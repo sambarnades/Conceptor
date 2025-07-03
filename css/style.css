@@ -1,0 +1,460 @@
+/* Réinitialisation et styles de base inspirés par Apple */
+html {
+    overflow-y: scroll; /* Force la scrollbar à être toujours visible, empêchant le décalage du layout */
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    background-color: #F5F5F7; /* Fond gris clair Apple */
+    color: #1d1d1f; /* Gris foncé pour le texte */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* En-tête */
+.app-bar {
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.app-bar h1 {
+    margin: 0;
+    font-size: 1.8em;
+    font-weight: 600;
+    color: #1d1d1f;
+}
+
+/* Cartes génériques */
+.info-card,
+.prompt-generator,
+.module-container {
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    padding: 25px 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.info-card h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin-bottom: 20px;
+}
+
+/* Section "Comment utiliser" */
+.info-card ol {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espace entre les points */
+}
+
+.info-card li {
+    font-size: 1.1em;
+    color: #333;
+}
+
+.info-card li::marker {
+    font-weight: bold;
+    color: #007AFF;
+}
+
+/* Générateur de prompt */
+.prompt-generator {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.prompt-generator input[type="text"],
+.prompt-generator input[type="number"] {
+    padding: 15px 20px;
+    border: 1px solid #dcdcdc;
+    border-radius: 12px;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #fcfcfc;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.prompt-generator input[type="text"]:focus,
+.prompt-generator input[type="number"]:focus {
+    outline: none;
+    border-color: #007AFF;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+}
+
+.prompt-generator button {
+    grid-column: 1 / -1; /* Le bouton prend toute la largeur */
+    padding: 18px;
+    background-color: #007AFF;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 500;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0, 122, 255, 0.2);
+}
+
+.prompt-generator button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.3);
+}
+
+/* Système d'onglets */
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+}
+
+.tab-link {
+    padding: 12px 25px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #8e8e93; /* Gris clair pour inactif */
+    position: relative;
+    transition: color 0.3s;
+}
+
+.tab-link:hover {
+    color: #1d1d1f;
+}
+
+.tab-link.active {
+    color: #007AFF; /* Bleu pour actif */
+    font-weight: 600;
+}
+
+.tab-link::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; /* Aligné avec la bordure du conteneur */
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #007AFF;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.tab-link.active::after {
+    transform: scaleX(1);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Grille H5P */
+.h5p-grid, .moodle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 25px;
+}
+
+.h5p-tile {
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    text-align: center;
+    padding: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.h5p-tile:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+}
+
+.h5p-tile img {
+    max-width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+.h5p-tile .tile-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.h5p-tile .tile-name-fr {
+    font-weight: 600;
+    font-size: 1em;
+    color: #1d1d1f;
+}
+
+.h5p-tile .tile-name-en {
+    font-size: 0.85em;
+    color: #8e8e93;
+}
+
+/* Conteneur de module (Moodle, modale) */
+.module-container h3 {
+    margin-top: 0;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.h5p-content-container h3 {
+    margin-top: 0;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: #1C1C1E;
+    margin-bottom: 15px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 200px; /* Plus grand */
+    padding: 20px; /* Plus aéré */
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    box-sizing: border-box;
+    font-family: "SF Mono", "Menlo", "Monaco", monospace;
+    font-size: 1em;
+    margin-bottom: 20px;
+    background-color: #FAFAFA; /* Fond légèrement contrasté */
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #007AFF;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+}
+
+textarea::placeholder {
+    color: #a0a0a0; /* Placeholder plus lisible */
+}
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.copy-btn, .action-btn {
+    padding: 12px 20px;
+    border: none;
+    background-color: #e9e9ed;
+    color: #1C1C1E;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.95em;
+    font-weight: 500;
+}
+
+.copy-btn:hover, .action-btn:hover {
+    background-color: #dcdce1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Conteneur de contenu H5P (remplace la modale) */
+.h5p-content-container {
+    display: none; /* Caché par défaut et retiré du flux */
+}
+
+.h5p-content-container.active {
+    display: block; /* Affiché quand actif */
+    padding: 35px 40px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.h5p-tile.active {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0, 122, 255, 0.2);
+    border: 1px solid #007AFF;
+}
+
+.h5p-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* Espacement réduit avec le sous-titre */
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.h5p-content-header h2 {
+    margin: 0;
+    font-size: 2.2em; /* Plus gros et gras */
+    font-weight: 700;
+    color: #1C1C1E;
+}
+
+.h5p-content-header .close-button {
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.h5p-content-header .close-button:hover {
+    color: #1d1d1f;
+}
+
+.h5p-content-description {
+    font-size: 1.2em;
+    color: #6c6c70; /* Gris doux */
+    margin-bottom: 40px; /* Espacement généreux */
+    max-width: 80ch; /* Limite la largeur pour la lisibilité */
+}
+
+/* Blocs de contenu dans le panneau */
+.h5p-prompt-block, .h5p-processor {
+    background-color: #FAFAFA;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.h5p-processor {
+    margin-top: 0; /* Remplacé par le margin-bottom du bloc précédent */
+    padding-top: 25px;
+}
+
+.h5p-processor h3 {
+    margin-top: 0;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: #1C1C1E;
+}
+
+.download-btn {
+    display: block; /* Prend toute la largeur */
+    width: 100%;
+    padding: 20px;
+    background-color: #007AFF; /* Bleu profond */
+    color: white;
+    border: none;
+    border-radius: 20px; /* Coins plus arrondis */
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s;
+    margin-top: 15px;
+    font-size: 1.2em;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 122, 255, 0.2);
+}
+
+.download-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.3);
+    background-color: #0071e3;
+}
+
+/* Footer */
+.footer {
+    background-color: #ffffff;
+    padding: 20px 30px;
+    margin-top: 60px;
+    font-size: 0.9em;
+    color: #8e8e93;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    text-align: center;
+}
+
+.footer a {
+    color: #555;
+    text-decoration: none;
+    transition: color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Espace entre l'icône et le texte */
+}
+
+.footer a:hover {
+    color: #007AFF;
+    text-decoration: none;
+}
+
+/* Conteneur de notifications */
+#notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notification {
+    background-color: #fff;
+    color: #1d1d1f;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 0.5s, transform 0.5s;
+    border-left: 5px solid #007AFF;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.notification.error {
+    border-left-color: #FF3B30; /* Rouge Apple */
+}
+
+

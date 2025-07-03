@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<course_completion_defaults>
+  <course_completion_default id="110646">
+    <modulename>assign</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"completionsubmit":1,"modids":["1","5","7","24","39"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110675">
+    <modulename>board</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"completionnotesenabled":1,"completionnotes":1,"modids":["37"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110647">
+    <modulename>book</modulename>
+    <completion>2</completion>
+    <completionview>1</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["3","12","15","16","18","21"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110648">
+    <modulename>chat</modulename>
+    <completion>0</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["4","8","9","13","20","22","30","36","41"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110649">
+    <modulename>choice</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"completionsubmit":1,"modids":["1","5","7","24","39"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110668">
+    <modulename>choicegroup</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"completionsubmit":1,"modids":["1","5","7","24","39"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110679">
+    <modulename>collabora</modulename>
+    <completion>0</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["4","8","9","13","20","22","30","36","41"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110650">
+    <modulename>data</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"completionentriesenabled":1,"completionentries":1,"modids":["6"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110669">
+    <modulename>epikmatch</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"completionminattemptsenabled":1,"completionminattempts":1,"modids":["25","32","34"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110651">
+    <modulename>feedback</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"completionsubmit":1,"modids":["1","5","7","24","39"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110652">
+    <modulename>folder</modulename>
+    <completion>0</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["4","8","9","13","20","22","30","36","41"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110653">
+    <modulename>forum</modulename>
+    <completion>0</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["4","8","9","13","20","22","30","36","41"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110676">
+    <modulename>game</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>1</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","27","29","30","32","34","36","37","38","39","40","41","42","43"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110670">
+    <modulename>geogebra</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>1</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","27","29","30","32","34","36","37","38","39","40","41","42","43"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110654">
+    <modulename>glossary</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"completionentriesenabled":1,"completionentries":1,"modids":["10"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110655">
+    <modulename>h5pactivity</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>1</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","27","29","30","32","34","36","37","38","39","40","41","42","43"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110671">
+    <modulename>hvp</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>1</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","27","29","30","32","34","36","37","38","39","40","41","42","43"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110656">
+    <modulename>imscp</modulename>
+    <completion>2</completion>
+    <completionview>1</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["3","12","15","16","18","21"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110657">
+    <modulename>label</modulename>
+    <completion>0</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["4","8","9","13","20","22","30","36","41"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110658">
+    <modulename>lesson</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"completionendreached":1,"modids":["14"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110659">
+    <modulename>lti</modulename>
+    <completion>2</completion>
+    <completionview>1</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["3","12","15","16","18","21"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110672">
+    <modulename>mapmodules</modulename>
+    <completion>0</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["4","8","9","13","20","22","30","36","41"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110673">
+    <modulename>millionnairev2</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"completionminattemptsenabled":1,"completionminattempts":1,"modids":["25","32","34"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110660">
+    <modulename>page</modulename>
+    <completion>2</completion>
+    <completionview>1</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["3","12","15","16","18","21"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110680">
+    <modulename>programcourse</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"completionall":1,"modids":["42"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110677">
+    <modulename>questionnaire</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"completionsubmit":1,"modids":["1","5","7","24","39"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110661">
+    <modulename>quiz</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>1</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","27","29","30","32","34","36","37","38","39","40","41","42","43"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110662">
+    <modulename>resource</modulename>
+    <completion>2</completion>
+    <completionview>1</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["3","12","15","16","18","21"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110663">
+    <modulename>scorm</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>1</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","27","29","30","32","34","36","37","38","39","40","41","42","43"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110674">
+    <modulename>simplequiz</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"completionminattemptsenabled":1,"completionminattempts":1,"modids":["25","32","34"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110681">
+    <modulename>stickynotes</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"completionstickynotesenabled":1,"completionstickynotes":1,"modids":["43"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110678">
+    <modulename>studentquiz</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"completionpointenabled":1,"completionpoint":1,"modids":["40"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110664">
+    <modulename>survey</modulename>
+    <completion>0</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["4","8","9","13","20","22","30","36","41"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110665">
+    <modulename>url</modulename>
+    <completion>2</completion>
+    <completionview>1</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["3","12","15","16","18","21"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110666">
+    <modulename>wiki</modulename>
+    <completion>0</completion>
+    <completionview>0</completionview>
+    <completionusegrade>0</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["4","8","9","13","20","22","30","36","41"]}</customrules>
+  </course_completion_default>
+  <course_completion_default id="110667">
+    <modulename>workshop</modulename>
+    <completion>2</completion>
+    <completionview>0</completionview>
+    <completionusegrade>1</completionusegrade>
+    <completionpassgrade>0</completionpassgrade>
+    <completionexpected>0</completionexpected>
+    <customrules>{"modids":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","27","29","30","32","34","36","37","38","39","40","41","42","43"]}</customrules>
+  </course_completion_default>
+</course_completion_defaults>
