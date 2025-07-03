@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outil de génération de prompt IA/H5P/Moodle</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header class="app-bar">
+        <h1>Caramel</h1>
+        <h2>Création Assistée de Ressources et d'Activités Moodle et Eléa</h2>
+    </header>
+
+    <div id="notification-container"></div>
+    <div class="container">
+        <div class="info-card">
+            <h2>Comment utiliser cet outil ?</h2>
+            <ol>
+                <li><strong>Renseignez le contexte :</strong> Indiquez la discipline, le thème, le niveau et le nombre d'éléments souhaités.</li>
+                <li><strong>Générez les prompts :</strong> Cliquez sur le bouton "Générer les prompts".</li>
+                <li><strong>Choisissez une activité :</strong> Cliquez sur une des tuiles H5P ou un module Éléa/Moodle.</li>
+                <li><strong>Utilisez le prompt :</strong> Copiez le prompt généré et collez-le dans votre IA favorite (ChatGPT, Le Chat, Duck.Ai, etc.).</li>
+                <li><strong>Créez votre module :</strong> Collez le résultat de l'IA dans la zone "Créer le fichier H5P complet" et téléchargez votre module.</li>
+            </ol>
+        </div>
+
+        <div class="prompt-generator">
+            <input id="matiere" type="text" placeholder="Discipline (ex : Histoire)" />
+            <input id="theme" type="text" placeholder="Thème (ex : La Révolution française)" />
+            <input id="niveau" type="text" placeholder="Niveau (ex : Seconde professionnelle)" />
+            <input id="nombreQuestions" min="1" type="number" placeholder="Nombre d'éléments (ex : 10)" />
+            <button id="generateBtn">Générer les prompts</button>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-link active" data-tab="h5p">H5P</button>
+            <button class="tab-link" data-tab="moodle">Modules Éléa/Moodle</button>
+        </div>
+
+        <div id="h5p" class="tab-content active">
+            <div class="h5p-grid">
+                <!-- Les tuiles H5P seront insérées ici par le JS -->
+            </div>
+        </div>
+
+        <div id="moodle" class="tab-content">
+            <!-- Les tuiles Éléa seront insérées ici par le JS -->
+            <div class="moodle-grid"></div>
+        </div>
+    </div>
+
+    <!-- Le conteneur pour le contenu H5P sera injecté dynamiquement par le JS -->
+
+    <footer class="footer">
+        <span>Générateur de H5P et activités ELEA/Moodle</span>
+        <a href="mailto:gauthier.remande@ac-nantes.fr"><i class="fas fa-envelope"></i> Gauthier Remande</a>
+        <a href="mailto:emmanuel.gaunard@ac-grenoble.fr"><i class="fas fa-envelope"></i> Emmanuel Gaunard</a>
+        <a href="https://forge.apps.education.fr/caramel/caramel"><i class="fas fa-code-branch"></i> Forge</a>
+        <a href="https://forge.apps.education.fr/caramel/caramel/-/issues"><i class="fas fa-bug"></i> Ticket</a>
+        <a href="https://forge.apps.education.fr/caramel/caramel"><i class="fas fa-scroll"></i> GNU GPL v3.0 ou ultérieure</a>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/jszip/jszip.min.js"></script>
+    <script src="js/fflate/index.js"></script>
+    <script src="js/tar-js/tar.bundle.js"></script>
+    <script src="js/client-zip/worker.js"></script>
+</body>
+</html>

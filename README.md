@@ -15,14 +15,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin https://forge.apps.education.fr/caramel/caramel.git
+git remote add origin https://forge.apps.education.fr/gaunardemmanuel/h5pgen.git
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](https://forge.apps.education.fr/caramel/caramel/-/settings/integrations)
+- [ ] [Set up project integrations](https://forge.apps.education.fr/gaunardemmanuel/h5pgen/-/settings/integrations)
 
 ## Collaborate with your team
 
