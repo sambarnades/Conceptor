@@ -21,22 +21,28 @@
             <button class="language-btn" aria-label="Changer de langue">
                 <i class="fas fa-globe"></i>
             </button>
+           <button class="help-btn" id="help-btn" aria-label="Aide">
+               <i class="fas fa-question-circle"></i>
+           </button>
         </div>
     </header>
 
     <div id="notification-container"></div>
-    <div class="container">
-        <div class="info-card">
-            <h2>Comment utiliser cet outil ?</h2>
-            <ol>
-                <li><strong>Renseignez le contexte :</strong> Indiquez la discipline, le thème, le niveau et le nombre d'éléments souhaités.</li>
-                <li><strong>Générez les prompts :</strong> Cliquez sur le bouton "Générer les prompts".</li>
-                <li><strong>Choisissez une activité :</strong> Cliquez sur une des tuiles H5P ou un module Éléa/Moodle.</li>
-                <li><strong>Utilisez le prompt :</strong> Copiez le prompt généré et collez-le dans votre IA favorite (ChatGPT, Le Chat, Duck.Ai, etc.).</li>
-                <li><strong>Créez votre module :</strong> Collez le résultat de l'IA dans la zone "Créer le fichier H5P complet" et téléchargez votre module.</li>
-            </ol>
-        </div>
 
+   <div id="help-sidebar" class="sidebar">
+       <button class="close-btn" id="close-help-btn">&times;</button>
+       <h2>Comment utiliser cet outil ?</h2>
+       <ol>
+           <li><strong>Renseignez le contexte :</strong> Indiquez la discipline, le thème, le niveau et le nombre d'éléments souhaités.</li>
+           <li><strong>Générez les prompts :</strong> Cliquez sur le bouton "Générer les prompts".</li>
+           <li><strong>Choisissez une activité :</strong> Cliquez sur une des tuiles H5P ou un module Éléa/Moodle.</li>
+           <li><strong>Utilisez le prompt :</strong> Copiez le prompt généré et collez-le dans votre IA favorite (ChatGPT, Le Chat, Duck.Ai, etc.).</li>
+           <li><strong>Créez votre module :</strong> Collez le résultat de l'IA dans la zone "Créer le fichier H5P complet" et téléchargez votre module.</li>
+       </ol>
+   </div>
+   <div id="sidebar-overlay"></div>
+
+    <div class="container">
         <div class="prompt-generator">
             <input id="matiere" type="text" placeholder="Discipline (ex : Histoire)" />
             <input id="theme" type="text" placeholder="Thème (ex : La Révolution française)" />
@@ -74,6 +80,28 @@
     </footer>
 
     <script src="js/script.js"></script>
+   <script>
+       document.addEventListener('DOMContentLoaded', function () {
+           const helpBtn = document.getElementById('help-btn');
+           const closeHelpBtn = document.getElementById('close-help-btn');
+           const helpSidebar = document.getElementById('help-sidebar');
+           const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+           function openSidebar() {
+               helpSidebar.classList.add('open');
+               sidebarOverlay.classList.add('open');
+           }
+
+           function closeSidebar() {
+               helpSidebar.classList.remove('open');
+               sidebarOverlay.classList.remove('open');
+           }
+
+           helpBtn.addEventListener('click', openSidebar);
+           closeHelpBtn.addEventListener('click', closeSidebar);
+           sidebarOverlay.addEventListener('click', closeSidebar);
+       });
+   </script>
     <script src="js/jszip/jszip.min.js"></script>
     <script src="js/fflate/index.js"></script>
     <script src="js/tar-js/tar.bundle.js"></script>
