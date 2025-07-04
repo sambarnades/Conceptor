@@ -3,15 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Outil de génération de prompt IA/H5P/Moodle</title>
+    <title>Caramel</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/all.min.css">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <header class="app-bar">
-        <h1>Caramel</h1>
-        <h2>Création Assistée de Ressources et d'Activités Moodle et Eléa</h2>
+        <div class="header-left">
+            <img src="images/logo_caramel.png" alt="Logo Caramel" class="logo">
+            <div class="title-container">
+                <h1>Caramel</h1>
+                <p class="subtitle">Création Assistée de Ressources et d'Activités Moodle et Éléa</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="language-btn" aria-label="Changer de langue">
+                <i class="fas fa-globe"></i>
+            </button>
+        </div>
     </header>
 
     <div id="notification-container"></div>
@@ -55,12 +65,12 @@
     <!-- Le conteneur pour le contenu H5P sera injecté dynamiquement par le JS -->
 
     <footer class="footer">
-        <span>Générateur de H5P et activités ELEA/Moodle</span>
+        <span>Caramel v1.0</span>
         <a href="mailto:gauthier.remande@ac-nantes.fr"><i class="fas fa-envelope"></i> Gauthier Remande</a>
         <a href="mailto:emmanuel.gaunard@ac-grenoble.fr"><i class="fas fa-envelope"></i> Emmanuel Gaunard</a>
         <a href="https://forge.apps.education.fr/caramel/caramel"><i class="fas fa-code-branch"></i> Forge</a>
         <a href="https://forge.apps.education.fr/caramel/caramel/-/issues"><i class="fas fa-bug"></i> Ticket</a>
-        <a href="https://forge.apps.education.fr/caramel/caramel"><i class="fas fa-scroll"></i> GNU GPL v3.0 ou ultérieure</a>
+        <a href="https://forge.apps.education.fr/gaunardemmanuel/h5pgen"><i class="fas fa-scroll"></i> GNU GPL v3.0 ou ultérieure</a>
     </footer>
 
     <script src="js/script.js"></script>

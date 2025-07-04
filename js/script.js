@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function() {
         Crossword: {
             name: "Mots croisés",
             englishName: "Crosswords",
-            machineName: "H5P.Crossword",
             description: "Générez une grille de mots croisés à partir d'une liste de mots et de définitions.",
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/crosswords.png",
             promptId: "crosswordResultat",
@@ -587,20 +586,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // --- NOUVELLE LOGIQUE POUR ESSAY ---
-        if (moduleKey === 'Essay') {
-            try {
-                const contentJson = JSON.parse(jsonInput);
-                const title = document.getElementById('theme').value.trim() || module.name;
-                createSimpleEssayH5P(title, contentJson);
-            } catch (error) {
-                showNotification(`Le JSON pour le module Essay est invalide : ${error.message}`, 'error');
-                console.error("Erreur JSON pour Essay:", error);
-            }
-            return; // On arrête ici pour Essay
-        }
-        // --- FIN DE LA NOUVELLE LOGIQUE ---
-
         // --- NOUVELLE LOGIQUE POUR QUIZSET ---
         if (moduleKey === 'QuizSet') {
             try {
@@ -621,13 +606,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const machineName = module.machineName || `H5P.${moduleKey}`;
 
         try {
-            // Extraction robuste du JSON pour ignorer le texte environnant ou les balises de code.
-            const match = jsonInput.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
-            if (!match) {
-                throw new Error("Aucun contenu JSON valide n'a été trouvé dans le texte fourni.");
-            }
-            const extractedJson = match[0];
-            const jsonObj = JSON.parse(extractedJson);
+            const jsonObj = JSON.parse(jsonInput);
             let content = jsonObj;
             let options = { title: jsonObj.title || module.name };
 
@@ -668,12 +647,24 @@ document.addEventListener('DOMContentLoaded', function() {
                     options.title = jsonObj.taskDescription;
                 }
             } else if (moduleKey === 'MarkTheWords') {
-                // Correction pour les apostrophes collées aux astérisques (ex: l'*élève*)
-                const correctedTextField = jsonObj.textField.replace(/([’'])\*/g, "$1 *");
-
                 content = {
                     taskDescription: jsonObj.taskDescription,
-                    textField: correctedTextField,
+                    textField: jsonObj.textField,
+                    behaviour: {
+                        enableRetry: true,
+                        enableSolutionsButton: true,
+                        enableCheckButton: true,
+                        showScorePoints: true
+                    },
+                    overallFeedback: []
+                };
+            }
+
+            // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
+            if (moduleKey === 'MarkTheWords') {
+                content = {
+                    taskDescription: jsonObj.taskDescription,
+                    textField: jsonObj.textField,
                     behaviour: {
                         enableRetry: true,
                         enableSolutionsButton: true,
@@ -793,12 +784,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                 **Règles pour le contenu :**
                                 1.  Les mots (\`answer\`) doivent être des termes uniques et pertinents.
-                                2.  **CRUCIAL pour la génération de la grille :**
-                                    -   Les mots doivent avoir une longueur d'au moins **3 caractères**. Évite les mots trop courts comme "BE" ou "DO".
-                                    -   La liste de mots doit contenir suffisamment de lettres communes pour permettre un entrecroisement facile. Choisis des mots qui se partagent des voyelles ou des consonnes fréquentes.
-                                3.  Les définitions (\`clue\`) doivent être courtes et précises.
-                                4.  **IMPORTANT :** Assure-toi que toutes les chaînes de caractères dans le JSON sont valides. Échappe correctement les caractères spéciaux, notamment les sauts de ligne qui doivent être représentés par \`\\n\` et non par un vrai retour à la ligne.
-                                5.  Le reste de la structure JSON (comportement, thème, etc.) doit être conservé tel quel.
+                                2.  Les définitions (\`clue\`) doivent être courtes et précises.
+                                3.  Le reste de la structure JSON (comportement, thème, etc.) doit être conservé tel quel.
 
                                 **Exemple de JSON pour un mot :**
                                 \`\`\`json
@@ -831,29 +818,31 @@ document.addEventListener('DOMContentLoaded', function() {
                             **Structure du JSON attendu :**
                             L'objet doit contenir :
                             - \`taskDescription\`: Une consigne claire invitant l'élève à rédiger un texte sur le thème.
-                            - \`keywords\`: Un tableau de ${nombreQuestions} objets, chacun définissant un mot-clé.
-                            - \`sampleSolution\`: Une phrase d'exemple qui intègre de manière fluide TOUS les mots-clés.
+                            - \`keywords\`: Un tableau de ${nombreQuestions} objets, chacun définissant un mot-clé que le système devra retrouver dans la réponse de l'élève.
 
                             **Règles pour le contenu :**
-                            1.  Chaque objet dans \`keywords\` doit contenir :
-                                - \`keyword\`: Le mot à rechercher (un mot unique, sans espaces).
-                                - \`options\`: Un objet avec au minimum \`"points": 1\` et \`"caseSensitive": false\`.
+                            1.  Chaque objet dans \`keywords\` doit contenir la clé \`keyword\` avec le mot à rechercher.
                             2.  Les mots-clés doivent être pertinents et essentiels pour évaluer la compréhension du thème.
-                            3.  La \`sampleSolution\` doit être une phrase grammaticalement correcte et cohérente.
+                            3.  La structure JSON (comportement, etc.) doit être conservée.
 
-                            **Exemple de JSON :**
+                            **Exemple de JSON pour un mot-clé :**
                             \`\`\`json
                             {
-                                "taskDescription": "<p>Rédige un court texte expliquant la photosynthèse.</p>",
-                                "keywords": [
-                                    { "keyword": "lumière", "options": { "points": 1, "caseSensitive": false } },
-                                    { "keyword": "chlorophylle", "options": { "points": 1, "caseSensitive": false } }
-                                ],
-                                "sampleSolution": "La photosynthèse est le processus par lequel les plantes utilisent la lumière du soleil pour produire de l'énergie grâce à la chlorophylle."
+                            "taskDescription": "<p>Rédige un court texte expliquant la photosynthèse.</p>",
+                            "keywords": [
+                                {
+                                "keyword": "lumière",
+                                "options": { "points": 1, "caseSensitive": false }
+                                },
+                                {
+                                "keyword": "chlorophylle",
+                                "options": { "points": 1, "caseSensitive": false }
+                                }
+                            ]
                             }
                             \`\`\`
 
-                            Génère le JSON complet et valide, sans aucun autre commentaire.`;
+                            Génère le JSON complet et valide, en remplissant la consigne et la liste de mots-clés, sans aucun autre commentaire.`;
 
         const moodleXmlPrompt = `Je suis professeur de ${matiere} pour des élèves de niveau ${niveau}.
 
@@ -1413,46 +1402,31 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                   }
                 }
-                // Ajout des fichiers optionnels, sauf pour TimelineJS qui a une structure différente
-                const libsToSkipOptionalFiles = [
-                    'FontAwesome',
-                    'H5P.JoubelUI',
-                    'H5P.Transition',
-                    'H5P.FontIcons',
-                    'H5PEditor.VerticalTabs',
-                    'TimelineJS', // TimelineJS a une structure différente et est déjà géré
-                    'H5P.Question',
-                    'H5PEditor.ShowWhen',
-                    'H5P.MaterialDesignIcons',
-                    'H5PEditor.RangeList',
-                    'H5PEditor.TableList',
-                    'H5PEditor.ColorSelector',
-                    'H5P.Image'
-                ];
-
-                if (!libsToSkipOptionalFiles.includes(machineName)) {
-                    for (const opt of ['semantics.json', 'icon.svg']) {
-                        const optResp = await fetch(`${libPath}/${opt}`);
-                        if (optResp.ok) {
-                            const blob = await optResp.blob();
-                            files.push({
-                                name: `${libFolderName}/${opt}`,
-                                input: new Uint8Array(await blob.arrayBuffer()),
-                                unixPermissions: 0o100644
-                            });
-                        }
-                    }
-                    // Ajout du fichier de langue français
-                    const langPath = `${libPath}/language/fr.json`;
-                    const langResponse = await fetch(langPath);
-                    if (langResponse.ok) {
-                        const blob = await langResponse.blob();
-                        files.push({
-                            name: `${libFolderName}/language/fr.json`,
-                            input: new Uint8Array(await blob.arrayBuffer()),
-                            unixPermissions: 0o100644
-                        });
-                    }
+                // Ajout des fichiers optionnels
+                const optionalFiles = ['semantics.json'];
+                if (machineName !== 'TimelineJS') {
+                    optionalFiles.push('icon.svg');
+                }
+                for (const opt of optionalFiles) {
+                  const optResp = await fetch(`${libPath}/${opt}`);
+                  if (optResp.ok) {
+                    const blob = await optResp.blob();
+                    files.push({
+                      name: `${libFolderName}/${opt}`,
+                      input: new Uint8Array(await blob.arrayBuffer()),
+                      unixPermissions: 0o100644
+                    });
+                  }
+                }
+                // Ajout du fichier de langue français
+                const langResponse = await fetch(`${libPath}/language/fr.json`);
+                if (langResponse.ok) {
+                  const blob = await langResponse.blob();
+                  files.push({
+                    name: `${libFolderName}/language/fr.json`,
+                    input: new Uint8Array(await blob.arrayBuffer()),
+                    unixPermissions: 0o100644
+                  });
                 }
                 // Ajout des polices si besoin
                 const fontFilesToCopy = {
@@ -1572,11 +1546,12 @@ document.addEventListener('DOMContentLoaded', function() {
             'H5P.JoubelUI': 'h5p-libs/H5P.JoubelUI-1.3',
             'H5P.FontIcons': 'h5p-libs/H5P.FontIcons-1.0',
             'H5P.Transition': 'h5p-libs/H5P.Transition-1.0',
-            'H5P.Question': 'h5p-libs/H5P.Question-1.4',
+            'H5P.Question': 'h5p-libs/H5P.Question-1.5',
             'H5P.TextUtilities': 'h5p-libs/H5P.TextUtilities-1.3',
             'jQuery.ui': 'h5p-libs/jQuery.ui-1.10',
             'FontAwesome': 'h5p-libs/FontAwesome-4.5',
             'H5P.Timeline': 'h5p-libs/H5P.Timeline-1.1',
+            'TimelineJS': 'h5p-libs/TimelineJS-1.1',
             'H5P.Flashcards': 'h5p-libs/H5P.Flashcards-1.6',
             'H5P.Accordion': 'h5p-libs/H5P.Accordion-1.0',
             'H5P.AdvancedText': 'h5p-libs/H5P.AdvancedText-1.1',
@@ -1591,11 +1566,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'H5PEditor.VerticalTabs': 'h5p-libs/H5PEditor.VerticalTabs-1.3',
             'H5PEditor.ColorSelector': 'h5p-libs/H5PEditor.ColorSelector-1.2',
             'H5PEditor.Wizard': 'h5p-libs/H5PEditor.Wizard-1.2',
-            'H5PEditor.RangeList': 'h5p-libs/H5PEditor.RangeList-1.0',
-            'H5PEditor.ShowWhen': 'h5p-libs/H5PEditor.ShowWhen-1.0',
-            'H5PEditor.TableList': 'h5p-libs/H5PEditor.TableList-1.0',
-            'H5PEditor.SummaryTextualEditor': 'h5p-libs/H5PEditor.SummaryTextualEditor-1.1',
-            'TimelineJS': 'h5p-libs/TimelineJS-1.1'
+            'H5PEditor.RangeList': 'h5p-libs/H5PEditor.RangeList-1.0'
         };
         const path = knownLibraries[machineName];
         if (path) {
@@ -1677,134 +1648,5 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error("Erreur lors de la création du H5P simple pour QuizSet:", error);
         showNotification(`Échec de la création du fichier H5P : ${error.message}`, 'error');
     }
-    }
-
-// =======================================================================
-// 14. CRÉATION D’UN ESSAY SIMPLE
-// =======================================================================
-
-    async function createSimpleEssayH5P(title, userInputJson) {
-        try {
-            if (!downloadZip) {
-                showNotification('Le module de compression n\'est pas prêt. Réessayez dans un instant.', 'error');
-                return;
-            }
-
-            // 1. Construire le content.json en fusionnant le modèle et l'entrée utilisateur
-            const contentTemplate = {
-                "solution": {
-                    "introduction": "<div>Voici un exemple de solution. La vôtre peut être différente.</div>\n",
-                    "sample": ""
-                },
-                "keywords": [],
-                "overallFeedback": [
-                    { "from": 0, "to": 49, "feedback": "Peut mieux faire. Relisez la consigne." },
-                    { "from": 50, "to": 79, "feedback": "Bon travail ! Vous avez compris l'essentiel." },
-                    { "from": 80, "to": 100, "feedback": "Excellent ! Vous maîtrisez le sujet." }
-                ],
-                "behaviour": {
-                    "inputFieldSize": "10",
-                    "enableRetry": true,
-                    "ignoreScoring": false,
-                    "minimumLength": 10,
-                    "maximumLength": 500,
-                    "percentagePassing": 50,
-                    "percentageMastering": 80,
-                    "pointsHost": 1
-                },
-                "checkAnswer": "Vérifier",
-                "tryAgain": "Recommencer",
-                "showSolution": "Voir la solution",
-                "feedbackHeader": "Feedback",
-                "solutionTitle": "Exemple de solution",
-                "remainingChars": "Caractères restants : @chars",
-                "notEnoughChars": "Vous devez entrer au moins @chars caractères !",
-                "messageSave": "Enregistré",
-                "taskDescription": "",
-                "placeholderText": "Commencez à écrire ici...",
-                "media": {},
-                "ariaYourResult": "Vous avez obtenu @score sur @total points",
-                "ariaNavigatedToSolution": "Navigation vers la solution après la zone de texte.",
-                 "submitAnswer":"Submit",
-                 "ariaCheck":"Check the answers.",
-                 "ariaShowSolution":"Show the solution. You will be provided with a sample solution.",
-                 "ariaRetry":"Retry the task. You can improve your previous answer if the author allowed that."
-            };
-
-            // Validation des mots-clés
-            if (userInputJson.keywords && userInputJson.keywords.some(k => k.keyword.includes(' '))) {
-                throw new Error("Les mots-clés ne doivent pas contenir d'espaces. Veuillez utiliser des mots uniques.");
-            }
-
-            contentTemplate.taskDescription = userInputJson.taskDescription;
-            
-            // Enrichir les mots-clés avec des options par défaut si elles sont manquantes
-            contentTemplate.keywords = userInputJson.keywords.map(kw => {
-                const defaultOptions = {
-                    points: 1,
-                    caseSensitive: false,
-                    forgiveMistakes: false
-                };
-                // Fusionne les options de l'utilisateur avec les options par défaut
-                const finalOptions = { ...defaultOptions, ...(kw.options || {}) };
-                return { ...kw, options: finalOptions };
-            });
-
-            // Optionnel : permettre à l'utilisateur de surcharger d'autres paramètres
-            if (userInputJson.behaviour) {
-                contentTemplate.behaviour = { ...contentTemplate.behaviour, ...userInputJson.behaviour };
-            }
-            if (userInputJson.solution) {
-                contentTemplate.solution = { ...contentTemplate.solution, ...userInputJson.solution };
-            }
-            if (userInputJson.sampleSolution) {
-                contentTemplate.solution.sample = `<div>${userInputJson.sampleSolution}</div>\n`;
-            }
-
-
-            // 2. Créer le fichier h5p.json
-            const h5pJson = {
-                title: title,
-                language: "fr",
-                mainLibrary: "H5P.Essay",
-                embedTypes: ["iframe"],
-                license: "U",
-                preloadedDependencies: [{
-                    machineName: "H5P.Essay",
-                    majorVersion: "1",
-                    minorVersion: "5"
-                }]
-            };
-
-            // 3. Préparer les fichiers pour le zip
-            const files = [
-                {
-                    name: "h5p.json",
-                    input: new TextEncoder().encode(JSON.stringify(h5pJson, null, 2))
-                },
-                {
-                    name: "content/content.json",
-                    input: new TextEncoder().encode(JSON.stringify(contentTemplate, null, 2))
-                }
-            ];
-
-            // 4. Créer et télécharger le fichier .h5p
-            const zipBlob = await downloadZip(files).blob();
-            const url = URL.createObjectURL(zipBlob);
-            const a = document.createElement('a');
-            const fileName = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-            a.download = `${fileName}.h5p`;
-            a.href = url;
-            document.body.appendChild(a);
-a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-
-            showNotification(`Fichier ${a.download} généré avec succès !`);
-
-        } catch (error) {
-            console.error("Erreur lors de la création du H5P simple pour Essay:", error);
-            showNotification(`Échec de la création du fichier H5P : ${error.message}`, 'error');
-        }
     }
 });
