@@ -1,0 +1,21 @@
+Caramel – Journal des modifications
+
+1.0 – 04-07-2025
+
+Première publication (release initiale)
+
+Génération automatique de prompts IA pour :
+
+H5P : Timeline, Flashcards, Quiz (Question Set), Drag the Words, Mark the Words, Fill in the Blanks, Glossary, Crossword, Essay, Summary.
+
+Moodle/Éléa : export XML, format GIFT, activité unique « Millionnaire ».
+
+Conversion côté client des réponses IA en paquets .h5p prêts à importer.
+
+Création d’archives .mbz pour l’activité « Millionnaire » – Moodle 3.x / 4.x.
+
+Interface web responsive
+
+Traitement 100 % local : aucune donnée transmise à un serveur.
+
+Dépôt statique compatible GitLab Pages.
