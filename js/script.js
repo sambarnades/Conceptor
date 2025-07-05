@@ -444,18 +444,31 @@ document.addEventListener('DOMContentLoaded', function() {
 // =======================================================================
 
     function generatePrompts() {
-        const matiere = document.getElementById('matiere').value.trim();
-        const niveau = document.getElementById('niveau').value.trim();
-        const theme = document.getElementById('theme').value.trim();
-        const nombreQuestions = document.getElementById('nombreQuestions').value.trim();
+        const simpleModeTab = document.querySelector('.mode-tab[data-mode="simple"]');
+        let prompts;
 
-        if (!matiere || !niveau || !theme || !nombreQuestions) {
-            showNotification('Veuillez remplir tous les champs.', 'error');
-            return;
+        if (simpleModeTab.classList.contains('active')) { // Mode Simple
+            const qui = document.getElementById('qui').value.trim();
+            const quoi = document.getElementById('quoi').value.trim();
+
+            if (!qui || !quoi) {
+                showNotification('Veuillez remplir tous les champs du mode simple.', 'error');
+                return;
+            }
+            prompts = getPrompts(qui, quoi, null, null, null, false);
+        } else { // Mode Guidé (Avancé)
+            const matiere = document.getElementById('matiere').value.trim();
+            const niveau = document.getElementById('niveau').value.trim();
+            const theme = document.getElementById('theme').value.trim();
+            const nombreQuestions = document.getElementById('nombreQuestions').value.trim();
+            const infosComplementaires = document.getElementById('infosComplementaires').value.trim();
+
+            if (!matiere || !niveau || !theme || !nombreQuestions) {
+                showNotification('Veuillez remplir tous les champs du mode guidé.', 'error');
+                return;
+            }
+            prompts = getPrompts(matiere, niveau, theme, nombreQuestions, infosComplementaires, true);
         }
-
-        // Stocker les prompts générés dans des éléments cachés pour les réutiliser
-        const prompts = getPrompts(matiere, niveau, theme, nombreQuestions);
         
         // Nettoyer les anciens prompts cachés
         document.querySelectorAll('textarea[id^="hidden-"]').forEach(el => el.remove());
@@ -505,6 +518,25 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function setupEventListeners() {
         document.getElementById('generateBtn')?.addEventListener('click', generatePrompts);
+
+        const modeTabs = document.querySelectorAll('.mode-tab');
+        const simpleMode = document.getElementById('simple-mode');
+        const advancedMode = document.getElementById('advanced-mode');
+
+        modeTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                modeTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                if (tab.dataset.mode === 'simple') {
+                    simpleMode.classList.add('active');
+                    advancedMode.classList.remove('active');
+                } else {
+                    simpleMode.classList.remove('active');
+                    advancedMode.classList.add('active');
+                }
+            });
+        });
 
         // Les boutons Moodle & GIFT sont maintenant gérés dans toggleMoodleContent
 
@@ -696,15 +728,39 @@ document.addEventListener('DOMContentLoaded', function() {
 // =======================================================================
 
 
-    function getPrompts(matiere, niveau, theme, nombreQuestions) {
-        const timelinePrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Timeline".
-                                Tu es un professeur expert en pédagogie qui adaptera le ton et le vocabulaire en fonction du contenu des programmes actuels et du niveau des élèves pour le cours de ${matiere}.
+    function getPrompts(arg1, arg2, arg3, arg4, arg5, isAdvanced) {
+        let contextPrompt;
+        let matiere, niveau, theme, nombreQuestions, infosComplementaires;
 
-                                **Contexte :**
-                                - **Matière :** ${matiere}
-                                - **Niveau des élèves :** ${niveau}
-                                - **Thème :** ${theme}
-                                - **Nombre d'événements clés :** ${nombreQuestions}
+        if (isAdvanced) {
+            matiere = arg1;
+            niveau = arg2;
+            theme = arg3;
+            nombreQuestions = arg4;
+            infosComplementaires = arg5;
+            contextPrompt = `
+                Tu es un professeur expert en pédagogie qui adaptera le ton et le vocabulaire en fonction du contenu des programmes actuels et du niveau des élèves pour le cours de ${matiere}.
+
+                **Contexte :**
+                - **Matière :** ${matiere}
+                - **Niveau des élèves :** ${niveau}
+                - **Thème :** ${theme}
+                - **Nombre d'éléments :** ${nombreQuestions}
+                ${infosComplementaires ? `- **Informations complémentaires :** ${infosComplementaires}` : ''}
+            `;
+        } else {
+            const qui = arg1;
+            const quoi = arg2;
+            contextPrompt = `
+                Je suis un(e) **${qui}** et je souhaite **${quoi}**.
+            `;
+            // Pour le mode simple, on peut déduire un nombre par défaut si nécessaire
+            nombreQuestions = 10;
+        }
+
+
+        const timelinePrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Timeline".
+                                ${contextPrompt}
 
                                 **Ta mission :**
                                 Génère un objet JSON complet et valide pour une activité H5P de type Timeline. Le JSON doit être directement utilisable.
@@ -763,13 +819,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 Génère uniquement le code JSON valide, sans aucun commentaire. Le résultat sera directement utilisé par un autre outil.`;
 
         const crosswordPrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Crossword".
-                                Tu es un professeur expert en pédagogie qui adaptera le ton et le vocabulaire en fonction du contenu des programmes actuels et du niveau des élèves pour le cours de ${matiere}.
-
-                                **Contexte :**
-                                - **Matière :** ${matiere}
-                                - **Niveau des élèves :** ${niveau}
-                                - **Thème :** ${theme}
-                                - **Nombre de mots :** ${nombreQuestions} (entre 5 et 10)
+                                ${contextPrompt}
 
                                 **Ta mission :**
                                 Génère un objet JSON complet et valide pour une activité de mots croisés H5P.
@@ -804,13 +854,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 Génère le JSON complet et valide, en remplissant le titre, la description et le tableau "words", sans aucun autre commentaire.`;
 
         const essayPrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Essay".
-                            Tu es un professeur expert en pédagogie qui adaptera le ton et le vocabulaire en fonction du contenu des programmes actuels et du niveau des élèves pour le cours de ${matiere}.
-
-                            **Contexte :**
-                            - **Matière :** ${matiere}
-                            - **Niveau des élèves :** ${niveau}
-                            - **Thème :** ${theme}
-                            - **Nombre de mots-clés :** ${nombreQuestions} (entre 5 et 8)
+                            ${contextPrompt}
 
                             **Ta mission :**
                             Génère un objet JSON complet et valide pour une activité H5P de type Essay.
@@ -844,9 +888,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                             Génère le JSON complet et valide, en remplissant la consigne et la liste de mots-clés, sans aucun autre commentaire.`;
 
-        const moodleXmlPrompt = `Je suis professeur de ${matiere} pour des élèves de niveau ${niveau}.
-
-                                Je souhaite créer un quiz de ${nombreQuestions} questions sur le thème suivant : ${theme}.
+        const moodleXmlPrompt = `
+                                ${contextPrompt}
+                                Je souhaite créer un quiz de ${nombreQuestions} questions.
                                 Concernant le fond :
 
                                 Les réponses incorrectes doivent être cohérentes avec le sujet mais clairement fausses pour éviter le hasard.
@@ -870,9 +914,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                 Ne commente pas, ne formate pas, ne résume pas : je veux uniquement le contenu brut du fichier XML. Respecte scrupuleusement le format décrit, car je vais coller le résultat dans un autre outil qui attend ce format. Produit la réponse sous forme de code préformaté`;
 
-        const giftPrompt = `Je suis professeur de ${matiere} pour des élèves de niveau ${niveau}.
-
-                          Je souhaite créer un quiz de ${nombreQuestions} questions sur le thème suivant : ${theme}.
+        const giftPrompt = `
+                          ${contextPrompt}
+                          Je souhaite créer un quiz de ${nombreQuestions} questions.
 
                           Le quizz doit être au format GIFT, destiné à être importé dans Moodle.
 
@@ -904,13 +948,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         
         const flashcardsPrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Flashcards".
-                                Tu es un professeur expert en pédagogie qui adaptera le ton et le vocabulaire en fonction du contenu des programmes actuels et du niveau des élèves pour le cours de ${matiere}.
-
-                                **Contexte :**
-                                - **Matière :** ${matiere}
-                                - **Niveau des élèves :** ${niveau}
-                                - **Thème :** ${theme}
-                                - **Nombre de cartes :** ${nombreQuestions}
+                                ${contextPrompt}
 
                                 **Ta mission :**
                                 Génère un objet JSON complet et valide pour une activité H5P de type Flashcards.
@@ -944,13 +982,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 Génère uniquement le code JSON valide, sans aucun commentaire.`;
 
         const quizSetPrompt = `Tu es un expert en ingénierie pédagogique créant le contenu pour une activité "H5P Quiz (Question Set)".
-                                Tu es un professeur expert en pédagogie qui adaptera le ton et le vocabulaire en fonction du contenu des programmes actuels et du niveau des élèves pour le cours de ${matiere}.
-
-                                **Contexte :**
-                                - **Matière :** ${matiere}
-                                - **Niveau des élèves :** ${niveau}
-                                - **Thème :** ${theme}
-                                - **Nombre de questions :** ${nombreQuestions}
+                                ${contextPrompt}
 
                                 **Ta mission :**
                                 Génère un objet JSON **uniquement pour le contenu** d'un quiz H5P. Le JSON doit être directement utilisable comme fichier \`content.json\`.
@@ -989,13 +1021,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 Génère l'objet JSON complet et valide, en commençant par \`{"progressType": "dots", ...}\`, sans aucun commentaire.`;
 
         const glossaryPrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Accordion".
-                                Tu es un professeur expert en pédagogie qui adaptera le ton et le vocabulaire en fonction du contenu des programmes actuels et du niveau des élèves pour le cours de ${matiere}.
-
-                                **Contexte :**
-                                - **Matière :** ${matiere}
-                                - **Niveau des élèves :** ${niveau}
-                                - **Thème :** ${theme}
-                                - **Nombre d'entrées :** ${nombreQuestions}
+                                ${contextPrompt}
 
                                 **Ta mission :**
                                 Génère un objet JSON complet et valide pour un glossaire H5P de type Accordion.
@@ -1032,13 +1058,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 Génère uniquement le code JSON valide, sans aucun commentaire.`;
 
         const summaryPrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Summary".
-                                Tu es un professeur expert en pédagogie qui adaptera le ton et le vocabulaire en fonction du contenu des programmes actuels et du niveau des élèves pour le cours de ${matiere}.
-
-                                **Contexte :**
-                                - **Matière :** ${matiere}
-                                - **Niveau des élèves :** ${niveau}
-                                - **Thème :** ${theme}
-                                - **Nombre de phrases dans le résumé :** ${nombreQuestions}
+                                ${contextPrompt}
 
                                 **Ta mission :**
                                 Génère un objet JSON complet pour une activité H5P de type Summary.
@@ -1070,13 +1090,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 Génère uniquement le code JSON valide, sans aucun commentaire.`;
 
         const dragWordPrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Drag the Words".
-                                Tu es un professeur expert en pédagogie qui adaptera le ton et le vocabulaire en fonction du contenu des programmes actuels et du niveau des élèves pour le cours de ${matiere}.
-
-                                **Contexte :**
-                                - **Matière :** ${matiere}
-                                - **Niveau des élèves :** ${niveau}
-                                - **Thème :** ${theme}
-                                - **Nombre de mots à glisser :** environ ${nombreQuestions}
+                                ${contextPrompt}
 
                                 **Ta mission :**
                                 Génère un objet JSON complet pour une activité H5P de type Drag the Words.
@@ -1101,13 +1115,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 Génère uniquement le code JSON valide, sans aucun commentaire.`;
 
         const blanksPrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Fill in the Blanks".
-                            Tu es un professeur expert en pédagogie qui adaptera le ton et le vocabulaire en fonction du contenu des programmes actuels et du niveau des élèves pour le cours de ${matiere}.
-
-                            **Contexte :**
-                            - **Matière :** ${matiere}
-                            - **Niveau des élèves :** ${niveau}
-                            - **Thème :** ${theme}
-                            - **Nombre de trous :** environ ${nombreQuestions}
+                            ${contextPrompt}
 
                             **Ta mission :**
                             Génère un objet JSON complet pour une activité H5P de type Fill in the Blanks.
@@ -1133,13 +1141,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             Génère uniquement le code JSON valide, sans aucun commentaire.`;
 
         const markWordsPrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Mark the Words".
-                                Tu es un professeur expert en pédagogie qui adaptera le ton et le vocabulaire en fonction du contenu des programmes actuels et du niveau des élèves pour le cours de ${matiere}.
-
-                                **Contexte :**
-                                - **Matière :** ${matiere}
-                                - **Niveau des élèves :** ${niveau}
-                                - **Thème :** ${theme}
-                                - **Nombre de mots à marquer :** environ ${nombreQuestions}
+                                ${contextPrompt}
 
                                 **Ta mission :**
                                 Génère un objet JSON complet pour une activité H5P de type Mark the Words.
@@ -1164,13 +1166,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 Génère uniquement le code JSON valide, sans aucun commentaire.`;
 
        const millionnairePrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Mark the Words".
-                                    Tu es un professeur expert en pédagogie qui adaptera le ton et le vocabulaire en fonction du contenu des programmes actuels et du niveau des élèves pour le cours de ${matiere}.
-
-                                    **Contexte :**
-                                    - **Matière :** ${matiere}
-                                    - **Niveau :** ${niveau}
-                                    - **Thème :** ${theme}
-                                    - **Nombre de questions :** 6
+                                    ${contextPrompt}
+                                    **Nombre de questions :** 6
 
                                     **Ta mission :**
                                     Génère un objet JSON contenant un titre et une liste de **6 questions** pour un jeu de type "Qui veut gagner des millions".

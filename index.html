@@ -44,11 +44,27 @@
 
     <div class="container">
         <div class="prompt-generator">
-            <input id="matiere" type="text" placeholder="Discipline (ex : Histoire)" />
-            <input id="theme" type="text" placeholder="Thème (ex : La Révolution française)" />
-            <input id="niveau" type="text" placeholder="Niveau (ex : Seconde professionnelle)" />
-            <input id="nombreQuestions" min="1" type="number" placeholder="Nombre d'éléments (ex : 10)" />
-            <button id="generateBtn">Générer les prompts</button>
+            <div class="mode-tabs">
+                <button class="mode-tab active" data-mode="simple">Mode Rapide</button>
+                <button class="mode-tab" data-mode="advanced">Mode Guidé</button>
+            </div>
+
+            <div class="prompt-form-container">
+                <div id="simple-mode" class="mode-content active">
+                    <input id="qui" type="text" placeholder="Qui êtes-vous ? (ex: Enseignant, formateur...)" />
+                    <input id="quoi" type="text" placeholder="Que souhaitez-vous aborder ? (ex: La nature d'un angle en 6e...)" />
+                </div>
+
+                <div id="advanced-mode" class="mode-content">
+                    <input id="matiere" type="text" placeholder="Discipline (ex : Histoire)" />
+                    <input id="theme" type="text" placeholder="Thème (ex : La Révolution française)" />
+                    <input id="niveau" type="text" placeholder="Niveau (ex : Seconde professionnelle)" />
+                    <input id="nombreQuestions" min="1" type="number" placeholder="Nombre d'éléments (ex : 10)" />
+                    <textarea id="infosComplementaires" placeholder="Informations complémentaires et spécifiques..."></textarea>
+                </div>
+
+                <button id="generateBtn">Générer les prompts</button>
+            </div>
         </div>
 
         <div class="tabs">
