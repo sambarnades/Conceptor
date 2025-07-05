@@ -681,11 +681,23 @@ textarea::placeholder {
         display: none;
     }
 
+    body {
+        padding-bottom: 0;
+    }
+
     .app-bar h1 {
         font-size: 1.2em;
     }
 
     .logo {
         height: 35px;
+    }
+
+    .footer {
+        position: relative;
+        height: auto;
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
     }
 }
