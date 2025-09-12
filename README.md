@@ -22,7 +22,7 @@
 À partir d'un contexte pédagogique (discipline, thème, niveau scolaire, nombre d'items), Caramel :
 
 1. génère des *prompts* prêts à l'emploi pour être utilisés dans l'IA du choix de l'utilisateur ;
-2. convertit la réponse de l'IA en fichiers **.h5p** (modules H5P) ou **.mbz** (activité Éléa/Magistère) sans quitter le navigateur.
+2. convertit la réponse de l'IA en fichiers **.h5p** (modules H5P) ou **.mbz** (activité Moodle/Éléa/Magistère) sans quitter le navigateur.
 
 Aucune donnée n'est envoyée vers un serveur : **tout est traité localement côté client**.
 
@@ -57,7 +57,7 @@ Fournir aux enseignants et formateurs un outil :
 
 ## Utilisation
 
-Le site internet est accessible directement à ce lien [https://caramel.forge.apps.education.fr/caramel](https://caramel.forge.apps.education.fr/caramel)
+Le site internet est accessible directement à ce lien [https://caramel.forge.apps.education.fr/](https://caramel.forge.apps.education.fr/) 
 
 ---
 
@@ -92,4 +92,4 @@ Les bibliothèques tierces conservent leurs licences respectives (MIT, Zlib, SIL
 
 ---
 
-*Caramel v1.0 – Juillet 2025*
+*Caramel v1.02 – Septembre 2025*
