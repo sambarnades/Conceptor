@@ -3,6 +3,58 @@
 // =======================================================================
 
 document.addEventListener('DOMContentLoaded', function() {
+    // =======================================================================
+    // 0. GESTION DE LA TRADUCTION
+    // =======================================================================
+    const languageSwitcher = document.querySelector('.language-switcher');
+    const languageDropdown = document.querySelector('.language-dropdown');
+    let currentLang = 'fr'; // Langue par défaut
+
+    function translatePage() {
+        document.querySelectorAll('[data-key]').forEach(element => {
+            const key = element.getAttribute('data-key');
+            const translation = translations[currentLang][key];
+            if (translation) {
+                if (element.placeholder) {
+                    element.placeholder = translation;
+                } else {
+                    element.innerHTML = translation;
+                }
+            }
+        });
+    }
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        translatePage();
+    }
+
+    const languageBtn = document.querySelector('.language-btn');
+
+    languageBtn.addEventListener('click', (e) => {
+        languageSwitcher.classList.toggle('open');
+        e.stopPropagation();
+    });
+
+    languageDropdown.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A') {
+            const lang = e.target.getAttribute('data-lang');
+            setLanguage(lang);
+            languageSwitcher.classList.remove('open');
+            e.preventDefault();
+        }
+    });
+
+    // Fermer le menu déroulant si on clique ailleurs
+    document.addEventListener('click', (e) => {
+        if (!languageSwitcher.contains(e.target)) {
+            languageSwitcher.classList.remove('open');
+        }
+    });
+
+    // Initial translation
+    setLanguage('fr');
+
     // --- Définition des modules H5P ---
     const h5pModules = {
         Timeline: {
@@ -247,7 +299,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
 
                 <div class="h5p-processor">
-                    <h3>Créer le fichier H5P complet</h3>
+                    <div class="h5p-processor-header">
+                        <h3>Créer le fichier H5P</h3>
+                        <div class="library-toggle">
+                            <label for="includeLibs-${moduleKey}">Intégrer les bibliothèques H5P :</label>
+                            <input type="checkbox" id="includeLibs-${moduleKey}" name="includeLibs">
+                        </div>
+                    </div>
                     <p>Collez le résultat de l'IA dans la zone ci-dessous pour créer votre module.</p>
                     <textarea id="${module.jsonInputId}" placeholder="Collez ici le JSON ou le texte généré par l'IA..."></textarea>
                     <button id="${module.createBtnId}" class="download-btn">Générer le H5P</button>
@@ -384,8 +442,18 @@ document.addEventListener('DOMContentLoaded', function() {
                handleMillionnaireCreation(jsonInput);
            });
        }
-       contentContainer.querySelectorAll('.go-duck').forEach(btn => btn.addEventListener('click', () => window.open('https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1', '_blank', 'noopener,noreferrer')));
-       contentContainer.querySelectorAll('.go-mistral').forEach(btn => btn.addEventListener('click', () => window.open('https://chat.mistral.ai/', '_blank', 'noopener,noreferrer')));
+       const promptIdForCopy = (moduleKey === 'moodleXml') ? 'moodleXmlResultat' :
+                               (moduleKey === 'gift') ? 'giftResultat' :
+                               (moduleKey === 'Millionnaire') ? moodleModules[moduleKey].promptId : null;
+
+       contentContainer.querySelectorAll('.go-duck').forEach(btn => btn.addEventListener('click', function() {
+           if (promptIdForCopy) copyToClipboard(promptIdForCopy, this);
+           window.open('https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1', '_blank', 'noopener,noreferrer');
+       }));
+       contentContainer.querySelectorAll('.go-mistral').forEach(btn => btn.addEventListener('click', function() {
+           if (promptIdForCopy) copyToClipboard(promptIdForCopy, this);
+           window.open('https://chat.mistral.ai/', '_blank', 'noopener,noreferrer');
+       }));
        
        // Remplir le prompt si déjà généré
        let promptId;
@@ -422,19 +490,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Boutons IA
-        container.querySelectorAll('.go-duck').forEach(btn => btn.addEventListener('click', () => window.open('https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1', '_blank', 'noopener,noreferrer')));
-        container.querySelectorAll('.go-mistral').forEach(btn => btn.addEventListener('click', () => window.open('https://chat.mistral.ai/', '_blank', 'noopener,noreferrer')));
+        container.querySelectorAll('.go-duck').forEach(btn => btn.addEventListener('click', function() {
+            copyToClipboard(module.promptId, this);
+            window.open('https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1', '_blank', 'noopener,noreferrer');
+        }));
+        container.querySelectorAll('.go-mistral').forEach(btn => btn.addEventListener('click', function() {
+            copyToClipboard(module.promptId, this);
+            window.open('https://chat.mistral.ai/', '_blank', 'noopener,noreferrer');
+        }));
 
         // Bouton de création H5P
         const createBtn = container.querySelector(`#${module.createBtnId}`);
         if (createBtn) {
             createBtn.addEventListener('click', () => {
                 const jsonInput = container.querySelector(`#${module.jsonInputId}`).value;
+                const includeLibs = container.querySelector(`#includeLibs-${moduleKey}`).checked;
                 if (!jsonInput) {
                     showNotification('Veuillez coller le contenu généré par l\'IA.', 'error');
                     return;
                 }
-                handleH5PCreation(moduleKey, jsonInput);
+                handleH5PCreation(moduleKey, jsonInput, includeLibs);
             });
         }
     }
@@ -611,7 +686,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     }
 
-    function handleH5PCreation(moduleKey, jsonInput) {
+    function handleH5PCreation(moduleKey, jsonInput, includeLibs = false) {
         const module = h5pModules[moduleKey];
         if (!module) {
             showNotification(`Module '${moduleKey}' non trouvé.`, 'error');
@@ -711,7 +786,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 ? [...new Set(jsonObj.quiz.questions.map(q => q.library.split(' ')[0]))]
                 : [];
 
-            createH5PFile(machineName, JSON.stringify(content), options, dynamicDependencies);
+            createH5PFile(machineName, JSON.stringify(content), options, dynamicDependencies, includeLibs);
 
         } catch (error) {
             if (error instanceof SyntaxError) {
@@ -1356,130 +1431,100 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     })();
 
-    async function createH5PFile(mainLibraryIdentifier, jsonContent, options = {}, dynamicDependencies = []) {
+    async function createH5PFile(mainLibraryIdentifier, jsonContent, options = {}, dynamicDependencies = [], includeLibs = false) {
         try {
-            // --- Nouvelle logique client-zip ---
             const files = [];
             const moduleName = mainLibraryIdentifier.split('.')[1];
             let allDependencies = new Map();
 
-            // Collecte des fichiers de bibliothèques (récursif)
-            async function addLibraryFiles(machineName, processedLibs) {
-                if (processedLibs.has(machineName)) return;
-                const libPath = await findLatestLibraryPath(machineName);
-                if (!libPath) {
-                    console.warn(`Bibliothèque locale '${machineName}' non trouvée.`);
-                    return;
-                }
-                const response = await fetch(`${libPath}/library.json`);
-                if (!response.ok) {
-                    console.warn(`Fichier '${libPath}/library.json' introuvable.`);
-                    return;
-                }
-                const libraryInfo = await response.json();
-                const libFolderName = libPath.split('/').pop();
-                // Ajout du library.json
-                files.push({
-                  name: `${libFolderName}/library.json`,
-                  input: new TextEncoder().encode(JSON.stringify(libraryInfo, null, 2)),
-                  unixPermissions: 0o100644
-                });
-                // Ajout des fichiers JS/CSS
-                const filesToAdd = (libraryInfo.preloadedJs || []).concat(libraryInfo.preloadedCss || []);
-                for (const file of filesToAdd) {
-                  const sourcePath = `${libPath}/${file.path}`;
-                  const destinationPath = `${libFolderName}/${file.path}`;
-                  const fileResponse = await fetch(sourcePath);
-                  if (fileResponse.ok) {
-                    const blob = await fileResponse.blob();
+            if (includeLibs) {
+                async function addLibraryFiles(machineName, processedLibs) {
+                    if (processedLibs.has(machineName)) return;
+                    const libPath = await findLatestLibraryPath(machineName);
+                    if (!libPath) {
+                        console.warn(`Bibliothèque locale '${machineName}' non trouvée.`);
+                        return;
+                    }
+                    const response = await fetch(`${libPath}/library.json`);
+                    if (!response.ok) {
+                        console.warn(`Fichier '${libPath}/library.json' introuvable.`);
+                        return;
+                    }
+                    const libraryInfo = await response.json();
+                    const libFolderName = libPath.split('/').pop();
+                    
                     files.push({
-                      name: destinationPath,
-                      input: new Uint8Array(await blob.arrayBuffer()),
+                      name: `${libFolderName}/library.json`,
+                      input: new TextEncoder().encode(JSON.stringify(libraryInfo, null, 2)),
                       unixPermissions: 0o100644
                     });
-                  }
-                }
-                // Ajout des fichiers optionnels
-                const optionalFiles = ['semantics.json'];
-                if (machineName !== 'TimelineJS') {
-                    optionalFiles.push('icon.svg');
-                }
-                for (const opt of optionalFiles) {
-                  const optResp = await fetch(`${libPath}/${opt}`);
-                  if (optResp.ok) {
-                    const blob = await optResp.blob();
-                    files.push({
-                      name: `${libFolderName}/${opt}`,
-                      input: new Uint8Array(await blob.arrayBuffer()),
-                      unixPermissions: 0o100644
-                    });
-                  }
-                }
-                // Ajout du fichier de langue français
-                const langResponse = await fetch(`${libPath}/language/fr.json`);
-                if (langResponse.ok) {
-                  const blob = await langResponse.blob();
-                  files.push({
-                    name: `${libFolderName}/language/fr.json`,
-                    input: new Uint8Array(await blob.arrayBuffer()),
-                    unixPermissions: 0o100644
-                  });
-                }
-                // Ajout des polices si besoin
-                const fontFilesToCopy = {
-                  'FontAwesome': [
-                    'fontawesome-webfont.eot',
-                    'fontawesome-webfont.svg',
-                    'fontawesome-webfont.ttf',
-                    'fontawesome-webfont.woff',
-                    'fontawesome-webfont.woff2',
-                    'FontAwesome.otf'
-                  ],
-                  'H5P.FontIcons': [
-                    'fonts/h5p.eot',
-                    'fonts/h5p.svg',
-                    'fonts/h5p.ttf',
-                    'fonts/h5p.woff'
-                  ],
-                  'H5P.JoubelUI': [
-                    'fonts/joubel.eot',
-                    'fonts/joubel.svg',
-                    'fonts/joubel.ttf',
-                    'fonts/joubel.woff'
-                  ]
-                };
-                if (fontFilesToCopy[machineName]) {
-                  for (const fontFile of fontFilesToCopy[machineName]) {
-                    const sourcePath = `${libPath}/${fontFile}`;
-                    const destinationPath = `${libFolderName}/${fontFile}`;
-                    const fileResponse = await fetch(sourcePath);
-                    if (fileResponse.ok) {
-                      const blob = await fileResponse.blob();
+
+                    const filesToAdd = (libraryInfo.preloadedJs || []).concat(libraryInfo.preloadedCss || []);
+                    for (const file of filesToAdd) {
+                      const sourcePath = `${libPath}/${file.path}`;
+                      const destinationPath = `${libFolderName}/${file.path}`;
+                      const fileResponse = await fetch(sourcePath);
+                      if (fileResponse.ok) {
+                        const blob = await fileResponse.blob();
+                        files.push({
+                          name: destinationPath,
+                          input: new Uint8Array(await blob.arrayBuffer()),
+                          unixPermissions: 0o100644
+                        });
+                      }
+                    }
+
+                    const optionalFiles = ['semantics.json', 'icon.svg'];
+                    for (const opt of optionalFiles) {
+                      const optResp = await fetch(`${libPath}/${opt}`);
+                      if (optResp.ok) {
+                        const blob = await optResp.blob();
+                        files.push({
+                          name: `${libFolderName}/${opt}`,
+                          input: new Uint8Array(await blob.arrayBuffer()),
+                          unixPermissions: 0o100644
+                        });
+                      }
+                    }
+
+                    const langResponse = await fetch(`${libPath}/language/fr.json`);
+                    if (langResponse.ok) {
+                      const blob = await langResponse.blob();
                       files.push({
-                        name: destinationPath,
+                        name: `${libFolderName}/language/fr.json`,
                         input: new Uint8Array(await blob.arrayBuffer()),
                         unixPermissions: 0o100644
                       });
                     }
-                  }
-                }
-                // Ajout des dépendances récursives
-                const allDeps = (libraryInfo.preloadedDependencies || []).concat(libraryInfo.editorDependencies || []);
-                for (const dep of allDeps) {
-                  await addLibraryFiles(dep.machineName, processedLibs);
-                }
-                processedLibs.set(machineName, {
-                  machineName: libraryInfo.machineName,
-                  majorVersion: String(libraryInfo.majorVersion),
-                  minorVersion: String(libraryInfo.minorVersion)
-                });
-            }
 
-            // Ajout de la bibliothèque principale
-            await addLibraryFiles(mainLibraryIdentifier, allDependencies);
-            // Ajout des dépendances dynamiques (ex: QuizSet)
-            for (const dep of dynamicDependencies) {
-              await addLibraryFiles(dep, allDependencies);
+                    const fontFilesToCopy = {
+                      'FontAwesome': ['fontawesome-webfont.eot', 'fontawesome-webfont.svg', 'fontawesome-webfont.ttf', 'fontawesome-webfont.woff', 'fontawesome-webfont.woff2', 'FontAwesome.otf'],
+                      'H5P.FontIcons': ['fonts/h5p.eot', 'fonts/h5p.svg', 'fonts/h5p.ttf', 'fonts/h5p.woff'],
+                      'H5P.JoubelUI': ['fonts/joubel.eot', 'fonts/joubel.svg', 'fonts/joubel.ttf', 'fonts/joubel.woff']
+                    };
+                    if (fontFilesToCopy[machineName]) {
+                      for (const fontFile of fontFilesToCopy[machineName]) {
+                        const sourcePath = `${libPath}/${fontFile}`;
+                        const destinationPath = `${libFolderName}/${fontFile}`;
+                        const fileResponse = await fetch(sourcePath);
+                        if (fileResponse.ok) {
+                          const blob = await fileResponse.blob();
+                          files.push({ name: destinationPath, input: new Uint8Array(await blob.arrayBuffer()), unixPermissions: 0o100644 });
+                        }
+                      }
+                    }
+
+                    const allDeps = (libraryInfo.preloadedDependencies || []).concat(libraryInfo.editorDependencies || []);
+                    for (const dep of allDeps) {
+                      await addLibraryFiles(dep.machineName, processedLibs);
+                    }
+                    processedLibs.set(machineName, { machineName: libraryInfo.machineName, majorVersion: String(libraryInfo.majorVersion), minorVersion: String(libraryInfo.minorVersion) });
+                }
+
+                await addLibraryFiles(mainLibraryIdentifier, allDependencies);
+                for (const dep of dynamicDependencies) {
+                  await addLibraryFiles(dep, allDependencies);
+                }
             }
 
             // Ajout du content.json
@@ -1495,14 +1540,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Génération du manifeste h5p.json
             const title = options.title || finalJsonContent.title || `${moduleName} Activity`;
+            let dependenciesForJson = Array.from(allDependencies.values());
+
+            // Si aucune bibliothèque n'est incluse, il faut quand même déclarer la dépendance principale.
+            if (dependenciesForJson.length === 0 && mainLibraryIdentifier) {
+                const mainLibPath = await findLatestLibraryPath(mainLibraryIdentifier);
+                if (mainLibPath) {
+                    try {
+                        const response = await fetch(`${mainLibPath}/library.json`);
+                        if (response.ok) {
+                            const libraryInfo = await response.json();
+                            dependenciesForJson.push({
+                                machineName: libraryInfo.machineName,
+                                majorVersion: String(libraryInfo.majorVersion),
+                                minorVersion: String(libraryInfo.minorVersion)
+                            });
+                        }
+                    } catch (e) {
+                        console.error("Impossible de charger les informations de la bibliothèque principale :", e);
+                    }
+                }
+            }
+
             const h5pJson = {
                 title: title,
                 mainLibrary: mainLibraryIdentifier,
-                embedTypes: [mainLibraryIdentifier === 'H5P.Timeline' ? 'iframe' : 'div'],
-                preloadedDependencies: Array.from(allDependencies.values()),
+                embedTypes: ["iframe"],
+                preloadedDependencies: dependenciesForJson,
                 language: "fr",
-                license: "U",
-                defaultLanguage: "fr"
+                license: "U"
             };
             files.push({
               name: "h5p.json",
@@ -1518,7 +1584,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const zipBlob = await downloadZip(files).blob();
             const url = URL.createObjectURL(zipBlob);
             const a = document.createElement('a');
-            const fileName = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            const today = new Date();
+            const dateString = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+            const englishName = h5pModules[moduleName]?.englishName || moduleName;
+            const fileName = `${englishName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}_caramel_${dateString}`;
             a.download = `${fileName}.h5p`;
             a.href = url;
             a.click();
@@ -1632,7 +1701,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const zipBlob = await downloadZip(files).blob();
         const url = URL.createObjectURL(zipBlob);
         const a = document.createElement('a');
-        const fileName = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+        const today = new Date();
+        const dateString = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+        const englishName = h5pModules['QuizSet']?.englishName || 'quiz-set';
+        const fileName = `${englishName.toLowerCase().replace(/[^a-z0-9()]+/g, '-').replace(/^-+|-+$/g, '')}_caramel_${dateString}`;
         a.download = `${fileName}.h5p`;
         a.href = url;
         document.body.appendChild(a);
