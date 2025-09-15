@@ -92,4 +92,4 @@ Les bibliothèques tierces conservent leurs licences respectives (MIT, Zlib, SIL
 
 ---
 
-*Caramel v1.02 – Septembre 2025*
+*Caramel v1.2 – Septembre 2025*
