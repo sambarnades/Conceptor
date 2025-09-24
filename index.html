@@ -104,7 +104,7 @@
     <!-- Le conteneur pour le contenu H5P sera injecté dynamiquement par le JS -->
 
     <footer class="footer">
-        <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank"><i class="fas fa-info-circle"></i> Caramel v1.0</a>
+        <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank"><i class="fas fa-info-circle"></i> Caramel v2.0</a>
         <a href="mailto:gauthier.remande@ac-nantes.fr"><i class="fas fa-envelope"></i> Gauthier REMANDE</a>
         <a href="mailto:emmanuel.gaunard@ac-grenoble.fr"><i class="fas fa-envelope"></i> Emmanuel GAUNARD</a>
         <a href="https://forge.apps.education.fr/caramel/caramel"><i class="fas fa-code-branch"></i> Forge</a>
@@ -112,8 +112,24 @@
         <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE"><i class="fas fa-scroll"></i> GNU GPL v3.0 ou ultérieure</a>
     </footer>
 
-    <script src="js/translations.js"></script>
     <script src="js/script.js"></script>
+    <script>
+        // Fonction pour charger dynamiquement le fichier de traduction
+        function loadTranslationScript(lang) {
+            const scriptId = 'translation-script';
+            let script = document.getElementById(scriptId);
+            if (script) {
+                script.remove(); // Supprimer l'ancien script si existant
+            }
+            script = document.createElement('script');
+            script.id = scriptId;
+            script.src = `js/translations/${lang}.js`;
+            document.head.appendChild(script);
+        }
+
+        // Charger la langue par défaut (fr) au démarrage
+        loadTranslationScript('fr');
+    </script>
    <script>
        document.addEventListener('DOMContentLoaded', function () {
            const helpBtn = document.getElementById('help-btn');

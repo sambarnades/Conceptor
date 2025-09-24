@@ -9,11 +9,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const languageSwitcher = document.querySelector('.language-switcher');
     const languageDropdown = document.querySelector('.language-dropdown');
     let currentLang = 'fr'; // Langue par défaut
+    let translations = {}; // Objet pour stocker les traductions chargées dynamiquement
+
+    // Fonction pour charger dynamiquement le fichier de traduction
+    async function loadTranslations(lang) {
+        try {
+            const response = await fetch(`js/translations/${lang}.js`);
+            const scriptText = await response.text();
+            // Exécuter le script pour définir la variable translations_XX
+            eval(scriptText + `\nwindow.translations_${lang} = translations_${lang};`);
+            translations = window[`translations_${lang}`]; // Assigner à l'objet global translations
+            currentLang = lang;
+            console.log('Translations loaded:', translations); // Ajout d'un log pour le débogage
+            translatePage();
+            // Mettre à jour l'attribut lang de la balise html
+            document.documentElement.lang = lang;
+        } catch (error) {
+            console.error(`Erreur lors du chargement des traductions pour ${lang}:`, error);
+        }
+    }
 
     function translatePage() {
         document.querySelectorAll('[data-key]').forEach(element => {
             const key = element.getAttribute('data-key');
-            const translation = translations[currentLang][key];
+            const translation = translations[key]; // Utiliser l'objet translations directement
             if (translation) {
                 if (element.placeholder) {
                     element.placeholder = translation;
@@ -24,11 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function setLanguage(lang) {
-        currentLang = lang;
-        translatePage();
-    }
-
     const languageBtn = document.querySelector('.language-btn');
 
     languageBtn.addEventListener('click', (e) => {
@@ -36,12 +50,24 @@ document.addEventListener('DOMContentLoaded', function() {
         e.stopPropagation();
     });
 
-    languageDropdown.addEventListener('click', (e) => {
+    languageDropdown.addEventListener('click', async (e) => {
         if (e.target.tagName === 'A') {
             const lang = e.target.getAttribute('data-lang');
-            setLanguage(lang);
+            await loadTranslations(lang); // Charger les traductions avant de traduire la page
             languageSwitcher.classList.remove('open');
             e.preventDefault();
+            // Après le chargement et la traduction, régénérer les tuiles pour mettre à jour les noms
+            generateH5PTiles();
+            generateMoodleTiles();
+            // Si un contenu est ouvert, le rafraîchir
+            if (activeContentContainer && activeTile) {
+                const moduleKey = activeTile.dataset.module;
+                if (h5pModules[moduleKey]) {
+                    toggleInlineContent(moduleKey, activeTile);
+                } else if (moodleModules[moduleKey]) {
+                    toggleMoodleContent(moduleKey, activeTile);
+                }
+            }
         }
     });
 
@@ -52,103 +78,102 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Initial translation
-    setLanguage('fr');
+    // Initial translation is now handled after setupEventListeners
 
     // --- Définition des modules H5P ---
     const h5pModules = {
         Timeline: {
-            name: "Frise chronologique",
+            name: "h5p_timeline_name",
             englishName: "Timeline",
             machineName: "H5P.Timeline",
-            description: "Créez une frise chronologique interactive pour présenter une séquence d'événements.",
+            description: "h5p_timeline_description",
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/timeline_icon-color.png",
             promptId: "timelineResultat",
             jsonInputId: "timelineJsonInput",
             createBtnId: "createTimelineH5P"
         },
         Flashcards: {
-            name: "Cartes mémoires",
+            name: "h5p_flashcards_name",
             englishName: "Flashcards",
             machineName: "H5P.Flashcards",
-            description: "Créez des cartes recto-verso pour aider à la mémorisation de termes et définitions.",
+            description: "h5p_flashcards_description",
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/flashcards-png-icon.png",
             promptId: "flashcardsResultat",
             jsonInputId: "flashcardsJsonInput",
             createBtnId: "createFlashcardsH5P"
         },
         QuizSet: {
-            name: "Quiz",
+            name: "h5p_quiz_set_name",
             englishName: "Quiz (Question Set)",
             machineName: "H5P.QuestionSet",
-            description: "Composez une série de questions variées (QCM, glisser-déposer, etc.) pour évaluer les connaissances.",
+            description: "h5p_quiz_set_description",
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/question-set-icon.png",
             promptId: "quizSetResultat",
             jsonInputId: "quizSetJsonInput",
             createBtnId: "createQuizSetH5P"
         },
         Glossary: {
-            name: "Glossaire",
+            name: "h5p_glossary_name",
             englishName: "Accordion",
             machineName: "H5P.Accordion",
-            description: "Créez un glossaire ou une FAQ sous forme d'accordéon dépliant.",
+            description: "h5p_glossary_description",
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/accordion-icon.png",
             promptId: "glossaryResultat",
             jsonInputId: "glossaryJsonInput",
             createBtnId: "createGlossaryH5P"
         },
         Crossword: {
-            name: "Mots croisés",
+            name: "h5p_crossword_name",
             englishName: "Crosswords",
-            description: "Générez une grille de mots croisés à partir d'une liste de mots et de définitions.",
+            description: "h5p_crossword_description",
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/crosswords.png",
             promptId: "crosswordResultat",
             jsonInputId: "crosswordJsonInput",
             createBtnId: "createCrosswordH5P"
         },
         Essay: {
-            name: "Rédaction",
+            name: "h5p_essay_name",
             englishName: "Essay",
-            description: "Proposez un sujet de rédaction et définissez des mots-clés pour une correction automatisée.",
+            description: "h5p_essay_description",
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/essay.png",
             promptId: "essayResultat",
             jsonInputId: "essayJsonInput",
             createBtnId: "createEssayH5P"
         },
         Summary: {
-            name: "Résumé",
+            name: "h5p_summary_name",
             englishName: "Summary",
-            description: "Les élèves doivent reconstituer un résumé correct en choisissant les bonnes phrases.",
+            description: "h5p_summary_description",
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/summary_icon.png",
             promptId: "summaryResultat",
             jsonInputId: "summaryJsonInput",
             createBtnId: "createSummaryH5P"
         },
         DragTheWords: {
-            name: "Glisser les mots",
+            name: "h5p_drag_the_words_name",
             englishName: "Drag the Words",
             machineName: "H5P.DragText",
-            description: "Créez un texte à trous où les élèves doivent glisser les mots manquants.",
+            description: "h5p_drag_the_words_description",
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/drag-the-words-icon.png",
             promptId: "dragWordResultat",
             jsonInputId: "dragWordJsonInput",
             createBtnId: "createDragWordH5P"
         },
         FillInTheBlanks: {
-            name: "Texte à trous",
+            name: "h5p_fill_in_the_blanks_name",
             englishName: "Fill in the Blanks",
             machineName: "H5P.Blanks",
-            description: "Les élèves doivent remplir les mots manquants dans un texte directement au clavier.",
+            description: "h5p_fill_in_the_blanks_description",
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/fill-in-the-blanks-icon_0.png",
             promptId: "blanksResultat",
             jsonInputId: "blanksJsonInput",
             createBtnId: "createBlanksH5P"
         },
         MarkTheWords: {
-            name: "Surligner les mots",
+            name: "h5p_mark_the_words_name",
             englishName: "Mark the Words",
             machineName: "H5P.MarkTheWords",
-            description: "Demandez aux élèves de surligner certains mots dans un paragraphe.",
+            description: "h5p_mark_the_words_description",
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/mark-the-words-icon_0.png",
             promptId: "markWordsResultat",
             jsonInputId: "markWordsJsonInput",
@@ -159,18 +184,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Définition des modules Éléa ---
    const moodleModules = {
        moodleXml: {
-           name: "XML Éléa/Moodle",
-           description: "Générez un fichier XML complet pour importer un test dans Moodle ou Éléa.",
+           name: "moodle_xml_name",
+           description: "moodle_xml_description",
            image: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Extensible_Markup_Language_%28XML%29_logo.svg"
        },
        gift: {
-           name: "Format GIFT",
-           description: "Créez des questions au format GIFT, un moyen simple d'importer des questions dans Moodle.",
+           name: "moodle_gift_name",
+           description: "moodle_gift_description",
            image: "https://moodle.org/theme/moodleorg/pix/moodle_logo_TM.svg"
        },
        Millionnaire: {
-           name: "Millionnaire",
-           description: "Générez une activité unique 'Millionnaire' de 6 questions graduelles en terme de difficulté.",
+           name: "moodle_millionnaire_name",
+           description: "moodle_millionnaire_description",
            image: "images/millionnaire.png",
            promptId: "millionnaireResultat",
            jsonInputId: "millionnaireJsonInput",
@@ -183,10 +208,13 @@ document.addEventListener('DOMContentLoaded', function() {
 // =======================================================================
     const h5pGrid = document.querySelector('.h5p-grid');
     const moodleGrid = document.querySelector('.moodle-grid');
-    generateH5PTiles();
-    generateMoodleTiles();
     setupTabs();
     setupEventListeners();
+    // Initial translation and tile generation
+    loadTranslations('fr').then(() => {
+        generateH5PTiles();
+        generateMoodleTiles();
+    });
 
 // =======================================================================
 // 3. AFFICHAGE DES TUILES (H5P et MOODLE)
@@ -200,9 +228,9 @@ document.addEventListener('DOMContentLoaded', function() {
             tile.className = 'h5p-tile';
             tile.dataset.module = key;
             tile.innerHTML = `
-                <img src="${module.image}" alt="${module.name} icon">
+                <img src="${module.image}" alt="${translations[module.name]} icon">
                 <div class="tile-text">
-                    <span class="tile-name-fr">${module.name}</span>
+                    <span class="tile-name-fr">${translations[module.name]}</span>
                     <span class="tile-name-en">(${module.englishName})</span>
                 </div>
             `;
@@ -220,9 +248,9 @@ document.addEventListener('DOMContentLoaded', function() {
            tile.className = 'h5p-tile'; // Réutiliser le style des tuiles H5P
            tile.dataset.module = key;
            tile.innerHTML = `
-               <img src="${module.image}" alt="${module.name} icon">
+               <img src="${module.image}" alt="${translations[module.name]} icon">
                <div class="tile-text">
-                   <span class="tile-name-fr">${module.name}</span>
+                   <span class="tile-name-fr">${translations[module.name]}</span>
                </div>
            `;
            tile.addEventListener('click', () => toggleMoodleContent(key, tile));
@@ -283,32 +311,32 @@ document.addEventListener('DOMContentLoaded', function() {
         contentContainer.className = 'h5p-content-container';
         contentContainer.innerHTML = `
                 <div class="h5p-content-header">
-                    <h2>${module.name}</h2>
+                    <h2>${translations[module.name]}</h2>
                     <span class="close-button">&times;</span>
                 </div>
-                <p class="h5p-content-description">${module.description}</p>
+                <p class="h5p-content-description">${translations[module.description]}</p>
                 
                 <div class="h5p-prompt-block">
-                    <h3>Prompt pour l'IA</h3>
-                    <textarea id="${module.promptId}" readonly placeholder="Générez les prompts pour voir le résultat ici..."></textarea>
+                    <h3>${translations.prompt_for_ia}</h3>
+                    <textarea id="${module.promptId}" readonly placeholder="${translations.generate_prompts_placeholder}"></textarea>
                     <div class="action-buttons">
-                        <button id="copy-${moduleKey}" class="copy-btn">📋 Copier le prompt</button>
-                        <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
-                        <button class="action-btn go-mistral">Ⓜ️ Accéder à Le chat</button>
+                        <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
+                        <button class="action-btn go-duck">${translations.go_duck}</button>
+                        <button class="action-btn go-mistral">${translations.go_mistral}</button>
                     </div>
                 </div>
 
                 <div class="h5p-processor">
                     <div class="h5p-processor-header">
-                        <h3>Créer le fichier H5P</h3>
+                        <h3>${translations.create_h5p_file}</h3>
                         <div class="library-toggle">
-                            <label for="includeLibs-${moduleKey}">Intégrer les bibliothèques H5P :</label>
+                            <label for="includeLibs-${moduleKey}">${translations.integrate_h5p_libraries}</label>
                             <input type="checkbox" id="includeLibs-${moduleKey}" name="includeLibs">
                         </div>
                     </div>
-                    <p>Collez le résultat de l'IA dans la zone ci-dessous pour créer votre module.</p>
-                    <textarea id="${module.jsonInputId}" placeholder="Collez ici le JSON ou le texte généré par l'IA..."></textarea>
-                    <button id="${module.createBtnId}" class="download-btn">Générer le H5P</button>
+                    <p>${translations.paste_ia_result}</p>
+                    <textarea id="${module.jsonInputId}" placeholder="${translations.paste_json_or_text}"></textarea>
+                    <button id="${module.createBtnId}" class="download-btn">${translations.generate_h5p}</button>
                 </div>
         `;
 
@@ -362,8 +390,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
        if (moduleKey === 'moodleXml') {
            contentHtml = `
-               <h3>Génération d'un XML Éléa/Moodle</h3>
-               <p>${module.description}</p>
+               <h3>${translations.moodle_xml_name}</h3>
+               <p>${translations.moodle_xml_description}</p>
                <textarea id="moodleXmlResultat" readonly placeholder="Le XML Moodle apparaîtra ici..."></textarea>
                <div class="action-buttons">
                    <button id="copyMoodleXmlLink" class="copy-btn">📋 Copier le prompt</button>
@@ -373,8 +401,8 @@ document.addEventListener('DOMContentLoaded', function() {
            `;
        } else if (moduleKey === 'gift') {
            contentHtml = `
-               <h3>Génération d'un format GIFT</h3>
-               <p>${module.description}</p>
+               <h3>${translations.moodle_gift_name}</h3>
+               <p>${translations.moodle_gift_description}</p>
                <textarea id="giftResultat" readonly placeholder="Le format GIFT apparaîtra ici..."></textarea>
                <div class="action-buttons">
                    <button id="copyGiftLink" class="copy-btn">📋 Copier le prompt</button>
@@ -384,8 +412,8 @@ document.addEventListener('DOMContentLoaded', function() {
            `;
        } else if (moduleKey === 'Millionnaire') {
            contentHtml = `
-               <h3>Génération d'une activité unique "Millionnaire"</h3>
-               <p>${module.description}</p>
+               <h3>${translations.moodle_millionnaire_name}</h3>
+               <p>${translations.moodle_millionnaire_description}</p>
                <div class="h5p-prompt-block">
                    <h3>Prompt pour l'IA</h3>
                    
@@ -405,15 +433,15 @@ document.addEventListener('DOMContentLoaded', function() {
            `;
        }
 
-       contentContainer.innerHTML = `
-           <div class="h5p-content-header">
-               <h2>${module.name}</h2>
-               <span class="close-button">&times;</span>
-           </div>
-           <div class="module-content">
-               ${contentHtml}
-           </div>
-       `;
+      contentContainer.innerHTML = `
+          <div class="h5p-content-header">
+              <h2>${translations[module.name]}</h2>
+              <span class="close-button">&times;</span>
+          </div>
+          <div class="module-content">
+              ${contentHtml}
+          </div>
+      `;
 
        moodleGrid.after(contentContainer);
        contentContainer.classList.add('active');
@@ -518,6 +546,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // 6. GÉNÉRATION DES PROMPTS
 // =======================================================================
 
+
     function generatePrompts() {
         const simpleModeTab = document.querySelector('.mode-tab[data-mode="simple"]');
         let prompts;
@@ -584,7 +613,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        showNotification('Prompts générés avec succès !');
+        showNotification(translations.prompts_generated_successfully);
     }
 
 // =======================================================================
@@ -698,7 +727,7 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 const contentJson = JSON.parse(jsonInput);
                 // Le titre est maintenant dans le champ de saisie, ou on utilise un titre par défaut.
-                const title = document.getElementById('theme').value.trim() || module.name;
+                const title = document.getElementById('theme').value.trim() || translations[module.name];
                 createSimpleQuizSetH5P(title, contentJson);
             } catch (error) {
                 showNotification(`Le JSON pour le Quiz est invalide : ${error.message}`, 'error');
@@ -706,24 +735,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             return; // On arrête ici pour le QuizSet
         }
-        // --- FIN DE LA NOUVELLE LOGIQUE ---
+       // --- FIN DE LA NOUVELLE LOGIQUE ---
 
 
-        // Utilise le machineName s'il est défini, sinon construit le nom (fallback)
-        const machineName = module.machineName || `H5P.${moduleKey}`;
+       // Utilise le machineName s'il est défini, sinon construit le nom (fallback)
+       const machineName = module.machineName || `H5P.${moduleKey}`;
 
-        try {
-            const jsonObj = JSON.parse(jsonInput);
-            let content = jsonObj;
-            let options = { title: jsonObj.title || module.name };
+       try {
+           const jsonObj = JSON.parse(jsonInput);
+           let content = jsonObj;
+           let options = { title: jsonObj.title || translations[module.name] };
 
             // Adaptations spécifiques par module
             if (moduleKey === 'Timeline' && !jsonObj.timeline) {
                 content = { timeline: jsonObj };
             } else if (moduleKey === 'Flashcards') {
                 const defaultFlashcardsContent = {
-                    title: jsonObj.title || "Flashcards",
-                    description: jsonObj.description || "Cliquez sur la carte pour voir la réponse.",
+                    title: jsonObj.title || translations[currentLang].h5p_flashcards_name,
+                    description: jsonObj.description || translations[currentLang].h5p_flashcards_description,
                     cards: jsonObj.cards ? jsonObj.cards.map(card => ({ ...card, tip: card.tip || "" })) : [],
                     progressText: "Carte @card sur @total",
                     next: "Suivant",
@@ -807,6 +836,9 @@ document.addEventListener('DOMContentLoaded', function() {
         let contextPrompt;
         let matiere, niveau, theme, nombreQuestions, infosComplementaires;
 
+        // Accéder aux traductions des prompts via l'objet translations
+        const pt = translations;
+
         if (isAdvanced) {
             matiere = arg1;
             niveau = arg2;
@@ -814,50 +846,51 @@ document.addEventListener('DOMContentLoaded', function() {
             nombreQuestions = arg4;
             infosComplementaires = arg5;
             contextPrompt = `
-                Tu es un professeur expert en pédagogie qui adaptera le ton et le vocabulaire en fonction du contenu des programmes actuels et du niveau des élèves pour le cours de ${matiere}.
+                ${pt.prompt_expert_intro}${matiere}.
 
-                **Contexte :**
-                - **Matière :** ${matiere}
-                - **Niveau des élèves :** ${niveau}
-                - **Thème :** ${theme}
-                - **Nombre d'éléments :** ${nombreQuestions}
-                ${infosComplementaires ? `- **Informations complémentaires :** ${infosComplementaires}` : ''}
+                ${pt.prompt_context_title}
+                ${pt.prompt_subject} ${matiere}
+                ${pt.prompt_student_level} ${niveau}
+                ${pt.prompt_theme} ${theme}
+                ${pt.prompt_number_of_elements} ${nombreQuestions}
+                ${infosComplementaires ? `${pt.prompt_additional_info} ${infosComplementaires}` : ''}
             `;
         } else {
             const qui = arg1;
             const quoi = arg2;
             contextPrompt = `
-                Je suis un(e) **${qui}** et je souhaite **${quoi}**.
+                ${pt.prompt_simple_intro_part1}${qui}${pt.prompt_simple_intro_part2}${quoi}.
             `;
             // Pour le mode simple, on peut déduire un nombre par défaut si nécessaire
             nombreQuestions = 10;
         }
 
+        const languageInstruction = `\n\n${pt.prompt_language_instruction}`;
 
-        const timelinePrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Timeline".
+        const timelinePrompt = `${pt.timeline_prompt_role}
                                 ${contextPrompt}
 
-                                **Ta mission :**
-                                Génère un objet JSON complet et valide pour une activité H5P de type Timeline. Le JSON doit être directement utilisable.
+                                ${pt.timeline_prompt_mission}
+                                ${pt.timeline_prompt_generate_json}
 
-                                **Structure du JSON attendu :**
-                                L'objet principal doit contenir une clé "timeline". Cet objet "timeline" doit inclure :
-                                - \`headline\`: Un titre général pour la frise.
-                                - \`text\`: Un court paragraphe d'introduction.
-                                - \`asset\`: Un objet pour l'image de couverture avec \`media\` (URL), \`caption\` (légende) et \`credit\` (source).
-                                - \`date\`: Un tableau contenant ${nombreQuestions} objets, chacun représentant un événement.
-                                - \`era\`: Un tableau d'objets pour définir des périodes couvrant plusieurs événements.
+                                ${pt.timeline_prompt_json_structure_title}
+                                ${pt.timeline_prompt_json_structure_main_object}
+                                - ${pt.timeline_prompt_headline}
+                                - ${pt.timeline_prompt_text}
+                                - ${pt.timeline_prompt_asset}
+                                - ${pt.timeline_prompt_date_array.replace('${nombreQuestions}', nombreQuestions)}
+                                - ${pt.timeline_prompt_era_array}
 
-                                **Règles pour le contenu :**
-                                1.  Chaque événement dans le tableau \`date\` doit avoir :
-                                    -   \`startDate\`: Date au format "AAAA,MM,JJ" ou "AAAA".
-                                    -   \`headline\`: Titre de l'événement.
-                                    -   \`text\`: Description en HTML (utilise <p> et <strong>).
-                                    -   \`asset\`: Un objet optionnel pour une image illustrant l'événement.
-                                2.  Assure-toi que les URL des images sont valides et accessibles.
-                                3.  La langue du contenu doit être "fr".
+                                ${pt.timeline_prompt_content_rules_title}
+                                ${pt.timeline_prompt_rule1}
+                                    ${pt.timeline_prompt_rule1_startDate}
+                                    ${pt.timeline_prompt_rule1_headline}
+                                    ${pt.timeline_prompt_rule1_text}
+                                    ${pt.timeline_prompt_rule1_asset}
+                                ${pt.timeline_prompt_rule2}
+                                ${pt.timeline_prompt_rule3}
 
-                                **Exemple de structure JSON :**
+                                ${pt.timeline_prompt_example_json_title}
                                 \`\`\`json
                                 {
                                 "timeline": {
@@ -891,28 +924,28 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }
                                 \`\`\`
 
-                                Génère uniquement le code JSON valide, sans aucun commentaire. Le résultat sera directement utilisé par un autre outil.`;
+                                ${pt.timeline_prompt_generate_only_json}${languageInstruction}`;
 
-        const crosswordPrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Crossword".
+        const crosswordPrompt = `${pt.crossword_prompt_role}
                                 ${contextPrompt}
 
-                                **Ta mission :**
-                                Génère un objet JSON complet et valide pour une activité de mots croisés H5P.
+                                ${pt.crossword_prompt_mission}
+                                ${pt.crossword_prompt_generate_json}
 
-                                **Structure du JSON attendu :**
-                                L'objet doit contenir :
-                                - \`title\`: Un titre pour l'activité.
-                                - \`words\`: Un tableau de ${nombreQuestions} objets, chacun avec :
-                                    - \`answer\`: Le mot à deviner.
-                                    - \`clue\`: La définition correspondante.
-                                - \`taskDescription\`: Une consigne claire.
+                                ${pt.crossword_prompt_json_structure_title}
+                                ${pt.crossword_prompt_json_structure_main_object}
+                                - ${pt.crossword_prompt_title}
+                                - ${pt.crossword_prompt_words_array.replace('${nombreQuestions}', nombreQuestions)}
+                                    - ${pt.crossword_prompt_answer}
+                                    - ${pt.crossword_prompt_clue}
+                                - ${pt.crossword_prompt_task_description}
 
-                                **Règles pour le contenu :**
-                                1.  Les mots (\`answer\`) doivent être des termes uniques et pertinents.
-                                2.  Les définitions (\`clue\`) doivent être courtes et précises.
-                                3.  Le reste de la structure JSON (comportement, thème, etc.) doit être conservé tel quel.
+                                ${pt.crossword_prompt_content_rules_title}
+                                ${pt.crossword_prompt_rule1}
+                                ${pt.crossword_prompt_rule2}
+                                ${pt.crossword_prompt_rule3}
 
-                                **Exemple de JSON pour un mot :**
+                                ${pt.crossword_prompt_example_json_title}
                                 \`\`\`json
                                 {
                                 "title": "Mots croisés sur la Biologie",
@@ -926,25 +959,25 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }
                                 \`\`\`
 
-                                Génère le JSON complet et valide, en remplissant le titre, la description et le tableau "words", sans aucun autre commentaire.`;
+                                ${pt.crossword_prompt_generate_only_json}${languageInstruction}`;
 
-        const essayPrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Essay".
+        const essayPrompt = `${pt.essay_prompt_role}
                             ${contextPrompt}
 
-                            **Ta mission :**
-                            Génère un objet JSON complet et valide pour une activité H5P de type Essay.
+                            ${pt.essay_prompt_mission}
+                            ${pt.essay_prompt_generate_json}
 
-                            **Structure du JSON attendu :**
-                            L'objet doit contenir :
-                            - \`taskDescription\`: Une consigne claire invitant l'élève à rédiger un texte sur le thème.
-                            - \`keywords\`: Un tableau de ${nombreQuestions} objets, chacun définissant un mot-clé que le système devra retrouver dans la réponse de l'élève.
+                            ${pt.essay_prompt_json_structure_title}
+                            ${pt.essay_prompt_json_structure_main_object}
+                            - ${pt.essay_prompt_task_description}
+                            - ${pt.essay_prompt_keywords_array.replace('${nombreQuestions}', nombreQuestions)}
 
-                            **Règles pour le contenu :**
-                            1.  Chaque objet dans \`keywords\` doit contenir la clé \`keyword\` avec le mot à rechercher.
-                            2.  Les mots-clés doivent être pertinents et essentiels pour évaluer la compréhension du thème.
-                            3.  La structure JSON (comportement, etc.) doit être conservée.
+                            ${pt.essay_prompt_content_rules_title}
+                            ${pt.essay_prompt_rule1}
+                            ${pt.essay_prompt_rule2}
+                            ${pt.essay_prompt_rule3}
 
-                            **Exemple de JSON pour un mot-clé :**
+                            ${pt.essay_prompt_example_json_title}
                             \`\`\`json
                             {
                             "taskDescription": "<p>Rédige un court texte expliquant la photosynthèse.</p>",
@@ -961,82 +994,82 @@ document.addEventListener('DOMContentLoaded', function() {
                             }
                             \`\`\`
 
-                            Génère le JSON complet et valide, en remplissant la consigne et la liste de mots-clés, sans aucun autre commentaire.`;
+                            ${pt.essay_prompt_generate_only_json}${languageInstruction}`;
 
         const moodleXmlPrompt = `
                                 ${contextPrompt}
-                                Je souhaite créer un quiz de ${nombreQuestions} questions.
-                                Concernant le fond :
+                                ${pt.moodle_xml_prompt_intro.replace('${nombreQuestions}', nombreQuestions)}
+                                ${pt.moodle_xml_prompt_content_title}
 
-                                Les réponses incorrectes doivent être cohérentes avec le sujet mais clairement fausses pour éviter le hasard.
-                                Il faut varier la difficulté des questions, idéalement du plus simple au plus complexe.
-                                Simplifie la formulation tout en maintenant la précision du contenu.
-                                Pour générer le feedback, tu donneras en une phrase ou deux les éléments de réponse attendus
+                                ${pt.moodle_xml_prompt_content_rule1}
+                                ${pt.moodle_xml_prompt_content_rule2}
+                                ${pt.moodle_xml_prompt_content_rule3}
+                                ${pt.moodle_xml_prompt_content_rule4}
 
-                                Les questions doivent être réparties équitablement entre les types suivants :
-                                - multichoice (QCM, avec une seule bonne réponse),
-                                                - matching (appariement),
-                                                - numerical (réponse numérique avec ou sans tolérance),
-                                                - truefalse (vrai ou faux).
+                                ${pt.moodle_xml_prompt_question_types_intro}
+                                ${pt.moodle_xml_prompt_question_type_multichoice}
+                                                ${pt.moodle_xml_prompt_question_type_matching}
+                                                ${pt.moodle_xml_prompt_question_type_numerical}
+                                                ${pt.moodle_xml_prompt_question_type_truefalse}
 
-                                Concernant la forme :
-                                Le fichier XML doit :
+                                ${pt.moodle_xml_prompt_form_title}
+                                ${pt.moodle_xml_prompt_form_rule1}
 
-                                Être encodé en UTF-8 (insérer la ligne d'encodage).
-                                Être directement réutilisable dans Moodle, sans erreur de format.
-                                Suivre la structure XML standard de Moodle (avec <quiz>, <question>, etc.).
+                                ${pt.moodle_xml_prompt_form_rule1_encoding}
+                                ${pt.moodle_xml_prompt_form_rule1_reusable}
+                                ${pt.moodle_xml_prompt_form_rule1_standard_structure}
 
 
-                                Ne commente pas, ne formate pas, ne résume pas : je veux uniquement le contenu brut du fichier XML. Respecte scrupuleusement le format décrit, car je vais coller le résultat dans un autre outil qui attend ce format. Produit la réponse sous forme de code préformaté`;
+                                ${pt.moodle_xml_prompt_generate_only_xml}${languageInstruction}`;
 
         const giftPrompt = `
-                          ${contextPrompt}
-                          Je souhaite créer un quiz de ${nombreQuestions} questions.
+                           ${contextPrompt}
+                           ${pt.gift_prompt_intro.replace('${nombreQuestions}', nombreQuestions)}
 
-                          Le quizz doit être au format GIFT, destiné à être importé dans Moodle.
+                           ${pt.gift_prompt_format_info}
 
-                          Chaque question doit être claire, concise, sans ambiguïté. Il faut qu'il ait des feedbacks détaillés.
+                           ${pt.gift_prompt_question_quality}
 
-                          Le code doit être exactement au même format que celui fourni ci-dessous:
+                           ${pt.gift_prompt_code_format_intro}
 
-                          // question: 1  name: Quel est l'objet central de notre système solaire ?
+                           ${pt.gift_prompt_example_question_comment}
 
-                          ::Quel est l'objet central de notre système solaire ?::Quel est l'objet central de notre système solaire ?{
+                           ${pt.gift_prompt_example_question_text}
 
-                              =Le Soleil#Exact ! Le Soleil est l'étoile centrale de notre système solaire. Bien joué !
+                               ${pt.gift_prompt_example_answer_correct}
 
-                              ~La Lune#Faux. La Lune est un satellite naturel de la Terre. Le Soleil est l'objet central.
+                               ${pt.gift_prompt_example_answer_incorrect1}
 
-                              ~Jupiter#Faux. Jupiter est une planète géante gazeuse. Le Soleil est l'objet central.
+                               ${pt.gift_prompt_example_answer_incorrect2}
 
-                              ~La Terre#Faux. La Terre est la planète où nous vivons. Le Soleil est l'objet central.
+                               ${pt.gift_prompt_example_answer_incorrect3}
 
-                          }
+                           ${pt.gift_prompt_example_end_bracket}
 
-                          Le quiz doit comporter différents types de questions de manière aléatoire :
-                          - des questions QCM (multichoice), avec 1 bonne réponse et 3 distracteurs.
-                          - des questions vrai/faux (truefalse).
-                          - des questions numériques (numerical) avec une marge d'erreur acceptable.
-                          - des questions d'appariement (matching) avec au moins 4 paires.
+                           ${pt.gift_prompt_question_types_intro}
+                           ${pt.gift_prompt_question_type_multichoice}
+                           ${pt.gift_prompt_question_type_truefalse}
+                           ${pt.gift_prompt_question_type_numerical}
+                           ${pt.gift_prompt_question_type_matching}
 
-                          Génère directement le quiz au format GIFT, sans commentaires ni balises supplémentaires. Respecte scrupuleusement le format décrit, car je vais coller le résultat dans un autre outil qui attend ce format. Produit la réponse sous forme de code préformaté.`;
+                           ${pt.gift_prompt_generate_only_gift}${languageInstruction}`;
 
         
-        const flashcardsPrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Flashcards".
+        const flashcardsPrompt = `${pt.flashcards_prompt_role}
                                 ${contextPrompt}
 
-                                **Ta mission :**
-                                Génère un objet JSON complet et valide pour une activité H5P de type Flashcards.
+                                ${pt.flashcards_prompt_mission}
+                                ${pt.flashcards_prompt_generate_json}
 
-                                **Structure du JSON attendu :**
-                                L'objet doit contenir :
-                                - \`title\`: Un titre pertinent pour l'activité.
-                                - \`description\`: Une consigne claire pour l'élève.
-                                - \`cards\`: Un tableau de ${nombreQuestions} objets, où chaque objet représente une carte et contient :
-                                    - \`text\`: La question ou le terme à deviner (recto).
-                                    - \`answer\`: La réponse ou la définition (verso).
+                                ${pt.flashcards_prompt_json_structure_title}
+                                ${pt.flashcards_prompt_json_structure_main_object}
+                                - ${pt.flashcards_prompt_title}
+                                - ${pt.flashcards_prompt_description}
+                                - ${pt.flashcards_prompt_cards_array.replace('${nombreQuestions}', nombreQuestions)}
+                                    - ${pt.flashcards_prompt_text}
+                                    - ${pt.flashcards_prompt_answer}
 
-                                **Exemple de JSON :**
+                                ${pt.flashcards_prompt_example_json_title}
                                 \`\`\`json
                                 {
                                 "title": "Les capitales d'Europe",
@@ -1054,30 +1087,30 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }
                                 \`\`\`
 
-                                Génère uniquement le code JSON valide, sans aucun commentaire.`;
+                                ${pt.flashcards_prompt_generate_only_json}${languageInstruction}`;
 
-        const quizSetPrompt = `Tu es un expert en ingénierie pédagogique créant le contenu pour une activité "H5P Quiz (Question Set)".
+        const quizSetPrompt = `${pt.quiz_set_prompt_role}
                                 ${contextPrompt}
 
-                                **Ta mission :**
-                                Génère un objet JSON **uniquement pour le contenu** d'un quiz H5P. Le JSON doit être directement utilisable comme fichier \`content.json\`.
+                                ${pt.quiz_set_prompt_mission}
+                                ${pt.quiz_set_prompt_generate_json}
 
-                                **Structure du JSON attendu :**
-                                L'objet principal doit contenir les clés suivantes :
-                                - \`progressType\`: "dots"
-                                - \`passPercentage\`: 50
-                                - \`questions\`: Un tableau de ${nombreQuestions} objets, chacun représentant une question.
+                                ${pt.quiz_set_prompt_json_structure_title}
+                                ${pt.quiz_set_prompt_json_structure_main_object}
+                                - ${pt.quiz_set_prompt_progress_type}
+                                - ${pt.quiz_set_prompt_pass_percentage}
+                                - ${pt.quiz_set_prompt_questions_array.replace('${nombreQuestions}', nombreQuestions)}
 
-                                **Règles pour le contenu des questions :**
-                                1.  Chaque objet question doit avoir les clés \`library\`, \`params\`, et \`subContentId\`.
-                                2.  **Ne génère PAS de \`subContentId\`**, laisse juste la chaîne "placeholder-uuid".
-                                3.  Varie les types de questions. Utilise les bibliothèques suivantes avec leurs versions exactes :
-                                    -   \`H5P.MultiChoice 1.16\`
-                                    -   \`H5P.Blanks 1.14\`
-                                4.  Pour chaque type de question, fournis des \`params\` complets et pertinents, incluant les textes, les bonnes réponses, les distracteurs, les comportements (\`behaviour\`), etc.
-                                5.  Assure-toi que le contenu (questions, réponses) est de haute qualité pédagogique, pertinent pour le thème et le niveau.
+                                ${pt.quiz_set_prompt_content_rules_title}
+                                ${pt.quiz_set_prompt_rule1}
+                                ${pt.quiz_set_prompt_rule2}
+                                ${pt.quiz_set_prompt_rule3}
+                                    ${pt.quiz_set_prompt_rule3_multichoice}
+                                    ${pt.quiz_set_prompt_rule3_blanks}
+                                ${pt.quiz_set_prompt_rule4}
+                                ${pt.quiz_set_prompt_rule5}
 
-                                **Exemple de structure pour une question H5P.MultiChoice :**
+                                ${pt.quiz_set_prompt_example_json_title}
                                 \`\`\`json
                                 {
                                 "library": "H5P.MultiChoice 1.16",
@@ -1093,25 +1126,25 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }
                                 \`\`\`
 
-                                Génère l'objet JSON complet et valide, en commençant par \`{"progressType": "dots", ...}\`, sans aucun commentaire.`;
+                                ${pt.quiz_set_prompt_generate_only_json}${languageInstruction}`;
 
-        const glossaryPrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Accordion".
+        const glossaryPrompt = `${pt.glossary_prompt_role}
                                 ${contextPrompt}
 
-                                **Ta mission :**
-                                Génère un objet JSON complet et valide pour un glossaire H5P de type Accordion.
+                                ${pt.glossary_prompt_mission}
+                                ${pt.glossary_prompt_generate_json}
 
-                                **Structure du JSON attendu :**
-                                L'objet doit contenir une clé "panels", qui est un tableau de ${nombreQuestions} objets.
-                                Chaque objet représente une entrée du glossaire et doit contenir :
-                                - \`title\`: Le mot ou l'expression à définir.
-                                - \`content\`: Un objet contenant les "params" avec le texte de la définition. La définition doit être en HTML (utilise <p>, <strong>, etc.).
+                                ${pt.glossary_prompt_json_structure_title}
+                                ${pt.glossary_prompt_json_structure_main_object.replace('${nombreQuestions}', nombreQuestions)}
+                                ${pt.glossary_prompt_panel_object}
+                                - ${pt.glossary_prompt_title}
+                                - ${pt.glossary_prompt_content}
 
-                                **Règles pour le contenu :**
-                                1.  Les définitions doivent être claires, concises et adaptées au niveau des élèves.
-                                2.  La structure interne de l'objet "content" (library, metadata, subContentId) doit être respectée, mais tu n'as pas besoin de générer de UUID.
+                                ${pt.glossary_prompt_content_rules_title}
+                                ${pt.glossary_prompt_rule1}
+                                ${pt.glossary_prompt_rule2}
 
-                                **Exemple de JSON pour une entrée :**
+                                ${pt.glossary_prompt_example_json_title}
                                 \`\`\`json
                                 {
                                 "panels": [
@@ -1130,24 +1163,24 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }
                                 \`\`\`
 
-                                Génère uniquement le code JSON valide, sans aucun commentaire.`;
+                                ${pt.glossary_prompt_generate_only_json}${languageInstruction}`;
 
-        const summaryPrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Summary".
+        const summaryPrompt = `${pt.summary_prompt_role}
                                 ${contextPrompt}
 
-                                **Ta mission :**
-                                Génère un objet JSON complet pour une activité H5P de type Summary.
+                                ${pt.summary_prompt_mission}
+                                ${pt.summary_prompt_generate_json}
 
-                                **Structure du JSON attendu :**
-                                L'objet doit contenir une clé "summaries", qui est un tableau de ${nombreQuestions} objets.
-                                Chaque objet représente une étape du résumé et contient un tableau "summary" de phrases.
+                                ${pt.summary_prompt_json_structure_title}
+                                ${pt.summary_prompt_json_structure_main_object.replace('${nombreQuestions}', nombreQuestions)}
+                                ${pt.summary_prompt_summary_object}
 
-                                **Règles pour le contenu :**
-                                1.  Dans chaque tableau "summary", la **première phrase est la bonne**.
-                                2.  Les phrases suivantes sont des distracteurs plausibles mais incorrects.
-                                3.  L'ensemble des phrases correctes doit former un résumé cohérent.
+                                ${pt.summary_prompt_content_rules_title}
+                                ${pt.summary_prompt_rule1}
+                                ${pt.summary_prompt_rule2}
+                                ${pt.summary_prompt_rule3}
 
-                                **Exemple de JSON pour une étape :**
+                                ${pt.summary_prompt_example_json_title}
                                 \`\`\`json
                                 {
                                 "summaries": [
@@ -1162,24 +1195,24 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }
                                 \`\`\`
 
-                                Génère uniquement le code JSON valide, sans aucun commentaire.`;
+                                ${pt.summary_prompt_generate_only_json}${languageInstruction}`;
 
-        const dragWordPrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Drag the Words".
+        const dragWordPrompt = `${pt.drag_word_prompt_role}
                                 ${contextPrompt}
 
-                                **Ta mission :**
-                                Génère un objet JSON complet pour une activité H5P de type Drag the Words.
+                                ${pt.drag_word_prompt_mission}
+                                ${pt.drag_word_prompt_generate_json}
 
-                                **Structure du JSON attendu :**
-                                L'objet doit contenir :
-                                - \`taskDescription\`: Une consigne claire.
-                                - \`textField\`: Le texte à compléter, où les mots à glisser sont entourés d'astérisques (*mot*).
+                                ${pt.drag_word_prompt_json_structure_title}
+                                ${pt.drag_word_prompt_json_structure_main_object}
+                                - ${pt.drag_word_prompt_task_description}
+                                - ${pt.drag_word_prompt_text_field}
 
-                                **Règles pour le contenu :**
-                                1.  Crée un texte cohérent sur le thème.
-                                2.  Identifie environ ${nombreQuestions} mots-clés à transformer en mots à glisser.
+                                ${pt.drag_word_prompt_content_rules_title}
+                                ${pt.drag_word_prompt_rule1}
+                                ${pt.drag_word_prompt_rule2.replace('${nombreQuestions}', nombreQuestions)}
 
-                                **Exemple de JSON :**
+                                ${pt.drag_word_prompt_example_json_title}
                                 \`\`\`json
                                 {
                                 "taskDescription": "Complète le texte en faisant glisser les mots.",
@@ -1187,23 +1220,23 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }
                                 \`\`\`
 
-                                Génère uniquement le code JSON valide, sans aucun commentaire.`;
+                                ${pt.drag_word_prompt_generate_only_json}${languageInstruction}`;
 
-        const blanksPrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Fill in the Blanks".
+        const blanksPrompt = `${pt.blanks_prompt_role}
                             ${contextPrompt}
 
-                            **Ta mission :**
-                            Génère un objet JSON complet pour une activité H5P de type Fill in the Blanks.
+                            ${pt.blanks_prompt_mission}
+                            ${pt.blanks_prompt_generate_json}
 
-                            **Structure du JSON attendu :**
-                            L'objet doit contenir une clé \`questions\`, qui est un tableau de chaînes de caractères. Chaque chaîne représente un bloc de texte à compléter.
+                            ${pt.blanks_prompt_json_structure_title}
+                            ${pt.blanks_prompt_json_structure_main_object}
 
-                            **Règles pour le contenu :**
-                            -   Les mots à deviner sont entourés d'astérisques (*mot*).
-                            -   Pour des réponses alternatives, utilisez une barre oblique : *Paris/Ville Lumière*.
-                            -   Pour ajouter une infobulle, utilisez deux-points : *open-source:Code source public*.
+                            ${pt.blanks_prompt_content_rules_title}
+                            ${pt.blanks_prompt_rule1}
+                            ${pt.blanks_prompt_rule2}
+                            ${pt.blanks_prompt_rule3}
 
-                            **Exemple de JSON :**
+                            ${pt.blanks_prompt_example_json_title}
                             \`\`\`json
                             {
                             "questions": [
@@ -1213,24 +1246,24 @@ document.addEventListener('DOMContentLoaded', function() {
                             }
                             \`\`\`
 
-                            Génère uniquement le code JSON valide, sans aucun commentaire.`;
+                            ${pt.blanks_prompt_generate_only_json}${languageInstruction}`;
 
-        const markWordsPrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Mark the Words".
+        const markWordsPrompt = `${pt.mark_words_prompt_role}
                                 ${contextPrompt}
 
-                                **Ta mission :**
-                                Génère un objet JSON complet pour une activité H5P de type Mark the Words.
+                                ${pt.mark_words_prompt_mission}
+                                ${pt.mark_words_prompt_generate_json}
 
-                                **Structure du JSON attendu :**
-                                L'objet doit contenir :
-                                - \`taskDescription\`: Une consigne claire.
-                                - \`textField\`: Le texte où les mots à marquer sont entourés d'astérisques (*mot*).
+                                ${pt.mark_words_prompt_json_structure_title}
+                                ${pt.mark_words_prompt_json_structure_main_object}
+                                - ${pt.mark_words_prompt_task_description}
+                                - ${pt.mark_words_prompt_text_field}
 
-                                **Règles pour le contenu :**
-                                1.  Crée un paragraphe pertinent sur le thème.
-                                2.  Identifie environ ${nombreQuestions} mots-clés importants à marquer.
+                                ${pt.mark_words_prompt_content_rules_title}
+                                ${pt.mark_words_prompt_rule1}
+                                ${pt.mark_words_prompt_rule2.replace('${nombreQuestions}', nombreQuestions)}
 
-                                **Exemple de JSON :**
+                                ${pt.mark_words_prompt_example_json_title}
                                 \`\`\`json
                                 {
                                 "taskDescription": "Clique sur les mots importants dans le texte.",
@@ -1238,29 +1271,29 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }
                                 \`\`\`
 
-                                Génère uniquement le code JSON valide, sans aucun commentaire.`;
+                                ${pt.mark_words_prompt_generate_only_json}${languageInstruction}`;
 
-       const millionnairePrompt = `Tu es un expert en ingénierie pédagogique créant une activité H5P "Mark the Words".
+        const millionnairePrompt = `${pt.millionnaire_prompt_role}
                                     ${contextPrompt}
-                                    **Nombre de questions :** 6
+                                    ${pt.millionnaire_prompt_num_questions}
 
-                                    **Ta mission :**
-                                    Génère un objet JSON contenant un titre et une liste de **6 questions** pour un jeu de type "Qui veut gagner des millions".
+                                    ${pt.millionnaire_prompt_mission}
+                                    ${pt.millionnaire_prompt_generate_json}
 
-                                    **Règles importantes :**
-                                    1.  Le \`title\` doit être un titre pertinent et engageant pour l'activité.
-                                    2.  La difficulté des questions dans le tableau \`questions\` doit être **croissante et pédagogique**, adaptée au niveau des élèves. La première question doit être très facile, la dernière très difficile.
-                                    3.  Le contenu doit être rigoureusement exact et pertinent par rapport au thème et au niveau scolaire.
+                                    ${pt.millionnaire_prompt_important_rules_title}
+                                    ${pt.millionnaire_prompt_rule1}
+                                    ${pt.millionnaire_prompt_rule2}
+                                    ${pt.millionnaire_prompt_rule3}
 
-                                    **Structure du JSON attendu :**
-                                    Un objet principal avec deux clés :
-                                    - \`title\`: Le titre de l'activité (chaîne de caractères).
-                                    - \`questions\`: Un tableau de 6 objets, où chaque objet représente une question et contient :
-                                        - \`question\`: La question (chaîne de caractères).
-                                        - \`goodanswer\`: La bonne réponse (chaîne de caractères).
-                                        - \`badanswer\`: Un tableau de 3 mauvaises réponses (chaînes de caractères).
+                                    ${pt.millionnaire_prompt_json_structure_title}
+                                    ${pt.millionnaire_prompt_main_object}
+                                    ${pt.millionnaire_prompt_title}
+                                    ${pt.millionnaire_prompt_questions_array}
+                                        ${pt.millionnaire_prompt_question}
+                                        ${pt.millionnaire_prompt_good_answer}
+                                        ${pt.millionnaire_prompt_bad_answer}
 
-                                    **Exemple de JSON :**
+                                    ${pt.millionnaire_prompt_example_json_title}
                                     \`\`\`json
                                     {
                                     "title": "Quiz sur la Révolution Française",
@@ -1274,7 +1307,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     }
                                     \`\`\`
 
-                                    Génère uniquement l'objet JSON valide, sans aucun autre commentaire.`;
+                                    ${pt.millionnaire_prompt_generate_only_json}${languageInstruction}`;
 
         return {
             timelineResultat: timelinePrompt,
@@ -1392,7 +1425,7 @@ document.addEventListener('DOMContentLoaded', function() {
            URL.revokeObjectURL(a.href);
            showNotification(`Fichier ${fileName} généré avec succès !`);
        } catch (error) {
-           console.error("Erreur lors de la création du fichier MBZ:", error);
+           console.error("Erreur lors de la création du MBZ:", error);
            showNotification(`Erreur : ${error.message}`, 'error');
        }
    }
@@ -1477,7 +1510,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const optionalFiles = ['semantics.json', 'icon.svg'];
                     for (const opt of optionalFiles) {
                       const optResp = await fetch(`${libPath}/${opt}`);
-                      if (optResp.ok) {
+                      if (optResp.ok) { // Vérifier si la ressource existe avant de l'ajouter
                         const blob = await optResp.blob();
                         files.push({
                           name: `${libFolderName}/${opt}`,
@@ -1488,7 +1521,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
 
                     const langResponse = await fetch(`${libPath}/language/fr.json`);
-                    if (langResponse.ok) {
+                    if (langResponse.ok) { // Vérifier si la ressource existe avant de l'ajouter
                       const blob = await langResponse.blob();
                       files.push({
                         name: `${libFolderName}/language/fr.json`,
@@ -1505,9 +1538,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (fontFilesToCopy[machineName]) {
                       for (const fontFile of fontFilesToCopy[machineName]) {
                         const sourcePath = `${libPath}/${fontFile}`;
-                        const destinationPath = `${libFolderName}/${fontFile}`;
                         const fileResponse = await fetch(sourcePath);
-                        if (fileResponse.ok) {
+                        if (fileResponse.ok) { // Vérifier si la ressource existe avant de l'ajouter
+                          const destinationPath = `${libFolderName}/${fontFile}`;
                           const blob = await fileResponse.blob();
                           files.push({ name: destinationPath, input: new Uint8Array(await blob.arrayBuffer()), unixPermissions: 0o100644 });
                         }
@@ -1586,15 +1619,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const a = document.createElement('a');
             const today = new Date();
             const dateString = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
-            const englishName = h5pModules[moduleName]?.englishName || moduleName;
-            const fileName = `${englishName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}_caramel_${dateString}`;
+            const englishName = h5pModules['QuizSet']?.englishName || 'quiz-set';
+            const fileName = `${englishName.toLowerCase().replace(/[^a-z0-9()]+/g, '-').replace(/^-+|-+$/g, '')}_caramel_${dateString}`;
             a.download = `${fileName}.h5p`;
             a.href = url;
+            document.body.appendChild(a);
             a.click();
+            document.body.removeChild(a);
             URL.revokeObjectURL(url);
 
             console.log(`Fichier ${a.download} généré avec succès.`);
-            showNotification(`Fichier ${a.download} généré avec succès.`);
+            showNotification(`Fichier ${a.download} généré avec succès !`);
             return { success: true, message: `Fichier ${a.download} créé.` };
         } catch (error) {
             console.error("Erreur lors de la création du H5P:", error);
@@ -1650,10 +1685,10 @@ document.addEventListener('DOMContentLoaded', function() {
 // =======================================================================
     function escapeXml(str) {
         return String(str)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
+            .replace(/&/g, '&')
+            .replace(/</g, '<')
+            .replace(/>/g, '>')
+            .replace(/"/g, '"')
             .replace(/'/g, '&#39;')
             .replace(/[^\x20-\x7E]/g, function(ch) {
                 return '&#' + ch.charCodeAt(0) + ';';
