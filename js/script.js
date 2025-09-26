@@ -318,7 +318,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 <div class="h5p-prompt-block">
                     <h3>${translations.prompt_for_ia}</h3>
-                    <textarea id="${module.promptId}" readonly placeholder="${translations.generate_prompts_placeholder}"></textarea>
+                    <textarea id="${module.promptId}" readonly placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
                     <div class="action-buttons">
                         <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
                         <button class="action-btn go-duck">${translations.go_duck}</button>
@@ -335,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     </div>
                     <p>${translations.paste_ia_result}</p>
-                    <textarea id="${module.jsonInputId}" placeholder="${translations.paste_json_or_text}"></textarea>
+                    <textarea id="${module.jsonInputId}" placeholder="${translations.paste_json_or_text || 'Collez ici le contenu généré par l\'IA...'}"></textarea>
                     <button id="${module.createBtnId}" class="download-btn">${translations.generate_h5p}</button>
                 </div>
         `;
@@ -390,20 +390,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
        if (moduleKey === 'moodleXml') {
            contentHtml = `
-               <h3>${translations.moodle_xml_name}</h3>
-               <p>${translations.moodle_xml_description}</p>
-               <textarea id="moodleXmlResultat" readonly placeholder="Le XML Moodle apparaîtra ici..."></textarea>
-               <div class="action-buttons">
-                   <button id="copyMoodleXmlLink" class="copy-btn">📋 Copier le prompt</button>
-                   <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
-                   <button class="action-btn go-mistral">Ⓜ️ Accéder à Le chat</button>
-               </div>
+                <div class="h5p-prompt-block">
+                    <h3>${translations.prompt_for_ia}</h3>
+                    <p>${translations.moodle_xml_description}</p>
+                    <textarea id="moodleXmlResultat" readonly placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+                    <div class="action-buttons">
+                        <button id="copyMoodleXmlLink" class="copy-btn">📋 Copier le prompt</button>
+                        <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
+                        <button class="action-btn go-mistral">Ⓜ️ Accéder à Le chat</button>
+                    </div>
+                </div>
+                <div class="h5p-processor">
+                    <h3>${translations.create_xml_file}</h3>
+                    <p>${translations.paste_ia_result_xml}</p>
+                    <textarea id="xmlEleaMoodleInput" placeholder="${translations.paste_json_or_text || 'Collez ici le contenu généré par l\'IA...'}"></textarea>
+                    <button id="createXmlEleaMoodle" class="download-btn">${translations.generate_xml_file}</button>
+                </div>
            `;
        } else if (moduleKey === 'gift') {
            contentHtml = `
                <h3>${translations.moodle_gift_name}</h3>
                <p>${translations.moodle_gift_description}</p>
-               <textarea id="giftResultat" readonly placeholder="Le format GIFT apparaîtra ici..."></textarea>
+               <textarea id="giftResultat" readonly placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
                <div class="action-buttons">
                    <button id="copyGiftLink" class="copy-btn">📋 Copier le prompt</button>
                    <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
@@ -417,7 +425,7 @@ document.addEventListener('DOMContentLoaded', function() {
                <div class="h5p-prompt-block">
                    <h3>Prompt pour l'IA</h3>
                    
-                   <textarea id="${module.promptId}" readonly placeholder="Générez les prompts pour voir le résultat ici..."></textarea>
+                   <textarea id="${module.promptId}" readonly placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
                    <div class="action-buttons">
                        <button id="copy-${moduleKey}" class="copy-btn">📋 Copier le prompt</button>
                        <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
@@ -427,7 +435,7 @@ document.addEventListener('DOMContentLoaded', function() {
                <div class="h5p-processor">
                    <h3>Créer le fichier Millionnaire (.mbz)</h3>
                    <p>Collez le JSON généré par l'IA ci-dessous. Le titre de l'activité sera automatiquement extrait du JSON.</p>
-                   <textarea id="${module.jsonInputId}" placeholder="Collez ici l'objet JSON complet (avec titre et questions) généré par l'IA..."></textarea>
+                   <textarea id="${module.jsonInputId}" placeholder="${translations.paste_json_or_text || 'Collez ici le contenu généré par l\'IA...'}"></textarea>
                    <button id="${module.createBtnId}" class="download-btn">Générer l'activité Millionnaire (mbz)</button>
                </div>
            `;
@@ -456,6 +464,14 @@ document.addEventListener('DOMContentLoaded', function() {
        });
        if (moduleKey === 'moodleXml') {
            setupCopyButton('copyMoodleXmlLink', 'moodleXmlResultat');
+           document.getElementById('createXmlEleaMoodle').addEventListener('click', () => {
+               const xmlContent = document.getElementById('xmlEleaMoodleInput').value;
+               if (!xmlContent) {
+                   showNotification('Veuillez coller le contenu XML généré.', 'error');
+                   return;
+               }
+               downloadFile(xmlContent, 'moodle_backup.xml', 'text/xml');
+           });
        } else if (moduleKey === 'gift') {
            setupCopyButton('copyGiftLink', 'giftResultat');
        } else if (moduleKey === 'Millionnaire') {
@@ -688,6 +704,16 @@ document.addEventListener('DOMContentLoaded', function() {
             showNotification('La copie a échoué.', 'error');
         });
     }
+
+   function downloadFile(content, fileName, contentType) {
+       const a = document.createElement('a');
+       const file = new Blob([content], { type: contentType });
+       a.href = URL.createObjectURL(file);
+       a.download = fileName;
+       document.body.appendChild(a);
+       a.click();
+       document.body.removeChild(a);
+   }
 
     function showNotification(message, type = 'success') {
         const container = document.getElementById('notification-container');

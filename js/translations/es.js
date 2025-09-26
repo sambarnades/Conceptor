@@ -291,6 +291,17 @@ const translations_es = {
     integrate_h5p_libraries: "Integrar bibliotecas H5P:",
     paste_ia_result: "Pega el resultado de la IA en el área de abajo para crear tu módulo.",
     generate_h5p: "Generar H5P",
+    create_xml_file: "Crear el archivo XML",
+    paste_ia_result_xml: "Pegue el XML generado por la IA a continuación.",
+    generate_xml_file: "Generar el archivo XML",
+
+    // Específico de Moodle XML
+    moodle_xml_placeholder: "El XML de Moodle aparecerá aquí...",
+    paste_xml_placeholder: "Pegue aquí el XML completo generado por la IA...",
+
+    // H5P campos de texto vacíos
+    generate_prompts_placeholder: "El prompt para la IA aparecerá aquí una vez que hagas clic en 'Generar los prompts'.",
+    paste_json_or_text: "Pega aquí el contenido JSON o el texto generado por la IA para crear tu actividad.",
 
     // Notifications
     prompts_generated_successfully: "¡Prompts generados con éxito!",
@@ -306,5 +317,6 @@ const translations_es = {
     error_compression_module_not_ready: "El módulo de compresión no está listo. Por favor, inténtalo de nuevo en un momento.",
     h5p_file_generated_successfully: "¡Archivo {fileName} generado con éxito!",
     h5p_creation_failed: "La creación del archivo H5P falló: {errorMessage}",
-    prompt_language_instruction: "El idioma utilizado debe ser el español."
+    prompt_language_instruction: "El idioma utilizado debe ser el español.",
+    license_info: "GNU GPL v3.0 o posterior"
 };

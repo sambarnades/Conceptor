@@ -291,7 +291,18 @@ const translations_fr = {
     integrate_h5p_libraries: "Intégrer les bibliothèques H5P :",
     paste_ia_result: "Collez le résultat de l'IA dans la zone ci-dessous pour créer votre module.",
     generate_h5p: "Générer le H5P",
-
+    create_xml_file: "Créer le fichier XML",
+    paste_ia_result_xml: "Collez le XML généré par l'IA ci-dessous.",
+    generate_xml_file: "Générer le fichier XML",
+ 
+    // Moodle XML specific
+    moodle_xml_placeholder: "Le XML Moodle apparaîtra ici...",
+    paste_xml_placeholder: "Collez ici le XML complet généré par l'IA...",
+    
+    // H5P champs textes vides
+    generate_prompts_placeholder: "Le prompt pour l'IA apparaîtra ici une fois que vous aurez cliqué sur 'Générer les prompts'.",
+    paste_json_or_text: "Collez ici le contenu JSON ou le texte généré par l'IA pour créer votre activité.",
+ 
     // Notifications
     prompts_generated_successfully: "Prompts générés avec succès !",
     error_please_fill_fields: "Veuillez remplir tous les champs du mode simple.",
@@ -305,5 +316,6 @@ const translations_fr = {
     error_paste_ia_content: "Veuillez coller le contenu généré par l'IA.",
     error_compression_module_not_ready: "Le module de compression n'est pas prêt. Réessayez dans un instant.",
     h5p_file_generated_successfully: "Fichier {fileName} généré avec succès !",
-    h5p_creation_failed: "Échec de la création du fichier H5P : {errorMessage}"
+    h5p_creation_failed: "Échec de la création du fichier H5P : {errorMessage}",
+    license_info: "GNU GPL v3.0 ou ultérieure"
 };
