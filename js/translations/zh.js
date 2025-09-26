@@ -274,13 +274,14 @@ const translations_zh = {
     h5p_mark_the_words_name: "标注词语",
     h5p_mark_the_words_description: "要求学生在段落中标出特定词语。",
 
-    // Moodle Modules
+    // Moodle 模块
     moodle_xml_name: "XML Éléa/Moodle",
-    moodle_xml_description: "生成完整的 XML 文件，以便导入到 Moodle 或 Éléa。",
+    moodle_xml_description: "生成一个包含 10 道题目的题库，可直接以 XML 格式导入测验活动。",
+    moodle_xml_help: "要在 Moodle 的“测验”活动中添加 XML 文件，首先创建活动。然后打开 <strong>更多</strong> 菜单并进入 <strong>题库</strong>。在此菜单中，点击 <strong>导入</strong>，选择 <strong>Moodle XML</strong> 格式，然后选择您的文件并确认。",
     moodle_gift_name: "GIFT 格式",
-    moodle_gift_description: "创建 GIFT 格式的问题，这是向 Moodle 导入题目的简便方式。",
+    moodle_gift_description: "以 GIFT 格式创建题目，这是一种将题目导入 Moodle 的简单方法。",
     moodle_millionnaire_name: "百万富翁",
-    moodle_millionnaire_description: "生成一项包含 6 道难度递增题目的“百万富翁”单项活动。",
+    moodle_millionnaire_description: "生成一个独特的“百万富翁”活动，包含 6 道逐渐变难的问题。",
 
     // Dynamic content
     prompt_for_ia: "供 AI 使用的提示词",

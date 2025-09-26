@@ -275,12 +275,13 @@ const translations_ar = {
     h5p_mark_the_words_description: "اطلب من المتعلمين تمييز كلمات معيّنة داخل فقرة.",
 
     // وحدات Moodle
-    moodle_xml_name: "XML ‏Éléa/Moodle",
-    moodle_xml_description: "ولِّد ملف XML كاملًا لاستيراد اختبار إلى Moodle أو Éléa.",
-    moodle_gift_name: "صيغة GIFT",
-    moodle_gift_description: "أنشِئ أسئلة بصيغة GIFT، وهي طريقة بسيطة لاستيراد الأسئلة إلى Moodle.",
-    moodle_millionnaire_name: "مليونير",
-    moodle_millionnaire_description: "ولِّد نشاط \"مليونير\" مستقلًا يضم 6 أسئلة بتدرّج في الصعوبة.",
+    moodle_xml_name: "XML Éléa/Moodle",
+    moodle_xml_description: "إنشاء بنك من 10 أسئلة لنشاط اختبار جاهزة للاستيراد بتنسيق XML.",
+    moodle_xml_help: "لإضافة ملف XML إلى نشاط «اختبار» على Moodle، ابدأ بإنشاء النشاط. بعد ذلك، افتح قائمة <strong>المزيد</strong> واذهب إلى <strong>بنك الأسئلة</strong>. في هذه القائمة، انقر على <strong>استيراد</strong>، واختر تنسيق <strong>Moodle XML</strong>، ثم حدد ملفك وقم بالتأكيد.",
+    moodle_gift_name: "تنسيق GIFT",
+    moodle_gift_description: "أنشئ أسئلة بتنسيق GIFT، وهو وسيلة بسيطة لاستيراد الأسئلة إلى Moodle.",
+    moodle_millionnaire_name: "من سيربح المليون؟",
+    moodle_millionnaire_description: "إنشاء نشاط فريد 'من سيربح المليون؟' من 6 أسئلة متدرجة في الصعوبة.",
 
     // محتوى ديناميكي
     prompt_for_ia: "مطلب للذكاء الاصطناعي",

@@ -390,9 +390,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
        if (moduleKey === 'moodleXml') {
            contentHtml = `
-                <div class="h5p-prompt-block">
+            <h3>${translations.moodle_xml_name}</h3>
+               <p>${translations.moodle_xml_description}</p>
+                  <div class="h5p-prompt-block">                   
                     <h3>${translations.prompt_for_ia}</h3>
-                    <p>${translations.moodle_xml_description}</p>
                     <textarea id="moodleXmlResultat" readonly placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
                     <div class="action-buttons">
                         <button id="copyMoodleXmlLink" class="copy-btn">📋 Copier le prompt</button>

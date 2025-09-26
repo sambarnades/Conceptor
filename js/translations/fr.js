@@ -276,7 +276,8 @@ const translations_fr = {
 
     // Moodle Modules
     moodle_xml_name: "XML Éléa/Moodle",
-    moodle_xml_description: "Générez un fichier XML complet pour importer un test dans Moodle ou Éléa.",
+    moodle_xml_description: "Générez une banque de 10 questions pour une activité Test prêtes à être importées au format XML",
+    moodle_xml_help: "Pour ajouter un fichier XML dans une activité « Test » sur Moodle, commencez par créer l’activité. Ensuite, ouvrez le menu <strong>Plus</strong> et allez dans <strong>Banque de questions</strong>. Dans ce menu, cliquez sur <strong>Importer</strong>, choisissez le format <strong>XML Moodle</strong>, puis sélectionnez votre fichier et validez.",
     moodle_gift_name: "Format GIFT",
     moodle_gift_description: "Créez des questions au format GIFT, un moyen simple d'importer des questions dans Moodle.",
     moodle_millionnaire_name: "Millionnaire",

@@ -274,13 +274,14 @@ const translations_nl = {
     h5p_mark_the_words_name: "Woorden markeren",
     h5p_mark_the_words_description: "Vraag leerlingen bepaalde woorden in een alinea te markeren.",
 
-    // Moodle-modules
+    // Moodle Modules
     moodle_xml_name: "XML Éléa/Moodle",
-    moodle_xml_description: "Genereer een volledig XML-bestand om een toets in Moodle of Éléa te importeren.",
+    moodle_xml_description: "Genereer een bank van 10 vragen voor een toetsactiviteit die klaar is om in XML-formaat geïmporteerd te worden.",
+    moodle_xml_help: "Om een XML-bestand toe te voegen aan een ‘Toets’-activiteit in Moodle, maakt u eerst de activiteit aan. Open vervolgens het menu <strong>Meer</strong> en ga naar <strong>Vraagbank</strong>. Klik in dit menu op <strong>Importeren</strong>, kies het formaat <strong>Moodle XML</strong>, selecteer uw bestand en bevestig.",
     moodle_gift_name: "GIFT-formaat",
     moodle_gift_description: "Maak vragen in GIFT-formaat, een eenvoudige manier om vragen in Moodle te importeren.",
     moodle_millionnaire_name: "Miljonair",
-    moodle_millionnaire_description: "Genereer een losse 'Miljonair'-activiteit met 6 vragen en oplopende moeilijkheid.",
+    moodle_millionnaire_description: "Genereer een unieke 'Miljonair'-activiteit met 6 vragen die geleidelijk moeilijker worden.",
 
     // Dynamische inhoud
     prompt_for_ia: "Prompt voor de AI",

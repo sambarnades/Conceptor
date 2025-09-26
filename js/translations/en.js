@@ -275,12 +275,13 @@ const translations_en = {
     h5p_mark_the_words_description: "Ask students to highlight certain words in a paragraph.",
 
     // Moodle Modules
-    moodle_xml_name: "Éléa/Moodle XML",
-    moodle_xml_description: "Generate a complete XML file to import a test into Moodle or Éléa.",
+    moodle_xml_name: "XML Éléa/Moodle",
+    moodle_xml_description: "Generate a bank of 10 questions for a Quiz activity ready to be imported in XML format.",
+    moodle_xml_help: "To add an XML file into a 'Quiz' activity in Moodle, first create the activity. Then open the <strong>More</strong> menu and go to <strong>Question bank</strong>. In this menu, click <strong>Import</strong>, choose the <strong>Moodle XML</strong> format, then select your file and confirm.",
     moodle_gift_name: "GIFT Format",
     moodle_gift_description: "Create questions in GIFT format, a simple way to import questions into Moodle.",
-    moodle_millionnaire_name: "Millionnaire",
-    moodle_millionnaire_description: "Generate a unique 'Millionnaire' activity with 6 gradual difficulty questions.",
+    moodle_millionnaire_name: "Millionaire",
+    moodle_millionnaire_description: "Generate a unique 'Millionaire' activity with 6 questions of increasing difficulty.",
 
     // Dynamic content
     prompt_for_ia: "Prompt for the AI",

@@ -274,13 +274,14 @@ const translations_de = {
     h5p_mark_the_words_name: "Wörter markieren",
     h5p_mark_the_words_description: "Bitten Sie die Schüler, bestimmte Wörter in einem Absatz hervorzuheben.",
 
-    // Moodle Modules
-    moodle_xml_name: "Éléa/Moodle XML",
-    moodle_xml_description: "Generieren Sie eine vollständige XML-Datei, um einen Test in Moodle oder Éléa zu importieren.",
+    // Moodle Module
+    moodle_xml_name: "XML Éléa/Moodle",
+    moodle_xml_description: "Erstellen Sie eine Bank mit 10 Fragen für eine Testaktivität, die im XML-Format importiert werden können.",
+    moodle_xml_help: "Um eine XML-Datei in eine „Test“-Aktivität in Moodle hinzuzufügen, erstellen Sie zunächst die Aktivität. Öffnen Sie dann das Menü <strong>Mehr</strong> und gehen Sie zu <strong>Fragenbank</strong>. In diesem Menü klicken Sie auf <strong>Importieren</strong>, wählen das Format <strong>Moodle XML</strong> und wählen dann Ihre Datei aus und bestätigen.",
     moodle_gift_name: "GIFT-Format",
     moodle_gift_description: "Erstellen Sie Fragen im GIFT-Format, eine einfache Möglichkeit, Fragen in Moodle zu importieren.",
     moodle_millionnaire_name: "Millionär",
-    moodle_millionnaire_description: "Generieren Sie eine einzigartige 'Millionär'-Aktivität mit 6 Fragen unterschiedlichen Schwierigkeitsgrades.",
+    moodle_millionnaire_description: "Erstellen Sie eine einzigartige 'Millionär'-Aktivität mit 6 Fragen, die schrittweise schwieriger werden.",
 
     // Dynamic content
     prompt_for_ia: "Prompt für die KI",

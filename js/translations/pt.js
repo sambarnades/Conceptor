@@ -274,13 +274,14 @@ const translations_pt = {
     h5p_mark_the_words_name: "Marcar palavras",
     h5p_mark_the_words_description: "Peça aos alunos que destaquem certas palavras num parágrafo.",
 
-    // Moodle Modules
+    // Módulos Moodle
     moodle_xml_name: "XML Éléa/Moodle",
-    moodle_xml_description: "Gere um ficheiro XML completo para importar um teste no Moodle ou Éléa.",
+    moodle_xml_description: "Gere um banco de 10 perguntas para uma atividade de Questionário prontas para serem importadas em formato XML.",
+    moodle_xml_help: "Para adicionar um ficheiro XML numa atividade «Questionário» no Moodle, primeiro crie a atividade. Em seguida, abra o menu <strong>Mais</strong> e vá a <strong>Banco de perguntas</strong>. Nesse menu, clique em <strong>Importar</strong>, escolha o formato <strong>Moodle XML</strong>, selecione o seu ficheiro e confirme.",
     moodle_gift_name: "Formato GIFT",
-    moodle_gift_description: "Crie perguntas no formato GIFT, uma forma simples de importar questões no Moodle.",
+    moodle_gift_description: "Crie perguntas no formato GIFT, uma forma simples de importar perguntas para o Moodle.",
     moodle_millionnaire_name: "Milionário",
-    moodle_millionnaire_description: "Gere uma atividade única \"Milionário\" com 6 perguntas de dificuldade progressiva.",
+    moodle_millionnaire_description: "Gere uma atividade única 'Milionário' com 6 perguntas de dificuldade crescente.",
 
     // Dynamic content
     prompt_for_ia: "Prompt para a IA",

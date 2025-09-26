@@ -274,13 +274,14 @@ const translations_jp = {
     h5p_mark_the_words_name: "単語をハイライト",
     h5p_mark_the_words_description: "生徒に段落の特定の単語をハイライトするよう求めます。",
 
-    // Moodle Modules
+    // Moodle モジュール
     moodle_xml_name: "XML Éléa/Moodle",
-    moodle_xml_description: "MoodleまたはÉléaにテストをインポートするための完全なXMLファイルを生成します。",
-    moodle_gift_name: "GIFT形式",
-    moodle_gift_description: "Moodleに質問をインポートする簡単な方法であるGIFT形式で質問を作成します。",
-    moodle_millionnaire_name: "億万長者",
-    moodle_millionnaire_description: "難易度が段階的に上がる6問の一意の「億万長者」アクティビティを生成します。",
+    moodle_xml_description: "XML 形式でインポート可能な小テスト用に 10 問の問題バンクを作成します。",
+    moodle_xml_help: "Moodle の「小テスト」活動に XML ファイルを追加するには、まず活動を作成します。その後、<strong>その他</strong> メニューを開き、<strong>問題バンク</strong> に移動します。そこで <strong>インポート</strong> をクリックし、<strong>Moodle XML</strong> 形式を選択し、ファイルを選んで確認します。",
+    moodle_gift_name: "GIFT フォーマット",
+    moodle_gift_description: "GIFT 形式で問題を作成します。これは Moodle に問題をインポートする簡単な方法です。",
+    moodle_millionnaire_name: "ミリオネア",
+    moodle_millionnaire_description: "難易度が徐々に上がる 6 問のユニークな「ミリオネア」活動を作成します。",
 
     // Dynamic content
     prompt_for_ia: "AI用プロンプト",
