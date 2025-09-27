@@ -984,13 +984,38 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     overallFeedback: []
                 };
-            } else if (moduleKey === 'Glossary' && jsonObj.panels) {
-               jsonObj.panels.forEach(panel => {
-                   if (panel.content && panel.content.subContentId) {
-                       panel.content.subContentId = generateUUID();
-                   }
-               });
-               content = jsonObj;
+            } else if (moduleKey === 'Glossary') {
+                // Détecter si c'est le nouveau format simplifié (un tableau) ou l'ancien (un objet avec "panels")
+                const panelsData = Array.isArray(jsonObj) ? jsonObj : jsonObj.panels;
+
+                const transformedPanels = panelsData.map(item => {
+                    // Si l'item a déjà la structure complète, on ne fait que générer l'UUID
+                    if (item.content && item.content.params) {
+                        item.content.subContentId = generateUUID();
+                        return item;
+                    }
+                    // Sinon, on transforme la structure simple en structure complète
+                    return {
+                        title: item.title,
+                        content: {
+                            params: {
+                                text: item.text
+                            },
+                            library: "H5P.AdvancedText 1.1",
+                            subContentId: generateUUID(),
+                            metadata: {
+                                contentType: "Text",
+                                license: "U",
+                                title: item.title // On utilise le titre du panneau comme titre de métadonnée
+                            }
+                        }
+                    };
+                });
+
+                content = {
+                    panels: transformedPanels,
+                    hTag: "h2"
+                };
             }
 
             // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
@@ -1338,35 +1363,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                 ${pt.glossary_prompt_json_structure_title}
                                 ${pt.glossary_prompt_json_structure_main_object.replace('${nombreQuestions}', nombreQuestions)}
-                                ${pt.glossary_prompt_panel_object}
                                 - ${pt.glossary_prompt_title}
                                 - ${pt.glossary_prompt_content}
 
                                 ${pt.glossary_prompt_content_rules_title}
                                 ${pt.glossary_prompt_rule1}
-                                ${pt.glossary_prompt_rule2}
 
                                 ${pt.glossary_prompt_example_json_title}
                                 \`\`\`json
-                                {
-                                "panels": [
+                                [
                                     {
-                                    "title": "Photosynthèse",
-                                    "content": {
-                                        "params": {
-                                        "text": "<p>Processus par lequel les plantes vertes transforment la lumière du soleil en énergie.</p>"
-                                        },
-                                        "library": "H5P.AdvancedText 1.1",
-                                        "metadata": {
-                                           "contentType": "Text",
-                                           "license": "U",
-                                           "title": "Untitled Text"
-                                        }
+                                      "title": "Photosynthèse",
+                                      "text": "<p>Processus par lequel les plantes vertes transforment la lumière du soleil en énergie.</p>"
+                                    },
+                                    {
+                                      "title": "Cellule",
+                                      "text": "<p>Unité de base de tous les êtres vivants.</p>"
                                     }
-                                    }
-                                ],
-                                "hTag": "h2"
-                                }
+                                ]
                                 \`\`\`
 
                                 ${pt.glossary_prompt_generate_only_json}${languageInstruction}`;
