@@ -108,6 +108,7 @@ const translations_zh = {
     moodle_xml_prompt_form_rule1_encoding: "使用 UTF-8 编码（包含编码声明行）。",
     moodle_xml_prompt_form_rule1_reusable: "可直接在 Moodle 中复用，且无格式错误。",
     moodle_xml_prompt_form_rule1_standard_structure: "遵循 Moodle 标准 XML 结构（包含 <quiz>、<question> 等）。",
+    moodle_xml_prompt_form_rule1_special_chars: "数学符号如 '&lt;' 或 '&gt;' 必须编码为 HTML 实体（例如，`&lt;` 表示 '<'，`&gt;` 表示 '>'），以避免与 XML 标签混淆。",
     moodle_xml_prompt_generate_only_xml: "不要评论、不要排版、不要总结：我只要 XML 原始内容。请严格遵守所述格式，因为我会将结果粘贴到另一个要求该格式的工具中。以预格式化代码形式给出答案。",
 
     // GIFT Prompt

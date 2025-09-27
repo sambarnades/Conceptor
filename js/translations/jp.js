@@ -108,6 +108,7 @@ const translations_jp = {
     moodle_xml_prompt_form_rule1_encoding: "UTF-8でエンコードされている（エンコード行を挿入）。",
     moodle_xml_prompt_form_rule1_reusable: "形式エラーなしで、Moodleで直接再利用可能。",
     moodle_xml_prompt_form_rule1_standard_structure: "Moodleの標準XML構造に従う（<quiz>、<question>などを含む）。",
+    moodle_xml_prompt_form_rule1_special_chars: "数式記号 '&lt;' や '&gt;' は HTML エンティティとしてエンコードする必要があります（例: '<' の場合は `&lt;`、'>' の場合は `&gt;`）、XML タグとの混同を避けるためです。",
     moodle_xml_prompt_generate_only_xml: "コメント、形式設定、要約はしないでください。XMLファイルの生の内容のみが必要です。説明された形式を厳密に守ってください。結果を他のツールに貼り付けるため、この形式が期待されています。回答をプリフォーマットされたコードとして生成してください。",
 
     // GIFT Prompt

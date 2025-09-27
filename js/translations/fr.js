@@ -108,6 +108,7 @@ const translations_fr = {
     moodle_xml_prompt_form_rule1_encoding: "Être encodé en UTF-8 (insérer la ligne d'encodage).",
     moodle_xml_prompt_form_rule1_reusable: "Être directement réutilisable dans Moodle, sans erreur de format.",
     moodle_xml_prompt_form_rule1_standard_structure: "Suivre la structure XML standard de Moodle (avec <quiz>, <question>, etc.).",
+    moodle_xml_prompt_form_rule1_special_chars: "Les symboles mathématiques comme '<' ou '>' doivent être encodés en entités HTML (par exemple, `<` pour '<' et `>` pour '>') pour éviter toute confusion avec les balises XML.",
     moodle_xml_prompt_generate_only_xml: "Ne commente pas, ne formate pas, ne résume pas : je veux uniquement le contenu brut du fichier XML. Respecte scrupuleusement le format décrit, car je vais coller le résultat dans un autre outil qui attend ce format. Produis la réponse sous forme de code préformaté",
 
     // GIFT Prompt

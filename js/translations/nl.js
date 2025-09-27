@@ -108,6 +108,7 @@ const translations_nl = {
     moodle_xml_prompt_form_rule1_encoding: "In UTF-8 gecodeerd zijn (voeg de coderegel toe).",
     moodle_xml_prompt_form_rule1_reusable: "Direct herbruikbaar zijn in Moodle, zonder opmaakfouten.",
     moodle_xml_prompt_form_rule1_standard_structure: "De standaard Moodle-XML-structuur volgen (met <quiz>, <question>, enz.).",
+    moodle_xml_prompt_form_rule1_special_chars: "Wiskundige symbolen zoals '&lt;' of '&gt;' moeten worden gecodeerd als HTML-entiteiten (bijvoorbeeld, `&lt;` voor '<' en `&gt;` voor '>') om verwarring met XML-tags te voorkomen.",
     moodle_xml_prompt_generate_only_xml: "Niet becommentariëren, niet opmaken, niet samenvatten: ik wil alleen de ruwe XML-inhoud. Respecteer strikt het beschreven formaat, want ik plak het resultaat in een andere tool die dit formaat vereist. Geef het antwoord als vooraf opgemaakte code.",
 
     // GIFT-prompt

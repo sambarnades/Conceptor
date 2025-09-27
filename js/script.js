@@ -1045,6 +1045,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ${pt.moodle_xml_prompt_form_rule1_encoding}
                                 ${pt.moodle_xml_prompt_form_rule1_reusable}
                                 ${pt.moodle_xml_prompt_form_rule1_standard_structure}
+                                ${pt.moodle_xml_prompt_form_rule1_special_chars}
 
 
                                 ${pt.moodle_xml_prompt_generate_only_xml}${languageInstruction}`;

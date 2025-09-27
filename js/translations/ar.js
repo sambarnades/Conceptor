@@ -108,6 +108,7 @@ const translations_ar = {
     moodle_xml_prompt_form_rule1_encoding: "مشفَّرًا بترميز UTF-8 (ضمّن سطر الترميز).",
     moodle_xml_prompt_form_rule1_reusable: "قابلًا لإعادة الاستخدام مباشرة في Moodle دون أخطاء في التنسيق.",
     moodle_xml_prompt_form_rule1_standard_structure: "متّبعًا لبنية XML القياسية في Moodle (مع <quiz> و<question>... إلخ).",
+    moodle_xml_prompt_form_rule1_special_chars: "يجب ترميز الرموز الرياضية مثل '&lt;' أو '&gt;' ككيانات HTML (على سبيل المثال، `&lt;` لـ '<' و `&gt;` لـ '>') لتجنب أي لبس مع وسوم XML.",
     moodle_xml_prompt_generate_only_xml: "لا تُعلّق، لا تُنسّق، لا تُلخّص: أريد المحتوى الخام لملف XML فقط. التزم بدقة بالتنسيق الموصوف، لأنني سأُلصق النتيجة في أداة أخرى تتوقّع هذا التنسيق. قدِّم الإجابة ككود مُنسَّق مسبقًا.",
 
     // مطالب GIFT
