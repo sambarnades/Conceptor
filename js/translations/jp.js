@@ -70,6 +70,7 @@ const translations_jp = {
     crossword_prompt_words_array: "`words`：${nombreQuestions}個のオブジェクトの配列。各オブジェクトには以下を含みます：",
     crossword_prompt_answer: "`answer`：推測する単語。",
     crossword_prompt_clue: "`clue`：対応する定義。",
+    crossword_prompt_extra_clue_optional: "`extraClue` (任意): 追加のヒントを含むオブジェクト。AIは追加の妥当性を判断する必要があります。",
     crossword_prompt_task_description: "`taskDescription`：明確な指示。",
     crossword_prompt_content_rules_title: "**コンテンツのルール：**",
     crossword_prompt_rule1: "1. 単語（`answer`）は固有で関連性のある用語である必要があります。",
@@ -77,6 +78,16 @@ const translations_jp = {
     crossword_prompt_rule3: "3. JSON構造の残り（動作、テーマなど）はそのまま保持してください。",
     crossword_prompt_example_json_title: "**単語のJSON例：**",
     crossword_prompt_generate_only_json: "タイトル、説明、「words」配列を埋めた完全で有効なJSONを、他のコメントなしで生成してください。",
+
+    // Crossword UI translations
+    crossword_across: "横",
+    crossword_down: "縦",
+    crossword_check_answer: "チェック",
+    crossword_try_again: "再試行",
+    crossword_show_solution: "解答を表示",
+    crossword_extra_clue: "追加ヒント",
+    crossword_close_window: "ウィンドウを閉じる",
+    crossword_submit_answer: "送信",
 
     // Essay Prompt
     essay_prompt_role: "あなたはH5P「Essay」アクティビティを作成する教育工学の専門家です。",

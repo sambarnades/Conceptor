@@ -70,6 +70,7 @@ const translations_el = {
     crossword_prompt_words_array: "`words`: Πίνακας με ${nombreQuestions} αντικείμενα, το καθένα περιλαμβάνει:",
     crossword_prompt_answer: "`answer`: Η λέξη προς εύρεση.",
     crossword_prompt_clue: "`clue`: Ο αντίστοιχος ορισμός.",
+    crossword_prompt_extra_clue_optional: "`extraClue` (προαιρετικό): Ένα αντικείμενο που περιέχει μια πρόσθετη ένδειξη. Η ΤΝ πρέπει να κρίνει τη σκοπιμότητα της προσθήκης του.",
     crossword_prompt_task_description: "`taskDescription`: Σαφής οδηγία.",
     crossword_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
     crossword_prompt_rule1: "1. Οι λέξεις (`answer`) πρέπει να είναι μοναδικές και σχετικές.",
@@ -77,6 +78,16 @@ const translations_el = {
     crossword_prompt_rule3: "3. Η υπόλοιπη δομή JSON (συμπεριφορά, θέμα κ.λπ.) παραμένει ως έχει.",
     crossword_prompt_example_json_title: "**Παράδειγμα JSON για μία λέξη:**",
     crossword_prompt_generate_only_json: "Παρήγαγε πλήρες και έγκυρο JSON συμπληρώνοντας τίτλο, περιγραφή και τον πίνακα \"words\", χωρίς πρόσθετα σχόλια.",
+
+    // Crossword UI translations
+    crossword_across: "Οριζόντια",
+    crossword_down: "Κάθετα",
+    crossword_check_answer: "Έλεγχος",
+    crossword_try_again: "Προσπάθησε ξανά",
+    crossword_show_solution: "Εμφάνιση λύσης",
+    crossword_extra_clue: "Επιπλέον στοιχείο",
+    crossword_close_window: "Κλείσιμο παραθύρου",
+    crossword_submit_answer: "Υποβολή",
 
     // Prompt για Δοκίμιο
     essay_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Essay\".",

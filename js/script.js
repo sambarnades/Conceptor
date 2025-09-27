@@ -1016,6 +1016,46 @@ document.addEventListener('DOMContentLoaded', function() {
                     panels: transformedPanels,
                     hTag: "h2"
                 };
+            } else if (moduleKey === 'Crossword') {
+                content = {
+                    ...jsonObj, // Conserve title, words, taskDescription
+                    behaviour: {
+                        enableInstantFeedback: false,
+                        scoreWords: true,
+                        applyPenalties: false,
+                        enableRetry: true,
+                        enableSolutionsButton: true
+                    },
+                    l10n: {
+                        across: translations.crossword_across || "Across",
+                        down: translations.crossword_down || "Down",
+                        checkAnswer: translations.crossword_check_answer || "Check",
+                        tryAgain: translations.crossword_try_again || "Retry",
+                        showSolution: translations.crossword_show_solution || "Show solution",
+                        extraClue: translations.crossword_extra_clue || "Extra clue",
+                        closeWindow: translations.crossword_close_window || "Close window",
+                        submitAnswer: translations.crossword_submit_answer || "Submit"
+                    },
+                    // Traiter les extraClues pour ajouter les métadonnées nécessaires
+                    words: jsonObj.words.map(word => {
+                        if (word.extraClue && word.extraClue.params) {
+                            return {
+                                ...word,
+                                extraClue: {
+                                    ...word.extraClue,
+                                    library: "H5P.AdvancedText 1.1",
+                                    subContentId: generateUUID(),
+                                    metadata: {
+                                        contentType: "Text",
+                                        license: "U",
+                                        title: "Extra clue"
+                                    }
+                                }
+                            };
+                        }
+                        return word;
+                    })
+                };
             }
 
             // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
@@ -1162,6 +1202,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 - ${pt.crossword_prompt_words_array.replace('${nombreQuestions}', nombreQuestions)}
                                     - ${pt.crossword_prompt_answer}
                                     - ${pt.crossword_prompt_clue}
+                                    - ${pt.crossword_prompt_extra_clue_optional}
                                 - ${pt.crossword_prompt_task_description}
 
                                 ${pt.crossword_prompt_content_rules_title}
@@ -1172,14 +1213,23 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ${pt.crossword_prompt_example_json_title}
                                 \`\`\`json
                                 {
-                                "title": "Mots croisés sur la Biologie",
-                                "words": [
+                                  "title": "Mots croisés sur la Biologie",
+                                  "words": [
                                     {
-                                    "answer": "Cellule",
-                                    "clue": "Unité de base de la vie."
+                                      "answer": "Cellule",
+                                      "clue": "Unité de base de la vie.",
+                                      "extraClue": {
+                                        "params": {
+                                          "text": "<p>Elle peut être animale ou végétale.</p>"
+                                        }
+                                      }
+                                    },
+                                    {
+                                       "answer": "ADN",
+                                       "clue": "Molécule portant l'information génétique."
                                     }
-                                ],
-                                "taskDescription": "<p>Complète la grille de mots croisés.</p>"
+                                  ],
+                                  "taskDescription": "<p>Complète la grille de mots croisés.</p>"
                                 }
                                 \`\`\`
 

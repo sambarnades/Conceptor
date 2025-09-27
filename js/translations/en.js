@@ -70,6 +70,7 @@ const translations_en = {
     crossword_prompt_words_array: "`words`: An array of ${nombreQuestions} objects, each with :",
     crossword_prompt_answer: "`answer`: The word to guess.",
     crossword_prompt_clue: "`clue`: The corresponding definition.",
+    crossword_prompt_extra_clue_optional: "`extraClue` (optional): An object containing an additional clue. The AI should judge the relevance of adding one.",
     crossword_prompt_task_description: "`taskDescription`: Clear instructions.",
     crossword_prompt_content_rules_title: "**Content rules :**",
     crossword_prompt_rule1: "1.  Words (`answer`) must be unique and relevant terms.",
@@ -77,6 +78,16 @@ const translations_en = {
     crossword_prompt_rule3: "3.  The rest of the JSON structure (behavior, theme, etc.) must be kept as is.",
     crossword_prompt_example_json_title: "**Example JSON for a word :**",
     crossword_prompt_generate_only_json: "Generate the complete and valid JSON, filling in the title, description and the \"words\" array, without any other comments.",
+
+    // Crossword UI translations
+    crossword_across: "Across",
+    crossword_down: "Down",
+    crossword_check_answer: "Check",
+    crossword_try_again: "Retry",
+    crossword_show_solution: "Show solution",
+    crossword_extra_clue: "Extra clue",
+    crossword_close_window: "Close window",
+    crossword_submit_answer: "Submit",
 
     // Essay Prompt
     essay_prompt_role: "You are an expert in pedagogical engineering creating an H5P \"Essay\" activity.",

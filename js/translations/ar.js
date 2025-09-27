@@ -70,6 +70,7 @@ const translations_ar = {
     crossword_prompt_words_array: "`words`: مصفوفة من ${nombreQuestions} كائنات، يحتوي كل منها على:",
     crossword_prompt_answer: "`answer`: الكلمة المطلوب اكتشافها.",
     crossword_prompt_clue: "`clue`: التعريف المقابل.",
+    crossword_prompt_extra_clue_optional: "`extraClue` (اختياري): كائن يحتوي على تلميح إضافي. يجب على الذكاء الاصطناعي الحكم على مدى ملاءمة إضافته.",
     crossword_prompt_task_description: "`taskDescription`: تعليمات واضحة.",
     crossword_prompt_content_rules_title: "**قواعد المحتوى:**",
     crossword_prompt_rule1: "1. يجب أن تكون الكلمات (`answer`) فريدة وذات صلة.",
@@ -77,6 +78,16 @@ const translations_ar = {
     crossword_prompt_rule3: "3. تُحفَظ بقية بنية JSON (السلوك، السمة، إلخ) كما هي.",
     crossword_prompt_example_json_title: "**مثال JSON لكلمة واحدة:**",
     crossword_prompt_generate_only_json: "ولِّد JSON كاملًا وصالحًا بملء العنوان والوصف ومصفوفة \"words\" دون أي تعليقات إضافية.",
+
+    // Crossword UI translations
+    crossword_across: "أفقي",
+    crossword_down: "عمودي",
+    crossword_check_answer: "تحقق",
+    crossword_try_again: "إعادة المحاولة",
+    crossword_show_solution: "إظهار الحل",
+    crossword_extra_clue: "تلميح إضافي",
+    crossword_close_window: "إغلاق النافذة",
+    crossword_submit_answer: "إرسال",
 
     // مطالب المقال
     essay_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Essay\".",

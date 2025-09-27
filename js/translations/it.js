@@ -70,6 +70,7 @@ const translations_it = {
     crossword_prompt_words_array: "`words`: Un array di ${nombreQuestions} oggetti, ciascuno con:",
     crossword_prompt_answer: "`answer`: La parola da indovinare.",
     crossword_prompt_clue: "`clue`: La definizione corrispondente.",
+    crossword_prompt_extra_clue_optional: "`extraClue` (opzionale): Un oggetto contenente un indizio aggiuntivo. L'IA dovrebbe giudicare la pertinenza di aggiungerne uno.",
     crossword_prompt_task_description: "`taskDescription`: Un’istruzione chiara.",
     crossword_prompt_content_rules_title: "**Regole per il contenuto:**",
     crossword_prompt_rule1: "1. Le parole (`answer`) devono essere uniche e pertinenti.",
@@ -77,6 +78,16 @@ const translations_it = {
     crossword_prompt_rule3: "3. Il resto della struttura JSON (comportamento, tema, ecc.) deve essere mantenuto.",
     crossword_prompt_example_json_title: "**Esempio di JSON per una parola:**",
     crossword_prompt_generate_only_json: "Genera il JSON completo e valido, compilando il titolo, la descrizione e l’array \"words\", senza altri commenti.",
+
+    // Crossword UI translations
+    crossword_across: "Orizzontale",
+    crossword_down: "Verticale",
+    crossword_check_answer: "Controlla",
+    crossword_try_again: "Riprova",
+    crossword_show_solution: "Mostra soluzione",
+    crossword_extra_clue: "Indizio extra",
+    crossword_close_window: "Chiudi finestra",
+    crossword_submit_answer: "Invia",
 
     // Essay Prompt
     essay_prompt_role: "Sei un esperto di ingegneria pedagogica che crea un’attività H5P \"Essay\".",

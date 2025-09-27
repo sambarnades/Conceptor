@@ -70,6 +70,7 @@ const translations_zh = {
     crossword_prompt_words_array: "`words`：包含 ${nombreQuestions} 个对象的数组，每个对象包括：",
     crossword_prompt_answer: "`answer`：要猜的词。",
     crossword_prompt_clue: "`clue`：对应的定义。",
+    crossword_prompt_extra_clue_optional: "`extraClue` (可选): 包含附加线索的对象。AI应判断添加线索的相关性。",
     crossword_prompt_task_description: "`taskDescription`：清晰的指令。",
     crossword_prompt_content_rules_title: "**内容规则：**",
     crossword_prompt_rule1: "1.  词语（`answer`）必须唯一且相关。",
@@ -77,6 +78,16 @@ const translations_zh = {
     crossword_prompt_rule3: "3.  其余 JSON 结构（行为、主题等）保持不变。",
     crossword_prompt_example_json_title: "**单个词的 JSON 示例：**",
     crossword_prompt_generate_only_json: "生成完整有效的 JSON，填写标题、说明与“words”数组，不要添加其它注释。",
+
+    // Crossword UI translations
+    crossword_across: "横向",
+    crossword_down: "纵向",
+    crossword_check_answer: "检查",
+    crossword_try_again: "重试",
+    crossword_show_solution: "显示答案",
+    crossword_extra_clue: "额外提示",
+    crossword_close_window: "关闭窗口",
+    crossword_submit_answer: "提交",
 
     // Essay Prompt
     essay_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Essay（作文）”活动。",

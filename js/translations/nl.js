@@ -70,6 +70,7 @@ const translations_nl = {
     crossword_prompt_words_array: "`words`: Een array van ${nombreQuestions} objecten, elk met:",
     crossword_prompt_answer: "`answer`: Het te raden woord.",
     crossword_prompt_clue: "`clue`: De bijbehorende definitie.",
+    crossword_prompt_extra_clue_optional: "`extraClue` (optioneel): Een object met een extra hint. De AI moet de relevantie van het toevoegen ervan beoordelen.",
     crossword_prompt_task_description: "`taskDescription`: Een duidelijke instructie.",
     crossword_prompt_content_rules_title: "**Regels voor de inhoud:**",
     crossword_prompt_rule1: "1.  De woorden (`answer`) moeten uniek en relevant zijn.",
@@ -77,6 +78,16 @@ const translations_nl = {
     crossword_prompt_rule3: "3.  De rest van de JSON-structuur (gedrag, thema, enz.) blijft ongewijzigd.",
     crossword_prompt_example_json_title: "**JSON-voorbeeld voor één woord:**",
     crossword_prompt_generate_only_json: "Genereer de volledige en geldige JSON door de titel, beschrijving en de array \"words\" in te vullen, zonder verdere opmerkingen.",
+
+    // Crossword UI translations
+    crossword_across: "Horizontaal",
+    crossword_down: "Verticaal",
+    crossword_check_answer: "Controleren",
+    crossword_try_again: "Opnieuw proberen",
+    crossword_show_solution: "Oplossing tonen",
+    crossword_extra_clue: "Extra hint",
+    crossword_close_window: "Venster sluiten",
+    crossword_submit_answer: "Indienen",
 
     // Essay-prompt
     essay_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Essay\".",
