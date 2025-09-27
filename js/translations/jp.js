@@ -407,4 +407,20 @@ const translations_jp = {
     flashcards_card_announcement: "不正解です。正解は @answer でした",
     flashcards_correct_announcement: "@answer は正解です。",
     flashcards_page_announcement: "ページ @current / @total"
+,
+
+    // Essay specific UI translations
+    essay_checkAnswer: "チェック",
+    essay_tryAgain: "再試行",
+    essay_showSolution: "解答を表示",
+    essay_feedbackHeader: "フィードバック",
+    essay_solutionTitle: "解答例",
+    remainingChars: "残り文字数: @chars",
+    notEnoughChars: "最低@chars文字入力してください！",
+    messageSave: "保存しました",
+    placeholderText: "ここに書き始めてください...",
+    ariaYourResult: "合計@total点中@score点を獲得しました",
+    ariaNavigatedToSolution: "テキストエリアの後に新しく含まれた解答例に移動しました。",
+    ticket: "チケット",
+    legal_mentions: "法的通知"
 };

@@ -412,4 +412,20 @@ const translations_ar = {
     flashcards_card_announcement: "إجابة غير صحيحة. الإجابة الصحيحة كانت @answer",
     flashcards_correct_announcement: "@answer صحيح.",
     flashcards_page_announcement: "صفحة @current من @total"
+,
+
+    // Essay specific UI translations
+    essay_checkAnswer: "تحقق",
+    essay_tryAgain: "إعادة المحاولة",
+    essay_showSolution: "إظهار الحل",
+    essay_feedbackHeader: "ملاحظات",
+    essay_solutionTitle: "حل نموذجي",
+    remainingChars: "الأحرف المتبقية: @chars",
+    notEnoughChars: "يجب إدخال @chars أحرف على الأقل!",
+    messageSave: "تم الحفظ",
+    placeholderText: "ابدأ الكتابة هنا...",
+    ariaYourResult: "لقد حصلت على @score من @total نقطة",
+    ariaNavigatedToSolution: "تم الانتقال إلى الحل النموذجي المضمن حديثًا بعد منطقة النص.",
+    ticket: "تذكرة",
+    legal_mentions: "ملاحظات قانونية"
 };

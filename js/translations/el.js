@@ -407,4 +407,20 @@ const translations_el = {
     flashcards_card_announcement: "Λανθασμένη απάντηση. Η σωστή απάντηση ήταν @answer",
     flashcards_correct_announcement: "Το @answer είναι σωστό.",
     flashcards_page_announcement: "Σελίδα @current από @total"
+,
+
+    // Essay specific UI translations
+    essay_checkAnswer: "Έλεγχος",
+    essay_tryAgain: "Προσπάθησε ξανά",
+    essay_showSolution: "Εμφάνιση λύσης",
+    essay_feedbackHeader: "Ανατροφοδότηση",
+    essay_solutionTitle: "Υποδειγματική λύση",
+    remainingChars: "Εναπομείναντες χαρακτήρες: @chars",
+    notEnoughChars: "Πρέπει να εισαγάγετε τουλάχιστον @chars χαρακτήρες!",
+    messageSave: "αποθηκεύτηκε",
+    placeholderText: "Ξεκινήστε να γράφετε εδώ...",
+    ariaYourResult: "Έχετε λάβει @score από @total βαθμούς",
+    ariaNavigatedToSolution: "Πλοηγηθήκατε στη νέα υποδειγματική λύση μετά την περιοχή κειμένου.",
+    ticket: "Αίτημα",
+    legal_mentions: "Νομικές σημειώσεις"
 };

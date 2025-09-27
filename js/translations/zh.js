@@ -412,4 +412,20 @@ const translations_zh = {
     flashcards_card_announcement: "回答错误。正确答案是 @answer",
     flashcards_correct_announcement: "@answer 是正确的。",
     flashcards_page_announcement: "第 @current 页，共 @total 页"
+,
+
+    // Essay specific UI translations
+    essay_checkAnswer: "检查",
+    essay_tryAgain: "重试",
+    essay_showSolution: "显示答案",
+    essay_feedbackHeader: "反馈",
+    essay_solutionTitle: "范例答案",
+    remainingChars: "剩余字符数：@chars",
+    notEnoughChars: "您必须输入至少 @chars 个字符！",
+    messageSave: "已保存",
+    placeholderText: "从这里开始写作...",
+    ariaYourResult: "您获得了 @total 分中的 @score 分",
+    ariaNavigatedToSolution: "已导航至文本区域后新包含的范例答案。",
+    ticket: "工单",
+    legal_mentions: "法律声明"
 };

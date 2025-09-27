@@ -413,4 +413,20 @@ const translations_en = {
     flashcards_card_announcement: "Incorrect answer. Correct answer was @answer",
     flashcards_correct_announcement: "@answer is correct.",
     flashcards_page_announcement: "Page @current of @total"
+,
+
+    // Essay specific UI translations
+    essay_checkAnswer: "Check",
+    essay_tryAgain: "Retry",
+    essay_showSolution: "Show solution",
+    essay_feedbackHeader: "Feedback",
+    essay_solutionTitle: "Sample solution",
+    remainingChars: "Remaining characters: @chars",
+    notEnoughChars: "You must enter at least @chars characters!",
+    messageSave: "saved",
+    placeholderText: "Start writing here...",
+    ariaYourResult: "You got @score out of @total points",
+    ariaNavigatedToSolution: "Navigated to newly included sample solution after textarea.",
+    ticket: "Ticket",
+    legal_mentions: "Legal Mentions"
 };

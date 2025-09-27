@@ -1056,11 +1056,46 @@ document.addEventListener('DOMContentLoaded', function() {
                         return word;
                     })
                 };
-            }
-
-            // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
-            if (moduleKey === 'MarkTheWords') {
+            } else if (moduleKey === 'Essay') {
                 content = {
+                    ...jsonObj, // Conserve taskDescription et keywords
+                    behaviour: {
+                        inputFieldSize: "10",
+                        enableRetry: true,
+                        ignoreScoring: false,
+                        minimumLength: 100,
+                        maximumLength: 0, // 0 = illimité
+                        percentagePassing: 50,
+                        percentageMastering: 80,
+                        pointsHost: 1
+                    },
+                    overallFeedback: [
+                        { from: 0, to: 49, feedback: "Hmm, peut-être devriez-vous relire le cours ?" },
+                        { from: 50, to: 79, feedback: "Bien ! Vous semblez connaître le sujet." },
+                        { from: 80, to: 100, feedback: "Excellent travail !" }
+                    ],
+                    checkAnswer: translations.essay_checkAnswer || "Check",
+                    tryAgain: translations.essay_tryAgain || "Retry",
+                    showSolution: translations.essay_showSolution || "Show solution",
+                    feedbackHeader: translations.essay_feedbackHeader || "Feedback",
+                    solutionTitle: translations.essay_solutionTitle || "Sample solution",
+                    remainingChars: translations.remainingChars || "Remaining characters: @chars",
+                    notEnoughChars: translations.notEnoughChars || "You must enter at least @chars characters!",
+                    messageSave: translations.messageSave || "saved",
+                    placeholderText: translations.placeholderText || "In a hole in the ground there lived a hobbit ...",
+                    solution: {
+                        introduction: "",
+                        sample: ""
+                    },
+                    media: {},
+                    ariaYourResult: translations.ariaYourResult || "You got @score out of @total points",
+                    ariaNavigatedToSolution: translations.ariaNavigatedToSolution || "Navigated to newly included sample solution after textarea."
+                };
+            }
+ 
+             // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
+             if (moduleKey === 'MarkTheWords') {
+                 content = {
                     taskDescription: jsonObj.taskDescription,
                     textField: jsonObj.textField,
                     behaviour: {

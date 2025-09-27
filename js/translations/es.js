@@ -413,4 +413,20 @@ const translations_es = {
     flashcards_card_announcement: "Respuesta incorrecta. La respuesta correcta era @answer",
     flashcards_correct_announcement: "@answer es correcto.",
     flashcards_page_announcement: "Página @current de @total"
+,
+
+    // Essay specific UI translations
+    essay_checkAnswer: "Comprobar",
+    essay_tryAgain: "Reintentar",
+    essay_showSolution: "Mostrar solución",
+    essay_feedbackHeader: "Comentario",
+    essay_solutionTitle: "Solución de ejemplo",
+    remainingChars: "Caracteres restantes: @chars",
+    notEnoughChars: "¡Debes introducir al menos @chars caracteres!",
+    messageSave: "guardado",
+    placeholderText: "Empieza a escribir aquí...",
+    ariaYourResult: "Has conseguido @score de @total puntos",
+    ariaNavigatedToSolution: "Navegado a la solución de ejemplo recién incluida después del área de texto.",
+    ticket: "Ticket",
+    legal_mentions: "Menciones legales"
 };

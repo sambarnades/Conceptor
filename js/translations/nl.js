@@ -407,4 +407,20 @@ const translations_nl = {
     flashcards_card_announcement: "Incorrect antwoord. Het juiste antwoord was @answer",
     flashcards_correct_announcement: "@answer is correct.",
     flashcards_page_announcement: "Pagina @current van @total"
+,
+
+    // Essay specific UI translations
+    essay_checkAnswer: "Controleren",
+    essay_tryAgain: "Opnieuw proberen",
+    essay_showSolution: "Oplossing tonen",
+    essay_feedbackHeader: "Feedback",
+    essay_solutionTitle: "Voorbeeldoplossing",
+    remainingChars: "Resterende tekens: @chars",
+    notEnoughChars: "U moet minstens @chars tekens invoeren!",
+    messageSave: "opgeslagen",
+    placeholderText: "Begin hier met schrijven...",
+    ariaYourResult: "U hebt @score van de @total punten behaald",
+    ariaNavigatedToSolution: "Naar de nieuw opgenomen voorbeeldoplossing na het tekstvak genavigeerd.",
+    ticket: "Ticket",
+    legal_mentions: "Wettelijke vermeldingen"
 };
