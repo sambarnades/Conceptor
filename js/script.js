@@ -64,8 +64,8 @@ document.addEventListener('DOMContentLoaded', function() {
    }
 
     function translatePage() {
-        document.querySelectorAll('[data-key]').forEach(element => {
-            const key = element.getAttribute('data-key');
+        document.querySelectorAll('[data-key], [data-translate]').forEach(element => {
+            const key = element.getAttribute('data-key') || element.getAttribute('data-translate');
             const translation = translations[key]; // Utiliser l'objet translations directement
             if (translation) {
                 if (element.placeholder) {
@@ -808,6 +808,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 const html = await response.text();
                 legalMentionsContent.innerHTML = html;
+                translatePage(); // Appeler la traduction sur le nouveau contenu
                 legalMentionsModal.style.display = 'block';
             } catch (error) {
                 console.error('Failed to fetch legal mentions:', error);
