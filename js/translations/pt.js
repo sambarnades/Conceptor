@@ -255,6 +255,24 @@ const translations_pt = {
     millionnaire_prompt_example_json_title: "**Exemplo de JSON:**",
     millionnaire_prompt_generate_only_json: "Gere apenas o objeto JSON válido, sem qualquer comentário.",
 
+    // Appariement Prompt
+    appariement_prompt_role: "Você é um especialista em engenharia pedagógica criando uma atividade do Moodle \"Correspondência\".",
+    appariement_prompt_num_questions: "**Número de pares:** 10",
+    appariement_prompt_mission: "**Sua missão:**",
+    appariement_prompt_generate_json: "Gere um objeto JSON contendo um título e uma lista de **10 pares** para um jogo de correspondência.",
+    appariement_prompt_important_rules_title: "**Regras importantes:**",
+    appariement_prompt_rule1: "1.  O `title` deve ser um título relevante e envolvente para a atividade.",
+    appariement_prompt_rule2: "2.  O array `pairs` deve conter 10 objetos, cada um com `question` (o item à esquerda) e `answer` (o item à direita a corresponder).",
+    appariement_prompt_rule3: "3.  O conteúdo deve ser rigorosamente exato e pertinente ao tema e ao nível de ensino.",
+    appariement_prompt_json_structure_title: "**Estrutura JSON esperada:**",
+    appariement_prompt_main_object: "Um objeto principal com duas chaves:",
+    appariement_prompt_title: "- `title`: O título da atividade (string).",
+    appariement_prompt_pairs_array: "- `pairs`: Um array de 10 objetos, em que cada objeto representa um par e contém:",
+    appariement_prompt_question: "- `question`: O termo ou a imagem à esquerda (string).",
+    appariement_prompt_answer: "- `answer`: A definição ou o termo correspondente à direita (string).",
+    appariement_prompt_example_json_title: "**Exemplo de JSON:**",
+    appariement_prompt_generate_only_json: "Gere apenas o objeto JSON válido, sem nenhum comentário.",
+
     // H5P Modules
     h5p_timeline_name: "Linha do tempo",
     h5p_timeline_description: "Crie uma linha do tempo interativa para apresentar uma sequência de eventos.",
@@ -285,6 +303,8 @@ const translations_pt = {
     moodle_gift_description: "Crie perguntas no formato GIFT, uma forma simples de importar perguntas para o Moodle.",
     moodle_millionnaire_name: "Milionário",
     moodle_millionnaire_description: "Gere uma atividade única 'Milionário' com 6 perguntas de dificuldade crescente.",
+    moodle_appariement_name: "Correspondência",
+    moodle_appariement_description: "Gere uma atividade de correspondência com 10 questões.",
 
     // Dynamic content
     prompt_for_ia: "Prompt para a IA",
@@ -298,7 +318,14 @@ const translations_pt = {
     create_xml_file: "Criar ficheiro XML",
     paste_ia_result_xml: "Cole abaixo o XML gerado pela IA.",
     generate_xml_file: "Gerar ficheiro XML",
- 
+
+    create_mbz_file_appariement: "Criar o arquivo Correspondência (.mbz)",
+    paste_ia_result_appariement: "Cole abaixo o JSON gerado pela IA. O título da atividade será extraído automaticamente do JSON.",
+    generate_mbz_appariement: "Gerar a atividade Correspondência (mbz)",
+    create_mbz_file_millionnaire: "Criar o arquivo Milionário (.mbz)",
+    paste_ia_result_millionnaire: "Cole abaixo o JSON gerado pela IA. O título da atividade será extraído automaticamente do JSON.",
+    generate_mbz_millionnaire: "Gerar a atividade Milionário (mbz)",
+
     // Específico para Moodle XML
     moodle_xml_placeholder: "O XML do Moodle aparecerá aqui...",
     paste_xml_placeholder: "Cole aqui o XML completo gerado pela IA...",

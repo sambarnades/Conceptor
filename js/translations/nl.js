@@ -255,6 +255,24 @@ const translations_nl = {
     millionnaire_prompt_example_json_title: "**JSON-voorbeeld:**",
     millionnaire_prompt_generate_only_json: "Genereer uitsluitend het geldige JSON-object, zonder commentaar.",
 
+    // Appariement Prompt
+    appariement_prompt_role: "Je bent een expert in onderwijsontwerp die een Moodle-activiteit \"Koppelen\" maakt.",
+    appariement_prompt_num_questions: "**Aantal paren:** 10",
+    appariement_prompt_mission: "**Je missie:**",
+    appariement_prompt_generate_json: "Genereer een JSON-object met een titel en een lijst van **10 paren** voor een koppelspel.",
+    appariement_prompt_important_rules_title: "**Belangrijke regels:**",
+    appariement_prompt_rule1: "1.  `title` moet een relevante en aansprekende titel voor de activiteit zijn.",
+    appariement_prompt_rule2: "2.  De array `pairs` moet 10 objecten bevatten, elk met een `question` (het linkerelement) en een `answer` (het rechterelement om te koppelen).",
+    appariement_prompt_rule3: "3.  De inhoud moet strikt correct zijn en relevant voor het thema en het schoolniveau.",
+    appariement_prompt_json_structure_title: "**Verwachte JSON-structuur:**",
+    appariement_prompt_main_object: "Een hoofdobject met twee sleutels:",
+    appariement_prompt_title: "- `title`: De titel van de activiteit (tekenreeks).",
+    appariement_prompt_pairs_array: "- `pairs`: Een array van 10 objecten, waarbij elk object een paar vertegenwoordigt en bevat:",
+    appariement_prompt_question: "- `question`: De term of de afbeelding links (tekenreeks).",
+    appariement_prompt_answer: "- `answer`: De definitie of de corresponderende term rechts (tekenreeks).",
+    appariement_prompt_example_json_title: "**Voorbeeld-JSON:**",
+    appariement_prompt_generate_only_json: "Genereer alleen het geldige JSON-object, zonder enig commentaar.",
+
     // H5P-modules
     h5p_timeline_name: "Tijdlijn",
     h5p_timeline_description: "Maak een interactieve tijdlijn om een reeks gebeurtenissen te presenteren.",
@@ -285,6 +303,8 @@ const translations_nl = {
     moodle_gift_description: "Maak vragen in GIFT-formaat, een eenvoudige manier om vragen in Moodle te importeren.",
     moodle_millionnaire_name: "Miljonair",
     moodle_millionnaire_description: "Genereer een unieke 'Miljonair'-activiteit met 6 vragen die geleidelijk moeilijker worden.",
+    moodle_appariement_name: "Koppelen",
+    moodle_appariement_description: "Genereer een koppelactiviteit met 10 vragen.",
 
     // Dynamische inhoud
     prompt_for_ia: "Prompt voor de AI",
@@ -298,7 +318,14 @@ const translations_nl = {
     create_xml_file: "XML-bestand maken",
     paste_ia_result_xml: "Plak hieronder de door de AI gegenereerde XML.",
     generate_xml_file: "XML-bestand genereren",
- 
+
+    create_mbz_file_appariement: "Maak het bestand Koppelen (.mbz)",
+    paste_ia_result_appariement: "Plak hieronder de door de AI gegenereerde JSON. De titel van de activiteit wordt automatisch uit de JSON gehaald.",
+    generate_mbz_appariement: "Genereer de activiteit Koppelen (mbz)",
+    create_mbz_file_millionnaire: "Maak het bestand Miljonair (.mbz)",
+    paste_ia_result_millionnaire: "Plak hieronder de door de AI gegenereerde JSON. De titel van de activiteit wordt automatisch uit de JSON gehaald.",
+    generate_mbz_millionnaire: "Genereer de activiteit Miljonair (mbz)",
+
     // Specifiek voor Moodle XML
     moodle_xml_placeholder: "De Moodle-XML verschijnt hier...",
     paste_xml_placeholder: "Plak hier de volledige, door de AI gegenereerde XML...",

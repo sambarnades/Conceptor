@@ -255,6 +255,24 @@ const translations_jp = {
     millionnaire_prompt_example_json_title: "**JSONの例：**",
     millionnaire_prompt_generate_only_json: "コメントなしで、有効なJSONオブジェクトのみを生成してください。",
 
+    // Appariement Prompt
+    appariement_prompt_role: "あなたは教育設計の専門家で、Moodleの「マッチング」活動を作成しています。",
+    appariement_prompt_num_questions: "**ペアの数：** 10",
+    appariement_prompt_mission: "**あなたのミッション：**",
+    appariement_prompt_generate_json: "マッチングゲーム用に、タイトルと**10組**のペア一覧を含むJSONオブジェクトを生成してください。",
+    appariement_prompt_important_rules_title: "**重要なルール：**",
+    appariement_prompt_rule1: "1.  `title` は活動にとって関連性が高く魅力的なタイトルでなければならない。",
+    appariement_prompt_rule2: "2.  `pairs` 配列には10個のオブジェクトが必要で、それぞれに `question`（左側の項目）と `answer`（右側で対応づける項目）が含まれる。",
+    appariement_prompt_rule3: "3.  内容はテーマと学年水準に対して厳密に正確であること。",
+    appariement_prompt_json_structure_title: "**想定されるJSON構造：**",
+    appariement_prompt_main_object: "2つのキーを持つメインオブジェクト：",
+    appariement_prompt_title: "- `title`: 活動のタイトル（文字列）。",
+    appariement_prompt_pairs_array: "- `pairs`: 10個のオブジェクトからなる配列。各オブジェクトは1組を表し、次を含む：",
+    appariement_prompt_question: "- `question`: 左側の用語または画像（文字列）。",
+    appariement_prompt_answer: "- `answer`: 右側の定義または対応する用語（文字列）。",
+    appariement_prompt_example_json_title: "**JSON例：**",
+    appariement_prompt_generate_only_json: "有効なJSONオブジェクトのみを生成し、コメントは一切付けないでください。",
+
     // H5P Modules
     h5p_timeline_name: "年表",
     h5p_timeline_description: "イベントの順序を示すインタラクティブな年表を作成します。",
@@ -285,6 +303,8 @@ const translations_jp = {
     moodle_gift_description: "GIFT 形式で問題を作成します。これは Moodle に問題をインポートする簡単な方法です。",
     moodle_millionnaire_name: "ミリオネア",
     moodle_millionnaire_description: "難易度が徐々に上がる 6 問のユニークな「ミリオネア」活動を作成します。",
+    moodle_appariement_name: "マッチング",
+    moodle_appariement_description: "10問のマッチング活動を生成します。",
 
     // Dynamic content
     prompt_for_ia: "AI用プロンプト",
@@ -298,6 +318,13 @@ const translations_jp = {
     create_xml_file: "XMLファイルを作成",
     paste_ia_result_xml: "下にAIで生成されたXMLを貼り付けてください。",
     generate_xml_file: "XMLファイルを生成",
+
+    create_mbz_file_appariement: "「マッチング」ファイル (.mbz) を作成",
+    paste_ia_result_appariement: "下にAIが生成したJSONを貼り付けてください。アクティビティのタイトルはJSONから自動的に抽出されます。",
+    generate_mbz_appariement: "「マッチング」活動を生成 (mbz)",
+    create_mbz_file_millionnaire: "「ミリオネア」ファイル (.mbz) を作成",
+    paste_ia_result_millionnaire: "下にAIが生成したJSONを貼り付けてください。アクティビティのタイトルはJSONから自動的に抽出されます。",
+    generate_mbz_millionnaire: "「ミリオネア」活動を生成 (mbz)",
 
     // Moodle XML specific
     moodle_xml_placeholder: "Moodle XMLがここに表示されます...",

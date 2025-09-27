@@ -254,7 +254,25 @@ const translations_ar = {
     millionnaire_prompt_bad_answer: "- `badanswer`: مصفوفة من 3 إجابات خاطئة (سلاسل).",
     millionnaire_prompt_example_json_title: "**مثال JSON:**",
     millionnaire_prompt_generate_only_json: "ولِّد الكائن JSON الصالح فقط دون أي تعليقات.",
-
+ 
+    // Appariement Prompt
+    appariement_prompt_role: "أنت خبير في الهندسة البيداغوجية تنشئ نشاط مودل \"المطابقة\".",
+    appariement_prompt_num_questions: "**عدد الأزواج:** 10",
+    appariement_prompt_mission: "**مهمتك:**",
+    appariement_prompt_generate_json: "أنشئ كائن JSON يحتوي على عنوان وقائمة من **10 أزواج** للعبة مطابقة.",
+    appariement_prompt_important_rules_title: "**قواعد مهمة:**",
+    appariement_prompt_rule1: "1.  يجب أن يكون `title` عنوانًا ذا صلة وجاذبية للنشاط.",
+    appariement_prompt_rule2: "2.  يجب أن يحتوي مصفوف `pairs` على 10 كائنات، يحتوي كل منها على `question` (العنصر على اليسار) و`answer` (العنصر على اليمين للمطابقة).",
+    appariement_prompt_rule3: "3.  يجب أن يكون المحتوى دقيقًا وصحيحًا وملائمًا للموضوع والمستوى الدراسي.",
+    appariement_prompt_json_structure_title: "**بنية JSON المتوقعة:**",
+    appariement_prompt_main_object: "كائن رئيسي يحتوي على مفتاحين:",
+    appariement_prompt_title: "- `title`: عنوان النشاط (سلسلة محارف).",
+    appariement_prompt_pairs_array: "- `pairs`: مصفوفة من 10 كائنات، حيث يمثل كل كائن زوجًا ويحتوي على:",
+    appariement_prompt_question: "- `question`: المصطلح أو الصورة على اليسار (سلسلة محارف).",
+    appariement_prompt_answer: "- `answer`: التعريف أو المصطلح المقابل على اليمين (سلسلة محارف).",
+    appariement_prompt_example_json_title: "**مثال JSON:**",
+    appariement_prompt_generate_only_json: "أنشئ فقط كائن JSON صالحًا، دون أي تعليق.",
+ 
     // وحدات H5P
     h5p_timeline_name: "الخط الزمني",
     h5p_timeline_description: "أنشِئ خطًا زمنيًا تفاعليًا لعرض تسلسل من الأحداث.",
@@ -285,6 +303,8 @@ const translations_ar = {
     moodle_gift_description: "أنشئ أسئلة بتنسيق GIFT، وهو وسيلة بسيطة لاستيراد الأسئلة إلى Moodle.",
     moodle_millionnaire_name: "من سيربح المليون؟",
     moodle_millionnaire_description: "إنشاء نشاط فريد 'من سيربح المليون؟' من 6 أسئلة متدرجة في الصعوبة.",
+    moodle_appariement_name: "المطابقة",
+    moodle_appariement_description: "أنشئ نشاط مطابقة مكوّنًا من 10 أسئلة.",
 
     // محتوى ديناميكي
     prompt_for_ia: "مطلب للذكاء الاصطناعي",
@@ -299,6 +319,13 @@ const translations_ar = {
     paste_ia_result_xml: "الصق هنا ملف XML المُولَّد بواسطة الذكاء الاصطناعي.",
     generate_xml_file: "توليد ملف XML",
  
+    create_mbz_file_appariement: "أنشئ ملف المطابقة (.mbz)",
+    paste_ia_result_appariement: "ألصق أدناه JSON الذي أنشأته الذكاء الاصطناعي. سيتم استخراج عنوان النشاط تلقائيًا من JSON.",
+    generate_mbz_appariement: "أنشئ نشاط المطابقة (mbz)",
+    create_mbz_file_millionnaire: "أنشئ ملف المليونير (.mbz)",
+    paste_ia_result_millionnaire: "ألصق أدناه JSON الذي أنشأته الذكاء الاصطناعي. سيتم استخراج عنوان النشاط تلقائيًا من JSON.",
+    generate_mbz_millionnaire: "أنشئ نشاط المليونير (mbz)",
+
     // خاص بـ Moodle XML
     moodle_xml_placeholder: "سيظهر Moodle XML هنا...",
     paste_xml_placeholder: "الصق هنا ملف XML الكامل الذي ولّده الذكاء الاصطناعي...",

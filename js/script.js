@@ -200,6 +200,14 @@ document.addEventListener('DOMContentLoaded', function() {
            promptId: "millionnaireResultat",
            jsonInputId: "millionnaireJsonInput",
            createBtnId: "createMillionnaireMBZ"
+       },
+       Appariement: {
+           name: "moodle_appariement_name",
+           description: "moodle_appariement_description",
+           image: "images/appariement.png",
+           promptId: "appariementResultat",
+           jsonInputId: "appariementJsonInput",
+           createBtnId: "createAppariementMBZ"
        }
    };
 
@@ -434,10 +442,31 @@ document.addEventListener('DOMContentLoaded', function() {
                    </div>
                </div>
                <div class="h5p-processor">
-                   <h3>Créer le fichier Millionnaire (.mbz)</h3>
-                   <p>Collez le JSON généré par l'IA ci-dessous. Le titre de l'activité sera automatiquement extrait du JSON.</p>
+                   <h3>${translations.create_mbz_file_millionnaire}</h3>
+                   <p>${translations.paste_ia_result_millionnaire}</p>
                    <textarea id="${module.jsonInputId}" placeholder="${translations.paste_json_or_text || 'Collez ici le contenu généré par l\'IA...'}"></textarea>
-                   <button id="${module.createBtnId}" class="download-btn">Générer l'activité Millionnaire (mbz)</button>
+                   <button id="${module.createBtnId}" class="download-btn">${translations.generate_mbz_millionnaire}</button>
+               </div>
+           `;
+       } else if (moduleKey === 'Appariement') {
+           contentHtml = `
+               <h3>${translations.moodle_appariement_name}</h3>
+               <p>${translations.moodle_appariement_description}</p>
+               <div class="h5p-prompt-block">
+                   <h3>Prompt pour l'IA</h3>
+                   
+                   <textarea id="${module.promptId}" readonly placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+                   <div class="action-buttons">
+                       <button id="copy-${moduleKey}" class="copy-btn">📋 Copier le prompt</button>
+                       <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
+                       <button class="action-btn go-mistral">Ⓜ️ Accéder à Le chat</button>
+                   </div>
+               </div>
+               <div class="h5p-processor">
+                   <h3>${translations.create_mbz_file_appariement}</h3>
+                   <p>${translations.paste_ia_result_appariement}</p>
+                   <textarea id="${module.jsonInputId}" placeholder="${translations.paste_json_or_text || 'Collez ici le contenu généré par l\'IA...'}"></textarea>
+                   <button id="${module.createBtnId}" class="download-btn">${translations.generate_mbz_appariement}</button>
                </div>
            `;
        }
@@ -486,10 +515,22 @@ document.addEventListener('DOMContentLoaded', function() {
                }
                handleMillionnaireCreation(jsonInput);
            });
+       } else if (moduleKey === 'Appariement') {
+           const module = moodleModules[moduleKey];
+           setupCopyButton(`copy-${moduleKey}`, module.promptId);
+           document.getElementById(module.createBtnId).addEventListener('click', () => {
+               const jsonInput = document.getElementById(module.jsonInputId).value;
+               if (!jsonInput) {
+                   showNotification('Veuillez coller le contenu JSON généré.', 'error');
+                   return;
+               }
+               handleAppariementCreation(jsonInput);
+           });
        }
        const promptIdForCopy = (moduleKey === 'moodleXml') ? 'moodleXmlResultat' :
                                (moduleKey === 'gift') ? 'giftResultat' :
-                               (moduleKey === 'Millionnaire') ? moodleModules[moduleKey].promptId : null;
+                               (moduleKey === 'Millionnaire') ? moodleModules[moduleKey].promptId :
+                               (moduleKey === 'Appariement') ? moodleModules[moduleKey].promptId : null;
 
        contentContainer.querySelectorAll('.go-duck').forEach(btn => btn.addEventListener('click', function() {
            if (promptIdForCopy) copyToClipboard(promptIdForCopy, this);
@@ -507,6 +548,8 @@ document.addEventListener('DOMContentLoaded', function() {
        } else if (moduleKey === 'gift') {
            promptId = 'giftResultat';
        } else if (moduleKey === 'Millionnaire') {
+           promptId = moodleModules[moduleKey].promptId;
+       } else if (moduleKey === 'Appariement') {
            promptId = moodleModules[moduleKey].promptId;
        }
 
@@ -1339,8 +1382,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                     ${pt.millionnaire_prompt_generate_only_json}${languageInstruction}`;
 
-        return {
-            timelineResultat: timelinePrompt,
+       const appariementPrompt = `${pt.appariement_prompt_role}
+                                   ${contextPrompt}
+                                   ${pt.appariement_prompt_num_questions}
+
+                                   ${pt.appariement_prompt_mission}
+                                   ${pt.appariement_prompt_generate_json}
+
+                                   ${pt.appariement_prompt_important_rules_title}
+                                   ${pt.appariement_prompt_rule1}
+                                   ${pt.appariement_prompt_rule2}
+                                   ${pt.appariement_prompt_rule3}
+
+                                   ${pt.appariement_prompt_json_structure_title}
+                                   ${pt.appariement_prompt_main_object}
+                                   ${pt.appariement_prompt_title}
+                                   ${pt.appariement_prompt_pairs_array}
+                                       ${pt.appariement_prompt_question}
+                                       ${pt.appariement_prompt_answer}
+
+                                   ${pt.appariement_prompt_example_json_title}
+                                   \`\`\`json
+                                   {
+                                   "title": "Appariement sur la Révolution Française",
+                                   "pairs": [
+                                       {
+                                       "question": "Prise de la Bastille",
+                                       "answer": "14 juillet 1789"
+                                       }
+                                   ]
+                                   }
+                                   \`\`\`
+
+                                   ${pt.appariement_prompt_generate_only_json}${languageInstruction}`;
+
+       return {
+           timelineResultat: timelinePrompt,
             crosswordResultat: crosswordPrompt,
             essayResultat: essayPrompt,
             moodleXmlResultat: moodleXmlPrompt,
@@ -1352,7 +1429,8 @@ document.addEventListener('DOMContentLoaded', function() {
             dragWordResultat: dragWordPrompt,
             blanksResultat: blanksPrompt,
             markWordsResultat: markWordsPrompt,
-            millionnaireResultat: millionnairePrompt
+            millionnaireResultat: millionnairePrompt,
+            appariementResultat: appariementPrompt
         };
     }
 
@@ -1363,8 +1441,6 @@ document.addEventListener('DOMContentLoaded', function() {
     async function createMbz(files) {
     const tar = new Tar();
     const mtime = Math.floor(Date.now() / 1000);
-    const encoder = new TextEncoder();
-
     // 1. Déduire la liste des répertoires à partir des chemins de fichiers
     const allPaths = Object.keys(files);
     const dirSet = new Set();
@@ -1384,7 +1460,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     for (const path of fileList) {
         const content = files[path];
-        const buffer = encoder.encode(content);
+        const buffer = fflate.strToU8(content);
         archiveIndexContent += `${path}\tf\t${buffer.length}\t${mtime}\n`;
     }
     files['.ARCHIVE_INDEX'] = archiveIndexContent;
@@ -1392,8 +1468,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const sortedPaths = Object.keys(files).sort();
     for (const path of sortedPaths) {
         const content = files[path];
-        const buffer = encoder.encode(content);
-        tar.append(path, buffer);
+        tar.append(path, fflate.strToU8(content));
     }
     // 4. Obtenir l'archive TAR sous forme de Uint8Array
     const tarball = tar.out;
@@ -1433,7 +1508,7 @@ document.addEventListener('DOMContentLoaded', function() {
                'COURSE_CONTEXTID': '110712'
            };
            const basePath = 'elea/millionnairev2/modele_base';
-           let files = await fetchAllFilesRecursively(basePath);
+           let files = await fetchAllFilesRecursively(basePath, 'millionnaire');
            for (const path in files) {
                let content = files[path];
                for (const key in data) {
@@ -1460,15 +1535,109 @@ document.addEventListener('DOMContentLoaded', function() {
        }
    }
 
-   async function fetchAllFilesRecursively(basePath, relativePath = '') {
-       const fullPath = basePath + (relativePath ? '/' + relativePath : '');
+   async function handleAppariementCreation(jsonInput) {
+        try {
+            if (typeof Tar === 'undefined' || typeof fflate === 'undefined') {
+                throw new Error("Les bibliothèques de compression (Tar.js ou fflate) ne sont pas chargées.");
+            }
+            const jsonData = JSON.parse(jsonInput);
+            if (!jsonData.title || !Array.isArray(jsonData.pairs) || jsonData.pairs.length === 0) {
+                throw new Error("La structure du JSON est invalide. Assurez-vous qu'elle contient un 'title' et un tableau 'pairs'.");
+            }
+
+            const activityTitle = jsonData.title;
+            const pairs = jsonData.pairs;
+            const questions = {};
+            const responses = {};
+            pairs.forEach((pair, index) => {
+                questions[index + 1] = escapeHtmlTags(`<p dir=\"ltr\" style=\"text-align: left;\">${pair.question}<\/p>`);
+                responses[index + 1] = escapeHtmlTags(`<p dir=\"ltr\" style=\"text-align: left;\">${pair.answer}<\/p>`);
+            });
+            const associations = JSON.stringify({ questions, responses });
+
+            // --- Génération des IDs et Timestamps ---
+            const timestamp = Math.floor(Date.now() / 1000);
+            const courseId = 1000 + Math.floor(Math.random() * 9000);
+            const moduleId = 10000 + Math.floor(Math.random() * 90000);
+            const sectionId = 1000 + Math.floor(Math.random() * 9000);
+            const activityId = 100 + Math.floor(Math.random() * 900);
+            const courseContextId = 10000 + Math.floor(Math.random() * 90000);
+            const activityContextId = courseContextId + 2; // Assurer un ID de contexte d'activité unique
+            const gradeItemId = 1000 + Math.floor(Math.random() * 9000);
+            const categoryId = 1000 + Math.floor(Math.random() * 9000);
+            const courseItemId = 1000 + Math.floor(Math.random() * 9000);
+
+            const data = {
+                'ACTIVITY_TITLE': activityTitle,
+                'ACTIVITY_INTRO_HTML': escapeHtmlTags(`<p dir="ltr" style="text-align: left;">Trouvez les paires correspondantes.</p>`),
+                'ASSOCIATIONS_JSON': associations,
+                'COURSE_FULLNAME': activityTitle,
+                'COURSE_SHORTNAME': `parcours-${Math.random().toString(36).substring(2, 15)}`,
+                'COURSE_ID': courseId,
+                'MODULE_ID': moduleId,
+                'SECTION_ID': sectionId,
+                'ACTIVITY_ID': activityId,
+                'COURSE_CONTEXTID': courseContextId,
+                'ACTIVITY_CONTEXTID': activityContextId,
+                'GRADE_ITEM_ID': gradeItemId,
+                'CATEGORY_ID': categoryId,
+                'COURSE_ITEM_ID': categoryId, // L'iteminstance doit être l'ID de la catégorie
+                'TIMESTAMP': timestamp,
+                'BACKUP_DATE': timestamp
+            };
+
+            const basePath = 'elea/appariement';
+            let files = await fetchAllFilesRecursively(basePath, 'appariement');
+
+            const newFiles = {};
+            for (let path in files) {
+                let content = files[path];
+                for (const key in data) {
+                    const regex = new RegExp(`{{${key}}}`, 'g');
+                    content = content.replace(regex, data[key]);
+                }
+                
+                let newPath = path.replace(/epikmatch_13863/g, `epikmatch_${data.MODULE_ID}`);
+                newPath = newPath.replace(/section_3585/g, `section_${data.SECTION_ID}`);
+                
+                newFiles[newPath] = content;
+            }
+            files = newFiles;
+
+            files['moodle_backup.log'] = 'Backup created automatically by Caramel\n';
+            const gzData = await createMbz(files);
+            const fileName = `${activityTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.mbz`;
+            
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([gzData], { type: 'application/gzip' }));
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(a.href);
+            showNotification(`Fichier ${fileName} généré avec succès !`);
+        } catch (error) {
+            console.error("Erreur lors de la création du MBZ pour l'appariement:", error);
+            showNotification(`Erreur : ${error.message}`, 'error');
+        }
+    }
+ 
+   async function fetchAllFilesRecursively(basePath, type) {
        let files = {};
-       const structure = [
-           'moodle_backup.xml', 'files.xml', 'roles.xml', 'outcomes.xml', 'scales.xml', 'gradebook.xml', 'grade_history.xml', 'groups.xml', 'questions.xml', 'completion.xml',
-           'course/course.xml', 'course/enrolments.xml', 'course/completiondefaults.xml', 'course/inforef.xml', 'course/roles.xml',
-           'activities/millionnairev2_59967/millionnairev2.xml', 'activities/millionnairev2_59967/grades.xml', 'activities/millionnairev2_59967/module.xml', 'activities/millionnairev2_59967/inforef.xml', 'activities/millionnairev2_59967/roles.xml', 'activities/millionnairev2_59967/grade_history.xml',
-           'sections/section_11207/inforef.xml', 'sections/section_11207/section.xml'
-       ];
+       let structure;
+       if (type === 'appariement') {
+           structure = [
+               'moodle_backup.xml', 'files.xml', 'roles.xml', 'outcomes.xml', 'scales.xml', 'gradebook.xml', 'grade_history.xml', 'groups.xml', 'questions.xml', 'completion.xml',
+               'activities/epikmatch_13863/epikmatch.xml', 'activities/epikmatch_13863/grades.xml', 'activities/epikmatch_13863/module.xml', 'activities/epikmatch_13863/inforef.xml', 'activities/epikmatch_13863/roles.xml', 'activities/epikmatch_13863/grade_history.xml', 'activities/epikmatch_13863/calendar.xml', 'activities/epikmatch_13863/filters.xml'
+           ];
+       } else { // Fallback to millionnaire
+           structure = [
+               'moodle_backup.xml', 'files.xml', 'roles.xml', 'outcomes.xml', 'scales.xml', 'gradebook.xml', 'grade_history.xml', 'groups.xml', 'questions.xml', 'completion.xml',
+               'course/course.xml', 'course/enrolments.xml', 'course/completiondefaults.xml', 'course/inforef.xml', 'course/roles.xml',
+               'activities/millionnairev2_59967/millionnairev2.xml', 'activities/millionnairev2_59967/grades.xml', 'activities/millionnairev2_59967/module.xml', 'activities/millionnairev2_59967/inforef.xml', 'activities/millionnairev2_59967/roles.xml', 'activities/millionnairev2_59967/grade_history.xml',
+               'sections/section_11207/inforef.xml', 'sections/section_11207/section.xml'
+           ];
+       }
        for (const path of structure) {
            const response = await fetch(`${basePath}/${path}`);
            if (response.ok) {
@@ -1711,14 +1880,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 // =======================================================================
+// 12. FONCTION D'ÉCHAPPEMENT HTML (uniquement les chevrons)
+// =======================================================================
+    function escapeHtmlTags(str) {
+        return String(str)
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+
+// =======================================================================
 // 12. FONCTION D'ÉCHAPPEMENT XML (garde les caractères spéciaux)
 // =======================================================================
     function escapeXml(str) {
         return String(str)
-            .replace(/&/g, '&')
-            .replace(/</g, '<')
-            .replace(/>/g, '>')
-            .replace(/"/g, '"')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
             .replace(/'/g, '&#39;')
             .replace(/[^\x20-\x7E]/g, function(ch) {
                 return '&#' + ch.charCodeAt(0) + ';';

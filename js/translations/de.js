@@ -255,6 +255,24 @@ const translations_de = {
     millionnaire_prompt_example_json_title: "**Beispiel-JSON :**",
     millionnaire_prompt_generate_only_json: "Generieren Sie nur das gültige JSON-Objekt, ohne weitere Kommentare.",
 
+    // Appariement Prompt
+    appariement_prompt_role: "Du bist eine Expertin/ein Experte für Instruktionsdesign und erstellst eine Moodle-Aktivität \"Zuordnung\".",
+    appariement_prompt_num_questions: "**Anzahl der Paare:** 10",
+    appariement_prompt_mission: "**Deine Aufgabe:**",
+    appariement_prompt_generate_json: "Erzeuge ein JSON-Objekt, das einen Titel und eine Liste von **10 Paaren** für ein Zuordnungsspiel enthält.",
+    appariement_prompt_important_rules_title: "**Wichtige Regeln:**",
+    appariement_prompt_rule1: "1.  Der `title` muss ein relevanter und ansprechender Titel für die Aktivität sein.",
+    appariement_prompt_rule2: "2.  Das Array `pairs` muss 10 Objekte enthalten, jeweils mit einer `question` (Element links) und einer `answer` (Element rechts zum Zuordnen).",
+    appariement_prompt_rule3: "3.  Der Inhalt muss streng korrekt und passend zum Thema und zum Schulniveau sein.",
+    appariement_prompt_json_structure_title: "**Erwartete JSON-Struktur:**",
+    appariement_prompt_main_object: "Ein Hauptobjekt mit zwei Schlüsseln:",
+    appariement_prompt_title: "- `title`: Der Titel der Aktivität (Zeichenkette).",
+    appariement_prompt_pairs_array: "- `pairs`: Ein Array mit 10 Objekten, wobei jedes Objekt ein Paar darstellt und Folgendes enthält:",
+    appariement_prompt_question: "- `question`: Der Begriff oder das Bild links (Zeichenkette).",
+    appariement_prompt_answer: "- `answer`: Die Definition oder der entsprechende Begriff rechts (Zeichenkette).",
+    appariement_prompt_example_json_title: "**Beispiel-JSON:**",
+    appariement_prompt_generate_only_json: "Erzeuge nur das gültige JSON-Objekt, ohne jeglichen Kommentar.",
+
     // H5P Modules
     h5p_timeline_name: "Zeitleiste",
     h5p_timeline_description: "Erstellen Sie eine interaktive Zeitleiste, um eine Abfolge von Ereignissen darzustellen.",
@@ -285,6 +303,8 @@ const translations_de = {
     moodle_gift_description: "Erstellen Sie Fragen im GIFT-Format, eine einfache Möglichkeit, Fragen in Moodle zu importieren.",
     moodle_millionnaire_name: "Millionär",
     moodle_millionnaire_description: "Erstellen Sie eine einzigartige 'Millionär'-Aktivität mit 6 Fragen, die schrittweise schwieriger werden.",
+    moodle_appariement_name: "Zuordnung",
+    moodle_appariement_description: "Erzeuge eine Zuordnungsaktivität mit 10 Fragen.",
 
     // Dynamic content
     prompt_for_ia: "Prompt für die KI",
@@ -298,6 +318,13 @@ const translations_de = {
     create_xml_file: "XML-Datei erstellen",
     paste_ia_result_xml: "Fügen Sie das von der KI erzeugte XML unten ein.",
     generate_xml_file: "XML-Datei generieren",
+
+    create_mbz_file_appariement: "Datei „Zuordnung“ (.mbz) erstellen",
+    paste_ia_result_appariement: "Fügen Sie unten das von der KI generierte JSON ein. Der Titel der Aktivität wird automatisch aus dem JSON extrahiert.",
+    generate_mbz_appariement: "Aktivität „Zuordnung“ generieren (mbz)",
+    create_mbz_file_millionnaire: "Datei „Millionär“ (.mbz) erstellen",
+    paste_ia_result_millionnaire: "Fügen Sie unten das von der KI generierte JSON ein. Der Titel der Aktivität wird automatisch aus dem JSON extrahiert.",
+    generate_mbz_millionnaire: "Aktivität „Millionär“ generieren (mbz)",
 
     // Moodle-XML – spezifisch
     moodle_xml_placeholder: "Das Moodle-XML wird hier angezeigt...",

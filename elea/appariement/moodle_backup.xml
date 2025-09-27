@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <moodle_backup>
   <information>
-    <name>modele_appariement.mbz</name>
-    <moodle_version>2022112818</moodle_version>
-    <moodle_release>4.1.18 (Build: 20250414)</moodle_release>
-    <backup_version>2022112800</backup_version>
-    <backup_release>4.1</backup_release>
-    <backup_date>1751476485</backup_date>
+    <name>sauvegarde-moodle2-activity-13863-epikmatch13863-20250927-1426-nu.mbz</name>
+    <moodle_version>2024100706</moodle_version>
+    <moodle_release>4.5.6 (Build: 20250811)</moodle_release>
+    <backup_version>2024100700</backup_version>
+    <backup_release>4.5</backup_release>
+    <backup_date>{{BACKUP_DATE}}</backup_date>
     <mnet_remoteusers>0</mnet_remoteusers>
-    <include_files>0</include_files>
+    <include_files>1</include_files>
     <include_file_references_to_external_content>0</include_file_references_to_external_content>
-    <original_wwwroot>https://aura-38-nord.elea.apps.education.fr</original_wwwroot>
+    <original_wwwroot>https://aura-07.elea.apps.education.fr</original_wwwroot>
     <original_site_identifier_hash>31f4b05dd157f31e868a2589d8961f99</original_site_identifier_hash>
-    <original_course_id>3376</original_course_id>
+    <original_course_id>{{COURSE_ID}}</original_course_id>
     <original_course_format>singleactivity</original_course_format>
-    <original_course_fullname>Modele_appariement</original_course_fullname>
-    <original_course_shortname>parcours-68656891ea3d5</original_course_shortname>
+    <original_course_fullname>{{COURSE_FULLNAME}}</original_course_fullname>
+    <original_course_shortname>{{COURSE_SHORTNAME}}</original_course_shortname>
     <original_course_startdate>0</original_course_startdate>
     <original_course_enddate>0</original_course_enddate>
-    <original_course_contextid>110950</original_course_contextid>
+    <original_course_contextid>{{COURSE_CONTEXTID}}</original_course_contextid>
     <original_system_contextid>1</original_system_contextid>
     <details>
-      <detail backup_id="cb9f542d2d1ac9e1c9f8d9acef8aa039">
-        <type>course</type>
+      <detail backup_id="df6efda5e4345c33d5c6fb0efd80d6b3">
+        <type>activity</type>
         <format>moodle2</format>
         <interactive>1</interactive>
         <mode>10</mode>
@@ -33,36 +33,20 @@
     <contents>
       <activities>
         <activity>
-          <moduleid>60128</moduleid>
-          <sectionid>11319</sectionid>
+          <moduleid>{{MODULE_ID}}</moduleid>
+          <sectionid>{{SECTION_ID}}</sectionid>
           <modulename>epikmatch</modulename>
-          <title>Appariement des sucreries</title>
-          <directory>activities/epikmatch_60128</directory>
+          <title>{{ACTIVITY_TITLE}}</title>
+          <directory>activities/epikmatch_{{MODULE_ID}}</directory>
+          <insubsection></insubsection>
         </activity>
       </activities>
-      <sections>
-        <section>
-          <sectionid>11319</sectionid>
-          <title>0</title>
-          <directory>sections/section_11319</directory>
-        </section>
-      </sections>
-      <course>
-        <courseid>3376</courseid>
-        <title>parcours-68656891ea3d5</title>
-        <directory>course</directory>
-      </course>
     </contents>
     <settings>
       <setting>
         <level>root</level>
         <name>filename</name>
-        <value>modele_appariement.mbz</value>
-      </setting>
-      <setting>
-        <level>root</level>
-        <name>imscc11</name>
-        <value>0</value>
+        <value>sauvegarde-moodle2-activity-13863-epikmatch13863-20250927-1426-nu.mbz</value>
       </setting>
       <setting>
         <level>root</level>
@@ -87,17 +71,17 @@
       <setting>
         <level>root</level>
         <name>blocks</name>
-        <value>0</value>
+        <value>1</value>
       </setting>
       <setting>
         <level>root</level>
         <name>files</name>
-        <value>0</value>
+        <value>1</value>
       </setting>
       <setting>
         <level>root</level>
         <name>filters</name>
-        <value>0</value>
+        <value>1</value>
       </setting>
       <setting>
         <level>root</level>
@@ -107,12 +91,12 @@
       <setting>
         <level>root</level>
         <name>badges</name>
-        <value>0</value>
+        <value>1</value>
       </setting>
       <setting>
         <level>root</level>
         <name>calendarevents</name>
-        <value>0</value>
+        <value>1</value>
       </setting>
       <setting>
         <level>root</level>
@@ -132,12 +116,12 @@
       <setting>
         <level>root</level>
         <name>questionbank</name>
-        <value>0</value>
+        <value>1</value>
       </setting>
       <setting>
         <level>root</level>
         <name>groups</name>
-        <value>0</value>
+        <value>1</value>
       </setting>
       <setting>
         <level>root</level>
@@ -147,40 +131,33 @@
       <setting>
         <level>root</level>
         <name>customfield</name>
-        <value>0</value>
+        <value>1</value>
       </setting>
       <setting>
         <level>root</level>
         <name>contentbankcontent</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>xapistate</name>
         <value>0</value>
       </setting>
       <setting>
         <level>root</level>
         <name>legacyfiles</name>
-        <value>0</value>
-      </setting>
-      <setting>
-        <level>section</level>
-        <section>section_11319</section>
-        <name>section_11319_included</name>
-        <value>1</value>
-      </setting>
-      <setting>
-        <level>section</level>
-        <section>section_11319</section>
-        <name>section_11319_userinfo</name>
-        <value>0</value>
-      </setting>
-      <setting>
-        <level>activity</level>
-        <activity>epikmatch_60128</activity>
-        <name>epikmatch_60128_included</name>
         <value>1</value>
       </setting>
       <setting>
         <level>activity</level>
-        <activity>epikmatch_60128</activity>
-        <name>epikmatch_60128_userinfo</name>
+        <activity>epikmatch_{{MODULE_ID}}</activity>
+        <name>epikmatch_{{MODULE_ID}}_included</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>activity</level>
+        <activity>epikmatch_{{MODULE_ID}}</activity>
+        <name>epikmatch_{{MODULE_ID}}_userinfo</name>
         <value>0</value>
       </setting>
     </settings>

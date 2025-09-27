@@ -255,6 +255,24 @@ const translations_zh = {
     millionnaire_prompt_example_json_title: "**JSON 示例：**",
     millionnaire_prompt_generate_only_json: "仅生成有效的 JSON 对象，不要添加任何注释。",
 
+    // Appariement Prompt
+    appariement_prompt_role: "你是一名教学工程专家，正在创建一个 Moodle “配对” 活动。",
+    appariement_prompt_num_questions: "**配对数：** 10",
+    appariement_prompt_mission: "**你的任务：**",
+    appariement_prompt_generate_json: "生成一个 JSON 对象，其中包含一个标题以及用于配对游戏的 **10 对**。",
+    appariement_prompt_important_rules_title: "**重要规则：**",
+    appariement_prompt_rule1: "1.  `title` 必须是与活动相关且有吸引力的标题。",
+    appariement_prompt_rule2: "2.  `pairs` 数组必须包含 10 个对象，每个对象包含 `question`（左侧项）和 `answer`（右侧要匹配的项）。",
+    appariement_prompt_rule3: "3.  内容必须严格准确，并与主题和学段相符。",
+    appariement_prompt_json_structure_title: "**预期的 JSON 结构：**",
+    appariement_prompt_main_object: "一个包含两个键的主对象：",
+    appariement_prompt_title: "- `title`：活动标题（字符串）。",
+    appariement_prompt_pairs_array: "- `pairs`：包含 10 个对象的数组，每个对象代表一对，并包含：",
+    appariement_prompt_question: "- `question`：左侧的术语或图片（字符串）。",
+    appariement_prompt_answer: "- `answer`：右侧对应的定义或术语（字符串）。",
+    appariement_prompt_example_json_title: "**JSON 示例：**",
+    appariement_prompt_generate_only_json: "仅生成有效的 JSON 对象，不要添加任何注释。",
+
     // H5P Modules
     h5p_timeline_name: "时间轴",
     h5p_timeline_description: "创建交互式时间轴，以展示一系列事件。",
@@ -285,6 +303,8 @@ const translations_zh = {
     moodle_gift_description: "以 GIFT 格式创建题目，这是一种将题目导入 Moodle 的简单方法。",
     moodle_millionnaire_name: "百万富翁",
     moodle_millionnaire_description: "生成一个独特的“百万富翁”活动，包含 6 道逐渐变难的问题。",
+    moodle_appariement_name: "配对",
+    moodle_appariement_description: "生成一个包含 10 个问题的配对活动。",
 
     // Dynamic content
     prompt_for_ia: "供 AI 使用的提示词",
@@ -299,6 +319,13 @@ const translations_zh = {
     paste_ia_result_xml: "在下方粘贴 AI 生成的 XML。",
     generate_xml_file: "生成 XML 文件",
  
+    create_mbz_file_appariement: "创建“配对”文件 (.mbz)",
+    paste_ia_result_appariement: "在下方粘贴由 AI 生成的 JSON。活动标题将自动从 JSON 中提取。",
+    generate_mbz_appariement: "生成“配对”活动 (mbz)",
+    create_mbz_file_millionnaire: "创建“百万富翁”文件 (.mbz)",
+    paste_ia_result_millionnaire: "在下方粘贴由 AI 生成的 JSON。活动标题将自动从 JSON 中提取。",
+    generate_mbz_millionnaire: "生成“百万富翁”活动 (mbz)",
+
     // Moodle XML 专用
     moodle_xml_placeholder: "此处将显示 Moodle XML……",
     paste_xml_placeholder: "在此粘贴 AI 生成的完整 XML……",

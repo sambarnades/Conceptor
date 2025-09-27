@@ -255,6 +255,24 @@ const translations_el = {
     millionnaire_prompt_example_json_title: "**Παράδειγμα JSON:**",
     millionnaire_prompt_generate_only_json: "Παράγετε μόνο το έγκυρο αντικείμενο JSON, χωρίς σχόλια.",
 
+    // Appariement Prompt
+    appariement_prompt_role: "Είσαι ειδικός στον εκπαιδευτικό σχεδιασμό και δημιουργείς μια δραστηριότητα Moodle «Αντιστοίχιση».",
+    appariement_prompt_num_questions: "**Αριθμός ζευγών:** 10",
+    appariement_prompt_mission: "**Η αποστολή σου:**",
+    appariement_prompt_generate_json: "Δημιούργησε ένα αντικείμενο JSON που να περιέχει έναν τίτλο και μια λίστα από **10 ζεύγη** για παιχνίδι αντιστοίχισης.",
+    appariement_prompt_important_rules_title: "**Σημαντικοί κανόνες:**",
+    appariement_prompt_rule1: "1.  Το `title` πρέπει να είναι σχετικός και ελκυστικός τίτλος για τη δραστηριότητα.",
+    appariement_prompt_rule2: "2.  Ο πίνακας `pairs` πρέπει να περιέχει 10 αντικείμενα, το καθένα με `question` (το στοιχείο αριστερά) και `answer` (το στοιχείο δεξιά προς αντιστοίχιση).",
+    appariement_prompt_rule3: "3.  Το περιεχόμενο πρέπει να είναι απολύτως ακριβές και κατάλληλο για το θέμα και το σχολικό επίπεδο.",
+    appariement_prompt_json_structure_title: "**Αναμενόμενη δομή JSON:**",
+    appariement_prompt_main_object: "Ένα κύριο αντικείμενο με δύο κλειδιά:",
+    appariement_prompt_title: "- `title`: Ο τίτλος της δραστηριότητας (συμβολοσειρά).",
+    appariement_prompt_pairs_array: "- `pairs`: Ένας πίνακας 10 αντικειμένων, όπου κάθε αντικείμενο αντιπροσωπεύει ένα ζεύγος και περιλαμβάνει:",
+    appariement_prompt_question: "- `question`: Ο όρος ή η εικόνα στα αριστερά (συμβολοσειρά).",
+    appariement_prompt_answer: "- `answer`: Ο ορισμός ή ο αντίστοιχος όρος στα δεξιά (συμβολοσειρά).",
+    appariement_prompt_example_json_title: "**Παράδειγμα JSON:**",
+    appariement_prompt_generate_only_json: "Παρήγαγε μόνο το έγκυρο αντικείμενο JSON, χωρίς κανένα σχόλιο.",
+
     // Μονάδες H5P
     h5p_timeline_name: "Χρονογραμμή",
     h5p_timeline_description: "Δημιουργήστε διαδραστική χρονογραμμή για την παρουσίαση μιας ακολουθίας γεγονότων.",
@@ -285,6 +303,8 @@ const translations_el = {
     moodle_gift_description: "Δημιουργήστε ερωτήσεις σε μορφή GIFT, ένας απλός τρόπος για να εισάγετε ερωτήσεις στο Moodle.",
     moodle_millionnaire_name: "Εκατομμυριούχος",
     moodle_millionnaire_description: "Δημιουργήστε μια μοναδική δραστηριότητα 'Εκατομμυριούχος' με 6 ερωτήσεις αυξανόμενης δυσκολίας.",
+    moodle_appariement_name: "Αντιστοίχιση",
+    moodle_appariement_description: "Δημιούργησε μια δραστηριότητα αντιστοίχισης με 10 ερωτήσεις.",
 
     // Δυναμικό περιεχόμενο
     prompt_for_ia: "Prompt για ΤΝ",
@@ -299,6 +319,13 @@ const translations_el = {
     paste_ia_result_xml: "Επικολλήστε εδώ το XML που παρήγαγε η ΤΝ.",
     generate_xml_file: "Δημιουργία αρχείου XML",
  
+    create_mbz_file_appariement: "Δημιούργησε το αρχείο Αντιστοίχιση (.mbz)",
+    paste_ia_result_appariement: "Επικόλλησε παρακάτω το JSON που δημιουργήθηκε από την ΤΝ. Ο τίτλος της δραστηριότητας θα εξαχθεί αυτόματα από το JSON.",
+    generate_mbz_appariement: "Δημιούργησε τη δραστηριότητα Αντιστοίχιση (mbz)",
+    create_mbz_file_millionnaire: "Δημιούργησε το αρχείο Εκατομμυριούχος (.mbz)",
+    paste_ia_result_millionnaire: "Επικόλλησε παρακάτω το JSON που δημιουργήθηκε από την ΤΝ. Ο τίτλος της δραστηριότητας θα εξαχθεί αυτόματα από το JSON.",
+    generate_mbz_millionnaire: "Δημιούργησε τη δραστηριότητα Εκατομμυριούχος (mbz)",
+
     // Ειδικά για Moodle XML
     moodle_xml_placeholder: "Το Moodle XML θα εμφανιστεί εδώ...",
     paste_xml_placeholder: "Επικολλήστε εδώ το πλήρες XML που παρήγαγε η ΤΝ...",

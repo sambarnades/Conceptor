@@ -254,7 +254,25 @@ const translations_fr = {
     millionnaire_prompt_bad_answer: "- `badanswer`: Un tableau de 3 mauvaises réponses (chaînes de caractères).",
     millionnaire_prompt_example_json_title: "**Exemple de JSON :**",
     millionnaire_prompt_generate_only_json: "Génère uniquement l'objet JSON valide, sans aucun commentaire.",
-
+ 
+    // Appariement Prompt
+    appariement_prompt_role: "Tu es un expert en ingénierie pédagogique créant une activité Moodle \"Appariement\".",
+    appariement_prompt_num_questions: "**Nombre de paires :** 10",
+    appariement_prompt_mission: "**Ta mission :**",
+    appariement_prompt_generate_json: "Génère un objet JSON contenant un titre et une liste de **10 paires** pour un jeu d'appariement.",
+    appariement_prompt_important_rules_title: "**Règles importantes :**",
+    appariement_prompt_rule1: "1.  Le `title` doit être un titre pertinent et engageant pour l'activité.",
+    appariement_prompt_rule2: "2.  Le tableau `pairs` doit contenir 10 objets, chacun avec une `question` (l'élément à gauche) et une `answer` (l'élément à droite à apparier).",
+    appariement_prompt_rule3: "3.  Le contenu doit être rigoureusement exact et pertinent par rapport au thème et au niveau scolaire.",
+    appariement_prompt_json_structure_title: "**Structure du JSON attendu :**",
+    appariement_prompt_main_object: "Un objet principal avec deux clés :",
+    appariement_prompt_title: "- `title`: Le titre de l'activité (chaîne de caractères).",
+    appariement_prompt_pairs_array: "- `pairs`: Un tableau de 10 objets, où chaque objet représente une paire et contient :",
+    appariement_prompt_question: "- `question`: Le terme ou l'image à gauche (chaîne de caractères).",
+    appariement_prompt_answer: "- `answer`: La définition ou le terme correspondant à droite (chaîne de caractères).",
+    appariement_prompt_example_json_title: "**Exemple de JSON :**",
+    appariement_prompt_generate_only_json: "Génère uniquement l'objet JSON valide, sans aucun commentaire.",
+ 
     // H5P Modules
     h5p_timeline_name: "Frise chronologique",
     h5p_timeline_description: "Créez une frise chronologique interactive pour présenter une séquence d'événements.",
@@ -285,6 +303,8 @@ const translations_fr = {
     moodle_gift_description: "Créez des questions au format GIFT, un moyen simple d'importer des questions dans Moodle.",
     moodle_millionnaire_name: "Millionnaire",
     moodle_millionnaire_description: "Générez une activité unique 'Millionnaire' de 6 questions graduelles en terme de difficulté.",
+    moodle_appariement_name: "Appariement",
+    moodle_appariement_description: "Générez une activité d'appariement de 10 questions.",
 
     // Dynamic content
     prompt_for_ia: "Prompt pour l'IA",
@@ -298,6 +318,13 @@ const translations_fr = {
     create_xml_file: "Créer le fichier XML",
     paste_ia_result_xml: "Collez le XML généré par l'IA ci-dessous.",
     generate_xml_file: "Générer le fichier XML",
+ 
+    create_mbz_file_appariement: "Créer le fichier Appariement (.mbz)",
+    paste_ia_result_appariement: "Collez le JSON généré par l'IA ci-dessous. Le titre de l'activité sera automatiquement extrait du JSON.",
+    generate_mbz_appariement: "Générer l'activité Appariement (mbz)",
+    create_mbz_file_millionnaire: "Créer le fichier Millionnaire (.mbz)",
+    paste_ia_result_millionnaire: "Collez le JSON généré par l'IA ci-dessous. Le titre de l'activité sera automatiquement extrait du JSON.",
+    generate_mbz_millionnaire: "Générer l'activité Millionnaire (mbz)",
  
     // Moodle XML specific
     moodle_xml_placeholder: "Le XML Moodle apparaîtra ici...",
