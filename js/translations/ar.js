@@ -103,6 +103,8 @@ const translations_ar = {
     moodle_xml_prompt_question_type_matching: "- المطابقة (matching)،",
     moodle_xml_prompt_question_type_numerical: "- عددية (numerical) بإجابة رقمية مع أو بدون سماحية،",
     moodle_xml_prompt_question_type_truefalse: "- صواب/خطأ (truefalse).",
+    moodle_xml_prompt_question_type_shortanswer: "- shortanswer (إجابة قصيرة) مع إجابات بديلة محتملة،", 
+    moodle_xml_prompt_question_type_cloze: "- cloze (نصٌّ بفراغات) باستخدام الفئات MULTICHOICE, MULTICHOICE_H, MULTICHOICE_V, MULTICHOICE_S, MULTICHOICE_HS, MULTIRESPONSE, MULTIRESPONSE_H, MULTIRESPONSE_HS, NUMERICAL, SHORTANSWER أو SHORTANWSER_C، وفقًا لما تراه الأنسب للسياق.",
     moodle_xml_prompt_form_title: "فيما يخصّ الشكل:",
     moodle_xml_prompt_form_rule1: "يجب أن يكون ملف XML:",
     moodle_xml_prompt_form_rule1_encoding: "مشفَّرًا بترميز UTF-8 (ضمّن سطر الترميز).",

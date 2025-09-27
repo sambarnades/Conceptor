@@ -103,6 +103,8 @@ const translations_nl = {
     moodle_xml_prompt_question_type_matching: "- matching (koppelen),",
     moodle_xml_prompt_question_type_numerical: "- numerical (numeriek antwoord met of zonder tolerantie),",
     moodle_xml_prompt_question_type_truefalse: "- truefalse (waar/onwaar).",
+    oodle_xml_prompt_question_type_shortanswer: "- shortanswer (kort antwoord) met eventuele alternatieve antwoorden,", 
+    moodle_xml_prompt_question_type_cloze: "- cloze (invultekst) met de categorieën MULTICHOICE, MULTICHOICE_H, MULTICHOICE_V, MULTICHOICE_S, MULTICHOICE_HS, MULTIRESPONSE, MULTIRESPONSE_H, MULTIRESPONSE_HS, NUMERICAL, SHORTANSWER of SHORTANWSER_C, afhankelijk van wat het best bij de context past.",
     moodle_xml_prompt_form_title: "Wat betreft de vorm:",
     moodle_xml_prompt_form_rule1: "Het XML-bestand moet:",
     moodle_xml_prompt_form_rule1_encoding: "In UTF-8 gecodeerd zijn (voeg de coderegel toe).",

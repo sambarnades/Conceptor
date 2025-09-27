@@ -103,6 +103,8 @@ const translations_el = {
     moodle_xml_prompt_question_type_matching: "- matching (αντιστοίχιση),",
     moodle_xml_prompt_question_type_numerical: "- numerical (αριθμητική απάντηση με ή χωρίς ανοχή),",
     moodle_xml_prompt_question_type_truefalse: "- truefalse (σωστό/λάθος).",
+    moodle_xml_prompt_question_type_shortanswer: "- shortanswer (σύντομη απάντηση) με πιθανές εναλλακτικές απαντήσεις,", 
+    moodle_xml_prompt_question_type_cloze: "- cloze (κείμενο με κενά) με τις κατηγορίες MULTICHOICE, MULTICHOICE_H, MULTICHOICE_V, MULTICHOICE_S, MULTICHOICE_HS, MULTIRESPONSE, MULTIRESPONSE_H, MULTIRESPONSE_HS, NUMERICAL, SHORTANSWER ή SHORTANWSER_C, ό,τι ταιριάζει καλύτερα στο πλαίσιο.",
     moodle_xml_prompt_form_title: "Όσον αφορά τη μορφή:",
     moodle_xml_prompt_form_rule1: "Το αρχείο XML πρέπει να:",
     moodle_xml_prompt_form_rule1_encoding: "Κωδικοποιείται σε UTF-8 (συμπεριλάβετε τη γραμμή κωδικοποίησης).",

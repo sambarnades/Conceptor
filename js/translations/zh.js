@@ -103,6 +103,8 @@ const translations_zh = {
     moodle_xml_prompt_question_type_matching: "- matching（配对），",
     moodle_xml_prompt_question_type_numerical: "- numerical（数值题，可带或不带容差），",
     moodle_xml_prompt_question_type_truefalse: "- truefalse（判断题）。",
+    moodle_xml_prompt_question_type_shortanswer: "- shortanswer（简答），可包含备选答案，", 
+    moodle_xml_prompt_question_type_cloze: "- cloze（完形填空）使用类别 MULTICHOICE, MULTICHOICE_H, MULTICHOICE_V, MULTICHOICE_S, MULTICHOICE_HS, MULTIRESPONSE, MULTIRESPONSE_H, MULTIRESPONSE_HS, NUMERICAL, SHORTANSWER 或 SHORTANWSER_C，根据情境选择最合适的。",
     moodle_xml_prompt_form_title: "关于格式：",
     moodle_xml_prompt_form_rule1: "XML 文件必须：",
     moodle_xml_prompt_form_rule1_encoding: "使用 UTF-8 编码（包含编码声明行）。",

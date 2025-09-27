@@ -103,6 +103,8 @@ const translations_jp = {
     moodle_xml_prompt_question_type_matching: "- matching（マッチング）、",
     moodle_xml_prompt_question_type_numerical: "- numerical（許容誤差ありまたはなしの数値回答）、",
     moodle_xml_prompt_question_type_truefalse: "- truefalse（正誤問題）。",
+    moodle_xml_prompt_question_type_shortanswer: "- shortanswer（短答）で、必要に応じて代替解答を含めてもよい,", 
+    moodle_xml_prompt_question_type_cloze: "- cloze（穴埋め）では、カテゴリ MULTICHOICE, MULTICHOICE_H, MULTICHOICE_V, MULTICHOICE_S, MULTICHOICE_HS, MULTIRESPONSE, MULTIRESPONSE_H, MULTIRESPONSE_HS, NUMERICAL, SHORTANSWER または SHORTANWSER_C を用い、文脈に最も適したものを選びます。",
     moodle_xml_prompt_form_title: "形式について：",
     moodle_xml_prompt_form_rule1: "XMLファイルは以下を満たす必要があります：",
     moodle_xml_prompt_form_rule1_encoding: "UTF-8でエンコードされている（エンコード行を挿入）。",

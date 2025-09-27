@@ -1035,10 +1035,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                 ${pt.moodle_xml_prompt_question_types_intro}
                                 ${pt.moodle_xml_prompt_question_type_multichoice}
-                                                ${pt.moodle_xml_prompt_question_type_matching}
-                                                ${pt.moodle_xml_prompt_question_type_numerical}
-                                                ${pt.moodle_xml_prompt_question_type_truefalse}
-
+                                ${pt.moodle_xml_prompt_question_type_matching}
+                                ${pt.moodle_xml_prompt_question_type_numerical}
+                                ${pt.moodle_xml_prompt_question_type_truefalse}
+                                ${pt.moodle_xml_prompt_question_type_shortanswer}
+                                ${pt.moodle_xml_prompt_question_type_cloze}
+                                
                                 ${pt.moodle_xml_prompt_form_title}
                                 ${pt.moodle_xml_prompt_form_rule1}
 

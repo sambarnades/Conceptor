@@ -103,6 +103,8 @@ const translations_pt = {
     moodle_xml_prompt_question_type_matching: "- matching (correspondência),",
     moodle_xml_prompt_question_type_numerical: "- numerical (resposta numérica com ou sem tolerância),",
     moodle_xml_prompt_question_type_truefalse: "- truefalse (verdadeiro/falso).",
+    moodle_xml_prompt_question_type_shortanswer: "- shortanswer (resposta curta) com possíveis respostas alternativas,", 
+    moodle_xml_prompt_question_type_cloze: "- cloze (texto com lacunas) com as categorias MULTICHOICE, MULTICHOICE_H, MULTICHOICE_V, MULTICHOICE_S, MULTICHOICE_HS, MULTIRESPONSE, MULTIRESPONSE_H, MULTIRESPONSE_HS, NUMERICAL, SHORTANSWER ou SHORTANWSER_C, conforme o mais adequado ao contexto.",
     moodle_xml_prompt_form_title: "Quanto à forma:",
     moodle_xml_prompt_form_rule1: "O ficheiro XML deve:",
     moodle_xml_prompt_form_rule1_encoding: "Estar codificado em UTF-8 (inserir a linha de codificação).",
