@@ -377,5 +377,23 @@ const translations_jp = {
     error_compression_module_not_ready: "圧縮モジュールの準備ができていません。少し待ってから再試行してください。",
     h5p_file_generated_successfully: "ファイル{fileName}が正常に生成されました！",
     h5p_creation_failed: "H5Pファイルの作成に失敗しました：{errorMessage}",
-    license_info: "GNU GPL v3.0 以降"
+    license_info: "GNU GPL v3.0 以降",
+
+    // Flashcards specific UI translations
+    flashcards_progress_text: "カード @card / @total",
+    flashcards_next: "次へ",
+    flashcards_previous: "前へ",
+    flashcards_check_answer: "チェック",
+    flashcards_your_answer: "あなたの答え",
+    flashcards_correct_answer: "正解",
+    flashcards_incorrect_answer: "不正解",
+    flashcards_show_solution: "正解を表示",
+    flashcards_results: "結果",
+    flashcards_of_correct: "@total 問中 @score 問正解",
+    flashcards_show_results: "結果を表示",
+    flashcards_answer_short: "A:",
+    flashcards_retry: "再試行",
+    flashcards_card_announcement: "不正解です。正解は @answer でした",
+    flashcards_correct_announcement: "@answer は正解です。",
+    flashcards_page_announcement: "ページ @current / @total"
 };

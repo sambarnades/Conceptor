@@ -382,5 +382,23 @@ const translations_zh = {
     error_compression_module_not_ready: "压缩模块尚未就绪。请稍后重试。",
     h5p_file_generated_successfully: "文件 {fileName} 已成功生成！",
     h5p_creation_failed: "创建 H5P 文件失败：{errorMessage}",
-    license_info: "GNU GPL v3.0 或更高版本"
+    license_info: "GNU GPL v3.0 或更高版本",
+
+    // Flashcards specific UI translations
+    flashcards_progress_text: "卡片 @card / @total",
+    flashcards_next: "下一个",
+    flashcards_previous: "上一个",
+    flashcards_check_answer: "检查",
+    flashcards_your_answer: "你的答案",
+    flashcards_correct_answer: "正确",
+    flashcards_incorrect_answer: "不正确",
+    flashcards_show_solution: "正确答案",
+    flashcards_results: "结果",
+    flashcards_of_correct: "总共 @total 个，答对 @score 个",
+    flashcards_show_results: "显示结果",
+    flashcards_answer_short: "答：",
+    flashcards_retry: "重试",
+    flashcards_card_announcement: "回答错误。正确答案是 @answer",
+    flashcards_correct_announcement: "@answer 是正确的。",
+    flashcards_page_announcement: "第 @current 页，共 @total 页"
 };

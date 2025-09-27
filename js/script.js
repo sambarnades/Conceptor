@@ -938,29 +938,31 @@ document.addEventListener('DOMContentLoaded', function() {
                
                content = timelineData;
             } else if (moduleKey === 'Flashcards') {
+                const h5pLang = currentLang === 'zh' ? 'zh-cn' : currentLang;
                 const defaultFlashcardsContent = {
-                    title: jsonObj.title || translations[currentLang].h5p_flashcards_name,
-                    description: jsonObj.description || translations[currentLang].h5p_flashcards_description,
+                    title: jsonObj.title || translations.h5p_flashcards_name,
+                    description: jsonObj.description || translations.h5p_flashcards_description,
                     cards: jsonObj.cards ? jsonObj.cards.map(card => ({ ...card, tip: card.tip || "" })) : [],
-                    progressText: "Carte @card sur @total",
-                    next: "Suivant",
-                    previous: "Précédent",
-                    checkAnswerText: "Vérifier",
+                    progressText: translations.flashcards_progress_text || "Card @card of @total",
+                    next: translations.flashcards_next || "Next",
+                    previous: translations.flashcards_previous || "Previous",
+                    checkAnswerText: translations.flashcards_check_answer || "Check",
                     showSolutionsRequiresInput: true,
-                    defaultAnswerText: "Votre réponse",
-                    correctAnswerText: "Réponse exacte",
-                    incorrectAnswerText: "Réponse inexacte",
-                    showSolutionText: "Réponse correcte",
-                    results: "Résultats",
-                    ofCorrect: "@score réponses correctes sur un total de @total",
-                    showResults: "Montrer les résultats",
-                    answerShortText: "R :",
-                    retry: "Recommencer",
+                    defaultAnswerText: translations.flashcards_your_answer || "Your answer",
+                    correctAnswerText: translations.flashcards_correct_answer || "Correct",
+                    incorrectAnswerText: translations.flashcards_incorrect_answer || "Incorrect",
+                    showSolutionText: translations.flashcards_show_solution || "Correct answer",
+                    results: translations.flashcards_results || "Results",
+                    ofCorrect: translations.flashcards_of_correct || "@score of @total correct",
+                    showResults: translations.flashcards_show_results || "Show results",
+                    answerShortText: translations.flashcards_answer_short || "A:",
+                    retry: translations.flashcards_retry || "Retry",
                     caseSensitive: false,
-                    cardAnnouncement: "Réponse incorrecte. La réponse correcte était @answer",
-                    correctAnswerAnnouncement: "@answer is correct.",
-                    pageAnnouncement: "Page @current of @total",
-                    randomCards: false
+                    cardAnnouncement: translations.flashcards_card_announcement || "Incorrect answer. Correct answer was @answer",
+                    correctAnswerAnnouncement: translations.flashcards_correct_announcement || "@answer is correct.",
+                    pageAnnouncement: translations.flashcards_page_announcement || "Page @current of @total",
+                    randomCards: false,
+                    language: h5pLang
                 };
                 content = defaultFlashcardsContent;
                 options.description = content.description;

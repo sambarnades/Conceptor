@@ -377,5 +377,23 @@ const translations_fr = {
     error_compression_module_not_ready: "Le module de compression n'est pas prêt. Réessayez dans un instant.",
     h5p_file_generated_successfully: "Fichier {fileName} généré avec succès !",
     h5p_creation_failed: "Échec de la création du fichier H5P : {errorMessage}",
-    license_info: "GNU GPL v3.0 ou ultérieure"
+    license_info: "GNU GPL v3.0 ou ultérieure",
+
+    // Flashcards specific UI translations
+    flashcards_progress_text: "Carte @card sur @total",
+    flashcards_next: "Suivant",
+    flashcards_previous: "Précédent",
+    flashcards_check_answer: "Vérifier",
+    flashcards_your_answer: "Votre réponse",
+    flashcards_correct_answer: "Réponse exacte",
+    flashcards_incorrect_answer: "Réponse inexacte",
+    flashcards_show_solution: "Réponse correcte",
+    flashcards_results: "Résultats",
+    flashcards_of_correct: "@score réponses correctes sur un total de @total",
+    flashcards_show_results: "Montrer les résultats",
+    flashcards_answer_short: "R :",
+    flashcards_retry: "Recommencer",
+    flashcards_card_announcement: "Réponse incorrecte. La réponse correcte était @answer",
+    flashcards_correct_announcement: "@answer est correct.",
+    flashcards_page_announcement: "Page @current sur @total"
 };

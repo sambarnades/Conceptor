@@ -377,5 +377,23 @@ const translations_nl = {
     error_compression_module_not_ready: "De compressiemodule is nog niet klaar. Probeer het zo meteen opnieuw.",
     h5p_file_generated_successfully: "Bestand {fileName} succesvol gegenereerd!",
     h5p_creation_failed: "Het maken van het H5P-bestand is mislukt: {errorMessage}",
-    license_info: "GNU GPL v3.0 of later"
+    license_info: "GNU GPL v3.0 of later",
+
+    // Flashcards specific UI translations
+    flashcards_progress_text: "Kaart @card van @total",
+    flashcards_next: "Volgende",
+    flashcards_previous: "Vorige",
+    flashcards_check_answer: "Controleer",
+    flashcards_your_answer: "Jouw antwoord",
+    flashcards_correct_answer: "Correct",
+    flashcards_incorrect_answer: "Incorrect",
+    flashcards_show_solution: "Correct antwoord",
+    flashcards_results: "Resultaten",
+    flashcards_of_correct: "@score van @total correct",
+    flashcards_show_results: "Toon resultaten",
+    flashcards_answer_short: "A:",
+    flashcards_retry: "Opnieuw proberen",
+    flashcards_card_announcement: "Incorrect antwoord. Het juiste antwoord was @answer",
+    flashcards_correct_announcement: "@answer is correct.",
+    flashcards_page_announcement: "Pagina @current van @total"
 };

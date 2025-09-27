@@ -382,5 +382,23 @@ const translations_ar = {
     error_compression_module_not_ready: "وحدة الضغط غير جاهزة بعد. أعد المحاولة بعد قليل.",
     h5p_file_generated_successfully: "تم إنشاء الملف {fileName} بنجاح!",
     h5p_creation_failed: "فشل إنشاء ملف H5P: {errorMessage}",
-    license_info: "رخصة GNU GPL الإصدار 3.0 أو الأحدث"
+    license_info: "رخصة GNU GPL الإصدار 3.0 أو الأحدث",
+
+    // Flashcards specific UI translations
+    flashcards_progress_text: "البطاقة @card من @total",
+    flashcards_next: "التالي",
+    flashcards_previous: "السابق",
+    flashcards_check_answer: "تحقق",
+    flashcards_your_answer: "إجابتك",
+    flashcards_correct_answer: "صحيح",
+    flashcards_incorrect_answer: "غير صحيح",
+    flashcards_show_solution: "الإجابة الصحيحة",
+    flashcards_results: "النتائج",
+    flashcards_of_correct: "@score من @total صحيح",
+    flashcards_show_results: "عرض النتائج",
+    flashcards_answer_short: "ج:",
+    flashcards_retry: "إعادة المحاولة",
+    flashcards_card_announcement: "إجابة غير صحيحة. الإجابة الصحيحة كانت @answer",
+    flashcards_correct_announcement: "@answer صحيح.",
+    flashcards_page_announcement: "صفحة @current من @total"
 };

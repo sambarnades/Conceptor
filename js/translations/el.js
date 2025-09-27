@@ -377,5 +377,23 @@ const translations_el = {
     error_compression_module_not_ready: "Η μονάδα συμπίεσης δεν είναι έτοιμη. Δοκιμάστε ξανά σε λίγο.",
     h5p_file_generated_successfully: "Το αρχείο {fileName} δημιουργήθηκε με επιτυχία!",
     h5p_creation_failed: "Αποτυχία δημιουργίας αρχείου H5P: {errorMessage}",
-    license_info: "GNU GPL v3.0 ή νεότερη"
+    license_info: "GNU GPL v3.0 ή νεότερη",
+
+    // Flashcards specific UI translations
+    flashcards_progress_text: "Κάρτα @card από @total",
+    flashcards_next: "Επόμενο",
+    flashcards_previous: "Προηγούμενο",
+    flashcards_check_answer: "Έλεγχος",
+    flashcards_your_answer: "Η απάντησή σας",
+    flashcards_correct_answer: "Σωστό",
+    flashcards_incorrect_answer: "Λάθος",
+    flashcards_show_solution: "Σωστή απάντηση",
+    flashcards_results: "Αποτελέσματα",
+    flashcards_of_correct: "@score από @total σωστά",
+    flashcards_show_results: "Εμφάνιση αποτελεσμάτων",
+    flashcards_answer_short: "Α:",
+    flashcards_retry: "Επανάληψη",
+    flashcards_card_announcement: "Λανθασμένη απάντηση. Η σωστή απάντηση ήταν @answer",
+    flashcards_correct_announcement: "Το @answer είναι σωστό.",
+    flashcards_page_announcement: "Σελίδα @current από @total"
 };

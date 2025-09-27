@@ -383,5 +383,23 @@ const translations_es = {
     h5p_file_generated_successfully: "¡Archivo {fileName} generado con éxito!",
     h5p_creation_failed: "La creación del archivo H5P falló: {errorMessage}",
     prompt_language_instruction: "El idioma utilizado debe ser el español.",
-    license_info: "GNU GPL v3.0 o posterior"
+    license_info: "GNU GPL v3.0 o posterior",
+
+    // Flashcards specific UI translations
+    flashcards_progress_text: "Tarjeta @card de @total",
+    flashcards_next: "Siguiente",
+    flashcards_previous: "Anterior",
+    flashcards_check_answer: "Comprobar",
+    flashcards_your_answer: "Tu respuesta",
+    flashcards_correct_answer: "Correcto",
+    flashcards_incorrect_answer: "Incorrecto",
+    flashcards_show_solution: "Respuesta correcta",
+    flashcards_results: "Resultados",
+    flashcards_of_correct: "@score de @total correctas",
+    flashcards_show_results: "Mostrar resultados",
+    flashcards_answer_short: "R:",
+    flashcards_retry: "Reintentar",
+    flashcards_card_announcement: "Respuesta incorrecta. La respuesta correcta era @answer",
+    flashcards_correct_announcement: "@answer es correcto.",
+    flashcards_page_announcement: "Página @current de @total"
 };
