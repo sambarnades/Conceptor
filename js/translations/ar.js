@@ -199,8 +199,12 @@ const translations_ar = {
     summary_prompt_mission: "**مهمتك:**",
     summary_prompt_generate_json: "ولِّد كائن JSON كاملًا لنشاط H5P من نوع Summary، جاهزًا للاستخدام مباشرة.",
     summary_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
-    summary_prompt_json_structure_main_object: "يحتوي الكائن على المفتاح \"summaries\"، وهي مصفوفة من ${nombreQuestions} كائنات.",
-    summary_prompt_summary_object: "يمثّل كل كائن خطوة من الملخص ويحتوي على مصفوفة \"summary\" من الجمل.",
+    summary_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على المفاتيح التالية:",
+    summary_prompt_intro_field: "`intro`: جملة تمهيدية للنشاط (مثال: \"اختر العبارة الصحيحة.\").",
+    summary_prompt_summaries_array: "`summaries`: مصفوفة من ${nombreQuestions} كائنات، يمثل كل منها خطوة في الملخص.",
+    summary_prompt_summary_object: "يجب أن يحتوي كل كائن في `summaries` على:",
+    summary_prompt_summary_array: "- `summary`: مصفوفة من الجمل.",
+    summary_prompt_tip_field: "- `tip` (اختياري ولكن موصى به): تلميح لمساعدة الطالب.",
     summary_prompt_content_rules_title: "**قواعد المحتوى:**",
     summary_prompt_rule1: "1. في كل مصفوفة \"summary\" تكون **الجملة الأولى صحيحة**.",
     summary_prompt_rule2: "2. الجمل التالية مُشتّتات معقولة لكنها غير صحيحة.",
@@ -208,7 +212,21 @@ const translations_ar = {
     summary_prompt_example_json_title: "**مثال JSON لخطوة واحدة:**",
     summary_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
 
-    // مطالب اسحب الكلمات
+    // Summary UI translations
+    summary_intro: "اختر العبارة الصحيحة.",
+    summary_solved_label: "التقدم:",
+    summary_score_label: "إجابات خاطئة:",
+    summary_result_label: "نتيجتك",
+    summary_feedback: "لقد أجبت بشكل صحيح على @score من @total عبارة (@percent %).",
+    summary_label_correct: "صحيح.",
+    summary_label_incorrect: "خطأ! يرجى المحاولة مرة أخرى.",
+    summary_label_correct_answers: "الإجابات الصحيحة.",
+    summary_tip_button_label: "إظهار التلميح",
+    summary_score_bar_label: "لقد حصلت على :num من :total نقطة",
+    summary_progress_text: "التقدم :num من :total",
+    summary_alternative_incorrect_label: "خطأ",
+ 
+     // مطالب اسحب الكلمات
     drag_word_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Drag the Words\".",
     drag_word_prompt_mission: "**مهمتك:**",
     drag_word_prompt_generate_json: "ولِّد كائن JSON كاملًا لنشاط H5P من نوع Drag the Words، جاهزًا للاستخدام.",

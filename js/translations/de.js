@@ -199,8 +199,12 @@ const translations_de = {
     summary_prompt_mission: "**Ihre Mission :**",
     summary_prompt_generate_json: "Generieren Sie ein vollständiges JSON-Objekt für eine H5P Summary-Aktivität. Das JSON muss direkt verwendbar sein.",
     summary_prompt_json_structure_title: "**Erwartete JSON-Struktur :**",
-    summary_prompt_json_structure_main_object: "Das Objekt muss einen \"summaries\"-Schlüssel enthalten, der ein Array von ${nombreQuestions} Objekten ist.",
-    summary_prompt_summary_object: "Jedes Objekt stellt einen Zusammenfassungsschritt dar und enthält ein \"summary\"-Array von Sätzen.",
+    summary_prompt_json_structure_main_object: "Das Objekt muss die folgenden Schlüssel enthalten:",
+    summary_prompt_intro_field: "`intro`: Ein einleitender Satz für die Aktivität (z.B. \"Wählen Sie die richtige Aussage.\").",
+    summary_prompt_summaries_array: "`summaries`: Ein Array von ${nombreQuestions} Objekten, die jeweils einen Zusammenfassungsschritt darstellen.",
+    summary_prompt_summary_object: "Jedes Objekt in `summaries` muss enthalten:",
+    summary_prompt_summary_array: "- `summary`: Ein Array von Sätzen.",
+    summary_prompt_tip_field: "- `tip` (optional, aber empfohlen): Ein Hinweis, um dem Schüler zu helfen.",
     summary_prompt_content_rules_title: "**Inhaltsregeln :**",
     summary_prompt_rule1: "1.  In jedem \"summary\"-Array ist der **erste Satz korrekt**.",
     summary_prompt_rule2: "2.  Nachfolgende Sätze sind plausible, aber falsche Ablenker.",
@@ -208,7 +212,21 @@ const translations_de = {
     summary_prompt_example_json_title: "**Beispiel-JSON für einen Schritt :**",
     summary_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code, ohne Kommentare.",
 
-    // Drag the Words Prompt
+    // Summary UI translations
+    summary_intro: "Wählen Sie die richtige Aussage.",
+    summary_solved_label: "Fortschritt:",
+    summary_score_label: "Falsche Antworten:",
+    summary_result_label: "Ihr Ergebnis",
+    summary_feedback: "Sie haben @score von @total Aussagen (@percent %) richtig.",
+    summary_label_correct: "Richtig.",
+    summary_label_incorrect: "Falsch! Bitte versuchen Sie es erneut.",
+    summary_label_correct_answers: "Richtige Antworten.",
+    summary_tip_button_label: "Tipp anzeigen",
+    summary_score_bar_label: "Sie haben :num von :total Punkten erreicht",
+    summary_progress_text: "Fortschritt :num von :total",
+    summary_alternative_incorrect_label: "Falsch",
+ 
+     // Drag the Words Prompt
     drag_word_prompt_role: "Sie sind ein Experte für pädagogische Ingenieurwissenschaften, der eine H5P \"Drag the Words\"-Aktivität erstellt.",
     drag_word_prompt_mission: "**Ihre Mission :**",
     drag_word_prompt_generate_json: "Generieren Sie ein vollständiges JSON-Objekt für eine H5P Drag the Words-Aktivität. Das JSON muss direkt verwendbar sein.",

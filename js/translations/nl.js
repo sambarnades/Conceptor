@@ -199,8 +199,12 @@ const translations_nl = {
     summary_prompt_mission: "**Jouw missie:**",
     summary_prompt_generate_json: "Genereer een volledig JSON-object voor een H5P-Summary-activiteit. De JSON moet direct bruikbaar zijn.",
     summary_prompt_json_structure_title: "**Verwachte JSON-structuur:**",
-    summary_prompt_json_structure_main_object: "Het object bevat de sleutel \"summaries\", een array van ${nombreQuestions} objecten.",
-    summary_prompt_summary_object: "Elk object is een stap van de samenvatting en bevat een array \"summary\" met zinnen.",
+    summary_prompt_json_structure_main_object: "Het object moet de volgende sleutels bevatten:",
+    summary_prompt_intro_field: "`intro`: Een inleidende zin voor de activiteit (bv. \"Kies de juiste stelling.\").",
+    summary_prompt_summaries_array: "`summaries`: Een array van ${nombreQuestions} objecten, die elk een stap van de samenvatting vertegenwoordigen.",
+    summary_prompt_summary_object: "Elk object in `summaries` moet bevatten:",
+    summary_prompt_summary_array: "- `summary`: Een array van zinnen.",
+    summary_prompt_tip_field: "- `tip` (optioneel maar aanbevolen): Een hint om de leerling te helpen.",
     summary_prompt_content_rules_title: "**Regels voor de inhoud:**",
     summary_prompt_rule1: "1.  In elke array \"summary\" is **de eerste zin correct**.",
     summary_prompt_rule2: "2.  De volgende zinnen zijn plausibele maar onjuiste afleiders.",
@@ -208,7 +212,21 @@ const translations_nl = {
     summary_prompt_example_json_title: "**JSON-voorbeeld voor één stap:**",
     summary_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
 
-    // Drag the Words-prompt
+    // Summary UI translations
+    summary_intro: "Kies de juiste stelling.",
+    summary_solved_label: "Voortgang:",
+    summary_score_label: "Foute antwoorden:",
+    summary_result_label: "Jouw resultaat",
+    summary_feedback: "Je hebt @score van de @total stellingen (@percent %) correct.",
+    summary_label_correct: "Correct.",
+    summary_label_incorrect: "Incorrect! Probeer het opnieuw.",
+    summary_label_correct_answers: "Correcte antwoorden.",
+    summary_tip_button_label: "Toon tip",
+    summary_score_bar_label: "Je hebt :num van de :total punten",
+    summary_progress_text: "Voortgang :num van :total",
+    summary_alternative_incorrect_label: "Incorrect",
+ 
+     // Drag the Words-prompt
     drag_word_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Drag the Words\".",
     drag_word_prompt_mission: "**Jouw missie:**",
     drag_word_prompt_generate_json: "Genereer een volledig JSON-object voor een H5P-Drag the Words-activiteit. De JSON moet direct bruikbaar zijn.",

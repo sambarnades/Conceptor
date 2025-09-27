@@ -199,8 +199,12 @@ const translations_jp = {
     summary_prompt_mission: "**あなたの使命：**",
     summary_prompt_generate_json: "H5PのSummary型アクティビティ用の完全なJSONオブジェクトを生成してください。JSONは直接使用可能である必要があります。",
     summary_prompt_json_structure_title: "**期待されるJSON構造：**",
-    summary_prompt_json_structure_main_object: "オブジェクトには「summaries」キーが含まれている必要があります。これは${nombreQuestions}個のオブジェクトの配列です。",
-    summary_prompt_summary_object: "各オブジェクトは要約のステップを表し、文の「summary」配列を含みます。",
+    summary_prompt_json_structure_main_object: "オブジェクトには以下のキーが含まれている必要があります：",
+    summary_prompt_intro_field: "`intro`: アクティビティの導入文（例：「正しい記述を選んでください。」）。",
+    summary_prompt_summaries_array: "`summaries`: ${nombreQuestions}個のオブジェクトを含む配列で、各オブジェクトが要約のステップを表します。",
+    summary_prompt_summary_object: "`summaries`内の各オブジェクトには以下が含まれている必要があります：",
+    summary_prompt_summary_array: "- `summary`: 文の配列。",
+    summary_prompt_tip_field: "- `tip` (任意ですが推奨): 生徒を助けるためのヒント。",
     summary_prompt_content_rules_title: "**コンテンツのルール：**",
     summary_prompt_rule1: "1. 各「summary」配列で、**最初の文が正解**です。",
     summary_prompt_rule2: "2. 続く文は、もっともらしいが間違っている選択肢です。",
@@ -208,7 +212,21 @@ const translations_jp = {
     summary_prompt_example_json_title: "**ステップのJSON例：**",
     summary_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 
-    // Drag the Words Prompt
+    // Summary UI translations
+    summary_intro: "正しい記述を選んでください。",
+    summary_solved_label: "進捗：",
+    summary_score_label: "不正解：",
+    summary_result_label: "あなたの結果",
+    summary_feedback: "全@total問中、@score問正解です（@percent %）。",
+    summary_label_correct: "正解です。",
+    summary_label_incorrect: "不正解です！もう一度お試しください。",
+    summary_label_correct_answers: "正解はこちらです。",
+    summary_tip_button_label: "ヒントを表示",
+    summary_score_bar_label: "合計@total点中、@num点を獲得しました",
+    summary_progress_text: "進捗 @num / @total",
+    summary_alternative_incorrect_label: "不正解",
+ 
+     // Drag the Words Prompt
     drag_word_prompt_role: "あなたはH5P「Drag the Words」アクティビティを作成する教育工学の専門家です。",
     drag_word_prompt_mission: "**あなたの使命：**",
     drag_word_prompt_generate_json: "H5PのDrag the Words型アクティビティ用の完全なJSONオブジェクトを生成してください。JSONは直接使用可能である必要があります。",

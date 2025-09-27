@@ -199,8 +199,12 @@ const translations_zh = {
     summary_prompt_mission: "**你的任务：**",
     summary_prompt_generate_json: "生成一个完整的 JSON 对象，用于 H5P Summary 活动。该 JSON 必须可直接使用。",
     summary_prompt_json_structure_title: "**预期的 JSON 结构：**",
-    summary_prompt_json_structure_main_object: "对象必须包含键 \"summaries\"，其值为包含 ${nombreQuestions} 个对象的数组。",
-    summary_prompt_summary_object: "每个对象代表摘要的一步，包含一个由多句话组成的 \"summary\" 数组。",
+    summary_prompt_json_structure_main_object: "对象必须包含以下键：",
+    summary_prompt_intro_field: "`intro`: 活动的介绍性句子（例如，“选择正确的陈述。”）。",
+    summary_prompt_summaries_array: "`summaries`: 一个包含 ${nombreQuestions} 个对象的数组，每个对象代表一个摘要步骤。",
+    summary_prompt_summary_object: "`summaries` 中的每个对象必须包含：",
+    summary_prompt_summary_array: "- `summary`: 一个句子数组。",
+    summary_prompt_tip_field: "- `tip` (可选但建议): 帮助学生的提示。",
     summary_prompt_content_rules_title: "**内容规则：**",
     summary_prompt_rule1: "1.  在每个 \"summary\" 数组中，**第一句为正确陈述**。",
     summary_prompt_rule2: "2.  其余句子为看似合理但错误的干扰项。",
@@ -208,7 +212,21 @@ const translations_zh = {
     summary_prompt_example_json_title: "**单个步骤的 JSON 示例：**",
     summary_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
 
-    // Drag the Words Prompt
+    // Summary UI translations
+    summary_intro: "选择正确的陈述。",
+    summary_solved_label: "进度：",
+    summary_score_label: "错误答案：",
+    summary_result_label: "你的结果",
+    summary_feedback: "你答对了 @total 条陈述中的 @score 条（@percent %）。",
+    summary_label_correct: "正确。",
+    summary_label_incorrect: "不正确！请重试。",
+    summary_label_correct_answers: "正确答案。",
+    summary_tip_button_label: "显示提示",
+    summary_score_bar_label: "你得到了 :num 分（共 :total 分）",
+    summary_progress_text: "进度 :num / :total",
+    summary_alternative_incorrect_label: "不正确",
+ 
+     // Drag the Words Prompt
     drag_word_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Drag the Words（拖动单词）”活动。",
     drag_word_prompt_mission: "**你的任务：**",
     drag_word_prompt_generate_json: "生成一个完整的 JSON 对象，用于 H5P 拖动单词活动。该 JSON 必须可直接使用。",

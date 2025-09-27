@@ -1092,6 +1092,30 @@ document.addEventListener('DOMContentLoaded', function() {
                     ariaYourResult: translations.ariaYourResult || "You got @score out of @total points",
                     ariaNavigatedToSolution: translations.ariaNavigatedToSolution || "Navigated to newly included sample solution after textarea."
                 };
+            } else if (moduleKey === 'Summary') {
+                content = {
+                    intro: jsonObj.intro || translations.summary_intro,
+                    summaries: jsonObj.summaries.map(s => ({
+                        ...s,
+                        subContentId: generateUUID(),
+                        tip: s.tip || ""
+                    })),
+                    solvedLabel: translations.summary_solved_label,
+                    scoreLabel: translations.summary_score_label,
+                    resultLabel: translations.summary_result_label,
+                    overallFeedback: [{
+                        from: 0,
+                        to: 100,
+                        feedback: translations.summary_feedback
+                    }],
+                    labelCorrect: translations.summary_label_correct,
+                    labelIncorrect: translations.summary_label_incorrect,
+                    labelCorrectAnswers: translations.summary_label_correct_answers,
+                    tipButtonLabel: translations.summary_tip_button_label,
+                    scoreBarLabel: translations.summary_score_bar_label,
+                    progressText: translations.summary_progress_text,
+                    alternativeIncorrectLabel: translations.summary_alternative_incorrect_label
+                };
             }
  
              // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
@@ -1478,8 +1502,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ${pt.summary_prompt_generate_json}
 
                                 ${pt.summary_prompt_json_structure_title}
-                                ${pt.summary_prompt_json_structure_main_object.replace('${nombreQuestions}', nombreQuestions)}
+                                ${pt.summary_prompt_json_structure_main_object}
+                                - ${pt.summary_prompt_intro_field}
+                                - ${pt.summary_prompt_summaries_array.replace('${nombreQuestions}', nombreQuestions)}
                                 ${pt.summary_prompt_summary_object}
+                                - ${pt.summary_prompt_summary_array}
+                                - ${pt.summary_prompt_tip_field}
 
                                 ${pt.summary_prompt_content_rules_title}
                                 ${pt.summary_prompt_rule1}

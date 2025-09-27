@@ -199,8 +199,12 @@ const translations_el = {
     summary_prompt_mission: "**Αποστολή σου:**",
     summary_prompt_generate_json: "Δημιούργησε πλήρες JSON για δραστηριότητα H5P τύπου Summary. Πρέπει να είναι άμεσα χρησιμοποιήσιμο.",
     summary_prompt_json_structure_title: "**Αναμενόμενη δομή JSON:**",
-    summary_prompt_json_structure_main_object: "Το αντικείμενο περιέχει το κλειδί \"summaries\", έναν πίνακα με ${nombreQuestions} αντικείμενα.",
-    summary_prompt_summary_object: "Κάθε αντικείμενο είναι ένα βήμα της σύνοψης και περιέχει πίνακα \"summary\" με προτάσεις.",
+    summary_prompt_json_structure_main_object: "Το αντικείμενο πρέπει να περιέχει τα ακόλουθα κλειδιά:",
+    summary_prompt_intro_field: "`intro`: Μια εισαγωγική πρόταση για τη δραστηριότητα (π.χ. «Επιλέξτε τη σωστή δήλωση.»).",
+    summary_prompt_summaries_array: "`summaries`: Ένας πίνακας με ${nombreQuestions} αντικείμενα, καθένα από τα οποία αντιπροσωπεύει ένα βήμα της σύνοψης.",
+    summary_prompt_summary_object: "Κάθε αντικείμενο στο `summaries` πρέπει να περιέχει:",
+    summary_prompt_summary_array: "- `summary`: Ένας πίνακας προτάσεων.",
+    summary_prompt_tip_field: "- `tip` (προαιρετικό αλλά συνιστάται): Μια υπόδειξη για να βοηθήσει τον μαθητή.",
     summary_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
     summary_prompt_rule1: "1. Σε κάθε πίνακα \"summary\" η **πρώτη πρόταση είναι σωστή**.",
     summary_prompt_rule2: "2. Οι επόμενες είναι πιθανές αλλά λανθασμένες αποσπάσεις.",
@@ -208,7 +212,21 @@ const translations_el = {
     summary_prompt_example_json_title: "**Παράδειγμα JSON για ένα βήμα:**",
     summary_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
 
-    // Prompt για Drag the Words
+    // Summary UI translations
+    summary_intro: "Επιλέξτε τη σωστή δήλωση.",
+    summary_solved_label: "Πρόοδος:",
+    summary_score_label: "Λανθασμένες απαντήσεις:",
+    summary_result_label: "Το αποτέλεσμά σας",
+    summary_feedback: "Έχετε @score από τις @total δηλώσεις (@percent %) σωστές.",
+    summary_label_correct: "Σωστό.",
+    summary_label_incorrect: "Λάθος! Παρακαλώ προσπαθήστε ξανά.",
+    summary_label_correct_answers: "Σωστές απαντήσεις.",
+    summary_tip_button_label: "Εμφάνιση συμβουλής",
+    summary_score_bar_label: "Έχετε :num από τους :total πόντους",
+    summary_progress_text: "Πρόοδος :num από :total",
+    summary_alternative_incorrect_label: "Λάθος",
+ 
+     // Prompt για Drag the Words
     drag_word_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Drag the Words\".",
     drag_word_prompt_mission: "**Αποστολή σου:**",
     drag_word_prompt_generate_json: "Δημιούργησε πλήρες JSON για δραστηριότητα H5P τύπου Drag the Words. Πρέπει να είναι άμεσα χρησιμοποιήσιμο.",
