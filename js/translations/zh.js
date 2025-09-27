@@ -179,7 +179,7 @@ const translations_zh = {
     glossary_prompt_content: "`content`：包含定义文本的 \"params\" 对象。定义需为 HTML（使用 <p>、<strong> 等）。",
     glossary_prompt_content_rules_title: "**内容规则：**",
     glossary_prompt_rule1: "1.  定义应清晰、简洁，并与学生水平相适应。",
-    glossary_prompt_rule2: "2.  需遵守 `content` 对象的内部结构（library、metadata、subContentId），无需生成 UUID。",
+    glossary_prompt_rule2: "2.  需遵守 `content` 对象的内部结构（library、metadata）。",
     glossary_prompt_example_json_title: "**单个词条的 JSON 示例：**",
     glossary_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
 

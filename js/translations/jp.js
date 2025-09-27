@@ -179,7 +179,7 @@ const translations_jp = {
     glossary_prompt_content: "`content`：定義テキストを含む「params」を持つオブジェクト。定義はHTML形式である必要があります（<p>、<strong>などを使用）。",
     glossary_prompt_content_rules_title: "**コンテンツのルール：**",
     glossary_prompt_rule1: "1. 定義は明確で簡潔、生徒のレベルに適している必要があります。",
-    glossary_prompt_rule2: "2. 「content」オブジェクトの内部構造（library、metadata、subContentId）は尊重する必要がありますが、UUIDを生成する必要はありません。",
+    glossary_prompt_rule2: "2. 「content」オブジェクトの内部構造（library、metadata）は尊重する必要があります。",
     glossary_prompt_example_json_title: "**エントリのJSON例：**",
     glossary_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 

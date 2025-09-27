@@ -179,7 +179,7 @@ const translations_it = {
     glossary_prompt_content: "`content`: Un oggetto che contiene i \"params\" con il testo della definizione. La definizione deve essere in HTML (usa <p>, <strong>, ecc.).",
     glossary_prompt_content_rules_title: "**Regole per il contenuto:**",
     glossary_prompt_rule1: "1. Le definizioni devono essere chiare, concise e adatte al livello degli studenti.",
-    glossary_prompt_rule2: "2. La struttura interna dell’oggetto \"content\" (library, metadata, subContentId) deve essere rispettata, ma non è necessario generare un UUID.",
+    glossary_prompt_rule2: "2. La struttura interna dell’oggetto \"content\" (library, metadata) deve essere rispettata.",
     glossary_prompt_example_json_title: "**Esempio di JSON per una voce:**",
     glossary_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento.",
 

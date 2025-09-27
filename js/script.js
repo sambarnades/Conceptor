@@ -984,6 +984,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     overallFeedback: []
                 };
+            } else if (moduleKey === 'Glossary' && jsonObj.panels) {
+               jsonObj.panels.forEach(panel => {
+                   if (panel.content && panel.content.subContentId) {
+                       panel.content.subContentId = generateUUID();
+                   }
+               });
+               content = jsonObj;
             }
 
             // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
@@ -1350,7 +1357,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                         "text": "<p>Processus par lequel les plantes vertes transforment la lumière du soleil en énergie.</p>"
                                         },
                                         "library": "H5P.AdvancedText 1.1",
-                                        "subContentId": "placeholder-uuid"
+                                        "metadata": {
+                                           "contentType": "Text",
+                                           "license": "U",
+                                           "title": "Untitled Text"
+                                        }
                                     }
                                     }
                                 ],
@@ -2146,9 +2157,16 @@ document.addEventListener('DOMContentLoaded', function() {
             .replace(/>/g, '&gt;');
     }
 
-// =======================================================================
-// 12. FONCTION D'ÉCHAPPEMENT XML (garde les caractères spéciaux)
-// =======================================================================
+    function generateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+ 
+ // =======================================================================
+ // 12. FONCTION D'ÉCHAPPEMENT XML (garde les caractères spéciaux)
+ // =======================================================================
     function escapeXml(str) {
         return String(str)
             .replace(/&/g, '&amp;')

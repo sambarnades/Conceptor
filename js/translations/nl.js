@@ -179,7 +179,7 @@ const translations_nl = {
     glossary_prompt_content: "`content`: Een object met de \"params\" die de definitietekst bevatten. De definitie moet HTML zijn (gebruik <p>, <strong>, enz.).",
     glossary_prompt_content_rules_title: "**Regels voor de inhoud:**",
     glossary_prompt_rule1: "1.  Definities moeten duidelijk, beknopt en passend bij het niveau van de leerlingen zijn.",
-    glossary_prompt_rule2: "2.  Respecteer de interne structuur van het `content`-object (library, metadata, subContentId); een UUID genereren is niet nodig.",
+    glossary_prompt_rule2: "2.  Respecteer de interne structuur van het `content`-object (library, metadata).",
     glossary_prompt_example_json_title: "**JSON-voorbeeld voor één item:**",
     glossary_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
 

@@ -179,7 +179,7 @@ const translations_ar = {
     glossary_prompt_content: "`content`: كائن يحتوي على \"params\" يتضمّن نص التعريف. يجب أن يكون التعريف بلغة HTML (استخدم <p> و<strong> وغيرهما).",
     glossary_prompt_content_rules_title: "**قواعد المحتوى:**",
     glossary_prompt_rule1: "1. يجب أن تكون التعريفات واضحة وموجزة ومناسبة لمستوى المتعلمين.",
-    glossary_prompt_rule2: "2. التزم بالبنية الداخلية لكائن `content` (library وmetadata وsubContentId)، ولا حاجة لتوليد UUID.",
+    glossary_prompt_rule2: "2. التزم بالبنية الداخلية لكائن `content` (library وmetadata).",
     glossary_prompt_example_json_title: "**مثال JSON لمدخل واحد:**",
     glossary_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
 

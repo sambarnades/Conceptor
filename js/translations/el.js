@@ -179,7 +179,7 @@ const translations_el = {
     glossary_prompt_content: "`content`: Αντικείμενο που περιέχει τα \"params\" με το κείμενο του ορισμού. Ο ορισμός πρέπει να είναι HTML (χρήση <p>, <strong> κ.λπ.).",
     glossary_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
     glossary_prompt_rule1: "1. Οι ορισμοί να είναι σαφείς, συνοπτικοί και κατάλληλοι για το επίπεδο των μαθητών.",
-    glossary_prompt_rule2: "2. Τήρησε την εσωτερική δομή του `content` (library, metadata, subContentId)· δεν χρειάζεται δημιουργία UUID.",
+    glossary_prompt_rule2: "2. Τήρησε την εσωτερική δομή του `content` (library, metadata).",
     glossary_prompt_example_json_title: "**Παράδειγμα JSON για μία καταχώριση:**",
     glossary_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
 
