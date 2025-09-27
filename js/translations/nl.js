@@ -35,6 +35,8 @@ const translations_nl = {
     // Algemene context (Eenvoudige modus)
     prompt_simple_intro_part1: "Ik ben een **",
     prompt_simple_intro_part2: "** en ik wil **",
+    prompt_language_instruction: "De gegenereerde inhoud moet in het Nederlands zijn, tenzij in het verzoek een andere taal wordt opgegeven.",
+    prompt_code_block_instruction: "Je moet het resultaat in een codeblok genereren.",
 
     // Timeline-prompt
     timeline_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Timeline\".",
@@ -273,6 +275,26 @@ const translations_nl = {
     appariement_prompt_example_json_title: "**Voorbeeld-JSON:**",
     appariement_prompt_generate_only_json: "Genereer alleen het geldige JSON-object, zonder enig commentaar.",
 
+   // QCM Prompt
+   qcm_prompt_role: "Je bent een expert in onderwijsontwerp die een Moodle-activiteit \"MCQ\" maakt.",
+   qcm_prompt_num_questions: "**Aantal vragen:** 10",
+   qcm_prompt_mission: "**Je missie:**",
+   qcm_prompt_generate_json: "Genereer een JSON-object met een titel en een lijst van **10 vragen** voor een MCQ.",
+   qcm_prompt_important_rules_title: "**Belangrijke regels:**",
+   qcm_prompt_rule1: "1.  `title` moet een relevante en aansprekende titel voor de activiteit zijn.",
+   qcm_prompt_rule2: "2.  De array `questions` moet 10 objecten bevatten, elk met een `text` (de vraagstelling) en een `answers`-array.",
+   qcm_prompt_rule3: "3.  Elke `answers`-array moet meerdere mogelijke antwoorden bevatten. Elk antwoord is een object met `text` en `iscorrect` (1 voor waar, 0 for onwaar). Afhankelijk van de context van de vraag, kun je vragen voorstellen met één juist antwoord of met meerdere juiste antwoorden.",
+   qcm_prompt_json_structure_title: "**Verwachte JSON-structuur:**",
+   qcm_prompt_main_object: "Een hoofdobject met twee sleutels:",
+   qcm_prompt_title: "- `title`: De titel van de activiteit (tekenreeks).",
+   qcm_prompt_questions_array: "- `questions`: Een array van 10 objecten, waarbij elk object een vraag vertegenwoordigt en bevat:",
+   qcm_prompt_question_text: "- `text`: De vraagstelling (tekenreeks, kan HTML bevatten).",
+   qcm_prompt_answers_array: "- `answers`: Een array van objecten, waarbij elk object een antwoord vertegenwoordigt en bevat:",
+   qcm_prompt_answer_text: "- `text`: De antwoordtekst (tekenreeks, kan HTML bevatten).",
+   qcm_prompt_answer_iscorrect: "- `iscorrect`: 1 als het antwoord juist is, anders 0.",
+   qcm_prompt_example_json_title: "**Voorbeeld-JSON:**",
+   qcm_prompt_generate_only_json: "Genereer alleen het geldige JSON-object, zonder enig commentaar.",
+
     // H5P-modules
     h5p_timeline_name: "Tijdlijn",
     h5p_timeline_description: "Maak een interactieve tijdlijn om een reeks gebeurtenissen te presenteren.",
@@ -306,6 +328,9 @@ const translations_nl = {
     moodle_appariement_name: "Koppelen",
     moodle_appariement_description: "Genereer een koppelactiviteit met 10 vragen.",
 
+   moodle_qcm_name: "MCQ",
+   moodle_qcm_description: "Genereer een eenvoudige MCQ-activiteit.",
+
     // Dynamische inhoud
     prompt_for_ia: "Prompt voor de AI",
     copy_prompt: "📋 Prompt kopiëren",
@@ -325,6 +350,10 @@ const translations_nl = {
     create_mbz_file_millionnaire: "Maak het bestand Miljonair (.mbz)",
     paste_ia_result_millionnaire: "Plak hieronder de door de AI gegenereerde JSON. De titel van de activiteit wordt automatisch uit de JSON gehaald.",
     generate_mbz_millionnaire: "Genereer de activiteit Miljonair (mbz)",
+
+    create_mbz_file_qcm: "Maak MCQ-bestand (.mbz)",
+    paste_ia_result_qcm: "Plak hieronder de door de AI gegenereerde JSON. De titel van de activiteit wordt automatisch uit de JSON gehaald.",
+    generate_mbz_qcm: "Genereer MCQ-activiteit (mbz)",
 
     // Specifiek voor Moodle XML
     moodle_xml_placeholder: "De Moodle-XML verschijnt hier...",

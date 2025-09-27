@@ -35,6 +35,8 @@ const translations_el = {
     // Γενικό πλαίσιο (Απλή λειτουργία)
     prompt_simple_intro_part1: "Είμαι **",
     prompt_simple_intro_part2: "** και θα ήθελα **",
+    prompt_language_instruction: "Το περιεχόμενο που θα δημιουργηθεί πρέπει να είναι στα ελληνικά, εκτός αν ορίζεται άλλη γλώσσα στην αίτηση.",
+    prompt_code_block_instruction: "Πρέπει να δημιουργήσετε το αποτέλεσμα σε ένα μπλοκ κώδικα.",
 
     // Prompt για Χρονογραμμή
     timeline_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Timeline\".",
@@ -273,6 +275,26 @@ const translations_el = {
     appariement_prompt_example_json_title: "**Παράδειγμα JSON:**",
     appariement_prompt_generate_only_json: "Παρήγαγε μόνο το έγκυρο αντικείμενο JSON, χωρίς κανένα σχόλιο.",
 
+   // QCM Prompt
+   qcm_prompt_role: "Είσαι ειδικός στον εκπαιδευτικό σχεδιασμό και δημιουργείς μια δραστηριότητα Moodle «MCQ».",
+   qcm_prompt_num_questions: "**Αριθμός ερωτήσεων:** 10",
+   qcm_prompt_mission: "**Η αποστολή σου:**",
+   qcm_prompt_generate_json: "Δημιούργησε ένα αντικείμενο JSON που να περιέχει έναν τίτλο και μια λίστα από **10 ερωτήσεις** για ένα MCQ.",
+   qcm_prompt_important_rules_title: "**Σημαντικοί κανόνες:**",
+   qcm_prompt_rule1: "1.  Το `title` πρέπει να είναι σχετικός και ελκυστικός τίτλος για τη δραστηριότητα.",
+   qcm_prompt_rule2: "2.  Ο πίνακας `questions` πρέπει να περιέχει 10 αντικείμενα, το καθένα με `text` (η διατύπωση της ερώτησης) και έναν πίνακα `answers`.",
+   qcm_prompt_rule3: "3.  Κάθε πίνακας `answers` πρέπει να περιέχει πολλές πιθανές απαντήσεις. Κάθε απάντηση είναι ένα αντικείμενο με `text` και `iscorrect` (1 για σωστό, 0 για λάθος). Ανάλογα με το πλαίσιο της ερώτησης, μπορείς να προτείνεις ερωτήσεις με μία μόνο σωστή απάντηση ή με πολλαπλές σωστές απαντήσεις.",
+   qcm_prompt_json_structure_title: "**Αναμενόμενη δομή JSON:**",
+   qcm_prompt_main_object: "Ένα κύριο αντικείμενο με δύο κλειδιά:",
+   qcm_prompt_title: "- `title`: Ο τίτλος της δραστηριότητας (συμβολοσειρά).",
+   qcm_prompt_questions_array: "- `questions`: Ένας πίνακας 10 αντικειμένων, όπου κάθε αντικείμενο αντιπροσωπεύει μια ερώτηση και περιλαμβάνει:",
+   qcm_prompt_question_text: "- `text`: Η διατύπωση της ερώτησης (συμβολοσειρά, μπορεί να περιέχει HTML).",
+   qcm_prompt_answers_array: "- `answers`: Ένας πίνακας αντικειμένων, όπου κάθε αντικείμενο αντιπροσωπεύει μια απάντηση και περιλαμβάνει:",
+   qcm_prompt_answer_text: "- `text`: Το κείμενο της απάντησης (συμβολοσειρά, μπορεί να περιέχει HTML).",
+   qcm_prompt_answer_iscorrect: "- `iscorrect`: 1 αν η απάντηση είναι σωστή, αλλιώς 0.",
+   qcm_prompt_example_json_title: "**Παράδειγμα JSON:**",
+   qcm_prompt_generate_only_json: "Παρήγαγε μόνο το έγκυρο αντικείμενο JSON, χωρίς κανένα σχόλιο.",
+
     // Μονάδες H5P
     h5p_timeline_name: "Χρονογραμμή",
     h5p_timeline_description: "Δημιουργήστε διαδραστική χρονογραμμή για την παρουσίαση μιας ακολουθίας γεγονότων.",
@@ -306,6 +328,9 @@ const translations_el = {
     moodle_appariement_name: "Αντιστοίχιση",
     moodle_appariement_description: "Δημιούργησε μια δραστηριότητα αντιστοίχισης με 10 ερωτήσεις.",
 
+   moodle_qcm_name: "MCQ",
+   moodle_qcm_description: "Δημιουργήστε μια απλή δραστηριότητα MCQ.",
+
     // Δυναμικό περιεχόμενο
     prompt_for_ia: "Prompt για ΤΝ",
     copy_prompt: "📋 Αντιγραφή prompt",
@@ -325,6 +350,10 @@ const translations_el = {
     create_mbz_file_millionnaire: "Δημιούργησε το αρχείο Εκατομμυριούχος (.mbz)",
     paste_ia_result_millionnaire: "Επικόλλησε παρακάτω το JSON που δημιουργήθηκε από την ΤΝ. Ο τίτλος της δραστηριότητας θα εξαχθεί αυτόματα από το JSON.",
     generate_mbz_millionnaire: "Δημιούργησε τη δραστηριότητα Εκατομμυριούχος (mbz)",
+
+    create_mbz_file_qcm: "Δημιουργία αρχείου MCQ (.mbz)",
+    paste_ia_result_qcm: "Επικολλήστε παρακάτω το JSON που δημιουργήθηκε από την ΤΝ. Ο τίτλος της δραστηριότητας θα εξαχθεί αυτόματα από το JSON.",
+    generate_mbz_qcm: "Δημιουργία δραστηριότητας MCQ (mbz)",
 
     // Ειδικά για Moodle XML
     moodle_xml_placeholder: "Το Moodle XML θα εμφανιστεί εδώ...",

@@ -35,6 +35,8 @@ const translations_ar = {
     // السياق العام (الوضع البسيط)
     prompt_simple_intro_part1: "أنا **",
     prompt_simple_intro_part2: "** وأرغب في **",
+    prompt_language_instruction: "يجب أن يكون المحتوى المُولَّد باللغة العربية، ما لم تُحدَّد لغة أخرى في الطلب.",
+    prompt_code_block_instruction: "يجب عليك إنشاء النتيجة في كتلة تعليمة برمجية.",
 
     // مطالب الخط الزمني
     timeline_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Timeline\".",
@@ -272,6 +274,26 @@ const translations_ar = {
     appariement_prompt_answer: "- `answer`: التعريف أو المصطلح المقابل على اليمين (سلسلة محارف).",
     appariement_prompt_example_json_title: "**مثال JSON:**",
     appariement_prompt_generate_only_json: "أنشئ فقط كائن JSON صالحًا، دون أي تعليق.",
+
+   // QCM Prompt
+   qcm_prompt_role: "أنت خبير في تصميم التعليم تنشئ نشاط Moodle \"MCQ\".",
+   qcm_prompt_num_questions: "**عدد الأسئلة:** 10",
+   qcm_prompt_mission: "**مهمتك:**",
+   qcm_prompt_generate_json: "أنشئ كائن JSON يحتوي على عنوان وقائمة من **10 أسئلة** لـ MCQ.",
+   qcm_prompt_important_rules_title: "**قواعد مهمة:**",
+   qcm_prompt_rule1: "1.  يجب أن يكون `title` عنوانًا ذا صلة وجاذبية للنشاط.",
+   qcm_prompt_rule2: "2.  يجب أن يحتوي مصفوف `questions` على 10 كائنات، يحتوي كل منها على `text` (نص السؤال) ومصفوف `answers`.",
+   qcm_prompt_rule3: "3.  يجب أن يحتوي كل مصفوف `answers` على عدة إجابات محتملة. كل إجابة هي كائن يحتوي على `text` و `iscorrect` (1 للصواب، 0 للخطأ). بناءً على سياق السؤال، يمكنك اقتراح أسئلة بإجابة صحيحة واحدة أو عدة إجابات صحيحة.",
+   qcm_prompt_json_structure_title: "**بنية JSON المتوقعة:**",
+   qcm_prompt_main_object: "كائن رئيسي يحتوي على مفتاحين:",
+   qcm_prompt_title: "- `title`: عنوان النشاط (سلسلة محارف).",
+   qcm_prompt_questions_array: "- `questions`: مصفوفة من 10 كائنات، حيث يمثل كل كائن سؤالًا ويحتوي على:",
+   qcm_prompt_question_text: "- `text`: نص السؤال (سلسلة محارف، قد تحتوي على HTML).",
+   qcm_prompt_answers_array: "- `answers`: مصفوفة من الكائنات، حيث يمثل كل كائن إجابة ويحتوي على:",
+   qcm_prompt_answer_text: "- `text`: نص الإجابة (سلسلة محارف، قد تحتوي على HTML).",
+   qcm_prompt_answer_iscorrect: "- `iscorrect`: 1 إذا كانت الإجابة صحيحة، وإلا 0.",
+   qcm_prompt_example_json_title: "**مثال JSON:**",
+   qcm_prompt_generate_only_json: "أنشئ فقط كائن JSON صالحًا، دون أي تعليق.",
  
     // وحدات H5P
     h5p_timeline_name: "الخط الزمني",
@@ -306,6 +328,11 @@ const translations_ar = {
     moodle_appariement_name: "المطابقة",
     moodle_appariement_description: "أنشئ نشاط مطابقة مكوّنًا من 10 أسئلة.",
 
+   moodle_qcm_name: "MCQ",
+   moodle_qcm_description: "إنشاء نشاط MCQ بسيط.",
+    moodle_qcm_name: "MCQ",
+    moodle_qcm_description: "إنشاء نشاط MCQ بسيط.",
+
     // محتوى ديناميكي
     prompt_for_ia: "مطلب للذكاء الاصطناعي",
     copy_prompt: "📋 نسخ المطلب",
@@ -325,6 +352,13 @@ const translations_ar = {
     create_mbz_file_millionnaire: "أنشئ ملف المليونير (.mbz)",
     paste_ia_result_millionnaire: "ألصق أدناه JSON الذي أنشأته الذكاء الاصطناعي. سيتم استخراج عنوان النشاط تلقائيًا من JSON.",
     generate_mbz_millionnaire: "أنشئ نشاط المليونير (mbz)",
+
+    create_mbz_file_qcm: "إنشاء ملف MCQ (.mbz)",
+    paste_ia_result_qcm: "ألصق أدناه JSON الذي أنشأته الذكاء الاصطناعي. سيتم استخراج عنوان النشاط تلقائيًا من JSON.",
+    generate_mbz_qcm: "إنشاء نشاط MCQ (mbz)",
+    create_mbz_file_qcm: "إنشاء ملف MCQ (.mbz)",
+    paste_ia_result_qcm: "ألصق أدناه JSON الذي أنشأته الذكاء الاصطناعي. سيتم استخراج عنوان النشاط تلقائيًا من JSON.",
+    generate_mbz_qcm: "إنشاء نشاط MCQ (mbz)",
 
     // خاص بـ Moodle XML
     moodle_xml_placeholder: "سيظهر Moodle XML هنا...",

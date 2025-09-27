@@ -35,6 +35,8 @@ const translations_fr = {
     // General Context (Simple Mode)
     prompt_simple_intro_part1: "Je suis un(e) **",
     prompt_simple_intro_part2: "** et je souhaite **",
+    prompt_language_instruction: "Le contenu généré doit être en français, sauf si une autre langue est spécifiée dans la demande.",
+    prompt_code_block_instruction: "Tu dois générer le résultat dans un bloc de code.",
 
     // Timeline Prompt
     timeline_prompt_role: "Tu es un expert en ingénierie pédagogique créant une activité H5P \"Timeline\".",

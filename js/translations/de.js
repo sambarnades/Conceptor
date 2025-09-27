@@ -35,6 +35,8 @@ const translations_de = {
     // General Context (Simple Mode)
     prompt_simple_intro_part1: "Ich bin ein(e) **",
     prompt_simple_intro_part2: "** und ich möchte **",
+    prompt_language_instruction: "Der generierte Inhalt muss auf Deutsch sein, es sei denn, in der Anfrage wird eine andere Sprache angegeben.",
+    prompt_code_block_instruction: "Du musst das Ergebnis in einem Codeblock generieren.",
 
     // Timeline Prompt
     timeline_prompt_role: "Sie sind ein Experte für pädagogische Ingenieurwissenschaften, der eine H5P \"Timeline\"-Aktivität erstellt.",
@@ -273,6 +275,26 @@ const translations_de = {
     appariement_prompt_example_json_title: "**Beispiel-JSON:**",
     appariement_prompt_generate_only_json: "Erzeuge nur das gültige JSON-Objekt, ohne jeglichen Kommentar.",
 
+   // QCM Prompt
+   qcm_prompt_role: "Du bist eine Expertin/ein Experte für Instruktionsdesign und erstellst eine Moodle-Aktivität \"QCM\".",
+   qcm_prompt_num_questions: "**Anzahl der Fragen:** 10",
+   qcm_prompt_mission: "**Deine Aufgabe:**",
+   qcm_prompt_generate_json: "Erzeuge ein JSON-Objekt, das einen Titel und eine Liste von **10 Fragen** für ein QCM enthält.",
+   qcm_prompt_important_rules_title: "**Wichtige Regeln:**",
+   qcm_prompt_rule1: "1.  Der `title` muss ein relevanter und ansprechender Titel für die Aktivität sein.",
+   qcm_prompt_rule2: "2.  Das Array `questions` muss 10 Objekte enthalten, jeweils mit einem `text` (Fragetext) und einem `answers`-Array.",
+   qcm_prompt_rule3: "3.  Jedes `answers`-Array muss mehrere mögliche Antworten enthalten. Jede Antwort ist ein Objekt mit `text` und `iscorrect` (1 für wahr, 0 für falsch). Je nach Kontext der Frage kannst du Fragen mit einer oder mehreren richtigen Antworten vorschlagen.",
+   qcm_prompt_json_structure_title: "**Erwartete JSON-Struktur:**",
+   qcm_prompt_main_object: "Ein Hauptobjekt mit zwei Schlüsseln:",
+   qcm_prompt_title: "- `title`: Der Titel der Aktivität (Zeichenkette).",
+   qcm_prompt_questions_array: "- `questions`: Ein Array mit 10 Objekten, wobei jedes Objekt eine Frage darstellt und Folgendes enthält:",
+   qcm_prompt_question_text: "- `text`: Der Fragetext (Zeichenkette, kann HTML enthalten).",
+   qcm_prompt_answers_array: "- `answers`: Ein Array von Objekten, wobei jedes Objekt eine Antwort darstellt und Folgendes enthält:",
+   qcm_prompt_answer_text: "- `text`: Der Antworttext (Zeichenkette, kann HTML enthalten).",
+   qcm_prompt_answer_iscorrect: "- `iscorrect`: 1, wenn die Antwort richtig ist, sonst 0.",
+   qcm_prompt_example_json_title: "**Beispiel-JSON:**",
+   qcm_prompt_generate_only_json: "Erzeuge nur das gültige JSON-Objekt, ohne jeglichen Kommentar.",
+
     // H5P Modules
     h5p_timeline_name: "Zeitleiste",
     h5p_timeline_description: "Erstellen Sie eine interaktive Zeitleiste, um eine Abfolge von Ereignissen darzustellen.",
@@ -305,6 +327,8 @@ const translations_de = {
     moodle_millionnaire_description: "Erstellen Sie eine einzigartige 'Millionär'-Aktivität mit 6 Fragen, die schrittweise schwieriger werden.",
     moodle_appariement_name: "Zuordnung",
     moodle_appariement_description: "Erzeuge eine Zuordnungsaktivität mit 10 Fragen.",
+    moodle_qcm_name: "MCQ",
+    moodle_qcm_description: "Generieren Sie eine einfache MCQ-Aktivität.",
 
     // Dynamic content
     prompt_for_ia: "Prompt für die KI",
@@ -325,6 +349,9 @@ const translations_de = {
     create_mbz_file_millionnaire: "Datei „Millionär“ (.mbz) erstellen",
     paste_ia_result_millionnaire: "Fügen Sie unten das von der KI generierte JSON ein. Der Titel der Aktivität wird automatisch aus dem JSON extrahiert.",
     generate_mbz_millionnaire: "Aktivität „Millionär“ generieren (mbz)",
+    create_mbz_file_qcm: "MCQ-Datei (.mbz) erstellen",
+    paste_ia_result_qcm: "Fügen Sie unten das von der KI generierte JSON ein. Der Titel der Aktivität wird automatisch aus dem JSON extrahiert.",
+    generate_mbz_qcm: "MCQ-Aktivität generieren (mbz)",
 
     // Moodle-XML – spezifisch
     moodle_xml_placeholder: "Das Moodle-XML wird hier angezeigt...",

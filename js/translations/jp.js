@@ -35,6 +35,8 @@ const translations_jp = {
     // General Context (Simple Mode)
     prompt_simple_intro_part1: "私は**",
     prompt_simple_intro_part2: "**で、**",
+    prompt_language_instruction: "生成されるコンテンツは日本語である必要がありますが、リクエストで他の言語が指定されている場合を除きます。",
+    prompt_code_block_instruction: "結果をコードブロックで生成する必要があります。",
 
     // Timeline Prompt
     timeline_prompt_role: "あなたはH5P「Timeline」アクティビティを作成する教育工学の専門家です。",
@@ -273,6 +275,26 @@ const translations_jp = {
     appariement_prompt_example_json_title: "**JSON例：**",
     appariement_prompt_generate_only_json: "有効なJSONオブジェクトのみを生成し、コメントは一切付けないでください。",
 
+   // QCM Prompt
+   qcm_prompt_role: "あなたは教育設計の専門家で、Moodleの「MCQ」活動を作成しています。",
+   qcm_prompt_num_questions: "**質問数：** 10",
+   qcm_prompt_mission: "**あなたのミッション：**",
+   qcm_prompt_generate_json: "MCQ用に、タイトルと**10問**の質問一覧を含むJSONオブジェクトを生成してください。",
+   qcm_prompt_important_rules_title: "**重要なルール：**",
+   qcm_prompt_rule1: "1.  `title` は活動にとって関連性が高く魅力的なタイトルでなければならない。",
+   qcm_prompt_rule2: "2.  `questions` 配列には10個のオブジェクトが必要で、それぞれに `text`（質問文）と `answers` 配列が含まれる。",
+   qcm_prompt_rule3: "3.  各 `answers` 配列には複数の回答候補が必要です。各回答は `text` と `iscorrect`（正解は1、不正解は0）を持つオブジェクトです。質問の文脈に応じて、正解が1つの質問や複数の正解がある質問を提案できます。",
+   qcm_prompt_json_structure_title: "**想定されるJSON構造：**",
+   qcm_prompt_main_object: "2つのキーを持つメインオブジェクト：",
+   qcm_prompt_title: "- `title`: 活動のタイトル（文字列）。",
+   qcm_prompt_questions_array: "- `questions`: 10個のオブジェクトからなる配列。各オブジェクトは1つの質問を表し、次を含む：",
+   qcm_prompt_question_text: "- `text`: 質問文（文字列、HTMLを含むことがある）。",
+   qcm_prompt_answers_array: "- `answers`: オブジェクトの配列。各オブジェクトは1つの回答を表し、次を含む：",
+   qcm_prompt_answer_text: "- `text`: 回答文（文字列、HTMLを含むことがある）。",
+   qcm_prompt_answer_iscorrect: "- `iscorrect`: 回答が正しければ1、そうでなければ0。",
+   qcm_prompt_example_json_title: "**JSON例：**",
+   qcm_prompt_generate_only_json: "有効なJSONオブジェクトのみを生成し、コメントは一切付けないでください。",
+
     // H5P Modules
     h5p_timeline_name: "年表",
     h5p_timeline_description: "イベントの順序を示すインタラクティブな年表を作成します。",
@@ -306,6 +328,9 @@ const translations_jp = {
     moodle_appariement_name: "マッチング",
     moodle_appariement_description: "10問のマッチング活動を生成します。",
 
+   moodle_qcm_name: "MCQ",
+   moodle_qcm_description: "簡単なMCQ活動を生成します。",
+
     // Dynamic content
     prompt_for_ia: "AI用プロンプト",
     copy_prompt: "📋 プロンプトをコピー",
@@ -325,6 +350,10 @@ const translations_jp = {
     create_mbz_file_millionnaire: "「ミリオネア」ファイル (.mbz) を作成",
     paste_ia_result_millionnaire: "下にAIが生成したJSONを貼り付けてください。アクティビティのタイトルはJSONから自動的に抽出されます。",
     generate_mbz_millionnaire: "「ミリオネア」活動を生成 (mbz)",
+
+    create_mbz_file_qcm: "MCQファイル (.mbz) を作成",
+    paste_ia_result_qcm: "下にAIが生成したJSONを貼り付けてください。アクティビティのタイトルはJSONから自動的に抽出されます。",
+    generate_mbz_qcm: "MCQ活動を生成 (mbz)",
 
     // Moodle XML specific
     moodle_xml_placeholder: "Moodle XMLがここに表示されます...",

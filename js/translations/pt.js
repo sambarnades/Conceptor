@@ -35,6 +35,8 @@ const translations_pt = {
     // General Context (Simple Mode)
     prompt_simple_intro_part1: "Sou um(a) **",
     prompt_simple_intro_part2: "** e desejo **",
+    prompt_language_instruction: "O conteúdo gerado deve estar em português, a menos que outro idioma seja especificado no pedido.",
+    prompt_code_block_instruction: "Você deve gerar o resultado em um bloco de código.",
 
     // Timeline Prompt
     timeline_prompt_role: "Você é um especialista em engenharia pedagógica criando uma atividade H5P \"Timeline\".",
@@ -273,6 +275,26 @@ const translations_pt = {
     appariement_prompt_example_json_title: "**Exemplo de JSON:**",
     appariement_prompt_generate_only_json: "Gere apenas o objeto JSON válido, sem nenhum comentário.",
 
+   // QCM Prompt
+   qcm_prompt_role: "Você é um especialista em design instrucional criando uma atividade Moodle \"MCQ\".",
+   qcm_prompt_num_questions: "**Número de perguntas:** 10",
+   qcm_prompt_mission: "**Sua missão:**",
+   qcm_prompt_generate_json: "Gere um objeto JSON contendo um título e uma lista de **10 perguntas** para um MCQ.",
+   qcm_prompt_important_rules_title: "**Regras importantes:**",
+   qcm_prompt_rule1: "1.  O `title` deve ser um título relevante e envolvente para a atividade.",
+   qcm_prompt_rule2: "2.  O array `questions` deve conter 10 objetos, cada um com `text` (o enunciado da pergunta) e um array `answers`.",
+   qcm_prompt_rule3: "3.  Cada array `answers` deve conter várias respostas possíveis. Cada resposta é um objeto com `text` e `iscorrect` (1 para verdadeiro, 0 para falso). Dependendo do contexto da pergunta, você pode propor perguntas com uma única resposta correta ou com várias respostas corretas.",
+   qcm_prompt_json_structure_title: "**Estrutura JSON esperada:**",
+   qcm_prompt_main_object: "Um objeto principal com duas chaves:",
+   qcm_prompt_title: "- `title`: O título da atividade (string).",
+   qcm_prompt_questions_array: "- `questions`: Um array de 10 objetos, em que cada objeto representa uma pergunta e contém:",
+   qcm_prompt_question_text: "- `text`: O enunciado da pergunta (string, pode conter HTML).",
+   qcm_prompt_answers_array: "- `answers`: Um array de objetos, em que cada objeto representa uma resposta e contém:",
+   qcm_prompt_answer_text: "- `text`: O texto da resposta (string, pode conter HTML).",
+   qcm_prompt_answer_iscorrect: "- `iscorrect`: 1 se a resposta for correta, 0 caso contrário.",
+   qcm_prompt_example_json_title: "**Exemplo de JSON:**",
+   qcm_prompt_generate_only_json: "Gere apenas o objeto JSON válido, sem nenhum comentário.",
+
     // H5P Modules
     h5p_timeline_name: "Linha do tempo",
     h5p_timeline_description: "Crie uma linha do tempo interativa para apresentar uma sequência de eventos.",
@@ -306,6 +328,9 @@ const translations_pt = {
     moodle_appariement_name: "Correspondência",
     moodle_appariement_description: "Gere uma atividade de correspondência com 10 questões.",
 
+   moodle_qcm_name: "MCQ",
+   moodle_qcm_description: "Gere uma atividade MCQ simples.",
+
     // Dynamic content
     prompt_for_ia: "Prompt para a IA",
     copy_prompt: "📋 Copiar prompt",
@@ -325,6 +350,10 @@ const translations_pt = {
     create_mbz_file_millionnaire: "Criar o arquivo Milionário (.mbz)",
     paste_ia_result_millionnaire: "Cole abaixo o JSON gerado pela IA. O título da atividade será extraído automaticamente do JSON.",
     generate_mbz_millionnaire: "Gerar a atividade Milionário (mbz)",
+
+    create_mbz_file_qcm: "Criar ficheiro MCQ (.mbz)",
+    paste_ia_result_qcm: "Cole abaixo o JSON gerado pela IA. O título da atividade será extraído automaticamente do JSON.",
+    generate_mbz_qcm: "Gerar atividade MCQ (mbz)",
 
     // Específico para Moodle XML
     moodle_xml_placeholder: "O XML do Moodle aparecerá aqui...",

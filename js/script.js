@@ -1044,7 +1044,7 @@ document.addEventListener('DOMContentLoaded', function() {
             nombreQuestions = 10;
         }
 
-        const languageInstruction = `\n\n${pt.prompt_language_instruction}`;
+        const languageInstruction = `\n\n${pt.prompt_language_instruction}\n\n${pt.prompt_code_block_instruction}`;
 
         const timelinePrompt = `${pt.timeline_prompt_role}
                                 ${contextPrompt}

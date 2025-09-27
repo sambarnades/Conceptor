@@ -35,6 +35,8 @@ const translations_zh = {
     // General Context (Simple Mode)
     prompt_simple_intro_part1: "我是一名**",
     prompt_simple_intro_part2: "**，我希望**",
+    prompt_language_instruction: "生成的内容必须为中文，除非请求中指定了其他语言。",
+    prompt_code_block_instruction: "你必须在代码块中生成结果。",
 
     // Timeline Prompt
     timeline_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Timeline（时间轴）”活动。",
@@ -273,6 +275,26 @@ const translations_zh = {
     appariement_prompt_example_json_title: "**JSON 示例：**",
     appariement_prompt_generate_only_json: "仅生成有效的 JSON 对象，不要添加任何注释。",
 
+   // QCM Prompt
+   qcm_prompt_role: "你是一名教学工程专家，正在创建一个 Moodle “MCQ” 活动。",
+   qcm_prompt_num_questions: "**问题数量：** 10",
+   qcm_prompt_mission: "**你的任务：**",
+   qcm_prompt_generate_json: "生成一个 JSON 对象，其中包含一个标题以及用于 MCQ 的 **10 个问题**的列表。",
+   qcm_prompt_important_rules_title: "**重要规则：**",
+   qcm_prompt_rule1: "1.  `title` 必须是与活动相关且有吸引力的标题。",
+   qcm_prompt_rule2: "2.  `questions` 数组必须包含 10 个对象，每个对象包含 `text`（问题措辞）和 `answers` 数组。",
+   qcm_prompt_rule3: "3.  每个 `answers` 数组必须包含几个可能的答案。每个答案都是一个包含 `text` 和 `iscorrect`（1 为真，0 为假）的对象。根据问题的上下文，你可以提出只有一个正确答案或有多个正确答案的问题。",
+   qcm_prompt_json_structure_title: "**预期的 JSON 结构：**",
+   qcm_prompt_main_object: "一个包含两个键的主对象：",
+   qcm_prompt_title: "- `title`：活动标题（字符串）。",
+   qcm_prompt_questions_array: "- `questions`：包含 10 个对象的数组，每个对象代表一个问题并包含：",
+   qcm_prompt_question_text: "- `text`：问题措辞（字符串，可以包含 HTML）。",
+   qcm_prompt_answers_array: "- `answers`：对象的数组，每个对象代表一个答案并包含：",
+   qcm_prompt_answer_text: "- `text`：答案文本（字符串，可以包含 HTML）。",
+   qcm_prompt_answer_iscorrect: "- `iscorrect`：如果答案正确则为 1，否则为 0。",
+   qcm_prompt_example_json_title: "**JSON 示例：**",
+   qcm_prompt_generate_only_json: "仅生成有效的 JSON 对象，不要添加任何注释。",
+
     // H5P Modules
     h5p_timeline_name: "时间轴",
     h5p_timeline_description: "创建交互式时间轴，以展示一系列事件。",
@@ -306,6 +328,11 @@ const translations_zh = {
     moodle_appariement_name: "配对",
     moodle_appariement_description: "生成一个包含 10 个问题的配对活动。",
 
+   moodle_qcm_name: "MCQ",
+   moodle_qcm_description: "生成一个简单的 MCQ 活动。",
+    moodle_qcm_name: "MCQ",
+    moodle_qcm_description: "生成一个简单的 MCQ 活动。",
+
     // Dynamic content
     prompt_for_ia: "供 AI 使用的提示词",
     copy_prompt: "📋 复制提示词",
@@ -325,6 +352,13 @@ const translations_zh = {
     create_mbz_file_millionnaire: "创建“百万富翁”文件 (.mbz)",
     paste_ia_result_millionnaire: "在下方粘贴由 AI 生成的 JSON。活动标题将自动从 JSON 中提取。",
     generate_mbz_millionnaire: "生成“百万富翁”活动 (mbz)",
+
+    create_mbz_file_qcm: "创建 MCQ 文件 (.mbz)",
+    paste_ia_result_qcm: "在下方粘贴由 AI 生成的 JSON。活动标题将自动从 JSON 中提取。",
+    generate_mbz_qcm: "生成 MCQ 活动 (mbz)",
+    create_mbz_file_qcm: "创建 MCQ 文件 (.mbz)",
+    paste_ia_result_qcm: "在下方粘贴由 AI 生成的 JSON。活动标题将自动从 JSON 中提取。",
+    generate_mbz_qcm: "生成 MCQ 活动 (mbz)",
 
     // Moodle XML 专用
     moodle_xml_placeholder: "此处将显示 Moodle XML……",
