@@ -233,15 +233,26 @@ const translations_jp = {
     drag_word_prompt_json_structure_title: "**期待されるJSON構造：**",
     drag_word_prompt_json_structure_main_object: "オブジェクトには以下を含める必要があります：",
     drag_word_prompt_task_description: "`taskDescription`：明確な指示。",
-    drag_word_prompt_text_field: "`textField`：完成させるテキスト。ドラッグする単語はアスタリスク（*単語*）で囲まれています。",
+    drag_word_prompt_text_field: "`textField`：完成させるテキスト。各文は改行 `\\n` で終わる必要があります。",
     drag_word_prompt_content_rules_title: "**コンテンツのルール：**",
-    drag_word_prompt_rule1: "1. テーマに関する一貫したテキストを作成してください。",
-    drag_word_prompt_rule2: "2. ドラッグ単語に変換する約${nombreQuestions}個のキーワードを特定してください。",
+    drag_word_prompt_rule1: "1. テーマに関する一貫した短い文でテキストを作成し、各文を `\\n` で終えてください。",
+    drag_word_prompt_rule2: "2. ドラッグ可能な単語はアスタリスクで囲みます。ヒントは `:私のヒント` で、フィードバックは `\\+正しいフィードバック \\-不正解のフィードバック` で追加できます。",
     drag_word_prompt_example_json_title: "**JSONの例：**",
     drag_word_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 
-    // Fill in the Blanks Prompt
-    blanks_prompt_role: "あなたはH5P「Fill in the Blanks」アクティビティを作成する教育工学の専門家です。",
+    // Drag the Words UI translations
+    drag_words_check_answer: "チェック",
+    drag_words_try_again: "再試行",
+    drag_words_show_solution: "解答を表示",
+    drag_words_score_feedback: "スコア：@score / @total。",
+    drag_words_tip_label: "ヒントを表示",
+    drag_words_correct_text: "正解！",
+    drag_words_incorrect_text: "不正解！",
+    drag_words_score_bar_label: "合計@total点中、@num点を獲得しました",
+    drag_words_submit_answer: "送信",
+ 
+     // Fill in the Blanks Prompt
+     blanks_prompt_role: "あなたはH5P「Fill in the Blanks」アクティビティを作成する教育工学の専門家です。",
     blanks_prompt_mission: "**あなたの使命：**",
     blanks_prompt_generate_json: "H5PのFill in the Blanks型アクティビティ用の完全なJSONオブジェクトを生成してください。JSONは直接使用可能である必要があります。",
     blanks_prompt_json_structure_title: "**期待されるJSON構造：**",

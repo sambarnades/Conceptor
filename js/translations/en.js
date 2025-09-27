@@ -233,15 +233,26 @@ const translations_en = {
     drag_word_prompt_json_structure_title: "**Expected JSON structure :**",
     drag_word_prompt_json_structure_main_object: "The object must contain :",
     drag_word_prompt_task_description: "`taskDescription`: Clear instructions.",
-    drag_word_prompt_text_field: "`textField`: The text to complete, where words to drag are enclosed in asterisks (*word*).",
+    drag_word_prompt_text_field: "`textField`: The text to complete. Each sentence should end with a line break `\\n`.",
     drag_word_prompt_content_rules_title: "**Content rules :**",
-    drag_word_prompt_rule1: "1.  Create a coherent text on the theme.",
-    drag_word_prompt_rule2: "2.  Identify approximately ${nombreQuestions} keywords to turn into draggable words.",
+    drag_word_prompt_rule1: "1.  Create a coherent text on the theme, with short sentences ending with `\\n`.",
+    drag_word_prompt_rule2: "2.  Draggable words are enclosed in asterisks. You can add a tip with `:my tip` and feedback with `\\+correct feedback \\-incorrect feedback`.",
     drag_word_prompt_example_json_title: "**Example JSON :**",
     drag_word_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
 
-    // Fill in the Blanks Prompt
-    blanks_prompt_role: "You are an expert in pedagogical engineering creating an H5P \"Fill in the Blanks\" activity.",
+    // Drag the Words UI translations
+    drag_words_check_answer: "Check",
+    drag_words_try_again: "Retry",
+    drag_words_show_solution: "Show Solution",
+    drag_words_score_feedback: "Score: @score of @total.",
+    drag_words_tip_label: "Show tip",
+    drag_words_correct_text: "Correct!",
+    drag_words_incorrect_text: "Incorrect!",
+    drag_words_score_bar_label: "You got :num out of :total points",
+    drag_words_submit_answer: "Submit",
+ 
+     // Fill in the Blanks Prompt
+     blanks_prompt_role: "You are an expert in pedagogical engineering creating an H5P \"Fill in the Blanks\" activity.",
     blanks_prompt_mission: "**Your mission :**",
     blanks_prompt_generate_json: "Generate a complete JSON object for an H5P Fill in the Blanks activity.",
     blanks_prompt_json_structure_title: "**Expected JSON structure :**",

@@ -233,15 +233,26 @@ const translations_ar = {
     drag_word_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
     drag_word_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
     drag_word_prompt_task_description: "`taskDescription`: تعليمات واضحة.",
-    drag_word_prompt_text_field: "`textField`: نص يُستكمل، وتُوضع الكلمات القابلة للسحب بين نجمتين (*كلمة*).",
+    drag_word_prompt_text_field: "`textField`: النص المراد إكماله. يجب أن تنتهي كل جملة بفاصل أسطر `\\n`.",
     drag_word_prompt_content_rules_title: "**قواعد المحتوى:**",
-    drag_word_prompt_rule1: "1. أنشئ نصًا مترابطًا حول الموضوع.",
-    drag_word_prompt_rule2: "2. حدّد نحو ${nombreQuestions} كلمات مفتاحية لتحويلها إلى كلمات قابلة للسحب.",
+    drag_word_prompt_rule1: "1. أنشئ نصًا متماسكًا حول الموضوع، بجمل قصيرة تنتهي بـ `\\n`.",
+    drag_word_prompt_rule2: "2. الكلمات القابلة للسحب محاطة بنجوم. يمكنك إضافة تلميح باستخدام `:تلميحي` وملاحظات باستخدام `\\+ملاحظات صحيحة \\-ملاحظات غير صحيحة`.",
     drag_word_prompt_example_json_title: "**مثال JSON:**",
     drag_word_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
 
-    // مطالب املأ الفراغات
-    blanks_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Fill in the Blanks\".",
+    // Drag the Words UI translations
+    drag_words_check_answer: "تحقق",
+    drag_words_try_again: "إعادة المحاولة",
+    drag_words_show_solution: "إظهار الحل",
+    drag_words_score_feedback: "النتيجة: @score من @total.",
+    drag_words_tip_label: "إظهار تلميح",
+    drag_words_correct_text: "صحيح!",
+    drag_words_incorrect_text: "خطأ!",
+    drag_words_score_bar_label: "لقد حصلت على :num من :total نقطة",
+    drag_words_submit_answer: "إرسال",
+ 
+     // مطالب املأ الفراغات
+     blanks_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Fill in the Blanks\".",
     blanks_prompt_mission: "**مهمتك:**",
     blanks_prompt_generate_json: "ولِّد كائن JSON كاملًا لنشاط H5P من نوع املأ الفراغات، جاهزًا للاستخدام.",
     blanks_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",

@@ -1116,6 +1116,46 @@ document.addEventListener('DOMContentLoaded', function() {
                     progressText: translations.summary_progress_text,
                     alternativeIncorrectLabel: translations.summary_alternative_incorrect_label
                 };
+            } else if (moduleKey === 'DragTheWords') {
+                content = {
+                    taskDescription: jsonObj.taskDescription,
+                    textField: jsonObj.textField,
+                    checkAnswer: translations.drag_words_check_answer || "Check",
+                    tryAgain: translations.drag_words_try_again || "Retry",
+                    showSolution: translations.drag_words_show_solution || "Show Solution",
+                    behaviour: {
+                        enableRetry: true,
+                        enableSolutionsButton: true,
+                        instantFeedback: false,
+                        enableCheckButton: true
+                    },
+                    overallFeedback: [{
+                        from: 0,
+                        to: 100,
+                        feedback: translations.drag_words_score_feedback || "Score: @score of @total."
+                    }],
+                    dropZoneIndex: "Drop Zone @index.",
+                    empty: "Drop Zone @index is empty.",
+                    contains: "Drop Zone @index contains draggable @draggable.",
+                    tipLabel: translations.drag_words_tip_label || "Show tip",
+                    correctText: translations.drag_words_correct_text || "Correct!",
+                    incorrectText: translations.drag_words_incorrect_text || "Incorrect!",
+                    resetDropTitle: "Reset drop",
+                    resetDropDescription: "Are you sure you want to reset this drop zone?",
+                    grabbed: "Draggable is grabbed.",
+                    cancelledDragging: "Cancelled dragging.",
+                    correctAnswer: "Correct answer:",
+                    feedbackHeader: "Feedback",
+                    scoreBarLabel: translations.drag_words_score_bar_label || "You got :num out of :total points",
+                    media: {
+                        disableImageZooming: false
+                    },
+                    submitAnswer: translations.drag_words_submit_answer || "Submit",
+                    ariaDraggableIndex: "@index of @count draggables.",
+                    a11yCheck: "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                    a11yShowSolution: "Show the solution. The task will be marked with its correct solution.",
+                    a11yRetry: "Retry the task. Reset all responses and start the task over again."
+                };
             }
  
              // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut

@@ -233,15 +233,26 @@ const translations_zh = {
     drag_word_prompt_json_structure_title: "**预期的 JSON 结构：**",
     drag_word_prompt_json_structure_main_object: "对象必须包含：",
     drag_word_prompt_task_description: "`taskDescription`：清晰的指令。",
-    drag_word_prompt_text_field: "`textField`：待完成的文本，其中要拖动的词用星号包裹（*词*）。",
+    drag_word_prompt_text_field: "`textField`：待完成的文本。每个句子应以换行符 `\\n` 结尾。",
     drag_word_prompt_content_rules_title: "**内容规则：**",
-    drag_word_prompt_rule1: "1.  围绕主题创作连贯文本。",
-    drag_word_prompt_rule2: "2.  选取约 ${nombreQuestions} 个关键词设为可拖动词。",
+    drag_word_prompt_rule1: "1.  围绕主题创作连贯的短句文本，每句以 `\\n` 结尾。",
+    drag_word_prompt_rule2: "2.  可拖动的词用星号包裹。你可以用 `:我的提示` 添加提示，用 `\\+正确反馈 \\-错误反馈` 添加反馈。",
     drag_word_prompt_example_json_title: "**JSON 示例：**",
     drag_word_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
 
-    // Fill in the Blanks Prompt
-    blanks_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Fill in the Blanks（填空）”活动。",
+    // Drag the Words UI translations
+    drag_words_check_answer: "检查",
+    drag_words_try_again: "重试",
+    drag_words_show_solution: "显示答案",
+    drag_words_score_feedback: "得分：@score / @total。",
+    drag_words_tip_label: "显示提示",
+    drag_words_correct_text: "正确！",
+    drag_words_incorrect_text: "错误！",
+    drag_words_score_bar_label: "你得到了 :num 分（共 :total 分）",
+    drag_words_submit_answer: "提交",
+ 
+     // Fill in the Blanks Prompt
+     blanks_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Fill in the Blanks（填空）”活动。",
     blanks_prompt_mission: "**你的任务：**",
     blanks_prompt_generate_json: "生成一个完整的 JSON 对象，用于 H5P 填空活动。该 JSON 必须可直接使用。",
     blanks_prompt_json_structure_title: "**预期的 JSON 结构：**",

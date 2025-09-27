@@ -233,15 +233,26 @@ const translations_nl = {
     drag_word_prompt_json_structure_title: "**Verwachte JSON-structuur:**",
     drag_word_prompt_json_structure_main_object: "Het object moet bevatten:",
     drag_word_prompt_task_description: "`taskDescription`: Een duidelijke instructie.",
-    drag_word_prompt_text_field: "`textField`: De in te vullen tekst, waarbij de te verslepen woorden tussen asterisken staan (*woord*).",
+    drag_word_prompt_text_field: "`textField`: De in te vullen tekst. Elke zin moet eindigen met een regeleinde `\\n`.",
     drag_word_prompt_content_rules_title: "**Regels voor de inhoud:**",
-    drag_word_prompt_rule1: "1.  Schrijf een coherent tekstje over het thema.",
-    drag_word_prompt_rule2: "2.  Identificeer ongeveer ${nombreQuestions} kernwoorden om versleepbaar te maken.",
+    drag_word_prompt_rule1: "1.  Schrijf een coherente tekst over het thema, met korte zinnen die eindigen op `\\n`.",
+    drag_word_prompt_rule2: "2.  Versleepbare woorden staan tussen asterisken. U kunt een tip toevoegen met `:mijn tip` en feedback met `\\+juiste feedback \\-onjuiste feedback`.",
     drag_word_prompt_example_json_title: "**JSON-voorbeeld:**",
     drag_word_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
 
-    // Fill in the Blanks-prompt
-    blanks_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Fill in the Blanks\".",
+    // Drag the Words UI translations
+    drag_words_check_answer: "Controleren",
+    drag_words_try_again: "Opnieuw proberen",
+    drag_words_show_solution: "Oplossing tonen",
+    drag_words_score_feedback: "Score: @score van @total.",
+    drag_words_tip_label: "Toon tip",
+    drag_words_correct_text: "Correct!",
+    drag_words_incorrect_text: "Incorrect!",
+    drag_words_score_bar_label: "Je hebt :num van de :total punten",
+    drag_words_submit_answer: "Indienen",
+ 
+     // Fill in the Blanks-prompt
+     blanks_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Fill in the Blanks\".",
     blanks_prompt_mission: "**Jouw missie:**",
     blanks_prompt_generate_json: "Genereer een volledig JSON-object voor een H5P-invulactiviteit. De JSON moet direct bruikbaar zijn.",
     blanks_prompt_json_structure_title: "**Verwachte JSON-structuur:**",

@@ -233,15 +233,26 @@ const translations_el = {
     drag_word_prompt_json_structure_title: "**Αναμενόμενη δομή JSON:**",
     drag_word_prompt_json_structure_main_object: "Το αντικείμενο πρέπει να περιέχει:",
     drag_word_prompt_task_description: "`taskDescription`: Σαφής οδηγία.",
-    drag_word_prompt_text_field: "`textField`: Το κείμενο προς συμπλήρωση· οι μετακινούμενες λέξεις περικλείονται με αστερίσκους (*λέξη*).",
+    drag_word_prompt_text_field: "`textField`: Το κείμενο προς συμπλήρωση. Κάθε πρόταση πρέπει να τελειώνει με αλλαγή γραμμής `\\n`.",
     drag_word_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
-    drag_word_prompt_rule1: "1. Δημιούργησε συνεκτικό κείμενο πάνω στο θέμα.",
-    drag_word_prompt_rule2: "2. Εντόπισε περίπου ${nombreQuestions} λέξεις-κλειδιά για μετακίνηση.",
+    drag_word_prompt_rule1: "1. Δημιούργησε ένα συνεκτικό κείμενο πάνω στο θέμα, με σύντομες προτάσεις που τελειώνουν με `\\n`.",
+    drag_word_prompt_rule2: "2. Οι μετακινούμενες λέξεις περικλείονται με αστερίσκους. Μπορείς να προσθέσεις μια συμβουλή με `:η συμβουλή μου` και ανατροφοδότηση με `\\+σωστή ανατροφοδότηση \\-λανθασμένη ανατροφοδότηση`.",
     drag_word_prompt_example_json_title: "**Παράδειγμα JSON:**",
     drag_word_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
 
-    // Prompt για Συμπλήρωση Κενών
-    blanks_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Fill in the Blanks\".",
+    // Drag the Words UI translations
+    drag_words_check_answer: "Έλεγχος",
+    drag_words_try_again: "Προσπάθησε ξανά",
+    drag_words_show_solution: "Εμφάνιση λύσης",
+    drag_words_score_feedback: "Βαθμολογία: @score από @total.",
+    drag_words_tip_label: "Εμφάνιση συμβουλής",
+    drag_words_correct_text: "Σωστό!",
+    drag_words_incorrect_text: "Λάθος!",
+    drag_words_score_bar_label: "Έχετε :num από τους :total πόντους",
+    drag_words_submit_answer: "Υποβολή",
+ 
+     // Prompt για Συμπλήρωση Κενών
+     blanks_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Fill in the Blanks\".",
     blanks_prompt_mission: "**Αποστολή σου:**",
     blanks_prompt_generate_json: "Δημιούργησε πλήρες JSON για δραστηριότητα H5P τύπου Fill in the Blanks. Πρέπει να είναι άμεσα χρησιμοποιήσιμο.",
     blanks_prompt_json_structure_title: "**Αναμενόμενη δομή JSON:**",

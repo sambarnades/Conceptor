@@ -233,15 +233,26 @@ const translations_pt = {
     drag_word_prompt_json_structure_title: "**Estrutura de JSON esperada:**",
     drag_word_prompt_json_structure_main_object: "O objeto deve conter:",
     drag_word_prompt_task_description: "`taskDescription`: Uma instrução clara.",
-    drag_word_prompt_text_field: "`textField`: O texto a completar, em que as palavras a arrastar estão entre asteriscos (*palavra*).",
+    drag_word_prompt_text_field: "`textField`: O texto a completar. Cada frase deve terminar com uma quebra de linha `\\n`.",
     drag_word_prompt_content_rules_title: "**Regras para o conteúdo:**",
-    drag_word_prompt_rule1: "1.  Crie um texto coerente sobre o tema.",
-    drag_word_prompt_rule2: "2.  Identifique cerca de ${nombreQuestions} palavras-chave para transformar em palavras arrastáveis.",
+    drag_word_prompt_rule1: "1.  Crie um texto coerente sobre o tema, com frases curtas que terminam com `\\n`.",
+    drag_word_prompt_rule2: "2.  As palavras arrastáveis estão entre asteriscos. Pode adicionar uma dica com `:minha dica` e feedback com `\\+feedback correto \\-feedback incorreto`.",
     drag_word_prompt_example_json_title: "**Exemplo de JSON:**",
     drag_word_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário.",
 
-    // Fill in the Blanks Prompt
-    blanks_prompt_role: "Você é um especialista em engenharia pedagógica criando uma atividade H5P \"Fill in the Blanks\".",
+    // Drag the Words UI translations
+    drag_words_check_answer: "Verificar",
+    drag_words_try_again: "Tentar novamente",
+    drag_words_show_solution: "Mostrar solução",
+    drag_words_score_feedback: "Pontuação: @score de @total.",
+    drag_words_tip_label: "Mostrar dica",
+    drag_words_correct_text: "Correto!",
+    drag_words_incorrect_text: "Incorreto!",
+    drag_words_score_bar_label: "Você obteve :num de :total pontos",
+    drag_words_submit_answer: "Enviar",
+ 
+     // Fill in the Blanks Prompt
+     blanks_prompt_role: "Você é um especialista em engenharia pedagógica criando uma atividade H5P \"Fill in the Blanks\".",
     blanks_prompt_mission: "**Sua missão:**",
     blanks_prompt_generate_json: "Gere um objeto JSON completo para uma atividade H5P do tipo Fill in the Blanks. O JSON deve ser diretamente utilizável.",
     blanks_prompt_json_structure_title: "**Estrutura de JSON esperada:**",
