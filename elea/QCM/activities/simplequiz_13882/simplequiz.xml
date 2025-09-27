@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity id="{{ACTIVITY_ID}}" moduleid="{{MODULE_ID}}" modulename="simplequiz" contextid="{{ACTIVITY_CONTEXTID}}">
+  <simplequiz id="{{ACTIVITY_ID}}">
+    <course>{{COURSE_ID}}</course>
+    <name>{{ACTIVITY_TITLE}}</name>
+    <intro>{{ACTIVITY_INTRO_HTML}}</intro>
+    <introformat>1</introformat>
+    <questions>{{QUESTIONS_JSON}}</questions>
+    <grade>100</grade>
+    <timecreated>{{TIMESTAMP}}</timecreated>
+    <timemodified>{{TIMESTAMP}}</timemodified>
+    <completionminattempts>1</completionminattempts>
+  </simplequiz>
+</activity>

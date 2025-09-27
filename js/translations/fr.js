@@ -273,6 +273,26 @@ const translations_fr = {
     appariement_prompt_example_json_title: "**Exemple de JSON :**",
     appariement_prompt_generate_only_json: "Génère uniquement l'objet JSON valide, sans aucun commentaire.",
  
+   // QCM Prompt
+   qcm_prompt_role: "Tu es un expert en ingénierie pédagogique créant une activité Moodle \"QCM\".",
+   qcm_prompt_num_questions: "**Nombre de questions :** 10",
+   qcm_prompt_mission: "**Ta mission :**",
+   qcm_prompt_generate_json: "Génère un objet JSON contenant un titre et une liste de **10 questions** pour un QCM.",
+   qcm_prompt_important_rules_title: "**Règles importantes :**",
+   qcm_prompt_rule1: "1.  Le `title` doit être un titre pertinent et engageant pour l'activité.",
+   qcm_prompt_rule2: "2.  Le tableau `questions` doit contenir 10 objets, chacun avec un `text` (l'intitulé de la question) et un tableau `answers`.",
+   qcm_prompt_rule3: "3.  Chaque tableau `answers` doit contenir plusieurs réponses possibles. Chaque réponse est un objet avec un `text` et `iscorrect` (1 pour vrai, 0 pour faux). Selon le contexte de la question, tu peux proposer des questions avec une seule bonne réponse ou avec plusieurs bonnes réponses.",
+   qcm_prompt_json_structure_title: "**Structure du JSON attendu :**",
+   qcm_prompt_main_object: "Un objet principal avec deux clés :",
+   qcm_prompt_title: "- `title`: Le titre de l'activité (chaîne de caractères).",
+   qcm_prompt_questions_array: "- `questions`: Un tableau de 10 objets, où chaque objet représente une question et contient :",
+   qcm_prompt_question_text: "- `text`: L'intitulé de la question (chaîne de caractères, peut contenir du HTML).",
+   qcm_prompt_answers_array: "- `answers`: Un tableau d'objets, où chaque objet représente une réponse et contient :",
+   qcm_prompt_answer_text: "- `text`: Le texte de la réponse (chaîne de caractères, peut contenir du HTML).",
+   qcm_prompt_answer_iscorrect: "- `iscorrect`: 1 si la réponse est correcte, 0 sinon.",
+   qcm_prompt_example_json_title: "**Exemple de JSON :**",
+   qcm_prompt_generate_only_json: "Génère uniquement l'objet JSON valide, sans aucun commentaire.",
+
     // H5P Modules
     h5p_timeline_name: "Frise chronologique",
     h5p_timeline_description: "Créez une frise chronologique interactive pour présenter une séquence d'événements.",
@@ -306,6 +326,9 @@ const translations_fr = {
     moodle_appariement_name: "Appariement",
     moodle_appariement_description: "Générez une activité d'appariement de 10 questions.",
 
+   moodle_qcm_name: "QCM",
+   moodle_qcm_description: "Générez une activité QCM simple.",
+
     // Dynamic content
     prompt_for_ia: "Prompt pour l'IA",
     copy_prompt: "📋 Copier le prompt",
@@ -326,6 +349,10 @@ const translations_fr = {
     paste_ia_result_millionnaire: "Collez le JSON généré par l'IA ci-dessous. Le titre de l'activité sera automatiquement extrait du JSON.",
     generate_mbz_millionnaire: "Générer l'activité Millionnaire (mbz)",
  
+   create_mbz_file_qcm: "Créer le fichier QCM (.mbz)",
+   paste_ia_result_qcm: "Collez le JSON généré par l'IA ci-dessous. Le titre de l'activité sera automatiquement extrait du JSON.",
+   generate_mbz_qcm: "Générer l'activité QCM (mbz)",
+
     // Moodle XML specific
     moodle_xml_placeholder: "Le XML Moodle apparaîtra ici...",
     paste_xml_placeholder: "Collez ici le XML complet généré par l'IA...",

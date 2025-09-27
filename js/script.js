@@ -242,6 +242,14 @@ document.addEventListener('DOMContentLoaded', function() {
            promptId: "appariementResultat",
            jsonInputId: "appariementJsonInput",
            createBtnId: "createAppariementMBZ"
+       },
+       QCM: {
+           name: "moodle_qcm_name",
+           description: "moodle_qcm_description",
+           image: "images/qcm.png",
+           promptId: "qcmResultat",
+           jsonInputId: "qcmJsonInput",
+           createBtnId: "createQCM_MBZ"
        }
    };
 
@@ -503,10 +511,31 @@ document.addEventListener('DOMContentLoaded', function() {
                    <button id="${module.createBtnId}" class="download-btn">${translations.generate_mbz_appariement}</button>
                </div>
            `;
+       } else if (moduleKey === 'QCM') {
+           contentHtml = `
+               <h3>${translations.moodle_qcm_name}</h3>
+               <p>${translations.moodle_qcm_description}</p>
+               <div class="h5p-prompt-block">
+                   <h3>Prompt pour l'IA</h3>
+                   
+                   <textarea id="${module.promptId}" readonly placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+                   <div class="action-buttons">
+                       <button id="copy-${moduleKey}" class="copy-btn">📋 Copier le prompt</button>
+                       <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
+                       <button class="action-btn go-mistral">Ⓜ️ Accéder à Le chat</button>
+                   </div>
+               </div>
+               <div class="h5p-processor">
+                   <h3>${translations.create_mbz_file_qcm}</h3>
+                   <p>${translations.paste_ia_result_qcm}</p>
+                   <textarea id="${module.jsonInputId}" placeholder="${translations.paste_json_or_text || 'Collez ici le contenu généré par l\'IA...'}"></textarea>
+                   <button id="${module.createBtnId}" class="download-btn">${translations.generate_mbz_qcm}</button>
+               </div>
+           `;
        }
-
-      contentContainer.innerHTML = `
-          <div class="h5p-content-header">
+ 
+       contentContainer.innerHTML = `
+           <div class="h5p-content-header">
               <h2>${translations[module.name]}</h2>
               <span class="close-button">&times;</span>
           </div>
@@ -560,11 +589,23 @@ document.addEventListener('DOMContentLoaded', function() {
                }
                handleAppariementCreation(jsonInput);
            });
+       } else if (moduleKey === 'QCM') {
+           const module = moodleModules[moduleKey];
+           setupCopyButton(`copy-${moduleKey}`, module.promptId);
+           document.getElementById(module.createBtnId).addEventListener('click', () => {
+               const jsonInput = document.getElementById(module.jsonInputId).value;
+               if (!jsonInput) {
+                   showNotification('Veuillez coller le contenu JSON généré.', 'error');
+                   return;
+               }
+               handleQCMCreation(jsonInput);
+           });
        }
        const promptIdForCopy = (moduleKey === 'moodleXml') ? 'moodleXmlResultat' :
-                               (moduleKey === 'gift') ? 'giftResultat' :
-                               (moduleKey === 'Millionnaire') ? moodleModules[moduleKey].promptId :
-                               (moduleKey === 'Appariement') ? moodleModules[moduleKey].promptId : null;
+                                (moduleKey === 'gift') ? 'giftResultat' :
+                                (moduleKey === 'Millionnaire') ? moodleModules[moduleKey].promptId :
+                                (moduleKey === 'Appariement') ? moodleModules[moduleKey].promptId :
+                                (moduleKey === 'QCM') ? moodleModules[moduleKey].promptId : null;
 
        contentContainer.querySelectorAll('.go-duck').forEach(btn => btn.addEventListener('click', function() {
            if (promptIdForCopy) copyToClipboard(promptIdForCopy, this);
@@ -584,6 +625,8 @@ document.addEventListener('DOMContentLoaded', function() {
        } else if (moduleKey === 'Millionnaire') {
            promptId = moodleModules[moduleKey].promptId;
        } else if (moduleKey === 'Appariement') {
+           promptId = moodleModules[moduleKey].promptId;
+       } else if (moduleKey === 'QCM') {
            promptId = moodleModules[moduleKey].promptId;
        }
 
@@ -1449,8 +1492,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                     ${pt.millionnaire_prompt_generate_only_json}${languageInstruction}`;
 
        const appariementPrompt = `${pt.appariement_prompt_role}
-                                   ${contextPrompt}
-                                   ${pt.appariement_prompt_num_questions}
+                                    ${contextPrompt}
+                                    ${pt.appariement_prompt_num_questions}
 
                                    ${pt.appariement_prompt_mission}
                                    ${pt.appariement_prompt_generate_json}
@@ -1482,9 +1525,49 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                    ${pt.appariement_prompt_generate_only_json}${languageInstruction}`;
 
-       return {
-           timelineResultat: timelinePrompt,
-            crosswordResultat: crosswordPrompt,
+        const qcmPrompt = `${pt.qcm_prompt_role}
+                                    ${contextPrompt}
+                                    ${pt.qcm_prompt_num_questions}
+ 
+                                    ${pt.qcm_prompt_mission}
+                                    ${pt.qcm_prompt_generate_json}
+ 
+                                    ${pt.qcm_prompt_important_rules_title}
+                                    ${pt.qcm_prompt_rule1}
+                                    ${pt.qcm_prompt_rule2}
+                                    ${pt.qcm_prompt_rule3}
+ 
+                                    ${pt.qcm_prompt_json_structure_title}
+                                    ${pt.qcm_prompt_main_object}
+                                    ${pt.qcm_prompt_title}
+                                    ${pt.qcm_prompt_questions_array}
+                                        ${pt.qcm_prompt_question_text}
+                                        ${pt.qcm_prompt_answers_array}
+                                            ${pt.qcm_prompt_answer_text}
+                                            ${pt.qcm_prompt_answer_iscorrect}
+ 
+                                    ${pt.qcm_prompt_example_json_title}
+                                    \`\`\`json
+                                    {
+                                      "title": "QCM sur la Révolution Française",
+                                      "questions": [
+                                        {
+                                          "text": "<p>Quelle est la date de la prise de la Bastille ?</p>",
+                                          "answers": [
+                                            { "text": "<p>14 juillet 1789</p>", "iscorrect": 1 },
+                                            { "text": "<p>4 août 1789</p>", "iscorrect": 0 },
+                                            { "text": "<p>26 août 1789</p>", "iscorrect": 0 }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                    \`\`\`
+ 
+                                    ${pt.qcm_prompt_generate_only_json}${languageInstruction}`;
+ 
+        return {
+            timelineResultat: timelinePrompt,
+             crosswordResultat: crosswordPrompt,
             essayResultat: essayPrompt,
             moodleXmlResultat: moodleXmlPrompt,
             giftResultat: giftPrompt,
@@ -1496,7 +1579,8 @@ document.addEventListener('DOMContentLoaded', function() {
             blanksResultat: blanksPrompt,
             markWordsResultat: markWordsPrompt,
             millionnaireResultat: millionnairePrompt,
-            appariementResultat: appariementPrompt
+            appariementResultat: appariementPrompt,
+            qcmResultat: qcmPrompt
         };
     }
 
@@ -1688,6 +1772,86 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
  
+   async function handleQCMCreation(jsonInput) {
+        try {
+            if (typeof Tar === 'undefined' || typeof fflate === 'undefined') {
+                throw new Error("Les bibliothèques de compression (Tar.js ou fflate) ne sont pas chargées.");
+            }
+            const jsonData = JSON.parse(jsonInput);
+            if (!jsonData.title || !Array.isArray(jsonData.questions) || jsonData.questions.length === 0 || jsonData.questions.some(q => !q.text || !Array.isArray(q.answers) || q.answers.length === 0)) {
+               throw new Error("La structure du JSON est invalide. Assurez-vous qu'elle contient un 'title' et un tableau 'questions' avec au moins une question et des réponses.");
+            }
+
+            const activityTitle = jsonData.title;
+            
+            const questionsData = escapeHtmlTags(JSON.stringify(jsonData.questions));
+
+            // --- Génération des IDs et Timestamps ---
+            const timestamp = Math.floor(Date.now() / 1000);
+            const courseId = 1000 + Math.floor(Math.random() * 9000);
+            const moduleId = 10000 + Math.floor(Math.random() * 90000);
+            const sectionId = 1000 + Math.floor(Math.random() * 9000);
+            const activityId = 100 + Math.floor(Math.random() * 900);
+            const courseContextId = 10000 + Math.floor(Math.random() * 90000);
+            const activityContextId = courseContextId + 2;
+            const gradeItemId = 1000 + Math.floor(Math.random() * 9000);
+            const categoryId = 1000 + Math.floor(Math.random() * 9000);
+
+            const data = {
+                'ACTIVITY_TITLE': activityTitle,
+                'ACTIVITY_INTRO_HTML': escapeHtmlTags(`<p dir="ltr" style="text-align: left;">Répondez aux questions suivantes.</p>`),
+                'QUESTIONS_JSON': questionsData, // Placeholder pour le JSON des questions
+                'COURSE_FULLNAME': activityTitle,
+                'COURSE_SHORTNAME': `parcours-qcm-${Math.random().toString(36).substring(2, 15)}`,
+                'COURSE_ID': courseId,
+                'MODULE_ID': moduleId,
+                'SECTION_ID': sectionId,
+                'ACTIVITY_ID': activityId,
+                'COURSE_CONTEXTID': courseContextId,
+                'ACTIVITY_CONTEXTID': activityContextId,
+                'GRADE_ITEM_ID': gradeItemId,
+                'CATEGORY_ID': categoryId,
+                'COURSE_ITEM_ID': categoryId,
+                'TIMESTAMP': timestamp,
+                'BACKUP_DATE': timestamp
+            };
+
+            const basePath = 'elea/QCM'; // Utiliser le dossier QCM comme base
+            let files = await fetchAllFilesRecursively(basePath, 'qcm');
+
+            const newFiles = {};
+            for (let path in files) {
+                let content = files[path];
+                for (const key in data) {
+                    const regex = new RegExp(`{{${key}}}`, 'g');
+                    content = content.replace(regex, data[key]);
+                }
+                
+                let newPath = path.replace(/simplequiz_13882/g, `simplequiz_${data.MODULE_ID}`);
+                // Pas de remplacement de section pour QCM pour l'instant, à vérifier
+                
+                newFiles[newPath] = content;
+            }
+            files = newFiles;
+
+            files['moodle_backup.log'] = 'Backup created automatically by Caramel\n';
+            const gzData = await createMbz(files);
+            const fileName = `${activityTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.mbz`;
+            
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([gzData], { type: 'application/gzip' }));
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(a.href);
+            showNotification(`Fichier ${fileName} généré avec succès !`);
+        } catch (error) {
+            console.error("Erreur lors de la création du MBZ pour le QCM:", error);
+            showNotification(`Erreur : ${error.message}`, 'error');
+        }
+   }
+
    async function fetchAllFilesRecursively(basePath, type) {
        let files = {};
        let structure;
@@ -1696,7 +1860,13 @@ document.addEventListener('DOMContentLoaded', function() {
                'moodle_backup.xml', 'files.xml', 'roles.xml', 'outcomes.xml', 'scales.xml', 'gradebook.xml', 'grade_history.xml', 'groups.xml', 'questions.xml', 'completion.xml',
                'activities/epikmatch_13863/epikmatch.xml', 'activities/epikmatch_13863/grades.xml', 'activities/epikmatch_13863/module.xml', 'activities/epikmatch_13863/inforef.xml', 'activities/epikmatch_13863/roles.xml', 'activities/epikmatch_13863/grade_history.xml', 'activities/epikmatch_13863/calendar.xml', 'activities/epikmatch_13863/filters.xml'
            ];
-       } else { // Fallback to millionnaire
+       } else if (type === 'qcm') {
+            structure = [
+               'moodle_backup.xml', 'files.xml', 'roles.xml', 'outcomes.xml', 'scales.xml', 'gradebook.xml', 'grade_history.xml', 'groups.xml', 'questions.xml', 'completion.xml', 'badges.xml',
+               'activities/simplequiz_13882/simplequiz.xml', 'activities/simplequiz_13882/grades.xml', 'activities/simplequiz_13882/module.xml', 'activities/simplequiz_13882/inforef.xml', 'activities/simplequiz_13882/roles.xml', 'activities/simplequiz_13882/grade_history.xml', 'activities/simplequiz_13882/calendar.xml', 'activities/simplequiz_13882/filters.xml'
+           ];
+       }
+       else { // Fallback to millionnaire
            structure = [
                'moodle_backup.xml', 'files.xml', 'roles.xml', 'outcomes.xml', 'scales.xml', 'gradebook.xml', 'grade_history.xml', 'groups.xml', 'questions.xml', 'completion.xml',
                'course/course.xml', 'course/enrolments.xml', 'course/completiondefaults.xml', 'course/inforef.xml', 'course/roles.xml',
