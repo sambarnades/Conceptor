@@ -926,8 +926,17 @@ document.addEventListener('DOMContentLoaded', function() {
            let options = { title: jsonObj.title || translations[module.name] };
 
             // Adaptations spécifiques par module
-            if (moduleKey === 'Timeline' && !jsonObj.timeline) {
-                content = { timeline: jsonObj };
+            if (moduleKey === 'Timeline') {
+               // Si la structure "timeline" n'existe pas, on l'enveloppe
+               const timelineData = jsonObj.timeline ? jsonObj : { timeline: jsonObj };
+
+               // Ajout des champs manquants avec des valeurs par défaut
+               timelineData.timeline.defaultZoomLevel = timelineData.timeline.defaultZoomLevel || "0";
+               const h5pLang = currentLang === 'zh' ? 'zh-cn' : currentLang;
+               timelineData.timeline.language = timelineData.timeline.language || h5pLang;
+               timelineData.timeline.height = timelineData.timeline.height || 600;
+               
+               content = timelineData;
             } else if (moduleKey === 'Flashcards') {
                 const defaultFlashcardsContent = {
                     title: jsonObj.title || translations[currentLang].h5p_flashcards_name,
@@ -994,7 +1003,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 ? [...new Set(jsonObj.quiz.questions.map(q => q.library.split(' ')[0]))]
                 : [];
 
-            createH5PFile(machineName, JSON.stringify(content), options, dynamicDependencies, includeLibs);
+            createH5PFile(machineName, JSON.stringify(content), options, dynamicDependencies, includeLibs, moduleKey);
 
         } catch (error) {
             if (error instanceof SyntaxError) {
@@ -1072,34 +1081,36 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ${pt.timeline_prompt_example_json_title}
                                 \`\`\`json
                                 {
-                                "timeline": {
+                                  "timeline": {
                                     "headline": "Titre de la frise chronologique",
                                     "text": "<p>Introduction sur le thème de la frise.</p>",
-                                    "asset": {
-                                    "media": "URL_IMAGE_PRINCIPALE",
-                                    "caption": "Légende de l'image",
-                                    "credit": "Source de l'image"
-                                    },
                                     "date": [
-                                    {
+                                      {
                                         "startDate": "1914,07,28",
+                                        "endDate": "1914,07,28",
                                         "headline": "Début de la Première Guerre mondiale",
                                         "text": "<p>L'Autriche-Hongrie déclare la guerre à la Serbie.</p>",
                                         "asset": {
-                                        "media": "URL_IMAGE_EVENEMENT_1",
-                                        "caption": "Légende",
-                                        "credit": "Source"
+                                          "media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
+                                          "caption": "L'archiduc François-Ferdinand juste avant son assassinat.",
+                                          "credit": "Wikimedia Commons / CC BY-SA 4.0"
                                         }
-                                    }
+                                      },
+                                      {
+                                        "startDate": "1918,11,11",
+                                        "endDate": "1918,11,11",
+                                        "headline": "Armistice de 1918",
+                                        "text": "<p>Signature de l'armistice à Rethondes, marquant la fin des combats.</p>"
+                                      }
                                     ],
                                     "era": [
-                                    {
+                                      {
                                         "startDate": "1914,07,28",
                                         "endDate": "1918,11,11",
                                         "headline": "Première Guerre mondiale"
-                                    }
+                                      }
                                     ]
-                                }
+                                  }
                                 }
                                 \`\`\`
 
@@ -1899,7 +1910,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     })();
 
-    async function createH5PFile(mainLibraryIdentifier, jsonContent, options = {}, dynamicDependencies = [], includeLibs = false) {
+    async function createH5PFile(mainLibraryIdentifier, jsonContent, options = {}, dynamicDependencies = [], includeLibs = false, moduleKey = '') {
         try {
             const files = [];
             const moduleName = mainLibraryIdentifier.split('.')[1];
@@ -2035,7 +2046,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 mainLibrary: mainLibraryIdentifier,
                 embedTypes: ["iframe"],
                 preloadedDependencies: dependenciesForJson,
-                language: "fr",
+                language: currentLang === 'zh' ? 'zh-cn' : currentLang,
                 license: "U"
             };
             files.push({
@@ -2052,11 +2063,20 @@ document.addEventListener('DOMContentLoaded', function() {
             const zipBlob = await downloadZip(files).blob();
             const url = URL.createObjectURL(zipBlob);
             const a = document.createElement('a');
-            const today = new Date();
-            const dateString = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
-            const englishName = h5pModules['QuizSet']?.englishName || 'quiz-set';
-            const fileName = `${englishName.toLowerCase().replace(/[^a-z0-9()]+/g, '-').replace(/^-+|-+$/g, '')}_caramel_${dateString}`;
-            a.download = `${fileName}.h5p`;
+            const now = new Date();
+            const dateString = now.getFullYear() + '-' +
+                             String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                             String(now.getDate()).padStart(2, '0') + '-' +
+                             String(now.getHours()).padStart(2, '0') + '-' +
+                             String(now.getMinutes()).padStart(2, '0');
+
+            const h5pType = (moduleKey && h5pModules[moduleKey])
+                            ? h5pModules[moduleKey].englishName.toLowerCase().replace(/[^a-z0-9()]+/g, '-').replace(/^-+|-+$/g, '')
+                            : mainLibraryIdentifier.split('.')[1].toLowerCase();
+
+            const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
+            const fileName = `h5p-${h5pType}_caramel_${dateString}_${lang}.h5p`;
+            a.download = fileName;
             a.href = url;
             document.body.appendChild(a);
             a.click();
@@ -2153,7 +2173,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 1. Créer le fichier h5p.json
         const h5pJson = {
             title: title,
-            language: "fr", // Langue par défaut
+            language: currentLang === 'zh' ? 'zh-cn' : currentLang,
             mainLibrary: "H5P.QuestionSet",
             embedTypes: ["iframe"],
             license: "U",
@@ -2180,11 +2200,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const zipBlob = await downloadZip(files).blob();
         const url = URL.createObjectURL(zipBlob);
         const a = document.createElement('a');
-        const today = new Date();
-        const dateString = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
-        const englishName = h5pModules['QuizSet']?.englishName || 'quiz-set';
-        const fileName = `${englishName.toLowerCase().replace(/[^a-z0-9()]+/g, '-').replace(/^-+|-+$/g, '')}_caramel_${dateString}`;
-        a.download = `${fileName}.h5p`;
+        const now = new Date();
+        const dateString = now.getFullYear() + '-' +
+                         String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                         String(now.getDate()).padStart(2, '0') + '-' +
+                         String(now.getHours()).padStart(2, '0') + '-' +
+                         String(now.getMinutes()).padStart(2, '0');
+
+        const h5pType = (h5pModules['QuizSet']?.englishName || 'quiz-set').toLowerCase().replace(/[^a-z0-9()]+/g, '-').replace(/^-+|-+$/g, '');
+        const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
+        const fileName = `h5p-${h5pType}_caramel_${dateString}_${lang}.h5p`;
+        a.download = fileName;
         a.href = url;
         document.body.appendChild(a);
         a.click();
