@@ -11,6 +11,20 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentLang = 'fr'; // Langue par défaut
     let translations = {}; // Objet pour stocker les traductions chargées dynamiquement
 
+   const languageConfig = {
+       'fr': { name: 'Français', code: 'fr' },
+       'de': { name: 'Deutsch', code: 'de' },
+       'en': { name: 'English', code: 'gb' },
+       'ar': { name: 'عربي', code: 'sa' },
+       'zh': { name: '中文', code: 'cn' },
+       'es': { name: 'Español', code: 'es' },
+       'el': { name: 'ελληνικά', code: 'gr' },
+       'it': { name: 'Italiano', code: 'it' },
+       'jp': { name: '日本語', code: 'jp' },
+       'nl': { name: 'Nederlands', code: 'nl' },
+       'pt': { name: 'Português', code: 'pt' }
+   };
+
     // Fonction pour charger dynamiquement le fichier de traduction
     async function loadTranslations(lang) {
         try {
@@ -24,10 +38,30 @@ document.addEventListener('DOMContentLoaded', function() {
             translatePage();
             // Mettre à jour l'attribut lang de la balise html
             document.documentElement.lang = lang;
+           updateLanguageSelector(); // Mettre à jour l'affichage
         } catch (error) {
             console.error(`Erreur lors du chargement des traductions pour ${lang}:`, error);
         }
     }
+
+   function updateLanguageSelector() {
+       // Mettre à jour les drapeaux et la classe active dans la liste déroulante
+       document.querySelectorAll('.language-dropdown a').forEach(link => {
+           const lang = link.getAttribute('data-lang');
+           const flagIcon = link.querySelector('.flag-icon');
+   
+           if (flagIcon && languageConfig[lang]) {
+               // Appliquer les classes de la bibliothèque de drapeaux
+               flagIcon.className = `flag-icon flag-icon-${languageConfig[lang].code}`;
+           }
+   
+           if (lang === currentLang) {
+               link.classList.add('active');
+           } else {
+               link.classList.remove('active');
+           }
+       });
+   }
 
     function translatePage() {
         document.querySelectorAll('[data-key]').forEach(element => {
@@ -714,6 +748,38 @@ document.addEventListener('DOMContentLoaded', function() {
             button.addEventListener('click', () => {
                 window.open('https://chat.mistral.ai/', '_blank', 'noopener,noreferrer');
             });
+        });
+
+        // Gestion de la modale des mentions légales
+        const legalMentionsLink = document.getElementById('legal-mentions-link');
+        const legalMentionsModal = document.getElementById('legal-mentions-modal');
+        const closeModalBtn = document.querySelector('.close-modal-btn');
+        const legalMentionsContent = document.getElementById('legal-mentions-content');
+
+        legalMentionsLink.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                const response = await fetch('legal/mentions-legales.html');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const html = await response.text();
+                legalMentionsContent.innerHTML = html;
+                legalMentionsModal.style.display = 'block';
+            } catch (error) {
+                console.error('Failed to fetch legal mentions:', error);
+                showNotification('Impossible de charger les mentions légales.', 'error');
+            }
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            legalMentionsModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === legalMentionsModal) {
+                legalMentionsModal.style.display = 'none';
+            }
         });
     }
 
