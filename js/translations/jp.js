@@ -270,6 +270,7 @@ const translations_jp = {
     blanks_prompt_rule3: "- ツールチップを追加するには、コロンを使用してください：*オープンソース:公開されたソースコード*。",
     blanks_prompt_example_json_title: "**JSONの例：**",
     blanks_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
+    blanks_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現し、トピックに関連している必要があります。",
 
     // Fill in the Blanks UI translations
     blanks_show_solutions: "解答を表示",

@@ -270,6 +270,7 @@ const translations_nl = {
     blanks_prompt_rule3: "-   Voor een tooltip gebruikt u een dubbele punt: *open-source:Openbare broncode*.",
     blanks_prompt_example_json_title: "**JSON-voorbeeld:**",
     blanks_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
+    blanks_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn, en gerelateerd aan het onderwerp.",
 
     // Fill in the Blanks UI translations
     blanks_show_solutions: "Oplossingen tonen",

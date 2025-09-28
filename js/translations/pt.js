@@ -270,6 +270,7 @@ const translations_pt = {
     blanks_prompt_rule3: "-   Para adicionar uma dica, utilize dois pontos: *open-source:Código-fonte público*.",
     blanks_prompt_example_json_title: "**Exemplo de JSON:**",
     blanks_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário.",
+    blanks_prompt_overall_feedback: "`overallFeedback`: Um array de 6 objetos para o feedback final, com pontuações de 0-10, 11-30, 31-50, 51-70, 71-90 e 91-100. O texto (`feedback`) deve ser benevolente, gradual e sempre formulado de forma afirmativa, relacionado com o tema.",
 
     // Fill in the Blanks UI translations
     blanks_show_solutions: "Mostrar soluções",

@@ -270,6 +270,7 @@ const translations_de = {
     blanks_prompt_rule3: "-   Um eine Quickinfo hinzuzufügen, verwenden Sie einen Doppelpunkt: *Open-Source:Öffentlicher Quellcode*.",
     blanks_prompt_example_json_title: "**Beispiel-JSON :**",
     blanks_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code, ohne Kommentare.",
+    blanks_prompt_overall_feedback: "`overallFeedback`: Ein Array von 6 Objekten für das abschließende Feedback mit Punktzahlen von 0-10, 11-30, 31-50, 51-70, 71-90 und 91-100. Der Text (`feedback`) muss wohlwollend, schrittweise und immer positiv formuliert sein und sich auf das Thema beziehen.",
 
     // Fill in the Blanks UI translations
     blanks_show_solutions: "Lösungen anzeigen",

@@ -1161,7 +1161,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
             } else if (moduleKey === 'FillInTheBlanks') {
                 content = {
-                    ...jsonObj, // Conserve les questions
+                    ...jsonObj, // Conserve les questions et le overallFeedback
                     showSolutions: translations.blanks_show_solutions || "Show solutions",
                     tryAgain: translations.blanks_try_again || "Try again",
                     checkAnswer: translations.blanks_check_answer || "Check",
@@ -1200,7 +1200,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         cancelLabel: translations.blanks_cancel_label || "Cancel",
                         confirmLabel: translations.blanks_retry_confirm_label || "Confirm"
                     },
-                    overallFeedback: [{
+                    overallFeedback: jsonObj.overallFeedback || [{
                         from: 0,
                         to: 100,
                         feedback: translations.blanks_feedback || "You got @score of @total blanks correct."
@@ -1695,6 +1695,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             ${pt.blanks_prompt_json_structure_main_object}
 
                             ${pt.blanks_prompt_content_rules_title}
+                            - ${pt.blanks_prompt_overall_feedback}
                             ${pt.blanks_prompt_rule1}
                             ${pt.blanks_prompt_rule2}
                             ${pt.blanks_prompt_rule3}

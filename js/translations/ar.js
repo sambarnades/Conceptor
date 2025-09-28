@@ -270,6 +270,7 @@ const translations_ar = {
     blanks_prompt_rule3: "- لإضافة تلميح استخدم نقطتين: *open-source:مصدر مفتوح عام*. ",
     blanks_prompt_example_json_title: "**مثال JSON:**",
     blanks_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
+    blanks_prompt_overall_feedback: "`overallFeedback`: مصفوفة من 6 كائنات للتقييم النهائي، مع درجات من 0-10، 11-30، 31-50، 51-70، 71-90، و 91-100. يجب أن يكون النص (`feedback`) إيجابيًا ومتدرجًا ومصاغًا دائمًا بشكل إيجابي، ومرتبطًا بالموضوع.",
 
     // Fill in the Blanks UI translations
     blanks_show_solutions: "إظهار الحلول",
