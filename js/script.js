@@ -1156,6 +1156,57 @@ document.addEventListener('DOMContentLoaded', function() {
                     a11yShowSolution: "Show the solution. The task will be marked with its correct solution.",
                     a11yRetry: "Retry the task. Reset all responses and start the task over again."
                 };
+            } else if (moduleKey === 'FillInTheBlanks') {
+                content = {
+                    ...jsonObj, // Conserve les questions
+                    showSolutions: translations.blanks_show_solutions || "Show solutions",
+                    tryAgain: translations.blanks_try_again || "Try again",
+                    checkAnswer: translations.blanks_check_answer || "Check",
+                    notFilledOut: translations.blanks_not_filled_out || "Please fill in all blanks",
+                    answerIsCorrect: translations.blanks_answer_is_correct || "'':ans' is correct",
+                    answerIsWrong: translations.blanks_answer_is_wrong || "'':ans' is wrong",
+                    answeredCorrectly: translations.blanks_answered_correctly || "Answered correctly",
+                    answeredIncorrectly: translations.blanks_answered_incorrectly || "Answered incorrectly",
+                    solutionLabel: translations.blanks_solution_label || "Correct answer:",
+                    inputLabel: translations.blanks_input_label || "Blank input @num of @total",
+                    inputHasTipLabel: translations.blanks_input_has_tip_label || "Tip available",
+                    tipLabel: translations.blanks_tip_label || "Tip",
+                    scoreBarLabel: translations.blanks_score_bar_label || "You got :num out of :total points",
+                    submitAnswer: translations.blanks_submit_answer || "Submit",
+                    behaviour: {
+                        enableSolutionsButton: true,
+                        autoCheck: true,
+                        caseSensitive: false,
+                        showSolutionsRequiresInput: true,
+                        separateLines: false,
+                        enableRetry: true,
+                        confirmCheckDialog: false,
+                        confirmRetryDialog: false,
+                        acceptSpellingErrors: false,
+                        enableCheckButton: true
+                    },
+                    confirmCheck: {
+                        header: translations.blanks_finish_header || "Finish ?",
+                        body: translations.blanks_finish_body || "Are you sure you wish to finish ?",
+                        cancelLabel: translations.blanks_cancel_label || "Cancel",
+                        confirmLabel: translations.blanks_finish_label || "Finish"
+                    },
+                    confirmRetry: {
+                        header: translations.blanks_retry_header || "Retry ?",
+                        body: translations.blanks_retry_body || "Are you sure you wish to retry ?",
+                        cancelLabel: translations.blanks_cancel_label || "Cancel",
+                        confirmLabel: translations.blanks_retry_confirm_label || "Confirm"
+                    },
+                    overallFeedback: [{
+                        from: 0,
+                        to: 100,
+                        feedback: translations.blanks_feedback || "You got @score of @total blanks correct."
+                    }],
+                    a11yCheck: translations.blanks_a11y_check || "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                    a11yShowSolution: translations.blanks_a11y_show_solution || "Show the solution. The task will be marked with its correct solution.",
+                    a11yRetry: translations.blanks_a11y_retry || "Retry the task. Reset all responses and start the task over again.",
+                    a11yCheckingModeHeader: translations.blanks_checking_mode_header || "Checking mode"
+                };
             }
  
              // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
