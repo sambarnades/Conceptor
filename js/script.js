@@ -1727,6 +1727,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ${pt.mark_words_prompt_content_rules_title}
                                 ${pt.mark_words_prompt_rule1}
                                 ${pt.mark_words_prompt_rule2.replace('${nombreQuestions}', nombreQuestions)}
+                                ${pt.mark_words_prompt_rule3}
+                                ${pt.mark_words_prompt_rule4}
 
                                 ${pt.mark_words_prompt_example_json_title}
                                 \`\`\`json

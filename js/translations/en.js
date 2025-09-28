@@ -312,6 +312,8 @@ const translations_en = {
     mark_words_prompt_content_rules_title: "**Content rules :**",
     mark_words_prompt_rule1: "1.  Create a relevant paragraph on the theme.",
     mark_words_prompt_rule2: "2.  Identify approximately ${nombreQuestions} important keywords to mark.",
+    mark_words_prompt_rule3: "3.  Each word to be marked must be individually enclosed in asterisks. For example, `*word1* *word2*` is correct, but `*word1 word2*` is not.",
+    mark_words_prompt_rule4: "4.  Apostrophes or other punctuation marks must not be attached to the marked words. For example, `it's*` is incorrect; it should be written as `it's *a*` for it to work.",
     mark_words_prompt_example_json_title: "**Example JSON :**",
     mark_words_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
 

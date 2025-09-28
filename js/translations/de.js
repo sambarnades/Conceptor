@@ -312,6 +312,8 @@ const translations_de = {
     mark_words_prompt_content_rules_title: "**Inhaltsregeln :**",
     mark_words_prompt_rule1: "1.  Erstellen Sie einen relevanten Absatz zum Thema.",
     mark_words_prompt_rule2: "2.  Identifizieren Sie ungefähr ${nombreQuestions} wichtige Schlüsselwörter zum Markieren.",
+    mark_words_prompt_rule3: "3.  Jedes zu markierende Wort muss einzeln in Sternchen eingeschlossen sein. Zum Beispiel ist `*Wort1* *Wort2*` korrekt, aber `*Wort1 Wort2*` nicht.",
+    mark_words_prompt_rule4: "4.  Apostrophe oder andere Satzzeichen dürfen nicht an den markierten Wörtern hängen. Zum Beispiel ist `geht's*` falsch; es sollte `geht's *nicht*` geschrieben werden, damit es funktioniert.",
     mark_words_prompt_example_json_title: "**Beispiel-JSON :**",
     mark_words_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code, ohne Kommentare.",
 

@@ -312,6 +312,8 @@ const translations_fr = {
     mark_words_prompt_content_rules_title: "**Règles pour le contenu :**",
     mark_words_prompt_rule1: "1.  Crée un paragraphe pertinent sur le thème.",
     mark_words_prompt_rule2: "2.  Identifie environ ${nombreQuestions} mots-clés importants à marquer.",
+    mark_words_prompt_rule3: "3.  Chaque mot à marquer doit être individuellement entouré d'astérisques. Par exemple, `*mot1* *mot2*` est correct, mais `*mot1 mot2*` ne l'est pas.",
+    mark_words_prompt_rule4: "4.  Les apostrophes ou autres signes de ponctuation ne doivent pas être collés aux mots marqués. Par exemple, `l'*oiseau*` est incorrect ; il faut écrire `l' *oiseau*` pour que cela fonctionne.",
     mark_words_prompt_example_json_title: "**Exemple de JSON :**",
     mark_words_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire.",
 

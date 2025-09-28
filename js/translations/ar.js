@@ -312,6 +312,8 @@ const translations_ar = {
     mark_words_prompt_content_rules_title: "**قواعد المحتوى:**",
     mark_words_prompt_rule1: "1. اكتب فقرة ذات صلة بالموضوع.",
     mark_words_prompt_rule2: "2. حدّد نحو ${nombreQuestions} كلمات مفتاحية مهمّة للتعليم.",
+    mark_words_prompt_rule3: "3.  يجب أن تكون كل كلمة مراد تحديدها محاطة بنجمة بشكل فردي. على سبيل المثال، `*كلمة1* *كلمة2*` صحيح، لكن `*كلمة1 كلمة2*` غير صحيح.",
+    mark_words_prompt_rule4: "4.  يجب ألا تكون الفواصل العليا أو علامات الترقيم الأخرى ملتصقة بالكلمات المحددة. على سبيل المثال، `ل'*الطائر*` غير صحيح؛ يجب أن تكتب `ال *طائر*` لكي تعمل.",
     mark_words_prompt_example_json_title: "**مثال JSON:**",
     mark_words_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
 

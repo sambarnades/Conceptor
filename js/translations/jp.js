@@ -312,6 +312,8 @@ const translations_jp = {
     mark_words_prompt_content_rules_title: "**コンテンツのルール：**",
     mark_words_prompt_rule1: "1. テーマに関する関連する段落を作成してください。",
     mark_words_prompt_rule2: "2. マークする重要なキーワードを約${nombreQuestions}個特定してください。",
+    mark_words_prompt_rule3: "3. マークする各単語は個別にアスタリスクで囲む必要があります。例えば、`*単語1* *単語2*`は正しいですが、`*単語1 単語2*`は正しくありません。",
+    mark_words_prompt_rule4: "4. アポストロフィやその他の句読点は、マークされた単語に付けてはいけません。例えば、`l'*oiseau*`は不正解です。`l' *oiseau*`と書くことで機能します。",
     mark_words_prompt_example_json_title: "**JSONの例：**",
     mark_words_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 

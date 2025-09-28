@@ -312,6 +312,8 @@ const translations_es = {
     mark_words_prompt_content_rules_title: "**Reglas de contenido :**",
     mark_words_prompt_rule1: "1.  Crea un párrafo relevante sobre el tema.",
     mark_words_prompt_rule2: "2.  Identifica aproximadamente ${nombreQuestions} palabras clave importantes para marcar.",
+    mark_words_prompt_rule3: "3.  Cada palabra a marcar debe estar individualmente entre asteriscos. Por ejemplo, `*palabra1* *palabra2*` es correcto, pero `*palabra1 palabra2*` no lo es.",
+    mark_words_prompt_rule4: "4.  Los apóstrofes u otros signos de puntuación no deben estar pegados a las palabras marcadas. Por ejemplo, `l'*árbol*` es incorrecto; debe escribirse `el *árbol*` para que funcione.",
     mark_words_prompt_example_json_title: "**Ejemplo de JSON :**",
     mark_words_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario.",
 
