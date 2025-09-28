@@ -245,6 +245,7 @@ const translations_es = {
     drag_word_prompt_rule2: "2.  Las palabras a arrastrar están entre asteriscos. Puedes añadir una pista con `:mi pista` y feedback con `\\+feedback correcto \\-feedback incorrecto`.",
     drag_word_prompt_example_json_title: "**Ejemplo de JSON :**",
     drag_word_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario.",
+    drag_word_prompt_overall_feedback: "`overallFeedback`: Un array de 6 objetos para el feedback final, con puntuaciones de 0-10, 11-30, 31-50, 51-70, 71-90 y 91-100. El texto (`feedback`) debe ser benévolo, gradual y siempre formulado en afirmativo, relacionado con el tema.",
 
     // Drag the Words UI translations
     drag_words_check_answer: "Comprobar",

@@ -245,6 +245,7 @@ const translations_de = {
     drag_word_prompt_rule2: "2.  Ziehbare Wörter sind in Sternchen eingeschlossen. Sie können einen Tipp mit `:mein Tipp` und Feedback mit `\\+richtiges Feedback \\-falsches Feedback` hinzufügen.",
     drag_word_prompt_example_json_title: "**Beispiel-JSON :**",
     drag_word_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code, ohne Kommentare.",
+    drag_word_prompt_overall_feedback: "`overallFeedback`: Ein Array von 6 Objekten für das abschließende Feedback mit Punktzahlen von 0-10, 11-30, 31-50, 51-70, 71-90 und 91-100. Der Text (`feedback`) muss wohlwollend, schrittweise und immer positiv formuliert sein und sich auf das Thema beziehen.",
 
     // Drag the Words UI translations
     drag_words_check_answer: "Überprüfen",

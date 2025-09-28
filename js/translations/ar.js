@@ -245,6 +245,7 @@ const translations_ar = {
     drag_word_prompt_rule2: "2. الكلمات القابلة للسحب محاطة بنجوم. يمكنك إضافة تلميح باستخدام `:تلميحي` وملاحظات باستخدام `\\+ملاحظات صحيحة \\-ملاحظات غير صحيحة`.",
     drag_word_prompt_example_json_title: "**مثال JSON:**",
     drag_word_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
+    drag_word_prompt_overall_feedback: "`overallFeedback`: مصفوفة من 6 كائنات للتقييم النهائي، مع درجات من 0-10، 11-30، 31-50، 51-70، 71-90، و 91-100. يجب أن يكون النص (`feedback`) إيجابيًا ومتدرجًا ومصاغًا دائمًا بشكل إيجابي، ومرتبطًا بالموضوع.",
 
     // Drag the Words UI translations
     drag_words_check_answer: "تحقق",

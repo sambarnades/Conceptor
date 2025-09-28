@@ -1132,7 +1132,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         instantFeedback: false,
                         enableCheckButton: true
                     },
-                    overallFeedback: [{
+                    overallFeedback: jsonObj.overallFeedback || [{
                         from: 0,
                         to: 100,
                         feedback: translations.drag_words_score_feedback || "Score: @score of @total."
@@ -1669,6 +1669,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ${pt.drag_word_prompt_json_structure_main_object}
                                 - ${pt.drag_word_prompt_task_description}
                                 - ${pt.drag_word_prompt_text_field}
+                                - ${pt.drag_word_prompt_overall_feedback}
 
                                 ${pt.drag_word_prompt_content_rules_title}
                                 ${pt.drag_word_prompt_rule1}
