@@ -1106,7 +1106,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     solvedLabel: translations.summary_solved_label,
                     scoreLabel: translations.summary_score_label,
                     resultLabel: translations.summary_result_label,
-                    overallFeedback: [{
+                    overallFeedback: jsonObj.overallFeedback || [{
                         from: 0,
                         to: 100,
                         feedback: translations.summary_feedback
@@ -1635,6 +1635,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ${pt.summary_prompt_summary_object}
                                 - ${pt.summary_prompt_summary_array}
                                 - ${pt.summary_prompt_tip_field}
+                                - ${pt.summary_prompt_overall_feedback}
 
                                 ${pt.summary_prompt_content_rules_title}
                                 ${pt.summary_prompt_rule1}

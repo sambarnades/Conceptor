@@ -216,6 +216,7 @@ const translations_ar = {
     summary_prompt_rule3: "3. يجب أن تكوّن جميع الجمل الصحيحة معًا ملخّصًا متماسكًا.",
     summary_prompt_example_json_title: "**مثال JSON لخطوة واحدة:**",
     summary_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
+    summary_prompt_overall_feedback: "`overallFeedback`: مصفوفة من 6 كائنات للتقييم النهائي، مع درجات من 0-10، 11-30، 31-50، 51-70، 71-90، و 91-100. يجب أن يكون النص (`feedback`) إيجابيًا ومتدرجًا ومصاغًا دائمًا بشكل إيجابي، ومرتبطًا بالموضوع.",
 
     // Summary UI translations
     summary_intro: "اختر العبارة الصحيحة.",

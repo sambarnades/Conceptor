@@ -216,6 +216,7 @@ const translations_el = {
     summary_prompt_rule3: "3. Όλες οι σωστές προτάσεις μαζί σχηματίζουν συνεκτική σύνοψη.",
     summary_prompt_example_json_title: "**Παράδειγμα JSON για ένα βήμα:**",
     summary_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
+    summary_prompt_overall_feedback: "`overallFeedback`: Ένας πίνακας 6 αντικειμένων για την τελική ανατροφοδότηση, με βαθμολογίες από 0-10, 11-30, 31-50, 51-70, 71-90 και 91-100. Το κείμενο (`feedback`) πρέπει να είναι ενθαρρυντικό, σταδιακό και πάντα διατυπωμένο θετικά, σχετικό με το θέμα.",
 
     // Summary UI translations
     summary_intro: "Επιλέξτε τη σωστή δήλωση.",

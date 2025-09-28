@@ -216,6 +216,7 @@ const translations_pt = {
     summary_prompt_rule3: "3.  O conjunto das frases corretas deve formar um resumo coerente.",
     summary_prompt_example_json_title: "**Exemplo de JSON para uma etapa:**",
     summary_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário.",
+    summary_prompt_overall_feedback: "`overallFeedback`: Um array de 6 objetos para o feedback final, com pontuações de 0-10, 11-30, 31-50, 51-70, 71-90 e 91-100. O texto (`feedback`) deve ser benevolente, gradual e sempre formulado de forma afirmativa, relacionado com o tema.",
 
     // Summary UI translations
     summary_intro: "Escolha a afirmação correta.",
