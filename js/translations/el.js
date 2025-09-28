@@ -1,4 +1,4 @@
-const translations_el = {
+var translations_el = {
     subtitle: "Υποβοηθούμενη δημιουργία πόρων και δραστηριοτήτων Moodle και Éléa",
     help_button: "Βοήθεια",
     help_title: "Πώς χρησιμοποιείται αυτό το εργαλείο;",
@@ -413,6 +413,8 @@ const translations_el = {
     h5p_fill_in_the_blanks_description: "Οι μαθητές συμπληρώνουν τις λέξεις που λείπουν απευθείας με το πληκτρολόγιο.",
     h5p_mark_the_words_name: "Επισήμανση λέξεων",
     h5p_mark_the_words_description: "Ζητήστε από τους μαθητές να επισημάνουν συγκεκριμένες λέξεις σε μια παράγραφο.",
+   h5p_true_false_name: "Ερώτηση Σωστό/Λάθος",
+   h5p_true_false_description: "Δημιουργήστε απλές ερωτήσεις με δυαδική απάντηση: σωστό ή λάθος.",
 
     // Ενότητες Moodle
     moodle_xml_name: "XML Éléa/Moodle",
@@ -556,5 +558,41 @@ const translations_el = {
     legal_library_clientzip: "<strong>client-zip</strong> (Άδεια: MIT): Μια άλλη βιβλιοθήκη που χρησιμοποιείται για τη συμπίεση αρχείων, προσφέροντας μια εναλλακτική λύση υψηλής απόδοσης για τη δημιουργία αρχείων .h5p απευθείας στον περιηγητή.",
     legal_library_fflate: "<strong>fflate</strong> (Άδεια: MIT): Πολύ γρήγορη βιβλιοθήκη για συμπίεση και αποσυμπίεση δεδομένων, που χρησιμοποιείται για τη δημιουργία αρχείων .mbz για ενότητες Moodle.",
     legal_library_tarjs: "<strong>tar-js</strong> (Άδεια: MIT): Επιτρέπει τη δημιουργία αρχείων .tar, ένα απαραίτητο βήμα πριν από τη συμπίεση για τη δημιουργία αρχείων .mbz για ενότητες Moodle.",
-    legal_library_ownership: "Κάθε βιβλιοθήκη παραμένει ιδιοκτησία των αντίστοιχων συγγραφέων της και χρησιμοποιείται σύμφωνα με την(τις) άδειά(ές) της."
+    legal_library_ownership: "Κάθε βιβλιοθήκη παραμένει ιδιοκτησία των αντίστοιχων συγγραφέων της και χρησιμοποιείται σύμφωνα με την(τις) άδειά(ές) της.",
+
+   // True/False Question
+   true_false_prompt_role: "Είστε ειδικός στον εκπαιδευτικό σχεδιασμό και δημιουργείτε μια ερώτηση Σωστό/Λάθος για μια δραστηριότητα H5P.",
+   true_false_prompt_mission: "Η αποστολή σας είναι να δημιουργήσετε ένα αντικείμενο JSON για μια ερώτηση Σωστό/Λάθος.",
+   true_false_prompt_generate_json: "Δημιουργήστε ένα αντικείμενο JSON με βάση την ακόλουθη δομή:",
+   true_false_prompt_json_structure_title: "--- ΑΝΑΜΕΝΟΜΕΝΗ ΔΟΜΗ JSON ---",
+   true_false_prompt_json_structure_main_object: "Το κύριο αντικείμενο πρέπει να περιέχει τα ακόλουθα κλειδιά:",
+   true_false_prompt_question: "`question`: (string) Η δήλωση προς αξιολόγηση. Μπορεί να περιέχει HTML.",
+   true_false_prompt_correct: "`correct`: (string) Η σωστή απάντηση, είτε \"true\" είτε \"false\".",
+  true_false_prompt_feedback_correct: "`feedbackOnCorrect`: (string) Σχόλιο που εμφανίζεται αν η απάντηση είναι σωστή.",
+  true_false_prompt_feedback_wrong: "`feedbackOnWrong`: (string) Σχόλιο που εμφανίζεται αν η απάντηση είναι λανθασμένη.",
+   true_false_prompt_content_rules_title: "--- ΚΑΝΟΝΕΣ ΠΕΡΙΕΧΟΜΕΝΟΥ ---",
+   true_false_prompt_rule1: "Η ερώτηση πρέπει να είναι μια σαφής δήλωση.",
+   true_false_prompt_rule2: "Η τιμή του `correct` πρέπει να είναι μια συμβολοσειρά: \"true\" ή \"false\".",
+   true_false_prompt_example_json_title: "--- ΠΑΡΑΔΕΙΓΜΑ JSON ---",
+   true_false_prompt_generate_only_json: "Θέλω να δημιουργήσετε μόνο το JSON, χωρίς σχόλια ή εισαγωγικό κείμενο.",
+   true_false_true_text: "Σωστό",
+   true_false_false_text: "Λάθος",
+   true_false_score: "Έχετε @score από @total πόντους",
+   true_false_check_answer: "Έλεγχος",
+   true_false_show_solution_button: "Εμφάνιση λύσης",
+   true_false_try_again: "Προσπαθήστε ξανά",
+   true_false_wrong_answer_message: "Λάθος απάντηση",
+   true_false_correct_answer_message: "Σωστή απάντηση",
+   true_false_score_bar_label: "Έχετε :num από τους :total πόντους",
+   true_false_submit_answer: "Υποβολή",
+   true_false_a11y_check: "Ελέγξτε τις απαντήσεις. Οι απαντήσεις θα επισημανθούν ως σωστές, λανθασμένες ή αναπάντητες.",
+   true_false_a11y_show_solution: "Εμφάνιση της λύσης. Η εργασία θα επισημανθεί με τη σωστή λύση της.",
+   true_false_a11y_retry: "Επαναλάβετε την εργασία. Επαναφέρετε όλες τις απαντήσεις και ξεκινήστε την εργασία από την αρχή.",
+   true_false_finish_header: "Ολοκλήρωση;",
+   true_false_finish_body: "Είστε σίγουροι ότι θέλετε να ολοκληρώσετε;",
+   true_false_cancel_label: "Άκυρο",
+   true_false_finish_label: "Ολοκλήρωση",
+   true_false_retry_header: "Επανάληψη;",
+   true_false_retry_body: "Είστε σίγουροι ότι θέλετε να προσπαθήσετε ξανά;",
+   true_false_retry_confirm_label: "Επιβεβαίωση"
 };

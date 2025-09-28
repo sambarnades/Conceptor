@@ -1,4 +1,4 @@
-const translations_ar = {
+var translations_ar = {
     subtitle: "إنشاء مُساعَد للموارد والأنشطة على Moodle وÉléa",
     help_button: "مساعدة",
     help_title: "كيف أستخدم هذه الأداة؟",
@@ -413,6 +413,8 @@ const translations_ar = {
     h5p_fill_in_the_blanks_description: "يملأ المتعلمون الكلمات الناقصة مباشرة بواسطة لوحة المفاتيح.",
     h5p_mark_the_words_name: "علِّم الكلمات",
     h5p_mark_the_words_description: "اطلب من المتعلمين تمييز كلمات معيّنة داخل فقرة.",
+   h5p_true_false_name: "سؤال صح/خطأ",
+   h5p_true_false_description: "أنشئ أسئلة بسيطة بإجابة ثنائية: صح أم خطأ.",
 
     // وحدات Moodle
     moodle_xml_name: "XML Éléa/Moodle",
@@ -561,5 +563,41 @@ const translations_ar = {
     legal_library_clientzip: "<strong>client-zip</strong> (الترخيص: MIT): مكتبة أخرى تستخدم لضغط الملفات، وتقدم بديلاً عالي الأداء لإنشاء أرشيفات .h5p مباشرة في المتصفح.",
     legal_library_fflate: "<strong>fflate</strong> (الترخيص: MIT): مكتبة سريعة جدًا لضغط وفك ضغط البيانات، تستخدم لإنشاء أرشيفات .mbz لوحدات Moodle.",
     legal_library_tarjs: "<strong>tar-js</strong> (الترخيص: MIT): يسمح بإنشاء أرشيفات .tar، وهي خطوة ضرورية قبل الضغط لتكوين ملفات .mbz لوحدات Moodle.",
-    legal_library_ownership: "تظل كل مكتبة ملكًا لمؤلفيها المعنيين وتستخدم وفقًا لترخيصها (تراخيصها)."
+    legal_library_ownership: "تظل كل مكتبة ملكًا لمؤلفيها المعنيين وتستخدم وفقًا لترخيصها (تراخيصها).",
+
+   // True/False Question
+   true_false_prompt_role: "أنت خبير في تصميم التعليم تنشئ سؤال صح/خطأ لنشاط H5P.",
+   true_false_prompt_mission: "مهمتك هي إنشاء كائن JSON لسؤال صح/خطأ.",
+   true_false_prompt_generate_json: "أنشئ كائن JSON بناءً على البنية التالية:",
+   true_false_prompt_json_structure_title: "--- بنية JSON المتوقعة ---",
+   true_false_prompt_json_structure_main_object: "يجب أن يحتوي الكائن الرئيسي على المفاتيح التالية:",
+   true_false_prompt_question: "`question`: (string) العبارة التي سيتم تقييمها. يمكن أن تحتوي على HTML.",
+   true_false_prompt_correct: "`correct`: (string) الإجابة الصحيحة، إما \"true\" أو \"false\".",
+  true_false_prompt_feedback_correct: "`feedbackOnCorrect`: (string) تعليق يظهر إذا كانت الإجابة صحيحة.",
+  true_false_prompt_feedback_wrong: "`feedbackOnWrong`: (string) تعليق يظهر إذا كانت الإجابة غير صحيحة.",
+   true_false_prompt_content_rules_title: "--- قواعد المحتوى ---",
+   true_false_prompt_rule1: "يجب أن يكون السؤال عبارة واضحة.",
+   true_false_prompt_rule2: "يجب أن تكون قيمة `correct` سلسلة نصية: \"true\" أو \"false\".",
+   true_false_prompt_example_json_title: "--- مثال على JSON ---",
+   true_false_prompt_generate_only_json: "أريدك أن تنشئ JSON فقط، بدون أي تعليقات أو نص تمهيدي.",
+   true_false_true_text: "صح",
+   true_false_false_text: "خطأ",
+   true_false_score: "لقد حصلت على @score من @total نقطة",
+   true_false_check_answer: "تحقق",
+   true_false_show_solution_button: "إظهار الحل",
+   true_false_try_again: "إعادة المحاولة",
+   true_false_wrong_answer_message: "إجابة خاطئة",
+   true_false_correct_answer_message: "إجابة صحيحة",
+   true_false_score_bar_label: "لقد حصلت على :num من :total نقطة",
+   true_false_submit_answer: "إرسال",
+   true_false_a11y_check: "تحقق من الإجابات. سيتم تمييز الإجابات بأنها صحيحة أو خاطئة أو لم تتم الإجابة عليها.",
+   true_false_a11y_show_solution: "إظهار الحل. سيتم تمييز المهمة بالحل الصحيح.",
+   true_false_a11y_retry: "أعد محاولة المهمة. أعد تعيين جميع الإجابات وابدأ المهمة من جديد.",
+   true_false_finish_header: "إنهاء؟",
+   true_false_finish_body: "هل أنت متأكد من رغبتك في الإنهاء؟",
+   true_false_cancel_label: "إلغاء",
+   true_false_finish_label: "إنهاء",
+   true_false_retry_header: "إعادة المحاولة؟",
+   true_false_retry_body: "هل أنت متأكد من رغبتك في إعادة المحاولة؟",
+   true_false_retry_confirm_label: "تأكيد"
 };

@@ -1,4 +1,4 @@
-const translations_zh = {
+var translations_zh = {
     subtitle: "辅助创建 Moodle 与 Éléa 资源与活动",
     help_button: "帮助",
     help_title: "如何使用此工具？",
@@ -413,6 +413,8 @@ const translations_zh = {
     h5p_fill_in_the_blanks_description: "学生直接用键盘填入文本中的缺失词语。",
     h5p_mark_the_words_name: "标注词语",
     h5p_mark_the_words_description: "要求学生在段落中标出特定词语。",
+   h5p_true_false_name: "判断题",
+   h5p_true_false_description: "创建答案为“是”或“否”的简单问题。",
 
     // Moodle 模块
     moodle_xml_name: "XML Éléa/Moodle",
@@ -561,5 +563,41 @@ const translations_zh = {
     legal_library_clientzip: "<strong>client-zip</strong> (许可证: MIT): 另一个用于文件压缩的库，为直接在浏览器中生成.h5p存档提供了高性能的替代方案。",
     legal_library_fflate: "<strong>fflate</strong> (许可证: MIT): 用于数据压缩和解压缩的非常快的库，用于为Moodle模块创建.mbz存档。",
     legal_library_tarjs: "<strong>tar-js</strong> (许可证: MIT): 允许创建.tar存档，这是压缩前形成Moodle模块的.mbz文件的必要步骤。",
-    legal_library_ownership: "每个库均为其各自作者的财产，并根据其许可证使用。"
+    legal_library_ownership: "每个库均为其各自作者的财产，并根据其许可证使用。",
+
+   // True/False Question
+   true_false_prompt_role: "你是一位教学设计专家，正在为H5P活动创建一个判断题。",
+   true_false_prompt_mission: "你的任务是为判断题生成一个JSON对象。",
+   true_false_prompt_generate_json: "根据以下结构生成一个JSON对象：",
+   true_false_prompt_json_structure_title: "--- 预期的JSON结构 ---",
+   true_false_prompt_json_structure_main_object: "主对象必须包含以下键：",
+   true_false_prompt_question: "`question`: (string) 待评估的陈述。可以包含HTML。",
+   true_false_prompt_correct: "`correct`: (string) 正确答案，为“true”或“false”。",
+  true_false_prompt_feedback_correct: "`feedbackOnCorrect`: (string) 如果答案正确，则显示评论。",
+  true_false_prompt_feedback_wrong: "`feedbackOnWrong`: (string) 如果答案不正确，则显示评论。",
+   true_false_prompt_content_rules_title: "--- 内容规则 ---",
+   true_false_prompt_rule1: "问题必须是一个明确的陈述。",
+   true_false_prompt_rule2: "`correct`的值必须是字符串：“true”或“false”。",
+   true_false_prompt_example_json_title: "--- JSON示例 ---",
+   true_false_prompt_generate_only_json: "我希望你只生成JSON，不带任何注释或介绍性文字。",
+   true_false_true_text: "正确",
+   true_false_false_text: "错误",
+   true_false_score: "你得到了@score/@total分",
+   true_false_check_answer: "检查",
+   true_false_show_solution_button: "显示答案",
+   true_false_try_again: "重试",
+   true_false_wrong_answer_message: "回答错误",
+   true_false_correct_answer_message: "回答正确",
+   true_false_score_bar_label: "你得到了:num/:total分",
+   true_false_submit_answer: "提交",
+   true_false_a11y_check: "检查答案。答案将被标记为正确、错误或未回答。",
+   true_false_a11y_show_solution: "显示答案。任务将标记其正确答案。",
+   true_false_a11y_retry: "重试任务。重置所有回答并重新开始任务。",
+   true_false_finish_header: "完成？",
+   true_false_finish_body: "你确定要完成吗？",
+   true_false_cancel_label: "取消",
+   true_false_finish_label: "完成",
+   true_false_retry_header: "重试？",
+   true_false_retry_body: "你确定要重试吗？",
+   true_false_retry_confirm_label: "确认"
 };

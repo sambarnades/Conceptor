@@ -212,7 +212,17 @@ document.addEventListener('DOMContentLoaded', function() {
             promptId: "markWordsResultat",
             jsonInputId: "markWordsJsonInput",
             createBtnId: "createMarkWordsH5P"
-        }
+        },
+       TrueFalse: {
+           name: "h5p_true_false_name",
+           englishName: "True/False Question",
+           machineName: "H5P.TrueFalse",
+           description: "h5p_true_false_description",
+           image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/true-false.png",
+           promptId: "trueFalseResultat",
+           jsonInputId: "trueFalseJsonInput",
+           createBtnId: "createTrueFalseH5P"
+       }
     };
     
     // --- Définition des modules Éléa ---
@@ -1210,6 +1220,51 @@ document.addEventListener('DOMContentLoaded', function() {
                     a11yRetry: translations.blanks_a11y_retry || "Retry the task. Reset all responses and start the task over again.",
                     a11yCheckingModeHeader: translations.blanks_checking_mode_header || "Checking mode"
                 };
+           } else if (moduleKey === 'TrueFalse') {
+               content = {
+                   ...jsonObj,
+                   correct: String(jsonObj.correct), // Ensure it's a string
+                   l10n: {
+                       trueText: translations.true_false_true_text || "True",
+                       falseText: translations.true_false_false_text || "False",
+                       score: translations.true_false_score || "You got @score of @total points",
+                       checkAnswer: translations.true_false_check_answer || "Check",
+                       showSolutionButton: translations.true_false_show_solution_button || "Show solution",
+                       tryAgain: translations.true_false_try_again || "Retry",
+                       wrongAnswerMessage: translations.true_false_wrong_answer_message || "Wrong answer",
+                       correctAnswerMessage: translations.true_false_correct_answer_message || "Correct answer",
+                       scoreBarLabel: translations.true_false_score_bar_label || "You got :num out of :total points",
+                       submitAnswer: translations.true_false_submit_answer || "Submit",
+                       a11yCheck: translations.true_false_a11y_check || "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                       a11yShowSolution: translations.true_false_a11y_show_solution || "Show the solution. The task will be marked with its correct solution.",
+                       a11yRetry: translations.true_false_a11y_retry || "Retry the task. Reset all responses and start the task over again."
+                   },
+                   behaviour: {
+                       enableRetry: true,
+                       enableSolutionsButton: true,
+                       confirmCheckDialog: false,
+                       confirmRetryDialog: false,
+                       autoCheck: false,
+                       enableCheckButton: true,
+                      feedbackOnCorrect: jsonObj.feedbackOnCorrect,
+                      feedbackOnWrong: jsonObj.feedbackOnWrong
+                   },
+                   confirmCheck: {
+                       header: translations.true_false_finish_header || "Finish ?",
+                       body: translations.true_false_finish_body || "Are you sure you wish to finish ?",
+                       cancelLabel: translations.true_false_cancel_label || "Cancel",
+                       confirmLabel: translations.true_false_finish_label || "Finish"
+                   },
+                   confirmRetry: {
+                       header: translations.true_false_retry_header || "Retry ?",
+                       body: translations.true_false_retry_body || "Are you sure you wish to retry ?",
+                       cancelLabel: translations.true_false_cancel_label || "Cancel",
+                       confirmLabel: translations.true_false_retry_confirm_label || "Confirm"
+                   },
+                   media: {
+                       disableImageZooming: false
+                   }
+               };
             }
  
              // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
@@ -1850,6 +1905,35 @@ document.addEventListener('DOMContentLoaded', function() {
  
                                     ${pt.qcm_prompt_generate_only_json}${languageInstruction}`;
  
+       const trueFalsePrompt = `${pt.true_false_prompt_role}
+                               ${contextPrompt}
+
+                               ${pt.true_false_prompt_mission}
+                               ${pt.true_false_prompt_generate_json}
+
+                               ${pt.true_false_prompt_json_structure_title}
+                               ${pt.true_false_prompt_json_structure_main_object}
+                               - ${pt.true_false_prompt_question}
+                               - ${pt.true_false_prompt_correct}
+                              - ${pt.true_false_prompt_feedback_correct}
+                              - ${pt.true_false_prompt_feedback_wrong}
+
+                               ${pt.true_false_prompt_content_rules_title}
+                               ${pt.true_false_prompt_rule1}
+                               ${pt.true_false_prompt_rule2}
+
+                               ${pt.true_false_prompt_example_json_title}
+                               \`\`\`json
+                               {
+                                   "question": "<p>Oslo est la capitale de la Norvège.</p>",
+                                   "correct": "true",
+                                   "feedbackOnCorrect": "Bonne réponse ! Oslo est bien la capitale de la Norvège.",
+                                   "feedbackOnWrong": "Mauvaise réponse. La capitale de la Norvège est Oslo."
+                               }
+                               \`\`\`
+
+                               ${pt.true_false_prompt_generate_only_json}${languageInstruction}`;
+
         return {
             timelineResultat: timelinePrompt,
              crosswordResultat: crosswordPrompt,
@@ -1865,7 +1949,8 @@ document.addEventListener('DOMContentLoaded', function() {
             markWordsResultat: markWordsPrompt,
             millionnaireResultat: millionnairePrompt,
             appariementResultat: appariementPrompt,
-            qcmResultat: qcmPrompt
+            qcmResultat: qcmPrompt,
+            trueFalseResultat: trueFalsePrompt
         };
     }
 
@@ -2297,22 +2382,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Si aucune bibliothèque n'est incluse, il faut quand même déclarer la dépendance principale.
             if (dependenciesForJson.length === 0 && mainLibraryIdentifier) {
-                const mainLibPath = await findLatestLibraryPath(mainLibraryIdentifier);
-                if (mainLibPath) {
-                    try {
-                        const response = await fetch(`${mainLibPath}/library.json`);
-                        if (response.ok) {
-                            const libraryInfo = await response.json();
-                            dependenciesForJson.push({
-                                machineName: libraryInfo.machineName,
-                                majorVersion: String(libraryInfo.majorVersion),
-                                minorVersion: String(libraryInfo.minorVersion)
-                            });
-                        }
-                    } catch (e) {
-                        console.error("Impossible de charger les informations de la bibliothèque principale :", e);
-                    }
-                }
+               const moduleInfo = h5pModules[moduleKey];
+               if (moduleInfo && moduleInfo.machineName) {
+                   const libPath = await findLatestLibraryPath(moduleInfo.machineName);
+                   if (libPath) {
+                       try {
+                           const response = await fetch(`${libPath}/library.json`);
+                           if (response.ok) {
+                               const libraryInfo = await response.json();
+                               dependenciesForJson.push({
+                                   machineName: libraryInfo.machineName,
+                                   majorVersion: String(libraryInfo.majorVersion),
+                                   minorVersion: String(libraryInfo.minorVersion)
+                               });
+                           }
+                       } catch (e) {
+                           console.error("Impossible de charger les informations de la bibliothèque principale :", e);
+                       }
+                   } else if (moduleInfo.machineName === "H5P.TrueFalse") {
+                       // Fallback for TrueFalse if local library is not found
+                       dependenciesForJson.push({
+                           machineName: "H5P.TrueFalse",
+                           majorVersion: "1",
+                           minorVersion: "8"
+                       });
+                   }
+               }
             }
 
             const h5pJson = {

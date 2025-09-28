@@ -1,4 +1,4 @@
-const translations_jp = {
+var translations_jp = {
     subtitle: "Moodle・Éléaリソース・アクティビティの支援作成",
     help_button: "ヘルプ",
     help_title: "このツールの使い方は？",
@@ -413,6 +413,8 @@ const translations_jp = {
     h5p_fill_in_the_blanks_description: "生徒がキーボードで直接テキストの欠落した単語を入力します。",
     h5p_mark_the_words_name: "単語をハイライト",
     h5p_mark_the_words_description: "生徒に段落の特定の単語をハイライトするよう求めます。",
+   h5p_true_false_name: "正誤問題",
+   h5p_true_false_description: "正解か不正解かの二者択一で答える簡単な問題を作成します。",
 
     // Moodle モジュール
     moodle_xml_name: "XML Éléa/Moodle",
@@ -556,5 +558,41 @@ const translations_jp = {
     legal_library_clientzip: "<strong>client-zip</strong> (ライセンス: MIT): ファイル圧縮に使用される別のライブラリで、ブラウザで直接.h5pアーカイブを生成するための高性能な代替手段を提供します。",
     legal_library_fflate: "<strong>fflate</strong> (ライセンス: MIT): Moodleモジュール用の.mbzアーカイブを作成するために使用される、データ圧縮および解凍用の非常に高速なライブラリ。",
     legal_library_tarjs: "<strong>tar-js</strong> (ライセンス: MIT): Moodleモジュール用の.mbzファイルを形成するために圧縮前に必要なステップである.tarアーカイブを作成できます。",
-    legal_library_ownership: "各ライブラリはそれぞれの作成者の所有物であり、そのライセンスに従って使用されます。"
+    legal_library_ownership: "各ライブラリはそれぞれの作成者の所有物であり、そのライセンスに従って使用されます。",
+
+   // True/False Question
+   true_false_prompt_role: "あなたは教育設計の専門家で、H5Pアクティビティの正誤問題を作成しています。",
+   true_false_prompt_mission: "あなたのミッションは、正誤問題のJSONオブジェクトを生成することです。",
+   true_false_prompt_generate_json: "次の構造に基づいてJSONオブジェクトを生成してください：",
+   true_false_prompt_json_structure_title: "--- 期待されるJSON構造 ---",
+   true_false_prompt_json_structure_main_object: "メインオブジェクトには次のキーが含まれている必要があります：",
+   true_false_prompt_question: "`question`: (string) 評価するステートメント。HTMLを含めることができます。",
+   true_false_prompt_correct: "`correct`: (string) 正解、「true」または「false」のいずれか。",
+  true_false_prompt_feedback_correct: "`feedbackOnCorrect`: (string) 正解の場合に表示されるコメント。",
+  true_false_prompt_feedback_wrong: "`feedbackOnWrong`: (string) 不正解の場合に表示されるコメント。",
+   true_false_prompt_content_rules_title: "--- コンテンツのルール ---",
+   true_false_prompt_rule1: "質問は明確なステートメントでなければなりません。",
+   true_false_prompt_rule2: "`correct`の値は文字列でなければなりません：「true」または「false」。",
+   true_false_prompt_example_json_title: "--- JSONの例 ---",
+   true_false_prompt_generate_only_json: "コメントや紹介文なしで、JSONのみを生成してください。",
+   true_false_true_text: "正解",
+   true_false_false_text: "不正解",
+   true_false_score: "合計@total点中@score点を獲得しました",
+   true_false_check_answer: "チェック",
+   true_false_show_solution_button: "解答を表示",
+   true_false_try_again: "再試行",
+   true_false_wrong_answer_message: "不正解",
+   true_false_correct_answer_message: "正解",
+   true_false_score_bar_label: "合計:total点中、:num点を獲得しました",
+   true_false_submit_answer: "送信",
+   true_false_a11y_check: "解答をチェックします。解答は正解、不正解、または未回答としてマークされます。",
+   true_false_a11y_show_solution: "解答を表示します。課題には正解が表示されます。",
+   true_false_a11y_retry: "課題を再試行します。すべての解答をリセットして、課題を最初からやり直します。",
+   true_false_finish_header: "終了しますか？",
+   true_false_finish_body: "本当に終了しますか？",
+   true_false_cancel_label: "キャンセル",
+   true_false_finish_label: "終了",
+   true_false_retry_header: "再試行しますか？",
+   true_false_retry_body: "本当に再試行しますか？",
+   true_false_retry_confirm_label: "確認"
 };

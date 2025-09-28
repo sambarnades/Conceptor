@@ -1,4 +1,4 @@
-const translations_it = {
+var translations_it = {
     subtitle: "Creazione assistita di risorse e attività per Moodle ed Éléa",
     help_button: "Aiuto",
     help_title: "Come usare questo strumento?",
@@ -413,6 +413,8 @@ const translations_it = {
     h5p_fill_in_the_blanks_description: "Gli studenti devono inserire le parole mancanti in un testo direttamente da tastiera.",
     h5p_mark_the_words_name: "Evidenzia le parole",
     h5p_mark_the_words_description: "Chiedi agli studenti di evidenziare alcune parole in un paragrafo.",
+   h5p_true_false_name: "Domanda Vero/Falso",
+   h5p_true_false_description: "Crea domande semplici con una risposta binaria: vero o falso.",
 
     // Moduli Moodle
     moodle_xml_name: "XML Éléa/Moodle",
@@ -556,5 +558,41 @@ const translations_it = {
     legal_library_clientzip: "<strong>client-zip</strong> (Licenza: MIT): Un'altra libreria utilizzata per la compressione di file, che offre un'alternativa ad alte prestazioni per la generazione di archivi .h5p direttamente nel browser.",
     legal_library_fflate: "<strong>fflate</strong> (Licenza: MIT): Libreria molto veloce per la compressione e decompressione dei dati, utilizzata per la creazione di archivi .mbz per i moduli Moodle.",
     legal_library_tarjs: "<strong>tar-js</strong> (Licenza: MIT): Consente di creare archivi .tar, un passaggio necessario prima della compressione per formare i file .mbz per i moduli Moodle.",
-    legal_library_ownership: "Ogni libreria rimane di proprietà dei rispettivi autori e viene utilizzata in conformità con la/le sua/e licenza/e."
+    legal_library_ownership: "Ogni libreria rimane di proprietà dei rispettivi autori e viene utilizzata in conformità con la/le sua/e licenza/e.",
+
+   // True/False Question
+   true_false_prompt_role: "Sei un esperto di progettazione didattica che crea una domanda Vero/Falso per un'attività H5P.",
+   true_false_prompt_mission: "La tua missione è generare un oggetto JSON per una domanda Vero/Falso.",
+   true_false_prompt_generate_json: "Genera un oggetto JSON basato sulla seguente struttura:",
+   true_false_prompt_json_structure_title: "--- STRUTTURA JSON PREVISTA ---",
+   true_false_prompt_json_structure_main_object: "L'oggetto principale deve contenere le seguenti chiavi:",
+   true_false_prompt_question: "`question`: (string) L'affermazione da valutare. Può contenere HTML.",
+   true_false_prompt_correct: "`correct`: (string) La risposta corretta, \"true\" o \"false\".",
+  true_false_prompt_feedback_correct: "`feedbackOnCorrect`: (string) Commento visualizzato se la risposta è corretta.",
+  true_false_prompt_feedback_wrong: "`feedbackOnWrong`: (string) Commento visualizzato se la risposta è errata.",
+   true_false_prompt_content_rules_title: "--- REGOLE DI CONTENUTO ---",
+   true_false_prompt_rule1: "La domanda deve essere un'affermazione chiara.",
+   true_false_prompt_rule2: "Il valore di `correct` deve essere una stringa: \"true\" o \"false\".",
+   true_false_prompt_example_json_title: "--- ESEMPIO DI JSON ---",
+   true_false_prompt_generate_only_json: "Voglio che tu generi solo il JSON, senza commenti o testo introduttivo.",
+   true_false_true_text: "Vero",
+   true_false_false_text: "Falso",
+   true_false_score: "Hai ottenuto @score di @total punti",
+   true_false_check_answer: "Controlla",
+   true_false_show_solution_button: "Mostra soluzione",
+   true_false_try_again: "Riprova",
+   true_false_wrong_answer_message: "Risposta sbagliata",
+   true_false_correct_answer_message: "Risposta corretta",
+   true_false_score_bar_label: "Hai ottenuto :num di :total punti",
+   true_false_submit_answer: "Invia",
+   true_false_a11y_check: "Controlla le risposte. Le risposte saranno contrassegnate come corrette, errate o non risposte.",
+   true_false_a11y_show_solution: "Mostra la soluzione. L'attività sarà contrassegnata con la sua soluzione corretta.",
+   true_false_a11y_retry: "Riprova l'attività. Resetta tutte le risposte e ricomincia l'attività.",
+   true_false_finish_header: "Finire?",
+   true_false_finish_body: "Sei sicuro di voler finire?",
+   true_false_cancel_label: "Annulla",
+   true_false_finish_label: "Finisci",
+   true_false_retry_header: "Riprovare?",
+   true_false_retry_body: "Sei sicuro di voler riprovare?",
+   true_false_retry_confirm_label: "Conferma"
 };

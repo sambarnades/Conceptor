@@ -1,4 +1,4 @@
-const translations_pt = {
+var translations_pt = {
     subtitle: "Criação assistida de recursos e atividades para Moodle e Éléa",
     help_button: "Ajuda",
     help_title: "Como utilizar esta ferramenta?",
@@ -413,6 +413,8 @@ const translations_pt = {
     h5p_fill_in_the_blanks_description: "Os alunos devem preencher diretamente no teclado as palavras em falta no texto.",
     h5p_mark_the_words_name: "Marcar palavras",
     h5p_mark_the_words_description: "Peça aos alunos que destaquem certas palavras num parágrafo.",
+   h5p_true_false_name: "Questão Verdadeiro/Falso",
+   h5p_true_false_description: "Crie perguntas simples com uma resposta binária: verdadeiro ou falso.",
 
     // Módulos Moodle
     moodle_xml_name: "XML Éléa/Moodle",
@@ -556,5 +558,41 @@ const translations_pt = {
     legal_library_clientzip: "<strong>client-zip</strong> (Licença: MIT): Outra biblioteca utilizada para a compressão de ficheiros, oferecendo uma alternativa de alto desempenho para gerar arquivos .h5p diretamente no navegador.",
     legal_library_fflate: "<strong>fflate</strong> (Licença: MIT): Biblioteca muito rápida para compressão e descompressão de dados, utilizada para criar arquivos .mbz para módulos Moodle.",
     legal_library_tarjs: "<strong>tar-js</strong> (Licença: MIT): Permite criar arquivos .tar, um passo necessário antes da compressão para formar ficheiros .mbz para módulos Moodle.",
-    legal_library_ownership: "Cada biblioteca permanece propriedade dos seus respetivos autores e é utilizada de acordo com a(s) sua(s) licença(s)."
+    legal_library_ownership: "Cada biblioteca permanece propriedade dos seus respetivos autores e é utilizada de acordo com a(s) sua(s) licença(s).",
+
+   // True/False Question
+   true_false_prompt_role: "Você é um especialista em design instrucional criando uma questão de Verdadeiro/Falso para uma atividade H5P.",
+   true_false_prompt_mission: "Sua missão é gerar um objeto JSON para uma questão de Verdadeiro/Falso.",
+   true_false_prompt_generate_json: "Gere um objeto JSON com base na seguinte estrutura:",
+   true_false_prompt_json_structure_title: "--- ESTRUTURA JSON ESPERADA ---",
+   true_false_prompt_json_structure_main_object: "O objeto principal deve conter as seguintes chaves:",
+   true_false_prompt_question: "`question`: (string) A afirmação a ser avaliada. Pode conter HTML.",
+   true_false_prompt_correct: "`correct`: (string) A resposta correta, \"true\" ou \"false\".",
+  true_false_prompt_feedback_correct: "`feedbackOnCorrect`: (string) Comentário exibido se a resposta estiver correta.",
+  true_false_prompt_feedback_wrong: "`feedbackOnWrong`: (string) Comentário exibido se a resposta estiver incorreta.",
+   true_false_prompt_content_rules_title: "--- REGRAS DE CONTEÚDO ---",
+   true_false_prompt_rule1: "A pergunta deve ser uma afirmação clara.",
+   true_false_prompt_rule2: "O valor de `correct` deve ser uma string: \"true\" ou \"false\".",
+   true_false_prompt_example_json_title: "--- EXEMPLO DE JSON ---",
+   true_false_prompt_generate_only_json: "Quero que você gere apenas o JSON, sem comentários ou texto introdutório.",
+   true_false_true_text: "Verdadeiro",
+   true_false_false_text: "Falso",
+   true_false_score: "Você obteve @score de @total pontos",
+   true_false_check_answer: "Verificar",
+   true_false_show_solution_button: "Mostrar solução",
+   true_false_try_again: "Tentar novamente",
+   true_false_wrong_answer_message: "Resposta errada",
+   true_false_correct_answer_message: "Resposta correta",
+   true_false_score_bar_label: "Você obteve :num de :total pontos",
+   true_false_submit_answer: "Enviar",
+   true_false_a11y_check: "Verifique as respostas. As respostas serão marcadas como corretas, incorretas ou não respondidas.",
+   true_false_a11y_show_solution: "Mostre a solução. A tarefa será marcada com a sua solução correta.",
+   true_false_a11y_retry: "Tente a tarefa novamente. Redefina todas as respostas e comece a tarefa novamente.",
+   true_false_finish_header: "Terminar?",
+   true_false_finish_body: "Tem certeza de que deseja terminar?",
+   true_false_cancel_label: "Cancelar",
+   true_false_finish_label: "Terminar",
+   true_false_retry_header: "Tentar novamente?",
+   true_false_retry_body: "Tem certeza de que deseja tentar novamente?",
+   true_false_retry_confirm_label: "Confirmar"
 };

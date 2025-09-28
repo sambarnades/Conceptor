@@ -1,4 +1,4 @@
-const translations_nl = {
+var translations_nl = {
     subtitle: "Begeleide creatie van Moodle- en Éléa-bronnen en -activiteiten",
     help_button: "Hulp",
     help_title: "Hoe gebruikt u deze tool?",
@@ -413,6 +413,8 @@ const translations_nl = {
     h5p_fill_in_the_blanks_description: "Leerlingen vullen de ontbrekende woorden rechtstreeks met het toetsenbord in.",
     h5p_mark_the_words_name: "Woorden markeren",
     h5p_mark_the_words_description: "Vraag leerlingen bepaalde woorden in een alinea te markeren.",
+   h5p_true_false_name: "Waar/Onwaar Vraag",
+   h5p_true_false_description: "Maak eenvoudige vragen met een binair antwoord: waar of onwaar.",
 
     // Moodle Modules
     moodle_xml_name: "XML Éléa/Moodle",
@@ -556,5 +558,41 @@ const translations_nl = {
     legal_library_clientzip: "<strong>client-zip</strong> (Licentie: MIT): Een andere bibliotheek die wordt gebruikt voor bestandscompressie en een krachtig alternatief biedt voor het rechtstreeks in de browser genereren van .h5p-archieven.",
     legal_library_fflate: "<strong>fflate</strong> (Licentie: MIT): Zeer snelle bibliotheek voor gegevenscompressie en -decompressie, gebruikt voor het maken van .mbz-archieven voor Moodle-modules.",
     legal_library_tarjs: "<strong>tar-js</strong> (Licentie: MIT): Maakt het mogelijk om .tar-archieven te maken, een noodzakelijke stap vóór compressie om .mbz-bestanden voor Moodle-modules te vormen.",
-    legal_library_ownership: "Elke bibliotheek blijft eigendom van de respectieve auteurs en wordt gebruikt in overeenstemming met de licentie(s)."
+    legal_library_ownership: "Elke bibliotheek blijft eigendom van de respectieve auteurs en wordt gebruikt in overeenstemming met de licentie(s).",
+
+   // True/False Question
+   true_false_prompt_role: "U bent een expert in onderwijsontwerp en maakt een Waar/Onwaar-vraag voor een H5P-activiteit.",
+   true_false_prompt_mission: "Uw missie is om een JSON-object te genereren voor een Waar/Onwaar-vraag.",
+   true_false_prompt_generate_json: "Genereer een JSON-object op basis van de volgende structuur:",
+   true_false_prompt_json_structure_title: "--- VERWACHTE JSON-STRUCTUUR ---",
+   true_false_prompt_json_structure_main_object: "Het hoofdobject moet de volgende sleutels bevatten:",
+   true_false_prompt_question: "`question`: (string) De te beoordelen bewering. Kan HTML bevatten.",
+   true_false_prompt_correct: "`correct`: (string) Het juiste antwoord, \"true\" of \"false\".",
+  true_false_prompt_feedback_correct: "`feedbackOnCorrect`: (string) Commentaar dat wordt weergegeven als het antwoord correct is.",
+  true_false_prompt_feedback_wrong: "`feedbackOnWrong`: (string) Commentaar dat wordt weergegeven als het antwoord onjuist is.",
+   true_false_prompt_content_rules_title: "--- INHOUDSREGELS ---",
+   true_false_prompt_rule1: "De vraag moet een duidelijke bewering zijn.",
+   true_false_prompt_rule2: "De waarde van `correct` moet een string zijn: \"true\" of \"false\".",
+   true_false_prompt_example_json_title: "--- JSON-VOORBEELD ---",
+   true_false_prompt_generate_only_json: "Ik wil dat u alleen de JSON genereert, zonder commentaar of inleidende tekst.",
+   true_false_true_text: "Waar",
+   true_false_false_text: "Onwaar",
+   true_false_score: "U hebt @score van de @total punten behaald",
+   true_false_check_answer: "Controleren",
+   true_false_show_solution_button: "Oplossing tonen",
+   true_false_try_again: "Opnieuw proberen",
+   true_false_wrong_answer_message: "Fout antwoord",
+   true_false_correct_answer_message: "Correct antwoord",
+   true_false_score_bar_label: "U hebt :num van de :total punten behaald",
+   true_false_submit_answer: "Indienen",
+   true_false_a11y_check: "Controleer de antwoorden. De antwoorden worden gemarkeerd als correct, incorrect of onbeantwoord.",
+   true_false_a11y_show_solution: "Toon de oplossing. De taak wordt gemarkeerd met de juiste oplossing.",
+   true_false_a11y_retry: "Probeer de taak opnieuw. Reset alle antwoorden en begin de taak opnieuw.",
+   true_false_finish_header: "Voltooien?",
+   true_false_finish_body: "Weet u zeker dat u wilt voltooien?",
+   true_false_cancel_label: "Annuleren",
+   true_false_finish_label: "Voltooien",
+   true_false_retry_header: "Opnieuw proberen?",
+   true_false_retry_body: "Weet u zeker dat u opnieuw wilt proberen?",
+   true_false_retry_confirm_label: "Bevestigen"
 };
