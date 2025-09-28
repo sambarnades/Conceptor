@@ -252,6 +252,16 @@ document.addEventListener('DOMContentLoaded', function() {
            promptId: "sortParagraphsResultat",
            jsonInputId: "sortParagraphsJsonInput",
            createBtnId: "createSortParagraphsH5P"
+       },
+       SingleChoiceSet: {
+           name: "h5p_single_choice_set_name",
+           englishName: "Single Choice Set",
+           machineName: "H5P.SingleChoiceSet",
+           description: "h5p_single_choice_set_description",
+           image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/single-choice-set-icon_0.png",
+           promptId: "singleChoiceSetResultat",
+           jsonInputId: "singleChoiceSetJsonInput",
+           createBtnId: "createSingleChoiceSetH5P"
        }
     };
     
@@ -1412,6 +1422,40 @@ document.addEventListener('DOMContentLoaded', function() {
                        listDescriptionShowSolution: translations.a11y_listDescriptionShowSolution
                    }
                };
+           } else if (moduleKey === 'SingleChoiceSet') {
+               content = {
+                   choices: jsonObj.choices.map(choice => ({
+                       ...choice,
+                       subContentId: generateUUID()
+                   })),
+                   overallFeedback: jsonObj.overallFeedback || [{"from":0,"to":100,"feedback":"You got :numcorrect of :maxscore correct"}],
+                   behaviour: {
+                       timeoutCorrect: 1000,
+                       timeoutWrong: 1000,
+                       soundEffectsEnabled: true,
+                       enableRetry: true,
+                       enableSolutionsButton: true,
+                       passPercentage: 100,
+                       autoContinue: true
+                   },
+                   l10n: {
+                       showSolutionButtonLabel: translations.showSolutionButtonLabel,
+                       retryButtonLabel: translations.retryButtonLabel,
+                       solutionViewTitle: translations.solutionViewTitle,
+                       correctText: translations.correctText,
+                       incorrectText: translations.incorrectText,
+                       muteButtonLabel: translations.muteButtonLabel,
+                       closeButtonLabel: translations.closeButtonLabel,
+                       slideOfTotal: translations.slideOfTotal,
+                       nextButtonLabel: translations.nextButtonLabel,
+                       scoreBarLabel: translations.scoreBarLabel,
+                       solutionListQuestionNumber: translations.solutionListQuestionNumber,
+                       a11yShowSolution: translations.a11yShowSolution,
+                       a11yRetry: translations.a11yRetry,
+                       shouldSelect: translations.shouldSelect,
+                       shouldNotSelect: translations.shouldNotSelect
+                   }
+               };
            }
 
              // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
@@ -2177,6 +2221,43 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                ${pt.sort_the_paragraphs_prompt_generate_only_json}${languageInstruction}`;
 
+       const singleChoiceSetPrompt = `${pt.single_choice_set_prompt_role}
+                               ${contextPrompt}
+
+                               ${pt.single_choice_set_prompt_mission}
+                               ${pt.single_choice_set_prompt_generate_json}
+
+                               ${pt.single_choice_set_prompt_json_structure_title}
+                               ${pt.single_choice_set_prompt_json_structure_main_object}
+                               - ${pt.single_choice_set_prompt_choices_array}
+                                   - ${pt.single_choice_set_prompt_question}
+                                   - ${pt.single_choice_set_prompt_answers_array}
+                               - ${pt.single_choice_set_prompt_overall_feedback}
+
+                               ${pt.single_choice_set_prompt_content_rules_title}
+                               ${pt.single_choice_set_prompt_rule1}
+
+                               ${pt.single_choice_set_prompt_example_json_title}
+                               \`\`\`json
+                               {
+                                 "choices": [
+                                   {
+                                     "question": "Goji berries are also known as ...",
+                                     "answers": ["Wolfberries", "Catberries", "Bearberries"]
+                                   },
+                                   {
+                                     "question": "Goji berries are native to ...",
+                                     "answers": ["Asia", "Africa", "Europe"]
+                                   }
+                                 ],
+                                 "overallFeedback": [
+                                   {"from": 0, "to": 100, "feedback": "You got :numcorrect of :maxscore correct"}
+                                 ]
+                               }
+                               \`\`\`
+
+                               ${pt.single_choice_set_prompt_generate_only_json}${languageInstruction}`;
+
         return {
             timelineResultat: timelinePrompt,
              crosswordResultat: crosswordPrompt,
@@ -2196,7 +2277,8 @@ document.addEventListener('DOMContentLoaded', function() {
             trueFalseResultat: trueFalsePrompt,
             multipleChoiceResultat: multipleChoicePrompt,
             findTheWordsResultat: findTheWordsPrompt,
-            sortParagraphsResultat: sortParagraphsPrompt
+            sortParagraphsResultat: sortParagraphsPrompt,
+            singleChoiceSetResultat: singleChoiceSetPrompt
         };
     }
 
@@ -2669,6 +2751,12 @@ document.addEventListener('DOMContentLoaded', function() {
                        dependenciesForJson.push({
                            machineName: "H5P.SortParagraphs",
                            majorVersion: "0",
+                           minorVersion: "11"
+                       });
+                   } else if (moduleInfo.machineName === "H5P.SingleChoiceSet") {
+                       dependenciesForJson.push({
+                           machineName: "H5P.SingleChoiceSet",
+                           majorVersion: "1",
                            minorVersion: "11"
                        });
                    }

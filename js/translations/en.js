@@ -421,6 +421,8 @@ const translations_en = {
    h5p_find_the_words_description: "Create a grid of letters where students must find words.",
    h5p_sort_the_paragraphs_name: "Sort the Paragraphs",
    h5p_sort_the_paragraphs_description: "Create a set of paragraphs that students must sort into the correct order.",
+   h5p_single_choice_set_name: "Single Choice Set",
+   h5p_single_choice_set_description: "Create a series of questions where each question has only one correct answer.",
  
      // Moodle Modules
      moodle_xml_name: "XML Éléa/Moodle",
@@ -701,5 +703,36 @@ const translations_en = {
    sort_the_paragraphs_prompt_content_rules_title: "**Content rules:**",
    sort_the_paragraphs_prompt_rule1: "1.  The `paragraphs` array must contain a list of paragraphs in the correct logical order.",
    sort_the_paragraphs_prompt_example_json_title: "**Example JSON:**",
-   sort_the_paragraphs_prompt_generate_only_json: "Generate only the valid JSON code, without any comments."
+   sort_the_paragraphs_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
+
+   // Single Choice Set UI translations
+   showSolutionButtonLabel: "Show solution",
+   retryButtonLabel: "Retry",
+   solutionViewTitle: "Solution",
+   correctText: "Correct!",
+   incorrectText: "Incorrect!",
+   muteButtonLabel: "Mute",
+   closeButtonLabel: "Close",
+   slideOfTotal: "Slide @slide of @total",
+   nextButtonLabel: "Next",
+   solutionListQuestionNumber: "Question @question",
+   a11yShowSolution: "Show the solution. The task will be marked with its correct solution.",
+   a11yRetry: "Retry the task. Reset all responses and start the task over again.",
+   shouldSelect: "Should select",
+   shouldNotSelect: "Should not select",
+
+   // Single Choice Set Prompt
+   single_choice_set_prompt_role: "You are an expert in pedagogical engineering creating an H5P \"Single Choice Set\" activity.",
+   single_choice_set_prompt_mission: "**Your mission:**",
+   single_choice_set_prompt_generate_json: "Generate a complete and valid JSON object for an H5P Single Choice Set activity.",
+   single_choice_set_prompt_json_structure_title: "**Expected JSON structure:**",
+   single_choice_set_prompt_json_structure_main_object: "The object must contain:",
+   single_choice_set_prompt_choices_array: "`choices`: An array of objects, where each object represents a question and contains:",
+   single_choice_set_prompt_question: "`question`: The question to ask.",
+   single_choice_set_prompt_answers_array: "`answers`: An array of strings. The first string is always the correct answer.",
+   single_choice_set_prompt_overall_feedback: "`overallFeedback`: An array of 6 objects for the final feedback, with scores from 0-10, 11-30, 31-50, 51-70, 71-90, and 91-100. The text (`feedback`) must be benevolent, gradual, and always phrased affirmatively.",
+   single_choice_set_prompt_content_rules_title: "**Content rules:**",
+   single_choice_set_prompt_rule1: "1.  In each `answers` array, the first answer is always the correct one.",
+   single_choice_set_prompt_example_json_title: "**Example JSON:**",
+   single_choice_set_prompt_generate_only_json: "Generate only the valid JSON code, without any comments."
 };

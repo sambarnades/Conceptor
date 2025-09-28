@@ -421,6 +421,8 @@ var translations_zh = {
    h5p_find_the_words_description: "创建一个字母网格，学生必须在其中找到单词。",
    h5p_sort_the_paragraphs_name: "段落排序",
    h5p_sort_the_paragraphs_description: "创建一组段落，学生必须按正确顺序排序。",
+   h5p_single_choice_set_name: "单选题集",
+   h5p_single_choice_set_description: "创建一系列问题，每个问题只有一个正确答案。",
  
      // Moodle 模块
      moodle_xml_name: "XML Éléa/Moodle",
@@ -700,5 +702,36 @@ var translations_zh = {
    sort_the_paragraphs_prompt_content_rules_title: "**内容规则:**",
    sort_the_paragraphs_prompt_rule1: "1.  `paragraphs` 数组必须包含按正确逻辑顺序排列的段落列表。",
    sort_the_paragraphs_prompt_example_json_title: "**JSON 示例:**",
-   sort_the_paragraphs_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。"
+   sort_the_paragraphs_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
+
+   // Single Choice Set UI translations
+   showSolutionButtonLabel: "显示答案",
+   retryButtonLabel: "重试",
+   solutionViewTitle: "答案",
+   correctText: "正确！",
+   incorrectText: "错误！",
+   muteButtonLabel: "静音",
+   closeButtonLabel: "关闭",
+   slideOfTotal: "幻灯片 @slide / @total",
+   nextButtonLabel: "下一个",
+   solutionListQuestionNumber: "问题 @question",
+   a11yShowSolution: "显示答案。任务将标记其正确答案。",
+   a11yRetry: "重试任务。重置所有回答并重新开始任务。",
+   shouldSelect: "应选择",
+   shouldNotSelect: "不应选择",
+
+   // Single Choice Set Prompt
+   single_choice_set_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“单选题集”活动。",
+   single_choice_set_prompt_mission: "**你的任务:**",
+   single_choice_set_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P 单选题集活动。",
+   single_choice_set_prompt_json_structure_title: "**预期的 JSON 结构:**",
+   single_choice_set_prompt_json_structure_main_object: "对象必须包含：",
+   single_choice_set_prompt_choices_array: "`choices`: 一个对象数组，每个对象代表一个问题并包含：",
+   single_choice_set_prompt_question: "`question`: 要提出的问题。",
+   single_choice_set_prompt_answers_array: "`answers`: 一个字符串数组。第一个字符串始终是正确答案。",
+   single_choice_set_prompt_overall_feedback: "`overallFeedback`: 一个包含6个对象的数组，用于最终反馈，分数范围为0-10、11-30、31-50、51-70、71-90和91-100。文本（`feedback`）必须是善意的、渐进的，并且始终以肯定的方式表达。",
+   single_choice_set_prompt_content_rules_title: "**内容规则:**",
+   single_choice_set_prompt_rule1: "1. 在每个 `answers` 数组中，第一个答案始终是正确的。",
+   single_choice_set_prompt_example_json_title: "**JSON 示例:**",
+   single_choice_set_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。"
 };

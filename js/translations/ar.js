@@ -421,6 +421,8 @@ var translations_ar = {
    h5p_find_the_words_description: "أنشئ شبكة حروف حيث يجب على الطلاب العثور على الكلمات.",
    h5p_sort_the_paragraphs_name: "ترتيب الفقرات",
    h5p_sort_the_paragraphs_description: "أنشئ مجموعة من الفقرات التي يجب على الطلاب ترتيبها بالترتيب الصحيح.",
+   h5p_single_choice_set_name: "مجموعة الاختيار الفردي",
+   h5p_single_choice_set_description: "أنشئ سلسلة من الأسئلة حيث يكون لكل سؤال إجابة صحيحة واحدة فقط.",
  
      // وحدات Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -700,5 +702,36 @@ var translations_ar = {
    sort_the_paragraphs_prompt_content_rules_title: "**قواعد المحتوى:**",
    sort_the_paragraphs_prompt_rule1: "1.  يجب أن تحتوي مصفوفة `paragraphs` على قائمة من الفقرات بالترتيب المنطقي الصحيح.",
    sort_the_paragraphs_prompt_example_json_title: "**مثال JSON:**",
-   sort_the_paragraphs_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات."
+   sort_the_paragraphs_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات.",
+
+   // Single Choice Set UI translations
+   showSolutionButtonLabel: "إظهار الحل",
+   retryButtonLabel: "إعادة المحاولة",
+   solutionViewTitle: "الحل",
+   correctText: "صحيح!",
+   incorrectText: "خطأ!",
+   muteButtonLabel: "كتم الصوت",
+   closeButtonLabel: "إغلاق",
+   slideOfTotal: "شريحة @slide من @total",
+   nextButtonLabel: "التالي",
+   solutionListQuestionNumber: "سؤال @question",
+   a11yShowSolution: "إظهار الحل. سيتم تمييز المهمة بالحل الصحيح.",
+   a11yRetry: "أعد محاولة المهمة. أعد تعيين جميع الإجابات وابدأ المهمة من جديد.",
+   shouldSelect: "يجب أن تختار",
+   shouldNotSelect: "لا يجب أن تختار",
+
+   // Single Choice Set Prompt
+   single_choice_set_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"مجموعة الاختيار الفردي\".",
+   single_choice_set_prompt_mission: "**مهمتك:**",
+   single_choice_set_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط H5P من نوع مجموعة الاختيار الفردي.",
+   single_choice_set_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
+   single_choice_set_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
+   single_choice_set_prompt_choices_array: "`choices`: مصفوفة من الكائنات، يمثّل كلٌّ منها سؤالًا ويحتوي على:",
+   single_choice_set_prompt_question: "`question`: السؤال المراد طرحه.",
+   single_choice_set_prompt_answers_array: "`answers`: مصفوفة من السلاسل النصية. السلسلة الأولى هي دائمًا الإجابة الصحيحة.",
+   single_choice_set_prompt_overall_feedback: "`overallFeedback`: مصفوفة من 6 كائنات للتقييم النهائي، مع درجات من 0-10، 11-30، 31-50، 51-70، 71-90، و 91-100. يجب أن يكون النص (`feedback`) إيجابيًا ومتدرجًا ومصاغًا دائمًا بشكل إيجابي.",
+   single_choice_set_prompt_content_rules_title: "**قواعد المحتوى:**",
+   single_choice_set_prompt_rule1: "1. في كل مصفوفة `answers`، تكون الإجابة الأولى هي الصحيحة دائمًا.",
+   single_choice_set_prompt_example_json_title: "**مثال JSON:**",
+   single_choice_set_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات."
 };

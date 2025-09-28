@@ -421,6 +421,8 @@ var translations_jp = {
    h5p_find_the_words_description: "生徒が単語を見つける文字グリッドを作成します。",
    h5p_sort_the_paragraphs_name: "段落の並べ替え",
    h5p_sort_the_paragraphs_description: "生徒が正しい順序に並べ替える必要がある段落のセットを作成します。",
+   h5p_single_choice_set_name: "単一選択セット",
+   h5p_single_choice_set_description: "各質問に正解が1つしかない一連の質問を作成します。",
  
      // Moodle モジュール
      moodle_xml_name: "XML Éléa/Moodle",
@@ -695,5 +697,36 @@ var translations_jp = {
    sort_the_paragraphs_prompt_content_rules_title: "**コンテンツのルール:**",
    sort_the_paragraphs_prompt_rule1: "1.  `paragraphs`配列には、正しい論理順序の段落のリストが含まれている必要があります。",
    sort_the_paragraphs_prompt_example_json_title: "**JSONの例:**",
-   sort_the_paragraphs_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。"
+   sort_the_paragraphs_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
+
+   // Single Choice Set UI translations
+   showSolutionButtonLabel: "解答を表示",
+   retryButtonLabel: "再試行",
+   solutionViewTitle: "解答",
+   correctText: "正解！",
+   incorrectText: "不正解！",
+   muteButtonLabel: "ミュート",
+   closeButtonLabel: "閉じる",
+   slideOfTotal: "スライド @slide / @total",
+   nextButtonLabel: "次へ",
+   solutionListQuestionNumber: "質問 @question",
+   a11yShowSolution: "解答を表示します。課題には正解が表示されます。",
+   a11yRetry: "課題を再試行します。すべての解答をリセットして、課題を最初からやり直します。",
+   shouldSelect: "選択する必要があります",
+   shouldNotSelect: "選択しないでください",
+
+   // Single Choice Set Prompt
+   single_choice_set_prompt_role: "あなたはH5P「単一選択セット」アクティビティを作成する教育工学の専門家です。",
+   single_choice_set_prompt_mission: "**あなたの使命:**",
+   single_choice_set_prompt_generate_json: "H5P単一選択セットアクティビティ用の完全で有効なJSONオブジェクトを生成してください。",
+   single_choice_set_prompt_json_structure_title: "**期待されるJSON構造:**",
+   single_choice_set_prompt_json_structure_main_object: "オブジェクトには以下を含める必要があります：",
+   single_choice_set_prompt_choices_array: "`choices`: 各質問を表すオブジェクトの配列。各オブジェクトには以下が含まれます：",
+   single_choice_set_prompt_question: "`question`: 質問。",
+   single_choice_set_prompt_answers_array: "`answers`: 文字列の配列。最初の文字列が常に正解です。",
+   single_choice_set_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現する必要があります。",
+   single_choice_set_prompt_content_rules_title: "**コンテンツのルール:**",
+   single_choice_set_prompt_rule1: "1. 各`answers`配列では、最初の回答が常に正解です。",
+   single_choice_set_prompt_example_json_title: "**JSONの例:**",
+   single_choice_set_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。"
 };

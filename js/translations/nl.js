@@ -421,6 +421,8 @@ var translations_nl = {
    h5p_find_the_words_description: "Maak een letterrooster waarin leerlingen woorden moeten vinden.",
    h5p_sort_the_paragraphs_name: "Paragrafen sorteren",
    h5p_sort_the_paragraphs_description: "Maak een set paragrafen die studenten in de juiste volgorde moeten sorteren.",
+   h5p_single_choice_set_name: "Enkelkeuze set",
+   h5p_single_choice_set_description: "Maak een reeks vragen waarbij elke vraag slechts één juist antwoord heeft.",
  
      // Moodle Modules
      moodle_xml_name: "XML Éléa/Moodle",
@@ -695,5 +697,36 @@ var translations_nl = {
    sort_the_paragraphs_prompt_content_rules_title: "**Inhoudsregels:**",
    sort_the_paragraphs_prompt_rule1: "1.  De `paragraphs`-array moet een lijst van paragrafen in de juiste logische volgorde bevatten.",
    sort_the_paragraphs_prompt_example_json_title: "**JSON-voorbeeld:**",
-   sort_the_paragraphs_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar."
+   sort_the_paragraphs_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar.",
+
+   // Single Choice Set UI translations
+   showSolutionButtonLabel: "Oplossing tonen",
+   retryButtonLabel: "Opnieuw proberen",
+   solutionViewTitle: "Oplossing",
+   correctText: "Correct!",
+   incorrectText: "Incorrect!",
+   muteButtonLabel: "Dempen",
+   closeButtonLabel: "Sluiten",
+   slideOfTotal: "Dia @slide van @total",
+   nextButtonLabel: "Volgende",
+   solutionListQuestionNumber: "Vraag @question",
+   a11yShowSolution: "Toon de oplossing. De taak wordt gemarkeerd met de juiste oplossing.",
+   a11yRetry: "Probeer de taak opnieuw. Reset alle antwoorden en begin de taak opnieuw.",
+   shouldSelect: "Moet selecteren",
+   shouldNotSelect: "Moet niet selecteren",
+
+   // Single Choice Set Prompt
+   single_choice_set_prompt_role: "U bent een expert in onderwijsontwerp en maakt een H5P-activiteit \"Enkelkeuze set\".",
+   single_choice_set_prompt_mission: "**Uw missie:**",
+   single_choice_set_prompt_generate_json: "Genereer een volledig en geldig JSON-object voor een H5P-activiteit van het type Enkelkeuze set.",
+   single_choice_set_prompt_json_structure_title: "**Verwachte JSON-structuur:**",
+   single_choice_set_prompt_json_structure_main_object: "Het object moet bevatten:",
+   single_choice_set_prompt_choices_array: "`choices`: Een array van objecten, waarbij elk object een vraag vertegenwoordigt en bevat:",
+   single_choice_set_prompt_question: "`question`: De te stellen vraag.",
+   single_choice_set_prompt_answers_array: "`answers`: Een array van tekenreeksen. De eerste tekenreeks is altijd het juiste antwoord.",
+   single_choice_set_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn.",
+   single_choice_set_prompt_content_rules_title: "**Inhoudsregels:**",
+   single_choice_set_prompt_rule1: "1. In elke `answers`-array is het eerste antwoord altijd het juiste.",
+   single_choice_set_prompt_example_json_title: "**JSON-voorbeeld:**",
+   single_choice_set_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar."
 };

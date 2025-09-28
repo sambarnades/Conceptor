@@ -421,6 +421,8 @@ var translations_de = {
    h5p_find_the_words_description: "Erstellen Sie ein Buchstabengitter, in dem die Schüler Wörter finden müssen.",
    h5p_sort_the_paragraphs_name: "Absätze sortieren",
    h5p_sort_the_paragraphs_description: "Erstellen Sie eine Reihe von Absätzen, die die Schüler in die richtige Reihenfolge bringen müssen.",
+   h5p_single_choice_set_name: "Einzelwahl-Satz",
+   h5p_single_choice_set_description: "Erstellen Sie eine Reihe von Fragen, bei denen jede Frage nur eine richtige Antwort hat.",
  
      // Moodle Module
      moodle_xml_name: "XML Éléa/Moodle",
@@ -694,5 +696,36 @@ var translations_de = {
    sort_the_paragraphs_prompt_content_rules_title: "**Inhaltsregeln:**",
    sort_the_paragraphs_prompt_rule1: "1.  Das `paragraphs`-Array muss eine Liste von Absätzen in der richtigen logischen Reihenfolge enthalten.",
    sort_the_paragraphs_prompt_example_json_title: "**Beispiel-JSON:**",
-   sort_the_paragraphs_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare."
+   sort_the_paragraphs_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare.",
+
+   // Single Choice Set UI translations
+   showSolutionButtonLabel: "Lösung anzeigen",
+   retryButtonLabel: "Wiederholen",
+   solutionViewTitle: "Lösung",
+   correctText: "Richtig!",
+   incorrectText: "Falsch!",
+   muteButtonLabel: "Stummschalten",
+   closeButtonLabel: "Schließen",
+   slideOfTotal: "Folie @slide von @total",
+   nextButtonLabel: "Weiter",
+   solutionListQuestionNumber: "Frage @question",
+   a11yShowSolution: "Zeigen Sie die Lösung an. Die Aufgabe wird mit der richtigen Lösung markiert.",
+   a11yRetry: "Versuchen Sie die Aufgabe erneut. Setzen Sie alle Antworten zurück und beginnen Sie von vorne.",
+   shouldSelect: "Sollte auswählen",
+   shouldNotSelect: "Sollte nicht auswählen",
+
+   // Single Choice Set Prompt
+   single_choice_set_prompt_role: "Sie sind ein Experte für pädagogische Ingenieurwissenschaften und erstellen eine H5P-Aktivität \"Einzelwahl-Satz\".",
+   single_choice_set_prompt_mission: "**Ihre Mission:**",
+   single_choice_set_prompt_generate_json: "Generieren Sie ein vollständiges und gültiges JSON-Objekt für eine H5P-Aktivität vom Typ Einzelwahl-Satz.",
+   single_choice_set_prompt_json_structure_title: "**Erwartete JSON-Struktur:**",
+   single_choice_set_prompt_json_structure_main_object: "Das Objekt muss enthalten:",
+   single_choice_set_prompt_choices_array: "`choices`: Ein Array von Objekten, wobei jedes Objekt eine Frage darstellt und Folgendes enthält:",
+   single_choice_set_prompt_question: "`question`: Die zu stellende Frage.",
+   single_choice_set_prompt_answers_array: "`answers`: Ein Array von Zeichenfolgen. Die erste Zeichenfolge ist immer die richtige Antwort.",
+   single_choice_set_prompt_overall_feedback: "`overallFeedback`: Ein Array von 6 Objekten für das abschließende Feedback mit Punktzahlen von 0-10, 11-30, 31-50, 51-70, 71-90 und 91-100. Der Text (`feedback`) muss wohlwollend, schrittweise und immer positiv formuliert sein.",
+   single_choice_set_prompt_content_rules_title: "**Inhaltsregeln:**",
+   single_choice_set_prompt_rule1: "1.  In jedem `answers`-Array ist die erste Antwort immer die richtige.",
+   single_choice_set_prompt_example_json_title: "**Beispiel-JSON:**",
+   single_choice_set_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare."
 };

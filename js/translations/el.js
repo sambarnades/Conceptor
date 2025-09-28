@@ -421,6 +421,8 @@ var translations_el = {
    h5p_find_the_words_description: "Δημιουργήστε ένα πλέγμα γραμμάτων όπου οι μαθητές πρέπει να βρουν λέξεις.",
    h5p_sort_the_paragraphs_name: "Ταξινόμηση παραγράφων",
    h5p_sort_the_paragraphs_description: "Δημιουργήστε ένα σύνολο παραγράφων που οι μαθητές πρέπει να ταξινομήσουν στη σωστή σειρά.",
+   h5p_single_choice_set_name: "Σετ απλής επιλογής",
+   h5p_single_choice_set_description: "Δημιουργήστε μια σειρά ερωτήσεων όπου κάθε ερώτηση έχει μόνο μία σωστή απάντηση.",
  
      // Ενότητες Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -695,5 +697,36 @@ var translations_el = {
    sort_the_paragraphs_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
    sort_the_paragraphs_prompt_rule1: "1.  Ο πίνακας `paragraphs` πρέπει να περιέχει μια λίστα παραγράφων με τη σωστή λογική σειρά.",
    sort_the_paragraphs_prompt_example_json_title: "**Παράδειγμα JSON:**",
-   sort_the_paragraphs_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια."
+   sort_the_paragraphs_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
+
+   // Single Choice Set UI translations
+   showSolutionButtonLabel: "Εμφάνιση λύσης",
+   retryButtonLabel: "Προσπάθησε ξανά",
+   solutionViewTitle: "Λύση",
+   correctText: "Σωστό!",
+   incorrectText: "Λάθος!",
+   muteButtonLabel: "Σίγαση",
+   closeButtonLabel: "Κλείσιμο",
+   slideOfTotal: "Διαφάνεια @slide από @total",
+   nextButtonLabel: "Επόμενο",
+   solutionListQuestionNumber: "Ερώτηση @question",
+   a11yShowSolution: "Εμφάνιση της λύσης. Η εργασία θα επισημανθεί με τη σωστή λύση της.",
+   a11yRetry: "Επαναλάβετε την εργασία. Επαναφέρετε όλες τις απαντήσεις και ξεκινήστε την εργασία από την αρχή.",
+   shouldSelect: "Πρέπει να επιλέξει",
+   shouldNotSelect: "Δεν πρέπει να επιλέξει",
+
+   // Single Choice Set Prompt
+   single_choice_set_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Σετ απλής επιλογής\".",
+   single_choice_set_prompt_mission: "**Αποστολή σου:**",
+   single_choice_set_prompt_generate_json: "Δημιούργησε ένα πλήρες και έγκυρο αντικείμενο JSON για δραστηριότητα H5P τύπου Σετ απλής επιλογής.",
+   single_choice_set_prompt_json_structure_title: "**Αναμενόμενη δομή JSON:**",
+   single_choice_set_prompt_json_structure_main_object: "Το αντικείμενο πρέπει να περιέχει:",
+   single_choice_set_prompt_choices_array: "`choices`: Ένας πίνακας αντικειμένων, όπου κάθε αντικείμενο αντιπροσωπεύει μια ερώτηση και περιλαμβάνει:",
+   single_choice_set_prompt_question: "`question`: Η ερώτηση προς υποβολή.",
+   single_choice_set_prompt_answers_array: "`answers`: Ένας πίνακας συμβολοσειρών. Η πρώτη συμβολοσειρά είναι πάντα η σωστή απάντηση.",
+   single_choice_set_prompt_overall_feedback: "`overallFeedback`: Ένας πίνακας 6 αντικειμένων για την τελική ανατροφοδότηση, με βαθμολογίες από 0-10, 11-30, 31-50, 51-70, 71-90 και 91-100. Το κείμενο (`feedback`) πρέπει να είναι ενθαρρυντικό, σταδιακό και πάντα διατυπωμένο θετικά.",
+   single_choice_set_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
+   single_choice_set_prompt_rule1: "1. Σε κάθε πίνακα `answers`, η πρώτη απάντηση είναι πάντα η σωστή.",
+   single_choice_set_prompt_example_json_title: "**Παράδειγμα JSON:**",
+   single_choice_set_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια."
 };

@@ -421,6 +421,8 @@ var translations_it = {
    h5p_find_the_words_description: "Crea una griglia di lettere in cui gli studenti devono trovare le parole.",
    h5p_sort_the_paragraphs_name: "Ordina i paragrafi",
    h5p_sort_the_paragraphs_description: "Crea un insieme di paragrafi che gli studenti devono ordinare correttamente.",
+   h5p_single_choice_set_name: "Set di scelta singola",
+   h5p_single_choice_set_description: "Crea una serie di domande in cui ogni domanda ha una sola risposta corretta.",
  
      // Moduli Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -695,5 +697,36 @@ var translations_it = {
    sort_the_paragraphs_prompt_content_rules_title: "**Regole per il contenuto:**",
    sort_the_paragraphs_prompt_rule1: "1.  L'array `paragraphs` deve contenere un elenco di paragrafi nell'ordine logico corretto.",
    sort_the_paragraphs_prompt_example_json_title: "**Esempio di JSON:**",
-   sort_the_paragraphs_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento."
+   sort_the_paragraphs_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento.",
+
+   // Single Choice Set UI translations
+   showSolutionButtonLabel: "Mostra soluzione",
+   retryButtonLabel: "Riprova",
+   solutionViewTitle: "Soluzione",
+   correctText: "Corretto!",
+   incorrectText: "Sbagliato!",
+   muteButtonLabel: "Muto",
+   closeButtonLabel: "Chiudi",
+   slideOfTotal: "Diapositiva @slide di @total",
+   nextButtonLabel: "Avanti",
+   solutionListQuestionNumber: "Domanda @question",
+   a11yShowSolution: "Mostra la soluzione. L'attività sarà contrassegnata con la sua soluzione corretta.",
+   a11yRetry: "Riprova l'attività. Resetta tutte le risposte e ricomincia l'attività.",
+   shouldSelect: "Dovrebbe selezionare",
+   shouldNotSelect: "Non dovrebbe selezionare",
+
+   // Single Choice Set Prompt
+   single_choice_set_prompt_role: "Sei un esperto di ingegneria pedagogica che crea un’attività H5P \"Set di scelta singola\".",
+   single_choice_set_prompt_mission: "**La tua missione:**",
+   single_choice_set_prompt_generate_json: "Genera un oggetto JSON completo e valido per un’attività H5P di tipo Set di scelta singola.",
+   single_choice_set_prompt_json_structure_title: "**Struttura JSON attesa:**",
+   single_choice_set_prompt_json_structure_main_object: "L’oggetto deve contenere:",
+   single_choice_set_prompt_choices_array: "`choices`: Un array di oggetti, in cui ogni oggetto rappresenta una domanda e contiene:",
+   single_choice_set_prompt_question: "`question`: La domanda da porre.",
+   single_choice_set_prompt_answers_array: "`answers`: Un array di stringhe. La prima stringa è sempre la risposta corretta.",
+   single_choice_set_prompt_overall_feedback: "`overallFeedback`: Un array di 6 oggetti per il feedback finale, con punteggi da 0-10, 11-30, 31-50, 51-70, 71-90 e 91-100. Il testo (`feedback`) deve essere benevolo, graduale e sempre formulato in modo affermativo.",
+   single_choice_set_prompt_content_rules_title: "**Regole per il contenuto:**",
+   single_choice_set_prompt_rule1: "1. In ogni array `answers`, la prima risposta è sempre quella corretta.",
+   single_choice_set_prompt_example_json_title: "**Esempio di JSON:**",
+   single_choice_set_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento."
 };
