@@ -242,6 +242,16 @@ document.addEventListener('DOMContentLoaded', function() {
            promptId: "findTheWordsResultat",
            jsonInputId: "findTheWordsJsonInput",
            createBtnId: "createFindTheWordsH5P"
+       },
+       SortParagraphs: {
+           name: "h5p_sort_the_paragraphs_name",
+           englishName: "Sort the Paragraphs",
+           machineName: "H5P.SortParagraphs",
+           description: "h5p_sort_the_paragraphs_description",
+           image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/sort-paragraphs.png",
+           promptId: "sortParagraphsResultat",
+           jsonInputId: "sortParagraphsJsonInput",
+           createBtnId: "createSortParagraphsH5P"
        }
     };
     
@@ -1355,6 +1365,52 @@ document.addEventListener('DOMContentLoaded', function() {
                        wordListHeader: translations.wordListHeader
                    }
                };
+           } else if (moduleKey === 'SortParagraphs') {
+               content = {
+                   taskDescription: jsonObj.taskDescription,
+                   paragraphs: jsonObj.paragraphs,
+                   overallFeedback: jsonObj.overallFeedback || [{"from":0,"to":100}],
+                   behaviour: {
+                       scoringMode: "transitions",
+                       applyPenalties: true,
+                       duplicatesInterchangeable: true,
+                       enableRetry: true,
+                       enableSolutionsButton: true,
+                       addButtonsForMovement: true
+                   },
+                   l10n: {
+                       checkAnswer: translations.checkAnswer,
+                       tryAgain: translations.tryAgain,
+                       showSolution: translations.showSolution,
+                       up: translations.up,
+                       down: translations.down,
+                       disabled: translations.disabled
+                   },
+                   a11y: {
+                       check: translations.a11y_check,
+                       showSolution: translations.a11y_showSolution,
+                       retry: translations.a11y_retry,
+                       yourResult: translations.a11y_yourResult,
+                       paragraph: translations.a11y_paragraph,
+                       correct: translations.a11y_correct,
+                       wrong: translations.a11y_wrong,
+                       point: translations.a11y_point,
+                       sevenOfNine: translations.a11y_sevenOfNine,
+                       currentPosition: translations.a11y_currentPosition,
+                       instructionsSelected: translations.a11y_instructionsSelected,
+                       instructionsGrabbed: translations.a11y_instructionsGrabbed,
+                       grabbed: translations.a11y_grabbed,
+                       moved: translations.a11y_moved,
+                       dropped: translations.a11y_dropped,
+                       reorderCancelled: translations.a11y_reorderCancelled,
+                       finalPosition: translations.a11y_finalPosition,
+                       nextParagraph: translations.a11y_nextParagraph,
+                       correctParagraph: translations.a11y_correctParagraph,
+                       listDescription: translations.a11y_listDescription,
+                       listDescriptionCheckAnswer: translations.a11y_listDescriptionCheckAnswer,
+                       listDescriptionShowSolution: translations.a11y_listDescriptionShowSolution
+                   }
+               };
            }
 
              // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
@@ -2089,6 +2145,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                ${pt.find_the_words_prompt_generate_only_json}${languageInstruction}`;
 
+       const sortParagraphsPrompt = `${pt.sort_the_paragraphs_prompt_role}
+                               ${contextPrompt}
+
+                               ${pt.sort_the_paragraphs_prompt_mission}
+                               ${pt.sort_the_paragraphs_prompt_generate_json}
+
+                               ${pt.sort_the_paragraphs_prompt_json_structure_title}
+                               ${pt.sort_the_paragraphs_prompt_json_structure_main_object}
+                               - ${pt.sort_the_paragraphs_prompt_task_description}
+                               - ${pt.sort_the_paragraphs_prompt_paragraphs_array}
+                               - ${pt.sort_the_paragraphs_prompt_overall_feedback}
+
+                               ${pt.sort_the_paragraphs_prompt_content_rules_title}
+                               ${pt.sort_the_paragraphs_prompt_rule1}
+
+                               ${pt.sort_the_paragraphs_prompt_example_json_title}
+                               \`\`\`json
+                               {
+                                 "taskDescription": "<p>My morning routine:</p>",
+                                 "paragraphs": [
+                                   "<p>First, I wake up at 7:30 am</p>",
+                                   "<p>Next, I get dressed</p>",
+                                   "<p>Then, I have breakfast</p>",
+                                   "<p>Afterward, I brush my teeth</p>",
+                                   "<p>Finally, I go to school</p>"
+                                 ]
+                               }
+                               \`\`\`
+
+                               ${pt.sort_the_paragraphs_prompt_generate_only_json}${languageInstruction}`;
+
         return {
             timelineResultat: timelinePrompt,
              crosswordResultat: crosswordPrompt,
@@ -2107,7 +2194,8 @@ document.addEventListener('DOMContentLoaded', function() {
             qcmResultat: qcmPrompt,
             trueFalseResultat: trueFalsePrompt,
             multipleChoiceResultat: multipleChoicePrompt,
-            findTheWordsResultat: findTheWordsPrompt
+            findTheWordsResultat: findTheWordsPrompt,
+            sortParagraphsResultat: sortParagraphsPrompt
         };
     }
 
@@ -2575,6 +2663,12 @@ document.addEventListener('DOMContentLoaded', function() {
                            machineName: "H5P.FindTheWords",
                            majorVersion: "1",
                            minorVersion: "4"
+                       });
+                   } else if (moduleInfo.machineName === "H5P.SortParagraphs") {
+                       dependenciesForJson.push({
+                           machineName: "H5P.SortParagraphs",
+                           majorVersion: "0",
+                           minorVersion: "11"
                        });
                    }
                }

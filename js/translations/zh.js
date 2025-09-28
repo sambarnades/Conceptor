@@ -419,6 +419,8 @@ var translations_zh = {
    h5p_multiple_choice_description: "创建具有一个或多个正确答案的多项选择题。",
    h5p_find_the_words_name: "单词搜索",
    h5p_find_the_words_description: "创建一个字母网格，学生必须在其中找到单词。",
+   h5p_sort_the_paragraphs_name: "段落排序",
+   h5p_sort_the_paragraphs_description: "创建一组段落，学生必须按正确顺序排序。",
  
      // Moodle 模块
      moodle_xml_name: "XML Éléa/Moodle",
@@ -658,5 +660,43 @@ var translations_zh = {
    find_the_words_prompt_rule1: "1.  `wordList` 必须是单个字符串，单词之间用逗号分隔。",
    find_the_words_prompt_example_json_title: "**JSON 示例:**",
    find_the_words_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
-   fillPool: ""
+   fillPool: "",
+
+   // Sort the Paragraphs UI translations
+   up: "上",
+   down: "下",
+   disabled: "已禁用",
+   a11y_yourResult: "您获得了 @total 分中的 @score 分",
+   a11y_paragraph: "段落",
+   a11y_correct: "正确",
+   a11y_wrong: "错误",
+   a11y_point: "@score 分",
+   a11y_sevenOfNine: "@total 中的 @current",
+   a11y_currentPosition: "列表中的当前位置",
+   a11y_instructionsSelected: "按空格键重新排序",
+   a11y_instructionsGrabbed: "按上下箭头键更改位置，按空格键放下，按 escape 取消",
+   a11y_grabbed: "已抓住",
+   a11y_moved: "已移动",
+   a11y_dropped: "已放下",
+   a11y_reorderCancelled: "重新排序已取消",
+   a11y_finalPosition: "最终位置",
+   a11y_nextParagraph: "下一段",
+   a11y_correctParagraph: "位置正确的段落",
+   a11y_listDescription: "可排序的段落列表。",
+   a11y_listDescriptionCheckAnswer: "带结果的段落列表。",
+   a11y_listDescriptionShowSolution: "带答案的段落列表。",
+
+   // Sort the Paragraphs Prompt
+   sort_the_paragraphs_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“段落排序”活动。",
+   sort_the_paragraphs_prompt_mission: "**你的任务:**",
+   sort_the_paragraphs_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P 段落排序活动。",
+   sort_the_paragraphs_prompt_json_structure_title: "**预期的 JSON 结构:**",
+   sort_the_paragraphs_prompt_json_structure_main_object: "对象必须包含：",
+   sort_the_paragraphs_prompt_task_description: "`taskDescription`: 活动的清晰说明。",
+   sort_the_paragraphs_prompt_paragraphs_array: "`paragraphs`: 字符串数组，每个字符串代表一个要排序的段落。段落必须按正确顺序排列。",
+   sort_the_paragraphs_prompt_overall_feedback: "`overallFeedback`: 一个包含6个对象的数组，用于最终反馈，分数范围为0-10、11-30、31-50、51-70、71-90和91-100。文本（`feedback`）必须是善意的、渐进的，并且始终以肯定的方式表达。",
+   sort_the_paragraphs_prompt_content_rules_title: "**内容规则:**",
+   sort_the_paragraphs_prompt_rule1: "1.  `paragraphs` 数组必须包含按正确逻辑顺序排列的段落列表。",
+   sort_the_paragraphs_prompt_example_json_title: "**JSON 示例:**",
+   sort_the_paragraphs_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。"
 };

@@ -419,6 +419,8 @@ var translations_es = {
    h5p_multiple_choice_description: "Crea preguntas de opción múltiple con una o más respuestas correctas.",
    h5p_find_the_words_name: "Sopa de letras",
    h5p_find_the_words_description: "Crea una cuadrícula de letras donde los alumnos deben encontrar palabras.",
+   h5p_sort_the_paragraphs_name: "Ordenar los párrafos",
+   h5p_sort_the_paragraphs_description: "Crea un conjunto de párrafos que los alumnos deben ordenar correctamente.",
  
      // Módulos de Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -659,5 +661,43 @@ var translations_es = {
    find_the_words_prompt_rule1: "1.  La `wordList` debe ser una única cadena de caracteres con palabras separadas por comas.",
    find_the_words_prompt_example_json_title: "**Ejemplo de JSON:**",
    find_the_words_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario.",
-   fillPool: "abcdefghijklmnopqrstuvwxyzñ"
+   fillPool: "abcdefghijklmnopqrstuvwxyzñ",
+
+   // Sort the Paragraphs UI translations
+   up: "Arriba",
+   down: "Abajo",
+   disabled: "Desactivado",
+   a11y_yourResult: "Has obtenido @score de @total puntos",
+   a11y_paragraph: "Párrafo",
+   a11y_correct: "correcto",
+   a11y_wrong: "incorrecto",
+   a11y_point: "@score punto",
+   a11y_sevenOfNine: "@current de @total",
+   a11y_currentPosition: "Posición actual en la lista",
+   a11y_instructionsSelected: "Pulsa la barra espaciadora para reordenar",
+   a11y_instructionsGrabbed: "Pulsa las flechas arriba y abajo para cambiar de posición, la barra espaciadora para soltar, escape para cancelar",
+   a11y_grabbed: "Agarrado",
+   a11y_moved: "Movido",
+   a11y_dropped: "Soltado",
+   a11y_reorderCancelled: "Reordenación cancelada",
+   a11y_finalPosition: "Posición final",
+   a11y_nextParagraph: "Siguiente párrafo",
+   a11y_correctParagraph: "Párrafo correcto en la posición",
+   a11y_listDescription: "Lista de párrafos ordenables.",
+   a11y_listDescriptionCheckAnswer: "Lista de párrafos con resultados.",
+   a11y_listDescriptionShowSolution: "Lista de párrafos con soluciones.",
+
+   // Sort the Paragraphs Prompt
+   sort_the_paragraphs_prompt_role: "Eres un experto en ingeniería pedagógica creando una actividad H5P \"Ordenar los párrafos\".",
+   sort_the_paragraphs_prompt_mission: "**Tu misión:**",
+   sort_the_paragraphs_prompt_generate_json: "Genera un objeto JSON completo y válido para una actividad H5P de ordenar párrafos.",
+   sort_the_paragraphs_prompt_json_structure_title: "**Estructura JSON esperada:**",
+   sort_the_paragraphs_prompt_json_structure_main_object: "El objeto debe contener:",
+   sort_the_paragraphs_prompt_task_description: "`taskDescription`: Instrucciones claras para la actividad.",
+   sort_the_paragraphs_prompt_paragraphs_array: "`paragraphs`: Un array de cadenas de texto, cada una representando un párrafo a ordenar. Los párrafos deben estar en el orden correcto.",
+   sort_the_paragraphs_prompt_overall_feedback: "`overallFeedback`: Un array de 6 objetos para el feedback final, con puntuaciones de 0-10, 11-30, 31-50, 51-70, 71-90 y 91-100. El texto (`feedback`) debe ser benévolo, gradual y siempre formulado en afirmativo.",
+   sort_the_paragraphs_prompt_content_rules_title: "**Reglas de contenido:**",
+   sort_the_paragraphs_prompt_rule1: "1.  El array `paragraphs` debe contener una lista de párrafos en el orden lógico correcto.",
+   sort_the_paragraphs_prompt_example_json_title: "**Ejemplo de JSON:**",
+   sort_the_paragraphs_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario."
 };

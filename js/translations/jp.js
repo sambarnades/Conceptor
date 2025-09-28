@@ -419,6 +419,8 @@ var translations_jp = {
    h5p_multiple_choice_description: "1つまたは複数の正解を持つ多肢選択問題を作成します。",
    h5p_find_the_words_name: "単語探し",
    h5p_find_the_words_description: "生徒が単語を見つける文字グリッドを作成します。",
+   h5p_sort_the_paragraphs_name: "段落の並べ替え",
+   h5p_sort_the_paragraphs_description: "生徒が正しい順序に並べ替える必要がある段落のセットを作成します。",
  
      // Moodle モジュール
      moodle_xml_name: "XML Éléa/Moodle",
@@ -653,5 +655,43 @@ var translations_jp = {
    find_the_words_prompt_rule1: "1.  `wordList`はカンマで区切られた単語の単一文字列である必要があります。",
    find_the_words_prompt_example_json_title: "**JSONの例:**",
    find_the_words_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
-   fillPool: ""
+   fillPool: "",
+
+   // Sort the Paragraphs UI translations
+   up: "上へ",
+   down: "下へ",
+   disabled: "無効",
+   a11y_yourResult: "合計@total点中@score点を獲得しました",
+   a11y_paragraph: "段落",
+   a11y_correct: "正解",
+   a11y_wrong: "不正解",
+   a11y_point: "@score点",
+   a11y_sevenOfNine: "@total個中@current個",
+   a11y_currentPosition: "リスト内の現在位置",
+   a11y_instructionsSelected: "スペースキーを押して並べ替える",
+   a11y_instructionsGrabbed: "上下矢印キーで位置を変更、スペースキーでドロップ、エスケープでキャンセル",
+   a11y_grabbed: "つかんだ",
+   a11y_moved: "移動した",
+   a11y_dropped: "ドロップした",
+   a11y_reorderCancelled: "並べ替えをキャンセルしました",
+   a11y_finalPosition: "最終位置",
+   a11y_nextParagraph: "次の段落",
+   a11y_correctParagraph: "位置が正しい段落",
+   a11y_listDescription: "並べ替え可能な段落のリスト。",
+   a11y_listDescriptionCheckAnswer: "結果付きの段落のリスト。",
+   a11y_listDescriptionShowSolution: "解答付きの段落のリスト。",
+
+   // Sort the Paragraphs Prompt
+   sort_the_paragraphs_prompt_role: "あなたはH5P「段落の並べ替え」アクティビティを作成する教育工学の専門家です。",
+   sort_the_paragraphs_prompt_mission: "**あなたの使命:**",
+   sort_the_paragraphs_prompt_generate_json: "H5P段落の並べ替えアクティビティ用の完全で有効なJSONオブジェクトを生成してください。",
+   sort_the_paragraphs_prompt_json_structure_title: "**期待されるJSON構造:**",
+   sort_the_paragraphs_prompt_json_structure_main_object: "オブジェクトには以下を含める必要があります：",
+   sort_the_paragraphs_prompt_task_description: "`taskDescription`: アクティビティの明確な指示。",
+   sort_the_paragraphs_prompt_paragraphs_array: "`paragraphs`: 並べ替える段落を表す文字列の配列。段落は正しい順序でなければなりません。",
+   sort_the_paragraphs_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現する必要があります。",
+   sort_the_paragraphs_prompt_content_rules_title: "**コンテンツのルール:**",
+   sort_the_paragraphs_prompt_rule1: "1.  `paragraphs`配列には、正しい論理順序の段落のリストが含まれている必要があります。",
+   sort_the_paragraphs_prompt_example_json_title: "**JSONの例:**",
+   sort_the_paragraphs_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。"
 };

@@ -419,6 +419,8 @@ var translations_ar = {
    h5p_multiple_choice_description: "أنشئ أسئلة الاختيار من متعدد مع إجابة صحيحة واحدة أو أكثر.",
    h5p_find_the_words_name: "البحث عن الكلمات",
    h5p_find_the_words_description: "أنشئ شبكة حروف حيث يجب على الطلاب العثور على الكلمات.",
+   h5p_sort_the_paragraphs_name: "ترتيب الفقرات",
+   h5p_sort_the_paragraphs_description: "أنشئ مجموعة من الفقرات التي يجب على الطلاب ترتيبها بالترتيب الصحيح.",
  
      // وحدات Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -658,5 +660,43 @@ var translations_ar = {
    find_the_words_prompt_rule1: "1.  يجب أن تكون `wordList` سلسلة واحدة من الكلمات مفصولة بفواصل.",
    find_the_words_prompt_example_json_title: "**مثال JSON:**",
    find_the_words_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات.",
-   fillPool: "ابتثجحخدذرزسشصضطظعغفقكلمنهوي"
+   fillPool: "ابتثجحخدذرزسشصضطظعغفقكلمنهوي",
+
+   // Sort the Paragraphs UI translations
+   up: "أعلى",
+   down: "أسفل",
+   disabled: "معطل",
+   a11y_yourResult: "لقد حصلت على @score من @total نقطة",
+   a11y_paragraph: "فقرة",
+   a11y_correct: "صحيح",
+   a11y_wrong: "خطأ",
+   a11y_point: "@score نقطة",
+   a11y_sevenOfNine: "@current من @total",
+   a11y_currentPosition: "الموضع الحالي في القائمة",
+   a11y_instructionsSelected: "اضغط على مفتاح المسافة لإعادة الترتيب",
+   a11y_instructionsGrabbed: "اضغط على مفاتيح الأسهم لأعلى ولأسفل لتغيير الموضع، ومفتاح المسافة للإفلات، ومفتاح الهروب للإلغاء",
+   a11y_grabbed: "تم الإمساك به",
+   a11y_moved: "تم نقله",
+   a11y_dropped: "تم إفلاته",
+   a11y_reorderCancelled: "تم إلغاء إعادة الترتيب",
+   a11y_finalPosition: "الموضع النهائي",
+   a11y_nextParagraph: "الفقرة التالية",
+   a11y_correctParagraph: "فقرة صحيحة في الموضع",
+   a11y_listDescription: "قائمة فقرات قابلة للفرز.",
+   a11y_listDescriptionCheckAnswer: "قائمة فقرات مع النتائج.",
+   a11y_listDescriptionShowSolution: "قائمة فقرات مع الحلول.",
+
+   // Sort the Paragraphs Prompt
+   sort_the_paragraphs_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"ترتيب الفقرات\".",
+   sort_the_paragraphs_prompt_mission: "**مهمتك:**",
+   sort_the_paragraphs_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط H5P من نوع ترتيب الفقرات.",
+   sort_the_paragraphs_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
+   sort_the_paragraphs_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
+   sort_the_paragraphs_prompt_task_description: "`taskDescription`: تعليمات واضحة للنشاط.",
+   sort_the_paragraphs_prompt_paragraphs_array: "`paragraphs`: مصفوفة من السلاسل النصية، تمثّل كلٌّ منها فقرة للترتيب. يجب أن تكون الفقرات بالترتيب الصحيح.",
+   sort_the_paragraphs_prompt_overall_feedback: "`overallFeedback`: مصفوفة من 6 كائنات للتقييم النهائي، مع درجات من 0-10، 11-30، 31-50، 51-70، 71-90، و 91-100. يجب أن يكون النص (`feedback`) إيجابيًا ومتدرجًا ومصاغًا دائمًا بشكل إيجابي.",
+   sort_the_paragraphs_prompt_content_rules_title: "**قواعد المحتوى:**",
+   sort_the_paragraphs_prompt_rule1: "1.  يجب أن تحتوي مصفوفة `paragraphs` على قائمة من الفقرات بالترتيب المنطقي الصحيح.",
+   sort_the_paragraphs_prompt_example_json_title: "**مثال JSON:**",
+   sort_the_paragraphs_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات."
 };

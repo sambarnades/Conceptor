@@ -419,6 +419,8 @@ var translations_de = {
    h5p_multiple_choice_description: "Erstellen Sie Multiple-Choice-Fragen mit einer oder mehreren richtigen Antworten.",
    h5p_find_the_words_name: "Wörter finden",
    h5p_find_the_words_description: "Erstellen Sie ein Buchstabengitter, in dem die Schüler Wörter finden müssen.",
+   h5p_sort_the_paragraphs_name: "Absätze sortieren",
+   h5p_sort_the_paragraphs_description: "Erstellen Sie eine Reihe von Absätzen, die die Schüler in die richtige Reihenfolge bringen müssen.",
  
      // Moodle Module
      moodle_xml_name: "XML Éléa/Moodle",
@@ -652,5 +654,43 @@ var translations_de = {
    find_the_words_prompt_rule1: "1.  Die `wordList` muss eine einzelne Zeichenfolge mit durch Kommas getrennten Wörtern sein.",
    find_the_words_prompt_example_json_title: "**Beispiel-JSON:**",
    find_the_words_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare.",
-   fillPool: "abcdefghijklmnopqrstuvwxyzäöüß"
+   fillPool: "abcdefghijklmnopqrstuvwxyzäöüß",
+
+   // Sort the Paragraphs UI translations
+   up: "Nach oben",
+   down: "Nach unten",
+   disabled: "Deaktiviert",
+   a11y_yourResult: "Sie haben @score von @total Punkten erreicht",
+   a11y_paragraph: "Absatz",
+   a11y_correct: "richtig",
+   a11y_wrong: "falsch",
+   a11y_point: "@score Punkt",
+   a11y_sevenOfNine: "@current von @total",
+   a11y_currentPosition: "Aktuelle Position in der Liste",
+   a11y_instructionsSelected: "Drücken Sie die Leertaste zum Neuanordnen",
+   a11y_instructionsGrabbed: "Drücken Sie die Pfeiltasten nach oben und unten, um die Position zu ändern, die Leertaste zum Ablegen, Escape zum Abbrechen",
+   a11y_grabbed: "Gegriffen",
+   a11y_moved: "Verschoben",
+   a11y_dropped: "Abgelegt",
+   a11y_reorderCancelled: "Neuanordnung abgebrochen",
+   a11y_finalPosition: "Endgültige Position",
+   a11y_nextParagraph: "Nächster Absatz",
+   a11y_correctParagraph: "Korrekter Absatz an Position",
+   a11y_listDescription: "Sortierbare Liste von Absätzen.",
+   a11y_listDescriptionCheckAnswer: "Liste von Absätzen mit Ergebnissen.",
+   a11y_listDescriptionShowSolution: "Liste von Absätzen mit Lösungen.",
+
+   // Sort the Paragraphs Prompt
+   sort_the_paragraphs_prompt_role: "Sie sind ein Experte für pädagogische Ingenieurwissenschaften und erstellen eine H5P-Aktivität \"Absätze sortieren\".",
+   sort_the_paragraphs_prompt_mission: "**Ihre Mission:**",
+   sort_the_paragraphs_prompt_generate_json: "Generieren Sie ein vollständiges und gültiges JSON-Objekt für eine H5P-Aktivität zum Sortieren von Absätzen.",
+   sort_the_paragraphs_prompt_json_structure_title: "**Erwartete JSON-Struktur:**",
+   sort_the_paragraphs_prompt_json_structure_main_object: "Das Objekt muss enthalten:",
+   sort_the_paragraphs_prompt_task_description: "`taskDescription`: Klare Anweisungen für die Aktivität.",
+   sort_the_paragraphs_prompt_paragraphs_array: "`paragraphs`: Ein Array von Zeichenfolgen, die jeweils einen zu sortierenden Absatz darstellen. Die Absätze müssen in der richtigen Reihenfolge sein.",
+   sort_the_paragraphs_prompt_overall_feedback: "`overallFeedback`: Ein Array von 6 Objekten für das abschließende Feedback mit Punktzahlen von 0-10, 11-30, 31-50, 51-70, 71-90 und 91-100. Der Text (`feedback`) muss wohlwollend, schrittweise und immer positiv formuliert sein.",
+   sort_the_paragraphs_prompt_content_rules_title: "**Inhaltsregeln:**",
+   sort_the_paragraphs_prompt_rule1: "1.  Das `paragraphs`-Array muss eine Liste von Absätzen in der richtigen logischen Reihenfolge enthalten.",
+   sort_the_paragraphs_prompt_example_json_title: "**Beispiel-JSON:**",
+   sort_the_paragraphs_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare."
 };

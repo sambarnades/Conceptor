@@ -419,6 +419,8 @@ var translations_el = {
    h5p_multiple_choice_description: "Δημιουργήστε ερωτήσεις πολλαπλής επιλογής με μία ή περισσότερες σωστές απαντήσεις.",
    h5p_find_the_words_name: "Κρυπτόλεξο",
    h5p_find_the_words_description: "Δημιουργήστε ένα πλέγμα γραμμάτων όπου οι μαθητές πρέπει να βρουν λέξεις.",
+   h5p_sort_the_paragraphs_name: "Ταξινόμηση παραγράφων",
+   h5p_sort_the_paragraphs_description: "Δημιουργήστε ένα σύνολο παραγράφων που οι μαθητές πρέπει να ταξινομήσουν στη σωστή σειρά.",
  
      // Ενότητες Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -653,5 +655,43 @@ var translations_el = {
    find_the_words_prompt_rule1: "1.  Η `wordList` πρέπει να είναι μια ενιαία συμβολοσειρά με λέξεις χωρισμένες με κόμμα.",
    find_the_words_prompt_example_json_title: "**Παράδειγμα JSON:**",
    find_the_words_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
-   fillPool: "αβγδεζηθικλμνξοπρστυφχψω"
+   fillPool: "αβγδεζηθικλμνξοπρστυφχψω",
+
+   // Sort the Paragraphs UI translations
+   up: "Πάνω",
+   down: "Κάτω",
+   disabled: "Απενεργοποιημένο",
+   a11y_yourResult: "Έχετε @score από τους @total πόντους",
+   a11y_paragraph: "Παράγραφος",
+   a11y_correct: "σωστό",
+   a11y_wrong: "λάθος",
+   a11y_point: "@score πόντος",
+   a11y_sevenOfNine: "@current από @total",
+   a11y_currentPosition: "Τρέχουσα θέση στη λίστα",
+   a11y_instructionsSelected: "Πατήστε το πλήκτρο διαστήματος για αναδιάταξη",
+   a11y_instructionsGrabbed: "Πατήστε τα πλήκτρα πάνω και κάτω βέλους για να αλλάξετε θέση, το πλήκτρο διαστήματος για να αφήσετε, το escape για ακύρωση",
+   a11y_grabbed: "Πιάστηκε",
+   a11y_moved: "Μετακινήθηκε",
+   a11y_dropped: "Αφέθηκε",
+   a11y_reorderCancelled: "Η αναδιάταξη ακυρώθηκε",
+   a11y_finalPosition: "Τελική θέση",
+   a11y_nextParagraph: "Επόμενη παράγραφος",
+   a11y_correctParagraph: "Σωστή παράγραφος στη θέση",
+   a11y_listDescription: "Λίστα παραγράφων με δυνατότητα ταξινόμησης.",
+   a11y_listDescriptionCheckAnswer: "Λίστα παραγράφων με αποτελέσματα.",
+   a11y_listDescriptionShowSolution: "Λίστα παραγράφων με λύσεις.",
+
+   // Sort the Paragraphs Prompt
+   sort_the_paragraphs_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Ταξινόμηση παραγράφων\".",
+   sort_the_paragraphs_prompt_mission: "**Αποστολή σου:**",
+   sort_the_paragraphs_prompt_generate_json: "Δημιούργησε ένα πλήρες και έγκυρο αντικείμενο JSON για δραστηριότητα H5P Ταξινόμησης παραγράφων.",
+   sort_the_paragraphs_prompt_json_structure_title: "**Αναμενόμενη δομή JSON:**",
+   sort_the_paragraphs_prompt_json_structure_main_object: "Το αντικείμενο πρέπει να περιέχει:",
+   sort_the_paragraphs_prompt_task_description: "`taskDescription`: Σαφείς οδηγίες για τη δραστηριότητα.",
+   sort_the_paragraphs_prompt_paragraphs_array: "`paragraphs`: Ένας πίνακας συμβολοσειρών, καθεμία από τις οποίες αντιπροσωπεύει μια παράγραφο προς ταξινόμηση. Οι παράγραφοι πρέπει να είναι με τη σωστή σειρά.",
+   sort_the_paragraphs_prompt_overall_feedback: "`overallFeedback`: Ένας πίνακας 6 αντικειμένων για την τελική ανατροφοδότηση, με βαθμολογίες από 0-10, 11-30, 31-50, 51-70, 71-90 και 91-100. Το κείμενο (`feedback`) πρέπει να είναι ενθαρρυντικό, σταδιακό και πάντα διατυπωμένο θετικά.",
+   sort_the_paragraphs_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
+   sort_the_paragraphs_prompt_rule1: "1.  Ο πίνακας `paragraphs` πρέπει να περιέχει μια λίστα παραγράφων με τη σωστή λογική σειρά.",
+   sort_the_paragraphs_prompt_example_json_title: "**Παράδειγμα JSON:**",
+   sort_the_paragraphs_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια."
 };

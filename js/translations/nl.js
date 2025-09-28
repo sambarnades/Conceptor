@@ -419,6 +419,8 @@ var translations_nl = {
    h5p_multiple_choice_description: "Maak meerkeuzevragen met een of meer juiste antwoorden.",
    h5p_find_the_words_name: "Woorden zoeken",
    h5p_find_the_words_description: "Maak een letterrooster waarin leerlingen woorden moeten vinden.",
+   h5p_sort_the_paragraphs_name: "Paragrafen sorteren",
+   h5p_sort_the_paragraphs_description: "Maak een set paragrafen die studenten in de juiste volgorde moeten sorteren.",
  
      // Moodle Modules
      moodle_xml_name: "XML Éléa/Moodle",
@@ -653,5 +655,43 @@ var translations_nl = {
    find_the_words_prompt_rule1: "1.  De `wordList` moet een enkele tekenreeks zijn met door komma's gescheiden woorden.",
    find_the_words_prompt_example_json_title: "**JSON-voorbeeld:**",
    find_the_words_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
-   fillPool: "abcdefghijklmnopqrstuvwxyz"
+   fillPool: "abcdefghijklmnopqrstuvwxyz",
+
+   // Sort the Paragraphs UI translations
+   up: "Omhoog",
+   down: "Omlaag",
+   disabled: "Uitgeschakeld",
+   a11y_yourResult: "U hebt @score van de @total punten behaald",
+   a11y_paragraph: "Paragraaf",
+   a11y_correct: "correct",
+   a11y_wrong: "fout",
+   a11y_point: "@score punt",
+   a11y_sevenOfNine: "@current van @total",
+   a11y_currentPosition: "Huidige positie in lijst",
+   a11y_instructionsSelected: "Druk op de spatiebalk om opnieuw te ordenen",
+   a11y_instructionsGrabbed: "Druk op de pijltoetsen omhoog en omlaag om de positie te wijzigen, de spatiebalk om neer te zetten, escape om te annuleren",
+   a11y_grabbed: "Vastgepakt",
+   a11y_moved: "Verplaatst",
+   a11y_dropped: "Neergezet",
+   a11y_reorderCancelled: "Opnieuw ordenen geannuleerd",
+   a11y_finalPosition: "Eindpositie",
+   a11y_nextParagraph: "Volgende paragraaf",
+   a11y_correctParagraph: "Correcte paragraaf op positie",
+   a11y_listDescription: "Sorteerbare lijst van paragrafen.",
+   a11y_listDescriptionCheckAnswer: "Lijst van paragrafen met resultaten.",
+   a11y_listDescriptionShowSolution: "Lijst van paragrafen met oplossingen.",
+
+   // Sort the Paragraphs Prompt
+   sort_the_paragraphs_prompt_role: "U bent een expert in onderwijsontwerp en maakt een H5P-activiteit \"Paragrafen sorteren\".",
+   sort_the_paragraphs_prompt_mission: "**Uw missie:**",
+   sort_the_paragraphs_prompt_generate_json: "Genereer een volledig en geldig JSON-object voor een H5P-activiteit voor het sorteren van paragrafen.",
+   sort_the_paragraphs_prompt_json_structure_title: "**Verwachte JSON-structuur:**",
+   sort_the_paragraphs_prompt_json_structure_main_object: "Het object moet bevatten:",
+   sort_the_paragraphs_prompt_task_description: "`taskDescription`: Duidelijke instructies voor de activiteit.",
+   sort_the_paragraphs_prompt_paragraphs_array: "`paragraphs`: Een array van tekenreeksen, die elk een te sorteren paragraaf vertegenwoordigen. De paragrafen moeten in de juiste volgorde staan.",
+   sort_the_paragraphs_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn.",
+   sort_the_paragraphs_prompt_content_rules_title: "**Inhoudsregels:**",
+   sort_the_paragraphs_prompt_rule1: "1.  De `paragraphs`-array moet een lijst van paragrafen in de juiste logische volgorde bevatten.",
+   sort_the_paragraphs_prompt_example_json_title: "**JSON-voorbeeld:**",
+   sort_the_paragraphs_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar."
 };
