@@ -232,6 +232,16 @@ document.addEventListener('DOMContentLoaded', function() {
            promptId: "multipleChoiceResultat",
            jsonInputId: "multipleChoiceJsonInput",
            createBtnId: "createMultipleChoiceH5P"
+       },
+       FindTheWords: {
+           name: "h5p_find_the_words_name",
+           englishName: "Find the Words",
+           machineName: "H5P.FindTheWords",
+           description: "h5p_find_the_words_description",
+           image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/word-search-h5porg.png",
+           promptId: "findTheWordsResultat",
+           jsonInputId: "findTheWordsJsonInput",
+           createBtnId: "createFindTheWordsH5P"
        }
     };
     
@@ -1314,6 +1324,37 @@ document.addEventListener('DOMContentLoaded', function() {
                        { from: 0, to: 100, feedback: "" }
                    ]
                };
+           } else if (moduleKey === 'FindTheWords') {
+               content = {
+                   taskDescription: jsonObj.taskDescription,
+                   wordList: jsonObj.wordList,
+                   behaviour: {
+                       orientations: {
+                           horizontal: true,
+                           horizontalBack: true,
+                           vertical: true,
+                           verticalUp: true,
+                           diagonal: true,
+                           diagonalBack: true,
+                           diagonalUp: true,
+                           diagonalUpBack: true
+                       },
+                       fillPool: translations.fillPool || "abcdefghijklmnopqrstuvwxyz",
+                       preferOverlap: true,
+                       showVocabulary: true,
+                       enableShowSolution: true,
+                       enableRetry: true
+                   },
+                   l10n: {
+                       check: translations.check,
+                       tryAgain: translations.tryAgain,
+                       showSolution: translations.showSolution,
+                       found: translations.found,
+                       timeSpent: translations.timeSpent,
+                       score: translations.score,
+                       wordListHeader: translations.wordListHeader
+                   }
+               };
            }
 
              // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
@@ -2024,6 +2065,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                ${pt.multiple_choice_prompt_generate_only_json}${languageInstruction}`;
 
+       const findTheWordsPrompt = `${pt.find_the_words_prompt_role}
+                               ${contextPrompt}
+
+                               ${pt.find_the_words_prompt_mission}
+                               ${pt.find_the_words_prompt_generate_json}
+
+                               ${pt.find_the_words_prompt_json_structure_title}
+                               ${pt.find_the_words_prompt_json_structure_main_object}
+                               - ${pt.find_the_words_prompt_task_description}
+                               - ${pt.find_the_words_prompt_word_list}
+
+                               ${pt.find_the_words_prompt_content_rules_title}
+                               ${pt.find_the_words_prompt_rule1}
+
+                               ${pt.find_the_words_prompt_example_json_title}
+                               \`\`\`json
+                               {
+                                 "taskDescription": "Find the city names in the grid below",
+                                 "wordList": "Canberra,Minsk,Beijing,Oslo,Paris,London,Madrid,Athens,Tokyo,Moscow,Washington,Stockholm"
+                               }
+                               \`\`\`
+
+                               ${pt.find_the_words_prompt_generate_only_json}${languageInstruction}`;
+
         return {
             timelineResultat: timelinePrompt,
              crosswordResultat: crosswordPrompt,
@@ -2041,7 +2106,8 @@ document.addEventListener('DOMContentLoaded', function() {
             appariementResultat: appariementPrompt,
             qcmResultat: qcmPrompt,
             trueFalseResultat: trueFalsePrompt,
-            multipleChoiceResultat: multipleChoicePrompt
+            multipleChoiceResultat: multipleChoicePrompt,
+            findTheWordsResultat: findTheWordsPrompt
         };
     }
 
@@ -2416,11 +2482,12 @@ document.addEventListener('DOMContentLoaded', function() {
                       }
                     }
 
-                    const langResponse = await fetch(`${libPath}/language/fr.json`);
+                    const h5pLang = currentLang === 'zh' ? 'zh-cn' : currentLang;
+                    const langResponse = await fetch(`${libPath}/language/${h5pLang}.json`);
                     if (langResponse.ok) { // Vérifier si la ressource existe avant de l'ajouter
                       const blob = await langResponse.blob();
                       files.push({
-                        name: `${libFolderName}/language/fr.json`,
+                        name: `${libFolderName}/language/${h5pLang}.json`,
                         input: new Uint8Array(await blob.arrayBuffer()),
                         unixPermissions: 0o100644
                       });
@@ -2503,7 +2570,13 @@ document.addEventListener('DOMContentLoaded', function() {
                           majorVersion: "1",
                           minorVersion: "16"
                       });
-                  }
+                  } else if (moduleInfo.machineName === "H5P.FindTheWords") {
+                       dependenciesForJson.push({
+                           machineName: "H5P.FindTheWords",
+                           majorVersion: "1",
+                           minorVersion: "4"
+                       });
+                   }
                }
             }
 

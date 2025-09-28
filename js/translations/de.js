@@ -417,6 +417,8 @@ var translations_de = {
    h5p_true_false_description: "Erstellen Sie einfache Fragen mit einer binären Antwort: wahr oder falsch.",
    h5p_multiple_choice_name: "Multiple Choice",
    h5p_multiple_choice_description: "Erstellen Sie Multiple-Choice-Fragen mit einer oder mehreren richtigen Antworten.",
+   h5p_find_the_words_name: "Wörter finden",
+   h5p_find_the_words_description: "Erstellen Sie ein Buchstabengitter, in dem die Schüler Wörter finden müssen.",
  
      // Moodle Module
      moodle_xml_name: "XML Éléa/Moodle",
@@ -627,5 +629,28 @@ var translations_de = {
    multiple_choice_prompt_rule1: "1.  Es darf nur eine richtige Antwort geben (`\"correct\": true`).",
    multiple_choice_prompt_rule2: "2.  Geben Sie mehrere falsche Antworten an (`\"correct\": false`).",
    multiple_choice_prompt_example_json_title: "**Beispiel-JSON:**",
-   multiple_choice_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare."
+   multiple_choice_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare.",
+
+   // Find the Words UI translations
+   check: "Überprüfen",
+   tryAgain: "Erneut versuchen",
+   showSolution: "Lösung anzeigen",
+   found: "@found von @totalWords gefunden",
+   timeSpent: "Verbrachte Zeit",
+   score: "Sie haben @score von @total Punkten erreicht",
+   wordListHeader: "Wortliste",
+
+   // Find the Words Prompt
+   find_the_words_prompt_role: "Sie sind ein Experte für pädagogische Ingenieurwissenschaften und erstellen eine H5P-Aktivität \"Wörter finden\".",
+   find_the_words_prompt_mission: "**Ihre Mission:**",
+   find_the_words_prompt_generate_json: "Generieren Sie ein vollständiges und gültiges JSON-Objekt für eine H5P-Aktivität zum Finden von Wörtern.",
+   find_the_words_prompt_json_structure_title: "**Erwartete JSON-Struktur:**",
+   find_the_words_prompt_json_structure_main_object: "Das Objekt muss enthalten:",
+   find_the_words_prompt_task_description: "`taskDescription`: Klare Anweisungen für die Aktivität.",
+   find_the_words_prompt_word_list: "`wordList`: Eine Zeichenfolge von zu findenden Wörtern, getrennt durch Kommas ohne Leerzeichen.",
+   find_the_words_prompt_content_rules_title: "**Inhaltsregeln:**",
+   find_the_words_prompt_rule1: "1.  Die `wordList` muss eine einzelne Zeichenfolge mit durch Kommas getrennten Wörtern sein.",
+   find_the_words_prompt_example_json_title: "**Beispiel-JSON:**",
+   find_the_words_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare.",
+   fillPool: "abcdefghijklmnopqrstuvwxyzäöüß"
 };

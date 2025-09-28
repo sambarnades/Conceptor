@@ -417,6 +417,8 @@ const translations_en = {
    h5p_true_false_description: "Create simple questions with a binary answer: true or false.",
    h5p_multiple_choice_name: "Multiple Choice",
    h5p_multiple_choice_description: "Create multiple choice questions with one or more correct answers.",
+   h5p_find_the_words_name: "Find the Words",
+   h5p_find_the_words_description: "Create a grid of letters where students must find words.",
  
      // Moodle Modules
      moodle_xml_name: "XML Éléa/Moodle",
@@ -634,5 +636,28 @@ const translations_en = {
    multiple_choice_prompt_rule1: "1.  There must be only one correct answer (`\"correct\": true`).",
    multiple_choice_prompt_rule2: "2.  Provide several incorrect answers (`\"correct\": false`).",
    multiple_choice_prompt_example_json_title: "**Example JSON:**",
-   multiple_choice_prompt_generate_only_json: "Generate only the valid JSON code, without any comments."
+   multiple_choice_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
+
+   // Find the Words UI translations
+   check: "Check",
+   tryAgain: "Retry",
+   showSolution: "Show Solution",
+   found: "@found of @totalWords found",
+   timeSpent: "Time Spent",
+   score: "You got @score of @total points",
+   wordListHeader: "Word list",
+
+   // Find the Words Prompt
+   find_the_words_prompt_role: "You are an expert in pedagogical engineering creating an H5P \"Find the Words\" activity.",
+   find_the_words_prompt_mission: "**Your mission:**",
+   find_the_words_prompt_generate_json: "Generate a complete and valid JSON object for an H5P Find the Words activity.",
+   find_the_words_prompt_json_structure_title: "**Expected JSON structure:**",
+   find_the_words_prompt_json_structure_main_object: "The object must contain:",
+   find_the_words_prompt_task_description: "`taskDescription`: Clear instructions for the activity.",
+   find_the_words_prompt_word_list: "`wordList`: A string of words to find, separated by commas without spaces.",
+   find_the_words_prompt_content_rules_title: "**Content rules:**",
+   find_the_words_prompt_rule1: "1.  The `wordList` must be a single string with words separated by commas.",
+   find_the_words_prompt_example_json_title: "**Example JSON:**",
+   find_the_words_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
+   fillPool: "abcdefghijklmnopqrstuvwxyz"
 };

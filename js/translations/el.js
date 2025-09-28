@@ -417,6 +417,8 @@ var translations_el = {
    h5p_true_false_description: "Δημιουργήστε απλές ερωτήσεις με δυαδική απάντηση: σωστό ή λάθος.",
    h5p_multiple_choice_name: "Πολλαπλή Επιλογή",
    h5p_multiple_choice_description: "Δημιουργήστε ερωτήσεις πολλαπλής επιλογής με μία ή περισσότερες σωστές απαντήσεις.",
+   h5p_find_the_words_name: "Κρυπτόλεξο",
+   h5p_find_the_words_description: "Δημιουργήστε ένα πλέγμα γραμμάτων όπου οι μαθητές πρέπει να βρουν λέξεις.",
  
      // Ενότητες Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -628,5 +630,28 @@ var translations_el = {
    multiple_choice_prompt_rule1: "1.  Πρέπει να υπάρχει μόνο μία σωστή απάντηση (`\"correct\": true`).",
    multiple_choice_prompt_rule2: "2.  Δώσε πολλές λανθασμένες απαντήσεις (`\"correct\": false`).",
    multiple_choice_prompt_example_json_title: "**Παράδειγμα JSON:**",
-   multiple_choice_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια."
+   multiple_choice_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
+
+   // Find the Words UI translations
+   check: "Έλεγχος",
+   tryAgain: "Προσπάθησε ξανά",
+   showSolution: "Εμφάνιση λύσης",
+   found: "Βρέθηκαν @found από @totalWords λέξεις",
+   timeSpent: "Χρόνος που δαπανήθηκε",
+   score: "Έχετε @score από τους @total πόντους",
+   wordListHeader: "Λίστα λέξεων",
+
+   // Find the Words Prompt
+   find_the_words_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Κρυπτόλεξο\".",
+   find_the_words_prompt_mission: "**Αποστολή σου:**",
+   find_the_words_prompt_generate_json: "Δημιούργησε ένα πλήρες και έγκυρο αντικείμενο JSON για δραστηριότητα H5P Κρυπτόλεξο.",
+   find_the_words_prompt_json_structure_title: "**Αναμενόμενη δομή JSON:**",
+   find_the_words_prompt_json_structure_main_object: "Το αντικείμενο πρέπει να περιέχει:",
+   find_the_words_prompt_task_description: "`taskDescription`: Σαφείς οδηγίες για τη δραστηριότητα.",
+   find_the_words_prompt_word_list: "`wordList`: Μια συμβολοσειρά με τις λέξεις προς εύρεση, χωρισμένες με κόμμα χωρίς κενά.",
+   find_the_words_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
+   find_the_words_prompt_rule1: "1.  Η `wordList` πρέπει να είναι μια ενιαία συμβολοσειρά με λέξεις χωρισμένες με κόμμα.",
+   find_the_words_prompt_example_json_title: "**Παράδειγμα JSON:**",
+   find_the_words_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
+   fillPool: "αβγδεζηθικλμνξοπρστυφχψω"
 };

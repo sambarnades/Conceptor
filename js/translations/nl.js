@@ -417,6 +417,8 @@ var translations_nl = {
    h5p_true_false_description: "Maak eenvoudige vragen met een binair antwoord: waar of onwaar.",
    h5p_multiple_choice_name: "Meerkeuze",
    h5p_multiple_choice_description: "Maak meerkeuzevragen met een of meer juiste antwoorden.",
+   h5p_find_the_words_name: "Woorden zoeken",
+   h5p_find_the_words_description: "Maak een letterrooster waarin leerlingen woorden moeten vinden.",
  
      // Moodle Modules
      moodle_xml_name: "XML Éléa/Moodle",
@@ -628,5 +630,28 @@ var translations_nl = {
    multiple_choice_prompt_rule1: "1.  Er mag slechts één juist antwoord zijn (`\"correct\": true`).",
    multiple_choice_prompt_rule2: "2.  Geef meerdere onjuiste antwoorden (`\"correct\": false`).",
    multiple_choice_prompt_example_json_title: "**JSON-voorbeeld:**",
-   multiple_choice_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar."
+   multiple_choice_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
+
+   // Find the Words UI translations
+   check: "Controleren",
+   tryAgain: "Opnieuw proberen",
+   showSolution: "Oplossing tonen",
+   found: "@found van @totalWords gevonden",
+   timeSpent: "Besteede tijd",
+   score: "Je hebt @score van de @total punten",
+   wordListHeader: "Woordenlijst",
+
+   // Find the Words Prompt
+   find_the_words_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Woorden zoeken\".",
+   find_the_words_prompt_mission: "**Jouw missie:**",
+   find_the_words_prompt_generate_json: "Genereer een volledig en geldig JSON-object voor een H5P-activiteit Woorden zoeken.",
+   find_the_words_prompt_json_structure_title: "**Verwachte JSON-structuur:**",
+   find_the_words_prompt_json_structure_main_object: "Het object moet bevatten:",
+   find_the_words_prompt_task_description: "`taskDescription`: Duidelijke instructies voor de activiteit.",
+   find_the_words_prompt_word_list: "`wordList`: Een tekenreeks van te vinden woorden, gescheiden door komma's zonder spaties.",
+   find_the_words_prompt_content_rules_title: "**Regels voor de inhoud:**",
+   find_the_words_prompt_rule1: "1.  De `wordList` moet een enkele tekenreeks zijn met door komma's gescheiden woorden.",
+   find_the_words_prompt_example_json_title: "**JSON-voorbeeld:**",
+   find_the_words_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
+   fillPool: "abcdefghijklmnopqrstuvwxyz"
 };

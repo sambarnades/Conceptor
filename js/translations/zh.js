@@ -417,6 +417,8 @@ var translations_zh = {
    h5p_true_false_description: "创建答案为“是”或“否”的简单问题。",
    h5p_multiple_choice_name: "多项选择",
    h5p_multiple_choice_description: "创建具有一个或多个正确答案的多项选择题。",
+   h5p_find_the_words_name: "单词搜索",
+   h5p_find_the_words_description: "创建一个字母网格，学生必须在其中找到单词。",
  
      // Moodle 模块
      moodle_xml_name: "XML Éléa/Moodle",
@@ -633,5 +635,28 @@ var translations_zh = {
    multiple_choice_prompt_rule1: "1.  只能有一个正确答案 (`\"correct\": true`)。",
    multiple_choice_prompt_rule2: "2.  提供几个不正确的答案 (`\"correct\": false`)。",
    multiple_choice_prompt_example_json_title: "**JSON 示例:**",
-   multiple_choice_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。"
+   multiple_choice_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
+
+   // Find the Words UI translations
+   check: "检查",
+   tryAgain: "重试",
+   showSolution: "显示答案",
+   found: "已找到 @found / @totalWords 个单词",
+   timeSpent: "用时",
+   score: "您获得了 @score / @total 分",
+   wordListHeader: "单词列表",
+
+   // Find the Words Prompt
+   find_the_words_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“单词搜索”活动。",
+   find_the_words_prompt_mission: "**你的任务:**",
+   find_the_words_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P 单词搜索活动。",
+   find_the_words_prompt_json_structure_title: "**预期的 JSON 结构:**",
+   find_the_words_prompt_json_structure_main_object: "对象必须包含：",
+   find_the_words_prompt_task_description: "`taskDescription`: 活动的清晰说明。",
+   find_the_words_prompt_word_list: "`wordList`: 要查找的单词字符串，用逗号分隔，不含空格。",
+   find_the_words_prompt_content_rules_title: "**内容规则:**",
+   find_the_words_prompt_rule1: "1.  `wordList` 必须是单个字符串，单词之间用逗号分隔。",
+   find_the_words_prompt_example_json_title: "**JSON 示例:**",
+   find_the_words_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
+   fillPool: ""
 };

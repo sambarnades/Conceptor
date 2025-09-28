@@ -417,6 +417,8 @@ var translations_jp = {
    h5p_true_false_description: "正解か不正解かの二者択一で答える簡単な問題を作成します。",
    h5p_multiple_choice_name: "多肢選択",
    h5p_multiple_choice_description: "1つまたは複数の正解を持つ多肢選択問題を作成します。",
+   h5p_find_the_words_name: "単語探し",
+   h5p_find_the_words_description: "生徒が単語を見つける文字グリッドを作成します。",
  
      // Moodle モジュール
      moodle_xml_name: "XML Éléa/Moodle",
@@ -628,5 +630,28 @@ var translations_jp = {
    multiple_choice_prompt_rule1: "1.  正解は1つだけです（`\"correct\": true`）。",
    multiple_choice_prompt_rule2: "2.  複数の不正解を提供してください（`\"correct\": false`）。",
    multiple_choice_prompt_example_json_title: "**JSONの例:**",
-   multiple_choice_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。"
+   multiple_choice_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
+
+   // Find the Words UI translations
+   check: "チェック",
+   tryAgain: "再試行",
+   showSolution: "解答を表示",
+   found: "@totalWords個中@found個見つかりました",
+   timeSpent: "経過時間",
+   score: "合計@total点中@score点を獲得しました",
+   wordListHeader: "単語リスト",
+
+   // Find the Words Prompt
+   find_the_words_prompt_role: "あなたはH5P「単語探し」アクティビティを作成する教育工学の専門家です。",
+   find_the_words_prompt_mission: "**あなたの使命:**",
+   find_the_words_prompt_generate_json: "H5P単語探しアクティビティ用の完全で有効なJSONオブジェクトを生成してください。",
+   find_the_words_prompt_json_structure_title: "**期待されるJSON構造:**",
+   find_the_words_prompt_json_structure_main_object: "オブジェクトには以下を含める必要があります：",
+   find_the_words_prompt_task_description: "`taskDescription`: アクティビティの明確な指示。",
+   find_the_words_prompt_word_list: "`wordList`: 見つけるべき単語の文字列。カンマ区切りでスペースなし。",
+   find_the_words_prompt_content_rules_title: "**コンテンツのルール:**",
+   find_the_words_prompt_rule1: "1.  `wordList`はカンマで区切られた単語の単一文字列である必要があります。",
+   find_the_words_prompt_example_json_title: "**JSONの例:**",
+   find_the_words_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
+   fillPool: ""
 };

@@ -417,6 +417,8 @@ var translations_pt = {
    h5p_true_false_description: "Crie perguntas simples com uma resposta binária: verdadeiro ou falso.",
    h5p_multiple_choice_name: "Múltipla Escolha",
    h5p_multiple_choice_description: "Crie perguntas de múltipla escolha com uma ou mais respostas corretas.",
+   h5p_find_the_words_name: "Caça-palavras",
+   h5p_find_the_words_description: "Crie uma grelha de letras onde os alunos devem encontrar palavras.",
  
      // Módulos Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -628,5 +630,28 @@ var translations_pt = {
    multiple_choice_prompt_rule1: "1.  Deve haver apenas uma resposta correta (`\"correct\": true`).",
    multiple_choice_prompt_rule2: "2.  Forneça várias respostas incorretas (`\"correct\": false`).",
    multiple_choice_prompt_example_json_title: "**Exemplo de JSON:**",
-   multiple_choice_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário."
+   multiple_choice_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário.",
+
+   // Find the Words UI translations
+   check: "Verificar",
+   tryAgain: "Tentar novamente",
+   showSolution: "Mostrar solução",
+   found: "@found de @totalWords palavras encontradas",
+   timeSpent: "Tempo gasto",
+   score: "Você obteve @score de @total pontos",
+   wordListHeader: "Lista de palavras",
+
+   // Find the Words Prompt
+   find_the_words_prompt_role: "Você é um especialista em engenharia pedagógica criando uma atividade H5P \"Caça-palavras\".",
+   find_the_words_prompt_mission: "**Sua missão:**",
+   find_the_words_prompt_generate_json: "Gere um objeto JSON completo e válido para uma atividade H5P de Caça-palavras.",
+   find_the_words_prompt_json_structure_title: "**Estrutura de JSON esperada:**",
+   find_the_words_prompt_json_structure_main_object: "O objeto deve conter:",
+   find_the_words_prompt_task_description: "`taskDescription`: Instruções claras para a atividade.",
+   find_the_words_prompt_word_list: "`wordList`: Uma string de palavras a encontrar, separadas por vírgulas sem espaços.",
+   find_the_words_prompt_content_rules_title: "**Regras para o conteúdo:**",
+   find_the_words_prompt_rule1: "1.  A `wordList` deve ser uma única string com palavras separadas por vírgulas.",
+   find_the_words_prompt_example_json_title: "**Exemplo de JSON:**",
+   find_the_words_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário.",
+   fillPool: "abcdefghijklmnopqrstuvwxyzçãõéáíóúâêô"
 };

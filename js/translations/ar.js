@@ -417,6 +417,8 @@ var translations_ar = {
    h5p_true_false_description: "أنشئ أسئلة بسيطة بإجابة ثنائية: صح أم خطأ.",
    h5p_multiple_choice_name: "الاختيار من متعدد",
    h5p_multiple_choice_description: "أنشئ أسئلة الاختيار من متعدد مع إجابة صحيحة واحدة أو أكثر.",
+   h5p_find_the_words_name: "البحث عن الكلمات",
+   h5p_find_the_words_description: "أنشئ شبكة حروف حيث يجب على الطلاب العثور على الكلمات.",
  
      // وحدات Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -633,5 +635,28 @@ var translations_ar = {
    multiple_choice_prompt_rule1: "1.  يجب أن تكون هناك إجابة صحيحة واحدة فقط (`\"correct\": true`).",
    multiple_choice_prompt_rule2: "2.  قدّم عدة إجابات خاطئة (`\"correct\": false`).",
    multiple_choice_prompt_example_json_title: "**مثال JSON:**",
-   multiple_choice_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات."
+   multiple_choice_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات.",
+
+   // Find the Words UI translations
+   check: "تحقق",
+   tryAgain: "إعادة المحاولة",
+   showSolution: "إظهار الحل",
+   found: "تم العثور على @found من @totalWords",
+   timeSpent: "الوقت المستغرق",
+   score: "لقد حصلت على @score من @total نقطة",
+   wordListHeader: "قائمة الكلمات",
+
+   // Find the Words Prompt
+   find_the_words_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"البحث عن الكلمات\".",
+   find_the_words_prompt_mission: "**مهمتك:**",
+   find_the_words_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط H5P من نوع البحث عن الكلمات.",
+   find_the_words_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
+   find_the_words_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
+   find_the_words_prompt_task_description: "`taskDescription`: تعليمات واضحة للنشاط.",
+   find_the_words_prompt_word_list: "`wordList`: سلسلة من الكلمات للبحث عنها، مفصولة بفواصل وبدون مسافات.",
+   find_the_words_prompt_content_rules_title: "**قواعد المحتوى:**",
+   find_the_words_prompt_rule1: "1.  يجب أن تكون `wordList` سلسلة واحدة من الكلمات مفصولة بفواصل.",
+   find_the_words_prompt_example_json_title: "**مثال JSON:**",
+   find_the_words_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات.",
+   fillPool: "ابتثجحخدذرزسشصضطظعغفقكلمنهوي"
 };
