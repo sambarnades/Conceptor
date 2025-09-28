@@ -425,6 +425,8 @@ var translations_el = {
    h5p_single_choice_set_description: "Δημιουργήστε μια σειρά ερωτήσεων όπου κάθε ερώτηση έχει μόνο μία σωστή απάντηση.",
    h5p_dialog_cards_name: "Κάρτες διαλόγου",
    h5p_dialog_cards_description: "Δημιουργήστε διαδραστικές κάρτες με κείμενο και προαιρετικές εικόνες και στις δύο πλευρές.",
+   h5p_complex_fill_the_blanks_name: "Συμπλήρωση κενών (σύνθετο)",
+   h5p_complex_fill_the_blanks_description: "Δημιουργήστε ένα προηγμένο κείμενο συμπλήρωσης κενών με ειδική ανατροφοδότηση για κάθε λάθος.",
  
      // Ενότητες Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -781,5 +783,26 @@ var translations_el = {
    confirmStartingOverHeader: "Ξεκινήσετε από την αρχή;",
    confirmStartingOverBody: "Όλη η πρόοδος θα χαθεί. Είστε σίγουροι ότι θέλετε να ξεκινήσετε από την αρχή;",
    confirmStartingOverCancelLabel: "Άκυρο",
-   confirmStartingOverConfirmLabel: "Ξεκινήστε από την αρχή"
+   confirmStartingOverConfirmLabel: "Ξεκινήστε από την αρχή",
+
+   // Complex Fill the Blanks Prompt
+   complex_blanks_prompt_role: "Είστε ειδικός στον εκπαιδευτικό σχεδιασμό και δημιουργείτε μια δραστηριότητα H5P \"Complex Fill the Blanks\".",
+   complex_blanks_prompt_mission: "**Η αποστολή σας:**",
+   complex_blanks_prompt_generate_json: "Δημιουργήστε ένα πλήρες και έγκυρο αντικείμενο JSON για μια δραστηριότητα H5P τύπου Complex Fill the Blanks.",
+   complex_blanks_prompt_json_structure_title: "**Αναμενόμενη δομή JSON:**",
+   complex_blanks_prompt_json_structure_main_object: "Το κύριο αντικείμενο πρέπει να περιέχει τα κλειδιά `content` και `overallFeedback`.",
+   complex_blanks_prompt_task: "`task`: Οι οδηγίες για την άσκηση (σε HTML).",
+   complex_blanks_prompt_blanks_text: "`blanksText`: Το κείμενο που περιέχει τα κενά, τα οποία αναπαρίστανται με `___________`.",
+   complex_blanks_prompt_blanks_list: "`blanksList`: Ένας πίνακας αντικειμένων, ένα για κάθε κενό, με τη σειρά εμφάνισης.",
+   complex_blanks_prompt_correct_answer: "`correctAnswerText`: Η σωστή απάντηση (μπορεί να περιλαμβάνει εναλλακτικές με `/`).",
+   complex_blanks_prompt_incorrect_answers_list: "`incorrectAnswersList`: Ένας πίνακας αντικειμένων για συνήθη λάθη.",
+   complex_blanks_prompt_incorrect_answer_text: "`incorrectAnswerText`: Το κείμενο ενός συνηθισμένου λάθους.",
+   complex_blanks_prompt_incorrect_answer_feedback: "`incorrectAnswerFeedback`: Η ειδική ανατροφοδότηση για αυτό το λάθος (σε HTML).",
+   complex_blanks_prompt_overall_feedback: "`overallFeedback`: Ένας πίνακας για γενική ανατροφοδότηση βάσει της βαθμολογίας.",
+   complex_blanks_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
+   complex_blanks_prompt_rule1: "1. Ο αριθμός των αντικειμένων στο `blanksList` πρέπει να αντιστοιχεί στον αριθμό των κενών στο `blanksText`.",
+   complex_blanks_prompt_rule2: "2. Παρέχετε συνήθη λάθη και εποικοδομητική ανατροφοδότηση.",
+   complex_blanks_prompt_rule3: "3. Το κείμενο και η ανατροφοδότηση μπορούν να περιέχουν απλές ετικέτες HTML όπως `<p>`, `<strong>`, `<em>`.",
+   complex_blanks_prompt_example_json_title: "**Παράδειγμα JSON:**",
+   complex_blanks_prompt_generate_only_json: "Δημιουργήστε μόνο τον έγκυρο κώδικα JSON, χωρίς κανένα σχόλιο."
 };

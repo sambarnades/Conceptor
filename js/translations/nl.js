@@ -425,6 +425,8 @@ var translations_nl = {
    h5p_single_choice_set_description: "Maak een reeks vragen waarbij elke vraag slechts één juist antwoord heeft.",
    h5p_dialog_cards_name: "Dialoogkaarten",
    h5p_dialog_cards_description: "Maak interactieve kaarten met tekst en optionele afbeeldingen aan beide zijden.",
+   h5p_complex_fill_the_blanks_name: "Complexe invuloefening",
+   h5p_complex_fill_the_blanks_description: "Maak een geavanceerde invultekst met specifieke feedback voor elke fout.",
  
      // Moodle Modules
      moodle_xml_name: "XML Éléa/Moodle",
@@ -781,5 +783,26 @@ var translations_nl = {
    confirmStartingOverHeader: "Opnieuw beginnen?",
    confirmStartingOverBody: "Alle voortgang gaat verloren. Weet je zeker dat je opnieuw wilt beginnen?",
    confirmStartingOverCancelLabel: "Annuleren",
-   confirmStartingOverConfirmLabel: "Opnieuw beginnen"
+   confirmStartingOverConfirmLabel: "Opnieuw beginnen",
+
+   // Complex Fill the Blanks Prompt
+   complex_blanks_prompt_role: "U bent een expert in onderwijsontwerp en maakt een H5P-activiteit \"Complex Fill the Blanks\".",
+   complex_blanks_prompt_mission: "**Uw missie:**",
+   complex_blanks_prompt_generate_json: "Genereer een volledig en geldig JSON-object voor een H5P-activiteit van het type Complex Fill the Blanks.",
+   complex_blanks_prompt_json_structure_title: "**Verwachte JSON-structuur:**",
+   complex_blanks_prompt_json_structure_main_object: "Het hoofdobject moet de sleutels `content` en `overallFeedback` bevatten.",
+   complex_blanks_prompt_task: "`task`: De instructies voor de oefening (in HTML).",
+   complex_blanks_prompt_blanks_text: "`blanksText`: De tekst met de lege plekken, weergegeven door `___________`.",
+   complex_blanks_prompt_blanks_list: "`blanksList`: Een array van objecten, één voor elke lege plek, in volgorde van verschijning.",
+   complex_blanks_prompt_correct_answer: "`correctAnswerText`: Het juiste antwoord (kan alternatieven bevatten met `/`).",
+   complex_blanks_prompt_incorrect_answers_list: "`incorrectAnswersList`: Een array van objecten voor veelvoorkomende fouten.",
+   complex_blanks_prompt_incorrect_answer_text: "`incorrectAnswerText`: De tekst van een veelvoorkomende fout.",
+   complex_blanks_prompt_incorrect_answer_feedback: "`incorrectAnswerFeedback`: De specifieke feedback voor deze fout (in HTML).",
+   complex_blanks_prompt_overall_feedback: "`overallFeedback`: Een array voor algemene feedback op basis van de score.",
+   complex_blanks_prompt_content_rules_title: "**Inhoudsregels:**",
+   complex_blanks_prompt_rule1: "1. Het aantal objecten in `blanksList` moet overeenkomen met het aantal lege plekken in `blanksText`.",
+   complex_blanks_prompt_rule2: "2. Geef veelvoorkomende fouten en constructieve feedback.",
+   complex_blanks_prompt_rule3: "3. De tekst en feedback kunnen eenvoudige HTML-tags bevatten zoals `<p>`, `<strong>`, `<em>`.",
+   complex_blanks_prompt_example_json_title: "**Voorbeeld-JSON:**",
+   complex_blanks_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar."
 };

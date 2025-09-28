@@ -272,6 +272,17 @@ document.addEventListener('DOMContentLoaded', function() {
            promptId: "dialogCardsResultat",
            jsonInputId: "dialogCardsJsonInput",
            createBtnId: "createDialogCardsH5P"
+       },
+       ComplexFillTheBlanks: {
+           name: "h5p_complex_fill_the_blanks_name",
+           englishName: "Complex fill the blanks",
+           machineName: "H5P.AdvancedBlanks",
+           description: "h5p_complex_fill_the_blanks_description",
+           image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/advanced-fill-in-the-blanks.png",
+           promptId: "complexBlanksResultat",
+           jsonInputId: "complexBlanksJsonInput",
+           createBtnId: "createComplexBlanksH5P",
+           hidden: true
        }
     };
     
@@ -334,6 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
         h5pGrid.innerHTML = '';
         for (const key in h5pModules) {
             const module = h5pModules[key];
+            if (module.hidden) continue; // Ne pas afficher les tuiles masquées
             const tile = document.createElement('div');
             tile.className = 'h5p-tile';
             tile.dataset.module = key;
@@ -1515,11 +1527,13 @@ document.addEventListener('DOMContentLoaded', function() {
                        confirmLabel: translations.confirmStartingOverConfirmLabel
                    }
                };
+           } else if (moduleKey === 'ComplexFillTheBlanks') {
+               content = { ...jsonObj }; // Le JSON est déjà au bon format
            }
 
-             // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
-             if (moduleKey === 'MarkTheWords') {
-                 content = {
+            // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
+            if (moduleKey === 'MarkTheWords') {
+                content = {
                     taskDescription: jsonObj.taskDescription,
                     textField: jsonObj.textField,
                     behaviour: {
@@ -2380,6 +2394,60 @@ document.addEventListener('DOMContentLoaded', function() {
                                \`\`\`
 
                                ${pt.dialog_cards_prompt_generate_only_json}${languageInstruction}`;
+       
+       const complexBlanksPrompt = `${pt.complex_blanks_prompt_role}
+                               ${contextPrompt}
+
+                               ${pt.complex_blanks_prompt_mission}
+                               ${pt.complex_blanks_prompt_generate_json}
+
+                               ${pt.complex_blanks_prompt_json_structure_title}
+                               ${pt.complex_blanks_prompt_json_structure_main_object}
+                               - ${pt.complex_blanks_prompt_task}
+                               - ${pt.complex_blanks_prompt_blanks_text}
+                               - ${pt.complex_blanks_prompt_blanks_list}
+                                   - ${pt.complex_blanks_prompt_correct_answer}
+                                   - ${pt.complex_blanks_prompt_incorrect_answers_list}
+                                       - ${pt.complex_blanks_prompt_incorrect_answer_text}
+                                       - ${pt.complex_blanks_prompt_incorrect_answer_feedback}
+                               - ${pt.complex_blanks_prompt_overall_feedback}
+                               
+                               ${pt.complex_blanks_prompt_content_rules_title}
+                               ${pt.complex_blanks_prompt_rule1}
+                               ${pt.complex_blanks_prompt_rule2}
+                               ${pt.complex_blanks_prompt_rule3}
+
+                               ${pt.complex_blanks_prompt_example_json_title}
+                               \`\`\`json
+                               {
+                                   "content": {
+                                       "task": "<p>Put the verbs into the correct tense. You'll get individual feedback for typical mistakes.</p>",
+                                       "blanksList": [
+                                           {
+                                               "correctAnswerText": "doesn't speak/does not speak",
+                                               "incorrectAnswersList": [
+                                                   {
+                                                       "incorrectAnswerText": "speaks not/speak not",
+                                                       "incorrectAnswerFeedback": "<div>Remember to use 'do/does' when negating a full verb <em>(speak)</em>.</div>"
+                                                   },
+                                                   {
+                                                       "incorrectAnswerText": "don't speak/do not speak",
+                                                       "incorrectAnswerFeedback": "<div>You forgot the 'third person singular -s' for simple present <em>(he)</em>.</div>"
+                                                   }
+                                               ]
+                                           }
+                                       ],
+                                       "blanksText": "<p>He speaks English but he (not / speak) ___________<strong>&nbsp;</strong>German.</p>"
+                                   },
+                                   "overallFeedback": [
+                                       {"from": 0, "to": 50, "feedback": "Try again!"},
+                                       {"from": 51, "to": 75, "feedback": "You've done ok!"},
+                                       {"from": 76, "to": 100, "feedback": "Good job!"}
+                                   ]
+                               }
+                               \`\`\`
+
+                               ${pt.complex_blanks_prompt_generate_only_json}${languageInstruction}`;
 
         return {
             timelineResultat: timelinePrompt,
@@ -2402,7 +2470,8 @@ document.addEventListener('DOMContentLoaded', function() {
             findTheWordsResultat: findTheWordsPrompt,
             sortParagraphsResultat: sortParagraphsPrompt,
             singleChoiceSetResultat: singleChoiceSetPrompt,
-            dialogCardsResultat: dialogCardsPrompt
+            dialogCardsResultat: dialogCardsPrompt,
+            complexBlanksResultat: complexBlanksPrompt
         };
     }
 
@@ -2837,58 +2906,42 @@ document.addEventListener('DOMContentLoaded', function() {
             if (dependenciesForJson.length === 0 && mainLibraryIdentifier) {
                const moduleInfo = h5pModules[moduleKey];
                if (moduleInfo && moduleInfo.machineName) {
-                   const libPath = await findLatestLibraryPath(moduleInfo.machineName);
-                   if (libPath) {
-                       try {
-                           const response = await fetch(`${libPath}/library.json`);
-                           if (response.ok) {
-                               const libraryInfo = await response.json();
-                               dependenciesForJson.push({
-                                   machineName: libraryInfo.machineName,
-                                   majorVersion: String(libraryInfo.majorVersion),
-                                   minorVersion: String(libraryInfo.minorVersion)
-                               });
-                           }
-                       } catch (e) {
-                           console.error("Impossible de charger les informations de la bibliothèque principale :", e);
-                       }
-                   } else if (moduleInfo.machineName === "H5P.TrueFalse") {
-                       // Fallback for TrueFalse if local library is not found
+                   // Pour "Complex fill the blanks", on force la version car on ne la stocke pas en local pour l'instant
+                   if (moduleInfo.machineName === "H5P.AdvancedBlanks") {
                        dependenciesForJson.push({
-                           machineName: "H5P.TrueFalse",
+                           machineName: "H5P.AdvancedBlanks",
                            majorVersion: "1",
-                           minorVersion: "8"
+                           minorVersion: "2"
                        });
-                   } else if (moduleInfo.machineName === "H5P.MultiChoice") {
-                      dependenciesForJson.push({
-                          machineName: "H5P.MultiChoice",
-                          majorVersion: "1",
-                          minorVersion: "16"
-                      });
-                  } else if (moduleInfo.machineName === "H5P.FindTheWords") {
-                       dependenciesForJson.push({
-                           machineName: "H5P.FindTheWords",
-                           majorVersion: "1",
-                           minorVersion: "4"
-                       });
-                   } else if (moduleInfo.machineName === "H5P.SortParagraphs") {
-                       dependenciesForJson.push({
-                           machineName: "H5P.SortParagraphs",
-                           majorVersion: "0",
-                           minorVersion: "11"
-                       });
-                   } else if (moduleInfo.machineName === "H5P.SingleChoiceSet") {
-                       dependenciesForJson.push({
-                           machineName: "H5P.SingleChoiceSet",
-                           majorVersion: "1",
-                           minorVersion: "11"
-                       });
-                   } else if (moduleInfo.machineName === "H5P.Dialogcards") {
-                       dependenciesForJson.push({
-                           machineName: "H5P.Dialogcards",
-                           majorVersion: "1",
-                           minorVersion: "9"
-                       });
+                   } else {
+                        const libPath = await findLatestLibraryPath(moduleInfo.machineName);
+                        if (libPath) {
+                            try {
+                                const response = await fetch(`${libPath}/library.json`);
+                                if (response.ok) {
+                                    const libraryInfo = await response.json();
+                                    dependenciesForJson.push({
+                                        machineName: libraryInfo.machineName,
+                                        majorVersion: String(libraryInfo.majorVersion),
+                                        minorVersion: String(libraryInfo.minorVersion)
+                                    });
+                                }
+                            } catch (e) {
+                                console.error("Impossible de charger les informations de la bibliothèque principale :", e);
+                            }
+                        } else if (moduleInfo.machineName === "H5P.TrueFalse") {
+                            dependenciesForJson.push({ machineName: "H5P.TrueFalse", majorVersion: "1", minorVersion: "8" });
+                        } else if (moduleInfo.machineName === "H5P.MultiChoice") {
+                           dependenciesForJson.push({ machineName: "H5P.MultiChoice", majorVersion: "1", minorVersion: "16" });
+                       } else if (moduleInfo.machineName === "H5P.FindTheWords") {
+                            dependenciesForJson.push({ machineName: "H5P.FindTheWords", majorVersion: "1", minorVersion: "4" });
+                        } else if (moduleInfo.machineName === "H5P.SortParagraphs") {
+                            dependenciesForJson.push({ machineName: "H5P.SortParagraphs", majorVersion: "0", minorVersion: "11" });
+                        } else if (moduleInfo.machineName === "H5P.SingleChoiceSet") {
+                            dependenciesForJson.push({ machineName: "H5P.SingleChoiceSet", majorVersion: "1", minorVersion: "11" });
+                        } else if (moduleInfo.machineName === "H5P.Dialogcards") {
+                            dependenciesForJson.push({ machineName: "H5P.Dialogcards", majorVersion: "1", minorVersion: "9" });
+                        }
                    }
                }
             }

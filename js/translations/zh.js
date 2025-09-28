@@ -425,6 +425,8 @@ var translations_zh = {
    h5p_single_choice_set_description: "创建一系列问题，每个问题只有一个正确答案。",
    h5p_dialog_cards_name: "对话卡",
    h5p_dialog_cards_description: "创建带有文本和可选图片（双面）的交互式卡片。",
+   h5p_complex_fill_the_blanks_name: "复杂填空",
+   h5p_complex_fill_the_blanks_description: "创建一个高级填空文本，并为每个错误提供具体反馈。",
  
      // Moodle 模块
      moodle_xml_name: "XML Éléa/Moodle",
@@ -786,5 +788,26 @@ var translations_zh = {
    confirmStartingOverHeader: "重新开始？",
    confirmStartingOverBody: "所有进度都将丢失。您确定要重新开始吗？",
    confirmStartingOverCancelLabel: "取消",
-   confirmStartingOverConfirmLabel: "重新开始"
+   confirmStartingOverConfirmLabel: "重新开始",
+
+   // Complex Fill the Blanks Prompt
+   complex_blanks_prompt_role: "你是一位教学设计专家，正在创建一个H5P活动“复杂填空”。",
+   complex_blanks_prompt_mission: "**你的任务：**",
+   complex_blanks_prompt_generate_json: "为H5P的“复杂填空”类型活动生成一个完整且有效的JSON对象。",
+   complex_blanks_prompt_json_structure_title: "**预期的JSON结构：**",
+   complex_blanks_prompt_json_structure_main_object: "主对象必须包含`content`和`overallFeedback`键。",
+   complex_blanks_prompt_task: "`task`: 练习的说明（HTML格式）。",
+   complex_blanks_prompt_blanks_text: "`blanksText`: 包含由`___________`表示的空格的文本。",
+   complex_blanks_prompt_blanks_list: "`blanksList`: 对象的数组，每个空格一个，按出现顺序列出。",
+   complex_blanks_prompt_correct_answer: "`correctAnswerText`: 正确答案（可以包含用`/`分隔的备选答案）。",
+   complex_blanks_prompt_incorrect_answers_list: "`incorrectAnswersList`: 常见错误的对象数组。",
+   complex_blanks_prompt_incorrect_answer_text: "`incorrectAnswerText`: 常见错误的文本。",
+   complex_blanks_prompt_incorrect_answer_feedback: "`incorrectAnswerFeedback`: 此错误的具体反馈（HTML格式）。",
+   complex_blanks_prompt_overall_feedback: "`overallFeedback`: 基于分数的总体反馈数组。",
+   complex_blanks_prompt_content_rules_title: "**内容规则：**",
+   complex_blanks_prompt_rule1: "1. `blanksList`中对象的数量必须与`blanksText`中空格的数量相匹配。",
+   complex_blanks_prompt_rule2: "2. 提供常见的错误和建设性的反馈。",
+   complex_blanks_prompt_rule3: "3. 文本和反馈可以包含简单的HTML标签，如`<p>`、`<strong>`、`<em>`。",
+   complex_blanks_prompt_example_json_title: "**JSON示例：**",
+   complex_blanks_prompt_generate_only_json: "只生成有效的JSON代码，不含任何注释。"
 };

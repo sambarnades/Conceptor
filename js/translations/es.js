@@ -425,6 +425,8 @@ var translations_es = {
    h5p_single_choice_set_description: "Crea una serie de preguntas donde cada pregunta tiene solo una respuesta correcta.",
    h5p_dialog_cards_name: "Tarjetas de diálogo",
    h5p_dialog_cards_description: "Crea tarjetas interactivas con texto y, opcionalmente, imágenes en ambos lados.",
+   h5p_complex_fill_the_blanks_name: "Rellenar huecos complejo",
+   h5p_complex_fill_the_blanks_description: "Crea un texto avanzado para rellenar huecos con retroalimentación específica para cada error.",
  
      // Módulos de Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -787,5 +789,26 @@ var translations_es = {
    confirmStartingOverHeader: "¿Empezar de nuevo?",
    confirmStartingOverBody: "Se perderá todo el progreso. ¿Estás seguro de que quieres empezar de nuevo?",
    confirmStartingOverCancelLabel: "Cancelar",
-   confirmStartingOverConfirmLabel: "Empezar de nuevo"
+   confirmStartingOverConfirmLabel: "Empezar de nuevo",
+
+   // Complex Fill the Blanks Prompt
+   complex_blanks_prompt_role: "Eres un experto en diseño instruccional creando una actividad H5P \"Complex Fill the Blanks\".",
+   complex_blanks_prompt_mission: "**Tu misión:**",
+   complex_blanks_prompt_generate_json: "Genera un objeto JSON completo y válido para una actividad H5P de tipo Complex Fill the Blanks.",
+   complex_blanks_prompt_json_structure_title: "**Estructura JSON esperada:**",
+   complex_blanks_prompt_json_structure_main_object: "El objeto principal debe contener las claves `content` y `overallFeedback`.",
+   complex_blanks_prompt_task: "`task`: Las instrucciones para el ejercicio (en HTML).",
+   complex_blanks_prompt_blanks_text: "`blanksText`: El texto que contiene los huecos, representados por `___________`.",
+   complex_blanks_prompt_blanks_list: "`blanksList`: Un array de objetos, uno por cada hueco, en orden de aparición.",
+   complex_blanks_prompt_correct_answer: "`correctAnswerText`: La respuesta correcta (puede incluir alternativas con `/`).",
+   complex_blanks_prompt_incorrect_answers_list: "`incorrectAnswersList`: Un array de objetos para errores comunes.",
+   complex_blanks_prompt_incorrect_answer_text: "`incorrectAnswerText`: El texto de un error común.",
+   complex_blanks_prompt_incorrect_answer_feedback: "`incorrectAnswerFeedback`: La retroalimentación específica para este error (en HTML).",
+   complex_blanks_prompt_overall_feedback: "`overallFeedback`: Un array para retroalimentación general basada en la puntuación.",
+   complex_blanks_prompt_content_rules_title: "**Reglas de contenido:**",
+   complex_blanks_prompt_rule1: "1. El número de objetos en `blanksList` debe coincidir con el número de huecos en `blanksText`.",
+   complex_blanks_prompt_rule2: "2. Proporciona errores comunes y retroalimentación constructiva.",
+   complex_blanks_prompt_rule3: "3. El texto y la retroalimentación pueden contener etiquetas HTML simples como `<p>`, `<strong>`, `<em>`.",
+   complex_blanks_prompt_example_json_title: "**Ejemplo de JSON:**",
+   complex_blanks_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario."
 };

@@ -425,6 +425,8 @@ var translations_de = {
    h5p_single_choice_set_description: "Erstellen Sie eine Reihe von Fragen, bei denen jede Frage nur eine richtige Antwort hat.",
    h5p_dialog_cards_name: "Dialogkarten",
    h5p_dialog_cards_description: "Erstellen Sie interaktive Karten mit Text und optionalen Bildern auf beiden Seiten.",
+   h5p_complex_fill_the_blanks_name: "Komplexer Lückentext",
+   h5p_complex_fill_the_blanks_description: "Erstellen Sie einen erweiterten Lückentext mit spezifischem Feedback für jeden Fehler.",
  
      // Moodle Module
      moodle_xml_name: "XML Éléa/Moodle",
@@ -780,5 +782,26 @@ var translations_de = {
    confirmStartingOverHeader: "Von vorne beginnen?",
    confirmStartingOverBody: "Ihr gesamter Fortschritt geht verloren. Sind Sie sicher, dass Sie von vorne beginnen möchten?",
    confirmStartingOverCancelLabel: "Abbrechen",
-   confirmStartingOverConfirmLabel: "Von vorne beginnen"
+   confirmStartingOverConfirmLabel: "Von vorne beginnen",
+
+   // Complex Fill the Blanks Prompt
+   complex_blanks_prompt_role: "Sie sind ein Experte für Instruktionsdesign und erstellen eine H5P-Aktivität „Complex Fill the Blanks“.",
+   complex_blanks_prompt_mission: "**Ihre Mission:**",
+   complex_blanks_prompt_generate_json: "Generieren Sie ein vollständiges und gültiges JSON-Objekt für eine H5P-Aktivität vom Typ Complex Fill the Blanks.",
+   complex_blanks_prompt_json_structure_title: "**Erwartete JSON-Struktur:**",
+   complex_blanks_prompt_json_structure_main_object: "Das Hauptobjekt muss die Schlüssel `content` und `overallFeedback` enthalten.",
+   complex_blanks_prompt_task: "`task`: Die Anweisung für die Übung (in HTML).",
+   complex_blanks_prompt_blanks_text: "`blanksText`: Der Text mit den Lücken, dargestellt durch `___________`.",
+   complex_blanks_prompt_blanks_list: "`blanksList`: Ein Array von Objekten, eines für jede Lücke, in der Reihenfolge ihres Erscheinens.",
+   complex_blanks_prompt_correct_answer: "`correctAnswerText`: Die richtige Antwort (kann Alternativen mit `/` enthalten).",
+   complex_blanks_prompt_incorrect_answers_list: "`incorrectAnswersList`: Ein Array von Objekten für häufige Fehler.",
+   complex_blanks_prompt_incorrect_answer_text: "`incorrectAnswerText`: Der Text eines häufigen Fehlers.",
+   complex_blanks_prompt_incorrect_answer_feedback: "`incorrectAnswerFeedback`: Das spezifische Feedback für diesen Fehler (in HTML).",
+   complex_blanks_prompt_overall_feedback: "`overallFeedback`: Ein Array für allgemeines Feedback basierend auf der Punktzahl.",
+   complex_blanks_prompt_content_rules_title: "**Inhaltsregeln:**",
+   complex_blanks_prompt_rule1: "1. Die Anzahl der Objekte in `blanksList` muss mit der Anzahl der Lücken in `blanksText` übereinstimmen.",
+   complex_blanks_prompt_rule2: "2. Bieten Sie häufige Fehler und konstruktives Feedback an.",
+   complex_blanks_prompt_rule3: "3. Der Text und das Feedback können einfache HTML-Tags wie `<p>`, `<strong>`, `<em>` enthalten.",
+   complex_blanks_prompt_example_json_title: "**Beispiel-JSON:**",
+   complex_blanks_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare."
 };

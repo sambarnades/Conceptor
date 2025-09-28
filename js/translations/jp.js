@@ -425,6 +425,8 @@ var translations_jp = {
    h5p_single_choice_set_description: "各質問に正解が1つしかない一連の質問を作成します。",
    h5p_dialog_cards_name: "ダイアログカード",
    h5p_dialog_cards_description: "テキストとオプションの画像を含むインタラクティブな両面カードを作成します。",
+   h5p_complex_fill_the_blanks_name: "複雑な穴埋め問題",
+   h5p_complex_fill_the_blanks_description: "各エラーに特定のフィードバックが付いた高度な穴埋めテキストを作成します。",
  
      // Moodle モジュール
      moodle_xml_name: "XML Éléa/Moodle",
@@ -781,5 +783,26 @@ var translations_jp = {
    confirmStartingOverHeader: "最初からやり直しますか？",
    confirmStartingOverBody: "すべての進捗が失われます。本当に最初からやり直しますか？",
    confirmStartingOverCancelLabel: "キャンセル",
-   confirmStartingOverConfirmLabel: "最初からやり直す"
+   confirmStartingOverConfirmLabel: "最初からやり直す",
+
+   // Complex Fill the Blanks Prompt
+   complex_blanks_prompt_role: "あなたは教育設計の専門家で、H5Pアクティビティ「Complex Fill the Blanks」を作成しています。",
+   complex_blanks_prompt_mission: "**あなたのミッション:**",
+   complex_blanks_prompt_generate_json: "H5PのComplex Fill the Blanksタイプのアクティビティ用に、完全で有効なJSONオブジェクトを生成してください。",
+   complex_blanks_prompt_json_structure_title: "**期待されるJSON構造:**",
+   complex_blanks_prompt_json_structure_main_object: "メインオブジェクトには`content`と`overallFeedback`キーが含まれている必要があります。",
+   complex_blanks_prompt_task: "`task`: 演習の指示（HTML形式）。",
+   complex_blanks_prompt_blanks_text: "`blanksText`: `___________`で表される空白を含むテキスト。",
+   complex_blanks_prompt_blanks_list: "`blanksList`: 各空白に対応するオブジェクトの配列。出現順に並べます。",
+   complex_blanks_prompt_correct_answer: "`correctAnswerText`: 正解（`/`で代替案を含めることができます）。",
+   complex_blanks_prompt_incorrect_answers_list: "`incorrectAnswersList`: 一般的な間違いに対応するオブジェクトの配列。",
+   complex_blanks_prompt_incorrect_answer_text: "`incorrectAnswerText`: 一般的な間違いのテキスト。",
+   complex_blanks_prompt_incorrect_answer_feedback: "`incorrectAnswerFeedback`: この間違いに対する特定のフィードバック（HTML形式）。",
+   complex_blanks_prompt_overall_feedback: "`overallFeedback`: スコアに基づく一般的なフィードバックの配列。",
+   complex_blanks_prompt_content_rules_title: "**コンテンツのルール:**",
+   complex_blanks_prompt_rule1: "1. `blanksList`内のオブジェクトの数は、`blanksText`内の空白の数と一致する必要があります。",
+   complex_blanks_prompt_rule2: "2. 一般的な間違いと建設的なフィードバックを提供してください。",
+   complex_blanks_prompt_rule3: "3. テキストとフィードバックには、`<p>`、`<strong>`、`<em>`などの単純なHTMLタグを含めることができます。",
+   complex_blanks_prompt_example_json_title: "**JSONの例:**",
+   complex_blanks_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。"
 };

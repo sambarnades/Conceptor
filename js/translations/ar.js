@@ -425,6 +425,8 @@ var translations_ar = {
    h5p_single_choice_set_description: "أنشئ سلسلة من الأسئلة حيث يكون لكل سؤال إجابة صحيحة واحدة فقط.",
    h5p_dialog_cards_name: "بطاقات الحوار",
    h5p_dialog_cards_description: "أنشئ بطاقات تفاعلية تحتوي على نص وصور اختيارية على كلا الوجهين.",
+   h5p_complex_fill_the_blanks_name: "املأ الفراغات المعقدة",
+   h5p_complex_fill_the_blanks_description: "أنشئ نصًا متقدمًا لملء الفراغات مع ملاحظات محددة لكل خطأ.",
  
      // وحدات Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -786,5 +788,26 @@ var translations_ar = {
    confirmStartingOverHeader: "البدء من جديد؟",
    confirmStartingOverBody: "سيتم فقدان كل التقدم. هل أنت متأكد من أنك تريد البدء من جديد؟",
    confirmStartingOverCancelLabel: "إلغاء",
-   confirmStartingOverConfirmLabel: "البدء من جديد"
+   confirmStartingOverConfirmLabel: "البدء من جديد",
+
+   // Complex Fill the Blanks Prompt
+   complex_blanks_prompt_role: "أنت خبير في تصميم التعليم تنشئ نشاط H5P \"املأ الفراغات المعقدة\".",
+   complex_blanks_prompt_mission: "**مهمتك:**",
+   complex_blanks_prompt_generate_json: "أنشئ كائن JSON كاملاً وصالحًا لنشاط H5P من نوع املأ الفراغات المعقدة.",
+   complex_blanks_prompt_json_structure_title: "**بنية JSON المتوقعة:**",
+   complex_blanks_prompt_json_structure_main_object: "يجب أن يحتوي الكائن الرئيسي على المفتاحين `content` و `overallFeedback`.",
+   complex_blanks_prompt_task: "`task`: تعليمات التمرين (بتنسيق HTML).",
+   complex_blanks_prompt_blanks_text: "`blanksText`: النص الذي يحتوي على الفراغات، ممثلة بـ `___________`.",
+   complex_blanks_prompt_blanks_list: "`blanksList`: مصفوفة من الكائنات، واحد لكل فراغ، بترتيب ظهورها.",
+   complex_blanks_prompt_correct_answer: "`correctAnswerText`: الإجابة الصحيحة (يمكن أن تتضمن بدائل مع `/`).",
+   complex_blanks_prompt_incorrect_answers_list: "`incorrectAnswersList`: مصفوفة من الكائنات للأخطاء الشائعة.",
+   complex_blanks_prompt_incorrect_answer_text: "`incorrectAnswerText`: نص خطأ شائع.",
+   complex_blanks_prompt_incorrect_answer_feedback: "`incorrectAnswerFeedback`: الملاحظات المحددة لهذا الخطأ (بتنسيق HTML).",
+   complex_blanks_prompt_overall_feedback: "`overallFeedback`: مصفوفة للملاحظات العامة بناءً على النتيجة.",
+   complex_blanks_prompt_content_rules_title: "**قواعد المحتوى:**",
+   complex_blanks_prompt_rule1: "1. يجب أن يتطابق عدد الكائنات في `blanksList` مع عدد الفراغات في `blanksText`.",
+   complex_blanks_prompt_rule2: "2. قدم أخطاء شائعة وملاحظات بناءة.",
+   complex_blanks_prompt_rule3: "3. يمكن أن يحتوي النص والملاحظات على علامات HTML بسيطة مثل `<p>` و `<strong>` و `<em>`.",
+   complex_blanks_prompt_example_json_title: "**مثال JSON:**",
+   complex_blanks_prompt_generate_only_json: "أنشئ فقط كود JSON صالحًا، بدون أي تعليقات."
 };
