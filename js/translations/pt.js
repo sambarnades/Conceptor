@@ -427,6 +427,8 @@ var translations_pt = {
    h5p_dialog_cards_description: "Crie cartões interativos com texto e, opcionalmente, imagens em ambos os lados.",
    h5p_complex_fill_the_blanks_name: "Preencher lacunas complexo",
    h5p_complex_fill_the_blanks_description: "Crie um texto avançado de preenchimento de lacunas com feedback específico para cada erro.",
+   h5p_chart_name: "Gráfico",
+   h5p_chart_description: "Crie um gráfico de pizza ou de barras para visualizar dados.",
  
      // Módulos Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -804,5 +806,25 @@ var translations_pt = {
    complex_blanks_prompt_rule2: "2. Forneça erros comuns e feedback construtivo.",
    complex_blanks_prompt_rule3: "3. O texto e o feedback podem conter tags HTML simples como `<p>`, `<strong>`, `<em>`.",
    complex_blanks_prompt_example_json_title: "**Exemplo de JSON:**",
-   complex_blanks_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário."
+   complex_blanks_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário.",
+
+    // Chart Prompt
+    chart_prompt_role: "Você é um especialista em design instrucional criando uma atividade H5P \"Gráfico\".",
+    chart_prompt_mission: "**Sua missão:**",
+    chart_prompt_generate_json: "Gere um objeto JSON completo e válido para uma atividade H5P de Gráfico.",
+    chart_prompt_json_structure_title: "**Estrutura de JSON esperada:**",
+    chart_prompt_json_structure_main_object: "O objeto deve conter:",
+    chart_prompt_graph_mode: "`graphMode`: Escolha o tipo de gráfico mais relevante, 'pieChart' (pizza) ou 'barChart' (barras), com base no contexto, a menos que seja instruído de outra forma.",
+    chart_prompt_list_of_types: "`listOfTypes`: Um array de objetos, cada um representando um ponto de dados no gráfico.",
+    chart_prompt_value: "`value`: O valor numérico do ponto de dados.",
+    chart_prompt_color: "`color`: A cor do ponto de dados (código hexadecimal).",
+    chart_prompt_font_color: "`fontColor`: A cor do texto para o ponto de dados (código hexadecimal).",
+    chart_prompt_text: "`text`: O rótulo para o ponto de dados.",
+    chart_prompt_figure_definition: "`figureDefinition`: Uma breve descrição do gráfico.",
+    chart_prompt_content_rules_title: "**Regras para o conteúdo:**",
+    chart_prompt_rule1: "1. Escolha cores contrastantes para uma boa legibilidade.",
+    chart_prompt_rule2: "2. Os rótulos devem ser curtos e claros.",
+    chart_prompt_rule3: "3. Se um valor for muito baixo em comparação com outros, prefira um 'barChart' para uma melhor visualização.",
+    chart_prompt_example_json_title: "**Exemplo de JSON:**",
+    chart_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário."
 };

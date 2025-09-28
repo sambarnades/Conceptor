@@ -427,6 +427,8 @@ var translations_jp = {
    h5p_dialog_cards_description: "テキストとオプションの画像を含むインタラクティブな両面カードを作成します。",
    h5p_complex_fill_the_blanks_name: "複雑な穴埋め問題",
    h5p_complex_fill_the_blanks_description: "各エラーに特定のフィードバックが付いた高度な穴埋めテキストを作成します。",
+   h5p_chart_name: "チャート",
+   h5p_chart_description: "データを視覚化するために円グラフまたは棒グラフを作成します。",
  
      // Moodle モジュール
      moodle_xml_name: "XML Éléa/Moodle",
@@ -804,5 +806,25 @@ var translations_jp = {
    complex_blanks_prompt_rule2: "2. 一般的な間違いと建設的なフィードバックを提供してください。",
    complex_blanks_prompt_rule3: "3. テキストとフィードバックには、`<p>`、`<strong>`、`<em>`などの単純なHTMLタグを含めることができます。",
    complex_blanks_prompt_example_json_title: "**JSONの例:**",
-   complex_blanks_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。"
+   complex_blanks_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
+
+    // Chart Prompt
+    chart_prompt_role: "あなたは教育設計の専門家で、H5Pアクティビティ「チャート」を作成しています。",
+    chart_prompt_mission: "**あなたのミッション:**",
+    chart_prompt_generate_json: "H5Pチャートアクティビティ用の完全で有効なJSONオブジェクトを生成してください。",
+    chart_prompt_json_structure_title: "**期待されるJSON構造:**",
+    chart_prompt_json_structure_main_object: "オブジェクトには以下を含める必要があります：",
+    chart_prompt_graph_mode: "`graphMode`: 文脈に基づいて最も関連性の高いチャートの種類（「pieChart」（円グラフ）または「barChart」（棒グラフ））を選択してください。特に指示がない限り。",
+    chart_prompt_list_of_types: "`listOfTypes`: チャート内のデータポイントを表すオブジェクトの配列。",
+    chart_prompt_value: "`value`: データポイントの数値。",
+    chart_prompt_color: "`color`: データポイントの色（16進コード）。",
+    chart_prompt_font_color: "`fontColor`: データポイントのテキストの色（16進コード）。",
+    chart_prompt_text: "`text`: データポイントのラベル。",
+    chart_prompt_figure_definition: "`figureDefinition`: チャートの簡単な説明。",
+    chart_prompt_content_rules_title: "**コンテンツのルール:**",
+    chart_prompt_rule1: "1. 読みやすさのために対照的な色を選択してください。",
+    chart_prompt_rule2: "2. ラベルは短く明確でなければなりません。",
+    chart_prompt_rule3: "3. 他の値と比較して非常に低い値がある場合は、視覚化を向上させるために「barChart」を優先してください。",
+    chart_prompt_example_json_title: "**JSONの例:**",
+    chart_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。"
 };

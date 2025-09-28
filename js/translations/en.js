@@ -427,6 +427,8 @@ const translations_en = {
    h5p_dialog_cards_description: "Create interactive cards with text and optional images on both sides.",
    h5p_complex_fill_the_blanks_name: "Complex fill the blanks",
    h5p_complex_fill_the_blanks_description: "Create an advanced fill-in-the-blanks text with specific feedback for each error.",
+   h5p_chart_name: "Chart",
+   h5p_chart_description: "Create a pie or bar chart to visualize data.",
  
      // Moodle Modules
      moodle_xml_name: "XML Éléa/Moodle",
@@ -810,5 +812,25 @@ const translations_en = {
    complex_blanks_prompt_rule2: "2. Provide common mistakes and constructive feedback.",
    complex_blanks_prompt_rule3: "3. The text and feedback can contain simple HTML tags like `<p>`, `<strong>`, `<em>`.",
    complex_blanks_prompt_example_json_title: "**Example JSON:**",
-   complex_blanks_prompt_generate_only_json: "Generate only the valid JSON code, without any comments."
+   complex_blanks_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
+
+    // Chart Prompt
+    chart_prompt_role: "You are an expert in instructional design creating an H5P \"Chart\" activity.",
+    chart_prompt_mission: "**Your mission:**",
+    chart_prompt_generate_json: "Generate a complete and valid JSON object for an H5P Chart activity.",
+    chart_prompt_json_structure_title: "**Expected JSON structure:**",
+    chart_prompt_json_structure_main_object: "The object must contain:",
+    chart_prompt_graph_mode: "`graphMode`: Choose the most relevant chart type, 'pieChart' or 'barChart', based on the context, unless instructed otherwise.",
+    chart_prompt_list_of_types: "`listOfTypes`: An array of objects, each representing a data point in the chart.",
+    chart_prompt_value: "`value`: The numerical value of the data point.",
+    chart_prompt_color: "`color`: The color of the data point (hex code).",
+    chart_prompt_font_color: "`fontColor`: The color of the text for the data point (hex code).",
+    chart_prompt_text: "`text`: The label for the data point.",
+    chart_prompt_figure_definition: "`figureDefinition`: A brief description of the chart.",
+    chart_prompt_content_rules_title: "**Content rules:**",
+    chart_prompt_rule1: "1. Choose contrasting colors for good readability.",
+    chart_prompt_rule2: "2. Labels should be short and clear.",
+    chart_prompt_rule3: "3. If a value is very low compared to others, prefer a 'barChart' for better visualization.",
+    chart_prompt_example_json_title: "**Example JSON:**",
+    chart_prompt_generate_only_json: "Generate only the valid JSON code, without any comments."
 };

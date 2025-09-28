@@ -283,6 +283,16 @@ document.addEventListener('DOMContentLoaded', function() {
            jsonInputId: "complexBlanksJsonInput",
            createBtnId: "createComplexBlanksH5P",
            hidden: true
+       },
+       Chart: {
+           name: "h5p_chart_name",
+           englishName: "Chart",
+           machineName: "H5P.Chart",
+           description: "h5p_chart_description",
+           image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/chart-icon-color.png",
+           promptId: "chartResultat",
+           jsonInputId: "chartJsonInput",
+           createBtnId: "createChartH5P"
        }
     };
     
@@ -1528,7 +1538,9 @@ document.addEventListener('DOMContentLoaded', function() {
                    }
                };
            } else if (moduleKey === 'ComplexFillTheBlanks') {
-               content = { ...jsonObj }; // Le JSON est déjà au bon format
+              content = { ...jsonObj }; // Le JSON est déjà au bon format
+           } else if (moduleKey === 'Chart') {
+               content = { ...jsonObj };
            }
 
             // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
@@ -2449,6 +2461,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                ${pt.complex_blanks_prompt_generate_only_json}${languageInstruction}`;
 
+       const chartPrompt = `${pt.chart_prompt_role}
+                               ${contextPrompt}
+
+                               ${pt.chart_prompt_mission}
+                               ${pt.chart_prompt_generate_json}
+
+                               ${pt.chart_prompt_json_structure_title}
+                               ${pt.chart_prompt_json_structure_main_object}
+                               - ${pt.chart_prompt_graph_mode}
+                               - ${pt.chart_prompt_list_of_types}
+                                   - ${pt.chart_prompt_value}
+                                   - ${pt.chart_prompt_color}
+                                   - ${pt.chart_prompt_font_color}
+                                   - ${pt.chart_prompt_text}
+                               - ${pt.chart_prompt_figure_definition}
+
+                               ${pt.chart_prompt_content_rules_title}
+                               ${pt.chart_prompt_rule1}
+                               ${pt.chart_prompt_rule2}
+
+                               ${pt.chart_prompt_example_json_title}
+                               \`\`\`json
+                               {
+                                   "graphMode": "pieChart",
+                                   "listOfTypes": [
+                                       {"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "Blueberries"},
+                                       {"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "Raspberries"}
+                                   ],
+                                   "figureDefinition": "Chart"
+                               }
+                               \`\`\`
+
+                               ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
+
         return {
             timelineResultat: timelinePrompt,
              crosswordResultat: crosswordPrompt,
@@ -2471,7 +2517,8 @@ document.addEventListener('DOMContentLoaded', function() {
             sortParagraphsResultat: sortParagraphsPrompt,
             singleChoiceSetResultat: singleChoiceSetPrompt,
             dialogCardsResultat: dialogCardsPrompt,
-            complexBlanksResultat: complexBlanksPrompt
+            complexBlanksResultat: complexBlanksPrompt,
+            chartResultat: chartPrompt
         };
     }
 
@@ -2941,7 +2988,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             dependenciesForJson.push({ machineName: "H5P.SingleChoiceSet", majorVersion: "1", minorVersion: "11" });
                         } else if (moduleInfo.machineName === "H5P.Dialogcards") {
                             dependenciesForJson.push({ machineName: "H5P.Dialogcards", majorVersion: "1", minorVersion: "9" });
-                        }
+                        } else if (moduleInfo.machineName === "H5P.Chart") {
+                           dependenciesForJson.push({ machineName: "H5P.Chart", majorVersion: "1", minorVersion: "2" });
+                       }
                    }
                }
             }

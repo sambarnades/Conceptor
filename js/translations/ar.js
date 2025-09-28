@@ -427,6 +427,8 @@ var translations_ar = {
    h5p_dialog_cards_description: "أنشئ بطاقات تفاعلية تحتوي على نص وصور اختيارية على كلا الوجهين.",
    h5p_complex_fill_the_blanks_name: "املأ الفراغات المعقدة",
    h5p_complex_fill_the_blanks_description: "أنشئ نصًا متقدمًا لملء الفراغات مع ملاحظات محددة لكل خطأ.",
+   h5p_chart_name: "رسم بياني",
+   h5p_chart_description: "أنشئ رسمًا بيانيًا دائريًا أو شريطيًا لتصور البيانات.",
  
      // وحدات Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -809,5 +811,25 @@ var translations_ar = {
    complex_blanks_prompt_rule2: "2. قدم أخطاء شائعة وملاحظات بناءة.",
    complex_blanks_prompt_rule3: "3. يمكن أن يحتوي النص والملاحظات على علامات HTML بسيطة مثل `<p>` و `<strong>` و `<em>`.",
    complex_blanks_prompt_example_json_title: "**مثال JSON:**",
-   complex_blanks_prompt_generate_only_json: "أنشئ فقط كود JSON صالحًا، بدون أي تعليقات."
+   complex_blanks_prompt_generate_only_json: "أنشئ فقط كود JSON صالحًا، بدون أي تعليقات.",
+
+    // Chart Prompt
+    chart_prompt_role: "أنت خبير في تصميم التعليم تنشئ نشاط H5P \"رسم بياني\".",
+    chart_prompt_mission: "**مهمتك:**",
+    chart_prompt_generate_json: "أنشئ كائن JSON كاملاً وصالحًا لنشاط H5P من نوع رسم بياني.",
+    chart_prompt_json_structure_title: "**بنية JSON المتوقعة:**",
+    chart_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
+    chart_prompt_graph_mode: "`graphMode`: اختر نوع الرسم البياني الأنسب، 'pieChart' (دائري) أو 'barChart' (شريطي)، بناءً على السياق، ما لم يُطلب خلاف ذلك.",
+    chart_prompt_list_of_types: "`listOfTypes`: مصفوفة من الكائنات، يمثل كل منها نقطة بيانات في الرسم البياني.",
+    chart_prompt_value: "`value`: القيمة الرقمية لنقطة البيانات.",
+    chart_prompt_color: "`color`: لون نقطة البيانات (رمز ست عشري).",
+    chart_prompt_font_color: "`fontColor`: لون نص نقطة البيانات (رمز ست عشري).",
+    chart_prompt_text: "`text`: تسمية نقطة البيانات.",
+    chart_prompt_figure_definition: "`figureDefinition`: وصف موجز للرسم البياني.",
+    chart_prompt_content_rules_title: "**قواعد المحتوى:**",
+    chart_prompt_rule1: "1. اختر ألوانًا متباينة لسهولة القراءة.",
+    chart_prompt_rule2: "2. يجب أن تكون التسميات قصيرة وواضحة.",
+    chart_prompt_rule3: "3. إذا كانت إحدى القيم منخفضة جدًا مقارنة بالقيم الأخرى، ففضل 'barChart' لتصور أفضل.",
+    chart_prompt_example_json_title: "**مثال JSON:**",
+    chart_prompt_generate_only_json: "أنشئ فقط كود JSON صالحًا، بدون أي تعليقات."
 };

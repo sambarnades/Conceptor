@@ -427,6 +427,8 @@ var translations_de = {
    h5p_dialog_cards_description: "Erstellen Sie interaktive Karten mit Text und optionalen Bildern auf beiden Seiten.",
    h5p_complex_fill_the_blanks_name: "Komplexer Lückentext",
    h5p_complex_fill_the_blanks_description: "Erstellen Sie einen erweiterten Lückentext mit spezifischem Feedback für jeden Fehler.",
+   h5p_chart_name: "Diagramm",
+   h5p_chart_description: "Erstellen Sie ein Kreis- oder Balkendiagramm zur Visualisierung von Daten.",
  
      // Moodle Module
      moodle_xml_name: "XML Éléa/Moodle",
@@ -803,5 +805,25 @@ var translations_de = {
    complex_blanks_prompt_rule2: "2. Bieten Sie häufige Fehler und konstruktives Feedback an.",
    complex_blanks_prompt_rule3: "3. Der Text und das Feedback können einfache HTML-Tags wie `<p>`, `<strong>`, `<em>` enthalten.",
    complex_blanks_prompt_example_json_title: "**Beispiel-JSON:**",
-   complex_blanks_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare."
+   complex_blanks_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare.",
+
+    // Chart Prompt
+    chart_prompt_role: "Sie sind ein Experte für Instruktionsdesign und erstellen eine H5P-Aktivität \"Diagramm\".",
+    chart_prompt_mission: "**Ihre Mission:**",
+    chart_prompt_generate_json: "Generieren Sie ein vollständiges und gültiges JSON-Objekt für eine H5P-Diagrammaktivität.",
+    chart_prompt_json_structure_title: "**Erwartete JSON-Struktur:**",
+    chart_prompt_json_structure_main_object: "Das Objekt muss enthalten:",
+    chart_prompt_graph_mode: "`graphMode`: Wählen Sie den relevantesten Diagrammtyp, 'pieChart' (Kreisdiagramm) oder 'barChart' (Balkendiagramm), basierend auf dem Kontext, sofern nicht anders angewiesen.",
+    chart_prompt_list_of_types: "`listOfTypes`: Ein Array von Objekten, die jeweils einen Datenpunkt im Diagramm darstellen.",
+    chart_prompt_value: "`value`: Der numerische Wert des Datenpunkts.",
+    chart_prompt_color: "`color`: Die Farbe des Datenpunkts (Hex-Code).",
+    chart_prompt_font_color: "`fontColor`: Die Farbe des Textes für den Datenpunkt (Hex-Code).",
+    chart_prompt_text: "`text`: Die Beschriftung für den Datenpunkt.",
+    chart_prompt_figure_definition: "`figureDefinition`: Eine kurze Beschreibung des Diagramms.",
+    chart_prompt_content_rules_title: "**Inhaltsregeln:**",
+    chart_prompt_rule1: "1. Wählen Sie kontrastierende Farben für eine gute Lesbarkeit.",
+    chart_prompt_rule2: "2. Beschriftungen sollten kurz und klar sein.",
+    chart_prompt_rule3: "3. Wenn ein Wert im Vergleich zu anderen sehr niedrig ist, bevorzugen Sie ein 'barChart' für eine bessere Visualisierung.",
+    chart_prompt_example_json_title: "**Beispiel-JSON:**",
+    chart_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare."
 };

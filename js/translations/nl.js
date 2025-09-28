@@ -427,6 +427,8 @@ var translations_nl = {
    h5p_dialog_cards_description: "Maak interactieve kaarten met tekst en optionele afbeeldingen aan beide zijden.",
    h5p_complex_fill_the_blanks_name: "Complexe invuloefening",
    h5p_complex_fill_the_blanks_description: "Maak een geavanceerde invultekst met specifieke feedback voor elke fout.",
+   h5p_chart_name: "Grafiek",
+   h5p_chart_description: "Maak een cirkel- of staafdiagram om gegevens te visualiseren.",
  
      // Moodle Modules
      moodle_xml_name: "XML Éléa/Moodle",
@@ -804,5 +806,25 @@ var translations_nl = {
    complex_blanks_prompt_rule2: "2. Geef veelvoorkomende fouten en constructieve feedback.",
    complex_blanks_prompt_rule3: "3. De tekst en feedback kunnen eenvoudige HTML-tags bevatten zoals `<p>`, `<strong>`, `<em>`.",
    complex_blanks_prompt_example_json_title: "**Voorbeeld-JSON:**",
-   complex_blanks_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar."
+   complex_blanks_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar.",
+
+    // Chart Prompt
+    chart_prompt_role: "U bent een expert in onderwijsontwerp en maakt een H5P-activiteit \"Grafiek\".",
+    chart_prompt_mission: "**Uw missie:**",
+    chart_prompt_generate_json: "Genereer een volledig en geldig JSON-object voor een H5P-Grafiekactiviteit.",
+    chart_prompt_json_structure_title: "**Verwachte JSON-structuur:**",
+    chart_prompt_json_structure_main_object: "Het object moet bevatten:",
+    chart_prompt_graph_mode: "`graphMode`: Kies het meest relevante grafiektype, 'pieChart' (cirkeldiagram) of 'barChart' (staafdiagram), op basis van de context, tenzij anders aangegeven.",
+    chart_prompt_list_of_types: "`listOfTypes`: Een array van objecten, die elk een gegevenspunt in de grafiek vertegenwoordigen.",
+    chart_prompt_value: "`value`: De numerieke waarde van het gegevenspunt.",
+    chart_prompt_color: "`color`: De kleur van het gegevenspunt (hex-code).",
+    chart_prompt_font_color: "`fontColor`: De kleur van de tekst voor het gegevenspunt (hex-code).",
+    chart_prompt_text: "`text`: Het label voor het gegevenspunt.",
+    chart_prompt_figure_definition: "`figureDefinition`: Een korte beschrijving van de grafiek.",
+    chart_prompt_content_rules_title: "**Inhoudsregels:**",
+    chart_prompt_rule1: "1. Kies contrasterende kleuren voor een goede leesbaarheid.",
+    chart_prompt_rule2: "2. Labels moeten kort en duidelijk zijn.",
+    chart_prompt_rule3: "3. Als een waarde erg laag is in vergelijking met andere, geef dan de voorkeur aan een 'barChart' voor een betere visualisatie.",
+    chart_prompt_example_json_title: "**Voorbeeld-JSON:**",
+    chart_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar."
 };

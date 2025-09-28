@@ -427,6 +427,8 @@ var translations_zh = {
    h5p_dialog_cards_description: "创建带有文本和可选图片（双面）的交互式卡片。",
    h5p_complex_fill_the_blanks_name: "复杂填空",
    h5p_complex_fill_the_blanks_description: "创建一个高级填空文本，并为每个错误提供具体反馈。",
+   h5p_chart_name: "图表",
+   h5p_chart_description: "创建饼图或条形图以可视化数据。",
  
      // Moodle 模块
      moodle_xml_name: "XML Éléa/Moodle",
@@ -809,5 +811,25 @@ var translations_zh = {
    complex_blanks_prompt_rule2: "2. 提供常见的错误和建设性的反馈。",
    complex_blanks_prompt_rule3: "3. 文本和反馈可以包含简单的HTML标签，如`<p>`、`<strong>`、`<em>`。",
    complex_blanks_prompt_example_json_title: "**JSON示例：**",
-   complex_blanks_prompt_generate_only_json: "只生成有效的JSON代码，不含任何注释。"
+   complex_blanks_prompt_generate_only_json: "只生成有效的JSON代码，不含任何注释。",
+
+    // Chart Prompt
+    chart_prompt_role: "你是一位教学设计专家，正在创建一个H5P活动“图表”。",
+    chart_prompt_mission: "**你的任务：**",
+    chart_prompt_generate_json: "为H5P的图表类型活动生成一个完整且有效的JSON对象。",
+    chart_prompt_json_structure_title: "**预期的JSON结构：**",
+    chart_prompt_json_structure_main_object: "对象必须包含：",
+    chart_prompt_graph_mode: "`graphMode`: 根据上下文选择最相关的图表类型，'pieChart'（饼图）或'barChart'（条形图），除非另有指示。",
+    chart_prompt_list_of_types: "`listOfTypes`: 对象的数组，每个对象代表图表中的一个数据点。",
+    chart_prompt_value: "`value`: 数据点的数值。",
+    chart_prompt_color: "`color`: 数据点的颜色（十六进制代码）。",
+    chart_prompt_font_color: "`fontColor`: 数据点文本的颜色（十六进制代码）。",
+    chart_prompt_text: "`text`: 数据点的标签。",
+    chart_prompt_figure_definition: "`figureDefinition`: 图表的简要说明。",
+    chart_prompt_content_rules_title: "**内容规则：**",
+    chart_prompt_rule1: "1. 选择对比鲜明的颜色以便于阅读。",
+    chart_prompt_rule2: "2. 标签应简短明了。",
+    chart_prompt_rule3: "3. 如果某个值与其他值相比非常低，请优先选择'barChart'以获得更好的可视化效果。",
+    chart_prompt_example_json_title: "**JSON示例：**",
+    chart_prompt_generate_only_json: "只生成有效的JSON代码，不含任何注释。"
 };

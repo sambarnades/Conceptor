@@ -427,7 +427,10 @@ var translations_it = {
    h5p_dialog_cards_description: "Crea carte interattive con testo e immagini opzionali su entrambi i lati.",
    h5p_complex_fill_the_blanks_name: "Completa gli spazi complesso",
    h5p_complex_fill_the_blanks_description: "Crea un testo avanzato da completare con feedback specifici per ogni errore.",
- 
+   h5p_chart_name: "Diagramma",
+   h5p_chart_description: "Crea un diagramma circolare o a barre per visualizzare i dati.",
+
+
      // Moduli Moodle
      moodle_xml_name: "XML Éléa/Moodle",
     moodle_xml_description: "Genera una banca di 10 domande per un'attività Quiz pronte per essere importate in formato XML.",
@@ -804,5 +807,24 @@ var translations_it = {
    complex_blanks_prompt_rule2: "2. Fornisci errori comuni e feedback costruttivo.",
    complex_blanks_prompt_rule3: "3. Il testo e il feedback possono contenere tag HTML semplici come `<p>`, `<strong>`, `<em>`.",
    complex_blanks_prompt_example_json_title: "**Esempio di JSON:**",
-   complex_blanks_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento."
+   complex_blanks_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento.",
+
+    // Chart Prompt
+    chart_prompt_role: "Sei un esperto di progettazione didattica che crea un'attività H5P \"Grafico\".",
+    chart_prompt_mission: "**La tua missione:**",
+    chart_prompt_generate_json: "Genera un oggetto JSON completo e valido per un'attività H5P di tipo Grafico.",
+    chart_prompt_json_structure_title: "**Struttura JSON attesa:**",
+    chart_prompt_json_structure_main_object: "L'oggetto deve contenere:",
+    chart_prompt_graph_mode: "`graphMode`: Il tipo di grafico, 'pieChart' (a torta) o 'barChart' (a barre). L'IA dovrebbe scegliere il più pertinente in base al contesto, se non diversamente indicato.",
+    chart_prompt_list_of_types: "`listOfTypes`: Un array di oggetti, ciascuno rappresentante un punto dati nel grafico.",
+    chart_prompt_value: "`value`: Il valore numerico del punto dati.",
+    chart_prompt_color: "`color`: Il colore del punto dati (codice esadecimale).",
+    chart_prompt_font_color: "`fontColor`: Il colore del testo per il punto dati (codice esadecimale).",
+    chart_prompt_text: "`text`: L'etichetta per il punto dati.",
+    chart_prompt_figure_definition: "`figureDefinition`: Una breve descrizione del grafico.",
+    chart_prompt_content_rules_title: "**Regole per il contenuto:**",
+    chart_prompt_rule1: "1. Scegli colori contrastanti per una buona leggibilità.",
+    chart_prompt_rule2: "2. Le etichette devono essere brevi e chiare.",
+    chart_prompt_example_json_title: "**Esempio di JSON:**",
+    chart_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento."
 };

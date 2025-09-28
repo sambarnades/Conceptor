@@ -427,6 +427,8 @@ const translations_fr = {
    h5p_dialog_cards_description: "Créez des cartes interactives recto-verso avec du texte et éventuellement des images.",
    h5p_complex_fill_the_blanks_name: "Texte à trous complexe",
    h5p_complex_fill_the_blanks_description: "Créez un texte à trous avancé avec des feedbacks spécifiques pour chaque erreur.",
+   h5p_chart_name: "Diagramme",
+   h5p_chart_description: "Créez un diagramme circulaire ou en barres pour visualiser des données.",
  
      // Moodle Modules
      moodle_xml_name: "XML Éléa/Moodle",
@@ -804,5 +806,25 @@ const translations_fr = {
    complex_blanks_prompt_rule2: "2. Propose des erreurs fréquentes et des feedbacks constructifs.",
    complex_blanks_prompt_rule3: "3. Le texte et les feedbacks peuvent contenir des balises HTML simples comme `<p>`, `<strong>`, `<em>`.",
    complex_blanks_prompt_example_json_title: "**Exemple de JSON :**",
-   complex_blanks_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire."
+   complex_blanks_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire.",
+
+   // Chart Prompt
+   chart_prompt_role: "Tu es un expert en ingénierie pédagogique créant une activité H5P \"Chart\".",
+   chart_prompt_mission: "**Ta mission :**",
+   chart_prompt_generate_json: "Génère un objet JSON complet et valide pour une activité H5P de type Chart.",
+   chart_prompt_json_structure_title: "**Structure du JSON attendu :**",
+   chart_prompt_json_structure_main_object: "L'objet doit contenir :",
+   chart_prompt_graph_mode: "`graphMode`: Choisis le type de diagramme le plus pertinent, 'pieChart' (circulaire) ou 'barChart' (barres), en fonction du contexte, sauf instruction contraire.",
+   chart_prompt_list_of_types: "`listOfTypes`: Un tableau d'objets, chacun représentant un élément du diagramme.",
+   chart_prompt_value: "`value`: La valeur numérique de l'élément.",
+   chart_prompt_color: "`color`: La couleur de l'élément (code hexadécimal).",
+   chart_prompt_font_color: "`fontColor`: La couleur du texte de l'élément (code hexadécimal).",
+   chart_prompt_text: "`text`: Le libellé de l'élément.",
+   chart_prompt_figure_definition: "`figureDefinition`: Une brève description du diagramme.",
+   chart_prompt_content_rules_title: "**Règles pour le contenu :**",
+   chart_prompt_rule1: "1.  Choisis des couleurs contrastées pour une bonne lisibilité.",
+   chart_prompt_rule2: "2.  Les libellés doivent être courts et clairs.",
+   chart_prompt_rule3: "3.  Si une valeur est très faible par rapport aux autres, privilégie un 'barChart' pour une meilleure visualisation.",
+   chart_prompt_example_json_title: "**Exemple de JSON :**",
+   chart_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire."
 };

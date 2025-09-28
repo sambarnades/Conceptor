@@ -427,6 +427,8 @@ var translations_el = {
    h5p_dialog_cards_description: "Δημιουργήστε διαδραστικές κάρτες με κείμενο και προαιρετικές εικόνες και στις δύο πλευρές.",
    h5p_complex_fill_the_blanks_name: "Συμπλήρωση κενών (σύνθετο)",
    h5p_complex_fill_the_blanks_description: "Δημιουργήστε ένα προηγμένο κείμενο συμπλήρωσης κενών με ειδική ανατροφοδότηση για κάθε λάθος.",
+   h5p_chart_name: "Γράφημα",
+   h5p_chart_description: "Δημιουργήστε ένα γράφημα πίτας ή ράβδων για την οπτικοποίηση δεδομένων.",
  
      // Ενότητες Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -804,5 +806,25 @@ var translations_el = {
    complex_blanks_prompt_rule2: "2. Παρέχετε συνήθη λάθη και εποικοδομητική ανατροφοδότηση.",
    complex_blanks_prompt_rule3: "3. Το κείμενο και η ανατροφοδότηση μπορούν να περιέχουν απλές ετικέτες HTML όπως `<p>`, `<strong>`, `<em>`.",
    complex_blanks_prompt_example_json_title: "**Παράδειγμα JSON:**",
-   complex_blanks_prompt_generate_only_json: "Δημιουργήστε μόνο τον έγκυρο κώδικα JSON, χωρίς κανένα σχόλιο."
+   complex_blanks_prompt_generate_only_json: "Δημιουργήστε μόνο τον έγκυρο κώδικα JSON, χωρίς κανένα σχόλιο.",
+
+    // Chart Prompt
+    chart_prompt_role: "Είστε ειδικός στον εκπαιδευτικό σχεδιασμό και δημιουργείτε μια δραστηριότητα H5P \"Γράφημα\".",
+    chart_prompt_mission: "**Η αποστολή σας:**",
+    chart_prompt_generate_json: "Δημιουργήστε ένα πλήρες και έγκυρο αντικείμενο JSON για μια δραστηριότητα H5P τύπου Γράφημα.",
+    chart_prompt_json_structure_title: "**Αναμενόμενη δομή JSON:**",
+    chart_prompt_json_structure_main_object: "Το αντικείμενο πρέπει να περιέχει:",
+    chart_prompt_graph_mode: "`graphMode`: Επιλέξτε τον πιο σχετικό τύπο γραφήματος, 'pieChart' (πίτα) ή 'barChart' (ράβδων), με βάση το πλαίσιο, εκτός αν δοθεί άλλη εντολή.",
+    chart_prompt_list_of_types: "`listOfTypes`: Ένας πίνακας αντικειμένων, καθένα από τα οποία αντιπροσωπεύει ένα σημείο δεδομένων στο γράφημα.",
+    chart_prompt_value: "`value`: Η αριθμητική τιμή του σημείου δεδομένων.",
+    chart_prompt_color: "`color`: Το χρώμα του σημείου δεδομένων (δεκαεξαδικός κώδικας).",
+    chart_prompt_font_color: "`fontColor`: Το χρώμα του κειμένου για το σημείο δεδομένων (δεκαεξαδικός κώδικας).",
+    chart_prompt_text: "`text`: Η ετικέτα για το σημείο δεδομένων.",
+    chart_prompt_figure_definition: "`figureDefinition`: Μια σύντομη περιγραφή του γραφήματος.",
+    chart_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
+    chart_prompt_rule1: "1. Επιλέξτε χρώματα με αντίθεση για καλή αναγνωσιμότητα.",
+    chart_prompt_rule2: "2. Οι ετικέτες πρέπει να είναι σύντομες και σαφείς.",
+    chart_prompt_rule3: "3. Εάν μια τιμή είναι πολύ χαμηλή σε σύγκριση με άλλες, προτιμήστε ένα 'barChart' για καλύτερη οπτικοποίηση.",
+    chart_prompt_example_json_title: "**Παράδειγμα JSON:**",
+    chart_prompt_generate_only_json: "Δημιουργήστε μόνο τον έγκυρο κώδικα JSON, χωρίς κανένα σχόλιο."
 };
