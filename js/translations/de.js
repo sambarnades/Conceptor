@@ -423,6 +423,8 @@ var translations_de = {
    h5p_sort_the_paragraphs_description: "Erstellen Sie eine Reihe von Absätzen, die die Schüler in die richtige Reihenfolge bringen müssen.",
    h5p_single_choice_set_name: "Einzelwahl-Satz",
    h5p_single_choice_set_description: "Erstellen Sie eine Reihe von Fragen, bei denen jede Frage nur eine richtige Antwort hat.",
+   h5p_dialog_cards_name: "Dialogkarten",
+   h5p_dialog_cards_description: "Erstellen Sie interaktive Karten mit Text und optionalen Bildern auf beiden Seiten.",
  
      // Moodle Module
      moodle_xml_name: "XML Éléa/Moodle",
@@ -727,5 +729,56 @@ var translations_de = {
    single_choice_set_prompt_content_rules_title: "**Inhaltsregeln:**",
    single_choice_set_prompt_rule1: "1.  In jedem `answers`-Array ist die erste Antwort immer die richtige.",
    single_choice_set_prompt_example_json_title: "**Beispiel-JSON:**",
-   single_choice_set_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare."
+   single_choice_set_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare.",
+
+   // Dialog Cards UI translations
+   answer: "Umdrehen",
+   next: "Weiter",
+   prev: "Zurück",
+   retry: "Wiederholen",
+   progressText: "Karte @card von @total",
+   cardFrontLabel: "Kartenvorderseite",
+   cardBackLabel: "Kartenrückseite",
+   tipButtonLabel: "Tipp anzeigen",
+   audioNotSupported: "Ihr Browser unterstützt dieses Audioformat nicht",
+
+   // Dialog Cards Prompt
+   dialog_cards_prompt_role: "Sie sind ein Experte für pädagogische Ingenieurwissenschaften und erstellen eine H5P-Aktivität \"Dialogkarten\".",
+   dialog_cards_prompt_mission: "**Ihre Mission:**",
+   dialog_cards_prompt_generate_json: "Generieren Sie ein JSON-Objekt, das nur die Schlüssel `title`, `description` und `dialogs` für eine H5P-Aktivität vom Typ Dialogkarten enthält.",
+   dialog_cards_prompt_json_structure_title: "**Erwartete JSON-Struktur:**",
+   dialog_cards_prompt_json_structure_main_object: "Das Objekt muss enthalten:",
+   dialog_cards_prompt_title: "`title`: Ein Titel für die Aktivität (HTML-Format).",
+   dialog_cards_prompt_description: "`description`: Eine kurze Beschreibung oder Anweisung (HTML-Format).",
+   dialog_cards_prompt_dialogs_array: "`dialogs`: Ein Array von ${nombreQuestions} Objekten, die jeweils eine Karte darstellen und Folgendes enthalten:",
+   dialog_cards_prompt_text: "`text`: Der Text auf der Vorderseite der Karte (HTML-Format).",
+   dialog_cards_prompt_answer: "`answer`: Der Text auf der Rückseite der Karte (HTML-Format).",
+   dialog_cards_prompt_tips: "`tips` (optional): Ein Objekt für Hinweise. Wenn Sie es für pädagogisch sinnvoll halten, fügen Sie einen Hinweis für die Vorderseite mit dem Schlüssel `front` und/oder für die Rückseite mit dem Schlüssel `back` hinzu.",
+   dialog_cards_prompt_content_rules_title: "**Inhaltsregeln:**",
+   dialog_cards_prompt_rule1: "1. Die Texte für die Vorderseite (`text`) und die Rückseite (`answer`) müssen klar und prägnant sein. **Formatieren Sie den Inhalt mit HTML (<strong> für fett, <em> für kursiv), um die Lesbarkeit zu verbessern und wichtige Informationen hervorzuheben.**",
+   dialog_cards_prompt_rule2: "2. Fügen Sie keine Bilder oder Töne hinzu.",
+   dialog_cards_prompt_rule3: "",
+   dialog_cards_prompt_example_json_title: "**Beispiel-JSON:**",
+   dialog_cards_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code, der die Schlüssel `title`, `description` und `dialogs` enthält, ohne Kommentare.",
+
+   // Dialog Cards specific UI translations
+   correctAnswer: "Ich hatte es richtig!",
+   incorrectAnswer: "Ich hatte es falsch",
+   round: "Runde @round",
+   cardsLeft: "Verbleibende Karten: @number",
+   nextRound: "Weiter zu Runde @round",
+   startOver: "Von vorne beginnen",
+   showSummary: "Weiter",
+   summary: "Zusammenfassung",
+   summaryCardsRight: "Karten, die Sie richtig hatten:",
+   summaryCardsWrong: "Karten, die Sie falsch hatten:",
+   summaryCardsNotShown: "Nicht gezeigte Karten im Pool:",
+   summaryOverallScore: "Gesamtpunktzahl",
+   summaryCardsCompleted: "Karten, die Sie gelernt haben:",
+   summaryCompletedRounds: "Abgeschlossene Runden:",
+   summaryAllDone: "Gut gemacht! Sie haben alle @cards Karten @max Mal hintereinander richtig beantwortet!",
+   confirmStartingOverHeader: "Von vorne beginnen?",
+   confirmStartingOverBody: "Ihr gesamter Fortschritt geht verloren. Sind Sie sicher, dass Sie von vorne beginnen möchten?",
+   confirmStartingOverCancelLabel: "Abbrechen",
+   confirmStartingOverConfirmLabel: "Von vorne beginnen"
 };

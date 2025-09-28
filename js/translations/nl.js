@@ -423,6 +423,8 @@ var translations_nl = {
    h5p_sort_the_paragraphs_description: "Maak een set paragrafen die studenten in de juiste volgorde moeten sorteren.",
    h5p_single_choice_set_name: "Enkelkeuze set",
    h5p_single_choice_set_description: "Maak een reeks vragen waarbij elke vraag slechts één juist antwoord heeft.",
+   h5p_dialog_cards_name: "Dialoogkaarten",
+   h5p_dialog_cards_description: "Maak interactieve kaarten met tekst en optionele afbeeldingen aan beide zijden.",
  
      // Moodle Modules
      moodle_xml_name: "XML Éléa/Moodle",
@@ -728,5 +730,56 @@ var translations_nl = {
    single_choice_set_prompt_content_rules_title: "**Inhoudsregels:**",
    single_choice_set_prompt_rule1: "1. In elke `answers`-array is het eerste antwoord altijd het juiste.",
    single_choice_set_prompt_example_json_title: "**JSON-voorbeeld:**",
-   single_choice_set_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar."
+   single_choice_set_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar.",
+
+   // Dialog Cards UI translations
+   answer: "Omdraaien",
+   next: "Volgende",
+   prev: "Vorige",
+   retry: "Opnieuw proberen",
+   progressText: "Kaart @card van @total",
+   cardFrontLabel: "Voorkant kaart",
+   cardBackLabel: "Achterkant kaart",
+   tipButtonLabel: "Toon tip",
+   audioNotSupported: "Uw browser ondersteunt deze audio niet",
+
+   // Dialog Cards Prompt
+   dialog_cards_prompt_role: "U bent een expert in onderwijsontwerp en maakt een H5P-activiteit \"Dialoogkaarten\".",
+   dialog_cards_prompt_mission: "**Uw missie:**",
+   dialog_cards_prompt_generate_json: "Genereer een JSON-object dat alleen de sleutels `title`, `description` en `dialogs` bevat voor een H5P-activiteit van het type Dialoogkaarten.",
+   dialog_cards_prompt_json_structure_title: "**Verwachte JSON-structuur:**",
+   dialog_cards_prompt_json_structure_main_object: "Het object moet bevatten:",
+   dialog_cards_prompt_title: "`title`: Een titel voor de activiteit (HTML-formaat).",
+   dialog_cards_prompt_description: "`description`: Een korte beschrijving of instructie (HTML-formaat).",
+   dialog_cards_prompt_dialogs_array: "`dialogs`: Een array van ${nombreQuestions} objecten, die elk een kaart vertegenwoordigen en bevatten:",
+   dialog_cards_prompt_text: "`text`: De tekst op de voorkant van de kaart (HTML-formaat).",
+   dialog_cards_prompt_answer: "`answer`: De tekst op de achterkant van de kaart (HTML-formaat).",
+   dialog_cards_prompt_tips: "`tips` (optioneel): Een object voor hints. Als u het pedagogisch nuttig acht, voeg dan een hint toe voor de voorkant met de sleutel `front` en/of voor de achterkant met de sleutel `back`.",
+   dialog_cards_prompt_content_rules_title: "**Inhoudsregels:**",
+   dialog_cards_prompt_rule1: "1. De teksten voor de voorkant (`text`) en achterkant (`answer`) moeten duidelijk en beknopt zijn. **Maak de inhoud op met HTML (<strong> voor vet, <em> voor cursief) om de leesbaarheid te verbeteren en belangrijke informatie te markeren.**",
+   dialog_cards_prompt_rule2: "2. Voeg geen afbeeldingen of geluiden toe.",
+   dialog_cards_prompt_rule3: "",
+   dialog_cards_prompt_example_json_title: "**JSON-voorbeeld:**",
+   dialog_cards_prompt_generate_only_json: "Genereer alleen de geldige JSON-code met de sleutels `title`, `description` en `dialogs`, zonder commentaar.",
+
+   // Dialog Cards specific UI translations
+   correctAnswer: "Ik had het goed!",
+   incorrectAnswer: "Ik had het fout",
+   round: "Ronde @round",
+   cardsLeft: "Resterende kaarten: @number",
+   nextRound: "Ga door naar ronde @round",
+   startOver: "Begin opnieuw",
+   showSummary: "Volgende",
+   summary: "Samenvatting",
+   summaryCardsRight: "Kaarten die je goed had:",
+   summaryCardsWrong: "Kaarten die je fout had:",
+   summaryCardsNotShown: "Kaarten in de stapel die niet zijn getoond:",
+   summaryOverallScore: "Algemene score",
+   summaryCardsCompleted: "Kaarten die je hebt voltooid:",
+   summaryCompletedRounds: "Voltooide rondes:",
+   summaryAllDone: "Goed gedaan! Je hebt alle @cards kaarten @max keer achter elkaar goed beantwoord!",
+   confirmStartingOverHeader: "Opnieuw beginnen?",
+   confirmStartingOverBody: "Alle voortgang gaat verloren. Weet je zeker dat je opnieuw wilt beginnen?",
+   confirmStartingOverCancelLabel: "Annuleren",
+   confirmStartingOverConfirmLabel: "Opnieuw beginnen"
 };

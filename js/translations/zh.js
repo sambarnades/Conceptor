@@ -423,6 +423,8 @@ var translations_zh = {
    h5p_sort_the_paragraphs_description: "创建一组段落，学生必须按正确顺序排序。",
    h5p_single_choice_set_name: "单选题集",
    h5p_single_choice_set_description: "创建一系列问题，每个问题只有一个正确答案。",
+   h5p_dialog_cards_name: "对话卡",
+   h5p_dialog_cards_description: "创建带有文本和可选图片（双面）的交互式卡片。",
  
      // Moodle 模块
      moodle_xml_name: "XML Éléa/Moodle",
@@ -733,5 +735,56 @@ var translations_zh = {
    single_choice_set_prompt_content_rules_title: "**内容规则:**",
    single_choice_set_prompt_rule1: "1. 在每个 `answers` 数组中，第一个答案始终是正确的。",
    single_choice_set_prompt_example_json_title: "**JSON 示例:**",
-   single_choice_set_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。"
+   single_choice_set_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
+
+   // Dialog Cards UI translations
+   answer: "翻转",
+   next: "下一个",
+   prev: "上一个",
+   retry: "重试",
+   progressText: "卡片 @card / @total",
+   cardFrontLabel: "卡片正面",
+   cardBackLabel: "卡片背面",
+   tipButtonLabel: "显示提示",
+   audioNotSupported: "您的浏览器不支持此音频",
+
+   // Dialog Cards Prompt
+   dialog_cards_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“对话卡”活动。",
+   dialog_cards_prompt_mission: "**你的任务:**",
+   dialog_cards_prompt_generate_json: "生成一个仅包含 `title`、`description` 和 `dialogs` 键的 JSON 对象，用于 H5P 对话卡活动。",
+   dialog_cards_prompt_json_structure_title: "**预期的 JSON 结构:**",
+   dialog_cards_prompt_json_structure_main_object: "对象必须包含：",
+   dialog_cards_prompt_title: "`title`: 活动的标题（HTML 格式）。",
+   dialog_cards_prompt_description: "`description`: 简短的描述或说明（HTML 格式）。",
+   dialog_cards_prompt_dialogs_array: "`dialogs`: 一个包含 ${nombreQuestions} 个对象的数组，每个对象代表一张卡片并包含：",
+   dialog_cards_prompt_text: "`text`: 卡片正面的文本（HTML 格式）。",
+   dialog_cards_prompt_answer: "`answer`: 卡片背面的文本（HTML 格式）。",
+   dialog_cards_prompt_tips: "`tips` (可选): 提示对象。如果您认为在教学上有用，请使用 `front` 键为正面添加提示，和/或使用 `back` 键为背面添加提示。",
+   dialog_cards_prompt_content_rules_title: "**内容规则:**",
+   dialog_cards_prompt_rule1: "1. 正面（`text`）和背面（`answer`）的文本必须清晰简洁。**使用HTML（<strong>表示粗体，<em>表示斜体）格式化内容，以提高可读性并突出重要信息。**",
+   dialog_cards_prompt_rule2: "2. 不要添加任何图像或声音。",
+   dialog_cards_prompt_rule3: "",
+   dialog_cards_prompt_example_json_title: "**JSON 示例:**",
+   dialog_cards_prompt_generate_only_json: "仅生成包含 `title`、`description` 和 `dialogs` 键的有效 JSON 代码，不要添加任何注释。",
+
+   // Dialog Cards specific UI translations
+   correctAnswer: "我答对了！",
+   incorrectAnswer: "我答错了",
+   round: "第 @round 轮",
+   cardsLeft: "剩余卡片：@number",
+   nextRound: "进入第 @round 轮",
+   startOver: "重新开始",
+   showSummary: "下一步",
+   summary: "总结",
+   summaryCardsRight: "您答对的卡片：",
+   summaryCardsWrong: "您答错的卡片：",
+   summaryCardsNotShown: "牌组中未显示的卡片：",
+   summaryOverallScore: "总分",
+   summaryCardsCompleted: "您已完成学习的卡片：",
+   summaryCompletedRounds: "已完成的轮次：",
+   summaryAllDone: "做得好！您连续 @max 次答对了所有 @cards 张卡片！",
+   confirmStartingOverHeader: "重新开始？",
+   confirmStartingOverBody: "所有进度都将丢失。您确定要重新开始吗？",
+   confirmStartingOverCancelLabel: "取消",
+   confirmStartingOverConfirmLabel: "重新开始"
 };

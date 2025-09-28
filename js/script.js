@@ -262,6 +262,16 @@ document.addEventListener('DOMContentLoaded', function() {
            promptId: "singleChoiceSetResultat",
            jsonInputId: "singleChoiceSetJsonInput",
            createBtnId: "createSingleChoiceSetH5P"
+       },
+       DialogCards: {
+           name: "h5p_dialog_cards_name",
+           englishName: "Dialog Cards",
+           machineName: "H5P.Dialogcards",
+           description: "h5p_dialog_cards_description",
+           image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/dialog_cards_icon-color.png",
+           promptId: "dialogCardsResultat",
+           jsonInputId: "dialogCardsJsonInput",
+           createBtnId: "createDialogCardsH5P"
        }
     };
     
@@ -1456,6 +1466,55 @@ document.addEventListener('DOMContentLoaded', function() {
                        shouldNotSelect: translations.shouldNotSelect
                    }
                };
+           } else if (moduleKey === 'DialogCards') {
+                const transformedDialogs = jsonObj.dialogs.map(dialog => {
+                   // On ne garde que le texte, la réponse et les astuces. On supprime l'image et l'audio.
+                   const { text, answer, tips } = dialog;
+                   return { text, answer, tips: tips || {} };
+               });
+
+               content = {
+                   title: jsonObj.title,
+                   description: jsonObj.description,
+                   dialogs: transformedDialogs,
+                   behaviour: {
+                       enableRetry: true,
+                       disableBackwardsNavigation: false,
+                       scaleTextNotCard: true,
+                       randomCards: false
+                   },
+                   answer: translations.answer,
+                   next: translations.next,
+                   prev: translations.prev,
+                   retry: translations.retry,
+                   progressText: translations.progressText,
+                   cardFrontLabel: translations.cardFrontLabel,
+                   cardBackLabel: translations.cardBackLabel,
+                   tipButtonLabel: translations.tipButtonLabel,
+                   audioNotSupported: translations.audioNotSupported,
+                   mode: "normal",
+                   correctAnswer: translations.correctAnswer,
+                   incorrectAnswer: translations.incorrectAnswer,
+                   round: translations.round,
+                   cardsLeft: translations.cardsLeft,
+                   nextRound: translations.nextRound,
+                   startOver: translations.startOver,
+                   showSummary: translations.showSummary,
+                   summary: translations.summary,
+                   summaryCardsRight: translations.summaryCardsRight,
+                   summaryCardsWrong: translations.summaryCardsWrong,
+                   summaryCardsNotShown: translations.summaryCardsNotShown,
+                   summaryOverallScore: translations.summaryOverallScore,
+                   summaryCardsCompleted: translations.summaryCardsCompleted,
+                   summaryCompletedRounds: translations.summaryCompletedRounds,
+                   summaryAllDone: translations.summaryAllDone,
+                   confirmStartingOver: {
+                       header: translations.confirmStartingOverHeader,
+                       body: translations.confirmStartingOverBody,
+                       cancelLabel: translations.confirmStartingOverCancelLabel,
+                       confirmLabel: translations.confirmStartingOverConfirmLabel
+                   }
+               };
            }
 
              // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
@@ -2258,6 +2317,70 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                ${pt.single_choice_set_prompt_generate_only_json}${languageInstruction}`;
 
+       const dialogCardsPrompt = `${pt.dialog_cards_prompt_role}
+                               ${contextPrompt}
+
+                               ${pt.dialog_cards_prompt_mission}
+                               ${pt.dialog_cards_prompt_generate_json}
+
+                               ${pt.dialog_cards_prompt_json_structure_title}
+                               ${pt.dialog_cards_prompt_json_structure_main_object}
+                               - ${pt.dialog_cards_prompt_title}
+                               - ${pt.dialog_cards_prompt_description}
+                               - ${pt.dialog_cards_prompt_dialogs_array}
+                                   - ${pt.dialog_cards_prompt_text}
+                                   - ${pt.dialog_cards_prompt_answer}
+                                   - ${pt.dialog_cards_prompt_tips}
+
+                               ${pt.dialog_cards_prompt_content_rules_title}
+                               ${pt.dialog_cards_prompt_rule1}
+                               ${pt.dialog_cards_prompt_rule2}
+                               ${pt.dialog_cards_prompt_rule3}
+
+                               ${pt.dialog_cards_prompt_example_json_title}
+                               \`\`\`json
+                               {
+                                 "title": "<p>Apprenez les noms des fruits en anglais</p>",
+                                 "description": "<p>Les noms des fruits sont présentés en français. Retournez les cartes pour voir la traduction anglaise correcte.</p>",
+                                 "dialogs": [
+                                   {
+                                     "text": "<p style=\\"text-align: center;\\">Fraises</p>",
+                                     "answer": "<p style=\\"text-align: center;\\">Strawberries</p>",
+                                     "image": {
+                                       "copyright": {
+                                         "license": "CC BY-SA",
+                                         "source": "https://commons.wikimedia.org/wiki/File:Bowl_of_Strawberries.jpg",
+                                         "author": "ShakataGaNai",
+                                         "title": "Bowl_of_Strawberries.jpg",
+                                         "version": "4.0"
+                                       },
+                                       "imageAltText": "Des fruits rouges avec des feuilles vertes"
+                                     },
+                                     "audio": [],
+                                     "tips": {}
+                                   },
+                                   {
+                                     "text": "<p style=\\"text-align: center;\\">Framboises</p>",
+                                     "answer": "<p style=\\"text-align: center;\\">Raspberries</p>",
+                                     "image": {
+                                       "copyright": {
+                                         "license": "CC BY",
+                                         "source": "https://commons.wikimedia.org/wiki/File:Summer_raspberries,_2008.jpg",
+                                         "title": "Summer_raspberries,_2008.jpg",
+                                         "author": "www.bluewaikiki.com",
+                                         "version": "4.0"
+                                       },
+                                       "imageAltText": "Des baies rouges"
+                                     },
+                                     "audio": [],
+                                     "tips": {}
+                                   }
+                                 ]
+                               }
+                               \`\`\`
+
+                               ${pt.dialog_cards_prompt_generate_only_json}${languageInstruction}`;
+
         return {
             timelineResultat: timelinePrompt,
              crosswordResultat: crosswordPrompt,
@@ -2278,7 +2401,8 @@ document.addEventListener('DOMContentLoaded', function() {
             multipleChoiceResultat: multipleChoicePrompt,
             findTheWordsResultat: findTheWordsPrompt,
             sortParagraphsResultat: sortParagraphsPrompt,
-            singleChoiceSetResultat: singleChoiceSetPrompt
+            singleChoiceSetResultat: singleChoiceSetPrompt,
+            dialogCardsResultat: dialogCardsPrompt
         };
     }
 
@@ -2758,6 +2882,12 @@ document.addEventListener('DOMContentLoaded', function() {
                            machineName: "H5P.SingleChoiceSet",
                            majorVersion: "1",
                            minorVersion: "11"
+                       });
+                   } else if (moduleInfo.machineName === "H5P.Dialogcards") {
+                       dependenciesForJson.push({
+                           machineName: "H5P.Dialogcards",
+                           majorVersion: "1",
+                           minorVersion: "9"
                        });
                    }
                }

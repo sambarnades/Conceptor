@@ -423,6 +423,8 @@ const translations_fr = {
    h5p_sort_the_paragraphs_description: "Créez un ensemble de paragraphes que les élèves doivent remettre dans le bon ordre.",
    h5p_single_choice_set_name: "Série de choix uniques",
    h5p_single_choice_set_description: "Créez une série de questions où chaque question n'a qu'une seule bonne réponse.",
+   h5p_dialog_cards_name: "Cartes de dialogue",
+   h5p_dialog_cards_description: "Créez des cartes interactives recto-verso avec du texte et éventuellement des images.",
  
      // Moodle Modules
      moodle_xml_name: "XML Éléa/Moodle",
@@ -728,5 +730,56 @@ const translations_fr = {
    single_choice_set_prompt_content_rules_title: "**Règles pour le contenu :**",
    single_choice_set_prompt_rule1: "1.  Dans chaque tableau `answers`, la première réponse est toujours la bonne.",
    single_choice_set_prompt_example_json_title: "**Exemple de JSON :**",
-   single_choice_set_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire."
+   single_choice_set_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire.",
+
+   // Dialog Cards UI translations
+   answer: "Retourner",
+   next: "Suivant",
+   prev: "Précédent",
+   retry: "Recommencer",
+   progressText: "Carte @card sur @total",
+   cardFrontLabel: "Recto de la carte",
+   cardBackLabel: "Verso de la carte",
+   tipButtonLabel: "Afficher l'indice",
+   audioNotSupported: "Votre navigateur ne supporte pas ce format audio",
+
+   // Dialog Cards Prompt
+   dialog_cards_prompt_role: "Tu es un expert en ingénierie pédagogique créant une activité H5P \"Cartes de dialogue\".",
+   dialog_cards_prompt_mission: "**Ta mission :**",
+   dialog_cards_prompt_generate_json: "Génère un objet JSON contenant uniquement les clés `title`, `description` et `dialogs` pour une activité H5P de type Cartes de dialogue.",
+   dialog_cards_prompt_json_structure_title: "**Structure du JSON attendu :**",
+   dialog_cards_prompt_json_structure_main_object: "L'objet doit contenir :",
+   dialog_cards_prompt_title: "`title`: Un titre pour l'activité (format HTML).",
+   dialog_cards_prompt_description: "`description`: Une courte description ou consigne (format HTML).",
+   dialog_cards_prompt_dialogs_array: "`dialogs`: Un tableau de ${nombreQuestions} objets, chacun représentant une carte et contenant :",
+   dialog_cards_prompt_text: "`text`: Le texte du recto de la carte (format HTML).",
+   dialog_cards_prompt_answer: "`answer`: Le texte du verso de la carte (format HTML).",
+   dialog_cards_prompt_tips: "`tips` (optionnel) : Un objet pour les indices. Si tu le juges pédagogiquement utile, ajoute un indice pour le recto avec la clé `front` et/ou pour le verso avec la clé `back`.",
+   dialog_cards_prompt_content_rules_title: "**Règles pour le contenu :**",
+   dialog_cards_prompt_rule1: "1.  Les textes pour le recto (`text`) et le verso (`answer`) doivent être clairs et concis. **Mets en forme le contenu avec du HTML (<strong> pour le gras, <em> pour l'italique) pour améliorer la lisibilité et mettre en évidence les informations importantes.**",
+   dialog_cards_prompt_rule2: "2.  N'ajoute ni image, ni son.",
+   dialog_cards_prompt_rule3: "",
+   dialog_cards_prompt_example_json_title: "**Exemple de JSON :**",
+   dialog_cards_prompt_generate_only_json: "Génère uniquement le code JSON valide contenant les clés `title`, `description` et `dialogs`, sans aucun commentaire.",
+
+   // Dialog Cards specific UI translations
+   correctAnswer: "J'ai eu bon !",
+   incorrectAnswer: "Je me suis trompé",
+   round: "Manche @round",
+   cardsLeft: "Cartes restantes : @number",
+   nextRound: "Passer à la manche @round",
+   startOver: "Recommencer",
+   showSummary: "Suivant",
+   summary: "Résumé",
+   summaryCardsRight: "Cartes que vous avez réussies :",
+   summaryCardsWrong: "Cartes que vous avez manquées :",
+   summaryCardsNotShown: "Cartes non montrées :",
+   summaryOverallScore: "Score global",
+   summaryCardsCompleted: "Cartes que vous avez apprises :",
+   summaryCompletedRounds: "Manches terminées :",
+   summaryAllDone: "Bien joué ! Vous avez réussi toutes les @cards cartes @max fois de suite !",
+   confirmStartingOverHeader: "Recommencer ?",
+   confirmStartingOverBody: "Toute votre progression sera perdue. Êtes-vous sûr de vouloir recommencer ?",
+   confirmStartingOverCancelLabel: "Annuler",
+   confirmStartingOverConfirmLabel: "Recommencer"
 };

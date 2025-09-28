@@ -423,6 +423,8 @@ var translations_ar = {
    h5p_sort_the_paragraphs_description: "أنشئ مجموعة من الفقرات التي يجب على الطلاب ترتيبها بالترتيب الصحيح.",
    h5p_single_choice_set_name: "مجموعة الاختيار الفردي",
    h5p_single_choice_set_description: "أنشئ سلسلة من الأسئلة حيث يكون لكل سؤال إجابة صحيحة واحدة فقط.",
+   h5p_dialog_cards_name: "بطاقات الحوار",
+   h5p_dialog_cards_description: "أنشئ بطاقات تفاعلية تحتوي على نص وصور اختيارية على كلا الوجهين.",
  
      // وحدات Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -733,5 +735,56 @@ var translations_ar = {
    single_choice_set_prompt_content_rules_title: "**قواعد المحتوى:**",
    single_choice_set_prompt_rule1: "1. في كل مصفوفة `answers`، تكون الإجابة الأولى هي الصحيحة دائمًا.",
    single_choice_set_prompt_example_json_title: "**مثال JSON:**",
-   single_choice_set_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات."
+   single_choice_set_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات.",
+
+   // Dialog Cards UI translations
+   answer: "اقلب",
+   next: "التالي",
+   prev: "السابق",
+   retry: "إعادة المحاولة",
+   progressText: "البطاقة @card من @total",
+   cardFrontLabel: "وجه البطاقة الأمامي",
+   cardBackLabel: "وجه البطاقة الخلفي",
+   tipButtonLabel: "إظهار التلميح",
+   audioNotSupported: "متصفحك لا يدعم هذا الصوت",
+
+   // Dialog Cards Prompt
+   dialog_cards_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"بطاقات الحوار\".",
+   dialog_cards_prompt_mission: "**مهمتك:**",
+   dialog_cards_prompt_generate_json: "ولِّد كائن JSON يحتوي فقط على المفاتيح `title` و `description` و `dialogs` لنشاط H5P من نوع بطاقات الحوار.",
+   dialog_cards_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
+   dialog_cards_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
+   dialog_cards_prompt_title: "`title`: عنوان للنشاط (بصيغة HTML).",
+   dialog_cards_prompt_description: "`description`: وصف قصير أو تعليمات (بصيغة HTML).",
+   dialog_cards_prompt_dialogs_array: "`dialogs`: مصفوفة من ${nombreQuestions} كائنات، يمثّل كلٌّ منها بطاقة ويحتوي على:",
+   dialog_cards_prompt_text: "`text`: النص على وجه البطاقة الأمامي (بصيغة HTML).",
+   dialog_cards_prompt_answer: "`answer`: النص على وجه البطاقة الخلفي (بصيغة HTML).",
+   dialog_cards_prompt_tips: "`tips` (اختياري): كائن للتلميحات. إذا رأيت أنه مفيد من الناحية التربوية، أضف تلميحًا للوجه الأمامي بالمفتاح `front` و/أو للوجه الخلفي بالمفتاح `back`.",
+   dialog_cards_prompt_content_rules_title: "**قواعد المحتوى:**",
+   dialog_cards_prompt_rule1: "1. يجب أن تكون نصوص الوجه الأمامي (`text`) والوجه الخلفي (`answer`) واضحة وموجزة. **نسق المحتوى باستخدام HTML (<strong> للنص العريض، <em> للنص المائل) لتحسين القراءة وإبراز المعلومات المهمة.**",
+   dialog_cards_prompt_rule2: "2. لا تقم بإضافة أي صور أو أصوات.",
+   dialog_cards_prompt_rule3: "",
+   dialog_cards_prompt_example_json_title: "**مثال JSON:**",
+   dialog_cards_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط يحتوي على المفاتيح `title` و `description` و `dialogs`، دون أي تعليقات.",
+
+   // Dialog Cards specific UI translations
+   correctAnswer: "أجبت بشكل صحيح!",
+   incorrectAnswer: "أخطأت",
+   round: "جولة @round",
+   cardsLeft: "البطاقات المتبقية: @number",
+   nextRound: "الانتقال إلى الجولة @round",
+   startOver: "البدء من جديد",
+   showSummary: "التالي",
+   summary: "ملخص",
+   summaryCardsRight: "البطاقات التي أجبت عليها بشكل صحيح:",
+   summaryCardsWrong: "البطاقات التي أخطأت فيها:",
+   summaryCardsNotShown: "البطاقات غير المعروضة في المجموعة:",
+   summaryOverallScore: "النتيجة الإجمالية",
+   summaryCardsCompleted: "البطاقات التي أكملت تعلمها:",
+   summaryCompletedRounds: "الجولات المكتملة:",
+   summaryAllDone: "أحسنت! لقد أجبت على جميع البطاقات @cards بشكل صحيح @max مرات متتالية!",
+   confirmStartingOverHeader: "البدء من جديد؟",
+   confirmStartingOverBody: "سيتم فقدان كل التقدم. هل أنت متأكد من أنك تريد البدء من جديد؟",
+   confirmStartingOverCancelLabel: "إلغاء",
+   confirmStartingOverConfirmLabel: "البدء من جديد"
 };

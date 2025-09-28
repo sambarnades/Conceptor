@@ -423,6 +423,8 @@ var translations_el = {
    h5p_sort_the_paragraphs_description: "Δημιουργήστε ένα σύνολο παραγράφων που οι μαθητές πρέπει να ταξινομήσουν στη σωστή σειρά.",
    h5p_single_choice_set_name: "Σετ απλής επιλογής",
    h5p_single_choice_set_description: "Δημιουργήστε μια σειρά ερωτήσεων όπου κάθε ερώτηση έχει μόνο μία σωστή απάντηση.",
+   h5p_dialog_cards_name: "Κάρτες διαλόγου",
+   h5p_dialog_cards_description: "Δημιουργήστε διαδραστικές κάρτες με κείμενο και προαιρετικές εικόνες και στις δύο πλευρές.",
  
      // Ενότητες Moodle
      moodle_xml_name: "XML Éléa/Moodle",
@@ -728,5 +730,56 @@ var translations_el = {
    single_choice_set_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
    single_choice_set_prompt_rule1: "1. Σε κάθε πίνακα `answers`, η πρώτη απάντηση είναι πάντα η σωστή.",
    single_choice_set_prompt_example_json_title: "**Παράδειγμα JSON:**",
-   single_choice_set_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια."
+   single_choice_set_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
+
+   // Dialog Cards UI translations
+   answer: "Γύρισμα",
+   next: "Επόμενο",
+   prev: "Προηγούμενο",
+   retry: "Επανάληψη",
+   progressText: "Κάρτα @card από @total",
+   cardFrontLabel: "Μπροστινή πλευρά κάρτας",
+   cardBackLabel: "Πίσω πλευρά κάρτας",
+   tipButtonLabel: "Εμφάνιση συμβουλής",
+   audioNotSupported: "Το πρόγραμμα περιήγησής σας δεν υποστηρίζει αυτόν τον ήχο",
+
+   // Dialog Cards Prompt
+   dialog_cards_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Κάρτες διαλόγου\".",
+   dialog_cards_prompt_mission: "**Αποστολή σου:**",
+   dialog_cards_prompt_generate_json: "Δημιούργησε ένα αντικείμενο JSON που να περιέχει μόνο τα κλειδιά `title`, `description` και `dialogs` για μια δραστηριότητα H5P τύπου Κάρτες διαλόγου.",
+   dialog_cards_prompt_json_structure_title: "**Αναμενόμενη δομή JSON:**",
+   dialog_cards_prompt_json_structure_main_object: "Το αντικείμενο πρέπει να περιέχει:",
+   dialog_cards_prompt_title: "`title`: Ένας τίτλος για τη δραστηριότητα (μορφή HTML).",
+   dialog_cards_prompt_description: "`description`: Μια σύντομη περιγραφή ή οδηγία (μορφή HTML).",
+   dialog_cards_prompt_dialogs_array: "`dialogs`: Ένας πίνακας ${nombreQuestions} αντικειμένων, καθένα από τα οποία αντιπροσωπεύει μια κάρτα και περιέχει:",
+   dialog_cards_prompt_text: "`text`: Το κείμενο στην μπροστινή πλευρά της κάρτας (μορφή HTML).",
+   dialog_cards_prompt_answer: "`answer`: Το κείμενο στην πίσω πλευρά της κάρτας (μορφή HTML).",
+   dialog_cards_prompt_tips: "`tips` (προαιρετικό): Ένα αντικείμενο για υποδείξεις. Εάν το κρίνετε παιδαγωγικά χρήσιμο, προσθέστε μια υπόδειξη για την μπροστινή όψη με το κλειδί `front` ή/και για την πίσω όψη με το κλειδί `back`.",
+   dialog_cards_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
+   dialog_cards_prompt_rule1: "1. Τα κείμενα για την μπροστινή (`text`) και την πίσω (`answer`) όψη πρέπει να είναι σαφή και συνοπτικά. **Μορφοποιήστε το περιεχόμενο με HTML (<strong> για έντονα, <em> για πλάγια) για να βελτιώσετε την αναγνωσιμότητα και να τονίσετε σημαντικές πληροφορίες.**",
+   dialog_cards_prompt_rule2: "2. Μην προσθέτετε εικόνες ή ήχους.",
+   dialog_cards_prompt_rule3: "",
+   dialog_cards_prompt_example_json_title: "**Παράδειγμα JSON:**",
+   dialog_cards_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON που περιέχει τα κλειδιά `title`, `description` και `dialogs`, χωρίς σχόλια.",
+
+   // Dialog Cards specific UI translations
+   correctAnswer: "Το βρήκα σωστά!",
+   incorrectAnswer: "Έκανα λάθος",
+   round: "Γύρος @round",
+   cardsLeft: "Κάρτες που απομένουν: @number",
+   nextRound: "Προχωρήστε στον γύρο @round",
+   startOver: "Ξεκινήστε από την αρχή",
+   showSummary: "Επόμενο",
+   summary: "Περίληψη",
+   summaryCardsRight: "Κάρτες που βρήκατε σωστά:",
+   summaryCardsWrong: "Κάρτες που κάνατε λάθος:",
+   summaryCardsNotShown: "Κάρτες στην τράπουλα που δεν εμφανίστηκαν:",
+   summaryOverallScore: "Συνολική βαθμολογία",
+   summaryCardsCompleted: "Κάρτες που έχετε ολοκληρώσει την εκμάθηση:",
+   summaryCompletedRounds: "Ολοκληρωμένοι γύροι:",
+   summaryAllDone: "Μπράβο! Απαντήσατε σωστά σε όλες τις @cards κάρτες @max φορές στη σειρά!",
+   confirmStartingOverHeader: "Ξεκινήσετε από την αρχή;",
+   confirmStartingOverBody: "Όλη η πρόοδος θα χαθεί. Είστε σίγουροι ότι θέλετε να ξεκινήσετε από την αρχή;",
+   confirmStartingOverCancelLabel: "Άκυρο",
+   confirmStartingOverConfirmLabel: "Ξεκινήστε από την αρχή"
 };

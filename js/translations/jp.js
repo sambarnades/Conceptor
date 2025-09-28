@@ -423,6 +423,8 @@ var translations_jp = {
    h5p_sort_the_paragraphs_description: "生徒が正しい順序に並べ替える必要がある段落のセットを作成します。",
    h5p_single_choice_set_name: "単一選択セット",
    h5p_single_choice_set_description: "各質問に正解が1つしかない一連の質問を作成します。",
+   h5p_dialog_cards_name: "ダイアログカード",
+   h5p_dialog_cards_description: "テキストとオプションの画像を含むインタラクティブな両面カードを作成します。",
  
      // Moodle モジュール
      moodle_xml_name: "XML Éléa/Moodle",
@@ -728,5 +730,56 @@ var translations_jp = {
    single_choice_set_prompt_content_rules_title: "**コンテンツのルール:**",
    single_choice_set_prompt_rule1: "1. 各`answers`配列では、最初の回答が常に正解です。",
    single_choice_set_prompt_example_json_title: "**JSONの例:**",
-   single_choice_set_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。"
+   single_choice_set_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
+
+   // Dialog Cards UI translations
+   answer: "裏返す",
+   next: "次へ",
+   prev: "前へ",
+   retry: "再試行",
+   progressText: "カード @card / @total",
+   cardFrontLabel: "カードの表",
+   cardBackLabel: "カードの裏",
+   tipButtonLabel: "ヒントを表示",
+   audioNotSupported: "お使いのブラウザはこのオーディオをサポートしていません",
+
+   // Dialog Cards Prompt
+   dialog_cards_prompt_role: "あなたはH5P「ダイアログカード」アクティビティを作成する教育工学の専門家です。",
+   dialog_cards_prompt_mission: "**あなたの使命:**",
+   dialog_cards_prompt_generate_json: "H5Pダイアログカードアクティビティ用の`title`、`description`、`dialogs`キーのみを含むJSONオブジェクトを生成してください。",
+   dialog_cards_prompt_json_structure_title: "**期待されるJSON構造:**",
+   dialog_cards_prompt_json_structure_main_object: "オブジェクトには以下を含める必要があります：",
+   dialog_cards_prompt_title: "`title`: アクティビティのタイトル（HTML形式）。",
+   dialog_cards_prompt_description: "`description`: 簡単な説明または指示（HTML形式）。",
+   dialog_cards_prompt_dialogs_array: "`dialogs`: 各カードを表す${nombreQuestions}個のオブジェクトの配列。各オブジェクトには以下が含まれます：",
+   dialog_cards_prompt_text: "`text`: カードの表のテキスト（HTML形式）。",
+   dialog_cards_prompt_answer: "`answer`: カードの裏のテキスト（HTML形式）。",
+   dialog_cards_prompt_tips: "`tips` (任意): ヒント用のオブジェクト。教育的に有用だと判断した場合は、`front`キーで表のヒント、`back`キーで裏のヒントを追加してください。",
+   dialog_cards_prompt_content_rules_title: "**コンテンツのルール:**",
+   dialog_cards_prompt_rule1: "1. 表（`text`）と裏（`answer`）のテキストは明確かつ簡潔でなければなりません。**読みやすさを向上させ、重要な情報を強調するために、HTML（<strong>で太字、<em>で斜体）でコンテンツをフォーマットしてください。**",
+   dialog_cards_prompt_rule2: "2. 画像や音声は追加しないでください。",
+   dialog_cards_prompt_rule3: "",
+   dialog_cards_prompt_example_json_title: "**JSONの例:**",
+   dialog_cards_prompt_generate_only_json: "コメントなしで、`title`、`description`、`dialogs`キーを含む有効なJSONコードのみを生成してください。",
+
+   // Dialog Cards specific UI translations
+   correctAnswer: "正解しました！",
+   incorrectAnswer: "間違えました",
+   round: "ラウンド @round",
+   cardsLeft: "残りカード: @number",
+   nextRound: "ラウンド @round に進む",
+   startOver: "最初からやり直す",
+   showSummary: "次へ",
+   summary: "概要",
+   summaryCardsRight: "正解したカード:",
+   summaryCardsWrong: "間違えたカード:",
+   summaryCardsNotShown: "プールに表示されなかったカード:",
+   summaryOverallScore: "総合スコア",
+   summaryCardsCompleted: "学習を完了したカード:",
+   summaryCompletedRounds: "完了したラウンド:",
+   summaryAllDone: "おめでとうございます！全 @cards 枚のカードを @max 回連続で正解しました！",
+   confirmStartingOverHeader: "最初からやり直しますか？",
+   confirmStartingOverBody: "すべての進捗が失われます。本当に最初からやり直しますか？",
+   confirmStartingOverCancelLabel: "キャンセル",
+   confirmStartingOverConfirmLabel: "最初からやり直す"
 };

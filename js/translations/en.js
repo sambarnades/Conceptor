@@ -423,6 +423,8 @@ const translations_en = {
    h5p_sort_the_paragraphs_description: "Create a set of paragraphs that students must sort into the correct order.",
    h5p_single_choice_set_name: "Single Choice Set",
    h5p_single_choice_set_description: "Create a series of questions where each question has only one correct answer.",
+   h5p_dialog_cards_name: "Dialog Cards",
+   h5p_dialog_cards_description: "Create interactive cards with text and optional images on both sides.",
  
      // Moodle Modules
      moodle_xml_name: "XML Éléa/Moodle",
@@ -734,5 +736,56 @@ const translations_en = {
    single_choice_set_prompt_content_rules_title: "**Content rules:**",
    single_choice_set_prompt_rule1: "1.  In each `answers` array, the first answer is always the correct one.",
    single_choice_set_prompt_example_json_title: "**Example JSON:**",
-   single_choice_set_prompt_generate_only_json: "Generate only the valid JSON code, without any comments."
+   single_choice_set_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
+
+   // Dialog Cards UI translations
+   answer: "Turn",
+   next: "Next",
+   prev: "Previous",
+   retry: "Retry",
+   progressText: "Card @card of @total",
+   cardFrontLabel: "Card front",
+   cardBackLabel: "Card back",
+   tipButtonLabel: "Show tip",
+   audioNotSupported: "Your browser does not support this audio",
+
+   // Dialog Cards Prompt
+   dialog_cards_prompt_role: "You are an expert in pedagogical engineering creating an H5P \"Dialog Cards\" activity.",
+   dialog_cards_prompt_mission: "**Your mission:**",
+   dialog_cards_prompt_generate_json: "Generate a JSON object containing only the `title`, `description`, and `dialogs` keys for an H5P activity of type Dialog Cards.",
+   dialog_cards_prompt_json_structure_title: "**Expected JSON structure:**",
+   dialog_cards_prompt_json_structure_main_object: "The object must contain:",
+   dialog_cards_prompt_title: "`title`: A title for the activity (HTML format).",
+   dialog_cards_prompt_description: "`description`: A short description or instruction (HTML format).",
+   dialog_cards_prompt_dialogs_array: "`dialogs`: An array of ${nombreQuestions} objects, each representing a card and containing:",
+   dialog_cards_prompt_text: "`text`: The text on the front of the card (HTML format).",
+   dialog_cards_prompt_answer: "`answer`: The text on the back of the card (HTML format).",
+   dialog_cards_prompt_tips: "`tips` (optional): An object for hints. If you deem it pedagogically useful, add a hint for the front with the `front` key and/or for the back with the `back` key.",
+   dialog_cards_prompt_content_rules_title: "**Content rules:**",
+   dialog_cards_prompt_rule1: "1. The texts for the front (`text`) and back (`answer`) must be clear and concise. **Format the content with HTML (<strong> for bold, <em> for italics) to improve readability and highlight important information.**",
+   dialog_cards_prompt_rule2: "2. Do not add any images or sounds.",
+   dialog_cards_prompt_rule3: "",
+   dialog_cards_prompt_example_json_title: "**Example JSON:**",
+   dialog_cards_prompt_generate_only_json: "Generate only the valid JSON code containing the `title`, `description`, and `dialogs` keys, without any comments.",
+
+   // Dialog Cards specific UI translations
+   correctAnswer: "I got it right!",
+   incorrectAnswer: "I got it wrong",
+   round: "Round @round",
+   cardsLeft: "Cards left: @number",
+   nextRound: "Proceed to round @round",
+   startOver: "Start over",
+   showSummary: "Next",
+   summary: "Summary",
+   summaryCardsRight: "Cards you got right:",
+   summaryCardsWrong: "Cards you got wrong:",
+   summaryCardsNotShown: "Cards in pool not shown:",
+   summaryOverallScore: "Overall Score",
+   summaryCardsCompleted: "Cards you have completed learning:",
+   summaryCompletedRounds: "Completed rounds:",
+   summaryAllDone: "Well done! You got all @cards cards correct @max times in a row!",
+   confirmStartingOverHeader: "Start over?",
+   confirmStartingOverBody: "All progress will be lost. Are you sure you want to start over?",
+   confirmStartingOverCancelLabel: "Cancel",
+   confirmStartingOverConfirmLabel: "Start over"
 };
