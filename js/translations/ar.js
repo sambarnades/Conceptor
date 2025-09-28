@@ -306,6 +306,24 @@ const translations_ar = {
     mark_words_prompt_example_json_title: "**مثال JSON:**",
     mark_words_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
 
+    // Mark the Words UI translations
+    mark_words_check_answer: "تحقق",
+    mark_words_try_again: "إعادة المحاولة",
+    mark_words_show_solution: "إظهار الحل",
+    mark_words_correct_answer: "صحيح!",
+    mark_words_incorrect_answer: "خطأ!",
+    mark_words_missed_answer: "فاتك!",
+    mark_words_display_solution_description: "تم تحديث المهمة لتتضمن الحل.",
+    mark_words_score_bar_label: "لقد حصلت على :num من :total نقطة",
+    mark_words_submit_answer: "إرسال",
+    mark_words_a11y_full_text_label: "نص كامل قابل للقراءة",
+    mark_words_a11y_clickable_text_label: "نص كامل يمكن فيه تمييز الكلمات",
+    mark_words_a11y_solution_mode_header: "وضع الحل",
+    mark_words_a11y_checking_header: "وضع التحقق",
+    mark_words_a11y_check: "تحقق من الإجابات. سيتم تمييز الإجابات بأنها صحيحة أو غير صحيحة أو لم تتم الإجابة عليها.",
+    mark_words_a11y_show_solution: "إظهار الحل. سيتم تمييز المهمة بالحل الصحيح.",
+    mark_words_a11y_retry: "إعادة محاولة المهمة. إعادة تعيين جميع الإجابات والبدء من جديد.",
+ 
     // مطالب المليونير
     millionnaire_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Millionnaire\".",
     millionnaire_prompt_num_questions: "**عدد الأسئلة:** 6",

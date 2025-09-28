@@ -306,6 +306,24 @@ const translations_en = {
     mark_words_prompt_example_json_title: "**Example JSON :**",
     mark_words_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
 
+    // Mark the Words UI translations
+    mark_words_check_answer: "Check",
+    mark_words_try_again: "Retry",
+    mark_words_show_solution: "Show solution",
+    mark_words_correct_answer: "Correct!",
+    mark_words_incorrect_answer: "Incorrect!",
+    mark_words_missed_answer: "Missed!",
+    mark_words_display_solution_description: "Task is updated to contain the solution.",
+    mark_words_score_bar_label: "You got :num out of :total points",
+    mark_words_submit_answer: "Submit",
+    mark_words_a11y_full_text_label: "Full readable text",
+    mark_words_a11y_clickable_text_label: "Full text where words can be marked",
+    mark_words_a11y_solution_mode_header: "Solution mode",
+    mark_words_a11y_checking_header: "Checking mode",
+    mark_words_a11y_check: "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+    mark_words_a11y_show_solution: "Show the solution. The task will be marked with its correct solution.",
+    mark_words_a11y_retry: "Retry the task. Reset all responses and start the task over again.",
+ 
     // Millionnaire Prompt
     millionnaire_prompt_role: "You are an expert in pedagogical engineering creating an H5P \"Millionnaire\" activity.",
     millionnaire_prompt_num_questions: "**Number of questions :** 6",

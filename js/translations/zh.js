@@ -306,6 +306,24 @@ const translations_zh = {
     mark_words_prompt_example_json_title: "**JSON 示例：**",
     mark_words_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
 
+    // Mark the Words UI translations
+    mark_words_check_answer: "检查",
+    mark_words_try_again: "重试",
+    mark_words_show_solution: "显示答案",
+    mark_words_correct_answer: "正确！",
+    mark_words_incorrect_answer: "错误！",
+    mark_words_missed_answer: "未答！",
+    mark_words_display_solution_description: "任务已更新以包含答案。",
+    mark_words_score_bar_label: "你得到了 :num 分（共 :total 分）",
+    mark_words_submit_answer: "提交",
+    mark_words_a11y_full_text_label: "完整可读文本",
+    mark_words_a11y_clickable_text_label: "可以标记单词的完整文本",
+    mark_words_a11y_solution_mode_header: "答案模式",
+    mark_words_a11y_checking_header: "检查模式",
+    mark_words_a11y_check: "检查答案。答案将被标记为正确、错误或未回答。",
+    mark_words_a11y_show_solution: "显示答案。任务将标记其正确答案。",
+    mark_words_a11y_retry: "重试任务。重置所有回答并重新开始任务。",
+ 
     // Millionnaire Prompt
     millionnaire_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Millionnaire（百万富翁）”活动。",
     millionnaire_prompt_num_questions: "**题目数量：** 6",

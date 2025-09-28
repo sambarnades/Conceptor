@@ -306,6 +306,24 @@ const translations_de = {
     mark_words_prompt_example_json_title: "**Beispiel-JSON :**",
     mark_words_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code, ohne Kommentare.",
 
+    // Mark the Words UI translations
+    mark_words_check_answer: "Überprüfen",
+    mark_words_try_again: "Erneut versuchen",
+    mark_words_show_solution: "Lösung anzeigen",
+    mark_words_correct_answer: "Richtig!",
+    mark_words_incorrect_answer: "Falsch!",
+    mark_words_missed_answer: "Verfehlt!",
+    mark_words_display_solution_description: "Die Aufgabe wird aktualisiert, um die Lösung anzuzeigen.",
+    mark_words_score_bar_label: "Sie haben :num von :total Punkten erreicht",
+    mark_words_submit_answer: "Absenden",
+    mark_words_a11y_full_text_label: "Vollständig lesbarer Text",
+    mark_words_a11y_clickable_text_label: "Vollständiger Text, in dem Wörter markiert werden können",
+    mark_words_a11y_solution_mode_header: "Lösungsmodus",
+    mark_words_a11y_checking_header: "Überprüfungsmodus",
+    mark_words_a11y_check: "Überprüfen Sie die Antworten. Die Antworten werden als richtig, falsch oder unbeantwortet markiert.",
+    mark_words_a11y_show_solution: "Zeigen Sie die Lösung an. Die Aufgabe wird mit der richtigen Lösung markiert.",
+    mark_words_a11y_retry: "Versuchen Sie die Aufgabe erneut. Setzen Sie alle Antworten zurück und beginnen Sie von vorne.",
+ 
     // Millionnaire Prompt
     millionnaire_prompt_role: "Sie sind ein Experte für pädagogische Ingenieurwissenschaften, der eine H5P \"Millionnaire\"-Aktivität erstellt.",
     millionnaire_prompt_num_questions: "**Anzahl der Fragen :** 6",

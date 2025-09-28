@@ -1220,7 +1220,30 @@ document.addEventListener('DOMContentLoaded', function() {
                         enableCheckButton: true,
                         showScorePoints: true
                     },
-                    overallFeedback: []
+                    overallFeedback: [{
+                        "from": 0,
+                        "to": 100,
+                        "feedback": "You got @score of @total points."
+                    }],
+                    checkAnswerButton: translations.mark_words_check_answer || "Check",
+                    tryAgainButton: translations.mark_words_try_again || "Retry",
+                    showSolutionButton: translations.mark_words_show_solution || "Show solution",
+                    correctAnswer: translations.mark_words_correct_answer || "Correct!",
+                    incorrectAnswer: translations.mark_words_incorrect_answer || "Incorrect!",
+                    missedAnswer: translations.mark_words_missed_answer || "Missed!",
+                    displaySolutionDescription: translations.mark_words_display_solution_description || "Task is updated to contain the solution.",
+                    scoreBarLabel: translations.mark_words_score_bar_label || "You got :num out of :total points",
+                    submitAnswerButton: translations.mark_words_submit_answer || "Submit",
+                    a11yFullTextLabel: translations.mark_words_a11y_full_text_label || "Full readable text",
+                    a11yClickableTextLabel: translations.mark_words_a11y_clickable_text_label || "Full text where words can be marked",
+                    media: {
+                        "disableImageZooming": false
+                    },
+                    a11ySolutionModeHeader: translations.mark_words_a11y_solution_mode_header || "Solution mode",
+                    a11yCheckingHeader: translations.mark_words_a11y_checking_header || "Checking mode",
+                    a11yCheck: translations.mark_words_a11y_check || "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                    a11yShowSolution: translations.mark_words_a11y_show_solution || "Show the solution. The task will be marked with its correct solution.",
+                    a11yRetry: translations.mark_words_a11y_retry || "Retry the task. Reset all responses and start the task over again."
                 };
             }
 

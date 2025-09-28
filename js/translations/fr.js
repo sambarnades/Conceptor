@@ -306,6 +306,24 @@ const translations_fr = {
     mark_words_prompt_example_json_title: "**Exemple de JSON :**",
     mark_words_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire.",
 
+    // Mark the Words UI translations
+    mark_words_check_answer: "Vérifier",
+    mark_words_try_again: "Recommencer",
+    mark_words_show_solution: "Afficher la solution",
+    mark_words_correct_answer: "Correct !",
+    mark_words_incorrect_answer: "Incorrect !",
+    mark_words_missed_answer: "Manqué !",
+    mark_words_display_solution_description: "La tâche est mise à jour pour contenir la solution.",
+    mark_words_score_bar_label: "Vous avez obtenu :num sur :total points",
+    mark_words_submit_answer: "Valider",
+    mark_words_a11y_full_text_label: "Texte complet lisible",
+    mark_words_a11y_clickable_text_label: "Texte complet où les mots peuvent être marqués",
+    mark_words_a11y_solution_mode_header: "Mode solution",
+    mark_words_a11y_checking_header: "Mode de vérification",
+    mark_words_a11y_check: "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+    mark_words_a11y_show_solution: "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+    mark_words_a11y_retry: "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+ 
     // Millionnaire Prompt
     millionnaire_prompt_role: "Tu es un expert en ingénierie pédagogique créant une activité H5P \"Millionnaire\".",
     millionnaire_prompt_num_questions: "**Nombre de questions :** 6",

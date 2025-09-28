@@ -306,6 +306,24 @@ const translations_el = {
     mark_words_prompt_example_json_title: "**Παράδειγμα JSON:**",
     mark_words_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
 
+    // Mark the Words UI translations
+    mark_words_check_answer: "Έλεγχος",
+    mark_words_try_again: "Προσπάθησε ξανά",
+    mark_words_show_solution: "Εμφάνιση λύσης",
+    mark_words_correct_answer: "Σωστό!",
+    mark_words_incorrect_answer: "Λάθος!",
+    mark_words_missed_answer: "Παραλείφθηκε!",
+    mark_words_display_solution_description: "Η εργασία ενημερώθηκε για να περιέχει τη λύση.",
+    mark_words_score_bar_label: "Έχετε :num από τους :total πόντους",
+    mark_words_submit_answer: "Υποβολή",
+    mark_words_a11y_full_text_label: "Πλήρες αναγνώσιμο κείμενο",
+    mark_words_a11y_clickable_text_label: "Πλήρες κείμενο όπου μπορούν να επισημανθούν λέξεις",
+    mark_words_a11y_solution_mode_header: "Λειτουργία λύσης",
+    mark_words_a11y_checking_header: "Λειτουργία ελέγχου",
+    mark_words_a11y_check: "Ελέγξτε τις απαντήσεις. Οι απαντήσεις θα επισημανθούν ως σωστές, λανθασμένες ή αναπάντητες.",
+    mark_words_a11y_show_solution: "Εμφάνιση της λύσης. Η εργασία θα επισημανθεί με τη σωστή λύση της.",
+    mark_words_a11y_retry: "Επαναλάβετε την εργασία. Επαναφέρετε όλες τις απαντήσεις και ξεκινήστε την εργασία από την αρχή.",
+ 
     // Prompt για Millionnaire
     millionnaire_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Millionnaire\".",
     millionnaire_prompt_num_questions: "**Αριθμός ερωτήσεων:** 6",

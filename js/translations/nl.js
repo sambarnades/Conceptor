@@ -306,6 +306,24 @@ const translations_nl = {
     mark_words_prompt_example_json_title: "**JSON-voorbeeld:**",
     mark_words_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
 
+    // Mark the Words UI translations
+    mark_words_check_answer: "Controleren",
+    mark_words_try_again: "Opnieuw proberen",
+    mark_words_show_solution: "Oplossing tonen",
+    mark_words_correct_answer: "Correct!",
+    mark_words_incorrect_answer: "Incorrect!",
+    mark_words_missed_answer: "Gemist!",
+    mark_words_display_solution_description: "De taak is bijgewerkt met de oplossing.",
+    mark_words_score_bar_label: "Je hebt :num van de :total punten",
+    mark_words_submit_answer: "Indienen",
+    mark_words_a11y_full_text_label: "Volledig leesbare tekst",
+    mark_words_a11y_clickable_text_label: "Volledige tekst waarin woorden gemarkeerd kunnen worden",
+    mark_words_a11y_solution_mode_header: "Oplossingsmodus",
+    mark_words_a11y_checking_header: "Controlemodus",
+    mark_words_a11y_check: "Controleer de antwoorden. De antwoorden worden gemarkeerd als correct, incorrect of onbeantwoord.",
+    mark_words_a11y_show_solution: "Toon de oplossing. De taak wordt gemarkeerd met de juiste oplossing.",
+    mark_words_a11y_retry: "Probeer de taak opnieuw. Reset alle antwoorden en begin de taak opnieuw.",
+ 
     // Millionaire-prompt
     millionnaire_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Millionnaire\".",
     millionnaire_prompt_num_questions: "**Aantal vragen:** 6",

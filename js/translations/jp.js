@@ -306,6 +306,24 @@ const translations_jp = {
     mark_words_prompt_example_json_title: "**JSONの例：**",
     mark_words_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 
+    // Mark the Words UI translations
+    mark_words_check_answer: "チェック",
+    mark_words_try_again: "再試行",
+    mark_words_show_solution: "解答を表示",
+    mark_words_correct_answer: "正解！",
+    mark_words_incorrect_answer: "不正解！",
+    mark_words_missed_answer: "未解答！",
+    mark_words_display_solution_description: "課題が更新され、解答が含まれました。",
+    mark_words_score_bar_label: "合計:total点中、:num点を獲得しました",
+    mark_words_submit_answer: "送信",
+    mark_words_a11y_full_text_label: "全文読み上げテキスト",
+    mark_words_a11y_clickable_text_label: "単語をマークできる全文テキスト",
+    mark_words_a11y_solution_mode_header: "解答モード",
+    mark_words_a11y_checking_header: "チェックモード",
+    mark_words_a11y_check: "解答をチェックします。解答は正解、不正解、または未回答としてマークされます。",
+    mark_words_a11y_show_solution: "解答を表示します。課題には正解が表示されます。",
+    mark_words_a11y_retry: "課題を再試行します。すべての解答をリセットして、課題を最初からやり直します。",
+ 
     // Millionnaire Prompt
     millionnaire_prompt_role: "あなたはH5P「Millionnaire」アクティビティを作成する教育工学の専門家です。",
     millionnaire_prompt_num_questions: "**質問数：** 6",
