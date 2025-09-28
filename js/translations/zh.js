@@ -97,12 +97,14 @@ const translations_zh = {
     essay_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P Essay 活动。",
     essay_prompt_json_structure_title: "**预期的 JSON 结构：**",
     essay_prompt_json_structure_main_object: "对象必须包含：",
-    essay_prompt_task_description: "`taskDescription`：清晰的指令，邀请学生就主题撰写一段文字。",
+    essay_prompt_task_description: "`taskDescription`：清晰的指令，邀请学生就主题撰写一段文字。主题应加粗（<strong>），每句话应以换行符（<p>）结尾。",
     essay_prompt_keywords_array: "`keywords`：包含 ${nombreQuestions} 个对象的数组，每个对象定义系统需在学生回答中检索的关键词。",
+    essay_prompt_overall_feedback: "`overallFeedback`: 一个包含6个对象的数组，用于最终反馈，分数范围为0-10、11-30、31-50、51-70、71-90和91-100。文本（`feedback`）必须是善意的、渐进的，并且始终以肯定的方式表达。",
     essay_prompt_content_rules_title: "**内容规则：**",
     essay_prompt_rule1: "1.  `keywords` 中的每个对象都必须包含键 `keyword`，其值为要检索的词。",
     essay_prompt_rule2: "2.  关键词需与主题密切相关，并能有效评估理解程度。",
-    essay_prompt_rule3: "3.  保持 JSON 结构（行为等）不变。",
+    essay_prompt_rule3: "3. 保持 JSON 结构（行为等）不变。",
+    essay_prompt_rule4: "4. 指示（`taskDescription`）应鼓励写作，而不是使用`keywords`中列出的关键字，除非为了理解需要使用主题名称。",
     essay_prompt_example_json_title: "**单个关键词的 JSON 示例：**",
     essay_prompt_generate_only_json: "生成完整有效的 JSON，填写指令与关键词清单，不要添加其它注释。",
 
@@ -504,6 +506,14 @@ const translations_zh = {
     placeholderText: "从这里开始写作...",
     ariaYourResult: "您获得了 @total 分中的 @score 分",
     ariaNavigatedToSolution: "已导航至文本区域后新包含的范例答案。",
+
+    // Essay Overall Feedback
+    essay_overall_feedback_0_10: "你的作品是一个好的开始。继续探索这个主题，以丰富你的想法。",
+    essay_overall_feedback_11_30: "你已经奠定了有趣的基础。通过深入研究某些要点，你的作品将变得更加精确。",
+    essay_overall_feedback_31_50: "你对这个主题的理解正在顺利进行中。考虑进一步发展你的论点，以加强你的观点。",
+    essay_overall_feedback_51_70: "这是一件好作品。你对这个主题有很好的掌握。再增加一些细节可以进一步改进它。",
+    essay_overall_feedback_71_90: "非常好的作品！你的分析是相关的，结构良好。你表现出色的理解力。",
+    essay_overall_feedback_91_100: "优秀的作品！你的思考是透彻的，论证充分，并显示出对主题的完全掌握。",
     ticket: "工单",
     legal_mentions: "法律声明",
 

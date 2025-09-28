@@ -97,12 +97,14 @@ const translations_de = {
     essay_prompt_generate_json: "Generieren Sie ein vollständiges und gültiges JSON-Objekt für eine H5P Essay-Aktivität.",
     essay_prompt_json_structure_title: "**Erwartete JSON-Struktur :**",
     essay_prompt_json_structure_main_object: "Das Objekt muss enthalten :",
-    essay_prompt_task_description: "`taskDescription`: Klare Anweisungen, die den Schüler einladen, einen Text zum Thema zu schreiben.",
+    essay_prompt_task_description: "`taskDescription`: Klare Anweisungen, die den Schüler einladen, einen Text zum Thema zu schreiben. Das Thema sollte fett gedruckt sein (<strong>) und jeder Satz sollte mit einem Zeilenumbruch (<p>) enden.",
     essay_prompt_keywords_array: "`keywords`: Ein Array von ${nombreQuestions} Objekten, die jeweils ein Schlüsselwort definieren, das das System in der Antwort des Schülers finden soll.",
+    essay_prompt_overall_feedback: "`overallFeedback`: Ein Array von 6 Objekten für das abschließende Feedback mit Punktzahlen von 0-10, 11-30, 31-50, 51-70, 71-90 und 91-100. Der Text (`feedback`) muss wohlwollend, schrittweise und immer positiv formuliert sein.",
     essay_prompt_content_rules_title: "**Inhaltsregeln :**",
     essay_prompt_rule1: "1.  Jedes Objekt in `keywords` muss den Schlüssel `keyword` mit dem zu suchenden Wort enthalten.",
     essay_prompt_rule2: "2.  Schlüsselwörter müssen relevant und wesentlich für die Bewertung des Verständnisses des Themas sein.",
     essay_prompt_rule3: "3.  Die JSON-Struktur (Verhalten usw.) muss beibehalten werden.",
+    essay_prompt_rule4: "4. Die Anweisung (`taskDescription`) sollte zum Schreiben anregen, ohne die in `keywords` aufgeführten Schlüsselwörter zu verwenden, außer dem Namen des Themas, falls dies zum Verständnis erforderlich ist.",
     essay_prompt_example_json_title: "**Beispiel-JSON für ein Schlüsselwort :**",
     essay_prompt_generate_only_json: "Generieren Sie das vollständige und gültige JSON, füllen Sie die Anweisungen und die Liste der Schlüsselwörter aus, ohne weitere Kommentare.",
 
@@ -498,6 +500,14 @@ const translations_de = {
     placeholderText: "Beginnen Sie hier zu schreiben...",
     ariaYourResult: "Sie haben @score von @total Punkten erreicht",
     ariaNavigatedToSolution: "Zur neu hinzugefügten Musterlösung nach dem Textbereich navigiert.",
+
+    // Essay Overall Feedback
+    essay_overall_feedback_0_10: "Ihre Arbeit ist ein guter Anfang. Erforschen Sie das Thema weiter, um Ihre Ideen zu bereichern.",
+    essay_overall_feedback_11_30: "Sie haben eine interessante Grundlage geschaffen. Durch eine Vertiefung bestimmter Punkte wird Ihre Arbeit an Präzision gewinnen.",
+    essay_overall_feedback_31_50: "Ihr Verständnis des Themas ist gut auf dem Weg. Erwägen Sie, Ihre Argumente weiterzuentwickeln, um Ihren Standpunkt zu stärken.",
+    essay_overall_feedback_51_70: "Das ist eine gute Arbeit. Sie zeigen eine gute Beherrschung des Themas. Einige weitere Details könnten es noch verbessern.",
+    essay_overall_feedback_71_90: "Sehr gute Arbeit! Ihre Analyse ist relevant und gut strukturiert. Sie zeigen ein ausgezeichnetes Verständnis.",
+    essay_overall_feedback_91_100: "Ausgezeichnete Arbeit! Ihre Überlegungen sind gründlich, gut argumentiert und zeigen eine vollständige Beherrschung des Themas.",
     ticket: "Ticket",
     legal_mentions: "Impressum",
 

@@ -97,12 +97,14 @@ const translations_en = {
     essay_prompt_generate_json: "Generate a complete and valid JSON object for an H5P Essay activity.",
     essay_prompt_json_structure_title: "**Expected JSON structure :**",
     essay_prompt_json_structure_main_object: "The object must contain :",
-    essay_prompt_task_description: "`taskDescription`: Clear instructions inviting the student to write a text on the theme.",
+    essay_prompt_task_description: "`taskDescription`: Clear instructions inviting the student to write a text on the theme. The theme should be in bold (<strong>) and each sentence should end with a line break (<p>).",
     essay_prompt_keywords_array: "`keywords`: An array of ${nombreQuestions} objects, each defining a keyword that the system should find in the student's answer.",
+    essay_prompt_overall_feedback: "`overallFeedback`: An array of 6 objects for the final feedback, with scores from 0-10, 11-30, 31-50, 51-70, 71-90, and 91-100. The text (`feedback`) must be benevolent, gradual, and always phrased affirmatively.",
     essay_prompt_content_rules_title: "**Content rules :**",
     essay_prompt_rule1: "1.  Each object in `keywords` must contain the `keyword` key with the word to search for.",
     essay_prompt_rule2: "2.  Keywords must be relevant and essential for evaluating understanding of the theme.",
     essay_prompt_rule3: "3.  The JSON structure (behavior, etc.) must be kept.",
+    essay_prompt_rule4: "4. The instruction (`taskDescription`) should encourage writing without using the keywords listed in `keywords`, except for the theme name if necessary for comprehension.",
     essay_prompt_example_json_title: "**Example JSON for a keyword :**",
     essay_prompt_generate_only_json: "Generate the complete and valid JSON, filling in the instructions and the list of keywords, without any other comments.",
 
@@ -505,6 +507,14 @@ const translations_en = {
     placeholderText: "Start writing here...",
     ariaYourResult: "You got @score out of @total points",
     ariaNavigatedToSolution: "Navigated to newly included sample solution after textarea.",
+
+    // Essay Overall Feedback
+    essay_overall_feedback_0_10: "Your work is a good start. Keep exploring the topic to enrich your ideas.",
+    essay_overall_feedback_11_30: "You have laid some interesting groundwork. By delving deeper into certain points, your work will gain precision.",
+    essay_overall_feedback_31_50: "Your understanding of the subject is well underway. Consider developing your arguments further to strengthen your point.",
+    essay_overall_feedback_51_70: "This is good work. You show a good command of the subject. A few more details could still improve it.",
+    essay_overall_feedback_71_90: "Very good work! Your analysis is relevant and well-structured. You demonstrate an excellent understanding.",
+    essay_overall_feedback_91_100: "Excellent work! Your reflection is thorough, well-argued, and shows a complete mastery of the subject.",
     ticket: "Ticket",
     legal_mentions: "Legal Mentions",
 

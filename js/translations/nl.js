@@ -97,12 +97,14 @@ const translations_nl = {
     essay_prompt_generate_json: "Genereer een volledig en geldig JSON-object voor een H5P-Essay-activiteit.",
     essay_prompt_json_structure_title: "**Verwachte JSON-structuur:**",
     essay_prompt_json_structure_main_object: "Het object moet bevatten:",
-    essay_prompt_task_description: "`taskDescription`: Een duidelijke opdracht die de leerling uitnodigt een tekst over het thema te schrijven.",
+    essay_prompt_task_description: "`taskDescription`: Een duidelijke opdracht die de leerling uitnodigt een tekst over het thema te schrijven. Het thema moet vetgedrukt zijn (<strong>) en elke zin moet eindigen met een regeleinde (<p>).",
     essay_prompt_keywords_array: "`keywords`: Een array met ${nombreQuestions} objecten; elk definieert een trefwoord dat het systeem in het antwoord moet vinden.",
+    essay_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn.",
     essay_prompt_content_rules_title: "**Regels voor de inhoud:**",
     essay_prompt_rule1: "1.  Elk object in `keywords` bevat de sleutel `keyword` met het te zoeken woord.",
     essay_prompt_rule2: "2.  De trefwoorden zijn relevant en essentieel om het begrip van het onderwerp te beoordelen.",
     essay_prompt_rule3: "3.  De JSON-structuur (gedrag, enz.) blijft behouden.",
+    essay_prompt_rule4: "4. De instructie (`taskDescription`) moet het schrijven aanmoedigen zonder de trefwoorden uit `keywords` te gebruiken, behalve de naam van het thema als dat nodig is voor het begrip.",
     essay_prompt_example_json_title: "**JSON-voorbeeld voor één trefwoord:**",
     essay_prompt_generate_only_json: "Genereer de volledige en geldige JSON door de opdracht en de lijst met trefwoorden in te vullen, zonder verdere opmerkingen.",
 
@@ -499,6 +501,14 @@ const translations_nl = {
     placeholderText: "Begin hier met schrijven...",
     ariaYourResult: "U hebt @score van de @total punten behaald",
     ariaNavigatedToSolution: "Naar de nieuw opgenomen voorbeeldoplossing na het tekstvak genavigeerd.",
+
+    // Essay Overall Feedback
+    essay_overall_feedback_0_10: "Je werk is een goed begin. Blijf het onderwerp verkennen om je ideeën te verrijken.",
+    essay_overall_feedback_11_30: "Je hebt een interessante basis gelegd. Door dieper op bepaalde punten in te gaan, zal je werk aan precisie winnen.",
+    essay_overall_feedback_31_50: "Je begrip van het onderwerp is goed op weg. Overweeg je argumenten verder te ontwikkelen om je standpunt te versterken.",
+    essay_overall_feedback_51_70: "Dit is goed werk. Je toont een goede beheersing van het onderwerp. Enkele extra details kunnen het nog verbeteren.",
+    essay_overall_feedback_71_90: "Zeer goed werk! Je analyse is relevant en goed gestructureerd. Je toont een uitstekend begrip.",
+    essay_overall_feedback_91_100: "Uitstekend werk! Je reflectie is grondig, goed beargumenteerd en toont een volledige beheersing van het onderwerp.",
     ticket: "Ticket",
     legal_mentions: "Wettelijke vermeldingen",
 

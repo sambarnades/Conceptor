@@ -97,12 +97,14 @@ const translations_ar = {
     essay_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط مقال عبر H5P.",
     essay_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
     essay_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
-    essay_prompt_task_description: "`taskDescription`: تعليمات واضحة تدعو المتعلّم إلى كتابة نص حول الموضوع.",
+    essay_prompt_task_description: "`taskDescription`: تعليمات واضحة تدعو المتعلّم إلى كتابة نص حول الموضوع. يجب أن يكون الموضوع بالخط العريض (<strong>) ويجب أن تنتهي كل جملة بفاصل أسطر (<p>).",
     essay_prompt_keywords_array: "`keywords`: مصفوفة من ${nombreQuestions} كائنات، يحدّد كلٌّ منها كلمة مفتاحية يجب أن يعثر عليها النظام في إجابة المتعلّم.",
+    essay_prompt_overall_feedback: "`overallFeedback`: مصفوفة من 6 كائنات للتقييم النهائي، مع درجات من 0-10، 11-30، 31-50، 51-70، 71-90، و 91-100. يجب أن يكون النص (`feedback`) إيجابيًا ومتدرجًا ومصاغًا دائمًا بشكل إيجابي.",
     essay_prompt_content_rules_title: "**قواعد المحتوى:**",
     essay_prompt_rule1: "1. يحتوي كل كائن في `keywords` على المفتاح `keyword` مع الكلمة المطلوب البحث عنها.",
     essay_prompt_rule2: "2. يجب أن تكون الكلمات المفتاحية ذات صلة وأساسية لتقييم الفهم.",
     essay_prompt_rule3: "3. تُحفَظ بنية JSON (السلوك، إلخ).",
+    essay_prompt_rule4: "4. يجب أن تشجع التعليمات (`taskDescription`) على الكتابة دون استخدام الكلمات المفتاحية المدرجة في `keywords`، باستثناء اسم الموضوع إذا كان ذلك ضروريًا للفهم.",
     essay_prompt_example_json_title: "**مثال JSON لكلمة مفتاحية:**",
     essay_prompt_generate_only_json: "ولِّد JSON كاملًا وصالحًا بملء التعليمات وقائمة الكلمات المفتاحية دون أي تعليقات.",
 
@@ -504,6 +506,14 @@ const translations_ar = {
     placeholderText: "ابدأ الكتابة هنا...",
     ariaYourResult: "لقد حصلت على @score من @total نقطة",
     ariaNavigatedToSolution: "تم الانتقال إلى الحل النموذجي المضمن حديثًا بعد منطقة النص.",
+
+    // Essay Overall Feedback
+    essay_overall_feedback_0_10: "عملك بداية جيدة. استمر في استكشاف الموضوع لإثراء أفكارك.",
+    essay_overall_feedback_11_30: "لقد وضعت أسسًا مثيرة للاهتمام. من خلال التعمق في نقاط معينة، سيكتسب عملك دقة أكبر.",
+    essay_overall_feedback_31_50: "فهمك للموضوع في طريقه الصحيح. فكر في تطوير حججك أكثر لتعزيز وجهة نظرك.",
+    essay_overall_feedback_51_70: "هذا عمل جيد. تظهر إتقانًا جيدًا للموضوع. بعض التفاصيل الإضافية يمكن أن تحسنه أكثر.",
+    essay_overall_feedback_71_90: "عمل جيد جدًا! تحليلك وثيق الصلة ومنظم جيدًا. تظهر فهمًا ممتازًا.",
+    essay_overall_feedback_91_100: "عمل ممتاز! تفكيرك عميق، مدعوم بحجج جيدة، ويظهر إتقانًا كاملاً للموضوع.",
     ticket: "تذكرة",
     legal_mentions: "ملاحظات قانونية",
 

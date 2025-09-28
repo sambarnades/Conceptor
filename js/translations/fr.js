@@ -97,12 +97,14 @@ const translations_fr = {
     essay_prompt_generate_json: "Génère un objet JSON complet et valide pour une activité H5P de type Essay.",
     essay_prompt_json_structure_title: "**Structure du JSON attendu :**",
     essay_prompt_json_structure_main_object: "L'objet doit contenir :",
-    essay_prompt_task_description: "`taskDescription`: Une consigne claire invitant l'élève à rédiger un texte sur le thème.",
+    essay_prompt_task_description: "`taskDescription`: Une consigne claire invitant l'élève à rédiger un texte sur le thème. Le thème doit être mis en gras (<strong>) et chaque phrase doit se terminer par un retour à la ligne (<p>).",
     essay_prompt_keywords_array: "`keywords`: Un tableau de ${nombreQuestions} objets, chacun définissant un mot-clé que le système devra retrouver dans la réponse de l'élève.",
+    essay_prompt_overall_feedback: "`overallFeedback`: Un tableau de 6 objets pour le feedback final, avec les scores de 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Le texte (`feedback`) doit être bienveillant, graduel, et toujours tourné à l'affirmative.",
     essay_prompt_content_rules_title: "**Règles pour le contenu :**",
     essay_prompt_rule1: "1.  Chaque objet dans `keywords` doit contenir la clé `keyword` avec le mot à rechercher.",
     essay_prompt_rule2: "2.  Les mots-clés doivent être pertinents et essentiels pour évaluer la compréhension du thème.",
     essay_prompt_rule3: "3.  La structure JSON (comportement, etc.) doit être conservée.",
+    essay_prompt_rule4: "4. La consigne (`taskDescription`) doit inciter à la rédaction sans utiliser les mots-clés listés dans `keywords`, à l'exception du nom du thème si nécessaire pour la compréhension.",
     essay_prompt_example_json_title: "**Exemple de JSON pour un mot-clé :**",
     essay_prompt_generate_only_json: "Génère le JSON complet et valide, en remplissant la consigne et la liste de mots-clés, sans aucun autre commentaire.",
 
@@ -540,5 +542,13 @@ const translations_fr = {
     messageSave: "enregistré",
     placeholderText: "Commencez à rédiger ici...",
     ariaYourResult: "Vous avez obtenu @score sur @total points",
-    ariaNavigatedToSolution: "Navigation vers la solution."
+    ariaNavigatedToSolution: "Navigation vers la solution.",
+
+    // Essay Overall Feedback
+    essay_overall_feedback_0_10: "Votre travail est un bon début. Continuez à explorer le sujet pour enrichir vos idées.",
+    essay_overall_feedback_11_30: "Vous avez posé des bases intéressantes. En approfondissant certains points, votre travail gagnera en précision.",
+    essay_overall_feedback_31_50: "Votre compréhension du sujet est bien engagée. Pensez à développer davantage vos arguments pour renforcer votre propos.",
+    essay_overall_feedback_51_70: "C'est un bon travail. Vous montrez une bonne maîtrise du sujet. Quelques détails supplémentaires pourraient encore l'améliorer.",
+    essay_overall_feedback_71_90: "Très bon travail ! Votre analyse est pertinente et bien structurée. Vous démontrez une excellente compréhension.",
+    essay_overall_feedback_91_100: "Excellent travail ! Votre réflexion est approfondie, bien argumentée et témoigne d'une maîtrise complète du sujet."
 };

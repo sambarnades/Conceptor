@@ -97,12 +97,14 @@ const translations_it = {
     essay_prompt_generate_json: "Genera un oggetto JSON completo e valido per un’attività H5P di tipo Essay.",
     essay_prompt_json_structure_title: "**Struttura JSON attesa:**",
     essay_prompt_json_structure_main_object: "L’oggetto deve contenere:",
-    essay_prompt_task_description: "`taskDescription`: Un’istruzione chiara che invita lo studente a redigere un testo sul tema.",
+    essay_prompt_task_description: "`taskDescription`: Un’istruzione chiara che invita lo studente a redigere un testo sul tema. Il tema deve essere in grassetto (<strong>) e ogni frase deve terminare con un'interruzione di riga (<p>).",
     essay_prompt_keywords_array: "`keywords`: Un array di ${nombreQuestions} oggetti, ciascuno che definisce una parola chiave che il sistema dovrà individuare nella risposta dello studente.",
+    essay_prompt_overall_feedback: "`overallFeedback`: Un array di 6 oggetti per il feedback finale, con punteggi da 0-10, 11-30, 31-50, 51-70, 71-90 e 91-100. Il testo (`feedback`) deve essere benevolo, graduale e sempre formulato in modo affermativo.",
     essay_prompt_content_rules_title: "**Regole per il contenuto:**",
     essay_prompt_rule1: "1. Ogni oggetto in `keywords` deve contenere la chiave `keyword` con la parola da cercare.",
     essay_prompt_rule2: "2. Le parole chiave devono essere pertinenti ed essenziali per valutare la comprensione del tema.",
     essay_prompt_rule3: "3. La struttura JSON (comportamento, ecc.) deve essere mantenuta.",
+    essay_prompt_rule4: "4. L'istruzione (`taskDescription`) dovrebbe incoraggiare la scrittura senza utilizzare le parole chiave elencate in `keywords`, ad eccezione del nome del tema se necessario per la comprensione.",
     essay_prompt_example_json_title: "**Esempio di JSON per una parola chiave:**",
     essay_prompt_generate_only_json: "Genera il JSON completo e valido, compilando l’istruzione e l’elenco delle parole chiave, senza altri commenti.",
 
@@ -499,6 +501,14 @@ const translations_it = {
     placeholderText: "Inizia a scrivere qui...",
     ariaYourResult: "Hai ottenuto @score su @total punti",
     ariaNavigatedToSolution: "Navigato alla soluzione di esempio appena inclusa dopo l'area di testo.",
+
+    // Essay Overall Feedback
+    essay_overall_feedback_0_10: "Il tuo lavoro è un buon inizio. Continua a esplorare l'argomento per arricchire le tue idee.",
+    essay_overall_feedback_11_30: "Hai posto delle basi interessanti. Approfondendo alcuni punti, il tuo lavoro guadagnerà in precisione.",
+    essay_overall_feedback_31_50: "La tua comprensione dell'argomento è a buon punto. Considera di sviluppare ulteriormente le tue argomentazioni per rafforzare il tuo punto di vista.",
+    essay_overall_feedback_51_70: "Questo è un buon lavoro. Dimostri una buona padronanza dell'argomento. Qualche dettaglio in più potrebbe ancora migliorarlo.",
+    essay_overall_feedback_71_90: "Ottimo lavoro! La tua analisi è pertinente e ben strutturata. Dimostri un'eccellente comprensione.",
+    essay_overall_feedback_91_100: "Lavoro eccellente! La tua riflessione è approfondita, ben argomentata e dimostra una completa padronanza dell'argomento.",
     ticket: "Ticket",
     legal_mentions: "Note legali",
 

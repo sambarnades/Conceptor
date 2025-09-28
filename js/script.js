@@ -1071,9 +1071,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         pointsHost: 1
                     },
                     overallFeedback: [
-                        { from: 0, to: 49, feedback: "Hmm, peut-être devriez-vous relire le cours ?" },
-                        { from: 50, to: 79, feedback: "Bien ! Vous semblez connaître le sujet." },
-                        { from: 80, to: 100, feedback: "Excellent travail !" }
+                        { from: 0, to: 10, feedback: translations.essay_overall_feedback_0_10 },
+                        { from: 11, to: 30, feedback: translations.essay_overall_feedback_11_30 },
+                        { from: 31, to: 50, feedback: translations.essay_overall_feedback_31_50 },
+                        { from: 51, to: 70, feedback: translations.essay_overall_feedback_51_70 },
+                        { from: 71, to: 90, feedback: translations.essay_overall_feedback_71_90 },
+                        { from: 91, to: 100, feedback: translations.essay_overall_feedback_91_100 }
                     ],
                     checkAnswer: translations.essay_checkAnswer || "Check",
                     tryAgain: translations.essay_tryAgain || "Retry",
@@ -1425,11 +1428,13 @@ document.addEventListener('DOMContentLoaded', function() {
                             ${pt.essay_prompt_json_structure_main_object}
                             - ${pt.essay_prompt_task_description}
                             - ${pt.essay_prompt_keywords_array.replace('${nombreQuestions}', nombreQuestions)}
+                            - ${pt.essay_prompt_overall_feedback}
 
                             ${pt.essay_prompt_content_rules_title}
                             ${pt.essay_prompt_rule1}
                             ${pt.essay_prompt_rule2}
                             ${pt.essay_prompt_rule3}
+                            ${pt.essay_prompt_rule4}
 
                             ${pt.essay_prompt_example_json_title}
                             \`\`\`json

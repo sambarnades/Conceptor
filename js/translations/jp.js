@@ -97,12 +97,14 @@ const translations_jp = {
     essay_prompt_generate_json: "H5PのEssay型アクティビティ用の完全で有効なJSONオブジェクトを生成してください。",
     essay_prompt_json_structure_title: "**期待されるJSON構造：**",
     essay_prompt_json_structure_main_object: "オブジェクトには以下を含める必要があります：",
-    essay_prompt_task_description: "`taskDescription`：生徒にテーマについてのテキストを書くように促す明確な指示。",
+    essay_prompt_task_description: "`taskDescription`：生徒にテーマについてのテキストを書くように促す明確な指示。テーマは太字（<strong>）にし、各文は改行（<p>）で終わる必要があります。",
     essay_prompt_keywords_array: "`keywords`：${nombreQuestions}個のオブジェクトの配列。各オブジェクトはシステムが生徒の回答で見つけるべきキーワードを定義します。",
+    essay_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現する必要があります。",
     essay_prompt_content_rules_title: "**コンテンツのルール：**",
     essay_prompt_rule1: "1. `keywords`の各オブジェクトには、検索する単語が含まれた`keyword`キーが必要です。",
     essay_prompt_rule2: "2. キーワードは関連性があり、テーマの理解を評価するために不可欠である必要があります。",
     essay_prompt_rule3: "3. JSON構造（動作など）は保持してください。",
+    essay_prompt_rule4: "4. 指示（`taskDescription`）は、理解のために必要な場合を除き、`keywords`にリストされているキーワードを使用せずに書くことを奨励する必要があります。",
     essay_prompt_example_json_title: "**キーワードのJSON例：**",
     essay_prompt_generate_only_json: "指示とキーワードリストを埋めた完全で有効なJSONを、他のコメントなしで生成してください。",
 
@@ -499,6 +501,14 @@ const translations_jp = {
     placeholderText: "ここに書き始めてください...",
     ariaYourResult: "合計@total点中@score点を獲得しました",
     ariaNavigatedToSolution: "テキストエリアの後に新しく含まれた解答例に移動しました。",
+
+    // Essay Overall Feedback
+    essay_overall_feedback_0_10: "あなたの作品は良いスタートです。アイデアを豊かにするために、トピックを探求し続けてください。",
+    essay_overall_feedback_11_30: "興味深い基礎を築きましたね。特定の点を掘り下げることで、あなたの作品はより正確になります。",
+    essay_overall_feedback_31_50: "主題の理解は順調に進んでいます。あなたの主張を強化するために、議論をさらに発展させることを検討してください。",
+    essay_overall_feedback_51_70: "これは良い作品です。主題をよく理解していることがわかります。いくつかの詳細を追加することで、さらに改善できます。",
+    essay_overall_feedback_71_90: "非常に良い作品です！あなたの分析は適切で、よく構成されています。優れた理解を示しています。",
+    essay_overall_feedback_91_100: "素晴らしい作品です！あなたの考察は徹底的で、十分に論じられており、主題の完全な習熟を示しています。",
     ticket: "チケット",
     legal_mentions: "法的通知",
 
