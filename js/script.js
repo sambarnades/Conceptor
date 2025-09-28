@@ -1323,6 +1323,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     ${pt.timeline_prompt_rule1_headline}
                                     ${pt.timeline_prompt_rule1_text}
                                     ${pt.timeline_prompt_rule1_asset}
+                                    ${pt.timeline_prompt_rule1_tag}
                                 ${pt.timeline_prompt_rule2}
                                 ${pt.timeline_prompt_rule3}
 
@@ -1342,20 +1343,24 @@ document.addEventListener('DOMContentLoaded', function() {
                                           "media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
                                           "caption": "L'archiduc François-Ferdinand juste avant son assassinat.",
                                           "credit": "Wikimedia Commons / CC BY-SA 4.0"
-                                        }
+                                        },
+                                        "tag": "Guerre"
                                       },
                                       {
                                         "startDate": "1918,11,11",
                                         "endDate": "1918,11,11",
                                         "headline": "Armistice de 1918",
-                                        "text": "<p>Signature de l'armistice à Rethondes, marquant la fin des combats.</p>"
+                                        "text": "<p>Signature de l'armistice à Rethondes, marquant la fin des combats.</p>",
+                                        "tag": "Traité"
                                       }
                                     ],
                                     "era": [
                                       {
                                         "startDate": "1914,07,28",
                                         "endDate": "1918,11,11",
-                                        "headline": "Première Guerre mondiale"
+                                        "headline": "Première Guerre mondiale",
+                                        "text": "<div>C'est la période de la Grande Guerre.</div>",
+                                        "tag": "Période historique"
                                       }
                                     ]
                                   }

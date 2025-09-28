@@ -55,8 +55,9 @@ const translations_ar = {
     timeline_prompt_rule1_headline: "-   `headline`: عنوان الحدث.",
     timeline_prompt_rule1_text: "-   `text`: وصف بصيغة HTML (استخدم <p> و<strong>).",
     timeline_prompt_rule1_asset: "-   `asset`: كائن اختياري لصورة توضّح الحدث.",
+    timeline_prompt_rule1_tag: "- `tag`: كلمة رئيسية تميز الفترة (مثال: 'تاريخ', 'علوم').",
     timeline_prompt_rule2: "2. لكل `asset`، ابحث بنشاط عن صورة ذات صلة وخالية من الحقوق (مثل Wikimedia Commons). يجب أن يكون الرابط في `media` مباشرًا وصالحًا. اذكر المصدر والترخيص في `credit`. إذا لم يتم العثور على صورة مناسبة، فاحذف كائن `asset` بالكامل.",
-    timeline_prompt_rule3: "3. يجب أن تكون لغة المحتوى \"fr\".",
+    timeline_prompt_rule3: "3. لكل فترة (`era`)، أضف حقل `text` مع وصف موجز و `tag`.",
     timeline_prompt_example_json_title: "**مثال على بنية JSON:**",
     timeline_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات. سيتم استخدام النتيجة مباشرة في أداة أخرى.",
 

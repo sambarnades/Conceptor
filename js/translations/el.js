@@ -55,8 +55,9 @@ const translations_el = {
     timeline_prompt_rule1_headline: "-   `headline`: Τίτλος γεγονότος.",
     timeline_prompt_rule1_text: "-   `text`: Περιγραφή σε HTML (χρησιμοποιήστε <p> και <strong>).",
     timeline_prompt_rule1_asset: "-   `asset`: Προαιρετικό αντικείμενο εικόνας που εικονογραφεί το γεγονός.",
+    timeline_prompt_rule1_tag: "- `tag`: Μια λέξη-κλειδί που χαρακτηρίζει την περίοδο (π.χ. 'ιστορία', 'επιστήμη').",
     timeline_prompt_rule2: "2. Για κάθε `asset`, αναζητήστε ενεργά μια σχετική εικόνα χωρίς δικαιώματα (π.χ. Wikimedia Commons). Η διεύθυνση URL στο `media` πρέπει να είναι ένας άμεσος και έγκυρος σύνδεσμος. Αναφέρετε την πηγή και την άδεια στο `credit`. Εάν δεν βρεθεί κατάλληλη εικόνα, παραλείψτε εντελώς το αντικείμενο `asset`.",
-    timeline_prompt_rule3: "3. Η γλώσσα του περιεχομένου πρέπει να είναι \"fr\".",
+    timeline_prompt_rule3: "3. Για κάθε περίοδο (`era`), προσθέστε ένα πεδίο `text` με μια σύντομη περιγραφή και ένα `tag`.",
     timeline_prompt_example_json_title: "**Παράδειγμα δομής JSON:**",
     timeline_prompt_generate_only_json: "Παράγετε μόνο έγκυρο κώδικα JSON, χωρίς σχόλια. Το αποτέλεσμα θα χρησιμοποιηθεί απευθείας από άλλο εργαλείο.",
 

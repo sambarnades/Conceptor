@@ -55,8 +55,9 @@ const translations_fr = {
     timeline_prompt_rule1_headline: "-   `headline`: Titre de l'événement.",
     timeline_prompt_rule1_text: "-   `text`: Description en HTML (utilise <p> et <strong>).",
     timeline_prompt_rule1_asset: "-   `asset`: Un objet optionnel pour une image illustrant l'événement.",
+    timeline_prompt_rule1_tag: "-   `tag`: Un mot-clé qui caractérise la période (ex: 'histoire', 'science').",
     timeline_prompt_rule2: "2.  Pour chaque `asset`, recherche activement une image pertinente et libre de droits (ex: Wikimedia Commons). L'URL dans `media` doit être un lien direct et valide. Renseigne la source et la licence dans `credit`. Si aucune image appropriée n'est trouvée, omets complètement l'objet `asset`.",
-    timeline_prompt_rule3: "3.  La langue du contenu doit être \"fr\".",
+    timeline_prompt_rule3: "3.  Pour chaque période (`era`), ajoute un champ `text` avec une brève description et un `tag`.",
     timeline_prompt_example_json_title: "**Exemple de structure JSON :**",
     timeline_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire. Le résultat sera directement utilisé par un autre outil.",
 
@@ -123,7 +124,7 @@ const translations_fr = {
     moodle_xml_prompt_form_rule1_encoding: "Être encodé en UTF-8 (insérer la ligne d'encodage).",
     moodle_xml_prompt_form_rule1_reusable: "Être directement réutilisable dans Moodle, sans erreur de format.",
     moodle_xml_prompt_form_rule1_standard_structure: "Suivre la structure XML standard de Moodle (avec <quiz>, <question>, etc.).",
-    moodle_xml_prompt_form_rule1_special_chars: "Les symboles mathématiques comme '<' ou '>' doivent être encodés en entités HTML (par exemple, `<` pour '<' et `>` pour '>') pour éviter toute confusion avec les balises XML.",
+    moodle_xml_prompt_form_rule1_special_chars: "Les symboles mathématiques comme '<' ou '>' doivent être encodés en entités HTML (par exemple, `&lt;` pour '<' et `&gt;` pour '>') pour éviter toute confusion avec les balises XML.",
     moodle_xml_prompt_generate_only_xml: "Ne commente pas, ne formate pas, ne résume pas : je veux uniquement le contenu brut du fichier XML. Respecte scrupuleusement le format décrit, car je vais coller le résultat dans un autre outil qui attend ce format. Produis la réponse sous forme de code préformaté",
 
     // GIFT Prompt

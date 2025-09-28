@@ -55,8 +55,9 @@ const translations_zh = {
     timeline_prompt_rule1_headline: "-   `headline`：事件标题。",
     timeline_prompt_rule1_text: "-   `text`：HTML 描述（使用 <p> 与 <strong>）。",
     timeline_prompt_rule1_asset: "-   `asset`：用于展示该事件的可选图片对象。",
+    timeline_prompt_rule1_tag: "- `tag`: 描述时期的关键词（例如：'历史'，'科学'）。",
     timeline_prompt_rule2: "2.  对于每个 `asset`，主动搜索相关的、免版税的图片（例如维基共享资源）。`media` 中的 URL 必须是直接且有效的链接。在 `credit` 中提供来源和许可证。如果没有找到合适的图片，请完全省略 `asset` 对象。",
-    timeline_prompt_rule3: "3.  内容语言必须为“fr”。",
+    timeline_prompt_rule3: "3.  为每个时期（`era`）添加一个带有简短描述和`tag`的`text`字段。",
     timeline_prompt_example_json_title: "**JSON 结构示例：**",
     timeline_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。结果将被另一个工具直接使用。",
 

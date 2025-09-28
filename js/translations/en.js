@@ -55,8 +55,9 @@ const translations_en = {
     timeline_prompt_rule1_headline: "-   `headline`: Event title.",
     timeline_prompt_rule1_text: "-   `text`: Description in HTML (uses <p> and <strong>).",
     timeline_prompt_rule1_asset: "-   `asset`: An optional object for an image illustrating the event.",
+    timeline_prompt_rule1_tag: "- `tag`: A keyword that characterizes the period (e.g., 'history', 'science').",
     timeline_prompt_rule2: "2.  For each `asset`, actively search for a relevant, royalty-free image (e.g., Wikimedia Commons). The URL in `media` must be a direct and valid link. Provide the source and license in `credit`. If no suitable image is found, omit the `asset` object entirely.",
-    timeline_prompt_rule3: "3.  The content language must be \"fr\".",
+    timeline_prompt_rule3: "3.  For each period (`era`), add a `text` field with a brief description and a `tag`.",
     timeline_prompt_example_json_title: "**Example JSON structure :**",
     timeline_prompt_generate_only_json: "Generate only the valid JSON code, without any comments. The result will be directly used by another tool.",
 

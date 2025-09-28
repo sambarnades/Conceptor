@@ -55,8 +55,9 @@ const translations_de = {
     timeline_prompt_rule1_headline: "-   `headline`: Ereignistitel.",
     timeline_prompt_rule1_text: "-   `text`: Beschreibung in HTML (verwendet <p> und <strong>).",
     timeline_prompt_rule1_asset: "-   `asset`: Ein optionales Objekt für ein Bild, das das Ereignis illustriert.",
+    timeline_prompt_rule1_tag: "- `tag`: Ein Schlüsselwort, das den Zeitraum charakterisiert (z.B. 'Geschichte', 'Wissenschaft').",
     timeline_prompt_rule2: "2.  Suchen Sie für jedes `asset` aktiv nach einem relevanten, lizenzfreien Bild (z. B. Wikimedia Commons). Die URL in `media` muss ein direkter und gültiger Link sein. Geben Sie die Quelle und die Lizenz in `credit` an. Wenn kein passendes Bild gefunden wird, lassen Sie das `asset`-Objekt vollständig weg.",
-    timeline_prompt_rule3: "3.  Die Inhaltssprache muss \"de\" sein.",
+    timeline_prompt_rule3: "3.  Fügen Sie für jeden Zeitraum (`era`) ein `text`-Feld mit einer kurzen Beschreibung und einem `tag` hinzu.",
     timeline_prompt_example_json_title: "**Beispiel-JSON-Struktur :**",
     timeline_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code, ohne Kommentare. Das Ergebnis wird direkt von einem anderen Tool verwendet.",
 

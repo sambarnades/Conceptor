@@ -55,8 +55,9 @@ const translations_nl = {
     timeline_prompt_rule1_headline: "-   `headline`: Titel van de gebeurtenis.",
     timeline_prompt_rule1_text: "-   `text`: Beschrijving in HTML (gebruik <p> en <strong>).",
     timeline_prompt_rule1_asset: "-   `asset`: Een optioneel object met een illustrerende afbeelding.",
+    timeline_prompt_rule1_tag: "- `tag`: Een trefwoord dat de periode kenmerkt (bv. 'geschiedenis', 'wetenschap').",
     timeline_prompt_rule2: "2.  Zoek voor elke `asset` actief naar een relevante, rechtenvrije afbeelding (bv. Wikimedia Commons). De URL in `media` moet een directe en geldige link zijn. Vermeld de bron en licentie in `credit`. Als er geen geschikte afbeelding wordt gevonden, laat het `asset`-object dan volledig weg.",
-    timeline_prompt_rule3: "3.  De inhoudstaal moet \"fr\" zijn.",
+    timeline_prompt_rule3: "3.  Voeg voor elke periode (`era`) een `text`-veld toe met een korte beschrijving en een `tag`.",
     timeline_prompt_example_json_title: "**Voorbeeld van JSON-structuur:**",
     timeline_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar. Het resultaat wordt direct door een ander hulpmiddel gebruikt.",
 

@@ -55,8 +55,9 @@ const translations_es = {
     timeline_prompt_rule1_headline: "-   `headline`: Título del evento.",
     timeline_prompt_rule1_text: "-   `text`: Descripción en HTML (usa <p> y <strong>).",
     timeline_prompt_rule1_asset: "-   `asset`: Un objeto opcional para una imagen que ilustre el evento.",
+    timeline_prompt_rule1_tag: "- `tag`: Una palabra clave que caracteriza el período (ej: 'historia', 'ciencia').",
     timeline_prompt_rule2: "2.  Para cada `asset`, busca activamente una imagen relevante y libre de derechos (ej: Wikimedia Commons). La URL en `media` debe ser un enlace directo y válido. Indica la fuente y la licencia en `credit`. Si no se encuentra ninguna imagen adecuada, omite el objeto `asset` por completo.",
-    timeline_prompt_rule3: "3.  El idioma del contenido debe ser \"es\".",
+    timeline_prompt_rule3: "3.  Para cada período (`era`), añade un campo `text` con una breve descripción y un `tag`.",
     timeline_prompt_example_json_title: "**Ejemplo de estructura JSON :**",
     timeline_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario. El resultado será utilizado directamente por otra herramienta.",
 

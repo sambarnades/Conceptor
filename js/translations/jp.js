@@ -55,8 +55,9 @@ const translations_jp = {
     timeline_prompt_rule1_headline: "- `headline`：イベントのタイトル。",
     timeline_prompt_rule1_text: "- `text`：HTML形式の説明（<p>と<strong>を使用）。",
     timeline_prompt_rule1_asset: "- `asset`：イベントを説明する画像用のオプションオブジェクト。",
+    timeline_prompt_rule1_tag: "- `tag`: 期間を特徴づけるキーワード（例：「歴史」、「科学」）。",
     timeline_prompt_rule2: "2. 各`asset`について、関連性のあるロイヤリティフリーの画像（例：Wikimedia Commons）を積極的に検索してください。`media`のURLは直接的で有効なリンクでなければなりません。`credit`にソースとライセンスを記載してください。適切な画像が見つからない場合は、`asset`オブジェクトを完全に省略してください。",
-    timeline_prompt_rule3: "3. コンテンツの言語は「ja」である必要があります。",
+    timeline_prompt_rule3: "3. 各期間（`era`）に、簡単な説明と`tag`を含む`text`フィールドを追加してください。",
     timeline_prompt_example_json_title: "**JSON構造の例：**",
     timeline_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。結果は他のツールで直接使用されます。",
 
