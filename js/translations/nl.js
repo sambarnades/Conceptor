@@ -658,6 +658,8 @@ var translations_nl = {
    fillPool: "abcdefghijklmnopqrstuvwxyz",
 
    // Sort the Paragraphs UI translations
+   checkAnswer: "Controleren",
+   submitAnswer: "Indienen",
    up: "Omhoog",
    down: "Omlaag",
    disabled: "Uitgeschakeld",

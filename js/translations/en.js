@@ -664,6 +664,8 @@ const translations_en = {
    fillPool: "abcdefghijklmnopqrstuvwxyz",
 
    // Sort the Paragraphs UI translations
+   checkAnswer: "Check",
+   submitAnswer: "Submit",
    up: "Up",
    down: "Down",
    disabled: "Disabled",

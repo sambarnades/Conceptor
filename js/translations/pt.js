@@ -658,6 +658,8 @@ var translations_pt = {
    fillPool: "abcdefghijklmnopqrstuvwxyzçãõéáíóúâêô",
 
    // Sort the Paragraphs UI translations
+   checkAnswer: "Verificar",
+   submitAnswer: "Enviar",
    up: "Cima",
    down: "Baixo",
    disabled: "Desativado",

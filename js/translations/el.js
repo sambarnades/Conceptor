@@ -658,6 +658,8 @@ var translations_el = {
    fillPool: "αβγδεζηθικλμνξοπρστυφχψω",
 
    // Sort the Paragraphs UI translations
+   checkAnswer: "Έλεγχος",
+   submitAnswer: "Υποβολή",
    up: "Πάνω",
    down: "Κάτω",
    disabled: "Απενεργοποιημένο",

@@ -664,6 +664,8 @@ var translations_es = {
    fillPool: "abcdefghijklmnopqrstuvwxyzñ",
 
    // Sort the Paragraphs UI translations
+   checkAnswer: "Comprobar",
+   submitAnswer: "Enviar",
    up: "Arriba",
    down: "Abajo",
    disabled: "Desactivado",

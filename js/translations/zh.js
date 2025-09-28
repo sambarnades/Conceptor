@@ -663,6 +663,8 @@ var translations_zh = {
    fillPool: "",
 
    // Sort the Paragraphs UI translations
+   checkAnswer: "检查",
+   submitAnswer: "提交",
    up: "上",
    down: "下",
    disabled: "已禁用",

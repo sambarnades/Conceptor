@@ -1380,6 +1380,7 @@ document.addEventListener('DOMContentLoaded', function() {
                    },
                    l10n: {
                        checkAnswer: translations.checkAnswer,
+                       submitAnswer: translations.submitAnswer,
                        tryAgain: translations.tryAgain,
                        showSolution: translations.showSolution,
                        up: translations.up,

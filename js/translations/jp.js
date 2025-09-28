@@ -658,6 +658,8 @@ var translations_jp = {
    fillPool: "",
 
    // Sort the Paragraphs UI translations
+   checkAnswer: "チェック",
+   submitAnswer: "送信",
    up: "上へ",
    down: "下へ",
    disabled: "無効",

@@ -663,6 +663,8 @@ var translations_ar = {
    fillPool: "ابتثجحخدذرزسشصضطظعغفقكلمنهوي",
 
    // Sort the Paragraphs UI translations
+   checkAnswer: "تحقق",
+   submitAnswer: "إرسال",
    up: "أعلى",
    down: "أسفل",
    disabled: "معطل",
