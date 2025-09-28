@@ -73,6 +73,7 @@ const translations_zh = {
     crossword_prompt_clue: "`clue`：对应的定义。",
     crossword_prompt_extra_clue_optional: "`extraClue` (可选): 包含附加线索的对象。AI应判断添加线索的相关性。",
     crossword_prompt_task_description: "`taskDescription`：清晰的指令。",
+    crossword_prompt_overall_feedback: "`overallFeedback`: 一个包含6个对象的数组，用于最终反馈，分数范围为0-10、11-30、31-50、51-70、71-90和91-100。文本（`feedback`）必须是善意的、渐进的，并且始终以肯定的方式表达。",
     crossword_prompt_content_rules_title: "**内容规则：**",
     crossword_prompt_rule1: "1.  词语（`answer`）必须唯一且相关。",
     crossword_prompt_rule2: "2.  定义（`clue`）需简短且准确。",

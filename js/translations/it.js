@@ -73,6 +73,7 @@ const translations_it = {
     crossword_prompt_clue: "`clue`: La definizione corrispondente.",
     crossword_prompt_extra_clue_optional: "`extraClue` (opzionale): Un oggetto contenente un indizio aggiuntivo. L'IA dovrebbe giudicare la pertinenza di aggiungerne uno.",
     crossword_prompt_task_description: "`taskDescription`: Un’istruzione chiara.",
+    crossword_prompt_overall_feedback: "`overallFeedback`: Un array di 6 oggetti per il feedback finale, con punteggi da 0-10, 11-30, 31-50, 51-70, 71-90 e 91-100. Il testo (`feedback`) deve essere benevolo, graduale e sempre formulato in modo affermativo.",
     crossword_prompt_content_rules_title: "**Regole per il contenuto:**",
     crossword_prompt_rule1: "1. Le parole (`answer`) devono essere uniche e pertinenti.",
     crossword_prompt_rule2: "2. Le definizioni (`clue`) devono essere brevi e precise.",

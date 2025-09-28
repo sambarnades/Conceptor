@@ -73,6 +73,7 @@ const translations_jp = {
     crossword_prompt_clue: "`clue`：対応する定義。",
     crossword_prompt_extra_clue_optional: "`extraClue` (任意): 追加のヒントを含むオブジェクト。AIは追加の妥当性を判断する必要があります。",
     crossword_prompt_task_description: "`taskDescription`：明確な指示。",
+    crossword_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現する必要があります。",
     crossword_prompt_content_rules_title: "**コンテンツのルール：**",
     crossword_prompt_rule1: "1. 単語（`answer`）は固有で関連性のある用語である必要があります。",
     crossword_prompt_rule2: "2. 定義（`clue`）は短く正確である必要があります。",

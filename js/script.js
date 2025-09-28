@@ -1019,7 +1019,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
             } else if (moduleKey === 'Crossword') {
                 content = {
-                    ...jsonObj, // Conserve title, words, taskDescription
+                    ...jsonObj, // Conserve title, words, taskDescription, and overallFeedback
                     behaviour: {
                         enableInstantFeedback: false,
                         scoreWords: true,
@@ -1383,6 +1383,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     - ${pt.crossword_prompt_clue}
                                     - ${pt.crossword_prompt_extra_clue_optional}
                                 - ${pt.crossword_prompt_task_description}
+                                - ${pt.crossword_prompt_overall_feedback}
 
                                 ${pt.crossword_prompt_content_rules_title}
                                 ${pt.crossword_prompt_rule1}

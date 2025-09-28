@@ -73,6 +73,7 @@ const translations_fr = {
     crossword_prompt_clue: "`clue`: La définition correspondante.",
     crossword_prompt_extra_clue_optional: "`extraClue` (optionnel): Un objet contenant un indice supplémentaire. L'IA doit juger de la pertinence d'en ajouter un.",
     crossword_prompt_task_description: "`taskDescription`: Une consigne claire.",
+    crossword_prompt_overall_feedback: "`overallFeedback`: Un tableau de 6 objets pour le feedback final, avec les scores de 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Le texte (`feedback`) doit être bienveillant, graduel, et toujours tourné à l'affirmative.",
     crossword_prompt_content_rules_title: "**Règles pour le contenu :**",
     crossword_prompt_rule1: "1.  Les mots (`answer`) doivent être des termes uniques et pertinents.",
     crossword_prompt_rule2: "2.  Les définitions (`clue`) doivent être courtes et précises.",
@@ -89,8 +90,8 @@ const translations_fr = {
     crossword_extra_clue: "Indice supplémentaire",
     crossword_close_window: "Fermer",
     crossword_submit_answer: "Valider",
-
-    // Essay Prompt
+ 
+     // Essay Prompt
     essay_prompt_role: "Tu es un expert en ingénierie pédagogique créant une activité H5P \"Essay\".",
     essay_prompt_mission: "**Ta mission :**",
     essay_prompt_generate_json: "Génère un objet JSON complet et valide pour une activité H5P de type Essay.",

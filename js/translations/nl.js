@@ -73,6 +73,7 @@ const translations_nl = {
     crossword_prompt_clue: "`clue`: De bijbehorende definitie.",
     crossword_prompt_extra_clue_optional: "`extraClue` (optioneel): Een object met een extra hint. De AI moet de relevantie van het toevoegen ervan beoordelen.",
     crossword_prompt_task_description: "`taskDescription`: Een duidelijke instructie.",
+    crossword_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn.",
     crossword_prompt_content_rules_title: "**Regels voor de inhoud:**",
     crossword_prompt_rule1: "1.  De woorden (`answer`) moeten uniek en relevant zijn.",
     crossword_prompt_rule2: "2.  De definities (`clue`) moeten kort en precies zijn.",

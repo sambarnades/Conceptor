@@ -73,6 +73,7 @@ const translations_ar = {
     crossword_prompt_clue: "`clue`: التعريف المقابل.",
     crossword_prompt_extra_clue_optional: "`extraClue` (اختياري): كائن يحتوي على تلميح إضافي. يجب على الذكاء الاصطناعي الحكم على مدى ملاءمة إضافته.",
     crossword_prompt_task_description: "`taskDescription`: تعليمات واضحة.",
+    crossword_prompt_overall_feedback: "`overallFeedback`: مصفوفة من 6 كائنات للتقييم النهائي، مع درجات من 0-10، 11-30، 31-50، 51-70، 71-90، و 91-100. يجب أن يكون النص (`feedback`) إيجابيًا ومتدرجًا ومصاغًا دائمًا بشكل إيجابي.",
     crossword_prompt_content_rules_title: "**قواعد المحتوى:**",
     crossword_prompt_rule1: "1. يجب أن تكون الكلمات (`answer`) فريدة وذات صلة.",
     crossword_prompt_rule2: "2. ينبغي أن تكون التعريفات (`clue`) قصيرة ودقيقة.",

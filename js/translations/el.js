@@ -73,6 +73,7 @@ const translations_el = {
     crossword_prompt_clue: "`clue`: Ο αντίστοιχος ορισμός.",
     crossword_prompt_extra_clue_optional: "`extraClue` (προαιρετικό): Ένα αντικείμενο που περιέχει μια πρόσθετη ένδειξη. Η ΤΝ πρέπει να κρίνει τη σκοπιμότητα της προσθήκης του.",
     crossword_prompt_task_description: "`taskDescription`: Σαφής οδηγία.",
+    crossword_prompt_overall_feedback: "`overallFeedback`: Ένας πίνακας 6 αντικειμένων για την τελική ανατροφοδότηση, με βαθμολογίες από 0-10, 11-30, 31-50, 51-70, 71-90 και 91-100. Το κείμενο (`feedback`) πρέπει να είναι ενθαρρυντικό, σταδιακό και πάντα διατυπωμένο θετικά.",
     crossword_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
     crossword_prompt_rule1: "1. Οι λέξεις (`answer`) πρέπει να είναι μοναδικές και σχετικές.",
     crossword_prompt_rule2: "2. Οι ορισμοί (`clue`) να είναι σύντομοι και ακριβείς.",

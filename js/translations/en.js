@@ -73,6 +73,7 @@ const translations_en = {
     crossword_prompt_clue: "`clue`: The corresponding definition.",
     crossword_prompt_extra_clue_optional: "`extraClue` (optional): An object containing an additional clue. The AI should judge the relevance of adding one.",
     crossword_prompt_task_description: "`taskDescription`: Clear instructions.",
+    crossword_prompt_overall_feedback: "`overallFeedback`: An array of 6 objects for the final feedback, with scores from 0-10, 11-30, 31-50, 51-70, 71-90, and 91-100. The text (`feedback`) must be benevolent, gradual, and always phrased affirmatively.",
     crossword_prompt_content_rules_title: "**Content rules :**",
     crossword_prompt_rule1: "1.  Words (`answer`) must be unique and relevant terms.",
     crossword_prompt_rule2: "2.  Definitions (`clue`) must be short and precise.",
