@@ -943,7 +943,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const defaultFlashcardsContent = {
                     title: jsonObj.title || translations.h5p_flashcards_name,
                     description: jsonObj.description || translations.h5p_flashcards_description,
-                    cards: jsonObj.cards ? jsonObj.cards.map(card => ({ ...card, tip: card.tip || "" })) : [],
+                    cards: jsonObj.cards ? jsonObj.cards.map(card => ({ text: card.text, answer: card.answer, tip: card.tip || "" })) : [],
                     progressText: translations.flashcards_progress_text || "Card @card of @total",
                     next: translations.flashcards_next || "Next",
                     previous: translations.flashcards_previous || "Previous",
@@ -1519,6 +1519,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 - ${pt.flashcards_prompt_cards_array.replace('${nombreQuestions}', nombreQuestions)}
                                     - ${pt.flashcards_prompt_text}
                                     - ${pt.flashcards_prompt_answer}
+                                    - ${pt.flashcards_prompt_tip}
 
                                 ${pt.flashcards_prompt_example_json_title}
                                 \`\`\`json
@@ -1531,8 +1532,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                     "answer": "Paris"
                                     },
                                     {
-                                    "text": "Allemagne",
-                                    "answer": "Berlin"
+                                    "text": "Pays-Bas",
+                                    "answer": "Amsterdam",
+                                    "tip": "<p>C'est la ville des <strong>canaux</strong> et des tulipes !</p>"
                                     }
                                 ]
                                 }

@@ -156,6 +156,7 @@ const translations_en = {
     flashcards_prompt_cards_array: "`cards`: An array of ${nombreQuestions} objects, where each object represents a card and contains :",
     flashcards_prompt_text: "`text`: The question or term to guess (front).",
     flashcards_prompt_answer: "`answer`: The answer or definition (back). Important: answer can only contain a single simple word or a number.",
+    flashcards_prompt_tip: "`tip` (optional): An HTML-formatted hint to help the student if the question is difficult. Only add a hint if you think it's relevant.",
     flashcards_prompt_example_json_title: "**Example JSON :**",
     flashcards_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
 

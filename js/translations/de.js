@@ -156,6 +156,7 @@ const translations_de = {
     flashcards_prompt_cards_array: "`cards`: Ein Array mit ${nombreQuestions} Objekten, wobei jedes Objekt eine Karte darstellt und enthält :",
     flashcards_prompt_text: "`text`: Die Frage oder der zu erratende Begriff (Vorderseite).",
     flashcards_prompt_answer: "`answer`: Die Antwort oder Definition (Rückseite). Wichtig: Die Antwort darf nur ein einfaches Wort oder eine Zahl enthalten.",
+    flashcards_prompt_tip: "`tip` (optional): Ein Hinweis im HTML-Format, um dem Schüler zu helfen, wenn die Frage schwierig ist. Fügen Sie einen Hinweis nur hinzu, wenn Sie ihn für relevant halten.",
     flashcards_prompt_example_json_title: "**Beispiel-JSON :**",
     flashcards_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code, ohne Kommentare.",
 

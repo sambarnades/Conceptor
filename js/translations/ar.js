@@ -156,6 +156,7 @@ const translations_ar = {
     flashcards_prompt_cards_array: "`cards`: مصفوفة من ${nombreQuestions} كائنات؛ يمثّل كل كائن بطاقةً ويحتوي على:",
     flashcards_prompt_text: "`text`: السؤال أو المصطلح المطلوب تخمينه (الوجه الأمامي).",
     flashcards_prompt_answer: "`answer`: الإجابة أو التعريف (الوجه الخلفي). تنبيه: يجب أن تحتوي `answer` على كلمة بسيطة واحدة أو رقم فقط.",
+    flashcards_prompt_tip: "`tip` (اختياري): تلميح بصيغة HTML لمساعدة الطالب إذا كان السؤال صعبًا. أضف تلميحًا فقط إذا كنت تعتقد أنه مناسب.",
     flashcards_prompt_example_json_title: "**مثال JSON:**",
     flashcards_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
 

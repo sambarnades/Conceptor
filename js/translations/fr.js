@@ -156,6 +156,7 @@ const translations_fr = {
     flashcards_prompt_cards_array: "`cards`: Un tableau de ${nombreQuestions} objets, où chaque objet représente une carte et contient :",
     flashcards_prompt_text: "`text`: La question ou le terme à deviner (recto).",
     flashcards_prompt_answer: "`answer`: La réponse ou la définition (verso). Attention, important : answer ne peut contenir qu'un seul mot simple ou un nombre.",
+    flashcards_prompt_tip: "`tip` (optionnel): Un indice au format HTML pour aider l'élève si la question est difficile. N'ajoute un indice que si cela te semble pertinent.",
     flashcards_prompt_example_json_title: "**Exemple de JSON :**",
     flashcards_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire.",
 

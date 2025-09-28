@@ -156,6 +156,7 @@ const translations_nl = {
     flashcards_prompt_cards_array: "`cards`: Een array van ${nombreQuestions} objecten; elk object stelt een kaart voor en bevat:",
     flashcards_prompt_text: "`text`: De vraag of de te raden term (voorzijde).",
     flashcards_prompt_answer: "`answer`: Het antwoord of de definitie (achterzijde). Let op: `answer` mag slechts één eenvoudig woord of een getal bevatten.",
+    flashcards_prompt_tip: "`tip` (optioneel): Een hint in HTML-formaat om de leerling te helpen als de vraag moeilijk is. Voeg alleen een hint toe als je denkt dat het relevant is.",
     flashcards_prompt_example_json_title: "**JSON-voorbeeld:**",
     flashcards_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
 

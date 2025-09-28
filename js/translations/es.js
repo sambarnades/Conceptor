@@ -156,6 +156,7 @@ const translations_es = {
     flashcards_prompt_cards_array: "`cards`: Un array de ${nombreQuestions} objetos, donde cada objeto representa una tarjeta y contiene :",
     flashcards_prompt_text: "`text`: La pregunta o el término a adivinar (anverso).",
     flashcards_prompt_answer: "`answer`: La respuesta o la definición (reverso). Importante: la respuesta solo puede contener una palabra simple o un número.",
+    flashcards_prompt_tip: "`tip` (opcional): Una pista en formato HTML para ayudar al alumno si la pregunta es difícil. Solo añade una pista si crees que es relevante.",
     flashcards_prompt_example_json_title: "**Ejemplo de JSON :**",
     flashcards_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario.",
 

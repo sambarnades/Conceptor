@@ -156,6 +156,7 @@ const translations_zh = {
     flashcards_prompt_cards_array: "`cards`：包含 ${nombreQuestions} 个对象的数组，每个对象代表一张卡片，并包含：",
     flashcards_prompt_text: "`text`：题目或要辨认的术语（正面）。",
     flashcards_prompt_answer: "`answer`：答案或定义（背面）。注意：`answer` 只能包含一个简单单词或一个数字。",
+    flashcards_prompt_tip: "`tip` (可选): 一个HTML格式的提示，用于在问题困难时帮助学生。仅在您认为相关时才添加提示。",
     flashcards_prompt_example_json_title: "**JSON 示例：**",
     flashcards_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
 

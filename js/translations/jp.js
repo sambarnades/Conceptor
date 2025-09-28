@@ -156,6 +156,7 @@ const translations_jp = {
     flashcards_prompt_cards_array: "`cards`：${nombreQuestions}個のオブジェクトの配列。各オブジェクトはカードを表し、以下を含みます：",
     flashcards_prompt_text: "`text`：推測する質問または用語（表）。",
     flashcards_prompt_answer: "`answer`：回答または定義（裏）。注意、重要：answerには単純な単語一つまたは数字のみを含めることができます。",
+    flashcards_prompt_tip: "`tip` (任意): 質問が難しい場合に学生を助けるためのHTML形式のヒント。関連性があると思われる場合にのみヒントを追加してください。",
     flashcards_prompt_example_json_title: "**JSONの例：**",
     flashcards_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 

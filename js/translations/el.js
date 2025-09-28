@@ -156,6 +156,7 @@ const translations_el = {
     flashcards_prompt_cards_array: "`cards`: Πίνακας με ${nombreQuestions} αντικείμενα· κάθε αντικείμενο είναι μία κάρτα και περιέχει:",
     flashcards_prompt_text: "`text`: Η ερώτηση ή ο όρος προς αναγνώριση (μπροστινή όψη).",
     flashcards_prompt_answer: "`answer`: Η απάντηση ή ο ορισμός (πίσω όψη). Σημαντικό: το `answer` μπορεί να περιέχει μόνο μία απλή λέξη ή έναν αριθμό.",
+    flashcards_prompt_tip: "`tip` (προαιρετικό): Μια υπόδειξη σε μορφή HTML για να βοηθήσει τον μαθητή εάν η ερώτηση είναι δύσκολη. Προσθέστε μια υπόδειξη μόνο εάν πιστεύετε ότι είναι σχετική.",
     flashcards_prompt_example_json_title: "**Παράδειγμα JSON:**",
     flashcards_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
 
