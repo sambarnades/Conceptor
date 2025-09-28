@@ -1223,7 +1223,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         enableCheckButton: true,
                         showScorePoints: true
                     },
-                    overallFeedback: [{
+                    overallFeedback: jsonObj.overallFeedback || [{
                         "from": 0,
                         "to": 100,
                         "feedback": "You got @score of @total points."
@@ -1722,6 +1722,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ${pt.mark_words_prompt_json_structure_main_object}
                                 - ${pt.mark_words_prompt_task_description}
                                 - ${pt.mark_words_prompt_text_field}
+                                - ${pt.mark_words_prompt_overall_feedback}
 
                                 ${pt.mark_words_prompt_content_rules_title}
                                 ${pt.mark_words_prompt_rule1}

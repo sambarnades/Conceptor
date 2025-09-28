@@ -308,6 +308,7 @@ const translations_el = {
     mark_words_prompt_json_structure_main_object: "Το αντικείμενο πρέπει να περιέχει:",
     mark_words_prompt_task_description: "`taskDescription`: Σαφής οδηγία.",
     mark_words_prompt_text_field: "`textField`: Κείμενο όπου οι λέξεις προς σήμανση περικλείονται με αστερίσκους (*λέξη*).",
+    mark_words_prompt_overall_feedback: "`overallFeedback`: Ένας πίνακας 6 αντικειμένων για την τελική ανατροφοδότηση, με βαθμολογίες από 0-10, 11-30, 31-50, 51-70, 71-90 και 91-100. Το κείμενο (`feedback`) πρέπει να είναι ενθαρρυντικό, σταδιακό και πάντα διατυπωμένο θετικά, σχετικό με το θέμα.",
     mark_words_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
     mark_words_prompt_rule1: "1. Γράψε σχετική παράγραφο για το θέμα.",
     mark_words_prompt_rule2: "2. Επίλεξε περίπου ${nombreQuestions} σημαντικές λέξεις-κλειδιά για σήμανση.",

@@ -308,6 +308,7 @@ const translations_ar = {
     mark_words_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
     mark_words_prompt_task_description: "`taskDescription`: تعليمات واضحة.",
     mark_words_prompt_text_field: "`textField`: نص تُحاط فيه الكلمات المطلوب تعليمها بنجمتين (*كلمة*).",
+    mark_words_prompt_overall_feedback: "`overallFeedback`: مصفوفة من 6 كائنات للتقييم النهائي، مع درجات من 0-10، 11-30، 31-50، 51-70، 71-90، و 91-100. يجب أن يكون النص (`feedback`) إيجابيًا ومتدرجًا ومصاغًا دائمًا بشكل إيجابي، ومرتبطًا بالموضوع.",
     mark_words_prompt_content_rules_title: "**قواعد المحتوى:**",
     mark_words_prompt_rule1: "1. اكتب فقرة ذات صلة بالموضوع.",
     mark_words_prompt_rule2: "2. حدّد نحو ${nombreQuestions} كلمات مفتاحية مهمّة للتعليم.",

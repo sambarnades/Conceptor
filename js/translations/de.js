@@ -308,6 +308,7 @@ const translations_de = {
     mark_words_prompt_json_structure_main_object: "Das Objekt muss enthalten :",
     mark_words_prompt_task_description: "`taskDescription`: Klare Anweisungen.",
     mark_words_prompt_text_field: "`textField`: Der Text, in dem die zu markierenden Wörter in Sternchen (*Wort*) eingeschlossen sind.",
+    mark_words_prompt_overall_feedback: "`overallFeedback`: Ein Array von 6 Objekten für das abschließende Feedback mit Punktzahlen von 0-10, 11-30, 31-50, 51-70, 71-90 und 91-100. Der Text (`feedback`) muss wohlwollend, schrittweise und immer positiv formuliert sein und sich auf das Thema beziehen.",
     mark_words_prompt_content_rules_title: "**Inhaltsregeln :**",
     mark_words_prompt_rule1: "1.  Erstellen Sie einen relevanten Absatz zum Thema.",
     mark_words_prompt_rule2: "2.  Identifizieren Sie ungefähr ${nombreQuestions} wichtige Schlüsselwörter zum Markieren.",

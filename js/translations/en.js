@@ -308,6 +308,7 @@ const translations_en = {
     mark_words_prompt_json_structure_main_object: "The object must contain :",
     mark_words_prompt_task_description: "`taskDescription`: Clear instructions.",
     mark_words_prompt_text_field: "`textField`: The text where words to mark are enclosed in asterisks (*word*).",
+    mark_words_prompt_overall_feedback: "`overallFeedback`: An array of 6 objects for the final feedback, with scores from 0-10, 11-30, 31-50, 51-70, 71-90, and 91-100. The text (`feedback`) must be benevolent, gradual, and always phrased affirmatively, related to the topic.",
     mark_words_prompt_content_rules_title: "**Content rules :**",
     mark_words_prompt_rule1: "1.  Create a relevant paragraph on the theme.",
     mark_words_prompt_rule2: "2.  Identify approximately ${nombreQuestions} important keywords to mark.",

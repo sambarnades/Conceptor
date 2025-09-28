@@ -308,6 +308,7 @@ const translations_zh = {
     mark_words_prompt_json_structure_main_object: "对象必须包含：",
     mark_words_prompt_task_description: "`taskDescription`：清晰的指令。",
     mark_words_prompt_text_field: "`textField`：需要标注的词用星号包裹（*词*）的文本。",
+    mark_words_prompt_overall_feedback: "`overallFeedback`: 一个包含6个对象的数组，用于最终反馈，分数范围为0-10、11-30、31-50、51-70、71-90和91-100。文本（`feedback`）必须是善意的、渐进的，并且始终以肯定的方式表达，与主题相关。",
     mark_words_prompt_content_rules_title: "**内容规则：**",
     mark_words_prompt_rule1: "1.  围绕主题写一段相关的文字。",
     mark_words_prompt_rule2: "2.  选择大约 ${nombreQuestions} 个重要关键词供标注。",

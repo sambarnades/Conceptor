@@ -308,6 +308,7 @@ const translations_nl = {
     mark_words_prompt_json_structure_main_object: "Het object moet bevatten:",
     mark_words_prompt_task_description: "`taskDescription`: Een duidelijke instructie.",
     mark_words_prompt_text_field: "`textField`: De tekst waarin de te markeren woorden tussen asterisken staan (*woord*).",
+    mark_words_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn, en gerelateerd aan het onderwerp.",
     mark_words_prompt_content_rules_title: "**Regels voor de inhoud:**",
     mark_words_prompt_rule1: "1.  Schrijf een relevant alinea over het thema.",
     mark_words_prompt_rule2: "2.  Kies ongeveer ${nombreQuestions} belangrijke kernwoorden om te markeren.",

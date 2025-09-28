@@ -308,6 +308,7 @@ const translations_jp = {
     mark_words_prompt_json_structure_main_object: "オブジェクトには以下を含める必要があります：",
     mark_words_prompt_task_description: "`taskDescription`：明確な指示。",
     mark_words_prompt_text_field: "`textField`：マークする単語がアスタリスク（*単語*）で囲まれたテキスト。",
+    mark_words_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現し、トピックに関連している必要があります。",
     mark_words_prompt_content_rules_title: "**コンテンツのルール：**",
     mark_words_prompt_rule1: "1. テーマに関する関連する段落を作成してください。",
     mark_words_prompt_rule2: "2. マークする重要なキーワードを約${nombreQuestions}個特定してください。",
