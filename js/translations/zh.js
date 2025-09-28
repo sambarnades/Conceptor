@@ -415,9 +415,11 @@ var translations_zh = {
     h5p_mark_the_words_description: "要求学生在段落中标出特定词语。",
    h5p_true_false_name: "判断题",
    h5p_true_false_description: "创建答案为“是”或“否”的简单问题。",
-
-    // Moodle 模块
-    moodle_xml_name: "XML Éléa/Moodle",
+   h5p_multiple_choice_name: "多项选择",
+   h5p_multiple_choice_description: "创建具有一个或多个正确答案的多项选择题。",
+ 
+     // Moodle 模块
+     moodle_xml_name: "XML Éléa/Moodle",
     moodle_xml_description: "生成一个包含 10 道题目的题库，可直接以 XML 格式导入测验活动。",
     moodle_xml_help: "要在 Moodle 的“测验”活动中添加 XML 文件，首先创建活动。然后打开 <strong>更多</strong> 菜单并进入 <strong>题库</strong>。在此菜单中，点击 <strong>导入</strong>，选择 <strong>Moodle XML</strong> 格式，然后选择您的文件并确认。",
     moodle_gift_name: "GIFT 格式",
@@ -599,5 +601,37 @@ var translations_zh = {
    true_false_finish_label: "完成",
    true_false_retry_header: "重试？",
    true_false_retry_body: "你确定要重试吗？",
-   true_false_retry_confirm_label: "确认"
+   true_false_retry_confirm_label: "确认",
+
+   // Multiple Choice UI translations
+   checkAnswerButton: "检查",
+   showSolutionButton: "显示答案",
+   tryAgainButton: "重试",
+   submitAnswerButton: "提交",
+   scoreBarLabel: "你得到了:num/:total分",
+   confirmCheckHeader: "完成？",
+   confirmCheckBody: "你确定要完成吗？",
+   confirmCheckCancelLabel: "取消",
+   confirmCheckConfirmLabel: "完成",
+   confirmRetryHeader: "重试？",
+   confirmRetryBody: "你确定要重试吗？",
+   confirmRetryCancelLabel: "取消",
+   confirmRetryConfirmLabel: "确认",
+
+   // Multiple Choice Prompt
+   multiple_choice_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“多项选择”活动。",
+   multiple_choice_prompt_mission: "**你的任务:**",
+   multiple_choice_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P 多项选择活动。",
+   multiple_choice_prompt_json_structure_title: "**预期的 JSON 结构:**",
+   multiple_choice_prompt_json_structure_main_object: "对象必须包含：",
+   multiple_choice_prompt_question: "`question`: 要提出的问题（HTML 格式）。",
+   multiple_choice_prompt_answers_array: "`answers`: 一个对象数组，每个对象代表一个答案。",
+   multiple_choice_prompt_text: "`text`: 答案文本（HTML 格式）。",
+   multiple_choice_prompt_correct: "`correct`: 一个布尔值（`true` 或 `false`），指示是否为正确答案。",
+   multiple_choice_prompt_overall_feedback: "`overallFeedback`: 一个包含6个对象的数组，用于最终反馈，分数范围为0-10、11-30、31-50、51-70、71-90和91-100。文本（`feedback`）必须是善意的、渐进的，并且始终以肯定的方式表达。",
+   multiple_choice_prompt_content_rules_title: "**内容规则:**",
+   multiple_choice_prompt_rule1: "1.  只能有一个正确答案 (`\"correct\": true`)。",
+   multiple_choice_prompt_rule2: "2.  提供几个不正确的答案 (`\"correct\": false`)。",
+   multiple_choice_prompt_example_json_title: "**JSON 示例:**",
+   multiple_choice_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。"
 };

@@ -415,9 +415,11 @@ var translations_pt = {
     h5p_mark_the_words_description: "Peça aos alunos que destaquem certas palavras num parágrafo.",
    h5p_true_false_name: "Questão Verdadeiro/Falso",
    h5p_true_false_description: "Crie perguntas simples com uma resposta binária: verdadeiro ou falso.",
-
-    // Módulos Moodle
-    moodle_xml_name: "XML Éléa/Moodle",
+   h5p_multiple_choice_name: "Múltipla Escolha",
+   h5p_multiple_choice_description: "Crie perguntas de múltipla escolha com uma ou mais respostas corretas.",
+ 
+     // Módulos Moodle
+     moodle_xml_name: "XML Éléa/Moodle",
     moodle_xml_description: "Gere um banco de 10 perguntas para uma atividade de Questionário prontas para serem importadas em formato XML.",
     moodle_xml_help: "Para adicionar um ficheiro XML numa atividade «Questionário» no Moodle, primeiro crie a atividade. Em seguida, abra o menu <strong>Mais</strong> e vá a <strong>Banco de perguntas</strong>. Nesse menu, clique em <strong>Importar</strong>, escolha o formato <strong>Moodle XML</strong>, selecione o seu ficheiro e confirme.",
     moodle_gift_name: "Formato GIFT",
@@ -594,5 +596,37 @@ var translations_pt = {
    true_false_finish_label: "Terminar",
    true_false_retry_header: "Tentar novamente?",
    true_false_retry_body: "Tem certeza de que deseja tentar novamente?",
-   true_false_retry_confirm_label: "Confirmar"
+   true_false_retry_confirm_label: "Confirmar",
+
+   // Multiple Choice UI translations
+   checkAnswerButton: "Verificar",
+   showSolutionButton: "Mostrar solução",
+   tryAgainButton: "Tentar novamente",
+   submitAnswerButton: "Enviar",
+   scoreBarLabel: "Você obteve :num de :total pontos",
+   confirmCheckHeader: "Terminar?",
+   confirmCheckBody: "Tem certeza de que deseja terminar?",
+   confirmCheckCancelLabel: "Cancelar",
+   confirmCheckConfirmLabel: "Terminar",
+   confirmRetryHeader: "Tentar novamente?",
+   confirmRetryBody: "Tem certeza de que deseja tentar novamente?",
+   confirmRetryCancelLabel: "Cancelar",
+   confirmRetryConfirmLabel: "Confirmar",
+
+   // Multiple Choice Prompt
+   multiple_choice_prompt_role: "Você é um especialista em engenharia pedagógica criando uma atividade H5P \"Múltipla Escolha\".",
+   multiple_choice_prompt_mission: "**Sua missão:**",
+   multiple_choice_prompt_generate_json: "Gere um objeto JSON completo e válido para uma atividade H5P de Múltipla Escolha.",
+   multiple_choice_prompt_json_structure_title: "**Estrutura de JSON esperada:**",
+   multiple_choice_prompt_json_structure_main_object: "O objeto deve conter:",
+   multiple_choice_prompt_question: "`question`: A pergunta a ser feita (formato HTML).",
+   multiple_choice_prompt_answers_array: "`answers`: Um array de objetos, cada um representando uma resposta.",
+   multiple_choice_prompt_text: "`text`: O texto da resposta (formato HTML).",
+   multiple_choice_prompt_correct: "`correct`: Um booleano (`true` ou `false`) indicando se é a resposta correta.",
+   multiple_choice_prompt_overall_feedback: "`overallFeedback`: Um array de 6 objetos para o feedback final, com pontuações de 0-10, 11-30, 31-50, 51-70, 71-90 e 91-100. O texto (`feedback`) deve ser benevolente, gradual e sempre formulado de forma afirmativa.",
+   multiple_choice_prompt_content_rules_title: "**Regras para o conteúdo:**",
+   multiple_choice_prompt_rule1: "1.  Deve haver apenas uma resposta correta (`\"correct\": true`).",
+   multiple_choice_prompt_rule2: "2.  Forneça várias respostas incorretas (`\"correct\": false`).",
+   multiple_choice_prompt_example_json_title: "**Exemplo de JSON:**",
+   multiple_choice_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário."
 };

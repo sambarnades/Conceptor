@@ -415,9 +415,11 @@ var translations_ar = {
     h5p_mark_the_words_description: "اطلب من المتعلمين تمييز كلمات معيّنة داخل فقرة.",
    h5p_true_false_name: "سؤال صح/خطأ",
    h5p_true_false_description: "أنشئ أسئلة بسيطة بإجابة ثنائية: صح أم خطأ.",
-
-    // وحدات Moodle
-    moodle_xml_name: "XML Éléa/Moodle",
+   h5p_multiple_choice_name: "الاختيار من متعدد",
+   h5p_multiple_choice_description: "أنشئ أسئلة الاختيار من متعدد مع إجابة صحيحة واحدة أو أكثر.",
+ 
+     // وحدات Moodle
+     moodle_xml_name: "XML Éléa/Moodle",
     moodle_xml_description: "إنشاء بنك من 10 أسئلة لنشاط اختبار جاهزة للاستيراد بتنسيق XML.",
     moodle_xml_help: "لإضافة ملف XML إلى نشاط «اختبار» على Moodle، ابدأ بإنشاء النشاط. بعد ذلك، افتح قائمة <strong>المزيد</strong> واذهب إلى <strong>بنك الأسئلة</strong>. في هذه القائمة، انقر على <strong>استيراد</strong>، واختر تنسيق <strong>Moodle XML</strong>، ثم حدد ملفك وقم بالتأكيد.",
     moodle_gift_name: "تنسيق GIFT",
@@ -599,5 +601,37 @@ var translations_ar = {
    true_false_finish_label: "إنهاء",
    true_false_retry_header: "إعادة المحاولة؟",
    true_false_retry_body: "هل أنت متأكد من رغبتك في إعادة المحاولة؟",
-   true_false_retry_confirm_label: "تأكيد"
+   true_false_retry_confirm_label: "تأكيد",
+
+   // Multiple Choice UI translations
+   checkAnswerButton: "تحقق",
+   showSolutionButton: "إظهار الحل",
+   tryAgainButton: "إعادة المحاولة",
+   submitAnswerButton: "إرسال",
+   scoreBarLabel: "لقد حصلت على :num من :total نقطة",
+   confirmCheckHeader: "إنهاء؟",
+   confirmCheckBody: "هل أنت متأكد من رغبتك في الإنهاء؟",
+   confirmCheckCancelLabel: "إلغاء",
+   confirmCheckConfirmLabel: "إنهاء",
+   confirmRetryHeader: "إعادة المحاولة؟",
+   confirmRetryBody: "هل أنت متأكد من رغبتك في إعادة المحاولة؟",
+   confirmRetryCancelLabel: "إلغاء",
+   confirmRetryConfirmLabel: "تأكيد",
+
+   // Multiple Choice Prompt
+   multiple_choice_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"الاختيار من متعدد\".",
+   multiple_choice_prompt_mission: "**مهمتك:**",
+   multiple_choice_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط H5P من نوع الاختيار من متعدد.",
+   multiple_choice_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
+   multiple_choice_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
+   multiple_choice_prompt_question: "`question`: السؤال المراد طرحه (بصيغة HTML).",
+   multiple_choice_prompt_answers_array: "`answers`: مصفوفة من الكائنات، يمثّل كلٌّ منها إجابة.",
+   multiple_choice_prompt_text: "`text`: نص الإجابة (بصيغة HTML).",
+   multiple_choice_prompt_correct: "`correct`: قيمة منطقية (`true` أو `false`) تشير إلى ما إذا كانت الإجابة صحيحة.",
+   multiple_choice_prompt_overall_feedback: "`overallFeedback`: مصفوفة من 6 كائنات للتقييم النهائي، مع درجات من 0-10، 11-30، 31-50، 51-70، 71-90، و 91-100. يجب أن يكون النص (`feedback`) إيجابيًا ومتدرجًا ومصاغًا دائمًا بشكل إيجابي.",
+   multiple_choice_prompt_content_rules_title: "**قواعد المحتوى:**",
+   multiple_choice_prompt_rule1: "1.  يجب أن تكون هناك إجابة صحيحة واحدة فقط (`\"correct\": true`).",
+   multiple_choice_prompt_rule2: "2.  قدّم عدة إجابات خاطئة (`\"correct\": false`).",
+   multiple_choice_prompt_example_json_title: "**مثال JSON:**",
+   multiple_choice_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات."
 };

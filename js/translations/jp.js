@@ -415,9 +415,11 @@ var translations_jp = {
     h5p_mark_the_words_description: "生徒に段落の特定の単語をハイライトするよう求めます。",
    h5p_true_false_name: "正誤問題",
    h5p_true_false_description: "正解か不正解かの二者択一で答える簡単な問題を作成します。",
-
-    // Moodle モジュール
-    moodle_xml_name: "XML Éléa/Moodle",
+   h5p_multiple_choice_name: "多肢選択",
+   h5p_multiple_choice_description: "1つまたは複数の正解を持つ多肢選択問題を作成します。",
+ 
+     // Moodle モジュール
+     moodle_xml_name: "XML Éléa/Moodle",
     moodle_xml_description: "XML 形式でインポート可能な小テスト用に 10 問の問題バンクを作成します。",
     moodle_xml_help: "Moodle の「小テスト」活動に XML ファイルを追加するには、まず活動を作成します。その後、<strong>その他</strong> メニューを開き、<strong>問題バンク</strong> に移動します。そこで <strong>インポート</strong> をクリックし、<strong>Moodle XML</strong> 形式を選択し、ファイルを選んで確認します。",
     moodle_gift_name: "GIFT フォーマット",
@@ -594,5 +596,37 @@ var translations_jp = {
    true_false_finish_label: "終了",
    true_false_retry_header: "再試行しますか？",
    true_false_retry_body: "本当に再試行しますか？",
-   true_false_retry_confirm_label: "確認"
+   true_false_retry_confirm_label: "確認",
+
+   // Multiple Choice UI translations
+   checkAnswerButton: "チェック",
+   showSolutionButton: "解答を表示",
+   tryAgainButton: "再試行",
+   submitAnswerButton: "送信",
+   scoreBarLabel: "合計:total点中、:num点を獲得しました",
+   confirmCheckHeader: "終了しますか？",
+   confirmCheckBody: "本当に終了しますか？",
+   confirmCheckCancelLabel: "キャンセル",
+   confirmCheckConfirmLabel: "終了",
+   confirmRetryHeader: "再試行しますか？",
+   confirmRetryBody: "本当に再試行しますか？",
+   confirmRetryCancelLabel: "キャンセル",
+   confirmRetryConfirmLabel: "確認",
+
+   // Multiple Choice Prompt
+   multiple_choice_prompt_role: "あなたはH5P「多肢選択」アクティビティを作成する教育工学の専門家です。",
+   multiple_choice_prompt_mission: "**あなたの使命:**",
+   multiple_choice_prompt_generate_json: "H5P多肢選択アクティビティ用の完全で有効なJSONオブジェクトを生成してください。",
+   multiple_choice_prompt_json_structure_title: "**期待されるJSON構造:**",
+   multiple_choice_prompt_json_structure_main_object: "オブジェクトには以下を含める必要があります：",
+   multiple_choice_prompt_question: "`question`: 質問（HTML形式）。",
+   multiple_choice_prompt_answers_array: "`answers`: 各回答を表すオブジェクトの配列。",
+   multiple_choice_prompt_text: "`text`: 回答テキスト（HTML形式）。",
+   multiple_choice_prompt_correct: "`correct`: 正解かどうかを示すブール値（`true`または`false`）。",
+   multiple_choice_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現する必要があります。",
+   multiple_choice_prompt_content_rules_title: "**コンテンツのルール:**",
+   multiple_choice_prompt_rule1: "1.  正解は1つだけです（`\"correct\": true`）。",
+   multiple_choice_prompt_rule2: "2.  複数の不正解を提供してください（`\"correct\": false`）。",
+   multiple_choice_prompt_example_json_title: "**JSONの例:**",
+   multiple_choice_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。"
 };

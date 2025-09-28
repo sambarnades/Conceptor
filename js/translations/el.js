@@ -415,9 +415,11 @@ var translations_el = {
     h5p_mark_the_words_description: "Ζητήστε από τους μαθητές να επισημάνουν συγκεκριμένες λέξεις σε μια παράγραφο.",
    h5p_true_false_name: "Ερώτηση Σωστό/Λάθος",
    h5p_true_false_description: "Δημιουργήστε απλές ερωτήσεις με δυαδική απάντηση: σωστό ή λάθος.",
-
-    // Ενότητες Moodle
-    moodle_xml_name: "XML Éléa/Moodle",
+   h5p_multiple_choice_name: "Πολλαπλή Επιλογή",
+   h5p_multiple_choice_description: "Δημιουργήστε ερωτήσεις πολλαπλής επιλογής με μία ή περισσότερες σωστές απαντήσεις.",
+ 
+     // Ενότητες Moodle
+     moodle_xml_name: "XML Éléa/Moodle",
     moodle_xml_description: "Δημιουργήστε μια τράπεζα 10 ερωτήσεων για μια δραστηριότητα Κουίζ έτοιμη για εισαγωγή σε μορφή XML.",
     moodle_xml_help: "Για να προσθέσετε ένα αρχείο XML σε μια δραστηριότητα «Κουίζ» στο Moodle, δημιουργήστε πρώτα τη δραστηριότητα. Στη συνέχεια, ανοίξτε το μενού <strong>Περισσότερα</strong> και μεταβείτε στην <strong>Τράπεζα ερωτήσεων</strong>. Σε αυτό το μενού, κάντε κλικ στο <strong>Εισαγωγή</strong>, επιλέξτε τη μορφή <strong>Moodle XML</strong>, στη συνέχεια επιλέξτε το αρχείο σας και επιβεβαιώστε.",
     moodle_gift_name: "Μορφή GIFT",
@@ -594,5 +596,37 @@ var translations_el = {
    true_false_finish_label: "Ολοκλήρωση",
    true_false_retry_header: "Επανάληψη;",
    true_false_retry_body: "Είστε σίγουροι ότι θέλετε να προσπαθήσετε ξανά;",
-   true_false_retry_confirm_label: "Επιβεβαίωση"
+   true_false_retry_confirm_label: "Επιβεβαίωση",
+
+   // Multiple Choice UI translations
+   checkAnswerButton: "Έλεγχος",
+   showSolutionButton: "Εμφάνιση λύσης",
+   tryAgainButton: "Προσπάθησε ξανά",
+   submitAnswerButton: "Υποβολή",
+   scoreBarLabel: "Έχετε :num από τους :total πόντους",
+   confirmCheckHeader: "Ολοκλήρωση;",
+   confirmCheckBody: "Είστε σίγουροι ότι θέλετε να ολοκληρώσετε;",
+   confirmCheckCancelLabel: "Άκυρο",
+   confirmCheckConfirmLabel: "Ολοκλήρωση",
+   confirmRetryHeader: "Επανάληψη;",
+   confirmRetryBody: "Είστε σίγουροι ότι θέλετε να προσπαθήσετε ξανά;",
+   confirmRetryCancelLabel: "Άκυρο",
+   confirmRetryConfirmLabel: "Επιβεβαίωση",
+
+   // Multiple Choice Prompt
+   multiple_choice_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Πολλαπλή Επιλογή\".",
+   multiple_choice_prompt_mission: "**Αποστολή σου:**",
+   multiple_choice_prompt_generate_json: "Δημιούργησε ένα πλήρες και έγκυρο αντικείμενο JSON για δραστηριότητα H5P Πολλαπλής Επιλογής.",
+   multiple_choice_prompt_json_structure_title: "**Αναμενόμενη δομή JSON:**",
+   multiple_choice_prompt_json_structure_main_object: "Το αντικείμενο πρέπει να περιέχει:",
+   multiple_choice_prompt_question: "`question`: Η ερώτηση προς υποβολή (μορφή HTML).",
+   multiple_choice_prompt_answers_array: "`answers`: Ένας πίνακας αντικειμένων, καθένα από τα οποία αντιπροσωπεύει μια απάντηση.",
+   multiple_choice_prompt_text: "`text`: Το κείμενο της απάντησης (μορφή HTML).",
+   multiple_choice_prompt_correct: "`correct`: Μια λογική τιμή (`true` ή `false`) που υποδεικνύει αν είναι η σωστή απάντηση.",
+   multiple_choice_prompt_overall_feedback: "`overallFeedback`: Ένας πίνακας 6 αντικειμένων για την τελική ανατροφοδότηση, με βαθμολογίες από 0-10, 11-30, 31-50, 51-70, 71-90 και 91-100. Το κείμενο (`feedback`) πρέπει να είναι ενθαρρυντικό, σταδιακό και πάντα διατυπωμένο θετικά.",
+   multiple_choice_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
+   multiple_choice_prompt_rule1: "1.  Πρέπει να υπάρχει μόνο μία σωστή απάντηση (`\"correct\": true`).",
+   multiple_choice_prompt_rule2: "2.  Δώσε πολλές λανθασμένες απαντήσεις (`\"correct\": false`).",
+   multiple_choice_prompt_example_json_title: "**Παράδειγμα JSON:**",
+   multiple_choice_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια."
 };

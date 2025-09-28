@@ -415,9 +415,11 @@ const translations_en = {
     h5p_mark_the_words_description: "Ask students to highlight certain words in a paragraph.",
    h5p_true_false_name: "True/False Question",
    h5p_true_false_description: "Create simple questions with a binary answer: true or false.",
-
-    // Moodle Modules
-    moodle_xml_name: "XML Éléa/Moodle",
+   h5p_multiple_choice_name: "Multiple Choice",
+   h5p_multiple_choice_description: "Create multiple choice questions with one or more correct answers.",
+ 
+     // Moodle Modules
+     moodle_xml_name: "XML Éléa/Moodle",
     moodle_xml_description: "Generate a bank of 10 questions for a Quiz activity ready to be imported in XML format.",
     moodle_xml_help: "To add an XML file into a 'Quiz' activity in Moodle, first create the activity. Then open the <strong>More</strong> menu and go to <strong>Question bank</strong>. In this menu, click <strong>Import</strong>, choose the <strong>Moodle XML</strong> format, then select your file and confirm.",
     moodle_gift_name: "GIFT Format",
@@ -600,5 +602,37 @@ const translations_en = {
    true_false_finish_label: "Finish",
    true_false_retry_header: "Retry?",
    true_false_retry_body: "Are you sure you wish to retry?",
-   true_false_retry_confirm_label: "Confirm"
+   true_false_retry_confirm_label: "Confirm",
+
+   // Multiple Choice UI translations
+   checkAnswerButton: "Check",
+   showSolutionButton: "Show solution",
+   tryAgainButton: "Retry",
+   submitAnswerButton: "Submit",
+   scoreBarLabel: "You got :num out of :total points",
+   confirmCheckHeader: "Finish?",
+   confirmCheckBody: "Are you sure you want to finish?",
+   confirmCheckCancelLabel: "Cancel",
+   confirmCheckConfirmLabel: "Finish",
+   confirmRetryHeader: "Retry?",
+   confirmRetryBody: "Are you sure you want to retry?",
+   confirmRetryCancelLabel: "Cancel",
+   confirmRetryConfirmLabel: "Confirm",
+
+   // Multiple Choice Prompt
+   multiple_choice_prompt_role: "You are an expert in pedagogical engineering creating an H5P \"Multiple Choice\" activity.",
+   multiple_choice_prompt_mission: "**Your mission:**",
+   multiple_choice_prompt_generate_json: "Generate a complete and valid JSON object for an H5P Multiple Choice activity.",
+   multiple_choice_prompt_json_structure_title: "**Expected JSON structure:**",
+   multiple_choice_prompt_json_structure_main_object: "The object must contain:",
+   multiple_choice_prompt_question: "`question`: The question to ask (HTML format).",
+   multiple_choice_prompt_answers_array: "`answers`: An array of objects, each representing an answer.",
+   multiple_choice_prompt_text: "`text`: The answer text (HTML format).",
+   multiple_choice_prompt_correct: "`correct`: A boolean (`true` or `false`) indicating if it's the correct answer.",
+   multiple_choice_prompt_overall_feedback: "`overallFeedback`: An array of 6 objects for the final feedback, with scores from 0-10, 11-30, 31-50, 51-70, 71-90, and 91-100. The text (`feedback`) must be benevolent, gradual, and always phrased affirmatively.",
+   multiple_choice_prompt_content_rules_title: "**Content rules:**",
+   multiple_choice_prompt_rule1: "1.  There must be only one correct answer (`\"correct\": true`).",
+   multiple_choice_prompt_rule2: "2.  Provide several incorrect answers (`\"correct\": false`).",
+   multiple_choice_prompt_example_json_title: "**Example JSON:**",
+   multiple_choice_prompt_generate_only_json: "Generate only the valid JSON code, without any comments."
 };

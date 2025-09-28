@@ -415,9 +415,11 @@ var translations_nl = {
     h5p_mark_the_words_description: "Vraag leerlingen bepaalde woorden in een alinea te markeren.",
    h5p_true_false_name: "Waar/Onwaar Vraag",
    h5p_true_false_description: "Maak eenvoudige vragen met een binair antwoord: waar of onwaar.",
-
-    // Moodle Modules
-    moodle_xml_name: "XML Éléa/Moodle",
+   h5p_multiple_choice_name: "Meerkeuze",
+   h5p_multiple_choice_description: "Maak meerkeuzevragen met een of meer juiste antwoorden.",
+ 
+     // Moodle Modules
+     moodle_xml_name: "XML Éléa/Moodle",
     moodle_xml_description: "Genereer een bank van 10 vragen voor een toetsactiviteit die klaar is om in XML-formaat geïmporteerd te worden.",
     moodle_xml_help: "Om een XML-bestand toe te voegen aan een ‘Toets’-activiteit in Moodle, maakt u eerst de activiteit aan. Open vervolgens het menu <strong>Meer</strong> en ga naar <strong>Vraagbank</strong>. Klik in dit menu op <strong>Importeren</strong>, kies het formaat <strong>Moodle XML</strong>, selecteer uw bestand en bevestig.",
     moodle_gift_name: "GIFT-formaat",
@@ -594,5 +596,37 @@ var translations_nl = {
    true_false_finish_label: "Voltooien",
    true_false_retry_header: "Opnieuw proberen?",
    true_false_retry_body: "Weet u zeker dat u opnieuw wilt proberen?",
-   true_false_retry_confirm_label: "Bevestigen"
+   true_false_retry_confirm_label: "Bevestigen",
+
+   // Multiple Choice UI translations
+   checkAnswerButton: "Controleren",
+   showSolutionButton: "Oplossing tonen",
+   tryAgainButton: "Opnieuw proberen",
+   submitAnswerButton: "Indienen",
+   scoreBarLabel: "Je hebt :num van de :total punten",
+   confirmCheckHeader: "Voltooien?",
+   confirmCheckBody: "Weet je zeker dat je wilt voltooien?",
+   confirmCheckCancelLabel: "Annuleren",
+   confirmCheckConfirmLabel: "Voltooien",
+   confirmRetryHeader: "Opnieuw proberen?",
+   confirmRetryBody: "Weet je zeker dat je opnieuw wilt proberen?",
+   confirmRetryCancelLabel: "Annuleren",
+   confirmRetryConfirmLabel: "Bevestigen",
+
+   // Multiple Choice Prompt
+   multiple_choice_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Meerkeuze\".",
+   multiple_choice_prompt_mission: "**Jouw missie:**",
+   multiple_choice_prompt_generate_json: "Genereer een volledig en geldig JSON-object voor een H5P-meerkeuzeactiviteit.",
+   multiple_choice_prompt_json_structure_title: "**Verwachte JSON-structuur:**",
+   multiple_choice_prompt_json_structure_main_object: "Het object moet bevatten:",
+   multiple_choice_prompt_question: "`question`: De te stellen vraag (HTML-formaat).",
+   multiple_choice_prompt_answers_array: "`answers`: Een array van objecten, die elk een antwoord vertegenwoordigen.",
+   multiple_choice_prompt_text: "`text`: De antwoordtekst (HTML-formaat).",
+   multiple_choice_prompt_correct: "`correct`: Een booleaanse waarde (`true` of `false`) die aangeeft of het het juiste antwoord is.",
+   multiple_choice_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn.",
+   multiple_choice_prompt_content_rules_title: "**Regels voor de inhoud:**",
+   multiple_choice_prompt_rule1: "1.  Er mag slechts één juist antwoord zijn (`\"correct\": true`).",
+   multiple_choice_prompt_rule2: "2.  Geef meerdere onjuiste antwoorden (`\"correct\": false`).",
+   multiple_choice_prompt_example_json_title: "**JSON-voorbeeld:**",
+   multiple_choice_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar."
 };

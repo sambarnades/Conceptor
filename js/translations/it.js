@@ -415,9 +415,11 @@ var translations_it = {
     h5p_mark_the_words_description: "Chiedi agli studenti di evidenziare alcune parole in un paragrafo.",
    h5p_true_false_name: "Domanda Vero/Falso",
    h5p_true_false_description: "Crea domande semplici con una risposta binaria: vero o falso.",
-
-    // Moduli Moodle
-    moodle_xml_name: "XML Éléa/Moodle",
+   h5p_multiple_choice_name: "Scelta Multipla",
+   h5p_multiple_choice_description: "Crea domande a scelta multipla con una o più risposte corrette.",
+ 
+     // Moduli Moodle
+     moodle_xml_name: "XML Éléa/Moodle",
     moodle_xml_description: "Genera una banca di 10 domande per un'attività Quiz pronte per essere importate in formato XML.",
     moodle_xml_help: "Per aggiungere un file XML in un'attività «Quiz» su Moodle, crea prima l'attività. Poi apri il menu <strong>Altro</strong> e vai a <strong>Banca delle domande</strong>. In questo menu, fai clic su <strong>Importa</strong>, scegli il formato <strong>Moodle XML</strong>, quindi seleziona il tuo file e conferma.",
     moodle_gift_name: "Formato GIFT",
@@ -594,5 +596,37 @@ var translations_it = {
    true_false_finish_label: "Finisci",
    true_false_retry_header: "Riprovare?",
    true_false_retry_body: "Sei sicuro di voler riprovare?",
-   true_false_retry_confirm_label: "Conferma"
+   true_false_retry_confirm_label: "Conferma",
+
+   // Multiple Choice UI translations
+   checkAnswerButton: "Controlla",
+   showSolutionButton: "Mostra soluzione",
+   tryAgainButton: "Riprova",
+   submitAnswerButton: "Invia",
+   scoreBarLabel: "Hai ottenuto :num punti su :total",
+   confirmCheckHeader: "Finire?",
+   confirmCheckBody: "Sei sicuro di voler finire?",
+   confirmCheckCancelLabel: "Annulla",
+   confirmCheckConfirmLabel: "Finisci",
+   confirmRetryHeader: "Riprovare?",
+   confirmRetryBody: "Sei sicuro di voler riprovare?",
+   confirmRetryCancelLabel: "Annulla",
+   confirmRetryConfirmLabel: "Conferma",
+
+   // Multiple Choice Prompt
+   multiple_choice_prompt_role: "Sei un esperto di ingegneria pedagogica che crea un’attività H5P \"Scelta Multipla\".",
+   multiple_choice_prompt_mission: "**La tua missione:**",
+   multiple_choice_prompt_generate_json: "Genera un oggetto JSON completo e valido per un’attività H5P di tipo Scelta Multipla.",
+   multiple_choice_prompt_json_structure_title: "**Struttura JSON attesa:**",
+   multiple_choice_prompt_json_structure_main_object: "L’oggetto deve contenere:",
+   multiple_choice_prompt_question: "`question`: La domanda da porre (formato HTML).",
+   multiple_choice_prompt_answers_array: "`answers`: Un array di oggetti, ciascuno rappresentante una risposta.",
+   multiple_choice_prompt_text: "`text`: Il testo della risposta (formato HTML).",
+   multiple_choice_prompt_correct: "`correct`: Un booleano (`true` o `false`) che indica se è la risposta corretta.",
+   multiple_choice_prompt_overall_feedback: "`overallFeedback`: Un array di 6 oggetti per il feedback finale, con punteggi da 0-10, 11-30, 31-50, 51-70, 71-90 e 91-100. Il testo (`feedback`) deve essere benevolo, graduale e sempre formulato in modo affermativo.",
+   multiple_choice_prompt_content_rules_title: "**Regole per il contenuto:**",
+   multiple_choice_prompt_rule1: "1.  Ci deve essere una sola risposta corretta (`\"correct\": true`).",
+   multiple_choice_prompt_rule2: "2.  Fornisci diverse risposte errate (`\"correct\": false`).",
+   multiple_choice_prompt_example_json_title: "**Esempio di JSON:**",
+   multiple_choice_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento."
 };

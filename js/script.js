@@ -222,6 +222,16 @@ document.addEventListener('DOMContentLoaded', function() {
            promptId: "trueFalseResultat",
            jsonInputId: "trueFalseJsonInput",
            createBtnId: "createTrueFalseH5P"
+       },
+       MultipleChoice: {
+           name: "h5p_multiple_choice_name",
+           englishName: "Multiple Choice",
+           machineName: "H5P.MultiChoice",
+           description: "h5p_multiple_choice_description",
+           image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/multichoice-icon_0.png",
+           promptId: "multipleChoiceResultat",
+           jsonInputId: "multipleChoiceJsonInput",
+           createBtnId: "createMultipleChoiceH5P"
        }
     };
     
@@ -1265,8 +1275,47 @@ document.addEventListener('DOMContentLoaded', function() {
                        disableImageZooming: false
                    }
                };
-            }
- 
+            } else if (moduleKey === 'MultipleChoice') {
+               content = {
+                   ...jsonObj, // Conserve la question, les réponses et le overallFeedback
+                   UI: {
+                       checkAnswerButton: translations.checkAnswerButton,
+                       showSolutionButton: translations.showSolutionButton,
+                       tryAgainButton: translations.tryAgainButton,
+                       submitAnswerButton: translations.submitAnswerButton,
+                       scoreBarLabel: translations.scoreBarLabel
+                   },
+                   behaviour: {
+                       enableRetry: true,
+                       enableSolutionsButton: true,
+                       type: 'auto',
+                       singlePoint: false,
+                       randomAnswers: true,
+                       showSolutionsRequiresInput: true,
+                       confirmCheckDialog: false,
+                       confirmRetryDialog: false,
+                       autoCheck: false,
+                       passPercentage: 50,
+                       showScorePoints: true
+                   },
+                   confirmCheck: {
+                       header: translations.confirmCheckHeader,
+                       body: translations.confirmCheckBody,
+                       cancelLabel: translations.confirmCheckCancelLabel,
+                       confirmLabel: translations.confirmCheckConfirmLabel
+                   },
+                   confirmRetry: {
+                       header: translations.confirmRetryHeader,
+                       body: translations.confirmRetryBody,
+                       cancelLabel: translations.confirmRetryCancelLabel,
+                       confirmLabel: translations.confirmRetryConfirmLabel
+                   },
+                   overallFeedback: jsonObj.overallFeedback || [
+                       { from: 0, to: 100, feedback: "" }
+                   ]
+               };
+           }
+
              // Ajout d'une adaptation pour MarkTheWords pour inclure les paramètres par défaut
              if (moduleKey === 'MarkTheWords') {
                  content = {
@@ -1934,6 +1983,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                ${pt.true_false_prompt_generate_only_json}${languageInstruction}`;
 
+       const multipleChoicePrompt = `${pt.multiple_choice_prompt_role}
+                               ${contextPrompt}
+
+                               ${pt.multiple_choice_prompt_mission}
+                               ${pt.multiple_choice_prompt_generate_json}
+
+                               ${pt.multiple_choice_prompt_json_structure_title}
+                               ${pt.multiple_choice_prompt_json_structure_main_object}
+                               - ${pt.multiple_choice_prompt_question}
+                               - ${pt.multiple_choice_prompt_answers_array}
+                                   - ${pt.multiple_choice_prompt_text}
+                                   - ${pt.multiple_choice_prompt_correct}
+                               - ${pt.multiple_choice_prompt_overall_feedback}
+
+                               ${pt.multiple_choice_prompt_content_rules_title}
+                               ${pt.multiple_choice_prompt_rule1}
+                               ${pt.multiple_choice_prompt_rule2}
+
+                               ${pt.multiple_choice_prompt_example_json_title}
+                               \`\`\`json
+                               {
+                                 "question": "<p>Quelle est la couleur réelle de la baie de cassis ?</p>",
+                                 "answers": [
+                                   {
+                                     "correct": true,
+                                     "text": "<div>Violet très foncé</div>"
+                                   },
+                                   {
+                                     "correct": false,
+                                     "text": "<div>Bleu</div>"
+                                   },
+                                   {
+                                     "correct": false,
+                                     "text": "<div>Noir</div>"
+                                   }
+                                 ]
+                               }
+                               \`\`\`
+
+                               ${pt.multiple_choice_prompt_generate_only_json}${languageInstruction}`;
+
         return {
             timelineResultat: timelinePrompt,
              crosswordResultat: crosswordPrompt,
@@ -1950,7 +2040,8 @@ document.addEventListener('DOMContentLoaded', function() {
             millionnaireResultat: millionnairePrompt,
             appariementResultat: appariementPrompt,
             qcmResultat: qcmPrompt,
-            trueFalseResultat: trueFalsePrompt
+            trueFalseResultat: trueFalsePrompt,
+            multipleChoiceResultat: multipleChoicePrompt
         };
     }
 
@@ -2406,7 +2497,13 @@ document.addEventListener('DOMContentLoaded', function() {
                            majorVersion: "1",
                            minorVersion: "8"
                        });
-                   }
+                   } else if (moduleInfo.machineName === "H5P.MultiChoice") {
+                      dependenciesForJson.push({
+                          machineName: "H5P.MultiChoice",
+                          majorVersion: "1",
+                          minorVersion: "16"
+                      });
+                  }
                }
             }
 
