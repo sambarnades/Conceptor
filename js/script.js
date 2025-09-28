@@ -461,10 +461,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="h5p-processor">
                     <div class="h5p-processor-header">
                         <h3>${translations.create_h5p_file}</h3>
-                        <div class="library-toggle">
+                        <!-- <div class="library-toggle">
                             <label for="includeLibs-${moduleKey}">${translations.integrate_h5p_libraries}</label>
                             <input type="checkbox" id="includeLibs-${moduleKey}" name="includeLibs">
-                        </div>
+                        </div> -->
                     </div>
                     <p>${translations.paste_ia_result}</p>
                     <textarea id="${module.jsonInputId}" placeholder="${translations.paste_json_or_text || 'Collez ici le contenu généré par l\'IA...'}"></textarea>
@@ -751,7 +751,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (createBtn) {
             createBtn.addEventListener('click', () => {
                 const jsonInput = container.querySelector(`#${module.jsonInputId}`).value;
-                const includeLibs = container.querySelector(`#includeLibs-${moduleKey}`).checked;
+                const includeLibs = false; // container.querySelector(`#includeLibs-${moduleKey}`).checked;
                 if (!jsonInput) {
                     showNotification('Veuillez coller le contenu généré par l\'IA.', 'error');
                     return;
@@ -984,20 +984,29 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // --- NOUVELLE LOGIQUE POUR QUIZSET ---
-        if (moduleKey === 'QuizSet') {
-            try {
-                const contentJson = JSON.parse(jsonInput);
-                // Le titre est maintenant dans le champ de saisie, ou on utilise un titre par défaut.
-                const title = document.getElementById('theme').value.trim() || translations[module.name];
-                createSimpleQuizSetH5P(title, contentJson);
-            } catch (error) {
-                showNotification(`Le JSON pour le Quiz est invalide : ${error.message}`, 'error');
-                console.error("Erreur JSON pour QuizSet:", error);
-            }
-            return; // On arrête ici pour le QuizSet
-        }
-       // --- FIN DE LA NOUVELLE LOGIQUE ---
+       if (moduleKey === 'QuizSet') {
+           try {
+               const contentData = JSON.parse(jsonInput);
+               const title = document.getElementById('theme').value.trim() || translations[module.name];
+
+               // Remplacer les placeholders UUID et collecter les bibliothèques
+               const libraries = new Set();
+               contentData.questions.forEach(q => {
+                   q.subContentId = generateUUID();
+                   // Extrait le nom de la bibliothèque (ex: "H5P.MultiChoice")
+                   const libName = q.library.split(' ')[0];
+                   libraries.add(libName);
+               });
+
+               // Créer le H5P avec les dépendances dynamiques
+               createH5PWithDynamicDependencies(title, contentData, Array.from(libraries));
+
+           } catch (error) {
+               showNotification(`Le JSON pour le Quiz est invalide : ${error.message}`, 'error');
+               console.error("Erreur JSON pour QuizSet:", error);
+           }
+           return;
+       }
 
 
        // Utilise le machineName s'il est défini, sinon construit le nom (fallback)
@@ -1885,43 +1894,58 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ${pt.flashcards_prompt_generate_only_json}${languageInstruction}`;
 
         const quizSetPrompt = `${pt.quiz_set_prompt_role}
-                                ${contextPrompt}
+   ${contextPrompt}
 
-                                ${pt.quiz_set_prompt_mission}
-                                ${pt.quiz_set_prompt_generate_json}
+   ${pt.quiz_set_prompt_mission}
+   ${pt.quiz_set_prompt_generate_json}
 
-                                ${pt.quiz_set_prompt_json_structure_title}
-                                ${pt.quiz_set_prompt_json_structure_main_object}
-                                - ${pt.quiz_set_prompt_progress_type}
-                                - ${pt.quiz_set_prompt_pass_percentage}
-                                - ${pt.quiz_set_prompt_questions_array.replace('${nombreQuestions}', nombreQuestions)}
+   ${pt.quiz_set_prompt_json_structure_title}
+   ${pt.quiz_set_prompt_json_structure_main_object}
+   - ${pt.quiz_set_prompt_progress_type}
+   - ${pt.quiz_set_prompt_pass_percentage}
+   - ${pt.quiz_set_prompt_questions_array.replace('${nombreQuestions}', nombreQuestions)}
 
-                                ${pt.quiz_set_prompt_content_rules_title}
-                                ${pt.quiz_set_prompt_rule1}
-                                ${pt.quiz_set_prompt_rule2}
-                                ${pt.quiz_set_prompt_rule3}
-                                    ${pt.quiz_set_prompt_rule3_multichoice}
-                                    ${pt.quiz_set_prompt_rule3_blanks}
-                                ${pt.quiz_set_prompt_rule4}
-                                ${pt.quiz_set_prompt_rule5}
+   ${pt.quiz_set_prompt_content_rules_title}
+   ${pt.quiz_set_prompt_rule1}
+   ${pt.quiz_set_prompt_rule2}
+   ${pt.quiz_set_prompt_rule3}
+   ${pt.quiz_set_prompt_rule4}
+   ${pt.quiz_set_prompt_rule5}
+   ${pt.quiz_set_prompt_rule6}
+   
+   ${pt.quiz_set_prompt_example_json_title}
 
-                                ${pt.quiz_set_prompt_example_json_title}
-                                \`\`\`json
-                                {
-                                "library": "H5P.MultiChoice 1.16",
-                                "subContentId": "placeholder-uuid",
-                                "params": {
-                                    "question": "<p>Quelle est la capitale de la France ?</p>",
-                                    "answers": [
-                                    { "text": "Paris", "correct": true, "tipsAndFeedback": { "tip": "", "chosenFeedback": "Bonne réponse !", "notChosenFeedback": "" }},
-                                    { "text": "Berlin", "correct": false, "tipsAndFeedback": { "tip": "", "chosenFeedback": "Incorrect.", "notChosenFeedback": "" }}
-                                    ],
-                                    "behaviour": { "type": "auto", "singleAnswer": true, "enableRetry": true, "enableSolutionsButton": true }
-                                }
-                                }
-                                \`\`\`
+   **Vrai/Faux :**
+   \`\`\`json
+${JSON.stringify(JSON.parse(pt.quiz_set_true_false_example), null, 2)}
+   \`\`\`
+ 
+   **Choix Multiple (QCM) :**
+   \`\`\`json
+${JSON.stringify(JSON.parse(pt.quiz_set_multiple_choice_example), null, 2)}
+   \`\`\`
+ 
+   **Texte à trous :**
+   \`\`\`json
+${JSON.stringify(JSON.parse(pt.quiz_set_fill_in_the_blanks_example), null, 2)}
+   \`\`\`
+ 
+   **Glisser les mots :**
+   \`\`\`json
+${JSON.stringify(JSON.parse(pt.quiz_set_drag_the_words_example), null, 2)}
+   \`\`\`
+ 
+   **Surligner les mots :**
+   \`\`\`json
+${JSON.stringify(JSON.parse(pt.quiz_set_mark_the_words_example), null, 2)}
+   \`\`\`
+ 
+   **Rédaction :**
+   \`\`\`json
+${JSON.stringify(JSON.parse(pt.quiz_set_essay_example), null, 2)}
+   \`\`\`
 
-                                ${pt.quiz_set_prompt_generate_only_json}${languageInstruction}`;
+   ${pt.quiz_set_prompt_generate_only_json}${languageInstruction}`;
 
         const glossaryPrompt = `${pt.glossary_prompt_role}
                                 ${contextPrompt}
@@ -3124,65 +3148,157 @@ document.addEventListener('DOMContentLoaded', function() {
 // 13. CRÉATION D’UN QUIZSET SIMPLE
 // =======================================================================
 
-    async function createSimpleQuizSetH5P(title, contentJson) {
-    try {
-        if (!downloadZip) {
-            showNotification('Le module de compression n\'est pas prêt. Réessayez dans un instant.', 'error');
-            return;
-        }
-
-        // 1. Créer le fichier h5p.json
-        const h5pJson = {
-            title: title,
-            language: currentLang === 'zh' ? 'zh-cn' : currentLang,
-            mainLibrary: "H5P.QuestionSet",
-            embedTypes: ["iframe"],
-            license: "U",
-            preloadedDependencies: [{
-                machineName: "H5P.QuestionSet",
-                majorVersion: "1",
-                minorVersion: "20"
-            }]
-        };
-
-        // 2. Préparer les fichiers pour le zip
-        const files = [
-            {
-                name: "h5p.json",
-                input: new TextEncoder().encode(JSON.stringify(h5pJson, null, 2))
-            },
-            {
-                name: "content/content.json",
-                input: new TextEncoder().encode(JSON.stringify(contentJson, null, 2))
+    async function createH5PWithDynamicDependencies(title, contentJson, libraries) {
+        try {
+            if (!downloadZip) {
+                showNotification('Le module de compression n\'est pas prêt. Réessayez dans un instant.', 'error');
+                return;
             }
-        ];
 
-        // 3. Créer et télécharger le fichier .h5p
-        const zipBlob = await downloadZip(files).blob();
-        const url = URL.createObjectURL(zipBlob);
-        const a = document.createElement('a');
-        const now = new Date();
-        const dateString = now.getFullYear() + '-' +
-                         String(now.getMonth() + 1).padStart(2, '0') + '-' +
-                         String(now.getDate()).padStart(2, '0') + '-' +
-                         String(now.getHours()).padStart(2, '0') + '-' +
-                         String(now.getMinutes()).padStart(2, '0');
+           // Enrichir chaque question avec les traductions et la structure complète
+           contentJson.questions.forEach(q => {
+               const libName = q.library.split(' ')[0];
+               
+               if (libName === 'H5P.TrueFalse') {
+                   // Déplacer les feedbacks au bon endroit
+                   if (q.params.feedbackOnCorrect || q.params.feedbackOnWrong) {
+                       q.params.behaviour = q.params.behaviour || {};
+                       q.params.behaviour.feedbackOnCorrect = q.params.feedbackOnCorrect;
+                       q.params.behaviour.feedbackOnWrong = q.params.feedbackOnWrong;
+                       delete q.params.feedbackOnCorrect;
+                       delete q.params.feedbackOnWrong;
+                   }
+                   // Ajouter les traductions de l'interface
+                   q.params.l10n = {
+                       trueText: translations.true_false_true_text,
+                       falseText: translations.true_false_false_text,
+                       score: translations.true_false_score,
+                       checkAnswer: translations.true_false_check_answer,
+                       showSolutionButton: translations.true_false_show_solution_button,
+                       tryAgain: translations.true_false_try_again,
+                       scoreBarLabel: translations.true_false_score_bar_label
+                   };
+               } else if (libName === 'H5P.MultiChoice') {
+                   q.params.UI = {
+                       checkAnswerButton: translations.checkAnswerButton,
+                       showSolutionButton: translations.showSolutionButton,
+                       tryAgainButton: translations.tryAgainButton,
+                       scoreBarLabel: translations.scoreBarLabel,
+                       submitAnswerButton: translations.submitAnswerButton,
+                       tipsLabel: translations.quiz_tips_label,
+                       tipAvailable: translations.quiz_tip_available,
+                       feedbackAvailable: translations.quiz_feedback_available,
+                       readFeedback: translations.quiz_read_feedback,
+                       wrongAnswer: translations.quiz_wrong_answer,
+                       correctAnswer: translations.quiz_correct_answer,
+                       shouldCheck: translations.quiz_should_check,
+                       shouldNotCheck: translations.quiz_should_not_check,
+                       noInput: translations.quiz_no_input,
+                       a11yCheck: translations.quiz_a11y_check,
+                       a11yShowSolution: translations.quiz_a11y_show_solution,
+                       a11yRetry: translations.quiz_a11y_retry
+                   };
+                    q.params.answers.forEach(a => {
+                       a.tipsAndFeedback = { tip: "", chosenFeedback: "", notChosenFeedback: "" };
+                   });
+               } else if (libName === 'H5P.Blanks') {
+                   q.params.checkAnswer = translations.blanks_check_answer;
+                   q.params.tryAgain = translations.blanks_try_again;
+                   q.params.showSolutions = translations.blanks_show_solutions;
+                   q.params.scoreBarLabel = translations.blanks_score_bar_label;
+               } else if (libName === 'H5P.DragText') {
+                   q.params.checkAnswer = translations.drag_words_check_answer;
+                   q.params.tryAgain = translations.drag_words_try_again;
+                   q.params.showSolution = translations.drag_words_show_solution;
+                   q.params.scoreBarLabel = translations.drag_words_score_bar_label;
+               } else if (libName === 'H5P.MarkTheWords') {
+                   q.params.checkAnswerButton = translations.mark_words_check_answer;
+                   q.params.tryAgainButton = translations.mark_words_try_again;
+                   q.params.showSolutionButton = translations.mark_words_show_solution;
+                   q.params.scoreBarLabel = translations.mark_words_score_bar_label;
+               } else if (libName === 'H5P.Essay') {
+                   q.params.checkAnswer = translations.essay_checkAnswer;
+                   q.params.tryAgain = translations.essay_tryAgain;
+                   q.params.showSolution = translations.essay_showSolution;
+               }
+           });
 
-        const h5pType = (h5pModules['QuizSet']?.englishName || 'quiz-set').toLowerCase().replace(/[^a-z0-9()]+/g, '-').replace(/^-+|-+$/g, '');
-        const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
-        const fileName = `h5p-${h5pType}_caramel_${dateString}_${lang}.h5p`;
-        a.download = fileName;
-        a.href = url;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
 
-        showNotification(`Fichier ${a.download} généré avec succès !`);
+            // Ajouter les traductions globales du Quiz (Question Set)
+            contentJson.texts = {
+                prevButton: translations.quiz_prev_button,
+                nextButton: translations.quiz_next_button,
+                finishButton: translations.quiz_finish_button,
+                submitButton: translations.quiz_submit_button,
+                textualProgress: translations.quiz_textual_progress,
+            };
+            contentJson.endGame = {
+                showResultPage: true,
+                showSolutionButton: true,
+                showRetryButton: true,
+                noResultMessage: translations.quiz_no_result_message,
+                message: translations.quiz_result_message,
+                scoreBarLabel: translations.quiz_score_bar_label,
+                solutionButtonText: translations.quiz_solution_button_text,
+                retryButtonText: translations.quiz_retry_button_text,
+                finishButtonText: translations.quiz_finish_button_text,
+                submitButtonText: translations.quiz_submit_button_text
+            };
 
-    } catch (error) {
-        console.error("Erreur lors de la création du H5P simple pour QuizSet:", error);
-        showNotification(`Échec de la création du fichier H5P : ${error.message}`, 'error');
-    }
+            // Liste de base des dépendances pour QuestionSet
+            const dependencies = new Map();
+            dependencies.set("H5P.QuestionSet", { machineName: "H5P.QuestionSet", majorVersion: "1", minorVersion: "20" });
+
+            // Ajout des dépendances de chaque sous-activité
+            const libraryVersions = {
+                "H5P.TrueFalse": { majorVersion: "1", minorVersion: "8" },
+                "H5P.MultiChoice": { majorVersion: "1", minorVersion: "16" },
+                "H5P.Blanks": { majorVersion: "1", minorVersion: "14" },
+                "H5P.DragText": { majorVersion: "1", minorVersion: "10" },
+                "H5P.MarkTheWords": { majorVersion: "1", minorVersion: "11" },
+                "H5P.Essay": { majorVersion: "1", minorVersion: "5" }
+            };
+
+            for (const lib of libraries) {
+                if (libraryVersions[lib] && !dependencies.has(lib)) {
+                    dependencies.set(lib, { machineName: lib, ...libraryVersions[lib] });
+                }
+            }
+
+            const h5pJson = {
+                title: title,
+                language: currentLang === 'zh' ? 'zh-cn' : currentLang,
+                mainLibrary: "H5P.QuestionSet",
+                embedTypes: ["iframe"],
+                license: "U",
+                preloadedDependencies: Array.from(dependencies.values())
+            };
+
+            const files = [
+                { name: "h5p.json", input: new TextEncoder().encode(JSON.stringify(h5pJson, null, 2)) },
+                { name: "content/content.json", input: new TextEncoder().encode(JSON.stringify(contentJson, null, 2)) }
+            ];
+
+            const zipBlob = await downloadZip(files).blob();
+            const url = URL.createObjectURL(zipBlob);
+            const a = document.createElement('a');
+            const now = new Date();
+            const dateString = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}-${String(now.getHours()).padStart(2, '0')}-${String(now.getMinutes()).padStart(2, '0')}`;
+            const h5pType = (h5pModules['QuizSet']?.englishName || 'quiz-set').toLowerCase().replace(/[^a-z0-9()]+/g, '-').replace(/^-+|-+$/g, '');
+            const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
+            const fileName = `h5p-${h5pType}_caramel_${dateString}_${lang}.h5p`;
+            a.download = fileName;
+            a.href = url;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showNotification(`Fichier ${a.download} généré avec succès !`);
+
+        } catch (error) {
+            console.error("Erreur lors de la création du H5P avec dépendances dynamiques:", error);
+            showNotification(`Échec de la création du fichier H5P : ${error.message}`, 'error');
+        }
     }
 });

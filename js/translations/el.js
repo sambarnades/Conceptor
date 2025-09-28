@@ -175,17 +175,118 @@ var translations_el = {
     quiz_set_prompt_questions_array: "`questions`: Πίνακας με ${nombreQuestions} αντικείμενα, το καθένα μία ερώτηση.",
     quiz_set_prompt_content_rules_title: "**Κανόνες για το περιεχόμενο των ερωτήσεων:**",
     quiz_set_prompt_rule1: "1. Κάθε αντικείμενο ερώτησης πρέπει να έχει τα `library`, `params` και `subContentId`.",
-    quiz_set_prompt_rule2: "2. **ΜΗΝ δημιουργείς `subContentId`**, άφησε μόνο τη συμβολοσειρά \"placeholder-uuid\".",
+    quiz_set_prompt_rule2: "2.  **Δομή:** Κάθε ερώτηση πρέπει να είναι ένα αντικείμενο με τα κλειδιά `library`, `metadata` και `params`.",
     quiz_set_prompt_rule3: "3. Ποικιλία τύπων ερώτησης. Χρησιμοποίησε τις παρακάτω βιβλιοθήκες με ακριβείς εκδόσεις:",
     quiz_set_prompt_rule3_multichoice: "-   `H5P.MultiChoice 1.16`",
     quiz_set_prompt_rule3_blanks: "-   `H5P.Blanks 1.14`",
-    quiz_set_prompt_rule4: "4. Για κάθε τύπο ερώτησης παρείχε πλήρη και συναφή `params`, συμπεριλαμβανομένων κειμένων, σωστών απαντήσεων, αντιπερισπασμών, συμπεριφοράς (`behaviour`) κ.λπ.",
-    quiz_set_prompt_rule5: "5. Εξασφάλισε ότι το περιεχόμενο (ερωτήσεις, απαντήσεις) είναι υψηλής παιδαγωγικής ποιότητας και ταιριάζει με το θέμα και το επίπεδο.",
-    quiz_set_prompt_example_json_title: "**Παράδειγμα δομής για ερώτηση H5P.MultiChoice:**",
-    quiz_set_prompt_generate_only_json: "Παράγετε το πλήρες και έγκυρο JSON αντικείμενο, ξεκινώντας με `{\"progressType\": \"dots\", ...}`, χωρίς σχόλια.",
-
-    // Prompt για Γλωσσάρι (Accordion)
-    glossary_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Accordion\".",
+    quiz_set_prompt_rule4: "4.  **Ανατροφοδότηση (ΚΡΙΣΙΜΟΣ ΚΑΝΟΝΑΣ):** Για **όλους τους τύπους ερωτήσεων** (`MultiChoice`, `Blanks`, `DragText`, `MarkTheWords`, `Essay`), **πρέπει** να δημιουργήσετε ένα `overallFeedback` με ακριβώς 6 κλίμακες βαθμολογίας: 0-10, 11-30, 31-50, 51-70, 71-90 και 91-100. Για τις ερωτήσεις `TrueFalse`, προσθέστε επίσης τα πεδία `feedbackOnCorrect` και `feedbackOnWrong`. Η ανατροφοδότηση πρέπει να είναι ενθαρρυντική, σταδιακή και πάντα διατυπωμένη θετικά.",
+    quiz_set_prompt_rule5: "5.  **Περιεχόμενο:** Το περιεχόμενο στο `params` πρέπει να είναι παιδαγωγικά σχετικό, με εύλογους αντιπερισπασμούς για τα MCQ και συνεκτικά κείμενα για άλλες δραστηριότητες.",
+    quiz_set_prompt_rule6: "6.  **Απλότητα:** Μην προσθέτετε εικόνες ή περιττές παραμέτρους συμπεριφοράς. Διατηρήστε τη δομή απλή όπως στα παραδείγματα.",
+    quiz_set_prompt_example_json_title: "**Παραδείγματα δομών για κάθε επιτρεπόμενο τύπο ερώτησης:**",
+    quiz_set_prompt_generate_only_json: "Παράγετε μόνο το έγκυρο JSON, ξεκινώντας με `{\"progressType\": \"dots\", ...}`, χωρίς σχόλια.",
+ 
+    quiz_set_true_false_example: JSON.stringify({
+        "library": "H5P.TrueFalse 1.8",
+        "metadata": { "title": "Τίτλος ερώτησης Σωστό/Λάθος" },
+        "params": {
+            "question": "<p>Είναι η Γαλλία χώρα;</p>",
+            "correct": "true",
+            "feedbackOnCorrect": "Σωστό! Η Γαλλία είναι πράγματι χώρα.",
+            "feedbackOnWrong": "Λάθος. Η Γαλλία αναγνωρίζεται διεθνώς ως χώρα.",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
+        }
+    }, null, 4),
+    quiz_set_multiple_choice_example: JSON.stringify({
+        "library": "H5P.MultiChoice 1.16",
+        "metadata": { "title": "Τίτλος MCQ" },
+        "params": {
+            "question": "<p>Ποια είναι η πρωτεύουσα της Γαλλίας;</p>",
+            "answers": [
+                { "text": "Παρίσι", "correct": true },
+                { "text": "Βερολίνο", "correct": false }
+            ],
+            "behaviour": { "type": "auto", "singleAnswer": true, "enableRetry": true, "enableSolutionsButton": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Ανατροφοδότηση για 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Ανατροφοδότηση για 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Ανατροφοδότηση για 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Ανατροφοδότηση για 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Ανατροφοδότηση για 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Ανατροφοδότηση για 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_fill_in_the_blanks_example: JSON.stringify({
+        "library": "H5P.Blanks 1.14",
+        "metadata": { "title": "Τίτλος άσκησης συμπλήρωσης κενών" },
+        "params": {
+            "questions": ["<p>Το Παρίσι είναι η *πρωτεύουσα* της Γαλλίας.</p>"],
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "caseSensitive": false },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Ανατροφοδότηση για 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Ανατροφοδότηση για 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Ανατροφοδότηση για 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Ανατροφοδότηση για 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Ανατροφοδότηση για 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Ανατροφοδότηση για 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_drag_the_words_example: JSON.stringify({
+        "library": "H5P.DragText 1.10",
+        "metadata": { "title": "Τίτλος δραστηριότητας μεταφοράς λέξεων" },
+        "params": {
+            "taskDescription": "Συμπληρώστε την πρόταση.",
+            "textField": "*Το Παρίσι* είναι η πρωτεύουσα της Γαλλίας.",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "instantFeedback": false },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Ανατροφοδότηση για 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Ανατροφοδότηση για 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Ανατροφοδότηση για 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Ανατροφοδότηση για 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Ανατροφοδότηση για 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Ανατροφοδότηση για 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_mark_the_words_example: JSON.stringify({
+        "library": "H5P.MarkTheWords 1.11",
+        "metadata": { "title": "Τίτλος δραστηριότητας επισήμανσης λέξεων" },
+        "params": {
+            "taskDescription": "Επισημάνετε την πρωτεύουσα.",
+            "textField": "Η πρωτεύουσα της Γαλλίας είναι *το Παρίσι*.",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Ανατροφοδότηση για 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Ανατροφοδότηση για 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Ανατροφοδότηση για 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Ανατροφοδότηση για 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Ανατροφοδότηση για 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Ανατροφοδότηση για 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_essay_example: JSON.stringify({
+        "library": "H5P.Essay 1.5",
+        "metadata": { "title": "Τίτλος του δοκιμίου" },
+        "params": {
+            "taskDescription": "<p>Ποια είναι η πρωτεύουσα της Γαλλίας;</p>",
+            "keywords": [
+                { "keyword": "Παρίσι", "options": { "points": 1, "caseSensitive": false } }
+            ],
+            "behaviour": { "inputFieldSize": "1", "enableRetry": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Ανατροφοδότηση για 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Ανατροφοδότηση για 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Ανατροφοδότηση για 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Ανατροφοδότηση για 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Ανατροφοδότηση για 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Ανατροφοδότηση για 91-100%" }
+            ]
+        }
+    }, null, 4),
+     // Prompt για Γλωσσάρι (Accordion)
+     glossary_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Accordion\".",
     glossary_prompt_mission: "**Αποστολή σου:**",
     glossary_prompt_generate_json: "Δημιούργησε πλήρες και έγκυρο JSON για γλωσσάρι τύπου Accordion μέσω H5P. Πρέπει να είναι άμεσα χρησιμοποιήσιμο.",
     glossary_prompt_json_structure_title: "**Αναμενόμενη δομή JSON:**",
@@ -827,4 +928,30 @@ var translations_el = {
     chart_prompt_rule3: "3. Εάν μια τιμή είναι πολύ χαμηλή σε σύγκριση με άλλες, προτιμήστε ένα 'barChart' για καλύτερη οπτικοποίηση.",
     chart_prompt_example_json_title: "**Παράδειγμα JSON:**",
     chart_prompt_generate_only_json: "Δημιουργήστε μόνο τον έγκυρο κώδικα JSON, χωρίς κανένα σχόλιο."
+,
+    // createH5PWithDynamicDependencies
+    quiz_prev_button: "Προηγούμενο",
+    quiz_next_button: "Επόμενο",
+    quiz_finish_button: "Τέλος",
+    quiz_submit_button: "Υποβολή",
+    quiz_textual_progress: "Ερώτηση @current από @total",
+    quiz_no_result_message: "Ολοκληρώθηκε",
+    quiz_result_message: "Τα αποτελέσματά σας:",
+    quiz_score_bar_label: "Έχετε @finals από τους @totals πόντους",
+    quiz_solution_button_text: "Εμφάνιση λύσης",
+    quiz_retry_button_text: "Επανάληψη",
+    quiz_finish_button_text: "Τέλος",
+    quiz_submit_button_text: "Υποβολή",
+    quiz_tips_label: "Εμφάνιση συμβουλών",
+    quiz_tip_available: "Διαθέσιμη συμβουλή",
+    quiz_feedback_available: "Διαθέσιμη ανατροφοδότηση",
+    quiz_read_feedback: "Διαβάστε την ανατροφοδότηση",
+    quiz_wrong_answer: "Λάθος απάντηση",
+    quiz_correct_answer: "Σωστή απάντηση",
+    quiz_should_check: "Θα έπρεπε να έχει επιλεγεί",
+    quiz_should_not_check: "Δεν θα έπρεπε να έχει επιλεγεί",
+    quiz_no_input: "Παρακαλώ απαντήστε πριν δείτε τη λύση.",
+    quiz_a11y_check: "Ελέγξτε τις απαντήσεις. Οι απαντήσεις θα επισημανθούν ως σωστές, λανθασμένες ή αναπάντητες.",
+    quiz_a11y_show_solution: "Εμφάνιση της λύσης. Η εργασία θα επισημανθεί με τη σωστή λύση της.",
+    quiz_a11y_retry: "Επαναλάβετε την εργασία. Επαναφέρετε όλες τις απαντήσεις και ξεκινήστε την εργασία από την αρχή."
 };

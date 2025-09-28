@@ -175,17 +175,118 @@ var translations_de = {
     quiz_set_prompt_questions_array: "`questions`: Ein Array mit ${nombreQuestions} Objekten, die jeweils eine Frage darstellen.",
     quiz_set_prompt_content_rules_title: "**Regeln für den Frageninhalt :**",
     quiz_set_prompt_rule1: "1.  Jedes Fragenobjekt muss die Schlüssel `library`, `params` und `subContentId` enthalten.",
-    quiz_set_prompt_rule2: "2.  **Generieren Sie KEINE `subContentId`**, lassen Sie einfach die Zeichenfolge \"placeholder-uuid\".",
+    quiz_set_prompt_rule2: "2.  **Struktur:** Jede Frage muss ein Objekt mit den Schlüsseln `library`, `metadata` und `params` sein.",
     quiz_set_prompt_rule3: "3.  Variieren Sie die Fragetypen. Verwenden Sie die folgenden Bibliotheken mit ihren genauen Versionen :",
     quiz_set_prompt_rule3_multichoice: "-   `H5P.MultiChoice 1.16`",
     quiz_set_prompt_rule3_blanks: "-   `H5P.Blanks 1.14`",
-    quiz_set_prompt_rule4: "4.  Geben Sie für jeden Fragetyp vollständige und relevante `params` an, einschließlich Texte, richtige Antworten, Ablenker, Verhaltensweisen (`behaviour`) usw.",
-    quiz_set_prompt_rule5: "5.  Stellen Sie sicher, dass der Inhalt (Fragen, Antworten) von hoher pädagogischer Qualität ist, relevant für das Thema und das Niveau.",
-    quiz_set_prompt_example_json_title: "**Beispielstruktur für eine H5P.MultiChoice-Frage :**",
-    quiz_set_prompt_generate_only_json: "Generieren Sie das vollständige und gültige JSON-Objekt, beginnend mit `{\"progressType\": \"dots\", ...}`, ohne Kommentare.",
-
-    // Glossary Prompt
-    glossary_prompt_role: "Sie sind ein Experte für pädagogische Ingenieurwissenschaften, der eine H5P \"Accordion\"-Aktivität erstellt.",
+    quiz_set_prompt_rule4: "4.  **Feedback (ENTSCHEIDENDE REGEL):** Für **alle Fragetypen** (`MultiChoice`, `Blanks`, `DragText`, `MarkTheWords`, `Essay`) **müssen** Sie ein `overallFeedback` mit genau 6 Bewertungsbereichen erstellen: 0-10, 11-30, 31-50, 51-70, 71-90 und 91-100. Fügen Sie für `TrueFalse`-Fragen zusätzlich die Felder `feedbackOnCorrect` und `feedbackOnWrong` hinzu. Das Feedback muss wohlwollend, schrittweise und immer positiv formuliert sein.",
+    quiz_set_prompt_rule5: "5.  **Inhalt:** Der Inhalt in `params` muss pädagogisch relevant sein, mit plausiblen Ablenkern für MCQs und zusammenhängenden Texten für andere Aktivitäten.",
+    quiz_set_prompt_rule6: "6.  **Einfachheit:** Fügen Sie keine Bilder oder überflüssige Verhaltensparameter hinzu. Halten Sie die Struktur einfach wie in den Beispielen.",
+    quiz_set_prompt_example_json_title: "**Beispielstrukturen für jeden zulässigen Fragetyp:**",
+    quiz_set_prompt_generate_only_json: "Generieren Sie nur das gültige JSON, beginnend mit `{\"progressType\": \"dots\", ...}`, ohne Kommentare.",
+    quiz_set_true_false_example: JSON.stringify({
+        "library": "H5P.TrueFalse 1.8",
+        "metadata": { "title": "Titel der Wahr/Falsch-Frage" },
+        "params": {
+            "question": "<p>Ist Frankreich ein Land?</p>",
+            "correct": "true",
+            "feedbackOnCorrect": "Das ist richtig! Frankreich ist in der Tat ein Land.",
+            "feedbackOnWrong": "Falsch. Frankreich ist international als Land anerkannt.",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
+        }
+    }, null, 4),
+    quiz_set_multiple_choice_example: JSON.stringify({
+        "library": "H5P.MultiChoice 1.16",
+        "metadata": { "title": "Titel der MCQ" },
+        "params": {
+            "question": "<p>Was ist die Hauptstadt von Frankreich?</p>",
+            "answers": [
+                { "text": "Paris", "correct": true },
+                { "text": "Berlin", "correct": false }
+            ],
+            "behaviour": { "type": "auto", "singleAnswer": true, "enableRetry": true, "enableSolutionsButton": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Feedback für 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Feedback für 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Feedback für 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Feedback für 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Feedback für 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Feedback für 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_fill_in_the_blanks_example: JSON.stringify({
+        "library": "H5P.Blanks 1.14",
+        "metadata": { "title": "Titel des Lückentextes" },
+        "params": {
+            "questions": ["<p>Paris ist die *Hauptstadt* von Frankreich.</p>"],
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "caseSensitive": false },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Feedback für 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Feedback für 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Feedback für 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Feedback für 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Feedback für 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Feedback für 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_drag_the_words_example: JSON.stringify({
+        "library": "H5P.DragText 1.10",
+        "metadata": { "title": "Titel der Drag-the-Words-Aktivität" },
+        "params": {
+            "taskDescription": "Vervollständige den Satz.",
+            "textField": "*Paris* ist die Hauptstadt von Frankreich.",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "instantFeedback": false },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Feedback für 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Feedback für 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Feedback für 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Feedback für 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Feedback für 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Feedback für 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_mark_the_words_example: JSON.stringify({
+        "library": "H5P.MarkTheWords 1.11",
+        "metadata": { "title": "Titel der Mark-the-Words-Aktivität" },
+        "params": {
+            "taskDescription": "Markiere die Hauptstadt.",
+            "textField": "Die Hauptstadt von Frankreich ist *Paris*.",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Feedback für 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Feedback für 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Feedback für 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Feedback für 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Feedback für 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Feedback für 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_essay_example: JSON.stringify({
+        "library": "H5P.Essay 1.5",
+        "metadata": { "title": "Titel des Aufsatzes" },
+        "params": {
+            "taskDescription": "<p>Was ist die Hauptstadt von Frankreich?</p>",
+            "keywords": [
+                { "keyword": "Paris", "options": { "points": 1, "caseSensitive": false } }
+            ],
+            "behaviour": { "inputFieldSize": "1", "enableRetry": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Feedback für 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Feedback für 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Feedback für 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Feedback für 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Feedback für 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Feedback für 91-100%" }
+            ]
+        }
+    }, null, 4),
+ 
+     // Glossary Prompt
+     glossary_prompt_role: "Sie sind ein Experte für pädagogische Ingenieurwissenschaften, der eine H5P \"Accordion\"-Aktivität erstellt.",
     glossary_prompt_mission: "**Ihre Mission :**",
     glossary_prompt_generate_json: "Generieren Sie ein vollständiges und gültiges JSON-Objekt für ein H5P Akkordeon-Glossar. Das JSON muss direkt verwendbar sein.",
     glossary_prompt_json_structure_title: "**Erwartete JSON-Struktur :**",
@@ -826,4 +927,30 @@ var translations_de = {
     chart_prompt_rule3: "3. Wenn ein Wert im Vergleich zu anderen sehr niedrig ist, bevorzugen Sie ein 'barChart' für eine bessere Visualisierung.",
     chart_prompt_example_json_title: "**Beispiel-JSON:**",
     chart_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare."
+,
+    // createHH5PWithDynamicDependencies
+    quiz_prev_button: "Zurück",
+    quiz_next_button: "Weiter",
+    quiz_finish_button: "Fertig",
+    quiz_submit_button: "Absenden",
+    quiz_textual_progress: "Frage @current von @total",
+    quiz_no_result_message: "Abgeschlossen",
+    quiz_result_message: "Ihre Ergebnisse:",
+    quiz_score_bar_label: "Sie haben @finals von @totals Punkten erreicht",
+    quiz_solution_button_text: "Lösung anzeigen",
+    quiz_retry_button_text: "Wiederholen",
+    quiz_finish_button_text: "Fertig",
+    quiz_submit_button_text: "Absenden",
+    quiz_tips_label: "Tipps anzeigen",
+    quiz_tip_available: "Tipp verfügbar",
+    quiz_feedback_available: "Feedback verfügbar",
+    quiz_read_feedback: "Feedback lesen",
+    quiz_wrong_answer: "Falsche Antwort",
+    quiz_correct_answer: "Richtige Antwort",
+    quiz_should_check: "Hätte markiert werden sollen",
+    quiz_should_not_check: "Hätte nicht markiert werden sollen",
+    quiz_no_input: "Bitte antworten Sie, bevor Sie die Lösung ansehen.",
+    quiz_a11y_check: "Überprüfen Sie die Antworten. Die Antworten werden als richtig, falsch oder unbeantwortet markiert.",
+    quiz_a11y_show_solution: "Zeigen Sie die Lösung an. Die Aufgabe wird mit der richtigen Lösung markiert.",
+    quiz_a11y_retry: "Versuchen Sie die Aufgabe erneut. Setzen Sie alle Antworten zurück und beginnen Sie von vorne."
 };

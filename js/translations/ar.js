@@ -175,17 +175,118 @@ var translations_ar = {
     quiz_set_prompt_questions_array: "`questions`: مصفوفة من ${nombreQuestions} كائنات، يمثّل كلٌّ منها سؤالًا.",
     quiz_set_prompt_content_rules_title: "**قواعد محتوى الأسئلة:**",
     quiz_set_prompt_rule1: "1. يجب أن يحتوي كل كائن سؤال على المفاتيح `library` و`params` و`subContentId`.",
-    quiz_set_prompt_rule2: "2. **لا تُولِّد `subContentId`**، واترك السلسلة \"placeholder-uuid\" فقط.",
+    quiz_set_prompt_rule2: "2.  **البنية:** يجب أن تكون كل سؤال كائنًا يحتوي على المفاتيح `library` و `metadata` و `params`.",
     quiz_set_prompt_rule3: "3. نوِّع أنواع الأسئلة. استخدم المكتبات التالية بالإصدارات الدقيقة:",
     quiz_set_prompt_rule3_multichoice: "-   `H5P.MultiChoice 1.16`",
     quiz_set_prompt_rule3_blanks: "-   `H5P.Blanks 1.14`",
-    quiz_set_prompt_rule4: "4. قدّم `params` كاملة وذات صلة لكل نوع سؤال، بما في ذلك النصوص والإجابات الصحيحة والمشتّتات والسلوك (`behaviour`) وغيرها.",
-    quiz_set_prompt_rule5: "5. تأكّد من أن المحتوى (الأسئلة والإجابات) عالي الجودة تربويًا وملائم للموضوع والمستوى.",
-    quiz_set_prompt_example_json_title: "**مثال على بنية سؤال H5P.MultiChoice:**",
-    quiz_set_prompt_generate_only_json: "ولِّد كائن JSON كاملًا وصالحًا يبدأ بـ `{\"progressType\": \"dots\", ...}` دون أي تعليقات.",
-
-    // مطالب المسرد (Accordion)
-    glossary_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Accordion\".",
+    quiz_set_prompt_rule4: "4.  **التقييم (قاعدة حاسمة):** لـ **جميع أنواع الأسئلة** (`MultiChoice`, `Blanks`, `DragText`, `MarkTheWords`, `Essay`), **يجب** عليك إنشاء `overallFeedback` بستة نطاقات درجات بالضبط: 0-10، 11-30، 31-50، 51-70، 71-90، و 91-100. بالنسبة لأسئلة `TrueFalse`، أضف أيضًا حقلي `feedbackOnCorrect` و `feedbackOnWrong`. يجب أن يكون التقييم إيجابيًا وتدريجيًا ومصاغًا دائمًا بشكل إيجابي.",
+    quiz_set_prompt_rule5: "5.  **المحتوى:** يجب أن يكون المحتوى في `params` ذا صلة من الناحية التربوية، مع مشتتات معقولة للأسئلة متعددة الخيارات ونصوص متماسكة للأنشطة الأخرى.",
+    quiz_set_prompt_rule6: "6.  **البساطة:** لا تضف صورًا أو معلمات سلوك غير ضرورية. حافظ على بساطة البنية كما في الأمثلة.",
+    quiz_set_prompt_example_json_title: "**أمثلة على الهياكل لكل نوع سؤال مسموح به:**",
+    quiz_set_prompt_generate_only_json: "ولِّد فقط JSON صالحًا، بدءًا من `{\"progressType\": \"dots\", ...}`، دون أي تعليقات.",
+ 
+    quiz_set_true_false_example: JSON.stringify({
+        "library": "H5P.TrueFalse 1.8",
+        "metadata": { "title": "عنوان سؤال صح/خطأ" },
+        "params": {
+            "question": "<p>هل فرنسا دولة؟</p>",
+            "correct": "true",
+            "feedbackOnCorrect": "صحيح! فرنسا بالفعل دولة.",
+            "feedbackOnWrong": "خطأ. فرنسا معترف بها دوليًا كدولة.",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
+        }
+    }, null, 4),
+    quiz_set_multiple_choice_example: JSON.stringify({
+        "library": "H5P.MultiChoice 1.16",
+        "metadata": { "title": "عنوان MCQ" },
+        "params": {
+            "question": "<p>ما هي عاصمة فرنسا؟</p>",
+            "answers": [
+                { "text": "باريس", "correct": true },
+                { "text": "برلين", "correct": false }
+            ],
+            "behaviour": { "type": "auto", "singleAnswer": true, "enableRetry": true, "enableSolutionsButton": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "تقييم 0-10%" },
+                { "from": 11, "to": 30, "feedback": "تقييم 11-30%" },
+                { "from": 31, "to": 50, "feedback": "تقييم 31-50%" },
+                { "from": 51, "to": 70, "feedback": "تقييم 51-70%" },
+                { "from": 71, "to": 90, "feedback": "تقييم 71-90%" },
+                { "from": 91, "to": 100, "feedback": "تقييم 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_fill_in_the_blanks_example: JSON.stringify({
+        "library": "H5P.Blanks 1.14",
+        "metadata": { "title": "عنوان تمرين ملء الفراغات" },
+        "params": {
+            "questions": ["<p>باريس هي *عاصمة* فرنسا.</p>"],
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "caseSensitive": false },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "تقييم 0-10%" },
+                { "from": 11, "to": 30, "feedback": "تقييم 11-30%" },
+                { "from": 31, "to": 50, "feedback": "تقييم 31-50%" },
+                { "from": 51, "to": 70, "feedback": "تقييم 51-70%" },
+                { "from": 71, "to": 90, "feedback": "تقييم 71-90%" },
+                { "from": 91, "to": 100, "feedback": "تقييم 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_drag_the_words_example: JSON.stringify({
+        "library": "H5P.DragText 1.10",
+        "metadata": { "title": "عنوان نشاط سحب الكلمات" },
+        "params": {
+            "taskDescription": "أكمل الجملة.",
+            "textField": "*باريس* هي عاصمة فرنسا.",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "instantFeedback": false },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "تقييم 0-10%" },
+                { "from": 11, "to": 30, "feedback": "تقييم 11-30%" },
+                { "from": 31, "to": 50, "feedback": "تقييم 31-50%" },
+                { "from": 51, "to": 70, "feedback": "تقييم 51-70%" },
+                { "from": 71, "to": 90, "feedback": "تقييم 71-90%" },
+                { "from": 91, "to": 100, "feedback": "تقييم 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_mark_the_words_example: JSON.stringify({
+        "library": "H5P.MarkTheWords 1.11",
+        "metadata": { "title": "عنوان نشاط تحديد الكلمات" },
+        "params": {
+            "taskDescription": "حدد العاصمة.",
+            "textField": "عاصمة فرنسا هي *باريس*.",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "تقييم 0-10%" },
+                { "from": 11, "to": 30, "feedback": "تقييم 11-30%" },
+                { "from": 31, "to": 50, "feedback": "تقييم 31-50%" },
+                { "from": 51, "to": 70, "feedback": "تقييم 51-70%" },
+                { "from": 71, "to": 90, "feedback": "تقييم 71-90%" },
+                { "from": 91, "to": 100, "feedback": "تقييم 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_essay_example: JSON.stringify({
+        "library": "H5P.Essay 1.5",
+        "metadata": { "title": "عنوان المقال" },
+        "params": {
+            "taskDescription": "<p>ما هي عاصمة فرنسا؟</p>",
+            "keywords": [
+                { "keyword": "باريس", "options": { "points": 1, "caseSensitive": false } }
+            ],
+            "behaviour": { "inputFieldSize": "1", "enableRetry": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "تقييم 0-10%" },
+                { "from": 11, "to": 30, "feedback": "تقييم 11-30%" },
+                { "from": 31, "to": 50, "feedback": "تقييم 31-50%" },
+                { "from": 51, "to": 70, "feedback": "تقييم 51-70%" },
+                { "from": 71, "to": 90, "feedback": "تقييم 71-90%" },
+                { "from": 91, "to": 100, "feedback": "تقييم 91-100%" }
+            ]
+        }
+    }, null, 4),
+     // مطالب المسرد (Accordion)
+     glossary_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Accordion\".",
     glossary_prompt_mission: "**مهمتك:**",
     glossary_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لمسرد مصطلحات (Accordion) عبر H5P. يجب أن يكون جاهزًا للاستخدام مباشرة.",
     glossary_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
@@ -832,4 +933,30 @@ var translations_ar = {
     chart_prompt_rule3: "3. إذا كانت إحدى القيم منخفضة جدًا مقارنة بالقيم الأخرى، ففضل 'barChart' لتصور أفضل.",
     chart_prompt_example_json_title: "**مثال JSON:**",
     chart_prompt_generate_only_json: "أنشئ فقط كود JSON صالحًا، بدون أي تعليقات."
+,
+    // createH5PWithDynamicDependencies
+    quiz_prev_button: "السابق",
+    quiz_next_button: "التالي",
+    quiz_finish_button: "إنهاء",
+    quiz_submit_button: "إرسال",
+    quiz_textual_progress: "سؤال @current من @total",
+    quiz_no_result_message: "اكتمل",
+    quiz_result_message: "نتائجك:",
+    quiz_score_bar_label: "لقد حصلت على @finals من @totals نقطة",
+    quiz_solution_button_text: "عرض الحل",
+    quiz_retry_button_text: "إعادة المحاولة",
+    quiz_finish_button_text: "إنهاء",
+    quiz_submit_button_text: "إرسال",
+    quiz_tips_label: "عرض التلميحات",
+    quiz_tip_available: "تلميح متاح",
+    quiz_feedback_available: "تقييم متاح",
+    quiz_read_feedback: "قراءة التقييم",
+    quiz_wrong_answer: "إجابة خاطئة",
+    quiz_correct_answer: "إجابة صحيحة",
+    quiz_should_check: "كان يجب تحديد هذا الخيار",
+    quiz_should_not_check: "لم يكن يجب تحديد هذا الخيار",
+    quiz_no_input: "يرجى الإجابة قبل عرض الحل.",
+    quiz_a11y_check: "تحقق من الإجابات. سيتم تمييز الإجابات بأنها صحيحة أو غير صحيحة أو لم تتم الإجابة عليها.",
+    quiz_a11y_show_solution: "إظهار الحل. سيتم تمييز المهمة بالحل الصحيح.",
+    quiz_a11y_retry: "إعادة محاولة المهمة. إعادة تعيين جميع الإجابات والبدء من جديد."
 };

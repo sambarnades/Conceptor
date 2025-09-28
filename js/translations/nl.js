@@ -175,17 +175,118 @@ var translations_nl = {
     quiz_set_prompt_questions_array: "`questions`: Een array van ${nombreQuestions} objecten, elk een vraag.",
     quiz_set_prompt_content_rules_title: "**Regels voor de vraaginhoud:**",
     quiz_set_prompt_rule1: "1.  Elk vraagobject moet de sleutels `library`, `params` en `subContentId` hebben.",
-    quiz_set_prompt_rule2: "2.  **Genereer GEEN `subContentId`**; laat enkel de string \"placeholder-uuid\" staan.",
+    quiz_set_prompt_rule2: "2.  **Structuur:** Elke vraag moet een object zijn met de sleutels `library`, `metadata` en `params`.",
     quiz_set_prompt_rule3: "3.  Varieer de vraagtypes. Gebruik de volgende libraries met exacte versies:",
     quiz_set_prompt_rule3_multichoice: "-   `H5P.MultiChoice 1.16`",
     quiz_set_prompt_rule3_blanks: "-   `H5P.Blanks 1.14`",
-    quiz_set_prompt_rule4: "4.  Lever per vraagtype volledige en relevante `params`, inclusief teksten, juiste antwoorden, afleiders, gedrag (`behaviour`), enz.",
-    quiz_set_prompt_rule5: "5.  Zorg dat de inhoud (vragen, antwoorden) didactisch van hoge kwaliteit is en past bij thema en niveau.",
-    quiz_set_prompt_example_json_title: "**Voorbeeldstructuur voor een H5P.MultiChoice-vraag:**",
-    quiz_set_prompt_generate_only_json: "Genereer het volledige en geldige JSON-object, beginnend met `{\"progressType\": \"dots\", ...}`, zonder commentaar.",
-
-    // Woordenlijst-prompt
-    glossary_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Accordion\".",
+    quiz_set_prompt_rule4: "4.  **Feedback (CRUCIALE REGEL):** Voor **alle vraagtypes** (`MultiChoice`, `Blanks`, `DragText`, `MarkTheWords`, `Essay`), **moet** u een `overallFeedback` genereren met exact 6 scorebereiken: 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. Voeg voor `TrueFalse`-vragen ook de velden `feedbackOnCorrect` en `feedbackOnWrong` toe. De feedback moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn.",
+    quiz_set_prompt_rule5: "5.  **Inhoud:** De inhoud in `params` moet pedagogisch relevant zijn, met plausibele afleiders voor MCQ's en coherente teksten voor andere activiteiten.",
+    quiz_set_prompt_rule6: "6.  **Eenvoud:** Voeg geen afbeeldingen of overbodige gedragsparameters toe. Houd de structuur eenvoudig zoals in de voorbeelden.",
+    quiz_set_prompt_example_json_title: "**Voorbeeldstructuren voor elk toegestaan vraagtype:**",
+    quiz_set_prompt_generate_only_json: "Genereer alleen de geldige JSON, beginnend met `{\"progressType\": \"dots\", ...}`, zonder commentaar.",
+ 
+    quiz_set_true_false_example: JSON.stringify({
+        "library": "H5P.TrueFalse 1.8",
+        "metadata": { "title": "Titel van de Waar/Onwaar-vraag" },
+        "params": {
+            "question": "<p>Is Frankrijk een land?</p>",
+            "correct": "true",
+            "feedbackOnCorrect": "Dat klopt! Frankrijk is inderdaad een land.",
+            "feedbackOnWrong": "Onjuist. Frankrijk wordt internationaal erkend als een land.",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
+        }
+    }, null, 4),
+    quiz_set_multiple_choice_example: JSON.stringify({
+        "library": "H5P.MultiChoice 1.16",
+        "metadata": { "title": "Titel van de MCQ" },
+        "params": {
+            "question": "<p>Wat is de hoofdstad van Frankrijk?</p>",
+            "answers": [
+                { "text": "Parijs", "correct": true },
+                { "text": "Berlijn", "correct": false }
+            ],
+            "behaviour": { "type": "auto", "singleAnswer": true, "enableRetry": true, "enableSolutionsButton": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Feedback voor 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Feedback voor 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Feedback voor 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Feedback voor 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Feedback voor 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Feedback voor 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_fill_in_the_blanks_example: JSON.stringify({
+        "library": "H5P.Blanks 1.14",
+        "metadata": { "title": "Titel van de invuloefening" },
+        "params": {
+            "questions": ["<p>Parijs is de *hoofdstad* van Frankrijk.</p>"],
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "caseSensitive": false },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Feedback voor 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Feedback voor 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Feedback voor 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Feedback voor 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Feedback voor 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Feedback voor 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_drag_the_words_example: JSON.stringify({
+        "library": "H5P.DragText 1.10",
+        "metadata": { "title": "Titel van de sleep-de-woorden-activiteit" },
+        "params": {
+            "taskDescription": "Maak de zin af.",
+            "textField": "*Parijs* is de hoofdstad van Frankrijk.",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "instantFeedback": false },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Feedback voor 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Feedback voor 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Feedback voor 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Feedback voor 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Feedback voor 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Feedback voor 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_mark_the_words_example: JSON.stringify({
+        "library": "H5P.MarkTheWords 1.11",
+        "metadata": { "title": "Titel van de markeer-de-woorden-activiteit" },
+        "params": {
+            "taskDescription": "Markeer de hoofdstad.",
+            "textField": "De hoofdstad van Frankrijk is *Parijs*.",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Feedback voor 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Feedback voor 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Feedback voor 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Feedback voor 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Feedback voor 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Feedback voor 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_essay_example: JSON.stringify({
+        "library": "H5P.Essay 1.5",
+        "metadata": { "title": "Titel van het essay" },
+        "params": {
+            "taskDescription": "<p>Wat is de hoofdstad van Frankrijk?</p>",
+            "keywords": [
+                { "keyword": "Parijs", "options": { "points": 1, "caseSensitive": false } }
+            ],
+            "behaviour": { "inputFieldSize": "1", "enableRetry": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Feedback voor 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Feedback voor 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Feedback voor 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Feedback voor 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Feedback voor 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Feedback voor 91-100%" }
+            ]
+        }
+    }, null, 4),
+     // Woordenlijst-prompt
+     glossary_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Accordion\".",
     glossary_prompt_mission: "**Jouw missie:**",
     glossary_prompt_generate_json: "Genereer een volledig en geldig JSON-object voor een H5P-woordenlijst (Accordion). De JSON moet direct bruikbaar zijn.",
     glossary_prompt_json_structure_title: "**Verwachte JSON-structuur:**",
@@ -827,4 +928,30 @@ var translations_nl = {
     chart_prompt_rule3: "3. Als een waarde erg laag is in vergelijking met andere, geef dan de voorkeur aan een 'barChart' voor een betere visualisatie.",
     chart_prompt_example_json_title: "**Voorbeeld-JSON:**",
     chart_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar."
+,
+    // createH5PWithDynamicDependencies
+    quiz_prev_button: "Vorige",
+    quiz_next_button: "Volgende",
+    quiz_finish_button: "Voltooien",
+    quiz_submit_button: "Indienen",
+    quiz_textual_progress: "Vraag @current van @total",
+    quiz_no_result_message: "Voltooid",
+    quiz_result_message: "Uw resultaten:",
+    quiz_score_bar_label: "U hebt @finals van de @totals punten behaald",
+    quiz_solution_button_text: "Oplossing tonen",
+    quiz_retry_button_text: "Opnieuw proberen",
+    quiz_finish_button_text: "Voltooien",
+    quiz_submit_button_text: "Indienen",
+    quiz_tips_label: "Toon tips",
+    quiz_tip_available: "Tip beschikbaar",
+    quiz_feedback_available: "Feedback beschikbaar",
+    quiz_read_feedback: "Lees feedback",
+    quiz_wrong_answer: "Fout antwoord",
+    quiz_correct_answer: "Correct antwoord",
+    quiz_should_check: "Had aangevinkt moeten zijn",
+    quiz_should_not_check: "Had niet aangevinkt moeten zijn",
+    quiz_no_input: "Gelieve te antwoorden alvorens de oplossing te bekijken.",
+    quiz_a11y_check: "Controleer de antwoorden. De antwoorden worden gemarkeerd als correct, incorrect of onbeantwoord.",
+    quiz_a11y_show_solution: "Toon de oplossing. De taak wordt gemarkeerd met de juiste oplossing.",
+    quiz_a11y_retry: "Probeer de taak opnieuw. Reset alle antwoorden en begin de taak opnieuw."
 };

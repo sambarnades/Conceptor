@@ -175,17 +175,117 @@ const translations_en = {
     quiz_set_prompt_questions_array: "`questions`: An array of ${nombreQuestions} objects, each representing a question.",
     quiz_set_prompt_content_rules_title: "**Rules for question content :**",
     quiz_set_prompt_rule1: "1.  Each question object must have the keys `library`, `params`, and `subContentId`.",
-    quiz_set_prompt_rule2: "2.  **Do NOT generate `subContentId`**, just leave the string \"placeholder-uuid\".",
+    quiz_set_prompt_rule2: "2.  **Structure:** Each question must be an object with the keys `library`, `metadata` and `params`.",
     quiz_set_prompt_rule3: "3.  Vary the types of questions. Use the following libraries with their exact versions :",
-    quiz_set_prompt_rule3_multichoice: "-   `H5P.MultiChoice 1.16`",
-    quiz_set_prompt_rule3_blanks: "-   `H5P.Blanks 1.14`",
-    quiz_set_prompt_rule4: "4.  For each question type, provide complete and relevant `params`, including texts, correct answers, distractors, behaviors (`behaviour`), etc.",
-    quiz_set_prompt_rule5: "5.  Ensure that the content (questions, answers) is of high pedagogical quality, relevant to the theme and level.",
-    quiz_set_prompt_example_json_title: "**Example structure for an H5P.MultiChoice question :**",
-    quiz_set_prompt_generate_only_json: "Generate the complete and valid JSON object, starting with `{\"progressType\": \"dots\", ...}`, without any comments.",
-
-    // Glossary Prompt
-    glossary_prompt_role: "You are an expert in pedagogical engineering creating an H5P \"Accordion\" activity.",
+    quiz_set_prompt_rule4: "4.  **Feedback (CRUCIAL RULE):** For **all question types** (`MultiChoice`, `Blanks`, `DragText`, `MarkTheWords`, `Essay`), you **must** generate an `overallFeedback` with exactly 6 score ranges: 0-10, 11-30, 31-50, 51-70, 71-90, and 91-100. For `TrueFalse` questions, also add the `feedbackOnCorrect` and `feedbackOnWrong` fields. The feedback must be benevolent, gradual, and always phrased affirmatively.",
+    quiz_set_prompt_rule5: "5.  **Content:** The content in `params` must be pedagogically relevant, with plausible distractors for MCQs and coherent texts for other activities.",
+    quiz_set_prompt_rule6: "6.  **Simplicity:** Do not add images or superfluous behavior parameters. Keep the structure simple as in the examples.",
+    quiz_set_prompt_example_json_title: "**Example structures for each authorized question type:**",
+    quiz_set_prompt_generate_only_json: "Generate only the valid JSON, starting with `{\"progressType\": \"dots\", ...}`, without any comments.",
+    
+    quiz_set_true_false_example: JSON.stringify({
+        "library": "H5P.TrueFalse 1.8",
+        "metadata": { "title": "Title of the True/False question" },
+        "params": {
+            "question": "<p>Is France a country?</p>",
+            "correct": "true",
+            "feedbackOnCorrect": "That's correct! France is indeed a country.",
+            "feedbackOnWrong": "Incorrect. France is internationally recognized as a country.",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
+        }
+    }, null, 4),
+    quiz_set_multiple_choice_example: JSON.stringify({
+        "library": "H5P.MultiChoice 1.16",
+        "metadata": { "title": "Title of the MCQ" },
+        "params": {
+            "question": "<p>What is the capital of France?</p>",
+            "answers": [
+                { "text": "Paris", "correct": true },
+                { "text": "Berlin", "correct": false }
+            ],
+            "behaviour": { "type": "auto", "singleAnswer": true, "enableRetry": true, "enableSolutionsButton": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Feedback for 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Feedback for 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Feedback for 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Feedback for 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Feedback for 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Feedback for 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_fill_in_the_blanks_example: JSON.stringify({
+        "library": "H5P.Blanks 1.14",
+        "metadata": { "title": "Title of the fill-in-the-blanks" },
+        "params": {
+            "questions": ["<p>Paris is the *capital* of France.</p>"],
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "caseSensitive": false },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Feedback for 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Feedback for 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Feedback for 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Feedback for 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Feedback for 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Feedback for 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_drag_the_words_example: JSON.stringify({
+        "library": "H5P.DragText 1.10",
+        "metadata": { "title": "Title of the drag the words activity" },
+        "params": {
+            "taskDescription": "Complete the sentence.",
+            "textField": "*Paris* is the capital of France.",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "instantFeedback": false },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Feedback for 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Feedback for 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Feedback for 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Feedback for 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Feedback for 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Feedback for 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_mark_the_words_example: JSON.stringify({
+        "library": "H5P.MarkTheWords 1.11",
+        "metadata": { "title": "Title of the mark the words activity" },
+        "params": {
+            "taskDescription": "Highlight the capital city.",
+            "textField": "The capital of France is *Paris*.",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Feedback for 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Feedback for 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Feedback for 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Feedback for 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Feedback for 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Feedback for 91-100%" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_essay_example: JSON.stringify({
+        "library": "H5P.Essay 1.5",
+        "metadata": { "title": "Title of the essay" },
+        "params": {
+            "taskDescription": "<p>What is the capital of France?</p>",
+            "keywords": [
+                { "keyword": "Paris", "options": { "points": 1, "caseSensitive": false } }
+            ],
+            "behaviour": { "inputFieldSize": "1", "enableRetry": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "Feedback for 0-10%" },
+                { "from": 11, "to": 30, "feedback": "Feedback for 11-30%" },
+                { "from": 31, "to": 50, "feedback": "Feedback for 31-50%" },
+                { "from": 51, "to": 70, "feedback": "Feedback for 51-70%" },
+                { "from": 71, "to": 90, "feedback": "Feedback for 71-90%" },
+                { "from": 91, "to": 100, "feedback": "Feedback for 91-100%" }
+            ]
+        }
+    }, null, 4),
+ 
+     // Glossary Prompt
+     glossary_prompt_role: "You are an expert in pedagogical engineering creating an H5P \"Accordion\" activity.",
     glossary_prompt_mission: "**Your mission :**",
     glossary_prompt_generate_json: "Generate a complete and valid JSON object for an H5P Accordion glossary.",
     glossary_prompt_json_structure_title: "**Expected JSON structure :**",
@@ -833,4 +933,30 @@ const translations_en = {
     chart_prompt_rule3: "3. If a value is very low compared to others, prefer a 'barChart' for better visualization.",
     chart_prompt_example_json_title: "**Example JSON:**",
     chart_prompt_generate_only_json: "Generate only the valid JSON code, without any comments."
+,
+    // createH5PWithDynamicDependencies
+    quiz_prev_button: "Previous",
+    quiz_next_button: "Next",
+    quiz_finish_button: "Finish",
+    quiz_submit_button: "Submit",
+    quiz_textual_progress: "Question @current of @total",
+    quiz_no_result_message: "Finished",
+    quiz_result_message: "Your results:",
+    quiz_score_bar_label: "You got @finals out of @totals points",
+    quiz_solution_button_text: "Show solution",
+    quiz_retry_button_text: "Retry",
+    quiz_finish_button_text: "Finish",
+    quiz_submit_button_text: "Submit",
+    quiz_tips_label: "Show tips",
+    quiz_tip_available: "Tip available",
+    quiz_feedback_available: "Feedback available",
+    quiz_read_feedback: "Read feedback",
+    quiz_wrong_answer: "Wrong answer",
+    quiz_correct_answer: "Correct answer",
+    quiz_should_check: "Should have been checked",
+    quiz_should_not_check: "Should not have been checked",
+    quiz_no_input: "Please answer before viewing the solution.",
+    quiz_a11y_check: "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+    quiz_a11y_show_solution: "Show the solution. The task will be marked with its correct solution.",
+    quiz_a11y_retry: "Retry the task. Reset all responses and start the task over again."
 };

@@ -175,17 +175,118 @@ var translations_jp = {
     quiz_set_prompt_questions_array: "`questions`：${nombreQuestions}個のオブジェクトの配列。各オブジェクトは質問を表します。",
     quiz_set_prompt_content_rules_title: "**質問内容のルール：**",
     quiz_set_prompt_rule1: "1. 各質問オブジェクトには`library`、`params`、`subContentId`キーが必要です。",
-    quiz_set_prompt_rule2: "2. **`subContentId`は生成しないで**、「placeholder-uuid」文字列のままにしてください。",
+    quiz_set_prompt_rule2: "2.  **構造:** 各質問は`library`、`metadata`、`params`のキーを持つオブジェクトでなければなりません。",
     quiz_set_prompt_rule3: "3. 質問の種類を変えてください。正確なバージョンで以下のライブラリを使用してください：",
     quiz_set_prompt_rule3_multichoice: "- `H5P.MultiChoice 1.16`",
     quiz_set_prompt_rule3_blanks: "- `H5P.Blanks 1.14`",
-    quiz_set_prompt_rule4: "4. 各質問タイプについて、テキスト、正解、選択肢、動作（`behaviour`）などを含む完全で関連性のある`params`を提供してください。",
-    quiz_set_prompt_rule5: "5. コンテンツ（質問、回答）がテーマとレベルに関連する高品質な教育内容であることを確認してください。",
-    quiz_set_prompt_example_json_title: "**H5P.MultiChoice質問の構造例：**",
-    quiz_set_prompt_generate_only_json: "`{\"progressType\": \"dots\", ...}`で始まる完全で有効なJSONオブジェクトを、コメントなしで生成してください。",
-
-    // Glossary Prompt
-    glossary_prompt_role: "あなたはH5P「Accordion」アクティビティを作成する教育工学の専門家です。",
+    quiz_set_prompt_rule4: "4.  **フィードバック（重要ルール）：** **すべての質問タイプ**（`MultiChoice`、`Blanks`、`DragText`、`MarkTheWords`、`Essay`）について、**必ず**6つのスコア範囲（0-10、11-30、31-50、51-70、71-90、91-100）を持つ`overallFeedback`を生成する必要があります。`TrueFalse`の質問には、`feedbackOnCorrect`と`feedbackOnWrong`フィールドも追加してください。フィードバックは親切で、段階的で、常に肯定的に表現する必要があります。",
+    quiz_set_prompt_rule5: "5.  **内容：** `params`の内容は教育的に適切で、MCQにはもっともらしい選択肢を、他のアクティビティには一貫したテキストを含める必要があります。",
+    quiz_set_prompt_rule6: "6.  **シンプルさ：** 画像や余分な動作パラメータを追加しないでください。例のように構造をシンプルに保ってください。",
+    quiz_set_prompt_example_json_title: "**許可されている各質問タイプの構造例：**",
+    quiz_set_prompt_generate_only_json: "`{\"progressType\": \"dots\", ...}`で始まる有効なJSONのみを、コメントなしで生成してください。",
+ 
+    quiz_set_true_false_example: JSON.stringify({
+        "library": "H5P.TrueFalse 1.8",
+        "metadata": { "title": "正誤問題のタイトル" },
+        "params": {
+            "question": "<p>フランスは国ですか？</p>",
+            "correct": "true",
+            "feedbackOnCorrect": "正解です！フランスは確かに国です。",
+            "feedbackOnWrong": "不正解です。フランスは国際的に国として認められています。",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
+        }
+    }, null, 4),
+    quiz_set_multiple_choice_example: JSON.stringify({
+        "library": "H5P.MultiChoice 1.16",
+        "metadata": { "title": "MCQのタイトル" },
+        "params": {
+            "question": "<p>フランスの首都はどこですか？</p>",
+            "answers": [
+                { "text": "パリ", "correct": true },
+                { "text": "ベルリン", "correct": false }
+            ],
+            "behaviour": { "type": "auto", "singleAnswer": true, "enableRetry": true, "enableSolutionsButton": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "0-10%のフィードバック" },
+                { "from": 11, "to": 30, "feedback": "11-30%のフィードバック" },
+                { "from": 31, "to": 50, "feedback": "31-50%のフィードバック" },
+                { "from": 51, "to": 70, "feedback": "51-70%のフィードバック" },
+                { "from": 71, "to": 90, "feedback": "71-90%のフィードバック" },
+                { "from": 91, "to": 100, "feedback": "91-100%のフィードバック" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_fill_in_the_blanks_example: JSON.stringify({
+        "library": "H5P.Blanks 1.14",
+        "metadata": { "title": "穴埋め問題のタイトル" },
+        "params": {
+            "questions": ["<p>パリはフランスの*首都*です。</p>"],
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "caseSensitive": false },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "0-10%のフィードバック" },
+                { "from": 11, "to": 30, "feedback": "11-30%のフィードバック" },
+                { "from": 31, "to": 50, "feedback": "31-50%のフィードバック" },
+                { "from": 51, "to": 70, "feedback": "51-70%のフィードバック" },
+                { "from": 71, "to": 90, "feedback": "71-90%のフィードバック" },
+                { "from": 91, "to": 100, "feedback": "91-100%のフィードバック" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_drag_the_words_example: JSON.stringify({
+        "library": "H5P.DragText 1.10",
+        "metadata": { "title": "単語ドラッグアクティビティのタイトル" },
+        "params": {
+            "taskDescription": "文を完成させてください。",
+            "textField": "*パリ*はフランスの首都です。",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "instantFeedback": false },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "0-10%のフィードバック" },
+                { "from": 11, "to": 30, "feedback": "11-30%のフィードバック" },
+                { "from": 31, "to": 50, "feedback": "31-50%のフィードバック" },
+                { "from": 51, "to": 70, "feedback": "51-70%のフィードバック" },
+                { "from": 71, "to": 90, "feedback": "71-90%のフィードバック" },
+                { "from": 91, "to": 100, "feedback": "91-100%のフィードバック" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_mark_the_words_example: JSON.stringify({
+        "library": "H5P.MarkTheWords 1.11",
+        "metadata": { "title": "単語マーキングアクティビティのタイトル" },
+        "params": {
+            "taskDescription": "首都をハイライトしてください。",
+            "textField": "フランスの首都は*パリ*です。",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "0-10%のフィードバック" },
+                { "from": 11, "to": 30, "feedback": "11-30%のフィードバック" },
+                { "from": 31, "to": 50, "feedback": "31-50%のフィードバック" },
+                { "from": 51, "to": 70, "feedback": "51-70%のフィードバック" },
+                { "from": 71, "to": 90, "feedback": "71-90%のフィードバック" },
+                { "from": 91, "to": 100, "feedback": "91-100%のフィードバック" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_essay_example: JSON.stringify({
+        "library": "H5P.Essay 1.5",
+        "metadata": { "title": "エッセイのタイトル" },
+        "params": {
+            "taskDescription": "<p>フランスの首都はどこですか？</p>",
+            "keywords": [
+                { "keyword": "パリ", "options": { "points": 1, "caseSensitive": false } }
+            ],
+            "behaviour": { "inputFieldSize": "1", "enableRetry": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "0-10%のフィードバック" },
+                { "from": 11, "to": 30, "feedback": "11-30%のフィードバック" },
+                { "from": 31, "to": 50, "feedback": "31-50%のフィードバック" },
+                { "from": 51, "to": 70, "feedback": "51-70%のフィードバック" },
+                { "from": 71, "to": 90, "feedback": "71-90%のフィードバック" },
+                { "from": 91, "to": 100, "feedback": "91-100%のフィードバック" }
+            ]
+        }
+    }, null, 4),
+     // Glossary Prompt
+     glossary_prompt_role: "あなたはH5P「Accordion」アクティビティを作成する教育工学の専門家です。",
     glossary_prompt_mission: "**あなたの使命：**",
     glossary_prompt_generate_json: "H5PのAccordion型用語集用の完全で有効なJSONオブジェクトを生成してください。JSONは直接使用可能である必要があります。",
     glossary_prompt_json_structure_title: "**期待されるJSON構造：**",
@@ -827,4 +928,30 @@ var translations_jp = {
     chart_prompt_rule3: "3. 他の値と比較して非常に低い値がある場合は、視覚化を向上させるために「barChart」を優先してください。",
     chart_prompt_example_json_title: "**JSONの例:**",
     chart_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。"
+,
+    // createH5PWithDynamicDependencies
+    quiz_prev_button: "前へ",
+    quiz_next_button: "次へ",
+    quiz_finish_button: "終了",
+    quiz_submit_button: "送信",
+    quiz_textual_progress: "質問 @current / @total",
+    quiz_no_result_message: "完了しました",
+    quiz_result_message: "あなたの結果：",
+    quiz_score_bar_label: "合計@totals点中@finals点を獲得しました",
+    quiz_solution_button_text: "解答を表示",
+    quiz_retry_button_text: "再試行",
+    quiz_finish_button_text: "終了",
+    quiz_submit_button_text: "送信",
+    quiz_tips_label: "ヒントを表示",
+    quiz_tip_available: "ヒントあり",
+    quiz_feedback_available: "フィードバックあり",
+    quiz_read_feedback: "フィードバックを読む",
+    quiz_wrong_answer: "不正解",
+    quiz_correct_answer: "正解",
+    quiz_should_check: "チェックされているべきでした",
+    quiz_should_not_check: "チェックされているべきではありませんでした",
+    quiz_no_input: "解答を表示する前に回答してください。",
+    quiz_a11y_check: "解答をチェックします。解答は正解、不正解、または未回答としてマークされます。",
+    quiz_a11y_show_solution: "解答を表示します。課題には正解が表示されます。",
+    quiz_a11y_retry: "課題を再試行します。すべての解答をリセットして、課題を最初からやり直します。"
 };

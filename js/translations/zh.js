@@ -175,17 +175,118 @@ var translations_zh = {
     quiz_set_prompt_questions_array: "`questions`：包含 ${nombreQuestions} 个对象的数组，每个对象代表一道题。",
     quiz_set_prompt_content_rules_title: "**题目内容规则：**",
     quiz_set_prompt_rule1: "1.  每个题目对象必须包含 `library`、`params` 与 `subContentId`。",
-    quiz_set_prompt_rule2: "2.  **不要生成 `subContentId`**，仅保留字符串 \"placeholder-uuid\"。",
+    quiz_set_prompt_rule2: "2.  **结构:** 每个问题都必须是一个包含`library`、`metadata`和`params`键的对象。",
     quiz_set_prompt_rule3: "3.  题型要多样化。请使用以下库及其精确版本：",
     quiz_set_prompt_rule3_multichoice: "-   `H5P.MultiChoice 1.16`",
     quiz_set_prompt_rule3_blanks: "-   `H5P.Blanks 1.14`",
-    quiz_set_prompt_rule4: "4.  对每种题型提供完整且相关的 `params`，包括文本、正确答案、干扰项、行为（`behaviour`）等。",
-    quiz_set_prompt_rule5: "5.  确保内容（题干、答案）具有高质量的教学性，且与主题和水平相符。",
-    quiz_set_prompt_example_json_title: "**H5P.MultiChoice 题目的结构示例：**",
-    quiz_set_prompt_generate_only_json: "生成完整有效的 JSON 对象，以 `{\"progressType\": \"dots\", ...}` 开头，不要添加任何注释。",
-
-    // Glossary Prompt
-    glossary_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Accordion（手风琴）”活动。",
+    quiz_set_prompt_rule4: "4.  **反馈（关键规则）：** 对于**所有问题类型**（`MultiChoice`、`Blanks`、`DragText`、`MarkTheWords`、`Essay`），您**必须**生成一个包含6个分数范围的`overallFeedback`：0-10、11-30、31-50、51-70、71-90和91-100。对于`TrueFalse`问题，还需添加`feedbackOnCorrect`和`feedbackOnWrong`字段。反馈必须是善意的、渐进的，并且始终以肯定的方式表达。",
+    quiz_set_prompt_rule5: "5.  **内容：** `params`中的内容必须在教学上相关，为多选题提供合理的干扰项，为其他活动提供连贯的文本。",
+    quiz_set_prompt_rule6: "6.  **简洁性：** 不要添加图片或多余的行为参数。保持结构简单，如示例所示。",
+    quiz_set_prompt_example_json_title: "**每种授权问题类型的结构示例：**",
+    quiz_set_prompt_generate_only_json: "仅生成有效的JSON，以`{\"progressType\": \"dots\", ...}`开头，不含任何注释。",
+ 
+    quiz_set_true_false_example: JSON.stringify({
+        "library": "H5P.TrueFalse 1.8",
+        "metadata": { "title": "判断题标题" },
+        "params": {
+            "question": "<p>法国是一个国家吗？</p>",
+            "correct": "true",
+            "feedbackOnCorrect": "正确！法国确实是一个国家。",
+            "feedbackOnWrong": "错误。法国在国际上被认为是一个国家。",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
+        }
+    }, null, 4),
+    quiz_set_multiple_choice_example: JSON.stringify({
+        "library": "H5P.MultiChoice 1.16",
+        "metadata": { "title": "MCQ标题" },
+        "params": {
+            "question": "<p>法国的首都是哪里？</p>",
+            "answers": [
+                { "text": "巴黎", "correct": true },
+                { "text": "柏林", "correct": false }
+            ],
+            "behaviour": { "type": "auto", "singleAnswer": true, "enableRetry": true, "enableSolutionsButton": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "0-10%的反馈" },
+                { "from": 11, "to": 30, "feedback": "11-30%的反馈" },
+                { "from": 31, "to": 50, "feedback": "31-50%的反馈" },
+                { "from": 51, "to": 70, "feedback": "51-70%的反馈" },
+                { "from": 71, "to": 90, "feedback": "71-90%的反馈" },
+                { "from": 91, "to": 100, "feedback": "91-100%的反馈" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_fill_in_the_blanks_example: JSON.stringify({
+        "library": "H5P.Blanks 1.14",
+        "metadata": { "title": "填空题标题" },
+        "params": {
+            "questions": ["<p>巴黎是法国的*首都*。</p>"],
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "caseSensitive": false },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "0-10%的反馈" },
+                { "from": 11, "to": 30, "feedback": "11-30%的反馈" },
+                { "from": 31, "to": 50, "feedback": "31-50%的反馈" },
+                { "from": 51, "to": 70, "feedback": "51-70%的反馈" },
+                { "from": 71, "to": 90, "feedback": "71-90%的反馈" },
+                { "from": 91, "to": 100, "feedback": "91-100%的反馈" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_drag_the_words_example: JSON.stringify({
+        "library": "H5P.DragText 1.10",
+        "metadata": { "title": "拖动单词活动标题" },
+        "params": {
+            "taskDescription": "完成句子。",
+            "textField": "*巴黎*是法国的首都。",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "instantFeedback": false },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "0-10%的反馈" },
+                { "from": 11, "to": 30, "feedback": "11-30%的反馈" },
+                { "from": 31, "to": 50, "feedback": "31-50%的反馈" },
+                { "from": 51, "to": 70, "feedback": "51-70%的反馈" },
+                { "from": 71, "to": 90, "feedback": "71-90%的反馈" },
+                { "from": 91, "to": 100, "feedback": "91-100%的反馈" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_mark_the_words_example: JSON.stringify({
+        "library": "H5P.MarkTheWords 1.11",
+        "metadata": { "title": "标记单词活动标题" },
+        "params": {
+            "taskDescription": "突出显示首都。",
+            "textField": "法国的首都是*巴黎*。",
+            "behaviour": { "enableRetry": true, "enableSolutionsButton": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "0-10%的反馈" },
+                { "from": 11, "to": 30, "feedback": "11-30%的反馈" },
+                { "from": 31, "to": 50, "feedback": "31-50%的反馈" },
+                { "from": 51, "to": 70, "feedback": "51-70%的反馈" },
+                { "from": 71, "to": 90, "feedback": "71-90%的反馈" },
+                { "from": 91, "to": 100, "feedback": "91-100%的反馈" }
+            ]
+        }
+    }, null, 4),
+    quiz_set_essay_example: JSON.stringify({
+        "library": "H5P.Essay 1.5",
+        "metadata": { "title": "文章标题" },
+        "params": {
+            "taskDescription": "<p>法国的首都是哪里？</p>",
+            "keywords": [
+                { "keyword": "巴黎", "options": { "points": 1, "caseSensitive": false } }
+            ],
+            "behaviour": { "inputFieldSize": "1", "enableRetry": true },
+            "overallFeedback": [
+                { "from": 0, "to": 10, "feedback": "0-10%的反馈" },
+                { "from": 11, "to": 30, "feedback": "11-30%的反馈" },
+                { "from": 31, "to": 50, "feedback": "31-50%的反馈" },
+                { "from": 51, "to": 70, "feedback": "51-70%的反馈" },
+                { "from": 71, "to": 90, "feedback": "71-90%的反馈" },
+                { "from": 91, "to": 100, "feedback": "91-100%的反馈" }
+            ]
+        }
+    }, null, 4),
+     // Glossary Prompt
+     glossary_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Accordion（手风琴）”活动。",
     glossary_prompt_mission: "**你的任务：**",
     glossary_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P 术语表（Accordion）活动。该 JSON 必须可直接使用。",
     glossary_prompt_json_structure_title: "**预期的 JSON 结构：**",
@@ -832,4 +933,30 @@ var translations_zh = {
     chart_prompt_rule3: "3. 如果某个值与其他值相比非常低，请优先选择'barChart'以获得更好的可视化效果。",
     chart_prompt_example_json_title: "**JSON示例：**",
     chart_prompt_generate_only_json: "只生成有效的JSON代码，不含任何注释。"
+,
+    // createH5PWithDynamicDependencies
+    quiz_prev_button: "上一个",
+    quiz_next_button: "下一个",
+    quiz_finish_button: "完成",
+    quiz_submit_button: "提交",
+    quiz_textual_progress: "问题 @current / @total",
+    quiz_no_result_message: "已完成",
+    quiz_result_message: "你的结果：",
+    quiz_score_bar_label: "你获得了 @totals 分中的 @finals 分",
+    quiz_solution_button_text: "显示答案",
+    quiz_retry_button_text: "重试",
+    quiz_finish_button_text: "完成",
+    quiz_submit_button_text: "提交",
+    quiz_tips_label: "显示提示",
+    quiz_tip_available: "提示可用",
+    quiz_feedback_available: "反馈可用",
+    quiz_read_feedback: "阅读反馈",
+    quiz_wrong_answer: "错误答案",
+    quiz_correct_answer: "正确答案",
+    quiz_should_check: "应该已勾选",
+    quiz_should_not_check: "不应该已勾选",
+    quiz_no_input: "请在查看答案前回答。",
+    quiz_a11y_check: "检查答案。答案将被标记为正确、错误或未回答。",
+    quiz_a11y_show_solution: "显示答案。任务将标记其正确答案。",
+    quiz_a11y_retry: "重试任务。重置所有回答并重新开始任务。"
 };
