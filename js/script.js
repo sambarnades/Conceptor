@@ -1628,295 +1628,293 @@ document.addEventListener('DOMContentLoaded', function() {
             nombreQuestions = arg4;
             infosComplementaires = arg5;
             contextPrompt = `
-                ${pt.prompt_expert_intro}${matiere}.
+${pt.prompt_expert_intro}${matiere}.
 
-                ${pt.prompt_context_title}
-                ${pt.prompt_subject} ${matiere}
-                ${pt.prompt_student_level} ${niveau}
-                ${pt.prompt_theme} ${theme}
-                ${pt.prompt_number_of_elements} ${nombreQuestions}
-                ${infosComplementaires ? `${pt.prompt_additional_info} ${infosComplementaires}` : ''}
+ ${pt.prompt_context_title}
+ ${pt.prompt_subject} ${matiere}
+ ${pt.prompt_student_level} ${niveau}
+ ${pt.prompt_theme} ${theme}
+ ${pt.prompt_number_of_elements} ${nombreQuestions}
+${infosComplementaires ? `${pt.prompt_additional_info} ${infosComplementaires}` : ''}
             `;
         } else {
             const qui = arg1;
             const quoi = arg2;
             contextPrompt = `
-                ${pt.prompt_simple_intro_part1}${qui}${pt.prompt_simple_intro_part2}${quoi}.
-            `;
+${pt.prompt_simple_intro_part1}${qui}${pt.prompt_simple_intro_part2}${quoi}.`;
             // Pour le mode simple, on peut déduire un nombre par défaut si nécessaire
             nombreQuestions = 10;
         }
 
-        const languageInstruction = `\n\n${pt.prompt_language_instruction}\n\n${pt.prompt_code_block_instruction}`;
+const languageInstruction = `\n\n${pt.prompt_language_instruction}\n\n${pt.prompt_code_block_instruction}`;
 
-        const timelinePrompt = `${pt.timeline_prompt_role}
-                                ${contextPrompt}
+const timelinePrompt = `
+${pt.timeline_prompt_role}
+${contextPrompt}
 
-                                ${pt.timeline_prompt_mission}
-                                ${pt.timeline_prompt_generate_json}
+${pt.timeline_prompt_mission}
+${pt.timeline_prompt_generate_json}
 
-                                ${pt.timeline_prompt_json_structure_title}
-                                ${pt.timeline_prompt_json_structure_main_object}
-                                - ${pt.timeline_prompt_headline}
-                                - ${pt.timeline_prompt_text}
-                                - ${pt.timeline_prompt_asset}
-                                - ${pt.timeline_prompt_date_array.replace('${nombreQuestions}', nombreQuestions)}
-                                - ${pt.timeline_prompt_era_array}
+${pt.timeline_prompt_json_structure_title}
+${pt.timeline_prompt_json_structure_main_object}
+- ${pt.timeline_prompt_headline}
+- ${pt.timeline_prompt_text}
+- ${pt.timeline_prompt_asset}
+- ${pt.timeline_prompt_date_array.replace('${nombreQuestions}', nombreQuestions)}
+- ${pt.timeline_prompt_era_array}
 
-                                ${pt.timeline_prompt_content_rules_title}
-                                ${pt.timeline_prompt_rule1}
-                                    ${pt.timeline_prompt_rule1_startDate}
-                                    ${pt.timeline_prompt_rule1_headline}
-                                    ${pt.timeline_prompt_rule1_text}
-                                    ${pt.timeline_prompt_rule1_asset}
-                                    ${pt.timeline_prompt_rule1_tag}
-                                ${pt.timeline_prompt_rule2}
-                                ${pt.timeline_prompt_rule3}
+${pt.timeline_prompt_content_rules_title}
+${pt.timeline_prompt_rule1}
+${pt.timeline_prompt_rule1_startDate}
+${pt.timeline_prompt_rule1_headline}
+${pt.timeline_prompt_rule1_text}
+${pt.timeline_prompt_rule1_asset}
+${pt.timeline_prompt_rule1_tag}
+${pt.timeline_prompt_rule2}
+${pt.timeline_prompt_rule3}
 
-                                ${pt.timeline_prompt_example_json_title}
-                                \`\`\`json
-                                {
-                                  "timeline": {
-                                    "headline": "Titre de la frise chronologique",
-                                    "text": "<p>Introduction sur le thème de la frise.</p>",
-                                    "date": [
-                                      {
-                                        "startDate": "1914,07,28",
-                                        "endDate": "1914,07,28",
-                                        "headline": "Début de la Première Guerre mondiale",
-                                        "text": "<p>L'Autriche-Hongrie déclare la guerre à la Serbie.</p>",
-                                        "asset": {
-                                          "media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
-                                          "caption": "L'archiduc François-Ferdinand juste avant son assassinat.",
-                                          "credit": "Wikimedia Commons / CC BY-SA 4.0"
-                                        },
-                                        "tag": "Guerre"
-                                      },
-                                      {
-                                        "startDate": "1918,11,11",
-                                        "endDate": "1918,11,11",
-                                        "headline": "Armistice de 1918",
-                                        "text": "<p>Signature de l'armistice à Rethondes, marquant la fin des combats.</p>",
-                                        "tag": "Traité"
-                                      }
-                                    ],
-                                    "era": [
-                                      {
-                                        "startDate": "1914,07,28",
-                                        "endDate": "1918,11,11",
-                                        "headline": "Première Guerre mondiale",
-                                        "text": "<div>C'est la période de la Grande Guerre.</div>",
-                                        "tag": "Période historique"
-                                      }
-                                    ]
-                                  }
-                                }
-                                \`\`\`
+${pt.timeline_prompt_example_json_title}
+\`\`\`json
+{
+"timeline": {
+"headline": "Titre de la frise chronologique",
+"text": "<p>Introduction sur le thème de la frise.</p>",
+"date": [
+{
+"startDate": "1914,07,28",
+"endDate": "1914,07,28",
+"headline": "Début de la Première Guerre mondiale",
+"text": "<p>L'Autriche-Hongrie déclare la guerre à la Serbie.</p>",
+"asset": {
+"media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
+"caption": "L'archiduc François-Ferdinand juste avant son assassinat.",
+"credit": "Wikimedia Commons / CC BY-SA 4.0"
+},
+"tag": "Guerre"
+},
+{
+"startDate": "1918,11,11",
+"endDate": "1918,11,11",
+"headline": "Armistice de 1918",
+"text": "<p>Signature de l'armistice à Rethondes, marquant la fin des combats.</p>",
+"tag": "Traité"
+}
+],
+"era": [
+{
+"startDate": "1914,07,28",
+"endDate": "1918,11,11",
+"headline": "Première Guerre mondiale",
+"text": "<div>C'est la période de la Grande Guerre.</div>",
+"tag": "Période historique"
+}
+]
+}
+}
+\`\`\`
 
-                                ${pt.timeline_prompt_generate_only_json}${languageInstruction}`;
+${pt.timeline_prompt_generate_only_json}${languageInstruction}`;
 
-        const crosswordPrompt = `${pt.crossword_prompt_role}
-                                ${contextPrompt}
+const crosswordPrompt = `${pt.crossword_prompt_role}
+${contextPrompt}
 
-                                ${pt.crossword_prompt_mission}
-                                ${pt.crossword_prompt_generate_json}
+${pt.crossword_prompt_mission}
+${pt.crossword_prompt_generate_json}
 
-                                ${pt.crossword_prompt_json_structure_title}
-                                ${pt.crossword_prompt_json_structure_main_object}
-                                - ${pt.crossword_prompt_title}
-                                - ${pt.crossword_prompt_words_array.replace('${nombreQuestions}', nombreQuestions)}
-                                    - ${pt.crossword_prompt_answer}
-                                    - ${pt.crossword_prompt_clue}
-                                    - ${pt.crossword_prompt_extra_clue_optional}
-                                - ${pt.crossword_prompt_task_description}
-                                - ${pt.crossword_prompt_overall_feedback}
+${pt.crossword_prompt_json_structure_title}
+${pt.crossword_prompt_json_structure_main_object}
+- ${pt.crossword_prompt_title}
+- ${pt.crossword_prompt_words_array.replace('${nombreQuestions}', nombreQuestions)}
+- ${pt.crossword_prompt_answer}
+- ${pt.crossword_prompt_clue}
+- ${pt.crossword_prompt_extra_clue_optional}
+- ${pt.crossword_prompt_task_description}
+- ${pt.crossword_prompt_overall_feedback}
 
-                                ${pt.crossword_prompt_content_rules_title}
-                                ${pt.crossword_prompt_rule1}
-                                ${pt.crossword_prompt_rule2}
-                                ${pt.crossword_prompt_rule3}
+${pt.crossword_prompt_content_rules_title}
+${pt.crossword_prompt_rule1}
+${pt.crossword_prompt_rule2}
+${pt.crossword_prompt_rule3}
 
-                                ${pt.crossword_prompt_example_json_title}
-                                \`\`\`json
-                                {
-                                  "title": "Mots croisés sur la Biologie",
-                                  "words": [
-                                    {
-                                      "answer": "Cellule",
-                                      "clue": "Unité de base de la vie.",
-                                      "extraClue": {
-                                        "params": {
-                                          "text": "<p>Elle peut être animale ou végétale.</p>"
-                                        }
-                                      }
-                                    },
-                                    {
-                                       "answer": "ADN",
-                                       "clue": "Molécule portant l'information génétique."
-                                    }
-                                  ],
-                                  "taskDescription": "<p>Complète la grille de mots croisés.</p>"
-                                }
-                                \`\`\`
+${pt.crossword_prompt_example_json_title}
+\`\`\`json
+{
+"title": "Mots croisés sur la Biologie",
+"words": [
+{
+"answer": "Cellule",
+"clue": "Unité de base de la vie.",
+"extraClue": {
+"params": {
+"text": "<p>Elle peut être animale ou végétale.</p>"
+}
+}
+},
+{
+"answer": "ADN",
+"clue": "Molécule portant l'information génétique."
+}
+],
+"taskDescription": "<p>Complète la grille de mots croisés.</p>"
+}
+\`\`\`
 
-                                ${pt.crossword_prompt_generate_only_json}${languageInstruction}`;
+${pt.crossword_prompt_generate_only_json}${languageInstruction}`;
 
-        const essayPrompt = `${pt.essay_prompt_role}
-                            ${contextPrompt}
+const essayPrompt = `${pt.essay_prompt_role}
+${contextPrompt}
 
-                            ${pt.essay_prompt_mission}
-                            ${pt.essay_prompt_generate_json}
+${pt.essay_prompt_mission}
+${pt.essay_prompt_generate_json}
 
-                            ${pt.essay_prompt_json_structure_title}
-                            ${pt.essay_prompt_json_structure_main_object}
-                            - ${pt.essay_prompt_task_description}
-                            - ${pt.essay_prompt_keywords_array.replace('${nombreQuestions}', nombreQuestions)}
-                            - ${pt.essay_prompt_overall_feedback}
+${pt.essay_prompt_json_structure_title}
+${pt.essay_prompt_json_structure_main_object}
+- ${pt.essay_prompt_task_description}
+- ${pt.essay_prompt_keywords_array.replace('${nombreQuestions}', nombreQuestions)}
+- ${pt.essay_prompt_overall_feedback}
 
-                            ${pt.essay_prompt_content_rules_title}
-                            ${pt.essay_prompt_rule1}
-                            ${pt.essay_prompt_rule2}
-                            ${pt.essay_prompt_rule3}
-                            ${pt.essay_prompt_rule4}
+${pt.essay_prompt_content_rules_title}
+${pt.essay_prompt_rule1}
+${pt.essay_prompt_rule2}
+${pt.essay_prompt_rule3}
+${pt.essay_prompt_rule4}
 
-                            ${pt.essay_prompt_example_json_title}
-                            \`\`\`json
-                            {
-                            "taskDescription": "<p>Rédige un court texte expliquant la photosynthèse.</p>",
-                            "keywords": [
-                                {
-                                "keyword": "lumière",
-                                "options": { "points": 1, "caseSensitive": false }
-                                },
-                                {
-                                "keyword": "chlorophylle",
-                                "options": { "points": 1, "caseSensitive": false }
-                                }
-                            ]
-                            }
-                            \`\`\`
+${pt.essay_prompt_example_json_title}
+\`\`\`json
+{
+"taskDescription": "<p>Rédige un court texte expliquant la photosynthèse.</p>",
+"keywords": [
+{
+"keyword": "lumière",
+"options": { "points": 1, "caseSensitive": false }
+},
+{
+"keyword": "chlorophylle",
+"options": { "points": 1, "caseSensitive": false }
+}
+]
+}
+\`\`\`
 
-                            ${pt.essay_prompt_generate_only_json}${languageInstruction}`;
+${pt.essay_prompt_generate_only_json}${languageInstruction}`;
 
         const moodleXmlPrompt = `
-                                ${contextPrompt}
-                                ${pt.moodle_xml_prompt_intro.replace('${nombreQuestions}', nombreQuestions)}
-                                ${pt.moodle_xml_prompt_content_title}
+${contextPrompt}
+${pt.moodle_xml_prompt_intro.replace('${nombreQuestions}', nombreQuestions)}
+${pt.moodle_xml_prompt_content_title}
 
-                                ${pt.moodle_xml_prompt_content_rule1}
-                                ${pt.moodle_xml_prompt_content_rule2}
-                                ${pt.moodle_xml_prompt_content_rule3}
-                                ${pt.moodle_xml_prompt_content_rule4}
+${pt.moodle_xml_prompt_content_rule1}
+${pt.moodle_xml_prompt_content_rule2}
+${pt.moodle_xml_prompt_content_rule3}
+${pt.moodle_xml_prompt_content_rule4}
 
-                                ${pt.moodle_xml_prompt_question_types_intro}
-                                ${pt.moodle_xml_prompt_question_type_multichoice}
-                                ${pt.moodle_xml_prompt_question_type_matching}
-                                ${pt.moodle_xml_prompt_question_type_numerical}
-                                ${pt.moodle_xml_prompt_question_type_truefalse}
-                                ${pt.moodle_xml_prompt_question_type_shortanswer}
-                                ${pt.moodle_xml_prompt_question_type_cloze}
-                                
-                                ${pt.moodle_xml_prompt_form_title}
-                                ${pt.moodle_xml_prompt_form_rule1}
+${pt.moodle_xml_prompt_question_types_intro}
+${pt.moodle_xml_prompt_question_type_multichoice}
+${pt.moodle_xml_prompt_question_type_matching}
+${pt.moodle_xml_prompt_question_type_numerical}
+${pt.moodle_xml_prompt_question_type_truefalse}
+${pt.moodle_xml_prompt_question_type_shortanswer}
+${pt.moodle_xml_prompt_question_type_cloze}
 
-                                ${pt.moodle_xml_prompt_form_rule1_encoding}
-                                ${pt.moodle_xml_prompt_form_rule1_reusable}
-                                ${pt.moodle_xml_prompt_form_rule1_standard_structure}
-                                ${pt.moodle_xml_prompt_form_rule1_special_chars}
+${pt.moodle_xml_prompt_form_title}
+${pt.moodle_xml_prompt_form_rule1}
 
+${pt.moodle_xml_prompt_form_rule1_encoding}
+${pt.moodle_xml_prompt_form_rule1_reusable}
+${pt.moodle_xml_prompt_form_rule1_standard_structure}
+${pt.moodle_xml_prompt_form_rule1_special_chars}
 
-                                ${pt.moodle_xml_prompt_generate_only_xml}${languageInstruction}`;
+${pt.moodle_xml_prompt_generate_only_xml}${languageInstruction}`;
 
         const giftPrompt = `
-                           ${contextPrompt}
-                           ${pt.gift_prompt_intro.replace('${nombreQuestions}', nombreQuestions)}
+${contextPrompt}
+${pt.gift_prompt_intro.replace('${nombreQuestions}', nombreQuestions)}
 
-                           ${pt.gift_prompt_format_info}
+${pt.gift_prompt_format_info}
 
-                           ${pt.gift_prompt_question_quality}
+${pt.gift_prompt_question_quality}
 
-                           ${pt.gift_prompt_code_format_intro}
+${pt.gift_prompt_code_format_intro}
 
-                           ${pt.gift_prompt_example_question_comment}
+${pt.gift_prompt_example_question_comment}
 
-                           ${pt.gift_prompt_example_question_text}
+${pt.gift_prompt_example_question_text}
 
-                               ${pt.gift_prompt_example_answer_correct}
+${pt.gift_prompt_example_answer_correct}
 
-                               ${pt.gift_prompt_example_answer_incorrect1}
+${pt.gift_prompt_example_answer_incorrect1}
 
-                               ${pt.gift_prompt_example_answer_incorrect2}
+${pt.gift_prompt_example_answer_incorrect2}
 
-                               ${pt.gift_prompt_example_answer_incorrect3}
+${pt.gift_prompt_example_answer_incorrect3}
 
-                           ${pt.gift_prompt_example_end_bracket}
+${pt.gift_prompt_example_end_bracket}
 
-                           ${pt.gift_prompt_question_types_intro}
-                           ${pt.gift_prompt_question_type_multichoice}
-                           ${pt.gift_prompt_question_type_truefalse}
-                           ${pt.gift_prompt_question_type_numerical}
-                           ${pt.gift_prompt_question_type_matching}
+${pt.gift_prompt_question_types_intro}
+${pt.gift_prompt_question_type_multichoice}
+${pt.gift_prompt_question_type_truefalse}
+${pt.gift_prompt_question_type_numerical}
+${pt.gift_prompt_question_type_matching}
 
-                           ${pt.gift_prompt_generate_only_gift}${languageInstruction}`;
-
+${pt.gift_prompt_generate_only_gift}${languageInstruction}`;
         
-        const flashcardsPrompt = `${pt.flashcards_prompt_role}
-                                ${contextPrompt}
+const flashcardsPrompt = `${pt.flashcards_prompt_role}
+${contextPrompt}
 
-                                ${pt.flashcards_prompt_mission}
-                                ${pt.flashcards_prompt_generate_json}
+${pt.flashcards_prompt_mission}
+${pt.flashcards_prompt_generate_json}
 
-                                ${pt.flashcards_prompt_json_structure_title}
-                                ${pt.flashcards_prompt_json_structure_main_object}
-                                - ${pt.flashcards_prompt_title}
-                                - ${pt.flashcards_prompt_description}
-                                - ${pt.flashcards_prompt_cards_array.replace('${nombreQuestions}', nombreQuestions)}
-                                    - ${pt.flashcards_prompt_text}
-                                    - ${pt.flashcards_prompt_answer}
-                                    - ${pt.flashcards_prompt_tip}
+${pt.flashcards_prompt_json_structure_title}
+${pt.flashcards_prompt_json_structure_main_object}
+- ${pt.flashcards_prompt_title}
+- ${pt.flashcards_prompt_description}
+- ${pt.flashcards_prompt_cards_array.replace('${nombreQuestions}', nombreQuestions)}
+- ${pt.flashcards_prompt_text}
+- ${pt.flashcards_prompt_answer}
+- ${pt.flashcards_prompt_tip}
 
-                                ${pt.flashcards_prompt_example_json_title}
-                                \`\`\`json
-                                {
-                                "title": "Les capitales d'Europe",
-                                "description": "Mémorise la capitale de chaque pays. Clique sur la carte pour voir la réponse.",
-                                "cards": [
-                                    {
-                                    "text": "France",
-                                    "answer": "Paris"
-                                    },
-                                    {
-                                    "text": "Pays-Bas",
-                                    "answer": "Amsterdam",
-                                    "tip": "<p>C'est la ville des <strong>canaux</strong> et des tulipes !</p>"
-                                    }
-                                ]
-                                }
-                                \`\`\`
+${pt.flashcards_prompt_example_json_title}
+\`\`\`json
+{
+"title": "Les capitales d'Europe",
+"description": "Mémorise la capitale de chaque pays. Clique sur la carte pour voir la réponse.",
+"cards": [
+{
+"text": "France",
+"answer": "Paris"
+},
+{
+"text": "Pays-Bas",
+"answer": "Amsterdam",
+"tip": "<p>C'est la ville des <strong>canaux</strong> et des tulipes !</p>"
+}
+]
+}
+\`\`\`
 
-                                ${pt.flashcards_prompt_generate_only_json}${languageInstruction}`;
+${pt.flashcards_prompt_generate_only_json}${languageInstruction}`;
 
-        const quizSetPrompt = `${pt.quiz_set_prompt_role}
-   ${contextPrompt}
+const quizSetPrompt = `${pt.quiz_set_prompt_role}
+${contextPrompt}
 
-   ${pt.quiz_set_prompt_mission}
-   ${pt.quiz_set_prompt_generate_json}
+${pt.quiz_set_prompt_mission}
+${pt.quiz_set_prompt_generate_json}
 
-   ${pt.quiz_set_prompt_json_structure_title}
-   ${pt.quiz_set_prompt_json_structure_main_object}
-   - ${pt.quiz_set_prompt_progress_type}
-   - ${pt.quiz_set_prompt_pass_percentage}
-   - ${pt.quiz_set_prompt_questions_array.replace('${nombreQuestions}', nombreQuestions)}
+${pt.quiz_set_prompt_json_structure_title}
+${pt.quiz_set_prompt_json_structure_main_object}
+- ${pt.quiz_set_prompt_progress_type}
+- ${pt.quiz_set_prompt_pass_percentage}
+- ${pt.quiz_set_prompt_questions_array.replace('${nombreQuestions}', nombreQuestions)}
 
-   ${pt.quiz_set_prompt_content_rules_title}
-   ${pt.quiz_set_prompt_rule1}
-   ${pt.quiz_set_prompt_rule2}
-   ${pt.quiz_set_prompt_rule3}
-   ${pt.quiz_set_prompt_rule4}
-   ${pt.quiz_set_prompt_rule5}
-   ${pt.quiz_set_prompt_rule6}
-   
-   ${pt.quiz_set_prompt_example_json_title}
+${pt.quiz_set_prompt_content_rules_title}
+${pt.quiz_set_prompt_rule1}
+${pt.quiz_set_prompt_rule2}
+${pt.quiz_set_prompt_rule3}
+${pt.quiz_set_prompt_rule4}
+${pt.quiz_set_prompt_rule5}
+${pt.quiz_set_prompt_rule6}
+
+${pt.quiz_set_prompt_example_json_title}
 
    **Vrai/Faux :**
    \`\`\`json
@@ -1950,577 +1948,577 @@ ${JSON.stringify(JSON.parse(pt.quiz_set_essay_example), null, 2)}
 
    ${pt.quiz_set_prompt_generate_only_json}${languageInstruction}`;
 
-        const glossaryPrompt = `${pt.glossary_prompt_role}
-                                ${contextPrompt}
+const glossaryPrompt = `${pt.glossary_prompt_role}
+${contextPrompt}
 
-                                ${pt.glossary_prompt_mission}
-                                ${pt.glossary_prompt_generate_json}
+${pt.glossary_prompt_mission}
+${pt.glossary_prompt_generate_json}
 
-                                ${pt.glossary_prompt_json_structure_title}
-                                ${pt.glossary_prompt_json_structure_main_object.replace('${nombreQuestions}', nombreQuestions)}
-                                - ${pt.glossary_prompt_title}
-                                - ${pt.glossary_prompt_content}
+${pt.glossary_prompt_json_structure_title}
+${pt.glossary_prompt_json_structure_main_object.replace('${nombreQuestions}', nombreQuestions)}
+- ${pt.glossary_prompt_title}
+- ${pt.glossary_prompt_content}
 
-                                ${pt.glossary_prompt_content_rules_title}
-                                ${pt.glossary_prompt_rule1}
+${pt.glossary_prompt_content_rules_title}
+${pt.glossary_prompt_rule1}
 
-                                ${pt.glossary_prompt_example_json_title}
-                                \`\`\`json
-                                [
-                                    {
-                                      "title": "Photosynthèse",
-                                      "text": "<p>Processus par lequel les plantes vertes transforment la lumière du soleil en énergie.</p>"
-                                    },
-                                    {
-                                      "title": "Cellule",
-                                      "text": "<p>Unité de base de tous les êtres vivants.</p>"
-                                    }
-                                ]
-                                \`\`\`
+${pt.glossary_prompt_example_json_title}
+\`\`\`json
+[
+{
+"title": "Photosynthèse",
+"text": "<p>Processus par lequel les plantes vertes transforment la lumière du soleil en énergie.</p>"
+},
+{
+"title": "Cellule",
+"text": "<p>Unité de base de tous les êtres vivants.</p>"
+}
+]
+\`\`\`
 
-                                ${pt.glossary_prompt_generate_only_json}${languageInstruction}`;
+${pt.glossary_prompt_generate_only_json}${languageInstruction}`;
 
-        const summaryPrompt = `${pt.summary_prompt_role}
-                                ${contextPrompt}
+const summaryPrompt = `${pt.summary_prompt_role}
+${contextPrompt}
 
-                                ${pt.summary_prompt_mission}
-                                ${pt.summary_prompt_generate_json}
+${pt.summary_prompt_mission}
+${pt.summary_prompt_generate_json}
 
-                                ${pt.summary_prompt_json_structure_title}
-                                ${pt.summary_prompt_json_structure_main_object}
-                                - ${pt.summary_prompt_intro_field}
-                                - ${pt.summary_prompt_summaries_array.replace('${nombreQuestions}', nombreQuestions)}
-                                ${pt.summary_prompt_summary_object}
-                                - ${pt.summary_prompt_summary_array}
-                                - ${pt.summary_prompt_tip_field}
-                                - ${pt.summary_prompt_overall_feedback}
+${pt.summary_prompt_json_structure_title}
+${pt.summary_prompt_json_structure_main_object}
+- ${pt.summary_prompt_intro_field}
+- ${pt.summary_prompt_summaries_array.replace('${nombreQuestions}', nombreQuestions)}
+${pt.summary_prompt_summary_object}
+- ${pt.summary_prompt_summary_array}
+- ${pt.summary_prompt_tip_field}
+- ${pt.summary_prompt_overall_feedback}
 
-                                ${pt.summary_prompt_content_rules_title}
-                                ${pt.summary_prompt_rule1}
-                                ${pt.summary_prompt_rule2}
-                                ${pt.summary_prompt_rule3}
+${pt.summary_prompt_content_rules_title}
+${pt.summary_prompt_rule1}
+${pt.summary_prompt_rule2}
+${pt.summary_prompt_rule3}
 
-                                ${pt.summary_prompt_example_json_title}
-                                \`\`\`json
-                                {
-                                "summaries": [
-                                    {
-                                    "summary": [
-                                        "Ceci est la phrase correcte.",
-                                        "Ceci est un distracteur.",
-                                        "Ceci est un autre distracteur."
-                                    ]
-                                    }
-                                ]
-                                }
-                                \`\`\`
+${pt.summary_prompt_example_json_title}
+\`\`\`json
+{
+"summaries": [
+{
+"summary": [
+    "Ceci est la phrase correcte.",
+    "Ceci est un distracteur.",
+    "Ceci est un autre distracteur."
+]
+}
+]
+}
+\`\`\`
 
-                                ${pt.summary_prompt_generate_only_json}${languageInstruction}`;
+${pt.summary_prompt_generate_only_json}${languageInstruction}`;
 
-        const dragWordPrompt = `${pt.drag_word_prompt_role}
-                                ${contextPrompt}
+const dragWordPrompt = `${pt.drag_word_prompt_role}
+${contextPrompt}
 
-                                ${pt.drag_word_prompt_mission}
-                                ${pt.drag_word_prompt_generate_json}
+${pt.drag_word_prompt_mission}
+${pt.drag_word_prompt_generate_json}
 
-                                ${pt.drag_word_prompt_json_structure_title}
-                                ${pt.drag_word_prompt_json_structure_main_object}
-                                - ${pt.drag_word_prompt_task_description}
-                                - ${pt.drag_word_prompt_text_field}
-                                - ${pt.drag_word_prompt_overall_feedback}
+${pt.drag_word_prompt_json_structure_title}
+${pt.drag_word_prompt_json_structure_main_object}
+- ${pt.drag_word_prompt_task_description}
+- ${pt.drag_word_prompt_text_field}
+- ${pt.drag_word_prompt_overall_feedback}
 
-                                ${pt.drag_word_prompt_content_rules_title}
-                                ${pt.drag_word_prompt_rule1}
-                                ${pt.drag_word_prompt_rule2.replace('${nombreQuestions}', nombreQuestions)}
+${pt.drag_word_prompt_content_rules_title}
+${pt.drag_word_prompt_rule1}
+${pt.drag_word_prompt_rule2.replace('${nombreQuestions}', nombreQuestions)}
 
-                                ${pt.drag_word_prompt_example_json_title}
-                                \`\`\`json
-                                {
-                                "taskDescription": "Complète le texte en faisant glisser les mots.",
-                                "textField": "Le *système solaire* est composé de *huit* planètes qui tournent autour du *Soleil*."
-                                }
-                                \`\`\`
+${pt.drag_word_prompt_example_json_title}
+\`\`\`json
+{
+"taskDescription": "Complète le texte en faisant glisser les mots.",
+"textField": "Le *système solaire* est composé de *huit* planètes qui tournent autour du *Soleil*."
+}
+\`\`\`
 
-                                ${pt.drag_word_prompt_generate_only_json}${languageInstruction}`;
+${pt.drag_word_prompt_generate_only_json}${languageInstruction}`;
 
-        const blanksPrompt = `${pt.blanks_prompt_role}
-                            ${contextPrompt}
+const blanksPrompt = `${pt.blanks_prompt_role}
+${contextPrompt}
 
-                            ${pt.blanks_prompt_mission}
-                            ${pt.blanks_prompt_generate_json}
+${pt.blanks_prompt_mission}
+${pt.blanks_prompt_generate_json}
 
-                            ${pt.blanks_prompt_json_structure_title}
-                            ${pt.blanks_prompt_json_structure_main_object}
+${pt.blanks_prompt_json_structure_title}
+${pt.blanks_prompt_json_structure_main_object}
 
-                            ${pt.blanks_prompt_content_rules_title}
-                            - ${pt.blanks_prompt_overall_feedback}
-                            ${pt.blanks_prompt_rule1}
-                            ${pt.blanks_prompt_rule2}
-                            ${pt.blanks_prompt_rule3}
+${pt.blanks_prompt_content_rules_title}
+- ${pt.blanks_prompt_overall_feedback}
+${pt.blanks_prompt_rule1}
+${pt.blanks_prompt_rule2}
+${pt.blanks_prompt_rule3}
 
-                            ${pt.blanks_prompt_example_json_title}
-                            \`\`\`json
-                            {
-                            "questions": [
-                                "Le système solaire a *huit* planètes. La plus grande est *Jupiter*.",
-                                "La capitale de la France est *Paris/Ville Lumière*."
-                            ]
-                            }
-                            \`\`\`
+${pt.blanks_prompt_example_json_title}
+\`\`\`json
+{
+"questions": [
+"Le système solaire a *huit* planètes. La plus grande est *Jupiter*.",
+"La capitale de la France est *Paris/Ville Lumière*."
+]
+}
+\`\`\`
 
-                            ${pt.blanks_prompt_generate_only_json}${languageInstruction}`;
+${pt.blanks_prompt_generate_only_json}${languageInstruction}`;
 
-        const markWordsPrompt = `${pt.mark_words_prompt_role}
-                                ${contextPrompt}
+const markWordsPrompt = `${pt.mark_words_prompt_role}
+${contextPrompt}
 
-                                ${pt.mark_words_prompt_mission}
-                                ${pt.mark_words_prompt_generate_json}
+${pt.mark_words_prompt_mission}
+${pt.mark_words_prompt_generate_json}
 
-                                ${pt.mark_words_prompt_json_structure_title}
-                                ${pt.mark_words_prompt_json_structure_main_object}
-                                - ${pt.mark_words_prompt_task_description}
-                                - ${pt.mark_words_prompt_text_field}
-                                - ${pt.mark_words_prompt_overall_feedback}
+${pt.mark_words_prompt_json_structure_title}
+${pt.mark_words_prompt_json_structure_main_object}
+- ${pt.mark_words_prompt_task_description}
+- ${pt.mark_words_prompt_text_field}
+- ${pt.mark_words_prompt_overall_feedback}
 
-                                ${pt.mark_words_prompt_content_rules_title}
-                                ${pt.mark_words_prompt_rule1}
-                                ${pt.mark_words_prompt_rule2.replace('${nombreQuestions}', nombreQuestions)}
-                                ${pt.mark_words_prompt_rule3}
-                                ${pt.mark_words_prompt_rule4}
+${pt.mark_words_prompt_content_rules_title}
+${pt.mark_words_prompt_rule1}
+${pt.mark_words_prompt_rule2.replace('${nombreQuestions}', nombreQuestions)}
+${pt.mark_words_prompt_rule3}
+${pt.mark_words_prompt_rule4}
 
-                                ${pt.mark_words_prompt_example_json_title}
-                                \`\`\`json
-                                {
-                                "taskDescription": "Clique sur les mots importants dans le texte.",
-                                "textField": "Le *système solaire* est composé de *huit* planètes qui tournent autour du *Soleil*."
-                                }
-                                \`\`\`
+${pt.mark_words_prompt_example_json_title}
+\`\`\`json
+{
+"taskDescription": "Clique sur les mots importants dans le texte.",
+"textField": "Le *système solaire* est composé de *huit* planètes qui tournent autour du *Soleil*."
+}
+\`\`\`
 
-                                ${pt.mark_words_prompt_generate_only_json}${languageInstruction}`;
+${pt.mark_words_prompt_generate_only_json}${languageInstruction}`;
 
-        const millionnairePrompt = `${pt.millionnaire_prompt_role}
-                                    ${contextPrompt}
-                                    ${pt.millionnaire_prompt_num_questions}
+const millionnairePrompt = `${pt.millionnaire_prompt_role}
+${contextPrompt}
+${pt.millionnaire_prompt_num_questions}
 
-                                    ${pt.millionnaire_prompt_mission}
-                                    ${pt.millionnaire_prompt_generate_json}
+${pt.millionnaire_prompt_mission}
+${pt.millionnaire_prompt_generate_json}
 
-                                    ${pt.millionnaire_prompt_important_rules_title}
-                                    ${pt.millionnaire_prompt_rule1}
-                                    ${pt.millionnaire_prompt_rule2}
-                                    ${pt.millionnaire_prompt_rule3}
+${pt.millionnaire_prompt_important_rules_title}
+${pt.millionnaire_prompt_rule1}
+${pt.millionnaire_prompt_rule2}
+${pt.millionnaire_prompt_rule3}
 
-                                    ${pt.millionnaire_prompt_json_structure_title}
-                                    ${pt.millionnaire_prompt_main_object}
-                                    ${pt.millionnaire_prompt_title}
-                                    ${pt.millionnaire_prompt_questions_array}
-                                        ${pt.millionnaire_prompt_question}
-                                        ${pt.millionnaire_prompt_good_answer}
-                                        ${pt.millionnaire_prompt_bad_answer}
+${pt.millionnaire_prompt_json_structure_title}
+${pt.millionnaire_prompt_main_object}
+${pt.millionnaire_prompt_title}
+${pt.millionnaire_prompt_questions_array}
+${pt.millionnaire_prompt_question}
+${pt.millionnaire_prompt_good_answer}
+${pt.millionnaire_prompt_bad_answer}
 
-                                    ${pt.millionnaire_prompt_example_json_title}
-                                    \`\`\`json
-                                    {
-                                    "title": "Quiz sur la Révolution Française",
-                                    "questions": [
-                                        {
-                                        "question": "Quelle est la capitale de la France ?",
-                                        "goodanswer": "Paris",
-                                        "badanswer": ["Berlin", "Londres", "Madrid"]
-                                        }
-                                    ]
-                                    }
-                                    \`\`\`
+${pt.millionnaire_prompt_example_json_title}
+\`\`\`json
+{
+"title": "Quiz sur la Révolution Française",
+"questions": [
+{
+"question": "Quelle est la capitale de la France ?",
+"goodanswer": "Paris",
+"badanswer": ["Berlin", "Londres", "Madrid"]
+}
+]
+}
+\`\`\`
 
-                                    ${pt.millionnaire_prompt_generate_only_json}${languageInstruction}`;
+${pt.millionnaire_prompt_generate_only_json}${languageInstruction}`;
 
-       const appariementPrompt = `${pt.appariement_prompt_role}
-                                    ${contextPrompt}
-                                    ${pt.appariement_prompt_num_questions}
+const appariementPrompt = `${pt.appariement_prompt_role}
+${contextPrompt}
+${pt.appariement_prompt_num_questions}
 
-                                   ${pt.appariement_prompt_mission}
-                                   ${pt.appariement_prompt_generate_json}
+${pt.appariement_prompt_mission}
+${pt.appariement_prompt_generate_json}
 
-                                   ${pt.appariement_prompt_important_rules_title}
-                                   ${pt.appariement_prompt_rule1}
-                                   ${pt.appariement_prompt_rule2}
-                                   ${pt.appariement_prompt_rule3}
+${pt.appariement_prompt_important_rules_title}
+${pt.appariement_prompt_rule1}
+${pt.appariement_prompt_rule2}
+${pt.appariement_prompt_rule3}
 
-                                   ${pt.appariement_prompt_json_structure_title}
-                                   ${pt.appariement_prompt_main_object}
-                                   ${pt.appariement_prompt_title}
-                                   ${pt.appariement_prompt_pairs_array}
-                                       ${pt.appariement_prompt_question}
-                                       ${pt.appariement_prompt_answer}
+${pt.appariement_prompt_json_structure_title}
+${pt.appariement_prompt_main_object}
+${pt.appariement_prompt_title}
+${pt.appariement_prompt_pairs_array}
+${pt.appariement_prompt_question}
+${pt.appariement_prompt_answer}
 
-                                   ${pt.appariement_prompt_example_json_title}
-                                   \`\`\`json
-                                   {
-                                   "title": "Appariement sur la Révolution Française",
-                                   "pairs": [
-                                       {
-                                       "question": "Prise de la Bastille",
-                                       "answer": "14 juillet 1789"
-                                       }
-                                   ]
-                                   }
-                                   \`\`\`
+${pt.appariement_prompt_example_json_title}
+\`\`\`json
+{
+"title": "Appariement sur la Révolution Française",
+"pairs": [
+{
+"question": "Prise de la Bastille",
+"answer": "14 juillet 1789"
+}
+]
+}
+\`\`\`
 
-                                   ${pt.appariement_prompt_generate_only_json}${languageInstruction}`;
+${pt.appariement_prompt_generate_only_json}${languageInstruction}`;
 
-        const qcmPrompt = `${pt.qcm_prompt_role}
-                                    ${contextPrompt}
-                                    ${pt.qcm_prompt_num_questions}
+const qcmPrompt = `${pt.qcm_prompt_role}
+${contextPrompt}
+${pt.qcm_prompt_num_questions}
+
+${pt.qcm_prompt_mission}
+${pt.qcm_prompt_generate_json}
+
+${pt.qcm_prompt_important_rules_title}
+${pt.qcm_prompt_rule1}
+${pt.qcm_prompt_rule2}
+${pt.qcm_prompt_rule3}
+
+${pt.qcm_prompt_json_structure_title}
+${pt.qcm_prompt_main_object}
+${pt.qcm_prompt_title}
+${pt.qcm_prompt_questions_array}
+${pt.qcm_prompt_question_text}
+${pt.qcm_prompt_answers_array}
+${pt.qcm_prompt_answer_text}
+${pt.qcm_prompt_answer_iscorrect}
+
+${pt.qcm_prompt_example_json_title}
+\`\`\`json
+{
+"title": "QCM sur la Révolution Française",
+"questions": [
+{
+"text": "<p>Quelle est la date de la prise de la Bastille ?</p>",
+"answers": [
+{ "text": "<p>14 juillet 1789</p>", "iscorrect": 1 },
+{ "text": "<p>4 août 1789</p>", "iscorrect": 0 },
+{ "text": "<p>26 août 1789</p>", "iscorrect": 0 }
+]
+}
+]
+}
+\`\`\`
+
+${pt.qcm_prompt_generate_only_json}${languageInstruction}`;
  
-                                    ${pt.qcm_prompt_mission}
-                                    ${pt.qcm_prompt_generate_json}
- 
-                                    ${pt.qcm_prompt_important_rules_title}
-                                    ${pt.qcm_prompt_rule1}
-                                    ${pt.qcm_prompt_rule2}
-                                    ${pt.qcm_prompt_rule3}
- 
-                                    ${pt.qcm_prompt_json_structure_title}
-                                    ${pt.qcm_prompt_main_object}
-                                    ${pt.qcm_prompt_title}
-                                    ${pt.qcm_prompt_questions_array}
-                                        ${pt.qcm_prompt_question_text}
-                                        ${pt.qcm_prompt_answers_array}
-                                            ${pt.qcm_prompt_answer_text}
-                                            ${pt.qcm_prompt_answer_iscorrect}
- 
-                                    ${pt.qcm_prompt_example_json_title}
-                                    \`\`\`json
-                                    {
-                                      "title": "QCM sur la Révolution Française",
-                                      "questions": [
-                                        {
-                                          "text": "<p>Quelle est la date de la prise de la Bastille ?</p>",
-                                          "answers": [
-                                            { "text": "<p>14 juillet 1789</p>", "iscorrect": 1 },
-                                            { "text": "<p>4 août 1789</p>", "iscorrect": 0 },
-                                            { "text": "<p>26 août 1789</p>", "iscorrect": 0 }
-                                          ]
-                                        }
-                                      ]
-                                    }
-                                    \`\`\`
- 
-                                    ${pt.qcm_prompt_generate_only_json}${languageInstruction}`;
- 
-       const trueFalsePrompt = `${pt.true_false_prompt_role}
-                               ${contextPrompt}
+const trueFalsePrompt = `${pt.true_false_prompt_role}
+${contextPrompt}
 
-                               ${pt.true_false_prompt_mission}
-                               ${pt.true_false_prompt_generate_json}
+${pt.true_false_prompt_mission}
+${pt.true_false_prompt_generate_json}
 
-                               ${pt.true_false_prompt_json_structure_title}
-                               ${pt.true_false_prompt_json_structure_main_object}
-                               - ${pt.true_false_prompt_question}
-                               - ${pt.true_false_prompt_correct}
-                              - ${pt.true_false_prompt_feedback_correct}
-                              - ${pt.true_false_prompt_feedback_wrong}
+${pt.true_false_prompt_json_structure_title}
+${pt.true_false_prompt_json_structure_main_object}
+- ${pt.true_false_prompt_question}
+- ${pt.true_false_prompt_correct}
+- ${pt.true_false_prompt_feedback_correct}
+- ${pt.true_false_prompt_feedback_wrong}
 
-                               ${pt.true_false_prompt_content_rules_title}
-                               ${pt.true_false_prompt_rule1}
-                               ${pt.true_false_prompt_rule2}
+${pt.true_false_prompt_content_rules_title}
+${pt.true_false_prompt_rule1}
+${pt.true_false_prompt_rule2}
 
-                               ${pt.true_false_prompt_example_json_title}
-                               \`\`\`json
-                               {
-                                   "question": "<p>Oslo est la capitale de la Norvège.</p>",
-                                   "correct": "true",
-                                   "feedbackOnCorrect": "Bonne réponse ! Oslo est bien la capitale de la Norvège.",
-                                   "feedbackOnWrong": "Mauvaise réponse. La capitale de la Norvège est Oslo."
-                               }
-                               \`\`\`
+${pt.true_false_prompt_example_json_title}
+\`\`\`json
+{
+"question": "<p>Oslo est la capitale de la Norvège.</p>",
+"correct": "true",
+"feedbackOnCorrect": "Bonne réponse ! Oslo est bien la capitale de la Norvège.",
+"feedbackOnWrong": "Mauvaise réponse. La capitale de la Norvège est Oslo."
+}
+\`\`\`
 
-                               ${pt.true_false_prompt_generate_only_json}${languageInstruction}`;
+${pt.true_false_prompt_generate_only_json}${languageInstruction}`;
 
-       const multipleChoicePrompt = `${pt.multiple_choice_prompt_role}
-                               ${contextPrompt}
+const multipleChoicePrompt = `${pt.multiple_choice_prompt_role}
+${contextPrompt}
 
-                               ${pt.multiple_choice_prompt_mission}
-                               ${pt.multiple_choice_prompt_generate_json}
+${pt.multiple_choice_prompt_mission}
+${pt.multiple_choice_prompt_generate_json}
 
-                               ${pt.multiple_choice_prompt_json_structure_title}
-                               ${pt.multiple_choice_prompt_json_structure_main_object}
-                               - ${pt.multiple_choice_prompt_question}
-                               - ${pt.multiple_choice_prompt_answers_array}
-                                   - ${pt.multiple_choice_prompt_text}
-                                   - ${pt.multiple_choice_prompt_correct}
-                               - ${pt.multiple_choice_prompt_overall_feedback}
+${pt.multiple_choice_prompt_json_structure_title}
+${pt.multiple_choice_prompt_json_structure_main_object}
+- ${pt.multiple_choice_prompt_question}
+- ${pt.multiple_choice_prompt_answers_array}
+- ${pt.multiple_choice_prompt_text}
+- ${pt.multiple_choice_prompt_correct}
+- ${pt.multiple_choice_prompt_overall_feedback}
 
-                               ${pt.multiple_choice_prompt_content_rules_title}
-                               ${pt.multiple_choice_prompt_rule1}
-                               ${pt.multiple_choice_prompt_rule2}
+${pt.multiple_choice_prompt_content_rules_title}
+${pt.multiple_choice_prompt_rule1}
+${pt.multiple_choice_prompt_rule2}
 
-                               ${pt.multiple_choice_prompt_example_json_title}
-                               \`\`\`json
-                               {
-                                 "question": "<p>Quelle est la couleur réelle de la baie de cassis ?</p>",
-                                 "answers": [
-                                   {
-                                     "correct": true,
-                                     "text": "<div>Violet très foncé</div>"
-                                   },
-                                   {
-                                     "correct": false,
-                                     "text": "<div>Bleu</div>"
-                                   },
-                                   {
-                                     "correct": false,
-                                     "text": "<div>Noir</div>"
-                                   }
-                                 ]
-                               }
-                               \`\`\`
+${pt.multiple_choice_prompt_example_json_title}
+\`\`\`json
+{
+"question": "<p>Quelle est la couleur réelle de la baie de cassis ?</p>",
+"answers": [
+{
+"correct": true,
+"text": "<div>Violet très foncé</div>"
+},
+{
+"correct": false,
+"text": "<div>Bleu</div>"
+},
+{
+"correct": false,
+"text": "<div>Noir</div>"
+}
+]
+}
+\`\`\`
 
-                               ${pt.multiple_choice_prompt_generate_only_json}${languageInstruction}`;
+${pt.multiple_choice_prompt_generate_only_json}${languageInstruction}`;
 
-       const findTheWordsPrompt = `${pt.find_the_words_prompt_role}
-                               ${contextPrompt}
+const findTheWordsPrompt = `${pt.find_the_words_prompt_role}
+${contextPrompt}
 
-                               ${pt.find_the_words_prompt_mission}
-                               ${pt.find_the_words_prompt_generate_json}
+${pt.find_the_words_prompt_mission}
+${pt.find_the_words_prompt_generate_json}
 
-                               ${pt.find_the_words_prompt_json_structure_title}
-                               ${pt.find_the_words_prompt_json_structure_main_object}
-                               - ${pt.find_the_words_prompt_task_description}
-                               - ${pt.find_the_words_prompt_word_list}
+${pt.find_the_words_prompt_json_structure_title}
+${pt.find_the_words_prompt_json_structure_main_object}
+- ${pt.find_the_words_prompt_task_description}
+- ${pt.find_the_words_prompt_word_list}
 
-                               ${pt.find_the_words_prompt_content_rules_title}
-                               ${pt.find_the_words_prompt_rule1}
+${pt.find_the_words_prompt_content_rules_title}
+${pt.find_the_words_prompt_rule1}
 
-                               ${pt.find_the_words_prompt_example_json_title}
-                               \`\`\`json
-                               {
-                                 "taskDescription": "Find the city names in the grid below",
-                                 "wordList": "Canberra,Minsk,Beijing,Oslo,Paris,London,Madrid,Athens,Tokyo,Moscow,Washington,Stockholm"
-                               }
-                               \`\`\`
+${pt.find_the_words_prompt_example_json_title}
+\`\`\`json
+{
+"taskDescription": "Find the city names in the grid below",
+"wordList": "Canberra,Minsk,Beijing,Oslo,Paris,London,Madrid,Athens,Tokyo,Moscow,Washington,Stockholm"
+}
+\`\`\`
 
-                               ${pt.find_the_words_prompt_generate_only_json}${languageInstruction}`;
+${pt.find_the_words_prompt_generate_only_json}${languageInstruction}`;
 
-       const sortParagraphsPrompt = `${pt.sort_the_paragraphs_prompt_role}
-                               ${contextPrompt}
+const sortParagraphsPrompt = `${pt.sort_the_paragraphs_prompt_role}
+${contextPrompt}
 
-                               ${pt.sort_the_paragraphs_prompt_mission}
-                               ${pt.sort_the_paragraphs_prompt_generate_json}
+${pt.sort_the_paragraphs_prompt_mission}
+${pt.sort_the_paragraphs_prompt_generate_json}
 
-                               ${pt.sort_the_paragraphs_prompt_json_structure_title}
-                               ${pt.sort_the_paragraphs_prompt_json_structure_main_object}
-                               - ${pt.sort_the_paragraphs_prompt_task_description}
-                               - ${pt.sort_the_paragraphs_prompt_paragraphs_array}
-                               - ${pt.sort_the_paragraphs_prompt_overall_feedback}
+${pt.sort_the_paragraphs_prompt_json_structure_title}
+${pt.sort_the_paragraphs_prompt_json_structure_main_object}
+- ${pt.sort_the_paragraphs_prompt_task_description}
+- ${pt.sort_the_paragraphs_prompt_paragraphs_array}
+- ${pt.sort_the_paragraphs_prompt_overall_feedback}
 
-                               ${pt.sort_the_paragraphs_prompt_content_rules_title}
-                               ${pt.sort_the_paragraphs_prompt_rule1}
+${pt.sort_the_paragraphs_prompt_content_rules_title}
+${pt.sort_the_paragraphs_prompt_rule1}
 
-                               ${pt.sort_the_paragraphs_prompt_example_json_title}
-                               \`\`\`json
-                               {
-                                 "taskDescription": "<p>My morning routine:</p>",
-                                 "paragraphs": [
-                                   "<p>First, I wake up at 7:30 am</p>",
-                                   "<p>Next, I get dressed</p>",
-                                   "<p>Then, I have breakfast</p>",
-                                   "<p>Afterward, I brush my teeth</p>",
-                                   "<p>Finally, I go to school</p>"
-                                 ]
-                               }
-                               \`\`\`
+${pt.sort_the_paragraphs_prompt_example_json_title}
+\`\`\`json
+{
+"taskDescription": "<p>My morning routine:</p>",
+"paragraphs": [
+"<p>First, I wake up at 7:30 am</p>",
+"<p>Next, I get dressed</p>",
+"<p>Then, I have breakfast</p>",
+"<p>Afterward, I brush my teeth</p>",
+"<p>Finally, I go to school</p>"
+]
+}
+\`\`\`
 
-                               ${pt.sort_the_paragraphs_prompt_generate_only_json}${languageInstruction}`;
+${pt.sort_the_paragraphs_prompt_generate_only_json}${languageInstruction}`;
 
-       const singleChoiceSetPrompt = `${pt.single_choice_set_prompt_role}
-                               ${contextPrompt}
+const singleChoiceSetPrompt = `${pt.single_choice_set_prompt_role}
+${contextPrompt}
 
-                               ${pt.single_choice_set_prompt_mission}
-                               ${pt.single_choice_set_prompt_generate_json}
+${pt.single_choice_set_prompt_mission}
+${pt.single_choice_set_prompt_generate_json}
 
-                               ${pt.single_choice_set_prompt_json_structure_title}
-                               ${pt.single_choice_set_prompt_json_structure_main_object}
-                               - ${pt.single_choice_set_prompt_choices_array}
-                                   - ${pt.single_choice_set_prompt_question}
-                                   - ${pt.single_choice_set_prompt_answers_array}
-                               - ${pt.single_choice_set_prompt_overall_feedback}
+${pt.single_choice_set_prompt_json_structure_title}
+${pt.single_choice_set_prompt_json_structure_main_object}
+- ${pt.single_choice_set_prompt_choices_array}
+- ${pt.single_choice_set_prompt_question}
+- ${pt.single_choice_set_prompt_answers_array}
+- ${pt.single_choice_set_prompt_overall_feedback}
 
-                               ${pt.single_choice_set_prompt_content_rules_title}
-                               ${pt.single_choice_set_prompt_rule1}
+${pt.single_choice_set_prompt_content_rules_title}
+${pt.single_choice_set_prompt_rule1}
 
-                               ${pt.single_choice_set_prompt_example_json_title}
-                               \`\`\`json
-                               {
-                                 "choices": [
-                                   {
-                                     "question": "Goji berries are also known as ...",
-                                     "answers": ["Wolfberries", "Catberries", "Bearberries"]
-                                   },
-                                   {
-                                     "question": "Goji berries are native to ...",
-                                     "answers": ["Asia", "Africa", "Europe"]
-                                   }
-                                 ],
-                                 "overallFeedback": [
-                                   {"from": 0, "to": 100, "feedback": "You got :numcorrect of :maxscore correct"}
-                                 ]
-                               }
-                               \`\`\`
+${pt.single_choice_set_prompt_example_json_title}
+\`\`\`json
+{
+"choices": [
+{
+"question": "Goji berries are also known as ...",
+"answers": ["Wolfberries", "Catberries", "Bearberries"]
+},
+{
+"question": "Goji berries are native to ...",
+"answers": ["Asia", "Africa", "Europe"]
+}
+],
+"overallFeedback": [
+{"from": 0, "to": 100, "feedback": "You got :numcorrect of :maxscore correct"}
+]
+}
+\`\`\`
 
-                               ${pt.single_choice_set_prompt_generate_only_json}${languageInstruction}`;
+${pt.single_choice_set_prompt_generate_only_json}${languageInstruction}`;
 
-       const dialogCardsPrompt = `${pt.dialog_cards_prompt_role}
-                               ${contextPrompt}
+const dialogCardsPrompt = `${pt.dialog_cards_prompt_role}
+${contextPrompt}
 
-                               ${pt.dialog_cards_prompt_mission}
-                               ${pt.dialog_cards_prompt_generate_json}
+${pt.dialog_cards_prompt_mission}
+${pt.dialog_cards_prompt_generate_json}
 
-                               ${pt.dialog_cards_prompt_json_structure_title}
-                               ${pt.dialog_cards_prompt_json_structure_main_object}
-                               - ${pt.dialog_cards_prompt_title}
-                               - ${pt.dialog_cards_prompt_description}
-                               - ${pt.dialog_cards_prompt_dialogs_array}
-                                   - ${pt.dialog_cards_prompt_text}
-                                   - ${pt.dialog_cards_prompt_answer}
-                                   - ${pt.dialog_cards_prompt_tips}
+${pt.dialog_cards_prompt_json_structure_title}
+${pt.dialog_cards_prompt_json_structure_main_object}
+- ${pt.dialog_cards_prompt_title}
+- ${pt.dialog_cards_prompt_description}
+- ${pt.dialog_cards_prompt_dialogs_array}
+- ${pt.dialog_cards_prompt_text}
+- ${pt.dialog_cards_prompt_answer}
+- ${pt.dialog_cards_prompt_tips}
 
-                               ${pt.dialog_cards_prompt_content_rules_title}
-                               ${pt.dialog_cards_prompt_rule1}
-                               ${pt.dialog_cards_prompt_rule2}
-                               ${pt.dialog_cards_prompt_rule3}
+${pt.dialog_cards_prompt_content_rules_title}
+${pt.dialog_cards_prompt_rule1}
+${pt.dialog_cards_prompt_rule2}
+${pt.dialog_cards_prompt_rule3}
 
-                               ${pt.dialog_cards_prompt_example_json_title}
-                               \`\`\`json
-                               {
-                                 "title": "<p>Apprenez les noms des fruits en anglais</p>",
-                                 "description": "<p>Les noms des fruits sont présentés en français. Retournez les cartes pour voir la traduction anglaise correcte.</p>",
-                                 "dialogs": [
-                                   {
-                                     "text": "<p style=\\"text-align: center;\\">Fraises</p>",
-                                     "answer": "<p style=\\"text-align: center;\\">Strawberries</p>",
-                                     "image": {
-                                       "copyright": {
-                                         "license": "CC BY-SA",
-                                         "source": "https://commons.wikimedia.org/wiki/File:Bowl_of_Strawberries.jpg",
-                                         "author": "ShakataGaNai",
-                                         "title": "Bowl_of_Strawberries.jpg",
-                                         "version": "4.0"
-                                       },
-                                       "imageAltText": "Des fruits rouges avec des feuilles vertes"
-                                     },
-                                     "audio": [],
-                                     "tips": {}
-                                   },
-                                   {
-                                     "text": "<p style=\\"text-align: center;\\">Framboises</p>",
-                                     "answer": "<p style=\\"text-align: center;\\">Raspberries</p>",
-                                     "image": {
-                                       "copyright": {
-                                         "license": "CC BY",
-                                         "source": "https://commons.wikimedia.org/wiki/File:Summer_raspberries,_2008.jpg",
-                                         "title": "Summer_raspberries,_2008.jpg",
-                                         "author": "www.bluewaikiki.com",
-                                         "version": "4.0"
-                                       },
-                                       "imageAltText": "Des baies rouges"
-                                     },
-                                     "audio": [],
-                                     "tips": {}
-                                   }
-                                 ]
-                               }
-                               \`\`\`
+${pt.dialog_cards_prompt_example_json_title}
+\`\`\`json
+{
+"title": "<p>Apprenez les noms des fruits en anglais</p>",
+"description": "<p>Les noms des fruits sont présentés en français. Retournez les cartes pour voir la traduction anglaise correcte.</p>",
+"dialogs": [
+{
+"text": "<p style=\\"text-align: center;\\">Fraises</p>",
+"answer": "<p style=\\"text-align: center;\\">Strawberries</p>",
+"image": {
+"copyright": {
+"license": "CC BY-SA",
+"source": "https://commons.wikimedia.org/wiki/File:Bowl_of_Strawberries.jpg",
+"author": "ShakataGaNai",
+"title": "Bowl_of_Strawberries.jpg",
+"version": "4.0"
+},
+"imageAltText": "Des fruits rouges avec des feuilles vertes"
+},
+"audio": [],
+"tips": {}
+},
+{
+"text": "<p style=\\"text-align: center;\\">Framboises</p>",
+"answer": "<p style=\\"text-align: center;\\">Raspberries</p>",
+"image": {
+"copyright": {
+"license": "CC BY",
+"source": "https://commons.wikimedia.org/wiki/File:Summer_raspberries,_2008.jpg",
+"title": "Summer_raspberries,_2008.jpg",
+"author": "www.bluewaikiki.com",
+"version": "4.0"
+},
+"imageAltText": "Des baies rouges"
+},
+"audio": [],
+"tips": {}
+}
+]
+}
+\`\`\`
 
-                               ${pt.dialog_cards_prompt_generate_only_json}${languageInstruction}`;
+${pt.dialog_cards_prompt_generate_only_json}${languageInstruction}`;
        
-       const complexBlanksPrompt = `${pt.complex_blanks_prompt_role}
-                               ${contextPrompt}
+const complexBlanksPrompt = `${pt.complex_blanks_prompt_role}
+${contextPrompt}
 
-                               ${pt.complex_blanks_prompt_mission}
-                               ${pt.complex_blanks_prompt_generate_json}
+${pt.complex_blanks_prompt_mission}
+${pt.complex_blanks_prompt_generate_json}
 
-                               ${pt.complex_blanks_prompt_json_structure_title}
-                               ${pt.complex_blanks_prompt_json_structure_main_object}
-                               - ${pt.complex_blanks_prompt_task}
-                               - ${pt.complex_blanks_prompt_blanks_text}
-                               - ${pt.complex_blanks_prompt_blanks_list}
-                                   - ${pt.complex_blanks_prompt_correct_answer}
-                                   - ${pt.complex_blanks_prompt_incorrect_answers_list}
-                                       - ${pt.complex_blanks_prompt_incorrect_answer_text}
-                                       - ${pt.complex_blanks_prompt_incorrect_answer_feedback}
-                               - ${pt.complex_blanks_prompt_overall_feedback}
-                               
-                               ${pt.complex_blanks_prompt_content_rules_title}
-                               ${pt.complex_blanks_prompt_rule1}
-                               ${pt.complex_blanks_prompt_rule2}
-                               ${pt.complex_blanks_prompt_rule3}
+${pt.complex_blanks_prompt_json_structure_title}
+${pt.complex_blanks_prompt_json_structure_main_object}
+- ${pt.complex_blanks_prompt_task}
+- ${pt.complex_blanks_prompt_blanks_text}
+- ${pt.complex_blanks_prompt_blanks_list}
+- ${pt.complex_blanks_prompt_correct_answer}
+- ${pt.complex_blanks_prompt_incorrect_answers_list}
+- ${pt.complex_blanks_prompt_incorrect_answer_text}
+- ${pt.complex_blanks_prompt_incorrect_answer_feedback}
+- ${pt.complex_blanks_prompt_overall_feedback}
 
-                               ${pt.complex_blanks_prompt_example_json_title}
-                               \`\`\`json
-                               {
-                                   "content": {
-                                       "task": "<p>Put the verbs into the correct tense. You'll get individual feedback for typical mistakes.</p>",
-                                       "blanksList": [
-                                           {
-                                               "correctAnswerText": "doesn't speak/does not speak",
-                                               "incorrectAnswersList": [
-                                                   {
-                                                       "incorrectAnswerText": "speaks not/speak not",
-                                                       "incorrectAnswerFeedback": "<div>Remember to use 'do/does' when negating a full verb <em>(speak)</em>.</div>"
-                                                   },
-                                                   {
-                                                       "incorrectAnswerText": "don't speak/do not speak",
-                                                       "incorrectAnswerFeedback": "<div>You forgot the 'third person singular -s' for simple present <em>(he)</em>.</div>"
-                                                   }
-                                               ]
-                                           }
-                                       ],
-                                       "blanksText": "<p>He speaks English but he (not / speak) ___________<strong>&nbsp;</strong>German.</p>"
-                                   },
-                                   "overallFeedback": [
-                                       {"from": 0, "to": 50, "feedback": "Try again!"},
-                                       {"from": 51, "to": 75, "feedback": "You've done ok!"},
-                                       {"from": 76, "to": 100, "feedback": "Good job!"}
-                                   ]
-                               }
-                               \`\`\`
+${pt.complex_blanks_prompt_content_rules_title}
+${pt.complex_blanks_prompt_rule1}
+${pt.complex_blanks_prompt_rule2}
+${pt.complex_blanks_prompt_rule3}
 
-                               ${pt.complex_blanks_prompt_generate_only_json}${languageInstruction}`;
+${pt.complex_blanks_prompt_example_json_title}
+\`\`\`json
+{
+"content": {
+"task": "<p>Put the verbs into the correct tense. You'll get individual feedback for typical mistakes.</p>",
+"blanksList": [
+{
+"correctAnswerText": "doesn't speak/does not speak",
+"incorrectAnswersList": [
+{
+"incorrectAnswerText": "speaks not/speak not",
+"incorrectAnswerFeedback": "<div>Remember to use 'do/does' when negating a full verb <em>(speak)</em>.</div>"
+},
+{
+"incorrectAnswerText": "don't speak/do not speak",
+"incorrectAnswerFeedback": "<div>You forgot the 'third person singular -s' for simple present <em>(he)</em>.</div>"
+}
+]
+}
+],
+"blanksText": "<p>He speaks English but he (not / speak) ___________<strong>&nbsp;</strong>German.</p>"
+},
+"overallFeedback": [
+{"from": 0, "to": 50, "feedback": "Try again!"},
+{"from": 51, "to": 75, "feedback": "You've done ok!"},
+{"from": 76, "to": 100, "feedback": "Good job!"}
+]
+}
+\`\`\`
 
-       const chartPrompt = `${pt.chart_prompt_role}
-                               ${contextPrompt}
+${pt.complex_blanks_prompt_generate_only_json}${languageInstruction}`;
 
-                               ${pt.chart_prompt_mission}
-                               ${pt.chart_prompt_generate_json}
+const chartPrompt = `${pt.chart_prompt_role}
+${contextPrompt}
 
-                               ${pt.chart_prompt_json_structure_title}
-                               ${pt.chart_prompt_json_structure_main_object}
-                               - ${pt.chart_prompt_graph_mode}
-                               - ${pt.chart_prompt_list_of_types}
-                                   - ${pt.chart_prompt_value}
-                                   - ${pt.chart_prompt_color}
-                                   - ${pt.chart_prompt_font_color}
-                                   - ${pt.chart_prompt_text}
-                               - ${pt.chart_prompt_figure_definition}
+${pt.chart_prompt_mission}
+${pt.chart_prompt_generate_json}
 
-                               ${pt.chart_prompt_content_rules_title}
-                               ${pt.chart_prompt_rule1}
-                               ${pt.chart_prompt_rule2}
+${pt.chart_prompt_json_structure_title}
+${pt.chart_prompt_json_structure_main_object}
+- ${pt.chart_prompt_graph_mode}
+- ${pt.chart_prompt_list_of_types}
+- ${pt.chart_prompt_value}
+- ${pt.chart_prompt_color}
+- ${pt.chart_prompt_font_color}
+- ${pt.chart_prompt_text}
+- ${pt.chart_prompt_figure_definition}
 
-                               ${pt.chart_prompt_example_json_title}
-                               \`\`\`json
-                               {
-                                   "graphMode": "pieChart",
-                                   "listOfTypes": [
-                                       {"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "Blueberries"},
-                                       {"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "Raspberries"}
-                                   ],
-                                   "figureDefinition": "Chart"
-                               }
-                               \`\`\`
+${pt.chart_prompt_content_rules_title}
+${pt.chart_prompt_rule1}
+${pt.chart_prompt_rule2}
 
-                               ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
+${pt.chart_prompt_example_json_title}
+\`\`\`json
+{
+"graphMode": "pieChart",
+"listOfTypes": [
+{"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "Blueberries"},
+{"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "Raspberries"}
+],
+"figureDefinition": "Chart"
+}
+\`\`\`
+
+${pt.chart_prompt_generate_only_json}${languageInstruction}`;
 
         return {
             timelineResultat: timelinePrompt,
@@ -3028,13 +3026,19 @@ ${JSON.stringify(JSON.parse(pt.quiz_set_essay_example), null, 2)}
                }
             }
 
+            // Ajout de la dépendance TimelineJS si nécessaire
+            if (moduleKey === 'Timeline' && !dependenciesForJson.some(d => d.machineName === 'TimelineJS')) {
+                dependenciesForJson.push({ machineName: "TimelineJS", majorVersion: "1", minorVersion: "1" });
+            }
+
             const h5pJson = {
                 title: title,
+                language: "und",
                 mainLibrary: mainLibraryIdentifier,
                 embedTypes: ["iframe"],
-                preloadedDependencies: dependenciesForJson,
-                language: currentLang === 'zh' ? 'zh-cn' : currentLang,
-                license: "U"
+                license: "U",
+                defaultLanguage: currentLang === 'zh' ? 'zh-cn' : currentLang,
+                preloadedDependencies: dependenciesForJson
             };
             files.push({
               name: "h5p.json",

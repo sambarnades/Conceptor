@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,60 +10,68 @@
     <link rel="stylesheet" href="css/flag-icons.min.css">
     <link rel="icon" href="images/logo_caramel.ico" type="image/x-icon">
 </head>
+
 <body>
     <header class="app-bar">
         <div class="header-left">
             <img src="images/logo_caramel.png" alt="Logo Caramel" class="logo">
             <div class="title-container">
                 <h1>Caramel</h1>
-                <p class="subtitle" data-key="subtitle">Création Assistée de Ressources et d'Activités Moodle et Éléa</p>
+                <p class="subtitle" data-key="subtitle">Création Assistée de Ressources et d'Activités Moodle et Éléa
+                </p>
             </div>
         </div>
         <div class="header-right">
-           <div class="language-switcher">
-              <button class="language-btn" aria-label="Changer de langue">
-                  <i class="fas fa-globe"></i>
-              </button>
-              <ul class="language-dropdown">
-                  <li><a href="#" data-lang="fr"><span class="fi fi-fr"></span>Français</a></li>
-                  <li><a href="#" data-lang="de"><span class="fi fi-de"></span>Deutsch</a></li>
-                  <li><a href="#" data-lang="en"><span class="fi fi-gb"></span>English</a></li>
-                  <li><a href="#" data-lang="ar"><span class="fi fi-sa"></span>عربي</a></li>
-                  <li><a href="#" data-lang="zh"><span class="fi fi-cn"></span>中文</a></li>
-                  <li><a href="#" data-lang="es"><span class="fi fi-es"></span>Español</a></li>
-                  <li><a href="#" data-lang="el"><span class="fi fi-gr"></span>ελληνικά</a></li>
-                  <li><a href="#" data-lang="it"><span class="fi fi-it"></span>Italiano</a></li>
-                  <li><a href="#" data-lang="jp"><span class="fi fi-jp"></span>日本語</a></li>
-                  <li><a href="#" data-lang="nl"><span class="fi fi-nl"></span>Nederlands</a></li>
-                  <li><a href="#" data-lang="pt"><span class="fi fi-pt"></span>Português</a></li>
-              </ul>
-           </div>
-          <button class="help-btn" id="help-btn" aria-label="Aide">
-               <i class="fas fa-question-circle"></i>
-           </button>
+            <div class="language-switcher">
+                <button class="language-btn" aria-label="Changer de langue">
+                    <i class="fas fa-globe"></i>
+                </button>
+                <ul class="language-dropdown">
+                    <li><a href="#" data-lang="fr"><span class="fi fi-fr"></span>Français</a></li>
+                    <li><a href="#" data-lang="de"><span class="fi fi-de"></span>Deutsch</a></li>
+                    <li><a href="#" data-lang="en"><span class="fi fi-gb"></span>English</a></li>
+                    <li><a href="#" data-lang="ar"><span class="fi fi-sa"></span>عربي</a></li>
+                    <li><a href="#" data-lang="zh"><span class="fi fi-cn"></span>中文</a></li>
+                    <li><a href="#" data-lang="es"><span class="fi fi-es"></span>Español</a></li>
+                    <li><a href="#" data-lang="el"><span class="fi fi-gr"></span>ελληνικά</a></li>
+                    <li><a href="#" data-lang="it"><span class="fi fi-it"></span>Italiano</a></li>
+                    <li><a href="#" data-lang="jp"><span class="fi fi-jp"></span>日本語</a></li>
+                    <li><a href="#" data-lang="nl"><span class="fi fi-nl"></span>Nederlands</a></li>
+                    <li><a href="#" data-lang="pt"><span class="fi fi-pt"></span>Português</a></li>
+                </ul>
+            </div>
+            <button class="help-btn" id="help-btn" aria-label="Aide">
+                <i class="fas fa-question-circle"></i>
+            </button>
         </div>
     </header>
 
     <div id="notification-container"></div>
 
-   <div id="help-sidebar" class="sidebar">
-       <button class="close-btn" id="close-help-btn">&times;</button>
-       <h2 data-key="help_title">Comment utiliser cet outil ?</h2>
-       <ol>
-           <li data-key="help_step1"><strong>Choisissez le mode de création :</strong>
-               <ul>
-                   <li data-key="help_step1_fast"><strong>Mode Rapide :</strong> Idéal pour démarrer vite. Indiquez votre rôle (ex: Enseignant) et le sujet à traiter.</li>
-                   <li data-key="help_step1_guided"><strong>Mode Guidé :</strong> Pour plus de précision. Renseignez la discipline, le thème, le niveau et le nombre d'éléments souhaités.</li>
-               </ul>
-           </li>
-           <li data-key="help_step2"><strong>Générez les prompts</strong> en cliquant sur le bouton dédié.</li>
-           <li data-key="help_step3"><strong>Sélectionnez une activité</strong> parmi les tuiles H5P ou les modules Moodle/Éléa.</li>
-           <li data-key="help_step4"><strong>Utilisez le prompt :</strong> Copiez le prompt généré pour le coller dans une IA (ChatGPT, Le Chat...).</li>
-           <li data-key="help_step5"><strong>Créez et téléchargez :</strong> Collez le texte de l'IA pour générer et télécharger votre module.</li>
-           <li data-key="help_step6"><strong>Finalisez :</strong> Importez le fichier .h5p ou .mbz dans votre plateforme (Éléa, Moodle...).</li>
-       </ol>
-   </div>
-   <div id="sidebar-overlay"></div>
+    <div id="help-sidebar" class="sidebar">
+        <button class="close-btn" id="close-help-btn">&times;</button>
+        <h2 data-key="help_title">Comment utiliser cet outil ?</h2>
+        <ol>
+            <li data-key="help_step1"><strong>Choisissez le mode de création :</strong>
+                <ul>
+                    <li data-key="help_step1_fast"><strong>Mode Rapide :</strong> Idéal pour démarrer vite. Indiquez
+                        votre rôle (ex: Enseignant) et le sujet à traiter.</li>
+                    <li data-key="help_step1_guided"><strong>Mode Guidé :</strong> Pour plus de précision. Renseignez la
+                        discipline, le thème, le niveau et le nombre d'éléments souhaités.</li>
+                </ul>
+            </li>
+            <li data-key="help_step2"><strong>Générez les prompts</strong> en cliquant sur le bouton dédié.</li>
+            <li data-key="help_step3"><strong>Sélectionnez une activité</strong> parmi les tuiles H5P ou les modules
+                Moodle/Éléa.</li>
+            <li data-key="help_step4"><strong>Utilisez le prompt :</strong> Copiez le prompt généré pour le coller dans
+                une IA (ChatGPT, Le Chat...).</li>
+            <li data-key="help_step5"><strong>Créez et téléchargez :</strong> Collez le texte de l'IA pour générer et
+                télécharger votre module.</li>
+            <li data-key="help_step6"><strong>Finalisez :</strong> Importez le fichier .h5p ou .mbz dans votre
+                plateforme (Éléa, Moodle...).</li>
+        </ol>
+    </div>
+    <div id="sidebar-overlay"></div>
 
     <div class="container">
         <div class="prompt-generator">
@@ -73,16 +82,22 @@
 
             <div class="prompt-form-container">
                 <div id="simple-mode" class="mode-content active">
-                    <input id="qui" type="text" placeholder="Qui êtes-vous ? (ex: Enseignant, formateur...)" data-key="who_are_you" />
-                    <input id="quoi" type="text" placeholder="Que souhaitez-vous aborder ? (ex: La nature d'un angle en 6e...)" data-key="what_to_address" />
+                    <input id="qui" type="text" placeholder="Qui êtes-vous ? (ex: Enseignant, formateur...)"
+                        data-key="who_are_you" />
+                    <input id="quoi" type="text"
+                        placeholder="Que souhaitez-vous aborder ? (ex: La nature d'un angle en 6e...)"
+                        data-key="what_to_address" />
                 </div>
 
                 <div id="advanced-mode" class="mode-content">
                     <input id="matiere" type="text" placeholder="Discipline (ex : Histoire)" data-key="discipline" />
                     <input id="theme" type="text" placeholder="Thème (ex : La Révolution française)" data-key="theme" />
-                    <input id="niveau" type="text" placeholder="Niveau (ex : Seconde professionnelle)" data-key="level" />
-                    <input id="nombreQuestions" min="1" type="number" placeholder="Nombre d'éléments (ex : 10)" data-key="number_of_elements" />
-                    <textarea id="infosComplementaires" placeholder="Informations complémentaires et spécifiques..." data-key="additional_info"></textarea>
+                    <input id="niveau" type="text" placeholder="Niveau (ex : Seconde professionnelle)"
+                        data-key="level" />
+                    <input id="nombreQuestions" min="1" type="number" placeholder="Nombre d'éléments (ex : 10)"
+                        data-key="number_of_elements" />
+                    <textarea id="infosComplementaires" placeholder="Informations complémentaires et spécifiques..."
+                        data-key="additional_info"></textarea>
                 </div>
 
                 <button id="generateBtn" data-key="generate_prompts">Générer les prompts</button>
@@ -109,13 +124,17 @@
     <!-- Le conteneur pour le contenu H5P sera injecté dynamiquement par le JS -->
 
     <footer class="footer">
-        <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank"><i class="fas fa-info-circle"></i> Caramel v2.0</a>
+        <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank"><i
+                class="fas fa-info-circle"></i> Caramel v2.0</a>
         <a href="mailto:gauthier.remande@ac-nantes.fr"><i class="fas fa-envelope"></i> Gauthier REMANDE</a>
         <a href="mailto:emmanuel.gaunard@ac-grenoble.fr"><i class="fas fa-envelope"></i> Emmanuel GAUNARD</a>
         <a href="https://forge.apps.education.fr/caramel/caramel"><i class="fas fa-code-branch"></i> Forge</a>
-        <a href="https://forge.apps.education.fr/caramel/caramel/-/issues"><i class="fas fa-bug"></i> <span data-key="ticket">Ticket</span></a>
-        <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE"><i class="fas fa-scroll"></i> <span data-key="license_info">GNU GPL v3.0 ou ultérieure</span></a>
-        <a href="#" id="legal-mentions-link"><i class="fas fa-gavel"></i> <span data-key="legal_mentions">Mentions légales</span></a>
+        <a href="https://forge.apps.education.fr/caramel/caramel/-/issues"><i class="fas fa-bug"></i> <span
+                data-key="ticket">Ticket</span></a>
+        <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE"><i class="fas fa-scroll"></i>
+            <span data-key="license_info">GNU GPL v3.0 ou ultérieure</span></a>
+        <a href="#" id="legal-mentions-link"><i class="fas fa-gavel"></i> <span data-key="legal_mentions">Mentions
+                légales</span></a>
     </footer>
 
     <div id="legal-mentions-modal" class="modal">
@@ -143,31 +162,32 @@
         // Charger la langue par défaut (fr) au démarrage
         loadTranslationScript('fr');
     </script>
-   <script>
-       document.addEventListener('DOMContentLoaded', function () {
-           const helpBtn = document.getElementById('help-btn');
-           const closeHelpBtn = document.getElementById('close-help-btn');
-           const helpSidebar = document.getElementById('help-sidebar');
-           const sidebarOverlay = document.getElementById('sidebar-overlay');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const helpBtn = document.getElementById('help-btn');
+            const closeHelpBtn = document.getElementById('close-help-btn');
+            const helpSidebar = document.getElementById('help-sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
 
-           function openSidebar() {
-               helpSidebar.classList.add('open');
-               sidebarOverlay.classList.add('open');
-           }
+            function openSidebar() {
+                helpSidebar.classList.add('open');
+                sidebarOverlay.classList.add('open');
+            }
 
-           function closeSidebar() {
-               helpSidebar.classList.remove('open');
-               sidebarOverlay.classList.remove('open');
-           }
+            function closeSidebar() {
+                helpSidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('open');
+            }
 
-           helpBtn.addEventListener('click', openSidebar);
-           closeHelpBtn.addEventListener('click', closeSidebar);
-           sidebarOverlay.addEventListener('click', closeSidebar);
-       });
-   </script>
+            helpBtn.addEventListener('click', openSidebar);
+            closeHelpBtn.addEventListener('click', closeSidebar);
+            sidebarOverlay.addEventListener('click', closeSidebar);
+        });
+    </script>
     <script src="js/jszip/jszip.min.js"></script>
     <script src="js/fflate/index.js"></script>
     <script src="js/tar-js/tar.bundle.js"></script>
     <script src="js/client-zip/worker.js"></script>
 </body>
+
 </html>
