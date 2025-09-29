@@ -159,6 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
         Crossword: {
             name: "h5p_crossword_name",
             englishName: "Crosswords",
+            machineName: "H5P.Crossword",
             description: "h5p_crossword_description",
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/crosswords.png",
             promptId: "crosswordResultat",
@@ -168,6 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
         Essay: {
             name: "h5p_essay_name",
             englishName: "Essay",
+            machineName: "H5P.Essay",
             description: "h5p_essay_description",
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/essay.png",
             promptId: "essayResultat",
@@ -177,6 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
         Summary: {
             name: "h5p_summary_name",
             englishName: "Summary",
+            machineName: "H5P.Summary",
             description: "h5p_summary_description",
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/summary_icon.png",
             promptId: "summaryResultat",
@@ -3014,7 +3017,13 @@ ${JSON.stringify(JSON.parse(pt.quiz_set_essay_example), null, 2)}
                             dependenciesForJson.push({ machineName: "H5P.Dialogcards", majorVersion: "1", minorVersion: "9" });
                         } else if (moduleInfo.machineName === "H5P.Chart") {
                            dependenciesForJson.push({ machineName: "H5P.Chart", majorVersion: "1", minorVersion: "2" });
-                       }
+                        } else if (moduleInfo.machineName === "H5P.Crossword") {
+                            dependenciesForJson.push({ machineName: "H5P.Crossword", majorVersion: "0", minorVersion: "5" });
+                        } else if (moduleInfo.machineName === "H5P.Essay") {
+                            dependenciesForJson.push({ machineName: "H5P.Essay", majorVersion: "1", minorVersion: "5" });
+                        } else if (moduleInfo.machineName === "H5P.Summary") {
+                            dependenciesForJson.push({ machineName: "H5P.Summary", majorVersion: "1", minorVersion: "10" });
+                        }
                    }
                }
             }
