@@ -1031,6 +1031,15 @@ document.addEventListener('DOMContentLoaded', function() {
                timelineData.timeline.language = timelineData.timeline.language || h5pLang;
                timelineData.timeline.height = timelineData.timeline.height || 600;
                
+               // S'assurer que chaque date a un objet asset, même vide.
+               if (timelineData.timeline && timelineData.timeline.date && Array.isArray(timelineData.timeline.date)) {
+                   timelineData.timeline.date.forEach(d => {
+                       if (!d.asset) {
+                           d.asset = {};
+                       }
+                   });
+               }
+
                content = timelineData;
             } else if (moduleKey === 'Flashcards') {
                 const h5pLang = currentLang === 'zh' ? 'zh-cn' : currentLang;
