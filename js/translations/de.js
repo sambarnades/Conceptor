@@ -952,5 +952,13 @@ var translations_de = {
     quiz_no_input: "Bitte antworten Sie, bevor Sie die Lösung ansehen.",
     quiz_a11y_check: "Überprüfen Sie die Antworten. Die Antworten werden als richtig, falsch oder unbeantwortet markiert.",
     quiz_a11y_show_solution: "Zeigen Sie die Lösung an. Die Aufgabe wird mit der richtigen Lösung markiert.",
-    quiz_a11y_retry: "Versuchen Sie die Aufgabe erneut. Setzen Sie alle Antworten zurück und beginnen Sie von vorne."
+    quiz_a11y_retry: "Versuchen Sie die Aufgabe erneut. Setzen Sie alle Antworten zurück und beginnen Sie von vorne.",
+
+    // Albert generation
+    generate_with_albert: "Mit Albert generieren",
+    generation_in_progress: "Generierung läuft, bitte warten...",
+    request_sent_to_ia: "Anfrage an KI gesendet, bitte warten...",
+    generation_successful: "H5P-Inhalt erfolgreich generiert!",
+    generation_failed_empty: "Generierung fehlgeschlagen. Die Antwort war leer.",
+    generation_failed_error: "Fehler bei der Generierung: {errorMessage}"
 };

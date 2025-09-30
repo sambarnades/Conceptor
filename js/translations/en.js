@@ -958,5 +958,13 @@ const translations_en = {
     quiz_no_input: "Please answer before viewing the solution.",
     quiz_a11y_check: "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
     quiz_a11y_show_solution: "Show the solution. The task will be marked with its correct solution.",
-    quiz_a11y_retry: "Retry the task. Reset all responses and start the task over again."
+    quiz_a11y_retry: "Retry the task. Reset all responses and start the task over again.",
+
+    // Albert generation
+    generate_with_albert: "Generate with Albert",
+    generation_in_progress: "Generation in progress, please wait...",
+    request_sent_to_ia: "Request sent to AI, please wait...",
+    generation_successful: "H5P content generated successfully!",
+    generation_failed_empty: "Generation failed. The response was empty.",
+    generation_failed_error: "Error during generation: {errorMessage}"
 };

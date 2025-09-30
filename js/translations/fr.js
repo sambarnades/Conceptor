@@ -962,5 +962,13 @@ const translations_fr = {
     quiz_no_input: "Répondez s'il vous plait avant de visionner la solution.",
     quiz_a11y_check: "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
     quiz_a11y_show_solution: "Show the solution. The task will be marked with its correct solution.",
-    quiz_a11y_retry: "Retry the task. Reset all responses and start the task over again."
+    quiz_a11y_retry: "Retry the task. Reset all responses and start the task over again.",
+
+    // Albert generation
+    generate_with_albert: "Générer avec Albert",
+    generation_in_progress: "Génération en cours, veuillez patienter...",
+    request_sent_to_ia: "Requête lancée à l'IA, veuillez patienter...",
+    generation_successful: "Contenu H5P généré avec succès !",
+    generation_failed_empty: "La génération a échoué. La réponse était vide.",
+    generation_failed_error: "Erreur lors de la génération : {errorMessage}"
 };

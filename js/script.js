@@ -458,7 +458,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
                         <button class="action-btn go-duck">${translations.go_duck}</button>
                         <button class="action-btn go-mistral">${translations.go_mistral}</button>
-                        <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">Générer avec Albert</button>
+                        <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">${translations.generate_with_albert}</button>
                     </div>
                 </div>
 
@@ -786,7 +786,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 jsonInputTarget.style.opacity = '0.5';
                 jsonInputTarget.value = ""; // Vider le champ
                 albertBtn.disabled = true;
-                showNotification("Requête lancée à l'IA, veuillez patienter...", 'success');
+                showNotification(translations.request_sent_to_ia, 'success');
 
                 try {
                     // 2. Attendre la réponse
@@ -795,15 +795,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     // 3. Traiter la réponse
                     if (h5pContent) {
                         jsonInputTarget.value = h5pContent;
-                        showNotification('Contenu H5P généré avec succès !', 'success');
+                        showNotification(translations.generation_successful, 'success');
                     } else {
-                        jsonInputTarget.value = "La génération a échoué. La réponse était vide.";
-                        showNotification("La génération a échoué (réponse vide).", 'error');
+                        jsonInputTarget.value = translations.generation_failed_empty;
+                        showNotification(translations.generation_failed_empty, 'error');
                     }
                 } catch (error) {
                     console.error("Erreur lors de la génération avec Albert:", error);
-                    showNotification(`Erreur: ${error.message}`, 'error');
-                    jsonInputTarget.value = `Erreur lors de la génération : ${error.message}`;
+                    const errorMessage = translations.generation_failed_error.replace('{errorMessage}', error.message);
+                    showNotification(errorMessage, 'error');
+                    jsonInputTarget.value = errorMessage;
                 } finally {
                     // 4. Supprimer le spinner et réactiver le bouton
                     spinner.remove();
