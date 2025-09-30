@@ -6,8 +6,7 @@ async function generateH5PWithAlbert(prompt) {
     console.log("Appel au proxy n8n pour l'API Albert avec le prompt :", prompt);
 
     // Utilisation de l'URL de webhook n8n pour la production.
-    //https://n8n.dane-info.fr/webhook/albert-proxy
-    const proxyUrl = "https://n8n.dane-info.fr/webhook/albert-proxy";
+    const proxyUrl = "https://n8n.remande.fr/webhook/albert-proxy";
 
     const requestBody = {
         prompt: prompt
