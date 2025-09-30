@@ -545,6 +545,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         <button id="copyMoodleXmlLink" class="copy-btn">📋 Copier le prompt</button>
                         <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
                         <button class="action-btn go-mistral">Ⓜ️ Accéder à Le chat</button>
+                        <div class="albert-generation-controls">
+                            <button id="generate-albert-moodleXml" class="action-btn albert-btn">${translations.generate_with_albert}</button>
+                            <div class="model-selector-container">
+                                <button id="model-selector-btn-moodleXml" class="model-selector-btn" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <ul id="model-selector-dropdown-moodleXml" class="model-selector-dropdown" role="menu"></ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="h5p-processor">
@@ -577,6 +586,15 @@ document.addEventListener('DOMContentLoaded', function() {
                        <button id="copy-${moduleKey}" class="copy-btn">📋 Copier le prompt</button>
                        <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
                        <button class="action-btn go-mistral">Ⓜ️ Accéder à Le chat</button>
+                       <div class="albert-generation-controls">
+                           <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">${translations.generate_with_albert}</button>
+                           <div class="model-selector-container">
+                               <button id="model-selector-btn-${moduleKey}" class="model-selector-btn" aria-haspopup="true" aria-expanded="false">
+                                   <i class="fas fa-chevron-down"></i>
+                               </button>
+                               <ul id="model-selector-dropdown-${moduleKey}" class="model-selector-dropdown" role="menu"></ul>
+                           </div>
+                       </div>
                    </div>
                </div>
                <div class="h5p-processor">
@@ -598,6 +616,15 @@ document.addEventListener('DOMContentLoaded', function() {
                        <button id="copy-${moduleKey}" class="copy-btn">📋 Copier le prompt</button>
                        <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
                        <button class="action-btn go-mistral">Ⓜ️ Accéder à Le chat</button>
+                       <div class="albert-generation-controls">
+                           <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">${translations.generate_with_albert}</button>
+                           <div class="model-selector-container">
+                               <button id="model-selector-btn-${moduleKey}" class="model-selector-btn" aria-haspopup="true" aria-expanded="false">
+                                   <i class="fas fa-chevron-down"></i>
+                               </button>
+                               <ul id="model-selector-dropdown-${moduleKey}" class="model-selector-dropdown" role="menu"></ul>
+                           </div>
+                       </div>
                    </div>
                </div>
                <div class="h5p-processor">
@@ -619,6 +646,15 @@ document.addEventListener('DOMContentLoaded', function() {
                        <button id="copy-${moduleKey}" class="copy-btn">📋 Copier le prompt</button>
                        <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
                        <button class="action-btn go-mistral">Ⓜ️ Accéder à Le chat</button>
+                       <div class="albert-generation-controls">
+                           <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">${translations.generate_with_albert}</button>
+                           <div class="model-selector-container">
+                               <button id="model-selector-btn-${moduleKey}" class="model-selector-btn" aria-haspopup="true" aria-expanded="false">
+                                   <i class="fas fa-chevron-down"></i>
+                               </button>
+                               <ul id="model-selector-dropdown-${moduleKey}" class="model-selector-dropdown" role="menu"></ul>
+                           </div>
+                       </div>
                    </div>
                </div>
                <div class="h5p-processor">
@@ -697,6 +733,12 @@ document.addEventListener('DOMContentLoaded', function() {
                handleQCMCreation(jsonInput);
            });
        }
+
+       // Attacher la logique Albert pour les modules Moodle concernés
+       if (['moodleXml', 'Millionnaire', 'Appariement', 'QCM'].includes(moduleKey)) {
+           attachAlbertLogic(moduleKey, contentContainer);
+       }
+
        const promptIdForCopy = (moduleKey === 'moodleXml') ? 'moodleXmlResultat' :
                                 (moduleKey === 'gift') ? 'giftResultat' :
                                 (moduleKey === 'Millionnaire') ? moodleModules[moduleKey].promptId :
@@ -881,6 +923,103 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+    }
+
+    function attachAlbertLogic(moduleKey, container) {
+        const albertBtn = container.querySelector(`#generate-albert-${moduleKey}`);
+        if (!albertBtn) return;
+
+        let selectedModel = 'albert-small';
+        const modelSelectorBtn = container.querySelector(`#model-selector-btn-${moduleKey}`);
+        const modelDropdown = container.querySelector(`#model-selector-dropdown-${moduleKey}`);
+        const module = h5pModules[moduleKey] || moodleModules[moduleKey];
+        const jsonInputId = (moduleKey === 'moodleXml') ? 'xmlEleaMoodleInput' : module.jsonInputId;
+
+        if (modelSelectorBtn && modelDropdown) {
+            modelSelectorBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                const isExpanded = modelSelectorBtn.getAttribute('aria-expanded') === 'true';
+
+                if (!isExpanded && modelDropdown.children.length === 0) {
+                    populateModelSelector(moduleKey, AVAILABLE_MODELS, (modelId) => {
+                        selectedModel = modelId;
+                    }, selectedModel);
+                }
+
+                if (!isExpanded) {
+                    const buttonRect = modelSelectorBtn.getBoundingClientRect();
+                    const spaceBelow = window.innerHeight - buttonRect.bottom;
+                    const spaceAbove = buttonRect.top;
+                    const dropdownHeight = 200;
+
+                    if (spaceBelow < dropdownHeight && spaceAbove > dropdownHeight) {
+                        modelDropdown.style.bottom = '100%';
+                        modelDropdown.style.top = 'auto';
+                        modelDropdown.style.marginBottom = '5px';
+                        modelDropdown.style.marginTop = '0';
+                    } else {
+                        modelDropdown.style.top = '100%';
+                        modelDropdown.style.bottom = 'auto';
+                        modelDropdown.style.marginTop = '5px';
+                        modelDropdown.style.marginBottom = '0';
+                    }
+                }
+                
+                modelSelectorBtn.setAttribute('aria-expanded', !isExpanded);
+                modelDropdown.style.display = isExpanded ? 'none' : 'block';
+            });
+
+            container.addEventListener('click', (event) => {
+                if (!modelSelectorBtn.contains(event.target) && !modelDropdown.contains(event.target)) {
+                    modelSelectorBtn.setAttribute('aria-expanded', 'false');
+                    modelDropdown.style.display = 'none';
+                }
+            });
+        }
+
+        albertBtn.addEventListener('click', async () => {
+            const promptId = (moduleKey === 'moodleXml') ? 'moodleXmlResultat' : module.promptId;
+            const promptTextarea = document.getElementById(promptId);
+            const prompt = promptTextarea.value;
+
+            if (!prompt) {
+                showNotification('Veuillez d\'abord générer un prompt.', 'error');
+                return;
+            }
+
+            const jsonInputTarget = container.querySelector(`#${jsonInputId}`);
+            const processorDiv = jsonInputTarget.closest('.h5p-processor');
+            
+            const spinner = document.createElement('div');
+            spinner.className = 'loading-spinner';
+            processorDiv.appendChild(spinner);
+            jsonInputTarget.style.opacity = '0.5';
+            jsonInputTarget.value = "";
+            albertBtn.disabled = true;
+            if (modelSelectorBtn) modelSelectorBtn.disabled = true;
+            showNotification(translations.request_sent_to_ia, 'success');
+
+            try {
+                const content = await generateH5PWithAlbert(prompt, selectedModel);
+                if (content) {
+                    jsonInputTarget.value = content;
+                    showNotification(translations.generation_successful, 'success');
+                } else {
+                    jsonInputTarget.value = translations.generation_failed_empty;
+                    showNotification(translations.generation_failed_empty, 'error');
+                }
+            } catch (error) {
+                console.error("Erreur lors de la génération avec Albert:", error);
+                const errorMessage = translations.generation_failed_error.replace('{errorMessage}', error.message);
+                showNotification(errorMessage, 'error');
+                jsonInputTarget.value = errorMessage;
+            } finally {
+                spinner.remove();
+                jsonInputTarget.style.opacity = '1';
+                albertBtn.disabled = false;
+                if (modelSelectorBtn) modelSelectorBtn.disabled = false;
+            }
+        });
     }
 
 // =======================================================================
