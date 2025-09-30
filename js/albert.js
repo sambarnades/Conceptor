@@ -2,14 +2,58 @@
 
 // La clé API ne doit pas être stockée ici. Elle doit être gérée de manière sécurisée par le serveur proxy (n8n).
 
-async function generateH5PWithAlbert(prompt) {
-    console.log("Appel au proxy n8n pour l'API Albert avec le prompt :", prompt);
+// =======================================================================
+// LISTE DES MODÈLES ALBERT DISPONIBLES
+// Modifiez cette liste pour ajouter, supprimer ou changer les modèles.
+// =======================================================================
+const AVAILABLE_MODELS = [
+    { id: 'albert-small', type: 'text-generation', owned_by: 'OpenGateLLM' },
+    { id: 'albert-large', type: 'image-text-to-text', owned_by: 'Albert API (prod)' },
+    { id: 'albert-code', type: 'text-generation', owned_by: 'OpenGateLLM' },
+    { id: 'embeddings-small', type: 'text-embeddings-inference', owned_by: 'OpenGateLLM' },
+    { id: 'rerank-small', type: 'text-classification', owned_by: 'OpenGateLLM' }
+];
+// =======================================================================
 
-    // Utilisation de l'URL de webhook n8n pour la production.
+// Fonction pour peupler un sélecteur de modèles spécifique
+function populateModelSelector(moduleKey, models, onSelectCallback, selectedModel) {
+    const dropdown = document.getElementById(`model-selector-dropdown-${moduleKey}`);
+    if (!dropdown) return;
+    dropdown.innerHTML = ''; // Vider la liste
+
+    const textModels = models.filter(model => model.type === 'text-generation' || model.type === 'image-text-to-text');
+
+    textModels.forEach(model => {
+        const listItem = document.createElement('li');
+        listItem.setAttribute('role', 'menuitem');
+        listItem.dataset.modelId = model.id;
+        listItem.innerHTML = `<strong>${model.id}</strong><br><small>(${model.owned_by})</small>`;
+        if (model.id === selectedModel) {
+            listItem.classList.add('selected');
+        }
+        listItem.addEventListener('click', () => {
+            onSelectCallback(model.id); // Appeler le callback avec le modèle sélectionné
+            
+            // Mettre à jour la classe 'selected'
+            const allItems = dropdown.querySelectorAll('li');
+            allItems.forEach(item => item.classList.remove('selected'));
+            listItem.classList.add('selected');
+
+            dropdown.style.display = 'none';
+            document.getElementById(`model-selector-btn-${moduleKey}`).setAttribute('aria-expanded', 'false');
+        });
+        dropdown.appendChild(listItem);
+    });
+}
+
+async function generateH5PWithAlbert(prompt, model) {
+    console.log(`Appel au proxy n8n pour l'API Albert avec le modèle ${model} et le prompt :`, prompt);
+
     const proxyUrl = "https://n8n.remande.fr/webhook/albert-proxy";
 
     const requestBody = {
-        prompt: prompt
+        prompt: prompt,
+        model: model // Utiliser le modèle passé en paramètre
     };
 
     try {
@@ -67,3 +111,6 @@ async function generateH5PWithAlbert(prompt) {
         throw error;
     }
 }
+
+// La gestion de l'interface est maintenant déplacée dans script.js
+// pour être attachée dynamiquement lorsque le contenu est créé.

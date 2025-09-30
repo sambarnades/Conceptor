@@ -1,0 +1,105 @@
+/* Styles pour le sélecteur de modèle Albert intégré aux boutons d'action */
+
+.albert-generation-controls {
+    display: flex;
+    align-items: stretch; /* Assure que les boutons ont la même hauteur */
+    background-color: #007bff; /* Couleur de fond unifiée */
+    border-radius: 4px; /* Coins arrondis pour le conteneur global */
+    border: 1px solid #0056b3; /* Bordure uniforme */
+    /* overflow: hidden; a été supprimé pour permettre au dropdown de s'afficher */
+}
+
+/* Le bouton principal "Générer avec Albert" */
+.albert-generation-controls .albert-btn {
+    background-color: transparent; /* Fond transparent pour hériter du conteneur */
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 4px; /* Arrondi à gauche */
+    border-bottom-left-radius: 4px; /* Arrondi à gauche */
+    margin-right: -1px; /* Superposition des bordures pour un look unifié */
+    flex-grow: 1; /* Permet au bouton principal de prendre plus de place si nécessaire */
+    border: none; /* La bordure est maintenant sur le conteneur */
+    color: white; /* S'assurer que le texte est blanc */
+    padding: 10px 15px; /* Ajouter un padding pour correspondre au style des autres boutons */
+}
+
+/* Conteneur pour le bouton flèche et la liste déroulante */
+.albert-generation-controls .model-selector-container {
+    position: relative;
+    display: flex; /* Utiliser flex pour aligner le bouton à l'intérieur */
+}
+
+/* Le bouton flèche pour ouvrir le sélecteur */
+.albert-generation-controls .model-selector-btn {
+    background-color: transparent; /* Fond transparent pour s'intégrer */
+    color: white;
+    padding: 0 12px; /* Ajustement du padding pour la flèche */
+    border: none; /* Supprime la bordure par défaut */
+    border-left: 1px solid rgba(255, 255, 255, 0.5); /* Séparateur visuel subtil */
+    cursor: pointer;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 4px; /* Arrondi à droite */
+    border-bottom-right-radius: 4px; /* Arrondi à droite */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Prend toute la hauteur du conteneur */
+}
+
+.albert-generation-controls .model-selector-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Assombrissement subtil au survol */
+}
+
+/* La liste déroulante des modèles */
+.model-selector-dropdown {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 280px; /* Largeur minimale */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1000; /* S'assurer qu'elle est au-dessus des autres éléments */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    right: 0; /* S'aligne à droite du conteneur */
+    /* La position verticale (top/bottom) sera gérée par JavaScript */
+}
+
+.model-selector-dropdown li {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.model-selector-dropdown li:last-child {
+    border-bottom: none;
+}
+
+.model-selector-dropdown li:hover {
+    background-color: #ddd;
+}
+
+.model-selector-dropdown li.selected {
+    background-color: #e9e9e9;
+    font-weight: bold;
+}
+
+.model-selector-dropdown li.selected::before {
+    content: '✔ ';
+    color: #007bff;
+    margin-right: 5px;
+}
+
+.model-selector-dropdown li strong {
+    font-weight: bold;
+}
+
+.model-selector-dropdown li small {
+    color: #555;
+}

@@ -1,0 +1,151 @@
+{
+  "name": "Caramel - Albert Model Selector",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "albert-proxy",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "c84d5533-3493-43ad-92ee-d356df4f7258",
+      "name": "Webhook (Proxy)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "30247654-5919-4144-9c82-6286b6fae518"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://albert.api.etalab.gouv.fr/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ $credentials.albertApi.apiKey }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "messages",
+              "value": "={{ [{ \"role\": \"user\", \"content\": $json.body.prompt }] }}"
+            },
+            {
+              "name": "model",
+              "value": "={{ $json.body.model }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f8f17166-5e78-449b-b187-76baebc8c6d5",
+      "name": "Requête vers Albert (Génération)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        240,
+        0
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "albertApi",
+          "name": "Albert API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.content }}",
+        "options": {}
+      },
+      "id": "85fef3ef-981b-4b63-abc6-5e00d9c32ac2",
+      "name": "Répondre au Webhook (Proxy)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        720,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8a7b0313-4bc3-4249-a7d9-c0b8757f7c16",
+              "name": "content",
+              "value": "={{ $json.choices[0].message.content.replace('```json', '').replace('```', '') }}\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        0
+      ],
+      "id": "853ad524-92ba-4199-8857-b321a3828502",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook (Proxy)": {
+      "main": [
+        [
+          {
+            "node": "Requête vers Albert (Génération)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Requête vers Albert (Génération)": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Répondre au Webhook (Proxy)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "your-new-version-id",
+  "meta": {},
+  "id": "your-workflow-id",
+  "tags": []
+}

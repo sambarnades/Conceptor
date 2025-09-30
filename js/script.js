@@ -457,8 +457,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="action-buttons">
                         <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
                         <button class="action-btn go-duck">${translations.go_duck}</button>
-                        <button class="action-btn go-mistral">${translations.go_mistral}</button>  
-                        <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">${translations.generate_with_albert}</button>
+                        <button class="action-btn go-mistral">${translations.go_mistral}</button>
+                        <div class="albert-generation-controls">
+                            <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">${translations.generate_with_albert}</button>
+                            <div class="model-selector-container">
+                                <button id="model-selector-btn-${moduleKey}" class="model-selector-btn" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <ul id="model-selector-dropdown-${moduleKey}" class="model-selector-dropdown" role="menu">
+                                    <!-- Les modèles seront injectés ici par le JS -->
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -767,6 +777,62 @@ document.addEventListener('DOMContentLoaded', function() {
         // Bouton pour générer avec Albert
         const albertBtn = container.querySelector(`#generate-albert-${moduleKey}`);
         if (albertBtn) {
+            let selectedModel = 'albert-small'; // Modèle par défaut pour cette instance
+
+            // Logique du sélecteur de modèle
+            const modelSelectorBtn = container.querySelector(`#model-selector-btn-${moduleKey}`);
+            const modelDropdown = container.querySelector(`#model-selector-dropdown-${moduleKey}`);
+
+            if (modelSelectorBtn && modelDropdown) {
+                // Peupler le dropdown au premier clic pour optimiser
+                modelSelectorBtn.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    const isExpanded = modelSelectorBtn.getAttribute('aria-expanded') === 'true';
+
+                    if (!isExpanded && modelDropdown.children.length === 0) {
+                        populateModelSelector(moduleKey, AVAILABLE_MODELS, (modelId) => {
+                            selectedModel = modelId;
+                            console.log(`Modèle sélectionné pour ${moduleKey}: ${selectedModel}`);
+                        }, selectedModel);
+                    }
+
+                    // Logique de positionnement dynamique
+                    if (!isExpanded) {
+                        const buttonRect = modelSelectorBtn.getBoundingClientRect();
+                        const spaceBelow = window.innerHeight - buttonRect.bottom;
+                        const spaceAbove = buttonRect.top;
+
+                        // Hauteur estimée du dropdown, à ajuster si nécessaire
+                        const dropdownHeight = 200;
+
+                        if (spaceBelow < dropdownHeight && spaceAbove > dropdownHeight) {
+                            // Pas assez de place en bas, on l'ouvre en haut
+                            modelDropdown.style.bottom = '100%';
+                            modelDropdown.style.top = 'auto';
+                            modelDropdown.style.marginBottom = '5px';
+                            modelDropdown.style.marginTop = '0';
+                        } else {
+                            // Assez de place en bas (ou pas assez en haut), on l'ouvre en bas
+                            modelDropdown.style.top = '100%';
+                            modelDropdown.style.bottom = 'auto';
+                            modelDropdown.style.marginTop = '5px';
+                            modelDropdown.style.marginBottom = '0';
+                        }
+                    }
+                    
+                    modelSelectorBtn.setAttribute('aria-expanded', !isExpanded);
+                    modelDropdown.style.display = isExpanded ? 'none' : 'block';
+                });
+
+                // Fermer le dropdown si on clique ailleurs dans le conteneur
+                container.addEventListener('click', (event) => {
+                    if (!modelSelectorBtn.contains(event.target) && !modelDropdown.contains(event.target)) {
+                        modelSelectorBtn.setAttribute('aria-expanded', 'false');
+                        modelDropdown.style.display = 'none';
+                    }
+                });
+            }
+
             albertBtn.addEventListener('click', async () => {
                 const promptTextarea = document.getElementById(module.promptId);
                 const prompt = promptTextarea.value;
@@ -786,11 +852,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 jsonInputTarget.style.opacity = '0.5';
                 jsonInputTarget.value = ""; // Vider le champ
                 albertBtn.disabled = true;
+                if (modelSelectorBtn) modelSelectorBtn.disabled = true;
                 showNotification(translations.request_sent_to_ia, 'success');
 
                 try {
-                    // 2. Attendre la réponse
-                    const h5pContent = await generateH5PWithAlbert(prompt);
+                    // 2. Attendre la réponse, en passant le modèle sélectionné
+                    const h5pContent = await generateH5PWithAlbert(prompt, selectedModel);
 
                     // 3. Traiter la réponse
                     if (h5pContent) {
@@ -810,6 +877,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     spinner.remove();
                     jsonInputTarget.style.opacity = '1';
                     albertBtn.disabled = false;
+                    if (modelSelectorBtn) modelSelectorBtn.disabled = false;
                 }
             });
         }
