@@ -1,0 +1,174 @@
+{
+  "name": "Proxy Albert avec gestion CORS",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "albert-proxy",
+        "options": {}
+      },
+      "id": "webhook-post",
+      "name": "Webhook POST",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        820,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://albert.api.etalab.gouv.fr/v1/chat/completions",
+        "authentication": "headerAuth",
+        "sendBody": true,
+        "bodyContentType": "json",
+        "jsonBody": "={{ $json.body.json }}",
+        "options": {}
+      },
+      "id": "http-request",
+      "name": "Requête vers Albert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        1260,
+        400
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "albert-api-key",
+          "name": "Clé API Albert"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "values": {
+          "json": [
+            {
+              "name": "model",
+              "value": "albert-small"
+            },
+            {
+              "name": "messages",
+              "value": "={{ [{ \"role\": \"user\", \"content\": $json.body.prompt }] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-request",
+      "name": "Préparer la requête",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2.1,
+      "position": [
+        1040,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "responseData": "={{ $json.choices[0].message.content }}",
+        "options": {}
+      },
+      "id": "respond-post",
+      "name": "Répondre au POST",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "OPTIONS",
+        "path": "albert-proxy",
+        "options": {}
+      },
+      "id": "webhook-options",
+      "name": "Webhook OPTIONS (CORS)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        820,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "responseHeaders": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Access-Control-Allow-Headers",
+                "value": "Content-Type, Authorization"
+              },
+              {
+                "name": "Access-Control-Allow-Methods",
+                "value": "POST, OPTIONS"
+              }
+            ]
+          }
+        }
+      },
+      "id": "respond-options",
+      "name": "Répondre à OPTIONS (CORS)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        200
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook POST": {
+      "main": [
+        [
+          {
+            "node": "Préparer la requête",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Préparer la requête": {
+      "main": [
+        [
+          {
+            "node": "Requête vers Albert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Requête vers Albert": {
+      "main": [
+        [
+          {
+            "node": "Répondre au POST",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook OPTIONS (CORS)": {
+      "main": [
+        [
+          {
+            "node": "Répondre à OPTIONS (CORS)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

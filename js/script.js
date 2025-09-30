@@ -458,6 +458,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
                         <button class="action-btn go-duck">${translations.go_duck}</button>
                         <button class="action-btn go-mistral">${translations.go_mistral}</button>
+                        <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">Générer avec Albert</button>
                     </div>
                 </div>
 
@@ -760,6 +761,55 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
                 handleH5PCreation(moduleKey, jsonInput, includeLibs);
+            });
+        }
+
+        // Bouton pour générer avec Albert
+        const albertBtn = container.querySelector(`#generate-albert-${moduleKey}`);
+        if (albertBtn) {
+            albertBtn.addEventListener('click', async () => {
+                const promptTextarea = document.getElementById(module.promptId);
+                const prompt = promptTextarea.value;
+
+                if (!prompt) {
+                    showNotification('Veuillez d\'abord générer un prompt.', 'error');
+                    return;
+                }
+
+                const jsonInputTarget = container.querySelector(`#${module.jsonInputId}`);
+                const processorDiv = jsonInputTarget.closest('.h5p-processor');
+                
+                // 1. Afficher le spinner et la notification
+                const spinner = document.createElement('div');
+                spinner.className = 'loading-spinner';
+                processorDiv.appendChild(spinner);
+                jsonInputTarget.style.opacity = '0.5';
+                jsonInputTarget.value = ""; // Vider le champ
+                albertBtn.disabled = true;
+                showNotification("Requête lancée à l'IA, veuillez patienter...", 'success');
+
+                try {
+                    // 2. Attendre la réponse
+                    const h5pContent = await generateH5PWithAlbert(prompt);
+
+                    // 3. Traiter la réponse
+                    if (h5pContent) {
+                        jsonInputTarget.value = h5pContent;
+                        showNotification('Contenu H5P généré avec succès !', 'success');
+                    } else {
+                        jsonInputTarget.value = "La génération a échoué. La réponse était vide.";
+                        showNotification("La génération a échoué (réponse vide).", 'error');
+                    }
+                } catch (error) {
+                    console.error("Erreur lors de la génération avec Albert:", error);
+                    showNotification(`Erreur: ${error.message}`, 'error');
+                    jsonInputTarget.value = `Erreur lors de la génération : ${error.message}`;
+                } finally {
+                    // 4. Supprimer le spinner et réactiver le bouton
+                    spinner.remove();
+                    jsonInputTarget.style.opacity = '1';
+                    albertBtn.disabled = false;
+                }
             });
         }
     }
