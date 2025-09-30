@@ -457,8 +457,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="action-buttons">
                         <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
                         <button class="action-btn go-duck">${translations.go_duck}</button>
-                        <button class="action-btn go-mistral">${translations.go_mistral}</button>
-                        <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">${translations.generate_with_albert}</button>
+                        <button class="action-btn go-mistral">${translations.go_mistral}</button>  
                     </div>
                 </div>
 
