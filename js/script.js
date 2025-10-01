@@ -45,33 +45,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
    function updateLanguageSelector() {
-       // Mettre à jour les drapeaux et la classe active dans la liste déroulante
-       document.querySelectorAll('.language-dropdown a').forEach(link => {
-           const lang = link.getAttribute('data-lang');
-           const flagIcon = link.querySelector('.flag-icon');
-   
-           if (flagIcon && languageConfig[lang]) {
-               // Appliquer les classes de la bibliothèque de drapeaux
-               flagIcon.className = `flag-icon flag-icon-${languageConfig[lang].code}`;
+           const mainFlagIcon = document.querySelector('.language-btn .fi');
+           if (mainFlagIcon && languageConfig[currentLang]) {
+               mainFlagIcon.className = `fi fi-${languageConfig[currentLang].code}`;
            }
    
-           if (lang === currentLang) {
-               link.classList.add('active');
-           } else {
-               link.classList.remove('active');
-           }
-       });
+           // Mettre à jour les drapeaux et la classe active dans la liste déroulante
+           document.querySelectorAll('.language-dropdown a').forEach(link => {
+               const lang = link.getAttribute('data-lang');
+               if (lang === currentLang) {
+                   link.classList.add('active');
+               } else {
+                   link.classList.remove('active');
+               }
+           });
    }
 
-    function translatePage() {
-        document.querySelectorAll('[data-key], [data-translate]').forEach(element => {
+    function translatePage(container = document) {
+        container.querySelectorAll('[data-key], [data-translate]').forEach(element => {
             const key = element.getAttribute('data-key') || element.getAttribute('data-translate');
-            const translation = translations[key]; // Utiliser l'objet translations directement
+            const translation = translations[key];
             if (translation) {
                 if (element.placeholder) {
                     element.placeholder = translation;
                 } else {
-                    element.innerHTML = translation;
+                    // Ne pas écraser les icônes ou autres éléments enfants
+                    const textNode = Array.from(element.childNodes).find(node => node.nodeType === Node.TEXT_NODE);
+                    if (textNode) {
+                        textNode.textContent = translation;
+                    } else {
+                        element.innerHTML = translation;
+                    }
                 }
             }
         });
@@ -1155,7 +1159,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 const html = await response.text();
                 legalMentionsContent.innerHTML = html;
-                translatePage(); // Appeler la traduction sur le nouveau contenu
+                translatePage(legalMentionsModal); // Appeler la traduction sur le nouveau contenu
                 legalMentionsModal.style.display = 'block';
             } catch (error) {
                 console.error('Failed to fetch legal mentions:', error);
@@ -1203,6 +1207,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const modalBody = document.createElement('div');
         modalBody.className = 'modal-body';
         modalBody.innerHTML = translations.help_modal_content || '<p>Contenu d\'aide non disponible.</p>';
+        
+        // Traduire le contenu de la modale après son insertion
+        translatePage(modalBody);
 
         // Assembler la modale
         modalContent.appendChild(modalHeader);

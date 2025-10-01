@@ -1027,5 +1027,7 @@ const translations_nl = {
     albert_model_parameters: "Modelgrootte:",
     albert_model_parameters_small: "8 miljard parameters",
     albert_model_parameters_large: "24 miljard parameters",
-    albert_model_parameters_code: "32,5 miljard parameters"
+    albert_model_parameters_code: "32,5 miljard parameters",
+    language: "Taal",
+    tutorial: "Handleiding"
 };

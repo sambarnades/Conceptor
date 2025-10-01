@@ -881,3 +881,33 @@ textarea::placeholder {
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
+
+/* Styles pour les boutons de langue et d'aide inspirés de LinkedIn */
+.language-btn, .help-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #666666;
+    padding: 0 12px;
+    height: 52px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.language-btn:hover, .help-btn:hover {
+    color: #000000;
+}
+
+.language-btn .fi, .help-btn .fas {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.language-btn span, .help-btn span {
+    display: block;
+}

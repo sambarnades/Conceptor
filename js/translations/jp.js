@@ -1027,5 +1027,7 @@ const translations_jp = {
     albert_model_parameters: "モデルサイズ:",
     albert_model_parameters_small: "80億パラメータ",
     albert_model_parameters_large: "240億パラメータ",
-    albert_model_parameters_code: "325億パラメータ"
+    albert_model_parameters_code: "325億パラメータ",
+    language: "言語",
+    tutorial: "チュートリアル"
 };

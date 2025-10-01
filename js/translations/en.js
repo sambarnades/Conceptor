@@ -1027,5 +1027,7 @@ const translations_en = {
     albert_model_parameters: "Model size:",
     albert_model_parameters_small: "8B parameters",
     albert_model_parameters_large: "24B parameters",
-    albert_model_parameters_code: "32.5B parameters"
+    albert_model_parameters_code: "32.5B parameters",
+    language: "Language",
+    tutorial: "Tutorial"
 };

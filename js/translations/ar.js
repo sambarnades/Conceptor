@@ -1027,5 +1027,7 @@ const translations_ar = {
     albert_model_parameters: "حجم النموذج:",
     albert_model_parameters_small: "8 مليار معلمة",
     albert_model_parameters_large: "24 مليار معلمة",
-    albert_model_parameters_code: "32.5 مليار معلمة"
+    albert_model_parameters_code: "32.5 مليار معلمة",
+    language: "لغة",
+    tutorial: "تعليمي"
 };

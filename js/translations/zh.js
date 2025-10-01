@@ -1027,5 +1027,7 @@ const translations_zh = {
     albert_model_parameters: "模型大小:",
     albert_model_parameters_small: "80亿参数",
     albert_model_parameters_large: "240亿参数",
-    albert_model_parameters_code: "325亿参数"
+    albert_model_parameters_code: "325亿参数",
+    language: "语言",
+    tutorial: "教程"
 };

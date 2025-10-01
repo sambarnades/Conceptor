@@ -1027,5 +1027,7 @@ const translations_el = {
     albert_model_parameters: "Μέγεθος μοντέλου:",
     albert_model_parameters_small: "8 δισ. παράμετροι",
     albert_model_parameters_large: "24 δισ. παράμετροι",
-    albert_model_parameters_code: "32,5 δισ. παράμετροι"
+    albert_model_parameters_code: "32,5 δισ. παράμετροι",
+    language: "Γλώσσα",
+    tutorial: "Οδηγός"
 };

@@ -1027,5 +1027,7 @@ const translations_es = {
     albert_model_parameters: "Tamaño del modelo:",
     albert_model_parameters_small: "8 mil millones de parámetros",
     albert_model_parameters_large: "24 mil millones de parámetros",
-    albert_model_parameters_code: "32,5 mil millones de parámetros"
+    albert_model_parameters_code: "32,5 mil millones de parámetros",
+    language: "Idioma",
+    tutorial: "Tutorial"
 };
