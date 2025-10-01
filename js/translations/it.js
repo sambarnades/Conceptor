@@ -1,4 +1,4 @@
-var translations_it = {
+const translations_it = {
     subtitle: "Creazione assistita di risorse e attività per Moodle ed Éléa",
     help_button: "Aiuto",
     help_title: "Come usare questo strumento?",
@@ -127,7 +127,7 @@ var translations_it = {
     moodle_xml_prompt_form_rule1_encoding: "Essere codificato in UTF-8 (inserire la riga di codifica).",
     moodle_xml_prompt_form_rule1_reusable: "Essere direttamente riutilizzabile in Moodle, senza errori di formato.",
     moodle_xml_prompt_form_rule1_standard_structure: "Seguire la struttura XML standard di Moodle (con <quiz>, <question>, ecc.).",
-    moodle_xml_prompt_form_rule1_special_chars: "I simboli matematici come '&lt;' o '&gt;' devono essere codificati come entità HTML (ad esempio, `&lt;` per '<' e `&gt;` per '>') per evitare qualsiasi confusione con i tag XML.",
+    moodle_xml_prompt_form_rule1_special_chars: "I simboli matematici come '<' o '>' devono essere codificati come entità HTML (ad esempio, `<` per '<' e `>` per '>') per evitare qualsiasi confusione con i tag XML.",
     moodle_xml_prompt_generate_only_xml: "Non commentare, non formattare, non riassumere: voglio solo il contenuto grezzo del file XML. Rispetta scrupolosamente il formato descritto, poiché incollerò il risultato in un altro strumento che si aspetta questo formato. Produci la risposta sotto forma di codice preformattato",
 
     // GIFT Prompt
@@ -177,13 +177,13 @@ var translations_it = {
     quiz_set_prompt_rule1: "1. Ogni oggetto domanda deve avere le chiavi `library`, `params` e `subContentId`.",
     quiz_set_prompt_rule2: "2.  **Struttura:** Ogni domanda deve essere un oggetto con le chiavi `library`, `metadata` e `params`.",
     quiz_set_prompt_rule3: "3. Varia i tipi di domande. Usa le seguenti librerie con le versioni esatte:",
-    quiz_set_prompt_rule3_multichoice: "-   `H5P.MultiChoice 1.16`",
-    quiz_set_prompt_rule3_blanks: "-   `H5P.Blanks 1.14`",
     quiz_set_prompt_rule4: "4.  **Feedback (REGOLA CRUCIALE):** Per **tutti i tipi di domande** (`MultiChoice`, `Blanks`, `DragText`, `MarkTheWords`, `Essay`), **devi** generare un `overallFeedback` con esattamente 6 fasce di punteggio: 0-10, 11-30, 31-50, 51-70, 71-90 e 91-100. Per le domande `TrueFalse`, aggiungi anche i campi `feedbackOnCorrect` e `feedbackOnWrong`. Il feedback deve essere benevolo, graduale e sempre formulato in modo affermativo.",
     quiz_set_prompt_rule5: "5.  **Contenuto:** Il contenuto in `params` deve essere pedagogicamente rilevante, con distrattori plausibili per i QCM e testi coerenti per le altre attività.",
     quiz_set_prompt_rule6: "6.  **Semplicità:** Non aggiungere immagini o parametri di comportamento superflui. Mantieni la struttura semplice come negli esempi.",
     quiz_set_prompt_example_json_title: "**Esempi di strutture per ogni tipo di domanda autorizzata:**",
     quiz_set_prompt_generate_only_json: "Genera solo il JSON valido, iniziando con `{\"progressType\": \"dots\", ...}`, senza alcun commento.",
+
+    // VRAI/FAUX
     quiz_set_true_false_example: JSON.stringify({
         "library": "H5P.TrueFalse 1.8",
         "metadata": { "title": "Titolo della domanda Vero/Falso" },
@@ -195,6 +195,8 @@ var translations_it = {
             "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
         }
     }, null, 4),
+
+    // QCM
     quiz_set_multiple_choice_example: JSON.stringify({
         "library": "H5P.MultiChoice 1.16",
         "metadata": { "title": "Titolo del QCM" },
@@ -215,6 +217,8 @@ var translations_it = {
             ]
         }
     }, null, 4),
+
+    // Texte à trous
     quiz_set_fill_in_the_blanks_example: JSON.stringify({
         "library": "H5P.Blanks 1.14",
         "metadata": { "title": "Titolo dell'esercizio di completamento" },
@@ -231,6 +235,8 @@ var translations_it = {
             ]
         }
     }, null, 4),
+
+    // Glisser les mots
     quiz_set_drag_the_words_example: JSON.stringify({
         "library": "H5P.DragText 1.10",
         "metadata": { "title": "Titolo dell'attività di trascinamento delle parole" },
@@ -248,6 +254,8 @@ var translations_it = {
             ]
         }
     }, null, 4),
+
+    // Surligner les mots
     quiz_set_mark_the_words_example: JSON.stringify({
         "library": "H5P.MarkTheWords 1.11",
         "metadata": { "title": "Titolo dell'attività di marcatura delle parole" },
@@ -265,6 +273,8 @@ var translations_it = {
             ]
         }
     }, null, 4),
+
+    // Rédaction
     quiz_set_essay_example: JSON.stringify({
         "library": "H5P.Essay 1.5",
         "metadata": { "title": "Titolo del saggio" },
@@ -316,8 +326,8 @@ var translations_it = {
     summary_prompt_rule2: "2. Le frasi successive sono distrattori plausibili ma errati.",
     summary_prompt_rule3: "3. Tutte le frasi corrette devono formare un riepilogo coerente.",
     summary_prompt_example_json_title: "**Esempio di JSON per una tappa:**",
-    summary_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento.",
     summary_prompt_overall_feedback: "`overallFeedback`: Un array di 6 oggetti per il feedback finale, con punteggi da 0-10, 11-30, 31-50, 51-70, 71-90 e 91-100. Il testo (`feedback`) deve essere benevolo, graduale e sempre formulato in modo affermativo, in relazione al tema.",
+    summary_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento.",
 
     // Summary UI translations
     summary_intro: "Scegli l'affermazione corretta.",
@@ -378,8 +388,8 @@ var translations_it = {
     blanks_try_again: "Riprova",
     blanks_check_answer: "Controlla",
     blanks_not_filled_out: "Per favore, compila tutti gli spazi.",
-    blanks_answer_is_correct: "'':ans' è corretto",
-    blanks_answer_is_wrong: "'':ans' è sbagliato",
+    blanks_answer_is_correct: "':ans' è corretto",
+    blanks_answer_is_wrong: "':ans' è sbagliato",
     blanks_answered_correctly: "Risposta corretta",
     blanks_answered_incorrectly: "Risposta sbagliata",
     blanks_solution_label: "Risposta corretta:",
@@ -531,8 +541,7 @@ var translations_it = {
     h5p_chart_name: "Diagramma",
     h5p_chart_description: "Crea un diagramma circolare o a barre per visualizzare i dati.",
 
-
-    // Moduli Moodle
+    // Moodle Modules
     moodle_xml_name: "XML Éléa/Moodle",
     moodle_xml_description: "Genera una banca di 10 domande per un'attività Quiz pronte per essere importate in formato XML.",
     moodle_xml_help: "Per aggiungere un file XML in un'attività «Quiz» su Moodle, crea prima l'attività. Poi apri il menu <strong>Altro</strong> e vai a <strong>Banca delle domande</strong>. In questo menu, fai clic su <strong>Importa</strong>, scegli il formato <strong>Moodle XML</strong>, quindi seleziona il tuo file e conferma.",
@@ -570,7 +579,7 @@ var translations_it = {
     paste_ia_result_qcm: "Incolla qui sotto il JSON generato dall'IA. Il titolo dell'attività verrà estratto automaticamente dal JSON.",
     generate_mbz_qcm: "Genera attività MCQ (mbz)",
 
-    // Specifico per Moodle XML
+    // Moodle XML specific
     moodle_xml_placeholder: "Il Moodle XML verrà visualizzato qui...",
     paste_xml_placeholder: "Incolla qui l'XML completo generato dall'IA...",
 
@@ -610,29 +619,8 @@ var translations_it = {
     flashcards_retry: "Riprova",
     flashcards_card_announcement: "Risposta sbagliata. La risposta corretta era @answer",
     flashcards_correct_announcement: "@answer è corretto.",
-    flashcards_page_announcement: "Pagina @current di @total"
-    ,
+    flashcards_page_announcement: "Pagina @current di @total",
 
-    // Essay specific UI translations
-    essay_checkAnswer: "Controlla",
-    essay_tryAgain: "Riprova",
-    essay_showSolution: "Mostra soluzione",
-    essay_feedbackHeader: "Feedback",
-    essay_solutionTitle: "Soluzione di esempio",
-    remainingChars: "Caratteri rimanenti: @chars",
-    notEnoughChars: "Devi inserire almeno @chars caratteri!",
-    messageSave: "salvato",
-    placeholderText: "Inizia a scrivere qui...",
-    ariaYourResult: "Hai ottenuto @score su @total punti",
-    ariaNavigatedToSolution: "Navigato alla soluzione di esempio appena inclusa dopo l'area di testo.",
-
-    // Essay Overall Feedback
-    essay_overall_feedback_0_10: "Il tuo lavoro è un buon inizio. Continua a esplorare l'argomento per arricchire le tue idee.",
-    essay_overall_feedback_11_30: "Hai posto delle basi interessanti. Approfondendo alcuni punti, il tuo lavoro guadagnerà in precisione.",
-    essay_overall_feedback_31_50: "La tua comprensione dell'argomento è a buon punto. Considera di sviluppare ulteriormente le tue argomentazioni per rafforzare il tuo punto di vista.",
-    essay_overall_feedback_51_70: "Questo è un buon lavoro. Dimostri una buona padronanza dell'argomento. Qualche dettaglio in più potrebbe ancora migliorarlo.",
-    essay_overall_feedback_71_90: "Ottimo lavoro! La tua analisi è pertinente e ben strutturata. Dimostri un'eccellente comprensione.",
-    essay_overall_feedback_91_100: "Lavoro eccellente! La tua riflessione è approfondita, ben argomentata e dimostra una completa padronanza dell'argomento.",
     ticket: "Ticket",
     legal_mentions: "Note legali",
 
@@ -675,6 +663,27 @@ var translations_it = {
     legal_library_fflate: "<strong>fflate</strong> (Licenza: MIT): Libreria molto veloce per la compressione e decompressione dei dati, utilizzata per la creazione di archivi .mbz per i moduli Moodle.",
     legal_library_tarjs: "<strong>tar-js</strong> (Licenza: MIT): Consente di creare archivi .tar, un passaggio necessario prima della compressione per formare i file .mbz per i moduli Moodle.",
     legal_library_ownership: "Ogni libreria rimane di proprietà dei rispettivi autori e viene utilizzata in conformità con la/le sua/e licenza/e.",
+
+    // Essay specific UI translations
+    essay_checkAnswer: "Controlla",
+    essay_tryAgain: "Riprova",
+    essay_showSolution: "Mostra soluzione",
+    essay_feedbackHeader: "Feedback",
+    essay_solutionTitle: "Soluzione di esempio",
+    remainingChars: "Caratteri rimanenti: @chars",
+    notEnoughChars: "Devi inserire almeno @chars caratteri!",
+    messageSave: "salvato",
+    placeholderText: "Inizia a scrivere qui...",
+    ariaYourResult: "Hai ottenuto @score su @total punti",
+    ariaNavigatedToSolution: "Navigato alla soluzione di esempio appena inclusa dopo l'area di testo.",
+
+    // Essay Overall Feedback
+    essay_overall_feedback_0_10: "Il tuo lavoro è un buon inizio. Continua a esplorare l'argomento per arricchire le tue idee.",
+    essay_overall_feedback_11_30: "Hai posto delle basi interessanti. Approfondendo alcuni punti, il tuo lavoro guadagnerà in precisione.",
+    essay_overall_feedback_31_50: "La tua comprensione dell'argomento è a buon punto. Considera di sviluppare ulteriormente le tue argomentazioni per rafforzare il tuo punto di vista.",
+    essay_overall_feedback_51_70: "Questo è un buon lavoro. Dimostri una buona padronanza dell'argomento. Qualche dettaglio in più potrebbe ancora migliorarlo.",
+    essay_overall_feedback_71_90: "Ottimo lavoro! La tua analisi è pertinente e ben strutturata. Dimostri un'eccellente comprensione.",
+    essay_overall_feedback_91_100: "Lavoro eccellente! La tua riflessione è approfondita, ben argomentata e dimostra una completa padronanza dell'argomento.",
 
     // True/False Question
     true_false_prompt_role: "Sei un esperto di progettazione didattica che crea una domanda Vero/Falso per un'attività H5P.",
@@ -926,9 +935,10 @@ var translations_it = {
     chart_prompt_content_rules_title: "**Regole per il contenuto:**",
     chart_prompt_rule1: "1. Scegli colori contrastanti per una buona leggibilità.",
     chart_prompt_rule2: "2. Le etichette devono essere brevi e chiare.",
+    chart_prompt_rule3: "3. Se un valore è molto basso in confronto con altri, preferisci un 'barChart' per una migliore visualizzazione.",
     chart_prompt_example_json_title: "**Esempio di JSON:**",
-    chart_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento."
-    ,
+    chart_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento.",
+
     // createH5PWithDynamicDependencies
     quiz_prev_button: "Precedente",
     quiz_next_button: "Successivo",
@@ -942,8 +952,6 @@ var translations_it = {
     quiz_retry_button_text: "Riprova",
     quiz_finish_button_text: "Fine",
     quiz_submit_button_text: "Invia",
-    quiz_tips_label: "Mostra suggerimenti",
-    quiz_tip_available: "Suggerimento disponibile",
     quiz_feedback_available: "Feedback disponibile",
     quiz_read_feedback: "Leggi feedback",
     quiz_wrong_answer: "Risposta sbagliata",

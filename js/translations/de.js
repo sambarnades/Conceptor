@@ -1,4 +1,4 @@
-var translations_de = {
+const translations_de = {
     subtitle: "Assistierte Erstellung von Moodle- und Éléa-Ressourcen und -Aktivitäten",
     help_button: "Hilfe",
     help_title: "Wie benutzt man dieses Tool?",
@@ -127,7 +127,7 @@ var translations_de = {
     moodle_xml_prompt_form_rule1_encoding: "In UTF-8 kodiert sein (Kodierungszeile einfügen).",
     moodle_xml_prompt_form_rule1_reusable: "Direkt in Moodle wiederverwendbar sein, ohne Formatfehler.",
     moodle_xml_prompt_form_rule1_standard_structure: "Der Standard-Moodle-XML-Struktur folgen (mit <quiz>, <question> usw.).",
-    moodle_xml_prompt_form_rule1_special_chars: "Mathematische Symbole wie '&lt;' oder '&gt;' müssen als HTML-Entitäten kodiert werden (zum Beispiel, `&lt;` für '&lt;' und `&gt;` für '&gt;'), um jede Verwechslung mit XML-Tags zu vermeiden.",
+    moodle_xml_prompt_form_rule1_special_chars: "Mathematische Symbole wie '<' oder '>' müssen als HTML-Entitäten kodiert werden (zum Beispiel, `<` für '<' und `>` für '>'), um jede Verwechslung mit XML-Tags zu vermeiden.",
     moodle_xml_prompt_generate_only_xml: "Keine Kommentare, keine Formatierung, keine Zusammenfassung: Ich möchte nur den Rohinhalt der XML-Datei. Halten Sie sich strikt an das beschriebene Format, da ich das Ergebnis in ein anderes Tool einfügen werde, das dieses Format erwartet. Erstellen Sie die Antwort in vorformatiertem Code.",
 
     // GIFT Prompt
@@ -177,13 +177,13 @@ var translations_de = {
     quiz_set_prompt_rule1: "1.  Jedes Fragenobjekt muss die Schlüssel `library`, `params` und `subContentId` enthalten.",
     quiz_set_prompt_rule2: "2.  **Struktur:** Jede Frage muss ein Objekt mit den Schlüsseln `library`, `metadata` und `params` sein.",
     quiz_set_prompt_rule3: "3.  Variieren Sie die Fragetypen. Verwenden Sie die folgenden Bibliotheken mit ihren genauen Versionen :",
-    quiz_set_prompt_rule3_multichoice: "-   `H5P.MultiChoice 1.16`",
-    quiz_set_prompt_rule3_blanks: "-   `H5P.Blanks 1.14`",
     quiz_set_prompt_rule4: "4.  **Feedback (ENTSCHEIDENDE REGEL):** Für **alle Fragetypen** (`MultiChoice`, `Blanks`, `DragText`, `MarkTheWords`, `Essay`) **müssen** Sie ein `overallFeedback` mit genau 6 Bewertungsbereichen erstellen: 0-10, 11-30, 31-50, 51-70, 71-90 und 91-100. Fügen Sie für `TrueFalse`-Fragen zusätzlich die Felder `feedbackOnCorrect` und `feedbackOnWrong` hinzu. Das Feedback muss wohlwollend, schrittweise und immer positiv formuliert sein.",
     quiz_set_prompt_rule5: "5.  **Inhalt:** Der Inhalt in `params` muss pädagogisch relevant sein, mit plausiblen Ablenkern für MCQs und zusammenhängenden Texten für andere Aktivitäten.",
     quiz_set_prompt_rule6: "6.  **Einfachheit:** Fügen Sie keine Bilder oder überflüssige Verhaltensparameter hinzu. Halten Sie die Struktur einfach wie in den Beispielen.",
     quiz_set_prompt_example_json_title: "**Beispielstrukturen für jeden zulässigen Fragetyp:**",
     quiz_set_prompt_generate_only_json: "Generieren Sie nur das gültige JSON, beginnend mit `{\"progressType\": \"dots\", ...}`, ohne Kommentare.",
+
+    // VRAI/FAUX
     quiz_set_true_false_example: JSON.stringify({
         "library": "H5P.TrueFalse 1.8",
         "metadata": { "title": "Titel der Wahr/Falsch-Frage" },
@@ -195,6 +195,8 @@ var translations_de = {
             "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
         }
     }, null, 4),
+
+    // QCM
     quiz_set_multiple_choice_example: JSON.stringify({
         "library": "H5P.MultiChoice 1.16",
         "metadata": { "title": "Titel der MCQ" },
@@ -215,6 +217,8 @@ var translations_de = {
             ]
         }
     }, null, 4),
+
+    // Texte à trous
     quiz_set_fill_in_the_blanks_example: JSON.stringify({
         "library": "H5P.Blanks 1.14",
         "metadata": { "title": "Titel des Lückentextes" },
@@ -231,6 +235,8 @@ var translations_de = {
             ]
         }
     }, null, 4),
+
+    // Glisser les mots
     quiz_set_drag_the_words_example: JSON.stringify({
         "library": "H5P.DragText 1.10",
         "metadata": { "title": "Titel der Drag-the-Words-Aktivität" },
@@ -248,6 +254,8 @@ var translations_de = {
             ]
         }
     }, null, 4),
+
+    // Surligner les mots
     quiz_set_mark_the_words_example: JSON.stringify({
         "library": "H5P.MarkTheWords 1.11",
         "metadata": { "title": "Titel der Mark-the-Words-Aktivität" },
@@ -265,6 +273,8 @@ var translations_de = {
             ]
         }
     }, null, 4),
+
+    // Rédaction
     quiz_set_essay_example: JSON.stringify({
         "library": "H5P.Essay 1.5",
         "metadata": { "title": "Titel des Aufsatzes" },
@@ -316,8 +326,8 @@ var translations_de = {
     summary_prompt_rule2: "2.  Nachfolgende Sätze sind plausible, aber falsche Ablenker.",
     summary_prompt_rule3: "3.  Alle richtigen Sätze müssen eine kohärente Zusammenfassung bilden.",
     summary_prompt_example_json_title: "**Beispiel-JSON für einen Schritt :**",
-    summary_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code, ohne Kommentare.",
     summary_prompt_overall_feedback: "`overallFeedback`: Ein Array von 6 Objekten für das abschließende Feedback mit Punktzahlen von 0-10, 11-30, 31-50, 51-70, 71-90 und 91-100. Der Text (`feedback`) muss wohlwollend, schrittweise und immer positiv formuliert sein und sich auf das Thema beziehen.",
+    summary_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code, ohne Kommentare.",
 
     // Summary UI translations
     summary_intro: "Wählen Sie die richtige Aussage.",
@@ -531,7 +541,7 @@ var translations_de = {
     h5p_chart_name: "Diagramm",
     h5p_chart_description: "Erstellen Sie ein Kreis- oder Balkendiagramm zur Visualisierung von Daten.",
 
-    // Moodle Module
+    // Moodle Modules
     moodle_xml_name: "XML Éléa/Moodle",
     moodle_xml_description: "Erstellen Sie eine Bank mit 10 Fragen für eine Testaktivität, die im XML-Format importiert werden können.",
     moodle_xml_help: "Um eine XML-Datei in eine „Test“-Aktivität in Moodle hinzuzufügen, erstellen Sie zunächst die Aktivität. Öffnen Sie dann das Menü <strong>Mehr</strong> und gehen Sie zu <strong>Fragenbank</strong>. In diesem Menü klicken Sie auf <strong>Importieren</strong>, wählen das Format <strong>Moodle XML</strong> und wählen dann Ihre Datei aus und bestätigen.",
@@ -589,7 +599,6 @@ var translations_de = {
     error_compression_module_not_ready: "Das Komprimierungsmodul ist nicht bereit. Bitte versuchen Sie es in einem Moment erneut.",
     h5p_file_generated_successfully: "Datei {fileName} erfolgreich generiert!",
     h5p_creation_failed: "Erstellung der H5P-Datei fehlgeschlagen: {errorMessage}",
-    prompt_language_instruction: "Die verwendete Sprache muss Deutsch sein.",
     license_info: "GNU GPL v3.0 oder später",
 
     // Flashcards specific UI translations
@@ -608,8 +617,7 @@ var translations_de = {
     flashcards_retry: "Wiederholen",
     flashcards_card_announcement: "Falsche Antwort. Die richtige Antwort war @answer",
     flashcards_correct_announcement: "@answer ist richtig.",
-    flashcards_page_announcement: "Seite @current von @total"
-    ,
+    flashcards_page_announcement: "Seite @current von @total",
 
     // Essay specific UI translations
     essay_checkAnswer: "Überprüfen",
@@ -926,9 +934,9 @@ var translations_de = {
     chart_prompt_rule2: "2. Beschriftungen sollten kurz und klar sein.",
     chart_prompt_rule3: "3. Wenn ein Wert im Vergleich zu anderen sehr niedrig ist, bevorzugen Sie ein 'barChart' für eine bessere Visualisierung.",
     chart_prompt_example_json_title: "**Beispiel-JSON:**",
-    chart_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare."
-    ,
-    // createHH5PWithDynamicDependencies
+    chart_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare.",
+
+    // createH5PWithDynamicDependencies
     quiz_prev_button: "Zurück",
     quiz_next_button: "Weiter",
     quiz_finish_button: "Fertig",
@@ -941,8 +949,6 @@ var translations_de = {
     quiz_retry_button_text: "Wiederholen",
     quiz_finish_button_text: "Fertig",
     quiz_submit_button_text: "Absenden",
-    quiz_tips_label: "Tipps anzeigen",
-    quiz_tip_available: "Tipp verfügbar",
     quiz_feedback_available: "Feedback verfügbar",
     quiz_read_feedback: "Feedback lesen",
     quiz_wrong_answer: "Falsche Antwort",

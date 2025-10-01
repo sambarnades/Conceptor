@@ -1,7 +1,7 @@
-var translations_ar = {
+const translations_ar = {
     subtitle: "إنشاء مُساعَد للموارد والأنشطة على Moodle وÉléa",
     help_button: "مساعدة",
-    help_title: "كيف أستخدم هذه الأداة؟",
+    help_title: "كيف أستخدم هذه الأдаة؟",
     help_step1: "<strong>اختر وضع الإنشاء:</strong>",
     help_step1_fast: "<strong>الوضع السريع:</strong> مثالي للبدء بسرعة. حدِّد دورك (مثال: معلّم) والموضوع المراد تناوله.",
     help_step1_guided: "<strong>الوضع المُوجَّه:</strong> لمزيد من الدقة. أدخِل المادة، الموضوع، المستوى وعدد العناصر المطلوبة.",
@@ -23,7 +23,7 @@ var translations_ar = {
     h5p_tab: "H5P",
     moodle_tab: "وحدات Éléa/Moodle",
 
-    // السياق العام (الوضع المتقدّم)
+    // General Context (Advanced Mode)
     prompt_expert_intro: "أنت أستاذ خبير في التربية ستُكيِّف النبرة والمفردات وفق محتوى البرامج الحالية ومستوى المتعلمين لمادّة ",
     prompt_context_title: "**السياق:**",
     prompt_subject: "- **المادة:**",
@@ -32,13 +32,13 @@ var translations_ar = {
     prompt_number_of_elements: "- **عدد العناصر:**",
     prompt_additional_info: "- **معلومات إضافية:**",
 
-    // السياق العام (الوضع البسيط)
+    // General Context (Simple Mode)
     prompt_simple_intro_part1: "أنا **",
     prompt_simple_intro_part2: "** وأرغب في **",
     prompt_language_instruction: "يجب أن يكون المحتوى المُولَّد باللغة العربية، ما لم تُحدَّد لغة أخرى في الطلب.",
     prompt_code_block_instruction: "يجب عليك إنشاء النتيجة في كتلة تعليمة برمجية.",
 
-    // مطالب الخط الزمني
+    // Timeline Prompt
     timeline_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Timeline\".",
     timeline_prompt_mission: "**مهمتك:**",
     timeline_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط H5P من نوع Timeline. يجب أن يكون JSON قابلًا للاستخدام مباشرة.",
@@ -61,7 +61,7 @@ var translations_ar = {
     timeline_prompt_example_json_title: "**مثال على بنية JSON:**",
     timeline_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات. سيتم استخدام النتيجة مباشرة في أداة أخرى.",
 
-    // مطالب الكلمات المتقاطعة
+    // Crossword Prompt
     crossword_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Crossword\".",
     crossword_prompt_mission: "**مهمتك:**",
     crossword_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط كلمات متقاطعة عبر H5P.",
@@ -91,7 +91,7 @@ var translations_ar = {
     crossword_close_window: "إغلاق النافذة",
     crossword_submit_answer: "إرسال",
 
-    // مطالب المقال
+    // Essay Prompt
     essay_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Essay\".",
     essay_prompt_mission: "**مهمتك:**",
     essay_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط مقال عبر H5P.",
@@ -108,7 +108,7 @@ var translations_ar = {
     essay_prompt_example_json_title: "**مثال JSON لكلمة مفتاحية:**",
     essay_prompt_generate_only_json: "ولِّد JSON كاملًا وصالحًا بملء التعليمات وقائمة الكلمات المفتاحية دون أي تعليقات.",
 
-    // مطالب Moodle XML
+    // Moodle XML Prompt
     moodle_xml_prompt_intro: "أرغب في إنشاء اختبار مكوَّن من ${nombreQuestions} أسئلة.",
     moodle_xml_prompt_content_title: "فيما يخصّ المحتوى:",
     moodle_xml_prompt_content_rule1: "يجب أن تكون الإجابات الخاطئة متسقة مع الموضوع ولكن خاطئة بوضوح لتجنّب التخمين.",
@@ -127,10 +127,10 @@ var translations_ar = {
     moodle_xml_prompt_form_rule1_encoding: "مشفَّرًا بترميز UTF-8 (ضمّن سطر الترميز).",
     moodle_xml_prompt_form_rule1_reusable: "قابلًا لإعادة الاستخدام مباشرة في Moodle دون أخطاء في التنسيق.",
     moodle_xml_prompt_form_rule1_standard_structure: "متّبعًا لبنية XML القياسية في Moodle (مع <quiz> و<question>... إلخ).",
-    moodle_xml_prompt_form_rule1_special_chars: "يجب ترميز الرموز الرياضية مثل '&lt;' أو '&gt;' ككيانات HTML (على سبيل المثال، `&lt;` لـ '<' و `&gt;` لـ '>') لتجنب أي لبس مع وسوم XML.",
+    moodle_xml_prompt_form_rule1_special_chars: "يجب ترميز الرموز الرياضية مثل '<' أو '>' ككيانات HTML (على سبيل المثال، `<` لـ '<' و `>` لـ '>') لتجنب أي لبس مع وسوم XML.",
     moodle_xml_prompt_generate_only_xml: "لا تُعلّق، لا تُنسّق، لا تُلخّص: أريد المحتوى الخام لملف XML فقط. التزم بدقة بالتنسيق الموصوف، لأنني سأُلصق النتيجة في أداة أخرى تتوقّع هذا التنسيق. قدِّم الإجابة ككود مُنسَّق مسبقًا.",
 
-    // مطالب GIFT
+    // GIFT Prompt
     gift_prompt_intro: "أرغب في إنشاء اختبار مكوَّن من ${nombreQuestions} أسئلة.",
     gift_prompt_format_info: "يجب أن يكون الاختبار بصيغة GIFT ليُستورد في Moodle.",
     gift_prompt_question_quality: "على كل سؤال أن يكون واضحًا وموجزًا وبدون لبس، مع تغذية راجعة مفصّلة.",
@@ -149,7 +149,7 @@ var translations_ar = {
     gift_prompt_question_type_matching: "- أسئلة مطابقة (matching) تحتوي على 4 أزواج على الأقل.",
     gift_prompt_generate_only_gift: "ولِّد الاختبار مباشرة بصيغة GIFT دون تعليقات أو وسوم إضافية. التزم بدقة بالتنسيق الموصوف؛ سأُلصق النتيجة في أداة أخرى تتوقّع هذا التنسيق. قدِّم الإجابة ككود مُنسَّق مسبقًا.",
 
-    // مطالب البطاقات
+    // Flashcards Prompt
     flashcards_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Flashcards\".",
     flashcards_prompt_mission: "**مهمتك:**",
     flashcards_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط H5P من نوع بطاقات الذاكرة. يجب أن يكون جاهزًا للاستخدام مباشرة.",
@@ -164,7 +164,7 @@ var translations_ar = {
     flashcards_prompt_example_json_title: "**مثال JSON:**",
     flashcards_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
 
-    // مطالب مجموعة الأسئلة
+    // QuizSet Prompt
     quiz_set_prompt_role: "أنت خبير في هندسة التعلّم تُنشئ محتوى لنشاط \"H5P Quiz (Question Set)\".",
     quiz_set_prompt_mission: "**مهمتك:**",
     quiz_set_prompt_generate_json: "ولِّد كائن JSON **للمحتوى فقط** لاختبار H5P، بحيث يمكن استخدامه مباشرة كملف `content.json`.",
@@ -177,14 +177,13 @@ var translations_ar = {
     quiz_set_prompt_rule1: "1. يجب أن يحتوي كل كائن سؤال على المفاتيح `library` و`params` و`subContentId`.",
     quiz_set_prompt_rule2: "2.  **البنية:** يجب أن تكون كل سؤال كائنًا يحتوي على المفاتيح `library` و `metadata` و `params`.",
     quiz_set_prompt_rule3: "3. نوِّع أنواع الأسئلة. استخدم المكتبات التالية بالإصدارات الدقيقة:",
-    quiz_set_prompt_rule3_multichoice: "-   `H5P.MultiChoice 1.16`",
-    quiz_set_prompt_rule3_blanks: "-   `H5P.Blanks 1.14`",
     quiz_set_prompt_rule4: "4.  **التقييم (قاعدة حاسمة):** لـ **جميع أنواع الأسئلة** (`MultiChoice`, `Blanks`, `DragText`, `MarkTheWords`, `Essay`), **يجب** عليك إنشاء `overallFeedback` بستة نطاقات درجات بالضبط: 0-10، 11-30، 31-50، 51-70، 71-90، و 91-100. بالنسبة لأسئلة `TrueFalse`، أضف أيضًا حقلي `feedbackOnCorrect` و `feedbackOnWrong`. يجب أن يكون التقييم إيجابيًا وتدريجيًا ومصاغًا دائمًا بشكل إيجابي.",
     quiz_set_prompt_rule5: "5.  **المحتوى:** يجب أن يكون المحتوى في `params` ذا صلة من الناحية التربوية، مع مشتتات معقولة للأسئلة متعددة الخيارات ونصوص متماسكة للأنشطة الأخرى.",
     quiz_set_prompt_rule6: "6.  **البساطة:** لا تضف صورًا أو معلمات سلوك غير ضرورية. حافظ على بساطة البنية كما في الأمثلة.",
     quiz_set_prompt_example_json_title: "**أمثلة على الهياكل لكل نوع سؤال مسموح به:**",
     quiz_set_prompt_generate_only_json: "ولِّد فقط JSON صالحًا، بدءًا من `{\"progressType\": \"dots\", ...}`، دون أي تعليقات.",
 
+    // VRAI/FAUX
     quiz_set_true_false_example: JSON.stringify({
         "library": "H5P.TrueFalse 1.8",
         "metadata": { "title": "عنوان سؤال صح/خطأ" },
@@ -196,6 +195,8 @@ var translations_ar = {
             "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
         }
     }, null, 4),
+
+    // QCM
     quiz_set_multiple_choice_example: JSON.stringify({
         "library": "H5P.MultiChoice 1.16",
         "metadata": { "title": "عنوان MCQ" },
@@ -216,6 +217,8 @@ var translations_ar = {
             ]
         }
     }, null, 4),
+
+    // Texte à trous
     quiz_set_fill_in_the_blanks_example: JSON.stringify({
         "library": "H5P.Blanks 1.14",
         "metadata": { "title": "عنوان تمرين ملء الفراغات" },
@@ -232,6 +235,8 @@ var translations_ar = {
             ]
         }
     }, null, 4),
+
+    // Glisser les mots
     quiz_set_drag_the_words_example: JSON.stringify({
         "library": "H5P.DragText 1.10",
         "metadata": { "title": "عنوان نشاط سحب الكلمات" },
@@ -249,6 +254,8 @@ var translations_ar = {
             ]
         }
     }, null, 4),
+
+    // Surligner les mots
     quiz_set_mark_the_words_example: JSON.stringify({
         "library": "H5P.MarkTheWords 1.11",
         "metadata": { "title": "عنوان نشاط تحديد الكلمات" },
@@ -266,6 +273,8 @@ var translations_ar = {
             ]
         }
     }, null, 4),
+
+    // Rédaction
     quiz_set_essay_example: JSON.stringify({
         "library": "H5P.Essay 1.5",
         "metadata": { "title": "عنوان المقال" },
@@ -285,7 +294,8 @@ var translations_ar = {
             ]
         }
     }, null, 4),
-    // مطالب المسرد (Accordion)
+
+    // Glossary Prompt
     glossary_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Accordion\".",
     glossary_prompt_mission: "**مهمتك:**",
     glossary_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لمسرد مصطلحات (Accordion) عبر H5P. يجب أن يكون جاهزًا للاستخدام مباشرة.",
@@ -300,7 +310,7 @@ var translations_ar = {
     glossary_prompt_example_json_title: "**مثال JSON لمدخل واحد:**",
     glossary_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
 
-    // مطالب الملخّص
+    // Summary Prompt
     summary_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Summary\".",
     summary_prompt_mission: "**مهمتك:**",
     summary_prompt_generate_json: "ولِّد كائن JSON كاملًا لنشاط H5P من نوع Summary، جاهزًا للاستخدام مباشرة.",
@@ -316,8 +326,8 @@ var translations_ar = {
     summary_prompt_rule2: "2. الجمل التالية مُشتّتات معقولة لكنها غير صحيحة.",
     summary_prompt_rule3: "3. يجب أن تكوّن جميع الجمل الصحيحة معًا ملخّصًا متماسكًا.",
     summary_prompt_example_json_title: "**مثال JSON لخطوة واحدة:**",
-    summary_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
     summary_prompt_overall_feedback: "`overallFeedback`: مصفوفة من 6 كائنات للتقييم النهائي، مع درجات من 0-10، 11-30، 31-50، 51-70، 71-90، و 91-100. يجب أن يكون النص (`feedback`) إيجابيًا ومتدرجًا ومصاغًا دائمًا بشكل إيجابي، ومرتبطًا بالموضوع.",
+    summary_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
 
     // Summary UI translations
     summary_intro: "اختر العبارة الصحيحة.",
@@ -333,7 +343,7 @@ var translations_ar = {
     summary_progress_text: "التقدم :num من :total",
     summary_alternative_incorrect_label: "خطأ",
 
-    // مطالب اسحب الكلمات
+    // Drag the Words Prompt
     drag_word_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Drag the Words\".",
     drag_word_prompt_mission: "**مهمتك:**",
     drag_word_prompt_generate_json: "ولِّد كائن JSON كاملًا لنشاط H5P من نوع Drag the Words، جاهزًا للاستخدام.",
@@ -359,7 +369,7 @@ var translations_ar = {
     drag_words_score_bar_label: "لقد حصلت على :num من :total نقطة",
     drag_words_submit_answer: "إرسال",
 
-    // مطالب املأ الفراغات
+    // Fill in the Blanks Prompt
     blanks_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Fill in the Blanks\".",
     blanks_prompt_mission: "**مهمتك:**",
     blanks_prompt_generate_json: "ولِّد كائن JSON كاملًا لنشاط H5P من نوع املأ الفراغات، جاهزًا للاستخدام.",
@@ -401,7 +411,7 @@ var translations_ar = {
     blanks_a11y_show_solution: "إظهار الحل. سيتم تمييز المهمة بالحل الصحيح.",
     blanks_a11y_retry: "إعادة محاولة المهمة. إعادة تعيين جميع الإجابات والبدء من جديد.",
 
-    // مطالب علّم الكلمات
+    // Mark the Words Prompt
     mark_words_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Mark the Words\".",
     mark_words_prompt_mission: "**مهمتك:**",
     mark_words_prompt_generate_json: "ولِّد كائن JSON كاملًا لنشاط H5P من نوع Mark the Words، جاهزًا للاستخدام.",
@@ -436,7 +446,7 @@ var translations_ar = {
     mark_words_a11y_show_solution: "إظهار الحل. سيتم تمييز المهمة بالحل الصحيح.",
     mark_words_a11y_retry: "إعادة محاولة المهمة. إعادة تعيين جميع الإجابات والبدء من جديد.",
 
-    // مطالب المليونير
+    // Millionnaire Prompt
     millionnaire_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Millionnaire\".",
     millionnaire_prompt_num_questions: "**عدد الأسئلة:** 6",
     millionnaire_prompt_mission: "**مهمتك:**",
@@ -493,7 +503,7 @@ var translations_ar = {
     qcm_prompt_example_json_title: "**مثال JSON:**",
     qcm_prompt_generate_only_json: "أنشئ فقط كائن JSON صالحًا، دون أي تعليق.",
 
-    // وحدات H5P
+    // H5P Modules
     h5p_timeline_name: "الخط الزمني",
     h5p_timeline_description: "أنشِئ خطًا زمنيًا تفاعليًا لعرض تسلسل من الأحداث.",
     h5p_flashcards_name: "بطاقات الذاكرة",
@@ -531,7 +541,7 @@ var translations_ar = {
     h5p_chart_name: "رسم بياني",
     h5p_chart_description: "أنشئ رسمًا بيانيًا دائريًا أو شريطيًا لتصور البيانات.",
 
-    // وحدات Moodle
+    // Moodle Modules
     moodle_xml_name: "XML Éléa/Moodle",
     moodle_xml_description: "إنشاء بنك من 10 أسئلة لنشاط اختبار جاهزة للاستيراد بتنسيق XML.",
     moodle_xml_help: "لإضافة ملف XML إلى نشاط «اختبار» على Moodle، ابدأ بإنشاء النشاط. بعد ذلك، افتح قائمة <strong>المزيد</strong> واذهب إلى <strong>بنك الأسئلة</strong>. في هذه القائمة، انقر على <strong>استيراد</strong>، واختر تنسيق <strong>Moodle XML</strong>، ثم حدد ملفك وقم بالتأكيد.",
@@ -544,10 +554,8 @@ var translations_ar = {
 
     moodle_qcm_name: "MCQ",
     moodle_qcm_description: "إنشاء نشاط MCQ بسيط.",
-    moodle_qcm_name: "MCQ",
-    moodle_qcm_description: "إنشاء نشاط MCQ بسيط.",
 
-    // محتوى ديناميكي
+    // Dynamic content
     prompt_for_ia: "مطلب للذكاء الاصطناعي",
     copy_prompt: "📋 نسخ المطلب",
     go_duck: "🦆 الانتقال إلى Duck.ai",
@@ -570,19 +578,16 @@ var translations_ar = {
     create_mbz_file_qcm: "إنشاء ملف MCQ (.mbz)",
     paste_ia_result_qcm: "ألصق أدناه JSON الذي أنشأته الذكاء الاصطناعي. سيتم استخراج عنوان النشاط تلقائيًا من JSON.",
     generate_mbz_qcm: "إنشاء نشاط MCQ (mbz)",
-    create_mbz_file_qcm: "إنشاء ملف MCQ (.mbz)",
-    paste_ia_result_qcm: "ألصق أدناه JSON الذي أنشأته الذكاء الاصطناعي. سيتم استخراج عنوان النشاط تلقائيًا من JSON.",
-    generate_mbz_qcm: "إنشاء نشاط MCQ (mbz)",
 
-    // خاص بـ Moodle XML
+    // Moodle XML specific
     moodle_xml_placeholder: "سيظهر Moodle XML هنا...",
     paste_xml_placeholder: "الصق هنا ملف XML الكامل الذي ولّده الذكاء الاصطناعي...",
 
-    // H5P حقول نصوص فارغة
+    // H5P champs textes vides
     generate_prompts_placeholder: "سيظهر موجّه الذكاء الاصطناعي هنا بعد النقر على 'توليد الـprompts'.",
     paste_json_or_text: "الصِق هنا محتوى JSON أو النص الذي أنشأه الذكاء الاصطناعي لإنشاء نشاطك.",
 
-    // الإشعارات
+    // Notifications
     prompts_generated_successfully: "تم توليد المطالبات بنجاح!",
     error_please_fill_fields: "يرجى ملء جميع حقول الوضع البسيط.",
     error_please_fill_guided_fields: "يرجى ملء جميع حقول الوضع المُوجَّه.",
@@ -614,29 +619,8 @@ var translations_ar = {
     flashcards_retry: "إعادة المحاولة",
     flashcards_card_announcement: "إجابة غير صحيحة. الإجابة الصحيحة كانت @answer",
     flashcards_correct_announcement: "@answer صحيح.",
-    flashcards_page_announcement: "صفحة @current من @total"
-    ,
+    flashcards_page_announcement: "صفحة @current من @total",
 
-    // Essay specific UI translations
-    essay_checkAnswer: "تحقق",
-    essay_tryAgain: "إعادة المحاولة",
-    essay_showSolution: "إظهار الحل",
-    essay_feedbackHeader: "ملاحظات",
-    essay_solutionTitle: "حل نموذجي",
-    remainingChars: "الأحرف المتبقية: @chars",
-    notEnoughChars: "يجب إدخال @chars أحرف على الأقل!",
-    messageSave: "تم الحفظ",
-    placeholderText: "ابدأ الكتابة هنا...",
-    ariaYourResult: "لقد حصلت على @score من @total نقطة",
-    ariaNavigatedToSolution: "تم الانتقال إلى الحل النموذجي المضمن حديثًا بعد منطقة النص.",
-
-    // Essay Overall Feedback
-    essay_overall_feedback_0_10: "عملك بداية جيدة. استمر في استكشاف الموضوع لإثراء أفكارك.",
-    essay_overall_feedback_11_30: "لقد وضعت أسسًا مثيرة للاهتمام. من خلال التعمق في نقاط معينة، سيكتسب عملك دقة أكبر.",
-    essay_overall_feedback_31_50: "فهمك للموضوع في طريقه الصحيح. فكر في تطوير حججك أكثر لتعزيز وجهة نظرك.",
-    essay_overall_feedback_51_70: "هذا عمل جيد. تظهر إتقانًا جيدًا للموضوع. بعض التفاصيل الإضافية يمكن أن تحسنه أكثر.",
-    essay_overall_feedback_71_90: "عمل جيد جدًا! تحليلك وثيق الصلة ومنظم جيدًا. تظهر فهمًا ممتازًا.",
-    essay_overall_feedback_91_100: "عمل ممتاز! تفكيرك عميق، مدعوم بحجج جيدة، ويظهر إتقانًا كاملاً للموضوع.",
     ticket: "تذكرة",
     legal_mentions: "ملاحظات قانونية",
 
@@ -679,6 +663,27 @@ var translations_ar = {
     legal_library_fflate: "<strong>fflate</strong> (الترخيص: MIT): مكتبة سريعة جدًا لضغط وفك ضغط البيانات، تستخدم لإنشاء أرشيفات .mbz لوحدات Moodle.",
     legal_library_tarjs: "<strong>tar-js</strong> (الترخيص: MIT): يسمح بإنشاء أرشيفات .tar، وهي خطوة ضرورية قبل الضغط لتكوين ملفات .mbz لوحدات Moodle.",
     legal_library_ownership: "تظل كل مكتبة ملكًا لمؤلفيها المعنيين وتستخدم وفقًا لترخيصها (تراخيصها).",
+
+    // Essay specific UI translations
+    essay_checkAnswer: "تحقق",
+    essay_tryAgain: "إعادة المحاولة",
+    essay_showSolution: "إظهار الحل",
+    essay_feedbackHeader: "ملاحظات",
+    essay_solutionTitle: "حل نموذجي",
+    remainingChars: "الأحرف المتبقية: @chars",
+    notEnoughChars: "يجب إدخال @chars أحرف على الأقل!",
+    messageSave: "تم الحفظ",
+    placeholderText: "ابدأ الكتابة هنا...",
+    ariaYourResult: "لقد حصلت على @score من @total نقطة",
+    ariaNavigatedToSolution: "تم الانتقال إلى الحل النموذجي المضمن حديثًا بعد منطقة النص.",
+
+    // Essay Overall Feedback
+    essay_overall_feedback_0_10: "عملك بداية جيدة. استمر في استكشاف الموضوع لإثراء أفكارك.",
+    essay_overall_feedback_11_30: "لقد وضعت أسسًا مثيرة للاهتمام. من خلال التعمق في نقاط معينة، سيكتسب عملك دقة أكبر.",
+    essay_overall_feedback_31_50: "فهمك للموضوع في طريقه الصحيح. فكر في تطوير حججك أكثر لتعزيز وجهة نظرك.",
+    essay_overall_feedback_51_70: "هذا عمل جيد. تظهر إتقانًا جيدًا للموضوع. بعض التفاصيل الإضافية يمكن أن تحسنه أكثر.",
+    essay_overall_feedback_71_90: "عمل جيد جدًا! تحليلك وثيق الصلة ومنظم جيدًا. تظهر فهمًا ممتازًا.",
+    essay_overall_feedback_91_100: "عمل ممتاز! تفكيرك عميق، مدعوم بحجج جيدة، ويظهر إتقانًا كاملاً للموضوع.",
 
     // True/False Question
     true_false_prompt_role: "أنت خبير في تصميم التعليم تنشئ سؤال صح/خطأ لنشاط H5P.",
@@ -932,8 +937,8 @@ var translations_ar = {
     chart_prompt_rule2: "2. يجب أن تكون التسميات قصيرة وواضحة.",
     chart_prompt_rule3: "3. إذا كانت إحدى القيم منخفضة جدًا مقارنة بالقيم الأخرى، ففضل 'barChart' لتصور أفضل.",
     chart_prompt_example_json_title: "**مثال JSON:**",
-    chart_prompt_generate_only_json: "أنشئ فقط كود JSON صالحًا، بدون أي تعليقات."
-    ,
+    chart_prompt_generate_only_json: "أنشئ فقط كود JSON صالحًا، بدون أي تعليقات.",
+
     // createH5PWithDynamicDependencies
     quiz_prev_button: "السابق",
     quiz_next_button: "التالي",
@@ -947,8 +952,6 @@ var translations_ar = {
     quiz_retry_button_text: "إعادة المحاولة",
     quiz_finish_button_text: "إنهاء",
     quiz_submit_button_text: "إرسال",
-    quiz_tips_label: "عرض التلميحات",
-    quiz_tip_available: "تلميح متاح",
     quiz_feedback_available: "تقييم متاح",
     quiz_read_feedback: "قراءة التقييم",
     quiz_wrong_answer: "إجابة خاطئة",
@@ -959,6 +962,14 @@ var translations_ar = {
     quiz_a11y_check: "تحقق من الإجابات. سيتم تمييز الإجابات بأنها صحيحة أو غير صحيحة أو لم تتم الإجابة عليها.",
     quiz_a11y_show_solution: "إظهار الحل. سيتم تمييز المهمة بالحل الصحيح.",
     quiz_a11y_retry: "إعادة محاولة المهمة. إعادة تعيين جميع الإجابات والبدء من جديد.",
+
+    // Albert generation
+    generate_with_albert: "إنشاء بواسطة Albert",
+    generation_in_progress: "قيد الإنشاء، يرجى الانتظار...",
+    request_sent_to_ia: "تم إرسال الطلب إلى الذكاء الاصطناعي، يرجى الانتظار...",
+    generation_successful: "تم إنشاء محتوى H5P بنجاح!",
+    generation_failed_empty: "فشل الإنشاء. كانت الاستجابة فارغة.",
+    generation_failed_error: "خطأ أثناء الإنشاء: {errorMessage}",
 
     // Albert models description
     albert_small_summary: "سريع، بسيط، مناسب للتمارين السريعة والمنظمة.",
@@ -973,13 +984,5 @@ var translations_ar = {
     albert_model_parameters: "حجم النموذج:",
     albert_model_parameters_small: "8 مليار معلمة",
     albert_model_parameters_large: "24 مليار معلمة",
-    albert_model_parameters_code: "32.5 مليار معلمة",
-
-    // Albert generation
-    generate_with_albert: "إنشاء بواسطة Albert",
-    generation_in_progress: "قيد الإنشاء، يرجى الانتظار...",
-    request_sent_to_ia: "تم إرسال الطلب إلى الذكاء الاصطناعي، يرجى الانتظار...",
-    generation_successful: "تم إنشاء محتوى H5P بنجاح!",
-    generation_failed_empty: "فشل الإنشاء. كانت الاستجابة فارغة.",
-    generation_failed_error: "خطأ أثناء الإنشاء: {errorMessage}"
+    albert_model_parameters_code: "32.5 مليار معلمة"
 };

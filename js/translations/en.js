@@ -127,7 +127,7 @@ const translations_en = {
     moodle_xml_prompt_form_rule1_encoding: "Be encoded in UTF-8 (insert the encoding line).",
     moodle_xml_prompt_form_rule1_reusable: "Be directly reusable in Moodle, without format errors.",
     moodle_xml_prompt_form_rule1_standard_structure: "Follow the standard Moodle XML structure (with <quiz>, <question>, etc.).",
-    moodle_xml_prompt_form_rule1_special_chars: "Mathematical symbols such as '&lt;' or '&gt;' must be encoded as HTML entities (for example, `&lt;` for '<' and `&gt;` for '>') to avoid any confusion with XML tags.",
+    moodle_xml_prompt_form_rule1_special_chars: "Mathematical symbols such as '<' or '>' must be encoded as HTML entities (for example, `<` for '<' and `>` for '>') to avoid any confusion with XML tags.",
     moodle_xml_prompt_generate_only_xml: "Do not comment, do not format, do not summarize: I only want the raw content of the XML file. Strictly respect the described format, as I will paste the result into another tool that expects this format. Produce the response in preformatted code.",
 
     // GIFT Prompt
@@ -183,6 +183,7 @@ const translations_en = {
     quiz_set_prompt_example_json_title: "**Example structures for each authorized question type:**",
     quiz_set_prompt_generate_only_json: "Generate only the valid JSON, starting with `{\"progressType\": \"dots\", ...}`, without any comments.",
 
+    // VRAI/FAUX
     quiz_set_true_false_example: JSON.stringify({
         "library": "H5P.TrueFalse 1.8",
         "metadata": { "title": "Title of the True/False question" },
@@ -194,6 +195,8 @@ const translations_en = {
             "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
         }
     }, null, 4),
+
+    // QCM
     quiz_set_multiple_choice_example: JSON.stringify({
         "library": "H5P.MultiChoice 1.16",
         "metadata": { "title": "Title of the MCQ" },
@@ -214,6 +217,8 @@ const translations_en = {
             ]
         }
     }, null, 4),
+
+    // Texte à trous
     quiz_set_fill_in_the_blanks_example: JSON.stringify({
         "library": "H5P.Blanks 1.14",
         "metadata": { "title": "Title of the fill-in-the-blanks" },
@@ -230,6 +235,8 @@ const translations_en = {
             ]
         }
     }, null, 4),
+
+    // Glisser les mots
     quiz_set_drag_the_words_example: JSON.stringify({
         "library": "H5P.DragText 1.10",
         "metadata": { "title": "Title of the drag the words activity" },
@@ -247,6 +254,8 @@ const translations_en = {
             ]
         }
     }, null, 4),
+
+    // Surligner les mots
     quiz_set_mark_the_words_example: JSON.stringify({
         "library": "H5P.MarkTheWords 1.11",
         "metadata": { "title": "Title of the mark the words activity" },
@@ -264,6 +273,8 @@ const translations_en = {
             ]
         }
     }, null, 4),
+
+    // Rédaction
     quiz_set_essay_example: JSON.stringify({
         "library": "H5P.Essay 1.5",
         "metadata": { "title": "Title of the essay" },
@@ -315,8 +326,8 @@ const translations_en = {
     summary_prompt_rule2: "2.  Subsequent sentences are plausible but incorrect distractors.",
     summary_prompt_rule3: "3.  All correct sentences must form a coherent summary.",
     summary_prompt_example_json_title: "**Example JSON for a step :**",
-    summary_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
     summary_prompt_overall_feedback: "`overallFeedback`: An array of 6 objects for the final feedback, with scores from 0-10, 11-30, 31-50, 51-70, 71-90, and 91-100. The text (`feedback`) must be benevolent, gradual, and always phrased affirmatively, related to the topic.",
+    summary_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
 
     // Summary UI translations
     summary_intro: "Choose the correct statement.",
@@ -543,8 +554,6 @@ const translations_en = {
 
     moodle_qcm_name: "MCQ",
     moodle_qcm_description: "Generate a simple MCQ activity.",
-    moodle_qcm_name: "MCQ",
-    moodle_qcm_description: "Generate a simple MCQ activity.",
 
     // Dynamic content
     prompt_for_ia: "Prompt for the AI",
@@ -566,9 +575,6 @@ const translations_en = {
     paste_ia_result_millionnaire: "Paste the AI-generated JSON below. The activity title will be automatically extracted from the JSON.",
     generate_mbz_millionnaire: "Generate the Millionaire activity (mbz)",
 
-    create_mbz_file_qcm: "Create MCQ file (.mbz)",
-    paste_ia_result_qcm: "Paste the AI-generated JSON below. The activity title will be automatically extracted from the JSON.",
-    generate_mbz_qcm: "Generate MCQ activity (mbz)",
     create_mbz_file_qcm: "Create MCQ file (.mbz)",
     paste_ia_result_qcm: "Paste the AI-generated JSON below. The activity title will be automatically extracted from the JSON.",
     generate_mbz_qcm: "Generate MCQ activity (mbz)",
@@ -595,7 +601,6 @@ const translations_en = {
     error_compression_module_not_ready: "The compression module is not ready. Please try again in a moment.",
     h5p_file_generated_successfully: "File {fileName} generated successfully!",
     h5p_creation_failed: "H5P file creation failed: {errorMessage}",
-    prompt_language_instruction: "The language used must be English.",
     license_info: "GNU GPL v3.0 or later",
 
     // Flashcards specific UI translations
@@ -614,29 +619,8 @@ const translations_en = {
     flashcards_retry: "Retry",
     flashcards_card_announcement: "Incorrect answer. Correct answer was @answer",
     flashcards_correct_announcement: "@answer is correct.",
-    flashcards_page_announcement: "Page @current of @total"
-    ,
+    flashcards_page_announcement: "Page @current of @total",
 
-    // Essay specific UI translations
-    essay_checkAnswer: "Check",
-    essay_tryAgain: "Retry",
-    essay_showSolution: "Show solution",
-    essay_feedbackHeader: "Feedback",
-    essay_solutionTitle: "Sample solution",
-    remainingChars: "Remaining characters: @chars",
-    notEnoughChars: "You must enter at least @chars characters!",
-    messageSave: "saved",
-    placeholderText: "Start writing here...",
-    ariaYourResult: "You got @score out of @total points",
-    ariaNavigatedToSolution: "Navigated to newly included sample solution after textarea.",
-
-    // Essay Overall Feedback
-    essay_overall_feedback_0_10: "Your work is a good start. Keep exploring the topic to enrich your ideas.",
-    essay_overall_feedback_11_30: "You have laid some interesting groundwork. By delving deeper into certain points, your work will gain precision.",
-    essay_overall_feedback_31_50: "Your understanding of the subject is well underway. Consider developing your arguments further to strengthen your point.",
-    essay_overall_feedback_51_70: "This is good work. You show a good command of the subject. A few more details could still improve it.",
-    essay_overall_feedback_71_90: "Very good work! Your analysis is relevant and well-structured. You demonstrate an excellent understanding.",
-    essay_overall_feedback_91_100: "Excellent work! Your reflection is thorough, well-argued, and shows a complete mastery of the subject.",
     ticket: "Ticket",
     legal_mentions: "Legal Mentions",
 
@@ -679,6 +663,27 @@ const translations_en = {
     legal_library_fflate: "<strong>fflate</strong> (License: MIT): Very fast library for data compression and decompression, used for creating .mbz archives for Moodle modules.",
     legal_library_tarjs: "<strong>tar-js</strong> (License: MIT): Allows creating .tar archives, a necessary step before compression to form .mbz files for Moodle modules.",
     legal_library_ownership: "Each library remains the property of its respective authors and is used in accordance with its license(s).",
+
+    // Essay specific UI translations
+    essay_checkAnswer: "Check",
+    essay_tryAgain: "Retry",
+    essay_showSolution: "Show solution",
+    essay_feedbackHeader: "Feedback",
+    essay_solutionTitle: "Sample solution",
+    remainingChars: "Remaining characters: @chars",
+    notEnoughChars: "You must enter at least @chars characters!",
+    messageSave: "saved",
+    placeholderText: "Start writing here...",
+    ariaYourResult: "You got @score out of @total points",
+    ariaNavigatedToSolution: "Navigated to newly included sample solution after textarea.",
+
+    // Essay Overall Feedback
+    essay_overall_feedback_0_10: "Your work is a good start. Keep exploring the topic to enrich your ideas.",
+    essay_overall_feedback_11_30: "You have laid some interesting groundwork. By delving deeper into certain points, your work will gain precision.",
+    essay_overall_feedback_31_50: "Your understanding of the subject is well underway. Consider developing your arguments further to strengthen your point.",
+    essay_overall_feedback_51_70: "This is good work. You show a good command of the subject. A few more details could still improve it.",
+    essay_overall_feedback_71_90: "Very good work! Your analysis is relevant and well-structured. You demonstrate an excellent understanding.",
+    essay_overall_feedback_91_100: "Excellent work! Your reflection is thorough, well-argued, and shows a complete mastery of the subject.",
 
     // True/False Question
     true_false_prompt_role: "You are an expert in instructional design creating a True/False question for an H5P activity.",
@@ -932,8 +937,8 @@ const translations_en = {
     chart_prompt_rule2: "2. Labels should be short and clear.",
     chart_prompt_rule3: "3. If a value is very low compared to others, prefer a 'barChart' for better visualization.",
     chart_prompt_example_json_title: "**Example JSON:**",
-    chart_prompt_generate_only_json: "Generate only the valid JSON code, without any comments."
-    ,
+    chart_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
+
     // createH5PWithDynamicDependencies
     quiz_prev_button: "Previous",
     quiz_next_button: "Next",
@@ -947,8 +952,6 @@ const translations_en = {
     quiz_retry_button_text: "Retry",
     quiz_finish_button_text: "Finish",
     quiz_submit_button_text: "Submit",
-    quiz_tips_label: "Show tips",
-    quiz_tip_available: "Tip available",
     quiz_feedback_available: "Feedback available",
     quiz_read_feedback: "Read feedback",
     quiz_wrong_answer: "Wrong answer",

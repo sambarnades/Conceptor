@@ -1,4 +1,4 @@
-var translations_el = {
+const translations_el = {
     subtitle: "Υποβοηθούμενη δημιουργία πόρων και δραστηριοτήτων Moodle και Éléa",
     help_button: "Βοήθεια",
     help_title: "Πώς χρησιμοποιείται αυτό το εργαλείο;",
@@ -23,7 +23,7 @@ var translations_el = {
     h5p_tab: "H5P",
     moodle_tab: "Μονάδες Éléa/Moodle",
 
-    // Γενικό πλαίσιο (Προχωρημένη λειτουργία)
+    // General Context (Advanced Mode)
     prompt_expert_intro: "Είσαι έμπειρος/η παιδαγωγός που θα προσαρμόσει τον τόνο και το λεξιλόγιο με βάση τα ισχύοντα προγράμματα και το επίπεδο των μαθητών για το μάθημα ",
     prompt_context_title: "**Πλαίσιο:**",
     prompt_subject: "- **Μάθημα:**",
@@ -32,13 +32,13 @@ var translations_el = {
     prompt_number_of_elements: "- **Αριθμός στοιχείων:**",
     prompt_additional_info: "- **Συμπληρωματικές πληροφορίες:**",
 
-    // Γενικό πλαίσιο (Απλή λειτουργία)
+    // General Context (Simple Mode)
     prompt_simple_intro_part1: "Είμαι **",
     prompt_simple_intro_part2: "** και θα ήθελα **",
     prompt_language_instruction: "Το περιεχόμενο που θα δημιουργηθεί πρέπει να είναι στα ελληνικά, εκτός αν ορίζεται άλλη γλώσσα στην αίτηση.",
     prompt_code_block_instruction: "Πρέπει να δημιουργήσετε το αποτέλεσμα σε ένα μπλοκ κώδικα.",
 
-    // Prompt για Χρονογραμμή
+    // Timeline Prompt
     timeline_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Timeline\".",
     timeline_prompt_mission: "**Αποστολή σου:**",
     timeline_prompt_generate_json: "Δημιούργησε ένα πλήρες και έγκυρο αντικείμενο JSON για δραστηριότητα H5P τύπου Timeline. Το JSON πρέπει να είναι άμεσα χρησιμοποιήσιμο.",
@@ -61,7 +61,7 @@ var translations_el = {
     timeline_prompt_example_json_title: "**Παράδειγμα δομής JSON:**",
     timeline_prompt_generate_only_json: "Παράγετε μόνο έγκυρο κώδικα JSON, χωρίς σχόλια. Το αποτέλεσμα θα χρησιμοποιηθεί απευθείας από άλλο εργαλείο.",
 
-    // Prompt για Σταυρόλεξο
+    // Crossword Prompt
     crossword_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Crossword\".",
     crossword_prompt_mission: "**Αποστολή σου:**",
     crossword_prompt_generate_json: "Δημιούργησε πλήρες και έγκυρο JSON για δραστηριότητα σταυρολέξου H5P.",
@@ -91,7 +91,7 @@ var translations_el = {
     crossword_close_window: "Κλείσιμο παραθύρου",
     crossword_submit_answer: "Υποβολή",
 
-    // Prompt για Δοκίμιο
+    // Essay Prompt
     essay_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Essay\".",
     essay_prompt_mission: "**Αποστολή σου:**",
     essay_prompt_generate_json: "Δημιούργησε πλήρες και έγκυρο JSON για δραστηριότητα H5P τύπου Essay.",
@@ -108,7 +108,7 @@ var translations_el = {
     essay_prompt_example_json_title: "**Παράδειγμα JSON για λέξη-κλειδί:**",
     essay_prompt_generate_only_json: "Παρήγαγε πλήρες και έγκυρο JSON, συμπληρώνοντας την οδηγία και τη λίστα λέξεων-κλειδιών, χωρίς άλλα σχόλια.",
 
-    // Prompt για Moodle XML
+    // Moodle XML Prompt
     moodle_xml_prompt_intro: "Θέλω να δημιουργήσω ένα κουίζ με ${nombreQuestions} ερωτήσεις.",
     moodle_xml_prompt_content_title: "Όσον αφορά το περιεχόμενο:",
     moodle_xml_prompt_content_rule1: "Τα λανθασμένα απαντήματα πρέπει να ταιριάζουν με το θέμα αλλά να είναι ξεκάθαρα λανθασμένα ώστε να αποφεύγεται το τυχαίο.",
@@ -127,10 +127,10 @@ var translations_el = {
     moodle_xml_prompt_form_rule1_encoding: "Κωδικοποιείται σε UTF-8 (συμπεριλάβετε τη γραμμή κωδικοποίησης).",
     moodle_xml_prompt_form_rule1_reusable: "Είναι άμεσα επαναχρησιμοποιήσιμο στο Moodle, χωρίς σφάλματα μορφοποίησης.",
     moodle_xml_prompt_form_rule1_standard_structure: "Ακολουθεί την τυπική δομή XML του Moodle (με <quiz>, <question> κ.λπ.).",
-    moodle_xml_prompt_form_rule1_special_chars: "Τα μαθηματικά σύμβολα όπως '&lt;' ή '&gt;' πρέπει να κωδικοποιούνται ως οντότητες HTML (για παράδειγμα, `&lt;` για το '<' και `&gt;` για το '>') ώστε να αποφεύγεται οποιαδήποτε σύγχυση με ετικέτες XML.",
+    moodle_xml_prompt_form_rule1_special_chars: "Τα μαθηματικά σύμβολα όπως '<' ή '>' πρέπει να κωδικοποιούνται ως οντότητες HTML (για παράδειγμα, `<` για το '<' και `>` για το '>') ώστε να αποφεύγεται οποιαδήποτε σύγχυση με ετικέτες XML.",
     moodle_xml_prompt_generate_only_xml: "Χωρίς σχόλια, χωρίς μορφοποίηση, χωρίς σύνοψη: θέλω μόνο το ακατέργαστο περιεχόμενο του XML. Τήρησε αυστηρά τη μορφή, γιατί θα το επικολλήσω σε εργαλείο που την απαιτεί. Παράδωσε την απάντηση ως προμορφοποιημένο κώδικα.",
 
-    // Prompt για GIFT
+    // GIFT Prompt
     gift_prompt_intro: "Θέλω να δημιουργήσω ένα κουίζ με ${nombreQuestions} ερωτήσεις.",
     gift_prompt_format_info: "Το κουίζ πρέπει να είναι σε μορφή GIFT, κατάλληλο για εισαγωγή στο Moodle.",
     gift_prompt_question_quality: "Κάθε ερώτηση να είναι σαφής, σύντομη και χωρίς ασάφεια, με αναλυτική ανατροφοδότηση.",
@@ -149,7 +149,7 @@ var translations_el = {
     gift_prompt_question_type_matching: "- αντιστοίχισης (matching) με τουλάχιστον 4 ζεύγη.",
     gift_prompt_generate_only_gift: "Παράγετε απευθείας το κουίζ σε μορφή GIFT, χωρίς πρόσθετα σχόλια ή ετικέτες. Τηρήστε αυστηρά τη μορφή, καθώς θα επικολληθεί σε άλλο εργαλείο. Δώστε την απάντηση ως προμορφοποιημένο κείμενο.",
 
-    // Prompt για Κάρτες (Flashcards)
+    // Flashcards Prompt
     flashcards_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Flashcards\".",
     flashcards_prompt_mission: "**Αποστολή σου:**",
     flashcards_prompt_generate_json: "Δημιούργησε πλήρες και έγκυρο JSON για δραστηριότητα H5P τύπου Flashcards. Πρέπει να είναι άμεσα χρησιμοποιήσιμο.",
@@ -164,7 +164,7 @@ var translations_el = {
     flashcards_prompt_example_json_title: "**Παράδειγμα JSON:**",
     flashcards_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
 
-    // Prompt για Σετ Ερωτήσεων
+    // QuizSet Prompt
     quiz_set_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς περιεχόμενο για \"H5P Quiz (Question Set)\".",
     quiz_set_prompt_mission: "**Αποστολή σου:**",
     quiz_set_prompt_generate_json: "Δημιούργησε αντικείμενο JSON **μόνο για το περιεχόμενο** ενός H5P κουίζ. Να είναι άμεσα χρησιμοποιήσιμο ως αρχείο `content.json`.",
@@ -177,14 +177,13 @@ var translations_el = {
     quiz_set_prompt_rule1: "1. Κάθε αντικείμενο ερώτησης πρέπει να έχει τα `library`, `params` και `subContentId`.",
     quiz_set_prompt_rule2: "2.  **Δομή:** Κάθε ερώτηση πρέπει να είναι ένα αντικείμενο με τα κλειδιά `library`, `metadata` και `params`.",
     quiz_set_prompt_rule3: "3. Ποικιλία τύπων ερώτησης. Χρησιμοποίησε τις παρακάτω βιβλιοθήκες με ακριβείς εκδόσεις:",
-    quiz_set_prompt_rule3_multichoice: "-   `H5P.MultiChoice 1.16`",
-    quiz_set_prompt_rule3_blanks: "-   `H5P.Blanks 1.14`",
     quiz_set_prompt_rule4: "4.  **Ανατροφοδότηση (ΚΡΙΣΙΜΟΣ ΚΑΝΟΝΑΣ):** Για **όλους τους τύπους ερωτήσεων** (`MultiChoice`, `Blanks`, `DragText`, `MarkTheWords`, `Essay`), **πρέπει** να δημιουργήσετε ένα `overallFeedback` με ακριβώς 6 κλίμακες βαθμολογίας: 0-10, 11-30, 31-50, 51-70, 71-90 και 91-100. Για τις ερωτήσεις `TrueFalse`, προσθέστε επίσης τα πεδία `feedbackOnCorrect` και `feedbackOnWrong`. Η ανατροφοδότηση πρέπει να είναι ενθαρρυντική, σταδιακή και πάντα διατυπωμένη θετικά.",
     quiz_set_prompt_rule5: "5.  **Περιεχόμενο:** Το περιεχόμενο στο `params` πρέπει να είναι παιδαγωγικά σχετικό, με εύλογους αντιπερισπασμούς για τα MCQ και συνεκτικά κείμενα για άλλες δραστηριότητες.",
     quiz_set_prompt_rule6: "6.  **Απλότητα:** Μην προσθέτετε εικόνες ή περιττές παραμέτρους συμπεριφοράς. Διατηρήστε τη δομή απλή όπως στα παραδείγματα.",
     quiz_set_prompt_example_json_title: "**Παραδείγματα δομών για κάθε επιτρεπόμενο τύπο ερώτησης:**",
     quiz_set_prompt_generate_only_json: "Παράγετε μόνο το έγκυρο JSON, ξεκινώντας με `{\"progressType\": \"dots\", ...}`, χωρίς σχόλια.",
 
+    // VRAI/FAUX
     quiz_set_true_false_example: JSON.stringify({
         "library": "H5P.TrueFalse 1.8",
         "metadata": { "title": "Τίτλος ερώτησης Σωστό/Λάθος" },
@@ -196,6 +195,8 @@ var translations_el = {
             "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
         }
     }, null, 4),
+
+    // QCM
     quiz_set_multiple_choice_example: JSON.stringify({
         "library": "H5P.MultiChoice 1.16",
         "metadata": { "title": "Τίτλος MCQ" },
@@ -216,6 +217,8 @@ var translations_el = {
             ]
         }
     }, null, 4),
+
+    // Texte à trous
     quiz_set_fill_in_the_blanks_example: JSON.stringify({
         "library": "H5P.Blanks 1.14",
         "metadata": { "title": "Τίτλος άσκησης συμπλήρωσης κενών" },
@@ -232,6 +235,8 @@ var translations_el = {
             ]
         }
     }, null, 4),
+
+    // Glisser les mots
     quiz_set_drag_the_words_example: JSON.stringify({
         "library": "H5P.DragText 1.10",
         "metadata": { "title": "Τίτλος δραστηριότητας μεταφοράς λέξεων" },
@@ -249,6 +254,8 @@ var translations_el = {
             ]
         }
     }, null, 4),
+
+    // Surligner les mots
     quiz_set_mark_the_words_example: JSON.stringify({
         "library": "H5P.MarkTheWords 1.11",
         "metadata": { "title": "Τίτλος δραστηριότητας επισήμανσης λέξεων" },
@@ -266,6 +273,8 @@ var translations_el = {
             ]
         }
     }, null, 4),
+
+    // Rédaction
     quiz_set_essay_example: JSON.stringify({
         "library": "H5P.Essay 1.5",
         "metadata": { "title": "Τίτλος του δοκιμίου" },
@@ -285,7 +294,8 @@ var translations_el = {
             ]
         }
     }, null, 4),
-    // Prompt για Γλωσσάρι (Accordion)
+
+    // Glossary Prompt
     glossary_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Accordion\".",
     glossary_prompt_mission: "**Αποστολή σου:**",
     glossary_prompt_generate_json: "Δημιούργησε πλήρες και έγκυρο JSON για γλωσσάρι τύπου Accordion μέσω H5P. Πρέπει να είναι άμεσα χρησιμοποιήσιμο.",
@@ -300,7 +310,7 @@ var translations_el = {
     glossary_prompt_example_json_title: "**Παράδειγμα JSON για μία καταχώριση:**",
     glossary_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
 
-    // Prompt για Σύνοψη
+    // Summary Prompt
     summary_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Summary\".",
     summary_prompt_mission: "**Αποστολή σου:**",
     summary_prompt_generate_json: "Δημιούργησε πλήρες JSON για δραστηριότητα H5P τύπου Summary. Πρέπει να είναι άμεσα χρησιμοποιήσιμο.",
@@ -316,8 +326,8 @@ var translations_el = {
     summary_prompt_rule2: "2. Οι επόμενες είναι πιθανές αλλά λανθασμένες αποσπάσεις.",
     summary_prompt_rule3: "3. Όλες οι σωστές προτάσεις μαζί σχηματίζουν συνεκτική σύνοψη.",
     summary_prompt_example_json_title: "**Παράδειγμα JSON για ένα βήμα:**",
-    summary_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
     summary_prompt_overall_feedback: "`overallFeedback`: Ένας πίνακας 6 αντικειμένων για την τελική ανατροφοδότηση, με βαθμολογίες από 0-10, 11-30, 31-50, 51-70, 71-90 και 91-100. Το κείμενο (`feedback`) πρέπει να είναι ενθαρρυντικό, σταδιακό και πάντα διατυπωμένο θετικά, σχετικό με το θέμα.",
+    summary_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
 
     // Summary UI translations
     summary_intro: "Επιλέξτε τη σωστή δήλωση.",
@@ -333,7 +343,7 @@ var translations_el = {
     summary_progress_text: "Πρόοδος :num από :total",
     summary_alternative_incorrect_label: "Λάθος",
 
-    // Prompt για Drag the Words
+    // Drag the Words Prompt
     drag_word_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Drag the Words\".",
     drag_word_prompt_mission: "**Αποστολή σου:**",
     drag_word_prompt_generate_json: "Δημιούργησε πλήρες JSON για δραστηριότητα H5P τύπου Drag the Words. Πρέπει να είναι άμεσα χρησιμοποιήσιμο.",
@@ -359,7 +369,7 @@ var translations_el = {
     drag_words_score_bar_label: "Έχετε :num από τους :total πόντους",
     drag_words_submit_answer: "Υποβολή",
 
-    // Prompt για Συμπλήρωση Κενών
+    // Fill in the Blanks Prompt
     blanks_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Fill in the Blanks\".",
     blanks_prompt_mission: "**Αποστολή σου:**",
     blanks_prompt_generate_json: "Δημιούργησε πλήρες JSON για δραστηριότητα H5P τύπου Fill in the Blanks. Πρέπει να είναι άμεσα χρησιμοποιήσιμο.",
@@ -401,7 +411,7 @@ var translations_el = {
     blanks_a11y_show_solution: "Εμφάνιση της λύσης. Η εργασία θα επισημανθεί με τη σωστή λύση της.",
     blanks_a11y_retry: "Επαναλάβετε την εργασία. Επαναφέρετε όλες τις απαντήσεις και ξεκινήστε την εργασία από την αρχή.",
 
-    // Prompt για Σήμανση Λέξεων
+    // Mark the Words Prompt
     mark_words_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Mark the Words\".",
     mark_words_prompt_mission: "**Αποστολή σου:**",
     mark_words_prompt_generate_json: "Δημιούργησε πλήρες JSON για δραστηριότητα H5P τύπου Mark the Words. Πρέπει να είναι άμεσα χρησιμοποιήσιμο.",
@@ -436,7 +446,7 @@ var translations_el = {
     mark_words_a11y_show_solution: "Εμφάνιση της λύσης. Η εργασία θα επισημανθεί με τη σωστή λύση της.",
     mark_words_a11y_retry: "Επαναλάβετε την εργασία. Επαναφέρετε όλες τις απαντήσεις και ξεκινήστε την εργασία από την αρχή.",
 
-    // Prompt για Millionnaire
+    // Millionnaire Prompt
     millionnaire_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Millionnaire\".",
     millionnaire_prompt_num_questions: "**Αριθμός ερωτήσεων:** 6",
     millionnaire_prompt_mission: "**Αποστολή σου:**",
@@ -493,7 +503,7 @@ var translations_el = {
     qcm_prompt_example_json_title: "**Παράδειγμα JSON:**",
     qcm_prompt_generate_only_json: "Παρήγαγε μόνο το έγκυρο αντικείμενο JSON, χωρίς κανένα σχόλιο.",
 
-    // Μονάδες H5P
+    // H5P Modules
     h5p_timeline_name: "Χρονογραμμή",
     h5p_timeline_description: "Δημιουργήστε διαδραστική χρονογραμμή για την παρουσίαση μιας ακολουθίας γεγονότων.",
     h5p_flashcards_name: "Κάρτες μνήμης",
@@ -531,7 +541,7 @@ var translations_el = {
     h5p_chart_name: "Γράφημα",
     h5p_chart_description: "Δημιουργήστε ένα γράφημα πίτας ή ράβδων για την οπτικοποίηση δεδομένων.",
 
-    // Ενότητες Moodle
+    // Moodle Modules
     moodle_xml_name: "XML Éléa/Moodle",
     moodle_xml_description: "Δημιουργήστε μια τράπεζα 10 ερωτήσεων για μια δραστηριότητα Κουίζ έτοιμη για εισαγωγή σε μορφή XML.",
     moodle_xml_help: "Για να προσθέσετε ένα αρχείο XML σε μια δραστηριότητα «Κουίζ» στο Moodle, δημιουργήστε πρώτα τη δραστηριότητα. Στη συνέχεια, ανοίξτε το μενού <strong>Περισσότερα</strong> και μεταβείτε στην <strong>Τράπεζα ερωτήσεων</strong>. Σε αυτό το μενού, κάντε κλικ στο <strong>Εισαγωγή</strong>, επιλέξτε τη μορφή <strong>Moodle XML</strong>, στη συνέχεια επιλέξτε το αρχείο σας και επιβεβαιώστε.",
@@ -545,7 +555,7 @@ var translations_el = {
     moodle_qcm_name: "MCQ",
     moodle_qcm_description: "Δημιουργήστε μια απλή δραστηριότητα MCQ.",
 
-    // Δυναμικό περιεχόμενο
+    // Dynamic content
     prompt_for_ia: "Prompt για ΤΝ",
     copy_prompt: "📋 Αντιγραφή prompt",
     go_duck: "🦆 Μετάβαση στο Duck.ai",
@@ -569,15 +579,15 @@ var translations_el = {
     paste_ia_result_qcm: "Επικολλήστε παρακάτω το JSON που δημιουργήθηκε από την ΤΝ. Ο τίτλος της δραστηριότητας θα εξαχθεί αυτόματα από το JSON.",
     generate_mbz_qcm: "Δημιουργία δραστηριότητας MCQ (mbz)",
 
-    // Ειδικά για Moodle XML
+    // Moodle XML specific
     moodle_xml_placeholder: "Το Moodle XML θα εμφανιστεί εδώ...",
     paste_xml_placeholder: "Επικολλήστε εδώ το πλήρες XML που παρήγαγε η ΤΝ...",
 
-    // H5P κενά πεδία κειμένου
+    // H5P empty text fields
     generate_prompts_placeholder: "Το prompt για την ΤΝ θα εμφανιστεί εδώ μόλις κάνετε κλικ στο 'Δημιουργία prompts'.",
     paste_json_or_text: "Επικολλήστε εδώ το περιεχόμενο JSON ή το κείμενο που δημιουργήθηκε από την ΤΝ για να δημιουργήσετε τη δραστηριότητά σας.",
 
-    // Ειδοποιήσεις
+    // Notifications
     prompts_generated_successfully: "Τα prompts δημιουργήθηκαν με επιτυχία!",
     error_please_fill_fields: "Συμπληρώστε όλα τα πεδία της απλής λειτουργίας.",
     error_please_fill_guided_fields: "Συμπληρώστε όλα τα πεδία της καθοδηγούμενης λειτουργίας.",
@@ -609,29 +619,8 @@ var translations_el = {
     flashcards_retry: "Επανάληψη",
     flashcards_card_announcement: "Λανθασμένη απάντηση. Η σωστή απάντηση ήταν @answer",
     flashcards_correct_announcement: "Το @answer είναι σωστό.",
-    flashcards_page_announcement: "Σελίδα @current από @total"
-    ,
+    flashcards_page_announcement: "Σελίδα @current από @total",
 
-    // Essay specific UI translations
-    essay_checkAnswer: "Έλεγχος",
-    essay_tryAgain: "Προσπάθησε ξανά",
-    essay_showSolution: "Εμφάνιση λύσης",
-    essay_feedbackHeader: "Ανατροφοδότηση",
-    essay_solutionTitle: "Υποδειγματική λύση",
-    remainingChars: "Εναπομείναντες χαρακτήρες: @chars",
-    notEnoughChars: "Πρέπει να εισαγάγετε τουλάχιστον @chars χαρακτήρες!",
-    messageSave: "αποθηκεύτηκε",
-    placeholderText: "Ξεκινήστε να γράφετε εδώ...",
-    ariaYourResult: "Έχετε λάβει @score από @total βαθμούς",
-    ariaNavigatedToSolution: "Πλοηγηθήκατε στη νέα υποδειγματική λύση μετά την περιοχή κειμένου.",
-
-    // Essay Overall Feedback
-    essay_overall_feedback_0_10: "Η δουλειά σου είναι μια καλή αρχή. Συνέχισε να εξερευνάς το θέμα για να εμπλουτίσεις τις ιδέες σου.",
-    essay_overall_feedback_11_30: "Έχεις θέσει μερικές ενδιαφέρουσες βάσεις. Εμβαθύνοντας σε ορισμένα σημεία, η δουλειά σου θα αποκτήσει μεγαλύτερη ακρίβεια.",
-    essay_overall_feedback_31_50: "Η κατανόησή σου για το θέμα είναι σε καλό δρόμο. Σκέψου να αναπτύξεις περαιτέρω τα επιχειρήματά σου για να ενισχύσεις τη θέση σου.",
-    essay_overall_feedback_51_70: "Αυτή είναι καλή δουλειά. Δείχνεις καλή γνώση του θέματος. Μερικές ακόμη λεπτομέρειες θα μπορούσαν να τη βελτιώσουν.",
-    essay_overall_feedback_71_90: "Πολύ καλή δουλειά! Η ανάλυσή σου είναι σχετική και καλά δομημένη. Δείχνεις εξαιρετική κατανόηση.",
-    essay_overall_feedback_91_100: "Εξαιρετική δουλειά! Ο προβληματισμός σου είναι εμπεριστατωμένος, καλά τεκμηριωμένος και δείχνει πλήρη γνώση του θέματος.",
     ticket: "Αίτημα",
     legal_mentions: "Νομικές σημειώσεις",
 
@@ -674,6 +663,27 @@ var translations_el = {
     legal_library_fflate: "<strong>fflate</strong> (Άδεια: MIT): Πολύ γρήγορη βιβλιοθήκη για συμπίεση και αποσυμπίεση δεδομένων, που χρησιμοποιείται για τη δημιουργία αρχείων .mbz για ενότητες Moodle.",
     legal_library_tarjs: "<strong>tar-js</strong> (Άδεια: MIT): Επιτρέπει τη δημιουργία αρχείων .tar, ένα απαραίτητο βήμα πριν από τη συμπίεση για τη δημιουργία αρχείων .mbz για ενότητες Moodle.",
     legal_library_ownership: "Κάθε βιβλιοθήκη παραμένει ιδιοκτησία των αντίστοιχων συγγραφέων της και χρησιμοποιείται σύμφωνα με την(τις) άδειά(ές) της.",
+
+    // Essay specific UI translations
+    essay_checkAnswer: "Έλεγχος",
+    essay_tryAgain: "Προσπάθησε ξανά",
+    essay_showSolution: "Εμφάνιση λύσης",
+    essay_feedbackHeader: "Ανατροφοδότηση",
+    essay_solutionTitle: "Υποδειγματική λύση",
+    remainingChars: "Εναπομείναντες χαρακτήρες: @chars",
+    notEnoughChars: "Πρέπει να εισαγάγετε τουλάχιστον @chars χαρακτήρες!",
+    messageSave: "αποθηκεύτηκε",
+    placeholderText: "Ξεκινήστε να γράφετε εδώ...",
+    ariaYourResult: "Έχετε λάβει @score από @total βαθμούς",
+    ariaNavigatedToSolution: "Πλοηγηθήκατε στη νέα υποδειγματική λύση μετά την περιοχή κειμένου.",
+
+    // Essay Overall Feedback
+    essay_overall_feedback_0_10: "Η δουλειά σου είναι μια καλή αρχή. Συνέχισε να εξερευνάς το θέμα για να εμπλουτίσεις τις ιδέες σου.",
+    essay_overall_feedback_11_30: "Έχεις θέσει μερικές ενδιαφέρουσες βάσεις. Εμβαθύνοντας σε ορισμένα σημεία, η δουλειά σου θα αποκτήσει μεγαλύτερη ακρίβεια.",
+    essay_overall_feedback_31_50: "Η κατανόησή σου για το θέμα είναι σε καλό δρόμο. Σκέψου να αναπτύξεις περαιτέρω τα επιχειρήματά σου για να ενισχύσεις τη θέση σου.",
+    essay_overall_feedback_51_70: "Αυτή είναι καλή δουλειά. Δείχνεις καλή γνώση του θέματος. Μερικές ακόμη λεπτομέρειες θα μπορούσαν να τη βελτιώσουν.",
+    essay_overall_feedback_71_90: "Πολύ καλή δουλειά! Η ανάλυσή σου είναι σχετική και καλά δομημένη. Δείχνεις εξαιρετική κατανόηση.",
+    essay_overall_feedback_91_100: "Εξαιρετική δουλειά! Ο προβληματισμός σου είναι εμπεριστατωμένος, καλά τεκμηριωμένος και δείχνει πλήρη γνώση του θέματος.",
 
     // True/False Question
     true_false_prompt_role: "Είστε ειδικός στον εκπαιδευτικό σχεδιασμό και δημιουργείτε μια ερώτηση Σωστό/Λάθος για μια δραστηριότητα H5P.",
@@ -927,8 +937,8 @@ var translations_el = {
     chart_prompt_rule2: "2. Οι ετικέτες πρέπει να είναι σύντομες και σαφείς.",
     chart_prompt_rule3: "3. Εάν μια τιμή είναι πολύ χαμηλή σε σύγκριση με άλλες, προτιμήστε ένα 'barChart' για καλύτερη οπτικοποίηση.",
     chart_prompt_example_json_title: "**Παράδειγμα JSON:**",
-    chart_prompt_generate_only_json: "Δημιουργήστε μόνο τον έγκυρο κώδικα JSON, χωρίς κανένα σχόλιο."
-    ,
+    chart_prompt_generate_only_json: "Δημιουργήστε μόνο τον έγκυρο κώδικα JSON, χωρίς κανένα σχόλιο.",
+
     // createH5PWithDynamicDependencies
     quiz_prev_button: "Προηγούμενο",
     quiz_next_button: "Επόμενο",
@@ -942,8 +952,6 @@ var translations_el = {
     quiz_retry_button_text: "Επανάληψη",
     quiz_finish_button_text: "Τέλος",
     quiz_submit_button_text: "Υποβολή",
-    quiz_tips_label: "Εμφάνιση συμβουλών",
-    quiz_tip_available: "Διαθέσιμη συμβουλή",
     quiz_feedback_available: "Διαθέσιμη ανατροφοδότηση",
     quiz_read_feedback: "Διαβάστε την ανατροφοδότηση",
     quiz_wrong_answer: "Λάθος απάντηση",
@@ -954,6 +962,14 @@ var translations_el = {
     quiz_a11y_check: "Ελέγξτε τις απαντήσεις. Οι απαντήσεις θα επισημανθούν ως σωστές, λανθασμένες ή αναπάντητες.",
     quiz_a11y_show_solution: "Εμφάνιση της λύσης. Η εργασία θα επισημανθεί με τη σωστή λύση της.",
     quiz_a11y_retry: "Επαναλάβετε την εργασία. Επαναφέρετε όλες τις απαντήσεις και ξεκινήστε την εργασία από την αρχή.",
+
+    // Albert generation
+    generate_with_albert: "Δημιουργία με τον Albert",
+    generation_in_progress: "Δημιουργία σε εξέλιξη, παρακαλώ περιμένετε...",
+    request_sent_to_ia: "Αίτημα εστάλη στην ΤΝ, παρακαλώ περιμένετε...",
+    generation_successful: "Το περιεχόμενο H5P δημιουργήθηκε με επιτυχία!",
+    generation_failed_empty: "Η δημιουργία απέτυχε. Η απάντηση ήταν κενή.",
+    generation_failed_error: "Σφάλμα κατά τη δημιουργία: {errorMessage}",
 
     // Albert models description
     albert_small_summary: "Γρήγορο, απλό, κατάλληλο για γρήγορες και δομημένες ασκήσεις.",
@@ -968,13 +984,5 @@ var translations_el = {
     albert_model_parameters: "Μέγεθος μοντέλου:",
     albert_model_parameters_small: "8 δισ. παράμετροι",
     albert_model_parameters_large: "24 δισ. παράμετροι",
-    albert_model_parameters_code: "32,5 δισ. παράμετροι",
-
-    // Albert generation
-    generate_with_albert: "Δημιουργία με τον Albert",
-    generation_in_progress: "Δημιουργία σε εξέλιξη, παρακαλώ περιμένετε...",
-    request_sent_to_ia: "Αίτημα εστάλη στην ΤΝ, παρακαλώ περιμένετε...",
-    generation_successful: "Το περιεχόμενο H5P δημιουργήθηκε με επιτυχία!",
-    generation_failed_empty: "Η δημιουργία απέτυχε. Η απάντηση ήταν κενή.",
-    generation_failed_error: "Σφάλμα κατά τη δημιουργία: {errorMessage}"
+    albert_model_parameters_code: "32,5 δισ. παράμετροι"
 };

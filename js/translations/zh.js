@@ -1,4 +1,4 @@
-var translations_zh = {
+const translations_zh = {
     subtitle: "辅助创建 Moodle 与 Éléa 资源与活动",
     help_button: "帮助",
     help_title: "如何使用此工具？",
@@ -127,7 +127,7 @@ var translations_zh = {
     moodle_xml_prompt_form_rule1_encoding: "使用 UTF-8 编码（包含编码声明行）。",
     moodle_xml_prompt_form_rule1_reusable: "可直接在 Moodle 中复用，且无格式错误。",
     moodle_xml_prompt_form_rule1_standard_structure: "遵循 Moodle 标准 XML 结构（包含 <quiz>、<question> 等）。",
-    moodle_xml_prompt_form_rule1_special_chars: "数学符号如 '&lt;' 或 '&gt;' 必须编码为 HTML 实体（例如，`&lt;` 表示 '<'，`&gt;` 表示 '>'），以避免与 XML 标签混淆。",
+    moodle_xml_prompt_form_rule1_special_chars: "数学符号如 '<' 或 '>' 必须编码为 HTML 实体（例如，`<` 表示 '<'，`>` 表示 '>'），以避免与 XML 标签混淆。",
     moodle_xml_prompt_generate_only_xml: "不要评论、不要排版、不要总结：我只要 XML 原始内容。请严格遵守所述格式，因为我会将结果粘贴到另一个要求该格式的工具中。以预格式化代码形式给出答案。",
 
     // GIFT Prompt
@@ -177,14 +177,13 @@ var translations_zh = {
     quiz_set_prompt_rule1: "1.  每个题目对象必须包含 `library`、`params` 与 `subContentId`。",
     quiz_set_prompt_rule2: "2.  **结构:** 每个问题都必须是一个包含`library`、`metadata`和`params`键的对象。",
     quiz_set_prompt_rule3: "3.  题型要多样化。请使用以下库及其精确版本：",
-    quiz_set_prompt_rule3_multichoice: "-   `H5P.MultiChoice 1.16`",
-    quiz_set_prompt_rule3_blanks: "-   `H5P.Blanks 1.14`",
     quiz_set_prompt_rule4: "4.  **反馈（关键规则）：** 对于**所有问题类型**（`MultiChoice`、`Blanks`、`DragText`、`MarkTheWords`、`Essay`），您**必须**生成一个包含6个分数范围的`overallFeedback`：0-10、11-30、31-50、51-70、71-90和91-100。对于`TrueFalse`问题，还需添加`feedbackOnCorrect`和`feedbackOnWrong`字段。反馈必须是善意的、渐进的，并且始终以肯定的方式表达。",
     quiz_set_prompt_rule5: "5.  **内容：** `params`中的内容必须在教学上相关，为多选题提供合理的干扰项，为其他活动提供连贯的文本。",
     quiz_set_prompt_rule6: "6.  **简洁性：** 不要添加图片或多余的行为参数。保持结构简单，如示例所示。",
     quiz_set_prompt_example_json_title: "**每种授权问题类型的结构示例：**",
-    quiz_set_prompt_generate_only_json: "仅生成有效的JSON，以`{\"progressType\": \"dots\", ...}`开头，不含任何注释。",
+    quiz_set_prompt_generate_only_json: "`{\"progressType\": \"dots\", ...}`で始まる有効なJSONのみを、コメントなしで生成してください。",
 
+    // VRAI/FAUX
     quiz_set_true_false_example: JSON.stringify({
         "library": "H5P.TrueFalse 1.8",
         "metadata": { "title": "判断题标题" },
@@ -196,6 +195,8 @@ var translations_zh = {
             "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
         }
     }, null, 4),
+
+    // QCM
     quiz_set_multiple_choice_example: JSON.stringify({
         "library": "H5P.MultiChoice 1.16",
         "metadata": { "title": "MCQ标题" },
@@ -216,6 +217,8 @@ var translations_zh = {
             ]
         }
     }, null, 4),
+
+    // Texte à trous
     quiz_set_fill_in_the_blanks_example: JSON.stringify({
         "library": "H5P.Blanks 1.14",
         "metadata": { "title": "填空题标题" },
@@ -232,6 +235,8 @@ var translations_zh = {
             ]
         }
     }, null, 4),
+
+    // Glisser les mots
     quiz_set_drag_the_words_example: JSON.stringify({
         "library": "H5P.DragText 1.10",
         "metadata": { "title": "拖动单词活动标题" },
@@ -249,6 +254,8 @@ var translations_zh = {
             ]
         }
     }, null, 4),
+
+    // Surligner les mots
     quiz_set_mark_the_words_example: JSON.stringify({
         "library": "H5P.MarkTheWords 1.11",
         "metadata": { "title": "标记单词活动标题" },
@@ -266,6 +273,8 @@ var translations_zh = {
             ]
         }
     }, null, 4),
+
+    // Rédaction
     quiz_set_essay_example: JSON.stringify({
         "library": "H5P.Essay 1.5",
         "metadata": { "title": "文章标题" },
@@ -285,6 +294,7 @@ var translations_zh = {
             ]
         }
     }, null, 4),
+
     // Glossary Prompt
     glossary_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Accordion（手风琴）”活动。",
     glossary_prompt_mission: "**你的任务：**",
@@ -316,8 +326,8 @@ var translations_zh = {
     summary_prompt_rule2: "2.  其余句子为看似合理但错误的干扰项。",
     summary_prompt_rule3: "3.  所有正确句子组合后应构成连贯的摘要。",
     summary_prompt_example_json_title: "**单个步骤的 JSON 示例：**",
-    summary_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
     summary_prompt_overall_feedback: "`overallFeedback`: 一个包含6个对象的数组，用于最终反馈，分数范围为0-10、11-30、31-50、51-70、71-90和91-100。文本（`feedback`）必须是善意的、渐进的，并且始终以肯定的方式表达，与主题相关。",
+    summary_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
 
     // Summary UI translations
     summary_intro: "选择正确的陈述。",
@@ -378,8 +388,8 @@ var translations_zh = {
     blanks_try_again: "重试",
     blanks_check_answer: "检查",
     blanks_not_filled_out: "请填写所有空格。",
-    blanks_answer_is_correct: "'':ans' 是正确的",
-    blanks_answer_is_wrong: "'':ans' 是错误的",
+    blanks_answer_is_correct: "「:ans」是正确的",
+    blanks_answer_is_wrong: "「:ans」是错误的",
     blanks_answered_correctly: "回答正确",
     blanks_answered_incorrectly: "回答错误",
     blanks_solution_label: "正确答案：",
@@ -531,7 +541,7 @@ var translations_zh = {
     h5p_chart_name: "图表",
     h5p_chart_description: "创建饼图或条形图以可视化数据。",
 
-    // Moodle 模块
+    // Moodle Modules
     moodle_xml_name: "XML Éléa/Moodle",
     moodle_xml_description: "生成一个包含 10 道题目的题库，可直接以 XML 格式导入测验活动。",
     moodle_xml_help: "要在 Moodle 的“测验”活动中添加 XML 文件，首先创建活动。然后打开 <strong>更多</strong> 菜单并进入 <strong>题库</strong>。在此菜单中，点击 <strong>导入</strong>，选择 <strong>Moodle XML</strong> 格式，然后选择您的文件并确认。",
@@ -542,8 +552,6 @@ var translations_zh = {
     moodle_appariement_name: "配对",
     moodle_appariement_description: "生成一个包含 10 个问题的配对活动。",
 
-    moodle_qcm_name: "MCQ",
-    moodle_qcm_description: "生成一个简单的 MCQ 活动。",
     moodle_qcm_name: "MCQ",
     moodle_qcm_description: "生成一个简单的 MCQ 活动。",
 
@@ -570,15 +578,12 @@ var translations_zh = {
     create_mbz_file_qcm: "创建 MCQ 文件 (.mbz)",
     paste_ia_result_qcm: "在下方粘贴由 AI 生成的 JSON。活动标题将自动从 JSON 中提取。",
     generate_mbz_qcm: "生成 MCQ 活动 (mbz)",
-    create_mbz_file_qcm: "创建 MCQ 文件 (.mbz)",
-    paste_ia_result_qcm: "在下方粘贴由 AI 生成的 JSON。活动标题将自动从 JSON 中提取。",
-    generate_mbz_qcm: "生成 MCQ 活动 (mbz)",
 
-    // Moodle XML 专用
+    // Moodle XML specific
     moodle_xml_placeholder: "此处将显示 Moodle XML……",
     paste_xml_placeholder: "在此粘贴 AI 生成的完整 XML……",
 
-    // H5P 空白文本字段
+    // H5P empty text fields
     generate_prompts_placeholder: "单击‘生成提示’后，AI 的提示词将显示在此处。",
     paste_json_or_text: "在此粘贴由 AI 生成的 JSON 内容或文本，以创建您的活动。",
 
@@ -614,29 +619,8 @@ var translations_zh = {
     flashcards_retry: "重试",
     flashcards_card_announcement: "回答错误。正确答案是 @answer",
     flashcards_correct_announcement: "@answer 是正确的。",
-    flashcards_page_announcement: "第 @current 页，共 @total 页"
-    ,
+    flashcards_page_announcement: "第 @current 页，共 @total 页",
 
-    // Essay specific UI translations
-    essay_checkAnswer: "检查",
-    essay_tryAgain: "重试",
-    essay_showSolution: "显示答案",
-    essay_feedbackHeader: "反馈",
-    essay_solutionTitle: "范例答案",
-    remainingChars: "剩余字符数：@chars",
-    notEnoughChars: "您必须输入至少 @chars 个字符！",
-    messageSave: "已保存",
-    placeholderText: "从这里开始写作...",
-    ariaYourResult: "您获得了 @total 分中的 @score 分",
-    ariaNavigatedToSolution: "已导航至文本区域后新包含的范例答案。",
-
-    // Essay Overall Feedback
-    essay_overall_feedback_0_10: "你的作品是一个好的开始。继续探索这个主题，以丰富你的想法。",
-    essay_overall_feedback_11_30: "你已经奠定了有趣的基础。通过深入研究某些要点，你的作品将变得更加精确。",
-    essay_overall_feedback_31_50: "你对这个主题的理解正在顺利进行中。考虑进一步发展你的论点，以加强你的观点。",
-    essay_overall_feedback_51_70: "这是一件好作品。你对这个主题有很好的掌握。再增加一些细节可以进一步改进它。",
-    essay_overall_feedback_71_90: "非常好的作品！你的分析是相关的，结构良好。你表现出色的理解力。",
-    essay_overall_feedback_91_100: "优秀的作品！你的思考是透彻的，论证充分，并显示出对主题的完全掌握。",
     ticket: "工单",
     legal_mentions: "法律声明",
 
@@ -664,7 +648,7 @@ var translations_zh = {
     legal_terms_of_use_title: "一般使用条款",
     legal_terms_of_use_content: "本网站允许用户生成H5P内容。显示在本地完成，不传输用户数据。用户对生成内容的使用负全部责任。该应用程序免费提供，不保证任何操作或结果。编辑对内容的误解或不当使用不承担任何责任。",
     legal_intellectual_property_title: "知识产权",
-    legal_intellectual_property_content: "所有源代码、图形元素和内容均根据免费的GNU AGPLv3许可证进行许可。允许在其各自许可证的条款下重复使用。任何重新分发或修改必须注明原作者：Gauthier REMANDE 和 Emmanuel GAUNARD。H5P模块中使用的图像来自H5P.org。",
+    legal_intellectual_property_content: "所有源代码、图形元素和内容均根据免费的GNU AGPLv3许可证进行许可。允许在其各自许可证的条款下重复使用。任何重新分发或修改必须注明原作者：Gauthier REMANDE和Emmanuel GAUNARD。H5P模块中使用的图像来自H5P.org。",
     legal_personal_data_title: "个人数据",
     legal_personal_data_content: "不收集或存储任何个人数据。不使用任何跟踪cookie。会话历史记录存储在用户的本地浏览器（localStorage）中，不进行传输。根据GDPR，任何个人信息都不会传输给编辑或第三方。",
     legal_accessibility_title: "无障碍",
@@ -679,6 +663,27 @@ var translations_zh = {
     legal_library_fflate: "<strong>fflate</strong> (许可证: MIT): 用于数据压缩和解压缩的非常快的库，用于为Moodle模块创建.mbz存档。",
     legal_library_tarjs: "<strong>tar-js</strong> (许可证: MIT): 允许创建.tar存档，这是压缩前形成Moodle模块的.mbz文件的必要步骤。",
     legal_library_ownership: "每个库均为其各自作者的财产，并根据其许可证使用。",
+
+    // Essay specific UI translations
+    essay_checkAnswer: "检查",
+    essay_tryAgain: "重试",
+    essay_showSolution: "显示答案",
+    essay_feedbackHeader: "反馈",
+    essay_solutionTitle: "范例答案",
+    remainingChars: "剩余字符数：@chars",
+    notEnoughChars: "您必须输入至少 @chars 个字符！",
+    messageSave: "已保存",
+    placeholderText: "从这里开始写作...",
+    ariaYourResult: "您获得了 @total 分中的 @score 分",
+    ariaNavigatedToSolution: "已导航至文本区域后新包含的范例答案。",
+
+    // Essay Overall Feedback
+    essay_overall_feedback_0_10: "你的作品是一个好的开始。继续探索这个主题，以丰富你的想法。",
+    essay_overall_feedback_11_30: "你已经奠定了有趣的基础。通过深入研究某些要点，你的作品将变得更加精确。",
+    essay_overall_feedback_31_50: "你对这个主题的理解正在顺利进行中。考虑进一步发展你的论点，以加强你的观点。",
+    essay_overall_feedback_51_70: "这是一件好作品。你对这个主题有很好的掌握。再增加一些细节可以进一步改进它。",
+    essay_overall_feedback_71_90: "非常好的作品！你的分析是相关的，结构良好。你表现出色的理解力。",
+    essay_overall_feedback_91_100: "优秀的作品！你的思考是透彻的，论证充分，并显示出对主题的完全掌握。",
 
     // True/False Question
     true_false_prompt_role: "你是一位教学设计专家，正在为H5P活动创建一个判断题。",
@@ -932,8 +937,8 @@ var translations_zh = {
     chart_prompt_rule2: "2. 标签应简短明了。",
     chart_prompt_rule3: "3. 如果某个值与其他值相比非常低，请优先选择'barChart'以获得更好的可视化效果。",
     chart_prompt_example_json_title: "**JSON示例：**",
-    chart_prompt_generate_only_json: "只生成有效的JSON代码，不含任何注释。"
-    ,
+    chart_prompt_generate_only_json: "只生成有效的JSON代码，不含任何注释。",
+
     // createH5PWithDynamicDependencies
     quiz_prev_button: "上一个",
     quiz_next_button: "下一个",
@@ -947,8 +952,6 @@ var translations_zh = {
     quiz_retry_button_text: "重试",
     quiz_finish_button_text: "完成",
     quiz_submit_button_text: "提交",
-    quiz_tips_label: "显示提示",
-    quiz_tip_available: "提示可用",
     quiz_feedback_available: "反馈可用",
     quiz_read_feedback: "阅读反馈",
     quiz_wrong_answer: "错误答案",
@@ -959,6 +962,14 @@ var translations_zh = {
     quiz_a11y_check: "检查答案。答案将被标记为正确、错误或未回答。",
     quiz_a11y_show_solution: "显示答案。任务将标记其正确答案。",
     quiz_a11y_retry: "重试任务。重置所有回答并重新开始任务。",
+
+    // Albert generation
+    generate_with_albert: "使用Albert生成",
+    generation_in_progress: "正在生成，请稍候...",
+    request_sent_to_ia: "已向AI发送请求，请稍候...",
+    generation_successful: "H5P内容已成功生成！",
+    generation_failed_empty: "生成失败。响应为空。",
+    generation_failed_error: "生成过程中出错：{errorMessage}",
 
     // Albert models description
     albert_small_summary: "快速、简单，适用于快速和结构化的练习。",
@@ -973,13 +984,5 @@ var translations_zh = {
     albert_model_parameters: "模型大小:",
     albert_model_parameters_small: "80亿参数",
     albert_model_parameters_large: "240亿参数",
-    albert_model_parameters_code: "325亿参数",
-
-    // Albert generation
-    generate_with_albert: "使用Albert生成",
-    generation_in_progress: "正在生成，请稍候...",
-    request_sent_to_ia: "已向AI发送请求，请稍候...",
-    generation_successful: "H5P内容已成功生成！",
-    generation_failed_empty: "生成失败。响应为空。",
-    generation_failed_error: "生成过程中出错：{errorMessage}"
+    albert_model_parameters_code: "325亿参数"
 };

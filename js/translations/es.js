@@ -1,4 +1,4 @@
-var translations_es = {
+const translations_es = {
     subtitle: "Creación Asistida de Recursos y Actividades para Moodle y Éléa",
     help_button: "Ayuda",
     help_title: "¿Cómo usar esta herramienta?",
@@ -127,7 +127,7 @@ var translations_es = {
     moodle_xml_prompt_form_rule1_encoding: "Estar codificado en UTF-8 (insertar la línea de codificación).",
     moodle_xml_prompt_form_rule1_reusable: "Ser directamente reutilizable en Moodle, sin errores de formato.",
     moodle_xml_prompt_form_rule1_standard_structure: "Seguir la estructura XML estándar de Moodle (con <quiz>, <question>, etc.).",
-    moodle_xml_prompt_form_rule1_special_chars: "Los símbolos matemáticos como '&lt;' o '&gt;' deben codificarse como entidades HTML (por ejemplo, `&lt;` para '<' y `&gt;` para '>') para evitar cualquier confusión con las etiquetas XML.",
+    moodle_xml_prompt_form_rule1_special_chars: "Los símbolos matemáticos como '<' o '>' deben codificarse como entidades HTML (por ejemplo, `<` para '<' y `>` para '>') para evitar cualquier confusión con las etiquetas XML.",
     moodle_xml_prompt_generate_only_xml: "No comentes, no formatees, no resumas: solo quiero el contenido bruto del archivo XML. Respeta escrupulosamente el formato descrito, ya que pegaré el resultado en otra herramienta que espera este formato. Produce la respuesta en formato de código preformateado.",
 
     // GIFT Prompt
@@ -177,13 +177,13 @@ var translations_es = {
     quiz_set_prompt_rule1: "1.  Cada objeto de pregunta debe tener las claves `library`, `params` y `subContentId`.",
     quiz_set_prompt_rule2: "2.  **Estructura:** Cada pregunta debe ser un objeto con las claves `library`, `metadata` y `params`.",
     quiz_set_prompt_rule3: "3.  Varía los tipos de preguntas. Utiliza las siguientes bibliotecas con sus versiones exactas :",
-    quiz_set_prompt_rule3_multichoice: "-   `H5P.MultiChoice 1.16`",
-    quiz_set_prompt_rule3_blanks: "-   `H5P.Blanks 1.14`",
     quiz_set_prompt_rule4: "4.  **Retroalimentación (REGLA CRUCIAL):** Para **todos los tipos de preguntas** (`MultiChoice`, `Blanks`, `DragText`, `MarkTheWords`, `Essay`), **debes** generar un `overallFeedback` con exactamente 6 rangos de puntuación: 0-10, 11-30, 31-50, 51-70, 71-90 y 91-100. Para las preguntas `TrueFalse`, añade también los campos `feedbackOnCorrect` y `feedbackOnWrong`. La retroalimentación debe ser benévola, gradual y siempre formulada en afirmativo.",
     quiz_set_prompt_rule5: "5.  **Contenido:** El contenido en `params` debe ser pedagógicamente relevante, con distractores plausibles para los MCQ y textos coherentes para otras actividades.",
     quiz_set_prompt_rule6: "6.  **Sencillez:** No añadas imágenes ni parámetros de comportamiento superfluos. Mantén la estructura simple como en los ejemplos.",
     quiz_set_prompt_example_json_title: "**Ejemplos de estructuras para cada tipo de pregunta autorizada:**",
     quiz_set_prompt_generate_only_json: "Genera solo el JSON válido, comenzando con `{\"progressType\": \"dots\", ...}`, sin ningún comentario.",
+
+    // VRAI/FAUX
     quiz_set_true_false_example: JSON.stringify({
         "library": "H5P.TrueFalse 1.8",
         "metadata": { "title": "Título de la pregunta Verdadero/Falso" },
@@ -195,6 +195,8 @@ var translations_es = {
             "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
         }
     }, null, 4),
+
+    // QCM
     quiz_set_multiple_choice_example: JSON.stringify({
         "library": "H5P.MultiChoice 1.16",
         "metadata": { "title": "Título del MCQ" },
@@ -215,6 +217,8 @@ var translations_es = {
             ]
         }
     }, null, 4),
+
+    // Texte à trous
     quiz_set_fill_in_the_blanks_example: JSON.stringify({
         "library": "H5P.Blanks 1.14",
         "metadata": { "title": "Título del ejercicio de rellenar huecos" },
@@ -231,6 +235,8 @@ var translations_es = {
             ]
         }
     }, null, 4),
+
+    // Glisser les mots
     quiz_set_drag_the_words_example: JSON.stringify({
         "library": "H5P.DragText 1.10",
         "metadata": { "title": "Título de la actividad de arrastrar palabras" },
@@ -248,6 +254,8 @@ var translations_es = {
             ]
         }
     }, null, 4),
+
+    // Surligner les mots
     quiz_set_mark_the_words_example: JSON.stringify({
         "library": "H5P.MarkTheWords 1.11",
         "metadata": { "title": "Título de la actividad de marcar palabras" },
@@ -265,6 +273,8 @@ var translations_es = {
             ]
         }
     }, null, 4),
+
+    // Rédaction
     quiz_set_essay_example: JSON.stringify({
         "library": "H5P.Essay 1.5",
         "metadata": { "title": "Título del ensayo" },
@@ -316,8 +326,8 @@ var translations_es = {
     summary_prompt_rule2: "2.  Las frases siguientes son distractores plausibles pero incorrectos.",
     summary_prompt_rule3: "3.  Todas las frases correctas deben formar un resumen coherente.",
     summary_prompt_example_json_title: "**Ejemplo de JSON para un paso :**",
-    summary_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario.",
     summary_prompt_overall_feedback: "`overallFeedback`: Un array de 6 objetos para el feedback final, con puntuaciones de 0-10, 11-30, 31-50, 51-70, 71-90 y 91-100. El texto (`feedback`) debe ser benévolo, gradual y siempre formulado en afirmativo, relacionado con el tema.",
+    summary_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario.",
 
     // Summary UI translations
     summary_intro: "Elige la afirmación correcta.",
@@ -534,7 +544,7 @@ var translations_es = {
     // Módulos de Moodle
     moodle_xml_name: "XML Éléa/Moodle",
     moodle_xml_description: "Genere un banco de 10 preguntas para una actividad de cuestionario listas para importarse en formato XML.",
-    moodle_xml_help: "Para añadir un archivo XML en una actividad de «Cuestionario» en Moodle, primero cree la actividad. Luego abra el menú <strong>Más</strong> y vaya a <strong>Banco de preguntas</strong>. En este menú, haga clic en <strong>Importar</strong>, elija el formato <strong>XML Moodle</strong>, seleccione su archivo y confirme.",
+    moodle_xml_help: "Para añadir un archivo XML en una actividad de «Cuestionario» en Moodle, primero cree la actividad. Luego abra el menú <strong>Más</strong> y vaya a <strong>Banco de preguntas</strong>. En este menú, haga clic en <strong>Importar</strong>, elija el formato <strong>Moodle XML</strong>, seleccione su archivo y confirme.",
     moodle_gift_name: "Formato GIFT",
     moodle_gift_description: "Cree preguntas en formato GIFT, una forma sencilla de importar preguntas en Moodle.",
     moodle_millionnaire_name: "Millonario",
@@ -542,8 +552,6 @@ var translations_es = {
     moodle_appariement_name: "Emparejamiento",
     moodle_appariement_description: "Genera una actividad de emparejamiento de 10 preguntas.",
 
-    moodle_qcm_name: "MCQ",
-    moodle_qcm_description: "Generar una actividad MCQ simple.",
     moodle_qcm_name: "MCQ",
     moodle_qcm_description: "Generar una actividad MCQ simple.",
 
@@ -570,11 +578,8 @@ var translations_es = {
     create_mbz_file_qcm: "Crear archivo MCQ (.mbz)",
     paste_ia_result_qcm: "Pega abajo el JSON generado por la IA. El título de la actividad se extraerá automáticamente del JSON.",
     generate_mbz_qcm: "Generar actividad MCQ (mbz)",
-    create_mbz_file_qcm: "Crear archivo MCQ (.mbz)",
-    paste_ia_result_qcm: "Pega abajo el JSON generado por la IA. El título de la actividad se extraerá automáticamente del JSON.",
-    generate_mbz_qcm: "Generar actividad MCQ (mbz)",
 
-    // Específico de Moodle XML
+    // Moodle XML specific
     moodle_xml_placeholder: "El XML de Moodle aparecerá aquí...",
     paste_xml_placeholder: "Pegue aquí el XML completo generado por la IA...",
 
@@ -596,7 +601,6 @@ var translations_es = {
     error_compression_module_not_ready: "El módulo de compresión no está listo. Por favor, inténtalo de nuevo en un momento.",
     h5p_file_generated_successfully: "¡Archivo {fileName} generado con éxito!",
     h5p_creation_failed: "La creación del archivo H5P falló: {errorMessage}",
-    prompt_language_instruction: "El idioma utilizado debe ser el español.",
     license_info: "GNU GPL v3.0 o posterior",
 
     // Flashcards specific UI translations
@@ -615,29 +619,8 @@ var translations_es = {
     flashcards_retry: "Reintentar",
     flashcards_card_announcement: "Respuesta incorrecta. La respuesta correcta era @answer",
     flashcards_correct_announcement: "@answer es correcto.",
-    flashcards_page_announcement: "Página @current de @total"
-    ,
+    flashcards_page_announcement: "Página @current de @total",
 
-    // Essay specific UI translations
-    essay_checkAnswer: "Comprobar",
-    essay_tryAgain: "Reintentar",
-    essay_showSolution: "Mostrar solución",
-    essay_feedbackHeader: "Comentario",
-    essay_solutionTitle: "Solución de ejemplo",
-    remainingChars: "Caracteres restantes: @chars",
-    notEnoughChars: "¡Debes introducir al menos @chars caracteres!",
-    messageSave: "guardado",
-    placeholderText: "Empieza a escribir aquí...",
-    ariaYourResult: "Has conseguido @score de @total puntos",
-    ariaNavigatedToSolution: "Navegado a la solución de ejemplo recién incluida después del área de texto.",
-
-    // Essay Overall Feedback
-    essay_overall_feedback_0_10: "Tu trabajo es un buen comienzo. Sigue explorando el tema para enriquecer tus ideas.",
-    essay_overall_feedback_11_30: "Has sentado unas bases interesantes. Profundizando en ciertos puntos, tu trabajo ganará en precisión.",
-    essay_overall_feedback_31_50: "Tu comprensión del tema está bien encaminada. Considera desarrollar más tus argumentos para reforzar tu punto de vista.",
-    essay_overall_feedback_51_70: "Es un buen trabajo. Demuestras un buen dominio del tema. Algunos detalles más podrían mejorarlo aún.",
-    essay_overall_feedback_71_90: "¡Muy buen trabajo! Tu análisis es pertinente y está bien estructurado. Demuestras una excelente comprensión.",
-    essay_overall_feedback_91_100: "¡Excelente trabajo! Tu reflexión es profunda, bien argumentada y demuestra un dominio completo del tema.",
     ticket: "Ticket",
     legal_mentions: "Menciones legales",
 
@@ -680,6 +663,27 @@ var translations_es = {
     legal_library_fflate: "<strong>fflate</strong> (Licencia: MIT): Biblioteca muy rápida para la compresión y descompresión de datos, utilizada para la creación de archivos .mbz para los módulos de Moodle.",
     legal_library_tarjs: "<strong>tar-js</strong> (Licencia: MIT): Permite crear archivos .tar, un paso necesario antes de la compresión para formar los archivos .mbz de los módulos de Moodle.",
     legal_library_ownership: "Cada biblioteca sigue siendo propiedad de sus respectivos autores y se utiliza de acuerdo con su(s) licencia(s).",
+
+    // Essay specific UI translations
+    essay_checkAnswer: "Comprobar",
+    essay_tryAgain: "Reintentar",
+    essay_showSolution: "Mostrar solución",
+    essay_feedbackHeader: "Comentario",
+    essay_solutionTitle: "Solución de ejemplo",
+    remainingChars: "Caracteres restantes: @chars",
+    notEnoughChars: "¡Debes introducir al menos @chars caracteres!",
+    messageSave: "guardado",
+    placeholderText: "Empieza a escribir aquí...",
+    ariaYourResult: "Has conseguido @score de @total puntos",
+    ariaNavigatedToSolution: "Navegado a la solución de ejemplo recién incluida después del área de texto.",
+
+    // Essay Overall Feedback
+    essay_overall_feedback_0_10: "Tu trabajo es un buen comienzo. Sigue explorando el tema para enriquecer tus ideas.",
+    essay_overall_feedback_11_30: "Has sentado unas bases interesantes. Profundizando en ciertos puntos, tu trabajo ganará en precisión.",
+    essay_overall_feedback_31_50: "Tu comprensión del tema está bien encaminada. Considera desarrollar más tus argumentos para reforzar tu punto de vista.",
+    essay_overall_feedback_51_70: "Es un buen trabajo. Demuestras un buen dominio del tema. Algunos detalles más podrían mejorarlo aún.",
+    essay_overall_feedback_71_90: "¡Muy buen trabajo! Tu análisis es pertinente y está bien estructurado. Demuestras una excelente comprensión.",
+    essay_overall_feedback_91_100: "¡Excelente trabajo! Tu reflexión es profunda, bien argumentada y demuestra un dominio completo del tema.",
 
     // True/False Question
     true_false_prompt_role: "Eres un experto en diseño instruccional creando una pregunta de Verdadero/Falso para una actividad H5P.",
@@ -933,8 +937,8 @@ var translations_es = {
     chart_prompt_rule2: "2. Las etiquetas deben ser cortas y claras.",
     chart_prompt_rule3: "3. Si un valor es muy bajo en comparación con otros, prefiere un 'barChart' para una mejor visualización.",
     chart_prompt_example_json_title: "**Ejemplo de JSON:**",
-    chart_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario."
-    ,
+    chart_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario.",
+
     // createH5PWithDynamicDependencies
     quiz_prev_button: "Anterior",
     quiz_next_button: "Siguiente",
@@ -948,8 +952,6 @@ var translations_es = {
     quiz_retry_button_text: "Reintentar",
     quiz_finish_button_text: "Finalizar",
     quiz_submit_button_text: "Enviar",
-    quiz_tips_label: "Mostrar pistas",
-    quiz_tip_available: "Pista disponible",
     quiz_feedback_available: "Feedback disponible",
     quiz_read_feedback: "Leer feedback",
     quiz_wrong_answer: "Respuesta incorrecta",

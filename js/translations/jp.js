@@ -1,4 +1,4 @@
-var translations_jp = {
+const translations_jp = {
     subtitle: "Moodle・Éléaリソース・アクティビティの支援作成",
     help_button: "ヘルプ",
     help_title: "このツールの使い方は？",
@@ -127,7 +127,7 @@ var translations_jp = {
     moodle_xml_prompt_form_rule1_encoding: "UTF-8でエンコードされている（エンコード行を挿入）。",
     moodle_xml_prompt_form_rule1_reusable: "形式エラーなしで、Moodleで直接再利用可能。",
     moodle_xml_prompt_form_rule1_standard_structure: "Moodleの標準XML構造に従う（<quiz>、<question>などを含む）。",
-    moodle_xml_prompt_form_rule1_special_chars: "数式記号 '&lt;' や '&gt;' は HTML エンティティとしてエンコードする必要があります（例: '<' の場合は `&lt;`、'>' の場合は `&gt;`）、XML タグとの混同を避けるためです。",
+    moodle_xml_prompt_form_rule1_special_chars: "数式記号 '<' や '>' は HTML エンティティとしてエンコードする必要があります（例: '<' の場合は `<`、'>' の場合は `>`）、XML タグとの混同を避けるためです。",
     moodle_xml_prompt_generate_only_xml: "コメント、形式設定、要約はしないでください。XMLファイルの生の内容のみが必要です。説明された形式を厳密に守ってください。結果を他のツールに貼り付けるため、この形式が期待されています。回答をプリフォーマットされたコードとして生成してください。",
 
     // GIFT Prompt
@@ -177,14 +177,13 @@ var translations_jp = {
     quiz_set_prompt_rule1: "1. 各質問オブジェクトには`library`、`params`、`subContentId`キーが必要です。",
     quiz_set_prompt_rule2: "2.  **構造:** 各質問は`library`、`metadata`、`params`のキーを持つオブジェクトでなければなりません。",
     quiz_set_prompt_rule3: "3. 質問の種類を変えてください。正確なバージョンで以下のライブラリを使用してください：",
-    quiz_set_prompt_rule3_multichoice: "- `H5P.MultiChoice 1.16`",
-    quiz_set_prompt_rule3_blanks: "- `H5P.Blanks 1.14`",
     quiz_set_prompt_rule4: "4.  **フィードバック（重要ルール）：** **すべての質問タイプ**（`MultiChoice`、`Blanks`、`DragText`、`MarkTheWords`、`Essay`）について、**必ず**6つのスコア範囲（0-10、11-30、31-50、51-70、71-90、91-100）を持つ`overallFeedback`を生成する必要があります。`TrueFalse`の質問には、`feedbackOnCorrect`と`feedbackOnWrong`フィールドも追加してください。フィードバックは親切で、段階的で、常に肯定的に表現する必要があります。",
     quiz_set_prompt_rule5: "5.  **内容：** `params`の内容は教育的に適切で、MCQにはもっともらしい選択肢を、他のアクティビティには一貫したテキストを含める必要があります。",
     quiz_set_prompt_rule6: "6.  **シンプルさ：** 画像や余分な動作パラメータを追加しないでください。例のように構造をシンプルに保ってください。",
     quiz_set_prompt_example_json_title: "**許可されている各質問タイプの構造例：**",
     quiz_set_prompt_generate_only_json: "`{\"progressType\": \"dots\", ...}`で始まる有効なJSONのみを、コメントなしで生成してください。",
 
+    // VRAI/FAUX
     quiz_set_true_false_example: JSON.stringify({
         "library": "H5P.TrueFalse 1.8",
         "metadata": { "title": "正誤問題のタイトル" },
@@ -196,6 +195,8 @@ var translations_jp = {
             "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
         }
     }, null, 4),
+
+    // QCM
     quiz_set_multiple_choice_example: JSON.stringify({
         "library": "H5P.MultiChoice 1.16",
         "metadata": { "title": "MCQのタイトル" },
@@ -216,6 +217,8 @@ var translations_jp = {
             ]
         }
     }, null, 4),
+
+    // Texte à trous
     quiz_set_fill_in_the_blanks_example: JSON.stringify({
         "library": "H5P.Blanks 1.14",
         "metadata": { "title": "穴埋め問題のタイトル" },
@@ -232,6 +235,8 @@ var translations_jp = {
             ]
         }
     }, null, 4),
+
+    // Glisser les mots
     quiz_set_drag_the_words_example: JSON.stringify({
         "library": "H5P.DragText 1.10",
         "metadata": { "title": "単語ドラッグアクティビティのタイトル" },
@@ -249,6 +254,8 @@ var translations_jp = {
             ]
         }
     }, null, 4),
+
+    // Surligner les mots
     quiz_set_mark_the_words_example: JSON.stringify({
         "library": "H5P.MarkTheWords 1.11",
         "metadata": { "title": "単語マーキングアクティビティのタイトル" },
@@ -266,6 +273,8 @@ var translations_jp = {
             ]
         }
     }, null, 4),
+
+    // Rédaction
     quiz_set_essay_example: JSON.stringify({
         "library": "H5P.Essay 1.5",
         "metadata": { "title": "エッセイのタイトル" },
@@ -285,6 +294,7 @@ var translations_jp = {
             ]
         }
     }, null, 4),
+
     // Glossary Prompt
     glossary_prompt_role: "あなたはH5P「Accordion」アクティビティを作成する教育工学の専門家です。",
     glossary_prompt_mission: "**あなたの使命：**",
@@ -316,8 +326,8 @@ var translations_jp = {
     summary_prompt_rule2: "2. 続く文は、もっともらしいが間違っている選択肢です。",
     summary_prompt_rule3: "3. 正解の文の集合は一貫した要約を形成する必要があります。",
     summary_prompt_example_json_title: "**ステップのJSON例：**",
-    summary_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
     summary_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現し、トピックに関連している必要があります。",
+    summary_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 
     // Summary UI translations
     summary_intro: "正しい記述を選んでください。",
@@ -531,7 +541,7 @@ var translations_jp = {
     h5p_chart_name: "チャート",
     h5p_chart_description: "データを視覚化するために円グラフまたは棒グラフを作成します。",
 
-    // Moodle モジュール
+    // Moodle Modules
     moodle_xml_name: "XML Éléa/Moodle",
     moodle_xml_description: "XML 形式でインポート可能な小テスト用に 10 問の問題バンクを作成します。",
     moodle_xml_help: "Moodle の「小テスト」活動に XML ファイルを追加するには、まず活動を作成します。その後、<strong>その他</strong> メニューを開き、<strong>問題バンク</strong> に移動します。そこで <strong>インポート</strong> をクリックし、<strong>Moodle XML</strong> 形式を選択し、ファイルを選んで確認します。",
@@ -609,29 +619,8 @@ var translations_jp = {
     flashcards_retry: "再試行",
     flashcards_card_announcement: "不正解です。正解は @answer でした",
     flashcards_correct_announcement: "@answer は正解です。",
-    flashcards_page_announcement: "ページ @current / @total"
-    ,
+    flashcards_page_announcement: "ページ @current / @total",
 
-    // Essay specific UI translations
-    essay_checkAnswer: "チェック",
-    essay_tryAgain: "再試行",
-    essay_showSolution: "解答を表示",
-    essay_feedbackHeader: "フィードバック",
-    essay_solutionTitle: "解答例",
-    remainingChars: "残り文字数: @chars",
-    notEnoughChars: "最低@chars文字入力してください！",
-    messageSave: "保存しました",
-    placeholderText: "ここに書き始めてください...",
-    ariaYourResult: "合計@total点中@score点を獲得しました",
-    ariaNavigatedToSolution: "テキストエリアの後に新しく含まれた解答例に移動しました。",
-
-    // Essay Overall Feedback
-    essay_overall_feedback_0_10: "あなたの作品は良いスタートです。アイデアを豊かにするために、トピックを探求し続けてください。",
-    essay_overall_feedback_11_30: "興味深い基礎を築きましたね。特定の点を掘り下げることで、あなたの作品はより正確になります。",
-    essay_overall_feedback_31_50: "主題の理解は順調に進んでいます。あなたの主張を強化するために、議論をさらに発展させることを検討してください。",
-    essay_overall_feedback_51_70: "これは良い作品です。主題をよく理解していることがわかります。いくつかの詳細を追加することで、さらに改善できます。",
-    essay_overall_feedback_71_90: "非常に良い作品です！あなたの分析は適切で、よく構成されています。優れた理解を示しています。",
-    essay_overall_feedback_91_100: "素晴らしい作品です！あなたの考察は徹底的で、十分に論じられており、主題の完全な習熟を示しています。",
     ticket: "チケット",
     legal_mentions: "法的通知",
 
@@ -674,6 +663,27 @@ var translations_jp = {
     legal_library_fflate: "<strong>fflate</strong> (ライセンス: MIT): Moodleモジュール用の.mbzアーカイブを作成するために使用される、データ圧縮および解凍用の非常に高速なライブラリ。",
     legal_library_tarjs: "<strong>tar-js</strong> (ライセンス: MIT): Moodleモジュール用の.mbzファイルを形成するために圧縮前に必要なステップである.tarアーカイブを作成できます。",
     legal_library_ownership: "各ライブラリはそれぞれの作成者の所有物であり、そのライセンスに従って使用されます。",
+
+    // Essay specific UI translations
+    essay_checkAnswer: "チェック",
+    essay_tryAgain: "再試行",
+    essay_showSolution: "解答を表示",
+    essay_feedbackHeader: "フィードバック",
+    essay_solutionTitle: "解答例",
+    remainingChars: "残り文字数: @chars",
+    notEnoughChars: "最低@chars文字入力してください！",
+    messageSave: "保存しました",
+    placeholderText: "ここに書き始めてください...",
+    ariaYourResult: "合計@total点中@score点を獲得しました",
+    ariaNavigatedToSolution: "テキストエリアの後に新しく含まれた解答例に移動しました。",
+
+    // Essay Overall Feedback
+    essay_overall_feedback_0_10: "あなたの作品は良いスタートです。アイデアを豊かにするために、トピックを探求し続けてください。",
+    essay_overall_feedback_11_30: "興味深い基礎を築きましたね。特定の点を掘り下げることで、あなたの作品はより正確になります。",
+    essay_overall_feedback_31_50: "主題の理解は順調に進んでいます。あなたの主張を強化するために、議論をさらに発展させることを検討してください。",
+    essay_overall_feedback_51_70: "これは良い作品です。主題をよく理解していることがわかります。いくつかの詳細を追加することで、さらに改善できます。",
+    essay_overall_feedback_71_90: "非常に良い作品です！あなたの分析は適切で、よく構成されています。優れた理解を示しています。",
+    essay_overall_feedback_91_100: "素晴らしい作品です！あなたの考察は徹底的で、十分に論じられており、主題の完全な習熟を示しています。",
 
     // True/False Question
     true_false_prompt_role: "あなたは教育設計の専門家で、H5Pアクティビティの正誤問題を作成しています。",
@@ -927,8 +937,8 @@ var translations_jp = {
     chart_prompt_rule2: "2. ラベルは短く明確でなければなりません。",
     chart_prompt_rule3: "3. 他の値と比較して非常に低い値がある場合は、視覚化を向上させるために「barChart」を優先してください。",
     chart_prompt_example_json_title: "**JSONの例:**",
-    chart_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。"
-    ,
+    chart_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
+
     // createH5PWithDynamicDependencies
     quiz_prev_button: "前へ",
     quiz_next_button: "次へ",
@@ -942,8 +952,6 @@ var translations_jp = {
     quiz_retry_button_text: "再試行",
     quiz_finish_button_text: "終了",
     quiz_submit_button_text: "送信",
-    quiz_tips_label: "ヒントを表示",
-    quiz_tip_available: "ヒントあり",
     quiz_feedback_available: "フィードバックあり",
     quiz_read_feedback: "フィードバックを読む",
     quiz_wrong_answer: "不正解",
@@ -954,6 +962,14 @@ var translations_jp = {
     quiz_a11y_check: "解答をチェックします。解答は正解、不正解、または未回答としてマークされます。",
     quiz_a11y_show_solution: "解答を表示します。課題には正解が表示されます。",
     quiz_a11y_retry: "課題を再試行します。すべての解答をリセットして、課題を最初からやり直します。",
+
+    // Albert generation
+    generate_with_albert: "Albertで生成",
+    generation_in_progress: "生成中です、お待ちください...",
+    request_sent_to_ia: "AIにリクエストを送信しました、お待ちください...",
+    generation_successful: "H5Pコンテンツが正常に生成されました！",
+    generation_failed_empty: "生成に失敗しました。応答が空でした。",
+    generation_failed_error: "生成中にエラーが発生しました：{errorMessage}",
 
     // Albert models description
     albert_small_summary: "高速、シンプル、迅速で構造化された演習に適しています。",
@@ -968,13 +984,5 @@ var translations_jp = {
     albert_model_parameters: "モデルサイズ:",
     albert_model_parameters_small: "80億パラメータ",
     albert_model_parameters_large: "240億パラメータ",
-    albert_model_parameters_code: "325億パラメータ",
-
-    // Albert generation
-    generate_with_albert: "Albertで生成",
-    generation_in_progress: "生成中です、お待ちください...",
-    request_sent_to_ia: "AIにリクエストを送信しました、お待ちください...",
-    generation_successful: "H5Pコンテンツが正常に生成されました！",
-    generation_failed_empty: "生成に失敗しました。応答が空でした。",
-    generation_failed_error: "生成中にエラーが発生しました：{errorMessage}"
+    albert_model_parameters_code: "325億パラメータ"
 };

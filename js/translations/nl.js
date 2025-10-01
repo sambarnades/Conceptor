@@ -1,4 +1,4 @@
-var translations_nl = {
+const translations_nl = {
     subtitle: "Begeleide creatie van Moodle- en Éléa-bronnen en -activiteiten",
     help_button: "Hulp",
     help_title: "Hoe gebruikt u deze tool?",
@@ -23,7 +23,7 @@ var translations_nl = {
     h5p_tab: "H5P",
     moodle_tab: "Éléa/Moodle-modules",
 
-    // Algemene context (Geavanceerde modus)
+    // General Context (Advanced Mode)
     prompt_expert_intro: "Je bent een didactisch expert die toon en woordenschat aanpast aan de huidige leerplannen en het niveau van de leerlingen voor de les ",
     prompt_context_title: "**Context:**",
     prompt_subject: "- **Vak:**",
@@ -32,13 +32,13 @@ var translations_nl = {
     prompt_number_of_elements: "- **Aantal elementen:**",
     prompt_additional_info: "- **Aanvullende informatie:**",
 
-    // Algemene context (Eenvoudige modus)
+    // General Context (Simple Mode)
     prompt_simple_intro_part1: "Ik ben een **",
     prompt_simple_intro_part2: "** en ik wil **",
     prompt_language_instruction: "De gegenereerde inhoud moet in het Nederlands zijn, tenzij in het verzoek een andere taal wordt opgegeven.",
     prompt_code_block_instruction: "Je moet het resultaat in een codeblok genereren.",
 
-    // Timeline-prompt
+    // Timeline Prompt
     timeline_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Timeline\".",
     timeline_prompt_mission: "**Jouw missie:**",
     timeline_prompt_generate_json: "Genereer een volledig en geldig JSON-object voor een H5P-activiteit van het type Timeline. De JSON moet direct bruikbaar zijn.",
@@ -61,7 +61,7 @@ var translations_nl = {
     timeline_prompt_example_json_title: "**Voorbeeld van JSON-structuur:**",
     timeline_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar. Het resultaat wordt direct door een ander hulpmiddel gebruikt.",
 
-    // Kruiswoord-prompt
+    // Crossword Prompt
     crossword_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Crossword\".",
     crossword_prompt_mission: "**Jouw missie:**",
     crossword_prompt_generate_json: "Genereer een volledig en geldig JSON-object voor een H5P-kruiswoordactiviteit.",
@@ -91,7 +91,7 @@ var translations_nl = {
     crossword_close_window: "Venster sluiten",
     crossword_submit_answer: "Indienen",
 
-    // Essay-prompt
+    // Essay Prompt
     essay_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Essay\".",
     essay_prompt_mission: "**Jouw missie:**",
     essay_prompt_generate_json: "Genereer een volledig en geldig JSON-object voor een H5P-Essay-activiteit.",
@@ -108,7 +108,7 @@ var translations_nl = {
     essay_prompt_example_json_title: "**JSON-voorbeeld voor één trefwoord:**",
     essay_prompt_generate_only_json: "Genereer de volledige en geldige JSON door de opdracht en de lijst met trefwoorden in te vullen, zonder verdere opmerkingen.",
 
-    // Moodle XML-prompt
+    // Moodle XML Prompt
     moodle_xml_prompt_intro: "Ik wil een quiz met ${nombreQuestions} vragen aanmaken.",
     moodle_xml_prompt_content_title: "Wat betreft de inhoud:",
     moodle_xml_prompt_content_rule1: "Foute antwoorden moeten inhoudelijk kloppen maar duidelijk onjuist zijn om gokken te vermijden.",
@@ -120,17 +120,17 @@ var translations_nl = {
     moodle_xml_prompt_question_type_matching: "- matching (koppelen),",
     moodle_xml_prompt_question_type_numerical: "- numerical (numeriek antwoord met of zonder tolerantie),",
     moodle_xml_prompt_question_type_truefalse: "- truefalse (waar/onwaar).",
-    oodle_xml_prompt_question_type_shortanswer: "- shortanswer (kort antwoord) met eventuele alternatieve antwoorden,",
+    moodle_xml_prompt_question_type_shortanswer: "- shortanswer (kort antwoord) met eventuele alternatieve antwoorden,",
     moodle_xml_prompt_question_type_cloze: "- cloze (invultekst) met de categorieën MULTICHOICE, MULTICHOICE_H, MULTICHOICE_V, MULTICHOICE_S, MULTICHOICE_HS, MULTIRESPONSE, MULTIRESPONSE_H, MULTIRESPONSE_HS, NUMERICAL, SHORTANSWER of SHORTANWSER_C, afhankelijk van wat het best bij de context past.",
     moodle_xml_prompt_form_title: "Wat betreft de vorm:",
     moodle_xml_prompt_form_rule1: "Het XML-bestand moet:",
     moodle_xml_prompt_form_rule1_encoding: "In UTF-8 gecodeerd zijn (voeg de coderegel toe).",
     moodle_xml_prompt_form_rule1_reusable: "Direct herbruikbaar zijn in Moodle, zonder opmaakfouten.",
     moodle_xml_prompt_form_rule1_standard_structure: "De standaard Moodle-XML-structuur volgen (met <quiz>, <question>, enz.).",
-    moodle_xml_prompt_form_rule1_special_chars: "Wiskundige symbolen zoals '&lt;' of '&gt;' moeten worden gecodeerd als HTML-entiteiten (bijvoorbeeld, `&lt;` voor '<' en `&gt;` voor '>') om verwarring met XML-tags te voorkomen.",
+    moodle_xml_prompt_form_rule1_special_chars: "Wiskundige symbolen zoals '<' of '>' moeten worden gecodeerd als HTML-entiteiten (bijvoorbeeld, `<` voor '<' en `>` voor '>') om verwarring met XML-tags te voorkomen.",
     moodle_xml_prompt_generate_only_xml: "Niet becommentariëren, niet opmaken, niet samenvatten: ik wil alleen de ruwe XML-inhoud. Respecteer strikt het beschreven formaat, want ik plak het resultaat in een andere tool die dit formaat vereist. Geef het antwoord als vooraf opgemaakte code.",
 
-    // GIFT-prompt
+    // GIFT Prompt
     gift_prompt_intro: "Ik wil een quiz met ${nombreQuestions} vragen aanmaken.",
     gift_prompt_format_info: "De quiz moet in GIFT-formaat zijn voor import in Moodle.",
     gift_prompt_question_quality: "Elke vraag moet duidelijk, beknopt en ondubbelzinnig zijn, met gedetailleerde feedback.",
@@ -149,7 +149,7 @@ var translations_nl = {
     gift_prompt_question_type_matching: "- koppelvragen (matching) met minstens 4 paren.",
     gift_prompt_generate_only_gift: "Genereer de quiz direct in GIFT-formaat, zonder extra commentaar of tags. Respecteer strikt het beschreven formaat; ik plak het resultaat in een andere tool die dit vereist. Lever het antwoord als vooraf opgemaakte code.",
 
-    // Flashcards-prompt
+    // Flashcards Prompt
     flashcards_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Flashcards\".",
     flashcards_prompt_mission: "**Jouw missie:**",
     flashcards_prompt_generate_json: "Genereer een volledig en geldig JSON-object voor een H5P-flashcardsactiviteit. De JSON moet direct bruikbaar zijn.",
@@ -164,7 +164,7 @@ var translations_nl = {
     flashcards_prompt_example_json_title: "**JSON-voorbeeld:**",
     flashcards_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
 
-    // QuizSet-prompt
+    // QuizSet Prompt
     quiz_set_prompt_role: "Je bent een specialist in leerontwerp en maakt de inhoud voor een \"H5P Quiz (Question Set)\".",
     quiz_set_prompt_mission: "**Jouw missie:**",
     quiz_set_prompt_generate_json: "Genereer een JSON-object **alleen voor de inhoud** van een H5P-quiz. De JSON moet direct bruikbaar zijn als `content.json`.",
@@ -176,15 +176,14 @@ var translations_nl = {
     quiz_set_prompt_content_rules_title: "**Regels voor de vraaginhoud:**",
     quiz_set_prompt_rule1: "1.  Elk vraagobject moet de sleutels `library`, `params` en `subContentId` hebben.",
     quiz_set_prompt_rule2: "2.  **Structuur:** Elke vraag moet een object zijn met de sleutels `library`, `metadata` en `params`.",
-    quiz_set_prompt_rule3: "3.  Varieer de vraagtypes. Gebruik de volgende libraries met exacte versies:",
-    quiz_set_prompt_rule3_multichoice: "-   `H5P.MultiChoice 1.16`",
-    quiz_set_prompt_rule3_blanks: "-   `H5P.Blanks 1.14`",
+    quiz_set_prompt_rule3: "3. Varieer de vraagtypes. Gebruik de volgende libraries met exacte versies:",
     quiz_set_prompt_rule4: "4.  **Feedback (CRUCIALE REGEL):** Voor **alle vraagtypes** (`MultiChoice`, `Blanks`, `DragText`, `MarkTheWords`, `Essay`), **moet** u een `overallFeedback` genereren met exact 6 scorebereiken: 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. Voeg voor `TrueFalse`-vragen ook de velden `feedbackOnCorrect` en `feedbackOnWrong` toe. De feedback moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn.",
     quiz_set_prompt_rule5: "5.  **Inhoud:** De inhoud in `params` moet pedagogisch relevant zijn, met plausibele afleiders voor MCQ's en coherente teksten voor andere activiteiten.",
     quiz_set_prompt_rule6: "6.  **Eenvoud:** Voeg geen afbeeldingen of overbodige gedragsparameters toe. Houd de structuur eenvoudig zoals in de voorbeelden.",
     quiz_set_prompt_example_json_title: "**Voorbeeldstructuren voor elk toegestaan vraagtype:**",
     quiz_set_prompt_generate_only_json: "Genereer alleen de geldige JSON, beginnend met `{\"progressType\": \"dots\", ...}`, zonder commentaar.",
 
+    // VRAI/FAUX
     quiz_set_true_false_example: JSON.stringify({
         "library": "H5P.TrueFalse 1.8",
         "metadata": { "title": "Titel van de Waar/Onwaar-vraag" },
@@ -196,6 +195,8 @@ var translations_nl = {
             "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
         }
     }, null, 4),
+
+    // QCM
     quiz_set_multiple_choice_example: JSON.stringify({
         "library": "H5P.MultiChoice 1.16",
         "metadata": { "title": "Titel van de MCQ" },
@@ -216,6 +217,8 @@ var translations_nl = {
             ]
         }
     }, null, 4),
+
+    // Texte à trous
     quiz_set_fill_in_the_blanks_example: JSON.stringify({
         "library": "H5P.Blanks 1.14",
         "metadata": { "title": "Titel van de invuloefening" },
@@ -232,6 +235,8 @@ var translations_nl = {
             ]
         }
     }, null, 4),
+
+    // Glisser les mots
     quiz_set_drag_the_words_example: JSON.stringify({
         "library": "H5P.DragText 1.10",
         "metadata": { "title": "Titel van de sleep-de-woorden-activiteit" },
@@ -249,6 +254,8 @@ var translations_nl = {
             ]
         }
     }, null, 4),
+
+    // Surligner les mots
     quiz_set_mark_the_words_example: JSON.stringify({
         "library": "H5P.MarkTheWords 1.11",
         "metadata": { "title": "Titel van de markeer-de-woorden-activiteit" },
@@ -266,6 +273,8 @@ var translations_nl = {
             ]
         }
     }, null, 4),
+
+    // Rédaction
     quiz_set_essay_example: JSON.stringify({
         "library": "H5P.Essay 1.5",
         "metadata": { "title": "Titel van het essay" },
@@ -285,7 +294,8 @@ var translations_nl = {
             ]
         }
     }, null, 4),
-    // Woordenlijst-prompt
+
+    // Glossary Prompt
     glossary_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Accordion\".",
     glossary_prompt_mission: "**Jouw missie:**",
     glossary_prompt_generate_json: "Genereer een volledig en geldig JSON-object voor een H5P-woordenlijst (Accordion). De JSON moet direct bruikbaar zijn.",
@@ -300,7 +310,7 @@ var translations_nl = {
     glossary_prompt_example_json_title: "**JSON-voorbeeld voor één item:**",
     glossary_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
 
-    // Summary-prompt
+    // Summary Prompt
     summary_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Summary\".",
     summary_prompt_mission: "**Jouw missie:**",
     summary_prompt_generate_json: "Genereer een volledig JSON-object voor een H5P-Summary-activiteit. De JSON moet direct bruikbaar zijn.",
@@ -316,8 +326,8 @@ var translations_nl = {
     summary_prompt_rule2: "2.  De volgende zinnen zijn plausibele maar onjuiste afleiders.",
     summary_prompt_rule3: "3.  Alle correcte zinnen samen vormen een coherente samenvatting.",
     summary_prompt_example_json_title: "**JSON-voorbeeld voor één stap:**",
-    summary_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
     summary_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn, en gerelateerd aan het onderwerp.",
+    summary_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
 
     // Summary UI translations
     summary_intro: "Kies de juiste stelling.",
@@ -333,7 +343,7 @@ var translations_nl = {
     summary_progress_text: "Voortgang :num van :total",
     summary_alternative_incorrect_label: "Incorrect",
 
-    // Drag the Words-prompt
+    // Drag the Words Prompt
     drag_word_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Drag the Words\".",
     drag_word_prompt_mission: "**Jouw missie:**",
     drag_word_prompt_generate_json: "Genereer een volledig JSON-object voor een H5P-Drag the Words-activiteit. De JSON moet direct bruikbaar zijn.",
@@ -359,7 +369,7 @@ var translations_nl = {
     drag_words_score_bar_label: "Je hebt :num van de :total punten",
     drag_words_submit_answer: "Indienen",
 
-    // Fill in the Blanks-prompt
+    // Fill in the Blanks Prompt
     blanks_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Fill in the Blanks\".",
     blanks_prompt_mission: "**Jouw missie:**",
     blanks_prompt_generate_json: "Genereer een volledig JSON-object voor een H5P-invulactiviteit. De JSON moet direct bruikbaar zijn.",
@@ -401,7 +411,7 @@ var translations_nl = {
     blanks_a11y_show_solution: "Toon de oplossing. De taak wordt gemarkeerd met de juiste oplossing.",
     blanks_a11y_retry: "Probeer de taak opnieuw. Reset alle antwoorden en begin de taak opnieuw.",
 
-    // Mark the Words-prompt
+    // Mark the Words Prompt
     mark_words_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Mark the Words\".",
     mark_words_prompt_mission: "**Jouw missie:**",
     mark_words_prompt_generate_json: "Genereer een volledig JSON-object voor een H5P-Mark the Words-activiteit. De JSON moet direct bruikbaar zijn.",
@@ -436,7 +446,7 @@ var translations_nl = {
     mark_words_a11y_show_solution: "Toon de oplossing. De taak wordt gemarkeerd met de juiste oplossing.",
     mark_words_a11y_retry: "Probeer de taak opnieuw. Reset alle antwoorden en begin de taak opnieuw.",
 
-    // Millionaire-prompt
+    // Millionnaire Prompt
     millionnaire_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Millionnaire\".",
     millionnaire_prompt_num_questions: "**Aantal vragen:** 6",
     millionnaire_prompt_mission: "**Jouw missie:**",
@@ -493,7 +503,7 @@ var translations_nl = {
     qcm_prompt_example_json_title: "**Voorbeeld-JSON:**",
     qcm_prompt_generate_only_json: "Genereer alleen het geldige JSON-object, zonder enig commentaar.",
 
-    // H5P-modules
+    // H5P Modules
     h5p_timeline_name: "Tijdlijn",
     h5p_timeline_description: "Maak een interactieve tijdlijn om een reeks gebeurtenissen te presenteren.",
     h5p_flashcards_name: "Flashcards",
@@ -545,7 +555,7 @@ var translations_nl = {
     moodle_qcm_name: "MCQ",
     moodle_qcm_description: "Genereer een eenvoudige MCQ-activiteit.",
 
-    // Dynamische inhoud
+    // Dynamic content
     prompt_for_ia: "Prompt voor de AI",
     copy_prompt: "📋 Prompt kopiëren",
     go_duck: "🦆 Naar Duck.ai",
@@ -569,15 +579,15 @@ var translations_nl = {
     paste_ia_result_qcm: "Plak hieronder de door de AI gegenereerde JSON. De titel van de activiteit wordt automatisch uit de JSON gehaald.",
     generate_mbz_qcm: "Genereer MCQ-activiteit (mbz)",
 
-    // Specifiek voor Moodle XML
+    // Moodle XML specific
     moodle_xml_placeholder: "De Moodle-XML verschijnt hier...",
     paste_xml_placeholder: "Plak hier de volledige, door de AI gegenereerde XML...",
 
-    // H5P lege tekstvelden
+    // H5P empty text fields
     generate_prompts_placeholder: "De AI-prompt verschijnt hier zodra je op 'Prompts genereren' klikt.",
     paste_json_or_text: "Plak hier de JSON-inhoud of de door de AI gegenereerde tekst om je activiteit te maken.",
 
-    // Meldingen
+    // Notifications
     prompts_generated_successfully: "Prompts succesvol gegenereerd!",
     error_please_fill_fields: "Vul alle velden van de eenvoudige modus in.",
     error_please_fill_guided_fields: "Vul alle velden van de geleide modus in.",
@@ -609,29 +619,8 @@ var translations_nl = {
     flashcards_retry: "Opnieuw proberen",
     flashcards_card_announcement: "Incorrect antwoord. Het juiste antwoord was @answer",
     flashcards_correct_announcement: "@answer is correct.",
-    flashcards_page_announcement: "Pagina @current van @total"
-    ,
+    flashcards_page_announcement: "Pagina @current van @total",
 
-    // Essay specific UI translations
-    essay_checkAnswer: "Controleren",
-    essay_tryAgain: "Opnieuw proberen",
-    essay_showSolution: "Oplossing tonen",
-    essay_feedbackHeader: "Feedback",
-    essay_solutionTitle: "Voorbeeldoplossing",
-    remainingChars: "Resterende tekens: @chars",
-    notEnoughChars: "U moet minstens @chars tekens invoeren!",
-    messageSave: "opgeslagen",
-    placeholderText: "Begin hier met schrijven...",
-    ariaYourResult: "U hebt @score van de @total punten behaald",
-    ariaNavigatedToSolution: "Naar de nieuw opgenomen voorbeeldoplossing na het tekstvak genavigeerd.",
-
-    // Essay Overall Feedback
-    essay_overall_feedback_0_10: "Je werk is een goed begin. Blijf het onderwerp verkennen om je ideeën te verrijken.",
-    essay_overall_feedback_11_30: "Je hebt een interessante basis gelegd. Door dieper op bepaalde punten in te gaan, zal je werk aan precisie winnen.",
-    essay_overall_feedback_31_50: "Je begrip van het onderwerp is goed op weg. Overweeg je argumenten verder te ontwikkelen om je standpunt te versterken.",
-    essay_overall_feedback_51_70: "Dit is goed werk. Je toont een goede beheersing van het onderwerp. Enkele extra details kunnen het nog verbeteren.",
-    essay_overall_feedback_71_90: "Zeer goed werk! Je analyse is relevant en goed gestructureerd. Je toont een uitstekend begrip.",
-    essay_overall_feedback_91_100: "Uitstekend werk! Je reflectie is grondig, goed beargumenteerd en toont een volledige beheersing van het onderwerp.",
     ticket: "Ticket",
     legal_mentions: "Wettelijke vermeldingen",
 
@@ -674,6 +663,27 @@ var translations_nl = {
     legal_library_fflate: "<strong>fflate</strong> (Licentie: MIT): Zeer snelle bibliotheek voor gegevenscompressie en -decompressie, gebruikt voor het maken van .mbz-archieven voor Moodle-modules.",
     legal_library_tarjs: "<strong>tar-js</strong> (Licentie: MIT): Maakt het mogelijk om .tar-archieven te maken, een noodzakelijke stap vóór compressie om .mbz-bestanden voor Moodle-modules te vormen.",
     legal_library_ownership: "Elke bibliotheek blijft eigendom van de respectieve auteurs en wordt gebruikt in overeenstemming met de licentie(s).",
+
+    // Essay specific UI translations
+    essay_checkAnswer: "Controleren",
+    essay_tryAgain: "Opnieuw proberen",
+    essay_showSolution: "Oplossing tonen",
+    essay_feedbackHeader: "Feedback",
+    essay_solutionTitle: "Voorbeeldoplossing",
+    remainingChars: "Resterende tekens: @chars",
+    notEnoughChars: "U moet minstens @chars tekens invoeren!",
+    messageSave: "opgeslagen",
+    placeholderText: "Begin hier met schrijven...",
+    ariaYourResult: "U hebt @score van de @total punten behaald",
+    ariaNavigatedToSolution: "Naar de nieuw opgenomen voorbeeldoplossing na het tekstvak genavigeerd.",
+
+    // Essay Overall Feedback
+    essay_overall_feedback_0_10: "Je werk is een goed begin. Blijf het onderwerp verkennen om je ideeën te verrijken.",
+    essay_overall_feedback_11_30: "Je hebt een interessante basis gelegd. Door dieper op bepaalde punten in te gaan, zal je werk aan precisie winnen.",
+    essay_overall_feedback_31_50: "Je begrip van het onderwerp is goed op weg. Overweeg je argumenten verder te ontwikkelen om je standpunt te versterken.",
+    essay_overall_feedback_51_70: "Dit is goed werk. Je toont een goede beheersing van het onderwerp. Enkele extra details kunnen het nog verbeteren.",
+    essay_overall_feedback_71_90: "Zeer goed werk! Je analyse is relevant en goed gestructureerd. Je toont een uitstekend begrip.",
+    essay_overall_feedback_91_100: "Uitstekend werk! Je reflectie is grondig, goed beargumenteerd en toont een volledige beheersing van het onderwerp.",
 
     // True/False Question
     true_false_prompt_role: "U bent een expert in onderwijsontwerp en maakt een Waar/Onwaar-vraag voor een H5P-activiteit.",
@@ -927,8 +937,8 @@ var translations_nl = {
     chart_prompt_rule2: "2. Labels moeten kort en duidelijk zijn.",
     chart_prompt_rule3: "3. Als een waarde erg laag is in vergelijking met andere, geef dan de voorkeur aan een 'barChart' voor een betere visualisatie.",
     chart_prompt_example_json_title: "**Voorbeeld-JSON:**",
-    chart_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar."
-    ,
+    chart_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar.",
+
     // createH5PWithDynamicDependencies
     quiz_prev_button: "Vorige",
     quiz_next_button: "Volgende",
@@ -942,8 +952,6 @@ var translations_nl = {
     quiz_retry_button_text: "Opnieuw proberen",
     quiz_finish_button_text: "Voltooien",
     quiz_submit_button_text: "Indienen",
-    quiz_tips_label: "Toon tips",
-    quiz_tip_available: "Tip beschikbaar",
     quiz_feedback_available: "Feedback beschikbaar",
     quiz_read_feedback: "Lees feedback",
     quiz_wrong_answer: "Fout antwoord",
@@ -954,6 +962,14 @@ var translations_nl = {
     quiz_a11y_check: "Controleer de antwoorden. De antwoorden worden gemarkeerd als correct, incorrect of onbeantwoord.",
     quiz_a11y_show_solution: "Toon de oplossing. De taak wordt gemarkeerd met de juiste oplossing.",
     quiz_a11y_retry: "Probeer de taak opnieuw. Reset alle antwoorden en begin de taak opnieuw.",
+
+    // Albert generation
+    generate_with_albert: "Genereer met Albert",
+    generation_in_progress: "Generatie wordt uitgevoerd, even geduld...",
+    request_sent_to_ia: "Verzoek naar AI verzonden, even geduld...",
+    generation_successful: "H5P-inhoud succesvol gegenereerd!",
+    generation_failed_empty: "Generatie mislukt. Het antwoord was leeg.",
+    generation_failed_error: "Fout tijdens generatie: {errorMessage}",
 
     // Albert models description
     albert_small_summary: "Snel, eenvoudig, geschikt voor snelle en gestructureerde oefeningen.",
@@ -968,13 +984,5 @@ var translations_nl = {
     albert_model_parameters: "Modelgrootte:",
     albert_model_parameters_small: "8 miljard parameters",
     albert_model_parameters_large: "24 miljard parameters",
-    albert_model_parameters_code: "32,5 miljard parameters",
-
-    // Albert generation
-    generate_with_albert: "Genereer met Albert",
-    generation_in_progress: "Generatie wordt uitgevoerd, even geduld...",
-    request_sent_to_ia: "Verzoek naar AI verzonden, even geduld...",
-    generation_successful: "H5P-inhoud succesvol gegenereerd!",
-    generation_failed_empty: "Generatie mislukt. Het antwoord was leeg.",
-    generation_failed_error: "Fout tijdens generatie: {errorMessage}"
+    albert_model_parameters_code: "32,5 miljard parameters"
 };
