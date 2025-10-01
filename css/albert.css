@@ -56,7 +56,7 @@
     display: none;
     position: absolute;
     background-color: #ffffff;
-    min-width: 280px; /* Largeur minimale */
+    min-width: 420px; /* Largeur minimale augmentée */
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1000; /* S'assurer qu'elle est au-dessus des autres éléments */
     list-style: none;
@@ -102,4 +102,34 @@
 
 .model-selector-dropdown li small {
     color: #555;
+}
+
+.model-pills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 8px;
+}
+
+.model-pills {
+    display: inline-flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 1px 0px;
+    font-size: 0.65em;
+    overflow: hidden;
+}
+
+.model-pills .pill-label {
+    background-color: #e0e0e0;
+    padding: 1px 5px;
+    font-weight: bold;
+    border-right: 1px solid #ccc;
+}
+
+.model-pills .pill-value {
+    padding: 1px 5px;
+    color: #333;
 }

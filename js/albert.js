@@ -16,7 +16,7 @@ const AVAILABLE_MODELS = [
 // =======================================================================
 
 // Fonction pour peupler un sélecteur de modèles spécifique
-function populateModelSelector(moduleKey, models, onSelectCallback, selectedModel) {
+function populateModelSelector(moduleKey, models, onSelectCallback, selectedModel, translations) {
     const dropdown = document.getElementById(`model-selector-dropdown-${moduleKey}`);
     if (!dropdown) return;
     dropdown.innerHTML = ''; // Vider la liste
@@ -27,7 +27,30 @@ function populateModelSelector(moduleKey, models, onSelectCallback, selectedMode
         const listItem = document.createElement('li');
         listItem.setAttribute('role', 'menuitem');
         listItem.dataset.modelId = model.id;
-        listItem.innerHTML = `<strong>${model.id}</strong><br><small>(${model.owned_by})</small>`;
+
+        const summaryKey = `${model.id.replace('-', '_')}_summary`;
+        const technicalKey = `${model.id.replace('-', '_')}_technical`;
+
+        const summary = translations[summaryKey] || '';
+        const technical = translations[technicalKey] || '';
+        const parametersKey = `albert_model_parameters_${model.id.split('-')[1]}`;
+        const parameters = translations[parametersKey] || '';
+
+        listItem.innerHTML = `
+            <strong>${model.id}</strong><br>
+            <small>${summary}</small>
+            <div class="model-pills-container">
+                <div class="model-pills">
+                    <span class="pill-label">${translations.albert_model_parameters}</span>
+                    <span class="pill-value">${parameters}</span>
+                </div>
+                <div class="model-pills">
+                    <span class="pill-label">${translations.albert_model_source}</span>
+                    <span class="pill-value">${technical}</span>
+                </div>
+            </div>
+        `;
+        
         if (model.id === selectedModel) {
             listItem.classList.add('selected');
         }

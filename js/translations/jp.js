@@ -953,5 +953,28 @@ var translations_jp = {
     quiz_no_input: "解答を表示する前に回答してください。",
     quiz_a11y_check: "解答をチェックします。解答は正解、不正解、または未回答としてマークされます。",
     quiz_a11y_show_solution: "解答を表示します。課題には正解が表示されます。",
-    quiz_a11y_retry: "課題を再試行します。すべての解答をリセットして、課題を最初からやり直します。"
+    quiz_a11y_retry: "課題を再試行します。すべての解答をリセットして、課題を最初からやり直します。",
+
+    // Albert models description
+    albert_small_summary: "高速、シンプル、迅速で構造化された演習に適しています。",
+    albert_small_technical: "Llama 3.1",
+    albert_large_summary: "強力でニュアンスがあり、複雑なタスクやライティングに最適です。",
+    albert_large_technical: "Mistral Small 3.2",
+    albert_code_summary: "専門的で正確、プログラミングとコード用に設計されています。",
+    albert_code_technical: "Qwen 2.5 Coder",
+
+    // Albert models pills
+    albert_model_source: "ソースモデル:",
+    albert_model_parameters: "モデルサイズ:",
+    albert_model_parameters_small: "80億パラメータ",
+    albert_model_parameters_large: "240億パラメータ",
+    albert_model_parameters_code: "325億パラメータ",
+
+    // Albert generation
+    generate_with_albert: "Albertで生成",
+    generation_in_progress: "生成中です、お待ちください...",
+    request_sent_to_ia: "AIにリクエストを送信しました、お待ちください...",
+    generation_successful: "H5Pコンテンツが正常に生成されました！",
+    generation_failed_empty: "生成に失敗しました。応答が空でした。",
+    generation_failed_error: "生成中にエラーが発生しました：{errorMessage}"
 };

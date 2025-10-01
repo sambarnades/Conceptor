@@ -970,5 +970,20 @@ const translations_fr = {
     request_sent_to_ia: "Requête lancée à l'IA, veuillez patienter...",
     generation_successful: "Contenu H5P généré avec succès !",
     generation_failed_empty: "La génération a échoué. La réponse était vide.",
-    generation_failed_error: "Erreur lors de la génération : {errorMessage}"
+    generation_failed_error: "Erreur lors de la génération : {errorMessage}",
+
+    // Albert models description
+    albert_small_summary: "Rapide, simple, adapté aux exercices rapides et structurés.",
+    albert_small_technical: "Llama 3.1",
+    albert_large_summary: "Puissant, nuancé, idéal pour tâches complexes et rédaction.",
+    albert_large_technical: "Mistral Small 3.2",
+    albert_code_summary: "Spécialisé, précis, conçu pour la programmation et le code.",
+    albert_code_technical: "Qwen 2.5 Coder",
+
+    // Albert models pills
+    albert_model_source: "Modèle source :",
+    albert_model_parameters: "Taille modèle :",
+    albert_model_parameters_small: "8 Mrd paramètres",
+    albert_model_parameters_large: "24 Mrd paramètres",
+    albert_model_parameters_code: "32,5 Mrd paramètres"
 };

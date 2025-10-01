@@ -953,5 +953,28 @@ var translations_pt = {
     quiz_no_input: "Por favor, responda antes de ver a solução.",
     quiz_a11y_check: "Verifique as respostas. As respostas serão marcadas como corretas, incorretas ou não respondidas.",
     quiz_a11y_show_solution: "Mostre a solução. A tarefa será marcada com a sua solução correta.",
-    quiz_a11y_retry: "Tente a tarefa novamente. Redefina todas as respostas e comece a tarefa novamente."
+    quiz_a11y_retry: "Tente a tarefa novamente. Redefina todas as respostas e comece a tarefa novamente.",
+
+    // Albert models description
+    albert_small_summary: "Rápido, simples, adequado para exercícios rápidos e estruturados.",
+    albert_small_technical: "Llama 3.1",
+    albert_large_summary: "Poderoso, matizado, ideal para tarefas complexas e redação.",
+    albert_large_technical: "Mistral Small 3.2",
+    albert_code_summary: "Especializado, preciso, projetado para programação e código.",
+    albert_code_technical: "Qwen 2.5 Coder",
+
+    // Albert models pills
+    albert_model_source: "Modelo de origem:",
+    albert_model_parameters: "Tamanho do modelo:",
+    albert_model_parameters_small: "8 mil milhões de parâmetros",
+    albert_model_parameters_large: "24 mil milhões de parâmetros",
+    albert_model_parameters_code: "32,5 mil milhões de parâmetros",
+
+    // Albert generation
+    generate_with_albert: "Gerar com Albert",
+    generation_in_progress: "Geração em andamento, por favor aguarde...",
+    request_sent_to_ia: "Pedido enviado à IA, por favor aguarde...",
+    generation_successful: "Conteúdo H5P gerado com sucesso!",
+    generation_failed_empty: "A geração falhou. A resposta estava vazia.",
+    generation_failed_error: "Erro durante a geração: {errorMessage}"
 };

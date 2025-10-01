@@ -958,5 +958,28 @@ var translations_ar = {
     quiz_no_input: "يرجى الإجابة قبل عرض الحل.",
     quiz_a11y_check: "تحقق من الإجابات. سيتم تمييز الإجابات بأنها صحيحة أو غير صحيحة أو لم تتم الإجابة عليها.",
     quiz_a11y_show_solution: "إظهار الحل. سيتم تمييز المهمة بالحل الصحيح.",
-    quiz_a11y_retry: "إعادة محاولة المهمة. إعادة تعيين جميع الإجابات والبدء من جديد."
+    quiz_a11y_retry: "إعادة محاولة المهمة. إعادة تعيين جميع الإجابات والبدء من جديد.",
+
+    // Albert models description
+    albert_small_summary: "سريع، بسيط، مناسب للتمارين السريعة والمنظمة.",
+    albert_small_technical: "Llama 3.1",
+    albert_large_summary: "قوي، دقيق، مثالي للمهام المعقدة والكتابة.",
+    albert_large_technical: "Mistral Small 3.2",
+    albert_code_summary: "متخصص، دقيق، مصمم للبرمجة والكود.",
+    albert_code_technical: "Qwen 2.5 Coder",
+
+    // Albert models pills
+    albert_model_source: "نموذج المصدر:",
+    albert_model_parameters: "حجم النموذج:",
+    albert_model_parameters_small: "8 مليار معلمة",
+    albert_model_parameters_large: "24 مليار معلمة",
+    albert_model_parameters_code: "32.5 مليار معلمة",
+
+    // Albert generation
+    generate_with_albert: "إنشاء بواسطة Albert",
+    generation_in_progress: "قيد الإنشاء، يرجى الانتظار...",
+    request_sent_to_ia: "تم إرسال الطلب إلى الذكاء الاصطناعي، يرجى الانتظار...",
+    generation_successful: "تم إنشاء محتوى H5P بنجاح!",
+    generation_failed_empty: "فشل الإنشاء. كانت الاستجابة فارغة.",
+    generation_failed_error: "خطأ أثناء الإنشاء: {errorMessage}"
 };

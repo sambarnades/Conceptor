@@ -958,5 +958,28 @@ var translations_zh = {
     quiz_no_input: "请在查看答案前回答。",
     quiz_a11y_check: "检查答案。答案将被标记为正确、错误或未回答。",
     quiz_a11y_show_solution: "显示答案。任务将标记其正确答案。",
-    quiz_a11y_retry: "重试任务。重置所有回答并重新开始任务。"
+    quiz_a11y_retry: "重试任务。重置所有回答并重新开始任务。",
+
+    // Albert models description
+    albert_small_summary: "快速、简单，适用于快速和结构化的练习。",
+    albert_small_technical: "Llama 3.1",
+    albert_large_summary: "功能强大，细致入微，非常适合复杂的任务和写作。",
+    albert_large_technical: "Mistral Small 3.2",
+    albert_code_summary: "专业、精确，专为编程和代码设计。",
+    albert_code_technical: "Qwen 2.5 Coder",
+
+    // Albert models pills
+    albert_model_source: "源模型:",
+    albert_model_parameters: "模型大小:",
+    albert_model_parameters_small: "80亿参数",
+    albert_model_parameters_large: "240亿参数",
+    albert_model_parameters_code: "325亿参数",
+
+    // Albert generation
+    generate_with_albert: "使用Albert生成",
+    generation_in_progress: "正在生成，请稍候...",
+    request_sent_to_ia: "已向AI发送请求，请稍候...",
+    generation_successful: "H5P内容已成功生成！",
+    generation_failed_empty: "生成失败。响应为空。",
+    generation_failed_error: "生成过程中出错：{errorMessage}"
 };

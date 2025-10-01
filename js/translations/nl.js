@@ -953,5 +953,28 @@ var translations_nl = {
     quiz_no_input: "Gelieve te antwoorden alvorens de oplossing te bekijken.",
     quiz_a11y_check: "Controleer de antwoorden. De antwoorden worden gemarkeerd als correct, incorrect of onbeantwoord.",
     quiz_a11y_show_solution: "Toon de oplossing. De taak wordt gemarkeerd met de juiste oplossing.",
-    quiz_a11y_retry: "Probeer de taak opnieuw. Reset alle antwoorden en begin de taak opnieuw."
+    quiz_a11y_retry: "Probeer de taak opnieuw. Reset alle antwoorden en begin de taak opnieuw.",
+
+    // Albert models description
+    albert_small_summary: "Snel, eenvoudig, geschikt voor snelle en gestructureerde oefeningen.",
+    albert_small_technical: "Llama 3.1",
+    albert_large_summary: "Krachtig, genuanceerd, ideaal voor complexe taken en schrijven.",
+    albert_large_technical: "Mistral Small 3.2",
+    albert_code_summary: "Gespecialiseerd, nauwkeurig, ontworpen voor programmeren en code.",
+    albert_code_technical: "Qwen 2.5 Coder",
+
+    // Albert models pills
+    albert_model_source: "Bronmodel:",
+    albert_model_parameters: "Modelgrootte:",
+    albert_model_parameters_small: "8 miljard parameters",
+    albert_model_parameters_large: "24 miljard parameters",
+    albert_model_parameters_code: "32,5 miljard parameters",
+
+    // Albert generation
+    generate_with_albert: "Genereer met Albert",
+    generation_in_progress: "Generatie wordt uitgevoerd, even geduld...",
+    request_sent_to_ia: "Verzoek naar AI verzonden, even geduld...",
+    generation_successful: "H5P-inhoud succesvol gegenereerd!",
+    generation_failed_empty: "Generatie mislukt. Het antwoord was leeg.",
+    generation_failed_error: "Fout tijdens generatie: {errorMessage}"
 };

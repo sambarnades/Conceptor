@@ -966,5 +966,20 @@ const translations_en = {
     request_sent_to_ia: "Request sent to AI, please wait...",
     generation_successful: "H5P content generated successfully!",
     generation_failed_empty: "Generation failed. The response was empty.",
-    generation_failed_error: "Error during generation: {errorMessage}"
+    generation_failed_error: "Error during generation: {errorMessage}",
+
+    // Albert models description
+    albert_small_summary: "Fast, simple, suitable for quick and structured exercises.",
+    albert_small_technical: "Llama 3.1",
+    albert_large_summary: "Powerful, nuanced, ideal for complex tasks and writing.",
+    albert_large_technical: "Mistral Small 3.2",
+    albert_code_summary: "Specialized, precise, designed for programming and code.",
+    albert_code_technical: "Qwen 2.5 Coder",
+
+    // Albert models pills
+    albert_model_source: "Source model:",
+    albert_model_parameters: "Model size:",
+    albert_model_parameters_small: "8B parameters",
+    albert_model_parameters_large: "24B parameters",
+    albert_model_parameters_code: "32.5B parameters"
 };

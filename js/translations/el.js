@@ -953,5 +953,28 @@ var translations_el = {
     quiz_no_input: "Παρακαλώ απαντήστε πριν δείτε τη λύση.",
     quiz_a11y_check: "Ελέγξτε τις απαντήσεις. Οι απαντήσεις θα επισημανθούν ως σωστές, λανθασμένες ή αναπάντητες.",
     quiz_a11y_show_solution: "Εμφάνιση της λύσης. Η εργασία θα επισημανθεί με τη σωστή λύση της.",
-    quiz_a11y_retry: "Επαναλάβετε την εργασία. Επαναφέρετε όλες τις απαντήσεις και ξεκινήστε την εργασία από την αρχή."
+    quiz_a11y_retry: "Επαναλάβετε την εργασία. Επαναφέρετε όλες τις απαντήσεις και ξεκινήστε την εργασία από την αρχή.",
+
+    // Albert models description
+    albert_small_summary: "Γρήγορο, απλό, κατάλληλο για γρήγορες και δομημένες ασκήσεις.",
+    albert_small_technical: "Llama 3.1",
+    albert_large_summary: "Ισχυρό, με αποχρώσεις, ιδανικό για σύνθετες εργασίες και συγγραφή.",
+    albert_large_technical: "Mistral Small 3.2",
+    albert_code_summary: "Εξειδικευμένο, ακριβές, σχεδιασμένο για προγραμματισμό και κώδικα.",
+    albert_code_technical: "Qwen 2.5 Coder",
+
+    // Albert models pills
+    albert_model_source: "Μοντέλο προέλευσης:",
+    albert_model_parameters: "Μέγεθος μοντέλου:",
+    albert_model_parameters_small: "8 δισ. παράμετροι",
+    albert_model_parameters_large: "24 δισ. παράμετροι",
+    albert_model_parameters_code: "32,5 δισ. παράμετροι",
+
+    // Albert generation
+    generate_with_albert: "Δημιουργία με τον Albert",
+    generation_in_progress: "Δημιουργία σε εξέλιξη, παρακαλώ περιμένετε...",
+    request_sent_to_ia: "Αίτημα εστάλη στην ΤΝ, παρακαλώ περιμένετε...",
+    generation_successful: "Το περιεχόμενο H5P δημιουργήθηκε με επιτυχία!",
+    generation_failed_empty: "Η δημιουργία απέτυχε. Η απάντηση ήταν κενή.",
+    generation_failed_error: "Σφάλμα κατά τη δημιουργία: {errorMessage}"
 };

@@ -835,7 +835,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         populateModelSelector(moduleKey, AVAILABLE_MODELS, (modelId) => {
                             selectedModel = modelId;
                             console.log(`Modèle sélectionné pour ${moduleKey}: ${selectedModel}`);
-                        }, selectedModel);
+                        }, selectedModel, translations);
                     }
 
                     // Logique de positionnement dynamique
@@ -943,7 +943,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!isExpanded && modelDropdown.children.length === 0) {
                     populateModelSelector(moduleKey, AVAILABLE_MODELS, (modelId) => {
                         selectedModel = modelId;
-                    }, selectedModel);
+                    }, selectedModel, translations);
                 }
 
                 if (!isExpanded) {
