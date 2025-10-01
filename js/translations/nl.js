@@ -1,15 +1,58 @@
 const translations_nl = {
     subtitle: "Begeleide creatie van Moodle- en Éléa-bronnen en -activiteiten",
     help_button: "Hulp",
-    help_title: "Hoe gebruikt u deze tool?",
-    help_step1: "<strong>Kies de creatiemodus:</strong>",
-    help_step1_fast: "<strong>Snelle modus:</strong> Ideaal om snel te starten. Geef uw rol op (bv.: docent) en het te behandelen onderwerp.",
-    help_step1_guided: "<strong>Geleide modus:</strong> Voor meer precisie. Vul de discipline, het thema, het niveau en het gewenste aantal elementen in.",
-    help_step2: "<strong>Genereer de prompts</strong> door op de daarvoor bestemde knop te klikken.",
-    help_step3: "<strong>Selecteer een activiteit</strong> uit de H5P-tegels of de Moodle/Éléa-modules.",
-    help_step4: "<strong>Gebruik de prompt:</strong> Kopieer de gegenereerde prompt en plak deze in een AI (ChatGPT, Le Chat...).",
-    help_step5: "<strong>Maak en download:</strong> Plak de tekst van de AI om uw module te genereren en te downloaden.",
-    help_step6: "<strong>Rond af:</strong> Importeer het .h5p- of .mbz-bestand in uw platform (Éléa, Moodle...).",
+    help_modal_title: "🚀 Snelstartgids voor Caramel",
+    help_modal_content: `
+        <div class="help-modal-content">
+            <p>Welkom bij <strong>Caramel</strong>! Deze tool begeleidt u stap voor stap bij het maken van interactieve educatieve activiteiten met behulp van kunstmatige intelligentie. Volg deze eenvoudige stappen om uw ideeën om te zetten in kant-en-klare modules.</p>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">1</span> Schrijf uw idee op (de "prompt")</h4>
+                <p>Alles begint met het beschrijven van uw behoeften. U heeft hiervoor twee opties:</p>
+                <ul>
+                    <li><span class="badge-help-mode">Snelle modus</span>: Ideaal voor een snelle start. Geef eenvoudig aan <strong>wie u bent</strong> (bv: <em>Docent wetenschappen</em>) en <strong>wat u wilt behandelen</strong> (bv: <em>de watercyclus in de 6e klas</em>).</li>
+                    <li><span class="badge-help-mode">Geleide modus</span>: Voor een preciezer verzoek. Vul de <strong>discipline</strong>, het <strong>thema</strong>, het <strong>niveau van de leerling</strong> en het <strong>aantal gewenste items</strong> in (vragen, data, etc.).</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">2</span> Genereer de prompts</h4>
+                <p>Nadat u uw informatie heeft ingevoerd, klikt u op de knop <button id="generateBtn" data-key="generate_prompts">Prompts genereren</button>. De tool zal dan gedetailleerde instructies (de "prompts") voorbereiden voor elk beschikbaar activiteitstype.</p>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">3</span> Kies uw activiteit</h4>
+                <p>Navigeer tussen de tabbladen <span class="badge-help-tab">H5P</span> en <span class="badge-help-tab">Éléa/Moodle Modules</span> om de verschillende beschikbare activiteiten te ontdekken. Klik op degene die u interesseert (bijvoorbeeld "Tijdlijn" of "MCQ"). De bijbehorende prompt verschijnt in het tekstvak.</p>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">4</span> Gebruik Kunstmatige Intelligentie</h4>
+                <p>Hier gebeurt de magie! U heeft twee opties om de inhoud voor uw activiteit te genereren:</p>
+                <div class="help-subsection">
+                    <h5><i class="fas fa-robot"></i> Optie A: Genereer met Albert (Aanbevolen)</h5>
+                    <p>Klik op de knop <button class="action-btn albert-btn">Genereer met Albert</button>. U kunt het AI-model kiezen dat het beste bij uw behoeften past (snel, krachtig of gespecialiseerd in code) door op het pijltje rechts van de knop te klikken. De inhoud voor uw activiteit wordt <strong>automatisch gegenereerd en ingevoegd</strong> in het resultaatveld, klaar voor gebruik.</p>
+                    <ul class="advantages">
+                        <li><strong>Sterke punten:</strong> Eenvoudig, snel, geïntegreerde AI direct in de tool.</li>
+                        <li><strong>Zwakke punten:</strong> Geen zoekopdracht op het web, geen aanpassing van de initiële AI-prompt mogelijk.</li>
+                    </ul>
+                </div>
+                <div class="help-subsection">
+                    <h5><i class="fas fa-paste"></i> Optie B: Gebruik uw eigen AI</h5>
+                    <p>Klik op <button class="copy-btn">📋 Prompt kopiëren</button> en plak deze instructie in uw favoriete kunstmatige intelligentie (ChatGPT, Le Chat, etc.). Kopieer vervolgens <strong>de reactie van de AI</strong> en <strong>plak deze</strong> in het resultaatveld van Caramel.</p>
+                    <ul class="advantages">
+                        <li><strong>Sterke punten:</strong> Volledige flexibiliteit, mogelijke internettoegang, mogelijkheid om de initiële prompt te wijzigen en documenten toe te voegen voor het genereren van inhoud.</li>
+                        <li><strong>Zwakke punten:</strong> Vereist handmatig kopiëren en plakken en een extern account.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">5</span> Maak en download uw bestand</h4>
+                <p>Zodra de inhoud in het resultaatveld staat (gegenereerd door Albert of door u geplakt), klikt u op de knop <button class="download-btn">Genereer H5P</button> (of .mbz/.xml afhankelijk van de activiteit). Uw bestand wordt gedownload, klaar om te worden geïntegreerd in uw Moodle- of Éléa-platform.</p>
+                <p class="help-final-tip">En dat is alles! U heeft in een paar klikken een interactieve activiteit gemaakt. Aarzel niet om te experimenteren met de verschillende modi en activiteitstypen om uw cursussen te verrijken.</p>
+            </div>
+        </div>
+    `,
     fast_mode: "Snelle modus",
     guided_mode: "Geleide modus",
     who_are_you: "Wie bent u? (bv.: Docent, trainer...)",

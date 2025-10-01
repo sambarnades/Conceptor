@@ -41,38 +41,13 @@
                     <li><a href="#" data-lang="pt"><span class="fi fi-pt"></span>Português</a></li>
                 </ul>
             </div>
-            <button class="help-btn" id="help-btn" aria-label="Aide">
-                <i class="fas fa-question-circle"></i>
+            <button class="help-btn" id="help-button" aria-label="Aide">
+                <i class="fas fa-book-open"></i>
             </button>
         </div>
     </header>
 
     <div id="notification-container"></div>
-
-    <div id="help-sidebar" class="sidebar">
-        <button class="close-btn" id="close-help-btn">&times;</button>
-        <h2 data-key="help_title">Comment utiliser cet outil ?</h2>
-        <ol>
-            <li data-key="help_step1"><strong>Choisissez le mode de création :</strong>
-                <ul>
-                    <li data-key="help_step1_fast"><strong>Mode Rapide :</strong> Idéal pour démarrer vite. Indiquez
-                        votre rôle (ex: Enseignant) et le sujet à traiter.</li>
-                    <li data-key="help_step1_guided"><strong>Mode Guidé :</strong> Pour plus de précision. Renseignez la
-                        discipline, le thème, le niveau et le nombre d'éléments souhaités.</li>
-                </ul>
-            </li>
-            <li data-key="help_step2"><strong>Générez les prompts</strong> en cliquant sur le bouton dédié.</li>
-            <li data-key="help_step3"><strong>Sélectionnez une activité</strong> parmi les tuiles H5P ou les modules
-                Moodle/Éléa.</li>
-            <li data-key="help_step4"><strong>Utilisez le prompt :</strong> Copiez le prompt généré pour le coller dans
-                une IA (ChatGPT, Le Chat...).</li>
-            <li data-key="help_step5"><strong>Créez et téléchargez :</strong> Collez le texte de l'IA pour générer et
-                télécharger votre module.</li>
-            <li data-key="help_step6"><strong>Finalisez :</strong> Importez le fichier .h5p ou .mbz dans votre
-                plateforme (Éléa, Moodle...).</li>
-        </ol>
-    </div>
-    <div id="sidebar-overlay"></div>
 
     <div class="container">
         <div class="prompt-generator">
@@ -162,28 +137,6 @@
 
         // Charger la langue par défaut (fr) au démarrage
         loadTranslationScript('fr');
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const helpBtn = document.getElementById('help-btn');
-            const closeHelpBtn = document.getElementById('close-help-btn');
-            const helpSidebar = document.getElementById('help-sidebar');
-            const sidebarOverlay = document.getElementById('sidebar-overlay');
-
-            function openSidebar() {
-                helpSidebar.classList.add('open');
-                sidebarOverlay.classList.add('open');
-            }
-
-            function closeSidebar() {
-                helpSidebar.classList.remove('open');
-                sidebarOverlay.classList.remove('open');
-            }
-
-            helpBtn.addEventListener('click', openSidebar);
-            closeHelpBtn.addEventListener('click', closeSidebar);
-            sidebarOverlay.addEventListener('click', closeSidebar);
-        });
     </script>
     <script src="js/jszip/jszip.min.js"></script>
     <script src="js/fflate/index.js"></script>

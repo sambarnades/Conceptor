@@ -133,3 +133,253 @@
     padding: 1px 5px;
     color: #333;
 }
+/* ======================================================================= */
+/* 14. STYLES DE LA MODALE D'AIDE */
+/* ======================================================================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+    background-color: #F5F5F7;
+    margin: 5% auto;
+    padding: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 900px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    animation: slideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    color: #1d1d1f;
+}
+
+.modal-header {
+    padding: 20px 30px;
+    background-color: #FFFFFF;
+    color: #1d1d1f;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e5e5e5;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.8em;
+    font-weight: 600;
+}
+
+.close-modal-btn {
+    color: #8e8e93;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-modal-btn:hover,
+.close-modal-btn:focus {
+    color: #1d1d1f;
+    text-decoration: none;
+}
+
+.modal-body {
+    padding: 30px;
+    line-height: 1.6;
+}
+
+.help-modal-content .help-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e5e5;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: sectionFadeIn 0.5s ease-out forwards;
+}
+
+.help-modal-content .help-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.help-modal-content h4 {
+    font-size: 1.3em;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.help-step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background-color: #007AFF;
+    color: white;
+    border-radius: 50%;
+    margin-right: 15px;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.help-modal-content ul {
+    list-style-type: none;
+    padding-left: 25px;
+}
+
+.help-modal-content li {
+    margin-bottom: 12px;
+    position: relative;
+    padding-left: 25px;
+    font-size: 1.05em;
+}
+
+.help-modal-content li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #34C759; /* Vert Apple */
+    font-weight: bold;
+}
+
+.badge-help-mode {
+    background-color: #e9e9ed;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    color: #1d1d1f;
+    font-size: 0.9em;
+}
+
+.badge-help-tab {
+    background-color: #e9e9ed;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    color: #1d1d1f;
+    font-size: 0.9em;
+}
+
+.help-modal-content button,
+.help-modal-content .btn-help-example,
+.help-modal-content .btn-help-example-albert,
+.help-modal-content .btn-help-example-copy,
+.help-modal-content .btn-help-example-generate {
+    padding: 5px 12px; /* Taille réduite */
+    border-radius: 10px;
+    font-size: 0.9em; /* Taille de police réduite */
+    font-weight: 500;
+    cursor: default !important; /* Empêche le curseur pointeur */
+    display: inline-block;
+    margin: 2px;
+    transform: none !important; /* Annule l'effet de survol */
+    box-shadow: none !important; /* Annule l'ombre */
+    transition: none !important; /* Annule les transitions */
+}
+
+/* Styles spécifiques pour chaque bouton pour conserver les couleurs */
+.help-modal-content #generateBtn { background-color: #007AFF; color: white; border: none; }
+.help-modal-content .action-btn.albert-btn { background-color: #3b82f6; color: white; }
+.help-modal-content .copy-btn { background-color: #e9e9ed; color: #1C1C1E; border: none; }
+.help-modal-content .download-btn { background-color: #007AFF; color: white; border: none; }
+
+/* Annuler les effets de survol spécifiquement */
+.help-modal-content #generateBtn:hover,
+.help-modal-content .action-btn.albert-btn:hover,
+.help-modal-content .copy-btn:hover,
+.help-modal-content .download-btn:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    background-color: initial; /* Pourrait nécessiter un ajustement si la couleur de base est différente */
+}
+
+/* Rétablir la couleur de fond au survol pour correspondre à la couleur de base */
+.help-modal-content #generateBtn:hover { background-color: #007AFF; }
+.help-modal-content .action-btn.albert-btn:hover { background-color: #3b82f6; }
+.help-modal-content .copy-btn:hover { background-color: #e9e9ed; }
+.help-modal-content .download-btn:hover { background-color: #007AFF; }
+
+
+.help-subsection {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #FFFFFF;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+}
+
+.help-subsection h5 {
+    font-size: 1.15em;
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #1d1d1f;
+}
+
+.help-final-tip {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: #eef7ff;
+    border-left: 4px solid #007AFF;
+    border-radius: 8px;
+    font-size: 1.05em;
+}
+
+.help-subsection ul.advantages {
+    padding-left: 20px;
+    margin-top: 15px;
+}
+
+.help-subsection ul.advantages li {
+    font-size: 0.95em;
+    margin-bottom: 8px;
+    padding-left: 25px;
+}
+
+.help-subsection ul.advantages li::before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+}
+
+.help-subsection ul.advantages li:first-child::before {
+    content: "\f00c"; /* Icône "check" pour les forces */
+    color: #34C759;
+}
+
+.help-subsection ul.advantages li:last-child::before {
+    content: "\f00d"; /* Icône "times" pour les faiblesses */
+    color: #FF3B30;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes sectionFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

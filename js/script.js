@@ -1122,7 +1122,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Les boutons Moodle & GIFT sont maintenant gérés dans toggleMoodleContent
+        // Gestion du bouton d'aide
+        const helpButton = document.getElementById('help-button');
+        if (helpButton) {
+            helpButton.addEventListener('click', showHelpModal);
+        }
 
         document.querySelectorAll('.go-duck').forEach(button => {
             button.addEventListener('click', () => {
@@ -1171,8 +1175,63 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 // =======================================================================
-// 8. FONCTIONS UTILITAIRES GLOBALES (copie, notification, etc)
+// 8. FONCTIONS UTILITAIRES GLOBALES (copie, notification, modale d'aide, etc)
 // =======================================================================
+
+    function showHelpModal() {
+        // Supprimer une modale existante si elle existe
+        const existingModal = document.getElementById('help-modal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+
+        // Créer les éléments de la modale
+        const modal = document.createElement('div');
+        modal.id = 'help-modal';
+        modal.className = 'modal';
+
+        const modalContent = document.createElement('div');
+        modalContent.className = 'modal-content';
+
+        const modalHeader = document.createElement('div');
+        modalHeader.className = 'modal-header';
+        modalHeader.innerHTML = `
+            <h2>${translations.help_modal_title || 'Guide'}</h2>
+            <span class="close-modal-btn" id="close-help-modal">&times;</span>
+        `;
+
+        const modalBody = document.createElement('div');
+        modalBody.className = 'modal-body';
+        modalBody.innerHTML = translations.help_modal_content || '<p>Contenu d\'aide non disponible.</p>';
+
+        // Assembler la modale
+        modalContent.appendChild(modalHeader);
+        modalContent.appendChild(modalBody);
+        modal.appendChild(modalContent);
+        document.body.appendChild(modal);
+
+        // Afficher la modale
+        modal.style.display = 'block';
+
+        // Animer les sections
+        const sections = modal.querySelectorAll('.help-section');
+        sections.forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.15}s`;
+        });
+
+        // Gérer la fermeture
+        const closeModal = () => {
+            modal.style.display = 'none';
+            modal.remove(); // Nettoyer le DOM
+        };
+
+        document.getElementById('close-help-modal').addEventListener('click', closeModal);
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    }
     function setupCopyButton(buttonId, textareaId) {
         const button = document.getElementById(buttonId);
         if (button) {

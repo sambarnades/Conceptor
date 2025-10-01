@@ -1,15 +1,58 @@
 const translations_ar = {
     subtitle: "إنشاء مُساعَد للموارد والأنشطة على Moodle وÉléa",
     help_button: "مساعدة",
-    help_title: "كيف أستخدم هذه الأдаة؟",
-    help_step1: "<strong>اختر وضع الإنشاء:</strong>",
-    help_step1_fast: "<strong>الوضع السريع:</strong> مثالي للبدء بسرعة. حدِّد دورك (مثال: معلّم) والموضوع المراد تناوله.",
-    help_step1_guided: "<strong>الوضع المُوجَّه:</strong> لمزيد من الدقة. أدخِل المادة، الموضوع، المستوى وعدد العناصر المطلوبة.",
-    help_step2: "<strong>ولِّد المطالبات (Prompts)</strong> بالضغط على الزر المخصّص.",
-    help_step3: "<strong>اختر نشاطًا</strong> من بطاقات H5P أو من وحدات Moodle/Éléa.",
-    help_step4: "<strong>استخدم المطلب:</strong> انسخ المطلب المُولَّد والصقه في ذكاء اصطناعي (ChatGPT، Le Chat...).",
-    help_step5: "<strong>أنشئ وحمّل:</strong> الصق نصّ الذكاء الاصطناعي لتوليد وحدتك وتحميلها.",
-    help_step6: "<strong>أكمِل:</strong> استورِد ملف ‎.h5p أو ‎.mbz إلى منصتك (Éléa، Moodle...).",
+    help_modal_title: "🚀 دليل البدء السريع لـ Caramel",
+    help_modal_content: `
+        <div class="help-modal-content">
+            <p>مرحباً بك في <strong>Caramel</strong>! هذا الدليل يرشدك خطوة بخطوة لإنشاء أنشطة تعليمية تفاعلية بمساعدة الذكاء الاصطناعي. اتبع هذه الخطوات البسيطة لتحويل أفكارك إلى وحدات جاهزة للاستخدام.</p>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">1</span> اكتب فكرتك (الـ "prompt")</h4>
+                <p>كل شيء يبدأ بوصف احتياجاتك. لديك خياران لذلك:</p>
+                <ul>
+                    <li><span class="badge-help-mode">الوضع السريع</span>: مثالي لبداية سريعة. ببساطة، حدد <strong>من أنت</strong> (مثال: <em>مدرس علوم</em>) و<strong>ماذا تريد أن تتناول</strong> (مثال: <em>دورة الماء في الصف السادس</em>).</li>
+                    <li><span class="badge-help-mode">الوضع الموجه</span>: لطلب أكثر دقة. املأ <strong>المادة</strong>، <strong>الموضوع</strong>، <strong>مستوى الطالب</strong>، و<strong>عدد العناصر</strong> التي تريدها (أسئلة، تواريخ، إلخ).</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">2</span> أنشئ الـ prompts</h4>
+                <p>بعد إدخال معلوماتك، انقر على زر <button id="generateBtn" data-key="generate_prompts">أنشئ الـ prompts</button>. ستقوم الأداة بعد ذلك بإعداد تعليمات مفصلة ("prompts") لكل نوع نشاط متاح.</p>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">3</span> اختر نشاطك</h4>
+                <p>تنقل بين علامات التبويب <span class="badge-help-tab">H5P</span> و <span class="badge-help-tab">وحدات Éléa/Moodle</span> لاكتشاف الأنشطة المختلفة المتاحة. انقر على النشاط الذي يثير اهتمامك (على سبيل المثال، "خط زمني" أو "MCQ"). سيظهر الـ prompt المقابل في مربع النص.</p>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">4</span> استخدم الذكاء الاصطناعي</h4>
+                <p>هنا يحدث السحر! لديك خياران لإنشاء محتوى نشاطك:</p>
+                <div class="help-subsection">
+                    <h5><i class="fas fa-robot"></i> الخيار أ: أنشئ مع Albert (موصى به)</h5>
+                    <p>انقر على زر <button class="action-btn albert-btn">أنشئ مع Albert</button>. يمكنك اختيار نموذج الذكاء الاصطناعي الذي يناسب احتياجاتك (سريع، قوي، أو متخصص في الكود) بالنقر على السهم الصغير يمين الزر. سيتم <strong>إنشاء وإدراج محتوى نشاطك تلقائياً</strong> في حقل النتائج، جاهزاً للاستخدام.</p>
+                    <ul class="advantages">
+                        <li><strong>نقاط القوة:</strong> بسيط، سريع، ذكاء اصطناعي مدمج مباشرة في الأداة.</li>
+                        <li><strong>نقاط الضعف:</strong> لا يوجد بحث على الويب، لا يمكن تخصيص الـ prompt الأولي للذكاء الاصطناعي.</li>
+                    </ul>
+                </div>
+                <div class="help-subsection">
+                    <h5><i class="fas fa-paste"></i> الخيار ب: استخدم الذكاء الاصطناعي الخاص بك</h5>
+                    <p>انقر على <button class="copy-btn">📋 نسخ الـ prompt</button> والصق هذه التعليمات في الذكاء الاصطناعي المفضل لديك (ChatGPT, Le Chat, etc.). ثم، <strong>انسخ رد الذكاء الاصطناعي</strong> و<strong>الصقه</strong> في حقل النتائج في Caramel.</p>
+                    <ul class="advantages">
+                        <li><strong>نقاط القوة:</strong> مرونة كاملة، إمكانية الوصول إلى الإنترنت، القدرة على تعديل الـ prompt الأولي وإضافة مستندات لإنشاء المحتوى.</li>
+                        <li><strong>نقاط الضعف:</strong> يتطلب نسخ ولصق يدوي وحساب خارجي.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">5</span> أنشئ وحمّل ملفك</h4>
+                <p>بمجرد أن يكون المحتوى في حقل النتائج (سواء تم إنشاؤه بواسطة Albert أو قمت بلصقه)، انقر على زر <button class="download-btn">أنشئ H5P</button> (أو .mbz/.xml حسب النشاط). سيتم تنزيل ملفك، جاهزاً للدمج في منصة Moodle أو Éléa الخاصة بك.</p>
+                <p class="help-final-tip">وهكذا! لقد أنشأت نشاطاً تفاعلياً ببضع نقرات فقط. لا تتردد في تجربة الأوضاع والأنشطة المختلفة لإثراء دوراتك.</p>
+            </div>
+        </div>
+    `,
     fast_mode: "الوضع السريع",
     guided_mode: "الوضع المُوجَّه",
     who_are_you: "من أنت؟ (مثال: معلّم، مدرّب...)",

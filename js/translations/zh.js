@@ -1,15 +1,58 @@
 const translations_zh = {
     subtitle: "辅助创建 Moodle 与 Éléa 资源与活动",
     help_button: "帮助",
-    help_title: "如何使用此工具？",
-    help_step1: "<strong>选择创建模式：</strong>",
-    help_step1_fast: "<strong>快速模式：</strong> 适合快速上手。先注明你的角色（如：教师）以及要处理的主题。",
-    help_step1_guided: "<strong>引导模式：</strong> 追求更高精度。填写学科、主题、年级以及所需元素数量。",
-    help_step2: "<strong>生成提示词</strong>，单击专用按钮即可。",
-    help_step3: "<strong>选择一种活动</strong>，可在 H5P 卡片或 Moodle/Éléa 模块中选择。",
-    help_step4: "<strong>使用提示词：</strong> 复制生成的提示词并粘贴到某个 AI 中（ChatGPT、Le Chat 等）。",
-    help_step5: "<strong>创建并下载：</strong> 粘贴 AI 的文本以生成并下载你的模块。",
-    help_step6: "<strong>完成：</strong> 将 .h5p 或 .mbz 文件导入你的平台（Éléa、Moodle 等）。",
+    help_modal_title: "🚀 Caramel 快速入门指南",
+    help_modal_content: `
+        <div class="help-modal-content">
+            <p>欢迎来到 <strong>Caramel</strong>！本工具将通过人工智能的辅助，一步步引导您创建交互式教学活动。请遵循以下简单步骤，将您的想法转化为即用型模块。</p>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">1</span> 写下您的想法（“提示”）</h4>
+                <p>一切始于描述您的需求。您有两种选择：</p>
+                <ul>
+                    <li><span class="badge-help-mode">快速模式</span>：适合快速入门。只需说明<strong>您的身份</strong>（例如：<em>科学教师</em>）和<strong>您想涵盖的内容</strong>（例如：<em>六年级的水循环</em>）。</li>
+                    <li><span class="badge-help-mode">引导模式</span>：用于更精确的请求。请填写<strong>学科</strong>、<strong>主题</strong>、<strong>学生水平</strong>以及您希望的<strong>项目数量</strong>（问题、日期等）。</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">2</span> 生成提示</h4>
+                <p>输入信息后，点击<button id="generateBtn" data-key="generate_prompts">生成提示</button>按钮。该工具将为每种可用的活动类型准备详细的说明（“提示”）。</p>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">3</span> 选择您的活动</h4>
+                <p>在<span class="badge-help-tab">H5P</span>和<span class="badge-help-tab">Éléa/Moodle 模块</span>选项卡之间导航，发现可用的不同活动。点击您感兴趣的活动（例如，“时间轴”或“MCQ”）。相应的提示将出现在文本区域中。</p>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">4</span> 使用人工智能</h4>
+                <p>魔法就在这里发生！您有两种选择来生成活动内容：</p>
+                <div class="help-subsection">
+                    <h5><i class="fas fa-robot"></i> 选项 A：使用 Albert 生成（推荐）</h5>
+                    <p>点击<button class="action-btn albert-btn">使用 Albert 生成</button>按钮。您可以通过点击按钮右侧的小箭头，选择最适合您需求的 AI 模型（快速、强大或专注于代码）。您的活动内容将<strong>自动生成并插入</strong>到结果字段中，随时可用。</p>
+                    <ul class="advantages">
+                        <li><strong>优点：</strong> 简单、快速，直接集成在工具中的 AI。</li>
+                        <li><strong>缺点：</strong> 无法进行网络搜索，无法自定义初始 AI 提示。</li>
+                    </ul>
+                </div>
+                <div class="help-subsection">
+                    <h5><i class="fas fa-paste"></i> 选项 B：使用您自己的 AI</h5>
+                    <p>点击<button class="copy-btn">📋 复制提示</button>并将此说明粘贴到您喜欢的人工智能（ChatGPT、Le Chat 等）中。然后，<strong>复制 AI 的响应</strong>并将其<strong>粘贴</strong>到 Caramel 的结果字段中。</p>
+                    <ul class="advantages">
+                        <li><strong>优点：</strong> 完全灵活，可能可以访问互联网，能够修改初始提示并添加文档以生成内容。</li>
+                        <li><strong>缺点：</strong> 需要手动复制粘贴和外部帐户。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">5</span> 创建并下载您的文件</h4>
+                <p>一旦内容出现在结果字段中（由 Albert 生成或由您粘贴），点击<button class="download-btn">生成 H5P</button>按钮（或根据活动选择 .mbz/.xml）。您的文件将被下载，准备好集成到您的 Moodle 或 Éléa 平台中。</p>
+                <p class="help-final-tip">就是这样！您只需几次点击就创建了一个互动活动。随时尝试不同的模式和活动类型，以丰富您的课程。</p>
+            </div>
+        </div>
+    `,
     fast_mode: "快速模式",
     guided_mode: "引导模式",
     who_are_you: "你是谁？（如：教师、培训师……）",

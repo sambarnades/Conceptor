@@ -1,15 +1,58 @@
 const translations_de = {
     subtitle: "Assistierte Erstellung von Moodle- und Éléa-Ressourcen und -Aktivitäten",
     help_button: "Hilfe",
-    help_title: "Wie benutzt man dieses Tool?",
-    help_step1: "<strong>Wählen Sie den Erstellungsmodus:</strong>",
-    help_step1_fast: "<strong>Schnellmodus:</strong> Ideal für einen schnellen Start. Geben Sie Ihre Rolle (z.B. Lehrer) und das zu behandelnde Thema an.",
-    help_step1_guided: "<strong>Geführter Modus:</strong> Für mehr Präzision. Geben Sie die Disziplin, das Thema, das Niveau und die Anzahl der gewünschten Elemente an.",
-    help_step2: "<strong>Generieren Sie die Prompts</strong>, indem Sie auf die entsprechende Schaltfläche klicken.",
-    help_step3: "<strong>Wählen Sie eine Aktivität</strong> aus den H5P-Kacheln oder den Moodle/Éléa-Modulen.",
-    help_step4: "<strong>Verwenden Sie den Prompt:</strong> Kopieren Sie den generierten Prompt, um ihn in eine KI (ChatGPT, Le Chat...) einzufügen.",
-    help_step5: "<strong>Erstellen und herunterladen:</strong> Fügen Sie den Text der KI ein, um Ihr Modul zu generieren und herunterzuladen.",
-    help_step6: "<strong>Fertigstellen:</strong> Importieren Sie die .h5p- oder .mbz-Datei in Ihre Plattform (Éléa, Moodle...).",
+    help_modal_title: "🚀 Schnellstartanleitung für Caramel",
+    help_modal_content: `
+        <div class="help-modal-content">
+            <p>Willkommen bei <strong>Caramel</strong>! Dieses Tool führt Sie Schritt für Schritt bei der Erstellung interaktiver Bildungsaktivitäten mit Hilfe von künstlicher Intelligenz. Befolgen Sie diese einfachen Schritte, um Ihre Ideen in einsatzbereite Module umzuwandeln.</p>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">1</span> Formulieren Sie Ihre Idee (der "Prompt")</h4>
+                <p>Alles beginnt mit der Beschreibung Ihrer Bedürfnisse. Dafür haben Sie zwei Möglichkeiten:</p>
+                <ul>
+                    <li><span class="badge-help-mode">Schnellmodus</span>: Ideal für einen schnellen Start. Geben Sie einfach an, <strong>wer Sie sind</strong> (z.B. <em>Lehrer für Naturwissenschaften</em>) und <strong>was Sie behandeln möchten</strong> (z.B. <em>der Wasserkreislauf in der 6. Klasse</em>).</li>
+                    <li><span class="badge-help-mode">Geführter Modus</span>: Für eine präzisere Anfrage. Füllen Sie die <strong>Disziplin</strong>, das <strong>Thema</strong>, das <strong>Schülerniveau</strong> und die <strong>Anzahl der gewünschten Elemente</strong> (Fragen, Daten usw.) aus.</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">2</span> Generieren Sie die Prompts</h4>
+                <p>Nachdem Sie Ihre Informationen eingegeben haben, klicken Sie auf die Schaltfläche <button id="generateBtn" data-key="generate_prompts">Prompts generieren</button>. Das Tool bereitet dann detaillierte Anweisungen (die "Prompts") für jeden verfügbaren Aktivitätstyp vor.</p>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">3</span> Wählen Sie Ihre Aktivität</h4>
+                <p>Navigieren Sie zwischen den Registerkarten <span class="badge-help-tab">H5P</span> und <span class="badge-help-tab">Éléa/Moodle-Module</span>, um die verschiedenen verfügbaren Aktivitäten zu entdecken. Klicken Sie auf die, die Sie interessiert (zum Beispiel "Zeitleiste" oder "MCQ"). Der entsprechende Prompt wird im Textbereich angezeigt.</p>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">4</span> Nutzen Sie künstliche Intelligenz</h4>
+                <p>Hier geschieht die Magie! Sie haben zwei Möglichkeiten, den Inhalt für Ihre Aktivität zu generieren:</p>
+                <div class="help-subsection">
+                    <h5><i class="fas fa-robot"></i> Option A: Mit Albert generieren (Empfohlen)</h5>
+                    <p>Klicken Sie auf die Schaltfläche <button class="action-btn albert-btn">Mit Albert generieren</button>. Sie können das KI-Modell auswählen, das Ihren Bedürfnissen am besten entspricht (schnell, leistungsstark oder auf Code spezialisiert), indem Sie auf den kleinen Pfeil rechts neben der Schaltfläche klicken. Der Inhalt für Ihre Aktivität wird <strong>automatisch generiert und in das Ergebnisfeld eingefügt</strong>, bereit zur Verwendung.</p>
+                    <ul class="advantages">
+                        <li><strong>Stärken:</strong> Einfach, schnell, integrierte KI direkt im Tool.</li>
+                        <li><strong>Schwächen:</strong> Keine Websuche, keine Anpassung des anfänglichen KI-Prompts möglich.</li>
+                    </ul>
+                </div>
+                <div class="help-subsection">
+                    <h5><i class="fas fa-paste"></i> Option B: Verwenden Sie Ihre eigene KI</h5>
+                    <p>Klicken Sie auf <button class="copy-btn">📋 Prompt kopieren</button> und fügen Sie diese Anweisung in Ihre bevorzugte künstliche Intelligenz (ChatGPT, Le Chat usw.) ein. Kopieren Sie dann <strong>die Antwort der KI</strong> und <strong>fügen Sie sie</strong> in das Ergebnisfeld von Caramel ein.</p>
+                    <ul class="advantages">
+                        <li><strong>Stärken:</strong> Völlige Flexibilität, möglicher Internetzugang, Möglichkeit, den anfänglichen Prompt zu ändern und Dokumente für die Inhaltsgenerierung hinzuzufügen.</li>
+                        <li><strong>Schwächen:</strong> Erfordert manuelles Kopieren und Einfügen sowie ein externes Konto.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">5</span> Erstellen und Herunterladen Ihrer Datei</h4>
+                <p>Sobald der Inhalt im Ergebnisfeld ist (entweder von Albert generiert oder von Ihnen eingefügt), klicken Sie auf die Schaltfläche <button class="download-btn">H5P generieren</button> (oder .mbz/.xml je nach Aktivität). Ihre Datei wird heruntergeladen und ist bereit, in Ihre Moodle- oder Éléa-Plattform integriert zu werden.</p>
+                <p class="help-final-tip">Und das war's! Sie haben mit nur wenigen Klicks eine interaktive Aktivität erstellt. Zögern Sie nicht, mit den verschiedenen Modi und Aktivitätstypen zu experimentieren, um Ihre Kurse zu bereichern.</p>
+            </div>
+        </div>
+    `,
     fast_mode: "Schnellmodus",
     guided_mode: "Geführter Modus",
     who_are_you: "Wer sind Sie? (z.B. Lehrer, Ausbilder...)",

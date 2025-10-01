@@ -1,15 +1,58 @@
 const translations_en = {
     subtitle: "Assisted Creation of Moodle and Éléa Resources and Activities",
     help_button: "Help",
-    help_title: "How to use this tool?",
-    help_step1: "<strong>Choose the creation mode:</strong>",
-    help_step1_fast: "<strong>Fast Mode:</strong> Ideal for a quick start. Indicate your role (e.g., Teacher) and the subject to be covered.",
-    help_step1_guided: "<strong>Guided Mode:</strong> For more precision. Fill in the discipline, theme, level, and the number of desired elements.",
-    help_step2: "<strong>Generate the prompts</strong> by clicking the dedicated button.",
-    help_step3: "<strong>Select an activity</strong> from the H5P tiles or the Moodle/Éléa modules.",
-    help_step4: "<strong>Use the prompt:</strong> Copy the generated prompt to paste it into an AI (ChatGPT, Le Chat...).",
-    help_step5: "<strong>Create and download:</strong> Paste the AI's text to generate and download your module.",
-    help_step6: "<strong>Finalize:</strong> Import the .h5p or .mbz file into your platform (Éléa, Moodle...).",
+    help_modal_title: "🚀 Getting Started Guide for Caramel",
+    help_modal_content: `
+        <div class="help-modal-content">
+            <p>Welcome to <strong>Caramel</strong>! This tool guides you step-by-step to create interactive educational activities with the help of artificial intelligence. Follow these simple steps to turn your ideas into ready-to-use modules.</p>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">1</span> Write down your idea (the "prompt")</h4>
+                <p>Everything starts with describing your needs. You have two options for this:</p>
+                <ul>
+                    <li><span class="badge-help-mode">Fast Mode</span>: Ideal for a quick start. Simply indicate <strong>who you are</strong> (e.g., <em>Science Teacher</em>) and <strong>what you want to cover</strong> (e.g., <em>the water cycle in 6th grade</em>).</li>
+                    <li><span class="badge-help-mode">Guided Mode</span>: For a more precise request. Fill in the <strong>discipline</strong>, <strong>theme</strong>, <strong>student level</strong>, and the <strong>number of items</strong> you want (questions, dates, etc.).</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">2</span> Generate the prompts</h4>
+                <p>Once you've entered your information, click the <button id="generateBtn" data-key="generate_prompts">Generate prompts</button> button. The tool will then prepare detailed instructions (the "prompts") for each available activity type.</p>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">3</span> Choose your activity</h4>
+                <p>Navigate between the <span class="badge-help-tab">H5P</span> and <span class="badge-help-tab">Éléa/Moodle Modules</span> tabs to discover the different activities available. Click on the one that interests you (for example, "Timeline" or "MCQ"). The corresponding prompt will appear in the text area.</p>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">4</span> Use Artificial Intelligence</h4>
+                <p>This is where the magic happens! You have two options to generate the content for your activity:</p>
+                <div class="help-subsection">
+                    <h5><i class="fas fa-robot"></i> Option A: Generate with Albert (Recommended)</h5>
+                    <p>Click the <button class="action-btn albert-btn">Generate with Albert</button> button. You can choose the AI model that best suits your needs (fast, powerful, or specialized in code) by clicking the small arrow to the right of the button. The content for your activity will be <strong>automatically generated and inserted</strong> into the result field, ready to be used.</p>
+                    <ul class="advantages">
+                        <li><strong>Strengths:</strong> Simple, fast, integrated AI.</li>
+                        <li><strong>Weaknesses:</strong> No web search, no customization of the initial AI prompt.</li>
+                    </ul>
+                </div>
+                <div class="help-subsection">
+                    <h5><i class="fas fa-paste"></i> Option B: Use your own AI</h5>
+                    <p>Click <button class="copy-btn">📋 Copy prompt</button> and paste this instruction into your favorite artificial intelligence (ChatGPT, Le Chat, etc.). Then, <strong>copy the AI's response</strong> and <strong>paste it</strong> into Caramel's result field.</p>
+                    <ul class="advantages">
+                        <li><strong>Strengths:</strong> Total flexibility, possible internet access, ability to modify the initial prompt and add documents for content generation.</li>
+                        <li><strong>Weaknesses:</strong> Requires manual copy-pasting and an external account.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">5</span> Create and download your file</h4>
+                <p>Once the content is in the result field (either generated by Albert or pasted by you), click the <button class="download-btn">Generate H5P</button> button (or .mbz/.xml depending on the activity). Your file will be downloaded, ready to be integrated into your Moodle or Éléa platform.</p>
+                <p class="help-final-tip">And there you have it! You've created an interactive activity in just a few clicks. Feel free to experiment with the different modes and activity types to enrich your courses.</p>
+            </div>
+        </div>
+    `,
     fast_mode: "Fast Mode",
     guided_mode: "Guided Mode",
     who_are_you: "Who are you? (e.g., Teacher, trainer...)",

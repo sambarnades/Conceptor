@@ -1,15 +1,58 @@
 const translations_fr = {
     subtitle: "Création Assistée de Ressources et d'Activités Moodle et Éléa",
     help_button: "Aide",
-    help_title: "Comment utiliser cet outil ?",
-    help_step1: "<strong>Choisissez le mode de création :</strong>",
-    help_step1_fast: "<strong>Mode Rapide :</strong> Idéal pour démarrer vite. Indiquez votre rôle (ex: Enseignant) et le sujet à traiter.",
-    help_step1_guided: "<strong>Mode Guidé :</strong> Pour plus de précision. Renseignez la discipline, le thème, le niveau et le nombre d'éléments souhaités.",
-    help_step2: "<strong>Générez les prompts</strong> en cliquant sur le bouton dédié.",
-    help_step3: "<strong>Sélectionnez une activité</strong> parmi les tuiles H5P ou les modules Moodle/Éléa.",
-    help_step4: "<strong>Utilisez le prompt :</strong> Copiez le prompt généré pour le coller dans une IA (ChatGPT, Le Chat...).",
-    help_step5: "<strong>Créez et téléchargez :</strong> Collez le texte de l'IA pour générer et télécharger votre module.",
-    help_step6: "<strong>Finalisez :</strong> Importez le fichier .h5p ou .mbz dans votre plateforme (Éléa, Moodle...).",
+    help_modal_title: "🚀 Guide de prise en main de Caramel",
+    help_modal_content: `
+        <div class="help-modal-content">
+            <p>Bienvenue sur <strong>Caramel</strong> ! Cet outil vous guide pas à pas pour créer des activités pédagogiques interactives avec l'aide de l'intelligence artificielle. Suivez ces étapes simples pour transformer vos idées en modules prêts à l'emploi.</p>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">1</span> Rédiger votre idée (le "prompt")</h4>
+                <p>Tout commence par la description de votre besoin. Vous avez deux options pour cela :</p>
+                <ul>
+                    <li><span class="badge-help-mode">Mode Rapide</span> : Idéal pour démarrer rapidement. Indiquez simplement <strong>qui vous êtes</strong> (ex: <em>Professeur de SVT</em>) et <strong>ce que vous voulez aborder</strong> (ex: <em>le cycle de l'eau en 6ème</em>).</li>
+                    <li><span class="badge-help-mode">Mode Guidé</span> : Pour une demande plus précise. Renseignez la <strong>discipline</strong>, le <strong>thème</strong>, le <strong>niveau des élèves</strong> et le <strong>nombre d'éléments</strong> souhaités (questions, dates, etc.).</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">2</span> Générer les prompts</h4>
+                <p>Une fois vos informations saisies, cliquez sur le bouton <button id="generateBtn" data-key="generate_prompts">Générer les prompts</button>. L'outil préparera alors des instructions détaillées (les "prompts") pour chaque type d'activité disponible.</p>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">3</span> Choisir votre activité</h4>
+                <p>Naviguez entre les onglets <span class="badge-help-tab">H5P</span> et <span class="badge-help-tab">Modules Éléa/Moodle</span> pour découvrir les différentes activités possibles. Cliquez sur celle qui vous intéresse (par exemple, "Frise chronologique" ou "QCM"). Le prompt correspondant s'affichera dans la zone de texte.</p>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">4</span> Utiliser l'Intelligence Artificielle</h4>
+                <p>C'est ici que la magie opère ! Vous avez deux possibilités pour générer le contenu de votre activité :</p>
+                <div class="help-subsection">
+                    <h5><i class="fas fa-robot"></i> Option A : Générer avec Albert (Recommandé)</h5>
+                    <p>Cliquez sur le bouton <button class="action-btn albert-btn">Générer avec Albert</button>. Vous pouvez choisir le modèle d'IA le plus adapté à votre besoin (rapide, puissant ou spécialisé en code) en cliquant sur la petite flèche à droite du bouton. Le contenu de votre activité sera <strong>automatiquement généré et inséré</strong> dans le champ de résultat.</p>
+                    <ul class="advantages">
+                        <li><strong>Forces :</strong> Simple, rapide, IA française intégrée directement dans l'outil.</li>
+                        <li><strong>Faiblesses :</strong> Pas de recherche sur le web, pas de personnalisation possible du prompt avant envoi.</li>
+                    </ul>
+                </div>
+                <div class="help-subsection">
+                    <h5><i class="fas fa-paste"></i> Option B : Utiliser votre propre IA</h5>
+                    <p>Cliquez sur <button class="copy-btn">📋 Copier le prompt</button> et collez cette instruction dans votre intelligence artificielle favorite (ChatGPT, Le Chat, etc.). Ensuite, <strong>copiez la réponse</strong> de l'IA et <strong>collez-la</strong> dans le champ de résultat de Caramel.</p>
+                    <ul class="advantages">
+                        <li><strong>Forces :</strong> Flexibilité totale, accès à internet, possibilité de modifier le prompt et d'ajouter des documents personnels pour un résultat sur mesure.</li>
+                        <li><strong>Faiblesses :</strong> Nécessite des copier-coller manuels et un compte externe.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">5</span> Créer et télécharger votre fichier</h4>
+                <p>Une fois que le contenu est dans le champ de résultat (généré par Albert ou collé par vos soins), cliquez sur le bouton <button class="download-btn">Générer le H5P</button> (ou .mbz/.xml selon l'activité). Votre fichier sera téléchargé, prêt à être intégré dans votre plateforme Moodle ou Éléa.</p>
+                <p class="help-final-tip">Et voilà ! Vous avez créé une activité interactive en quelques clics. N'hésitez pas à expérimenter avec les différents modes et types d'activités pour enrichir vos cours.</p>
+            </div>
+        </div>
+    `,
     fast_mode: "Mode Rapide",
     guided_mode: "Mode Guidé",
     who_are_you: "Qui êtes-vous ? (ex: Enseignant, formateur...)",

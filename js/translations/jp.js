@@ -1,15 +1,58 @@
 const translations_jp = {
     subtitle: "Moodle・Éléaリソース・アクティビティの支援作成",
     help_button: "ヘルプ",
-    help_title: "このツールの使い方は？",
-    help_step1: "<strong>作成モードを選択：</strong>",
-    help_step1_fast: "<strong>クイックモード：</strong> 素早く開始するのに最適。役割（例：教師）と扱うテーマを入力してください。",
-    help_step1_guided: "<strong>ガイドモード：</strong> より正確に。分野、テーマ、レベル、希望する要素数を記入してください。",
-    help_step2: "<strong>プロンプトを生成</strong> 専用ボタンをクリックしてください。",
-    help_step3: "<strong>アクティビティを選択</strong> H5Pタイルまたは Moodle/Éléaモジュールから。",
-    help_step4: "<strong>プロンプトを使用：</strong> 生成されたプロンプトをコピーしてAI（ChatGPT、Le Chat...）に貼り付けてください。",
-    help_step5: "<strong>作成・ダウンロード：</strong> AIのテキストを貼り付けてモジュールを生成・ダウンロードしてください。",
-    help_step6: "<strong>完了：</strong> .h5pまたは.mbzファイルをプラットフォーム（Éléa、Moodle...）にインポートしてください。",
+    help_modal_title: "🚀 Caramel スタートガイド",
+    help_modal_content: `
+        <div class="help-modal-content">
+            <p><strong>Caramel</strong>へようこそ！このツールは、人工知能の助けを借りてインタラクティブな教育活動を作成するためのステップバイステップガイドです。これらの簡単な手順に従って、あなたのアイデアをすぐに使えるモジュールに変換しましょう。</p>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">1</span> アイデアを記述する（「プロンプト」）</h4>
+                <p>すべてはあなたのニーズを記述することから始まります。これには2つのオプションがあります：</p>
+                <ul>
+                    <li><span class="badge-help-mode">クイックモード</span>: 素早く始めるのに最適です。単に<strong>あなたの役割</strong>（例：<em>理科の先生</em>）と<strong>扱いたい内容</strong>（例：<em>6年生の水の循環</em>）を指定してください。</li>
+                    <li><span class="badge-help-mode">ガイドモード</span>: より正確なリクエストのために。<strong>専門分野</strong>、<strong>テーマ</strong>、<strong>生徒のレベル</strong>、そして希望する<strong>アイテム数</strong>（質問、日付など）を記入してください。</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">2</span> プロンプトを生成する</h4>
+                <p>情報を入力したら、<button id="generateBtn" data-key="generate_prompts">プロンプトを生成</button>ボタンをクリックしてください。ツールは、利用可能な各アクティビティタイプのための詳細な指示（「プロンプト」）を準備します。</p>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">3</span> アクティビティを選択する</h4>
+                <p><span class="badge-help-tab">H5P</span>と<span class="badge-help-tab">Éléa/Moodleモジュール</span>タブを切り替えて、利用可能なさまざまなアクティビティをご覧ください。興味のあるものをクリックしてください（例：「タイムライン」や「MCQ」）。対応するプロンプトがテキストエリアに表示されます。</p>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">4</span> 人工知能を利用する</h4>
+                <p>ここで魔法が起こります！アクティビティのコンテンツを生成するには2つのオプションがあります：</p>
+                <div class="help-subsection">
+                    <h5><i class="fas fa-robot"></i> オプションA：Albertで生成（推奨）</h5>
+                    <p><button class="action-btn albert-btn">Albertで生成</button>ボタンをクリックしてください。ボタンの右側にある小さな矢印をクリックすることで、あなたのニーズに最適なAIモデル（高速、強力、またはコードに特化）を選択できます。アクティビティのコンテンツは<strong>自動的に生成され、結果フィールドに挿入</strong>され、すぐに使用できます。</p>
+                    <ul class="advantages">
+                        <li><strong>長所：</strong> シンプル、高速、ツールに直接統合されたAI。</li>
+                        <li><strong>短所：</strong> ウェブ検索なし、初期AIプロンプトのカスタマイズ不可。</li>
+                    </ul>
+                </div>
+                <div class="help-subsection">
+                    <h5><i class="fas fa-paste"></i> オプションB：独自のAIを使用する</h5>
+                    <p><button class="copy-btn">📋 プロンプトをコピー</button>をクリックし、この指示をお好みの人工知能（ChatGPT、Le Chatなど）に貼り付けてください。次に、<strong>AIの応答をコピー</strong>し、Caramelの結果フィールドに<strong>貼り付け</strong>てください。</p>
+                    <ul class="advantages">
+                        <li><strong>長所：</strong> 完全な柔軟性、インターネットアクセス可能、初期プロンプトの変更やコンテンツ生成のためのドキュメント追加機能。</li>
+                        <li><strong>短所：</strong> 手動でのコピー＆ペーストと外部アカウントが必要。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <h4><span class="help-step-number">5</span> ファイルを作成してダウンロードする</h4>
+                <p>コンテンツが結果フィールドに入力されたら（Albertによって生成されたか、自分で貼り付けたかに関わらず）、<button class="download-btn">H5Pを生成</button>ボタン（またはアクティビティに応じて.mbz/.xml）をクリックしてください。ファイルがダウンロードされ、MoodleまたはÉléaプラットフォームに統合する準備が整います。</p>
+                <p class="help-final-tip">これで完了です！数回のクリックでインタラクティブなアクティビティを作成しました。さまざまなモードやアクティビティタイプを試して、コースを充実させてください。</p>
+            </div>
+        </div>
+    `,
     fast_mode: "クイックモード",
     guided_mode: "ガイドモード",
     who_are_you: "あなたは誰ですか？（例：教師、講師...）",
