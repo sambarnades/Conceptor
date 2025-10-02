@@ -102,6 +102,44 @@ const translations_es = {
     timeline_prompt_rule2: "2.  Para cada `asset`, busca activamente una imagen relevante y libre de derechos (ej: Wikimedia Commons). La URL en `media` debe ser un enlace directo y válido. Indica la fuente y la licencia en `credit`. Si no se encuentra ninguna imagen adecuada, omite el objeto `asset` por completo.",
     timeline_prompt_rule3: "3.  Para cada período (`era`), añade un campo `text` con una breve descripción y un `tag`.",
     timeline_prompt_example_json_title: "**Ejemplo de estructura JSON :**",
+    timeline_prompt_example: `\`\`\`json
+{
+"timeline": {
+"headline": "Título de la línea de tiempo",
+"text": "<p>Introducción al tema de la línea de tiempo.</p>",
+"date": [
+{
+"startDate": "1914,07,28",
+"endDate": "1914,07,28",
+"headline": "Inicio de la Primera Guerra Mundial",
+"text": "<p>Austria-Hungría declara la guerra a Serbia.</p>",
+"asset": {
+"media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
+"caption": "El archiduque Francisco Fernando poco antes de su asesinato.",
+"credit": "Wikimedia Commons / CC BY-SA 4.0"
+},
+"tag": "Guerra"
+},
+{
+"startDate": "1918,11,11",
+"endDate": "1918,11,11",
+"headline": "Armisticio de 1918",
+"text": "<p>Firma del armisticio en Rethondes, que marcó el fin de los combates.</p>",
+"tag": "Tratado"
+}
+],
+"era": [
+{
+"startDate": "1914,07,28",
+"endDate": "1918,11,11",
+"headline": "Primera Guerra Mundial",
+"text": "<div>Es el período de la Gran Guerra.</div>",
+"tag": "Período histórico"
+}
+]
+}
+}
+\`\`\` `,  
     timeline_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario. El resultado será utilizado directamente por otra herramienta.",
 
     // Crossword Prompt

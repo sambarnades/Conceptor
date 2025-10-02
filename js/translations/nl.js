@@ -102,6 +102,44 @@ const translations_nl = {
     timeline_prompt_rule2: "2.  Zoek voor elke `asset` actief naar een relevante, rechtenvrije afbeelding (bv. Wikimedia Commons). De URL in `media` moet een directe en geldige link zijn. Vermeld de bron en licentie in `credit`. Als er geen geschikte afbeelding wordt gevonden, laat het `asset`-object dan volledig weg.",
     timeline_prompt_rule3: "3.  Voeg voor elke periode (`era`) een `text`-veld toe met een korte beschrijving en een `tag`.",
     timeline_prompt_example_json_title: "**Voorbeeld van JSON-structuur:**",
+    timeline_prompt_example: `\`\`\`json
+{
+"timeline": {
+"headline": "Titel van de tijdlijn",
+"text": "<p>Inleiding tot het thema van de tijdlijn.</p>",
+"date": [
+{
+"startDate": "1914,07,28",
+"endDate": "1914,07,28",
+"headline": "Begin van de Eerste Wereldoorlog",
+"text": "<p>Oostenrijk-Hongarije verklaart de oorlog aan Servië.</p>",
+"asset": {
+"media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
+"caption": "Aartshertog Franz Ferdinand vlak voor zijn moord.",
+"credit": "Wikimedia Commons / CC BY-SA 4.0"
+},
+"tag": "Oorlog"
+},
+{
+"startDate": "1918,11,11",
+"endDate": "1918,11,11",
+"headline": "Wapenstilstand van 1918",
+"text": "<p>Ondertekening van de wapenstilstand in Rethondes, waarmee de gevechten eindigden.</p>",
+"tag": "Verdrag"
+}
+],
+"era": [
+{
+"startDate": "1914,07,28",
+"endDate": "1918,11,11",
+"headline": "Eerste Wereldoorlog",
+"text": "<div>Dit is de periode van de Grote Oorlog.</div>",
+"tag": "Historische periode"
+}
+]
+}
+}
+\`\`\` `,
     timeline_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar. Het resultaat wordt direct door een ander hulpmiddel gebruikt.",
 
     // Crossword Prompt

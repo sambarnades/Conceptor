@@ -102,6 +102,44 @@ const translations_zh = {
     timeline_prompt_rule2: "2.  对于每个 `asset`，主动搜索相关的、免版税的图片（例如维基共享资源）。`media` 中的 URL 必须是直接且有效的链接。在 `credit` 中提供来源和许可证。如果没有找到合适的图片，请完全省略 `asset` 对象。",
     timeline_prompt_rule3: "3.  为每个时期（`era`）添加一个带有简短描述和`tag`的`text`字段。",
     timeline_prompt_example_json_title: "**JSON 结构示例：**",
+    timeline_prompt_example: `\`\`\`json
+{
+"timeline": {
+"headline": "时间线标题",
+"text": "<p>关于时间线主题的介绍。</p>",
+"date": [
+{
+"startDate": "1914,07,28",
+"endDate": "1914,07,28",
+"headline": "第一次世界大战的开始",
+"text": "<p>奥匈帝国向塞尔维亚宣战。</p>",
+"asset": {
+"media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
+"caption": "大公弗朗茨·斐迪南遇刺前不久。",
+"credit": "Wikimedia Commons / CC BY-SA 4.0"
+},
+"tag": "战争"
+},
+{
+"startDate": "1918,11,11",
+"endDate": "1918,11,11",
+"headline": "1918年停战协定",
+"text": "<p>在雷东德签署停战协定，标志着战斗的结束。</p>",
+"tag": "条约"
+}
+],
+"era": [
+{
+"startDate": "1914,07,28",
+"endDate": "1918,11,11",
+"headline": "第一次世界大战",
+"text": "<div>这是“大战”的时期。</div>",
+"tag": "历史时期"
+}
+]
+}
+}
+\`\`\` `,
     timeline_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。结果将被另一个工具直接使用。",
 
     // Crossword Prompt

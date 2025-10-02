@@ -102,6 +102,44 @@ const translations_jp = {
     timeline_prompt_rule2: "2. 各`asset`について、関連性のあるロイヤリティフリーの画像（例：Wikimedia Commons）を積極的に検索してください。`media`のURLは直接的で有効なリンクでなければなりません。`credit`にソースとライセンスを記載してください。適切な画像が見つからない場合は、`asset`オブジェクトを完全に省略してください。",
     timeline_prompt_rule3: "3. 各期間（`era`）に、簡単な説明と`tag`を含む`text`フィールドを追加してください。",
     timeline_prompt_example_json_title: "**JSON構造の例：**",
+    timeline_prompt_example: `\`\`\`json
+{
+"timeline": {
+"headline": "年表のタイトル",
+"text": "<p>年表のテーマに関する序文。</p>",
+"date": [
+{
+"startDate": "1914,07,28",
+"endDate": "1914,07,28",
+"headline": "第一次世界大戦の始まり",
+"text": "<p>オーストリア＝ハンガリー帝国がセルビアに宣戦布告。</p>",
+"asset": {
+"media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
+"caption": "暗殺直前のフランツ・フェルディナント大公。",
+"credit": "Wikimedia Commons / CC BY-SA 4.0"
+},
+"tag": "戦争"
+},
+{
+"startDate": "1918,11,11",
+"endDate": "1918,11,11",
+"headline": "1918年の休戦協定",
+"text": "<p>レトンドで休戦協定が署名され、戦闘が終結した。</p>",
+"tag": "条約"
+}
+],
+"era": [
+{
+"startDate": "1914,07,28",
+"endDate": "1918,11,11",
+"headline": "第一次世界大戦",
+"text": "<div>これは「大戦」と呼ばれる時代です。</div>",
+"tag": "歴史的時代"
+}
+]
+}
+}
+\`\`\` `,  
     timeline_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。結果は他のツールで直接使用されます。",
 
     // Crossword Prompt

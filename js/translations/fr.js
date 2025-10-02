@@ -102,6 +102,44 @@ const translations_fr = {
     timeline_prompt_rule2: "2.  Pour chaque `asset`, recherche activement une image pertinente et libre de droits (ex: Wikimedia Commons). L'URL dans `media` doit être un lien direct et valide. Renseigne la source et la licence dans `credit`. Si aucune image appropriée n'est trouvée, omets complètement l'objet `asset`.",
     timeline_prompt_rule3: "3.  Pour chaque période (`era`), ajoute un champ `text` avec une brève description et un `tag`.",
     timeline_prompt_example_json_title: "**Exemple de structure JSON :**",
+    timeline_prompt_example: `\`\`\`json
+{
+"timeline": {
+"headline": "Titre de la frise chronologique",
+"text": "<p>Introduction sur le thème de la frise.</p>",
+"date": [
+{
+"startDate": "1914,07,28",
+"endDate": "1914,07,28",
+"headline": "Début de la Première Guerre mondiale",
+"text": "<p>L'Autriche-Hongrie déclare la guerre à la Serbie.</p>",
+"asset": {
+"media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
+"caption": "L'archiduc François-Ferdinand juste avant son assassinat.",
+"credit": "Wikimedia Commons / CC BY-SA 4.0"
+},
+"tag": "Guerre"
+},
+{
+"startDate": "1918,11,11",
+"endDate": "1918,11,11",
+"headline": "Armistice de 1918",
+"text": "<p>Signature de l'armistice à Rethondes, marquant la fin des combats.</p>",
+"tag": "Traité"
+}
+],
+"era": [
+{
+"startDate": "1914,07,28",
+"endDate": "1918,11,11",
+"headline": "Première Guerre mondiale",
+"text": "<div>C'est la période de la Grande Guerre.</div>",
+"tag": "Période historique"
+}
+]
+}
+}
+\`\`\` `,
     timeline_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire. Le résultat sera directement utilisé par un autre outil.",
 
     // Crossword Prompt

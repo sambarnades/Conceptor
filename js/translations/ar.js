@@ -102,6 +102,44 @@ const translations_ar = {
     timeline_prompt_rule2: "2. لكل `asset`، ابحث بنشاط عن صورة ذات صلة وخالية من الحقوق (مثل Wikimedia Commons). يجب أن يكون الرابط في `media` مباشرًا وصالحًا. اذكر المصدر والترخيص في `credit`. إذا لم يتم العثور على صورة مناسبة، فاحذف كائن `asset` بالكامل.",
     timeline_prompt_rule3: "3. لكل فترة (`era`)، أضف حقل `text` مع وصف موجز و `tag`.",
     timeline_prompt_example_json_title: "**مثال على بنية JSON:**",
+    timeline_prompt_example: `\`\`\`json
+{
+"timeline": {
+"headline": "عنوان الخط الزمني",
+"text": "<p>مقدمة حول موضوع الخط الزمني.</p>",
+"date": [
+{
+"startDate": "1914,07,28",
+"endDate": "1914,07,28",
+"headline": "بداية الحرب العالمية الأولى",
+"text": "<p>النمسا-المجر تعلن الحرب على صربيا.</p>",
+"asset": {
+"media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
+"caption": "الأرشيدوق فرانز فرديناند قبل اغتياله مباشرة.",
+"credit": "Wikimedia Commons / CC BY-SA 4.0"
+},
+"tag": "حرب"
+},
+{
+"startDate": "1918,11,11",
+"endDate": "1918,11,11",
+"headline": "هدنة 1918",
+"text": "<p>توقيع الهدنة في ريتوند، التي أنهت القتال.</p>",
+"tag": "معاهدة"
+}
+],
+"era": [
+{
+"startDate": "1914,07,28",
+"endDate": "1918,11,11",
+"headline": "الحرب العالمية الأولى",
+"text": "<div>إنها فترة الحرب العظمى.</div>",
+"tag": "فترة تاريخية"
+}
+]
+}
+}
+\`\`\` `,
     timeline_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات. سيتم استخدام النتيجة مباشرة في أداة أخرى.",
 
     // Crossword Prompt

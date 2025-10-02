@@ -102,6 +102,44 @@ const translations_de = {
     timeline_prompt_rule2: "2.  Suchen Sie für jedes `asset` aktiv nach einem relevanten, lizenzfreien Bild (z. B. Wikimedia Commons). Die URL in `media` muss ein direkter und gültiger Link sein. Geben Sie die Quelle und die Lizenz in `credit` an. Wenn kein passendes Bild gefunden wird, lassen Sie das `asset`-Objekt vollständig weg.",
     timeline_prompt_rule3: "3.  Fügen Sie für jeden Zeitraum (`era`) ein `text`-Feld mit einer kurzen Beschreibung und einem `tag` hinzu.",
     timeline_prompt_example_json_title: "**Beispiel-JSON-Struktur :**",
+    timeline_prompt_example: `\`\`\`json
+{
+"timeline": {
+"headline": "Titel der Zeitleiste",
+"text": "<p>Einführung in das Thema der Zeitleiste.</p>",
+"date": [
+{
+"startDate": "1914,07,28",
+"endDate": "1914,07,28",
+"headline": "Beginn des Ersten Weltkriegs",
+"text": "<p>Österreich-Ungarn erklärt Serbien den Krieg.</p>",
+"asset": {
+"media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
+"caption": "Erzherzog Franz Ferdinand kurz vor seiner Ermordung.",
+"credit": "Wikimedia Commons / CC BY-SA 4.0"
+},
+"tag": "Krieg"
+},
+{
+"startDate": "1918,11,11",
+"endDate": "1918,11,11",
+"headline": "Waffenstillstand von 1918",
+"text": "<p>Unterzeichnung des Waffenstillstands in Rethondes, der das Ende der Kämpfe markiert.</p>",
+"tag": "Vertrag"
+}
+],
+"era": [
+{
+"startDate": "1914,07,28",
+"endDate": "1918,11,11",
+"headline": "Erster Weltkrieg",
+"text": "<div>Dies ist die Zeit des Großen Krieges.</div>",
+"tag": "Historische Periode"
+}
+]
+}
+}
+\`\`\` `,
     timeline_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code, ohne Kommentare. Das Ergebnis wird direkt von einem anderen Tool verwendet.",
 
     // Crossword Prompt
