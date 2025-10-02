@@ -2209,18 +2209,7 @@ ${pt.glossary_prompt_content_rules_title}
 ${pt.glossary_prompt_rule1}
 
 ${pt.glossary_prompt_example_json_title}
-\`\`\`json
-[
-{
-"title": "Photosynthèse",
-"text": "<p>Processus par lequel les plantes vertes transforment la lumière du soleil en énergie.</p>"
-},
-{
-"title": "Cellule",
-"text": "<p>Unité de base de tous les êtres vivants.</p>"
-}
-]
-\`\`\`
+${pt.glossary_prompt_example}
 
 ${pt.glossary_prompt_generate_only_json}${languageInstruction}`;
 

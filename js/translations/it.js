@@ -448,6 +448,18 @@ const translations_it = {
     glossary_prompt_rule1: "1. Le definizioni devono essere chiare, concise e adatte al livello degli studenti.",
     glossary_prompt_rule2: "",
     glossary_prompt_example_json_title: "**Esempio di JSON per una voce:**",
+    glossary_prompt_example: `\`\`\`json
+[
+{
+"title": "Fotosintesi",
+"text": "<p>Processo mediante il quale le piante verdi trasformano la luce solare in energia.</p>"
+},
+{
+"title": "Cellula",
+"text": "<p>Unità base di tutti gli esseri viventi.</p>"
+}
+]
+\`\`\` `,
     glossary_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento.",
 
     // Summary Prompt

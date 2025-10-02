@@ -448,6 +448,18 @@ const translations_jp = {
     glossary_prompt_rule1: "1. 定義は明確で簡潔、生徒のレベルに適している必要があります。",
     glossary_prompt_rule2: "",
     glossary_prompt_example_json_title: "**エントリのJSON例：**",
+    glossary_prompt_example: `\`\`\`json
+[
+{
+"title": "光合成",
+"text": "<p>緑色植物が太陽光をエネルギーに変換するプロセス。</p>"
+},
+{
+"title": "細胞",
+"text": "<p>すべての生物の基本単位。</p>"
+}
+]
+\`\`\` `,
     glossary_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 
     // Summary Prompt

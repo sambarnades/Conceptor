@@ -448,6 +448,18 @@ const translations_zh = {
     glossary_prompt_rule1: "1.  定义应清晰、简洁，并与学生水平相适应。",
     glossary_prompt_rule2: "",
     glossary_prompt_example_json_title: "**单个词条的 JSON 示例：**",
+    glossary_prompt_example: `\`\`\`json
+[
+{
+"title": "光合作用",
+"text": "<p>绿色植物将阳光转化为能量的过程。</p>"
+},
+{
+"title": "细胞",
+"text": "<p>所有生物的基本单位。</p>"
+}
+]
+\`\`\` `,
     glossary_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
 
     // Summary Prompt

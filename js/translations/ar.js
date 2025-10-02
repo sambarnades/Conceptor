@@ -448,6 +448,18 @@ const translations_ar = {
     glossary_prompt_rule1: "1. يجب أن تكون التعريفات واضحة وموجزة ومناسبة لمستوى المتعلمين.",
     glossary_prompt_rule2: "",
     glossary_prompt_example_json_title: "**مثال JSON لمدخل واحد:**",
+    glossary_prompt_example: `\`\`\`json
+[
+{
+"title": "البناء الضوئي",
+"text": "<p>عملية تقوم من خلالها النباتات الخضراء بتحويل ضوء الشمس إلى طاقة.</p>"
+},
+{
+"title": "خلية",
+"text": "<p>الوحدة الأساسية لجميع الكائنات الحية.</p>"
+}
+]
+\`\`\` `,
     glossary_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
 
     // Summary Prompt

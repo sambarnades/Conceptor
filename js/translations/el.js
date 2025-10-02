@@ -448,6 +448,18 @@ const translations_el = {
     glossary_prompt_rule1: "1. Οι ορισμοί να είναι σαφείς, συνοπτικοί και κατάλληλοι για το επίπεδο των μαθητών.",
     glossary_prompt_rule2: "",
     glossary_prompt_example_json_title: "**Παράδειγμα JSON για μία καταχώριση:**",
+    glossary_prompt_example: `\`\`\`json
+[
+{
+"title": "Φωτοσύνθεση",
+"text": "<p>Διαδικασία με την οποία τα πράσινα φυτά μετατρέπουν το ηλιακό φως σε ενέργεια.</p>"
+},
+{
+"title": "Κύτταρο",
+"text": "<p>Η βασική μονάδα όλων των ζωντανών οργανισμών.</p>"
+}
+]
+\`\`\` `,
     glossary_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
 
     // Summary Prompt

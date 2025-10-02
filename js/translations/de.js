@@ -448,6 +448,18 @@ const translations_de = {
     glossary_prompt_rule1: "1.  Definitionen müssen klar, prägnant und an das Niveau der Schüler angepasst sein.",
     glossary_prompt_rule2: "",
     glossary_prompt_example_json_title: "**Beispiel-JSON für einen Eintrag :**",
+    glossary_prompt_example: `\`\`\`json
+[
+{
+"title": "Photosynthese",
+"text": "<p>Prozess, bei dem grüne Pflanzen Sonnenlicht in Energie umwandeln.</p>"
+},
+{
+"title": "Zelle",
+"text": "<p>Grundeinheit aller Lebewesen.</p>"
+}
+]
+\`\`\` `,
     glossary_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code, ohne Kommentare.",
 
     // Summary Prompt

@@ -448,6 +448,18 @@ const translations_nl = {
     glossary_prompt_rule1: "1.  Definities moeten duidelijk, beknopt en passend bij het niveau van de leerlingen zijn.",
     glossary_prompt_rule2: "",
     glossary_prompt_example_json_title: "**JSON-voorbeeld voor één item:**",
+    glossary_prompt_example: `\`\`\`json
+[
+{
+"title": "Fotosynthese",
+"text": "<p>Proces waarbij groene planten zonlicht omzetten in energie.</p>"
+},
+{
+"title": "Cel",
+"text": "<p>De basiseenheid van alle levende wezens.</p>"
+}
+]
+\`\`\` `,
     glossary_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
 
     // Summary Prompt
