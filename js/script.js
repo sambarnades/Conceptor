@@ -2230,19 +2230,7 @@ ${pt.summary_prompt_rule2}
 ${pt.summary_prompt_rule3}
 
 ${pt.summary_prompt_example_json_title}
-\`\`\`json
-{
-"summaries": [
-{
-"summary": [
-    "Ceci est la phrase correcte.",
-    "Ceci est un distracteur.",
-    "Ceci est un autre distracteur."
-]
-}
-]
-}
-\`\`\`
+${pt.summary_prompt_example}
 
 ${pt.summary_prompt_generate_only_json}${languageInstruction}`;
 

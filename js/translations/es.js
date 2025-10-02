@@ -478,6 +478,19 @@ const translations_es = {
     summary_prompt_rule2: "2.  Las frases siguientes son distractores plausibles pero incorrectos.",
     summary_prompt_rule3: "3.  Todas las frases correctas deben formar un resumen coherente.",
     summary_prompt_example_json_title: "**Ejemplo de JSON para un paso :**",
+    summary_prompt_example: `\`\`\`json
+{
+"summaries": [
+{
+"summary": [
+    "Esta es la frase correcta.",
+    "Este es un distractor.",
+    "Este es otro distractor."
+]
+}
+]
+}
+\`\`\` `,
     summary_prompt_overall_feedback: "`overallFeedback`: Un array de 6 objetos para el feedback final, con puntuaciones de 0-10, 11-30, 31-50, 51-70, 71-90 y 91-100. El texto (`feedback`) debe ser benévolo, gradual y siempre formulado en afirmativo, relacionado con el tema.",
     summary_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario.",
 

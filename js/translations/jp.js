@@ -478,6 +478,19 @@ const translations_jp = {
     summary_prompt_rule2: "2. 続く文は、もっともらしいが間違っている選択肢です。",
     summary_prompt_rule3: "3. 正解の文の集合は一貫した要約を形成する必要があります。",
     summary_prompt_example_json_title: "**ステップのJSON例：**",
+    summary_prompt_example: `\`\`\`json
+{
+"summaries": [
+{
+"summary": [
+    "これは正しい文です。",
+    "これは誤答です。",
+    "これは別の誤答です。"
+]
+}
+]
+}
+\`\`\` `,
     summary_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現し、トピックに関連している必要があります。",
     summary_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 

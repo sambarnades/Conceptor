@@ -478,6 +478,19 @@ const translations_de = {
     summary_prompt_rule2: "2.  Nachfolgende Sätze sind plausible, aber falsche Ablenker.",
     summary_prompt_rule3: "3.  Alle richtigen Sätze müssen eine kohärente Zusammenfassung bilden.",
     summary_prompt_example_json_title: "**Beispiel-JSON für einen Schritt :**",
+    summary_prompt_example: `\`\`\`json
+{
+"summaries": [
+{
+"summary": [
+    "Dies ist der richtige Satz.",
+    "Dies ist ein Ablenker.",
+    "Dies ist ein weiterer Ablenker."
+]
+}
+]
+}
+\`\`\` `,
     summary_prompt_overall_feedback: "`overallFeedback`: Ein Array von 6 Objekten für das abschließende Feedback mit Punktzahlen von 0-10, 11-30, 31-50, 51-70, 71-90 und 91-100. Der Text (`feedback`) muss wohlwollend, schrittweise und immer positiv formuliert sein und sich auf das Thema beziehen.",
     summary_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code, ohne Kommentare.",
 

@@ -478,6 +478,19 @@ const translations_nl = {
     summary_prompt_rule2: "2.  De volgende zinnen zijn plausibele maar onjuiste afleiders.",
     summary_prompt_rule3: "3.  Alle correcte zinnen samen vormen een coherente samenvatting.",
     summary_prompt_example_json_title: "**JSON-voorbeeld voor één stap:**",
+    summary_prompt_example: `\`\`\`json
+{
+"summaries": [
+{
+"summary": [
+    "Dit is de juiste zin.",
+    "Dit is een afleider.",
+    "Dit is nog een afleider."
+]
+}
+]
+}
+\`\`\` `,
     summary_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn, en gerelateerd aan het onderwerp.",
     summary_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
 

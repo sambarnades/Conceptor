@@ -478,6 +478,19 @@ const translations_zh = {
     summary_prompt_rule2: "2.  其余句子为看似合理但错误的干扰项。",
     summary_prompt_rule3: "3.  所有正确句子组合后应构成连贯的摘要。",
     summary_prompt_example_json_title: "**单个步骤的 JSON 示例：**",
+   summary_prompt_example: `\`\`\`json
+{
+"summaries": [
+{
+"summary": [
+    "这是正确的句子。",
+    "这是一个干扰项。",
+    "这是另一个干扰项。"
+]
+}
+]
+}
+\`\`\` `,
     summary_prompt_overall_feedback: "`overallFeedback`: 一个包含6个对象的数组，用于最终反馈，分数范围为0-10、11-30、31-50、51-70、71-90和91-100。文本（`feedback`）必须是善意的、渐进的，并且始终以肯定的方式表达，与主题相关。",
     summary_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
 
