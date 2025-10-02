@@ -551,6 +551,14 @@ const translations_en = {
     blanks_prompt_rule2: "-   For alternative answers, use a slash: *Paris/City of Light*.",
     blanks_prompt_rule3: "-   To add a tooltip, use a colon: *open-source:Public source code*.",
     blanks_prompt_example_json_title: "**Example JSON :**",
+    blanks_prompt_example: `\`\`\`json
+{
+"questions": [
+"The solar system has *eight* planets. The largest is *Jupiter*.",
+"The capital of France is *Paris/City of Light*."
+]
+}
+\`\`\` `,
     blanks_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
     blanks_prompt_overall_feedback: "`overallFeedback`: An array of 6 objects for the final feedback, with scores from 0-10, 11-30, 31-50, 51-70, 71-90, and 91-100. The text (`feedback`) must be benevolent, gradual, and always phrased affirmatively, related to the topic.",
 

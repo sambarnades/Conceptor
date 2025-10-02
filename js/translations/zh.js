@@ -551,6 +551,14 @@ const translations_zh = {
     blanks_prompt_rule2: "-  若有备选答案，用斜杠分隔：*巴黎/光之城*。",
     blanks_prompt_rule3: "-  若要添加提示，用冒号：*开源:公开的源代码*。",
     blanks_prompt_example_json_title: "**JSON 示例：**",
+    blanks_prompt_example: `\`\`\`json
+{
+"questions": [
+"太阳系有*八*颗行星。最大的是*木星*。",
+"法国的首都是*巴黎/光之城*。"
+]
+}
+\`\`\` `,
     blanks_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
     blanks_prompt_overall_feedback: "`overallFeedback`: 一个包含6个对象的数组，用于最终反馈，分数范围为0-10、11-30、31-50、51-70、71-90和91-100。文本（`feedback`）必须是善意的、渐进的，并且始终以肯定的方式表达，与主题相关。",
 

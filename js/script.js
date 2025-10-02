@@ -2271,14 +2271,7 @@ ${pt.blanks_prompt_rule2}
 ${pt.blanks_prompt_rule3}
 
 ${pt.blanks_prompt_example_json_title}
-\`\`\`json
-{
-"questions": [
-"Le système solaire a *huit* planètes. La plus grande est *Jupiter*.",
-"La capitale de la France est *Paris/Ville Lumière*."
-]
-}
-\`\`\`
+${pt.blanks_prompt_example}
 
 ${pt.blanks_prompt_generate_only_json}${languageInstruction}`;
 

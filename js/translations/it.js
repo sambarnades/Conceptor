@@ -551,6 +551,14 @@ const translations_it = {
     blanks_prompt_rule2: "- Per risposte alternative, usa una barra: *Parigi/Città della Luce*.",
     blanks_prompt_rule3: "- Per aggiungere un suggerimento, usa i due punti: *open-source:Codice sorgente pubblico*.",
     blanks_prompt_example_json_title: "**Esempio di JSON:**",
+    blanks_prompt_example: `\`\`\`json
+{
+"questions": [
+"Il sistema solare ha *otto* pianeti. Il più grande è *Giove*.",
+"La capitale della Francia è *Parigi/Città della Luce*."
+]
+}
+\`\`\` `,
     blanks_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento.",
     blanks_prompt_overall_feedback: "`overallFeedback`: Un array di 6 oggetti per il feedback finale, con punteggi da 0-10, 11-30, 31-50, 51-70, 71-90 e 91-100. Il testo (`feedback`) deve essere benevolo, graduale e sempre formulato in modo affermativo, in relazione al tema.",
 

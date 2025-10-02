@@ -551,6 +551,14 @@ const translations_jp = {
     blanks_prompt_rule2: "- 代替回答には、スラッシュを使用してください：*Paris/光の都*。",
     blanks_prompt_rule3: "- ツールチップを追加するには、コロンを使用してください：*オープンソース:公開されたソースコード*。",
     blanks_prompt_example_json_title: "**JSONの例：**",
+    blanks_prompt_example: `\`\`\`json
+{
+"questions": [
+"太陽系には*8*つの惑星があり、最大のものは*木星*です。",
+"フランスの首都は*パリ/光の都*です。"
+]
+}
+\`\`\` `,
     blanks_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
     blanks_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現し、トピックに関連している必要があります。",
 
