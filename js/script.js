@@ -2251,12 +2251,7 @@ ${pt.drag_word_prompt_rule1}
 ${pt.drag_word_prompt_rule2.replace('${nombreQuestions}', nombreQuestions)}
 
 ${pt.drag_word_prompt_example_json_title}
-\`\`\`json
-{
-"taskDescription": "Complète le texte en faisant glisser les mots.",
-"textField": "Le *système solaire* est composé de *huit* planètes qui tournent autour du *Soleil*."
-}
-\`\`\`
+${pt.drag_word_prompt_example}
 
 ${pt.drag_word_prompt_generate_only_json}${languageInstruction}`;
 

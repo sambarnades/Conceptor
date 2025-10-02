@@ -520,6 +520,12 @@ const translations_fr = {
     drag_word_prompt_rule1: "1.  Crée un texte cohérent sur le thème, avec des phrases courtes se terminant par `\\n`.",
     drag_word_prompt_rule2: "2.  Les mots à glisser sont entourés d'astérisques. Tu peux ajouter une aide avec `:mon aide` et un feedback avec `\\+feedback correct \\-feedback incorrect`.",
     drag_word_prompt_example_json_title: "**Exemple de JSON :**",
+    drag_word_prompt_example: `\`\`\`json
+{
+"taskDescription": "Complète le texte en faisant glisser les mots.",
+"textField": "Le *système solaire* est composé de *huit* planètes qui tournent autour du *Soleil*."
+}
+ \`\`\` `,
     drag_word_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire.",
     drag_word_prompt_overall_feedback: "`overallFeedback`: Un tableau de 6 objets pour le feedback final, avec les scores de 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Le texte (`feedback`) doit être bienveillant, graduel, et toujours tourné à l'affirmative, en lien avec le sujet.",
 

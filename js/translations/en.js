@@ -520,6 +520,12 @@ const translations_en = {
     drag_word_prompt_rule1: "1.  Create a coherent text on the theme, with short sentences ending with `\\n`.",
     drag_word_prompt_rule2: "2.  Draggable words are enclosed in asterisks. You can add a tip with `:my tip` and feedback with `\\+correct feedback \\-incorrect feedback`.",
     drag_word_prompt_example_json_title: "**Example JSON :**",
+    drag_word_prompt_example: `\`\`\`json
+{
+"taskDescription": "Complete the text by dragging the words.",
+"textField": "The *solar system* is made up of *eight* planets that orbit the *Sun*."
+}
+ \`\`\` `,
     drag_word_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
     drag_word_prompt_overall_feedback: "`overallFeedback`: An array of 6 objects for the final feedback, with scores from 0-10, 11-30, 31-50, 51-70, 71-90, and 91-100. The text (`feedback`) must be benevolent, gradual, and always phrased affirmatively, related to the topic.",
 

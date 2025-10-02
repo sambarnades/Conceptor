@@ -520,6 +520,12 @@ const translations_zh = {
     drag_word_prompt_rule1: "1.  围绕主题创作连贯的短句文本，每句以 `\\n` 结尾。",
     drag_word_prompt_rule2: "2.  可拖动的词用星号包裹。你可以用 `:我的提示` 添加提示，用 `\\+正确反馈 \\-错误反馈` 添加反馈。",
     drag_word_prompt_example_json_title: "**JSON 示例：**",
+    drag_word_prompt_example: `\`\`\`json
+{
+"taskDescription": "通过拖动单词完成文本。",
+"textField": "*太阳系*由*八*颗行星组成，这些行星围绕*太阳*运行。"
+}
+ \`\`\` `,
     drag_word_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
     drag_word_prompt_overall_feedback: "`overallFeedback`: 一个包含6个对象的数组，用于最终反馈，分数范围为0-10、11-30、31-50、51-70、71-90和91-100。文本（`feedback`）必须是善意的、渐进的，并且始终以肯定的方式表达，与主题相关。",
 

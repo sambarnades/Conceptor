@@ -520,6 +520,12 @@ const translations_nl = {
     drag_word_prompt_rule1: "1.  Schrijf een coherente tekst over het thema, met korte zinnen die eindigen op `\\n`.",
     drag_word_prompt_rule2: "2.  Versleepbare woorden staan tussen asterisken. U kunt een tip toevoegen met `:mijn tip` en feedback met `\\+juiste feedback \\-onjuiste feedback`.",
     drag_word_prompt_example_json_title: "**JSON-voorbeeld:**",
+    drag_word_prompt_example: `\`\`\`json
+{
+"taskDescription": "Vul de tekst aan door de woorden te verslepen.",
+"textField": "Het *zonnestelsel* bestaat uit *acht* planeten die rond de *zon* draaien."
+}
+ \`\`\` `,
     drag_word_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
     drag_word_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn, en gerelateerd aan het onderwerp.",
 

@@ -520,6 +520,12 @@ const translations_jp = {
     drag_word_prompt_rule1: "1. テーマに関する一貫した短い文でテキストを作成し、各文を `\\n` で終えてください。",
     drag_word_prompt_rule2: "2. ドラッグ可能な単語はアスタリスクで囲みます。ヒントは `:私のヒント` で、フィードバックは `\\+正しいフィードバック \\-不正解のフィードバック` で追加できます。",
     drag_word_prompt_example_json_title: "**JSONの例：**",
+    drag_word_prompt_example: `\`\`\`json
+{
+"taskDescription": "単語をドラッグして文章を完成させなさい。",
+"textField": "*太陽系*は*8*つの惑星で構成されており、これらは*太陽*の周りを公転している。"
+}
+ \`\`\` `,
     drag_word_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
     drag_word_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現し、トピックに関連している必要があります。",
 
