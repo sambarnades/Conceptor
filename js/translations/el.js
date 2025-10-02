@@ -208,6 +208,21 @@ const translations_el = {
     essay_prompt_rule3: "3. Η δομή JSON (συμπεριφορά κ.λπ.) διατηρείται.",
     essay_prompt_rule4: "4. Η οδηγία (`taskDescription`) πρέπει να ενθαρρύνει τη συγγραφή χωρίς να χρησιμοποιεί τις λέξεις-κλειδιά που αναφέρονται στο `keywords`, εκτός από το όνομα του θέματος εάν είναι απαραίτητο για την κατανόηση.",
     essay_prompt_example_json_title: "**Παράδειγμα JSON για λέξη-κλειδί:**",
+    essay_prompt_example: `\`\`\`json
+{
+"taskDescription": "<p>Γράψε ένα σύντομο κείμενο που εξηγεί τη φωτοσύνθεση.</p>",
+"keywords": [
+{
+"keyword": "φως",
+"options": { "points": 1, "caseSensitive": false }
+},
+{
+"keyword": "χλωροφύλλη",
+"options": { "points": 1, "caseSensitive": false }
+}
+]
+}
+\`\`\` `,
     essay_prompt_generate_only_json: "Παρήγαγε πλήρες και έγκυρο JSON, συμπληρώνοντας την οδηγία και τη λίστα λέξεων-κλειδιών, χωρίς άλλα σχόλια.",
 
     // Moodle XML Prompt

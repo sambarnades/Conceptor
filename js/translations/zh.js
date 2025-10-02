@@ -208,6 +208,21 @@ const translations_zh = {
     essay_prompt_rule3: "3. 保持 JSON 结构（行为等）不变。",
     essay_prompt_rule4: "4. 指示（`taskDescription`）应鼓励写作，而不是使用`keywords`中列出的关键字，除非为了理解需要使用主题名称。",
     essay_prompt_example_json_title: "**单个关键词的 JSON 示例：**",
+    essay_prompt_example: `\`\`\`json
+{
+"taskDescription": "<p>写一段简短的文字解释光合作用。</p>",
+"keywords": [
+{
+"keyword": "光",
+"options": { "points": 1, "caseSensitive": false }
+},
+{
+"keyword": "叶绿素",
+"options": { "points": 1, "caseSensitive": false }
+}
+]
+}
+\`\`\` `,
     essay_prompt_generate_only_json: "生成完整有效的 JSON，填写指令与关键词清单，不要添加其它注释。",
 
     // Moodle XML Prompt

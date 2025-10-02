@@ -208,6 +208,20 @@ const translations_ar = {
     essay_prompt_rule3: "3. تُحفَظ بنية JSON (السلوك، إلخ).",
     essay_prompt_rule4: "4. يجب أن تشجع التعليمات (`taskDescription`) على الكتابة دون استخدام الكلمات المفتاحية المدرجة في `keywords`، باستثناء اسم الموضوع إذا كان ذلك ضروريًا للفهم.",
     essay_prompt_example_json_title: "**مثال JSON لكلمة مفتاحية:**",
+    essay_prompt_example: `\`\`\`json
+{
+"taskDescription": "<p>اكتب نصًا قصيرًا يشرح عملية البناء الضوئي.</p>",
+"keywords": [
+{
+"keyword": "ضوء",
+"options": { "points": 1, "caseSensitive": false }
+},
+{
+"keyword": "كلوروفيل",
+"options": { "points": 1, "caseSensitive": false }
+}
+]
+\`\`\` `,
     essay_prompt_generate_only_json: "ولِّد JSON كاملًا وصالحًا بملء التعليمات وقائمة الكلمات المفتاحية دون أي تعليقات.",
 
     // Moodle XML Prompt

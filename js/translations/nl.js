@@ -208,6 +208,21 @@ const translations_nl = {
     essay_prompt_rule3: "3.  De JSON-structuur (gedrag, enz.) blijft behouden.",
     essay_prompt_rule4: "4. De instructie (`taskDescription`) moet het schrijven aanmoedigen zonder de trefwoorden uit `keywords` te gebruiken, behalve de naam van het thema als dat nodig is voor het begrip.",
     essay_prompt_example_json_title: "**JSON-voorbeeld voor één trefwoord:**",
+    essay_prompt_example: `\`\`\`json
+{
+"taskDescription": "<p>Schrijf een korte tekst die de fotosynthese uitlegt.</p>",
+"keywords": [
+{
+"keyword": "licht",
+"options": { "points": 1, "caseSensitive": false }
+},
+{
+"keyword": "chlorofyl",
+"options": { "points": 1, "caseSensitive": false }
+}
+]
+}
+\`\`\` `,
     essay_prompt_generate_only_json: "Genereer de volledige en geldige JSON door de opdracht en de lijst met trefwoorden in te vullen, zonder verdere opmerkingen.",
 
     // Moodle XML Prompt

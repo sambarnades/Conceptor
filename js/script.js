@@ -2056,21 +2056,7 @@ ${pt.essay_prompt_rule3}
 ${pt.essay_prompt_rule4}
 
 ${pt.essay_prompt_example_json_title}
-\`\`\`json
-{
-"taskDescription": "<p>Rédige un court texte expliquant la photosynthèse.</p>",
-"keywords": [
-{
-"keyword": "lumière",
-"options": { "points": 1, "caseSensitive": false }
-},
-{
-"keyword": "chlorophylle",
-"options": { "points": 1, "caseSensitive": false }
-}
-]
-}
-\`\`\`
+${pt.essay_prompt_example}
 
 ${pt.essay_prompt_generate_only_json}${languageInstruction}`;
 

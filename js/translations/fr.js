@@ -208,6 +208,21 @@ const translations_fr = {
     essay_prompt_rule3: "3.  La structure JSON (comportement, etc.) doit être conservée.",
     essay_prompt_rule4: "4. La consigne (`taskDescription`) doit inciter à la rédaction sans utiliser les mots-clés listés dans `keywords`, à l'exception du nom du thème si nécessaire pour la compréhension.",
     essay_prompt_example_json_title: "**Exemple de JSON pour un mot-clé :**",
+    essay_prompt_example: `\`\`\`json
+{
+"taskDescription": "<p>Rédige un court texte expliquant la photosynthèse.</p>",
+"keywords": [
+{
+"keyword": "lumière",
+"options": { "points": 1, "caseSensitive": false }
+},
+{
+"keyword": "chlorophylle",
+"options": { "points": 1, "caseSensitive": false }
+}
+]
+}
+\`\`\` `,
     essay_prompt_generate_only_json: "Génère le JSON complet et valide, en remplissant la consigne et la liste de mots-clés, sans aucun autre commentaire.",
 
     // Moodle XML Prompt

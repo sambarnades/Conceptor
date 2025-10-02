@@ -208,6 +208,21 @@ const translations_jp = {
     essay_prompt_rule3: "3. JSON構造（動作など）は保持してください。",
     essay_prompt_rule4: "4. 指示（`taskDescription`）は、理解のために必要な場合を除き、`keywords`にリストされているキーワードを使用せずに書くことを奨励する必要があります。",
     essay_prompt_example_json_title: "**キーワードのJSON例：**",
+    essay_prompt_example: `\`\`\`json
+{
+"taskDescription": "<p>光合成を説明する短い文章を書きなさい。</p>",
+"keywords": [
+{
+"keyword": "光",
+"options": { "points": 1, "caseSensitive": false }
+},
+{
+"keyword": "クロロフィル",
+"options": { "points": 1, "caseSensitive": false }
+}
+]
+}
+\`\`\` `,
     essay_prompt_generate_only_json: "指示とキーワードリストを埋めた完全で有効なJSONを、他のコメントなしで生成してください。",
 
     // Moodle XML Prompt
