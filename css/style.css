@@ -911,3 +911,8 @@ textarea::placeholder {
 .language-btn span, .help-btn span {
     display: block;
 }
+
+
+.language-btn .fi {
+    font-size: 18px;
+}
