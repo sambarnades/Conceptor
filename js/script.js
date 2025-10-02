@@ -2319,18 +2319,7 @@ ${pt.millionnaire_prompt_good_answer}
 ${pt.millionnaire_prompt_bad_answer}
 
 ${pt.millionnaire_prompt_example_json_title}
-\`\`\`json
-{
-"title": "Quiz sur la Révolution Française",
-"questions": [
-{
-"question": "Quelle est la capitale de la France ?",
-"goodanswer": "Paris",
-"badanswer": ["Berlin", "Londres", "Madrid"]
-}
-]
-}
-\`\`\`
+${pt.millionnaire_prompt_example}
 
 ${pt.millionnaire_prompt_generate_only_json}${languageInstruction}`;
 

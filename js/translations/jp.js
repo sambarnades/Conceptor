@@ -648,6 +648,18 @@ const translations_jp = {
     millionnaire_prompt_good_answer: "- `goodanswer`：正解（文字列）。",
     millionnaire_prompt_bad_answer: "- `badanswer`：3つの間違った回答の配列（文字列）。",
     millionnaire_prompt_example_json_title: "**JSONの例：**",
+    millionnaire_prompt_example: `\`\`\`json
+{
+"title": "フランス革命に関するクイズ",
+"questions": [
+{
+"question": "フランスの首都はどこですか？",
+"goodanswer": "パリ",
+"badanswer": ["ベルリン", "ロンドン", "マドリード"]
+}
+]
+}
+\`\`\` `,
     millionnaire_prompt_generate_only_json: "コメントなしで、有効なJSONオブジェクトのみを生成してください。",
 
     // Appariement Prompt

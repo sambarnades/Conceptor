@@ -648,6 +648,18 @@ const translations_ar = {
     millionnaire_prompt_good_answer: "- `goodanswer`: الإجابة الصحيحة (سلسلة).",
     millionnaire_prompt_bad_answer: "- `badanswer`: مصفوفة من 3 إجابات خاطئة (سلاسل).",
     millionnaire_prompt_example_json_title: "**مثال JSON:**",
+    millionnaire_prompt_example: `\`\`\`json
+{
+"title": "اختبار حول الثورة الفرنسية",
+"questions": [
+{
+"question": "ما هي عاصمة فرنسا؟",
+"goodanswer": "باريس",
+"badanswer": ["برلين", "لندن", "مدريد"]
+}
+]
+}
+\`\`\` `,
     millionnaire_prompt_generate_only_json: "ولِّد الكائن JSON الصالح فقط دون أي تعليقات.",
 
     // Appariement Prompt

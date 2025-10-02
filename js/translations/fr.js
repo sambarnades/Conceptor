@@ -648,6 +648,18 @@ const translations_fr = {
     millionnaire_prompt_good_answer: "- `goodanswer`: La bonne réponse (chaîne de caractères).",
     millionnaire_prompt_bad_answer: "- `badanswer`: Un tableau de 3 mauvaises réponses (chaînes de caractères).",
     millionnaire_prompt_example_json_title: "**Exemple de JSON :**",
+    millionnaire_prompt_example: `\`\`\`json
+{
+"title": "Quiz sur la Révolution Française",
+"questions": [
+{
+"question": "Quelle est la capitale de la France ?",
+"goodanswer": "Paris",
+"badanswer": ["Berlin", "Londres", "Madrid"]
+}
+]
+}
+\`\`\` `,
     millionnaire_prompt_generate_only_json: "Génère uniquement l'objet JSON valide, sans aucun commentaire.",
 
     // Appariement Prompt

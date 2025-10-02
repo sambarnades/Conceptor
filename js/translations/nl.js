@@ -648,6 +648,18 @@ const translations_nl = {
     millionnaire_prompt_good_answer: "- `goodanswer`: Het juiste antwoord (string).",
     millionnaire_prompt_bad_answer: "- `badanswer`: Een array met 3 foute antwoorden (strings).",
     millionnaire_prompt_example_json_title: "**JSON-voorbeeld:**",
+   millionnaire_prompt_example: `\`\`\`json
+{
+"title": "Quiz over de Franse Revolutie",
+"questions": [
+{
+"question": "Wat is de hoofdstad van Frankrijk?",
+"goodanswer": "Parijs",
+"badanswer": ["Berlijn", "Londen", "Madrid"]
+}
+]
+}
+\`\`\` `,
     millionnaire_prompt_generate_only_json: "Genereer uitsluitend het geldige JSON-object, zonder commentaar.",
 
     // Appariement Prompt

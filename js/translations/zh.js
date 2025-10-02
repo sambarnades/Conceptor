@@ -648,6 +648,18 @@ const translations_zh = {
     millionnaire_prompt_good_answer: "- `goodanswer`：正确答案（字符串）。",
     millionnaire_prompt_bad_answer: "- `badanswer`：3 个错误答案的数组（字符串）。",
     millionnaire_prompt_example_json_title: "**JSON 示例：**",
+    millionnaire_prompt_example: `\`\`\`json
+{
+"title": "关于法国大革命的测验",
+"questions": [
+{
+"question": "法国的首都是哪里？",
+"goodanswer": "巴黎",
+"badanswer": ["柏林", "伦敦", "马德里"]
+}
+]
+}
+\`\`\` `,
     millionnaire_prompt_generate_only_json: "仅生成有效的 JSON 对象，不要添加任何注释。",
 
     // Appariement Prompt

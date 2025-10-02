@@ -648,6 +648,18 @@ const translations_el = {
     millionnaire_prompt_good_answer: "- `goodanswer`: Η σωστή απάντηση (string).",
     millionnaire_prompt_bad_answer: "- `badanswer`: Πίνακας με 3 λανθασμένες απαντήσεις (strings).",
     millionnaire_prompt_example_json_title: "**Παράδειγμα JSON:**",
+    millionnaire_prompt_example: `\`\`\`json
+{
+"title": "Κουίζ για τη Γαλλική Επανάσταση",
+"questions": [
+{
+"question": "Ποια είναι η πρωτεύουσα της Γαλλίας;",
+"goodanswer": "Παρίσι",
+"badanswer": ["Βερολίνο", "Λονδίνο", "Μαδρίτη"]
+}
+]
+}
+\`\`\` `,
     millionnaire_prompt_generate_only_json: "Παράγετε μόνο το έγκυρο αντικείμενο JSON, χωρίς σχόλια.",
 
     // Appariement Prompt
