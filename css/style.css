@@ -845,8 +845,8 @@ textarea::placeholder {
 }
 
 @keyframes slideIn {
-    from {transform: translateY(-50px); opacity: 0;}
-    to {transform: translateY(0); opacity: 1;}
+    from {transform: scale(0.95); opacity: 0.5;}
+    to {transform: scale(1); opacity: 1;}
 }
 
 .action-btn.albert-btn {

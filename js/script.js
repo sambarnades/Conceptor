@@ -1220,11 +1220,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Afficher la modale
         modal.style.display = 'block';
 
-        // Animer les sections
-        const sections = modal.querySelectorAll('.help-section');
-        sections.forEach((section, index) => {
-            section.style.animationDelay = `${index * 0.15}s`;
-        });
+        // Les animations de section ont été supprimées pour améliorer les performances.
 
         // Gérer la fermeture
         const closeModal = () => {
