@@ -709,6 +709,21 @@ const translations_de = {
     qcm_prompt_answer_text: "- `text`: Der Antworttext (Zeichenkette, kann HTML enthalten).",
     qcm_prompt_answer_iscorrect: "- `iscorrect`: 1, wenn die Antwort richtig ist, sonst 0.",
     qcm_prompt_example_json_title: "**Beispiel-JSON:**",
+    qcm_prompt_example: `\`\`\`json
+{
+"title": "Multiple-Choice-Quiz über die Französische Revolution",
+"questions": [
+{
+"text": "<p>Wann war der Sturm auf die Bastille?</p>",
+"answers": [
+{ "text": "<p>14. Juli 1789</p>", "iscorrect": 1 },
+{ "text": "<p>4. August 1789</p>", "iscorrect": 0 },
+{ "text": "<p>26. August 1789</p>", "iscorrect": 0 }
+]
+}
+]
+}
+\`\`\` `,
     qcm_prompt_generate_only_json: "Erzeuge nur das gültige JSON-Objekt, ohne jeglichen Kommentar.",
 
     // H5P Modules

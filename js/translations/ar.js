@@ -709,6 +709,21 @@ const translations_ar = {
     qcm_prompt_answer_text: "- `text`: نص الإجابة (سلسلة محارف، قد تحتوي على HTML).",
     qcm_prompt_answer_iscorrect: "- `iscorrect`: 1 إذا كانت الإجابة صحيحة، وإلا 0.",
     qcm_prompt_example_json_title: "**مثال JSON:**",
+    qcm_prompt_example: `\`\`\`json
+{
+"title": "اختبار متعدد الاختيارات حول الثورة الفرنسية",
+"questions": [
+{
+"text": "<p>ما هو تاريخ اقتحام سجن الباستيل؟</p>",
+"answers": [
+{ "text": "<p>14 يوليو 1789</p>", "iscorrect": 1 },
+{ "text": "<p>4 أغسطس 1789</p>", "iscorrect": 0 },
+{ "text": "<p>26 أغسطس 1789</p>", "iscorrect": 0 }
+]
+}
+]
+}
+\`\`\` `,
     qcm_prompt_generate_only_json: "أنشئ فقط كائن JSON صالحًا، دون أي تعليق.",
 
     // H5P Modules

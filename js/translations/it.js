@@ -709,6 +709,21 @@ const translations_it = {
     qcm_prompt_answer_text: "- `text`: Il testo della risposta (stringa, può contenere HTML).",
     qcm_prompt_answer_iscorrect: "- `iscorrect`: 1 se la risposta è corretta, altrimenti 0.",
     qcm_prompt_example_json_title: "**Esempio di JSON:**",
+    qcm_prompt_example: `\`\`\`json
+{
+"title": "QCM sulla Rivoluzione Francese",
+"questions": [
+{
+"text": "<p>Qual è la data della Presa della Bastiglia?</p>",
+"answers": [
+{ "text": "<p>14 luglio 1789</p>", "iscorrect": 1 },
+{ "text": "<p>4 agosto 1789</p>", "iscorrect": 0 },
+{ "text": "<p>26 agosto 1789</p>", "iscorrect": 0 }
+]
+}
+]
+}
+\`\`\` `,
     qcm_prompt_generate_only_json: "Genera solo l'oggetto JSON valido, senza alcun commento.",
 
     // H5P Modules

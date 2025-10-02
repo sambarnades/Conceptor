@@ -709,6 +709,21 @@ const translations_el = {
     qcm_prompt_answer_text: "- `text`: Το κείμενο της απάντησης (συμβολοσειρά, μπορεί να περιέχει HTML).",
     qcm_prompt_answer_iscorrect: "- `iscorrect`: 1 αν η απάντηση είναι σωστή, αλλιώς 0.",
     qcm_prompt_example_json_title: "**Παράδειγμα JSON:**",
+    qcm_prompt_example: `\`\`\`json
+{
+"title": "Πολλαπλής επιλογής για τη Γαλλική Επανάσταση",
+"questions": [
+{
+"text": "<p>Ποια είναι η ημερομηνία της Άλωσης της Βαστίλης;</p>",
+"answers": [
+{ "text": "<p>14 Ιουλίου 1789</p>", "iscorrect": 1 },
+{ "text": "<p>4 Αυγούστου 1789</p>", "iscorrect": 0 },
+{ "text": "<p>26 Αυγούστου 1789</p>", "iscorrect": 0 }
+]
+}
+]
+}
+\`\`\` `,
     qcm_prompt_generate_only_json: "Παρήγαγε μόνο το έγκυρο αντικείμενο JSON, χωρίς κανένα σχόλιο.",
 
     // H5P Modules

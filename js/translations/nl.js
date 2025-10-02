@@ -709,7 +709,22 @@ const translations_nl = {
     qcm_prompt_answer_text: "- `text`: De antwoordtekst (tekenreeks, kan HTML bevatten).",
     qcm_prompt_answer_iscorrect: "- `iscorrect`: 1 als het antwoord juist is, anders 0.",
     qcm_prompt_example_json_title: "**Voorbeeld-JSON:**",
-    qcm_prompt_generate_only_json: "Genereer alleen het geldige JSON-object, zonder enig commentaar.",
+    qcm_prompt_example: `\`\`\`json
+{
+"title": "Meerkeuzequiz over de Franse Revolutie",
+"questions": [
+{
+"text": "<p>Wat is de datum van de Bestorming van de Bastille?</p>",
+"answers": [
+{ "text": "<p>14 juli 1789</p>", "iscorrect": 1 },
+{ "text": "<p>4 augustus 1789</p>", "iscorrect": 0 },
+{ "text": "<p>26 augustus 1789</p>", "iscorrect": 0 }
+]
+}
+]
+}
+\`\`\` `,
+   qcm_prompt_generate_only_json: "Genereer alleen het geldige JSON-object, zonder enig commentaar.",
 
     // H5P Modules
     h5p_timeline_name: "Tijdlijn",

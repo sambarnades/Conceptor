@@ -2369,21 +2369,7 @@ ${pt.qcm_prompt_answer_text}
 ${pt.qcm_prompt_answer_iscorrect}
 
 ${pt.qcm_prompt_example_json_title}
-\`\`\`json
-{
-"title": "QCM sur la Révolution Française",
-"questions": [
-{
-"text": "<p>Quelle est la date de la prise de la Bastille ?</p>",
-"answers": [
-{ "text": "<p>14 juillet 1789</p>", "iscorrect": 1 },
-{ "text": "<p>4 août 1789</p>", "iscorrect": 0 },
-{ "text": "<p>26 août 1789</p>", "iscorrect": 0 }
-]
-}
-]
-}
-\`\`\`
+${pt.qcm_prompt_example}
 
 ${pt.qcm_prompt_generate_only_json}${languageInstruction}`;
  

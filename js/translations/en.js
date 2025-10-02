@@ -709,6 +709,21 @@ const translations_en = {
     qcm_prompt_answer_text: "- `text`: The answer text (string, may contain HTML).",
     qcm_prompt_answer_iscorrect: "- `iscorrect`: 1 if the answer is correct, 0 otherwise.",
     qcm_prompt_example_json_title: "**Example JSON:**",
+    qcm_prompt_example: `\`\`\`json
+{
+"title": "MCQ on the French Revolution",
+"questions": [
+{
+"text": "<p>What is the date of the Storming of the Bastille?</p>",
+"answers": [
+{ "text": "<p>July 14, 1789</p>", "iscorrect": 1 },
+{ "text": "<p>August 4, 1789</p>", "iscorrect": 0 },
+{ "text": "<p>August 26, 1789</p>", "iscorrect": 0 }
+]
+}
+]
+}
+\`\`\` `,
     qcm_prompt_generate_only_json: "Generate only the valid JSON object, with no comments.",
 
     // H5P Modules

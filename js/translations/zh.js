@@ -709,6 +709,21 @@ const translations_zh = {
     qcm_prompt_answer_text: "- `text`：答案文本（字符串，可以包含 HTML）。",
     qcm_prompt_answer_iscorrect: "- `iscorrect`：如果答案正确则为 1，否则为 0。",
     qcm_prompt_example_json_title: "**JSON 示例：**",
+    qcm_prompt_example: `\`\`\`json
+{
+"title": "关于法国大革命的多项选择题",
+"questions": [
+{
+"text": "<p>攻占巴士底狱的日期是？</p>",
+"answers": [
+{ "text": "<p>1789年7月14日</p>", "iscorrect": 1 },
+{ "text": "<p>1789年8月4日</p>", "iscorrect": 0 },
+{ "text": "<p>1789年8月26日</p>", "iscorrect": 0 }
+]
+}
+]
+}
+\`\`\` `,
     qcm_prompt_generate_only_json: "仅生成有效的 JSON 对象，不要添加任何注释。",
 
     // H5P Modules

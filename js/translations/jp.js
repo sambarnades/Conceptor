@@ -709,6 +709,21 @@ const translations_jp = {
     qcm_prompt_answer_text: "- `text`: 回答文（文字列、HTMLを含むことがある）。",
     qcm_prompt_answer_iscorrect: "- `iscorrect`: 回答が正しければ1、そうでなければ0。",
     qcm_prompt_example_json_title: "**JSON例：**",
+    qcm_prompt_example: `\`\`\`json
+{
+"title": "フランス革命に関する多肢選択クイズ",
+"questions": [
+{
+"text": "<p>バスティーユ襲撃の日付はいつですか？</p>",
+"answers": [
+{ "text": "<p>1789年7月14日</p>", "iscorrect": 1 },
+{ "text": "<p>1789年8月4日</p>", "iscorrect": 0 },
+{ "text": "<p>1789年8月26日</p>", "iscorrect": 0 }
+]
+}
+]
+}
+\`\`\` `,
     qcm_prompt_generate_only_json: "有効なJSONオブジェクトのみを生成し、コメントは一切付けないでください。",
 
     // H5P Modules
