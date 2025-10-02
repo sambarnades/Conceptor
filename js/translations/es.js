@@ -279,6 +279,23 @@ const translations_es = {
     flashcards_prompt_answer: "`answer`: La respuesta o la definición (reverso). Importante: la respuesta solo puede contener una palabra simple o un número.",
     flashcards_prompt_tip: "`tip` (opcional): Una pista en formato HTML para ayudar al alumno si la pregunta es difícil. Solo añade una pista si crees que es relevante.",
     flashcards_prompt_example_json_title: "**Ejemplo de JSON :**",
+    flashcards_prompt_example: `\`\`\`json
+{
+"title": "Las capitales de Europa",
+"description": "Memoriza la capital de cada país. Haz clic en la tarjeta para ver la respuesta.",
+"cards": [
+{
+"text": "Francia",
+"answer": "París"
+},
+{
+"text": "Países Bajos",
+"answer": "Ámsterdam",
+"tip": "<p>¡Es la ciudad de los <strong>canales</strong> y los tulipanes!</p>"
+}
+]
+}
+\`\`\` `,
     flashcards_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario.",
 
     // QuizSet Prompt

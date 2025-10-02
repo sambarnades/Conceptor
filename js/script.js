@@ -2136,23 +2136,7 @@ ${pt.flashcards_prompt_json_structure_main_object}
 - ${pt.flashcards_prompt_tip}
 
 ${pt.flashcards_prompt_example_json_title}
-\`\`\`json
-{
-"title": "Les capitales d'Europe",
-"description": "Mémorise la capitale de chaque pays. Clique sur la carte pour voir la réponse.",
-"cards": [
-{
-"text": "France",
-"answer": "Paris"
-},
-{
-"text": "Pays-Bas",
-"answer": "Amsterdam",
-"tip": "<p>C'est la ville des <strong>canaux</strong> et des tulipes !</p>"
-}
-]
-}
-\`\`\`
+${pt.flashcards_prompt_example}
 
 ${pt.flashcards_prompt_generate_only_json}${languageInstruction}`;
 

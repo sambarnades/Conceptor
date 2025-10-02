@@ -221,6 +221,7 @@ const translations_ar = {
 "options": { "points": 1, "caseSensitive": false }
 }
 ]
+}
 \`\`\` `,
     essay_prompt_generate_only_json: "ولِّد JSON كاملًا وصالحًا بملء التعليمات وقائمة الكلمات المفتاحية دون أي تعليقات.",
 
@@ -278,6 +279,23 @@ const translations_ar = {
     flashcards_prompt_answer: "`answer`: الإجابة أو التعريف (الوجه الخلفي). تنبيه: يجب أن تحتوي `answer` على كلمة بسيطة واحدة أو رقم فقط.",
     flashcards_prompt_tip: "`tip` (اختياري): تلميح بصيغة HTML لمساعدة الطالب إذا كان السؤال صعبًا. أضف تلميحًا فقط إذا كنت تعتقد أنه مناسب.",
     flashcards_prompt_example_json_title: "**مثال JSON:**",
+    flashcards_prompt_example: `\`\`\`json
+{
+"title": "عواصم أوروبا",
+"description": "احفظ عاصمة كل بلد. انقر على البطاقة لرؤية الإجابة.",
+"cards": [
+{
+"text": "فرنسا",
+"answer": "باريس"
+},
+{
+"text": "هولندا",
+"answer": "أمستردام",
+"tip": "<p>إنها مدينة <strong>القنوات</strong> وزهور التوليب!</p>"
+}
+]
+}
+\`\`\` `,
     flashcards_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
 
     // QuizSet Prompt

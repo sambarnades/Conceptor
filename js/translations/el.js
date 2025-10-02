@@ -279,6 +279,23 @@ const translations_el = {
     flashcards_prompt_answer: "`answer`: Η απάντηση ή ο ορισμός (πίσω όψη). Σημαντικό: το `answer` μπορεί να περιέχει μόνο μία απλή λέξη ή έναν αριθμό.",
     flashcards_prompt_tip: "`tip` (προαιρετικό): Μια υπόδειξη σε μορφή HTML για να βοηθήσει τον μαθητή εάν η ερώτηση είναι δύσκολη. Προσθέστε μια υπόδειξη μόνο εάν πιστεύετε ότι είναι σχετική.",
     flashcards_prompt_example_json_title: "**Παράδειγμα JSON:**",
+    flashcards_prompt_example: `\`\`\`json
+{
+"title": "Οι πρωτεύουσες της Ευρώπης",
+"description": "Απομνημόνευσε την πρωτεύουσα κάθε χώρας. Κάνε κλικ στην κάρτα για να δεις την απάντηση.",
+"cards": [
+{
+"text": "Γαλλία",
+"answer": "Παρίσι"
+},
+{
+"text": "Κάτω Χώρες",
+"answer": "Άμστερνταμ",
+"tip": "<p>Είναι η πόλη των <strong>καναλιών</strong> και των τουλίπων!</p>"
+}
+]
+}
+\`\`\` `,
     flashcards_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
 
     // QuizSet Prompt

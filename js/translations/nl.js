@@ -279,6 +279,23 @@ const translations_nl = {
     flashcards_prompt_answer: "`answer`: Het antwoord of de definitie (achterzijde). Let op: `answer` mag slechts één eenvoudig woord of een getal bevatten.",
     flashcards_prompt_tip: "`tip` (optioneel): Een hint in HTML-formaat om de leerling te helpen als de vraag moeilijk is. Voeg alleen een hint toe als je denkt dat het relevant is.",
     flashcards_prompt_example_json_title: "**JSON-voorbeeld:**",
+    flashcards_prompt_example: `\`\`\`json
+{
+"title": "De hoofdsteden van Europa",
+"description": "Onthoud de hoofdstad van elk land. Klik op de kaart om het antwoord te zien.",
+"cards": [
+{
+"text": "Frankrijk",
+"answer": "Parijs"
+},
+{
+"text": "Nederland",
+"answer": "Amsterdam",
+"tip": "<p>Het is de stad van de <strong>grachten</strong> en tulpen!</p>"
+}
+]
+}
+\`\`\` `,
     flashcards_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
 
     // QuizSet Prompt

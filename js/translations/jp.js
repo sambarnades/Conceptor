@@ -279,6 +279,23 @@ const translations_jp = {
     flashcards_prompt_answer: "`answer`：回答または定義（裏）。注意、重要：answerには単純な単語一つまたは数字のみを含めることができます。",
     flashcards_prompt_tip: "`tip` (任意): 質問が難しい場合に学生を助けるためのHTML形式のヒント。関連性があると思われる場合にのみヒントを追加してください。",
     flashcards_prompt_example_json_title: "**JSONの例：**",
+    flashcards_prompt_example: `\`\`\`json
+{
+"title": "ヨーロッパの首都",
+"description": "各国の首都を覚えましょう。カードをクリックすると答えが表示されます。",
+"cards": [
+{
+"text": "フランス",
+"answer": "パリ"
+},
+{
+"text": "オランダ",
+"answer": "アムステルダム",
+"tip": "<p><strong>運河</strong>とチューリップの街です！</p>"
+}
+]
+}
+\`\`\` `,
     flashcards_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 
     // QuizSet Prompt
