@@ -2033,27 +2033,7 @@ ${pt.crossword_prompt_rule2}
 ${pt.crossword_prompt_rule3}
 
 ${pt.crossword_prompt_example_json_title}
-\`\`\`json
-{
-"title": "Mots croisés sur la Biologie",
-"words": [
-{
-"answer": "Cellule",
-"clue": "Unité de base de la vie.",
-"extraClue": {
-"params": {
-"text": "<p>Elle peut être animale ou végétale.</p>"
-}
-}
-},
-{
-"answer": "ADN",
-"clue": "Molécule portant l'information génétique."
-}
-],
-"taskDescription": "<p>Complète la grille de mots croisés.</p>"
-}
-\`\`\`
+${pt.crossword_prompt_example}
 
 ${pt.crossword_prompt_generate_only_json}${languageInstruction}`;
 

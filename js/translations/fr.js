@@ -160,6 +160,27 @@ const translations_fr = {
     crossword_prompt_rule2: "2.  Les définitions (`clue`) doivent être courtes et précises.",
     crossword_prompt_rule3: "3.  Le reste de la structure JSON (comportement, thème, etc.) doit être conservé tel quel.",
     crossword_prompt_example_json_title: "**Exemple de JSON pour un mot :**",
+    crossword_prompt_example: `\`\`\`json
+{
+"title": "Mots croisés sur la Biologie",
+"words": [
+{
+"answer": "Cellule",
+"clue": "Unité de base de la vie.",
+"extraClue": {
+"params": {
+"text": "<p>Elle peut être animale ou végétale.</p>"
+}
+}
+},
+{
+"answer": "ADN",
+"clue": "Molécule portant l'information génétique."
+}
+],
+"taskDescription": "<p>Complète la grille de mots croisés.</p>"
+}
+\`\`\` `,
     crossword_prompt_generate_only_json: "Génère le JSON complet et valide, en remplissant le titre, la description et le tableau \"words\", sans aucun autre commentaire.",
 
     // Crossword UI translations

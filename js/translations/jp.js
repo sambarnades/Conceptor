@@ -160,6 +160,27 @@ const translations_jp = {
     crossword_prompt_rule2: "2. 定義（`clue`）は短く正確である必要があります。",
     crossword_prompt_rule3: "3. JSON構造の残り（動作、テーマなど）はそのまま保持してください。",
     crossword_prompt_example_json_title: "**単語のJSON例：**",
+    crossword_prompt_example: `\`\`\`json
+{
+"title": "生物学に関するクロスワード",
+"words": [
+{
+"answer": "細胞",
+"clue": "生命の基本単位。",
+"extraClue": {
+"params": {
+"text": "<p>動物または植物のものがある。</p>"
+}
+}
+},
+{
+"answer": "DNA",
+"clue": "遺伝情報を運ぶ分子。"
+}
+],
+"taskDescription": "<p>クロスワードのマスを埋めなさい。</p>"
+}
+\`\`\` `,
     crossword_prompt_generate_only_json: "タイトル、説明、「words」配列を埋めた完全で有効なJSONを、他のコメントなしで生成してください。",
 
     // Crossword UI translations

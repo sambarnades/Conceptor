@@ -160,6 +160,27 @@ const translations_nl = {
     crossword_prompt_rule2: "2.  De definities (`clue`) moeten kort en precies zijn.",
     crossword_prompt_rule3: "3.  De rest van de JSON-structuur (gedrag, thema, enz.) blijft ongewijzigd.",
     crossword_prompt_example_json_title: "**JSON-voorbeeld voor één woord:**",
+    crossword_prompt_example: `\`\`\`json
+{
+"title": "Kruiswoordpuzzel over Biologie",
+"words": [
+{
+"answer": "Cel",
+"clue": "De basiseenheid van het leven.",
+"extraClue": {
+"params": {
+"text": "<p>Kan dierlijk of plantaardig zijn.</p>"
+}
+}
+},
+{
+"answer": "DNA",
+"clue": "Molecuul dat de genetische informatie draagt."
+}
+],
+"taskDescription": "<p>Vul het kruiswoordraadsel in.</p>"
+}
+\`\`\` `,
     crossword_prompt_generate_only_json: "Genereer de volledige en geldige JSON door de titel, beschrijving en de array \"words\" in te vullen, zonder verdere opmerkingen.",
 
     // Crossword UI translations

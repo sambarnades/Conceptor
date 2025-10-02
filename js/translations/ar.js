@@ -160,6 +160,27 @@ const translations_ar = {
     crossword_prompt_rule2: "2. ينبغي أن تكون التعريفات (`clue`) قصيرة ودقيقة.",
     crossword_prompt_rule3: "3. تُحفَظ بقية بنية JSON (السلوك، السمة، إلخ) كما هي.",
     crossword_prompt_example_json_title: "**مثال JSON لكلمة واحدة:**",
+    crossword_prompt_example: `\`\`\`json
+{
+"title": "الكلمات المتقاطعة حول علم الأحياء",
+"words": [
+{
+"answer": "خلية",
+"clue": "الوحدة الأساسية للحياة.",
+"extraClue": {
+"params": {
+"text": "<p>يمكن أن تكون حيوانية أو نباتية.</p>"
+}
+}
+},
+{
+"answer": "DNA",
+"clue": "الجزيء الذي يحمل المعلومات الوراثية."
+}
+],
+"taskDescription": "<p>أكمل شبكة الكلمات المتقاطعة.</p>"
+}
+\`\`\` `,
     crossword_prompt_generate_only_json: "ولِّد JSON كاملًا وصالحًا بملء العنوان والوصف ومصفوفة \"words\" دون أي تعليقات إضافية.",
 
     // Crossword UI translations

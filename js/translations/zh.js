@@ -160,6 +160,27 @@ const translations_zh = {
     crossword_prompt_rule2: "2.  定义（`clue`）需简短且准确。",
     crossword_prompt_rule3: "3.  其余 JSON 结构（行为、主题等）保持不变。",
     crossword_prompt_example_json_title: "**单个词的 JSON 示例：**",
+    crossword_prompt_example: `\`\`\`json
+{
+"title": "关于生物学的填字游戏",
+"words": [
+{
+"answer": "细胞",
+"clue": "生命的基本单位。",
+"extraClue": {
+"params": {
+"text": "<p>可以是动物的或植物的。</p>"
+}
+}
+},
+{
+"answer": "DNA",
+"clue": "携带遗传信息的分子。"
+}
+],
+"taskDescription": "<p>完成填字游戏网格。</p>"
+}
+\`\`\` `,
     crossword_prompt_generate_only_json: "生成完整有效的 JSON，填写标题、说明与“words”数组，不要添加其它注释。",
 
     // Crossword UI translations

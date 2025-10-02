@@ -102,6 +102,44 @@ const translations_en = {
     timeline_prompt_rule2: "2.  For each `asset`, actively search for a relevant, royalty-free image (e.g., Wikimedia Commons). The URL in `media` must be a direct and valid link. Provide the source and license in `credit`. If no suitable image is found, omit the `asset` object entirely.",
     timeline_prompt_rule3: "3.  For each period (`era`), add a `text` field with a brief description and a `tag`.",
     timeline_prompt_example_json_title: "**Example JSON structure :**",
+    timeline_prompt_example: `\`\`\`json
+{
+"timeline": {
+"headline": "Title of the timeline",
+"text": "<p>Introduction to the theme of the timeline.</p>",
+"date": [
+{
+"startDate": "1914,07,28",
+"endDate": "1914,07,28",
+"headline": "Beginning of the First World War",
+"text": "<p>Austria-Hungary declares war on Serbia.</p>",
+"asset": {
+"media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
+"caption": "Archduke Franz Ferdinand just before his assassination.",
+"credit": "Wikimedia Commons / CC BY-SA 4.0"
+},
+"tag": "War"
+},
+{
+"startDate": "1918,11,11",
+"endDate": "1918,11,11",
+"headline": "Armistice of 1918",
+"text": "<p>Signing of the armistice at Rethondes, marking the end of the fighting.</p>",
+"tag": "Treaty"
+}
+],
+"era": [
+{
+"startDate": "1914,07,28",
+"endDate": "1918,11,11",
+"headline": "First World War",
+"text": "<div>This is the period of the Great War.</div>",
+"tag": "Historical period"
+}
+]
+}
+}
+\`\`\` `,   
     timeline_prompt_generate_only_json: "Generate only the valid JSON code, without any comments. The result will be directly used by another tool.",
 
     // Crossword Prompt
@@ -122,6 +160,27 @@ const translations_en = {
     crossword_prompt_rule2: "2.  Definitions (`clue`) must be short and precise.",
     crossword_prompt_rule3: "3.  The rest of the JSON structure (behavior, theme, etc.) must be kept as is.",
     crossword_prompt_example_json_title: "**Example JSON for a word :**",
+    crossword_prompt_example: `\`\`\`json
+{
+"title": "Crossword on Biology",
+"words": [
+{
+"answer": "Cell",
+"clue": "Basic unit of life.",
+"extraClue": {
+"params": {
+"text": "<p>It can be animal or plant.</p>"
+}
+}
+},
+{
+"answer": "DNA",
+"clue": "Molecule carrying genetic information."
+}
+],
+"taskDescription": "<p>Complete the crossword grid.</p>"
+}
+\`\`\` `,
     crossword_prompt_generate_only_json: "Generate the complete and valid JSON, filling in the title, description and the \"words\" array, without any other comments.",
 
     // Crossword UI translations

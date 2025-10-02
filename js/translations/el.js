@@ -160,6 +160,27 @@ const translations_el = {
     crossword_prompt_rule2: "2. Οι ορισμοί (`clue`) να είναι σύντομοι και ακριβείς.",
     crossword_prompt_rule3: "3. Η υπόλοιπη δομή JSON (συμπεριφορά, θέμα κ.λπ.) παραμένει ως έχει.",
     crossword_prompt_example_json_title: "**Παράδειγμα JSON για μία λέξη:**",
+    crossword_prompt_example: `\`\`\`json
+{
+"title": "Σταυρόλεξο για τη Βιολογία",
+"words": [
+{
+"answer": "Κύτταρο",
+"clue": "Βασική μονάδα της ζωής.",
+"extraClue": {
+"params": {
+"text": "<p>Μπορεί να είναι ζωικό ή φυτικό.</p>"
+}
+}
+},
+{
+"answer": "DNA",
+"clue": "Μόριο που φέρει τη γενετική πληροφορία."
+}
+],
+"taskDescription": "<p>Συμπλήρωσε το πλέγμα του σταυρόλεξου.</p>"
+}
+\`\`\` `, 
     crossword_prompt_generate_only_json: "Παρήγαγε πλήρες και έγκυρο JSON συμπληρώνοντας τίτλο, περιγραφή και τον πίνακα \"words\", χωρίς πρόσθετα σχόλια.",
 
     // Crossword UI translations
