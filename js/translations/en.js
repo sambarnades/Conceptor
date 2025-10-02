@@ -605,6 +605,12 @@ const translations_en = {
     mark_words_prompt_rule3: "3.  Each word to be marked must be individually enclosed in asterisks. For example, `*word1* *word2*` is correct, but `*word1 word2*` is not.",
     mark_words_prompt_rule4: "4.  Apostrophes or other punctuation marks must not be attached to the marked words. For example, `it's*` is incorrect; it should be written as `it's *a*` for it to work.",
     mark_words_prompt_example_json_title: "**Example JSON :**",
+    mark_words_prompt_example: `\`\`\`json
+{
+"taskDescription": "Click on the important words in the text.",
+"textField": "The *solar* *system* is made up of *eight* planets that orbit the *Sun*."
+}
+\`\`\` `,
     mark_words_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
 
     // Mark the Words UI translations

@@ -605,6 +605,12 @@ const translations_de = {
     mark_words_prompt_rule3: "3.  Jedes zu markierende Wort muss einzeln in Sternchen eingeschlossen sein. Zum Beispiel ist `*Wort1* *Wort2*` korrekt, aber `*Wort1 Wort2*` nicht.",
     mark_words_prompt_rule4: "4.  Apostrophe oder andere Satzzeichen dürfen nicht an den markierten Wörtern hängen. Zum Beispiel ist `geht's*` falsch; es sollte `geht's *nicht*` geschrieben werden, damit es funktioniert.",
     mark_words_prompt_example_json_title: "**Beispiel-JSON :**",
+    mark_words_prompt_example: `\`\`\`json
+{
+"taskDescription": "Klicke auf die wichtigen Wörter im Text.",
+"textField": "Das *Sonnen* *system* besteht aus *acht* Planeten, die sich um die *Sonne* drehen."
+}
+\`\`\` `,
     mark_words_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code, ohne Kommentare.",
 
     // Mark the Words UI translations

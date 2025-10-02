@@ -605,6 +605,12 @@ const translations_zh = {
     mark_words_prompt_rule3: "3.  每个要标记的单词必须单独用星号括起来。例如, `*单词1* *单词2*` 是正确的, 但 `*单词1 单词2*` 是不正确的。",
     mark_words_prompt_rule4: "4.  撇号或其他标点符号不能附加到标记的单词上。例如, `l'*oiseau*` 是不正确的; 它应该写成 `l' *oiseau*` 才能正常工作。",
     mark_words_prompt_example_json_title: "**JSON 示例：**",
+    mark_words_prompt_example: `\`\`\`json
+{
+"taskDescription": "点击文本中的重要词语。",
+"textField": "*太阳* *系*由*八*颗行星组成，这些行星围绕*太阳*运行。"
+}
+\`\`\` `,
     mark_words_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
 
     // Mark the Words UI translations

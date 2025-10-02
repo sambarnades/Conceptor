@@ -605,6 +605,12 @@ const translations_jp = {
     mark_words_prompt_rule3: "3. マークする各単語は個別にアスタリスクで囲む必要があります。例えば、`*単語1* *単語2*`は正しいですが、`*単語1 単語2*`は正しくありません。",
     mark_words_prompt_rule4: "4. アポストロフィやその他の句読点は、マークされた単語に付けてはいけません。例えば、`l'*oiseau*`は不正解です。`l' *oiseau*`と書くことで機能します。",
     mark_words_prompt_example_json_title: "**JSONの例：**",
+    mark_words_prompt_example: `\`\`\`json
+{
+"taskDescription": "文中の重要な語をクリックしなさい。",
+"textField": "*太陽* *系*は*8*つの惑星で構成されており、それらは*太陽*の周りを公転している。"
+}
+\`\`\` `,
     mark_words_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 
     // Mark the Words UI translations

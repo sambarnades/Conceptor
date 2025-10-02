@@ -605,6 +605,12 @@ const translations_nl = {
     mark_words_prompt_rule3: "3.  Elk te markeren woord moet afzonderlijk tussen asterisken staan. Bijvoorbeeld, `*woord1* *woord2*` is correct, maar `*woord1 woord2*` niet.",
     mark_words_prompt_rule4: "4.  Apostroffen of andere leestekens mogen niet aan de gemarkeerde woorden vastzitten. Bijvoorbeeld, `l'*vogel*` is onjuist; het moet `de *vogel*` zijn om te werken.",
     mark_words_prompt_example_json_title: "**JSON-voorbeeld:**",
+    mark_words_prompt_example: `\`\`\`json
+{
+"taskDescription": "Klik op de belangrijke woorden in de tekst.",
+"textField": "Het *zonne* *stelsel* bestaat uit *acht* planeten die rond de *zon* draaien."
+}
+\`\`\` `,
     mark_words_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
 
     // Mark the Words UI translations

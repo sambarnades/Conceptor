@@ -605,6 +605,12 @@ const translations_it = {
     mark_words_prompt_rule3: "3. Ogni parola da evidenziare deve essere racchiusa individualmente tra asterischi. Ad esempio, `*parola1* *parola2*` è corretto, ma `*parola1 parola2*` non lo è.",
     mark_words_prompt_rule4: "4. Gli apostrofi o altri segni di punteggiatura non devono essere attaccati alle parole evidenziate. Ad esempio, `l'*albero*` è errato; si dovrebbe scrivere `l' *albero*` perché funzioni.",
     mark_words_prompt_example_json_title: "**Esempio di JSON:**",
+    mark_words_prompt_example: `\`\`\`json
+{
+"taskDescription": "Clicca sulle parole importanti nel testo.",
+"textField": "Il *sistema* *solare* è composto da *otto* pianeti che orbitano attorno al *Sole*."
+}
+\`\`\` `,
     mark_words_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento.",
 
     // Mark the Words UI translations

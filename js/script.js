@@ -2294,12 +2294,7 @@ ${pt.mark_words_prompt_rule3}
 ${pt.mark_words_prompt_rule4}
 
 ${pt.mark_words_prompt_example_json_title}
-\`\`\`json
-{
-"taskDescription": "Clique sur les mots importants dans le texte.",
-"textField": "Le *système solaire* est composé de *huit* planètes qui tournent autour du *Soleil*."
-}
-\`\`\`
+${pt.mark_words_prompt_example}
 
 ${pt.mark_words_prompt_generate_only_json}${languageInstruction}`;
 
