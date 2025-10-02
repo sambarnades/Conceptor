@@ -315,6 +315,12 @@ const translations_ar = {
     quiz_set_prompt_rule5: "5.  **المحتوى:** يجب أن يكون المحتوى في `params` ذا صلة من الناحية التربوية، مع مشتتات معقولة للأسئلة متعددة الخيارات ونصوص متماسكة للأنشطة الأخرى.",
     quiz_set_prompt_rule6: "6.  **البساطة:** لا تضف صورًا أو معلمات سلوك غير ضرورية. حافظ على بساطة البنية كما في الأمثلة.",
     quiz_set_prompt_example_json_title: "**أمثلة على الهياكل لكل نوع سؤال مسموح به:**",
+    quiz_set_example_true_false: "صح/خطأ :",
+    quiz_set_example_multiple_choice: "اختيار من متعدد :",
+    quiz_set_example_fill_in_the_blanks: "نص مع فراغات :",
+    quiz_set_example_drag_the_words: "اسحب الكلمات :",
+    quiz_set_example_mark_the_words: "تمييز الكلمات :",
+    quiz_set_example_essay: "كتابة :",
     quiz_set_prompt_generate_only_json: "ولِّد فقط JSON صالحًا، بدءًا من `{\"progressType\": \"dots\", ...}`، دون أي تعليقات.",
 
     // VRAI/FAUX

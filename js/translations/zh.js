@@ -315,6 +315,12 @@ const translations_zh = {
     quiz_set_prompt_rule5: "5.  **内容：** `params`中的内容必须在教学上相关，为多选题提供合理的干扰项，为其他活动提供连贯的文本。",
     quiz_set_prompt_rule6: "6.  **简洁性：** 不要添加图片或多余的行为参数。保持结构简单，如示例所示。",
     quiz_set_prompt_example_json_title: "**每种授权问题类型的结构示例：**",
+    quiz_set_example_true_false: "对/错 :",
+    quiz_set_example_multiple_choice: "多项选择 :",
+    quiz_set_example_fill_in_the_blanks: "填空题 :",
+    quiz_set_example_drag_the_words: "拖动单词 :",
+    quiz_set_example_mark_the_words: "标记单词 :",
+    quiz_set_example_essay: "写作 :",
     quiz_set_prompt_generate_only_json: "`{\"progressType\": \"dots\", ...}`で始まる有効なJSONのみを、コメントなしで生成してください。",
 
     // VRAI/FAUX

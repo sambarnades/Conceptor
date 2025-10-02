@@ -315,6 +315,12 @@ const translations_nl = {
     quiz_set_prompt_rule5: "5.  **Inhoud:** De inhoud in `params` moet pedagogisch relevant zijn, met plausibele afleiders voor MCQ's en coherente teksten voor andere activiteiten.",
     quiz_set_prompt_rule6: "6.  **Eenvoud:** Voeg geen afbeeldingen of overbodige gedragsparameters toe. Houd de structuur eenvoudig zoals in de voorbeelden.",
     quiz_set_prompt_example_json_title: "**Voorbeeldstructuren voor elk toegestaan vraagtype:**",
+    quiz_set_example_true_false: "Waar/Onwaar :",
+    quiz_set_example_multiple_choice: "Meerkeuze :",
+    quiz_set_example_fill_in_the_blanks: "Invultekst :",
+    quiz_set_example_drag_the_words: "Versleep de woorden :",
+    quiz_set_example_mark_the_words: "Markeer de woorden :",
+    quiz_set_example_essay: "Opstel :",
     quiz_set_prompt_generate_only_json: "Genereer alleen de geldige JSON, beginnend met `{\"progressType\": \"dots\", ...}`, zonder commentaar.",
 
     // VRAI/FAUX

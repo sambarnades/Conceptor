@@ -315,6 +315,12 @@ const translations_it = {
     quiz_set_prompt_rule5: "5.  **Contenuto:** Il contenuto in `params` deve essere pedagogicamente rilevante, con distrattori plausibili per i QCM e testi coerenti per le altre attività.",
     quiz_set_prompt_rule6: "6.  **Semplicità:** Non aggiungere immagini o parametri di comportamento superflui. Mantieni la struttura semplice come negli esempi.",
     quiz_set_prompt_example_json_title: "**Esempi di strutture per ogni tipo di domanda autorizzata:**",
+    quiz_set_example_true_false: "Vero/Falso :",
+    quiz_set_example_multiple_choice: "Scelta multipla :",
+    quiz_set_example_fill_in_the_blanks: "Testo con spazi vuoti :",
+    quiz_set_example_drag_the_words: "Trascina le parole :",
+    quiz_set_example_mark_the_words: "Evidenzia le parole :",
+    quiz_set_example_essay: "Redazione :",
     quiz_set_prompt_generate_only_json: "Genera solo il JSON valido, iniziando con `{\"progressType\": \"dots\", ...}`, senza alcun commento.",
 
     // VRAI/FAUX

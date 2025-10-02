@@ -2162,34 +2162,34 @@ ${pt.quiz_set_prompt_rule6}
 
 ${pt.quiz_set_prompt_example_json_title}
 
-   **Vrai/Faux :**
+   **${pt.quiz_set_example_true_false}**
    \`\`\`json
-${JSON.stringify(JSON.parse(pt.quiz_set_true_false_example), null, 2)}
+ ${JSON.stringify(JSON.parse(pt.quiz_set_true_false_example), null, 2)}
    \`\`\`
  
-   **Choix Multiple (QCM) :**
+   **${pt.quiz_set_example_multiple_choice}**
    \`\`\`json
-${JSON.stringify(JSON.parse(pt.quiz_set_multiple_choice_example), null, 2)}
+ ${JSON.stringify(JSON.parse(pt.quiz_set_multiple_choice_example), null, 2)}
    \`\`\`
  
-   **Texte à trous :**
+   **${pt.quiz_set_example_fill_in_the_blanks}**
    \`\`\`json
-${JSON.stringify(JSON.parse(pt.quiz_set_fill_in_the_blanks_example), null, 2)}
+ ${JSON.stringify(JSON.parse(pt.quiz_set_fill_in_the_blanks_example), null, 2)}
    \`\`\`
  
-   **Glisser les mots :**
+   **${pt.quiz_set_example_drag_the_words}**
    \`\`\`json
-${JSON.stringify(JSON.parse(pt.quiz_set_drag_the_words_example), null, 2)}
+ ${JSON.stringify(JSON.parse(pt.quiz_set_drag_the_words_example), null, 2)}
    \`\`\`
  
-   **Surligner les mots :**
+   **${pt.quiz_set_example_mark_the_words}**
    \`\`\`json
-${JSON.stringify(JSON.parse(pt.quiz_set_mark_the_words_example), null, 2)}
+ ${JSON.stringify(JSON.parse(pt.quiz_set_mark_the_words_example), null, 2)}
    \`\`\`
  
-   **Rédaction :**
+   **${pt.quiz_set_example_essay}**
    \`\`\`json
-${JSON.stringify(JSON.parse(pt.quiz_set_essay_example), null, 2)}
+ ${JSON.stringify(JSON.parse(pt.quiz_set_essay_example), null, 2)}
    \`\`\`
 
    ${pt.quiz_set_prompt_generate_only_json}${languageInstruction}`;

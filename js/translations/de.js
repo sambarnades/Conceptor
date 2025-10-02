@@ -315,6 +315,12 @@ const translations_de = {
     quiz_set_prompt_rule5: "5.  **Inhalt:** Der Inhalt in `params` muss pädagogisch relevant sein, mit plausiblen Ablenkern für MCQs und zusammenhängenden Texten für andere Aktivitäten.",
     quiz_set_prompt_rule6: "6.  **Einfachheit:** Fügen Sie keine Bilder oder überflüssige Verhaltensparameter hinzu. Halten Sie die Struktur einfach wie in den Beispielen.",
     quiz_set_prompt_example_json_title: "**Beispielstrukturen für jeden zulässigen Fragetyp:**",
+    quiz_set_example_true_false: "Wahr/Falsch :",
+    quiz_set_example_multiple_choice: "Multiple-Choice (MC) :",
+    quiz_set_example_fill_in_the_blanks: "Lückentext :",
+    quiz_set_example_drag_the_words: "Wörter ziehen :",
+    quiz_set_example_mark_the_words: "Wörter markieren :",
+    quiz_set_example_essay: "Aufsatz :",
     quiz_set_prompt_generate_only_json: "Generieren Sie nur das gültige JSON, beginnend mit `{\"progressType\": \"dots\", ...}`, ohne Kommentare.",
 
     // VRAI/FAUX

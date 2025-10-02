@@ -315,8 +315,14 @@ const translations_fr = {
     quiz_set_prompt_rule5: "5.  **Contenu :** Le contenu dans `params` doit être pédagogiquement pertinent, avec des distracteurs plausibles pour les QCM et des textes cohérents pour les autres activités.",
     quiz_set_prompt_rule6: "6.  **Simplicité :** N'ajoute pas d'images ou de paramètres de comportement superflus. Garde la structure simple comme dans les exemples.",
     quiz_set_prompt_example_json_title: "**Exemples de structures pour chaque type de question autorisé :**",
+    quiz_set_example_true_false: "Vrai/Faux :",
+    quiz_set_example_multiple_choice: "Choix Multiple (QCM) :",
+    quiz_set_example_fill_in_the_blanks: "Texte à trous :",
+    quiz_set_example_drag_the_words: "Glisser les mots :",
+    quiz_set_example_mark_the_words: "Surligner les mots :",
+    quiz_set_example_essay: "Rédaction :",
     quiz_set_prompt_generate_only_json: "Génère uniquement le JSON complet et valide, en commençant par `{\"progressType\": \"dots\", ...}`, sans aucun commentaire.",
-
+ 
     // VRAI/FAUX
     quiz_set_true_false_example: JSON.stringify({
         "library": "H5P.TrueFalse 1.8",

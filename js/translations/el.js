@@ -315,6 +315,12 @@ const translations_el = {
     quiz_set_prompt_rule5: "5.  **Περιεχόμενο:** Το περιεχόμενο στο `params` πρέπει να είναι παιδαγωγικά σχετικό, με εύλογους αντιπερισπασμούς για τα MCQ και συνεκτικά κείμενα για άλλες δραστηριότητες.",
     quiz_set_prompt_rule6: "6.  **Απλότητα:** Μην προσθέτετε εικόνες ή περιττές παραμέτρους συμπεριφοράς. Διατηρήστε τη δομή απλή όπως στα παραδείγματα.",
     quiz_set_prompt_example_json_title: "**Παραδείγματα δομών για κάθε επιτρεπόμενο τύπο ερώτησης:**",
+    quiz_set_example_true_false: "Σωστό/Λάθος :",
+    quiz_set_example_multiple_choice: "Πολλαπλής επιλογής :",
+    quiz_set_example_fill_in_the_blanks: "Κείμενο με κενά :",
+    quiz_set_example_drag_the_words: "Σύρε τις λέξεις :",
+    quiz_set_example_mark_the_words: "Επισήμανση λέξεων :",
+    quiz_set_example_essay: "Έκθεση :",
     quiz_set_prompt_generate_only_json: "Παράγετε μόνο το έγκυρο JSON, ξεκινώντας με `{\"progressType\": \"dots\", ...}`, χωρίς σχόλια.",
 
     // VRAI/FAUX

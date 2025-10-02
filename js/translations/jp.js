@@ -315,6 +315,12 @@ const translations_jp = {
     quiz_set_prompt_rule5: "5.  **内容：** `params`の内容は教育的に適切で、MCQにはもっともらしい選択肢を、他のアクティビティには一貫したテキストを含める必要があります。",
     quiz_set_prompt_rule6: "6.  **シンプルさ：** 画像や余分な動作パラメータを追加しないでください。例のように構造をシンプルに保ってください。",
     quiz_set_prompt_example_json_title: "**許可されている各質問タイプの構造例：**",
+    quiz_set_example_true_false: "正誤問題 :",
+    quiz_set_example_multiple_choice: "多肢選択 :",
+    quiz_set_example_fill_in_the_blanks: "穴埋め問題 :",
+    quiz_set_example_drag_the_words: "単語をドラッグ :",
+    quiz_set_example_mark_the_words: "単語をマーク :",
+    quiz_set_example_essay: "作文 :",
     quiz_set_prompt_generate_only_json: "`{\"progressType\": \"dots\", ...}`で始まる有効なJSONのみを、コメントなしで生成してください。",
 
     // VRAI/FAUX
