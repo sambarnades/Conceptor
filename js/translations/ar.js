@@ -1037,6 +1037,18 @@ const translations_ar = {
     sort_the_paragraphs_prompt_content_rules_title: "**قواعد المحتوى:**",
     sort_the_paragraphs_prompt_rule1: "1.  يجب أن تحتوي مصفوفة `paragraphs` على قائمة من الفقرات بالترتيب المنطقي الصحيح.",
     sort_the_paragraphs_prompt_example_json_title: "**مثال JSON:**",
+    sort_the_paragraphs_prompt_example: `\`\`\`json
+{
+"taskDescription": "<p>روتيني الصباحي:</p>",
+"paragraphs": [
+"<p>أولاً، أستيقظ في الساعة 7:30 صباحًا</p>",
+"<p>بعد ذلك، أرتدي ملابسي</p>",
+"<p>ثم، أتناول فطوري</p>",
+"<p>بعدها، أنظف أسناني</p>",
+"<p>أخيرًا، أذهب إلى المدرسة</p>"
+]
+}
+ \`\`\` `, 
     sort_the_paragraphs_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات.",
 
     // Single Choice Set UI translations

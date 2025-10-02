@@ -1037,6 +1037,18 @@ const translations_nl = {
     sort_the_paragraphs_prompt_content_rules_title: "**Inhoudsregels:**",
     sort_the_paragraphs_prompt_rule1: "1.  De `paragraphs`-array moet een lijst van paragrafen in de juiste logische volgorde bevatten.",
     sort_the_paragraphs_prompt_example_json_title: "**JSON-voorbeeld:**",
+    sort_the_paragraphs_prompt_example: `\`\`\`json
+{
+"taskDescription": "<p>Mijn ochtendroutine:</p>",
+"paragraphs": [
+"<p>Eerst sta ik om 7:30 uur op</p>",
+"<p>Daarna kleed ik me aan</p>",
+"<p>Dan ontbijt ik</p>",
+"<p>Vervolgens poets ik mijn tanden</p>",
+"<p>Tot slot ga ik naar school</p>"
+]
+}
+ \`\`\` `, 
     sort_the_paragraphs_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar.",
 
     // Single Choice Set UI translations

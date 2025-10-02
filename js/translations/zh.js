@@ -1037,6 +1037,18 @@ const translations_zh = {
     sort_the_paragraphs_prompt_content_rules_title: "**内容规则:**",
     sort_the_paragraphs_prompt_rule1: "1.  `paragraphs` 数组必须包含按正确逻辑顺序排列的段落列表。",
     sort_the_paragraphs_prompt_example_json_title: "**JSON 示例:**",
+    sort_the_paragraphs_prompt_example: `\`\`\`json
+{
+"taskDescription": "<p>我的早晨日常：</p>",
+"paragraphs": [
+"<p>首先，我在早上7点30分起床</p>",
+"<p>接着，我穿衣服</p>",
+"<p>然后，我吃早餐</p>",
+"<p>之后，我刷牙</p>",
+"<p>最后，我去上学</p>"
+]
+}
+ \`\`\` `, 
     sort_the_paragraphs_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
 
     // Single Choice Set UI translations

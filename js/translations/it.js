@@ -1037,6 +1037,18 @@ const translations_it = {
     sort_the_paragraphs_prompt_content_rules_title: "**Regole per il contenuto:**",
     sort_the_paragraphs_prompt_rule1: "1.  L'array `paragraphs` deve contenere un elenco di paragrafi nell'ordine logico corretto.",
     sort_the_paragraphs_prompt_example_json_title: "**Esempio di JSON:**",
+    sort_the_paragraphs_prompt_example: `\`\`\`json
+{
+"taskDescription": "<p>La mia routine del mattino:</p>",
+"paragraphs": [
+"<p>Per prima cosa, mi sveglio alle 7:30</p>",
+"<p>Poi, mi vesto</p>",
+"<p>Quindi, faccio colazione</p>",
+"<p>Dopo, mi lavo i denti</p>",
+"<p>Infine, vado a scuola</p>"
+]
+}
+ \`\`\` `, 
     sort_the_paragraphs_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento.",
 
     // Single Choice Set UI translations

@@ -2483,18 +2483,7 @@ ${pt.sort_the_paragraphs_prompt_content_rules_title}
 ${pt.sort_the_paragraphs_prompt_rule1}
 
 ${pt.sort_the_paragraphs_prompt_example_json_title}
-\`\`\`json
-{
-"taskDescription": "<p>My morning routine:</p>",
-"paragraphs": [
-"<p>First, I wake up at 7:30 am</p>",
-"<p>Next, I get dressed</p>",
-"<p>Then, I have breakfast</p>",
-"<p>Afterward, I brush my teeth</p>",
-"<p>Finally, I go to school</p>"
-]
-}
-\`\`\`
+${pt.sort_the_paragraphs_prompt_example}
 
 ${pt.sort_the_paragraphs_prompt_generate_only_json}${languageInstruction}`;
 

@@ -1037,6 +1037,18 @@ const translations_el = {
     sort_the_paragraphs_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
     sort_the_paragraphs_prompt_rule1: "1.  Ο πίνακας `paragraphs` πρέπει να περιέχει μια λίστα παραγράφων με τη σωστή λογική σειρά.",
     sort_the_paragraphs_prompt_example_json_title: "**Παράδειγμα JSON:**",
+    sort_the_paragraphs_prompt_example: `\`\`\`json
+{
+"taskDescription": "<p>Η πρωινή μου ρουτίνα:</p>",
+"paragraphs": [
+"<p>Πρώτα, ξυπνάω στις 7:30 π.μ.</p>",
+"<p>Μετά, ντύνομαι</p>",
+"<p>Έπειτα, τρώω πρωινό</p>",
+"<p>Κατόπιν, βουρτσίζω τα δόντια μου</p>",
+"<p>Τέλος, πηγαίνω στο σχολείο</p>"
+]
+}
+ \`\`\` `, 
     sort_the_paragraphs_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
 
     // Single Choice Set UI translations

@@ -774,6 +774,7 @@ const translations_de = {
     moodle_millionnaire_description: "Erstellen Sie eine einzigartige 'Millionär'-Aktivität mit 6 Fragen, die schrittweise schwieriger werden.",
     moodle_appariement_name: "Zuordnung",
     moodle_appariement_description: "Erzeuge eine Zuordnungsaktivität mit 10 Fragen.",
+    
     moodle_qcm_name: "MCQ",
     moodle_qcm_description: "Generieren Sie eine einfache MCQ-Aktivität.",
 
@@ -796,6 +797,7 @@ const translations_de = {
     create_mbz_file_millionnaire: "Datei „Millionär“ (.mbz) erstellen",
     paste_ia_result_millionnaire: "Fügen Sie unten das von der KI generierte JSON ein. Der Titel der Aktivität wird automatisch aus dem JSON extrahiert.",
     generate_mbz_millionnaire: "Aktivität „Millionär“ generieren (mbz)",
+   
     create_mbz_file_qcm: "MCQ-Datei (.mbz) erstellen",
     paste_ia_result_qcm: "Fügen Sie unten das von der KI generierte JSON ein. Der Titel der Aktivität wird automatisch aus dem JSON extrahiert.",
     generate_mbz_qcm: "MCQ-Aktivität generieren (mbz)",
@@ -862,6 +864,7 @@ const translations_de = {
     essay_overall_feedback_51_70: "Das ist eine gute Arbeit. Sie zeigen eine gute Beherrschung des Themas. Einige weitere Details könnten es noch verbessern.",
     essay_overall_feedback_71_90: "Sehr gute Arbeit! Ihre Analyse ist relevant und gut strukturiert. Sie zeigen ein ausgezeichnetes Verständnis.",
     essay_overall_feedback_91_100: "Ausgezeichnete Arbeit! Ihre Überlegungen sind gründlich, gut argumentiert und zeigen eine vollständige Beherrschung des Themas.",
+
     ticket: "Ticket",
     legal_mentions: "Impressum",
 
@@ -1034,6 +1037,18 @@ const translations_de = {
     sort_the_paragraphs_prompt_content_rules_title: "**Inhaltsregeln:**",
     sort_the_paragraphs_prompt_rule1: "1.  Das `paragraphs`-Array muss eine Liste von Absätzen in der richtigen logischen Reihenfolge enthalten.",
     sort_the_paragraphs_prompt_example_json_title: "**Beispiel-JSON:**",
+    sort_the_paragraphs_prompt_example: `\`\`\`json
+{
+"taskDescription": "<p>Meine Morgenroutine:</p>",
+"paragraphs": [
+"<p>Zuerst wache ich um 7:30 Uhr auf</p>",
+"<p>Als Nächstes ziehe ich mich an</p>",
+"<p>Dann frühstücke ich</p>",
+"<p>Danach putze ich mir die Zähne</p>",
+"<p>Schließlich gehe ich zur Schule</p>"
+]
+}
+ \`\`\` `, 
     sort_the_paragraphs_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare.",
 
     // Single Choice Set UI translations

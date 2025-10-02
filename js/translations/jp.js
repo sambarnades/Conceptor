@@ -1037,6 +1037,18 @@ const translations_jp = {
     sort_the_paragraphs_prompt_content_rules_title: "**コンテンツのルール:**",
     sort_the_paragraphs_prompt_rule1: "1.  `paragraphs`配列には、正しい論理順序の段落のリストが含まれている必要があります。",
     sort_the_paragraphs_prompt_example_json_title: "**JSONの例:**",
+    sort_the_paragraphs_prompt_example: `\`\`\`json
+{
+"taskDescription": "<p>私の朝のルーティン:</p>",
+"paragraphs": [
+"<p>まず、7時30分に起きます</p>",
+"<p>次に、服を着ます</p>",
+"<p>それから、朝ごはんを食べます</p>",
+"<p>その後、歯を磨きます</p>",
+"<p>最後に、学校へ行きます</p>"
+]
+}
+ \`\`\` `, 
     sort_the_paragraphs_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 
     // Single Choice Set UI translations
