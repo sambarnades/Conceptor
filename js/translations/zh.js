@@ -678,6 +678,17 @@ const translations_zh = {
     appariement_prompt_question: "- `question`：左侧的术语或图片（字符串）。",
     appariement_prompt_answer: "- `answer`：右侧对应的定义或术语（字符串）。",
     appariement_prompt_example_json_title: "**JSON 示例：**",
+    appariement_prompt_example: `\`\`\`json
+{
+"title": "关于法国大革命的配对题",
+"pairs": [
+{
+"question": "攻占巴士底狱",
+"answer": "1789年7月14日"
+}
+]
+}
+\`\`\` `,
     appariement_prompt_generate_only_json: "仅生成有效的 JSON 对象，不要添加任何注释。",
 
     // QCM Prompt

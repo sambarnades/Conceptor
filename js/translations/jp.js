@@ -678,6 +678,17 @@ const translations_jp = {
     appariement_prompt_question: "- `question`: 左側の用語または画像（文字列）。",
     appariement_prompt_answer: "- `answer`: 右側の定義または対応する用語（文字列）。",
     appariement_prompt_example_json_title: "**JSON例：**",
+    appariement_prompt_example: `\`\`\`json
+{
+"title": "フランス革命に関する対応問題",
+"pairs": [
+{
+"question": "バスティーユ襲撃",
+"answer": "1789年7月14日"
+}
+]
+}
+\`\`\` `,
     appariement_prompt_generate_only_json: "有効なJSONオブジェクトのみを生成し、コメントは一切付けないでください。",
 
     // QCM Prompt

@@ -678,6 +678,17 @@ const translations_de = {
     appariement_prompt_question: "- `question`: Der Begriff oder das Bild links (Zeichenkette).",
     appariement_prompt_answer: "- `answer`: Die Definition oder der entsprechende Begriff rechts (Zeichenkette).",
     appariement_prompt_example_json_title: "**Beispiel-JSON:**",
+    appariement_prompt_example: `\`\`\`json
+{
+"title": "Zuordnung über die Französische Revolution",
+"pairs": [
+{
+"question": "Sturm auf die Bastille",
+"answer": "14. Juli 1789"
+}
+]
+}
+\`\`\` `,
     appariement_prompt_generate_only_json: "Erzeuge nur das gültige JSON-Objekt, ohne jeglichen Kommentar.",
 
     // QCM Prompt

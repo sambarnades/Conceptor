@@ -2343,17 +2343,7 @@ ${pt.appariement_prompt_question}
 ${pt.appariement_prompt_answer}
 
 ${pt.appariement_prompt_example_json_title}
-\`\`\`json
-{
-"title": "Appariement sur la Révolution Française",
-"pairs": [
-{
-"question": "Prise de la Bastille",
-"answer": "14 juillet 1789"
-}
-]
-}
-\`\`\`
+${pt.appariement_prompt_example}
 
 ${pt.appariement_prompt_generate_only_json}${languageInstruction}`;
 

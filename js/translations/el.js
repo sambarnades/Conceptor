@@ -678,6 +678,17 @@ const translations_el = {
     appariement_prompt_question: "- `question`: Ο όρος ή η εικόνα στα αριστερά (συμβολοσειρά).",
     appariement_prompt_answer: "- `answer`: Ο ορισμός ή ο αντίστοιχος όρος στα δεξιά (συμβολοσειρά).",
     appariement_prompt_example_json_title: "**Παράδειγμα JSON:**",
+    appariement_prompt_example: `\`\`\`json
+{
+"title": "Συσχέτιση για τη Γαλλική Επανάσταση",
+"pairs": [
+{
+"question": "Άλωση της Βαστίλης",
+"answer": "14 Ιουλίου 1789"
+}
+]
+}
+\`\`\` `,
     appariement_prompt_generate_only_json: "Παρήγαγε μόνο το έγκυρο αντικείμενο JSON, χωρίς κανένα σχόλιο.",
 
     // QCM Prompt

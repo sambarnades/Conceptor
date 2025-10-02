@@ -678,6 +678,17 @@ const translations_it = {
     appariement_prompt_question: "- `question`: Il termine o l'immagine a sinistra (stringa).",
     appariement_prompt_answer: "- `answer`: La definizione o il termine corrispondente a destra (stringa).",
     appariement_prompt_example_json_title: "**Esempio di JSON:**",
+    appariement_prompt_example: `\`\`\`json
+{
+"title": "Abbinamento sulla Rivoluzione Francese",
+"pairs": [
+{
+"question": "Presa della Bastiglia",
+"answer": "14 luglio 1789"
+}
+]
+}
+\`\`\` `,
     appariement_prompt_generate_only_json: "Genera solo l'oggetto JSON valido, senza alcun commento.",
 
     // QCM Prompt

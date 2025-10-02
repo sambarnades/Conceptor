@@ -678,6 +678,17 @@ const translations_ar = {
     appariement_prompt_question: "- `question`: المصطلح أو الصورة على اليسار (سلسلة محارف).",
     appariement_prompt_answer: "- `answer`: التعريف أو المصطلح المقابل على اليمين (سلسلة محارف).",
     appariement_prompt_example_json_title: "**مثال JSON:**",
+    appariement_prompt_example: `\`\`\`json
+{
+"title": "مطابقة حول الثورة الفرنسية",
+"pairs": [
+{
+"question": "اقتحام سجن الباستيل",
+"answer": "14 يوليو 1789"
+}
+]
+}
+\`\`\` `,
     appariement_prompt_generate_only_json: "أنشئ فقط كائن JSON صالحًا، دون أي تعليق.",
 
     // QCM Prompt

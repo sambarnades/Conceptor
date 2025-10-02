@@ -678,7 +678,18 @@ const translations_nl = {
     appariement_prompt_question: "- `question`: De term of de afbeelding links (tekenreeks).",
     appariement_prompt_answer: "- `answer`: De definitie of de corresponderende term rechts (tekenreeks).",
     appariement_prompt_example_json_title: "**Voorbeeld-JSON:**",
-    appariement_prompt_generate_only_json: "Genereer alleen het geldige JSON-object, zonder enig commentaar.",
+    appariement_prompt_example: `\`\`\`json
+{
+"title": "Koppelen over de Franse Revolutie",
+"pairs": [
+{
+"question": "Bestorming van de Bastille",
+"answer": "14 juli 1789"
+}
+]
+}
+\`\`\` `,
+   appariement_prompt_generate_only_json: "Genereer alleen het geldige JSON-object, zonder enig commentaar.",
 
     // QCM Prompt
     qcm_prompt_role: "Je bent een expert in onderwijsontwerp die een Moodle-activiteit \"MCQ\" maakt.",
