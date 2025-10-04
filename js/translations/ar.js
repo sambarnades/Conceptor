@@ -982,6 +982,25 @@ const translations_ar = {
     multiple_choice_prompt_rule1: "1.  يجب أن تكون هناك إجابة صحيحة واحدة فقط (`\"correct\": true`).",
     multiple_choice_prompt_rule2: "2.  قدّم عدة إجابات خاطئة (`\"correct\": false`).",
     multiple_choice_prompt_example_json_title: "**مثال JSON:**",
+    multiple_choice_prompt_example: `\`\`\`json
+{
+"question": "<p>ما هو اللون الحقيقي لتوت الكاسيس؟</p>",
+"answers": [
+{
+"correct": true,
+"text": "<div>بنفسجي داكن جدًا</div>"
+},
+{
+"correct": false,
+"text": "<div>أزرق</div>"
+},
+{
+"correct": false,
+"text": "<div>أسود</div>"
+}
+]
+}
+\`\`\` `,
     multiple_choice_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات.",
 
     // Find the Words UI translations

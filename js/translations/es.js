@@ -982,6 +982,25 @@ const translations_es = {
     multiple_choice_prompt_rule1: "1.  Solo debe haber una respuesta correcta (`\"correct\": true`).",
     multiple_choice_prompt_rule2: "2.  Proporciona varias respuestas incorrectas (`\"correct\": false`).",
     multiple_choice_prompt_example_json_title: "**Ejemplo de JSON:**",
+    multiple_choice_prompt_example: `\`\`\`json
+{
+"question": "<p>¿Cuál es el color real de la grosella negra (cassis)?</p>",
+"answers": [
+{
+"correct": true,
+"text": "<div>Violeta muy oscuro</div>"
+},
+{
+"correct": false,
+"text": "<div>Azul</div>"
+},
+{
+"correct": false,
+"text": "<div>Negro</div>"
+}
+]
+}
+\`\`\` `,
     multiple_choice_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario.",
 
     // Find the Words UI translations

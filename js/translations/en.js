@@ -982,6 +982,25 @@ const translations_en = {
     multiple_choice_prompt_rule1: "1.  There must be only one correct answer (`\"correct\": true`).",
     multiple_choice_prompt_rule2: "2.  Provide several incorrect answers (`\"correct\": false`).",
     multiple_choice_prompt_example_json_title: "**Example JSON:**",
+    multiple_choice_prompt_example: `\`\`\`json
+{
+"question": "<p>What is the real color of blackcurrant?</p>",
+"answers": [
+{
+"correct": true,
+"text": "<div>Very dark purple</div>"
+},
+{
+"correct": false,
+"text": "<div>Blue</div>"
+},
+{
+"correct": false,
+"text": "<div>Black</div>"
+}
+]
+}
+\`\`\` `,
     multiple_choice_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
 
     // Find the Words UI translations

@@ -982,7 +982,26 @@ const translations_pt = {
     multiple_choice_prompt_rule1: "1.  Deve haver apenas uma resposta correta (`\"correct\": true`).",
     multiple_choice_prompt_rule2: "2.  Forneça várias respostas incorretas (`\"correct\": false`).",
     multiple_choice_prompt_example_json_title: "**Exemplo de JSON:**",
-    multiple_choice_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário.",
+    multiple_choice_prompt_example: `\`\`\`json
+{
+"question": "<p>Qual é a cor real da groselha-preta (cassis)?</p>",
+"answers": [
+{
+"correct": true,
+"text": "<div>Roxo muito escuro</div>"
+},
+{
+"correct": false,
+"text": "<div>Azul</div>"
+},
+{
+"correct": false,
+"text": "<div>Preto</div>"
+}
+]
+}
+\`\`\` `,
+   multiple_choice_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário.",
 
     // Find the Words UI translations
     check: "Verificar",

@@ -982,6 +982,25 @@ const translations_jp = {
     multiple_choice_prompt_rule1: "1.  正解は1つだけです（`\"correct\": true`）。",
     multiple_choice_prompt_rule2: "2.  複数の不正解を提供してください（`\"correct\": false`）。",
     multiple_choice_prompt_example_json_title: "**JSONの例:**",
+    multiple_choice_prompt_example: `\`\`\`json
+{
+"question": "<p>カシス（クロスグリ）の実の本当の色は何ですか？</p>",
+"answers": [
+{
+"correct": true,
+"text": "<div>非常に濃い紫</div>"
+},
+{
+"correct": false,
+"text": "<div>青</div>"
+},
+{
+"correct": false,
+"text": "<div>黒</div>"
+}
+]
+}
+\`\`\` `,
     multiple_choice_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 
     // Find the Words UI translations

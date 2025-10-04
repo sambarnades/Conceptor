@@ -982,6 +982,25 @@ const translations_el = {
     multiple_choice_prompt_rule1: "1.  Πρέπει να υπάρχει μόνο μία σωστή απάντηση (`\"correct\": true`).",
     multiple_choice_prompt_rule2: "2.  Δώσε πολλές λανθασμένες απαντήσεις (`\"correct\": false`).",
     multiple_choice_prompt_example_json_title: "**Παράδειγμα JSON:**",
+    multiple_choice_prompt_example: `\`\`\`json
+{
+"question": "<p>Ποιο είναι το πραγματικό χρώμα του φραγκοστάφυλου (cassis);</p>",
+"answers": [
+{
+"correct": true,
+"text": "<div>Πολύ σκούρο μωβ</div>"
+},
+{
+"correct": false,
+"text": "<div>Μπλε</div>"
+},
+{
+"correct": false,
+"text": "<div>Μαύρο</div>"
+}
+]
+}
+\`\`\` `,
     multiple_choice_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
 
     // Find the Words UI translations

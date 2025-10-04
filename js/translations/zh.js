@@ -982,6 +982,25 @@ const translations_zh = {
     multiple_choice_prompt_rule1: "1.  只能有一个正确答案 (`\"correct\": true`)。",
     multiple_choice_prompt_rule2: "2.  提供几个不正确的答案 (`\"correct\": false`)。",
     multiple_choice_prompt_example_json_title: "**JSON 示例:**",
+    multiple_choice_prompt_example: `\`\`\`json
+{
+"question": "<p>黑加仑（cassis）的真实颜色是什么？</p>",
+"answers": [
+{
+"correct": true,
+"text": "<div>深紫色</div>"
+},
+{
+"correct": false,
+"text": "<div>蓝色</div>"
+},
+{
+"correct": false,
+"text": "<div>黑色</div>"
+}
+]
+}
+\`\`\` `,
     multiple_choice_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
 
     // Find the Words UI translations

@@ -982,6 +982,25 @@ const translations_fr = {
     multiple_choice_prompt_rule1: "1.  Il ne doit y avoir qu'une seule bonne réponse (`\"correct\": true`).",
     multiple_choice_prompt_rule2: "2.  Propose plusieurs mauvaises réponses (`\"correct\": false`).",
     multiple_choice_prompt_example_json_title: "**Exemple de JSON :**",
+    multiple_choice_prompt_example: `\`\`\`json
+{
+"question": "<p>Quelle est la couleur réelle de la baie de cassis ?</p>",
+"answers": [
+{
+"correct": true,
+"text": "<div>Violet très foncé</div>"
+},
+{
+"correct": false,
+"text": "<div>Bleu</div>"
+},
+{
+"correct": false,
+"text": "<div>Noir</div>"
+}
+]
+}
+\`\`\` `,
     multiple_choice_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire.",
 
     // Find the Words UI translations

@@ -2414,25 +2414,7 @@ ${pt.multiple_choice_prompt_rule1}
 ${pt.multiple_choice_prompt_rule2}
 
 ${pt.multiple_choice_prompt_example_json_title}
-\`\`\`json
-{
-"question": "<p>Quelle est la couleur réelle de la baie de cassis ?</p>",
-"answers": [
-{
-"correct": true,
-"text": "<div>Violet très foncé</div>"
-},
-{
-"correct": false,
-"text": "<div>Bleu</div>"
-},
-{
-"correct": false,
-"text": "<div>Noir</div>"
-}
-]
-}
-\`\`\`
+${pt.multiple_choice_prompt_example}
 
 ${pt.multiple_choice_prompt_generate_only_json}${languageInstruction}`;
 

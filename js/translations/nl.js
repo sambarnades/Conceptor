@@ -982,6 +982,25 @@ const translations_nl = {
     multiple_choice_prompt_rule1: "1.  Er mag slechts één juist antwoord zijn (`\"correct\": true`).",
     multiple_choice_prompt_rule2: "2.  Geef meerdere onjuiste antwoorden (`\"correct\": false`).",
     multiple_choice_prompt_example_json_title: "**JSON-voorbeeld:**",
+    multiple_choice_prompt_example: `\`\`\`json
+{
+"question": "<p>Wat is de werkelijke kleur van zwarte bes (cassis)?</p>",
+"answers": [
+{
+"correct": true,
+"text": "<div>Zeer donker paars</div>"
+},
+{
+"correct": false,
+"text": "<div>Blauw</div>"
+},
+{
+"correct": false,
+"text": "<div>Zwart</div>"
+}
+]
+}
+\`\`\` `,
     multiple_choice_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
 
     // Find the Words UI translations

@@ -982,6 +982,25 @@ const translations_it = {
     multiple_choice_prompt_rule1: "1.  Ci deve essere una sola risposta corretta (`\"correct\": true`).",
     multiple_choice_prompt_rule2: "2.  Fornisci diverse risposte errate (`\"correct\": false`).",
     multiple_choice_prompt_example_json_title: "**Esempio di JSON:**",
+    multiple_choice_prompt_example: `\`\`\`json
+{
+"question": "<p>Qual è il colore reale del ribes nero (cassis)?</p>",
+"answers": [
+{
+"correct": true,
+"text": "<div>Viola molto scuro</div>"
+},
+{
+"correct": false,
+"text": "<div>Blu</div>"
+},
+{
+"correct": false,
+"text": "<div>Nero</div>"
+}
+]
+}
+\`\`\` `,
     multiple_choice_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento.",
 
     // Find the Words UI translations

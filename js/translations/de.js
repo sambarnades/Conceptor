@@ -982,6 +982,25 @@ const translations_de = {
     multiple_choice_prompt_rule1: "1.  Es darf nur eine richtige Antwort geben (`\"correct\": true`).",
     multiple_choice_prompt_rule2: "2.  Geben Sie mehrere falsche Antworten an (`\"correct\": false`).",
     multiple_choice_prompt_example_json_title: "**Beispiel-JSON:**",
+    multiple_choice_prompt_example: `\`\`\`json
+{
+"question": "<p>Welche ist die tatsächliche Farbe der Schwarzen Johannisbeere?</p>",
+"answers": [
+{
+"correct": true,
+"text": "<div>Sehr dunkles Violett</div>"
+},
+{
+"correct": false,
+"text": "<div>Blau</div>"
+},
+{
+"correct": false,
+"text": "<div>Schwarz</div>"
+}
+]
+}
+\`\`\` `,
     multiple_choice_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare.",
 
     // Find the Words UI translations
