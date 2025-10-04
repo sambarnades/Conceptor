@@ -922,6 +922,14 @@ const translations_zh = {
     true_false_prompt_rule1: "问题必须是一个明确的陈述。",
     true_false_prompt_rule2: "`correct`的值必须是字符串：“true”或“false”。",
     true_false_prompt_example_json_title: "--- JSON示例 ---",
+    true_false_prompt_example: `\`\`\`json
+{
+"question": "<p>奥斯陆是挪威的首都。</p>",
+"correct": "true",
+"feedbackOnCorrect": "回答正确！奥斯陆确实是挪威的首都。",
+"feedbackOnWrong": "回答错误。挪威的首都是奥斯陆。"
+}
+    \`\`\` `,
     true_false_prompt_generate_only_json: "我希望你只生成JSON，不带任何注释或介绍性文字。",
     true_false_true_text: "正确",
     true_false_false_text: "错误",

@@ -922,6 +922,14 @@ const translations_el = {
     true_false_prompt_rule1: "Η ερώτηση πρέπει να είναι μια σαφής δήλωση.",
     true_false_prompt_rule2: "Η τιμή του `correct` πρέπει να είναι μια συμβολοσειρά: \"true\" ή \"false\".",
     true_false_prompt_example_json_title: "--- ΠΑΡΑΔΕΙΓΜΑ JSON ---",
+    true_false_prompt_example: `\`\`\`json
+{
+"question": "<p>Το Όσλο είναι η πρωτεύουσα της Νορβηγίας.</p>",
+"correct": "true",
+"feedbackOnCorrect": "Σωστή απάντηση! Το Όσλο είναι πράγματι η πρωτεύουσα της Νορβηγίας.",
+"feedbackOnWrong": "Λάθος απάντηση. Η πρωτεύουσα της Νορβηγίας είναι το Όσλο."
+}
+    \`\`\` `,
     true_false_prompt_generate_only_json: "Θέλω να δημιουργήσετε μόνο το JSON, χωρίς σχόλια ή εισαγωγικό κείμενο.",
     true_false_true_text: "Σωστό",
     true_false_false_text: "Λάθος",

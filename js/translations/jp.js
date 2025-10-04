@@ -922,6 +922,14 @@ const translations_jp = {
     true_false_prompt_rule1: "質問は明確なステートメントでなければなりません。",
     true_false_prompt_rule2: "`correct`の値は文字列でなければなりません：「true」または「false」。",
     true_false_prompt_example_json_title: "--- JSONの例 ---",
+    true_false_prompt_example: `\`\`\`json
+{
+"question": "<p>オスロはノルウェーの首都です。</p>",
+"correct": "true",
+"feedbackOnCorrect": "正解です！オスロは確かにノルウェーの首都です。",
+"feedbackOnWrong": "不正解です。ノルウェーの首都はオスロです。"
+}
+    \`\`\` `,
     true_false_prompt_generate_only_json: "コメントや紹介文なしで、JSONのみを生成してください。",
     true_false_true_text: "正解",
     true_false_false_text: "不正解",

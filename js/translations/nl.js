@@ -922,6 +922,14 @@ const translations_nl = {
     true_false_prompt_rule1: "De vraag moet een duidelijke bewering zijn.",
     true_false_prompt_rule2: "De waarde van `correct` moet een string zijn: \"true\" of \"false\".",
     true_false_prompt_example_json_title: "--- JSON-VOORBEELD ---",
+    true_false_prompt_example: `\`\`\`json
+{
+"question": "<p>Oslo is de hoofdstad van Noorwegen.</p>",
+"correct": "true",
+"feedbackOnCorrect": "Goed antwoord! Oslo is inderdaad de hoofdstad van Noorwegen.",
+"feedbackOnWrong": "Fout antwoord. De hoofdstad van Noorwegen is Oslo."
+}
+    \`\`\` `,
     true_false_prompt_generate_only_json: "Ik wil dat u alleen de JSON genereert, zonder commentaar of inleidende tekst.",
     true_false_true_text: "Waar",
     true_false_false_text: "Onwaar",

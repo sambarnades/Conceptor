@@ -2391,14 +2391,7 @@ ${pt.true_false_prompt_rule1}
 ${pt.true_false_prompt_rule2}
 
 ${pt.true_false_prompt_example_json_title}
-\`\`\`json
-{
-"question": "<p>Oslo est la capitale de la Norvège.</p>",
-"correct": "true",
-"feedbackOnCorrect": "Bonne réponse ! Oslo est bien la capitale de la Norvège.",
-"feedbackOnWrong": "Mauvaise réponse. La capitale de la Norvège est Oslo."
-}
-\`\`\`
+${pt.true_false_prompt_example}
 
 ${pt.true_false_prompt_generate_only_json}${languageInstruction}`;
 

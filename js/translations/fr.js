@@ -922,6 +922,14 @@ const translations_fr = {
     true_false_prompt_rule1: "La question doit être une affirmation claire.",
     true_false_prompt_rule2: "La valeur de `correct` doit impérativement être une chaîne de caractères : \"true\" ou \"false\".",
     true_false_prompt_example_json_title: "--- EXEMPLE DE JSON ---",
+    true_false_prompt_example: `\`\`\`json
+{
+"question": "<p>Oslo est la capitale de la Norvège.</p>",
+"correct": "true",
+"feedbackOnCorrect": "Bonne réponse ! Oslo est bien la capitale de la Norvège.",
+"feedbackOnWrong": "Mauvaise réponse. La capitale de la Norvège est Oslo."
+}
+    \`\`\` `,
     true_false_prompt_generate_only_json: "Je veux que tu me génères uniquement le JSON, sans aucun commentaire ou texte d'introduction.",
     true_false_true_text: "Vrai",
     true_false_false_text: "Faux",
