@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 <div class="h5p-prompt-block">
                     <h3>${translations.prompt_for_ia}</h3>
-                    <textarea id="${module.promptId}" readonly placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+                    <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
                     <div class="action-buttons">
                         <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
                         <button class="action-btn go-duck">${translations.go_duck}</button>
@@ -544,7 +544,7 @@ document.addEventListener('DOMContentLoaded', function() {
                <p>${translations.moodle_xml_description}</p>
                   <div class="h5p-prompt-block">                   
                     <h3>${translations.prompt_for_ia}</h3>
-                    <textarea id="moodleXmlResultat" readonly placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+                    <textarea id="moodleXmlResultat" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
                     <div class="action-buttons">
                         <button id="copyMoodleXmlLink" class="copy-btn">📋 Copier le prompt</button>
                         <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
@@ -571,7 +571,7 @@ document.addEventListener('DOMContentLoaded', function() {
            contentHtml = `
                <h3>${translations.moodle_gift_name}</h3>
                <p>${translations.moodle_gift_description}</p>
-               <textarea id="giftResultat" readonly placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+               <textarea id="giftResultat" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
                <div class="action-buttons">
                    <button id="copyGiftLink" class="copy-btn">📋 Copier le prompt</button>
                    <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
@@ -585,7 +585,7 @@ document.addEventListener('DOMContentLoaded', function() {
                <div class="h5p-prompt-block">
                    <h3>Prompt pour l'IA</h3>
                    
-                   <textarea id="${module.promptId}" readonly placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+                   <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
                    <div class="action-buttons">
                        <button id="copy-${moduleKey}" class="copy-btn">📋 Copier le prompt</button>
                        <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
@@ -615,7 +615,7 @@ document.addEventListener('DOMContentLoaded', function() {
                <div class="h5p-prompt-block">
                    <h3>Prompt pour l'IA</h3>
                    
-                   <textarea id="${module.promptId}" readonly placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+                   <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
                    <div class="action-buttons">
                        <button id="copy-${moduleKey}" class="copy-btn">📋 Copier le prompt</button>
                        <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
@@ -645,7 +645,7 @@ document.addEventListener('DOMContentLoaded', function() {
                <div class="h5p-prompt-block">
                    <h3>Prompt pour l'IA</h3>
                    
-                   <textarea id="${module.promptId}" readonly placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+                   <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
                    <div class="action-buttons">
                        <button id="copy-${moduleKey}" class="copy-btn">📋 Copier le prompt</button>
                        <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
