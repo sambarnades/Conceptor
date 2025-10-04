@@ -1242,7 +1242,35 @@ const translations_ar = {
     complex_blanks_prompt_rule2: "2. قدم أخطاء شائعة وملاحظات بناءة.",
     complex_blanks_prompt_rule3: "3. يمكن أن يحتوي النص والملاحظات على علامات HTML بسيطة مثل `<p>` و `<strong>` و `<em>`.",
     complex_blanks_prompt_example_json_title: "**مثال JSON:**",
-    complex_blanks_prompt_generate_only_json: "أنشئ فقط كود JSON صالحًا، بدون أي تعليقات.",
+    complex_blanks_prompt_example: `\`\`\`json
+{
+"content": {
+"task": "<p>ضع الأفعال في الزمن الصحيح. ستحصل على ملاحظات فردية للأخطاء الشائعة.</p>",
+"blanksList": [
+{
+"correctAnswerText": "لا يتحدث",
+"incorrectAnswersList": [
+{
+"incorrectAnswerText": "يتحدث لا",
+"incorrectAnswerFeedback": "<div>تذكر أن النفي يكون قبل الفعل في العربية <em>(يتحدث)</em>.</div>"
+},
+{
+"incorrectAnswerText": "لا نتحدث",
+"incorrectAnswerFeedback": "<div>لقد نسيت أن الفاعل هو الغائب المفرد <em>(هو)</em>.</div>"
+}
+]
+}
+],
+"blanksText": "<p>هو يتحدث الإنجليزية لكنه (لا / يتحدث) ___________<strong>&nbsp;</strong>الألمانية.</p>"
+},
+"overallFeedback": [
+{"from": 0, "to": 50, "feedback": "حاول مرة أخرى!"},
+{"from": 51, "to": 75, "feedback": "جيد إلى حد ما!"},
+{"from": 76, "to": 100, "feedback": "عمل رائع!"}
+]
+}
+\`\`\` `,
+   complex_blanks_prompt_generate_only_json: "أنشئ فقط كود JSON صالحًا، بدون أي تعليقات.",
 
     // Chart Prompt
     chart_prompt_role: "أنت خبير في تصميم التعليم تنشئ نشاط H5P \"رسم بياني\".",

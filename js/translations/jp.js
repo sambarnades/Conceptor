@@ -1242,7 +1242,35 @@ const translations_jp = {
     complex_blanks_prompt_rule2: "2. 一般的な間違いと建設的なフィードバックを提供してください。",
     complex_blanks_prompt_rule3: "3. テキストとフィードバックには、`<p>`、`<strong>`、`<em>`などの単純なHTMLタグを含めることができます。",
     complex_blanks_prompt_example_json_title: "**JSONの例:**",
-    complex_blanks_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
+    complex_blanks_prompt_example: `\`\`\`json
+{
+"content": {
+"task": "<p>動詞を正しい時制に直しなさい。典型的な間違いには個別のフィードバックが与えられます。</p>",
+"blanksList": [
+{
+"correctAnswerText": "話さない",
+"incorrectAnswersList": [
+{
+"incorrectAnswerText": "話すない",
+"incorrectAnswerFeedback": "<div>否定形では「〜ない」を動詞に直接付けます <em>(話す→話さない)</em>。</div>"
+},
+{
+"incorrectAnswerText": "話しません",
+"incorrectAnswerFeedback": "<div>ここでは三人称単数のカジュアルな否定形を使います <em>(彼)</em>。</div>"
+}
+]
+}
+],
+"blanksText": "<p>彼は英語を話しますが、(話さない) ___________<strong>&nbsp;</strong>ドイツ語。</p>"
+},
+"overallFeedback": [
+{"from": 0, "to": 50, "feedback": "もう一度やってみよう！"},
+{"from": 51, "to": 75, "feedback": "まあまあできました！"},
+{"from": 76, "to": 100, "feedback": "よくできました！"}
+]
+}
+\`\`\` `,
+   complex_blanks_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 
     // Chart Prompt
     chart_prompt_role: "あなたは教育設計の専門家で、H5Pアクティビティ「チャート」を作成しています。",

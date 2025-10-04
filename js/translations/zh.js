@@ -1242,6 +1242,34 @@ const translations_zh = {
     complex_blanks_prompt_rule2: "2. 提供常见的错误和建设性的反馈。",
     complex_blanks_prompt_rule3: "3. 文本和反馈可以包含简单的HTML标签，如`<p>`、`<strong>`、`<em>`。",
     complex_blanks_prompt_example_json_title: "**JSON示例：**",
+    complex_blanks_prompt_example: `\`\`\`json
+{
+"content": {
+"task": "<p>把动词放在正确的时态。你会得到典型错误的个别反馈。</p>",
+"blanksList": [
+{
+"correctAnswerText": "不会说",
+"incorrectAnswersList": [
+{
+"incorrectAnswerText": "说不",
+"incorrectAnswerFeedback": "<div>记住中文的否定形式是在动词前加“不”或“没”。<em>(说 → 不会说)</em></div>"
+},
+{
+"incorrectAnswerText": "我们不会说",
+"incorrectAnswerFeedback": "<div>你忘了这里的主语是第三人称单数 <em>(他)</em>。</div>"
+}
+]
+}
+],
+"blanksText": "<p>他会说英语，但他 (不会说) ___________<strong>&nbsp;</strong>德语。</p>"
+},
+"overallFeedback": [
+{"from": 0, "to": 50, "feedback": "再试一次！"},
+{"from": 51, "to": 75, "feedback": "还不错！"},
+{"from": 76, "to": 100, "feedback": "干得好！"}
+]
+}
+\`\`\` `,
     complex_blanks_prompt_generate_only_json: "只生成有效的JSON代码，不含任何注释。",
 
     // Chart Prompt

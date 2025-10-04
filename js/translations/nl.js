@@ -1242,6 +1242,34 @@ const translations_nl = {
     complex_blanks_prompt_rule2: "2. Geef veelvoorkomende fouten en constructieve feedback.",
     complex_blanks_prompt_rule3: "3. De tekst en feedback kunnen eenvoudige HTML-tags bevatten zoals `<p>`, `<strong>`, `<em>`.",
     complex_blanks_prompt_example_json_title: "**Voorbeeld-JSON:**",
+    complex_blanks_prompt_example: `\`\`\`json
+{
+"content": {
+"task": "<p>Zet de werkwoorden in de juiste tijd. Je krijgt individuele feedback voor typische fouten.</p>",
+"blanksList": [
+{
+"correctAnswerText": "spreekt niet",
+"incorrectAnswersList": [
+{
+"incorrectAnswerText": "niet spreekt",
+"incorrectAnswerFeedback": "<div>Onthoud dat 'niet' meestal achter het werkwoord komt <em>(spreken)</em>.</div>"
+},
+{
+"incorrectAnswerText": "spreken niet",
+"incorrectAnswerFeedback": "<div>Je bent de uitgang voor derde persoon enkelvoud vergeten <em>(hij)</em>.</div>"
+}
+]
+}
+],
+"blanksText": "<p>Hij spreekt Engels maar hij (niet / spreken) ___________<strong>&nbsp;</strong>Duits.</p>"
+},
+"overallFeedback": [
+{"from": 0, "to": 50, "feedback": "Probeer het opnieuw!"},
+{"from": 51, "to": 75, "feedback": "Best goed gedaan!"},
+{"from": 76, "to": 100, "feedback": "Goed zo!"}
+]
+}
+\`\`\` `,
     complex_blanks_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar.",
 
     // Chart Prompt

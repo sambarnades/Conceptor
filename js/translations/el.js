@@ -1242,7 +1242,35 @@ const translations_el = {
     complex_blanks_prompt_rule2: "2. Παρέχετε συνήθη λάθη και εποικοδομητική ανατροφοδότηση.",
     complex_blanks_prompt_rule3: "3. Το κείμενο και η ανατροφοδότηση μπορούν να περιέχουν απλές ετικέτες HTML όπως `<p>`, `<strong>`, `<em>`.",
     complex_blanks_prompt_example_json_title: "**Παράδειγμα JSON:**",
-    complex_blanks_prompt_generate_only_json: "Δημιουργήστε μόνο τον έγκυρο κώδικα JSON, χωρίς κανένα σχόλιο.",
+    complex_blanks_prompt_example: `\`\`\`json
+{
+"content": {
+"task": "<p>Βάλε τα ρήματα στον σωστό χρόνο. Θα λάβεις ατομικά σχόλια για συνηθισμένα λάθη.</p>",
+"blanksList": [
+{
+"correctAnswerText": "δεν μιλά",
+"incorrectAnswersList": [
+{
+"incorrectAnswerText": "μιλά όχι",
+"incorrectAnswerFeedback": "<div>Θυμήσου ότι η άρνηση μπαίνει πριν από το ρήμα <em>(μιλάω)</em>.</div>"
+},
+{
+"incorrectAnswerText": "δεν μιλάμε",
+"incorrectAnswerFeedback": "<div>Ξέχασες ότι το υποκείμενο είναι τρίτο πρόσωπο ενικού <em>(αυτός)</em>.</div>"
+}
+]
+}
+],
+"blanksText": "<p>Μιλάει αγγλικά αλλά (δεν / μιλάω) ___________<strong>&nbsp;</strong>γερμανικά.</p>"
+},
+"overallFeedback": [
+{"from": 0, "to": 50, "feedback": "Δοκίμασε ξανά!"},
+{"from": 51, "to": 75, "feedback": "Καλά τα πήγες!"},
+{"from": 76, "to": 100, "feedback": "Μπράβο!"}
+]
+}
+\`\`\` `,
+   complex_blanks_prompt_generate_only_json: "Δημιουργήστε μόνο τον έγκυρο κώδικα JSON, χωρίς κανένα σχόλιο.",
 
     // Chart Prompt
     chart_prompt_role: "Είστε ειδικός στον εκπαιδευτικό σχεδιασμό και δημιουργείτε μια δραστηριότητα H5P \"Γράφημα\".",

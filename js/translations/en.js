@@ -1242,6 +1242,34 @@ const translations_en = {
     complex_blanks_prompt_rule2: "2. Provide common mistakes and constructive feedback.",
     complex_blanks_prompt_rule3: "3. The text and feedback can contain simple HTML tags like `<p>`, `<strong>`, `<em>`.",
     complex_blanks_prompt_example_json_title: "**Example JSON:**",
+    complex_blanks_prompt_example: `\`\`\`json
+{
+"content": {
+"task": "<p>Put the verbs into the correct tense. You'll get individual feedback for typical mistakes.</p>",
+"blanksList": [
+{
+"correctAnswerText": "doesn't speak/does not speak",
+"incorrectAnswersList": [
+{
+"incorrectAnswerText": "speaks not/speak not",
+"incorrectAnswerFeedback": "<div>Remember to use 'do/does' when negating a full verb <em>(speak)</em>.</div>"
+},
+{
+"incorrectAnswerText": "don't speak/do not speak",
+"incorrectAnswerFeedback": "<div>You forgot the 'third person singular -s' for simple present <em>(he)</em>.</div>"
+}
+]
+}
+],
+"blanksText": "<p>He speaks English but he (not / speak) ___________<strong>&nbsp;</strong>German.</p>"
+},
+"overallFeedback": [
+{"from": 0, "to": 50, "feedback": "Try again!"},
+{"from": 51, "to": 75, "feedback": "You've done ok!"},
+{"from": 76, "to": 100, "feedback": "Good job!"}
+]
+}
+\`\`\` `,
     complex_blanks_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
 
     // Chart Prompt

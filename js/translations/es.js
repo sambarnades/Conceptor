@@ -1242,6 +1242,35 @@ const translations_es = {
     complex_blanks_prompt_rule2: "2. Proporciona errores comunes y retroalimentación constructiva.",
     complex_blanks_prompt_rule3: "3. El texto y la retroalimentación pueden contener etiquetas HTML simples como `<p>`, `<strong>`, `<em>`.",
     complex_blanks_prompt_example_json_title: "**Ejemplo de JSON:**",
+    complex_blanks_prompt_example: `\`\`\`json
+{
+"content": {
+"task": "<p>Pon los verbos en el tiempo correcto. Recibirás retroalimentación individual para errores típicos.</p>",
+"blanksList": [
+{
+"correctAnswerText": "no habla",
+"incorrectAnswersList": [
+{
+"incorrectAnswerText": "habla no",
+"incorrectAnswerFeedback": "<div>Recuerda que en español la negación va antes del verbo <em>(hablar)</em>.</div>"
+},
+{
+"incorrectAnswerText": "no hablamos",
+"incorrectAnswerFeedback": "<div>Olvidaste que el sujeto es tercera persona singular <em>(él)</em>.</div>"
+}
+]
+}
+],
+"blanksText": "<p>Él habla inglés pero (no / hablar) ___________<strong>&nbsp;</strong>alemán.</p>"
+},
+"overallFeedback": [
+{"from": 0, "to": 50, "feedback": "¡Inténtalo de nuevo!"},
+{"from": 51, "to": 75, "feedback": "¡Está bastante bien!"},
+{"from": 76, "to": 100, "feedback": "¡Muy bien hecho!"
+}
+]
+}
+\`\`\` `,
     complex_blanks_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario.",
 
     // Chart Prompt

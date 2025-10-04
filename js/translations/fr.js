@@ -1242,6 +1242,34 @@ const translations_fr = {
     complex_blanks_prompt_rule2: "2. Propose des erreurs fréquentes et des feedbacks constructifs.",
     complex_blanks_prompt_rule3: "3. Le texte et les feedbacks peuvent contenir des balises HTML simples comme `<p>`, `<strong>`, `<em>`.",
     complex_blanks_prompt_example_json_title: "**Exemple de JSON :**",
+    complex_blanks_prompt_example: `\`\`\`json
+{
+"content": {
+"task": "<p>Mets les verbes au temps correct. Tu recevras un retour individuel pour les erreurs typiques.</p>",
+"blanksList": [
+{
+"correctAnswerText": "ne parle pas",
+"incorrectAnswersList": [
+{
+"incorrectAnswerText": "parle pas",
+"incorrectAnswerFeedback": "<div>N'oublie pas d'utiliser 'ne ... pas' pour la négation complète du verbe <em>(parler)</em>.</div>"
+},
+{
+"incorrectAnswerText": "ne parlent pas",
+"incorrectAnswerFeedback": "<div>Tu as oublié la terminaison du 'troisième personne du singulier' au présent simple <em>(il)</em>.</div>"
+}
+]
+}
+],
+"blanksText": "<p>Il parle anglais mais il (ne / parler) ___________<strong>&nbsp;</strong>allemand.</p>"
+},
+"overallFeedback": [
+{"from": 0, "to": 50, "feedback": "Essaie encore !"},
+{"from": 51, "to": 75, "feedback": "C’est correct dans l’ensemble !"},
+{"from": 76, "to": 100, "feedback": "Bravo !"}
+]
+}
+\`\`\` `,
     complex_blanks_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire.",
 
     // Chart Prompt
