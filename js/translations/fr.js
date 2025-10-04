@@ -631,6 +631,15 @@ const translations_fr = {
     mark_words_a11y_show_solution: "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
     mark_words_a11y_retry: "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
 
+    // Millionnaire Creation
+    millionnaire_error_compression_libs: "Les bibliothèques de compression (Tar.js ou fflate) ne sont pas chargées. Veuillez vérifier votre connexion internet ou rafraîchir la page.",
+    millionnaire_error_invalid_json: "La structure du JSON est invalide. Assurez-vous qu'elle contient un 'title' et un tableau 'questions' de 6 questions conformes à l'exemple.",
+    millionnaire_activity_intro: "Participez à ce jeu pour tester vos connaissances.",
+    millionnaire_backup_log: "Sauvegarde créée automatiquement par Caramel\n",
+    millionnaire_success_generation: "Fichier {fileName} généré avec succès !",
+    millionnaire_error_creation_mbz: "Erreur lors de la création du MBZ:",
+    millionnaire_error_generic: "Erreur :",
+ 
     // Millionnaire Prompt
     millionnaire_prompt_role: "Tu es un expert en ingénierie pédagogique créant une activité H5P \"Millionnaire\".",
     millionnaire_prompt_num_questions: "**Nombre de questions :** 6",

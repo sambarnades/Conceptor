@@ -2639,18 +2639,18 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
    async function handleMillionnaireCreation(jsonInput) {
        try {
            if (typeof Tar === 'undefined' || typeof fflate === 'undefined') {
-               throw new Error("Les bibliothèques de compression (Tar.js ou fflate) ne sont pas chargées. Veuillez vérifier votre connexion internet ou rafraîchir la page.");
+               throw new Error(translations.millionnaire_error_compression_libs);
            }
            const jsonData = JSON.parse(jsonInput);
            if (!jsonData.title || !Array.isArray(jsonData.questions) || jsonData.questions.length !== 6 || jsonData.questions.some(q => !q.question || !q.goodanswer || !Array.isArray(q.badanswer) || q.badanswer.length !== 3)) {
-               throw new Error("La structure du JSON est invalide. Assurez-vous qu'elle contient un 'title' et un tableau 'questions' de 6 questions conformes à l'exemple.");
+               throw new Error(translations.millionnaire_error_invalid_json);
            }
            const activityTitle = jsonData.title;
            const questions = jsonData.questions;
            const courseFullname = activityTitle;
            const data = {
                'ACTIVITY_TITLE': escapeXml(activityTitle),
-               'ACTIVITY_INTRO_HTML': '<p>Participez à ce jeu pour tester vos connaissances.</p>',
+               'ACTIVITY_INTRO_HTML': `<p>${translations.millionnaire_activity_intro}</p>`,
                'QUESTIONS_JSON': JSON.stringify(questions),
                'COURSE_FULLNAME': escapeXml(courseFullname),
                'COURSE_CONTEXTID': '110712'
@@ -2666,7 +2666,7 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
                files[path] = content;
            }
            // Ajout automatique du fichier moodle_backup.log minimal
-           files['moodle_backup.log'] = 'Backup created automatically by my-tool\n';
+           files['moodle_backup.log'] = translations.millionnaire_backup_log;
            const gzData = await createMbz(files);
            const fileName = `${activityTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.mbz`;
            const a = document.createElement('a');
@@ -2676,10 +2676,10 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
            a.click();
            document.body.removeChild(a);
            URL.revokeObjectURL(a.href);
-           showNotification(`Fichier ${fileName} généré avec succès !`);
+           showNotification(translations.millionnaire_success_generation.replace('{fileName}', fileName));
        } catch (error) {
-           console.error("Erreur lors de la création du MBZ:", error);
-           showNotification(`Erreur : ${error.message}`, 'error');
+           console.error(translations.millionnaire_error_creation_mbz, error);
+           showNotification(`${translations.millionnaire_error_generic} ${error.message}`, 'error');
        }
    }
 
