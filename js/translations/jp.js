@@ -1160,6 +1160,46 @@ const translations_jp = {
     dialog_cards_prompt_rule2: "2. 画像や音声は追加しないでください。",
     dialog_cards_prompt_rule3: "",
     dialog_cards_prompt_example_json_title: "**JSONの例:**",
+    dialog_cards_prompt_example: `\`\`\`json
+{
+"title": "<p>フランス語で果物の名前を学びましょう</p>",
+"description": "<p>果物の名前は日本語で表示されます。カードをめくって正しいフランス語訳を確認しましょう。</p>",
+"dialogs": [
+{
+"text": "<p style=\"text-align: center;\">いちご</p>",
+"answer": "<p style=\"text-align: center;\">Fraises</p>",
+"image": {
+"copyright": {
+"license": "CC BY-SA",
+"source": "https://commons.wikimedia.org/wiki/File:Bowl_of_Strawberries.jpg",
+"author": "ShakataGaNai",
+"title": "Bowl_of_Strawberries.jpg",
+"version": "4.0"
+},
+"imageAltText": "緑の葉のついた赤い果物"
+},
+"audio": [],
+"tips": {}
+},
+{
+"text": "<p style=\"text-align: center;\">ラズベリー</p>",
+"answer": "<p style=\"text-align: center;\">Framboises</p>",
+"image": {
+"copyright": {
+"license": "CC BY",
+"source": "https://commons.wikimedia.org/wiki/File:Summer_raspberries,_2008.jpg",
+"title": "Summer_raspberries,_2008.jpg",
+"author": "www.bluewaikiki.com",
+"version": "4.0"
+},
+"imageAltText": "赤いベリー"
+},
+"audio": [],
+"tips": {}
+}
+]
+}
+\`\`\` `,
     dialog_cards_prompt_generate_only_json: "コメントなしで、`title`、`description`、`dialogs`キーを含む有効なJSONコードのみを生成してください。",
 
     // Dialog Cards specific UI translations

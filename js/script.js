@@ -2499,46 +2499,7 @@ ${pt.dialog_cards_prompt_rule2}
 ${pt.dialog_cards_prompt_rule3}
 
 ${pt.dialog_cards_prompt_example_json_title}
-\`\`\`json
-{
-"title": "<p>Apprenez les noms des fruits en anglais</p>",
-"description": "<p>Les noms des fruits sont présentés en français. Retournez les cartes pour voir la traduction anglaise correcte.</p>",
-"dialogs": [
-{
-"text": "<p style=\\"text-align: center;\\">Fraises</p>",
-"answer": "<p style=\\"text-align: center;\\">Strawberries</p>",
-"image": {
-"copyright": {
-"license": "CC BY-SA",
-"source": "https://commons.wikimedia.org/wiki/File:Bowl_of_Strawberries.jpg",
-"author": "ShakataGaNai",
-"title": "Bowl_of_Strawberries.jpg",
-"version": "4.0"
-},
-"imageAltText": "Des fruits rouges avec des feuilles vertes"
-},
-"audio": [],
-"tips": {}
-},
-{
-"text": "<p style=\\"text-align: center;\\">Framboises</p>",
-"answer": "<p style=\\"text-align: center;\\">Raspberries</p>",
-"image": {
-"copyright": {
-"license": "CC BY",
-"source": "https://commons.wikimedia.org/wiki/File:Summer_raspberries,_2008.jpg",
-"title": "Summer_raspberries,_2008.jpg",
-"author": "www.bluewaikiki.com",
-"version": "4.0"
-},
-"imageAltText": "Des baies rouges"
-},
-"audio": [],
-"tips": {}
-}
-]
-}
-\`\`\`
+${pt.dialog_cards_prompt_example}
 
 ${pt.dialog_cards_prompt_generate_only_json}${languageInstruction}`;
        

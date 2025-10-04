@@ -1160,7 +1160,47 @@ const translations_ar = {
     dialog_cards_prompt_rule2: "2. لا تقم بإضافة أي صور أو أصوات.",
     dialog_cards_prompt_rule3: "",
     dialog_cards_prompt_example_json_title: "**مثال JSON:**",
-    dialog_cards_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط يحتوي على المفاتيح `title` و `description` و `dialogs`، دون أي تعليقات.",
+    dialog_cards_prompt_example: `\`\`\`json
+{
+"title": "<p>تعلّم أسماء الفواكه بالإنجليزية</p>",
+"description": "<p>أسماء الفواكه معروضة بالعربية. اقلب البطاقات لرؤية الترجمة الصحيحة بالإنجليزية.</p>",
+"dialogs": [
+{
+"text": "<p style=\"text-align: center;\">فراولة</p>",
+"answer": "<p style=\"text-align: center;\">Strawberries</p>",
+"image": {
+"copyright": {
+"license": "CC BY-SA",
+"source": "https://commons.wikimedia.org/wiki/File:Bowl_of_Strawberries.jpg",
+"author": "ShakataGaNai",
+"title": "Bowl_of_Strawberries.jpg",
+"version": "4.0"
+},
+"imageAltText": "فاكهة حمراء بأوراق خضراء"
+},
+"audio": [],
+"tips": {}
+},
+{
+"text": "<p style=\"text-align: center;\">توت العليق</p>",
+"answer": "<p style=\"text-align: center;\">Raspberries</p>",
+"image": {
+"copyright": {
+"license": "CC BY",
+"source": "https://commons.wikimedia.org/wiki/File:Summer_raspberries,_2008.jpg",
+"title": "Summer_raspberries,_2008.jpg",
+"author": "www.bluewaikiki.com",
+"version": "4.0"
+},
+"imageAltText": "توت أحمر"
+},
+"audio": [],
+"tips": {}
+}
+]
+}
+\`\`\` `,
+   dialog_cards_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط يحتوي على المفاتيح `title` و `description` و `dialogs`، دون أي تعليقات.",
 
     // Dialog Cards specific UI translations
     correctAnswer: "أجبت بشكل صحيح!",

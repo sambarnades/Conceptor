@@ -1160,6 +1160,46 @@ const translations_el = {
     dialog_cards_prompt_rule2: "2. Μην προσθέτετε εικόνες ή ήχους.",
     dialog_cards_prompt_rule3: "",
     dialog_cards_prompt_example_json_title: "**Παράδειγμα JSON:**",
+    dialog_cards_prompt_example: `\`\`\`json
+{
+"title": "<p>Μάθετε τα ονόματα των φρούτων στα Αγγλικά</p>",
+"description": "<p>Τα ονόματα των φρούτων εμφανίζονται στα Ελληνικά. Γυρίστε τις κάρτες για να δείτε τη σωστή αγγλική μετάφραση.</p>",
+"dialogs": [
+{
+"text": "<p style=\"text-align: center;\">Φράουλες</p>",
+"answer": "<p style=\"text-align: center;\">Strawberries</p>",
+"image": {
+"copyright": {
+"license": "CC BY-SA",
+"source": "https://commons.wikimedia.org/wiki/File:Bowl_of_Strawberries.jpg",
+"author": "ShakataGaNai",
+"title": "Bowl_of_Strawberries.jpg",
+"version": "4.0"
+},
+"imageAltText": "Κόκκινα φρούτα με πράσινα φύλλα"
+},
+"audio": [],
+"tips": {}
+},
+{
+"text": "<p style=\"text-align: center;\">Σμέουρα</p>",
+"answer": "<p style=\"text-align: center;\">Raspberries</p>",
+"image": {
+"copyright": {
+"license": "CC BY",
+"source": "https://commons.wikimedia.org/wiki/File:Summer_raspberries,_2008.jpg",
+"title": "Summer_raspberries,_2008.jpg",
+"author": "www.bluewaikiki.com",
+"version": "4.0"
+},
+"imageAltText": "Κόκκινα μούρα"
+},
+"audio": [],
+"tips": {}
+}
+]
+}
+\`\`\` `,
     dialog_cards_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON που περιέχει τα κλειδιά `title`, `description` και `dialogs`, χωρίς σχόλια.",
 
     // Dialog Cards specific UI translations

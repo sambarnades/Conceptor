@@ -1160,6 +1160,46 @@ const translations_nl = {
     dialog_cards_prompt_rule2: "2. Voeg geen afbeeldingen of geluiden toe.",
     dialog_cards_prompt_rule3: "",
     dialog_cards_prompt_example_json_title: "**JSON-voorbeeld:**",
+    dialog_cards_prompt_example: `\`\`\`json
+{
+"title": "<p>Leer de namen van fruit in het Frans</p>",
+"description": "<p>De fruitnamen worden in het Nederlands weergegeven. Draai de kaarten om de juiste Franse vertaling te zien.</p>",
+"dialogs": [
+{
+"text": "<p style=\"text-align: center;\">Aardbeien</p>",
+"answer": "<p style=\"text-align: center;\">Fraises</p>",
+"image": {
+"copyright": {
+"license": "CC BY-SA",
+"source": "https://commons.wikimedia.org/wiki/File:Bowl_of_Strawberries.jpg",
+"author": "ShakataGaNai",
+"title": "Bowl_of_Strawberries.jpg",
+"version": "4.0"
+},
+"imageAltText": "Rode vruchten met groene bladeren"
+},
+"audio": [],
+"tips": {}
+},
+{
+"text": "<p style=\"text-align: center;\">Frambozen</p>",
+"answer": "<p style=\"text-align: center;\">Framboises</p>",
+"image": {
+"copyright": {
+"license": "CC BY",
+"source": "https://commons.wikimedia.org/wiki/File:Summer_raspberries,_2008.jpg",
+"title": "Summer_raspberries,_2008.jpg",
+"author": "www.bluewaikiki.com",
+"version": "4.0"
+},
+"imageAltText": "Rode bessen"
+},
+"audio": [],
+"tips": {}
+}
+]
+}
+\`\`\` `,
     dialog_cards_prompt_generate_only_json: "Genereer alleen de geldige JSON-code met de sleutels `title`, `description` en `dialogs`, zonder commentaar.",
 
     // Dialog Cards specific UI translations

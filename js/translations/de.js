@@ -1160,6 +1160,46 @@ const translations_de = {
     dialog_cards_prompt_rule2: "2. Fügen Sie keine Bilder oder Töne hinzu.",
     dialog_cards_prompt_rule3: "",
     dialog_cards_prompt_example_json_title: "**Beispiel-JSON:**",
+    dialog_cards_prompt_example: `\`\`\`json
+{
+"title": "<p>Lerne die Namen der Früchte auf Englisch</p>",
+"description": "<p>Die Fruchtnamen werden auf Deutsch angezeigt. Drehe die Karten um, um die richtige englische Übersetzung zu sehen.</p>",
+"dialogs": [
+{
+"text": "<p style=\"text-align: center;\">Erdbeeren</p>",
+"answer": "<p style=\"text-align: center;\">Strawberries</p>",
+"image": {
+"copyright": {
+"license": "CC BY-SA",
+"source": "https://commons.wikimedia.org/wiki/File:Bowl_of_Strawberries.jpg",
+"author": "ShakataGaNai",
+"title": "Bowl_of_Strawberries.jpg",
+"version": "4.0"
+},
+"imageAltText": "Rote Früchte mit grünen Blättern"
+},
+"audio": [],
+"tips": {}
+},
+{
+"text": "<p style=\"text-align: center;\">Himbeeren</p>",
+"answer": "<p style=\"text-align: center;\">Raspberries</p>",
+"image": {
+"copyright": {
+"license": "CC BY",
+"source": "https://commons.wikimedia.org/wiki/File:Summer_raspberries,_2008.jpg",
+"title": "Summer_raspberries,_2008.jpg",
+"author": "www.bluewaikiki.com",
+"version": "4.0"
+},
+"imageAltText": "Rote Beeren"
+},
+"audio": [],
+"tips": {}
+}
+]
+}
+\`\`\` `,
     dialog_cards_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code, der die Schlüssel `title`, `description` und `dialogs` enthält, ohne Kommentare.",
 
     // Dialog Cards specific UI translations

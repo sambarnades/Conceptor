@@ -1160,7 +1160,47 @@ const translations_zh = {
     dialog_cards_prompt_rule2: "2. 不要添加任何图像或声音。",
     dialog_cards_prompt_rule3: "",
     dialog_cards_prompt_example_json_title: "**JSON 示例:**",
-    dialog_cards_prompt_generate_only_json: "仅生成包含 `title`、`description` 和 `dialogs` 键的有效 JSON 代码，不要添加任何注释。",
+    dialog_cards_prompt_example: `\`\`\`json
+{
+"title": "<p>学习法语中的水果名称</p>",
+"description": "<p>水果的名字以中文显示。翻转卡片查看正确的法语翻译。</p>",
+"dialogs": [
+{
+"text": "<p style=\"text-align: center;\">草莓</p>",
+"answer": "<p style=\"text-align: center;\">Fraises</p>",
+"image": {
+"copyright": {
+"license": "CC BY-SA",
+"source": "https://commons.wikimedia.org/wiki/File:Bowl_of_Strawberries.jpg",
+"author": "ShakataGaNai",
+"title": "Bowl_of_Strawberries.jpg",
+"version": "4.0"
+},
+"imageAltText": "带绿色叶子的红色水果"
+},
+"audio": [],
+"tips": {}
+},
+{
+"text": "<p style=\"text-align: center;\">覆盆子</p>",
+"answer": "<p style=\"text-align: center;\">Framboises</p>",
+"image": {
+"copyright": {
+"license": "CC BY",
+"source": "https://commons.wikimedia.org/wiki/File:Summer_raspberries,_2008.jpg",
+"title": "Summer_raspberries,_2008.jpg",
+"author": "www.bluewaikiki.com",
+"version": "4.0"
+},
+"imageAltText": "红色浆果"
+},
+"audio": [],
+"tips": {}
+}
+]
+}
+\`\`\` `,
+   dialog_cards_prompt_generate_only_json: "仅生成包含 `title`、`description` 和 `dialogs` 键的有效 JSON 代码，不要添加任何注释。",
 
     // Dialog Cards specific UI translations
     correctAnswer: "我答对了！",

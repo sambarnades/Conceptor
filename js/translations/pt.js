@@ -1160,6 +1160,46 @@ const translations_pt = {
     dialog_cards_prompt_rule2: "2. Não adicione imagens ou sons.",
     dialog_cards_prompt_rule3: "",
     dialog_cards_prompt_example_json_title: "**Exemplo de JSON:**",
+    dialog_cards_prompt_example: `\`\`\`json
+{
+"title": "<p>Aprenda os nomes das frutas em francês</p>",
+"description": "<p>Os nomes das frutas são apresentados em português. Vire os cartões para ver a tradução correta em francês.</p>",
+"dialogs": [
+{
+"text": "<p style=\"text-align: center;\">Morangos</p>",
+"answer": "<p style=\"text-align: center;\">Fraises</p>",
+"image": {
+"copyright": {
+"license": "CC BY-SA",
+"source": "https://commons.wikimedia.org/wiki/File:Bowl_of_Strawberries.jpg",
+"author": "ShakataGaNai",
+"title": "Bowl_of_Strawberries.jpg",
+"version": "4.0"
+},
+"imageAltText": "Frutos vermelhos com folhas verdes"
+},
+"audio": [],
+"tips": {}
+},
+{
+"text": "<p style=\"text-align: center;\">Framboesas</p>",
+"answer": "<p style=\"text-align: center;\">Framboises</p>",
+"image": {
+"copyright": {
+"license": "CC BY",
+"source": "https://commons.wikimedia.org/wiki/File:Summer_raspberries,_2008.jpg",
+"title": "Summer_raspberries,_2008.jpg",
+"author": "www.bluewaikiki.com",
+"version": "4.0"
+},
+"imageAltText": "Bagas vermelhas"
+},
+"audio": [],
+"tips": {}
+}
+]
+}
+\`\`\` `,
     dialog_cards_prompt_generate_only_json: "Gere apenas o código JSON válido contendo as chaves `title`, `description` e `dialogs`, sem qualquer comentário.",
 
     // Dialog Cards specific UI translations
