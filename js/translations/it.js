@@ -1113,6 +1113,23 @@ const translations_it = {
     single_choice_set_prompt_content_rules_title: "**Regole per il contenuto:**",
     single_choice_set_prompt_rule1: "1. In ogni array `answers`, la prima risposta è sempre quella corretta.",
     single_choice_set_prompt_example_json_title: "**Esempio di JSON:**",
+    single_choice_set_prompt_example: `\`\`\`json
+{
+"choices": [
+{
+"question": "Le bacche di goji sono anche conosciute come ...",
+"answers": ["Bacche di lupo", "Bacche di gatto", "Bacche di orso"]
+},
+{
+"question": "Le bacche di goji sono originarie ...",
+"answers": ["Asia", "Africa", "Europa"]
+}
+],
+"overallFeedback": [
+{"from": 0, "to": 100, "feedback": "Hai ottenuto :numcorrect su :maxscore corrette"}
+]
+}
+\`\`\` `,
     single_choice_set_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento.",
 
     // Dialog Cards UI translations

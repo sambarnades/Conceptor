@@ -1113,7 +1113,24 @@ const translations_ar = {
     single_choice_set_prompt_content_rules_title: "**قواعد المحتوى:**",
     single_choice_set_prompt_rule1: "1. في كل مصفوفة `answers`، تكون الإجابة الأولى هي الصحيحة دائمًا.",
     single_choice_set_prompt_example_json_title: "**مثال JSON:**",
-    single_choice_set_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات.",
+    single_choice_set_prompt_example: `\`\`\`json
+{
+"choices": [
+{
+"question": "تُعرف توت الغوجي أيضًا باسم ...",
+"answers": ["توت الذئب", "توت القط", "توت الدب"]
+},
+{
+"question": "توت الغوجي موطنها الأصلي ...",
+"answers": ["آسيا", "أفريقيا", "أوروبا"]
+}
+],
+"overallFeedback": [
+{"from": 0, "to": 100, "feedback": "لقد حصلت على :numcorrect من أصل :maxscore إجابات صحيحة"}
+]
+}
+\`\`\` `,
+   single_choice_set_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات.",
 
     // Dialog Cards UI translations
     answer: "اقلب",

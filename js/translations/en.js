@@ -1113,6 +1113,23 @@ const translations_en = {
     single_choice_set_prompt_content_rules_title: "**Content rules:**",
     single_choice_set_prompt_rule1: "1.  In each `answers` array, the first answer is always the correct one.",
     single_choice_set_prompt_example_json_title: "**Example JSON:**",
+    single_choice_set_prompt_example: `\`\`\`json
+{
+"choices": [
+{
+"question": "Goji berries are also known as ...",
+"answers": ["Wolfberries", "Catberries", "Bearberries"]
+},
+{
+"question": "Goji berries are native to ...",
+"answers": ["Asia", "Africa", "Europe"]
+}
+],
+"overallFeedback": [
+{"from": 0, "to": 100, "feedback": "You got :numcorrect of :maxscore correct"}
+]
+}
+\`\`\` `,
     single_choice_set_prompt_generate_only_json: "Generate only the valid JSON code, without any comments.",
 
     // Dialog Cards UI translations

@@ -1113,7 +1113,24 @@ const translations_nl = {
     single_choice_set_prompt_content_rules_title: "**Inhoudsregels:**",
     single_choice_set_prompt_rule1: "1. In elke `answers`-array is het eerste antwoord altijd het juiste.",
     single_choice_set_prompt_example_json_title: "**JSON-voorbeeld:**",
-    single_choice_set_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar.",
+    single_choice_set_prompt_example: `\`\`\`json
+{
+"choices": [
+{
+"question": "Goji-bessen staan ook bekend als ...",
+"answers": ["Wolfbessen", "Kattenbessen", "Berenbessen"]
+},
+{
+"question": "Goji-bessen zijn afkomstig uit ...",
+"answers": ["Azië", "Afrika", "Europa"]
+}
+],
+"overallFeedback": [
+{"from": 0, "to": 100, "feedback": "Je had :numcorrect van de :maxscore goed"}
+]
+}
+\`\`\` `,
+   single_choice_set_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar.",
 
     // Dialog Cards UI translations
     answer: "Omdraaien",

@@ -1113,6 +1113,23 @@ const translations_zh = {
     single_choice_set_prompt_content_rules_title: "**内容规则:**",
     single_choice_set_prompt_rule1: "1. 在每个 `answers` 数组中，第一个答案始终是正确的。",
     single_choice_set_prompt_example_json_title: "**JSON 示例:**",
+    single_choice_set_prompt_example: `\`\`\`json
+{
+"choices": [
+{
+"question": "枸杞也被称为 ...",
+"answers": ["狼莓", "猫莓", "熊莓"]
+},
+{
+"question": "枸杞原产于 ...",
+"answers": ["亚洲", "非洲", "欧洲"]
+}
+],
+"overallFeedback": [
+{"from": 0, "to": 100, "feedback": "你答对了 :numcorrect 道，共 :maxscore 道"}
+]
+}
+\`\`\` `,
     single_choice_set_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
 
     // Dialog Cards UI translations

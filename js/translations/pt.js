@@ -1113,6 +1113,23 @@ const translations_pt = {
     single_choice_set_prompt_content_rules_title: "**Regras para o conteúdo:**",
     single_choice_set_prompt_rule1: "1. Em cada array `answers`, a primeira resposta é sempre a correta.",
     single_choice_set_prompt_example_json_title: "**Exemplo de JSON:**",
+    single_choice_set_prompt_example: `\`\`\`json
+{
+"choices": [
+{
+"question": "As bagas de goji também são conhecidas como ...",
+"answers": ["Bagas de lobo", "Bagas de gato", "Bagas de urso"]
+},
+{
+"question": "As bagas de goji são nativas de ...",
+"answers": ["Ásia", "África", "Europa"]
+}
+],
+"overallFeedback": [
+{"from": 0, "to": 100, "feedback": "Acertaste :numcorrect de :maxscore"}
+]
+}
+\`\`\` `,
     single_choice_set_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário.",
 
     // Dialog Cards UI translations

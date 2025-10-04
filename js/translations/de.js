@@ -1113,6 +1113,23 @@ const translations_de = {
     single_choice_set_prompt_content_rules_title: "**Inhaltsregeln:**",
     single_choice_set_prompt_rule1: "1.  In jedem `answers`-Array ist die erste Antwort immer die richtige.",
     single_choice_set_prompt_example_json_title: "**Beispiel-JSON:**",
+    single_choice_set_prompt_example: `\`\`\`json
+{
+"choices": [
+{
+"question": "Gojibeeren sind auch bekannt als ...",
+"answers": ["Wolfbeeren", "Katzenbeeren", "Bärenbeeren"]
+},
+{
+"question": "Gojibeeren stammen aus ...",
+"answers": ["Asien", "Afrika", "Europa"]
+}
+],
+"overallFeedback": [
+{"from": 0, "to": 100, "feedback": "Du hast :numcorrect von :maxscore richtig"}
+]
+}
+\`\`\` `,
     single_choice_set_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare.",
 
     // Dialog Cards UI translations

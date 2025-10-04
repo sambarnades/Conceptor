@@ -1113,6 +1113,23 @@ const translations_es = {
     single_choice_set_prompt_content_rules_title: "**Reglas de contenido:**",
     single_choice_set_prompt_rule1: "1.  En cada array `answers`, la primera respuesta es siempre la correcta.",
     single_choice_set_prompt_example_json_title: "**Ejemplo de JSON:**",
+    single_choice_set_prompt_example: `\`\`\`json
+{
+"choices": [
+{
+"question": "Las bayas de goji también se conocen como ...",
+"answers": ["Bayas de lobo", "Bayas de gato", "Bayas de oso"]
+},
+{
+"question": "Las bayas de goji son originarias de ...",
+"answers": ["Asia", "África", "Europa"]
+}
+],
+"overallFeedback": [
+{"from": 0, "to": 100, "feedback": "Has acertado :numcorrect de :maxscore"}
+]
+}
+\`\`\` `,
     single_choice_set_prompt_generate_only_json: "Genera solo el código JSON válido, sin ningún comentario.",
 
     // Dialog Cards UI translations

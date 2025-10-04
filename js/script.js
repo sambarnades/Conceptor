@@ -2474,23 +2474,7 @@ ${pt.single_choice_set_prompt_content_rules_title}
 ${pt.single_choice_set_prompt_rule1}
 
 ${pt.single_choice_set_prompt_example_json_title}
-\`\`\`json
-{
-"choices": [
-{
-"question": "Goji berries are also known as ...",
-"answers": ["Wolfberries", "Catberries", "Bearberries"]
-},
-{
-"question": "Goji berries are native to ...",
-"answers": ["Asia", "Africa", "Europe"]
-}
-],
-"overallFeedback": [
-{"from": 0, "to": 100, "feedback": "You got :numcorrect of :maxscore correct"}
-]
-}
-\`\`\`
+${pt.single_choice_set_prompt_example}
 
 ${pt.single_choice_set_prompt_generate_only_json}${languageInstruction}`;
 

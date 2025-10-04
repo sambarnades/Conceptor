@@ -1113,6 +1113,23 @@ const translations_el = {
     single_choice_set_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
     single_choice_set_prompt_rule1: "1. Σε κάθε πίνακα `answers`, η πρώτη απάντηση είναι πάντα η σωστή.",
     single_choice_set_prompt_example_json_title: "**Παράδειγμα JSON:**",
+    single_choice_set_prompt_example: `\`\`\`json
+{
+"choices": [
+{
+"question": "Τα μούρα γκότζι είναι επίσης γνωστά ως ...",
+"answers": ["Μούρα λύκου", "Μούρα γάτας", "Μούρα αρκούδας"]
+},
+{
+"question": "Τα μούρα γκότζι κατάγονται από ...",
+"answers": ["Ασία", "Αφρική", "Ευρώπη"]
+}
+],
+"overallFeedback": [
+{"from": 0, "to": 100, "feedback": "Έχεις :numcorrect σωστές απαντήσεις από :maxscore"}
+]
+}
+\`\`\` `,
     single_choice_set_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
 
     // Dialog Cards UI translations

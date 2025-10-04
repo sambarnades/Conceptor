@@ -1113,6 +1113,23 @@ const translations_jp = {
     single_choice_set_prompt_content_rules_title: "**コンテンツのルール:**",
     single_choice_set_prompt_rule1: "1. 各`answers`配列では、最初の回答が常に正解です。",
     single_choice_set_prompt_example_json_title: "**JSONの例:**",
+    single_choice_set_prompt_example: `\`\`\`json
+{
+"choices": [
+{
+"question": "クコの実は別名 ... とも呼ばれます",
+"answers": ["オオカミの実", "ネコの実", "クマの実"]
+},
+{
+"question": "クコの実の原産地は ...",
+"answers": ["アジア", "アフリカ", "ヨーロッパ"]
+}
+],
+"overallFeedback": [
+{"from": 0, "to": 100, "feedback": ":maxscore 問中 :numcorrect 問正解しました"}
+]
+}
+\`\`\` `,
     single_choice_set_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 
     // Dialog Cards UI translations
