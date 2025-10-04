@@ -1023,6 +1023,12 @@ const translations_zh = {
     find_the_words_prompt_content_rules_title: "**内容规则:**",
     find_the_words_prompt_rule1: "1.  `wordList` 必须是单个字符串，单词之间用逗号分隔。",
     find_the_words_prompt_example_json_title: "**JSON 示例:**",
+    find_the_words_prompt_example: `\`\`\`json
+{
+"taskDescription": "在下面的字母网格中找出城市名称",
+"wordList": "堪培拉,明斯克,北京,奥斯陆,巴黎,伦敦,马德里,雅典,东京,莫斯科,华盛顿,斯德哥尔摩"
+}
+\`\`\` `,
     find_the_words_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
     fillPool: "",
 

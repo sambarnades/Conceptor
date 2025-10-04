@@ -1023,7 +1023,13 @@ const translations_pt = {
     find_the_words_prompt_content_rules_title: "**Regras para o conteúdo:**",
     find_the_words_prompt_rule1: "1.  A `wordList` deve ser uma única string com palavras separadas por vírgulas.",
     find_the_words_prompt_example_json_title: "**Exemplo de JSON:**",
-    find_the_words_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário.",
+    find_the_words_prompt_example: `\`\`\`json
+{
+"taskDescription": "Encontra os nomes das cidades na grelha abaixo",
+"wordList": "Camberra,Minsk,Pequim,Oslo,Paris,Londres,Madrid,Atenas,Tóquio,Moscovo,Washington,Estocolmo"
+}
+\`\`\` `,
+   find_the_words_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário.",
     fillPool: "abcdefghijklmnopqrstuvwxyzçãõéáíóúâêô",
 
     // Sort the Paragraphs UI translations

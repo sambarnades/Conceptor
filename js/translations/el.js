@@ -1023,6 +1023,12 @@ const translations_el = {
     find_the_words_prompt_content_rules_title: "**Κανόνες περιεχομένου:**",
     find_the_words_prompt_rule1: "1.  Η `wordList` πρέπει να είναι μια ενιαία συμβολοσειρά με λέξεις χωρισμένες με κόμμα.",
     find_the_words_prompt_example_json_title: "**Παράδειγμα JSON:**",
+    find_the_words_prompt_example: `\`\`\`json
+{
+"taskDescription": "Βρες τα ονόματα των πόλεων στο παρακάτω πλέγμα",
+"wordList": "Καμπέρα,Μινσκ,Πεκίνο,Όσλο,Παρίσι,Λονδίνο,Μαδρίτη,Αθήνα,Τόκιο,Μόσχα,Ουάσινγκτον,Στοκχόλμη"
+}
+\`\`\` `,
     find_the_words_prompt_generate_only_json: "Παράγετε μόνο έγκυρο JSON, χωρίς σχόλια.",
     fillPool: "αβγδεζηθικλμνξοπρστυφχψω",
 

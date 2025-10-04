@@ -2433,12 +2433,7 @@ ${pt.find_the_words_prompt_content_rules_title}
 ${pt.find_the_words_prompt_rule1}
 
 ${pt.find_the_words_prompt_example_json_title}
-\`\`\`json
-{
-"taskDescription": "Find the city names in the grid below",
-"wordList": "Canberra,Minsk,Beijing,Oslo,Paris,London,Madrid,Athens,Tokyo,Moscow,Washington,Stockholm"
-}
-\`\`\`
+${pt.find_the_words_prompt_example}
 
 ${pt.find_the_words_prompt_generate_only_json}${languageInstruction}`;
 

@@ -1023,6 +1023,12 @@ const translations_nl = {
     find_the_words_prompt_content_rules_title: "**Regels voor de inhoud:**",
     find_the_words_prompt_rule1: "1.  De `wordList` moet een enkele tekenreeks zijn met door komma's gescheiden woorden.",
     find_the_words_prompt_example_json_title: "**JSON-voorbeeld:**",
+    find_the_words_prompt_example: `\`\`\`json
+{
+"taskDescription": "Zoek de stadsnamen in het onderstaande rooster",
+"wordList": "Canberra,Minsk,Peking,Oslo,Parijs,Londen,Madrid,Athene,Tokio,Moskou,Washington,Stockholm"
+}
+\`\`\` `,
     find_the_words_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
     fillPool: "abcdefghijklmnopqrstuvwxyz",
 

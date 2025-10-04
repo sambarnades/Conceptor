@@ -1023,6 +1023,12 @@ const translations_jp = {
     find_the_words_prompt_content_rules_title: "**コンテンツのルール:**",
     find_the_words_prompt_rule1: "1.  `wordList`はカンマで区切られた単語の単一文字列である必要があります。",
     find_the_words_prompt_example_json_title: "**JSONの例:**",
+    find_the_words_prompt_example: `\`\`\`json
+{
+"taskDescription": "下のグリッドで都市名を探しなさい",
+"wordList": "キャンベラ,ミンスク,北京,オスロ,パリ,ロンドン,マドリード,アテネ,東京,モスクワ,ワシントン,ストックホルム"
+}
+\`\`\` `,
     find_the_words_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
     fillPool: "",
 

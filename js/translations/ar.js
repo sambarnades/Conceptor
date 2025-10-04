@@ -1023,6 +1023,12 @@ const translations_ar = {
     find_the_words_prompt_content_rules_title: "**قواعد المحتوى:**",
     find_the_words_prompt_rule1: "1.  يجب أن تكون `wordList` سلسلة واحدة من الكلمات مفصولة بفواصل.",
     find_the_words_prompt_example_json_title: "**مثال JSON:**",
+    find_the_words_prompt_example: `\`\`\`json
+{
+"taskDescription": "ابحث عن أسماء المدن في الشبكة أدناه",
+"wordList": "كانبيرا,مينسك,بكين,أوسلو,باريس,لندن,مدريد,أثينا,طوكيو,موسكو,واشنطن,ستوكهولم"
+}
+\`\`\` `,
     find_the_words_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات.",
     fillPool: "ابتثجحخدذرزسشصضطظعغفقكلمنهوي",
 
