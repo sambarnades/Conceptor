@@ -1290,6 +1290,16 @@ const translations_ar = {
     chart_prompt_rule2: "2. يجب أن تكون التسميات قصيرة وواضحة.",
     chart_prompt_rule3: "3. إذا كانت إحدى القيم منخفضة جدًا مقارنة بالقيم الأخرى، ففضل 'barChart' لتصور أفضل.",
     chart_prompt_example_json_title: "**مثال JSON:**",
+    chart_prompt_example: `\`\`\`json
+{
+"graphMode": "pieChart",
+"listOfTypes": [
+{"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "توت أزرق"},
+{"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "توت العليق"}
+],
+"figureDefinition": "رسم بياني"
+}
+\`\`\` `,
     chart_prompt_generate_only_json: "أنشئ فقط كود JSON صالحًا، بدون أي تعليقات.",
 
     // createH5PWithDynamicDependencies

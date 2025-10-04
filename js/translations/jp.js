@@ -1290,6 +1290,16 @@ const translations_jp = {
     chart_prompt_rule2: "2. ラベルは短く明確でなければなりません。",
     chart_prompt_rule3: "3. 他の値と比較して非常に低い値がある場合は、視覚化を向上させるために「barChart」を優先してください。",
     chart_prompt_example_json_title: "**JSONの例:**",
+    chart_prompt_example: `\`\`\`json
+{
+"graphMode": "pieChart",
+"listOfTypes": [
+{"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "ブルーベリー"},
+{"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "ラズベリー"}
+],
+"figureDefinition": "チャート"
+}
+\`\`\` `,
     chart_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 
     // createH5PWithDynamicDependencies

@@ -1291,7 +1291,17 @@ const translations_pt = {
     chart_prompt_rule2: "2. Os rótulos devem ser curtos e claros.",
     chart_prompt_rule3: "3. Se um valor for muito baixo em comparação com outros, prefira um 'barChart' para uma melhor visualização.",
     chart_prompt_example_json_title: "**Exemplo de JSON:**",
-    chart_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário.",
+    chart_prompt_example: `\`\`\`json
+{
+"graphMode": "pieChart",
+"listOfTypes": [
+{"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "Mirtilos"},
+{"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "Framboesas"}
+],
+"figureDefinition": "Gráfico"
+}
+\`\`\` `,
+   chart_prompt_generate_only_json: "Gere apenas o código JSON válido, sem qualquer comentário.",
 
     // createH5PWithDynamicDependencies
     quiz_prev_button: "Anterior",

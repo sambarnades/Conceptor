@@ -1290,6 +1290,16 @@ const translations_nl = {
     chart_prompt_rule2: "2. Labels moeten kort en duidelijk zijn.",
     chart_prompt_rule3: "3. Als een waarde erg laag is in vergelijking met andere, geef dan de voorkeur aan een 'barChart' voor een betere visualisatie.",
     chart_prompt_example_json_title: "**Voorbeeld-JSON:**",
+    chart_prompt_example: `\`\`\`json
+{
+"graphMode": "pieChart",
+"listOfTypes": [
+{"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "Bosbessen"},
+{"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "Frambozen"}
+],
+"figureDefinition": "Diagram"
+}
+\`\`\` `,
     chart_prompt_generate_only_json: "Genereer alleen de geldige JSON-code, zonder commentaar.",
 
     // createH5PWithDynamicDependencies

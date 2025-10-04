@@ -2551,16 +2551,7 @@ ${pt.chart_prompt_rule1}
 ${pt.chart_prompt_rule2}
 
 ${pt.chart_prompt_example_json_title}
-\`\`\`json
-{
-"graphMode": "pieChart",
-"listOfTypes": [
-{"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "Blueberries"},
-{"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "Raspberries"}
-],
-"figureDefinition": "Chart"
-}
-\`\`\`
+${pt.chart_prompt_example}
 
 ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
 

@@ -1290,6 +1290,16 @@ const translations_it = {
     chart_prompt_rule2: "2. Le etichette devono essere brevi e chiare.",
     chart_prompt_rule3: "3. Se un valore è molto basso in confronto con altri, preferisci un 'barChart' per una migliore visualizzazione.",
     chart_prompt_example_json_title: "**Esempio di JSON:**",
+    chart_prompt_example: `\`\`\`json
+{
+"graphMode": "pieChart",
+"listOfTypes": [
+{"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "Mirtilli"},
+{"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "Lamponi"}
+],
+"figureDefinition": "Grafico"
+}
+\`\`\` `,
     chart_prompt_generate_only_json: "Genera solo il codice JSON valido, senza alcun commento.",
 
     // createH5PWithDynamicDependencies

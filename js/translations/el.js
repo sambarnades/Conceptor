@@ -1290,6 +1290,16 @@ const translations_el = {
     chart_prompt_rule2: "2. Οι ετικέτες πρέπει να είναι σύντομες και σαφείς.",
     chart_prompt_rule3: "3. Εάν μια τιμή είναι πολύ χαμηλή σε σύγκριση με άλλες, προτιμήστε ένα 'barChart' για καλύτερη οπτικοποίηση.",
     chart_prompt_example_json_title: "**Παράδειγμα JSON:**",
+    chart_prompt_example: `\`\`\`json
+{
+"graphMode": "pieChart",
+"listOfTypes": [
+{"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "Μύρτιλα"},
+{"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "Σμέουρα"}
+],
+"figureDefinition": "Διάγραμμα"
+}
+\`\`\` `,
     chart_prompt_generate_only_json: "Δημιουργήστε μόνο τον έγκυρο κώδικα JSON, χωρίς κανένα σχόλιο.",
 
     // createH5PWithDynamicDependencies

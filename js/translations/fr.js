@@ -1290,8 +1290,17 @@ const translations_fr = {
     chart_prompt_rule2: "2.  Les libellés doivent être courts et clairs.",
     chart_prompt_rule3: "3.  Si une valeur est très faible par rapport aux autres, privilégie un 'barChart' pour une meilleure visualisation.",
     chart_prompt_example_json_title: "**Exemple de JSON :**",
-    chart_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire."
-    ,
+    chart_prompt_example: `\`\`\`json
+{
+"graphMode": "pieChart",
+"listOfTypes": [
+{"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "Myrtilles"},
+{"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "Framboises"}
+],
+"figureDefinition": "Graphique"
+}
+\`\`\` `,
+    chart_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire.",
 
     // createH5PWithDynamicDependencies
     quiz_prev_button: "Retour",

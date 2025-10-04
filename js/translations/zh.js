@@ -1290,6 +1290,16 @@ const translations_zh = {
     chart_prompt_rule2: "2. 标签应简短明了。",
     chart_prompt_rule3: "3. 如果某个值与其他值相比非常低，请优先选择'barChart'以获得更好的可视化效果。",
     chart_prompt_example_json_title: "**JSON示例：**",
+    chart_prompt_example: `\`\`\`json
+{
+"graphMode": "pieChart",
+"listOfTypes": [
+{"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "蓝莓"},
+{"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "覆盆子"}
+],
+"figureDefinition": "图表"
+}
+\`\`\` `,
     chart_prompt_generate_only_json: "只生成有效的JSON代码，不含任何注释。",
 
     // createH5PWithDynamicDependencies

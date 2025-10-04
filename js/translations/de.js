@@ -1290,6 +1290,16 @@ const translations_de = {
     chart_prompt_rule2: "2. Beschriftungen sollten kurz und klar sein.",
     chart_prompt_rule3: "3. Wenn ein Wert im Vergleich zu anderen sehr niedrig ist, bevorzugen Sie ein 'barChart' für eine bessere Visualisierung.",
     chart_prompt_example_json_title: "**Beispiel-JSON:**",
+    chart_prompt_example: `\`\`\`json
+{
+"graphMode": "pieChart",
+"listOfTypes": [
+{"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "Blaubeeren"},
+{"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "Himbeeren"}
+],
+"figureDefinition": "Diagramm"
+}
+\`\`\` `,
     chart_prompt_generate_only_json: "Generieren Sie nur den gültigen JSON-Code ohne Kommentare.",
 
     // createH5PWithDynamicDependencies
