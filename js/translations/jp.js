@@ -835,6 +835,10 @@ const translations_jp = {
     h5p_creation_failed: "H5Pファイルの作成に失敗しました：{errorMessage}",
     license_info: "GNU GPL v3.0 以降",
 
+    // Notifications for JSON content
+    error_paste_json_content: "生成されたJSONコンテンツを貼り付けてください。",
+    error_paste_xml_content: "生成されたXMLコンテンツを貼り付けてください。",
+
     // Flashcards specific UI translations
     flashcards_progress_text: "カード @card / @total",
     flashcards_next: "次へ",

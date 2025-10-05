@@ -835,6 +835,10 @@ const translations_zh = {
     h5p_creation_failed: "创建 H5P 文件失败：{errorMessage}",
     license_info: "GNU GPL v3.0 或更高版本",
 
+    // Notifications for JSON content
+    error_paste_json_content: "请粘贴生成的JSON内容。",
+    error_paste_xml_content: "请粘贴生成的XML内容。",
+
     // Flashcards specific UI translations
     flashcards_progress_text: "卡片 @card / @total",
     flashcards_next: "下一个",

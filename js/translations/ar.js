@@ -835,6 +835,10 @@ const translations_ar = {
     h5p_creation_failed: "فشل إنشاء ملف H5P: {errorMessage}",
     license_info: "رخصة GNU GPL الإصدار 3.0 أو الأحدث",
 
+    // Notifications for JSON content
+    error_paste_json_content: "يرجى لصق محتوى JSON الذي تم إنشاؤه.",
+    error_paste_xml_content: "يرجى لصق محتوى XML الذي تم إنشاؤه.",
+
     // Flashcards specific UI translations
     flashcards_progress_text: "البطاقة @card من @total",
     flashcards_next: "التالي",

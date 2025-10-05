@@ -835,6 +835,10 @@ const translations_en = {
     h5p_creation_failed: "H5P file creation failed: {errorMessage}",
     license_info: "GNU GPL v3.0 or later",
 
+    // Notifications for JSON content
+    error_paste_json_content: "Please paste the generated JSON content.",
+    error_paste_xml_content: "Please paste the generated XML content.",
+
     // Flashcards specific UI translations
     flashcards_progress_text: "Card @card of @total",
     flashcards_next: "Next",

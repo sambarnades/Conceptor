@@ -639,7 +639,6 @@ const translations_fr = {
     millionnaire_success_generation: "Fichier {fileName} généré avec succès !",
     millionnaire_error_creation_mbz: "Erreur lors de la création du MBZ:",
     millionnaire_error_generic: "Erreur :",
-    millionnaire_backup_log: "Sauvegarde créée automatiquement par Caramel", 
 
     // Millionnaire Prompt
     millionnaire_prompt_role: "Tu es un expert en ingénierie pédagogique créant une activité H5P \"Millionnaire\".",

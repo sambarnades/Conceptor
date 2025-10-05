@@ -835,6 +835,10 @@ const translations_el = {
     h5p_creation_failed: "Αποτυχία δημιουργίας αρχείου H5P: {errorMessage}",
     license_info: "GNU GPL v3.0 ή νεότερη",
 
+    // Notifications for JSON content
+    error_paste_json_content: "Παρακαλώ επικολλήστε το περιεχόμενο JSON που δημιουργήθηκε.",
+    error_paste_xml_content: "Παρακαλώ επικολλήστε το περιεχόμενο XML που δημιουργήθηκε.",
+
     // Flashcards specific UI translations
     flashcards_progress_text: "Κάρτα @card από @total",
     flashcards_next: "Επόμενο",
