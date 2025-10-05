@@ -733,7 +733,15 @@ document.addEventListener('DOMContentLoaded', function() {
                    showNotification(translations.error_paste_xml_content || 'Veuillez coller le contenu XML généré.', 'error');
                    return;
                }
-               downloadFile(xmlContent, 'moodle_backup.xml', 'text/xml');
+               const now = new Date();
+               const dateString = now.getFullYear() + '-' +
+                                String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                                String(now.getDate()).padStart(2, '0') + '-' +
+                                String(now.getHours()).padStart(2, '0') + '-' +
+                                String(now.getMinutes()).padStart(2, '0');
+               const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
+               const fileName = `banque-de-questions_caramel_${dateString}_${lang}.xml`;
+               downloadFile(xmlContent, fileName, 'text/xml');
            });
        } else if (moduleKey === 'glossaireXml') {
            setupCopyButton('copy-glossaireXml', 'glossaireXmlResultat');
@@ -2705,7 +2713,15 @@ ${pt.glossaire_xml_prompt_generate_only_xml}${languageInstruction}`;
   </INFO>
 </GLOSSARY>`;
 
-            downloadFile(xmlContent, 'glossaire.xml', 'text/xml');
+            const now = new Date();
+            const dateString = now.getFullYear() + '-' +
+                             String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                             String(now.getDate()).padStart(2, '0') + '-' +
+                             String(now.getHours()).padStart(2, '0') + '-' +
+                             String(now.getMinutes()).padStart(2, '0');
+            const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
+            const fileName = `glossaire_caramel_${dateString}_${lang}.xml`;
+            downloadFile(xmlContent, fileName, 'text/xml');
             showNotification("Fichier glossaire.xml généré avec succès !");
 
         } catch (error) {
@@ -2800,7 +2816,14 @@ ${pt.glossaire_xml_prompt_generate_only_xml}${languageInstruction}`;
            // Ajout automatique du fichier moodle_backup.log minimal
            files['moodle_backup.log'] = translations.millionnaire_backup_log || "Sauvegarde créée automatiquement par Caramel";
            const gzData = await createMbz(files);
-           const fileName = `${activityTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.mbz`;
+           const now = new Date();
+           const dateString = now.getFullYear() + '-' +
+                            String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                            String(now.getDate()).padStart(2, '0') + '-' +
+                            String(now.getHours()).padStart(2, '0') + '-' +
+                            String(now.getMinutes()).padStart(2, '0');
+           const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
+           const fileName = `millionnaire_caramel_${dateString}_${lang}.mbz`;
            const a = document.createElement('a');
            a.href = URL.createObjectURL(new Blob([gzData], { type: 'application/gzip' }));
            a.download = fileName;
@@ -2886,7 +2909,14 @@ ${pt.glossaire_xml_prompt_generate_only_xml}${languageInstruction}`;
  
             files['moodle_backup.log'] = translations.millionnaire_backup_log || 'Backup created automatically by Caramel\n';
             const gzData = await createMbz(files);
-            const fileName = `${activityTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.mbz`;
+            const now = new Date();
+            const dateString = now.getFullYear() + '-' +
+                             String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                             String(now.getDate()).padStart(2, '0') + '-' +
+                             String(now.getHours()).padStart(2, '0') + '-' +
+                             String(now.getMinutes()).padStart(2, '0');
+            const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
+            const fileName = `appariement_caramel_${dateString}_${lang}.mbz`;
             
             const a = document.createElement('a');
             a.href = URL.createObjectURL(new Blob([gzData], { type: 'application/gzip' }));
@@ -2966,7 +2996,14 @@ ${pt.glossaire_xml_prompt_generate_only_xml}${languageInstruction}`;
  
             files['moodle_backup.log'] = translations.millionnaire_backup_log || 'Backup created automatically by Caramel\n';
             const gzData = await createMbz(files);
-            const fileName = `${activityTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.mbz`;
+            const now = new Date();
+            const dateString = now.getFullYear() + '-' +
+                             String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                             String(now.getDate()).padStart(2, '0') + '-' +
+                             String(now.getHours()).padStart(2, '0') + '-' +
+                             String(now.getMinutes()).padStart(2, '0');
+            const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
+            const fileName = `qcm_caramel_${dateString}_${lang}.mbz`;
             
             const a = document.createElement('a');
             a.href = URL.createObjectURL(new Blob([gzData], { type: 'application/gzip' }));
