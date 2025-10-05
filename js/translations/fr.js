@@ -639,7 +639,8 @@ const translations_fr = {
     millionnaire_success_generation: "Fichier {fileName} généré avec succès !",
     millionnaire_error_creation_mbz: "Erreur lors de la création du MBZ:",
     millionnaire_error_generic: "Erreur :",
- 
+    millionnaire_backup_log: "Sauvegarde créée automatiquement par Caramel", 
+
     // Millionnaire Prompt
     millionnaire_prompt_role: "Tu es un expert en ingénierie pédagogique créant une activité H5P \"Millionnaire\".",
     millionnaire_prompt_num_questions: "**Nombre de questions :** 6",
@@ -835,6 +836,10 @@ const translations_fr = {
     h5p_creation_failed: "Échec de la création du fichier H5P : {errorMessage}",
     license_info: "GNU GPL v3.0 ou ultérieure",
 
+    // Notifications for JSON content
+    error_paste_json_content: "Veuillez coller le contenu JSON généré.",
+    error_paste_xml_content: "Veuillez coller le contenu XML généré.",
+ 
     // Flashcards specific UI translations
     flashcards_progress_text: "Carte @card sur @total",
     flashcards_next: "Suivant",

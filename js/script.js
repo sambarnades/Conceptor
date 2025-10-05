@@ -696,7 +696,7 @@ document.addEventListener('DOMContentLoaded', function() {
            document.getElementById('createXmlEleaMoodle').addEventListener('click', () => {
                const xmlContent = document.getElementById('xmlEleaMoodleInput').value;
                if (!xmlContent) {
-                   showNotification('Veuillez coller le contenu XML généré.', 'error');
+                   showNotification(translations.error_paste_xml_content || 'Veuillez coller le contenu XML généré.', 'error');
                    return;
                }
                downloadFile(xmlContent, 'moodle_backup.xml', 'text/xml');
@@ -709,7 +709,7 @@ document.addEventListener('DOMContentLoaded', function() {
            document.getElementById(module.createBtnId).addEventListener('click', () => {
                const jsonInput = document.getElementById(module.jsonInputId).value;
                if (!jsonInput) {
-                   showNotification('Veuillez coller le contenu JSON généré.', 'error');
+                   showNotification(translations.error_paste_json_content || 'Veuillez coller le contenu JSON généré.', 'error');
                    return;
                }
                handleMillionnaireCreation(jsonInput);
@@ -720,7 +720,7 @@ document.addEventListener('DOMContentLoaded', function() {
            document.getElementById(module.createBtnId).addEventListener('click', () => {
                const jsonInput = document.getElementById(module.jsonInputId).value;
                if (!jsonInput) {
-                   showNotification('Veuillez coller le contenu JSON généré.', 'error');
+                   showNotification(translations.error_paste_json_content || 'Veuillez coller le contenu JSON généré.', 'error');
                    return;
                }
                handleAppariementCreation(jsonInput);
@@ -731,7 +731,7 @@ document.addEventListener('DOMContentLoaded', function() {
            document.getElementById(module.createBtnId).addEventListener('click', () => {
                const jsonInput = document.getElementById(module.jsonInputId).value;
                if (!jsonInput) {
-                   showNotification('Veuillez coller le contenu JSON généré.', 'error');
+                   showNotification(translations.error_paste_json_content || 'Veuillez coller le contenu JSON généré.', 'error');
                    return;
                }
                handleQCMCreation(jsonInput);
@@ -813,7 +813,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const jsonInput = container.querySelector(`#${module.jsonInputId}`).value;
                 const includeLibs = false; // container.querySelector(`#includeLibs-${moduleKey}`).checked;
                 if (!jsonInput) {
-                    showNotification('Veuillez coller le contenu généré par l\'IA.', 'error');
+                    showNotification(translations.error_paste_ia_content || 'Veuillez coller le contenu généré par l\'IA.', 'error');
                     return;
                 }
                 handleH5PCreation(moduleKey, jsonInput, includeLibs);
@@ -884,7 +884,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const prompt = promptTextarea.value;
 
                 if (!prompt) {
-                    showNotification('Veuillez d\'abord générer un prompt.', 'error');
+                    showNotification(translations.error_field_empty || 'Veuillez d\'abord générer un prompt.', 'error');
                     return;
                 }
 
@@ -987,7 +987,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const prompt = promptTextarea.value;
 
             if (!prompt) {
-                showNotification('Veuillez d\'abord générer un prompt.', 'error');
+                showNotification(translations.error_field_empty || 'Veuillez d\'abord générer un prompt.', 'error');
                 return;
             }
 
@@ -1040,7 +1040,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const quoi = document.getElementById('quoi').value.trim();
 
             if (!qui || !quoi) {
-                showNotification('Veuillez remplir tous les champs du mode simple.', 'error');
+                showNotification(translations.error_please_fill_fields || 'Veuillez remplir tous les champs du mode simple.', 'error');
                 return;
             }
             prompts = getPrompts(qui, quoi, null, null, null, false);
@@ -1052,7 +1052,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const infosComplementaires = document.getElementById('infosComplementaires').value.trim();
 
             if (!matiere || !niveau || !theme || !nombreQuestions) {
-                showNotification('Veuillez remplir tous les champs du mode guidé.', 'error');
+                showNotification(translations.error_please_fill_guided_fields || 'Veuillez remplir tous les champs du mode guidé.', 'error');
                 return;
             }
             prompts = getPrompts(matiere, niveau, theme, nombreQuestions, infosComplementaires, true);
@@ -1163,7 +1163,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 legalMentionsModal.style.display = 'block';
             } catch (error) {
                 console.error('Failed to fetch legal mentions:', error);
-                showNotification('Impossible de charger les mentions légales.', 'error');
+                showNotification(translations.error_loading_legal || 'Impossible de charger les mentions légales.', 'error');
             }
         });
 
@@ -1247,7 +1247,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function copyToClipboard(textareaId, button) {
         const textarea = document.getElementById(textareaId);
         if (!textarea || !textarea.value.trim()) {
-            showNotification('Le champ est vide. Veuillez d\'abord générer un prompt.', 'error');
+            showNotification(translations.error_field_empty || 'Le champ est vide. Veuillez d\'abord générer un prompt.', 'error');
             return;
         }
         navigator.clipboard.writeText(textarea.value).then(() => {
@@ -1260,7 +1260,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 2000);
         }).catch(err => {
             console.error('Erreur de copie:', err);
-            showNotification('La copie a échoué.', 'error');
+            showNotification(translations.error_copy_failed || 'La copie a échoué.', 'error');
         });
     }
 
@@ -1303,7 +1303,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleH5PCreation(moduleKey, jsonInput, includeLibs = false) {
         const module = h5pModules[moduleKey];
         if (!module) {
-            showNotification(`Module '${moduleKey}' non trouvé.`, 'error');
+            showNotification(translations.error_h5p_module_not_found.replace('{moduleKey}', moduleKey) || `Module '${moduleKey}' non trouvé.`, 'error');
             return;
         }
 
@@ -1325,7 +1325,7 @@ document.addEventListener('DOMContentLoaded', function() {
                createH5PWithDynamicDependencies(title, contentData, Array.from(libraries));
 
            } catch (error) {
-               showNotification(`Le JSON pour le Quiz est invalide : ${error.message}`, 'error');
+               showNotification(translations.error_invalid_quiz_json.replace('{errorMessage}', error.message) || `Le JSON pour le Quiz est invalide : ${error.message}`, 'error');
                console.error("Erreur JSON pour QuizSet:", error);
            }
            return;
@@ -1930,9 +1930,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         } catch (error) {
             if (error instanceof SyntaxError) {
-                showNotification(`Le JSON fourni est invalide. Erreur: ${error.message}`, 'error');
+                showNotification(translations.error_invalid_json.replace('{errorMessage}', error.message) || `Le JSON fourni est invalide. Erreur: ${error.message}`, 'error');
             } else {
-                showNotification(`Erreur de création H5P: ${error.message}`, 'error');
+                showNotification(translations.error_h5p_creation.replace('{errorMessage}', error.message) || `Erreur de création H5P: ${error.message}`, 'error');
             }
             console.error(`Erreur pour ${moduleKey}:`, error);
         }
@@ -2666,7 +2666,7 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
                files[path] = content;
            }
            // Ajout automatique du fichier moodle_backup.log minimal
-           files['moodle_backup.log'] = translations.millionnaire_backup_log;
+           files['moodle_backup.log'] = translations.millionnaire_backup_log || "Sauvegarde créée automatiquement par Caramel";
            const gzData = await createMbz(files);
            const fileName = `${activityTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.mbz`;
            const a = document.createElement('a');
@@ -2686,11 +2686,11 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
    async function handleAppariementCreation(jsonInput) {
         try {
             if (typeof Tar === 'undefined' || typeof fflate === 'undefined') {
-                throw new Error("Les bibliothèques de compression (Tar.js ou fflate) ne sont pas chargées.");
+                throw new Error(translations.millionnaire_error_compression_libs || "Les bibliothèques de compression (Tar.js ou fflate) ne sont pas chargées.");
             }
             const jsonData = JSON.parse(jsonInput);
             if (!jsonData.title || !Array.isArray(jsonData.pairs) || jsonData.pairs.length === 0) {
-                throw new Error("La structure du JSON est invalide. Assurez-vous qu'elle contient un 'title' et un tableau 'pairs'.");
+                throw new Error(translations.appariement_error_invalid_json || "La structure du JSON est invalide. Assurez-vous qu'elle contient un 'title' et un tableau 'pairs'.");
             }
 
             const activityTitle = jsonData.title;
@@ -2717,7 +2717,7 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
 
             const data = {
                 'ACTIVITY_TITLE': activityTitle,
-                'ACTIVITY_INTRO_HTML': escapeHtmlTags(`<p dir="ltr" style="text-align: left;">Trouvez les paires correspondantes.</p>`),
+                'ACTIVITY_INTRO_HTML': escapeHtmlTags(`<p dir="ltr" style="text-align: left;">${translations.appariement_activity_intro || "Trouvez les paires correspondantes."}</p>`),
                 'ASSOCIATIONS_JSON': associations,
                 'COURSE_FULLNAME': activityTitle,
                 'COURSE_SHORTNAME': `parcours-${Math.random().toString(36).substring(2, 15)}`,
@@ -2751,8 +2751,8 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
                 newFiles[newPath] = content;
             }
             files = newFiles;
-
-            files['moodle_backup.log'] = 'Backup created automatically by Caramel\n';
+ 
+            files['moodle_backup.log'] = translations.millionnaire_backup_log || 'Backup created automatically by Caramel\n';
             const gzData = await createMbz(files);
             const fileName = `${activityTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.mbz`;
             
@@ -2763,22 +2763,22 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(a.href);
-            showNotification(`Fichier ${fileName} généré avec succès !`);
+            showNotification(translations.appariement_success_generation.replace('{fileName}', fileName) || `Fichier ${fileName} généré avec succès !`);
         } catch (error) {
-            console.error("Erreur lors de la création du MBZ pour l'appariement:", error);
-            showNotification(`Erreur : ${error.message}`, 'error');
+            console.error(translations.appariement_error_creation_mbz || "Erreur lors de la création du MBZ pour l'appariement:", error);
+            showNotification(`${translations.millionnaire_error_generic || "Erreur :"} ${error.message}`, 'error');
         }
     }
  
    async function handleQCMCreation(jsonInput) {
-        try {
-            if (typeof Tar === 'undefined' || typeof fflate === 'undefined') {
-                throw new Error("Les bibliothèques de compression (Tar.js ou fflate) ne sont pas chargées.");
-            }
-            const jsonData = JSON.parse(jsonInput);
-            if (!jsonData.title || !Array.isArray(jsonData.questions) || jsonData.questions.length === 0 || jsonData.questions.some(q => !q.text || !Array.isArray(q.answers) || q.answers.length === 0)) {
-               throw new Error("La structure du JSON est invalide. Assurez-vous qu'elle contient un 'title' et un tableau 'questions' avec au moins une question et des réponses.");
-            }
+       try {
+           if (typeof Tar === 'undefined' || typeof fflate === 'undefined') {
+               throw new Error(translations.millionnaire_error_compression_libs || "Les bibliothèques de compression (Tar.js ou fflate) ne sont pas chargées.");
+           }
+           const jsonData = JSON.parse(jsonInput);
+           if (!jsonData.title || !Array.isArray(jsonData.questions) || jsonData.questions.length === 0 || jsonData.questions.some(q => !q.text || !Array.isArray(q.answers) || q.answers.length === 0)) {
+              throw new Error(translations.qcm_error_invalid_json || "La structure du JSON est invalide. Assurez-vous qu'elle contient un 'title' et un tableau 'questions' avec au moins une question et des réponses.");
+           }
 
             const activityTitle = jsonData.title;
             
@@ -2797,7 +2797,7 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
 
             const data = {
                 'ACTIVITY_TITLE': activityTitle,
-                'ACTIVITY_INTRO_HTML': escapeHtmlTags(`<p dir="ltr" style="text-align: left;">Répondez aux questions suivantes.</p>`),
+                'ACTIVITY_INTRO_HTML': escapeHtmlTags(`<p dir="ltr" style="text-align: left;">${translations.qcm_activity_intro || "Répondez aux questions suivantes."}</p>`),
                 'QUESTIONS_JSON': questionsData, // Placeholder pour le JSON des questions
                 'COURSE_FULLNAME': activityTitle,
                 'COURSE_SHORTNAME': `parcours-qcm-${Math.random().toString(36).substring(2, 15)}`,
@@ -2831,8 +2831,8 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
                 newFiles[newPath] = content;
             }
             files = newFiles;
-
-            files['moodle_backup.log'] = 'Backup created automatically by Caramel\n';
+ 
+            files['moodle_backup.log'] = translations.millionnaire_backup_log || 'Backup created automatically by Caramel\n';
             const gzData = await createMbz(files);
             const fileName = `${activityTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.mbz`;
             
@@ -2843,10 +2843,10 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(a.href);
-            showNotification(`Fichier ${fileName} généré avec succès !`);
+            showNotification(translations.qcm_success_generation.replace('{fileName}', fileName) || `Fichier ${fileName} généré avec succès !`);
         } catch (error) {
-            console.error("Erreur lors de la création du MBZ pour le QCM:", error);
-            showNotification(`Erreur : ${error.message}`, 'error');
+            console.error(translations.qcm_error_creation_mbz || "Erreur lors de la création du MBZ pour le QCM:", error);
+            showNotification(`${translations.millionnaire_error_generic || "Erreur :"} ${error.message}`, 'error');
         }
    }
 
@@ -2893,7 +2893,7 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
         downloadZip = mod.downloadZip;
       } catch(e) {
         console.error("Failed to load client-zip", e);
-        showNotification('Erreur de chargement du module de compression. La génération de fichiers risque d\'échouer.', 'error');
+        showNotification(translations.error_loading_zip_module || 'Erreur de chargement du module de compression. La génération de fichiers risque d\'échouer.', 'error');
       }
     })();
 
@@ -3083,7 +3083,7 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
 
             // Téléchargement du ZIP H5P
             if (!downloadZip) {
-                showNotification('Le module de compression n\'est pas prêt. Réessayez dans un instant.', 'error');
+                showNotification(translations.error_compression_module_not_ready || 'Le module de compression n\'est pas prêt. Réessayez dans un instant.', 'error');
                 return;
             }
             const zipBlob = await downloadZip(files).blob();
@@ -3108,13 +3108,13 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-
+ 
             console.log(`Fichier ${a.download} généré avec succès.`);
-            showNotification(`Fichier ${a.download} généré avec succès !`);
+            showNotification(translations.h5p_file_generated_successfully.replace('{fileName}', a.download) || `Fichier ${a.download} généré avec succès !`);
             return { success: true, message: `Fichier ${a.download} créé.` };
         } catch (error) {
             console.error("Erreur lors de la création du H5P:", error);
-            showNotification(`Échec de la création du fichier H5P : ${error.message}`, 'error');
+            showNotification(translations.h5p_creation_failed.replace('{errorMessage}', error.message) || `Échec de la création du fichier H5P : ${error.message}`, 'error');
             return { success: false, error: error.message };
         }
     }
@@ -3199,7 +3199,7 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
     async function createH5PWithDynamicDependencies(title, contentJson, libraries) {
         try {
             if (!downloadZip) {
-                showNotification('Le module de compression n\'est pas prêt. Réessayez dans un instant.', 'error');
+                showNotification(translations.error_compression_module_not_ready || 'Le module de compression n\'est pas prêt. Réessayez dans un instant.', 'error');
                 return;
             }
 
@@ -3341,12 +3341,12 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-
-            showNotification(`Fichier ${a.download} généré avec succès !`);
-
+ 
+            showNotification(translations.h5p_file_generated_successfully.replace('{fileName}', a.download) || `Fichier ${a.download} généré avec succès !`);
+ 
         } catch (error) {
             console.error("Erreur lors de la création du H5P avec dépendances dynamiques:", error);
-            showNotification(`Échec de la création du fichier H5P : ${error.message}`, 'error');
+            showNotification(translations.h5p_creation_failed.replace('{errorMessage}', error.message) || `Échec de la création du fichier H5P : ${error.message}`, 'error');
         }
     }
 });
