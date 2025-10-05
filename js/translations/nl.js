@@ -226,6 +226,7 @@ const translations_nl = {
     essay_prompt_generate_only_json: "Genereer de volledige en geldige JSON door de opdracht en de lijst met trefwoorden in te vullen, zonder verdere opmerkingen.",
 
     // Moodle XML Prompt
+    moodle_xml_prompt_role: "U bent een expert in onderwijsontwerp en maakt een vragenbank voor een Moodle/Éléa-toetsactiviteit.",
     moodle_xml_prompt_intro: "Ik wil een quiz met ${nombreQuestions} vragen aanmaken.",
     moodle_xml_prompt_content_title: "Wat betreft de inhoud:",
     moodle_xml_prompt_content_rule1: "Foute antwoorden moeten inhoudelijk kloppen maar duidelijk onjuist zijn om gokken te vermijden.",
@@ -248,6 +249,7 @@ const translations_nl = {
     moodle_xml_prompt_generate_only_xml: "Niet becommentariëren, niet opmaken, niet samenvatten: ik wil alleen de ruwe XML-inhoud. Respecteer strikt het beschreven formaat, want ik plak het resultaat in een andere tool die dit formaat vereist. Geef het antwoord als vooraf opgemaakte code.",
 
     // GIFT Prompt
+    gift_prompt_role: "U bent een expert in onderwijsontwerp en maakt een vragenbank voor een Moodle/Éléa-toetsactiviteit in GIFT-formaat.",
     gift_prompt_intro: "Ik wil een quiz met ${nombreQuestions} vragen aanmaken.",
     gift_prompt_format_info: "De quiz moet in GIFT-formaat zijn voor import in Moodle.",
     gift_prompt_question_quality: "Elke vraag moet duidelijk, beknopt en ondubbelzinnig zijn, met gedetailleerde feedback.",

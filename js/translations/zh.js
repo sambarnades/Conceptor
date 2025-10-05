@@ -226,6 +226,7 @@ const translations_zh = {
     essay_prompt_generate_only_json: "生成完整有效的 JSON，填写指令与关键词清单，不要添加其它注释。",
 
     // Moodle XML Prompt
+    moodle_xml_prompt_role: "你是一位教学工程专家，正在为Moodle/Éléa测试活动创建一个题库。",
     moodle_xml_prompt_intro: "我希望创建一个包含 ${nombreQuestions} 道题目的测验。",
     moodle_xml_prompt_content_title: "关于内容：",
     moodle_xml_prompt_content_rule1: "错误选项应与主题相关但明显错误，以避免纯随机作答。",
@@ -248,6 +249,7 @@ const translations_zh = {
     moodle_xml_prompt_generate_only_xml: "不要评论、不要排版、不要总结：我只要 XML 原始内容。请严格遵守所述格式，因为我会将结果粘贴到另一个要求该格式的工具中。以预格式化代码形式给出答案。",
 
     // GIFT Prompt
+    gift_prompt_role: "你是一位教学工程专家，正在为Moodle/Éléa测试活动创建一个GIFT格式的题库。",
     gift_prompt_intro: "我希望创建一个包含 ${nombreQuestions} 道题目的测验。",
     gift_prompt_format_info: "测验须采用 GIFT 格式，以便导入 Moodle。",
     gift_prompt_question_quality: "每道题都必须清晰、简洁、无歧义，并应包含详细反馈。",

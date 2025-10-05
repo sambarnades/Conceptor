@@ -226,6 +226,7 @@ const translations_jp = {
     essay_prompt_generate_only_json: "指示とキーワードリストを埋めた完全で有効なJSONを、他のコメントなしで生成してください。",
 
     // Moodle XML Prompt
+    moodle_xml_prompt_role: "あなたはMoodle/Éléaテストアクティビティ用の問題バンクを作成する教育工学の専門家です。",
     moodle_xml_prompt_intro: "${nombreQuestions}問のクイズを作成したいと思います。",
     moodle_xml_prompt_content_title: "内容について：",
     moodle_xml_prompt_content_rule1: "間違った回答は、トピックと一致しているが、偶然を避けるために明らかに間違っている必要があります。",
@@ -248,6 +249,7 @@ const translations_jp = {
     moodle_xml_prompt_generate_only_xml: "コメント、形式設定、要約はしないでください。XMLファイルの生の内容のみが必要です。説明された形式を厳密に守ってください。結果を他のツールに貼り付けるため、この形式が期待されています。回答をプリフォーマットされたコードとして生成してください。",
 
     // GIFT Prompt
+    gift_prompt_role: "あなたはGIFT形式でMoodle/Éléaテストアクティビティ用の問題バンクを作成する教育工学の専門家です。",
     gift_prompt_intro: "${nombreQuestions}問のクイズを作成したいと思います。",
     gift_prompt_format_info: "クイズはGIFT形式で、Moodleにインポートする予定です。",
     gift_prompt_question_quality: "各質問は明確で簡潔、曖昧さがない必要があります。詳細なフィードバックが必要です。",

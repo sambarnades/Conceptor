@@ -2030,8 +2030,7 @@ ${pt.prompt_simple_intro_part1}${qui}${pt.prompt_simple_intro_part2}${quoi}.`;
 
 const languageInstruction = `\n\n${pt.prompt_language_instruction}\n\n${pt.prompt_code_block_instruction}`;
 
-const timelinePrompt = `
-${pt.timeline_prompt_role}
+const timelinePrompt = `${pt.timeline_prompt_role}
 ${contextPrompt}
 
 ${pt.timeline_prompt_mission}
@@ -2109,7 +2108,7 @@ ${pt.essay_prompt_example}
 
 ${pt.essay_prompt_generate_only_json}${languageInstruction}`;
 
-        const moodleXmlPrompt = `
+const moodleXmlPrompt = `${pt.moodle_xml_prompt_role}
 ${contextPrompt}
 ${pt.moodle_xml_prompt_intro.replace('${nombreQuestions}', nombreQuestions)}
 ${pt.moodle_xml_prompt_content_title}
@@ -2137,7 +2136,7 @@ ${pt.moodle_xml_prompt_form_rule1_special_chars}
 
 ${pt.moodle_xml_prompt_generate_only_xml}${languageInstruction}`;
 
-        const giftPrompt = `
+const giftPrompt = `${pt.gift_prompt_role}
 ${contextPrompt}
 ${pt.gift_prompt_intro.replace('${nombreQuestions}', nombreQuestions)}
 

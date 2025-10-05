@@ -226,6 +226,7 @@ const translations_es = {
     essay_prompt_generate_only_json: "Genera el JSON completo y válido, rellenando la instrucción y la lista de palabras clave, sin ningún otro comentario.",
 
     // Moodle XML Prompt
+    moodle_xml_prompt_role: "Eres un experto en ingeniería pedagógica creando un banco de preguntas para una actividad de Test en Moodle/Éléa.",
     moodle_xml_prompt_intro: "Deseo crear un cuestionario de ${nombreQuestions} preguntas.",
     moodle_xml_prompt_content_title: "En cuanto al contenido :",
     moodle_xml_prompt_content_rule1: "Las respuestas incorrectas deben ser coherentes con el tema pero claramente falsas para evitar el azar.",
@@ -248,6 +249,7 @@ const translations_es = {
     moodle_xml_prompt_generate_only_xml: "No comentes, no formatees, no resumas: solo quiero el contenido bruto del archivo XML. Respeta escrupulosamente el formato descrito, ya que pegaré el resultado en otra herramienta que espera este formato. Produce la respuesta en formato de código preformateado.",
 
     // GIFT Prompt
+    gift_prompt_role: "Eres un experto en ingeniería pedagógica creando un banco de preguntas para una actividad de Test en Moodle/Éléa en formato GIFT.",
     gift_prompt_intro: "Deseo crear un cuestionario de ${nombreQuestions} preguntas.",
     gift_prompt_format_info: "El cuestionario debe estar en formato GIFT, destinado a ser importado en Moodle.",
     gift_prompt_question_quality: "Cada pregunta debe ser clara, concisa, sin ambigüedad. Debe tener retroalimentación detallada.",

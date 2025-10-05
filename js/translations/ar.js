@@ -226,6 +226,7 @@ const translations_ar = {
     essay_prompt_generate_only_json: "ولِّد JSON كاملًا وصالحًا بملء التعليمات وقائمة الكلمات المفتاحية دون أي تعليقات.",
 
     // Moodle XML Prompt
+    moodle_xml_prompt_role: "أنت خبير في هندسة التعلّم تنشئ بنك أسئلة لنشاط اختبار على Moodle/Éléa.",
     moodle_xml_prompt_intro: "أرغب في إنشاء اختبار مكوَّن من ${nombreQuestions} أسئلة.",
     moodle_xml_prompt_content_title: "فيما يخصّ المحتوى:",
     moodle_xml_prompt_content_rule1: "يجب أن تكون الإجابات الخاطئة متسقة مع الموضوع ولكن خاطئة بوضوح لتجنّب التخمين.",
@@ -248,6 +249,7 @@ const translations_ar = {
     moodle_xml_prompt_generate_only_xml: "لا تُعلّق، لا تُنسّق، لا تُلخّص: أريد المحتوى الخام لملف XML فقط. التزم بدقة بالتنسيق الموصوف، لأنني سأُلصق النتيجة في أداة أخرى تتوقّع هذا التنسيق. قدِّم الإجابة ككود مُنسَّق مسبقًا.",
 
     // GIFT Prompt
+    gift_prompt_role: "أنت خبير في هندسة التعلّم تنشئ بنك أسئلة لنشاط اختبار على Moodle/Éléa بصيغة GIFT.",
     gift_prompt_intro: "أرغب في إنشاء اختبار مكوَّن من ${nombreQuestions} أسئلة.",
     gift_prompt_format_info: "يجب أن يكون الاختبار بصيغة GIFT ليُستورد في Moodle.",
     gift_prompt_question_quality: "على كل سؤال أن يكون واضحًا وموجزًا وبدون لبس، مع تغذية راجعة مفصّلة.",

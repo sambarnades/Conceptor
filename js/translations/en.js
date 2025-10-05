@@ -226,6 +226,7 @@ const translations_en = {
     essay_prompt_generate_only_json: "Generate the complete and valid JSON, filling in the instructions and the list of keywords, without any other comments.",
 
     // Moodle XML Prompt
+    moodle_xml_prompt_role: "You are an expert in pedagogical engineering creating a question bank for a Moodle/Éléa Test activity.",
     moodle_xml_prompt_intro: "I want to create a quiz of ${nombreQuestions} questions.",
     moodle_xml_prompt_content_title: "Regarding the content :",
     moodle_xml_prompt_content_rule1: "Incorrect answers must be consistent with the subject but clearly false to avoid randomness.",
@@ -248,6 +249,7 @@ const translations_en = {
     moodle_xml_prompt_generate_only_xml: "Do not comment, do not format, do not summarize: I only want the raw content of the XML file. Strictly respect the described format, as I will paste the result into another tool that expects this format. Produce the response in preformatted code.",
 
     // GIFT Prompt
+    gift_prompt_role: "You are an expert in pedagogical engineering creating a question bank for a Moodle/Éléa Test activity in GIFT format.",
     gift_prompt_intro: "I want to create a quiz of ${nombreQuestions} questions.",
     gift_prompt_format_info: "The quiz must be in GIFT format, intended for import into Moodle.",
     gift_prompt_question_quality: "Each question must be clear, concise, unambiguous. It must have detailed feedback.",
