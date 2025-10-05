@@ -787,6 +787,9 @@ const translations_ar = {
     moodle_qcm_name: "MCQ",
     moodle_qcm_description: "إنشاء نشاط MCQ بسيط.",
 
+    moodle_glossaire_xml_name: "مسرد (XML)",
+    moodle_glossaire_xml_description: "قم بإنشاء مسرد جاهز للاستيراد بتنسيق XML.",
+
     // Dynamic content
     prompt_for_ia: "مطلب للذكاء الاصطناعي",
     copy_prompt: "📋 نسخ المطلب",
@@ -1362,5 +1365,34 @@ const translations_ar = {
     albert_model_parameters_large: "24 مليار معلمة",
     albert_model_parameters_code: "32.5 مليار معلمة",
     language: "لغة",
-    tutorial: "تعليمي"
+    tutorial: "تعليمي",
+ 
+    // توجيه مسرد XML
+    glossaire_xml_prompt_role: "أنت خبير في التصميم التعليمي وستنشئ محتوى لمسرد.",
+    glossaire_xml_prompt_mission: "**مهمتك:** يجب أن تُنشئ كائن JSON بسيطًا يحتوي على قائمة مصطلحات لمسرد. يجب أن يحتوي كل مصطلح على مفهوم وتعريف، وإذا كان مناسبًا، قائمة بأسماء بديلة.",
+    glossaire_xml_prompt_structure_title: "**بنية JSON المتوقعة:**",
+    glossaire_xml_prompt_structure_rules: `
+-   **الجذر:** كائن رئيسي يحتوي على مفتاحين: \`name\` (اسم المسرد) و\`entries\` (مصفوفة كائنات).
+-   **يجب أن يحتوي كل كائن في \`entries\` على:**
+    -   \`concept\`: الكلمة أو التعبير المراد تعريفه.
+    -   \`definition\`: تعريف واضح وموجز.
+    -   \`aliases\` (اختياري): مصفوفة سلاسل نصية للمرادفات أو المصطلحات البديلة. أضِف هذا المفتاح فقط إذا وُجدت أسماء بديلة ذات صلة.`,
+    glossaire_xml_prompt_example_title: "**مثال JSON:**",
+    glossaire_xml_prompt_example: `\`\`\`json
+{
+  "name": "معجم المعلومات",
+  "entries": [
+    {
+      "concept": "صحفي",
+      "definition": "شخص يجمع المعلومات ويتحقق منها وينشرها.",
+      "aliases": ["مراسل", "كاتب عمود"]
+    },
+    {
+      "concept": "مصدر",
+      "definition": "مصدر المعلومة."
+    }
+  ]
+}
+\`\`\``,
+    glossaire_xml_prompt_generate_only_xml: "أنشئ كود JSON صالحًا فقط، دون أي تعليقات.",
 };

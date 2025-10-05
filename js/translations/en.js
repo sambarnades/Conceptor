@@ -787,8 +787,11 @@ const translations_en = {
     moodle_qcm_name: "MCQ",
     moodle_qcm_description: "Generate a simple MCQ activity.",
 
-    // Dynamic content
-    prompt_for_ia: "Prompt for the AI",
+    moodle_glossaire_xml_name: "Glossary (XML)",
+    moodle_glossaire_xml_description: "Generate a glossary ready to be imported in XML format.",
+ 
+     // Dynamic content
+     prompt_for_ia: "Prompt for the AI",
     copy_prompt: "📋 Copy prompt",
     go_duck: "🦆 Go to Duck.ai",
     go_mistral: "Ⓜ️ Go to Le Chat",
@@ -1362,5 +1365,34 @@ const translations_en = {
     albert_model_parameters_large: "24B parameters",
     albert_model_parameters_code: "32.5B parameters",
     language: "Language",
-    tutorial: "Tutorial"
+    tutorial: "Tutorial",
+
+    // Glossaire XML Prompt
+    glossaire_xml_prompt_role: "You are an expert in instructional design and you will create the content for a Moodle glossary in XML format.",
+    glossaire_xml_prompt_mission: "**Your mission:** You must generate a simple JSON object containing a list of terms for a glossary. Each term must have a concept, a definition, and, if relevant, a list of aliases.",
+    glossaire_xml_prompt_structure_title: "**Expected JSON structure:**",
+    glossaire_xml_prompt_structure_rules: `
+-   **Root:** A main object containing two keys: \`name\` (the name of the glossary) and \`entries\` (an array of objects).
+-   **Each object in \`entries\` must contain:**
+    -   \`concept\`: The word or expression to be defined.
+    -   \`definition\`: The clear and concise definition.
+    -   \`aliases\` (optional): An array of strings for synonyms or alternative terms. Only add this key if relevant aliases exist.`,
+    glossaire_xml_prompt_example_title: "**Example JSON:**",
+    glossaire_xml_prompt_example: `\`\`\`json
+{
+  "name": "The Lexicon of Information",
+  "entries": [
+    {
+      "concept": "Journalist",
+      "definition": "A person who collects, verifies, and disseminates information.",
+      "aliases": ["Reporter", "Chronicler"]
+    },
+    {
+      "concept": "Source",
+      "definition": "The origin of a piece of information."
+    }
+  ]
+}
+\`\`\``,
+    glossaire_xml_prompt_generate_only_xml: "Generate only the valid JSON code, without any comments."
 };

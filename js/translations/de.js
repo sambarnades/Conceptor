@@ -787,6 +787,9 @@ const translations_de = {
     moodle_qcm_name: "MCQ",
     moodle_qcm_description: "Generieren Sie eine einfache MCQ-Aktivität.",
 
+    moodle_glossaire_xml_name: "Glossar (XML)",
+    moodle_glossaire_xml_description: "Erstellen Sie ein Glossar, das zum Import im XML-Format bereit ist.",
+
     // Dynamic content
     prompt_for_ia: "Prompt für die KI",
     copy_prompt: "📋 Prompt kopieren",
@@ -1362,5 +1365,34 @@ const translations_de = {
     albert_model_parameters_large: "24 Mrd. Parameter",
     albert_model_parameters_code: "32,5 Mrd. Parameter",
     language: "Sprache",
-    tutorial: "Anleitung"
+    tutorial: "Anleitung",
+
+    // Glossar-XML-Prompt
+    glossaire_xml_prompt_role: "Du bist Experte für Instruktionsdesign und erstellst den Inhalt für ein Glossar.",
+    glossaire_xml_prompt_mission: "**Deine Mission:** Du sollst ein einfaches JSON-Objekt erzeugen, das eine Liste von Begriffen für ein Glossar enthält. Jeder Begriff muss ein Konzept, eine Definition und – falls relevant – eine Liste von Aliassen haben.",
+    glossaire_xml_prompt_structure_title: "**Erwartete JSON-Struktur:**",
+    glossaire_xml_prompt_structure_rules: `
+-   **Wurzel:** Ein Hauptobjekt mit zwei Schlüsseln: \`name\` (der Name des Glossars) und \`entries\` (ein Array von Objekten).
+-   **Jedes Objekt in \`entries\` muss enthalten:**
+    -   \`concept\`: Das zu definierende Wort oder die Wortgruppe.
+    -   \`definition\`: Die klare und knappe Definition.
+    -   \`aliases\` (optional): Ein Array aus Zeichenketten für Synonyme oder alternative Begriffe. Füge diesen Schlüssel nur hinzu, wenn relevante Aliasse existieren.`,
+    glossaire_xml_prompt_example_title: "**JSON-Beispiel:**",
+    glossaire_xml_prompt_example: `\`\`\`json
+{
+  "name": "Das Lexikon der Information",
+  "entries": [
+    {
+      "concept": "Journalist",
+      "definition": "Person, die Informationen sammelt, überprüft und verbreitet.",
+      "aliases": ["Reporter", "Kolumnist"]
+    },
+    {
+      "concept": "Quelle",
+      "definition": "Ursprung einer Information."
+    }
+  ]
+}
+\`\`\``,
+    glossaire_xml_prompt_generate_only_xml: "Erzeuge nur gültigen JSON-Code, ohne jeglichen Kommentar.",
 };

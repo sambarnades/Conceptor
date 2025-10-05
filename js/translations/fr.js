@@ -787,8 +787,11 @@ const translations_fr = {
     moodle_qcm_name: "QCM",
     moodle_qcm_description: "Générez une activité QCM simple.",
 
-    // Dynamic content
-    prompt_for_ia: "Prompt pour l'IA",
+    moodle_glossaire_xml_name: "Glossaire (XML)",
+    moodle_glossaire_xml_description: "Générez un glossaire prêt à être importé au format XML.",
+ 
+     // Dynamic content
+     prompt_for_ia: "Prompt pour l'IA",
     copy_prompt: "📋 Copier le prompt",
     go_duck: "🦆 Accéder à Duck.ai",
     go_mistral: "Ⓜ️ Accéder à Le chat",
@@ -1362,5 +1365,34 @@ const translations_fr = {
     albert_model_parameters_large: "24 Mrd paramètres",
     albert_model_parameters_code: "32,5 Mrd paramètres",
     language: "Langue",
-    tutorial: "Tutoriel"
+    tutorial: "Tutoriel",
+
+    // Glossaire XML Prompt
+    glossaire_xml_prompt_role: "Tu es un expert en ingénierie pédagogique et tu vas créer le contenu pour un glossaire.",
+    glossaire_xml_prompt_mission: "**Ta mission :** Tu dois générer un objet JSON simple contenant une liste de termes pour un glossaire. Chaque terme doit avoir un concept, une définition et, si pertinent, une liste d'alias.",
+    glossaire_xml_prompt_structure_title: "**Structure du JSON attendu :**",
+    glossaire_xml_prompt_structure_rules: `
+-   **Racine :** Un objet principal contenant deux clés : \`name\` (le nom du glossaire) et \`entries\` (un tableau d'objets).
+-   **Chaque objet dans \`entries\` doit contenir :**
+    -   \`concept\` : Le mot ou l'expression à définir.
+    -   \`definition\` : La définition claire et concise.
+    -   \`aliases\` (optionnel) : Un tableau de chaînes de caractères pour les synonymes ou termes alternatifs. N'ajoute cette clé que si des alias pertinents existent.`,
+    glossaire_xml_prompt_example_title: "**Exemple de JSON :**",
+    glossaire_xml_prompt_example: `\`\`\`json
+{
+  "name": "Le lexique de l'information",
+  "entries": [
+    {
+      "concept": "Journaliste",
+      "definition": "Personne qui collecte, vérifie et diffuse des informations.",
+      "aliases": ["Reporter", "Chroniqueur"]
+    },
+    {
+      "concept": "Source",
+      "definition": "Origine d'une information."
+    }
+  ]
+}
+\`\`\``,
+    glossaire_xml_prompt_generate_only_xml: "Génère uniquement le code JSON valide, sans aucun commentaire."
 };

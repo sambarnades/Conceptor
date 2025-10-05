@@ -310,6 +310,11 @@ document.addEventListener('DOMContentLoaded', function() {
            description: "moodle_xml_description",
            image: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Extensible_Markup_Language_%28XML%29_logo.svg"
        },
+       glossaireXml: {
+           name: "moodle_glossaire_xml_name",
+           description: "moodle_glossaire_xml_description",
+           image: "images/glossaire.png"
+       },
        gift: {
            name: "moodle_gift_name",
            description: "moodle_gift_description",
@@ -567,6 +572,35 @@ document.addEventListener('DOMContentLoaded', function() {
                     <button id="createXmlEleaMoodle" class="download-btn">${translations.generate_xml_file}</button>
                 </div>
            `;
+        } else if (moduleKey === 'glossaireXml') {
+           contentHtml = `
+               <h3>${translations.moodle_glossaire_xml_name}</h3>
+               <p>${translations.moodle_glossaire_xml_description}</p>
+               <div class="h5p-prompt-block">
+                   <h3>${translations.prompt_for_ia}</h3>
+                   <textarea id="glossaireXmlResultat" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+                   <div class="action-buttons">
+                       <button id="copy-glossaireXml" class="copy-btn">${translations.copy_prompt}</button>
+                       <button class="action-btn go-duck">${translations.go_duck}</button>
+                       <button class="action-btn go-mistral">${translations.go_mistral}</button>
+                       <div class="albert-generation-controls">
+                           <button id="generate-albert-glossaireXml" class="action-btn albert-btn">${translations.generate_with_albert}</button>
+                           <div class="model-selector-container">
+                               <button id="model-selector-btn-glossaireXml" class="model-selector-btn" aria-haspopup="true" aria-expanded="false">
+                                   <i class="fas fa-chevron-down"></i>
+                               </button>
+                               <ul id="model-selector-dropdown-glossaireXml" class="model-selector-dropdown" role="menu"></ul>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               <div class="h5p-processor">
+                   <h3>${translations.create_xml_file}</h3>
+                   <p>${translations.paste_ia_result}</p>
+                   <textarea id="glossaireXmlJsonInput" placeholder="${translations.paste_json_or_text || 'Collez ici le contenu généré par l\'IA...'}"></textarea>
+                   <button id="createGlossaireXmlBtn" class="download-btn">${translations.generate_xml_file}</button>
+               </div>
+           `;
        } else if (moduleKey === 'gift') {
            contentHtml = `
                <h3>${translations.moodle_gift_name}</h3>
@@ -701,6 +735,16 @@ document.addEventListener('DOMContentLoaded', function() {
                }
                downloadFile(xmlContent, 'moodle_backup.xml', 'text/xml');
            });
+       } else if (moduleKey === 'glossaireXml') {
+           setupCopyButton('copy-glossaireXml', 'glossaireXmlResultat');
+           document.getElementById('createGlossaireXmlBtn').addEventListener('click', () => {
+               const jsonInput = document.getElementById('glossaireXmlJsonInput').value;
+               if (!jsonInput) {
+                   showNotification(translations.error_paste_json_content || 'Veuillez coller le contenu JSON généré.', 'error');
+                   return;
+               }
+               handleGlossaireXmlCreation(jsonInput);
+           });
        } else if (moduleKey === 'gift') {
            setupCopyButton('copyGiftLink', 'giftResultat');
        } else if (moduleKey === 'Millionnaire') {
@@ -739,11 +783,12 @@ document.addEventListener('DOMContentLoaded', function() {
        }
 
        // Attacher la logique Albert pour les modules Moodle concernés
-       if (['moodleXml', 'Millionnaire', 'Appariement', 'QCM'].includes(moduleKey)) {
+       if (['moodleXml', 'glossaireXml', 'Millionnaire', 'Appariement', 'QCM'].includes(moduleKey)) {
            attachAlbertLogic(moduleKey, contentContainer);
        }
 
        const promptIdForCopy = (moduleKey === 'moodleXml') ? 'moodleXmlResultat' :
+                                (moduleKey === 'glossaireXml') ? 'glossaireXmlResultat' :
                                 (moduleKey === 'gift') ? 'giftResultat' :
                                 (moduleKey === 'Millionnaire') ? moodleModules[moduleKey].promptId :
                                 (moduleKey === 'Appariement') ? moodleModules[moduleKey].promptId :
@@ -762,6 +807,14 @@ document.addEventListener('DOMContentLoaded', function() {
        let promptId;
        if (moduleKey === 'moodleXml') {
            promptId = 'moodleXmlResultat';
+       } else if (moduleKey === 'glossaireXml') {
+           promptId = 'glossaireXmlResultat';
+       } else if (moduleKey === 'glossaireXml') {
+           promptId = 'glossaireXmlResultat';
+       } else if (moduleKey === 'glossaireXml') {
+           promptId = 'glossaireXmlResultat';
+       } else if (moduleKey === 'glossaireXml') {
+           promptId = 'glossaireXmlResultat';
        } else if (moduleKey === 'gift') {
            promptId = 'giftResultat';
        } else if (moduleKey === 'Millionnaire') {
@@ -937,10 +990,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const modelSelectorBtn = container.querySelector(`#model-selector-btn-${moduleKey}`);
         const modelDropdown = container.querySelector(`#model-selector-dropdown-${moduleKey}`);
         const module = h5pModules[moduleKey] || moodleModules[moduleKey];
-        const jsonInputId = (moduleKey === 'moodleXml') ? 'xmlEleaMoodleInput' : module.jsonInputId;
-
-        if (modelSelectorBtn && modelDropdown) {
-            modelSelectorBtn.addEventListener('click', (event) => {
+        const jsonInputId = (moduleKey === 'moodleXml') ? 'xmlEleaMoodleInput' : (moduleKey === 'glossaireXml') ? 'xmlGlossaireInput' : module.jsonInputId;
+ 
+         if (modelSelectorBtn && modelDropdown) {
+             modelSelectorBtn.addEventListener('click', (event) => {
                 event.stopPropagation();
                 const isExpanded = modelSelectorBtn.getAttribute('aria-expanded') === 'true';
 
@@ -982,7 +1035,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         albertBtn.addEventListener('click', async () => {
-            const promptId = (moduleKey === 'moodleXml') ? 'moodleXmlResultat' : module.promptId;
+            const promptId = (moduleKey === 'moodleXml') ? 'moodleXmlResultat' : (moduleKey === 'glossaireXml') ? 'glossaireXmlResultat' : module.promptId;
             const promptTextarea = document.getElementById(promptId);
             const prompt = promptTextarea.value;
 
@@ -2555,11 +2608,24 @@ ${pt.chart_prompt_example}
 
 ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
 
+const glossaireXmlPrompt = `${pt.glossaire_xml_prompt_role}
+${contextPrompt}
+
+${pt.glossaire_xml_prompt_mission}
+${pt.glossaire_xml_prompt_structure_title}
+${pt.glossaire_xml_prompt_structure_rules}
+
+${pt.glossaire_xml_prompt_example_title}
+${pt.glossaire_xml_prompt_example}
+
+${pt.glossaire_xml_prompt_generate_only_xml}${languageInstruction}`;
+
         return {
             timelineResultat: timelinePrompt,
              crosswordResultat: crosswordPrompt,
             essayResultat: essayPrompt,
             moodleXmlResultat: moodleXmlPrompt,
+            glossaireXmlResultat: glossaireXmlPrompt,
             giftResultat: giftPrompt,
             flashcardsResultat: flashcardsPrompt,
             quizSetResultat: quizSetPrompt,
@@ -2580,6 +2646,73 @@ ${pt.chart_prompt_generate_only_json}${languageInstruction}`;
             complexBlanksResultat: complexBlanksPrompt,
             chartResultat: chartPrompt
         };
+    }
+
+// =======================================================================
+// 10. CRÉATION DU GLOSSAIRE XML
+// =======================================================================
+
+    function handleGlossaireXmlCreation(jsonInput) {
+        try {
+            const jsonData = JSON.parse(jsonInput);
+            if (!jsonData.name || !Array.isArray(jsonData.entries)) {
+                throw new Error("Le JSON doit contenir un nom ('name') et un tableau d'entrées ('entries').");
+            }
+
+            let entriesXml = '';
+            for (const entry of jsonData.entries) {
+                if (!entry.concept || !entry.definition) {
+                    console.warn("Entrée de glossaire ignorée (concept ou définition manquant) :", entry);
+                    continue;
+                }
+
+                let aliasesXml = '';
+                if (Array.isArray(entry.aliases) && entry.aliases.length > 0) {
+                    aliasesXml = '<ALIASES>' + entry.aliases.map(alias => `<ALIAS><NAME>${escapeXml(alias)}</NAME></ALIAS>`).join('') + '</ALIASES>';
+                }
+
+                entriesXml += `
+      <ENTRY>
+        <CONCEPT>${escapeXml(entry.concept)}</CONCEPT>
+        <DEFINITION>${escapeXml(`<p dir="ltr" style="text-align:left;">${entry.definition}</p>`)}</DEFINITION>
+        <FORMAT>1</FORMAT>
+        <DEFINITIONTRUST>0</DEFINITIONTRUST>
+        <USEDYNALINK>1</USEDYNALINK>
+        <CASESENSITIVE>0</CASESENSITIVE>
+        <FULLMATCH>0</FULLMATCH>
+        <TEACHERENTRY>1</TEACHERENTRY>
+        ${aliasesXml}
+      </ENTRY>`;
+            }
+
+            const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+<GLOSSARY>
+  <INFO>
+    <NAME>${escapeXml(jsonData.name)}</NAME>
+    <INTRO><p dir="ltr" style="text-align: left;"></p></INTRO>
+    <INTROFORMAT>1</INTROFORMAT>
+    <ALLOWDUPLICATEDENTRIES>0</ALLOWDUPLICATEDENTRIES>
+    <DISPLAYFORMAT>dictionary</DISPLAYFORMAT>
+    <SHOWSPECIAL>1</SHOWSPECIAL>
+    <SHOWALPHABET>1</SHOWALPHABET>
+    <SHOWALL>1</SHOWALL>
+    <ALLOWCOMMENTS>0</ALLOWCOMMENTS>
+    <USEDYNALINK>0</USEDYNALINK>
+    <DEFAULTAPPROVAL>0</DEFAULTAPPROVAL>
+    <GLOBALGLOSSARY>0</GLOBALGLOSSARY>
+    <ENTBYPAGE>10</ENTBYPAGE>
+    <ENTRIES>${entriesXml}
+    </ENTRIES>
+  </INFO>
+</GLOSSARY>`;
+
+            downloadFile(xmlContent, 'glossaire.xml', 'text/xml');
+            showNotification("Fichier glossaire.xml généré avec succès !");
+
+        } catch (error) {
+            console.error("Erreur lors de la création du XML du glossaire:", error);
+            showNotification(`Erreur : ${error.message}`, 'error');
+        }
     }
 
 // =======================================================================

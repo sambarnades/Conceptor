@@ -787,6 +787,9 @@ const translations_jp = {
     moodle_qcm_name: "MCQ",
     moodle_qcm_description: "簡単なMCQ活動を生成します。",
 
+    moodle_glossaire_xml_name: "用語集 (XML)",
+    moodle_glossaire_xml_description: "XML形式でインポート可能な用語集を生成します。",
+
     // Dynamic content
     prompt_for_ia: "AI用プロンプト",
     copy_prompt: "📋 プロンプトをコピー",
@@ -1362,5 +1365,34 @@ const translations_jp = {
     albert_model_parameters_large: "240億パラメータ",
     albert_model_parameters_code: "325億パラメータ",
     language: "言語",
-    tutorial: "チュートリアル"
+    tutorial: "チュートリアル",
+
+    // 用語集 XML のプロンプト
+    glossaire_xml_prompt_role: "あなたはインストラクショナルデザインの専門家で、用語集の内容を作成します。",
+    glossaire_xml_prompt_mission: "**あなたのミッション:** 用語集の用語リストを含むシンプルな JSON オブジェクトを生成してください。各用語には、概念、定義、そして必要に応じてエイリアスのリストを含めます。",
+    glossaire_xml_prompt_structure_title: "**期待される JSON の構造:**",
+    glossaire_xml_prompt_structure_rules: `
+-   **ルート:** \`name\`（用語集名）と\`entries\`（オブジェクトの配列）の 2 つのキーを持つメインオブジェクト。
+-   **\`entries\` の各オブジェクトは以下を含む必要があります:**
+    -   \`concept\`: 定義する語または表現。
+    -   \`definition\`: 明確で簡潔な定義。
+    -   \`aliases\`（任意）: 同義語や代替用語のための文字列配列。関連するエイリアスがある場合にのみこのキーを追加してください。`,
+    glossaire_xml_prompt_example_title: "**JSON の例:**",
+    glossaire_xml_prompt_example: `\`\`\`json
+{
+  "name": "情報の用語集",
+  "entries": [
+    {
+      "concept": "ジャーナリスト",
+      "definition": "情報を収集・確認し、発信する人。",
+      "aliases": ["レポーター", "コラムニスト"]
+    },
+    {
+      "concept": "情報源",
+      "definition": "情報の出どころ。"
+    }
+  ]
+}
+\`\`\``,
+    glossaire_xml_prompt_generate_only_xml: "有効な JSON コードのみを生成し、コメントは一切含めないでください。",
 };

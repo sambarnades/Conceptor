@@ -787,6 +787,9 @@ const translations_pt = {
     moodle_qcm_name: "MCQ",
     moodle_qcm_description: "Gere uma atividade MCQ simples.",
 
+    moodle_glossaire_xml_name: "Glossário (XML)",
+    moodle_glossaire_xml_description: "Gere um glossário pronto para ser importado no formato XML.",
+
     // Dynamic content
     prompt_for_ia: "Prompt para a IA",
     copy_prompt: "📋 Copiar prompt",
@@ -1363,5 +1366,34 @@ const translations_pt = {
     albert_model_parameters_large: "24 mil milhões de parâmetros",
     albert_model_parameters_code: "32,5 mil milhões de parâmetros",
     language: "Língua",
-    tutorial: "Tutorial"
+    tutorial: "Tutorial",
+
+    // Prompt de Glossário XML
+    glossaire_xml_prompt_role: "Você é um especialista em design instrucional e vai criar o conteúdo para um glossário.",
+    glossaire_xml_prompt_mission: "**Sua missão:** Você deve gerar um objeto JSON simples contendo uma lista de termos para um glossário. Cada termo deve ter um conceito, uma definição e, se pertinente, uma lista de aliases.",
+    glossaire_xml_prompt_structure_title: "**Estrutura JSON esperada:**",
+    glossaire_xml_prompt_structure_rules: `
+-   **Raiz:** Um objeto principal contendo duas chaves: \`name\` (o nome do glossário) e \`entries\` (um array de objetos).
+-   **Cada objeto em \`entries\` deve conter:**
+    -   \`concept\`: A palavra ou expressão a ser definida.
+    -   \`definition\`: A definição clara e concisa.
+    -   \`aliases\` (opcional): Um array de strings para sinônimos ou termos alternativos. Adicione esta chave apenas se existirem aliases relevantes.`,
+    glossaire_xml_prompt_example_title: "**Exemplo de JSON:**",
+    glossaire_xml_prompt_example: `\`\`\`json
+{
+  "name": "O léxico da informação",
+  "entries": [
+    {
+      "concept": "Jornalista",
+      "definition": "Pessoa que coleta, verifica e divulga informações.",
+      "aliases": ["Repórter", "Cronista"]
+    },
+    {
+      "concept": "Fonte",
+      "definition": "Origem de uma informação."
+    }
+  ]
+}
+\`\`\``,
+    glossaire_xml_prompt_generate_only_xml: "Gere apenas o código JSON válido, sem nenhum comentário.",
 };

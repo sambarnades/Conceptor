@@ -787,6 +787,9 @@ const translations_nl = {
     moodle_qcm_name: "MCQ",
     moodle_qcm_description: "Genereer een eenvoudige MCQ-activiteit.",
 
+    moodle_glossaire_xml_name: "Woordenlijst (XML)",
+    moodle_glossaire_xml_description: "Genereer een woordenlijst die klaar is om in XML-indeling te worden geïmporteerd.",
+
     // Dynamic content
     prompt_for_ia: "Prompt voor de AI",
     copy_prompt: "📋 Prompt kopiëren",
@@ -1362,5 +1365,34 @@ const translations_nl = {
     albert_model_parameters_large: "24 miljard parameters",
     albert_model_parameters_code: "32,5 miljard parameters",
     language: "Taal",
-    tutorial: "Handleiding"
+    tutorial: "Handleiding",
+
+    // Woordenlijst-XML-prompt
+    glossaire_xml_prompt_role: "Je bent een expert in instructieontwerp en je gaat inhoud maken voor een woordenlijst.",
+    glossaire_xml_prompt_mission: "**Je missie:** Je moet een eenvoudig JSON-object genereren met een lijst met termen voor een woordenlijst. Elke term moet een concept, een definitie en, indien relevant, een lijst met aliassen bevatten.",
+    glossaire_xml_prompt_structure_title: "**Verwachte JSON-structuur:**",
+    glossaire_xml_prompt_structure_rules: `
+-   **Root:** Een hoofdobject met twee sleutels: \`name\` (de naam van de woordenlijst) en \`entries\` (een array van objecten).
+-   **Elk object in \`entries\` moet bevatten:**
+    -   \`concept\`: Het woord of de uitdrukking die gedefinieerd moet worden.
+    -   \`definition\`: De duidelijke en bondige definitie.
+    -   \`aliases\` (optioneel): Een array met tekenreeksen voor synoniemen of alternatieve termen. Voeg deze sleutel alleen toe als er relevante aliassen bestaan.`,
+    glossaire_xml_prompt_example_title: "**JSON-voorbeeld:**",
+    glossaire_xml_prompt_example: `\`\`\`json
+{
+  "name": "Het lexicon van de informatie",
+  "entries": [
+    {
+      "concept": "Journalist",
+      "definition": "Persoon die informatie verzamelt, verifieert en verspreidt.",
+      "aliases": ["Verslaggever", "Columnist"]
+    },
+    {
+      "concept": "Bron",
+      "definition": "Oorsprong van informatie."
+    }
+  ]
+}
+\`\`\``,
+    glossaire_xml_prompt_generate_only_xml: "Genereer alleen geldige JSON-code, zonder enige opmerkingen.",
 };

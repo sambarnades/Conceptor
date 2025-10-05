@@ -787,6 +787,9 @@ const translations_el = {
     moodle_qcm_name: "MCQ",
     moodle_qcm_description: "Δημιουργήστε μια απλή δραστηριότητα MCQ.",
 
+    moodle_glossaire_xml_name: "Γλωσσάρι (XML)",
+    moodle_glossaire_xml_description: "Δημιουργήστε ένα γλωσσάρι έτοιμο για εισαγωγή σε μορφή XML.",
+
     // Dynamic content
     prompt_for_ia: "Prompt για ΤΝ",
     copy_prompt: "📋 Αντιγραφή prompt",
@@ -1362,5 +1365,34 @@ const translations_el = {
     albert_model_parameters_large: "24 δισ. παράμετροι",
     albert_model_parameters_code: "32,5 δισ. παράμετροι",
     language: "Γλώσσα",
-    tutorial: "Οδηγός"
+    tutorial: "Οδηγός",
+
+    // Προτροπή Γλωσσαρίου XML
+    glossaire_xml_prompt_role: "Είσαι ειδικός στον εκπαιδευτικό σχεδιασμό και θα δημιουργήσεις το περιεχόμενο για ένα γλωσσάρι.",
+    glossaire_xml_prompt_mission: "**Η αποστολή σου:** Πρέπει να δημιουργήσεις ένα απλό αντικείμενο JSON που να περιέχει μια λίστα όρων για ένα γλωσσάρι. Κάθε όρος πρέπει να έχει μια έννοια, έναν ορισμό και, αν είναι σχετικό, μια λίστα από ψευδώνυμα/συνώνυμα.",
+    glossaire_xml_prompt_structure_title: "**Αναμενόμενη δομή JSON:**",
+    glossaire_xml_prompt_structure_rules: `
+-   **Ρίζα:** Ένα κύριο αντικείμενο που περιέχει δύο κλειδιά: \`name\` (το όνομα του γλωσσαρίου) και \`entries\` (ένας πίνακας αντικειμένων).
+-   **Κάθε αντικείμενο στο \`entries\` πρέπει να περιέχει:**
+    -   \`concept\`: Τη λέξη ή φράση που θα οριστεί.
+    -   \`definition\`: Τον σαφή και συνοπτικό ορισμό.
+    -   \`aliases\` (προαιρετικό): Ένας πίνακας συμβολοσειρών για συνώνυμα ή εναλλακτικούς όρους. Πρόσθεσε αυτό το κλειδί μόνο αν υπάρχουν σχετικά ψευδώνυμα.`,
+    glossaire_xml_prompt_example_title: "**Παράδειγμα JSON:**",
+    glossaire_xml_prompt_example: `\`\`\`json
+{
+  "name": "Το γλωσσάρι της πληροφορίας",
+  "entries": [
+    {
+      "concept": "Δημοσιογράφος",
+      "definition": "Άτομο που συλλέγει, επαληθεύει και διαδίδει πληροφορίες.",
+      "aliases": ["Ρεπόρτερ", "Χρονογράφος"]
+    },
+    {
+      "concept": "Πηγή",
+      "definition": "Προέλευση μιας πληροφορίας."
+    }
+  ]
+}
+\`\`\``,
+    glossaire_xml_prompt_generate_only_xml: "Παρήγαγε μόνο έγκυρο κώδικα JSON, χωρίς κανένα σχόλιο.",
 };

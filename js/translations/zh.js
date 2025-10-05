@@ -787,6 +787,9 @@ const translations_zh = {
     moodle_qcm_name: "MCQ",
     moodle_qcm_description: "生成一个简单的 MCQ 活动。",
 
+    moodle_glossaire_xml_name: "术语表 (XML)",
+    moodle_glossaire_xml_description: "生成一个可导入为 XML 格式的术语表。",
+
     // Dynamic content
     prompt_for_ia: "供 AI 使用的提示词",
     copy_prompt: "📋 复制提示词",
@@ -1362,5 +1365,34 @@ const translations_zh = {
     albert_model_parameters_large: "240亿参数",
     albert_model_parameters_code: "325亿参数",
     language: "语言",
-    tutorial: "教程"
+    tutorial: "教程",
+    
+    // 术语表 XML 提示
+    glossaire_xml_prompt_role: "你是一名教学设计专家，你将为一个术语表创建内容。",
+    glossaire_xml_prompt_mission: "**你的任务：** 你需要生成一个简单的 JSON 对象，其中包含术语表的术语列表。每个术语都应包含一个概念、一个定义，以及（如适用）一个别名列表。",
+    glossaire_xml_prompt_structure_title: "**期望的 JSON 结构：**",
+    glossaire_xml_prompt_structure_rules: `
+-   **根：** 一个主对象，包含两个键：\`name\`（术语表名称）和\`entries\`（对象数组）。
+-   **\`entries\` 中的每个对象必须包含：**
+    -   \`concept\`：需要定义的词或短语。
+    -   \`definition\`：清晰且简洁的定义。
+    -   \`aliases\`（可选）：用于同义词或替代术语的字符串数组。仅在存在相关别名时添加此键。`,
+    glossaire_xml_prompt_example_title: "**JSON 示例：**",
+    glossaire_xml_prompt_example: `\`\`\`json
+{
+  "name": "信息术语表",
+  "entries": [
+    {
+      "concept": "记者",
+      "definition": "收集、核实并传播信息的人。",
+      "aliases": ["报道员", "专栏作者"]
+    },
+    {
+      "concept": "来源",
+      "definition": "一条信息的来源。"
+    }
+  ]
+}
+\`\`\``,
+    glossaire_xml_prompt_generate_only_xml: "只生成有效的 JSON 代码，不要添加任何注释。",
 };
