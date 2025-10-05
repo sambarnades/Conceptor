@@ -308,17 +308,12 @@ document.addEventListener('DOMContentLoaded', function() {
        moodleXml: {
            name: "moodle_xml_name",
            description: "moodle_xml_description",
-           image: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Extensible_Markup_Language_%28XML%29_logo.svg"
+           image: "images/test.png"
        },
        glossaireXml: {
            name: "moodle_glossaire_xml_name",
            description: "moodle_glossaire_xml_description",
            image: "images/glossaire.png"
-       },
-       gift: {
-           name: "moodle_gift_name",
-           description: "moodle_gift_description",
-           image: "https://moodle.org/theme/moodleorg/pix/moodle_logo_TM.svg"
        },
        Millionnaire: {
            name: "moodle_millionnaire_name",
@@ -343,6 +338,11 @@ document.addEventListener('DOMContentLoaded', function() {
            promptId: "qcmResultat",
            jsonInputId: "qcmJsonInput",
            createBtnId: "createQCM_MBZ"
+       },
+       gift: {
+           name: "moodle_gift_name",
+           description: "moodle_gift_description",
+           image: "https://moodle.org/theme/moodleorg/pix/moodle_logo_TM.svg"
        }
    };
 

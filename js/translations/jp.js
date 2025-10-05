@@ -774,7 +774,7 @@ const translations_jp = {
     h5p_chart_description: "データを視覚化するために円グラフまたは棒グラフを作成します。",
 
     // Moodle Modules
-    moodle_xml_name: "XML Éléa/Moodle",
+    moodle_xml_name: "問題バンク (XML)",
     moodle_xml_description: "XML 形式でインポート可能な小テスト用に 10 問の問題バンクを作成します。",
     moodle_xml_help: "Moodle の「小テスト」活動に XML ファイルを追加するには、まず活動を作成します。その後、<strong>その他</strong> メニューを開き、<strong>問題バンク</strong> に移動します。そこで <strong>インポート</strong> をクリックし、<strong>Moodle XML</strong> 形式を選択し、ファイルを選んで確認します。",
     moodle_gift_name: "GIFT フォーマット",

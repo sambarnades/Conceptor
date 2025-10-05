@@ -774,7 +774,7 @@ const translations_de = {
     h5p_chart_description: "Erstellen Sie ein Kreis- oder Balkendiagramm zur Visualisierung von Daten.",
 
     // Moodle Modules
-    moodle_xml_name: "XML Éléa/Moodle",
+    moodle_xml_name: "Fragenpool (XML)",
     moodle_xml_description: "Erstellen Sie eine Bank mit 10 Fragen für eine Testaktivität, die im XML-Format importiert werden können.",
     moodle_xml_help: "Um eine XML-Datei in eine „Test“-Aktivität in Moodle hinzuzufügen, erstellen Sie zunächst die Aktivität. Öffnen Sie dann das Menü <strong>Mehr</strong> und gehen Sie zu <strong>Fragenbank</strong>. In diesem Menü klicken Sie auf <strong>Importieren</strong>, wählen das Format <strong>Moodle XML</strong> und wählen dann Ihre Datei aus und bestätigen.",
     moodle_gift_name: "GIFT-Format",

@@ -774,7 +774,7 @@ const translations_zh = {
     h5p_chart_description: "创建饼图或条形图以可视化数据。",
 
     // Moodle Modules
-    moodle_xml_name: "XML Éléa/Moodle",
+    moodle_xml_name: "题库 (XML)",
     moodle_xml_description: "生成一个包含 10 道题目的题库，可直接以 XML 格式导入测验活动。",
     moodle_xml_help: "要在 Moodle 的“测验”活动中添加 XML 文件，首先创建活动。然后打开 <strong>更多</strong> 菜单并进入 <strong>题库</strong>。在此菜单中，点击 <strong>导入</strong>，选择 <strong>Moodle XML</strong> 格式，然后选择您的文件并确认。",
     moodle_gift_name: "GIFT 格式",

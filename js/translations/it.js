@@ -774,7 +774,7 @@ const translations_it = {
     h5p_chart_description: "Crea un diagramma circolare o a barre per visualizzare i dati.",
 
     // Moodle Modules
-    moodle_xml_name: "XML Éléa/Moodle",
+    moodle_xml_name: "Banca domande (XML)",
     moodle_xml_description: "Genera una banca di 10 domande per un'attività Quiz pronte per essere importate in formato XML.",
     moodle_xml_help: "Per aggiungere un file XML in un'attività «Quiz» su Moodle, crea prima l'attività. Poi apri il menu <strong>Altro</strong> e vai a <strong>Banca delle domande</strong>. In questo menu, fai clic su <strong>Importa</strong>, scegli il formato <strong>Moodle XML</strong>, quindi seleziona il tuo file e conferma.",
     moodle_gift_name: "Formato GIFT",
