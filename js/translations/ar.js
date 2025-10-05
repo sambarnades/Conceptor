@@ -631,6 +631,15 @@ const translations_ar = {
     mark_words_a11y_show_solution: "إظهار الحل. سيتم تمييز المهمة بالحل الصحيح.",
     mark_words_a11y_retry: "إعادة محاولة المهمة. إعادة تعيين جميع الإجابات والبدء من جديد.",
 
+   // Millionnaire Creation
+    millionnaire_error_compression_libs: "لم يتم تحميل مكتبات الضغط (Tar.js أو fflate). يرجى التحقق من اتصال الإنترنت أو تحديث الصفحة.",
+    millionnaire_error_invalid_json: "بنية JSON غير صالحة. تأكد من أنها تحتوي على 'title' ومصفوفة 'questions' تتضمن 6 أسئلة مطابقة للمثال.",
+    millionnaire_activity_intro: "شارك في هذه اللعبة لاختبار معلوماتك.",
+    millionnaire_backup_log: "تم إنشاء نسخة احتياطية تلقائيًا بواسطة Caramel\n",
+    millionnaire_success_generation: "تم إنشاء الملف {fileName} بنجاح!",
+    millionnaire_error_creation_mbz: "حدث خطأ أثناء إنشاء ملف MBZ:",
+    millionnaire_error_generic: "خطأ:",
+ 
     // Millionnaire Prompt
     millionnaire_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Millionnaire\".",
     millionnaire_prompt_num_questions: "**عدد الأسئلة:** 6",

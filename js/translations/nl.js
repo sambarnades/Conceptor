@@ -631,6 +631,15 @@ const translations_nl = {
     mark_words_a11y_show_solution: "Toon de oplossing. De taak wordt gemarkeerd met de juiste oplossing.",
     mark_words_a11y_retry: "Probeer de taak opnieuw. Reset alle antwoorden en begin de taak opnieuw.",
 
+    // Millionnaire Creation
+    millionnaire_error_compression_libs: "De compressiebibliotheken (Tar.js of fflate) zijn niet geladen. Controleer je internetverbinding of vernieuw de pagina.",
+    millionnaire_error_invalid_json: "De JSON-structuur is ongeldig. Zorg ervoor dat deze een 'title' en een 'questions'-array met 6 vragen bevat volgens het voorbeeld.",
+    millionnaire_activity_intro: "Doe mee aan dit spel om je kennis te testen.",
+    millionnaire_backup_log: "Back-up automatisch aangemaakt door Caramel\n",
+    millionnaire_success_generation: "Bestand {fileName} succesvol gegenereerd!",
+    millionnaire_error_creation_mbz: "Fout bij het maken van MBZ-bestand:",
+    millionnaire_error_generic: "Fout:",
+
     // Millionnaire Prompt
     millionnaire_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Millionnaire\".",
     millionnaire_prompt_num_questions: "**Aantal vragen:** 6",

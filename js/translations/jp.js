@@ -631,6 +631,15 @@ const translations_jp = {
     mark_words_a11y_show_solution: "解答を表示します。課題には正解が表示されます。",
     mark_words_a11y_retry: "課題を再試行します。すべての解答をリセットして、課題を最初からやり直します。",
 
+    // Millionnaire Creation
+    millionnaire_error_compression_libs: "圧縮ライブラリ（Tar.js または fflate）が読み込まれていません。インターネット接続を確認するか、ページを更新してください。",
+    millionnaire_error_invalid_json: "JSON 構造が無効です。「title」と、サンプルに従った6つの質問を含む「questions」配列を確認してください。",
+    millionnaire_activity_intro: "このゲームに参加して知識を試してみましょう。",
+    millionnaire_backup_log: "Caramel によって自動的にバックアップが作成されました\n",
+    millionnaire_success_generation: "ファイル {fileName} が正常に生成されました！",
+    millionnaire_error_creation_mbz: "MBZ ファイルの作成中にエラーが発生しました:",
+    millionnaire_error_generic: "エラー:",
+
     // Millionnaire Prompt
     millionnaire_prompt_role: "あなたはH5P「Millionnaire」アクティビティを作成する教育工学の専門家です。",
     millionnaire_prompt_num_questions: "**質問数：** 6",

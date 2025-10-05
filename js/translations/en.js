@@ -631,6 +631,15 @@ const translations_en = {
     mark_words_a11y_show_solution: "Show the solution. The task will be marked with its correct solution.",
     mark_words_a11y_retry: "Retry the task. Reset all responses and start the task over again.",
 
+    // Millionnaire Creation
+    millionnaire_error_compression_libs: "The compression libraries (Tar.js or fflate) are not loaded. Please check your internet connection or refresh the page.",
+    millionnaire_error_invalid_json: "The JSON structure is invalid. Make sure it includes a 'title' and a 'questions' array with 6 questions matching the example.",
+    millionnaire_activity_intro: "Take part in this game to test your knowledge.",
+    millionnaire_backup_log: "Backup automatically created by Caramel\n",
+    millionnaire_success_generation: "File {fileName} generated successfully!",
+    millionnaire_error_creation_mbz: "Error while creating MBZ file:",
+    millionnaire_error_generic: "Error:",
+
     // Millionnaire Prompt
     millionnaire_prompt_role: "You are an expert in pedagogical engineering creating an H5P \"Millionnaire\" activity.",
     millionnaire_prompt_num_questions: "**Number of questions :** 6",

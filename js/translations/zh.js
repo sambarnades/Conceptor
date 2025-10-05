@@ -631,6 +631,15 @@ const translations_zh = {
     mark_words_a11y_show_solution: "显示答案。任务将标记其正确答案。",
     mark_words_a11y_retry: "重试任务。重置所有回答并重新开始任务。",
 
+    // Millionnaire Creation
+    millionnaire_error_compression_libs: "压缩库（Tar.js 或 fflate）未加载。请检查您的互联网连接或刷新页面。",
+    millionnaire_error_invalid_json: "JSON 结构无效。请确保其中包含 'title' 和一个包含 6 个问题的 'questions' 数组，与示例一致。",
+    millionnaire_activity_intro: "参与此游戏以测试您的知识。",
+    millionnaire_backup_log: "由 Caramel 自动创建的备份\n",
+    millionnaire_success_generation: "文件 {fileName} 已成功生成！",
+    millionnaire_error_creation_mbz: "创建 MBZ 文件时出错：",
+    millionnaire_error_generic: "错误：",
+
     // Millionnaire Prompt
     millionnaire_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Millionnaire（百万富翁）”活动。",
     millionnaire_prompt_num_questions: "**题目数量：** 6",

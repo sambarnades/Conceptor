@@ -631,6 +631,15 @@ const translations_el = {
     mark_words_a11y_show_solution: "Εμφάνιση της λύσης. Η εργασία θα επισημανθεί με τη σωστή λύση της.",
     mark_words_a11y_retry: "Επαναλάβετε την εργασία. Επαναφέρετε όλες τις απαντήσεις και ξεκινήστε την εργασία από την αρχή.",
 
+    // Millionnaire Creation
+    millionnaire_error_compression_libs: "Οι βιβλιοθήκες συμπίεσης (Tar.js ή fflate) δεν έχουν φορτωθεί. Ελέγξτε τη σύνδεσή σας στο διαδίκτυο ή ανανεώστε τη σελίδα.",
+    millionnaire_error_invalid_json: "Η δομή JSON δεν είναι έγκυρη. Βεβαιωθείτε ότι περιέχει 'title' και έναν πίνακα 'questions' με 6 ερωτήσεις σύμφωνα με το παράδειγμα.",
+    millionnaire_activity_intro: "Συμμετέχετε σε αυτό το παιχνίδι για να δοκιμάσετε τις γνώσεις σας.",
+    millionnaire_backup_log: "Αντίγραφο ασφαλείας δημιουργήθηκε αυτόματα από το Caramel\n",
+    millionnaire_success_generation: "Το αρχείο {fileName} δημιουργήθηκε με επιτυχία!",
+    millionnaire_error_creation_mbz: "Σφάλμα κατά τη δημιουργία του αρχείου MBZ:",
+    millionnaire_error_generic: "Σφάλμα:",
+
     // Millionnaire Prompt
     millionnaire_prompt_role: "Είσαι ειδικός/ή στον εκπαιδευτικό σχεδιασμό και δημιουργείς δραστηριότητα H5P \"Millionnaire\".",
     millionnaire_prompt_num_questions: "**Αριθμός ερωτήσεων:** 6",
