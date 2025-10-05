@@ -546,9 +546,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h3>${translations.prompt_for_ia}</h3>
                     <textarea id="moodleXmlResultat" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
                     <div class="action-buttons">
-                        <button id="copyMoodleXmlLink" class="copy-btn">📋 Copier le prompt</button>
-                        <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
-                        <button class="action-btn go-mistral">Ⓜ️ Accéder à Le chat</button>
+                        <button id="copyMoodleXmlLink" class="copy-btn">${translations.copy_prompt}</button>
+                        <button class="action-btn go-duck">${translations.go_duck}</button>
+                        <button class="action-btn go-mistral">${translations.go_mistral}</button>
                         <div class="albert-generation-controls">
                             <button id="generate-albert-moodleXml" class="action-btn albert-btn">${translations.generate_with_albert}</button>
                             <div class="model-selector-container">
@@ -573,9 +573,9 @@ document.addEventListener('DOMContentLoaded', function() {
                <p>${translations.moodle_gift_description}</p>
                <textarea id="giftResultat" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
                <div class="action-buttons">
-                   <button id="copyGiftLink" class="copy-btn">📋 Copier le prompt</button>
-                   <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
-                   <button class="action-btn go-mistral">Ⓜ️ Accéder à Le chat</button>
+                   <button id="copyGiftLink" class="copy-btn">${translations.copy_prompt}</button>
+                   <button class="action-btn go-duck">${translations.go_duck}</button>
+                   <button class="action-btn go-mistral">${translations.go_mistral}</button>
                </div>
            `;
        } else if (moduleKey === 'Millionnaire') {
@@ -583,13 +583,13 @@ document.addEventListener('DOMContentLoaded', function() {
                <h3>${translations.moodle_millionnaire_name}</h3>
                <p>${translations.moodle_millionnaire_description}</p>
                <div class="h5p-prompt-block">
-                   <h3>Prompt pour l'IA</h3>
+                   <h3>${translations.prompt_for_ia}</h3>
                    
                    <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
                    <div class="action-buttons">
-                       <button id="copy-${moduleKey}" class="copy-btn">📋 Copier le prompt</button>
-                       <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
-                       <button class="action-btn go-mistral">Ⓜ️ Accéder à Le chat</button>
+                       <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
+                       <button class="action-btn go-duck">${translations.go_duck}</button>
+                       <button class="action-btn go-mistral">${translations.go_mistral}</button>
                        <div class="albert-generation-controls">
                            <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">${translations.generate_with_albert}</button>
                            <div class="model-selector-container">
@@ -613,13 +613,13 @@ document.addEventListener('DOMContentLoaded', function() {
                <h3>${translations.moodle_appariement_name}</h3>
                <p>${translations.moodle_appariement_description}</p>
                <div class="h5p-prompt-block">
-                   <h3>Prompt pour l'IA</h3>
+                   <h3>${translations.prompt_for_ia}</h3>
                    
                    <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
                    <div class="action-buttons">
-                       <button id="copy-${moduleKey}" class="copy-btn">📋 Copier le prompt</button>
-                       <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
-                       <button class="action-btn go-mistral">Ⓜ️ Accéder à Le chat</button>
+                       <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
+                       <button class="action-btn go-duck">${translations.go_duck}</button>
+                       <button class="action-btn go-mistral">${translations.go_mistral}</button>
                        <div class="albert-generation-controls">
                            <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">${translations.generate_with_albert}</button>
                            <div class="model-selector-container">
@@ -643,13 +643,13 @@ document.addEventListener('DOMContentLoaded', function() {
                <h3>${translations.moodle_qcm_name}</h3>
                <p>${translations.moodle_qcm_description}</p>
                <div class="h5p-prompt-block">
-                   <h3>Prompt pour l'IA</h3>
+                   <h3>${translations.prompt_for_ia}</h3>
                    
                    <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
                    <div class="action-buttons">
-                       <button id="copy-${moduleKey}" class="copy-btn">📋 Copier le prompt</button>
-                       <button class="action-btn go-duck">🦆 Accéder à Duck.ai</button>
-                       <button class="action-btn go-mistral">Ⓜ️ Accéder à Le chat</button>
+                       <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
+                       <button class="action-btn go-duck">${translations.go_duck}</button>
+                       <button class="action-btn go-mistral">${translations.go_mistral}</button>
                        <div class="albert-generation-controls">
                            <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">${translations.generate_with_albert}</button>
                            <div class="model-selector-container">
