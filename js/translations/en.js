@@ -776,7 +776,7 @@ const translations_en = {
     h5p_chart_description: "Create a pie or bar chart to visualize data.",
 
     // Moodle Modules
-    moodle_xml_name: "Question bank (XML)",
+    moodle_xml_name: "Quiz (Question bank)",
     moodle_xml_description: "Generate a bank of 10 questions for a Quiz activity ready to be imported in XML format.",
     moodle_xml_help: "To add an XML file into a 'Quiz' activity in Moodle, first create the activity. Then open the <strong>More</strong> menu and go to <strong>Question bank</strong>. In this menu, click <strong>Import</strong>, choose the <strong>Moodle XML</strong> format, then select your file and confirm.",
     moodle_gift_name: "GIFT Format",

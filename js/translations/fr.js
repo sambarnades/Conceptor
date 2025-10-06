@@ -776,7 +776,7 @@ const translations_fr = {
     h5p_chart_description: "Créez un diagramme circulaire ou en barres pour visualiser des données.",
 
     // Moodle Modules
-    moodle_xml_name: "Banque de questions (XML)",
+    moodle_xml_name: "Test (Banque de questions)",
     moodle_xml_description: "Générez une banque de 10 questions pour une activité Test prêtes à être importées au format XML",
     moodle_xml_help: "Pour ajouter un fichier XML dans une activité « Test » sur Moodle, commencez par créer l’activité. Ensuite, ouvrez le menu <strong>Plus</strong> et allez dans <strong>Banque de questions</strong>. Dans ce menu, cliquez sur <strong>Importer</strong>, choisissez le format <strong>XML Moodle</strong>, puis sélectionnez votre fichier et validez.",
     moodle_gift_name: "Format GIFT",

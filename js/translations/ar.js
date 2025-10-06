@@ -776,7 +776,7 @@ const translations_ar = {
     h5p_chart_description: "أنشئ رسمًا بيانيًا دائريًا أو شريطيًا لتصور البيانات.",
 
     // Moodle Modules
-    moodle_xml_name: "بنك الأسئلة (XML)",
+    moodle_xml_name: "اختبار (بنك الأسئلة)",
     moodle_xml_description: "إنشاء بنك من 10 أسئلة لنشاط اختبار جاهزة للاستيراد بتنسيق XML.",
     moodle_xml_help: "لإضافة ملف XML إلى نشاط «اختبار» على Moodle، ابدأ بإنشاء النشاط. بعد ذلك، افتح قائمة <strong>المزيد</strong> واذهب إلى <strong>بنك الأسئلة</strong>. في هذه القائمة، انقر على <strong>استيراد</strong>، واختر تنسيق <strong>Moodle XML</strong>، ثم حدد ملفك وقم بالتأكيد.",
     moodle_gift_name: "تنسيق GIFT",

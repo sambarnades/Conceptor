@@ -776,7 +776,7 @@ const translations_nl = {
     h5p_chart_description: "Maak een cirkel- of staafdiagram om gegevens te visualiseren.",
 
     // Moodle Modules
-    moodle_xml_name: "Vragenbank (XML)",
+    moodle_xml_name: "Test (Vragenbank)",
     moodle_xml_description: "Genereer een bank van 10 vragen voor een toetsactiviteit die klaar is om in XML-formaat geïmporteerd te worden.",
     moodle_xml_help: "Om een XML-bestand toe te voegen aan een ‘Toets’-activiteit in Moodle, maakt u eerst de activiteit aan. Open vervolgens het menu <strong>Meer</strong> en ga naar <strong>Vraagbank</strong>. Klik in dit menu op <strong>Importeren</strong>, kies het formaat <strong>Moodle XML</strong>, selecteer uw bestand en bevestig.",
     moodle_gift_name: "GIFT-formaat",

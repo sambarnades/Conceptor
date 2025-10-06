@@ -776,7 +776,7 @@ const translations_pt = {
     h5p_chart_description: "Crie um gráfico de pizza ou de barras para visualizar dados.",
 
     // Moodle Modules
-    moodle_xml_name: "Banco de perguntas (XML)",
+    moodle_xml_name: "Teste (Banco de perguntas)",
     moodle_xml_description: "Gere um banco de 10 perguntas para uma atividade de Questionário prontas para serem importadas em formato XML.",
     moodle_xml_help: "Para adicionar um ficheiro XML numa atividade «Questionário» no Moodle, primeiro crie a atividade. Em seguida, abra o menu <strong>Mais</strong> e vá a <strong>Banco de perguntas</strong>. Nesse menu, clique em <strong>Importar</strong>, escolha o formato <strong>Moodle XML</strong>, selecione o seu ficheiro e confirme.",
     moodle_gift_name: "Formato GIFT",
