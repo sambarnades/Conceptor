@@ -917,3 +917,120 @@ textarea::placeholder {
 .language-btn .fi {
     font-size: 18px;
 }
+
+/* =======================================================================
+   14. STYLES POUR LA BARRE D'OUTILS FLOTTANTE DU TEXTAREA
+   ======================================================================= */
+
+.textarea-container {
+    position: relative;
+}
+
+.floating-toolbar {
+    position: absolute;
+    top: 10px;
+    right: 20px; /* Décalage pour éviter la barre de défilement */
+    display: flex;
+    gap: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 5px;
+    border-radius: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 5;
+}
+
+.textarea-container:hover .floating-toolbar {
+    opacity: 1;
+    visibility: visible;
+}
+
+.toolbar-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 16px;
+    color: #333;
+    transition: color 0.2s;
+    position: relative;
+}
+
+.toolbar-btn:hover {
+    color: #007AFF;
+}
+
+/* Style pour les infobulles */
+.toolbar-btn::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 5px;
+    background-color: #333;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+}
+
+.toolbar-btn:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Style pour le mode plein écran */
+/* Superposition pour le mode plein écran */
+.fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1999; /* Juste en dessous de la barre d'outils */
+    padding: 0; /* Retiré pour que l'overlay prenne tout l'écran */
+    box-sizing: border-box;
+}
+
+.textarea-fullscreen {
+    width: 85vw;  /* Occupe 85% de la largeur de la fenêtre */
+    height: 85vh; /* Occupe 85% de la hauteur de la fenêtre */
+    resize: none; /* Empêcher le redimensionnement en plein écran */
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 1.2em;
+    line-height: 1.6;
+    padding: 20px; /* Ajout d'un padding interne */
+    box-sizing: border-box;
+}
+
+/* Le conteneur cloné prend toute la place dans l'overlay */
+.fullscreen-overlay .textarea-container {
+    width: 85vw;
+    height: 85vh;
+    position: relative;
+}
+
+/* La barre d'outils reste attachée au conteneur cloné */
+.fullscreen-overlay .floating-toolbar {
+    opacity: 1;
+    visibility: visible;
+    position: absolute;
+    top: 15px; /* Ajustement pour être plus esthétique */
+    right: 25px; /* Décalage pour éviter la barre de défilement */
+    z-index: 2000;
+}

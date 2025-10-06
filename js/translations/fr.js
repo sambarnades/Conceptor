@@ -793,8 +793,12 @@ const translations_fr = {
     moodle_glossaire_xml_description: "Générez un glossaire prêt à être importé au format XML.",
  
      // Dynamic content
-     prompt_for_ia: "Prompt pour l'IA",
-    copy_prompt: "📋 Copier le prompt",
+    prompt_for_ia: "Prompt pour l'IA",
+    copy_prompt: "Copier le prompt",
+    fullscreen_prompt: "Plein écran",
+    exit_fullscreen_prompt: "Quitter le plein écran",
+    lock_prompt: "Verrouiller le prompt",
+    unlock_prompt: "Déverrouiller le prompt",
     go_duck: "🦆 Accéder à Duck.ai",
     go_mistral: "Ⓜ️ Accéder à Le chat",
     create_h5p_file: "Créer le fichier H5P",

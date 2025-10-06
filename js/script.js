@@ -62,20 +62,30 @@ document.addEventListener('DOMContentLoaded', function() {
    }
 
     function translatePage(container = document) {
-        container.querySelectorAll('[data-key], [data-translate]').forEach(element => {
+        container.querySelectorAll('[data-key], [data-translate], [data-tooltip-key]').forEach(element => {
             const key = element.getAttribute('data-key') || element.getAttribute('data-translate');
-            const translation = translations[key];
-            if (translation) {
-                if (element.placeholder) {
-                    element.placeholder = translation;
-                } else {
-                    // Ne pas écraser les icônes ou autres éléments enfants
-                    const textNode = Array.from(element.childNodes).find(node => node.nodeType === Node.TEXT_NODE);
-                    if (textNode) {
-                        textNode.textContent = translation;
+            const tooltipKey = element.getAttribute('data-tooltip-key');
+            
+            if (key) {
+                const translation = translations[key];
+                if (translation) {
+                    if (element.placeholder) {
+                        element.placeholder = translation;
                     } else {
-                        element.innerHTML = translation;
+                        const textNode = Array.from(element.childNodes).find(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+                        if (textNode) {
+                            textNode.textContent = translation;
+                        } else if (element.tagName !== 'I') { // Ne pas écraser les icônes
+                            element.innerHTML = translation;
+                        }
                     }
+                }
+            }
+            
+            if (tooltipKey) {
+                const translation = translations[tooltipKey];
+                if (translation) {
+                    element.setAttribute('data-tooltip', translation);
                 }
             }
         });
@@ -462,7 +472,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 <div class="h5p-prompt-block">
                     <h3>${translations.prompt_for_ia}</h3>
-                    <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+                    <div class="textarea-container">
+                        <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}" readonly></textarea>
+                        <div class="floating-toolbar">
+                            <button class="toolbar-btn copy-prompt-btn" data-tooltip-key="copy_prompt"><i class="fas fa-copy"></i></button>
+                            <button class="toolbar-btn fullscreen-btn" data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i></button>
+                            <button class="toolbar-btn lock-btn" data-tooltip-key="unlock_prompt"><i class="fas fa-lock"></i></button>
+                        </div>
+                    </div>
                     <div class="action-buttons">
                         <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
                         <button class="action-btn go-duck">${translations.go_duck}</button>
@@ -511,6 +528,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Attacher les événements
         attachInlineEventListeners(moduleKey, contentContainer, tileElement);
+        setupToolbarListeners(contentContainer);
 
         // Remplir le prompt si déjà généré
         const generatedPrompt = document.getElementById(`hidden-${module.promptId}`)?.value;
@@ -549,7 +567,14 @@ document.addEventListener('DOMContentLoaded', function() {
                <p>${translations.moodle_xml_description}</p>
                   <div class="h5p-prompt-block">                   
                     <h3>${translations.prompt_for_ia}</h3>
-                    <textarea id="moodleXmlResultat" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+                    <div class="textarea-container">
+                        <textarea id="moodleXmlResultat" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}" readonly></textarea>
+                        <div class="floating-toolbar">
+                            <button class="toolbar-btn copy-prompt-btn" data-tooltip-key="copy_prompt"><i class="fas fa-copy"></i></button>
+                            <button class="toolbar-btn fullscreen-btn" data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i></button>
+                            <button class="toolbar-btn lock-btn" data-tooltip-key="unlock_prompt"><i class="fas fa-lock"></i></button>
+                        </div>
+                    </div>
                     <div class="action-buttons">
                         <button id="copyMoodleXmlLink" class="copy-btn">${translations.copy_prompt}</button>
                         <button class="action-btn go-duck">${translations.go_duck}</button>
@@ -578,7 +603,14 @@ document.addEventListener('DOMContentLoaded', function() {
                <p>${translations.moodle_glossaire_xml_description}</p>
                <div class="h5p-prompt-block">
                    <h3>${translations.prompt_for_ia}</h3>
-                   <textarea id="glossaireXmlResultat" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+                   <div class="textarea-container">
+                       <textarea id="glossaireXmlResultat" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}" readonly></textarea>
+                       <div class="floating-toolbar">
+                           <button class="toolbar-btn copy-prompt-btn" data-tooltip-key="copy_prompt"><i class="fas fa-copy"></i></button>
+                           <button class="toolbar-btn fullscreen-btn" data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i></button>
+                           <button class="toolbar-btn lock-btn" data-tooltip-key="unlock_prompt"><i class="fas fa-lock"></i></button>
+                       </div>
+                   </div>
                    <div class="action-buttons">
                        <button id="copy-glossaireXml" class="copy-btn">${translations.copy_prompt}</button>
                        <button class="action-btn go-duck">${translations.go_duck}</button>
@@ -619,7 +651,14 @@ document.addEventListener('DOMContentLoaded', function() {
                <div class="h5p-prompt-block">
                    <h3>${translations.prompt_for_ia}</h3>
                    
-                   <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+                   <div class="textarea-container">
+                       <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}" readonly></textarea>
+                       <div class="floating-toolbar">
+                           <button class="toolbar-btn copy-prompt-btn" data-tooltip-key="copy_prompt"><i class="fas fa-copy"></i></button>
+                           <button class="toolbar-btn fullscreen-btn" data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i></button>
+                           <button class="toolbar-btn lock-btn" data-tooltip-key="unlock_prompt"><i class="fas fa-lock"></i></button>
+                       </div>
+                   </div>
                    <div class="action-buttons">
                        <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
                        <button class="action-btn go-duck">${translations.go_duck}</button>
@@ -649,7 +688,14 @@ document.addEventListener('DOMContentLoaded', function() {
                <div class="h5p-prompt-block">
                    <h3>${translations.prompt_for_ia}</h3>
                    
-                   <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+                   <div class="textarea-container">
+                       <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}" readonly></textarea>
+                       <div class="floating-toolbar">
+                           <button class="toolbar-btn copy-prompt-btn" data-tooltip-key="copy_prompt"><i class="fas fa-copy"></i></button>
+                           <button class="toolbar-btn fullscreen-btn" data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i></button>
+                           <button class="toolbar-btn lock-btn" data-tooltip-key="unlock_prompt"><i class="fas fa-lock"></i></button>
+                       </div>
+                   </div>
                    <div class="action-buttons">
                        <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
                        <button class="action-btn go-duck">${translations.go_duck}</button>
@@ -679,7 +725,14 @@ document.addEventListener('DOMContentLoaded', function() {
                <div class="h5p-prompt-block">
                    <h3>${translations.prompt_for_ia}</h3>
                    
-                   <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+                   <div class="textarea-container">
+                       <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}" readonly></textarea>
+                       <div class="floating-toolbar">
+                           <button class="toolbar-btn copy-prompt-btn" data-tooltip-key="copy_prompt"><i class="fas fa-copy"></i></button>
+                           <button class="toolbar-btn fullscreen-btn" data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i></button>
+                           <button class="toolbar-btn lock-btn" data-tooltip-key="unlock_prompt"><i class="fas fa-lock"></i></button>
+                       </div>
+                   </div>
                    <div class="action-buttons">
                        <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
                        <button class="action-btn go-duck">${translations.go_duck}</button>
@@ -1236,6 +1289,88 @@ document.addEventListener('DOMContentLoaded', function() {
             if (e.target === legalMentionsModal) {
                 legalMentionsModal.style.display = 'none';
             }
+        });
+    }
+
+    function setupToolbarListeners(container) {
+        const toolbars = container.querySelectorAll('.floating-toolbar');
+        toolbars.forEach(toolbar => {
+            const textarea = toolbar.previousElementSibling;
+            const copyBtn = toolbar.querySelector('.copy-prompt-btn');
+            const fullscreenBtn = toolbar.querySelector('.fullscreen-btn');
+            const lockBtn = toolbar.querySelector('.lock-btn');
+
+            // 1. Bouton Copier
+            copyBtn.addEventListener('click', () => {
+                copyToClipboard(textarea.id, copyBtn);
+            });
+
+            // 2. Bouton Plein écran
+            fullscreenBtn.addEventListener('click', () => {
+                const originalContainer = textarea.closest('.textarea-container');
+                const existingOverlay = document.querySelector('.fullscreen-overlay');
+                const icon = fullscreenBtn.querySelector('i');
+
+                if (existingOverlay) {
+                    // Quitter le plein écran
+                    existingOverlay.remove();
+                    icon.classList.remove('fa-compress');
+                    icon.classList.add('fa-expand');
+                    fullscreenBtn.setAttribute('data-tooltip-key', 'fullscreen_prompt');
+                } else {
+                    // Entrer en plein écran
+                    const overlay = document.createElement('div');
+                    overlay.className = 'fullscreen-overlay';
+                    
+                    // Cloner le conteneur (textarea + barre d'outils)
+                    const clonedContainer = originalContainer.cloneNode(true);
+                    const clonedTextarea = clonedContainer.querySelector('textarea');
+                    
+                    // Synchroniser le contenu
+                    clonedTextarea.value = textarea.value;
+                    clonedTextarea.addEventListener('input', () => {
+                        textarea.value = clonedTextarea.value;
+                    });
+
+                    // Ajouter la classe plein écran
+                    clonedTextarea.classList.add('textarea-fullscreen');
+                    
+                    overlay.appendChild(clonedContainer);
+                    document.body.appendChild(overlay);
+
+                    // Re-attacher les écouteurs sur les boutons clonés
+                    setupToolbarListeners(overlay);
+
+                    // Mettre à jour l'icône du bouton original
+                    icon.classList.remove('fa-expand');
+                    icon.classList.add('fa-compress');
+                    fullscreenBtn.setAttribute('data-tooltip-key', 'exit_fullscreen_prompt');
+
+                    // Cliquer sur l'overlay pour fermer
+                    overlay.addEventListener('click', (e) => {
+                        if (e.target === overlay) {
+                            fullscreenBtn.click(); // Simule un clic sur le bouton original pour fermer
+                        }
+                    });
+                }
+                translatePage(toolbar); // Mettre à jour l'infobulle du bouton original
+            });
+
+            // 3. Bouton Cadenas
+            lockBtn.addEventListener('click', () => {
+                textarea.readOnly = !textarea.readOnly;
+                const icon = lockBtn.querySelector('i');
+                if (textarea.readOnly) {
+                    icon.classList.remove('fa-unlock');
+                    icon.classList.add('fa-lock');
+                    lockBtn.setAttribute('data-tooltip-key', 'unlock_prompt');
+                } else {
+                    icon.classList.remove('fa-lock');
+                    icon.classList.add('fa-unlock');
+                    lockBtn.setAttribute('data-tooltip-key', 'lock_prompt');
+                }
+                translatePage(toolbar); // Mettre à jour l'infobulle
+            });
         });
     }
 

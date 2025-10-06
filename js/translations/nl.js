@@ -795,6 +795,10 @@ const translations_nl = {
     // Dynamic content
     prompt_for_ia: "Prompt voor de AI",
     copy_prompt: "📋 Prompt kopiëren",
+    fullscreen_prompt: "Volledig scherm",
+    exit_fullscreen_prompt: "Volledig scherm verlaten",
+    lock_prompt: "Prompt vergrendelen",
+    unlock_prompt: "Prompt ontgrendelen",
     go_duck: "🦆 Naar Duck.ai",
     go_mistral: "Ⓜ️ Naar Le Chat",
     create_h5p_file: "H5P-bestand maken",

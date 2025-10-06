@@ -795,6 +795,10 @@ const translations_el = {
     // Dynamic content
     prompt_for_ia: "Prompt για ΤΝ",
     copy_prompt: "📋 Αντιγραφή prompt",
+    fullscreen_prompt: "Πλήρης οθόνη",
+    exit_fullscreen_prompt: "Έξοδος από πλήρη οθόνη",
+    lock_prompt: "Κλείδωμα prompt",
+    unlock_prompt: "Ξεκλείδωμα prompt",
     go_duck: "🦆 Μετάβαση στο Duck.ai",
     go_mistral: "Ⓜ️ Μετάβαση στο Le Chat",
     create_h5p_file: "Δημιουργία αρχείου H5P",

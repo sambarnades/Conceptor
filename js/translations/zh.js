@@ -795,6 +795,10 @@ const translations_zh = {
     // Dynamic content
     prompt_for_ia: "供 AI 使用的提示词",
     copy_prompt: "📋 复制提示词",
+    fullscreen_prompt: "全屏",
+    exit_fullscreen_prompt: "退出全屏",
+    lock_prompt: "锁定提示词",
+    unlock_prompt: "解锁提示词",
     go_duck: "🦆 访问 Duck.ai",
     go_mistral: "Ⓜ️ 访问 Le Chat",
     create_h5p_file: "创建 H5P 文件",

@@ -795,6 +795,10 @@ const translations_ar = {
     // Dynamic content
     prompt_for_ia: "مطلب للذكاء الاصطناعي",
     copy_prompt: "📋 نسخ المطلب",
+    fullscreen_prompt: "ملء الشاشة",
+    exit_fullscreen_prompt: "الخروج من ملء الشاشة",
+    lock_prompt: "قفل البرومبت",
+    unlock_prompt: "إلغاء قفل البرومبت",
     go_duck: "🦆 الانتقال إلى Duck.ai",
     go_mistral: "Ⓜ️ الانتقال إلى Le Chat",
     create_h5p_file: "إنشاء ملف H5P",

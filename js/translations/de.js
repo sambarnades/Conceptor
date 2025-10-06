@@ -795,6 +795,10 @@ const translations_de = {
     // Dynamic content
     prompt_for_ia: "Prompt für die KI",
     copy_prompt: "📋 Prompt kopieren",
+    fullscreen_prompt: "Vollbild",
+    exit_fullscreen_prompt: "Vollbild beenden",
+    lock_prompt: "Prompt sperren",
+    unlock_prompt: "Prompt entsperren",
     go_duck: "🦆 Zu Duck.ai gehen",
     go_mistral: "Ⓜ️ Zu Le Chat gehen",
     create_h5p_file: "H5P-Datei erstellen",

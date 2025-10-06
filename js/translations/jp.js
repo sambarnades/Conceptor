@@ -795,6 +795,10 @@ const translations_jp = {
     // Dynamic content
     prompt_for_ia: "AI用プロンプト",
     copy_prompt: "📋 プロンプトをコピー",
+    fullscreen_prompt: "フルスクリーン",
+    exit_fullscreen_prompt: "フルスクリーンを終了",
+    lock_prompt: "プロンプトをロック",
+    unlock_prompt: "プロンプトのロックを解除",
     go_duck: "🦆 Duck.aiにアクセス",
     go_mistral: "Ⓜ️ Le chatにアクセス",
     create_h5p_file: "H5Pファイルを作成",
