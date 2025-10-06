@@ -980,6 +980,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (h5pContent) {
                         jsonInputTarget.value = h5pContent;
                         showNotification(translations.generation_successful, 'success');
+                        // Déclencher le téléchargement automatiquement
+                        const createBtn = container.querySelector(`#${module.createBtnId}`);
+                        if (createBtn) {
+                            createBtn.click();
+                        }
                     } else {
                         jsonInputTarget.value = translations.generation_failed_empty;
                         showNotification(translations.generation_failed_empty, 'error');
@@ -1068,6 +1073,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (content) {
                     jsonInputTarget.value = content;
                     showNotification(translations.generation_successful, 'success');
+                    
+                    // Déclencher le téléchargement automatiquement
+                    let createBtnId;
+                    if (moduleKey === 'moodleXml') {
+                        createBtnId = 'createXmlEleaMoodle';
+                    } else if (moduleKey === 'glossaireXml') {
+                        createBtnId = 'createGlossaireXmlBtn';
+                    } else if (module.createBtnId) {
+                        createBtnId = module.createBtnId;
+                    }
+
+                    if (createBtnId) {
+                        const createBtn = document.getElementById(createBtnId);
+                        if (createBtn) {
+                            createBtn.click();
+                        }
+                    }
                 } else {
                     jsonInputTarget.value = translations.generation_failed_empty;
                     showNotification(translations.generation_failed_empty, 'error');
