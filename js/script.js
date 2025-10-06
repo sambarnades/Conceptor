@@ -998,7 +998,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const modelSelectorBtn = container.querySelector(`#model-selector-btn-${moduleKey}`);
         const modelDropdown = container.querySelector(`#model-selector-dropdown-${moduleKey}`);
         const module = h5pModules[moduleKey] || moodleModules[moduleKey];
-        const jsonInputId = (moduleKey === 'moodleXml') ? 'xmlEleaMoodleInput' : (moduleKey === 'glossaireXml') ? 'xmlGlossaireInput' : module.jsonInputId;
+        const jsonInputId = (moduleKey === 'moodleXml') ? 'xmlEleaMoodleInput' : (moduleKey === 'glossaireXml') ? 'glossaireXmlJsonInput' : module.jsonInputId;
  
          if (modelSelectorBtn && modelDropdown) {
              modelSelectorBtn.addEventListener('click', (event) => {
