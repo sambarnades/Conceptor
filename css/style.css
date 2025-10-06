@@ -516,6 +516,7 @@ body {
 textarea {
     width: 100%;
     min-height: 200px; /* Plus grand */
+    resize: vertical; /* Permet uniquement le redimensionnement vertical */
     padding: 20px; /* Plus aéré */
     border: 1px solid #e5e5e5;
     border-radius: 12px;
