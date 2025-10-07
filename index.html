@@ -83,50 +83,23 @@
         </div>
 
         <div class="tabs">
-            <button class="tab-link active" data-tab="all">Tout</button>
-            <button class="tab-link" data-tab="quiz">Quiz & Tests</button>
-            <button class="tab-link" data-tab="text">Manipulation de texte</button>
-            <button class="tab-link" data-tab="memory">Mémorisation & Découverte</button>
-            <button class="tab-link" data-tab="elea">Éléa</button>
-            <button class="tab-link" data-tab="h5p">H5P</button>
-            <button class="tab-link" data-tab="moodle">Moodle</button>
+            <button class="tab-link active" data-tab="h5p" data-key="h5p_tab">H5P</button>
+            <button class="tab-link" data-tab="moodle" data-key="moodle_tab">Modules Éléa/Moodle</button>
         </div>
 
-        <div id="all" class="tab-content active">
-            <div class="grid">
-                <!-- Les tuiles seront insérées ici par le JS -->
+        <div id="h5p" class="tab-content active">
+            <div class="h5p-grid">
+                <!-- Les tuiles H5P seront insérées ici par le JS -->
             </div>
         </div>
-        <div id="quiz" class="tab-content">
-            <div class="grid"></div>
-        </div>
-        <div id="text" class="tab-content">
-            <div class="grid"></div>
-        </div>
-        <div id="memory" class="tab-content">
-            <div class="grid"></div>
-        </div>
-        <div id="elea" class="tab-content">
-            <div class="grid"></div>
-        </div>
-        <div id="h5p" class="tab-content">
-            <div class="grid"></div>
-        </div>
+
         <div id="moodle" class="tab-content">
-            <div class="grid"></div>
+            <!-- Les tuiles Éléa seront insérées ici par le JS -->
+            <div class="moodle-grid"></div>
         </div>
     </div>
 
     <!-- Le conteneur pour le contenu H5P sera injecté dynamiquement par le JS -->
-
-    <!-- =======================================================================
-         NOUVEAU PANNEAU LATÉRAL POUR LE CONTENU DES MODULES
-         ======================================================================= -->
-    <div id="sidebar-overlay"></div>
-    <div id="module-sidebar" class="sidebar">
-        <!-- Le contenu du module sera injecté ici par le JS -->
-    </div>
-    <!-- ======================================================================= -->
 
     <footer class="footer">
         <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank"><i
@@ -172,17 +145,6 @@
     <script src="js/tar-js/tar.bundle.js"></script>
     <script src="js/client-zip/worker.js"></script>
     <script src="js/albert.js"></script>
-
-    <!-- Animation de chargement "Caramel" -->
-    <div id="caramel-animation-overlay">
-        <div class="marmite">
-            <div class="marmite-content"></div>
-        </div>
-        <div id="recipe-steps"></div>
-    </div>
-    <div id="success-message" class="hidden">
-        <h1>Votre sucrerie est prête !</h1>
-    </div>
 </body>
 
 </html>

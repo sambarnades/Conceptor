@@ -105,7 +105,8 @@ document.addEventListener('DOMContentLoaded', function() {
             languageSwitcher.classList.remove('open');
             e.preventDefault();
             // Après le chargement et la traduction, régénérer les tuiles pour mettre à jour les noms
-            generateTiles();
+            generateH5PTiles();
+            generateMoodleTiles();
             // Si un contenu est ouvert, le rafraîchir
             if (activeContentContainer && activeTile) {
                 const moduleKey = activeTile.dataset.module;
@@ -137,8 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/timeline_icon-color.png",
             promptId: "timelineResultat",
             jsonInputId: "timelineJsonInput",
-            createBtnId: "createTimelineH5P",
-            categories: ["memory", "h5p"]
+            createBtnId: "createTimelineH5P"
         },
         Flashcards: {
             name: "h5p_flashcards_name",
@@ -148,8 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/flashcards-png-icon.png",
             promptId: "flashcardsResultat",
             jsonInputId: "flashcardsJsonInput",
-            createBtnId: "createFlashcardsH5P",
-            categories: ["memory", "h5p"]
+            createBtnId: "createFlashcardsH5P"
         },
         QuizSet: {
             name: "h5p_quiz_set_name",
@@ -159,8 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/question-set-icon.png",
             promptId: "quizSetResultat",
             jsonInputId: "quizSetJsonInput",
-            createBtnId: "createQuizSetH5P",
-            categories: ["quiz", "h5p"]
+            createBtnId: "createQuizSetH5P"
         },
         Glossary: {
             name: "h5p_glossary_name",
@@ -170,8 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/accordion-icon.png",
             promptId: "glossaryResultat",
             jsonInputId: "glossaryJsonInput",
-            createBtnId: "createGlossaryH5P",
-            categories: ["memory", "h5p"]
+            createBtnId: "createGlossaryH5P"
         },
         Crossword: {
             name: "h5p_crossword_name",
@@ -181,8 +178,7 @@ document.addEventListener('DOMContentLoaded', function() {
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/crosswords.png",
             promptId: "crosswordResultat",
             jsonInputId: "crosswordJsonInput",
-            createBtnId: "createCrosswordH5P",
-            categories: ["memory", "h5p"]
+            createBtnId: "createCrosswordH5P"
         },
         Essay: {
             name: "h5p_essay_name",
@@ -192,8 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/essay.png",
             promptId: "essayResultat",
             jsonInputId: "essayJsonInput",
-            createBtnId: "createEssayH5P",
-            categories: ["text", "h5p"]
+            createBtnId: "createEssayH5P"
         },
         Summary: {
             name: "h5p_summary_name",
@@ -203,8 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/summary_icon.png",
             promptId: "summaryResultat",
             jsonInputId: "summaryJsonInput",
-            createBtnId: "createSummaryH5P",
-            categories: ["text", "h5p"]
+            createBtnId: "createSummaryH5P"
         },
         DragTheWords: {
             name: "h5p_drag_the_words_name",
@@ -214,8 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/drag-the-words-icon.png",
             promptId: "dragWordResultat",
             jsonInputId: "dragWordJsonInput",
-            createBtnId: "createDragWordH5P",
-            categories: ["text", "h5p"]
+            createBtnId: "createDragWordH5P"
         },
         FillInTheBlanks: {
             name: "h5p_fill_in_the_blanks_name",
@@ -225,8 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/fill-in-the-blanks-icon_0.png",
             promptId: "blanksResultat",
             jsonInputId: "blanksJsonInput",
-            createBtnId: "createBlanksH5P",
-            categories: ["text", "h5p"]
+            createBtnId: "createBlanksH5P"
         },
         MarkTheWords: {
             name: "h5p_mark_the_words_name",
@@ -236,8 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
             image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/mark-the-words-icon_0.png",
             promptId: "markWordsResultat",
             jsonInputId: "markWordsJsonInput",
-            createBtnId: "createMarkWordsH5P",
-            categories: ["text", "h5p"]
+            createBtnId: "createMarkWordsH5P"
         },
        TrueFalse: {
            name: "h5p_true_false_name",
@@ -247,8 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
            image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/true-false.png",
            promptId: "trueFalseResultat",
            jsonInputId: "trueFalseJsonInput",
-           createBtnId: "createTrueFalseH5P",
-           categories: ["quiz", "h5p"]
+           createBtnId: "createTrueFalseH5P"
        },
        MultipleChoice: {
            name: "h5p_multiple_choice_name",
@@ -258,8 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
            image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/multichoice-icon_0.png",
            promptId: "multipleChoiceResultat",
            jsonInputId: "multipleChoiceJsonInput",
-           createBtnId: "createMultipleChoiceH5P",
-           categories: ["quiz", "h5p"]
+           createBtnId: "createMultipleChoiceH5P"
        },
        FindTheWords: {
            name: "h5p_find_the_words_name",
@@ -269,8 +258,7 @@ document.addEventListener('DOMContentLoaded', function() {
            image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/word-search-h5porg.png",
            promptId: "findTheWordsResultat",
            jsonInputId: "findTheWordsJsonInput",
-           createBtnId: "createFindTheWordsH5P",
-           categories: ["memory", "h5p"]
+           createBtnId: "createFindTheWordsH5P"
        },
        SortParagraphs: {
            name: "h5p_sort_the_paragraphs_name",
@@ -280,8 +268,7 @@ document.addEventListener('DOMContentLoaded', function() {
            image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/sort-paragraphs.png",
            promptId: "sortParagraphsResultat",
            jsonInputId: "sortParagraphsJsonInput",
-           createBtnId: "createSortParagraphsH5P",
-           categories: ["text", "h5p"]
+           createBtnId: "createSortParagraphsH5P"
        },
        SingleChoiceSet: {
            name: "h5p_single_choice_set_name",
@@ -291,8 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
            image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/single-choice-set-icon_0.png",
            promptId: "singleChoiceSetResultat",
            jsonInputId: "singleChoiceSetJsonInput",
-           createBtnId: "createSingleChoiceSetH5P",
-           categories: ["quiz", "h5p"]
+           createBtnId: "createSingleChoiceSetH5P"
        },
        DialogCards: {
            name: "h5p_dialog_cards_name",
@@ -302,8 +288,7 @@ document.addEventListener('DOMContentLoaded', function() {
            image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/dialog_cards_icon-color.png",
            promptId: "dialogCardsResultat",
            jsonInputId: "dialogCardsJsonInput",
-           createBtnId: "createDialogCardsH5P",
-           categories: ["memory", "h5p"]
+           createBtnId: "createDialogCardsH5P"
        },
        ComplexFillTheBlanks: {
            name: "h5p_complex_fill_the_blanks_name",
@@ -314,8 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
            promptId: "complexBlanksResultat",
            jsonInputId: "complexBlanksJsonInput",
            createBtnId: "createComplexBlanksH5P",
-           hidden: true,
-           categories: []
+           hidden: true
        },
        Chart: {
            name: "h5p_chart_name",
@@ -325,8 +309,7 @@ document.addEventListener('DOMContentLoaded', function() {
            image: "https://h5p.org/sites/default/files/styles/small-logo/public/logos/chart-icon-color.png",
            promptId: "chartResultat",
            jsonInputId: "chartJsonInput",
-           createBtnId: "createChartH5P",
-           categories: ["memory", "h5p"]
+           createBtnId: "createChartH5P"
        }
     };
     
@@ -335,14 +318,12 @@ document.addEventListener('DOMContentLoaded', function() {
        moodleXml: {
            name: "moodle_xml_name",
            description: "moodle_xml_description",
-           image: "images/test.png",
-           categories: ["quiz", "moodle"]
+           image: "images/test.png"
        },
        glossaireXml: {
            name: "moodle_glossaire_xml_name",
            description: "moodle_glossaire_xml_description",
-           image: "images/glossaire.png",
-           categories: ["memory", "moodle"]
+           image: "images/glossaire.png"
        },
        Millionnaire: {
            name: "moodle_millionnaire_name",
@@ -350,8 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
            image: "images/millionnaire.png",
            promptId: "millionnaireResultat",
            jsonInputId: "millionnaireJsonInput",
-           createBtnId: "createMillionnaireMBZ",
-           categories: ["quiz", "elea"]
+           createBtnId: "createMillionnaireMBZ"
        },
        Appariement: {
            name: "moodle_appariement_name",
@@ -359,8 +339,7 @@ document.addEventListener('DOMContentLoaded', function() {
            image: "images/appariement.png",
            promptId: "appariementResultat",
            jsonInputId: "appariementJsonInput",
-           createBtnId: "createAppariementMBZ",
-           categories: ["quiz", "elea"]
+           createBtnId: "createAppariementMBZ"
        },
        QCM: {
            name: "moodle_qcm_name",
@@ -368,117 +347,70 @@ document.addEventListener('DOMContentLoaded', function() {
            image: "images/qcm.png",
            promptId: "qcmResultat",
            jsonInputId: "qcmJsonInput",
-           createBtnId: "createQCM_MBZ",
-           categories: ["quiz", "elea"]
+           createBtnId: "createQCM_MBZ"
        },
        gift: {
            name: "moodle_gift_name",
            description: "moodle_gift_description",
-           image: "https://moodle.org/theme/moodleorg/pix/moodle_logo_TM.svg",
-           categories: ["quiz", "moodle"]
+           image: "https://moodle.org/theme/moodleorg/pix/moodle_logo_TM.svg"
        }
    };
-
-    const allModules = {...h5pModules, ...moodleModules };
-
-    const customOrder = [
-        'QuizSet',
-        'TrueFalse',
-        'MultipleChoice',
-        'SingleChoiceSet',
-        'moodleXml',
-        'gift',
-        'QCM',
-        'Appariement',
-        'Millionnaire',
-        'DragTheWords',
-        'FillInTheBlanks',
-        'MarkTheWords',
-        'SortParagraphs',
-        'Essay',
-        'Summary',
-        'Flashcards',
-        'DialogCards',
-        'Timeline',
-        'Glossary',
-        'glossaireXml',
-        'Crossword',
-        'FindTheWords',
-        'Chart'
-    ];
 
 // =======================================================================
 // 2. INITIALISATION DES ÉLÉMENTS INTERFACE ET APPEL DES PREMIERS RENDUS
 // =======================================================================
+    const h5pGrid = document.querySelector('.h5p-grid');
+    const moodleGrid = document.querySelector('.moodle-grid');
     setupTabs();
     setupEventListeners();
     // Initial translation and tile generation
     loadTranslations('fr').then(() => {
-        generateTiles();
+        generateH5PTiles();
+        generateMoodleTiles();
     });
 
 // =======================================================================
-// 3. AFFICHAGE DES TUILES
+// 3. AFFICHAGE DES TUILES (H5P et MOODLE)
 // =======================================================================
-    function generateTiles() {
-        const tabs = document.querySelectorAll('.tab-content');
+    function generateH5PTiles() {
+        if (!h5pGrid) return;
+        h5pGrid.innerHTML = '';
+        for (const key in h5pModules) {
+            const module = h5pModules[key];
+            if (module.hidden) continue; // Ne pas afficher les tuiles masquées
+            const tile = document.createElement('div');
+            tile.className = 'h5p-tile';
+            tile.dataset.module = key;
+            tile.innerHTML = `
+                <img src="${module.image}" alt="${translations[module.name]} icon">
+                <div class="tile-text">
+                    <span class="tile-name-fr">${translations[module.name]}</span>
+                    <span class="tile-name-en">(${module.englishName})</span>
+                </div>
+            `;
+            tile.addEventListener('click', () => toggleInlineContent(key, tile));
+            h5pGrid.appendChild(tile);
+        }
+   }
 
-        tabs.forEach(tab => {
-            const grid = tab.querySelector('.grid');
-            if (!grid) return;
-            grid.innerHTML = '';
-            const tabId = tab.id;
-
-            const renderTile = (key) => {
-                const module = allModules[key];
-                if (!module || module.hidden) return;
-
-                const tile = document.createElement('div');
-                tile.className = 'h5p-tile';
-                tile.dataset.module = key;
-                tile.innerHTML = `
-                    <img src="${module.image}" alt="${translations[module.name]} icon">
-                    <div class="tile-text">
-                        <span class="tile-name-fr">${translations[module.name]}</span>
-                        ${module.englishName ? `<span class="tile-name-en">(${module.englishName})</span>` : ''}
-                    </div>
-                `;
-                if (h5pModules[key]) {
-                    tile.addEventListener('click', () => toggleInlineContent(key, tile));
-                } else {
-                    tile.addEventListener('click', () => toggleMoodleContent(key, tile));
-                }
-                grid.appendChild(tile);
-            };
-
-            if (tabId === 'all') {
-                const renderedKeys = new Set();
-                // Render custom ordered modules
-                customOrder.forEach(key => {
-                    if (allModules[key]) {
-                        renderTile(key);
-                        renderedKeys.add(key);
-                    }
-                });
-                // Render remaining modules
-                for (const key in allModules) {
-                    if (!renderedKeys.has(key)) {
-                        renderTile(key);
-                    }
-                }
-            } else {
-                // For other tabs, we can iterate through all modules and check category
-                for (const key in allModules) {
-                    const module = allModules[key];
-                    if (module.hidden) continue;
-
-                    if (module.categories.includes(tabId)) {
-                        renderTile(key);
-                    }
-                }
-            }
-        });
-    }
+   function generateMoodleTiles() {
+       if (!moodleGrid) return;
+       moodleGrid.innerHTML = '';
+       for (const key in moodleModules) {
+           const module = moodleModules[key];
+           const tile = document.createElement('div');
+           tile.className = 'h5p-tile'; // Réutiliser le style des tuiles H5P
+           tile.dataset.module = key;
+           tile.innerHTML = `
+               <img src="${module.image}" alt="${translations[module.name]} icon">
+               <div class="tile-text">
+                   <span class="tile-name-fr">${translations[module.name]}</span>
+               </div>
+           `;
+           tile.addEventListener('click', () => toggleMoodleContent(key, tile));
+           moodleGrid.appendChild(tile);
+       }
+   }
 
 // =======================================================================
 // 4. GESTION DES ONGLETS
@@ -503,52 +435,59 @@ document.addEventListener('DOMContentLoaded', function() {
 // =======================================================================
 // 5. AFFICHAGE DU CONTENU DYNAMIQUE (Inline + Moodle)
 // =======================================================================
+    let activeContentContainer = null;
     let activeTile = null;
-    const sidebar = document.getElementById('module-sidebar');
-    const sidebarOverlay = document.getElementById('sidebar-overlay');
-
-    function closeSidebar() {
-        sidebar.classList.remove('open');
-        sidebarOverlay.classList.remove('open');
-        if (activeTile) {
-            activeTile.classList.remove('active');
-            activeTile = null;
-        }
-        // Vider le contenu pour éviter les conflits d'ID
-        setTimeout(() => {
-            sidebar.innerHTML = '';
-        }, 400); // Durée de la transition
-    }
-
-    sidebarOverlay.addEventListener('click', closeSidebar);
 
     function toggleInlineContent(moduleKey, tileElement) {
-        const module = h5pModules[moduleKey];
-        if (!module) return;
+        const previouslyActiveContainer = activeContentContainer;
+        const previouslyActiveTile = activeTile;
 
-        if (activeTile === tileElement) {
-            closeSidebar();
+        // Fermer l'élément actuellement ouvert en le supprimant directement du DOM
+        if (previouslyActiveContainer) {
+            previouslyActiveContainer.remove();
+        }
+        if (previouslyActiveTile) {
+            previouslyActiveTile.classList.remove('active');
+        }
+
+        // Si on clique sur la même tuile, on la ferme et on s'arrête là
+        if (previouslyActiveContainer && previouslyActiveTile === tileElement) {
+            activeContentContainer = null;
+            activeTile = null;
             return;
         }
 
-        if (activeTile) {
-            activeTile.classList.remove('active');
-        }
-        activeTile = tileElement;
-        activeTile.classList.add('active');
+        const module = h5pModules[moduleKey];
+        if (!module) return;
 
-        sidebar.innerHTML = `
-            <div class="modal-header-group">
-                <div class="modal-header">
-                    <div class="modal-title-container">
-                        <img src="${module.image}" alt="${translations[module.name]}" class="modal-title-icon">
-                        <h2 class="modal-title">${translations[module.name]}</h2>
+        // Créer le nouveau conteneur
+        const contentContainer = document.createElement('div');
+        contentContainer.className = 'h5p-content-container';
+        contentContainer.innerHTML = `
+                <div class="h5p-content-header">
+                    <h2>${translations[module.name]}</h2>
+                    <span class="close-button">&times;</span>
+                </div>
+                <p class="h5p-content-description">${translations[module.description]}</p>
+                
+                <div class="h5p-prompt-block">
+                    <h3>${translations.prompt_for_ia}</h3>
+                    <div class="textarea-container">
+                        <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}" readonly></textarea>
+                        <div class="floating-toolbar">
+                            <button class="toolbar-btn copy-prompt-btn" data-tooltip-key="copy_prompt"><i class="fas fa-copy"></i></button>
+                            <button class="toolbar-btn fullscreen-btn" data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i></button>
+                            <button class="toolbar-btn lock-btn" data-tooltip-key="unlock_prompt"><i class="fas fa-lock"></i></button>
+                        </div>
                     </div>
-                    <div class="modal-header-actions">
+                    <div class="action-buttons">
+                        <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
+                        <button class="action-btn go-duck">${translations.go_duck}</button>
+                        <button class="action-btn go-mistral">${translations.go_mistral}</button>
                         <div class="albert-generation-controls">
-                            <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">${translations.generate_one_click || "Générer en un clic"}</button>
+                            <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">${translations.generate_with_albert}</button>
                             <div class="model-selector-container">
-                                <button id="model-selector-btn-${moduleKey}" class="model-selector-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sélectionner le modèle">
+                                <button id="model-selector-btn-${moduleKey}" class="model-selector-btn" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-chevron-down"></i>
                                 </button>
                                 <ul id="model-selector-dropdown-${moduleKey}" class="model-selector-dropdown" role="menu">
@@ -556,77 +495,42 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </ul>
                             </div>
                         </div>
-                        <button class="close-button">&times;</button>
                     </div>
                 </div>
-                <div class="modal-tuto-content">
-                    <p>${translations[module.description]}</p>
-                </div>
-            </div>
-            <div class="generation-controls-wrapper">
-                <div class="mode-switch-container">
-                    <span class="switch-label" data-key="simple_mode">Simple</span>
-                    <label class="switch">
-                        <input type="checkbox" class="mode-toggle-checkbox">
-                        <span class="slider round"></span>
-                    </label>
-                    <span class="switch-label" data-key="advanced_mode">Avancé</span>
-                </div>
-            </div>
-            <div class="modal-main-content">
-                <div class="modal-panel">
-                    <h3>1/2 Obtenir le prompt</h3>
-                    <div class="prompt-area">
-                        <div class="floating-toolbar">
-                            <button class="toolbar-btn copy-prompt-btn" data-tooltip-key="copy_prompt">
-                                <i class="fas fa-copy"></i>
-                                <span data-key="copy_prompt"></span>
-                            </button>
-                            <button class="toolbar-btn fullscreen-btn" data-tooltip-key="fullscreen_prompt">
-                                <i class="fas fa-expand"></i>
-                                <span data-key="fullscreen_prompt"></span>
-                            </button>
-                            <button class="toolbar-btn lock-btn" data-tooltip-key="unlock_prompt">
-                                <i class="fas fa-lock"></i>
-                                <span data-key="unlock_prompt"></span>
-                            </button>
-                        </div>
-                        <div class="textarea-container">
-                            <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}" readonly></textarea>
-                        </div>
+
+                <div class="h5p-processor">
+                    <div class="h5p-processor-header">
+                        <h3>${translations.create_h5p_file}</h3>
+                        <!-- <div class="library-toggle">
+                            <label for="includeLibs-${moduleKey}">${translations.integrate_h5p_libraries}</label>
+                            <input type="checkbox" id="includeLibs-${moduleKey}" name="includeLibs">
+                        </div> -->
                     </div>
-                     <div class="action-buttons">
-                        <button class="action-btn go-duck">${translations.go_duck}</button>
-                        <button class="action-btn go-mistral">${translations.go_mistral}</button>
-                    </div>
-                </div>
-                <div class="modal-panel">
-                    <h3>2/2 Créer le fichier</h3>
                     <p>${translations.paste_ia_result}</p>
                     <textarea id="${module.jsonInputId}" placeholder="${translations.paste_json_or_text || 'Collez ici le contenu généré par l\'IA...'}"></textarea>
                     <button id="${module.createBtnId}" class="download-btn">${translations.generate_h5p}</button>
                 </div>
-            </div>
         `;
 
-        // Check the main page mode and set the modal's initial state
-        const isAdvancedMode = document.querySelector('.mode-tab[data-mode="advanced"]').classList.contains('active');
-        const modeToggleCheckbox = sidebar.querySelector('.mode-toggle-checkbox');
-        if (isAdvancedMode && modeToggleCheckbox) {
-            sidebar.classList.add('advanced-view');
-            modeToggleCheckbox.checked = true;
+        // Insérer le conteneur APRÈS la grille pour ne pas perturber le layout
+        const existingContainer = document.querySelector('.h5p-content-container');
+        if (existingContainer) {
+            existingContainer.remove();
         }
+        h5pGrid.after(contentContainer);
+        
+        // Activer le conteneur et la tuile
+        contentContainer.classList.add('active');
+        tileElement.classList.add('active');
 
-        sidebar.classList.add('open');
-        sidebarOverlay.classList.add('open');
-        translatePage(sidebar); // Traduire le nouveau contenu
+        activeContentContainer = contentContainer;
+        activeTile = tileElement;
 
-        // Attacher l'événement de fermeture
-        sidebar.querySelector('.close-button').addEventListener('click', closeSidebar);
+        // Attacher les événements
+        attachInlineEventListeners(moduleKey, contentContainer, tileElement);
+        setupToolbarListeners(contentContainer);
 
-        attachInlineEventListeners(moduleKey, sidebar, tileElement);
-        setupToolbarListeners(sidebar);
-
+        // Remplir le prompt si déjà généré
         const generatedPrompt = document.getElementById(`hidden-${module.promptId}`)?.value;
         if (generatedPrompt) {
             document.getElementById(module.promptId).value = generatedPrompt;
@@ -634,246 +538,377 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
    function toggleMoodleContent(moduleKey, tileElement) {
-        const module = moodleModules[moduleKey];
-        if (!module) return;
+       const previouslyActiveContainer = activeContentContainer;
+       const previouslyActiveTile = activeTile;
 
-        if (activeTile === tileElement) {
-            closeSidebar();
-            return;
-        }
+       if (previouslyActiveContainer) {
+           previouslyActiveContainer.remove();
+       }
+       if (previouslyActiveTile) {
+           previouslyActiveTile.classList.remove('active');
+       }
 
-        if (activeTile) {
-            activeTile.classList.remove('active');
-        }
-        activeTile = tileElement;
-        activeTile.classList.add('active');
+       if (previouslyActiveContainer && previouslyActiveTile === tileElement) {
+           activeContentContainer = null;
+           activeTile = null;
+           return;
+       }
 
-        let promptPanelHtml = '';
-        let creationPanelHtml = '';
-        let promptId = '';
-        let jsonInputId = '';
-        let createBtnId = '';
-        let createBtnText = '';
-        let pasteText = '';
+       const module = moodleModules[moduleKey];
+       if (!module) return;
 
-        // Déterminer les IDs et textes en fonction du module
-        if (moduleKey === 'moodleXml') {
-            promptId = 'moodleXmlResultat';
-            jsonInputId = 'xmlEleaMoodleInput';
-            createBtnId = 'createXmlEleaMoodle';
-            createBtnText = translations.generate_xml_file;
-            pasteText = translations.paste_ia_result_xml;
-        } else if (moduleKey === 'glossaireXml') {
-            promptId = 'glossaireXmlResultat';
-            jsonInputId = 'glossaireXmlJsonInput';
-            createBtnId = 'createGlossaireXmlBtn';
-            createBtnText = translations.generate_xml_file;
-            pasteText = translations.paste_ia_result;
-        } else if (module.promptId) { // Cas pour Millionnaire, Appariement, QCM
-            promptId = module.promptId;
-            jsonInputId = module.jsonInputId;
-            createBtnId = module.createBtnId;
-            createBtnText = translations[`generate_mbz_${moduleKey.toLowerCase()}`] || "Générer Fichier MBZ";
-            pasteText = translations[`paste_ia_result_${moduleKey.toLowerCase()}`] || "Collez ici le contenu généré par l'IA...";
-        }
+       const contentContainer = document.createElement('div');
+       contentContainer.className = 'h5p-content-container'; // Réutiliser le style
+       let contentHtml = '';
 
-        // Construire les panneaux
-        if (promptId) {
-            promptPanelHtml = `
-                <div class="prompt-area">
-                    <div class="floating-toolbar">
-                        <button class="toolbar-btn copy-prompt-btn" data-tooltip-key="copy_prompt">
-                            <i class="fas fa-copy"></i>
-                            <span data-key="copy_prompt"></span>
-                        </button>
-                        <button class="toolbar-btn fullscreen-btn" data-tooltip-key="fullscreen_prompt">
-                            <i class="fas fa-expand"></i>
-                            <span data-key="fullscreen_prompt"></span>
-                        </button>
-                        <button class="toolbar-btn lock-btn" data-tooltip-key="unlock_prompt">
-                            <i class="fas fa-lock"></i>
-                            <span data-key="unlock_prompt"></span>
-                        </button>
-                    </div>
+       if (moduleKey === 'moodleXml') {
+           contentHtml = `
+            <h3>${translations.moodle_xml_name}</h3>
+               <p>${translations.moodle_xml_description}</p>
+                  <div class="h5p-prompt-block">                   
+                    <h3>${translations.prompt_for_ia}</h3>
                     <div class="textarea-container">
-                        <textarea id="${promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}" readonly></textarea>
+                        <textarea id="moodleXmlResultat" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}" readonly></textarea>
+                        <div class="floating-toolbar">
+                            <button class="toolbar-btn copy-prompt-btn" data-tooltip-key="copy_prompt"><i class="fas fa-copy"></i></button>
+                            <button class="toolbar-btn fullscreen-btn" data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i></button>
+                            <button class="toolbar-btn lock-btn" data-tooltip-key="unlock_prompt"><i class="fas fa-lock"></i></button>
+                        </div>
                     </div>
-                </div>
-                <div class="action-buttons">
-                    <button class="action-btn go-duck">${translations.go_duck}</button>
-                    <button class="action-btn go-mistral">${translations.go_mistral}</button>
-                </div>
-            `;
-        } else if (moduleKey === 'gift') {
-             promptPanelHtml = `<textarea id="giftResultat" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
-                <div class="action-buttons">
-                   <button class="action-btn go-duck">${translations.go_duck}</button>
-                   <button class="action-btn go-mistral">${translations.go_mistral}</button>
-               </div>`;
-        }
-
-        if (jsonInputId) {
-            creationPanelHtml = `
-                <p>${pasteText}</p>
-                <textarea id="${jsonInputId}" placeholder="${translations.paste_json_or_text || 'Collez ici le contenu généré par l\'IA...'}"></textarea>
-                <button id="${createBtnId}" class="download-btn">${createBtnText}</button>
-            `;
-        }
-
-        sidebar.innerHTML = `
-            <div class="modal-header-group">
-                <div class="modal-header">
-                    <div class="modal-title-container">
-                        <img src="${module.image}" alt="${translations[module.name]}" class="modal-title-icon">
-                        <h2 class="modal-title">${translations[module.name]}</h2>
-                    </div>
-                    <div class="modal-header-actions">
+                    <div class="action-buttons">
+                        <button id="copyMoodleXmlLink" class="copy-btn">${translations.copy_prompt}</button>
+                        <button class="action-btn go-duck">${translations.go_duck}</button>
+                        <button class="action-btn go-mistral">${translations.go_mistral}</button>
                         <div class="albert-generation-controls">
-                            <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">${translations.generate_one_click || "Générer en un clic"}</button>
+                            <button id="generate-albert-moodleXml" class="action-btn albert-btn">${translations.generate_with_albert}</button>
                             <div class="model-selector-container">
-                                <button id="model-selector-btn-${moduleKey}" class="model-selector-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sélectionner le modèle">
+                                <button id="model-selector-btn-moodleXml" class="model-selector-btn" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-chevron-down"></i>
                                 </button>
-                                <ul id="model-selector-dropdown-${moduleKey}" class="model-selector-dropdown" role="menu">
-                                    <!-- Les modèles seront injectés ici par le JS -->
-                                </ul>
+                                <ul id="model-selector-dropdown-moodleXml" class="model-selector-dropdown" role="menu"></ul>
                             </div>
                         </div>
-                        <button class="close-button">&times;</button>
                     </div>
                 </div>
-                <div class="modal-tuto-content">
-                    <p>${translations[module.description]}</p>
+                <div class="h5p-processor">
+                    <h3>${translations.create_xml_file}</h3>
+                    <p>${translations.paste_ia_result_xml}</p>
+                    <textarea id="xmlEleaMoodleInput" placeholder="${translations.paste_json_or_text || 'Collez ici le contenu généré par l\'IA...'}"></textarea>
+                    <button id="createXmlEleaMoodle" class="download-btn">${translations.generate_xml_file}</button>
                 </div>
-            </div>
-            <div class="generation-controls-wrapper">
-                <div class="mode-switch-container">
-                    <span class="switch-label" data-key="simple_mode">Simple</span>
-                    <label class="switch">
-                        <input type="checkbox" class="mode-toggle-checkbox">
-                        <span class="slider round"></span>
-                    </label>
-                    <span class="switch-label" data-key="advanced_mode">Avancé</span>
-                </div>
-            </div>
-            <div class="modal-main-content">
-                <div class="modal-panel">
-                    <h3>1/2 Obtenir le prompt</h3>
-                    ${promptPanelHtml}
-                </div>
-                <div class="modal-panel">
-                    <h3>2/2 Créer le fichier</h3>
-                    ${creationPanelHtml}
-                </div>
-            </div>
-        `;
-
-        // Check the main page mode and set the modal's initial state
-        const isAdvancedMode = document.querySelector('.mode-tab[data-mode="advanced"]').classList.contains('active');
-        const modeToggleCheckbox = sidebar.querySelector('.mode-toggle-checkbox');
-        if (isAdvancedMode && modeToggleCheckbox) {
-            sidebar.classList.add('advanced-view');
-            modeToggleCheckbox.checked = true;
-        }
-
-        sidebar.classList.add('open');
-        sidebarOverlay.classList.add('open');
-        translatePage(sidebar); // Traduire le nouveau contenu
-        sidebar.querySelector('.close-button').addEventListener('click', closeSidebar);
-
-        // Attacher les écouteurs d'événements
-        setupToolbarListeners(sidebar);
-
-        const modeToggle = sidebar.querySelector('.mode-toggle-checkbox');
-        if (modeToggle) {
-            modeToggle.addEventListener('change', () => {
-                sidebar.classList.toggle('advanced-view');
-            });
-        }
-
-        if (moduleKey === 'moodleXml') {
-            document.getElementById('createXmlEleaMoodle').addEventListener('click', () => {
-                const xmlContent = document.getElementById('xmlEleaMoodleInput').value;
-                if (!xmlContent) {
-                    showNotification(translations.error_paste_xml_content || 'Veuillez coller le contenu XML généré.', 'error');
-                    return;
-                }
-                const now = new Date();
-                const dateString = now.getFullYear() + '-' +
-                                 String(now.getMonth() + 1).padStart(2, '0') + '-' +
-                                 String(now.getDate()).padStart(2, '0') + '-' +
-                                 String(now.getHours()).padStart(2, '0') + '-' +
-                                 String(now.getMinutes()).padStart(2, '0');
-                const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
-                const fileName = `banque-de-questions_caramel_${dateString}_${lang}.xml`;
-                downloadFile(xmlContent, fileName, 'text/xml');
-            });
+           `;
         } else if (moduleKey === 'glossaireXml') {
-            document.getElementById('createGlossaireXmlBtn').addEventListener('click', () => {
-                const jsonInput = document.getElementById('glossaireXmlJsonInput').value;
-                if (!jsonInput) {
-                    showNotification(translations.error_paste_json_content || 'Veuillez coller le contenu JSON généré.', 'error');
-                    return;
-                }
-                handleGlossaireXmlCreation(jsonInput);
-            });
-        } else if (moduleKey === 'gift') {
-        } else if (moduleKey === 'Millionnaire' || moduleKey === 'Appariement' || moduleKey === 'QCM') {
-            const currentModule = moodleModules[moduleKey];
-            document.getElementById(currentModule.createBtnId).addEventListener('click', () => {
-                const jsonInput = document.getElementById(currentModule.jsonInputId).value;
-                if (!jsonInput) {
-                    showNotification(translations.error_paste_json_content || 'Veuillez coller le contenu JSON généré.', 'error');
-                    return;
-                }
-                if (moduleKey === 'Millionnaire') handleMillionnaireCreation(jsonInput);
-                else if (moduleKey === 'Appariement') handleAppariementCreation(jsonInput);
-                else if (moduleKey === 'QCM') handleQCMCreation(jsonInput);
-            });
-        }
+           contentHtml = `
+               <h3>${translations.moodle_glossaire_xml_name}</h3>
+               <p>${translations.moodle_glossaire_xml_description}</p>
+               <div class="h5p-prompt-block">
+                   <h3>${translations.prompt_for_ia}</h3>
+                   <div class="textarea-container">
+                       <textarea id="glossaireXmlResultat" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}" readonly></textarea>
+                       <div class="floating-toolbar">
+                           <button class="toolbar-btn copy-prompt-btn" data-tooltip-key="copy_prompt"><i class="fas fa-copy"></i></button>
+                           <button class="toolbar-btn fullscreen-btn" data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i></button>
+                           <button class="toolbar-btn lock-btn" data-tooltip-key="unlock_prompt"><i class="fas fa-lock"></i></button>
+                       </div>
+                   </div>
+                   <div class="action-buttons">
+                       <button id="copy-glossaireXml" class="copy-btn">${translations.copy_prompt}</button>
+                       <button class="action-btn go-duck">${translations.go_duck}</button>
+                       <button class="action-btn go-mistral">${translations.go_mistral}</button>
+                       <div class="albert-generation-controls">
+                           <button id="generate-albert-glossaireXml" class="action-btn albert-btn">${translations.generate_with_albert}</button>
+                           <div class="model-selector-container">
+                               <button id="model-selector-btn-glossaireXml" class="model-selector-btn" aria-haspopup="true" aria-expanded="false">
+                                   <i class="fas fa-chevron-down"></i>
+                               </button>
+                               <ul id="model-selector-dropdown-glossaireXml" class="model-selector-dropdown" role="menu"></ul>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               <div class="h5p-processor">
+                   <h3>${translations.create_xml_file}</h3>
+                   <p>${translations.paste_ia_result}</p>
+                   <textarea id="glossaireXmlJsonInput" placeholder="${translations.paste_json_or_text || 'Collez ici le contenu généré par l\'IA...'}"></textarea>
+                   <button id="createGlossaireXmlBtn" class="download-btn">${translations.generate_xml_file}</button>
+               </div>
+           `;
+       } else if (moduleKey === 'gift') {
+           contentHtml = `
+               <h3>${translations.moodle_gift_name}</h3>
+               <p>${translations.moodle_gift_description}</p>
+               <textarea id="giftResultat" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
+               <div class="action-buttons">
+                   <button id="copyGiftLink" class="copy-btn">${translations.copy_prompt}</button>
+                   <button class="action-btn go-duck">${translations.go_duck}</button>
+                   <button class="action-btn go-mistral">${translations.go_mistral}</button>
+               </div>
+           `;
+       } else if (moduleKey === 'Millionnaire') {
+           contentHtml = `
+               <h3>${translations.moodle_millionnaire_name}</h3>
+               <p>${translations.moodle_millionnaire_description}</p>
+               <div class="h5p-prompt-block">
+                   <h3>${translations.prompt_for_ia}</h3>
+                   
+                   <div class="textarea-container">
+                       <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}" readonly></textarea>
+                       <div class="floating-toolbar">
+                           <button class="toolbar-btn copy-prompt-btn" data-tooltip-key="copy_prompt"><i class="fas fa-copy"></i></button>
+                           <button class="toolbar-btn fullscreen-btn" data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i></button>
+                           <button class="toolbar-btn lock-btn" data-tooltip-key="unlock_prompt"><i class="fas fa-lock"></i></button>
+                       </div>
+                   </div>
+                   <div class="action-buttons">
+                       <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
+                       <button class="action-btn go-duck">${translations.go_duck}</button>
+                       <button class="action-btn go-mistral">${translations.go_mistral}</button>
+                       <div class="albert-generation-controls">
+                           <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">${translations.generate_with_albert}</button>
+                           <div class="model-selector-container">
+                               <button id="model-selector-btn-${moduleKey}" class="model-selector-btn" aria-haspopup="true" aria-expanded="false">
+                                   <i class="fas fa-chevron-down"></i>
+                               </button>
+                               <ul id="model-selector-dropdown-${moduleKey}" class="model-selector-dropdown" role="menu"></ul>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               <div class="h5p-processor">
+                   <h3>${translations.create_mbz_file_millionnaire}</h3>
+                   <p>${translations.paste_ia_result_millionnaire}</p>
+                   <textarea id="${module.jsonInputId}" placeholder="${translations.paste_json_or_text || 'Collez ici le contenu généré par l\'IA...'}"></textarea>
+                   <button id="${module.createBtnId}" class="download-btn">${translations.generate_mbz_millionnaire}</button>
+               </div>
+           `;
+       } else if (moduleKey === 'Appariement') {
+           contentHtml = `
+               <h3>${translations.moodle_appariement_name}</h3>
+               <p>${translations.moodle_appariement_description}</p>
+               <div class="h5p-prompt-block">
+                   <h3>${translations.prompt_for_ia}</h3>
+                   
+                   <div class="textarea-container">
+                       <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}" readonly></textarea>
+                       <div class="floating-toolbar">
+                           <button class="toolbar-btn copy-prompt-btn" data-tooltip-key="copy_prompt"><i class="fas fa-copy"></i></button>
+                           <button class="toolbar-btn fullscreen-btn" data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i></button>
+                           <button class="toolbar-btn lock-btn" data-tooltip-key="unlock_prompt"><i class="fas fa-lock"></i></button>
+                       </div>
+                   </div>
+                   <div class="action-buttons">
+                       <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
+                       <button class="action-btn go-duck">${translations.go_duck}</button>
+                       <button class="action-btn go-mistral">${translations.go_mistral}</button>
+                       <div class="albert-generation-controls">
+                           <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">${translations.generate_with_albert}</button>
+                           <div class="model-selector-container">
+                               <button id="model-selector-btn-${moduleKey}" class="model-selector-btn" aria-haspopup="true" aria-expanded="false">
+                                   <i class="fas fa-chevron-down"></i>
+                               </button>
+                               <ul id="model-selector-dropdown-${moduleKey}" class="model-selector-dropdown" role="menu"></ul>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               <div class="h5p-processor">
+                   <h3>${translations.create_mbz_file_appariement}</h3>
+                   <p>${translations.paste_ia_result_appariement}</p>
+                   <textarea id="${module.jsonInputId}" placeholder="${translations.paste_json_or_text || 'Collez ici le contenu généré par l\'IA...'}"></textarea>
+                   <button id="${module.createBtnId}" class="download-btn">${translations.generate_mbz_appariement}</button>
+               </div>
+           `;
+       } else if (moduleKey === 'QCM') {
+           contentHtml = `
+               <h3>${translations.moodle_qcm_name}</h3>
+               <p>${translations.moodle_qcm_description}</p>
+               <div class="h5p-prompt-block">
+                   <h3>${translations.prompt_for_ia}</h3>
+                   
+                   <div class="textarea-container">
+                       <textarea id="${module.promptId}" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}" readonly></textarea>
+                       <div class="floating-toolbar">
+                           <button class="toolbar-btn copy-prompt-btn" data-tooltip-key="copy_prompt"><i class="fas fa-copy"></i></button>
+                           <button class="toolbar-btn fullscreen-btn" data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i></button>
+                           <button class="toolbar-btn lock-btn" data-tooltip-key="unlock_prompt"><i class="fas fa-lock"></i></button>
+                       </div>
+                   </div>
+                   <div class="action-buttons">
+                       <button id="copy-${moduleKey}" class="copy-btn">${translations.copy_prompt}</button>
+                       <button class="action-btn go-duck">${translations.go_duck}</button>
+                       <button class="action-btn go-mistral">${translations.go_mistral}</button>
+                       <div class="albert-generation-controls">
+                           <button id="generate-albert-${moduleKey}" class="action-btn albert-btn">${translations.generate_with_albert}</button>
+                           <div class="model-selector-container">
+                               <button id="model-selector-btn-${moduleKey}" class="model-selector-btn" aria-haspopup="true" aria-expanded="false">
+                                   <i class="fas fa-chevron-down"></i>
+                               </button>
+                               <ul id="model-selector-dropdown-${moduleKey}" class="model-selector-dropdown" role="menu"></ul>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+               <div class="h5p-processor">
+                   <h3>${translations.create_mbz_file_qcm}</h3>
+                   <p>${translations.paste_ia_result_qcm}</p>
+                   <textarea id="${module.jsonInputId}" placeholder="${translations.paste_json_or_text || 'Collez ici le contenu généré par l\'IA...'}"></textarea>
+                   <button id="${module.createBtnId}" class="download-btn">${translations.generate_mbz_qcm}</button>
+               </div>
+           `;
+       }
+ 
+       contentContainer.innerHTML = `
+           <div class="h5p-content-header">
+              <h2>${translations[module.name]}</h2>
+              <span class="close-button">&times;</span>
+          </div>
+          <div class="module-content">
+              ${contentHtml}
+          </div>
+      `;
 
-        if (['moodleXml', 'glossaireXml', 'Millionnaire', 'Appariement', 'QCM'].includes(moduleKey)) {
-            attachAlbertLogic(moduleKey, sidebar);
-        }
+       moodleGrid.after(contentContainer);
+       contentContainer.classList.add('active');
+       tileElement.classList.add('active');
 
-        const promptIdForCopy = promptId || (moduleKey === 'gift' ? 'giftResultat' : null);
-        if (promptIdForCopy) {
-            sidebar.querySelectorAll('.go-duck').forEach(btn => btn.addEventListener('click', function() {
-                copyToClipboard(promptIdForCopy, this);
-                window.open('https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1', '_blank', 'noopener,noreferrer');
-            }));
-            sidebar.querySelectorAll('.go-mistral').forEach(btn => btn.addEventListener('click', function() {
-                copyToClipboard(promptIdForCopy, this);
-                window.open('https://chat.mistral.ai/', '_blank', 'noopener,noreferrer');
-            }));
-        }
+       activeContentContainer = contentContainer;
+       activeTile = tileElement;
 
-        if (promptId) {
-            const generatedPrompt = document.getElementById(`hidden-${promptId}`)?.value;
-            if (generatedPrompt) {
-                const targetTextarea = document.getElementById(promptId);
-                if (targetTextarea) {
-                    targetTextarea.value = generatedPrompt;
-                }
-            }
-        }
+       // Attach event listeners for the new content
+       contentContainer.querySelector('.close-button').addEventListener('click', () => {
+           toggleMoodleContent(moduleKey, tileElement);
+       });
+       if (moduleKey === 'moodleXml') {
+           setupCopyButton('copyMoodleXmlLink', 'moodleXmlResultat');
+           document.getElementById('createXmlEleaMoodle').addEventListener('click', () => {
+               const xmlContent = document.getElementById('xmlEleaMoodleInput').value;
+               if (!xmlContent) {
+                   showNotification(translations.error_paste_xml_content || 'Veuillez coller le contenu XML généré.', 'error');
+                   return;
+               }
+               const now = new Date();
+               const dateString = now.getFullYear() + '-' +
+                                String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                                String(now.getDate()).padStart(2, '0') + '-' +
+                                String(now.getHours()).padStart(2, '0') + '-' +
+                                String(now.getMinutes()).padStart(2, '0');
+               const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
+               const fileName = `banque-de-questions_caramel_${dateString}_${lang}.xml`;
+               downloadFile(xmlContent, fileName, 'text/xml');
+           });
+       } else if (moduleKey === 'glossaireXml') {
+           setupCopyButton('copy-glossaireXml', 'glossaireXmlResultat');
+           document.getElementById('createGlossaireXmlBtn').addEventListener('click', () => {
+               const jsonInput = document.getElementById('glossaireXmlJsonInput').value;
+               if (!jsonInput) {
+                   showNotification(translations.error_paste_json_content || 'Veuillez coller le contenu JSON généré.', 'error');
+                   return;
+               }
+               handleGlossaireXmlCreation(jsonInput);
+           });
+       } else if (moduleKey === 'gift') {
+           setupCopyButton('copyGiftLink', 'giftResultat');
+       } else if (moduleKey === 'Millionnaire') {
+           const module = moodleModules[moduleKey];
+           setupCopyButton(`copy-${moduleKey}`, module.promptId);
+           document.getElementById(module.createBtnId).addEventListener('click', () => {
+               const jsonInput = document.getElementById(module.jsonInputId).value;
+               if (!jsonInput) {
+                   showNotification(translations.error_paste_json_content || 'Veuillez coller le contenu JSON généré.', 'error');
+                   return;
+               }
+               handleMillionnaireCreation(jsonInput);
+           });
+       } else if (moduleKey === 'Appariement') {
+           const module = moodleModules[moduleKey];
+           setupCopyButton(`copy-${moduleKey}`, module.promptId);
+           document.getElementById(module.createBtnId).addEventListener('click', () => {
+               const jsonInput = document.getElementById(module.jsonInputId).value;
+               if (!jsonInput) {
+                   showNotification(translations.error_paste_json_content || 'Veuillez coller le contenu JSON généré.', 'error');
+                   return;
+               }
+               handleAppariementCreation(jsonInput);
+           });
+       } else if (moduleKey === 'QCM') {
+           const module = moodleModules[moduleKey];
+           setupCopyButton(`copy-${moduleKey}`, module.promptId);
+           document.getElementById(module.createBtnId).addEventListener('click', () => {
+               const jsonInput = document.getElementById(module.jsonInputId).value;
+               if (!jsonInput) {
+                   showNotification(translations.error_paste_json_content || 'Veuillez coller le contenu JSON généré.', 'error');
+                   return;
+               }
+               handleQCMCreation(jsonInput);
+           });
+       }
+
+       // Attacher la logique Albert pour les modules Moodle concernés
+       if (['moodleXml', 'glossaireXml', 'Millionnaire', 'Appariement', 'QCM'].includes(moduleKey)) {
+           attachAlbertLogic(moduleKey, contentContainer);
+       }
+
+       const promptIdForCopy = (moduleKey === 'moodleXml') ? 'moodleXmlResultat' :
+                                (moduleKey === 'glossaireXml') ? 'glossaireXmlResultat' :
+                                (moduleKey === 'gift') ? 'giftResultat' :
+                                (moduleKey === 'Millionnaire') ? moodleModules[moduleKey].promptId :
+                                (moduleKey === 'Appariement') ? moodleModules[moduleKey].promptId :
+                                (moduleKey === 'QCM') ? moodleModules[moduleKey].promptId : null;
+
+       contentContainer.querySelectorAll('.go-duck').forEach(btn => btn.addEventListener('click', function() {
+           if (promptIdForCopy) copyToClipboard(promptIdForCopy, this);
+           window.open('https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1', '_blank', 'noopener,noreferrer');
+       }));
+       contentContainer.querySelectorAll('.go-mistral').forEach(btn => btn.addEventListener('click', function() {
+           if (promptIdForCopy) copyToClipboard(promptIdForCopy, this);
+           window.open('https://chat.mistral.ai/', '_blank', 'noopener,noreferrer');
+       }));
+       
+       // Remplir le prompt si déjà généré
+       let promptId;
+       if (moduleKey === 'moodleXml') {
+           promptId = 'moodleXmlResultat';
+       } else if (moduleKey === 'glossaireXml') {
+           promptId = 'glossaireXmlResultat';
+       } else if (moduleKey === 'glossaireXml') {
+           promptId = 'glossaireXmlResultat';
+       } else if (moduleKey === 'glossaireXml') {
+           promptId = 'glossaireXmlResultat';
+       } else if (moduleKey === 'glossaireXml') {
+           promptId = 'glossaireXmlResultat';
+       } else if (moduleKey === 'gift') {
+           promptId = 'giftResultat';
+       } else if (moduleKey === 'Millionnaire') {
+           promptId = moodleModules[moduleKey].promptId;
+       } else if (moduleKey === 'Appariement') {
+           promptId = moodleModules[moduleKey].promptId;
+       } else if (moduleKey === 'QCM') {
+           promptId = moodleModules[moduleKey].promptId;
+       }
+
+       if (promptId) {
+           const generatedPrompt = document.getElementById(`hidden-${promptId}`)?.value;
+           if (generatedPrompt) {
+               const targetTextarea = document.getElementById(promptId);
+               if (targetTextarea) {
+                   targetTextarea.value = generatedPrompt;
+               }
+           }
+       }
    }
 
    function attachInlineEventListeners(moduleKey, container, tile) {
         const module = h5pModules[moduleKey];
 
-        // Le bouton fermer est géré globalement maintenant
+        // Bouton fermer
+        container.querySelector('.close-button').addEventListener('click', () => {
+            toggleInlineContent(moduleKey, tile); // Appeler toggle pour fermer
+        });
         
-        // Bouton Tuto
-        
-
-        // Bouton de bascule de mode
-        const modeToggle = container.querySelector('.mode-toggle-checkbox');
-        if (modeToggle) {
-            modeToggle.addEventListener('change', () => {
-                container.closest('#module-sidebar').classList.toggle('advanced-view');
-            });
-        }
+        // Bouton Copier
+        container.querySelector(`#copy-${moduleKey}`).addEventListener('click', function() {
+            copyToClipboard(module.promptId, this);
+        });
 
         // Boutons IA
         container.querySelectorAll('.go-duck').forEach(btn => btn.addEventListener('click', function() {
@@ -970,7 +1005,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 const jsonInputTarget = container.querySelector(`#${module.jsonInputId}`);
                 const processorDiv = jsonInputTarget.closest('.h5p-processor');
                 
-                startCaramelAnimation();
+                // 1. Afficher le spinner et la notification
+                const spinner = document.createElement('div');
+                spinner.className = 'loading-spinner';
+                processorDiv.appendChild(spinner);
+                jsonInputTarget.style.opacity = '0.5';
+                jsonInputTarget.value = ""; // Vider le champ
+                albertBtn.disabled = true;
+                if (modelSelectorBtn) modelSelectorBtn.disabled = true;
+                showNotification(translations.request_sent_to_ia, 'success');
 
                 try {
                     // 2. Attendre la réponse, en passant le modèle sélectionné
@@ -980,11 +1023,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (h5pContent) {
                         jsonInputTarget.value = h5pContent;
                         showNotification(translations.generation_successful, 'success');
-                        // Déclencher le téléchargement automatiquement
-                        const createBtn = container.querySelector(`#${module.createBtnId}`);
-                        if (createBtn) {
-                            createBtn.click();
-                        }
                     } else {
                         jsonInputTarget.value = translations.generation_failed_empty;
                         showNotification(translations.generation_failed_empty, 'error');
@@ -995,7 +1033,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     showNotification(errorMessage, 'error');
                     jsonInputTarget.value = errorMessage;
                 } finally {
-                    stopCaramelAnimation();
+                    // 4. Supprimer le spinner et réactiver le bouton
+                    spinner.remove();
+                    jsonInputTarget.style.opacity = '1';
+                    albertBtn.disabled = false;
+                    if (modelSelectorBtn) modelSelectorBtn.disabled = false;
                 }
             });
         }
@@ -1066,30 +1108,20 @@ document.addEventListener('DOMContentLoaded', function() {
             const jsonInputTarget = container.querySelector(`#${jsonInputId}`);
             const processorDiv = jsonInputTarget.closest('.h5p-processor');
             
-            startCaramelAnimation();
+            const spinner = document.createElement('div');
+            spinner.className = 'loading-spinner';
+            processorDiv.appendChild(spinner);
+            jsonInputTarget.style.opacity = '0.5';
+            jsonInputTarget.value = "";
+            albertBtn.disabled = true;
+            if (modelSelectorBtn) modelSelectorBtn.disabled = true;
+            showNotification(translations.request_sent_to_ia, 'success');
 
             try {
                 const content = await generateH5PWithAlbert(prompt, selectedModel);
                 if (content) {
                     jsonInputTarget.value = content;
                     showNotification(translations.generation_successful, 'success');
-                    
-                    // Déclencher le téléchargement automatiquement
-                    let createBtnId;
-                    if (moduleKey === 'moodleXml') {
-                        createBtnId = 'createXmlEleaMoodle';
-                    } else if (moduleKey === 'glossaireXml') {
-                        createBtnId = 'createGlossaireXmlBtn';
-                    } else if (module.createBtnId) {
-                        createBtnId = module.createBtnId;
-                    }
-
-                    if (createBtnId) {
-                        const createBtn = document.getElementById(createBtnId);
-                        if (createBtn) {
-                            createBtn.click();
-                        }
-                    }
                 } else {
                     jsonInputTarget.value = translations.generation_failed_empty;
                     showNotification(translations.generation_failed_empty, 'error');
@@ -1100,7 +1132,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 showNotification(errorMessage, 'error');
                 jsonInputTarget.value = errorMessage;
             } finally {
-                stopCaramelAnimation();
+                spinner.remove();
+                jsonInputTarget.style.opacity = '1';
+                albertBtn.disabled = false;
+                if (modelSelectorBtn) modelSelectorBtn.disabled = false;
             }
         });
     }
@@ -1260,7 +1295,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function setupToolbarListeners(container) {
         const toolbars = container.querySelectorAll('.floating-toolbar');
         toolbars.forEach(toolbar => {
-            const textarea = toolbar.parentElement.querySelector('textarea');
+            const textarea = toolbar.previousElementSibling;
             const copyBtn = toolbar.querySelector('.copy-prompt-btn');
             const fullscreenBtn = toolbar.querySelector('.fullscreen-btn');
             const lockBtn = toolbar.querySelector('.lock-btn');
@@ -1272,10 +1307,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 2. Bouton Plein écran
             fullscreenBtn.addEventListener('click', () => {
-                const originalContainer = textarea.closest('.prompt-area');
+                const originalContainer = textarea.closest('.textarea-container');
                 const existingOverlay = document.querySelector('.fullscreen-overlay');
                 const icon = fullscreenBtn.querySelector('i');
-                const span = fullscreenBtn.querySelector('span');
 
                 if (existingOverlay) {
                     // Quitter le plein écran
@@ -1283,7 +1317,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     icon.classList.remove('fa-compress');
                     icon.classList.add('fa-expand');
                     fullscreenBtn.setAttribute('data-tooltip-key', 'fullscreen_prompt');
-                    if (span) span.setAttribute('data-key', 'fullscreen_prompt');
                 } else {
                     // Entrer en plein écran
                     const overlay = document.createElement('div');
@@ -1312,8 +1345,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     icon.classList.remove('fa-expand');
                     icon.classList.add('fa-compress');
                     fullscreenBtn.setAttribute('data-tooltip-key', 'exit_fullscreen_prompt');
-                    if (span) span.setAttribute('data-key', 'exit_fullscreen_prompt');
-
 
                     // Cliquer sur l'overlay pour fermer
                     overlay.addEventListener('click', (e) => {
@@ -1322,26 +1353,23 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     });
                 }
-                translatePage(toolbar); // Mettre à jour l'infobulle et le texte du bouton original
+                translatePage(toolbar); // Mettre à jour l'infobulle du bouton original
             });
 
             // 3. Bouton Cadenas
             lockBtn.addEventListener('click', () => {
                 textarea.readOnly = !textarea.readOnly;
                 const icon = lockBtn.querySelector('i');
-                const span = lockBtn.querySelector('span');
                 if (textarea.readOnly) {
                     icon.classList.remove('fa-unlock');
                     icon.classList.add('fa-lock');
                     lockBtn.setAttribute('data-tooltip-key', 'unlock_prompt');
-                    if (span) span.setAttribute('data-key', 'unlock_prompt');
                 } else {
                     icon.classList.remove('fa-lock');
                     icon.classList.add('fa-unlock');
                     lockBtn.setAttribute('data-tooltip-key', 'lock_prompt');
-                    if (span) span.setAttribute('data-key', 'lock_prompt');
                 }
-                translatePage(toolbar); // Mettre à jour l'infobulle et le texte
+                translatePage(toolbar); // Mettre à jour l'infobulle
             });
         });
     }
@@ -3546,62 +3574,6 @@ ${pt.glossaire_xml_prompt_generate_only_xml}${languageInstruction}`;
                    q.params.showSolution = translations.essay_showSolution;
                }
            });
-           
-           // =======================================================================
-           // ANIMATION CARAMEL
-           // =======================================================================
-           let recipeInterval;
-           
-           function startCaramelAnimation() {
-               const overlay = document.getElementById('caramel-animation-overlay');
-               const recipeSteps = document.getElementById('recipe-steps');
-               const marmiteContent = document.querySelector('.marmite-content');
-               overlay.style.display = 'flex';
-           
-               const steps = [
-                   "On verse le sucre dans la casserole...",
-                   "On ajoute un peu d'eau...",
-                   "On fait chauffer à feu moyen...",
-                   "Le sucre commence à fondre...",
-                   "Ça commence à colorer...",
-                   "On remue doucement...",
-                   "Le caramel prend une belle couleur ambrée...",
-                   "On ajoute la crème chaude...",
-                   "Attention aux éclaboussures !",
-                   "On mélange bien...",
-                   "C'est presque prêt !"
-               ];
-           
-               let currentStep = 0;
-               recipeSteps.textContent = steps[currentStep];
-               recipeInterval = setInterval(() => {
-                   currentStep = (currentStep + 1) % steps.length;
-                   recipeSteps.textContent = steps[currentStep];
-               }, 2000);
-           
-               // Reset animation
-               marmiteContent.style.animation = 'none';
-               marmiteContent.offsetHeight; /* trigger reflow */
-               marmiteContent.style.animation = null;
-               marmiteContent.style.animation = 'fillMarmite 22s linear forwards';
-           }
-           
-           function stopCaramelAnimation() {
-               const overlay = document.getElementById('caramel-animation-overlay');
-               const successMessage = document.getElementById('success-message');
-               clearInterval(recipeInterval);
-               overlay.style.display = 'none';
-           
-               successMessage.classList.remove('hidden');
-               successMessage.style.opacity = 1;
-           
-               setTimeout(() => {
-                   successMessage.style.opacity = 0;
-                   setTimeout(() => {
-                       successMessage.classList.add('hidden');
-                   }, 500);
-               }, 2000);
-           }
 
 
             // Ajouter les traductions globales du Quiz (Question Set)
@@ -3682,59 +3654,3 @@ ${pt.glossaire_xml_prompt_generate_only_xml}${languageInstruction}`;
         }
     }
 });
-
-// =======================================================================
-// ANIMATION CARAMEL
-// =======================================================================
-let recipeInterval;
-
-function startCaramelAnimation() {
-    const overlay = document.getElementById('caramel-animation-overlay');
-    const recipeSteps = document.getElementById('recipe-steps');
-    const marmiteContent = document.querySelector('.marmite-content');
-    overlay.style.display = 'flex';
-
-    const steps = [
-        "On verse le sucre dans la casserole...",
-        "On ajoute un peu d'eau...",
-        "On fait chauffer à feu moyen...",
-        "Le sucre commence à fondre...",
-        "Ça commence à colorer...",
-        "On remue doucement...",
-        "Le caramel prend une belle couleur ambrée...",
-        "On ajoute la crème chaude...",
-        "Attention aux éclaboussures !",
-        "On mélange bien...",
-        "C'est presque prêt !"
-    ];
-
-    let currentStep = 0;
-    recipeSteps.textContent = steps[currentStep];
-    recipeInterval = setInterval(() => {
-        currentStep = (currentStep + 1) % steps.length;
-        recipeSteps.textContent = steps[currentStep];
-    }, 2000);
-
-    // Reset animation
-    marmiteContent.style.animation = 'none';
-    marmiteContent.offsetHeight; /* trigger reflow */
-    marmiteContent.style.animation = null;
-    marmiteContent.style.animation = 'fillMarmite 22s linear forwards';
-}
-
-function stopCaramelAnimation() {
-    const overlay = document.getElementById('caramel-animation-overlay');
-    const successMessage = document.getElementById('success-message');
-    clearInterval(recipeInterval);
-    overlay.style.display = 'none';
-
-    successMessage.classList.remove('hidden');
-    successMessage.style.opacity = 1;
-
-    setTimeout(() => {
-        successMessage.style.opacity = 0;
-        setTimeout(() => {
-            successMessage.classList.add('hidden');
-        }, 500);
-    }, 2000);
-}

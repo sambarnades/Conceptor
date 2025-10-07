@@ -164,33 +164,22 @@ body {
 }
 
 /* Panneau latéral d'aide */
-/* MODALE CENTRÉE POUR LES MODULES */
-#module-sidebar {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.95);
-    width: 60vw; /* Largeur de 60% de la vue */
-    max-height: 40vh; /* Hauteur initiale pour le mode simple */
-    max-width: 1400px; /* Limite la largeur maximale */
-    background-color: #F5F5F7;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-    z-index: 1002;
-    display: none;
-    flex-direction: column;
-    padding: 20px;
-    box-sizing: border-box;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s, max-height 0.5s ease-in-out;
+.sidebar {
+   position: fixed;
+   top: 0;
+   right: -350px; /* Caché par défaut */
+   width: 350px;
+   height: 100%;
+   background-color: #ffffff;
+   box-shadow: -4px 0 15px rgba(0,0,0,0.1);
+   padding: 20px;
+   z-index: 1001;
+   transition: right 0.4s ease-in-out;
+   overflow-y: auto;
 }
 
-#module-sidebar.open {
-    display: flex;
-    opacity: 1;
-    visibility: visible;
-    transform: translate(-50%, -50%) scale(1);
+.sidebar.open {
+   right: 0; /* Visible */
 }
 
 .sidebar .close-btn {
@@ -210,7 +199,7 @@ body {
 }
 
 .sidebar h2 {
-   margin-top: 0; /* Ajusté car le padding est maintenant interne */
+   margin-top: 40px;
    font-size: 1.5em;
    font-weight: 600;
    color: #1d1d1f;
@@ -234,7 +223,6 @@ body {
    color: #007AFF;
 }
 
-/* L'overlay est de nouveau nécessaire pour l'arrière-plan */
 #sidebar-overlay {
    position: fixed;
    top: 0;
@@ -242,10 +230,10 @@ body {
    width: 100%;
    height: 100%;
    background-color: rgba(0,0,0,0.4);
-   z-index: 1001;
+   z-index: 1000;
    opacity: 0;
    visibility: hidden;
-   transition: opacity 0.3s ease, visibility 0.3s;
+   transition: opacity 0.4s ease-in-out, visibility 0.4s;
 }
 
 #sidebar-overlay.open {
@@ -388,9 +376,8 @@ body {
     gap: 15px; /* Espacement réduit */
 }
 
-
 .prompt-generator button#generateBtn {
-    padding: 15px;
+    padding: 15px; /* Padding réduit */
     background-color: #007AFF;
     color: white;
     border: none;
@@ -400,7 +387,7 @@ body {
     font-weight: 500;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 4px 15px rgba(0, 122, 255, 0.2);
-    width: 100%;
+    width: 100%; /* Prend toute la largeur de son conteneur paddé */
 }
 
 .prompt-generator button#generateBtn:hover {
@@ -461,8 +448,8 @@ body {
     display: block;
 }
 
-/* Grille des modules */
-.grid {
+/* Grille H5P */
+.h5p-grid, .moodle-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 25px;
@@ -576,136 +563,21 @@ textarea::placeholder {
 }
 
 /* Conteneur de contenu H5P (remplace la modale) */
-/* NOUVELLE STRUCTURE DE LA MODALE */
-.modal-header-group {
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
-    margin-bottom: 15px;
-    flex-shrink: 0;
-    padding: 10px 20px;
+.h5p-content-container {
+    display: none; /* Caché par défaut et retiré du flux */
 }
 
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-shrink: 0;
+.h5p-content-container.active {
+    display: block; /* Affiché quand actif */
+    padding: 35px 40px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.modal-title-container {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.modal-title-icon {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-}
-
-.modal-title {
-    margin: 0;
-    font-size: 1.6em;
-    font-weight: 600;
-}
-
-.modal-header-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.modal-header-actions .action-btn {
-    padding: 8px 16px;
-    font-size: 0.9em;
-}
-
-.modal-tuto-content {
-    padding: 15px 0px;
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-.modal-tuto-content p {
-    margin: 0;
-    color: #6e6e73;
-}
-
-.modal-main-content {
-    display: flex;
-    gap: 20px;
-    flex-grow: 1;
-    overflow: hidden;
-    max-height: 0;
-    opacity: 0;
-    transform: translateY(-20px);
-    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, transform 0.5s ease-in-out, margin-top 0.5s ease-in-out;
-    margin-top: 0;
-}
-
-#module-sidebar.advanced-view {
-    max-height: 90vh;
-}
-
-#module-sidebar.advanced-view .modal-main-content {
-    max-height: 1000px; /* Valeur suffisamment grande */
-    opacity: 1;
-    transform: translateY(0);
-    margin-top: 15px;
-}
-
-.close-button {
-    font-size: 28px;
-    font-weight: bold;
-    color: #aaa;
-    cursor: pointer;
-    transition: color 0.3s;
-    padding: 0 10px;
-    background: none;
-    border: none;
-    line-height: 1;
-}
-
-.close-button:hover {
-    color: #1d1d1f;
-}
-
-.modal-panels-container {
-    display: flex;
-    gap: 20px;
-    flex-grow: 1;
-    overflow: hidden; /* Empêche le débordement */
-}
-
-.modal-panel {
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    padding: 25px;
-}
-
-.modal-panel h3 {
-    margin-top: 0;
-    font-size: 1.3em;
-    font-weight: 600;
-    color: #1C1C1E;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #e5e5e5;
-    margin-bottom: 20px;
-}
-
-.modal-panel .textarea-container,
-.modal-panel textarea {
-    flex-grow: 1; /* Fait en sorte que le textarea prenne la place restante */
-    min-height: 150px; /* Hauteur minimale pour la visibilité */
-}
-
-/* La classe .active sur les tuiles est maintenant gérée par JS pour le panneau latéral,
-   mais on peut garder un style pour indiquer la sélection. */
 .h5p-tile.active {
     transform: translateY(-4px);
     box-shadow: 0 10px 28px rgba(0, 122, 255, 0.2);
@@ -1050,32 +922,30 @@ textarea::placeholder {
    14. STYLES POUR LA BARRE D'OUTILS FLOTTANTE DU TEXTAREA
    ======================================================================= */
 
-.prompt-area {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
 .textarea-container {
     position: relative;
-    flex-grow: 1;
-    display: flex; /* Ajouté pour que le textarea remplisse l'espace */
-}
-
-.textarea-container textarea {
-    flex-grow: 1; /* Le textarea prend toute la place disponible */
 }
 
 .floating-toolbar {
+    position: absolute;
+    top: 10px;
+    right: 20px; /* Décalage pour éviter la barre de défilement */
     display: flex;
-    gap: 15px; /* Augmenter l'espace entre les boutons */
+    gap: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 5px;
+    border-radius: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
     z-index: 5;
-    margin-bottom: 8px;
-    align-self: flex-start;
-    opacity: 1; /* Toujours visible */
+}
+
+.textarea-container:hover .floating-toolbar {
+    opacity: 1;
     visibility: visible;
-    background-color: transparent; /* Fond transparent */
-    padding: 0; /* Pas de padding pour le conteneur */
 }
 
 .toolbar-btn {
@@ -1083,30 +953,38 @@ textarea::placeholder {
     border: none;
     cursor: pointer;
     padding: 5px;
-    font-size: 12px; /* Taille de police pour le texte */
-    color: #6e6e73; /* Couleur de texte grise */
+    font-size: 16px;
+    color: #333;
     transition: color 0.2s;
     position: relative;
-    display: flex;
-    flex-direction: column; /* Icône au-dessus du texte */
-    align-items: center;
-    gap: 4px; /* Espace entre l'icône et le texte */
-    width: 80px; /* Largeur fixe pour un meilleur alignement */
-    text-align: center;
-}
-
-.toolbar-btn i {
-    font-size: 18px; /* Taille de l'icône */
-    margin-bottom: 2px; /* Petit espace sous l'icône */
 }
 
 .toolbar-btn:hover {
     color: #007AFF;
 }
 
-/* Style pour les infobulles (supprimé car le texte est maintenant visible) */
+/* Style pour les infobulles */
 .toolbar-btn::after {
-    display: none;
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 5px;
+    background-color: #333;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+}
+
+.toolbar-btn:hover::after {
+    opacity: 1;
+    visibility: visible;
 }
 
 /* Style pour le mode plein écran */
@@ -1140,166 +1018,19 @@ textarea::placeholder {
     box-sizing: border-box;
 }
 
-.generation-controls-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 15px;
-    flex-shrink: 0;
-}
-
-.mode-switch-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.switch-label {
-    font-size: 0.9em;
-    color: #6e6e73;
-}
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
-}
-
-input:checked + .slider {
-    background-color: #007AFF;
-}
-
-input:checked + .slider:before {
-    transform: translateX(26px);
-}
-
-.slider.round {
-    border-radius: 34px;
-}
-
-.slider.round:before {
-    border-radius: 50%;
-}
-
 /* Le conteneur cloné prend toute la place dans l'overlay */
-.fullscreen-overlay .prompt-area {
+.fullscreen-overlay .textarea-container {
     width: 85vw;
     height: 85vh;
     position: relative;
-    display: flex;
-    flex-direction: column;
 }
 
 /* La barre d'outils reste attachée au conteneur cloné */
 .fullscreen-overlay .floating-toolbar {
     opacity: 1;
     visibility: visible;
-    position: static;
-    margin-top: 10px;
-    margin-right: 10px;
-    z-index: 2000;
-    background-color: rgba(255, 255, 255, 0.9); /* Fond légèrement visible en plein écran */
-    padding: 8px 10px;
-    border-radius: 8px;
-}
-
-/* Animation de chargement "Caramel" */
-#caramel-animation-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 3000;
-    flex-direction: column;
-}
-
-.marmite {
-    width: 200px;
-    height: 150px;
-    background-color: #d3d3d3;
-    border-radius: 10px 10px 50px 50px;
-    position: relative;
-    border: 5px solid #8b4513;
-    overflow: hidden;
-}
-
-.marmite-content {
     position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 0;
-    background-color: #daa520;
-    animation: fillMarmite 10s linear forwards;
-}
-
-#recipe-steps {
-    margin-top: 20px;
-    color: white;
-    font-size: 1.2em;
-    text-align: center;
-    height: 50px;
-}
-
-#success-message {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 4000;
-    color: white;
-    font-size: 2em;
-    text-align: center;
-    opacity: 0;
-    transition: opacity 0.5s;
-}
-
-#success-message.hidden {
-    display: none;
-}
-
-@keyframes fillMarmite {
-    0% { height: 0%; }
-    100% { height: 80%; }
+    top: 15px; /* Ajustement pour être plus esthétique */
+    right: 25px; /* Décalage pour éviter la barre de défilement */
+    z-index: 2000;
 }
