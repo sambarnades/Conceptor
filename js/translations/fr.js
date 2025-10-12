@@ -1,60 +1,176 @@
 const translations_fr = {
-    subtitle: "Création Assistée de Ressources et d'Activités Moodle et Éléa",
+    subtitle: "Création Assistée de Ressources et d'Activités Magistère et Éléa",
     help_button: "Aide",
-    help_modal_title: "🚀 Guide de prise en main de Caramel",
+    help_modal_title: "🚀 Guide complet de Caramel pour les enseignants",
     help_modal_content: `
-        <div class="help-modal-content">
-            <p>Bienvenue sur <strong>Caramel</strong> ! Cet outil vous guide pas à pas pour créer des activités pédagogiques interactives avec l'aide de l'intelligence artificielle. Suivez ces étapes simples pour transformer vos idées en modules prêts à l'emploi.</p>
+    <p>Bienvenue sur <strong>Caramel</strong> ! Ce guide est conçu pour vous accompagner pas à pas, même si vous débutez. Notre objectif est de vous aider à créer des activités pédagogiques interactives, de manière simple et efficace.</p>
+    
+    <div class="help-nav">
+        <a href="#decrire" class="help-nav-link"><span class="help-step-number">1</span> Décrire</a>
+        <a href="#choisir" class="help-nav-link"><span class="help-step-number">2</span> Choisir</a>
+        <a href="#generer" class="help-nav-link"><span class="help-step-number">3</span> Générer</a>
+        <a href="#integrer" class="help-nav-link"><span class="help-step-number">4</span> Télécharger</a>
+        <a href="#communaute" class="help-nav-link"><i class="fas fa-users"></i> Communauté</a>
+    </div>
 
-            <div class="help-section">
-                <h4><span class="help-step-number">1</span> Rédiger votre idée (le "prompt")</h4>
-                <p>Tout commence par la description de votre besoin. Vous avez deux options pour cela :</p>
-                <ul>
-                    <li><span class="badge-help-mode">Mode Rapide</span> : Idéal pour démarrer rapidement. Indiquez simplement <strong>qui vous êtes</strong> (ex: <em>Professeur de SVT</em>) et <strong>ce que vous voulez aborder</strong> (ex: <em>le cycle de l'eau en 6ème</em>).</li>
-                    <li><span class="badge-help-mode">Mode Guidé</span> : Pour une demande plus précise. Renseignez la <strong>discipline</strong>, le <strong>thème</strong>, le <strong>niveau des élèves</strong> et le <strong>nombre d'éléments</strong> souhaités (questions, dates, etc.).</li>
-                </ul>
-            </div>
+    <div id="philosophie" class="help-section help-philosophy">
+        <h4><i class="fas fa-lightbulb"></i> Notre philosophie : vous gardez la main !</h4>
+        <p>Avec Caramel, l'intelligence artificielle est une assistante, mais c'est vous qui pilotez. Vous avez le contrôle à chaque étape :</p>
+        <ul>
+            <li><strong>Avant :</strong> C'est vous qui définissez le cadre pédagogique en remplissant les champs de description.</li>
+            <li><strong>Pendant :</strong> Une fois le contenu généré par l'IA (le code JSON), vous pouvez le modifier directement dans l'éditeur pour l'ajuster.</li>
+            <li><strong>Après :</strong> Même après avoir téléchargé le fichier, vous pouvez toujours l'ouvrir et le modifier dans d'autres outils si nécessaire.</li>
+        </ul>
+    </div>
 
-            <div class="help-section">
-                <h4><span class="help-step-number">2</span> Générer les prompts</h4>
-                <p>Une fois vos informations saisies, cliquez sur le bouton <button id="generateBtn" data-key="generate_prompts">Générer les prompts</button>. L'outil préparera alors des instructions détaillées (les "prompts") pour chaque type d'activité disponible.</p>
-            </div>
-
-            <div class="help-section">
-                <h4><span class="help-step-number">3</span> Choisir votre activité</h4>
-                <p>Naviguez entre les onglets <span class="badge-help-tab">H5P</span> et <span class="badge-help-tab">Modules Éléa/Moodle</span> pour découvrir les différentes activités possibles. Cliquez sur celle qui vous intéresse (par exemple, "Frise chronologique" ou "QCM"). Le prompt correspondant s'affichera dans la zone de texte.</p>
-            </div>
-
-            <div class="help-section">
-                <h4><span class="help-step-number">4</span> Utiliser l'Intelligence Artificielle</h4>
-                <p>C'est ici que la magie opère ! Vous avez deux possibilités pour générer le contenu de votre activité :</p>
-                <div class="help-subsection">
-                    <h5><i class="fas fa-robot"></i> Option A : Générer avec Albert (Recommandé)</h5>
-                    <p>Cliquez sur le bouton <button class="action-btn albert-btn">Générer avec Albert</button>. Vous pouvez choisir le modèle d'IA le plus adapté à votre besoin (rapide, puissant ou spécialisé en code) en cliquant sur la petite flèche à droite du bouton. Le contenu de votre activité sera <strong>automatiquement généré et inséré</strong> dans le champ de résultat.</p>
-                    <ul class="advantages">
-                        <li><strong>Forces :</strong> Simple, rapide, IA française intégrée directement dans l'outil.</li>
-                        <li><strong>Faiblesses :</strong> Pas de recherche sur le web, pas de personnalisation possible du prompt avant envoi.</li>
-                    </ul>
-                </div>
-                <div class="help-subsection">
-                    <h5><i class="fas fa-paste"></i> Option B : Utiliser votre propre IA</h5>
-                    <p>Cliquez sur <button class="copy-btn">📋 Copier le prompt</button> et collez cette instruction dans votre intelligence artificielle favorite (ChatGPT, Le Chat, etc.). Ensuite, <strong>copiez la réponse</strong> de l'IA et <strong>collez-la</strong> dans le champ de résultat de Caramel.</p>
-                    <ul class="advantages">
-                        <li><strong>Forces :</strong> Flexibilité totale, accès à internet, possibilité de modifier le prompt et d'ajouter des documents personnels pour un résultat sur mesure.</li>
-                        <li><strong>Faiblesses :</strong> Nécessite des copier-coller manuels et un compte externe.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="help-section">
-                <h4><span class="help-step-number">5</span> Créer et télécharger votre fichier</h4>
-                <p>Une fois que le contenu est dans le champ de résultat (généré par Albert ou collé par vos soins), cliquez sur le bouton <button class="download-btn">Générer le H5P</button> (ou .mbz/.xml selon l'activité). Votre fichier sera téléchargé, prêt à être intégré dans votre plateforme Moodle ou Éléa.</p>
-                <p class="help-final-tip">Et voilà ! Vous avez créé une activité interactive en quelques clics. N'hésitez pas à expérimenter avec les différents modes et types d'activités pour enrichir vos cours.</p>
-            </div>
+    <div id="decrire" class="help-section">
+        <h4><span class="help-step-number">1</span> Décrire votre besoin : le point de départ</h4>
+        <p>Tout commence ici. Plus votre description sera claire, plus le résultat sera pertinent. Deux options s'offrent à vous :</p>
+        <div class="help-subsection">
+            <h5><span class="help-badge-mode">Mode Rapide</span></h5>
+            <p>Idéal pour aller à l'essentiel. Remplissez les deux champs :</p>
+            <ul>
+                <li><strong>Qui êtes-vous ?</strong> Soyez direct. Pas besoin de phrase. Exemples : <em>Professeur de mathématiques</em>, <em>Formateur académique</em>.</li>
+                <li><strong>Que souhaitez-vous aborder ?</strong> C'est le cœur de votre demande. Soyez aussi complet que possible. N'hésitez pas à inclure le thème, le niveau, et les contraintes. Exemple : <em>Une introduction aux fractions pour des élèves de 6ème, avec des exemples concrets comme le partage d'un gâteau.</em></li>
+            </ul>
         </div>
+        <div class="help-subsection">
+            <h5><span class="help-badge-mode">Mode Avancé</span></h5>
+            <p>Pour une demande plus structurée, ce mode vous cadre avec des champs précis :</p>
+            <ul>
+                <li><strong>Discipline, Thème, Niveau :</strong> Pour définir le contexte.</li>
+                <li><strong>Nombre d'éléments :</strong> Très important ! Cela correspond au nombre de questions, de dates sur une frise, de mots dans un glossaire, etc.</li>
+                <li><strong>Informations complémentaires :</strong> Un espace pour ajouter des consignes spécifiques, des contraintes ou tout autre détail pertinent.</li>
+            </ul>
+            <p><span class="help-badge-feature"><i class="fas fa-file-alt"></i> Activer la consultation de document</span><br>
+            Cette option puissante vous permet de baser la génération sur un contenu que vous fournissez. Vous pouvez soit <strong>copier-coller un texte</strong>, soit <strong>télécharger un fichier PDF</strong>.
+            <br><strong><i class="fas fa-lock"></i> Confidentialité :</strong> Rassurez-vous, le traitement de votre document se fait <strong>entièrement en local sur votre ordinateur</strong>. Aucune donnée n'est envoyée sur Internet.</p>
+        </div>
+    </div>
+
+    <div id="choisir" class="help-section">
+        <h4><span class="help-step-number">2</span> Choisir le type d'activité</h4>
+        <p>Une fois la description faite, les tuiles d'activités deviennent accessibles. Cliquez sur celle qui correspond à votre objectif pédagogique.</p>
+        <details>
+            <summary><strong>Cliquez ici pour voir le détail des activités disponibles</strong></summary>
+            <h5><span class="help-badge-tab">H5P</span></h5>
+            <p>Activités interactives au format H5P. Celles marquées d'une étoile <span class="feedback-star">*</span> intègrent par défaut un feedback détaillé en 6 tranches de score.</p>
+            <ul>
+                <li><strong>Frise chronologique :</strong> Créez une frise interactive pour présenter une séquence d'événements.</li>
+                <li><strong>Cartes mémoires :</strong> Créez des cartes recto-verso pour aider à la mémorisation.</li>
+                <li><strong>Quiz (Question Set) <span class="feedback-star">*</span> :</strong> Composez une série de questions variées (QCM, glisser-déposer, etc.).</li>
+                <li><strong>Glossaire :</strong> Créez un glossaire ou une FAQ sous forme d'accordéon dépliant.</li>
+                <li><strong>Mots croisés <span class="feedback-star">*</span> :</strong> Générez une grille de mots croisés à partir de définitions.</li>
+                <li><strong>Rédaction <span class="feedback-star">*</span> :</strong> Proposez un sujet de rédaction avec correction automatisée par mots-clés.</li>
+                <li><strong>Résumé <span class="feedback-star">*</span> :</strong> Les élèves doivent reconstituer un résumé correct en choisissant les bonnes phrases.</li>
+                <li><strong>Glisser les mots <span class="feedback-star">*</span> :</strong> Créez un texte où les élèves glissent les mots manquants.</li>
+                <li><strong>Texte à trous <span class="feedback-star">*</span> :</strong> Les élèves doivent remplir les mots manquants au clavier.</li>
+                <li><strong>Surligner les mots <span class="feedback-star">*</span> :</strong> Demandez aux élèves de surligner certains mots dans un texte.</li>
+                <li><strong>Vrai/Faux :</strong> Créez des questions simples avec une réponse binaire.</li>
+                <li><strong>Choix multiples <span class="feedback-star">*</span> :</strong> Créez des QCM avec une ou plusieurs bonnes réponses.</li>
+                <li><strong>Mots mêlés :</strong> Créez une grille de lettres où les élèves doivent retrouver des mots.</li>
+                <li><strong>Ordonner les paragraphes <span class="feedback-star">*</span> :</strong> Les élèves doivent remettre des paragraphes dans le bon ordre.</li>
+                <li><strong>Série de choix uniques <span class="feedback-star">*</span> :</strong> Créez une série de questions avec une seule bonne réponse par question.</li>
+                <li><strong>Cartes de dialogue :</strong> Créez des cartes interactives recto-verso avec texte et audio.</li>
+                <li><strong>Texte à trous complexe <span class="feedback-star">*</span> :</strong> Un texte à trous avancé avec des feedbacks spécifiques pour chaque erreur.</li>
+                <li><strong>Diagramme :</strong> Créez un diagramme circulaire ou en barres pour visualiser des données.</li>
+            </ul>
+            <h5><span class="help-badge-tab">Moodle/Éléa</span></h5>
+            <ul>
+                <li><strong>Test (XML / GIFT) :</strong> Génère une banque de questions variées (QCM, appariement, etc.) à importer dans un test Moodle.</li>
+                <li><strong>QCM (MBZ) :</strong> Crée une activité QCM simple et rapide.</li>
+                <li><strong>Appariement (MBZ) :</strong> Un jeu d'association entre des paires d'éléments.</li>
+                <li><strong>Millionnaire (MBZ) :</strong> Un jeu de quiz ludique où la difficulté augmente à chaque question.</li>
+                <li><strong>Glossaire (XML) :</strong> Produit un fichier pour importer une liste de définitions dans un glossaire Moodle.</li>
+                <li><strong>Page (MBZ / HTML) :</strong> Construit une page de cours structurée et visuellement mise en forme pour Éléa.</li>
+            </ul>
+        </details>
+    </div>
+
+    <div id="generer" class="help-section">
+        <h4><span class="help-step-number">3</span> Générer et affiner le contenu</h4>
+        <p>Après avoir cliqué sur une tuile, une fenêtre s'ouvre. C'est ici que vous interagissez avec l'IA.</p>
+        <div class="help-subsection">
+            <h5><i class="fas fa-rocket"></i> Option A : Générer en un clic</h5>
+            <p>La voie rapide. Cliquez sur le bouton <button class="help-btn-example-albert">Générer en un clic</button> pour que l'IA produise le contenu et le place directement dans la zone de résultat à droite. Vous pouvez choisir entre différents modèles d'IA (rapide, puissant...) via la petite flèche sur le côté droit du bouton.</p>
+        </div>
+        <div class="help-subsection">
+            <h5><i class="fas fa-tools"></i> Option B : Utiliser une IA externe</h5>
+            <p>Pour un contrôle maximal. Le prompt (instruction pour l'IA) apparaît à gauche.</p>
+            <ol>
+                <li>Modifiez le prompt si vous le souhaitez.</li>
+                <li>Utilisez les boutons <button class="help-btn-example-duck">Accéder à Duck.ai</button> ou <button class="help-btn-example-mistral">Accéder à Le Chat</button>. Cela <strong>copie automatiquement le prompt</strong> et ouvre l'IA dans un nouvel onglet.</li>
+                <li>Collez le prompt dans l'IA, récupérez sa réponse, et collez-la dans la zone de résultat à droite dans Caramel.</li>
+            </ol>
+            <p>Des icônes utiles sont là pour vous aider : <span class="help-badge-icon"><i class="fas fa-expand"></i> Plein écran</span> pour plus de confort, et <span class="help-badge-icon"><i class="fas fa-lock"></i> Verrouiller</span> pour protéger le prompt.</p>
+        </div>
+    </div>
+
+    <div id="integrer" class="help-section">
+        <h4><span class="help-step-number">4</span> Télécharger et intégrer votre activité</h4>
+        <p>Une fois le contenu prêt, cliquez sur le bouton de téléchargement (ex: <button class="help-btn-example-download">Générer le H5P</button>). Voici comment intégrer les fichiers dans Éléa/Moodle :</p>
+        
+        <div class="import-guide">
+            <details class="import-details" open>
+                <summary><span class="help-badge-file">.h5p</span> (Activités H5P)</summary>
+                <div class="import-content">
+                    <ul>
+                        <li><strong>Méthode simple :</strong> Activez le mode édition dans votre cours, puis glissez-déposez le fichier .h5p directement dans la section de votre choix. Idéal pour un usage rapide sans partage complexe.</li>
+                        <li><strong>Méthode recommandée (pour les concepteurs) :</strong> Cliquez sur "Ajouter une activité ou une ressource", choisissez "Contenu interactif (H5P)", puis dans le champ "Fichier", téléchargez votre .h5p. Cette méthode garantit que l'activité sera bien incluse si vous partagez votre parcours.</li>
+                    </ul>
+                </div>
+            </details>
+            <details class="import-details">
+                <summary><span class="help-badge-file">.mbz</span> (Page, Millionnaire, Appariement, QCM)</summary>
+                <div class="import-content">
+                    <p>Ce format importe une activité complète dans votre cours.</p>
+                    <ol>
+                        <li>Dans votre cours, allez dans le menu d'édition (roue crantée) et cliquez sur "Restaurer".</li>
+                        <li>Glissez-déposez votre fichier .mbz dans la zone d'importation.</li>
+                        <li>Suivez les étapes en cliquant sur "Continuer". L'activité sera ajoutée à votre cours.</li>
+                    </ol>
+                </div>
+            </details>
+            <details class="import-details">
+                <summary><span class="help-badge-file">.xml</span> et <span class="help-badge-file">GIFT</span> (Activité Test)</summary>
+                <div class="import-content">
+                    <p>Ces formats importent des questions dans votre "Banque de questions".</p>
+                    <ol>
+                        <li>Allez dans le menu "Plus" de votre cours, puis "Banque de questions".</li>
+                        <li>Cliquez sur l'onglet "Importer".</li>
+                        <li>Choisissez le format "Format XML Moodle" ou "Format GIFT".</li>
+                        <li>Glissez-déposez votre fichier dans la zone "Importer" et validez.</li>
+                        <li>Vos questions sont maintenant dans la banque, prêtes à être ajoutées à une activité "Test".</li>
+                    </ol>
+                </div>
+            </details>
+            <details class="import-details">
+                <summary><span class="help-badge-file">.html</span> (Alternative pour l'activité Page)</summary>
+                <div class="import-content">
+                    <p>Pour un contrôle manuel du contenu.</p>
+                    <ol>
+                        <li>Ouvrez le fichier .html avec un éditeur de texte (ex: Bloc-notes) et copiez tout son contenu.</li>
+                        <li>Dans Éléa, ajoutez une activité "Page".</li>
+                        <li>Dans l'éditeur de texte de la page, cliquez sur l'icône pour basculer en mode HTML (souvent représentée par \`</\>\`).</li>
+                        <li>Collez le contenu que vous aviez copié, puis enregistrez.</li>
+                    </ol>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div id="communaute" class="help-section help-community">
+        <h4><i class="fas fa-users"></i> Communauté et Support</h4>
+        <p>Caramel est un projet vivant, et votre avis est précieux !</p>
+        <ul>
+            <li><strong>Discuter & Poser des questions :</strong> Rejoignez-nous sur le salon <a href="https://tchap.beta.gouv.fr/#/room/#Caramel:agent.dinum.tchap.gouv.fr" target="_blank" rel="noopener noreferrer">Tchap</a> pour échanger avec la communauté.</li>
+            <li><strong>Signaler un bug :</strong> Un problème ? Créez un <a href="https://github.com/g-rem/caramel/issues" target="_blank" rel="noopener noreferrer">ticket</a>. Si possible, joignez le fichier JSON qui a causé l'erreur, cela nous aide énormément à le corriger.</li>
+            <li><strong>Soutenir le projet :</strong> Si l'outil vous plaît, laissez-nous une petite étoile sur la <a href="https://forge.apps.education.fr/caramel/caramel" target="_blank" rel="noopener noreferrer">page de la Forge</a>. C'est notre meilleure récompense !</li>
+        </ul>
+    </div>
     `,
     fast_mode: "Mode Rapide",
-    guided_mode: "Mode Guidé",
+    guided_mode: "Mode Avancé",
     who_are_you: "Qui êtes-vous ? (ex: Enseignant, formateur...)",
     what_to_address: "Que souhaitez-vous aborder ? (ex: La nature d'un angle en 6e...)",
     discipline: "Discipline (ex : Histoire)",
@@ -96,7 +212,7 @@ const translations_fr = {
     timeline_prompt_rule1: "1.  Chaque événement dans le tableau `date` doit avoir :",
     timeline_prompt_rule1_startDate: "-   `startDate` et `endDate`: Dates au format \"AAAA,MM,JJ\" ou \"AAAA\". Utilisez `endDate` pour définir une période.",
     timeline_prompt_rule1_headline: "-   `headline`: Titre de l'événement.",
-    timeline_prompt_rule1_text: "-   `text`: Description en HTML (utilise <p> et <strong>).",
+    timeline_prompt_rule1_text: "-   `text`: Description du texte. Utilise `*mot*` pour le gras, `**mot**` pour l'italique et `\\n` pour les sauts de ligne.",
     timeline_prompt_rule1_asset: "-   `asset`: Un objet optionnel pour une image illustrant l'événement.",
     timeline_prompt_rule1_tag: "-   `tag`: Un mot-clé qui caractérise la période (ex: 'histoire', 'science').",
     timeline_prompt_rule2: "2.  Pour chaque `asset`, recherche activement une image pertinente et libre de droits (ex: Wikimedia Commons). L'URL dans `media` doit être un lien direct et valide. Renseigne la source et la licence dans `credit`. Si aucune image appropriée n'est trouvée, omets complètement l'objet `asset`.",
@@ -106,13 +222,13 @@ const translations_fr = {
 {
 "timeline": {
 "headline": "Titre de la frise chronologique",
-"text": "<p>Introduction sur le thème de la frise.</p>",
+"text": "Introduction sur le thème de la *frise*.",
 "date": [
 {
 "startDate": "1914,07,28",
 "endDate": "1914,07,28",
 "headline": "Début de la Première Guerre mondiale",
-"text": "<p>L'Autriche-Hongrie déclare la guerre à la Serbie.</p>",
+"text": "L'Autriche-Hongrie déclare la **guerre** à la *Serbie*.",
 "asset": {
 "media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
 "caption": "L'archiduc François-Ferdinand juste avant son assassinat.",
@@ -124,7 +240,7 @@ const translations_fr = {
 "startDate": "1918,11,11",
 "endDate": "1918,11,11",
 "headline": "Armistice de 1918",
-"text": "<p>Signature de l'armistice à Rethondes, marquant la fin des combats.</p>",
+"text": "Signature de l'armistice à *Rethondes*, marquant la fin des combats.",
 "tag": "Traité"
 }
 ],
@@ -133,7 +249,7 @@ const translations_fr = {
 "startDate": "1914,07,28",
 "endDate": "1918,11,11",
 "headline": "Première Guerre mondiale",
-"text": "<div>C'est la période de la Grande Guerre.</div>",
+"text": "C'est la période de la Grande Guerre.",
 "tag": "Période historique"
 }
 ]
@@ -151,12 +267,12 @@ const translations_fr = {
     crossword_prompt_title: "`title`: Un titre pour l'activité.",
     crossword_prompt_words_array: "`words`: Un tableau de ${nombreQuestions} objets, chacun avec :",
     crossword_prompt_answer: "`answer`: Le mot à deviner.",
-    crossword_prompt_clue: "`clue`: La définition correspondante.",
-    crossword_prompt_extra_clue_optional: "`extraClue` (optionnel): Un objet contenant un indice supplémentaire. L'IA doit juger de la pertinence d'en ajouter un.",
-    crossword_prompt_task_description: "`taskDescription`: Une consigne claire.",
-    crossword_prompt_overall_feedback: "`overallFeedback`: Un tableau de 6 objets pour le feedback final, avec les scores de 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Le texte (`feedback`) doit être bienveillant, graduel, et toujours tourné à l'affirmative.",
+    crossword_prompt_clue: "`clue`: La définition correspondante. Il est interdit d'écrire le mot à trouver dans l'indice.",
+    crossword_prompt_extra_clue_optional: "`extraClue` (optionnel): Un objet contenant un indice supplémentaire. Le texte de l'indice peut utiliser `*mot*` pour le gras, `**mot**` pour l'italique et `\\n` pour les sauts de ligne. L'IA doit juger de la pertinence d'en ajouter un.",
+    crossword_prompt_task_description: "`taskDescription`: Une consigne claire et contextualisée. Utilise `*mot*` pour le gras, `**mot**` pour l'italique et `\\n` pour les sauts de ligne. Après un saut de ligne, précise les règles pour les mots composés : \"Pour les mots composés, ne mettez ni espace ni tiret (ex: 'portecles' pour 'porte-clés').\"",
+    crossword_prompt_overall_feedback: "`overallFeedback`: (RÈGLE STRICTE) Tu dois obligatoirement générer un tableau de 6 objets pour le feedback final, contextualisé au thème de l'exercice, en respectant scrupuleusement les tranches de score suivantes : 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Chaque objet doit avoir la forme `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. Le texte du `feedback` doit être bienveillant sans être excessif non plus, graduel et toujours tourné à l'affirmative.",
     crossword_prompt_content_rules_title: "**Règles pour le contenu :**",
-    crossword_prompt_rule1: "1.  Les mots (`answer`) doivent être des termes uniques et pertinents.",
+    crossword_prompt_rule1: "1.  RÈGLE STRICTE : Les mots (`answer`) ne doivent contenir que des lettres. Tout mot composé, acronyme ou expression doit être fusionné en un seul mot sans espaces, tirets ou autres caractères (ex: 'arc-en-ciel' devient 'arcenciel', 'D-DAY' devient 'DDAY').",
     crossword_prompt_rule2: "2.  Les définitions (`clue`) doivent être courtes et précises.",
     crossword_prompt_rule3: "3.  Le reste de la structure JSON (comportement, thème, etc.) doit être conservé tel quel.",
     crossword_prompt_example_json_title: "**Exemple de JSON pour un mot :**",
@@ -169,7 +285,7 @@ const translations_fr = {
 "clue": "Unité de base de la vie.",
 "extraClue": {
 "params": {
-"text": "<p>Elle peut être animale ou végétale.</p>"
+"text": "Elle peut être *animale* ou *végétale*."
 }
 }
 },
@@ -178,7 +294,7 @@ const translations_fr = {
 "clue": "Molécule portant l'information génétique."
 }
 ],
-"taskDescription": "<p>Complète la grille de mots croisés.</p>"
+"taskDescription": "*Complète* la **grille** de mots croisés."
 }
 \`\`\` `,
     crossword_prompt_generate_only_json: "Génère le JSON complet et valide, en remplissant le titre, la description et le tableau \"words\", sans aucun autre commentaire.",
@@ -199,9 +315,9 @@ const translations_fr = {
     essay_prompt_generate_json: "Génère un objet JSON complet et valide pour une activité H5P de type Essay.",
     essay_prompt_json_structure_title: "**Structure du JSON attendu :**",
     essay_prompt_json_structure_main_object: "L'objet doit contenir :",
-    essay_prompt_task_description: "`taskDescription`: Une consigne claire invitant l'élève à rédiger un texte sur le thème. Le thème doit être mis en gras (<strong>) et chaque phrase doit se terminer par un retour à la ligne (<p>).",
+    essay_prompt_task_description: "`taskDescription`: Une consigne claire invitant l'élève à rédiger un texte sur le thème. Utilise `*mot*` pour le gras, `**mot**` pour l'italique et `\\n` pour les sauts de ligne.",
     essay_prompt_keywords_array: "`keywords`: Un tableau de ${nombreQuestions} objets, chacun définissant un mot-clé que le système devra retrouver dans la réponse de l'élève.",
-    essay_prompt_overall_feedback: "`overallFeedback`: Un tableau de 6 objets pour le feedback final, avec les scores de 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Le texte (`feedback`) doit être bienveillant, graduel, et toujours tourné à l'affirmative.",
+    essay_prompt_overall_feedback: "`overallFeedback`: (RÈGLE STRICTE) Tu dois obligatoirement générer un tableau de 6 objets pour le feedback final, contextualisé au thème de l'exercice, en respectant scrupuleusement les tranches de score suivantes : 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Chaque objet doit avoir la forme `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. Le texte du `feedback` doit être bienveillant sans être excessif non plus, graduel et toujours tourné à l'affirmative.",
     essay_prompt_content_rules_title: "**Règles pour le contenu :**",
     essay_prompt_rule1: "1.  Chaque objet dans `keywords` doit contenir la clé `keyword` avec le mot à rechercher.",
     essay_prompt_rule2: "2.  Les mots-clés doivent être pertinents et essentiels pour évaluer la compréhension du thème.",
@@ -210,7 +326,7 @@ const translations_fr = {
     essay_prompt_example_json_title: "**Exemple de JSON pour un mot-clé :**",
     essay_prompt_example: `\`\`\`json
 {
-"taskDescription": "<p>Rédige un court texte expliquant la photosynthèse.</p>",
+"taskDescription": "Rédige un court texte expliquant la photosynthèse.",
 "keywords": [
 {
 "keyword": "lumière",
@@ -226,27 +342,116 @@ const translations_fr = {
     essay_prompt_generate_only_json: "Génère le JSON complet et valide, en remplissant la consigne et la liste de mots-clés, sans aucun autre commentaire.",
 
     // Moodle XML Prompt
-    moodle_xml_prompt_role: "Tu es un expert en ingénierie pédagogique créant une banque de questions pour une activité Test sur Moodle/Éléa.",
+    moodle_xml_prompt_role: "Tu es un expert en ingénierie pédagogique. Ta mission est de créer le contenu d'une activité Test avec sa banque de questions Moodle/Éléa en générant un objet JSON valide.",
     moodle_xml_prompt_intro: "Je souhaite créer un quiz de ${nombreQuestions} questions.",
-    moodle_xml_prompt_content_title: "Concernant le fond :",
-    moodle_xml_prompt_content_rule1: "Les réponses incorrectes doivent être cohérentes avec le sujet mais clairement fausses pour éviter le hasard.",
-    moodle_xml_prompt_content_rule2: "Il faut varier la difficulté des questions, idéalement du plus simple au plus complexe.",
-    moodle_xml_prompt_content_rule3: "Simplifie la formulation tout en maintenant la précision du contenu.",
-    moodle_xml_prompt_content_rule4: "Pour générer le feedback, tu donneras en une phrase ou deux les éléments de réponse attendus",
-    moodle_xml_prompt_question_types_intro: "Les questions doivent être réparties équitablement entre les types suivants :",
-    moodle_xml_prompt_question_type_multichoice: "- multichoice (QCM, avec une seule bonne réponse),",
-    moodle_xml_prompt_question_type_matching: "- matching (appariement),",
-    moodle_xml_prompt_question_type_numerical: "- numerical (réponse numérique avec ou sans tolérance),",
-    moodle_xml_prompt_question_type_truefalse: "- truefalse (vrai ou faux),",
-    moodle_xml_prompt_question_type_shortanswer: "- shortanswer (réponse rapide) avec d'éventuelles réponses alternatives,",
-    moodle_xml_prompt_question_type_cloze: "- cloze (texte à trous) avec les catégories MULTICHOICE, MULTICHOICE_H, MULTICHOICE_V, MULTICHOICE_S, MULTICHOICE_HS, MULTIRESPONSE, MULTIRESPONSE_H, MULTIRESPONSE_HS, NUMERICAL, SHORTANSWER ou SHORTANWSER_C qui te sembleront être les plus adaptées selon le contexte.",
-    moodle_xml_prompt_form_title: "Concernant la forme :",
-    moodle_xml_prompt_form_rule1: "Le fichier XML doit :",
-    moodle_xml_prompt_form_rule1_encoding: "Être encodé en UTF-8 (insérer la ligne d'encodage).",
-    moodle_xml_prompt_form_rule1_reusable: "Être directement réutilisable dans Moodle, sans erreur de format.",
-    moodle_xml_prompt_form_rule1_standard_structure: "Suivre la structure XML standard de Moodle (avec <quiz>, <question>, etc.).",
-    moodle_xml_prompt_form_rule1_special_chars: "Les symboles mathématiques comme '<' ou '>' doivent être encodés en entités HTML (par exemple, `&lt;` pour '<' et `&gt;` pour '>') pour éviter toute confusion avec les balises XML.",
-    moodle_xml_prompt_generate_only_xml: "Ne commente pas, ne formate pas, ne résume pas : je veux uniquement le contenu brut du fichier XML. Respecte scrupuleusement le format décrit, car je vais coller le résultat dans un autre outil qui attend ce format. Produis la réponse sous forme de code préformaté",
+    moodle_xml_prompt_content_title: "**Règles pour le contenu :**",
+    moodle_xml_prompt_content_rule1: "- Les réponses incorrectes doivent être plausibles mais fausses.",
+    moodle_xml_prompt_content_rule2: "- La difficulté des questions doit être variée.",
+    moodle_xml_prompt_content_rule3: "- La formulation doit être simple et précise.",
+    moodle_xml_prompt_content_rule4: "- Les feedbacks doivent expliquer brièvement la bonne réponse.",
+    moodle_xml_prompt_question_types_intro: "**Structure JSON attendue :**\nL'objet principal doit contenir les clés suivantes :\n- `bank_name`: Un nom court et descriptif pour la banque de questions.\n- `bank_description`: Une phrase décrivant le contenu de la banque.\n- `questions`: Un tableau d'objets où chaque objet représente une question et doit avoir un `type` et un `content`.",
+    moodle_xml_prompt_question_type_multichoice: `
+- **Pour le type \`multichoice\` (QCM) :**
+  \`\`\`json
+  {
+    "type": "multichoice",
+    "content": {
+      "name": "Titre de la question",
+      "questiontext": "Énoncé de la question.",
+      "feedback": "Feedback général.",
+      "answers": [
+        { "text": "Réponse 1", "fraction": 100, "feedback": "Feedback si choisie." },
+        { "text": "Réponse 2", "fraction": 0, "feedback": "Feedback si choisie." }
+      ]
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_question_type_matching: `
+- **Pour le type \`matching\` (Appariement) :**
+  \`\`\`json
+  {
+    "type": "matching",
+    "content": {
+      "name": "Titre de la question",
+      "questiontext": "Énoncé de la question.",
+      "feedback": "Feedback général.",
+      "subquestions": [
+        { "text": "Texte question 1", "answer": "Réponse 1" },
+        { "text": "Texte question 2", "answer": "Réponse 2" }
+      ]
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_question_type_numerical: `
+- **Pour le type \`numerical\` (Numérique) :**
+  \`\`\`json
+  {
+    "type": "numerical",
+    "content": {
+      "name": "Titre de la question",
+      "questiontext": "Énoncé de la question.",
+      "feedback": "Feedback général.",
+      "answer": { "number": 12.34, "tolerance": 0.1, "feedback": "Feedback pour la réponse." }
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_question_type_truefalse: `
+- **Pour le type \`truefalse\` (Vrai/Faux) :**
+  \`\`\`json
+  {
+    "type": "truefalse",
+    "content": {
+      "name": "Titre de la question",
+      "questiontext": "Énoncé de la question.",
+      "feedback": "Feedback général.",
+      "answer": { "value": true, "feedback_true": "Feedback si Vrai.", "feedback_false": "Feedback si Faux." }
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_question_type_shortanswer: `
+- **Pour le type \`shortanswer\` (Réponse courte) :**
+  \`\`\`json
+  {
+    "type": "shortanswer",
+    "content": {
+      "name": "Titre de la question",
+      "questiontext": "Énoncé de la question.",
+      "feedback": "Feedback général.",
+      "answers": [
+        { "text": "Réponse exacte 1", "fraction": 100, "feedback": "Feedback si choisie." },
+        { "text": "Réponse alternative", "fraction": 100, "feedback": "Feedback si choisie." }
+      ]
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_question_type_cloze: `
+- **Pour le type \`cloze\` (Texte à trous) :**
+  \`\`\`json
+  {
+    "type": "cloze",
+    "content": {
+      "name": "Titre de la question",
+      "questiontext": "Ceci est un texte avec un trou {1:SHORTANSWER:=Bonne réponse~Feedback} et un autre {1:MULTICHOICE:=Bonne réponse~Mauvaise réponse}.",
+      "feedback": "Feedback général."
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_form_title: "**Consignes finales :**",
+    moodle_xml_prompt_form_rule1: "Répartis équitablement les questions entre les différents types.",
+    moodle_xml_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire. Le résultat doit être un objet JSON unique contenant la clé `questions`.",
+
+    // Création test Éléa
+    moodle_xml_success_generation: "Fichier {fileName} généré avec succès !",
+    test_error_creation_mbz: "Erreur lors de la création du MBZ pour le Test:",
+    test_success_generation: "Fichier {fileName} généré avec succès !",
+    test_error_generic: "Erreur :",
+    test_backup_log: "Sauvegarde créée automatiquement par Caramel\n",
 
     // GIFT Prompt
     gift_prompt_role: "Tu es un expert en ingénierie pédagogique créant une banque de questions pour une activité Test sur Moodle/Éléa au format GIFT.",
@@ -276,10 +481,12 @@ const translations_fr = {
     flashcards_prompt_json_structure_main_object: "L'objet doit contenir :",
     flashcards_prompt_title: "`title`: Un titre pertinent pour l'activité.",
     flashcards_prompt_description: "`description`: Une consigne claire pour l'élève.",
+    flashcards_prompt_association_principle: "Le recto et le verso doivent être reliés par un critère unique et stable (ex.: terme→définition, figure→nombre de côtés, date→événement, auteur→œuvre). Utilise la même relation pour toutes les cartes et formule la consigne ainsi : « Associe chaque X à Y ». Réponses (`answer`) normalisées : un mot simple ou un nombre, minuscules, sans article ni ponctuation ; nombres en chiffres.",
     flashcards_prompt_cards_array: "`cards`: Un tableau de ${nombreQuestions} objets, où chaque objet représente une carte et contient :",
     flashcards_prompt_text: "`text`: La question ou le terme à deviner (recto).",
     flashcards_prompt_answer: "`answer`: La réponse ou la définition (verso). Attention, important : answer ne peut contenir qu'un seul mot simple ou un nombre.",
-    flashcards_prompt_tip: "`tip` (optionnel): Un indice au format HTML pour aider l'élève si la question est difficile. N'ajoute un indice que si cela te semble pertinent.",
+    flashcards_prompt_tip: "`tip` (optionnel): Un indice pour aider l'élève si la question est difficile. N'ajoute un indice que si cela te semble pertinent.",
+    flashcards_prompt_tip_formatting: "Pour les indices (`tip`), tu peux utiliser `*mot*` pour mettre en gras et `**mot**` pour mettre en italique afin de souligner les informations importantes.",
     flashcards_prompt_example_json_title: "**Exemple de JSON :**",
     flashcards_prompt_example: `\`\`\`json
 {
@@ -293,7 +500,7 @@ const translations_fr = {
 {
 "text": "Pays-Bas",
 "answer": "Amsterdam",
-"tip": "<p>C'est la ville des <strong>canaux</strong> et des tulipes !</p>"
+"tip": "C'est la ville des *canaux* et des tulipes !"
 }
 ]
 }
@@ -445,7 +652,7 @@ const translations_fr = {
     glossary_prompt_json_structure_main_object: "Génère un tableau de ${nombreQuestions} objets JSON.",
     glossary_prompt_panel_object: "",
     glossary_prompt_title: "`title`: Le mot ou l'expression à définir.",
-    glossary_prompt_content: "`text`: La définition au format HTML (utilise <p>, <strong>, etc.).",
+    glossary_prompt_content: "`text`: La définition. Utilise `*mot*` pour le gras, `**mot**` pour l'italique et `\\n` pour les sauts de ligne.",
     glossary_prompt_content_rules_title: "**Règles pour le contenu :**",
     glossary_prompt_rule1: "1.  Les définitions doivent être claires, concises et adaptées au niveau des élèves.",
     glossary_prompt_rule2: "",
@@ -454,11 +661,11 @@ const translations_fr = {
 [
 {
 "title": "Photosynthèse",
-"text": "<p>Processus par lequel les plantes vertes transforment la lumière du soleil en énergie.</p>"
+"text": "Processus par lequel les plantes vertes transforment la *lumière* du *soleil* en énergie."
 },
 {
 "title": "Cellule",
-"text": "<p>Unité de base de tous les êtres vivants.</p>"
+"text": "**Unité** de base de tous les êtres vivants."
 }
 ]
 \`\`\` `,
@@ -493,7 +700,7 @@ const translations_fr = {
 ]
 }
 \`\`\` `,
-    summary_prompt_overall_feedback: "`overallFeedback`: Un tableau de 6 objets pour le feedback final, avec les scores de 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Le texte (`feedback`) doit être bienveillant, graduel, et toujours tourné à l'affirmative, en lien avec le sujet.",
+    summary_prompt_overall_feedback: "`overallFeedback`: (RÈGLE STRICTE) Tu dois obligatoirement générer un tableau de 6 objets pour le feedback final, contextualisé au thème de l'exercice, en respectant scrupuleusement les tranches de score suivantes : 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Chaque objet doit avoir la forme `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. Le texte du `feedback` doit être bienveillant sans être excessif non plus, graduel et toujours tourné à l'affirmative.",
     summary_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire.",
 
     // Summary UI translations
@@ -529,7 +736,7 @@ const translations_fr = {
 }
  \`\`\` `,
     drag_word_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire.",
-    drag_word_prompt_overall_feedback: "`overallFeedback`: Un tableau de 6 objets pour le feedback final, avec les scores de 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Le texte (`feedback`) doit être bienveillant, graduel, et toujours tourné à l'affirmative, en lien avec le sujet.",
+    drag_word_prompt_overall_feedback: "`overallFeedback`: (RÈGLE STRICTE) Tu dois obligatoirement générer un tableau de 6 objets pour le feedback final, contextualisé au thème de l'exercice, en respectant scrupuleusement les tranches de score suivantes : 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Chaque objet doit avoir la forme `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. Le texte du `feedback` doit être bienveillant sans être excessif non plus, graduel et toujours tourné à l'affirmative.",
 
     // Drag the Words UI translations
     drag_words_check_answer: "Vérifier",
@@ -562,7 +769,7 @@ const translations_fr = {
 }
 \`\`\` `,
     blanks_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire.",
-    blanks_prompt_overall_feedback: "`overallFeedback`: Un tableau de 6 objets pour le feedback final, avec les scores de 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Le texte (`feedback`) doit être bienveillant, graduel, et toujours tourné à l'affirmative, en lien avec le sujet.",
+    blanks_prompt_overall_feedback: "`overallFeedback`: (RÈGLE STRICTE) Tu dois obligatoirement générer un tableau de 6 objets pour le feedback final, contextualisé au thème de l'exercice, en respectant scrupuleusement les tranches de score suivantes : 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Chaque objet doit avoir la forme `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. Le texte du `feedback` doit être bienveillant sans être excessif non plus, graduel et toujours tourné à l'affirmative.",
 
     // Fill in the Blanks UI translations
     blanks_show_solutions: "Afficher les solutions",
@@ -600,7 +807,7 @@ const translations_fr = {
     mark_words_prompt_json_structure_main_object: "L'objet doit contenir :",
     mark_words_prompt_task_description: "`taskDescription`: Une consigne claire.",
     mark_words_prompt_text_field: "`textField`: Le texte où les mots à marquer sont entourés d'astérisques (*mot*).",
-    mark_words_prompt_overall_feedback: "`overallFeedback`: Un tableau de 6 objets pour le feedback final, avec les scores de 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Le texte (`feedback`) doit être bienveillant, graduel, et toujours tourné à l'affirmative, en lien avec le sujet.",
+    mark_words_prompt_overall_feedback: "`overallFeedback`: (RÈGLE STRICTE) Tu dois obligatoirement générer un tableau de 6 objets pour le feedback final, contextualisé au thème de l'exercice, en respectant scrupuleusement les tranches de score suivantes : 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Chaque objet doit avoir la forme `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. Le texte du `feedback` doit être bienveillant sans être excessif non plus, graduel et toujours tourné à l'affirmative.",
     mark_words_prompt_content_rules_title: "**Règles pour le contenu :**",
     mark_words_prompt_rule1: "1.  Crée un paragraphe pertinent sur le thème.",
     mark_words_prompt_rule2: "2.  Identifie environ ${nombreQuestions} mots-clés importants à marquer.",
@@ -702,6 +909,12 @@ const translations_fr = {
 \`\`\` `,
     appariement_prompt_generate_only_json: "Génère uniquement l'objet JSON valide, sans aucun commentaire.",
 
+   // Appariement Creation
+   appariement_error_invalid_json: "La structure du JSON est invalide. Assurez-vous qu'elle contient un 'title' et un tableau 'pairs' où chaque paire a une 'question' et une 'answer'.",
+   appariement_activity_intro: "Trouvez les paires correspondantes.",
+   appariement_success_generation: "Fichier {fileName} généré avec succès !",
+   appariement_error_creation_mbz: "Erreur lors de la création du MBZ pour l'appariement:",
+
     // QCM Prompt
     qcm_prompt_role: "Tu es un expert en ingénierie pédagogique créant une activité Moodle \"QCM\".",
     qcm_prompt_num_questions: "**Nombre de questions :** 10",
@@ -725,17 +938,23 @@ const translations_fr = {
 "title": "QCM sur la Révolution Française",
 "questions": [
 {
-"text": "<p>Quelle est la date de la prise de la Bastille ?</p>",
+"text": "Quelle est la date de la prise de la Bastille ?",
 "answers": [
-{ "text": "<p>14 juillet 1789</p>", "iscorrect": 1 },
-{ "text": "<p>4 août 1789</p>", "iscorrect": 0 },
-{ "text": "<p>26 août 1789</p>", "iscorrect": 0 }
+{ "text": "14 juillet 1789", "iscorrect": 1 },
+{ "text": "4 août 1789", "iscorrect": 0 },
+{ "text": "26 août 1789", "iscorrect": 0 }
 ]
 }
 ]
 }
 \`\`\` `,
-    qcm_prompt_generate_only_json: "Génère uniquement l'objet JSON valide, sans aucun commentaire.",
+   qcm_prompt_generate_only_json: "Génère uniquement l'objet JSON valide, sans aucun commentaire.",
+
+   // QCM Creation
+   qcm_error_invalid_json: "La structure du JSON est invalide. Assurez-vous qu'elle contient un 'title' et un tableau 'questions' avec au moins une question et des réponses.",
+   qcm_activity_intro: "Répondez aux questions suivantes.",
+   qcm_success_generation: "Fichier {fileName} généré avec succès !",
+   qcm_error_creation_mbz: "Erreur lors de la création du MBZ pour le QCM:",
 
     // H5P Modules
     h5p_timeline_name: "Frise chronologique",
@@ -776,8 +995,8 @@ const translations_fr = {
     h5p_chart_description: "Créez un diagramme circulaire ou en barres pour visualiser des données.",
 
     // Moodle Modules
-    moodle_xml_name: "Test (Banque de questions)",
-    moodle_xml_description: "Générez une banque de 10 questions pour une activité Test prêtes à être importées au format XML",
+    moodle_xml_name: "Test",
+    moodle_xml_description: "Générez une banque de questions à importer directement dans une activité Test (au format xml ou format gift)",
     moodle_xml_help: "Pour ajouter un fichier XML dans une activité « Test » sur Moodle, commencez par créer l’activité. Ensuite, ouvrez le menu <strong>Plus</strong> et allez dans <strong>Banque de questions</strong>. Dans ce menu, cliquez sur <strong>Importer</strong>, choisissez le format <strong>XML Moodle</strong>, puis sélectionnez votre fichier et validez.",
     moodle_gift_name: "Format GIFT",
     moodle_gift_description: "Créez des questions au format GIFT, un moyen simple d'importer des questions dans Moodle.",
@@ -791,16 +1010,19 @@ const translations_fr = {
 
     moodle_glossaire_xml_name: "Glossaire (XML)",
     moodle_glossaire_xml_description: "Générez un glossaire prêt à être importé au format XML.",
+
+    elea_page_name: "Page",
+    elea_page_description: "Créer une page de contenu Éléa mise en forme visuellement.",
  
      // Dynamic content
     prompt_for_ia: "Prompt pour l'IA",
     copy_prompt: "Copier le prompt",
     fullscreen_prompt: "Plein écran",
     exit_fullscreen_prompt: "Quitter le plein écran",
-    lock_prompt: "Verrouiller le prompt",
-    unlock_prompt: "Déverrouiller le prompt",
-    go_duck: "🦆 Accéder à Duck.ai",
-    go_mistral: "Ⓜ️ Accéder à Le chat",
+    lock_prompt: "Verrouiller",
+    unlock_prompt: "Déverrouiller",
+    go_duck: "Accéder à Duck.ai",
+    go_mistral: "Accéder à Le chat",
     create_h5p_file: "Créer le fichier H5P",
     integrate_h5p_libraries: "Intégrer les bibliothèques H5P :",
     paste_ia_result: "Collez le résultat de l'IA dans la zone ci-dessous pour créer votre module.",
@@ -808,6 +1030,10 @@ const translations_fr = {
     create_xml_file: "Créer le fichier XML",
     paste_ia_result_xml: "Collez le XML généré par l'IA ci-dessous.",
     generate_xml_file: "Générer le fichier XML",
+    export_mbz: "Format MBZ",
+    export_gift: "Format GIFT",
+    export_xml: "Format XML",
+    export_html: "Format HTML",
 
     create_mbz_file_appariement: "Créer le fichier Appariement (.mbz)",
     paste_ia_result_appariement: "Collez le JSON généré par l'IA ci-dessous. Le titre de l'activité sera automatiquement extrait du JSON.",
@@ -815,23 +1041,29 @@ const translations_fr = {
     create_mbz_file_millionnaire: "Créer le fichier Millionnaire (.mbz)",
     paste_ia_result_millionnaire: "Collez le JSON généré par l'IA ci-dessous. Le titre de l'activité sera automatiquement extrait du JSON.",
     generate_mbz_millionnaire: "Générer l'activité Millionnaire (mbz)",
+    generate_mbz_test: "Générer l'activité Test (mbz)",
 
     create_mbz_file_qcm: "Créer le fichier QCM (.mbz)",
     paste_ia_result_qcm: "Collez le JSON généré par l'IA ci-dessous. Le titre de l'activité sera automatiquement extrait du JSON.",
     generate_mbz_qcm: "Générer l'activité QCM (mbz)",
+
+    create_mbz_file_page: "Créer le fichier Page (.mbz)",
+    paste_ia_result_page: "Collez le JSON généré par l'IA ci-dessous pour construire la page.",
+    generate_mbz_page: "Générer l'activité Page (mbz)",
 
     // Moodle XML specific
     moodle_xml_placeholder: "Le XML Moodle apparaîtra ici...",
     paste_xml_placeholder: "Collez ici le XML complet généré par l'IA...",
 
     // H5P champs textes vides
-    generate_prompts_placeholder: "Le prompt pour l'IA apparaîtra ici une fois que vous aurez cliqué sur 'Générer les prompts'.",
+    generate_prompts_placeholder: "Le prompt pour l'IA apparaîtra ici une fois que vous aurez compléter au moins un champ du mode Rapide ou du mode Avancé.",
     paste_json_or_text: "Collez ici le contenu JSON ou le texte généré par l'IA pour créer votre activité.",
 
     // Notifications
     prompts_generated_successfully: "Prompts générés avec succès !",
-    error_please_fill_fields: "Veuillez remplir tous les champs du mode simple.",
-    error_please_fill_guided_fields: "Veuillez remplir tous les champs du mode guidé.",
+    success_copy: "✓ Copié !",
+    error_please_fill_fields: "Veuillez remplir au moins un champ du mode Rapide.",
+    error_please_fill_guided_fields: "Veuillez remplir au moins un champ du mode Avancé.",
     error_field_empty: "Le champ est vide. Veuillez d'abord générer un prompt.",
     error_copy_failed: "La copie a échoué.",
     error_h5p_module_not_found: "Module '{moduleKey}' non trouvé.",
@@ -946,7 +1178,7 @@ const translations_fr = {
     true_false_prompt_example_json_title: "--- EXEMPLE DE JSON ---",
     true_false_prompt_example: `\`\`\`json
 {
-"question": "<p>Oslo est la capitale de la Norvège.</p>",
+"question": "Oslo est la capitale de la Norvège.",
 "correct": "true",
 "feedbackOnCorrect": "Bonne réponse ! Oslo est bien la capitale de la Norvège.",
 "feedbackOnWrong": "Mauvaise réponse. La capitale de la Norvège est Oslo."
@@ -999,27 +1231,35 @@ const translations_fr = {
     multiple_choice_prompt_answers_array: "`answers`: Un tableau d'objets, chacun représentant une réponse.",
     multiple_choice_prompt_text: "`text`: Le texte de la réponse (format HTML).",
     multiple_choice_prompt_correct: "`correct`: Un booléen (`true` ou `false`) indiquant si c'est la bonne réponse.",
-    multiple_choice_prompt_overall_feedback: "`overallFeedback`: Un tableau de 6 objets pour le feedback final, avec les scores de 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Le texte (`feedback`) doit être bienveillant, graduel, et toujours tourné à l'affirmative.",
+    multiple_choice_prompt_overall_feedback: "`overallFeedback`: (RÈGLE STRICTE) Tu dois obligatoirement générer un tableau de 6 objets pour le feedback final, contextualisé au thème de l'exercice, en respectant scrupuleusement les tranches de score suivantes : 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Chaque objet doit avoir la forme `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. Le texte du `feedback` doit être bienveillant sans être excessif non plus, graduel et toujours tourné à l'affirmative.",
     multiple_choice_prompt_content_rules_title: "**Règles pour le contenu :**",
     multiple_choice_prompt_rule1: "1.  Il ne doit y avoir qu'une seule bonne réponse (`\"correct\": true`).",
     multiple_choice_prompt_rule2: "2.  Propose plusieurs mauvaises réponses (`\"correct\": false`).",
     multiple_choice_prompt_example_json_title: "**Exemple de JSON :**",
     multiple_choice_prompt_example: `\`\`\`json
 {
-"question": "<p>Quelle est la couleur réelle de la baie de cassis ?</p>",
+"question": "Quelle est la couleur réelle de la baie de cassis ?",
 "answers": [
 {
 "correct": true,
-"text": "<div>Violet très foncé</div>"
+"text": "Violet très foncé"
 },
 {
 "correct": false,
-"text": "<div>Bleu</div>"
+"text": "Bleu"
 },
 {
 "correct": false,
-"text": "<div>Noir</div>"
+"text": "Noir"
 }
+],
+"overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "Feedback pour 0-10%" },
+    { "from": 11, "to": 30, "feedback": "Feedback pour 11-30%" },
+    { "from": 31, "to": 50, "feedback": "Feedback pour 31-50%" },
+    { "from": 51, "to": 70, "feedback": "Feedback pour 51-70%" },
+    { "from": 71, "to": 90, "feedback": "Feedback pour 71-90%" },
+    { "from": 91, "to": 100, "feedback": "Feedback pour 91-100%" }
 ]
 }
 \`\`\` `,
@@ -1043,7 +1283,7 @@ const translations_fr = {
     find_the_words_prompt_task_description: "`taskDescription`: Une consigne claire pour l'activité.",
     find_the_words_prompt_word_list: "`wordList`: Une chaîne de caractères contenant les mots à trouver, séparés par des virgules et sans espaces.",
     find_the_words_prompt_content_rules_title: "**Règles pour le contenu :**",
-    find_the_words_prompt_rule1: "1.  La `wordList` doit être une chaîne de caractères unique avec les mots séparés par des virgules.",
+    find_the_words_prompt_rule1: "1.  La `wordList` doit être une chaîne de caractères unique avec les mots séparés par des virgules. Chaque mot doit être simple (pas de groupe de mots). Les nombres, symboles de ponctuation et lettres accentuées sont interdits (ex: 'élève' doit s'écrire 'eleve').",
     find_the_words_prompt_example_json_title: "**Exemple de JSON :**",
     find_the_words_prompt_example: `\`\`\`json
 {
@@ -1086,21 +1326,22 @@ const translations_fr = {
     sort_the_paragraphs_prompt_generate_json: "Génère un objet JSON complet et valide pour une activité H5P d'ordonnancement de paragraphes.",
     sort_the_paragraphs_prompt_json_structure_title: "**Structure du JSON attendu :**",
     sort_the_paragraphs_prompt_json_structure_main_object: "L'objet doit contenir :",
-    sort_the_paragraphs_prompt_task_description: "`taskDescription`: Une consigne claire pour l'activité.",
-    sort_the_paragraphs_prompt_paragraphs_array: "`paragraphs`: Un tableau de chaînes de caractères, chaque chaîne représentant un paragraphe à ordonner. Les paragraphes doivent être dans le bon ordre.",
-    sort_the_paragraphs_prompt_overall_feedback: "`overallFeedback`: Un tableau de 6 objets pour le feedback final, avec les scores de 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Le texte (`feedback`) doit être bienveillant, graduel, et toujours tourné à l'affirmative.",
+    sort_the_paragraphs_prompt_task_description: "`taskDescription`: Une consigne claire pour l'activité. Utilise `*mot*` pour le gras, `**mot**` pour l'italique et `\\n` pour les sauts de ligne.",
+    sort_the_paragraphs_prompt_paragraphs_array: "`paragraphs`: Un tableau de chaînes de caractères, chaque chaîne représentant un paragraphe à ordonner. Les paragraphes doivent être dans le bon ordre. Utilise `*mot*` pour le gras, `**mot**` pour l'italique.",
+    sort_the_paragraphs_prompt_overall_feedback: "`overallFeedback`: (RÈGLE STRICTE) Tu dois obligatoirement générer un tableau de 6 objets pour le feedback final, contextualisé au thème de l'exercice, en respectant scrupuleusement les tranches de score suivantes : 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Chaque objet doit avoir la forme `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. Le texte du `feedback` doit être bienveillant sans être excessif non plus, graduel et toujours tourné à l'affirmative.",
     sort_the_paragraphs_prompt_content_rules_title: "**Règles pour le contenu :**",
-    sort_the_paragraphs_prompt_rule1: "1.  Le tableau `paragraphs` doit contenir une liste de paragraphes dans le bon ordre logique.",
+    sort_the_paragraphs_prompt_rule1: "1. `paragraphs` doit former une progression logique inférable par le contenu, sans indices artificiels (numéros, dates/horaires, « d’abord/ensuite/enfin »), sauf demande explicite.",
+    sort_the_paragraphs_prompt_rule2: "2. Pas de liste plate : chaque phrase fait avancer le même fil (cause→effet, préparation→action→résultat, général→particulier) pour rendre l’ordre déductible.",
     sort_the_paragraphs_prompt_example_json_title: "**Exemple de JSON :**",
     sort_the_paragraphs_prompt_example: `\`\`\`json
 {
-"taskDescription": "<p>Ma routine du matin :</p>",
+"taskDescription": "Ma routine du matin :",
 "paragraphs": [
-"<p>D'abord, je me réveille à 7h30</p>",
-"<p>Ensuite, je m'habille</p>",
-"<p>Puis, je prends mon petit-déjeuner</p>",
-"<p>Après, je me brosse les dents</p>",
-"<p>Enfin, je vais à l'école</p>"
+  "Je remplis la bouilloire avec de l’eau fraîche.",
+  "Je la mets en marche.",
+  "Je dépose un sachet de thé dans la tasse.",
+  "Je verse l’eau frémissante sur le sachet.",
+  "Je retire le sachet lorsque l’infusion est prête."
 ]
 }
  \`\`\` `, 
@@ -1131,7 +1372,7 @@ const translations_fr = {
     single_choice_set_prompt_choices_array: "`choices`: Un tableau d'objets, où chaque objet représente une question et contient :",
     single_choice_set_prompt_question: "`question`: La question à poser.",
     single_choice_set_prompt_answers_array: "`answers`: Un tableau de chaînes de caractères. La première chaîne est toujours la bonne réponse.",
-    single_choice_set_prompt_overall_feedback: "`overallFeedback`: Un tableau de 6 objets pour le feedback final, avec les scores de 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Le texte (`feedback`) doit être bienveillant, graduel, et toujours tourné à l'affirmative.",
+    single_choice_set_prompt_overall_feedback: "`overallFeedback`: (RÈGLE STRICTE) Tu dois obligatoirement générer un tableau de 6 objets pour le feedback final, contextualisé au thème de l'exercice, en respectant scrupuleusement les tranches de score suivantes : 0-10, 11-30, 31-50, 51-70, 71-90, et 91-100. Chaque objet doit avoir la forme `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. Le texte du `feedback` doit être bienveillant sans être excessif non plus, graduel et toujours tourné à l'affirmative.",
     single_choice_set_prompt_content_rules_title: "**Règles pour le contenu :**",
     single_choice_set_prompt_rule1: "1.  Dans chaque tableau `answers`, la première réponse est toujours la bonne.",
     single_choice_set_prompt_example_json_title: "**Exemple de JSON :**",
@@ -1147,8 +1388,13 @@ const translations_fr = {
 "answers": ["Asie", "Afrique", "Europe"]
 }
 ],
-"overallFeedback": [
-{"from": 0, "to": 100, "feedback": "Tu as :numcorrect bonnes réponses sur :maxscore"}
+"overallFeedback":
+    { "from": 0, "to": 10, "feedback": "Feedback pour 0-10%" },
+    { "from": 11, "to": 30, "feedback": "Feedback pour 11-30%" },
+    { "from": 31, "to": 50, "feedback": "Feedback pour 31-50%" },
+    { "from": 51, "to": 70, "feedback": "Feedback pour 51-70%" },
+    { "from": 71, "to": 90, "feedback": "Feedback pour 71-90%" },
+    { "from": 91, "to": 100, "feedback": "Feedback pour 91-100%" }
 ]
 }
 \`\`\` `,
@@ -1171,53 +1417,41 @@ const translations_fr = {
     dialog_cards_prompt_generate_json: "Génère un objet JSON contenant uniquement les clés `title`, `description` et `dialogs` pour une activité H5P de type Cartes de dialogue.",
     dialog_cards_prompt_json_structure_title: "**Structure du JSON attendu :**",
     dialog_cards_prompt_json_structure_main_object: "L'objet doit contenir :",
-    dialog_cards_prompt_title: "`title`: Un titre pour l'activité (format HTML).",
+    dialog_cards_prompt_title: "`title`: Un titre pour l'activité. Ne pas inclure de balises HTML.",
     dialog_cards_prompt_description: "`description`: Une courte description ou consigne (format HTML).",
     dialog_cards_prompt_dialogs_array: "`dialogs`: Un tableau de ${nombreQuestions} objets, chacun représentant une carte et contenant :",
-    dialog_cards_prompt_text: "`text`: Le texte du recto de la carte (format HTML).",
-    dialog_cards_prompt_answer: "`answer`: Le texte du verso de la carte (format HTML).",
-    dialog_cards_prompt_tips: "`tips` (optionnel) : Un objet pour les indices. Si tu le juges pédagogiquement utile, ajoute un indice pour le recto avec la clé `front` et/ou pour le verso avec la clé `back`.",
+    dialog_cards_prompt_text: "`text`: Le texte du recto de la carte. Ne pas inclure de balises HTML.",
+    dialog_cards_prompt_answer: "`answer`: Le texte du verso de la carte. Ne pas inclure de balises HTML.",
+    dialog_cards_prompt_tips: "`tips` (optionnel) : Un objet pour les indices (texte brut uniquement, sans formatage). Si tu le juges pédagogiquement utile, ajoute un indice pour le recto avec la clé `front` et/ou pour le verso avec la clé `back`.",
     dialog_cards_prompt_content_rules_title: "**Règles pour le contenu :**",
-    dialog_cards_prompt_rule1: "1.  Les textes pour le recto (`text`) et le verso (`answer`) doivent être clairs et concis. **Mets en forme le contenu avec du HTML (<strong> pour le gras, <em> pour l'italique) pour améliorer la lisibilité et mettre en évidence les informations importantes.**",
-    dialog_cards_prompt_rule2: "2.  N'ajoute ni image, ni son.",
-    dialog_cards_prompt_rule3: "",
+    dialog_cards_prompt_rule1: "1.  Pour `text` et `answer`, tu peux utiliser `*mot*` pour mettre en gras et `**mot**` pour mettre en italique.",
     dialog_cards_prompt_example_json_title: "**Exemple de JSON :**",
     dialog_cards_prompt_example: `\`\`\`json
 {
-"title": "<p>Apprenez les noms des fruits en anglais</p>",
-"description": "<p>Les noms des fruits sont présentés en français. Retournez les cartes pour voir la traduction anglaise correcte.</p>",
+"title": "Apprenez les noms des fruits en anglais",
+"description": "Les noms des fruits sont présentés en français. Retournez les cartes pour voir la traduction anglaise correcte.",
 "dialogs": [
 {
-"text": "<p style=\\"text-align: center;\\">Fraises</p>",
-"answer": "<p style=\\"text-align: center;\\">Strawberries</p>",
-"image": {
-"copyright": {
-"license": "CC BY-SA",
-"source": "https://commons.wikimedia.org/wiki/File:Bowl_of_Strawberries.jpg",
-"author": "ShakataGaNai",
-"title": "Bowl_of_Strawberries.jpg",
-"version": "4.0"
-},
-"imageAltText": "Des fruits rouges avec des feuilles vertes"
-},
-"audio": [],
-"tips": {}
+"title": "Retrouvez les verbes anglais au présent",
+"description": "À partir d'une phrase en anglais au prétérit, retrouvez le verbe à l'infinitif. Retournez les cartes pour vérifier vos réponses.",
+"dialogs": [
+{
+"text": "He *visited* his grandmother.",
+"answer": "to *visit*",
+"tips": {
+"front": "Identifiez le verbe au prétérit.",
+"back": "Pensez à la forme de base du verbe."
+}
 },
 {
-"text": "<p style=\\"text-align: center;\\">Framboises</p>",
-"answer": "<p style=\\"text-align: center;\\">Raspberries</p>",
-"image": {
-"copyright": {
-"license": "CC BY",
-"source": "https://commons.wikimedia.org/wiki/File:Summer_raspberries,_2008.jpg",
-"title": "Summer_raspberries,_2008.jpg",
-"author": "www.bluewaikiki.com",
-"version": "4.0"
-},
-"imageAltText": "Des baies rouges"
-},
-"audio": [],
-"tips": {}
+"text": "She *played* soccer.",
+"answer": "to *play*",
+"tips": {
+"front": "Cherchez le verbe passé.",
+"back": "Visualisez le verbe dans une phrase au présent."
+}
+}
+]
 }
 ]
 }
@@ -1286,9 +1520,12 @@ const translations_fr = {
 "blanksText": "<p>Il parle anglais mais il (ne / parler) ___________<strong>&nbsp;</strong>allemand.</p>"
 },
 "overallFeedback": [
-{"from": 0, "to": 50, "feedback": "Essaie encore !"},
-{"from": 51, "to": 75, "feedback": "C’est correct dans l’ensemble !"},
-{"from": 76, "to": 100, "feedback": "Bravo !"}
+    { "from": 0, "to": 10, "feedback": "Feedback pour 0-10%" },
+    { "from": 11, "to": 30, "feedback": "Feedback pour 11-30%" },
+    { "from": 31, "to": 50, "feedback": "Feedback pour 31-50%" },
+    { "from": 51, "to": 70, "feedback": "Feedback pour 51-70%" },
+    { "from": 71, "to": 90, "feedback": "Feedback pour 71-90%" },
+    { "from": 91, "to": 100, "feedback": "Feedback pour 91-100%" }
 ]
 }
 \`\`\` `,
@@ -1381,7 +1618,7 @@ const translations_fr = {
 -   **Racine :** Un objet principal contenant deux clés : \`name\` (le nom du glossaire) et \`entries\` (un tableau d'objets).
 -   **Chaque objet dans \`entries\` doit contenir :**
     -   \`concept\` : Le mot ou l'expression à définir.
-    -   \`definition\` : La définition claire et concise.
+    -   \`definition\` : La définition claire et concise. Utilise *mot* pour mettre en gras, **mot** pour mettre en italique et \\n pour les sauts de ligne, uniquement lorsque c'est pertinent pédagogiquement.
     -   \`aliases\` (optionnel) : Un tableau de chaînes de caractères pour les synonymes ou termes alternatifs. N'ajoute cette clé que si des alias pertinents existent.`,
     glossaire_xml_prompt_example_title: "**Exemple de JSON :**",
     glossaire_xml_prompt_example: `\`\`\`json
@@ -1390,15 +1627,107 @@ const translations_fr = {
   "entries": [
     {
       "concept": "Journaliste",
-      "definition": "Personne qui collecte, vérifie et diffuse des informations.",
+      "definition": "Personne qui **collecte**, vérifie et diffuse des *informations*.",
       "aliases": ["Reporter", "Chroniqueur"]
     },
     {
       "concept": "Source",
-      "definition": "Origine d'une information."
+      "definition": "Origine d'une *information*."
     }
   ]
 }
 \`\`\``,
-    glossaire_xml_prompt_generate_only_xml: "Génère uniquement le code JSON valide, sans aucun commentaire."
+    glossaire_xml_prompt_generate_only_xml: "Génère uniquement le code JSON valide, sans aucun commentaire.",
+    
+    //Barre de menu
+    tab_all: "Tout",
+    tab_quiz: "Quiz & Tests",
+    tab_text: "Manipulation de texte",
+    tab_memory: "Mémorisation & Découverte",
+    tab_elea: "Éléa",
+    tab_h5p: "H5P",
+    tab_moodle: "Moodle",
+
+    //Bandeau modale de génération
+    get_prompt_step: "1/2 Obtenir le prompt",
+    create_file_step: "2/2 Créer le fichier",
+    generate_one_click: "Générer en un clic",
+    simple_mode: "Simple",
+    advanced_mode: "Guidé",
+    
+    // RAG feature
+    activate_rag: "Activer la consultation de document",
+    rag_tooltip: "Permet de copier-coller un texte ou de charger un PDF. Le contenu sera utilisé comme source principale pour générer les activités.",
+    rag_title: "Joindre des documents (facultatif)",
+    rag_note: "Si vous souhaitez que l'IA travaille exclusivement à partir de vos documents, collez votre texte ou déposez vos fichiers ici. Sinon, laissez cette zone vide pour permettre à l'IA de rechercher les informations par elle-même.",
+    upload_pdf: "Ou téléverser un PDF pour analyse",
+    pdf_loading: "Chargement du PDF...",
+    pdf_processing_page: "Traitement de la page",
+    ocr_recognizing_page: "Reconnaissance (OCR) de la page",
+    ocr_success: "Le document a été traité avec succès.",
+    ocr_error: "Une erreur est survenue lors du traitement.",
+    error_invalid_pdf: "Veuillez sélectionner un fichier PDF valide.",
+    error_fullscreen: "Le mode plein écran a échoué:",
+    lock_text: "Verrouiller",
+    unlock_text: "Déverrouiller",
+    rag_instruction: "\n\nTu devras uniquement pour générer le contenu consulter les infos suivantes :",
+    
+    // Caramel Animation Steps
+    caramel_animation_step_1: "On verse le sucre dans la casserole...",
+    caramel_animation_step_2: "On ajoute un peu d'eau...",
+    caramel_animation_step_3: "On fait chauffer à feu moyen...",
+    caramel_animation_step_4: "Le sucre commence à fondre...",
+    caramel_animation_step_5: "Ça commence à colorer...",
+    caramel_animation_step_6: "On remue doucement...",
+    caramel_animation_step_7: "Le caramel prend une belle couleur ambrée...",
+    caramel_animation_step_8: "On ajoute la crème chaude...",
+    caramel_animation_step_9: "Attention aux éclaboussures !",
+    caramel_animation_step_10: "On mélange bien...",
+    caramel_animation_step_11: "C'est presque prêt !",
+
+    // Page Prompt
+    page_prompt_role: "Tu es un expert en ingénierie pédagogique créant une activité Page, structurée, pour Éléa/Moodle.",
+    page_prompt_mission: "**Ta mission :**",
+    page_prompt_generate_json: "Génère un objet JSON pour construire une page de contenu Éléa. La structure de la page est basée sur des blocs prédéfinis. Tu dois sélectionner les blocs les plus pertinents parmi la liste ci-dessous pour répondre à la demande de l'utilisateur.",
+    page_prompt_json_structure_title: "**Structure du JSON attendu :**",
+    page_prompt_json_structure_main_object: "L'objet principal doit contenir une clé \"title\" pour le titre de la page, une clé \"intro\" pour une introduction claire et compréhensible du contenu de cours qui suit, et une clé \"blocks\" qui est un tableau d'objets. Chaque objet représente un bloc de contenu et doit avoir un \"type\" correspondant à un des blocs ci-dessous, et un objet \"data\" contenant les informations spécifiques au bloc.",
+    page_prompt_blocks_list_title: "**Liste des blocs disponibles :**",
+    page_prompt_block_01: "- `#01_hero_header`: Bandeau d'ouverture. `{ \"type\": \"#01_hero_header\", \"data\": { \"title\": \"...\", \"subtitle\": \"...\" } }`",
+    page_prompt_block_02: "- `#02_nav_summary`: Sommaire avec des liens internes. `{ \"type\": \"#02_nav_summary\", \"data\": { \"links\": [{ \"href\": \"#...\", \"text\": \"...\" }] } }`",
+    page_prompt_block_03: "- `#03_histo_reperes`: Repères historiques en 3 cartes. `{ \"type\": \"#03_histo_reperes\", \"data\": { \"title\": \"...\", \"cards\": [{ \"title\": \"...\", \"text\": \"...\" }] } }` (max 3 cartes)",
+    page_prompt_block_04: "- `#04_callout_set`: Bandeaux Objectifs, À savoir, Alerte. `{ \"type\": \"#04_callout_set\", \"data\": { \"title\": \"...\", \"callouts\": [{ \"type\": \"objectif|savoir|alerte\", \"text\": \"...\" }] } }`",
+    page_prompt_block_05: "- `#05_stats_cards`: Chiffres-clés en cartes. `{ \"type\": \"#05_stats_cards\", \"data\": { \"title\": \"...\", \"stats\": [{ \"value\": \"...\", \"label\": \"...\" }] } }`",
+    page_prompt_block_06: "- `#06_lexique_table`: Tableau de vocabulaire. `{ \\\"type\\\": \\\"#06_lexique_table\\\", \\\"data\\\": { \\\"title\\\": \\\"...\\\", \\\"caption\\\": \\\"...\\\", \\\"headers\\\": [\\\"...\\\", \\\"...\\\"], \\\"rows\\\": [[\\\"...\\\",\\\"...\\\"]] } }`",
+    page_prompt_block_07: "- `#07_glossary_chips`: Glossaire en pastilles. `{ \"type\": \"#07_glossary_chips\", \"data\": { \"title\": \"...\", \"chips\": [\"...\"] } }`",
+    page_prompt_block_08: "- `#08_monuments_grid`: Cartes monuments avec images. `{ \"type\": \"#08_monuments_grid\", \"data\": { \"title\": \"...\", \"cards\": [{ \"img_src\": \"...\", \"img_alt\": \"...\", \"caption\": \"...\", \"title\": \"...\", \"text\": \"...\" }] } }`",
+    page_prompt_block_09: "- `#09_figures_comparison`: Deux images comparées. `{ \"type\": \"#09_figures_comparison\", \"data\": { \"title\": \"...\", \"images\": [{ \"src\": \"...\", \"alt\": \"...\", \"caption\": \"...\" }, { \"src\": \"...\", \"alt\": \"...\", \"caption\": \"...\" }] } }`",
+    page_prompt_block_10: "- `#10_table_comparison`: Tableau de comparaison. `{ \\\"type\\\": \\\"#10_table_comparison\\\", \\\"data\\\": { \\\"title\\\": \\\"...\\\", \\\"caption\\\": \\\"...\\\", \\\"headers\\\": [\\\"...\\\", \\\"...\\\"], \\\"rows\\\": [[\\\"...\\\",\\\"...\\\"]] } }`",
+    page_prompt_block_11: "- `#11_definition_box`: Encadré Définition. `{ \"type\": \"#11_definition_box\", \"data\": { \"title\": \"Définition\", \"text\": \"...\" } }`",
+    page_prompt_block_12: "- `#12_context_paragraphs`: Paragraphes de cours. `{ \"type\": \"#12_context_paragraphs\", \"data\": { \"title\": \"...\", \"paragraphs\": [\"...\", \"...\"] } }`",
+    page_prompt_block_13: "- `#13_monument_sheet_long`: Fiche détaillée. `{ \"type\": \"#13_monument_sheet_long\", \"data\": { \"title\": \"...\", \"paragraphs\": [\"...\"] } }`",
+    page_prompt_block_14: "- `#14_faq_block`: Foire aux questions. `{ \"type\": \"#14_faq_block\", \"data\": { \"title\": \"FAQ\", \"questions\": [{ \"q\": \"...\", \"a\": \"...\" }] } }`",
+    page_prompt_block_15: "- `#15_myths_realities`: Mythes vs Réalités. `{ \"type\": \"#15_myths_realities\", \"data\": { \"myths\": { \"title\": \"Mythes\", \"items\": [\"...\"] }, \"realities\": { \"title\": \"Réalités\", \"items\": [\"...\"] } } }`",
+    page_prompt_block_17: "- `#17_method_image_desc`: Méthode pour décrire une image. `{ \"type\": \"#17_method_image_desc\", \"data\": { \"title\": \"...\", \"steps\": [\"...\"] } }`",
+    page_prompt_block_18: "- `#18_sito_graphy`: Sitographie. `{ \"type\": \"#18_sito_graphy\", \"data\": { \"title\": \"Sitographie\", \"links\": [{ \"href\": \"...\", \"text\": \"...\" }] } }`",
+    page_prompt_block_19: "- `#19_quote_bilingual`: Citation bilingue. `{ \"type\": \"#19_quote_bilingual\", \"data\": { \"title\": \"...\", \"quote_fr\": \"...\", \"quote_alt\": \"...\", \"caption\": \"...\" } }`",
+    page_prompt_content_rules_title: "**Règles pour le contenu :**",
+    page_prompt_rule1: "1.  Le JSON doit être valide.",
+    page_prompt_rule2: "2.  Le contenu textuel peut utiliser les balises Markdown `*mot*` pour le gras et `**mot**` pour l'italique.",
+    page_prompt_rule3: "3.  Pour les images, trouve des URL pertinentes et libres de droits (ex: Wikimedia Commons).",
+    page_prompt_example_json_title: "**Exemple de JSON :**",
+    page_prompt_example_json: `\`\`\`json
+{
+  "title": "La Révolution Française",
+  "blocks": [
+    { "type": "#01_hero_header", "data": { "title": "La Révolution Française", "subtitle": "Repères essentiels" } },
+    { "type": "#12_context_paragraphs", "data": { "title": "Contexte", "paragraphs": ["La Révolution française est une période de bouleversements...", "Plusieurs causes expliquent cet événement..."] } },
+    { "type": "#08_monuments_grid", "data": { "title": "Événements clés", "cards": [{ "img_src": "https://.../Prise_de_la_Bastille.jpg", "img_alt": "Prise de la Bastille", "caption": "14 juillet 1789", "title": "Prise de la Bastille", "text": "Cet événement marque le début de la Révolution." }] } }
+  ]
+}
+\`\`\``,
+    page_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire.",
+    drag_drop_text: "Glissez-déposez un fichier PDF ici",
+    or_text: "ou",
+    upload_pdf_btn: "Choisissez un fichier",
+    paste_your_text_here: "Copiez-collez votre texte ici..."
 };

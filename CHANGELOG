@@ -1,20 +1,62 @@
-Caramel – Journal des modifications
+# Caramel – Journal des modifications
 
-2.0 – 25-09-2025
+## 3.0 – 12-10-2025
 
+### ✨ Interface et expérience utilisateur (UX/UI)
+- **Refonte de l'interface** : L'interface a été entièrement repensée pour être plus intuitive, responsive et organisée par catégories de modules (H5P, Éléa, etc.).
+- **Nouveau parcours de génération** : La saisie se fait désormais via deux approches : le **Mode Rapide** (par défaut) et le **Mode Avancé**. Une fois les informations saisies, un clic sur une tuile lance directement la génération.
+- **Affichage Simple / Guidé** : Dans la modale de génération, il est possible de basculer entre un affichage **Simple** (copier-coller direct du JSON) et un affichage **Guidé** (champs de prompts détaillés).
+- **Améliorations visuelles** :
+    - Amélioration du rendu visuel des fichiers générés.
+    - Homogénéisation des couleurs et des boutons pour une meilleure cohérence.
+    - Ajout d'étiquettes "H5P" ou "ELEA" au survol des tuiles et dans la modale de génération pour identifier facilement le type de contenu.
+    - La zone d'OCR a été affinée visuellement.
+    - La modale d'aide a été repensée.
+    - Une animation de "caramélisation" se déclenche lors de la génération d'un fichier.
+- **Ergonomie et accessibilité** :
+    - Modes plein écran disponibles et copier-coller facilité.
+    - Le footer reste désormais fixé en bas de la page.
+    - Sur les petits écrans, une barre de défilement horizontale a été ajoutée pour le menu des catégories.
+    - La modale de génération est maintenant responsive pour éviter les débordements.
+- **Ajout d'un bouton "Chat"** dans le menu.
 
-Génération automatique de prompts IA pour :
+### 🚀 Fonctionnalités et améliorations
+- **OCR (Reconnaissance de caractères)** :
+    - Un nouveau bouton dans le menu du **Mode Avancé** permet de charger un PDF.
+    - Le traitement est effectué localement dans le navigateur, garantissant la confidentialité des données (conforme RGPD).
+    - Le texte extrait peut ensuite être utilisé pour la génération de contenu via l'IA.
+- **IA Albert (DINUM)** :
+    - Intégration de l'IA de la DINUM, conforme au RGPD, garantissant qu'aucune donnée n'est envoyée sur des serveurs externes.
+    - Plusieurs modèles disponibles : `Albert-Large`, `Albert-Small`, et `Albert-Code`.
+    - Le modèle `Albert-Large` est utilisé par défaut pour des résultats plus qualitatifs.
+- **Nouveau module "Page"** :
+    - Permet de générer une page de contenu structurée avec des blocs HTML prédéfinis.
+    - Exporte aux formats `.mbz` (Moodle/Éléa) et `.html` (autonome).
+    - Il est conseillé de demander à l'IA de ne pas inclure d'images lors de l'utilisation de modèles légers.
+- **Module "Test" amélioré** :
+    - L'export a été fusionné et propose désormais les formats `XML Moodle` et `GIFT`.
+    - Il est recommandé de privilégier l'export `XML`, plus complet, car le format `GIFT` ne supporte pas les questions de type `CLOSE` (texte à trous).
+- **Fusion des modales** : Les deux types de modales pour H5P et ELEA ont été fusionnés en une seule, simplifiant la maintenance.
+- **Robustesse des générations IA** :
+    - **Gestion intelligente du copier-coller** : La plateforme gère les deux types de copie depuis une IA externe (copie du bloc de code seul ou de la réponse complète avec Markdown).
+    - **Détection de JSON améliorée** : Le système lit le contenu à partir de la première accolade `{`, ignorant tout texte potentiellement ajouté avant par l'IA.
+    - **Fiabilité des feedbacks** : Les prompts ont été renforcés pour mieux cadrer l'IA et garantir que les feedbacks des questions soient générés correctement.
+    - Les prompts ont été renforcés pour que les JSON générés ne contiennent plus de balises HTML.
+- **Logique des boutons** : Le bouton "Générer en un clic" est grisé si le **Mode Avancé** est sélectionné.
+- **Correction des popups** : Les popups affichent désormais le contenu correct en fonction de la génération effectuée.
 
-H5P : Timeline, Flashcards, Quiz (Question Set), Drag the Words, Mark the Words, Fill in the Blanks, Glossary, Crossword, Essay, Summary.
+### 🔧 Technique
+- **Refonte du code JavaScript** : Le fichier `script.js` a été découpé en plusieurs fichiers modulaires. Le point d'entrée est maintenant `main.js`.
 
-Moodle/Éléa : export XML, format GIFT, activité unique « Millionnaire ».
+---
 
-Conversion côté client des réponses IA en paquets .h5p prêts à importer.
+## 2.0 – 25-09-2025
 
-Création d’archives .mbz pour l’activité « Millionnaire » – Moodle 3.x / 4.x.
-
-Interface web responsive
-
-Traitement 100 % local : aucune donnée transmise à un serveur.
-
-Dépôt statique compatible GitLab Pages.
+- **Génération automatique de prompts IA pour :**
+    - **H5P :** Timeline, Flashcards, Quiz (Question Set), Drag the Words, Mark the Words, Fill in the Blanks, Glossary, Crossword, Essay, Summary.
+    - **Moodle/Éléa :** export XML, format GIFT, activité unique "Millionnaire".
+- **Conversion côté client** des réponses IA en paquets .h5p prêts à importer.
+- **Création d’archives .mbz** pour l’activité "Millionnaire" – Moodle 3.x / 4.x.
+- **Interface web responsive**.
+- **Traitement 100 % local :** aucune donnée transmise à un serveur.
+- **Dépôt statique** compatible GitLab Pages.

@@ -1,6 +1,15 @@
-/* Réinitialisation et styles de base inspirés par Apple */
+/* =======================================================================
+    0. CLASSES UTILITAIRES
+   ======================================================================= */
+.hidden {
+    display: none;
+}
+
+/* =======================================================================
+   1. STYLES DE BASE ET RÉINITIALISATION
+   ======================================================================= */
 html {
-    overflow-y: auto; /* Affiche la scrollbar uniquement lorsque c'est nécessaire */
+    overflow-y: scroll; /* Affiche la scrollbar en permanence pour éviter les sauts de page */
 }
 
 *,
@@ -19,7 +28,8 @@ body {
     -moz-osx-font-smoothing: grayscale;
     position: relative;
     min-height: 100vh;
-    padding-bottom: 80px; /* Hauteur du footer */
+    padding-bottom: 60px; /* Hauteur du footer */
+    box-sizing: border-box;
 }
 
 .container {
@@ -28,7 +38,9 @@ body {
     padding: 0 20px;
 }
 
-/* En-tête */
+/* =======================================================================
+   2. EN-TÊTE ET BARRE D'APPLICATION
+   ======================================================================= */
 .app-bar {
     background-color: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(20px);
@@ -76,39 +88,28 @@ body {
 .header-right {
     display: flex;
     align-items: center;
+    gap: 12px;
 }
 
-/* Language Switcher */
+/* =======================================================================
+   3. SÉLECTEUR DE LANGUE
+   ======================================================================= */
 .language-switcher {
     position: relative;
     display: inline-block;
 }
 
-.language-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.5em;
-    color: #1d1d1f;
-    padding: 5px;
-    transition: color 0.3s ease;
-}
-
-.language-btn:hover {
-    color: #007AFF;
-}
 
 .language-dropdown {
     display: none;
     position: absolute;
     right: 0;
     background-color: #ffffff;
-    min-width: 120px;
+    min-width: 200px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     z-index: 1;
     list-style: none;
     padding: 0;
-    margin: 5px 0 0 0;
     border-radius: 8px;
 }
 
@@ -148,38 +149,37 @@ body {
     display: block;
 }
 
-.help-btn {
-   background: none;
-   border: none;
-   cursor: pointer;
-   font-size: 1.5em;
-   color: #1d1d1f;
-   padding: 5px;
-   margin-left: 10px;
-   transition: color 0.3s ease;
+
+/* =======================================================================
+   4. BARRE LATÉRALE / MODALE D'ACTIVITÉ
+   ======================================================================= */
+#module-sidebar {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    width: 80vw; /* Largeur de 80% de la vue */
+    /* max-height est maintenant géré par le contenu */
+    max-width: 1400px; /* Limite la largeur maximale */
+    background-color: #F5F5F7;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    z-index: 1002;
+    display: none;
+    flex-direction: column;
+    overflow: visible;
+    padding: 20px;
+    box-sizing: border-box;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s, height 0.5s ease-in-out;
 }
 
-.help-btn:hover {
-   color: #007AFF;
-}
-
-/* Panneau latéral d'aide */
-.sidebar {
-   position: fixed;
-   top: 0;
-   right: -350px; /* Caché par défaut */
-   width: 350px;
-   height: 100%;
-   background-color: #ffffff;
-   box-shadow: -4px 0 15px rgba(0,0,0,0.1);
-   padding: 20px;
-   z-index: 1001;
-   transition: right 0.4s ease-in-out;
-   overflow-y: auto;
-}
-
-.sidebar.open {
-   right: 0; /* Visible */
+#module-sidebar.open {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
 }
 
 .sidebar .close-btn {
@@ -199,30 +199,34 @@ body {
 }
 
 .sidebar h2 {
-   margin-top: 40px;
+   margin-top: 0; /* Ajusté car le padding est maintenant interne */
    font-size: 1.5em;
    font-weight: 600;
    color: #1d1d1f;
    margin-bottom: 20px;
 }
 
-.sidebar ol {
+.sidebar ol,
+.info-card ol {
    padding-left: 20px;
    display: flex;
    flex-direction: column;
-   gap: 15px;
+   gap: 15px; /* Espace entre les points */
 }
 
-.sidebar li {
+.sidebar li,
+.info-card li {
    font-size: 1.1em;
    color: #333;
 }
 
-.sidebar li::marker {
+.sidebar li::marker,
+.info-card li::marker {
    font-weight: bold;
    color: #007AFF;
 }
 
+/* L'overlay est de nouveau nécessaire pour l'arrière-plan */
 #sidebar-overlay {
    position: fixed;
    top: 0;
@@ -230,10 +234,10 @@ body {
    width: 100%;
    height: 100%;
    background-color: rgba(0,0,0,0.4);
-   z-index: 1000;
+   z-index: 1001;
    opacity: 0;
    visibility: hidden;
-   transition: opacity 0.4s ease-in-out, visibility 0.4s;
+   transition: opacity 0.3s ease, visibility 0.3s;
 }
 
 #sidebar-overlay.open {
@@ -241,7 +245,9 @@ body {
    visibility: visible;
 }
 
-/* Cartes génériques */
+/* =======================================================================
+   5. MISE EN PAGE PRINCIPALE (CONTENEUR, CARTES)
+   ======================================================================= */
 .info-card,
 .prompt-generator,
 .module-container {
@@ -251,7 +257,7 @@ body {
     margin-bottom: 30px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     border: 1px solid rgba(0, 0, 0, 0.05);
-    overflow: hidden; /* Important pour les coins arrondis du conteneur */
+    /* overflow: hidden; */ /* Important pour les coins arrondis du conteneur, mais empêche les dropdowns de déborder */
 }
 
 .prompt-generator {
@@ -267,24 +273,10 @@ body {
 }
 
 /* Section "Comment utiliser" */
-.info-card ol {
-    padding-left: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Espace entre les points */
-}
 
-.info-card li {
-    font-size: 1.1em;
-    color: #333;
-}
-
-.info-card li::marker {
-    font-weight: bold;
-    color: #007AFF;
-}
-
-/* Générateur de prompt */
+/* =======================================================================
+   6. GÉNÉRATEUR DE PROMPT ET MODES
+   ======================================================================= */
 .prompt-generator {
     display: flex;
     flex-direction: column;
@@ -376,8 +368,9 @@ body {
     gap: 15px; /* Espacement réduit */
 }
 
+
 .prompt-generator button#generateBtn {
-    padding: 15px; /* Padding réduit */
+    padding: 15px;
     background-color: #007AFF;
     color: white;
     border: none;
@@ -387,7 +380,7 @@ body {
     font-weight: 500;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 4px 15px rgba(0, 122, 255, 0.2);
-    width: 100%; /* Prend toute la largeur de son conteneur paddé */
+    width: 100%;
 }
 
 .prompt-generator button#generateBtn:hover {
@@ -395,12 +388,29 @@ body {
     box-shadow: 0 6px 20px rgba(0, 122, 255, 0.3);
 }
 
-/* Système d'onglets */
+/* =======================================================================
+   7. SYSTÈME D'ONGLETS ET GRILLE DE MODULES
+   ======================================================================= */
 .tabs {
     display: flex;
-    justify-content: center;
+    justify-content: space-around; /* Modifié de 'center' pour permettre le défilement */
     margin-bottom: 30px;
     border-bottom: 1px solid #ddd;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch; /* Pour un défilement fluide sur iOS */
+    overscroll-behavior-y: contain !important; /* Empêche le défilement vertical lors du scroll horizontal */
+    touch-action: pan-x !important; /* Force le défilement tactile à être uniquement horizontal */
+    cursor: grab; /* Indique que l'élément est déplaçable */
+    scrollbar-width: none; /* Pour Firefox */
+}
+
+.tabs::-webkit-scrollbar {
+    display: none; /* Pour Chrome, Safari, etc. */
+}
+
+.tabs.grabbing {
+    cursor: grabbing; /* Change le curseur pendant le glissement */
 }
 
 .tab-link {
@@ -413,6 +423,7 @@ body {
     color: #8e8e93; /* Gris clair pour inactif */
     position: relative;
     transition: color 0.3s;
+    flex-shrink: 0; /* Empêche les onglets de rétrécir */
 }
 
 .tab-link:hover {
@@ -448,8 +459,8 @@ body {
     display: block;
 }
 
-/* Grille H5P */
-.h5p-grid, .moodle-grid {
+/* Grille des modules */
+.grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 25px;
@@ -498,13 +509,10 @@ body {
     color: #8e8e93;
 }
 
-/* Conteneur de module (Moodle, modale) */
-.module-container h3 {
-    margin-top: 0;
-    font-size: 1.3em;
-    font-weight: 600;
-}
-
+/* =======================================================================
+   8. ÉLÉMENTS DE FORMULAIRE (TEXTAREA, BOUTONS)
+   ======================================================================= */
+.module-container h3,
 .h5p-content-container h3 {
     margin-top: 0;
     font-size: 1.3em;
@@ -516,7 +524,7 @@ body {
 textarea {
     width: 100%;
     min-height: 200px; /* Plus grand */
-    resize: vertical; /* Permet uniquement le redimensionnement vertical */
+    resize: none; /* Permet uniquement le redimensionnement vertical */
     padding: 20px; /* Plus aéré */
     border: 1px solid #e5e5e5;
     border-radius: 12px;
@@ -554,6 +562,7 @@ textarea::placeholder {
     transition: all 0.3s;
     font-size: 0.95em;
     font-weight: 500;
+    flex: 1; /* Tous les boutons d'action se partagent l'espace */
 }
 
 .copy-btn:hover, .action-btn:hover {
@@ -562,22 +571,181 @@ textarea::placeholder {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
+/* Animation unifiée pour le groupe de boutons de génération */
+.generation-button-group:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.generation-button-group .action-btn:hover {
+    transform: none;
+    box-shadow: none;
+}
+
 /* Conteneur de contenu H5P (remplace la modale) */
-.h5p-content-container {
-    display: none; /* Caché par défaut et retiré du flux */
+/* NOUVELLE STRUCTURE DE LA MODALE */
+.modal-header-group {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    margin-bottom: 15px;
+    flex-shrink: 0;
+    padding: 10px 20px;
+    position: relative;
+    z-index: 10; /* z-index élevé pour être au-dessus du contenu */
 }
 
-.h5p-content-container.active {
-    display: block; /* Affiché quand actif */
-    padding: 35px 40px;
-    margin-top: 20px;
-    margin-bottom: 30px;
-    background-color: #FFFFFF;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+
+.modal-title-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
+.top-controls-container {
+    margin-left: auto;
+    position: relative;
+    z-index: 3; /* Au-dessus du wrapper tuto */
+}
+
+.modal-title-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.modal-title {
+    margin: 0;
+    font-size: 1.6em;
+    font-weight: 600;
+}
+
+.modal-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.top-controls-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+
+.tuto-controls-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0px;
+    animation: fadeIn 0.3s ease-in-out;
+    position: relative;
+    z-index: 2; /* En dessous du conteneur des boutons */
+}
+
+.modal-tuto-content {
+    flex-grow: 1;
+}
+
+.modal-tuto-content p {
+    margin: 0;
+    color: #6e6e73;
+}
+
+.modal-main-content {
+    display: flex;
+    gap: 20px;
+    flex-grow: 1;
+    overflow: hidden; /* Empêche le débordement des enfants */
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, transform 0.5s ease-in-out, margin-top 0.5s ease-in-out;
+    margin-top: 0;
+    min-height: 0; /* Correction pour le flexbox shrink */
+    position: relative; /* Crée un contexte de superposition */
+    z-index: 1; /* Doit être en dessous de l'en-tête */
+}
+
+#module-sidebar.advanced-view {
+    height: 80vh;
+    overflow-y: auto;
+}
+
+#module-sidebar.advanced-view .modal-main-content {
+    max-height: 1000px; /* Valeur suffisamment grande */
+    opacity: 1;
+    transform: translateY(0);
+    margin-top: 15px;
+}
+
+.close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%);
+    background-color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 10;
+    padding: 0;
+    line-height: 1;
+}
+
+.close-button:hover {
+    color: #1d1d1f;
+}
+
+.modal-panels-container {
+    display: flex;
+    gap: 20px;
+    flex-grow: 1;
+    overflow-y: auto; /* Permet le défilement vertical */
+}
+
+.modal-panel {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    padding: 15px 20px;
+    gap: 15px; /* Ajoute de l'espace entre les enfants flex */
+}
+
+.modal-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    flex-wrap: wrap; /* Permet aux éléments de passer à la ligne */
+}
+
+.modal-panel h3 {
+    margin-top: 0;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: #1C1C1E;
+    margin-bottom: 0; /* Ajusté */
+}
+
+
+/* Cette règle est maintenant gérée par .prompt-area et .textarea-container */
+
+/* La classe .active sur les tuiles est maintenant gérée par JS pour le panneau latéral,
+   mais on peut garder un style pour indiquer la sélection. */
 .h5p-tile.active {
     transform: translateY(-4px);
     box-shadow: 0 10px 28px rgba(0, 122, 255, 0.2);
@@ -626,6 +794,7 @@ textarea::placeholder {
     border-radius: 12px;
     padding: 25px;
     margin-bottom: 30px;
+    position: relative; /* Nécessaire pour positionner le spinner à l'intérieur */
 }
 
 .h5p-processor {
@@ -649,6 +818,35 @@ textarea::placeholder {
 
 .h5p-processor-header h3 {
     margin: 0;
+}
+
+.albert-generation-controls {
+    display: flex;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    overflow: hidden;
+    background-color: #3b82f6;
+}
+
+.albert-generation-controls .action-btn {
+    background-color: transparent !important; /* Force la transparence pour outrepasser les autres règles */
+    transition: none;
+    border-radius: 0;
+}
+
+.albert-generation-controls .action-btn:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.model-selector-container {
+    display: flex;
+}
+
+.albert-generation-controls .model-selector-btn {
+    border-left: 1px solid #2563eb;
+    padding: 0 10px;
+    min-width: 44px;
 }
 
 .library-toggle {
@@ -688,7 +886,9 @@ textarea::placeholder {
     background-color: #0071e3;
 }
 
-/* Footer */
+/* =======================================================================
+   9. FOOTER
+   ======================================================================= */
 .footer {
     background-color: #ffffff;
     padding: 10px 30px;
@@ -722,11 +922,13 @@ textarea::placeholder {
     text-decoration: none;
 }
 
-/* Conteneur de notifications */
+/* =======================================================================
+   10. NOTIFICATIONS
+   ======================================================================= */
 #notification-container {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 75px;
+    right: 5px;
     z-index: 2000;
     display: flex;
     flex-direction: column;
@@ -756,8 +958,20 @@ textarea::placeholder {
 
 
 
-/* Responsive */
+/* =======================================================================
+   11. STYLES RESPONSIVES
+   ======================================================================= */
 @media (max-width: 768px) {
+    .header-right {
+        gap: 0;
+        justify-content: flex-end;
+        flex-grow: 1;
+    }
+
+    .language-btn, .help-btn {
+        padding: 0 6px;
+    }
+
     .subtitle {
         display: none;
     }
@@ -781,9 +995,61 @@ textarea::placeholder {
         gap: 15px;
         padding: 20px;
     }
+    #module-sidebar {
+        width: 95vw;
+        padding: 15px;
+    }
+
+    #module-sidebar.menu-open {
+        height: 69vh; /* Hauteur augmentée pour faire de la place au menu */
+    }
+
+    #module-sidebar.advanced-view {
+        height: 97vh;
+    }
+
+
+    .modal-main-content {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    #module-sidebar:not(.advanced-view) .modal-main-content {
+        display: none;
+    }
+
+    #module-sidebar.advanced-view .modal-main-content {
+        display: flex;
+    }
+
+
+
+    .modal-panel {
+        width: 100%;
+    }
 }
 
-/* Modale pour les mentions légales */
+
+.toolbar-btn i {
+    font-size: 20px;
+    margin-bottom: 2px;
+}
+
+
+@media (min-width: 769px) {
+    .modal-header {
+        justify-content: space-between;
+    }
+
+    .modal-panel {
+        flex: 1;
+        min-height: 0;
+    }
+}
+
+/* =======================================================================
+   12. MODALE (MENTIONS LÉGALES, AIDE)
+   ======================================================================= */
 .modal {
     display: none;
     position: fixed;
@@ -793,37 +1059,60 @@ textarea::placeholder {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.5);
-    animation: fadeIn 0.3s;
+    background-color: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.3s ease-out;
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: #F5F5F7;
     margin: 5% auto;
-    padding: 30px;
-    border: 1px solid #888;
+    padding: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     width: 80%;
-    max-width: 800px;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    position: relative;
-    animation: slideIn 0.4s;
+    max-width: 1200px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    animation: slideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    color: #1d1d1f;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 20px;
+    padding: 20px 0;
+    background-color: #FFFFFF;
+    color: #1d1d1f;
+    border-bottom: 1px solid #e5e5e5;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.8em;
+    font-weight: 600;
 }
 
 .close-modal-btn {
-    color: #aaa;
-    position: absolute;
-    top: 15px;
-    right: 25px;
+    color: #8e8e93;
     font-size: 28px;
     font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
 }
 
 .close-modal-btn:hover,
 .close-modal-btn:focus {
-    color: black;
+    color: #1d1d1f;
     text-decoration: none;
-    cursor: pointer;
+}
+
+.modal-body {
+    padding: 30px;
+    line-height: 1.6;
 }
 
 #legal-mentions-content h3 {
@@ -850,20 +1139,11 @@ textarea::placeholder {
     to {transform: scale(1); opacity: 1;}
 }
 
-.action-btn.albert-btn {
-    background-color: #3b82f6; /* Un bleu distinctif */
-    color: white;
-}
 
-.action-btn.albert-btn:hover {
-    background-color: #2563eb;
-}
 
-/* Spinner de chargement pour l'appel à l'IA */
-.h5p-processor {
-    position: relative; /* Nécessaire pour positionner le spinner à l'intérieur */
-}
-
+/* =======================================================================
+   13. ANIMATION DE CHARGEMENT
+   ======================================================================= */
 .loading-spinner {
     position: absolute;
     top: 50%;
@@ -897,7 +1177,7 @@ textarea::placeholder {
     border: none;
     background-color: transparent;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: color 0.2s, background-color 0.3s;
 }
 
 .language-btn:hover, .help-btn:hover {
@@ -919,33 +1199,39 @@ textarea::placeholder {
 }
 
 /* =======================================================================
-   14. STYLES POUR LA BARRE D'OUTILS FLOTTANTE DU TEXTAREA
+   14. BARRE D'OUTILS FLOTTANTE
    ======================================================================= */
+.prompt-area {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+}
 
 .textarea-container {
     position: relative;
+    flex: 1;
+    display: flex;
+}
+
+.textarea-container textarea {
+    flex: 1;
+    margin-bottom: 0; /* L'espacement est géré par le gap du parent */
+    min-height: 155px; /* Hauteur minimale pour le mode smartphone */
 }
 
 .floating-toolbar {
-    position: absolute;
-    top: 10px;
-    right: 20px; /* Décalage pour éviter la barre de défilement */
     display: flex;
-    gap: 5px;
-    background-color: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    padding: 5px;
-    border-radius: 8px;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s, visibility 0.3s;
+    gap: 15px;
     z-index: 5;
-}
-
-.textarea-container:hover .floating-toolbar {
+    align-self: flex-start;
     opacity: 1;
     visibility: visible;
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 5px;
+    justify-content: space-around; /* Répartir l'espace */
+    width: 100%;
 }
 
 .toolbar-btn {
@@ -953,38 +1239,40 @@ textarea::placeholder {
     border: none;
     cursor: pointer;
     padding: 5px;
-    font-size: 16px;
-    color: #333;
+    font-size: 12px; /* Taille de police pour le texte */
+    color: #6e6e73; /* Couleur de texte grise */
     transition: color 0.2s;
     position: relative;
+    display: flex;
+    flex-direction: column; /* Icône au-dessus du texte */
+    align-items: center;
+    gap: 4px; /* Espace entre l'icône et le texte */
+    flex: 1; /* Pour que les boutons occupent l'espace */
+    text-align: center;
+}
+
+.toolbar-btn-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%; /* S'assurer que le span prend toute la largeur du bouton */
+}
+
+.toolbar-btn i {
+    font-size: 18px; /* Taille de l'icône */
+    margin-bottom: 2px; /* Petit espace sous l'icône */
 }
 
 .toolbar-btn:hover {
     color: #007AFF;
+    background-color: #f0f0f0; /* Léger fond gris au survol */
+    border-radius: 8px; /* Coins arrondis pour le fond */
 }
 
-/* Style pour les infobulles */
-.toolbar-btn::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-bottom: 5px;
-    background-color: #333;
-    color: #fff;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s, visibility 0.2s;
-}
-
-.toolbar-btn:hover::after {
-    opacity: 1;
-    visibility: visible;
+/* Style pour les infobulles (supprimé car le texte est maintenant visible) */
+.toolbar-btn::after,
+.toolbar-btn::before {
+    display: none !important;
 }
 
 /* Style pour le mode plein écran */
@@ -1018,19 +1306,724 @@ textarea::placeholder {
     box-sizing: border-box;
 }
 
-/* Le conteneur cloné prend toute la place dans l'overlay */
-.fullscreen-overlay .textarea-container {
+
+.mode-switch-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.switch-label {
+    font-size: 0.9em;
+    color: #6e6e73;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #007AFF;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Styles pour le conteneur de la modale en plein écran */
+.fullscreen-modal-container {
     width: 85vw;
     height: 85vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff; /* Ajout d'un fond pour la visibilité */
+    border-radius: 12px;
+    overflow: hidden; /* Pour que le textarea ne dépasse pas */
+}
+
+.fullscreen-modal-container .unified-rag-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* La barre d'outils en plein écran */
+.fullscreen-modal-container .floating-toolbar {
+    flex-shrink: 0; /* Empêche la barre d'outils de se réduire */
+    padding: 10px 15px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #e5e5e5;
+    width: 100%;
+    justify-content: flex-start; /* Aligner à gauche */
+}
+
+/* Le textarea en plein écran prend le reste de la place */
+.fullscreen-modal-container .textarea-fullscreen {
+    flex-grow: 1;
+    border: none; /* Supprimer les bordures inutiles */
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Animation de chargement "Caramel" */
+#caramel-animation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    flex-direction: column;
+}
+
+.marmite {
+    width: 200px;
+    height: 150px;
+    background-color: #d3d3d3;
+    border-radius: 10px 10px 50px 50px;
+    position: relative;
+    border: 5px solid #8b4513;
+    overflow: hidden;
+}
+
+.marmite-content {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 0;
+    background-color: #daa520;
+    animation: fillMarmite 10s linear forwards;
+}
+
+#recipe-steps {
+    margin-top: 20px;
+    color: white;
+    font-size: 1.2em;
+    text-align: center;
+    height: 50px;
+}
+
+#success-message {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 4000;
+    color: white;
+    font-size: 2em;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+#success-message.hidden {
+    display: none;
+}
+
+@keyframes fillMarmite {
+    0% { height: 0%; }
+    100% { height: 80%; }
+}
+
+/* =======================================================================
+   15. UPLOAD PDF ET OCR (RAG)
+   ======================================================================= */
+.file-upload-container {
+    grid-column: 1 / -1;
+    margin-top: 10px;
+    border: 2px dashed #dcdcdc;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    background-color: #fcfcfc;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+.file-upload-container:hover {
+    border-color: #007AFF;
+    background-color: #f5faff;
+}
+
+.file-upload-label {
+    cursor: pointer;
+    color: #007AFF;
+    font-weight: 500;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+#ocr-status {
+    margin-top: 15px;
+    font-style: italic;
+    color: #6e6e73;
+}
+
+#ocr-output-container {
+    grid-column: 1 / -1;
+    position: relative;
+    margin-top: 10px;
+}
+
+.ocr-output-header {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 5px 10px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #e5e5e5;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.ocr-output-header button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    color: #6e6e73;
+    transition: color 0.2s;
+}
+
+.ocr-output-header button:hover {
+    color: #007AFF;
+}
+
+#ocr-output {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    margin-bottom: 0;
+    min-height: 250px;
+}
+
+#ocr-output-container:fullscreen {
+    padding: 20px;
+    background-color: #F5F5F7;
+    display: flex;
+    flex-direction: column;
+}
+
+#ocr-output-container:fullscreen #ocr-output {
+    height: 100%;
+    flex-grow: 1;
+}
+
+/* =======================================================================
+   16. STYLES POUR L'INTERRUPTEUR RAG
+   ======================================================================= */
+
+#rag-section-container {
+    grid-column: 1 / -1;
+    margin-top: 10px;
+}
+
+.rag-section-header {
+    margin-bottom: 5px;
+}
+
+.rag-toggle-container {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 12px;
+}
+
+.rag-title {
+    margin: 0;
+    text-align: right;
+    flex-grow: 1;
+}
+
+.rag-content-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.rag-content-area.fullscreen {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.rag-content-area.fullscreen .unified-rag-area {
+    flex-grow: 1;
+}
+
+.unified-rag-area {
+    position: relative;
+    border: 1px solid #dcdcdc;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 350px; /* Hauteur minimale pour l'ensemble */
+}
+
+.unified-rag-area textarea {
+    flex-grow: 1; /* Permet au textarea de s'étendre */
+    min-height: 150px; /* Hauteur minimale pour le textarea */
+    resize: none !important; /* Empêche le redimensionnement manuel */
+}
+
+.unified-rag-area .floating-toolbar {
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 5px;
+    justify-content: flex-end;
+}
+
+.unified-rag-area textarea {
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+.drag-drop-area {
+    padding: 20px;
+    text-align: center;
+    background-color: #fcfcfc;
+    transition: background-color 0.3s;
+    border: 2px dashed #dcdcdc;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.drag-drop-area.drag-over {
+    background-color: #f5faff;
+}
+
+.drag-drop-content i {
+    font-size: 2em;
+    color: #007AFF;
+    margin-bottom: 10px;
+}
+
+.drag-drop-content p {
+    margin: 5px 0;
+    color: #6e6e73;
+}
+
+.file-upload-label {
+    cursor: pointer;
+    color: #007AFF;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.rag-toggle-container {
+    grid-column: 1 / -1;
+    display: flex;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    background-color: #fcfcfc;
+    transition: border-color 0.3s, background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.drag-drop-area.drag-over {
+    border-color: #007AFF;
+    background-color: #f5faff;
+}
+
+.drag-drop-content i {
+    font-size: 3em;
+    color: #007AFF;
+    margin-bottom: 15px;
+}
+
+.drag-drop-content p {
+    margin: 5px 0;
+    color: #6e6e73;
+}
+
+.file-upload-label {
+    cursor: pointer;
+    color: #007AFF;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.rag-toggle-container {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 12px;
+}
+
+.rag-toggle-label {
+    font-weight: 500;
+    color: #1d1d1f;
+}
+
+.rag-title {
+    grid-column: 1 / -1;
+    font-size: 1.1em;
+    font-weight: 500;
+    color: #1d1d1f;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.rag-note {
+    grid-column: 1 / -1;
+    font-size: 0.9em;
+    color: #6e6e73;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Styles pour l'infobulle */
+[data-tooltip-key] {
     position: relative;
 }
 
-/* La barre d'outils reste attachée au conteneur cloné */
-.fullscreen-overlay .floating-toolbar {
+[data-tooltip-key]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    white-space: pre-wrap;
+    width: max-content;
+    max-width: 300px;
+    text-align: left;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+    z-index: 100;
+}
+
+[data-tooltip-key]:hover::after {
     opacity: 1;
     visibility: visible;
+}
+
+[data-tooltip-key]::before {
+    content: '';
     position: absolute;
-    top: 15px; /* Ajustement pour être plus esthétique */
-    right: 25px; /* Décalage pour éviter la barre de défilement */
-    z-index: 2000;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-style: solid;
+    border-width: 6px 6px 0;
+    border-color: #333 transparent transparent transparent;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+    z-index: 100;
+    margin-bottom: -6px; /* Position the arrow correctly */
+}
+
+[data-tooltip-key]:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Adjust after pseudo-element to be above the arrow */
+[data-tooltip-key]::after {
+    bottom: calc(125% + 6px);
+}
+
+/* =======================================================================
+   17. STYLES POUR LES BOUTONS DE LA MODALE
+   ======================================================================= */
+
+.modal-panel-footer {
+    margin-top: auto;
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    gap: 10px;
+}
+
+.action-buttons-group {
+    display: flex;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+.generation-button-group {
+    gap: 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px; /* Appliquer le radius au conteneur pour l'ombre */
+}
+
+
+
+
+.action-btn.secondary-btn {
+    background-color: #FFFFFF;
+    color: #007AFF;
+    border: 1px solid #007AFF;
+}
+
+.action-btn.secondary-btn:hover {
+    background-color: #f0f8ff;
+}
+
+.action-btn.primary-btn {
+    background-color: #007AFF;
+    color: white;
+    border: none;
+}
+
+.action-btn.primary-btn:hover {
+    background-color: #0056b3;
+}
+
+.generation-button-group:hover .action-btn.primary-btn {
+    background-color: #0056b3;
+}
+
+
+/* Assurer la même hauteur pour tous les boutons */
+.modal-panel-footer .action-btn {
+    padding: 15px;
+    font-size: 1.1em;
+    font-weight: 500;
+    border-radius: 15px;
+    text-align: center;
+    height: 100%; /* Assure la même hauteur */
+}
+
+.main-action-button {
+    flex-grow: 1;
+    display: flex;
+}
+
+.main-action-button .action-btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    width: 100%;
+}
+
+.more-actions-button {
+    position: relative;
+    display: flex;
+    margin-left: -1px; /* Superposition pour joindre les boutons */
+}
+
+.more-actions-button .dropdown-toggle {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.more-actions-button .dropdown-menu {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    list-style: none;
+    padding: 5px 0;
+    margin: 0 0 5px 0;
+    min-width: 150px;
+    z-index: 1001;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.more-actions-button .dropdown-menu.show {
+    display: block;
+}
+
+.more-actions-button .dropdown-menu li a {
+    display: block;
+    padding: 8px 15px;
+    color: #333;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.more-actions-button .dropdown-menu li a:hover {
+    background-color: #f5f5f5;
+}
+/* Style spécifique pour le bouton Copier dans la modale */
+.toolbar-btn.copy-prompt-btn {
+    background-color: transparent; /* Fond transparent par défaut */
+    color: #6e6e73; /* Texte gris comme les autres boutons de la barre d'outils */
+    border-radius: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.toolbar-btn.copy-prompt-btn:hover {
+    background-color: #f0f0f0; /* Léger fond gris au survol */
+    color: #007AFF;
+}
+
+/* Style pour le bouton Copier lorsqu'il est cliqué (succès) */
+.toolbar-btn.copy-prompt-btn.copied {
+    background-color: #007AFF; /* Fond bleu */
+    color: white; /* Texte blanc */
+}
+
+
+/* Style pour l'icône Tchap */
+#tchap-button {
+    text-decoration: none;
+}
+
+.tchap-icon {
+    width: 40px;
+    height: 20px;
+    object-fit: contain;
+}
+
+
+.model-selector-dropdown {
+    max-width: 450px; /* Limite la largeur */
+    word-wrap: break-word; /* Permet au texte de revenir à la ligne */
+}
+
+.expand-button-container {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.expand-btn {
+    background-color: #e9e9ed;
+    color: #007AFF;
+    border: 1px solid #007AFF;
+    padding: 8px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.expand-btn:hover {
+    background-color: #f0f8ff;
+}
+
+/* Améliorations responsives pour les modales */
+@media (max-width: 768px) {
+    .rag-content-area {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-header {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .modal-title-container {
+        order: 1;
+    }
+
+    .top-controls-container {
+        margin-left: 0;
+        order: 2;
+    }
+
+    .tuto-controls-wrapper {
+        flex-direction: column;
+        align-items: center; /* Centrer le switch */
+        gap: 15px;
+        width: 100%;
+    }
+
+    .modal-tuto-content {
+        text-align: center;
+    }
+
+    #module-sidebar {
+        overflow-y: auto; /* Activer le défilement sur toute la modale */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain; /* Empêche le défilement de l'arrière-plan */
+    }
+
+    .modal-main-content {
+        overflow: visible !important; /* Forcer la désactivation du défilement sur ce conteneur */
+    }
+    .close-button {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1003;
+    }
+}
+.hidden {
+    display: none;
 }

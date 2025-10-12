@@ -1,0 +1,66 @@
+/* =======================================================================
+   1. ÉTIQUETTES DES TUILLES (H5P/ÉLÉA)
+   ======================================================================= */
+.h5p-tile .module-label {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: white;
+    border: 1px solid;
+    opacity: 0;
+    transition: none;
+}
+
+.h5p-tile:hover .module-label {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.h5p-label {
+    border-image: linear-gradient(to left, #0659B8, #0976E7) 1;
+    color: #0976E7; /* Fallback */
+}
+
+.h5p-label span {
+    background: linear-gradient(to left, #0659B8, #0976E7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.elea-label {
+    border-image: linear-gradient(to left, #32038D, #B9459B) 1;
+    color: #B9459B; /* Fallback */
+}
+
+.elea-label span {
+    background: linear-gradient(to left, #32038D, #B9459B);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+/* =======================================================================
+   2. ÉTIQUETTES DANS LA MODALE
+   ======================================================================= */
+.modal-description-label {
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    border: 1px solid;
+    margin-right: 8px;
+}
+
+.h5p-label-modal {
+    border-image: linear-gradient(to left, #0659B8, #0976E7) 1;
+    color: #0976E7;
+}
+
+.elea-label-modal {
+    border-image: linear-gradient(to left, #32038D, #B9459B) 1;
+    color: #B9459B;
+}

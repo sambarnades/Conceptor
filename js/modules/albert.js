@@ -1,12 +1,17 @@
-// Fichier pour l'intégration de l'IA Albert pour la génération de contenu H5P
+/**
+ * @file Gestion de l'intégration avec l'IA Albert.
+ * Ce module gère la configuration des modèles disponibles, l'interface du sélecteur de modèles,
+ * et la communication avec l'API d'Albert via un serveur proxy (n8n).
+ */
 
-// La clé API ne doit pas être stockée ici. Elle doit être gérée de manière sécurisée par le serveur proxy (n8n).
+// La clé API n'est pas stockée ici pour des raisons de sécurité.
+// Elle est gérée côté serveur par le proxy n8n.
 
-// =======================================================================
-// LISTE DES MODÈLES ALBERT DISPONIBLES
-// Modifiez cette liste pour ajouter, supprimer ou changer les modèles.
-// =======================================================================
-const AVAILABLE_MODELS = [
+/**
+ * @constant {Array<Object>} AVAILABLE_MODELS
+ * Liste des modèles d'IA disponibles via l'API Albert.
+ */
+export const AVAILABLE_MODELS = [
     { id: 'albert-small', type: 'text-generation', owned_by: 'OpenGateLLM' },
     { id: 'albert-large', type: 'image-text-to-text', owned_by: 'Albert API (prod)' },
     { id: 'albert-code', type: 'text-generation', owned_by: 'OpenGateLLM' },
@@ -15,8 +20,15 @@ const AVAILABLE_MODELS = [
 ];
 // =======================================================================
 
-// Fonction pour peupler un sélecteur de modèles spécifique
-function populateModelSelector(moduleKey, models, onSelectCallback, selectedModel, translations) {
+/**
+ * Remplit le menu déroulant du sélecteur de modèles avec les informations appropriées.
+ * @param {string} moduleKey - La clé identifiant le module (ex: 'Timeline').
+ * @param {Array<Object>} models - La liste des modèles disponibles (généralement AVAILABLE_MODELS).
+ * @param {function} onSelectCallback - La fonction à appeler lorsqu'un modèle est sélectionné.
+ * @param {string} selectedModel - L'ID du modèle actuellement sélectionné.
+ * @param {Object} translations - L'objet contenant les traductions de l'interface.
+ */
+export function populateModelSelector(moduleKey, models, onSelectCallback, selectedModel, translations) {
     const dropdown = document.getElementById(`model-selector-dropdown-${moduleKey}`);
     if (!dropdown) return;
     dropdown.innerHTML = ''; // Vider la liste
@@ -55,21 +67,25 @@ function populateModelSelector(moduleKey, models, onSelectCallback, selectedMode
             listItem.classList.add('selected');
         }
         listItem.addEventListener('click', () => {
-            onSelectCallback(model.id); // Appeler le callback avec le modèle sélectionné
-            
+            onSelectCallback(model.id); // Le callback gère maintenant la fermeture
+
             // Mettre à jour la classe 'selected'
             const allItems = dropdown.querySelectorAll('li');
             allItems.forEach(item => item.classList.remove('selected'));
             listItem.classList.add('selected');
-
-            dropdown.style.display = 'none';
-            document.getElementById(`model-selector-btn-${moduleKey}`).setAttribute('aria-expanded', 'false');
         });
         dropdown.appendChild(listItem);
     });
 }
 
-async function generateH5PWithAlbert(prompt, model) {
+/**
+ * Envoie un prompt à l'API Albert via le proxy n8n et retourne le contenu généré.
+ * @param {string} prompt - Le prompt à envoyer au modèle d'IA.
+ * @param {string} model - L'ID du modèle d'IA à utiliser (ex: 'albert-large').
+ * @returns {Promise<string>} Le contenu textuel généré par l'IA, nettoyé des blocs de code.
+ * @throws {Error} Si la réponse du proxy n'est pas valide ou si une erreur réseau survient.
+ */
+export async function generateH5PWithAlbert(prompt, model) {
     console.log(`Appel au proxy n8n pour l'API Albert avec le modèle ${model} et le prompt :`, prompt);
 
     const proxyUrl = "https://n8n.remande.fr/webhook/albert-proxy";
@@ -123,7 +139,26 @@ async function generateH5PWithAlbert(prompt, model) {
             if (jsonMatch && jsonMatch[1]) {
                 return jsonMatch[1].trim();
             }
-            return content.trim(); // On retourne le contenu, même si ce n'est pas du JSON
+
+            // Si pas de bloc de code, on cherche le début d'un objet ou tableau JSON
+            const firstBrace = content.indexOf('{');
+            const firstBracket = content.indexOf('[');
+
+            let startIndex = -1;
+
+            if (firstBrace > -1 && firstBracket > -1) {
+                startIndex = Math.min(firstBrace, firstBracket);
+            } else if (firstBrace > -1) {
+                startIndex = firstBrace;
+            } else {
+                startIndex = firstBracket;
+            }
+
+            if (startIndex > -1) {
+                return content.substring(startIndex).trim();
+            }
+            
+            return content.trim(); // Fallback : on retourne le contenu, même si ce n'est pas du JSON
         } else {
             console.error("Réponse inattendue ou vide du proxy n8n:", rawResponse);
             throw new Error("La réponse du proxy n8n est vide ou dans un format inattendu.");
@@ -134,6 +169,3 @@ async function generateH5PWithAlbert(prompt, model) {
         throw error;
     }
 }
-
-// La gestion de l'interface est maintenant déplacée dans script.js
-// pour être attachée dynamiquement lorsque le contenu est créé.

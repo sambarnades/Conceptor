@@ -1,67 +1,183 @@
 const translations_jp = {
-    subtitle: "Moodle・Éléaリソース・アクティビティの支援作成",
+    subtitle: "Magistère と Éléa のための教材・活動の支援作成",
     help_button: "ヘルプ",
-    help_modal_title: "🚀 Caramel スタートガイド",
+    help_modal_title: "🚀 先生のための Caramel 完全ガイド",
     help_modal_content: `
-        <div class="help-modal-content">
-            <p><strong>Caramel</strong>へようこそ！このツールは、人工知能の助けを借りてインタラクティブな教育活動を作成するためのステップバイステップガイドです。これらの簡単な手順に従って、あなたのアイデアをすぐに使えるモジュールに変換しましょう。</p>
+    <p><strong>Caramel</strong> へようこそ！このガイドは、はじめての方でも安心して使えるよう、手順を一つずつ案内します。目標は、対話的な学習活動を、かんたん・効率的に作成できるようにすることです。</p>
+    
+    <div class="help-nav">
+        <a href="#decrire" class="help-nav-link"><span class="help-step-number">1</span> 記述する</a>
+        <a href="#choisir" class="help-nav-link"><span class="help-step-number">2</span> 選ぶ</a>
+        <a href="#generer" class="help-nav-link"><span class="help-step-number">3</span> 生成する</a>
+        <a href="#integrer" class="help-nav-link"><span class="help-step-number">4</span> ダウンロード</a>
+        <a href="#communaute" class="help-nav-link"><i class="fas fa-users"></i> コミュニティ</a>
+    </div>
 
-            <div class="help-section">
-                <h4><span class="help-step-number">1</span> アイデアを記述する（「プロンプト」）</h4>
-                <p>すべてはあなたのニーズを記述することから始まります。これには2つのオプションがあります：</p>
-                <ul>
-                    <li><span class="badge-help-mode">クイックモード</span>: 素早く始めるのに最適です。単に<strong>あなたの役割</strong>（例：<em>理科の先生</em>）と<strong>扱いたい内容</strong>（例：<em>6年生の水の循環</em>）を指定してください。</li>
-                    <li><span class="badge-help-mode">ガイドモード</span>: より正確なリクエストのために。<strong>専門分野</strong>、<strong>テーマ</strong>、<strong>生徒のレベル</strong>、そして希望する<strong>アイテム数</strong>（質問、日付など）を記入してください。</li>
-                </ul>
-            </div>
+    <div id="philosophie" class="help-section help-philosophy">
+        <h4><i class="fas fa-lightbulb"></i> 私たちの理念：主導権は先生に！</h4>
+        <p>Caramel では、AI はアシスタントにすぎません。操縦するのは先生です。各段階で先生がコントロールします。</p>
+        <ul>
+            <li><strong>前：</strong> 記述フィールドを埋めて、授業の枠組みを先生が定めます。</li>
+            <li><strong>中：</strong> AI が内容（JSON コード）を生成したら、エディタで直接編集して微調整できます。</li>
+            <li><strong>後：</strong> ファイルをダウンロードした後でも、他のツールで開いて編集できます。</li>
+        </ul>
+    </div>
 
-            <div class="help-section">
-                <h4><span class="help-step-number">2</span> プロンプトを生成する</h4>
-                <p>情報を入力したら、<button id="generateBtn" data-key="generate_prompts">プロンプトを生成</button>ボタンをクリックしてください。ツールは、利用可能な各アクティビティタイプのための詳細な指示（「プロンプト」）を準備します。</p>
-            </div>
-
-            <div class="help-section">
-                <h4><span class="help-step-number">3</span> アクティビティを選択する</h4>
-                <p><span class="badge-help-tab">H5P</span>と<span class="badge-help-tab">Éléa/Moodleモジュール</span>タブを切り替えて、利用可能なさまざまなアクティビティをご覧ください。興味のあるものをクリックしてください（例：「タイムライン」や「MCQ」）。対応するプロンプトがテキストエリアに表示されます。</p>
-            </div>
-
-            <div class="help-section">
-                <h4><span class="help-step-number">4</span> 人工知能を利用する</h4>
-                <p>ここで魔法が起こります！アクティビティのコンテンツを生成するには2つのオプションがあります：</p>
-                <div class="help-subsection">
-                    <h5><i class="fas fa-robot"></i> オプションA：Albertで生成（推奨）</h5>
-                    <p><button class="action-btn albert-btn">Albertで生成</button>ボタンをクリックしてください。ボタンの右側にある小さな矢印をクリックすることで、あなたのニーズに最適なAIモデル（高速、強力、またはコードに特化）を選択できます。アクティビティのコンテンツは<strong>自動的に生成され、結果フィールドに挿入</strong>され、すぐに使用できます。</p>
-                    <ul class="advantages">
-                        <li><strong>長所：</strong> シンプル、高速、ツールに直接統合されたAI。</li>
-                        <li><strong>短所：</strong> ウェブ検索なし、初期AIプロンプトのカスタマイズ不可。</li>
-                    </ul>
-                </div>
-                <div class="help-subsection">
-                    <h5><i class="fas fa-paste"></i> オプションB：独自のAIを使用する</h5>
-                    <p><button class="copy-btn">📋 プロンプトをコピー</button>をクリックし、この指示をお好みの人工知能（ChatGPT、Le Chatなど）に貼り付けてください。次に、<strong>AIの応答をコピー</strong>し、Caramelの結果フィールドに<strong>貼り付け</strong>てください。</p>
-                    <ul class="advantages">
-                        <li><strong>長所：</strong> 完全な柔軟性、インターネットアクセス可能、初期プロンプトの変更やコンテンツ生成のためのドキュメント追加機能。</li>
-                        <li><strong>短所：</strong> 手動でのコピー＆ペーストと外部アカウントが必要。</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="help-section">
-                <h4><span class="help-step-number">5</span> ファイルを作成してダウンロードする</h4>
-                <p>コンテンツが結果フィールドに入力されたら（Albertによって生成されたか、自分で貼り付けたかに関わらず）、<button class="download-btn">H5Pを生成</button>ボタン（またはアクティビティに応じて.mbz/.xml）をクリックしてください。ファイルがダウンロードされ、MoodleまたはÉléaプラットフォームに統合する準備が整います。</p>
-                <p class="help-final-tip">これで完了です！数回のクリックでインタラクティブなアクティビティを作成しました。さまざまなモードやアクティビティタイプを試して、コースを充実させてください。</p>
-            </div>
+    <div id="decrire" class="help-section">
+        <h4><span class="help-step-number">1</span> ニーズを記述：出発点</h4>
+        <p>すべてはここから始まります。説明が明確であるほど、結果は適切になります。方法は 2 つあります。</p>
+        <div class="help-subsection">
+            <h5><span class="help-badge-mode">クイックモード</span></h5>
+            <p>要点重視。次の 2 項目を入力します。</p>
+            <ul>
+                <li><strong>あなたは誰？</strong> 端的に。文章である必要はありません。例：<em>数学教師</em>、<em>アカデミックトレーナー</em>。</li>
+                <li><strong>何を扱う？</strong> 依頼の核心です。できるだけ具体的に。テーマ・学年・条件など。例：<em>中学 1 年生向けの分数入門。ケーキを分けるなどの具体例を含む。</em></li>
+            </ul>
         </div>
+        <div class="help-subsection">
+            <h5><span class="help-badge-mode">高度なモード</span></h5>
+            <p>より構造化した依頼に。以下のような正確な入力欄があります。</p>
+            <ul>
+                <li><strong>教科・テーマ・学年：</strong> 文脈を定義。</li>
+                <li><strong>要素数：</strong> 重要！ 質問数、年表の件数、用語集の語数など。</li>
+                <li><strong>追加情報：</strong> 指示・制約・その他の詳細を記入。</li>
+            </ul>
+            <p><span class="help-badge-feature"><i class="fas fa-file-alt"></i> ドキュメント参照を有効化</span><br>
+            先生が用意した内容を基に生成できます。<strong>テキストを貼り付け</strong>るか、<strong>PDF をアップロード</strong>できます。
+            <br><strong><i class="fas fa-lock"></i> プライバシー：</strong> 文書の処理は <strong>すべてお使いのPC上でローカルに</strong> 実行されます。インターネット送信は行いません。</p>
+        </div>
+    </div>
+
+    <div id="choisir" class="help-section">
+        <h4><span class="help-step-number">2</span> 活動タイプを選択</h4>
+        <p>記述が完了すると、活動タイルが有効になります。目的に合うものをクリックしてください。</p>
+        <details>
+            <summary><strong>利用可能な活動の詳細を見る</strong></summary>
+            <h5><span class="help-badge-tab">H5P</span></h5>
+            <p>H5P 形式の対話型活動。<span class="feedback-star">*</span> が付いたものは、6 段階のスコア帯に対応した詳細フィードバックを既定で含みます。</p>
+            <ul>
+                <li><strong>年表：</strong> 出来事の連なりを示す対話的タイムライン。</li>
+                <li><strong>フラッシュカード：</strong> 暗記用の表裏カード。</li>
+                <li><strong>クイズ（Question Set）<span class="feedback-star">*</span>：</strong> 多様な問題（選択式・ドラッグ＆ドロップ等）。</li>
+                <li><strong>用語集：</strong> アコーディオン形式の用語集／FAQ。</li>
+                <li><strong>クロスワード <span class="feedback-star">*</span>：</strong> 定義からクロスワードを生成。</li>
+                <li><strong>作文 <span class="feedback-star">*</span>：</strong> キーワードに基づく自動採点つき課題。</li>
+                <li><strong>要約 <span class="feedback-star">*</span>：</strong> 適切な文を選んで要約を再構成。</li>
+                <li><strong>語句ドラッグ <span class="feedback-star">*</span>：</strong> 欠落語をドラッグで補完するテキスト。</li>
+                <li><strong>穴埋め <span class="feedback-star">*</span>：</strong> 欠落語をキーボードで入力。</li>
+                <li><strong>語句ハイライト <span class="feedback-star">*</span>：</strong> 指定語を本文で強調。</li>
+                <li><strong>○/×：</strong> 単純な二択。</li>
+                <li><strong>多肢選択 <span class="feedback-star">*</span>：</strong> 正解が一つまたは複数の MCQ。</li>
+                <li><strong>ワードサーチ：</strong> 文字盤から単語を探す。</li>
+                <li><strong>段落並べ替え <span class="feedback-star">*</span>：</strong> 段落を正しい順に。</li>
+                <li><strong>単一選択シリーズ <span class="feedback-star">*</span>：</strong> 各問 1 正解の連続問題。</li>
+                <li><strong>ダイアログカード：</strong> 文字と音声の表裏カード。</li>
+                <li><strong>高度な穴埋め <span class="feedback-star">*</span>：</strong> 誤答ごとの特定フィードバック。</li>
+                <li><strong>グラフ：</strong> 円グラフ・棒グラフでデータ可視化。</li>
+            </ul>
+            <h5><span class="help-badge-tab">Moodle/Éléa</span></h5>
+            <ul>
+                <li><strong>テスト（XML / GIFT）：</strong> 多様な問題バンク（選択式・マッチング等）を Moodle にインポート。</li>
+                <li><strong>MCQ（MBZ）：</strong> かんたん・迅速な多肢選択活動。</li>
+                <li><strong>マッチング（MBZ）：</strong> 要素ペアを対応させるゲーム。</li>
+                <li><strong>ミリオネア（MBZ）：</strong> 問ごとに難度が上がるクイズ。</li>
+                <li><strong>用語集（XML）：</strong> 定義リストを Moodle の用語集へインポート。</li>
+                <li><strong>ページ（MBZ / HTML）：</strong> Éléa 向けの構造化・装飾済みページ。</li>
+            </ul>
+        </details>
+    </div>
+
+    <div id="generer" class="help-section">
+        <h4><span class="help-step-number">3</span> 生成して磨く</h4>
+        <p>タイルをクリックするとウィンドウが開き、ここで AI とやり取りします。</p>
+        <div class="help-subsection">
+            <h5><i class="fas fa-rocket"></i> オプションA：ワンクリック生成</h5>
+            <p>最短ルート。<button class="help-btn-example-albert">ワンクリック生成</button> を押すと、AI が内容を生成し、右の結果領域に直接配置します。ボタン右側の小さな矢印から（高速・高性能など）モデルを選べます。</p>
+        </div>
+        <div class="help-subsection">
+            <h5><i class="fas fa-tools"></i> オプションB：外部 AI を使う</h5>
+            <p>最大限のコントロールに。左側にプロンプト（AI への指示）が表示されます。</p>
+            <ol>
+                <li>必要に応じてプロンプトを編集。</li>
+                <li><button class="help-btn-example-duck">Duck.ai を開く</button> または <button class="help-btn-example-mistral">Le Chat を開く</button> をクリック。<strong>プロンプトが自動コピー</strong>され、新しいタブで AI が開きます。</li>
+                <li>AI に貼り付けて実行し、結果を右の結果領域（Caramel）に貼り付けます。</li>
+            </ol>
+            <p>便利なアイコン：<span class="help-badge-icon"><i class="fas fa-expand"></i> 全画面</span>、<span class="help-badge-icon"><i class="fas fa-lock"></i> ロック</span>（プロンプト保護）。</p>
+        </div>
+    </div>
+
+    <div id="integrer" class="help-section">
+        <h4><span class="help-step-number">4</span> ダウンロードして取り込む</h4>
+        <p>内容が整ったら、ダウンロードボタン（例：<button class="help-btn-example-download">H5P を生成</button>）をクリック。Éléa/Moodle への取り込み方法は次のとおりです。</p>
+        
+        <div class="import-guide">
+            <details class="import-details" open>
+                <summary><span class="help-badge-file">.h5p</span>（H5P 活動）</summary>
+                <div class="import-content">
+                    <ul>
+                        <li><strong>簡単な方法：</strong> コースの編集を有効にし、.h5p ファイルを目的のセクションにドラッグ＆ドロップ。すばやい利用に最適。</li>
+                        <li><strong>推奨方法（設計者向け）：</strong> 「活動またはリソースを追加」→「インタラクティブコンテンツ（H5P）」→「ファイル」欄に .h5p をアップロード。コース共有時に活動が正しく含まれます。</li>
+                    </ul>
+                </div>
+            </details>
+            <details class="import-details">
+                <summary><span class="help-badge-file">.mbz</span>（ページ／ミリオネア／マッチング／MCQ）</summary>
+                <div class="import-content">
+                    <p>この形式は完全な活動をコースにインポートします。</p>
+                    <ol>
+                        <li>コースの設定（歯車）メニューで「復元」。</li>
+                        <li>.mbz ファイルをインポート領域へドラッグ＆ドロップ。</li>
+                        <li>「続行」を押して手順に従うと、活動がコースに追加されます。</li>
+                    </ol>
+                </div>
+            </details>
+            <details class="import-details">
+                <summary><span class="help-badge-file">.xml</span> と <span class="help-badge-file">GIFT</span>（テスト活動）</summary>
+                <div class="import-content">
+                    <p>これらは「問題バンク」に質問をインポートします。</p>
+                    <ol>
+                        <li>コースの「その他」メニュー → 「問題バンク」。</li>
+                        <li>「インポート」タブをクリック。</li>
+                        <li>「Moodle XML 形式」または「GIFT 形式」を選択。</li>
+                        <li>ファイルを「インポート」領域にドラッグし、確定。</li>
+                        <li>質問はバンクに入り、「テスト」に追加できます。</li>
+                    </ol>
+                </div>
+            </details>
+            <details class="import-details">
+                <summary><span class="help-badge-file">.html</span>（ページ活動の代替）</summary>
+                <div class="import-content">
+                    <p>内容を手動で管理したい場合。</p>
+                    <ol>
+                        <li>.html をテキストエディタ（例：メモ帳）で開き、全内容をコピー。</li>
+                        <li>Éléa で「ページ」活動を追加。</li>
+                        <li>ページのエディタで HTML モードに切り替えるアイコンをクリック（多くは \`</\>\` で表示）。</li>
+                        <li>コピーした内容を貼り付け、保存します。</li>
+                    </ol>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div id="communaute" class="help-section help-community">
+        <h4><i class="fas fa-users"></i> コミュニティとサポート</h4>
+        <p>Caramel は生きたプロジェクト。皆さまの声が力になります！</p>
+        <ul>
+            <li><strong>交流・質問：</strong> コミュニティと交流できる <a href="https://tchap.beta.gouv.fr/#/room/#Caramel:agent.dinum.tchap.gouv.fr" target="_blank" rel="noopener noreferrer">Tchap</a> ルームに参加してください。</li>
+            <li><strong>バグ報告：</strong> 問題が見つかったら <a href="https://github.com/g-rem/caramel/issues" target="_blank" rel="noopener noreferrer">Issue</a> を作成。可能ならエラーを引き起こした JSON を添付してください。</li>
+            <li><strong>プロジェクト支援：</strong> 気に入ったら <a href="https://forge.apps.education.fr/caramel/caramel" target="_blank" rel="noopener noreferrer">Forge ページ</a> にスターを。最高の励みになります！</li>
+        </ul>
+    </div>
     `,
     fast_mode: "クイックモード",
-    guided_mode: "ガイドモード",
+    guided_mode: "高度なモード",
     who_are_you: "あなたは誰ですか？（例：教師、講師...）",
     what_to_address: "何を扱いたいですか？（例：6年生での角の性質...）",
     discipline: "科目（例：歴史）",
     theme: "テーマ（例：フランス革命）",
     level: "レベル（例：職業高校2年生）",
     number_of_elements: "要素数（例：10）",
-    additional_info: "補足・詳細情報...",
+    additional_info: "補足情報...",
     generate_prompts: "プロンプトを生成",
     h5p_tab: "H5P",
     moodle_tab: "Éléa/Moodleモジュール",
@@ -96,7 +212,7 @@ const translations_jp = {
     timeline_prompt_rule1: "1. `date`配列の各イベントには以下が必要です：",
     timeline_prompt_rule1_startDate: "- `startDate` と `endDate`: 日付は「YYYY,MM,DD」または「YYYY」形式。期間を定義するには `endDate` を使用します。",
     timeline_prompt_rule1_headline: "- `headline`：イベントのタイトル。",
-    timeline_prompt_rule1_text: "- `text`：HTML形式の説明（<p>と<strong>を使用）。",
+    timeline_prompt_rule1_text: "-   `text`: テキストの説明。太字には `*単語*`、斜体には `**単語**` を使い、改行には `\\n` を使用します.",
     timeline_prompt_rule1_asset: "- `asset`：イベントを説明する画像用のオプションオブジェクト。",
     timeline_prompt_rule1_tag: "- `tag`: 期間を特徴づけるキーワード（例：「歴史」、「科学」）。",
     timeline_prompt_rule2: "2. 各`asset`について、関連性のあるロイヤリティフリーの画像（例：Wikimedia Commons）を積極的に検索してください。`media`のURLは直接的で有効なリンクでなければなりません。`credit`にソースとライセンスを記載してください。適切な画像が見つからない場合は、`asset`オブジェクトを完全に省略してください。",
@@ -106,13 +222,13 @@ const translations_jp = {
 {
 "timeline": {
 "headline": "年表のタイトル",
-"text": "<p>年表のテーマに関する序文。</p>",
+"text": "年表のテーマに関する序文。",
 "date": [
 {
 "startDate": "1914,07,28",
 "endDate": "1914,07,28",
 "headline": "第一次世界大戦の始まり",
-"text": "<p>オーストリア＝ハンガリー帝国がセルビアに宣戦布告。</p>",
+"text": "オーストリア＝ハンガリー帝国がセルビアに宣戦布告。",
 "asset": {
 "media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
 "caption": "暗殺直前のフランツ・フェルディナント大公。",
@@ -124,7 +240,7 @@ const translations_jp = {
 "startDate": "1918,11,11",
 "endDate": "1918,11,11",
 "headline": "1918年の休戦協定",
-"text": "<p>レトンドで休戦協定が署名され、戦闘が終結した。</p>",
+"text": "レトンドで休戦協定が署名され、戦闘が終結した。",
 "tag": "条約"
 }
 ],
@@ -133,7 +249,7 @@ const translations_jp = {
 "startDate": "1914,07,28",
 "endDate": "1918,11,11",
 "headline": "第一次世界大戦",
-"text": "<div>これは「大戦」と呼ばれる時代です。</div>",
+"text": "これは「大戦」と呼ばれる時代です。",
 "tag": "歴史的時代"
 }
 ]
@@ -151,34 +267,34 @@ const translations_jp = {
     crossword_prompt_title: "`title`：アクティビティのタイトル。",
     crossword_prompt_words_array: "`words`：${nombreQuestions}個のオブジェクトの配列。各オブジェクトには以下を含みます：",
     crossword_prompt_answer: "`answer`：推測する単語。",
-    crossword_prompt_clue: "`clue`：対応する定義。",
-    crossword_prompt_extra_clue_optional: "`extraClue` (任意): 追加のヒントを含むオブジェクト。AIは追加の妥当性を判断する必要があります。",
-    crossword_prompt_task_description: "`taskDescription`：明確な指示。",
-    crossword_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現する必要があります。",
-    crossword_prompt_content_rules_title: "**コンテンツのルール：**",
-    crossword_prompt_rule1: "1. 単語（`answer`）は固有で関連性のある用語である必要があります。",
+    crossword_prompt_clue: "`clue`: 対応する定義。手がかりに解答となる語を書いてはいけません。",
+    crossword_prompt_extra_clue_optional: "`extraClue`（任意）: 追加のヒントを含むオブジェクト。ヒント文では太字に `*語*`、斜体に `**語**`、改行に `\\n` を使えます。ヒントを追加するかはAIが妥当性を判断します。",
+    crossword_prompt_task_description: "`taskDescription`: 明確で文脈に即した指示。太字には `*語*`、斜体には `**語**`、改行には `\\n` を使用します。改行後に複合語の規則を示します: \"複合語はスペースやハイフンを用いず、連続した1語として表記する。\"",
+    crossword_prompt_overall_feedback: "`overallFeedback`:（厳格な規則）最終フィードバックとして6個のオブジェクトからなる配列を必ず生成し、課題のテーマに即してスコア帯 0-10, 11-30, 31-50, 51-70, 71-90, 91-100 を厳密に守ってください。各オブジェクトは `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }` の形式。`feedback` は過度でない肯定的・段階的な文にします。",
+    crossword_prompt_content_rules_title: "**内容ルール:**",
+    crossword_prompt_rule1: "1.  厳格な規則: 解答（`answer`）は文字のみを用いること。複合語・略語・連語はスペースや句読点を使わず、1語にまとめて表記すること。",
     crossword_prompt_rule2: "2. 定義（`clue`）は短く正確である必要があります。",
     crossword_prompt_rule3: "3. JSON構造の残り（動作、テーマなど）はそのまま保持してください。",
     crossword_prompt_example_json_title: "**単語のJSON例：**",
     crossword_prompt_example: `\`\`\`json
 {
-"title": "生物学に関するクロスワード",
+"title": "生物学のクロスワード",
 "words": [
 {
 "answer": "細胞",
 "clue": "生命の基本単位。",
 "extraClue": {
 "params": {
-"text": "<p>動物または植物のものがある。</p>"
+"text": "*動物*または*植物*のいずれかになり得る。"
 }
 }
 },
 {
 "answer": "DNA",
-"clue": "遺伝情報を運ぶ分子。"
+"clue": "遺伝情報を担う分子。"
 }
 ],
-"taskDescription": "<p>クロスワードのマスを埋めなさい。</p>"
+"taskDescription": "**クロスワード**を*完成*させよう。"
 }
 \`\`\` `,
     crossword_prompt_generate_only_json: "タイトル、説明、「words」配列を埋めた完全で有効なJSONを、他のコメントなしで生成してください。",
@@ -199,9 +315,9 @@ const translations_jp = {
     essay_prompt_generate_json: "H5PのEssay型アクティビティ用の完全で有効なJSONオブジェクトを生成してください。",
     essay_prompt_json_structure_title: "**期待されるJSON構造：**",
     essay_prompt_json_structure_main_object: "オブジェクトには以下を含める必要があります：",
-    essay_prompt_task_description: "`taskDescription`：生徒にテーマについてのテキストを書くように促す明確な指示。テーマは太字（<strong>）にし、各文は改行（<p>）で終わる必要があります。",
+    essay_prompt_task_description: "`taskDescription`：生徒にテーマについてのテキストを書くように促す明確な指示。太字には`*単語*`、斜体には`**単語**`、改行には`\\n`を使用してください。",
     essay_prompt_keywords_array: "`keywords`：${nombreQuestions}個のオブジェクトの配列。各オブジェクトはシステムが生徒の回答で見つけるべきキーワードを定義します。",
-    essay_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現する必要があります。",
+    essay_prompt_overall_feedback: "`overallFeedback`:（厳格な規則）最終フィードバックとして6個のオブジェクトからなる配列を必ず生成し、課題のテーマに即してスコア帯 0-10, 11-30, 31-50, 51-70, 71-90, 91-100 を厳密に守ってください。各オブジェクトは `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }` の形式。`feedback` は過度でない肯定的・段階的な文にします。",
     essay_prompt_content_rules_title: "**コンテンツのルール：**",
     essay_prompt_rule1: "1. `keywords`の各オブジェクトには、検索する単語が含まれた`keyword`キーが必要です。",
     essay_prompt_rule2: "2. キーワードは関連性があり、テーマの理解を評価するために不可欠である必要があります。",
@@ -210,7 +326,7 @@ const translations_jp = {
     essay_prompt_example_json_title: "**キーワードのJSON例：**",
     essay_prompt_example: `\`\`\`json
 {
-"taskDescription": "<p>光合成を説明する短い文章を書きなさい。</p>",
+"taskDescription": "光合成を説明する短い文章を書きなさい。",
 "keywords": [
 {
 "keyword": "光",
@@ -225,28 +341,117 @@ const translations_jp = {
 \`\`\` `,
     essay_prompt_generate_only_json: "指示とキーワードリストを埋めた完全で有効なJSONを、他のコメントなしで生成してください。",
 
-    // Moodle XML Prompt
-    moodle_xml_prompt_role: "あなたはMoodle/Éléaテストアクティビティ用の問題バンクを作成する教育工学の専門家です。",
-    moodle_xml_prompt_intro: "${nombreQuestions}問のクイズを作成したいと思います。",
-    moodle_xml_prompt_content_title: "内容について：",
-    moodle_xml_prompt_content_rule1: "間違った回答は、トピックと一致しているが、偶然を避けるために明らかに間違っている必要があります。",
-    moodle_xml_prompt_content_rule2: "質問の難易度を変える必要があります。理想的には簡単なものから複雑なものまで。",
-    moodle_xml_prompt_content_rule3: "内容の正確さを保ちながら表現を簡素化してください。",
-    moodle_xml_prompt_content_rule4: "フィードバックを生成するには、期待される回答要素を1～2文で提供してください。",
-    moodle_xml_prompt_question_types_intro: "質問は以下のタイプに均等に分散する必要があります：",
-    moodle_xml_prompt_question_type_multichoice: "- multichoice（選択肢、正解は1つ）、",
-    moodle_xml_prompt_question_type_matching: "- matching（マッチング）、",
-    moodle_xml_prompt_question_type_numerical: "- numerical（許容誤差ありまたはなしの数値回答）、",
-    moodle_xml_prompt_question_type_truefalse: "- truefalse（正誤問題）。",
-    moodle_xml_prompt_question_type_shortanswer: "- shortanswer（短答）で、必要に応じて代替解答を含めてもよい,",
-    moodle_xml_prompt_question_type_cloze: "- cloze（穴埋め）では、カテゴリ MULTICHOICE, MULTICHOICE_H, MULTICHOICE_V, MULTICHOICE_S, MULTICHOICE_HS, MULTIRESPONSE, MULTIRESPONSE_H, MULTIRESPONSE_HS, NUMERICAL, SHORTANSWER または SHORTANWSER_C を用い、文脈に最も適したものを選びます。",
-    moodle_xml_prompt_form_title: "形式について：",
-    moodle_xml_prompt_form_rule1: "XMLファイルは以下を満たす必要があります：",
-    moodle_xml_prompt_form_rule1_encoding: "UTF-8でエンコードされている（エンコード行を挿入）。",
-    moodle_xml_prompt_form_rule1_reusable: "形式エラーなしで、Moodleで直接再利用可能。",
-    moodle_xml_prompt_form_rule1_standard_structure: "Moodleの標準XML構造に従う（<quiz>、<question>などを含む）。",
-    moodle_xml_prompt_form_rule1_special_chars: "数式記号 '<' や '>' は HTML エンティティとしてエンコードする必要があります（例: '<' の場合は `<`、'>' の場合は `>`）、XML タグとの混同を避けるためです。",
-    moodle_xml_prompt_generate_only_xml: "コメント、形式設定、要約はしないでください。XMLファイルの生の内容のみが必要です。説明された形式を厳密に守ってください。結果を他のツールに貼り付けるため、この形式が期待されています。回答をプリフォーマットされたコードとして生成してください。",
+    // Moodle XML プロンプト
+    moodle_xml_prompt_role: "あなたはインストラクショナルデザインの専門家です。Moodle/Éléa の問題バンク付きテスト活動の内容を、有効な JSON オブジェクトを生成して作成します。",
+    moodle_xml_prompt_intro: "合計 ${nombreQuestions} 問のクイズを作成したいです。",
+    moodle_xml_prompt_content_title: "**内容ルール:**",
+    moodle_xml_prompt_content_rule1: "- 誤答はもっともらしいが誤りであること。",
+    moodle_xml_prompt_content_rule2: "- 質問の難易度に幅を持たせること。",
+    moodle_xml_prompt_content_rule3: "- 表現は簡潔かつ正確にすること。",
+    moodle_xml_prompt_content_rule4: "- フィードバックでは正答を簡潔に説明すること。",
+    moodle_xml_prompt_question_types_intro: "**想定する JSON 構造:**\nメインのオブジェクトは次のキーを含みます:\n- `bank_name`: 問題バンクの短く説明的な名称。\n- `bank_description`: バンクの内容を説明する一文。\n- `questions`: 各要素が質問を表し、`type` と `content` を持つオブジェクト配列。",
+    moodle_xml_prompt_question_type_multichoice: `
+- **\`multichoice\` 型（多肢選択）の場合:**
+  \`\`\`json
+  {
+    "type": "multichoice",
+    "content": {
+      "name": "問題タイトル",
+      "questiontext": "問題文。",
+      "feedback": "全体フィードバック。",
+      "answers": [
+        { "text": "解答 1", "fraction": 100, "feedback": "選択時のフィードバック。" },
+        { "text": "解答 2", "fraction": 0, "feedback": "選択時のフィードバック。" }
+      ]
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_question_type_matching: `
+- **\`matching\` 型（対応付け）の場合:**
+  \`\`\`json
+  {
+    "type": "matching",
+    "content": {
+      "name": "問題タイトル",
+      "questiontext": "問題文。",
+      "feedback": "全体フィードバック。",
+      "subquestions": [
+        { "text": "小問 1 の文", "answer": "解答 1" },
+        { "text": "小問 2 の文", "answer": "解答 2" }
+      ]
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_question_type_numerical: `
+- **\`numerical\` 型（数値）の場合:**
+  \`\`\`json
+  {
+    "type": "numerical",
+    "content": {
+      "name": "問題タイトル",
+      "questiontext": "問題文。",
+      "feedback": "全体フィードバック。",
+      "answer": { "number": 12.34, "tolerance": 0.1, "feedback": "この解答に対するフィードバック。" }
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_question_type_truefalse: `
+- **\`truefalse\` 型（正誤）の場合:**
+  \`\`\`json
+  {
+    "type": "truefalse",
+    "content": {
+      "name": "問題タイトル",
+      "questiontext": "問題文。",
+      "feedback": "全体フィードバック。",
+      "answer": { "value": true, "feedback_true": "正しい場合のフィードバック。", "feedback_false": "誤りの場合のフィードバック。" }
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_question_type_shortanswer: `
+- **\`shortanswer\` 型（短答）の場合:**
+  \`\`\`json
+  {
+    "type": "shortanswer",
+    "content": {
+      "name": "問題タイトル",
+      "questiontext": "問題文。",
+      "feedback": "全体フィードバック。",
+      "answers": [
+        { "text": "正答 1", "fraction": 100, "feedback": "選択時のフィードバック。" },
+        { "text": "代替正答", "fraction": 100, "feedback": "選択時のフィードバック。" }
+      ]
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_question_type_cloze: `
+- **\`cloze\` 型（穴埋め）の場合:**
+  \`\`\`json
+  {
+    "type": "cloze",
+    "content": {
+      "name": "問題タイトル",
+      "questiontext": "これは空所 {1:SHORTANSWER:=正答~フィードバック} と別の空所 {1:MULTICHOICE:=正答~誤答} を含むテキストです。",
+      "feedback": "全体フィードバック。"
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_form_title: "**最終指示:**",
+    moodle_xml_prompt_form_rule1: "質問を各タイプに均等に配分してください。",
+    moodle_xml_prompt_generate_only_json: "コメントなしで有効な JSON コードのみを生成してください。結果はキー `questions` を含む単一の JSON オブジェクトである必要があります。",
+
+    // Éléa テストの作成
+    moodle_xml_success_generation: "ファイル {fileName} の生成に成功しました！",
+    test_error_creation_mbz: "テスト用 MBZ の作成中にエラーが発生しました：",
+    test_success_generation: "ファイル {fileName} の生成に成功しました！",
+    test_error_generic: "エラー：",
+    test_backup_log: "Caramel によって自動的にバックアップが作成されました\n",
 
     // GIFT Prompt
     gift_prompt_role: "あなたはGIFT形式でMoodle/Éléaテストアクティビティ用の問題バンクを作成する教育工学の専門家です。",
@@ -276,10 +481,12 @@ const translations_jp = {
     flashcards_prompt_json_structure_main_object: "オブジェクトには以下を含める必要があります：",
     flashcards_prompt_title: "`title`：アクティビティに関連するタイトル。",
     flashcards_prompt_description: "`description`：生徒への明確な指示。",
+    flashcards_prompt_association_principle: "表面と裏面は、単一で安定した基準で結び付ける必要があります（例: 用語→定義、図形→辺の数、日付→出来事、作者→作品）。すべてのカードで同じ関係を用い、指示は次のように表現してください: « 各XをYに対応させなさい ». 正規化した回答（`answer`）: 単純な語1語または数値。小文字、冠詞や句読点なし；数は数字表記。",
     flashcards_prompt_cards_array: "`cards`：${nombreQuestions}個のオブジェクトの配列。各オブジェクトはカードを表し、以下を含みます：",
     flashcards_prompt_text: "`text`：推測する質問または用語（表）。",
     flashcards_prompt_answer: "`answer`：回答または定義（裏）。注意、重要：answerには単純な単語一つまたは数字のみを含めることができます。",
-    flashcards_prompt_tip: "`tip` (任意): 質問が難しい場合に学生を助けるためのHTML形式のヒント。関連性があると思われる場合にのみヒントを追加してください。",
+    flashcards_prompt_tip: "`tip`（任意）: 質問が難しい場合に学習者を助けるためのヒントです。適切だと思う場合にのみヒントを追加してください。",
+    flashcards_prompt_tip_formatting: "ヒント（`tip`）では、重要な情報を強調するために、太字には `*mot*`、斜体には `**mot**` を使用できます。",
     flashcards_prompt_example_json_title: "**JSONの例：**",
     flashcards_prompt_example: `\`\`\`json
 {
@@ -445,7 +652,7 @@ const translations_jp = {
     glossary_prompt_json_structure_main_object: "${nombreQuestions}個のJSONオブジェクトの配列を生成してください。",
     glossary_prompt_panel_object: "",
     glossary_prompt_title: "`title`：定義する単語または表現。",
-    glossary_prompt_content: "`text`：HTML形式の定義（<p>、<strong>などを使用）。",
+    glossary_prompt_content: "`text`: 定義。太字には `*単語*`、斜体には `**単語**` を使い、改行には `\\n` を使用します。",
     glossary_prompt_content_rules_title: "**コンテンツのルール：**",
     glossary_prompt_rule1: "1. 定義は明確で簡潔、生徒のレベルに適している必要があります。",
     glossary_prompt_rule2: "",
@@ -454,11 +661,11 @@ const translations_jp = {
 [
 {
 "title": "光合成",
-"text": "<p>緑色植物が太陽光をエネルギーに変換するプロセス。</p>"
+"text": "緑色植物が太陽光をエネルギーに変換するプロセス。"
 },
 {
 "title": "細胞",
-"text": "<p>すべての生物の基本単位。</p>"
+"text": "すべての生物の基本単位。"
 }
 ]
 \`\`\` `,
@@ -493,7 +700,7 @@ const translations_jp = {
 ]
 }
 \`\`\` `,
-    summary_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現し、トピックに関連している必要があります。",
+    summary_prompt_overall_feedback: "`overallFeedback`:（厳格な規則）最終フィードバックとして6個のオブジェクトからなる配列を必ず生成し、課題のテーマに即してスコア帯 0-10, 11-30, 31-50, 51-70, 71-90, 91-100 を厳密に守ってください。各オブジェクトは `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }` の形式。`feedback` は過度でない肯定的・段階的な文にします。",
     summary_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
 
     // Summary UI translations
@@ -529,7 +736,7 @@ const translations_jp = {
 }
  \`\`\` `,
     drag_word_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
-    drag_word_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現し、トピックに関連している必要があります。",
+    drag_word_prompt_overall_feedback: "`overallFeedback`:（厳格な規則）最終フィードバックとして6個のオブジェクトからなる配列を必ず生成し、課題のテーマに即してスコア帯 0-10, 11-30, 31-50, 51-70, 71-90, 91-100 を厳密に守ってください。各オブジェクトは `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }` の形式。`feedback` は過度でない肯定的・段階的な文にします。",
 
     // Drag the Words UI translations
     drag_words_check_answer: "チェック",
@@ -562,7 +769,7 @@ const translations_jp = {
 }
 \`\`\` `,
     blanks_prompt_generate_only_json: "コメントなしで、有効なJSONコードのみを生成してください。",
-    blanks_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現し、トピックに関連している必要があります。",
+    blanks_prompt_overall_feedback: "`overallFeedback`:（厳格な規則）最終フィードバックとして6個のオブジェクトからなる配列を必ず生成し、課題のテーマに即してスコア帯 0-10, 11-30, 31-50, 51-70, 71-90, 91-100 を厳密に守ってください。各オブジェクトは `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }` の形式。`feedback` は過度でない肯定的・段階的な文にします。",
 
     // Fill in the Blanks UI translations
     blanks_show_solutions: "解答を表示",
@@ -600,7 +807,7 @@ const translations_jp = {
     mark_words_prompt_json_structure_main_object: "オブジェクトには以下を含める必要があります：",
     mark_words_prompt_task_description: "`taskDescription`：明確な指示。",
     mark_words_prompt_text_field: "`textField`：マークする単語がアスタリスク（*単語*）で囲まれたテキスト。",
-    mark_words_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現し、トピックに関連している必要があります。",
+    mark_words_prompt_overall_feedback: "`overallFeedback`:（厳格な規則）最終フィードバックとして6個のオブジェクトからなる配列を必ず生成し、課題のテーマに即してスコア帯 0-10, 11-30, 31-50, 51-70, 71-90, 91-100 を厳密に守ってください。各オブジェクトは `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }` の形式。`feedback` は過度でない肯定的・段階的な文にします。",
     mark_words_prompt_content_rules_title: "**コンテンツのルール：**",
     mark_words_prompt_rule1: "1. テーマに関する関連する段落を作成してください。",
     mark_words_prompt_rule2: "2. マークする重要なキーワードを約${nombreQuestions}個特定してください。",
@@ -702,6 +909,12 @@ const translations_jp = {
 \`\`\` `,
     appariement_prompt_generate_only_json: "有効なJSONオブジェクトのみを生成し、コメントは一切付けないでください。",
 
+    // 対応付けの作成
+    appariement_error_invalid_json: "JSON の構造が無効です。'title' と配列 'pairs' が含まれ、各ペアに 'question' と 'answer' があることを確認してください。",
+    appariement_activity_intro: "対応するペアを見つけてください。",
+    appariement_success_generation: "ファイル {fileName} の生成に成功しました !",
+    appariement_error_creation_mbz: "対応付け用の MBZ 作成中にエラーが発生しました:",
+
     // QCM Prompt
     qcm_prompt_role: "あなたは教育設計の専門家で、Moodleの「MCQ」活動を作成しています。",
     qcm_prompt_num_questions: "**質問数：** 10",
@@ -725,17 +938,23 @@ const translations_jp = {
 "title": "フランス革命に関する多肢選択クイズ",
 "questions": [
 {
-"text": "<p>バスティーユ襲撃の日付はいつですか？</p>",
+"text": "バスティーユ襲撃の日付はいつですか？",
 "answers": [
-{ "text": "<p>1789年7月14日</p>", "iscorrect": 1 },
-{ "text": "<p>1789年8月4日</p>", "iscorrect": 0 },
-{ "text": "<p>1789年8月26日</p>", "iscorrect": 0 }
+{ "text": "1789年7月14日", "iscorrect": 1 },
+{ "text": "1789年8月4日", "iscorrect": 0 },
+{ "text": "1789年8月26日", "iscorrect": 0 }
 ]
 }
 ]
 }
 \`\`\` `,
     qcm_prompt_generate_only_json: "有効なJSONオブジェクトのみを生成し、コメントは一切付けないでください。",
+
+    // 多肢選択クイズの作成
+    qcm_error_invalid_json: "JSON の構造が無効です。'title' と配列 'questions' が含まれ、少なくとも 1 つの質問と回答があることを確認してください。",
+    qcm_activity_intro: "次の質問に回答してください。",
+    qcm_success_generation: "ファイル {fileName} の生成に成功しました !",
+    qcm_error_creation_mbz: "多肢選択クイズ用の MBZ 作成中にエラーが発生しました:",
 
     // H5P Modules
     h5p_timeline_name: "年表",
@@ -776,8 +995,8 @@ const translations_jp = {
     h5p_chart_description: "データを視覚化するために円グラフまたは棒グラフを作成します。",
 
     // Moodle Modules
-    moodle_xml_name: "テスト (問題バンク)",
-    moodle_xml_description: "XML 形式でインポート可能な小テスト用に 10 問の問題バンクを作成します。",
+    moodle_xml_name: "テスト",
+    moodle_xml_description: "テスト活動に直接インポートするための問題バンクを生成します（xmlまたはgift形式）",
     moodle_xml_help: "Moodle の「小テスト」活動に XML ファイルを追加するには、まず活動を作成します。その後、<strong>その他</strong> メニューを開き、<strong>問題バンク</strong> に移動します。そこで <strong>インポート</strong> をクリックし、<strong>Moodle XML</strong> 形式を選択し、ファイルを選んで確認します。",
     moodle_gift_name: "GIFT フォーマット",
     moodle_gift_description: "GIFT 形式で問題を作成します。これは Moodle に問題をインポートする簡単な方法です。",
@@ -792,15 +1011,18 @@ const translations_jp = {
     moodle_glossaire_xml_name: "用語集 (XML)",
     moodle_glossaire_xml_description: "XML形式でインポート可能な用語集を生成します。",
 
+    elea_page_name: "ページ",
+    elea_page_description: "Éléa のコンテンツページを視覚的に整形して作成します.",
+
     // Dynamic content
     prompt_for_ia: "AI用プロンプト",
-    copy_prompt: "📋 プロンプトをコピー",
+    copy_prompt: "プロンプトをコピー",
     fullscreen_prompt: "フルスクリーン",
     exit_fullscreen_prompt: "フルスクリーンを終了",
     lock_prompt: "プロンプトをロック",
     unlock_prompt: "プロンプトのロックを解除",
-    go_duck: "🦆 Duck.aiにアクセス",
-    go_mistral: "Ⓜ️ Le chatにアクセス",
+    go_duck: "Duck.aiにアクセス",
+    go_mistral: "Le chatにアクセス",
     create_h5p_file: "H5Pファイルを作成",
     integrate_h5p_libraries: "H5Pライブラリを統合：",
     paste_ia_result: "モジュールを作成するために、下のエリアにAIの結果を貼り付けてください。",
@@ -808,6 +1030,10 @@ const translations_jp = {
     create_xml_file: "XMLファイルを作成",
     paste_ia_result_xml: "下にAIで生成されたXMLを貼り付けてください。",
     generate_xml_file: "XMLファイルを生成",
+    export_mbz: "MBZ 形式",
+    export_gift: "GIFT 形式",
+    export_xml: "XML 形式",
+    export_html: "HTML 形式",
 
     create_mbz_file_appariement: "「マッチング」ファイル (.mbz) を作成",
     paste_ia_result_appariement: "下にAIが生成したJSONを貼り付けてください。アクティビティのタイトルはJSONから自動的に抽出されます。",
@@ -815,23 +1041,29 @@ const translations_jp = {
     create_mbz_file_millionnaire: "「ミリオネア」ファイル (.mbz) を作成",
     paste_ia_result_millionnaire: "下にAIが生成したJSONを貼り付けてください。アクティビティのタイトルはJSONから自動的に抽出されます。",
     generate_mbz_millionnaire: "「ミリオネア」活動を生成 (mbz)",
+    generate_mbz_test: "テスト活動（mbz）を生成",
 
     create_mbz_file_qcm: "MCQファイル (.mbz) を作成",
     paste_ia_result_qcm: "下にAIが生成したJSONを貼り付けてください。アクティビティのタイトルはJSONから自動的に抽出されます。",
     generate_mbz_qcm: "MCQ活動を生成 (mbz)",
+
+    create_mbz_file_page: "ページファイル (.mbz) を作成",
+    paste_ia_result_page: "下に AI が生成した JSON を貼り付けて、ページを構築します.",
+    generate_mbz_page: "ページのアクティビティ (mbz) を生成",
 
     // Moodle XML specific
     moodle_xml_placeholder: "Moodle XMLがここに表示されます...",
     paste_xml_placeholder: "AIで生成された完全なXMLをここに貼り付けてください...",
 
     // H5P 空のテキストフィールド
-    generate_prompts_placeholder: "『プロンプトを生成』をクリックすると、AI 用プロンプトがここに表示されます。",
+    generate_prompts_placeholder: "クイックモードまたは詳細モードの項目を少なくとも1つ入力すると、ここにAI用のプロンプトが表示されます。",
     paste_json_or_text: "アクティビティ作成のため、AI が生成した JSON コンテンツまたはテキストをここに貼り付けてください。",
 
     // Notifications
     prompts_generated_successfully: "プロンプトが正常に生成されました！",
-    error_please_fill_fields: "簡単モードのすべてのフィールドを入力してください。",
-    error_please_fill_guided_fields: "ガイドモードのすべてのフィールドを入力してください。",
+    success_copy: "✓ コピーしました !",
+    error_please_fill_fields: "クイックモードで少なくとも1つのフィールドを入力してください。",
+    error_please_fill_guided_fields: "詳細モードで少なくとも1つのフィールドを入力してください。",
     error_field_empty: "フィールドが空です。まずプロンプトを生成してください。",
     error_copy_failed: "コピーに失敗しました。",
     error_h5p_module_not_found: "モジュール'{moduleKey}'が見つかりません。",
@@ -946,7 +1178,7 @@ const translations_jp = {
     true_false_prompt_example_json_title: "--- JSONの例 ---",
     true_false_prompt_example: `\`\`\`json
 {
-"question": "<p>オスロはノルウェーの首都です。</p>",
+"question": "オスロはノルウェーの首都です。",
 "correct": "true",
 "feedbackOnCorrect": "正解です！オスロは確かにノルウェーの首都です。",
 "feedbackOnWrong": "不正解です。ノルウェーの首都はオスロです。"
@@ -999,27 +1231,35 @@ const translations_jp = {
     multiple_choice_prompt_answers_array: "`answers`: 各回答を表すオブジェクトの配列。",
     multiple_choice_prompt_text: "`text`: 回答テキスト（HTML形式）。",
     multiple_choice_prompt_correct: "`correct`: 正解かどうかを示すブール値（`true`または`false`）。",
-    multiple_choice_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現する必要があります。",
+    multiple_choice_prompt_overall_feedback: "`overallFeedback`:（厳格な規則）最終フィードバックとして6個のオブジェクトからなる配列を必ず生成し、課題のテーマに即してスコア帯 0-10, 11-30, 31-50, 51-70, 71-90, 91-100 を厳密に守ってください。各オブジェクトは `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }` の形式。`feedback` は過度でない肯定的・段階的な文にします。",
     multiple_choice_prompt_content_rules_title: "**コンテンツのルール:**",
     multiple_choice_prompt_rule1: "1.  正解は1つだけです（`\"correct\": true`）。",
     multiple_choice_prompt_rule2: "2.  複数の不正解を提供してください（`\"correct\": false`）。",
     multiple_choice_prompt_example_json_title: "**JSONの例:**",
     multiple_choice_prompt_example: `\`\`\`json
 {
-"question": "<p>カシス（クロスグリ）の実の本当の色は何ですか？</p>",
+"question": "カシス（クロスグリ）の実の本当の色は何ですか？",
 "answers": [
 {
 "correct": true,
-"text": "<div>非常に濃い紫</div>"
+"text": "非常に濃い紫"
 },
 {
 "correct": false,
-"text": "<div>青</div>"
+"text": "青"
 },
 {
 "correct": false,
-"text": "<div>黒</div>"
+"text": "黒"
 }
+],
+"overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "0-10%のフィードバック" },
+    { "from": 11, "to": 30, "feedback": "11-30%のフィードバック" },
+    { "from": 31, "to": 50, "feedback": "31-50%のフィードバック" },
+    { "from": 51, "to": 70, "feedback": "51-70%のフィードバック" },
+    { "from": 71, "to": 90, "feedback": "71-90%のフィードバック" },
+    { "from": 91, "to": 100, "feedback": "91-100%のフィードバック" }
 ]
 }
 \`\`\` `,
@@ -1043,7 +1283,7 @@ const translations_jp = {
     find_the_words_prompt_task_description: "`taskDescription`: アクティビティの明確な指示。",
     find_the_words_prompt_word_list: "`wordList`: 見つけるべき単語の文字列。カンマ区切りでスペースなし。",
     find_the_words_prompt_content_rules_title: "**コンテンツのルール:**",
-    find_the_words_prompt_rule1: "1.  `wordList`はカンマで区切られた単語の単一文字列である必要があります。",
+    find_the_words_prompt_rule1: "1.  `wordList` は、語をカンマで区切った単一の文字列にしてください。各語は単純な1語（複合語不可）とします。数字・句読点・アクセント付き文字は使用禁止です。基本のラテン文字のみを用い（例：'élève' ではなく 'eleve' と書く）。",
     find_the_words_prompt_example_json_title: "**JSONの例:**",
     find_the_words_prompt_example: `\`\`\`json
 {
@@ -1086,21 +1326,22 @@ const translations_jp = {
     sort_the_paragraphs_prompt_generate_json: "H5P段落の並べ替えアクティビティ用の完全で有効なJSONオブジェクトを生成してください。",
     sort_the_paragraphs_prompt_json_structure_title: "**期待されるJSON構造:**",
     sort_the_paragraphs_prompt_json_structure_main_object: "オブジェクトには以下を含める必要があります：",
-    sort_the_paragraphs_prompt_task_description: "`taskDescription`: アクティビティの明確な指示。",
-    sort_the_paragraphs_prompt_paragraphs_array: "`paragraphs`: 並べ替える段落を表す文字列の配列。段落は正しい順序でなければなりません。",
-    sort_the_paragraphs_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現する必要があります。",
+    sort_the_paragraphs_prompt_task_description: "`taskDescription`: アクティビティの明確な指示。太字には`*単語*`、斜体には`**単語**`、改行には`\\n`を使用してください。",
+    sort_the_paragraphs_prompt_paragraphs_array: "`paragraphs`: 並べ替える段落を表す文字列の配列。段落は正しい順序でなければなりません。太字には`*単語*`、斜体には`**単語**`を使用してください。",
+    sort_the_paragraphs_prompt_overall_feedback: "`overallFeedback`:（厳格な規則）最終フィードバックとして6個のオブジェクトからなる配列を必ず生成し、課題のテーマに即してスコア帯 0-10, 11-30, 31-50, 51-70, 71-90, 91-100 を厳密に守ってください。各オブジェクトは `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }` の形式。`feedback` は過度でない肯定的・段階的な文にします。",
     sort_the_paragraphs_prompt_content_rules_title: "**コンテンツのルール:**",
-    sort_the_paragraphs_prompt_rule1: "1.  `paragraphs`配列には、正しい論理順序の段落のリストが含まれている必要があります。",
+    sort_the_paragraphs_prompt_rule1: "1. `paragraphs` は内容から推論できる論理的な流れを形成し、人工的な手掛かり（番号、日付/時刻、「まず/次に/最後に」）を含めないこと（明示的に指示された場合を除く）。",
+    sort_the_paragraphs_prompt_rule2: "2. 平板な羅列にしないこと：各文が同じ筋を前進させる（原因→結果、準備→行動→結果、一般→具体）ことで、順序を推測可能にする。",
     sort_the_paragraphs_prompt_example_json_title: "**JSONの例:**",
     sort_the_paragraphs_prompt_example: `\`\`\`json
 {
-"taskDescription": "<p>私の朝のルーティン:</p>",
+"taskDescription": "私の朝のルーティン:",
 "paragraphs": [
-"<p>まず、7時30分に起きます</p>",
-"<p>次に、服を着ます</p>",
-"<p>それから、朝ごはんを食べます</p>",
-"<p>その後、歯を磨きます</p>",
-"<p>最後に、学校へ行きます</p>"
+  "やかんに新しい水を入れる。",
+  "スイッチを入れる。",
+  "カップにティーバッグを入れる。",
+  "沸いたお湯をティーバッグの上から注ぐ。",
+  "抽出が終わったらティーバッグを取り出す。"
 ]
 }
  \`\`\` `, 
@@ -1131,7 +1372,7 @@ const translations_jp = {
     single_choice_set_prompt_choices_array: "`choices`: 各質問を表すオブジェクトの配列。各オブジェクトには以下が含まれます：",
     single_choice_set_prompt_question: "`question`: 質問。",
     single_choice_set_prompt_answers_array: "`answers`: 文字列の配列。最初の文字列が常に正解です。",
-    single_choice_set_prompt_overall_feedback: "`overallFeedback`: 最終フィードバック用の6つのオブジェクトの配列で、スコアは0-10、11-30、31-50、51-70、71-90、91-100です。テキスト（`feedback`）は親切で、段階的で、常に肯定的に表現する必要があります。",
+    single_choice_set_prompt_overall_feedback: "`overallFeedback`:（厳格な規則）最終フィードバックとして6個のオブジェクトからなる配列を必ず生成し、課題のテーマに即してスコア帯 0-10, 11-30, 31-50, 51-70, 71-90, 91-100 を厳密に守ってください。各オブジェクトは `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }` の形式。`feedback` は過度でない肯定的・段階的な文にします。",
     single_choice_set_prompt_content_rules_title: "**コンテンツのルール:**",
     single_choice_set_prompt_rule1: "1. 各`answers`配列では、最初の回答が常に正解です。",
     single_choice_set_prompt_example_json_title: "**JSONの例:**",
@@ -1148,7 +1389,12 @@ const translations_jp = {
 }
 ],
 "overallFeedback": [
-{"from": 0, "to": 100, "feedback": ":maxscore 問中 :numcorrect 問正解しました"}
+    { "from": 0, "to": 10, "feedback": "0-10%のフィードバック" },
+    { "from": 11, "to": 30, "feedback": "11-30%のフィードバック" },
+    { "from": 31, "to": 50, "feedback": "31-50%のフィードバック" },
+    { "from": 51, "to": 70, "feedback": "51-70%のフィードバック" },
+    { "from": 71, "to": 90, "feedback": "71-90%のフィードバック" },
+    { "from": 91, "to": 100, "feedback": "91-100%のフィードバック" }
 ]
 }
 \`\`\` `,
@@ -1179,45 +1425,33 @@ const translations_jp = {
     dialog_cards_prompt_tips: "`tips` (任意): ヒント用のオブジェクト。教育的に有用だと判断した場合は、`front`キーで表のヒント、`back`キーで裏のヒントを追加してください。",
     dialog_cards_prompt_content_rules_title: "**コンテンツのルール:**",
     dialog_cards_prompt_rule1: "1. 表（`text`）と裏（`answer`）のテキストは明確かつ簡潔でなければなりません。**読みやすさを向上させ、重要な情報を強調するために、HTML（<strong>で太字、<em>で斜体）でコンテンツをフォーマットしてください。**",
-    dialog_cards_prompt_rule2: "2. 画像や音声は追加しないでください。",
-    dialog_cards_prompt_rule3: "",
     dialog_cards_prompt_example_json_title: "**JSONの例:**",
     dialog_cards_prompt_example: `\`\`\`json
 {
-"title": "<p>フランス語で果物の名前を学びましょう</p>",
-"description": "<p>果物の名前は日本語で表示されます。カードをめくって正しいフランス語訳を確認しましょう。</p>",
+"title": "英語で果物の名前を覚えよう",
+"description": "果物の名前はフランス語で提示されます。カードをめくって正しい英語訳を確認しましょう。",
 "dialogs": [
 {
-"text": "<p style=\"text-align: center;\">いちご</p>",
-"answer": "<p style=\"text-align: center;\">Fraises</p>",
-"image": {
-"copyright": {
-"license": "CC BY-SA",
-"source": "https://commons.wikimedia.org/wiki/File:Bowl_of_Strawberries.jpg",
-"author": "ShakataGaNai",
-"title": "Bowl_of_Strawberries.jpg",
-"version": "4.0"
-},
-"imageAltText": "緑の葉のついた赤い果物"
-},
-"audio": [],
-"tips": {}
+"title": "英語の動詞（現在形）を見つけよう",
+"description": "英語の過去形の文から、動詞の不定詞を見つけましょう。カードをめくって答えを確認します。",
+"dialogs": [
+{
+"text": "He *visited* his grandmother.",
+"answer": "to *visit*",
+"tips": {
+"front": "過去形の動詞を特定しましょう。",
+"back": "動詞の基本形（不定詞）を思い浮かべてください。」
+}
 },
 {
-"text": "<p style=\"text-align: center;\">ラズベリー</p>",
-"answer": "<p style=\"text-align: center;\">Framboises</p>",
-"image": {
-"copyright": {
-"license": "CC BY",
-"source": "https://commons.wikimedia.org/wiki/File:Summer_raspberries,_2008.jpg",
-"title": "Summer_raspberries,_2008.jpg",
-"author": "www.bluewaikiki.com",
-"version": "4.0"
-},
-"imageAltText": "赤いベリー"
-},
-"audio": [],
-"tips": {}
+"text": "She *played* soccer.",
+"answer": "to *play*",
+"tips": {
+"front": "過去の動詞を探しましょう。",
+"back": "辞書形（不定詞）を想像しましょう。"
+}
+}
+]
 }
 ]
 }
@@ -1286,9 +1520,12 @@ const translations_jp = {
 "blanksText": "<p>彼は英語を話しますが、(話さない) ___________<strong>&nbsp;</strong>ドイツ語。</p>"
 },
 "overallFeedback": [
-{"from": 0, "to": 50, "feedback": "もう一度やってみよう！"},
-{"from": 51, "to": 75, "feedback": "まあまあできました！"},
-{"from": 76, "to": 100, "feedback": "よくできました！"}
+    { "from": 0, "to": 10, "feedback": "0-10%のフィードバック" },
+    { "from": 11, "to": 30, "feedback": "11-30%のフィードバック" },
+    { "from": 31, "to": 50, "feedback": "31-50%のフィードバック" },
+    { "from": 51, "to": 70, "feedback": "51-70%のフィードバック" },
+    { "from": 71, "to": 90, "feedback": "71-90%のフィードバック" },
+    { "from": 91, "to": 100, "feedback": "91-100%のフィードバック" }
 ]
 }
 \`\`\` `,
@@ -1381,7 +1618,7 @@ const translations_jp = {
 -   **ルート:** \`name\`（用語集名）と\`entries\`（オブジェクトの配列）の 2 つのキーを持つメインオブジェクト。
 -   **\`entries\` の各オブジェクトは以下を含む必要があります:**
     -   \`concept\`: 定義する語または表現。
-    -   \`definition\`: 明確で簡潔な定義。
+    -   \`definition\`: 明確で簡潔な定義。太字には *mot*、斜体には **mot**、改行には \\n を使用し、教育的に妥当な場合にのみ用いる。
     -   \`aliases\`（任意）: 同義語や代替用語のための文字列配列。関連するエイリアスがある場合にのみこのキーを追加してください。`,
     glossaire_xml_prompt_example_title: "**JSON の例:**",
     glossaire_xml_prompt_example: `\`\`\`json
@@ -1390,15 +1627,107 @@ const translations_jp = {
   "entries": [
     {
       "concept": "ジャーナリスト",
-      "definition": "情報を収集・確認し、発信する人。",
+      "definition": "**収集**し、検証し、*情報*を発信する人物。",
       "aliases": ["レポーター", "コラムニスト"]
     },
     {
       "concept": "情報源",
-      "definition": "情報の出どころ。"
+      "definition": "ある*情報*の出所。"
     }
   ]
 }
 \`\`\``,
     glossaire_xml_prompt_generate_only_xml: "有効な JSON コードのみを生成し、コメントは一切含めないでください。",
+ 
+    //Barre de menu
+    tab_all: "すべて",
+    tab_quiz: "クイズ＆テスト",
+    tab_text: "テキスト操作",
+    tab_memory: "記憶と発見",
+    tab_elea: "Éléa",
+    tab_h5p: "H5P",
+    tab_moodle: "Moodle",
+
+    //Bandeau modale de génération
+    get_prompt_step: "1/2 プロンプトを取得",
+    create_file_step: "2/2 ファイルを作成",
+    generate_one_click: "ワンクリックで生成",
+    simple_mode: "シンプル",
+    advanced_mode: "ガイド付き",
+
+    // RAG feature
+    activate_rag: "ドキュメント相談を有効にする",
+    rag_tooltip: "テキストを貼り付けるか、PDFをアップロードできます。コンテンツはアクティビティ生成の主要なソースとして使用されます。",
+    rag_title: "ドキュメントを添付 (任意)",
+    rag_note: "AIにあなたのドキュメントのみを扱わせたい場合は、ここにテキストを貼り付けるか、ファイルをドロップしてください。そうでない場合は、AIが独自に情報を検索できるように、このエリアを空のままにしてください。",
+    upload_pdf: "または分析用のPDFをアップロード",
+    pdf_loading: "PDFを読み込み中...",
+    pdf_processing_page: "ページを処理中",
+    ocr_recognizing_page: "ページを認識中（OCR）",
+    ocr_success: "ドキュメントは正常に処理されました。",
+    ocr_error: "処理中にエラーが発生しました。",
+    error_invalid_pdf: "有効なPDFファイルを選択してください。",
+    error_fullscreen: "フルスクリーンモードに失敗しました：",
+    lock_text: "ロック",
+    unlock_text: "ロック解除",
+    rag_instruction: "\n\nコンテンツを生成するには、以下の情報のみを参照してください：",
+
+    // キャラメル作りの手順
+    caramel_animation_step_1: "鍋に砂糖を入れます...",
+    caramel_animation_step_2: "少し水を加えます...",
+    caramel_animation_step_3: "中火で加熱します...",
+    caramel_animation_step_4: "砂糖が溶け始めます...",
+    caramel_animation_step_5: "色づき始めます...",
+    caramel_animation_step_6: "ゆっくりかき混ぜます...",
+    caramel_animation_step_7: "キャラメルが美しい琥珀色になります...",
+    caramel_animation_step_8: "温かいクリームを加えます...",
+    caramel_animation_step_9: "はねに注意！",
+    caramel_animation_step_10: "よく混ぜます...",
+    caramel_animation_step_11: "もうすぐ完成です！",
+
+    // ページ用プロンプト
+    page_prompt_role: "あなたはインストラクショナルデザインの専門家として、Éléa/Moodle 用の構造化された「ページ」アクティビティを作成します。",
+    page_prompt_mission: "**あなたのミッション :**",
+    page_prompt_generate_json: "Éléa のコンテンツページを構築するための JSON オブジェクトを生成してください。ページの構成はあらかじめ定義されたブロックに基づきます。以下の一覧から、ユーザーの要望に最も適したブロックを選択してください。",
+    page_prompt_json_structure_title: "**想定される JSON 構造 :**",
+    page_prompt_json_structure_main_object: "メインオブジェクトには、ページタイトル用のキー \"title\"、続く講義内容への明確で理解しやすい導入のためのキー \"intro\"、およびオブジェクトの配列であるキー \"blocks\" を含める必要があります。各オブジェクトはコンテンツブロックを表し、下記のいずれかのブロックに対応する \"type\" と、ブロック固有の情報を含む \"data\" オブジェクトを持たなければなりません。",
+    page_prompt_blocks_list_title: "**利用可能なブロック一覧 :**",
+    page_prompt_block_01: "- `#01_hero_header`: オープニングバナー。 `{ \"type\": \"#01_hero_header\", \"data\": { \"title\": \"...\", \"subtitle\": \"...\" } }`",
+    page_prompt_block_02: "- `#02_nav_summary`: 内部リンク付きの目次。 `{ \"type\": \"#02_nav_summary\", \"data\": { \"links\": [{ \"href\": \"#...\", \"text\": \"...\" }] } }`",
+    page_prompt_block_03: "- `#03_histo_reperes`: 歴史上の要点（3 枚のカード）。 `{ \"type\": \"#03_histo_reperes\", \"data\": { \"title\": \"...\", \"cards\": [{ \"title\": \"...\", \"text\": \"...\" }] } }` (最大 3 枚)",
+    page_prompt_block_04: "- `#04_callout_set`: バナー：目標／知っておくこと／警告。 `{ \"type\": \"#04_callout_set\", \"data\": { \"title\": \"...\", \"callouts\": [{ \"type\": \"objectif|savoir|alerte\", \"text\": \"...\" }] } }`",
+    page_prompt_block_05: "- `#05_stats_cards`: 主要指標（カード表示）。 `{ \"type\": \"#05_stats_cards\", \"data\": { \"title\": \"...\", \"stats\": [{ \"value\": \"...\", \"label\": \"...\" }] } }`",
+    page_prompt_block_06: "- `#06_lexique_table`: 語彙表。 `{ \\\"type\\\": \\\"#06_lexique_table\\\", \\\"data\\\": { \\\"title\\\": \\\"...\\\", \\\"caption\\\": \\\"...\\\", \\\"headers\\\": [\\\"...\\\", \\\"...\\\"], \\\"rows\\\": [[\\\"...\\\",\\\"...\\\"]] } }`",
+    page_prompt_block_07: "- `#07_glossary_chips`: グロッサリー（チップ）。 `{ \"type\": \"#07_glossary_chips\", \"data\": { \"title\": \"...\", \"chips\": [\"...\"] } }`",
+    page_prompt_block_08: "- `#08_monuments_grid`: 画像付きモニュメントカード。 `{ \"type\": \"#08_monuments_grid\", \"data\": { \"title\": \"...\", \"cards\": [{ \"img_src\": \"...\", \"img_alt\": \"...\", \"caption\": \"...\", \"title\": \"...\", \"text\": \"...\" }] } }`",
+    page_prompt_block_09: "- `#09_figures_comparison`: 2 枚の画像の比較。 `{ \"type\": \"#09_figures_comparison\", \"data\": { \"title\": \"...\", \"images\": [{ \"src\": \"...\", \"alt\": \"...\", \"caption\": \"...\" }, { \"src\": \"...\", \"alt\": \"...\", \"caption\": \"...\" }] } }`",
+    page_prompt_block_10: "- `#10_table_comparison`: 比較表。 `{ \\\"type\\\": \\\"#10_table_comparison\\\", \\\"data\\\": { \\\"title\\\": \\\"...\\\", \\\"caption\\\": \\\"...\\\", \\\"headers\\\": [\\\"...\\\", \\\"...\\\"], \\\"rows\\\": [[\\\"...\\\",\\\"...\\\"]] } }`",
+    page_prompt_block_11: "- `#11_definition_box`: 定義ボックス。 `{ \"type\": \"#11_definition_box\", \"data\": { \"title\": \"定義\", \"text\": \"...\" } }`",
+    page_prompt_block_12: "- `#12_context_paragraphs`: 講義の段落。 `{ \"type\": \"#12_context_paragraphs\", \"data\": { \"title\": \"...\", \"paragraphs\": [\"...\", \"...\"] } }`",
+    page_prompt_block_13: "- `#13_monument_sheet_long`: 詳細シート。 `{ \"type\": \"#13_monument_sheet_long\", \"data\": { \"title\": \"...\", \"paragraphs\": [\"...\"] } }`",
+    page_prompt_block_14: "- `#14_faq_block`: よくある質問。 `{ \"type\": \"#14_faq_block\", \"data\": { \"title\": \"FAQ\", \"questions\": [{ \"q\": \"...\", \"a\": \"...\" }] } }`",
+    page_prompt_block_15: "- `#15_myths_realities`: 神話 vs 現実。 `{ \"type\": \"#15_myths_realities\", \"data\": { \"myths\": { \"title\": \"神話\", \"items\": [\"...\"] }, \"realities\": { \"title\": \"現実\", \"items\": [\"...\"] } } }`",
+    page_prompt_block_17: "- `#17_method_image_desc`: 画像の記述手順. `{ \"type\": \"#17_method_image_desc\", \"data\": { \"title\": \"...\", \"steps\": [\"...\"] } }`",
+    page_prompt_block_18: "- `#18_sito_graphy`: ウェブグラフィー. `{ \"type\": \"#18_sito_graphy\", \"data\": { \"title\": \"ウェブグラフィー\", \"links\": [{ \"href\": \"...\", \"text\": \"...\" }] } }`",
+    page_prompt_block_19: "- `#19_quote_bilingual`: 二言語の引用。 `{ \"type\": \"#19_quote_bilingual\", \"data\": { \"title\": \"...\", \"quote_fr\": \"...\", \"quote_alt\": \"...\", \"caption\": \"...\" } }`",
+    page_prompt_content_rules_title: "**コンテンツのルール :**",
+    page_prompt_rule1: "1.  JSON は有効でなければなりません。",
+    page_prompt_rule2: "2.  テキストは Markdown のタグ `*語*` を太字、`**語**` を斜体として使用できます。",
+    page_prompt_rule3: "3.  画像については、関連性があり著作権フリーの URL を探してください（例: Wikimedia Commons）。",
+    page_prompt_example_json_title: "**JSON の例 :**",
+    page_prompt_example_json: `\`\`\`json
+{
+  "title": "フランス革命",
+  "blocks": [
+    { "type": "#01_hero_header", "data": { "title": "フランス革命", "subtitle": "重要な指標" } },
+    { "type": "#12_context_paragraphs", "data": { "title": "背景", "paragraphs": ["フランス革命は大きな変革の時期である...", "いくつかの原因がこの出来事を説明します..."] } },
+    { "type": "#08_monuments_grid", "data": { "title": "主要な出来事", "cards": [{ "img_src": "https://.../Prise_de_la_Bastille.jpg", "img_alt": "バスティーユ襲撃", "caption": "1789年7月14日", "title": "バスティーユ襲撃", "text": "この出来事は革命の始まりを示します。" }] } }
+  ]
+}
+\`\`\``,
+    page_prompt_generate_only_json: "有効な JSON コードのみを生成し、コメントは一切含めないでください。",
+    drag_drop_text: "ここに PDF ファイルをドラッグ＆ドロップしてください",
+    or_text: "または",
+    upload_pdf_btn: "ファイルを選択",
+    paste_your_text_here: "ここにテキストをコピー＆ペーストしてください..."
 };

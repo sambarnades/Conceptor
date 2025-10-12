@@ -1,67 +1,183 @@
 const translations_nl = {
-    subtitle: "Begeleide creatie van Moodle- en Éléa-bronnen en -activiteiten",
-    help_button: "Hulp",
-    help_modal_title: "🚀 Snelstartgids voor Caramel",
+    subtitle: "Ondersteunde creatie van bronnen en activiteiten voor Magistère en Éléa",
+    help_button: "Help",
+    help_modal_title: "🚀 Compleet Caramel-handboek voor docenten",
     help_modal_content: `
-        <div class="help-modal-content">
-            <p>Welkom bij <strong>Caramel</strong>! Deze tool begeleidt u stap voor stap bij het maken van interactieve educatieve activiteiten met behulp van kunstmatige intelligentie. Volg deze eenvoudige stappen om uw ideeën om te zetten in kant-en-klare modules.</p>
+    <p>Welkom bij <strong>Caramel</strong>! Deze gids begeleidt je stap voor stap, ook als je net begint. Ons doel is om je te helpen interactieve leeractiviteiten eenvoudig en efficiënt te maken.</p>
+    
+    <div class="help-nav">
+        <a href="#decrire" class="help-nav-link"><span class="help-step-number">1</span> Beschrijven</a>
+        <a href="#choisir" class="help-nav-link"><span class="help-step-number">2</span> Kiezen</a>
+        <a href="#generer" class="help-nav-link"><span class="help-step-number">3</span> Genereren</a>
+        <a href="#integrer" class="help-nav-link"><span class="help-step-number">4</span> Downloaden</a>
+        <a href="#communaute" class="help-nav-link"><i class="fas fa-users"></i> Community</a>
+    </div>
 
-            <div class="help-section">
-                <h4><span class="help-step-number">1</span> Schrijf uw idee op (de "prompt")</h4>
-                <p>Alles begint met het beschrijven van uw behoeften. U heeft hiervoor twee opties:</p>
-                <ul>
-                    <li><span class="badge-help-mode">Snelle modus</span>: Ideaal voor een snelle start. Geef eenvoudig aan <strong>wie u bent</strong> (bv: <em>Docent wetenschappen</em>) en <strong>wat u wilt behandelen</strong> (bv: <em>de watercyclus in de 6e klas</em>).</li>
-                    <li><span class="badge-help-mode">Geleide modus</span>: Voor een preciezer verzoek. Vul de <strong>discipline</strong>, het <strong>thema</strong>, het <strong>niveau van de leerling</strong> en het <strong>aantal gewenste items</strong> in (vragen, data, etc.).</li>
-                </ul>
-            </div>
+    <div id="philosophie" class="help-section help-philosophy">
+        <h4><i class="fas fa-lightbulb"></i> Onze filosofie: jij houdt de regie!</h4>
+        <p>Met Caramel is AI een assistent, maar jij stuurt. Je behoudt in elke fase de controle:</p>
+        <ul>
+            <li><strong>Vooraf:</strong> Je bepaalt het didactische kader door de beschrijvingsvelden in te vullen.</li>
+            <li><strong>Tijdens:</strong> Nadat de AI de inhoud (JSON-code) heeft gegenereerd, kun je die direct in de editor bijstellen.</li>
+            <li><strong>Achteraf:</strong> Ook na het downloaden kun je het bestand in andere tools openen en bewerken.</li>
+        </ul>
+    </div>
 
-            <div class="help-section">
-                <h4><span class="help-step-number">2</span> Genereer de prompts</h4>
-                <p>Nadat u uw informatie heeft ingevoerd, klikt u op de knop <button id="generateBtn" data-key="generate_prompts">Prompts genereren</button>. De tool zal dan gedetailleerde instructies (de "prompts") voorbereiden voor elk beschikbaar activiteitstype.</p>
-            </div>
-
-            <div class="help-section">
-                <h4><span class="help-step-number">3</span> Kies uw activiteit</h4>
-                <p>Navigeer tussen de tabbladen <span class="badge-help-tab">H5P</span> en <span class="badge-help-tab">Éléa/Moodle Modules</span> om de verschillende beschikbare activiteiten te ontdekken. Klik op degene die u interesseert (bijvoorbeeld "Tijdlijn" of "MCQ"). De bijbehorende prompt verschijnt in het tekstvak.</p>
-            </div>
-
-            <div class="help-section">
-                <h4><span class="help-step-number">4</span> Gebruik Kunstmatige Intelligentie</h4>
-                <p>Hier gebeurt de magie! U heeft twee opties om de inhoud voor uw activiteit te genereren:</p>
-                <div class="help-subsection">
-                    <h5><i class="fas fa-robot"></i> Optie A: Genereer met Albert (Aanbevolen)</h5>
-                    <p>Klik op de knop <button class="action-btn albert-btn">Genereer met Albert</button>. U kunt het AI-model kiezen dat het beste bij uw behoeften past (snel, krachtig of gespecialiseerd in code) door op het pijltje rechts van de knop te klikken. De inhoud voor uw activiteit wordt <strong>automatisch gegenereerd en ingevoegd</strong> in het resultaatveld, klaar voor gebruik.</p>
-                    <ul class="advantages">
-                        <li><strong>Sterke punten:</strong> Eenvoudig, snel, geïntegreerde AI direct in de tool.</li>
-                        <li><strong>Zwakke punten:</strong> Geen zoekopdracht op het web, geen aanpassing van de initiële AI-prompt mogelijk.</li>
-                    </ul>
-                </div>
-                <div class="help-subsection">
-                    <h5><i class="fas fa-paste"></i> Optie B: Gebruik uw eigen AI</h5>
-                    <p>Klik op <button class="copy-btn">📋 Prompt kopiëren</button> en plak deze instructie in uw favoriete kunstmatige intelligentie (ChatGPT, Le Chat, etc.). Kopieer vervolgens <strong>de reactie van de AI</strong> en <strong>plak deze</strong> in het resultaatveld van Caramel.</p>
-                    <ul class="advantages">
-                        <li><strong>Sterke punten:</strong> Volledige flexibiliteit, mogelijke internettoegang, mogelijkheid om de initiële prompt te wijzigen en documenten toe te voegen voor het genereren van inhoud.</li>
-                        <li><strong>Zwakke punten:</strong> Vereist handmatig kopiëren en plakken en een extern account.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="help-section">
-                <h4><span class="help-step-number">5</span> Maak en download uw bestand</h4>
-                <p>Zodra de inhoud in het resultaatveld staat (gegenereerd door Albert of door u geplakt), klikt u op de knop <button class="download-btn">Genereer H5P</button> (of .mbz/.xml afhankelijk van de activiteit). Uw bestand wordt gedownload, klaar om te worden geïntegreerd in uw Moodle- of Éléa-platform.</p>
-                <p class="help-final-tip">En dat is alles! U heeft in een paar klikken een interactieve activiteit gemaakt. Aarzel niet om te experimenteren met de verschillende modi en activiteitstypen om uw cursussen te verrijken.</p>
-            </div>
+    <div id="decrire" class="help-section">
+        <h4><span class="help-step-number">1</span> Beschrijf je behoefte: het startpunt</h4>
+        <p>Hier begint alles. Hoe duidelijker je beschrijving, hoe relevanter het resultaat. Je hebt twee opties:</p>
+        <div class="help-subsection">
+            <h5><span class="help-badge-mode">Snelle modus</span></h5>
+            <p>Ideaal voor de hoofdzaken. Vul twee velden in:</p>
+            <ul>
+                <li><strong>Wie ben je?</strong> Wees direct. Geen volledige zin nodig. Voorbeelden: <em>Docent wiskunde</em>, <em>Academische trainer</em>.</li>
+                <li><strong>Wat wil je behandelen?</strong> De kern van je vraag. Wees zo volledig mogelijk. Voeg onderwerp, niveau en randvoorwaarden toe. Voorbeeld: <em>Een inleiding tot breuken voor 1e klas van het voortgezet onderwijs, met concrete voorbeelden zoals het delen van een taart.</em></li>
+            </ul>
         </div>
+        <div class="help-subsection">
+            <h5><span class="help-badge-mode">Geavanceerde modus</span></h5>
+            <p>Voor een meer gestructureerde vraag biedt deze modus precieze velden:</p>
+            <ul>
+                <li><strong>Vaks, Thema, Niveau:</strong> om de context te bepalen.</li>
+                <li><strong>Aantal items:</strong> Erg belangrijk! Aantal vragen, data op een tijdlijn, woorden in een glossarium, enz.</li>
+                <li><strong>Aanvullende info:</strong> Ruimte voor specifieke instructies, beperkingen of andere relevante details.</li>
+            </ul>
+            <p><span class="help-badge-feature"><i class="fas fa-file-alt"></i> Documentlezing inschakelen</span><br>
+            Met deze krachtige optie kun je genereren op basis van eigen content. <strong>Kopieer-plak tekst</strong> of <strong>upload een PDF</strong>.
+            <br><strong><i class="fas fa-lock"></i> Privacy:</strong> Je document wordt <strong>volledig lokaal op je computer</strong> verwerkt. Er wordt niets naar internet verzonden.</p>
+        </div>
+    </div>
+
+    <div id="choisir" class="help-section">
+        <h4><span class="help-step-number">2</span> Kies het activiteitstype</h4>
+        <p>Na de beschrijving worden de activiteitstegels actief. Klik op de tegel die past bij je didactisch doel.</p>
+        <details>
+            <summary><strong>Klik hier voor details van de beschikbare activiteiten</strong></summary>
+            <h5><span class="help-badge-tab">H5P</span></h5>
+            <p>Interactieve activiteiten in H5P-formaat. Activiteiten met een ster <span class="feedback-star">*</span> bevatten standaard uitgebreide feedback in 6 scorebanden.</p>
+            <ul>
+                <li><strong>Tijdlijn:</strong> Interactieve tijdlijn met een reeks gebeurtenissen.</li>
+                <li><strong>Flashcards:</strong> Kaarten voor memorisatie (voor-/achterzijde).</li>
+                <li><strong>Quiz (Question Set) <span class="feedback-star">*</span>:</strong> Set van gevarieerde vragen (MC, drag-and-drop, enz.).</li>
+                <li><strong>Glossarium:</strong> Glossarium of FAQ als accordeon.</li>
+                <li><strong>Kruiswoord <span class="feedback-star">*</span>:</strong> Kruiswoordpuzzel op basis van definities.</li>
+                <li><strong>Schrijfopdracht <span class="feedback-star">*</span>:</strong> Schrijfonderwerp met automatische sleutelwoordcorrectie.</li>
+                <li><strong>Samenvatting <span class="feedback-star">*</span>:</strong> Leerlingen stellen een juiste samenvatting samen door zinnen te kiezen.</li>
+                <li><strong>Woorden slepen <span class="feedback-star">*</span>:</strong> Tekst waarin leerlingen ontbrekende woorden slepen.</li>
+                <li><strong>Invultekst <span class="feedback-star">*</span>:</strong> Ontbrekende woorden via toetsenbord invullen.</li>
+                <li><strong>Woorden markeren <span class="feedback-star">*</span>:</strong> Bepaalde woorden in een tekst markeren.</li>
+                <li><strong>Waar/Onwaar:</strong> Eenvoudige binaire vragen.</li>
+                <li><strong>Meerkeuze <span class="feedback-star">*</span>:</strong> MC-vragen met één of meerdere juiste antwoorden.</li>
+                <li><strong>Woordzoeker:</strong> Letterrooster om woorden te vinden.</li>
+                <li><strong>Alinea’s ordenen <span class="feedback-star">*</span>:</strong> Alinea’s in de juiste volgorde zetten.</li>
+                <li><strong>Reeks enkelvoudige keuze <span class="feedback-star">*</span>:</strong> Reeks vragen met exact één goed antwoord.</li>
+                <li><strong>Dialoogkaarten:</strong> Interactieve kaarten met tekst en audio.</li>
+                <li><strong>Geavanceerde invultekst <span class="feedback-star">*</span>:</strong> Cloze-opgave met specifieke feedback per fout.</li>
+                <li><strong>Diagram:</strong> Cirkeldiagram of staafdiagram voor datavisualisatie.</li>
+            </ul>
+            <h5><span class="help-badge-tab">Moodle/Éléa</span></h5>
+            <ul>
+                <li><strong>Toets (XML / GIFT):</strong> Bank met gevarieerde vragen (MC, koppelen, enz.) voor import in Moodle.</li>
+                <li><strong>MC (MBZ):</strong> Snelle, eenvoudige meerkeuze-activiteit.</li>
+                <li><strong>Koppelen (MBZ):</strong> Koppelspel met paren.</li>
+                <li><strong>Miljonair (MBZ):</strong> Quiz met oplopende moeilijkheid.</li>
+                <li><strong>Glossarium (XML):</strong> Bestand om definities in een Moodle-glossarium te importeren.</li>
+                <li><strong>Pagina (MBZ / HTML):</strong> Gestructureerde, visueel opgemaakte cursuspagina voor Éléa.</li>
+            </ul>
+        </details>
+    </div>
+
+    <div id="generer" class="help-section">
+        <h4><span class="help-step-number">3</span> Inhoud genereren en verfijnen</h4>
+        <p>Na een klik op een tegel opent een venster. Hier werk je met de AI.</p>
+        <div class="help-subsection">
+            <h5><i class="fas fa-rocket"></i> Optie A: In één klik genereren</h5>
+            <p>De snelle route. Klik op <button class="help-btn-example-albert">In één klik genereren</button> zodat de AI de inhoud maakt en direct rechts in het resultaatgebied plaatst. Via het pijltje rechts op de knop kies je verschillende AI-modellen (snel, krachtig...).</p>
+        </div>
+        <div class="help-subsection">
+            <h5><i class="fas fa-tools"></i> Optie B: Externe AI gebruiken</h5>
+            <p>Voor maximale controle. De prompt (instructie voor de AI) verschijnt links.</p>
+            <ol>
+                <li>Pas de prompt aan indien gewenst.</li>
+                <li>Gebruik <button class="help-btn-example-duck">Open Duck.ai</button> of <button class="help-btn-example-mistral">Open Le Chat</button>. Dit <strong>kopieert de prompt automatisch</strong> en opent de AI in een nieuw tabblad.</li>
+                <li>Plak de prompt in de AI, kopieer de output en plak die rechts in het resultaatgebied in Caramel.</li>
+            </ol>
+            <p>Handige pictogrammen: <span class="help-badge-icon"><i class="fas fa-expand"></i> Volledig scherm</span> en <span class="help-badge-icon"><i class="fas fa-lock"></i> Vergrendelen</span> om de prompt te beschermen.</p>
+        </div>
+    </div>
+
+    <div id="integrer" class="help-section">
+        <h4><span class="help-step-number">4</span> Downloaden en integreren</h4>
+        <p>Als de inhoud klaar is, klik op de downloadknop (bijv. <button class="help-btn-example-download">H5P genereren</button>). Zo integreer je bestanden in Éléa/Moodle:</p>
+        
+        <div class="import-guide">
+            <details class="import-details" open>
+                <summary><span class="help-badge-file">.h5p</span> (H5P-activiteiten)</summary>
+                <div class="import-content">
+                    <ul>
+                        <li><strong>Eenvoudige methode:</strong> Zet bewerken aan in je cursus en sleep het .h5p-bestand naar de gewenste sectie. Ideaal voor snel gebruik.</li>
+                        <li><strong>Aanbevolen methode (voor ontwerpers):</strong> “Activiteit of bron toevoegen” → “Interactieve inhoud (H5P)” → upload je .h5p bij “Bestand”. Zo wordt de activiteit correct meegenomen bij het delen.</li>
+                    </ul>
+                </div>
+            </details>
+            <details class="import-details">
+                <summary><span class="help-badge-file">.mbz</span> (Pagina, Miljonair, Koppelen, MC)</summary>
+                <div class="import-content">
+                    <p>Dit formaat importeert een complete activiteit in je cursus.</p>
+                    <ol>
+                        <li>In je cursus: tandwielmenu → “Herstellen”.</li>
+                        <li>Sleep je .mbz-bestand naar het importgebied.</li>
+                        <li>Volg de stappen via “Doorgaan”. De activiteit wordt toegevoegd.</li>
+                    </ol>
+                </div>
+            </details>
+            <details class="import-details">
+                <summary><span class="help-badge-file">.xml</span> en <span class="help-badge-file">GIFT</span> (Toetsactiviteit)</summary>
+                <div class="import-content">
+                    <p>Deze formaten importeren vragen in de “Vragenbank”.</p>
+                    <ol>
+                        <li>Ga naar “Meer” in je cursus → “Vragenbank”.</li>
+                        <li>Klik op het tabblad “Importeren”.</li>
+                        <li>Kies “Moodle XML-formaat” of “GIFT-formaat”.</li>
+                        <li>Sleep je bestand naar “Importeren” en bevestig.</li>
+                        <li>Je vragen staan nu in de bank en zijn klaar voor een “Toets”.</li>
+                    </ol>
+                </div>
+            </details>
+            <details class="import-details">
+                <summary><span class="help-badge-file">.html</span> (Alternatief voor activiteit “Pagina”)</summary>
+                <div class="import-content">
+                    <p>Voor handmatige contentcontrole.</p>
+                    <ol>
+                        <li>Open het .html-bestand met een teksteditor (bijv. Kladblok) en kopieer de volledige inhoud.</li>
+                        <li>Voeg in Éléa een activiteit “Pagina” toe.</li>
+                        <li>Klik in de pagina-editor op het pictogram om naar HTML-modus te schakelen (vaak weergegeven als \`</\>\`).</li>
+                        <li>Plak de gekopieerde inhoud en sla op.</li>
+                    </ol>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div id="communaute" class="help-section help-community">
+        <h4><i class="fas fa-users"></i> Community & Support</h4>
+        <p>Caramel is een levend project en jouw feedback is waardevol!</p>
+        <ul>
+            <li><strong>Discussie & Vragen:</strong> Sluit je aan bij de <a href="https://tchap.beta.gouv.fr/#/room/#Caramel:agent.dinum.tchap.gouv.fr" target="_blank" rel="noopener noreferrer">Tchap</a>-ruimte om met de community uit te wisselen.</li>
+            <li><strong>Bug melden:</strong> Probleem? Maak een <a href="https://github.com/g-rem/caramel/issues" target="_blank" rel="noopener noreferrer">issue</a> aan. Voeg indien mogelijk het JSON-bestand toe dat de fout veroorzaakte.</li>
+            <li><strong>Project steunen:</strong> Vind je de tool handig? Geef ons een ster op de <a href="https://forge.apps.education.fr/caramel/caramel" target="_blank" rel="noopener noreferrer">Forge-pagina</a>. Dat waarderen we enorm!</li>
+        </ul>
+    </div>
     `,
     fast_mode: "Snelle modus",
-    guided_mode: "Geleide modus",
+    guided_mode: "Geavanceerde modus",
     who_are_you: "Wie bent u? (bv.: Docent, trainer...)",
     what_to_address: "Wat wilt u behandelen? (bv.: De aard van een hoek in de brugklas...)",
     discipline: "Discipline (bv.: Geschiedenis)",
     theme: "Thema (bv.: De Franse Revolutie)",
     level: "Niveau (bv.: Tweede jaar beroepsonderwijs)",
     number_of_elements: "Aantal elementen (bv.: 10)",
-    additional_info: "Aanvullende en specifieke informatie...",
+    additional_info: "Aanvullende informatie...",
     generate_prompts: "Prompts genereren",
     h5p_tab: "H5P",
     moodle_tab: "Éléa/Moodle-modules",
@@ -96,7 +212,7 @@ const translations_nl = {
     timeline_prompt_rule1: "1.  Elke gebeurtenis in de array `date` moet bevatten:",
     timeline_prompt_rule1_startDate: "-   `startDate` en `endDate`: Datum in de notatie \"JJJJ,MM,DD\" of \"JJJJ\". Gebruik `endDate` om een periode te definiëren.",
     timeline_prompt_rule1_headline: "-   `headline`: Titel van de gebeurtenis.",
-    timeline_prompt_rule1_text: "-   `text`: Beschrijving in HTML (gebruik <p> en <strong>).",
+    timeline_prompt_rule1_text: "-   `text`: Tekstbeschrijving. Gebruik `*woord*` voor vet, `**woord**` voor cursief en `\\n` voor regeleinden.",
     timeline_prompt_rule1_asset: "-   `asset`: Een optioneel object met een illustrerende afbeelding.",
     timeline_prompt_rule1_tag: "- `tag`: Een trefwoord dat de periode kenmerkt (bv. 'geschiedenis', 'wetenschap').",
     timeline_prompt_rule2: "2.  Zoek voor elke `asset` actief naar een relevante, rechtenvrije afbeelding (bv. Wikimedia Commons). De URL in `media` moet een directe en geldige link zijn. Vermeld de bron en licentie in `credit`. Als er geen geschikte afbeelding wordt gevonden, laat het `asset`-object dan volledig weg.",
@@ -106,13 +222,13 @@ const translations_nl = {
 {
 "timeline": {
 "headline": "Titel van de tijdlijn",
-"text": "<p>Inleiding tot het thema van de tijdlijn.</p>",
+"text": "Inleiding tot het thema van de tijdlijn.",
 "date": [
 {
 "startDate": "1914,07,28",
 "endDate": "1914,07,28",
 "headline": "Begin van de Eerste Wereldoorlog",
-"text": "<p>Oostenrijk-Hongarije verklaart de oorlog aan Servië.</p>",
+"text": "Oostenrijk-Hongarije verklaart de oorlog aan Servië.",
 "asset": {
 "media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
 "caption": "Aartshertog Franz Ferdinand vlak voor zijn moord.",
@@ -124,7 +240,7 @@ const translations_nl = {
 "startDate": "1918,11,11",
 "endDate": "1918,11,11",
 "headline": "Wapenstilstand van 1918",
-"text": "<p>Ondertekening van de wapenstilstand in Rethondes, waarmee de gevechten eindigden.</p>",
+"text": "Ondertekening van de wapenstilstand in Rethondes, waarmee de gevechten eindigden.",
 "tag": "Verdrag"
 }
 ],
@@ -133,7 +249,7 @@ const translations_nl = {
 "startDate": "1914,07,28",
 "endDate": "1918,11,11",
 "headline": "Eerste Wereldoorlog",
-"text": "<div>Dit is de periode van de Grote Oorlog.</div>",
+"text": "Dit is de periode van de Grote Oorlog.",
 "tag": "Historische periode"
 }
 ]
@@ -151,12 +267,12 @@ const translations_nl = {
     crossword_prompt_title: "`title`: Een titel voor de activiteit.",
     crossword_prompt_words_array: "`words`: Een array van ${nombreQuestions} objecten, elk met:",
     crossword_prompt_answer: "`answer`: Het te raden woord.",
-    crossword_prompt_clue: "`clue`: De bijbehorende definitie.",
-    crossword_prompt_extra_clue_optional: "`extraClue` (optioneel): Een object met een extra hint. De AI moet de relevantie van het toevoegen ervan beoordelen.",
-    crossword_prompt_task_description: "`taskDescription`: Een duidelijke instructie.",
-    crossword_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn.",
-    crossword_prompt_content_rules_title: "**Regels voor de inhoud:**",
-    crossword_prompt_rule1: "1.  De woorden (`answer`) moeten uniek en relevant zijn.",
+    crossword_prompt_clue: "`clue`: De bijbehorende definitie. Het is verboden het te zoeken woord in de hint te zetten.",
+    crossword_prompt_extra_clue_optional: "`extraClue` (optioneel): Een object met een extra hint. De hinttekst mag `*woord*` gebruiken voor vet, `**woord**` voor cursief en `\\n` voor regeleinden. De AI beoordeelt of een extra hint zinvol is.",
+    crossword_prompt_task_description: "`taskDescription`: Een duidelijke, gecontextualiseerde instructie. Gebruik `*woord*` voor vet, `**woord**` voor cursief en `\\n` voor regeleinden. Na een regeleinde, geef de regel voor samenstellingen: \"Schrijf samengestelde woorden als één doorlopend woord, zonder spaties of koppeltekens.\"",
+    crossword_prompt_overall_feedback: "`overallFeedback`: (STRICTE REGEL) Genereer verplicht een array van 6 objecten voor de eindfeedback, afgestemd op het thema van de oefening, met strikte scorebanden 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. Elk object heeft de vorm `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. De `feedback`-tekst is vriendelijk, niet overdreven, gradueel en steeds bevestigend.",
+    crossword_prompt_content_rules_title: "**Inhoudsregels:**",
+    crossword_prompt_rule1: "1.  STRICTE REGEL: Woorden (`answer`) mogen alleen letters bevatten. Samenstellingen, afkortingen of woordgroepen worden samengevoegd tot één woord, zonder spaties, koppeltekens of andere tekens.",
     crossword_prompt_rule2: "2.  De definities (`clue`) moeten kort en precies zijn.",
     crossword_prompt_rule3: "3.  De rest van de JSON-structuur (gedrag, thema, enz.) blijft ongewijzigd.",
     crossword_prompt_example_json_title: "**JSON-voorbeeld voor één woord:**",
@@ -166,10 +282,10 @@ const translations_nl = {
 "words": [
 {
 "answer": "Cel",
-"clue": "De basiseenheid van het leven.",
+"clue": "Basiseenheid van het leven.",
 "extraClue": {
 "params": {
-"text": "<p>Kan dierlijk of plantaardig zijn.</p>"
+"text": "Ze kan *dierlijk* of *plantaardig* zijn."
 }
 }
 },
@@ -178,7 +294,7 @@ const translations_nl = {
 "clue": "Molecuul dat de genetische informatie draagt."
 }
 ],
-"taskDescription": "<p>Vul het kruiswoordraadsel in.</p>"
+"taskDescription": "*Vul* de **kruiswoordpuzzel** in."
 }
 \`\`\` `,
     crossword_prompt_generate_only_json: "Genereer de volledige en geldige JSON door de titel, beschrijving en de array \"words\" in te vullen, zonder verdere opmerkingen.",
@@ -199,9 +315,9 @@ const translations_nl = {
     essay_prompt_generate_json: "Genereer een volledig en geldig JSON-object voor een H5P-Essay-activiteit.",
     essay_prompt_json_structure_title: "**Verwachte JSON-structuur:**",
     essay_prompt_json_structure_main_object: "Het object moet bevatten:",
-    essay_prompt_task_description: "`taskDescription`: Een duidelijke opdracht die de leerling uitnodigt een tekst over het thema te schrijven. Het thema moet vetgedrukt zijn (<strong>) en elke zin moet eindigen met een regeleinde (<p>).",
+    essay_prompt_task_description: "`taskDescription`: Een duidelijke opdracht die de leerling uitnodigt een tekst over het thema te schrijven. Gebruik `*woord*` voor vet, `**woord**` voor cursief en `\\n` voor regeleindes.",
     essay_prompt_keywords_array: "`keywords`: Een array met ${nombreQuestions} objecten; elk definieert een trefwoord dat het systeem in het antwoord moet vinden.",
-    essay_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn.",
+    essay_prompt_overall_feedback: "`overallFeedback`: (STRICTE REGEL) Genereer verplicht een array van 6 objecten voor de eindfeedback, afgestemd op het thema van de oefening, met strikte scorebanden 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. Elk object heeft de vorm `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. De `feedback`-tekst is vriendelijk, niet overdreven, gradueel en steeds bevestigend.",
     essay_prompt_content_rules_title: "**Regels voor de inhoud:**",
     essay_prompt_rule1: "1.  Elk object in `keywords` bevat de sleutel `keyword` met het te zoeken woord.",
     essay_prompt_rule2: "2.  De trefwoorden zijn relevant en essentieel om het begrip van het onderwerp te beoordelen.",
@@ -210,7 +326,7 @@ const translations_nl = {
     essay_prompt_example_json_title: "**JSON-voorbeeld voor één trefwoord:**",
     essay_prompt_example: `\`\`\`json
 {
-"taskDescription": "<p>Schrijf een korte tekst die de fotosynthese uitlegt.</p>",
+"taskDescription": "Schrijf een korte tekst die de fotosynthese uitlegt.",
 "keywords": [
 {
 "keyword": "licht",
@@ -225,28 +341,117 @@ const translations_nl = {
 \`\`\` `,
     essay_prompt_generate_only_json: "Genereer de volledige en geldige JSON door de opdracht en de lijst met trefwoorden in te vullen, zonder verdere opmerkingen.",
 
-    // Moodle XML Prompt
-    moodle_xml_prompt_role: "U bent een expert in onderwijsontwerp en maakt een vragenbank voor een Moodle/Éléa-toetsactiviteit.",
-    moodle_xml_prompt_intro: "Ik wil een quiz met ${nombreQuestions} vragen aanmaken.",
-    moodle_xml_prompt_content_title: "Wat betreft de inhoud:",
-    moodle_xml_prompt_content_rule1: "Foute antwoorden moeten inhoudelijk kloppen maar duidelijk onjuist zijn om gokken te vermijden.",
-    moodle_xml_prompt_content_rule2: "Varieer in moeilijkheid, idealiter van eenvoudig naar complex.",
-    moodle_xml_prompt_content_rule3: "Vereenvoudig de formulering met behoud van inhoudelijke nauwkeurigheid.",
-    moodle_xml_prompt_content_rule4: "Voor de feedback geef je in één à twee zinnen de verwachte elementen van het antwoord.",
-    moodle_xml_prompt_question_types_intro: "De vragen worden gelijkmatig verdeeld over de volgende types:",
-    moodle_xml_prompt_question_type_multichoice: "- multichoice (meerkeuze met één juist antwoord),",
-    moodle_xml_prompt_question_type_matching: "- matching (koppelen),",
-    moodle_xml_prompt_question_type_numerical: "- numerical (numeriek antwoord met of zonder tolerantie),",
-    moodle_xml_prompt_question_type_truefalse: "- truefalse (waar/onwaar).",
-    moodle_xml_prompt_question_type_shortanswer: "- shortanswer (kort antwoord) met eventuele alternatieve antwoorden,",
-    moodle_xml_prompt_question_type_cloze: "- cloze (invultekst) met de categorieën MULTICHOICE, MULTICHOICE_H, MULTICHOICE_V, MULTICHOICE_S, MULTICHOICE_HS, MULTIRESPONSE, MULTIRESPONSE_H, MULTIRESPONSE_HS, NUMERICAL, SHORTANSWER of SHORTANWSER_C, afhankelijk van wat het best bij de context past.",
-    moodle_xml_prompt_form_title: "Wat betreft de vorm:",
-    moodle_xml_prompt_form_rule1: "Het XML-bestand moet:",
-    moodle_xml_prompt_form_rule1_encoding: "In UTF-8 gecodeerd zijn (voeg de coderegel toe).",
-    moodle_xml_prompt_form_rule1_reusable: "Direct herbruikbaar zijn in Moodle, zonder opmaakfouten.",
-    moodle_xml_prompt_form_rule1_standard_structure: "De standaard Moodle-XML-structuur volgen (met <quiz>, <question>, enz.).",
-    moodle_xml_prompt_form_rule1_special_chars: "Wiskundige symbolen zoals '<' of '>' moeten worden gecodeerd als HTML-entiteiten (bijvoorbeeld, `<` voor '<' en `>` voor '>') om verwarring met XML-tags te voorkomen.",
-    moodle_xml_prompt_generate_only_xml: "Niet becommentariëren, niet opmaken, niet samenvatten: ik wil alleen de ruwe XML-inhoud. Respecteer strikt het beschreven formaat, want ik plak het resultaat in een andere tool die dit formaat vereist. Geef het antwoord als vooraf opgemaakte code.",
+    // Moodle XML-prompt
+    moodle_xml_prompt_role: "Je bent expert in onderwijskundig ontwerp. Je taak is de inhoud van een Toets-activiteit met bijbehorende Moodle/Éléa-vragenbank te maken door een geldig JSON-object te genereren.",
+    moodle_xml_prompt_intro: "Ik wil een quiz met ${nombreQuestions} vragen maken.",
+    moodle_xml_prompt_content_title: "**Regels voor de inhoud:**",
+    moodle_xml_prompt_content_rule1: "- Onjuiste antwoorden moeten plausibel maar fout zijn.",
+    moodle_xml_prompt_content_rule2: "- Varieer de moeilijkheidsgraad van de vragen.",
+    moodle_xml_prompt_content_rule3: "- Formuleer eenvoudig en precies.",
+    moodle_xml_prompt_content_rule4: "- Feedback moet kort de juiste oplossing toelichten.",
+    moodle_xml_prompt_question_types_intro: "**Verwachte JSON-structuur:**\nHet hoofdobject moet de volgende sleutels bevatten:\n- `bank_name`: Een korte, beschrijvende naam voor de vragenbank.\n- `bank_description`: Eén zin die de inhoud van de bank beschrijft.\n- `questions`: Een array met objecten; elk object stelt een vraag voor en moet `type` en `content` bevatten.",
+    moodle_xml_prompt_question_type_multichoice: `
+- **Voor het type \`multichoice\` (Meerkeuze):**
+  \`\`\`json
+  {
+    "type": "multichoice",
+    "content": {
+      "name": "Vraagtitel",
+      "questiontext": "Vraagstelling.",
+      "feedback": "Algemene feedback.",
+      "answers": [
+        { "text": "Antwoord 1", "fraction": 100, "feedback": "Feedback indien gekozen." },
+        { "text": "Antwoord 2", "fraction": 0, "feedback": "Feedback indien gekozen." }
+      ]
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_question_type_matching: `
+- **Voor het type \`matching\` (Koppelen):**
+  \`\`\`json
+  {
+    "type": "matching",
+    "content": {
+      "name": "Vraagtitel",
+      "questiontext": "Vraagstelling.",
+      "feedback": "Algemene feedback.",
+      "subquestions": [
+        { "text": "Vraagtekst 1", "answer": "Antwoord 1" },
+        { "text": "Vraagtekst 2", "answer": "Antwoord 2" }
+      ]
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_question_type_numerical: `
+- **Voor het type \`numerical\` (Numeriek):**
+  \`\`\`json
+  {
+    "type": "numerical",
+    "content": {
+      "name": "Vraagtitel",
+      "questiontext": "Vraagstelling.",
+      "feedback": "Algemene feedback.",
+      "answer": { "number": 12.34, "tolerance": 0.1, "feedback": "Feedback bij het antwoord." }
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_question_type_truefalse: `
+- **Voor het type \`truefalse\` (Waar/Onwaar):**
+  \`\`\`json
+  {
+    "type": "truefalse",
+    "content": {
+      "name": "Vraagtitel",
+      "questiontext": "Vraagstelling.",
+      "feedback": "Algemene feedback.",
+      "answer": { "value": true, "feedback_true": "Feedback bij Waar.", "feedback_false": "Feedback bij Onwaar." }
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_question_type_shortanswer: `
+- **Voor het type \`shortanswer\` (Kort antwoord):**
+  \`\`\`json
+  {
+    "type": "shortanswer",
+    "content": {
+      "name": "Vraagtitel",
+      "questiontext": "Vraagstelling.",
+      "feedback": "Algemene feedback.",
+      "answers": [
+        { "text": "Exact antwoord 1", "fraction": 100, "feedback": "Feedback indien gekozen." },
+        { "text": "Alternatief antwoord", "fraction": 100, "feedback": "Feedback indien gekozen." }
+      ]
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_question_type_cloze: `
+- **Voor het type \`cloze\` (Invultekst):**
+  \`\`\`json
+  {
+    "type": "cloze",
+    "content": {
+      "name": "Vraagtitel",
+      "questiontext": "Dit is een tekst met een gat {1:SHORTANSWER:=Juiste antwoord~Feedback} en nog een {1:MULTICHOICE:=Juiste antwoord~Fout antwoord}.",
+      "feedback": "Algemene feedback."
+    }
+  }
+  \`\`\`
+`,
+    moodle_xml_prompt_form_title: "**Laatste instructies:**",
+    moodle_xml_prompt_form_rule1: "Verdeel de vragen gelijkmatig over de verschillende typen.",
+    moodle_xml_prompt_generate_only_json: "Genereer alleen geldige JSON-code, zonder commentaar. Het resultaat moet één JSON-object zijn met de sleutel `questions`.",
+
+    // Éléa-test aanmaken
+    moodle_xml_success_generation: "Bestand {fileName} succesvol gegenereerd!",
+    test_error_creation_mbz: "Fout bij het aanmaken van de MBZ voor de toets:",
+    test_success_generation: "Bestand {fileName} succesvol gegenereerd!",
+    test_error_generic: "Fout:",
+    test_backup_log: "Back-up automatisch aangemaakt door Caramel\n",
 
     // GIFT Prompt
     gift_prompt_role: "U bent een expert in onderwijsontwerp en maakt een vragenbank voor een Moodle/Éléa-toetsactiviteit in GIFT-formaat.",
@@ -276,10 +481,12 @@ const translations_nl = {
     flashcards_prompt_json_structure_main_object: "Het object moet bevatten:",
     flashcards_prompt_title: "`title`: Een passende titel voor de activiteit.",
     flashcards_prompt_description: "`description`: Een duidelijke instructie voor de leerling.",
+    flashcards_prompt_association_principle: "De voor- en achterkant moeten verbonden zijn door één enkel, stabiel criterium (bijv.: term→definitie, figuur→aantal zijden, datum→gebeurtenis, auteur→werk). Gebruik voor alle kaarten dezelfde relatie en formuleer de instructie als volgt: « Koppel elke X aan Y ». Genormaliseerde antwoorden (`answer`): één eenvoudig woord of een getal, in kleine letters, zonder lidwoord of leestekens; getallen in cijfers.",
     flashcards_prompt_cards_array: "`cards`: Een array van ${nombreQuestions} objecten; elk object stelt een kaart voor en bevat:",
     flashcards_prompt_text: "`text`: De vraag of de te raden term (voorzijde).",
     flashcards_prompt_answer: "`answer`: Het antwoord of de definitie (achterzijde). Let op: `answer` mag slechts één eenvoudig woord of een getal bevatten.",
-    flashcards_prompt_tip: "`tip` (optioneel): Een hint in HTML-formaat om de leerling te helpen als de vraag moeilijk is. Voeg alleen een hint toe als je denkt dat het relevant is.",
+    flashcards_prompt_tip: "`tip` (optioneel): Een hint om de leerling te helpen als de vraag moeilijk is. Voeg alleen een hint toe als dat relevant lijkt.",
+    flashcards_prompt_tip_formatting: "Voor hints (`tip`) kun je `*mot*` gebruiken voor vet en `**mot**` voor cursief om belangrijke informatie te benadrukken.",
     flashcards_prompt_example_json_title: "**JSON-voorbeeld:**",
     flashcards_prompt_example: `\`\`\`json
 {
@@ -445,7 +652,7 @@ const translations_nl = {
     glossary_prompt_json_structure_main_object: "Genereer een array van ${nombreQuestions} JSON-objecten.",
     glossary_prompt_panel_object: "",
     glossary_prompt_title: "`title`: Het te definiëren woord of de uitdrukking.",
-    glossary_prompt_content: "`text`: De definitie in HTML-formaat (gebruik <p>, <strong>, enz.).",
+    glossary_prompt_content: "`text`: De definitie. Gebruik `*woord*` voor vet, `**woord**` voor cursief en `\\n` voor regeleinden.",
     glossary_prompt_content_rules_title: "**Regels voor de inhoud:**",
     glossary_prompt_rule1: "1.  Definities moeten duidelijk, beknopt en passend bij het niveau van de leerlingen zijn.",
     glossary_prompt_rule2: "",
@@ -454,11 +661,11 @@ const translations_nl = {
 [
 {
 "title": "Fotosynthese",
-"text": "<p>Proces waarbij groene planten zonlicht omzetten in energie.</p>"
+"text": "Proces waarbij groene planten zonlicht omzetten in energie."
 },
 {
 "title": "Cel",
-"text": "<p>De basiseenheid van alle levende wezens.</p>"
+"text": "De basiseenheid van alle levende wezens."
 }
 ]
 \`\`\` `,
@@ -493,7 +700,7 @@ const translations_nl = {
 ]
 }
 \`\`\` `,
-    summary_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn, en gerelateerd aan het onderwerp.",
+    summary_prompt_overall_feedback: "`overallFeedback`: (STRICTE REGEL) Genereer verplicht een array van 6 objecten voor de eindfeedback, afgestemd op het thema van de oefening, met strikte scorebanden 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. Elk object heeft de vorm `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. De `feedback`-tekst is vriendelijk, niet overdreven, gradueel en steeds bevestigend.",
     summary_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
 
     // Summary UI translations
@@ -529,7 +736,7 @@ const translations_nl = {
 }
  \`\`\` `,
     drag_word_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
-    drag_word_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn, en gerelateerd aan het onderwerp.",
+    drag_word_prompt_overall_feedback: "`overallFeedback`: (STRICTE REGEL) Genereer verplicht een array van 6 objecten voor de eindfeedback, afgestemd op het thema van de oefening, met strikte scorebanden 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. Elk object heeft de vorm `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. De `feedback`-tekst is vriendelijk, niet overdreven, gradueel en steeds bevestigend.",
 
     // Drag the Words UI translations
     drag_words_check_answer: "Controleren",
@@ -562,7 +769,7 @@ const translations_nl = {
 }
 \`\`\` `,
     blanks_prompt_generate_only_json: "Genereer uitsluitend geldige JSON-code, zonder commentaar.",
-    blanks_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn, en gerelateerd aan het onderwerp.",
+    blanks_prompt_overall_feedback: "`overallFeedback`: (STRICTE REGEL) Genereer verplicht een array van 6 objecten voor de eindfeedback, afgestemd op het thema van de oefening, met strikte scorebanden 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. Elk object heeft de vorm `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. De `feedback`-tekst is vriendelijk, niet overdreven, gradueel en steeds bevestigend.",
 
     // Fill in the Blanks UI translations
     blanks_show_solutions: "Oplossingen tonen",
@@ -600,7 +807,7 @@ const translations_nl = {
     mark_words_prompt_json_structure_main_object: "Het object moet bevatten:",
     mark_words_prompt_task_description: "`taskDescription`: Een duidelijke instructie.",
     mark_words_prompt_text_field: "`textField`: De tekst waarin de te markeren woorden tussen asterisken staan (*woord*).",
-    mark_words_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn, en gerelateerd aan het onderwerp.",
+    mark_words_prompt_overall_feedback: "`overallFeedback`: (STRICTE REGEL) Genereer verplicht een array van 6 objecten voor de eindfeedback, afgestemd op het thema van de oefening, met strikte scorebanden 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. Elk object heeft de vorm `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. De `feedback`-tekst is vriendelijk, niet overdreven, gradueel en steeds bevestigend.",
     mark_words_prompt_content_rules_title: "**Regels voor de inhoud:**",
     mark_words_prompt_rule1: "1.  Schrijf een relevant alinea over het thema.",
     mark_words_prompt_rule2: "2.  Kies ongeveer ${nombreQuestions} belangrijke kernwoorden om te markeren.",
@@ -702,6 +909,12 @@ const translations_nl = {
 \`\`\` `,
    appariement_prompt_generate_only_json: "Genereer alleen het geldige JSON-object, zonder enig commentaar.",
 
+    // Koppeling aanmaken
+    appariement_error_invalid_json: "De JSON-structuur is ongeldig. Zorg ervoor dat deze een 'title' en een array 'pairs' bevat, waarbij elk paar een 'question' en een 'answer' heeft.",
+    appariement_activity_intro: "Vind de bijpassende paren.",
+    appariement_success_generation: "Bestand {fileName} is succesvol gegenereerd !",
+    appariement_error_creation_mbz: "Fout bij het aanmaken van de MBZ voor de koppeling:",
+
     // QCM Prompt
     qcm_prompt_role: "Je bent een expert in onderwijsontwerp die een Moodle-activiteit \"MCQ\" maakt.",
     qcm_prompt_num_questions: "**Aantal vragen:** 10",
@@ -725,17 +938,23 @@ const translations_nl = {
 "title": "Meerkeuzequiz over de Franse Revolutie",
 "questions": [
 {
-"text": "<p>Wat is de datum van de Bestorming van de Bastille?</p>",
+"text": "Wat is de datum van de Bestorming van de Bastille?",
 "answers": [
-{ "text": "<p>14 juli 1789</p>", "iscorrect": 1 },
-{ "text": "<p>4 augustus 1789</p>", "iscorrect": 0 },
-{ "text": "<p>26 augustus 1789</p>", "iscorrect": 0 }
+{ "text": "14 juli 1789", "iscorrect": 1 },
+{ "text": "4 augustus 1789", "iscorrect": 0 },
+{ "text": "26 augustus 1789", "iscorrect": 0 }
 ]
 }
 ]
 }
 \`\`\` `,
    qcm_prompt_generate_only_json: "Genereer alleen het geldige JSON-object, zonder enig commentaar.",
+
+    // Meerkeuzequiz aanmaken
+    qcm_error_invalid_json: "De JSON-structuur is ongeldig. Zorg ervoor dat deze een 'title' en een array 'questions' bevat met ten minste één vraag en antwoorden.",
+    qcm_activity_intro: "Beantwoord de volgende vragen.",
+    qcm_success_generation: "Bestand {fileName} is succesvol gegenereerd !",
+    qcm_error_creation_mbz: "Fout bij het aanmaken van de MBZ voor de meerkeuzequiz:",
 
     // H5P Modules
     h5p_timeline_name: "Tijdlijn",
@@ -776,8 +995,8 @@ const translations_nl = {
     h5p_chart_description: "Maak een cirkel- of staafdiagram om gegevens te visualiseren.",
 
     // Moodle Modules
-    moodle_xml_name: "Test (Vragenbank)",
-    moodle_xml_description: "Genereer een bank van 10 vragen voor een toetsactiviteit die klaar is om in XML-formaat geïmporteerd te worden.",
+    moodle_xml_name: "Test",
+    moodle_xml_description: "Genereer een vragenbank om direct in een Test-activiteit te importeren (in xml- of gift-formaat)",
     moodle_xml_help: "Om een XML-bestand toe te voegen aan een ‘Toets’-activiteit in Moodle, maakt u eerst de activiteit aan. Open vervolgens het menu <strong>Meer</strong> en ga naar <strong>Vraagbank</strong>. Klik in dit menu op <strong>Importeren</strong>, kies het formaat <strong>Moodle XML</strong>, selecteer uw bestand en bevestig.",
     moodle_gift_name: "GIFT-formaat",
     moodle_gift_description: "Maak vragen in GIFT-formaat, een eenvoudige manier om vragen in Moodle te importeren.",
@@ -792,15 +1011,18 @@ const translations_nl = {
     moodle_glossaire_xml_name: "Woordenlijst (XML)",
     moodle_glossaire_xml_description: "Genereer een woordenlijst die klaar is om in XML-indeling te worden geïmporteerd.",
 
+    elea_page_name: "Pagina",
+    elea_page_description: "Een visueel opgemaakte Éléa-inhoudspagina maken.",
+
     // Dynamic content
     prompt_for_ia: "Prompt voor de AI",
-    copy_prompt: "📋 Prompt kopiëren",
+    copy_prompt: "Prompt kopiëren",
     fullscreen_prompt: "Volledig scherm",
     exit_fullscreen_prompt: "Volledig scherm verlaten",
     lock_prompt: "Prompt vergrendelen",
     unlock_prompt: "Prompt ontgrendelen",
-    go_duck: "🦆 Naar Duck.ai",
-    go_mistral: "Ⓜ️ Naar Le Chat",
+    go_duck: "Naar Duck.ai",
+    go_mistral: "Naar Le Chat",
     create_h5p_file: "H5P-bestand maken",
     integrate_h5p_libraries: "H5P-bibliotheken integreren:",
     paste_ia_result: "Plak hieronder het AI-resultaat om uw module te maken.",
@@ -808,6 +1030,10 @@ const translations_nl = {
     create_xml_file: "XML-bestand maken",
     paste_ia_result_xml: "Plak hieronder de door de AI gegenereerde XML.",
     generate_xml_file: "XML-bestand genereren",
+    export_mbz: "Formaat MBZ",
+    export_gift: "Formaat GIFT",
+    export_xml: "Formaat XML",
+    export_html: "HTML-formaat",
 
     create_mbz_file_appariement: "Maak het bestand Koppelen (.mbz)",
     paste_ia_result_appariement: "Plak hieronder de door de AI gegenereerde JSON. De titel van de activiteit wordt automatisch uit de JSON gehaald.",
@@ -815,23 +1041,29 @@ const translations_nl = {
     create_mbz_file_millionnaire: "Maak het bestand Miljonair (.mbz)",
     paste_ia_result_millionnaire: "Plak hieronder de door de AI gegenereerde JSON. De titel van de activiteit wordt automatisch uit de JSON gehaald.",
     generate_mbz_millionnaire: "Genereer de activiteit Miljonair (mbz)",
+    generate_mbz_test: "De Toets-activiteit (mbz) genereren",
 
     create_mbz_file_qcm: "Maak MCQ-bestand (.mbz)",
     paste_ia_result_qcm: "Plak hieronder de door de AI gegenereerde JSON. De titel van de activiteit wordt automatisch uit de JSON gehaald.",
     generate_mbz_qcm: "Genereer MCQ-activiteit (mbz)",
+
+    create_mbz_file_page: "Het bestand Pagina (.mbz) maken",
+    paste_ia_result_page: "Plak hieronder de door AI gegenereerde JSON om de pagina te bouwen.",
+    generate_mbz_page: "De activiteit Pagina (mbz) genereren",
 
     // Moodle XML specific
     moodle_xml_placeholder: "De Moodle-XML verschijnt hier...",
     paste_xml_placeholder: "Plak hier de volledige, door de AI gegenereerde XML...",
 
     // H5P empty text fields
-    generate_prompts_placeholder: "De AI-prompt verschijnt hier zodra je op 'Prompts genereren' klikt.",
+    generate_prompts_placeholder: "De AI-prompt verschijnt hier zodra u minimaal één veld in de Snelle modus of de Geavanceerde modus hebt ingevuld.",
     paste_json_or_text: "Plak hier de JSON-inhoud of de door de AI gegenereerde tekst om je activiteit te maken.",
 
     // Notifications
     prompts_generated_successfully: "Prompts succesvol gegenereerd!",
-    error_please_fill_fields: "Vul alle velden van de eenvoudige modus in.",
-    error_please_fill_guided_fields: "Vul alle velden van de geleide modus in.",
+    success_copy: "✓ Gekopieerd !",
+    error_please_fill_fields: "Vul ten minste één veld in de Snelle modus in.",
+    error_please_fill_guided_fields: "Vul ten minste één veld in de Geavanceerde modus in.",
     error_field_empty: "Het veld is leeg. Genereer eerst een prompt.",
     error_copy_failed: "Kopiëren mislukt.",
     error_h5p_module_not_found: "Module '{moduleKey}' niet gevonden.",
@@ -946,7 +1178,7 @@ const translations_nl = {
     true_false_prompt_example_json_title: "--- JSON-VOORBEELD ---",
     true_false_prompt_example: `\`\`\`json
 {
-"question": "<p>Oslo is de hoofdstad van Noorwegen.</p>",
+"question": "Oslo is de hoofdstad van Noorwegen.",
 "correct": "true",
 "feedbackOnCorrect": "Goed antwoord! Oslo is inderdaad de hoofdstad van Noorwegen.",
 "feedbackOnWrong": "Fout antwoord. De hoofdstad van Noorwegen is Oslo."
@@ -999,27 +1231,35 @@ const translations_nl = {
     multiple_choice_prompt_answers_array: "`answers`: Een array van objecten, die elk een antwoord vertegenwoordigen.",
     multiple_choice_prompt_text: "`text`: De antwoordtekst (HTML-formaat).",
     multiple_choice_prompt_correct: "`correct`: Een booleaanse waarde (`true` of `false`) die aangeeft of het het juiste antwoord is.",
-    multiple_choice_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn.",
+    multiple_choice_prompt_overall_feedback: "`overallFeedback`: (STRICTE REGEL) Genereer verplicht een array van 6 objecten voor de eindfeedback, afgestemd op het thema van de oefening, met strikte scorebanden 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. Elk object heeft de vorm `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. De `feedback`-tekst is vriendelijk, niet overdreven, gradueel en steeds bevestigend.",
     multiple_choice_prompt_content_rules_title: "**Regels voor de inhoud:**",
     multiple_choice_prompt_rule1: "1.  Er mag slechts één juist antwoord zijn (`\"correct\": true`).",
     multiple_choice_prompt_rule2: "2.  Geef meerdere onjuiste antwoorden (`\"correct\": false`).",
     multiple_choice_prompt_example_json_title: "**JSON-voorbeeld:**",
     multiple_choice_prompt_example: `\`\`\`json
 {
-"question": "<p>Wat is de werkelijke kleur van zwarte bes (cassis)?</p>",
+"question": "Wat is de werkelijke kleur van zwarte bes (cassis)?",
 "answers": [
 {
 "correct": true,
-"text": "<div>Zeer donker paars</div>"
+"text": "Zeer donker paars"
 },
 {
 "correct": false,
-"text": "<div>Blauw</div>"
+"text": "Blauw"
 },
 {
 "correct": false,
-"text": "<div>Zwart</div>"
+"text": "Zwart"
 }
+],
+"overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "Feedback voor 0-10%" },
+    { "from": 11, "to": 30, "feedback": "Feedback voor 11-30%" },
+    { "from": 31, "to": 50, "feedback": "Feedback voor 31-50%" },
+    { "from": 51, "to": 70, "feedback": "Feedback voor 51-70%" },
+    { "from": 71, "to": 90, "feedback": "Feedback voor 71-90%" },
+    { "from": 91, "to": 100, "feedback": "Feedback voor 91-100%" }
 ]
 }
 \`\`\` `,
@@ -1043,7 +1283,7 @@ const translations_nl = {
     find_the_words_prompt_task_description: "`taskDescription`: Duidelijke instructies voor de activiteit.",
     find_the_words_prompt_word_list: "`wordList`: Een tekenreeks van te vinden woorden, gescheiden door komma's zonder spaties.",
     find_the_words_prompt_content_rules_title: "**Regels voor de inhoud:**",
-    find_the_words_prompt_rule1: "1.  De `wordList` moet een enkele tekenreeks zijn met door komma's gescheiden woorden.",
+    find_the_words_prompt_rule1: "1.  De `wordList` moet één enkele tekenreeks zijn met woorden gescheiden door komma’s. Elk woord moet eenvoudig zijn (geen meerwoordige termen). Cijfers, leestekens en letters met accenten/diakritische tekens zijn verboden (bv.: schrijf 'eleve' in plaats van 'élève').",
     find_the_words_prompt_example_json_title: "**JSON-voorbeeld:**",
     find_the_words_prompt_example: `\`\`\`json
 {
@@ -1086,21 +1326,22 @@ const translations_nl = {
     sort_the_paragraphs_prompt_generate_json: "Genereer een volledig en geldig JSON-object voor een H5P-activiteit voor het sorteren van paragrafen.",
     sort_the_paragraphs_prompt_json_structure_title: "**Verwachte JSON-structuur:**",
     sort_the_paragraphs_prompt_json_structure_main_object: "Het object moet bevatten:",
-    sort_the_paragraphs_prompt_task_description: "`taskDescription`: Duidelijke instructies voor de activiteit.",
-    sort_the_paragraphs_prompt_paragraphs_array: "`paragraphs`: Een array van tekenreeksen, die elk een te sorteren paragraaf vertegenwoordigen. De paragrafen moeten in de juiste volgorde staan.",
-    sort_the_paragraphs_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn.",
+    sort_the_paragraphs_prompt_task_description: "`taskDescription`: Duidelijke instructies voor de activiteit. Gebruik `*woord*` voor vet, `**woord**` voor cursief en `\\n` voor regeleindes.",
+    sort_the_paragraphs_prompt_paragraphs_array: "`paragraphs`: Een array van tekenreeksen, die elk een te sorteren paragraaf vertegenwoordigen. De paragrafen moeten in de juiste volgorde staan. Gebruik `*woord*` voor vet, `**woord**` voor cursief.",
+    sort_the_paragraphs_prompt_overall_feedback: "`overallFeedback`: (STRICTE REGEL) Genereer verplicht een array van 6 objecten voor de eindfeedback, afgestemd op het thema van de oefening, met strikte scorebanden 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. Elk object heeft de vorm `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. De `feedback`-tekst is vriendelijk, niet overdreven, gradueel en steeds bevestigend.",
     sort_the_paragraphs_prompt_content_rules_title: "**Inhoudsregels:**",
-    sort_the_paragraphs_prompt_rule1: "1.  De `paragraphs`-array moet een lijst van paragrafen in de juiste logische volgorde bevatten.",
+    sort_the_paragraphs_prompt_rule1: "1. `paragraphs` moet een logische voortgang vormen die uit de inhoud is af te leiden, zonder kunstmatige hints (nummers, data/tijden, «eerst/dan/tot slot»), tenzij expliciet gevraagd.",
+    sort_the_paragraphs_prompt_rule2: "2. Geen platte lijst: elke zin voert dezelfde rode draad verder (oorzaak→gevolg, voorbereiding→actie→resultaat, algemeen→specifiek) zodat de volgorde afleidbaar is.",
     sort_the_paragraphs_prompt_example_json_title: "**JSON-voorbeeld:**",
     sort_the_paragraphs_prompt_example: `\`\`\`json
 {
-"taskDescription": "<p>Mijn ochtendroutine:</p>",
+"taskDescription": "Mijn ochtendroutine:",
 "paragraphs": [
-"<p>Eerst sta ik om 7:30 uur op</p>",
-"<p>Daarna kleed ik me aan</p>",
-"<p>Dan ontbijt ik</p>",
-"<p>Vervolgens poets ik mijn tanden</p>",
-"<p>Tot slot ga ik naar school</p>"
+  "Ik vul de waterkoker met vers water.",
+  "Ik zet hem aan.",
+  "Ik doe een theezakje in het kopje.",
+  "Ik schenk het kokende water over het zakje.",
+  "Ik haal het zakje eruit zodra de thee klaar is."
 ]
 }
  \`\`\` `, 
@@ -1131,7 +1372,7 @@ const translations_nl = {
     single_choice_set_prompt_choices_array: "`choices`: Een array van objecten, waarbij elk object een vraag vertegenwoordigt en bevat:",
     single_choice_set_prompt_question: "`question`: De te stellen vraag.",
     single_choice_set_prompt_answers_array: "`answers`: Een array van tekenreeksen. De eerste tekenreeks is altijd het juiste antwoord.",
-    single_choice_set_prompt_overall_feedback: "`overallFeedback`: Een array van 6 objecten voor de eindfeedback, met scores van 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. De tekst (`feedback`) moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn.",
+    single_choice_set_prompt_overall_feedback: "`overallFeedback`: (STRICTE REGEL) Genereer verplicht een array van 6 objecten voor de eindfeedback, afgestemd op het thema van de oefening, met strikte scorebanden 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. Elk object heeft de vorm `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. De `feedback`-tekst is vriendelijk, niet overdreven, gradueel en steeds bevestigend.",
     single_choice_set_prompt_content_rules_title: "**Inhoudsregels:**",
     single_choice_set_prompt_rule1: "1. In elke `answers`-array is het eerste antwoord altijd het juiste.",
     single_choice_set_prompt_example_json_title: "**JSON-voorbeeld:**",
@@ -1148,7 +1389,12 @@ const translations_nl = {
 }
 ],
 "overallFeedback": [
-{"from": 0, "to": 100, "feedback": "Je had :numcorrect van de :maxscore goed"}
+    { "from": 0, "to": 10, "feedback": "Feedback voor 0-10%" },
+    { "from": 11, "to": 30, "feedback": "Feedback voor 11-30%" },
+    { "from": 31, "to": 50, "feedback": "Feedback voor 31-50%" },
+    { "from": 51, "to": 70, "feedback": "Feedback voor 51-70%" },
+    { "from": 71, "to": 90, "feedback": "Feedback voor 71-90%" },
+    { "from": 91, "to": 100, "feedback": "Feedback voor 91-100%" }
 ]
 }
 \`\`\` `,
@@ -1179,45 +1425,33 @@ const translations_nl = {
     dialog_cards_prompt_tips: "`tips` (optioneel): Een object voor hints. Als u het pedagogisch nuttig acht, voeg dan een hint toe voor de voorkant met de sleutel `front` en/of voor de achterkant met de sleutel `back`.",
     dialog_cards_prompt_content_rules_title: "**Inhoudsregels:**",
     dialog_cards_prompt_rule1: "1. De teksten voor de voorkant (`text`) en achterkant (`answer`) moeten duidelijk en beknopt zijn. **Maak de inhoud op met HTML (<strong> voor vet, <em> voor cursief) om de leesbaarheid te verbeteren en belangrijke informatie te markeren.**",
-    dialog_cards_prompt_rule2: "2. Voeg geen afbeeldingen of geluiden toe.",
-    dialog_cards_prompt_rule3: "",
     dialog_cards_prompt_example_json_title: "**JSON-voorbeeld:**",
     dialog_cards_prompt_example: `\`\`\`json
 {
-"title": "<p>Leer de namen van fruit in het Frans</p>",
-"description": "<p>De fruitnamen worden in het Nederlands weergegeven. Draai de kaarten om de juiste Franse vertaling te zien.</p>",
+"title": "Leer de namen van fruit in het Engels",
+"description": "De fruitnamen worden in het Frans aangeboden. Draai de kaarten om de juiste Engelse vertaling te zien.",
 "dialogs": [
 {
-"text": "<p style=\"text-align: center;\">Aardbeien</p>",
-"answer": "<p style=\"text-align: center;\">Fraises</p>",
-"image": {
-"copyright": {
-"license": "CC BY-SA",
-"source": "https://commons.wikimedia.org/wiki/File:Bowl_of_Strawberries.jpg",
-"author": "ShakataGaNai",
-"title": "Bowl_of_Strawberries.jpg",
-"version": "4.0"
-},
-"imageAltText": "Rode vruchten met groene bladeren"
-},
-"audio": [],
-"tips": {}
+"title": "Vind de Engelse werkwoorden in de tegenwoordige tijd",
+"description": "Vertrekkend van een Engelse zin in de verleden tijd, vind het werkwoord in de infinitief. Draai de kaarten om je antwoorden te controleren.",
+"dialogs": [
+{
+"text": "He *visited* his grandmother.",
+"answer": "to *visit*",
+"tips": {
+"front": "Identificeer het werkwoord in de verleden tijd.",
+"back": "Denk aan de basisvorm (infinitief) van het werkwoord."
+}
 },
 {
-"text": "<p style=\"text-align: center;\">Frambozen</p>",
-"answer": "<p style=\"text-align: center;\">Framboises</p>",
-"image": {
-"copyright": {
-"license": "CC BY",
-"source": "https://commons.wikimedia.org/wiki/File:Summer_raspberries,_2008.jpg",
-"title": "Summer_raspberries,_2008.jpg",
-"author": "www.bluewaikiki.com",
-"version": "4.0"
-},
-"imageAltText": "Rode bessen"
-},
-"audio": [],
-"tips": {}
+"text": "She *played* soccer.",
+"answer": "to *play*",
+"tips": {
+"front": "Zoek naar het werkwoord in de verleden tijd.",
+"back": "Stel je de woordenboekvorm (infinitief) van het werkwoord voor."
+}
+}
+]
 }
 ]
 }
@@ -1286,9 +1520,12 @@ const translations_nl = {
 "blanksText": "<p>Hij spreekt Engels maar hij (niet / spreken) ___________<strong>&nbsp;</strong>Duits.</p>"
 },
 "overallFeedback": [
-{"from": 0, "to": 50, "feedback": "Probeer het opnieuw!"},
-{"from": 51, "to": 75, "feedback": "Best goed gedaan!"},
-{"from": 76, "to": 100, "feedback": "Goed zo!"}
+    { "from": 0, "to": 10, "feedback": "Feedback voor 0-10%" },
+    { "from": 11, "to": 30, "feedback": "Feedback voor 11-30%" },
+    { "from": 31, "to": 50, "feedback": "Feedback voor 31-50%" },
+    { "from": 51, "to": 70, "feedback": "Feedback voor 51-70%" },
+    { "from": 71, "to": 90, "feedback": "Feedback voor 71-90%" },
+    { "from": 91, "to": 100, "feedback": "Feedback voor 91-100%" }
 ]
 }
 \`\`\` `,
@@ -1381,24 +1618,116 @@ const translations_nl = {
 -   **Root:** Een hoofdobject met twee sleutels: \`name\` (de naam van de woordenlijst) en \`entries\` (een array van objecten).
 -   **Elk object in \`entries\` moet bevatten:**
     -   \`concept\`: Het woord of de uitdrukking die gedefinieerd moet worden.
-    -   \`definition\`: De duidelijke en bondige definitie.
+    -   \`definition\`: Een duidelijke en beknopte definitie. Gebruik *mot* voor vet, **mot** voor cursief en \\n voor regeleinden, alleen wanneer dit didactisch relevant is.
     -   \`aliases\` (optioneel): Een array met tekenreeksen voor synoniemen of alternatieve termen. Voeg deze sleutel alleen toe als er relevante aliassen bestaan.`,
     glossaire_xml_prompt_example_title: "**JSON-voorbeeld:**",
     glossaire_xml_prompt_example: `\`\`\`json
 {
-  "name": "Het lexicon van de informatie",
+  "name": "Het lexicon van informatie",
   "entries": [
     {
       "concept": "Journalist",
-      "definition": "Persoon die informatie verzamelt, verifieert en verspreidt.",
-      "aliases": ["Verslaggever", "Columnist"]
+      "definition": "Persoon die **verzamelt**, controleert en *informatie* verspreidt.",
+      "aliases": ["Reporter", "Columnist"]
     },
     {
       "concept": "Bron",
-      "definition": "Oorsprong van informatie."
+      "definition": "Oorsprong van *informatie*."
     }
   ]
 }
 \`\`\``,
     glossaire_xml_prompt_generate_only_xml: "Genereer alleen geldige JSON-code, zonder enige opmerkingen.",
+
+    //Barre de menu
+    tab_all: "Alles",
+    tab_quiz: "Quiz & Tests",
+    tab_text: "Tekstmanipulatie",
+    tab_memory: "Memoriseren & Ontdekken",
+    tab_elea: "Éléa",
+    tab_h5p: "H5P",
+    tab_moodle: "Moodle",
+
+    //Bandeau modale de génération
+    get_prompt_step: "1/2 Prompt ophalen",
+    create_file_step: "2/2 Bestand aanmaken",
+    generate_one_click: "Genereren met één klik",
+    simple_mode: "Eenvoudig",
+    advanced_mode: "Geleid",
+
+    // RAG feature
+    activate_rag: "Documentconsultatie inschakelen",
+    rag_tooltip: "Hiermee kunt u tekst plakken of een PDF uploaden. De inhoud wordt gebruikt als de belangrijkste bron voor het genereren van de activiteiten.",
+    rag_title: "Documenten bijvoegen (optioneel)",
+    rag_note: "Als u wilt dat de AI uitsluitend op basis van uw documenten werkt, plak dan uw tekst of plaats uw bestanden hier. Laat dit gebied anders leeg, zodat de AI zelf naar informatie kan zoeken.",
+    upload_pdf: "Of upload een PDF voor analyse",
+    pdf_loading: "PDF laden...",
+    pdf_processing_page: "Pagina verwerken",
+    ocr_recognizing_page: "Pagina herkennen (OCR)",
+    ocr_success: "Het document is succesvol verwerkt.",
+    ocr_error: "Er is een fout opgetreden tijdens de verwerking.",
+    error_invalid_pdf: "Selecteer een geldig PDF-bestand.",
+    error_fullscreen: "Volledig scherm is mislukt:",
+    lock_text: "Vergrendelen",
+    unlock_text: "Ontgrendelen",
+    rag_instruction: "\n\nU dient alleen de volgende informatie te raadplegen om de inhoud te genereren:",
+
+    // Stappen om karamel te maken
+    caramel_animation_step_1: "Giet de suiker in de pan...",
+    caramel_animation_step_2: "Voeg een beetje water toe...",
+    caramel_animation_step_3: "Verwarm op middelhoog vuur...",
+    caramel_animation_step_4: "De suiker begint te smelten...",
+    caramel_animation_step_5: "Het begint te kleuren...",
+    caramel_animation_step_6: "Roer voorzichtig...",
+    caramel_animation_step_7: "De karamel krijgt een mooie amberkleur...",
+    caramel_animation_step_8: "Voeg de warme room toe...",
+    caramel_animation_step_9: "Pas op voor spetters!",
+    caramel_animation_step_10: "Roer goed...",
+    caramel_animation_step_11: "Het is bijna klaar!",
+
+    // Pagina-prompt
+    page_prompt_role: "Je bent een expert in onderwijskunde die een gestructureerde activiteit Pagina maakt voor Éléa/Moodle.",
+    page_prompt_mission: "**Je missie :**",
+    page_prompt_generate_json: "Genereer een JSON-object om een Éléa-inhoudspagina op te bouwen. De paginastructuur is gebaseerd op vooraf gedefinieerde blokken. Je moet uit onderstaande lijst de meest relevante blokken kiezen om aan de vraag van de gebruiker te voldoen.",
+    page_prompt_json_structure_title: "**Verwachte JSON-structuur :**",
+    page_prompt_json_structure_main_object: "Het hoofdobject moet een sleutel \"title\" bevatten voor de paginatitel, een sleutel \"intro\" voor een duidelijke en begrijpelijke introductie op de daaropvolgende leerinhoud, en een sleutel \"blocks\" die een array van objecten is. Elk object vertegenwoordigt een inhoudsblok en moet een \"type\" hebben dat overeenkomt met een van de onderstaande blokken, en een \"data\"-object dat de blokspecifieke informatie bevat.",
+    page_prompt_blocks_list_title: "**Lijst met beschikbare blokken :**",
+    page_prompt_block_01: "- `#01_hero_header`: Openingsbanner. `{ \"type\": \"#01_hero_header\", \"data\": { \"title\": \"...\", \"subtitle\": \"...\" } }`",
+    page_prompt_block_02: "- `#02_nav_summary`: Inhoudsopgave met interne links. `{ \"type\": \"#02_nav_summary\", \"data\": { \"links\": [{ \"href\": \"#...\", \"text\": \"...\" }] } }`",
+    page_prompt_block_03: "- `#03_histo_reperes`: Historische ijkpunten in 3 kaarten. `{ \"type\": \"#03_histo_reperes\", \"data\": { \"title\": \"...\", \"cards\": [{ \"title\": \"...\", \"text\": \"...\" }] } }` (max. 3 kaarten)",
+    page_prompt_block_04: "- `#04_callout_set`: Banners Doelstellingen, Om te weten, Alarm. `{ \"type\": \"#04_callout_set\", \"data\": { \"title\": \"...\", \"callouts\": [{ \"type\": \"objectif|savoir|alerte\", \"text\": \"...\" }] } }`",
+    page_prompt_block_05: "- `#05_stats_cards`: Kerncijfers in kaarten. `{ \"type\": \"#05_stats_cards\", \"data\": { \"title\": \"...\", \"stats\": [{ \"value\": \"...\", \"label\": \"...\" }] } }`",
+    page_prompt_block_06: "- `#06_lexique_table`: Woordenlijsttabel. `{ \\\"type\\\": \\\"#06_lexique_table\\\", \\\"data\\\": { \\\"title\\\": \\\"...\\\", \\\"caption\\\": \\\"...\\\", \\\"headers\\\": [\\\"...\\\", \\\"...\\\"], \\\"rows\\\": [[\\\"...\\\",\\\"...\\\"]] } }`",
+    page_prompt_block_07: "- `#07_glossary_chips`: Glossarium als chips. `{ \"type\": \"#07_glossary_chips\", \"data\": { \"title\": \"...\", \"chips\": [\"...\"] } }`",
+    page_prompt_block_08: "- `#08_monuments_grid`: Monumentkaarten met afbeeldingen. `{ \"type\": \"#08_monuments_grid\", \"data\": { \"title\": \"...\", \"cards\": [{ \"img_src\": \"...\", \"img_alt\": \"...\", \"caption\": \"...\", \"title\": \"...\", \"text\": \"...\" }] } }`",
+    page_prompt_block_09: "- `#09_figures_comparison`: Twee afbeeldingen vergeleken. `{ \"type\": \"#09_figures_comparison\", \"data\": { \"title\": \"...\", \"images\": [{ \"src\": \"...\", \"alt\": \"...\", \"caption\": \"...\" }, { \"src\": \"...\", \"alt\": \"...\", \"caption\": \"...\" }] } }`",
+    page_prompt_block_10: "- `#10_table_comparison`: Vergelijkingstabel. `{ \\\"type\\\": \\\"#10_table_comparison\\\", \\\"data\\\": { \\\"title\\\": \\\"...\\\", \\\"caption\\\": \\\"...\\\", \\\"headers\\\": [\\\"...\\\", \\\"...\\\"], \\\"rows\\\": [[\\\"...\\\",\\\"...\\\"]] } }`",
+    page_prompt_block_11: "- `#11_definition_box`: Definitievak. `{ \"type\": \"#11_definition_box\", \"data\": { \"title\": \"Definitie\", \"text\": \"...\" } }`",
+    page_prompt_block_12: "- `#12_context_paragraphs`: Cursusparagrafen. `{ \"type\": \"#12_context_paragraphs\", \"data\": { \"title\": \"...\", \"paragraphs\": [\"...\", \"...\"] } }`",
+    page_prompt_block_13: "- `#13_monument_sheet_long`: Uitgebreide fiche. `{ \"type\": \"#13_monument_sheet_long\", \"data\": { \"title\": \"...\", \"paragraphs\": [\"...\"] } }`",
+    page_prompt_block_14: "- `#14_faq_block`: Veelgestelde vragen. `{ \"type\": \"#14_faq_block\", \"data\": { \"title\": \"FAQ\", \"questions\": [{ \"q\": \"...\", \"a\": \"...\" }] } }`",
+    page_prompt_block_15: "- `#15_myths_realities`: Mythes vs Realiteiten. `{ \"type\": \"#15_myths_realities\", \"data\": { \"myths\": { \"title\": \"Mythes\", \"items\": [\"...\"] }, \"realities\": { \"title\": \"Realiteiten\", \"items\": [\"...\"] } } }`",
+    page_prompt_block_17: "- `#17_method_image_desc`: Methode om een afbeelding te beschrijven. `{ \"type\": \"#17_method_image_desc\", \"data\": { \"title\": \"...\", \"steps\": [\"...\"] } }`",
+    page_prompt_block_18: "- `#18_sito_graphy`: Webografie. `{ \"type\": \"#18_sito_graphy\", \"data\": { \"title\": \"Webografie\", \"links\": [{ \"href\": \"...\", \"text\": \"...\" }] } }`",
+    page_prompt_block_19: "- `#19_quote_bilingual`: Tweetalige citaat. `{ \"type\": \"#19_quote_bilingual\", \"data\": { \"title\": \"...\", \"quote_fr\": \"...\", \"quote_alt\": \"...\", \"caption\": \"...\" } }`",
+    page_prompt_content_rules_title: "**Regels voor de inhoud :**",
+    page_prompt_rule1: "1.  De JSON moet geldig zijn.",
+    page_prompt_rule2: "2.  Tekstinhoud mag Markdown-tags gebruiken: `*woord*` voor vet en `**woord**` voor cursief.",
+    page_prompt_rule3: "3.  Voor afbeeldingen: zoek relevante, rechtenvrije URL's (bijv.: Wikimedia Commons).",
+    page_prompt_example_json_title: "**JSON-voorbeeld :**",
+    page_prompt_example_json: `\`\`\`json
+{
+  "title": "De Franse Revolutie",
+  "blocks": [
+    { "type": "#01_hero_header", "data": { "title": "De Franse Revolutie", "subtitle": "Essentiële referentiepunten" } },
+    { "type": "#12_context_paragraphs", "data": { "title": "Context", "paragraphs": ["De Franse Revolutie is een periode van omwentelingen...", "Meerdere oorzaken verklaren deze gebeurtenis..."] } },
+    { "type": "#08_monuments_grid", "data": { "title": "Belangrijkste gebeurtenissen", "cards": [{ "img_src": "https://.../Prise_de_la_Bastille.jpg", "img_alt": "Bestorming van de Bastille", "caption": "14 juli 1789", "title": "Bestorming van de Bastille", "text": "Deze gebeurtenis markeert het begin van de Revolutie." }] } }
+  ]
+}
+\`\`\``,
+    page_prompt_generate_only_json: "Genereer alleen geldige JSON-code, zonder enig commentaar.",
+    drag_drop_text: "Sleep een PDF-bestand hierheen en laat het los",
+    or_text: "of",
+    upload_pdf_btn: "Kies een bestand",
+    paste_your_text_here: "Kopieer en plak hier je tekst..."
 };
