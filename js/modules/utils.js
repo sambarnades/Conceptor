@@ -234,11 +234,11 @@ export function setupEventListeners() {
         });
     }
 
-    if(closeModalBtn) {
+    /* if(closeModalBtn) {
         closeModalBtn.addEventListener('click', () => {
             legalMentionsModal.style.display = 'none';
         });
-    }
+    } */
 
     window.addEventListener('click', (e) => {
         if (e.target === legalMentionsModal) {
