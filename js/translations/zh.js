@@ -515,7 +515,7 @@ const translations_zh = {
     quiz_set_prompt_json_structure_main_object: "主对象必须包含以下键：",
     quiz_set_prompt_progress_type: "`progressType`：\"dots\"",
     quiz_set_prompt_pass_percentage: "`passPercentage`：50",
-    quiz_set_prompt_questions_array: "`questions`：包含 ${nombreQuestions} 个对象的数组，每个对象代表一道题。",
+    quiz_set_prompt_questions_array: "`questions`：包含 5 个对象的数组，每个对象代表一道题。",
     quiz_set_prompt_content_rules_title: "**题目内容规则：**",
     quiz_set_prompt_rule1: "1.  每个题目对象必须包含 `library`、`params` 与 `subContentId`。",
     quiz_set_prompt_rule2: "2.  **结构:** 每个问题都必须是一个包含`library`、`metadata`和`params`键的对象。",

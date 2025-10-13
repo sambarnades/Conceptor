@@ -515,7 +515,7 @@ const translations_fr = {
     quiz_set_prompt_json_structure_main_object: "L'objet principal doit contenir :",
     quiz_set_prompt_progress_type: "`progressType`: \"dots\"",
     quiz_set_prompt_pass_percentage: "`passPercentage`: 50",
-    quiz_set_prompt_questions_array: "`questions`: Un tableau de ${nombreQuestions} objets, où chaque objet est une activité H5P.",
+    quiz_set_prompt_questions_array: "`questions`: Un tableau de 5 objets, où chaque objet est une activité H5P.",
     quiz_set_prompt_content_rules_title: "**Règles pour chaque question :**",
     quiz_set_prompt_rule1: "1.  **Choix des activités :** Tu dois choisir parmi les types d'activités suivants. Ne propose rien d'autre : `H5P.TrueFalse`, `H5P.MultiChoice`, `H5P.Blanks` (Texte à trous), `H5P.DragText` (Glisser les mots), `H5P.MarkTheWords` (Surligner les mots), `H5P.Essay` (Rédaction).",
     quiz_set_prompt_rule2: "2.  **Structure :** Chaque question doit être un objet avec les clés `library`, `metadata` et `params`.",
@@ -1056,7 +1056,7 @@ const translations_fr = {
     paste_xml_placeholder: "Collez ici le XML complet généré par l'IA...",
 
     // H5P champs textes vides
-    generate_prompts_placeholder: "Le prompt pour l'IA apparaîtra ici une fois que vous aurez compléter au moins un champ du mode Rapide ou du mode Avancé.",
+    generate_prompts_placeholder: "Le prompt pour l'IA apparaîtra ici une fois que vous aurez complété au moins un champ du mode Rapide ou du mode Avancé.",
     paste_json_or_text: "Collez ici le contenu JSON ou le texte généré par l'IA pour créer votre activité.",
 
     // Notifications

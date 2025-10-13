@@ -515,7 +515,7 @@ const translations_ar = {
     quiz_set_prompt_json_structure_main_object: "يحتوي الكائن الرئيس على المفاتيح التالية:",
     quiz_set_prompt_progress_type: "`progressType`: \"dots\"",
     quiz_set_prompt_pass_percentage: "`passPercentage`: 50",
-    quiz_set_prompt_questions_array: "`questions`: مصفوفة من ${nombreQuestions} كائنات، يمثّل كلٌّ منها سؤالًا.",
+    quiz_set_prompt_questions_array: "`questions`: مصفوفة من 5 كائنات، يمثّل كلٌّ منها سؤالًا.",
     quiz_set_prompt_content_rules_title: "**قواعد محتوى الأسئلة:**",
     quiz_set_prompt_rule1: "1. يجب أن يحتوي كل كائن سؤال على المفاتيح `library` و`params` و`subContentId`.",
     quiz_set_prompt_rule2: "2.  **البنية:** يجب أن تكون كل سؤال كائنًا يحتوي على المفاتيح `library` و `metadata` و `params`.",

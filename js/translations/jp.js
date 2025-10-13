@@ -515,7 +515,7 @@ const translations_jp = {
     quiz_set_prompt_json_structure_main_object: "メインオブジェクトには以下のキーを含める必要があります：",
     quiz_set_prompt_progress_type: "`progressType`: \"dots\"",
     quiz_set_prompt_pass_percentage: "`passPercentage`: 50",
-    quiz_set_prompt_questions_array: "`questions`：${nombreQuestions}個のオブジェクトの配列。各オブジェクトは質問を表します。",
+    quiz_set_prompt_questions_array: "`questions`：5個のオブジェクトの配列。各オブジェクトは質問を表します。",
     quiz_set_prompt_content_rules_title: "**質問内容のルール：**",
     quiz_set_prompt_rule1: "1. 各質問オブジェクトには`library`、`params`、`subContentId`キーが必要です。",
     quiz_set_prompt_rule2: "2.  **構造:** 各質問は`library`、`metadata`、`params`のキーを持つオブジェクトでなければなりません。",

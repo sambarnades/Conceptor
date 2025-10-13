@@ -515,7 +515,7 @@ const translations_de = {
     quiz_set_prompt_json_structure_main_object: "Das Hauptobjekt muss die folgenden Schlüssel enthalten :",
     quiz_set_prompt_progress_type: "`progressType`: \"dots\"",
     quiz_set_prompt_pass_percentage: "`passPercentage`: 50",
-    quiz_set_prompt_questions_array: "`questions`: Ein Array mit ${nombreQuestions} Objekten, die jeweils eine Frage darstellen.",
+    quiz_set_prompt_questions_array: "`questions`: Ein Array mit 5 Objekten, die jeweils eine Frage darstellen.",
     quiz_set_prompt_content_rules_title: "**Regeln für den Frageninhalt :**",
     quiz_set_prompt_rule1: "1.  Jedes Fragenobjekt muss die Schlüssel `library`, `params` und `subContentId` enthalten.",
     quiz_set_prompt_rule2: "2.  **Struktur:** Jede Frage muss ein Objekt mit den Schlüsseln `library`, `metadata` und `params` sein.",

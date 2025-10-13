@@ -1217,7 +1217,7 @@ textarea::placeholder {
 .textarea-container textarea {
     flex: 1;
     margin-bottom: 0; /* L'espacement est géré par le gap du parent */
-    min-height: 155px; /* Hauteur minimale pour le mode smartphone */
+    min-height: 10px; /* Hauteur minimale pour le mode smartphone */
 }
 
 .floating-toolbar {

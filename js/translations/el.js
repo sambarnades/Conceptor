@@ -515,7 +515,7 @@ const translations_el = {
     quiz_set_prompt_json_structure_main_object: "Το κύριο αντικείμενο περιέχει τα εξής κλειδιά:",
     quiz_set_prompt_progress_type: "`progressType`: \"dots\"",
     quiz_set_prompt_pass_percentage: "`passPercentage`: 50",
-    quiz_set_prompt_questions_array: "`questions`: Πίνακας με ${nombreQuestions} αντικείμενα, το καθένα μία ερώτηση.",
+    quiz_set_prompt_questions_array: "`questions`: Πίνακας με 5 αντικείμενα, το καθένα μία ερώτηση.",
     quiz_set_prompt_content_rules_title: "**Κανόνες για το περιεχόμενο των ερωτήσεων:**",
     quiz_set_prompt_rule1: "1. Κάθε αντικείμενο ερώτησης πρέπει να έχει τα `library`, `params` και `subContentId`.",
     quiz_set_prompt_rule2: "2.  **Δομή:** Κάθε ερώτηση πρέπει να είναι ένα αντικείμενο με τα κλειδιά `library`, `metadata` και `params`.",

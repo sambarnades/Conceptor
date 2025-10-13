@@ -515,7 +515,7 @@ const translations_es = {
     quiz_set_prompt_json_structure_main_object: "El objeto principal debe contener las siguientes claves :",
     quiz_set_prompt_progress_type: "`progressType`: \"dots\"",
     quiz_set_prompt_pass_percentage: "`passPercentage`: 50",
-    quiz_set_prompt_questions_array: "`questions`: Un array de ${nombreQuestions} objetos, cada uno representando una pregunta.",
+    quiz_set_prompt_questions_array: "`questions`: Un array de 5 objetos, cada uno representando una pregunta.",
     quiz_set_prompt_content_rules_title: "**Reglas para el contenido de las preguntas :**",
     quiz_set_prompt_rule1: "1.  Cada objeto de pregunta debe tener las claves `library`, `params` y `subContentId`.",
     quiz_set_prompt_rule2: "2.  **Estructura:** Cada pregunta debe ser un objeto con las claves `library`, `metadata` y `params`.",

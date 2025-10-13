@@ -515,7 +515,7 @@ const translations_nl = {
     quiz_set_prompt_json_structure_main_object: "Het hoofdobject bevat de volgende sleutels:",
     quiz_set_prompt_progress_type: "`progressType`: \"dots\"",
     quiz_set_prompt_pass_percentage: "`passPercentage`: 50",
-    quiz_set_prompt_questions_array: "`questions`: Een array van ${nombreQuestions} objecten, elk een vraag.",
+    quiz_set_prompt_questions_array: "`questions`: Een array van 5 objecten, elk een vraag.",
     quiz_set_prompt_content_rules_title: "**Regels voor de vraaginhoud:**",
     quiz_set_prompt_rule1: "1.  Elk vraagobject moet de sleutels `library`, `params` en `subContentId` hebben.",
     quiz_set_prompt_rule2: "2.  **Structuur:** Elke vraag moet een object zijn met de sleutels `library`, `metadata` en `params`.",
