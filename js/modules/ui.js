@@ -181,8 +181,10 @@ export function toggleActivityContent(moduleKey, tileElement) {
                 </div>
                 <div class="modal-panel-footer">
                     <div class="action-buttons-group">
-                        <button class="action-btn secondary-btn go-duck">${translations.go_duck}</button>
-                        <button class="action-btn secondary-btn go-mistral">${translations.go_mistral}</button>
+                        <p class="ia-guidance-text" data-key="info_prompt_copy">
+                            <i class="fas fa-info-circle" aria-hidden="true"></i>
+                            {/* La clé de traduction sera insérée ici par le code */}
+                        </p>
                     </div>
                 </div>`;
             
@@ -240,16 +242,21 @@ export function toggleActivityContent(moduleKey, tileElement) {
                     </div>
                     <div class="modal-panel-footer">
                         <div class="action-buttons-group">
-                            <button class="action-btn secondary-btn go-duck">${translations.go_duck}</button>
-                            <button class="action-btn secondary-btn go-mistral">${translations.go_mistral}</button>
+                            <p class="ia-guidance-text" data-key="info_prompt_copy">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i>
+                                {/* La clé de traduction sera insérée ici par le code */}
+                            </p>
                         </div>
                     </div>`;
             } else if (moduleKey === 'gift') {
                 promptPanelHtml = `<textarea id="giftResultat" placeholder="${translations.generate_prompts_placeholder || 'Générez les prompts pour voir le résultat ici...'}"></textarea>
                     <div class="modal-panel-footer">
                         <div class="action-buttons-group">
-                            <button class="action-btn secondary-btn go-duck">${translations.go_duck}</button>
-                            <button class="action-btn secondary-btn go-mistral">${translations.go_mistral}</button>
+                            <p class="ia-guidance-text" data-key="info_prompt_copy">
+                                Ne pas coller ce prompt dans la partie droite. Copier-le avec une IA externe
+                                (<a href="#" class="go-mistral">Mistral</a>, <a href="#" class="go-duck">Duck.ai</a>...)
+                                pour générer un JSON à coller dans le panneau de droite.
+                            </p>
                         </div>
                     </div>`;
             }
@@ -297,7 +304,7 @@ export function toggleActivityContent(moduleKey, tileElement) {
                         </div>
                     </div>
                     <div class="modal-header-actions">
-                        <button class="close-button">&times;</button>
+                        <button class="close-btn" onclick="closeSidebar()">×</button>
                     </div>
                 </div>
                 <div class="tuto-controls-wrapper">
@@ -316,34 +323,28 @@ export function toggleActivityContent(moduleKey, tileElement) {
                 <div class="modal-panel">${creationPanelHtml}</div>
             </div>`;
 
-        const isAdvancedMode = document.querySelector('.mode-tab[data-mode="advanced"]').classList.contains('active');
-        const modeToggleCheckbox = sidebar.querySelector('.mode-toggle-checkbox');
-        if (isAdvancedMode && modeToggleCheckbox) {
-            sidebar.classList.add('advanced-view');
-            modeToggleCheckbox.checked = true;
-        }
 
         sidebar.classList.add('open');
         sidebarOverlay.classList.add('open');
         translatePage(sidebar);
-        sidebar.querySelector('.close-button').addEventListener('click', closeSidebar);
         
         setupToolbarListeners(sidebar);
-
         const modeToggle = sidebar.querySelector('.mode-toggle-checkbox');
         if (modeToggle) {
             modeToggle.addEventListener('change', () => {
-                sidebar.classList.toggle('advanced-view');
-                const generationBtnGroup = sidebar.querySelector('.generation-button-group');
+                const isAdvanced = sidebar.classList.toggle('advanced-view');
+                const generationBtnGroup = sidebar.querySelector('.action-buttons-group.generation-button-group');
                 if (generationBtnGroup) {
-                    generationBtnGroup.classList.toggle('greyed-out', modeToggle.checked);
+                    generationBtnGroup.style.display = isAdvanced ? 'none' : 'flex';
                 }
             });
         }
         
         if (sidebar.classList.contains('advanced-view')) {
-            const generationBtnGroup = sidebar.querySelector('.generation-button-group');
-            if(generationBtnGroup) generationBtnGroup.classList.add('greyed-out');
+            const generationBtnGroup = sidebar.querySelector('.action-buttons-group.generation-button-group');
+            if (generationBtnGroup) {
+                generationBtnGroup.style.display = 'none';
+            }
         }
 
         updateGenerationButton(moduleKey, module);
@@ -409,6 +410,10 @@ export function toggleActivityContent(moduleKey, tileElement) {
         }
     }
 
+    /**
+     * Ajuste la hauteur des pieds de page des panneaux modaux pour qu'ils soient identiques.
+     * @param {HTMLElement} container - L'élément conteneur de la barre latérale.
+     */
     function updateGenerationButton(moduleKey, module) {
         const buttonGroup = document.getElementById(`generation-button-group-${moduleKey}`);
         if (!buttonGroup) return;
@@ -585,11 +590,13 @@ export function toggleActivityContent(moduleKey, tileElement) {
         const module = h5pModules[moduleKey]; // H5P-specific logic here
 
         // Boutons IA
-        container.querySelectorAll('.go-duck').forEach(btn => btn.addEventListener('click', function() {
+        container.querySelectorAll('.go-duck').forEach(link => link.addEventListener('click', function(e) {
+            e.preventDefault();
             copyToClipboard(module.promptId, this);
             window.open('https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1', '_blank', 'noopener,noreferrer');
         }));
-        container.querySelectorAll('.go-mistral').forEach(btn => btn.addEventListener('click', function() {
+        container.querySelectorAll('.go-mistral').forEach(link => link.addEventListener('click', function(e) {
+            e.preventDefault();
             copyToClipboard(module.promptId, this);
             window.open('https://chat.mistral.ai/', '_blank', 'noopener,noreferrer');
         }));
@@ -693,7 +700,7 @@ export function toggleActivityContent(moduleKey, tileElement) {
                 }
             } catch (error) {
                 console.error("Erreur lors de la génération avec Albert:", error);
-                const errorMessage = translations.generation_failed_error.replace('{errorMessage}', error.message);
+                const errorMessage = translations.generation_failed_albert.replace('{errorMessage}', error.message);
                 showNotification(errorMessage, 'error');
                 jsonInputTarget.value = errorMessage;
             } finally {

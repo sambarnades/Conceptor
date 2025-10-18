@@ -99,7 +99,7 @@ const translations_ar = {
             <p>لتحكّم أقصى. يظهر الـ prompt (تعليمات الذكاء الاصطناعي) على اليسار.</p>
             <ol>
                 <li>عدّل الـ prompt إن رغبت.</li>
-                <li>استخدم الأزرار <button class="help-btn-example-duck">الدخول إلى Duck.ai</button> أو <button class="help-btn-example-mistral">الدخول إلى Le Chat</button>. هذا <strong>ينسخ الـ prompt تلقائيًا</strong> ويفتح الذكاء الاصطناعي في لسان جديد.</li>
+                <li>استخدموا زر <strong>نسخ الموجه</strong> وافتحوا أداة ذكاء اصطناعي موجهة للجمهور العام من اختياركم في علامة تبويب جديدة.</li>
                 <li>ألصق الـ prompt في الذكاء الاصطناعي، ثم انسخ استجابته وألصقها في منطقة النتائج على اليمين داخل Caramel.</li>
             </ol>
             <p>توجد أيقونات مفيدة لمساعدتك: <span class="help-badge-icon"><i class="fas fa-expand"></i> ملء الشاشة</span> لمزيد من الراحة، و<span class="help-badge-icon"><i class="fas fa-lock"></i> قفل</span> لحماية الـ prompt.</p>
@@ -474,31 +474,31 @@ const translations_ar = {
     gift_prompt_generate_only_gift: "ولِّد الاختبار مباشرة بصيغة GIFT دون تعليقات أو وسوم إضافية. التزم بدقة بالتنسيق الموصوف؛ سأُلصق النتيجة في أداة أخرى تتوقّع هذا التنسيق. قدِّم الإجابة ككود مُنسَّق مسبقًا.",
 
     // Flashcards Prompt
-    flashcards_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Flashcards\".",
+    flashcards_prompt_role: "أنت خبير في التصميم التربوي تقوم بإنشاء نشاط H5P من نوع 'بطاقات تعليمية'.",
     flashcards_prompt_mission: "**مهمتك:**",
-    flashcards_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط H5P من نوع بطاقات الذاكرة. يجب أن يكون جاهزًا للاستخدام مباشرة.",
-    flashcards_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
+    flashcards_prompt_generate_json: "أنشئ كائن JSON كامل وصالح لنشاط H5P من نوع Flashcards. يجب أن يكون JSON قابلاً للاستخدام مباشرة.",
+    flashcards_prompt_json_structure_title: "**هيكل JSON المتوقع:**",
     flashcards_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
     flashcards_prompt_title: "`title`: عنوان مناسب للنشاط.",
-    flashcards_prompt_description: "`description`: تعليمات واضحة للمتعلّم.",
-    flashcards_prompt_association_principle: "يجب أن يكون الوجه والظهر مرتبطين بمعيار واحد وثابت (مثال: مصطلح→تعريف، شكل→عدد الأضلاع، تاريخ→حدث، مؤلف→عمل). استخدم العلاقة نفسها لجميع البطاقات وصُغ التعليمات على النحو التالي: « اربط كل X بـ Y ». إجابات (`answer`) مُطَبَّعة: كلمة بسيطة واحدة أو رقم، بحروف صغيرة، من دون أداة تعريف أو علامات ترقيم؛ الأرقام بالأرقام.",
-    flashcards_prompt_cards_array: "`cards`: مصفوفة من ${nombreQuestions} كائنات؛ يمثّل كل كائن بطاقةً ويحتوي على:",
-    flashcards_prompt_text: "`text`: السؤال أو المصطلح المطلوب تخمينه (الوجه الأمامي).",
-    flashcards_prompt_answer: "`answer`: الإجابة أو التعريف (الوجه الخلفي). تنبيه: يجب أن تحتوي `answer` على كلمة بسيطة واحدة أو رقم فقط.",
-    flashcards_prompt_tip: "`tip` (اختياري): تلميح لمساعدة الطالب إذا كان السؤال صعبًا. أضف تلميحًا فقط إذا كنت تعتقد أنه مناسب.",
-    flashcards_prompt_tip_formatting: "للتلميحات (`tip`)، يمكنك استخدام `*كلمة*` للنص العريض و `**كلمة**` للنص المائل لتسليط الضوء على المعلومات المهمة.",
-    flashcards_prompt_example_json_title: "**مثال JSON:**",
+    flashcards_prompt_description: "`description`: تعليمات واضحة للطالب.",
+    flashcards_prompt_association_principle: "يجب أن يكون الوجه الأمامي والخلفي مرتبطين بمعيار واحد وثابت (مثل: تعريف→مصطلح، شكل→عدد الأضلاع، حدث→تاريخ، مؤلف→عمل). استخدم نفس العلاقة لجميع البطاقات وصغ التعليمات على النحو التالي: «اربط كل X بـ Y». الإجابات (`answer`) يجب أن تكون موحدة: كلمة واحدة بسيطة أو رقم، بأحرف صغيرة، بدون أدوات تعريف أو علامات ترقيم؛ الأرقام بالأرقام.",
+    flashcards_prompt_cards_array: "`cards`: مصفوفة تحتوي على ${nombreQuestions} من الكائنات، يمثل كل كائن بطاقة ويحتوي على:",
+    flashcards_prompt_text: "`text`: السؤال أو المصطلح المراد تخمينه (الوجه الأمامي).",
+    flashcards_prompt_answer: "`answer`: الإجابة أو التعريف (الوجه الخلفي). ملاحظة مهمة: يجب أن تحتوي الإجابة على كلمة بسيطة واحدة أو رقم فقط، بدون كلمات مركبة أو منفصلة.",
+    flashcards_prompt_tip: "`tip` (اختياري): تلميح لمساعدة الطالب إذا كان السؤال صعبًا. أضف تلميحًا فقط إذا كان ذلك مناسبًا.",
+    flashcards_prompt_tip_formatting: "في التلميحات (`tip`)، يمكنك استخدام `*كلمة*` لتكون بالخط العريض و`**كلمة**` للمائل لتأكيد المعلومات المهمة.",
+    flashcards_prompt_example_json_title: "**مثال على JSON:**",
     flashcards_prompt_example: `\`\`\`json
 {
 "title": "عواصم أوروبا",
 "description": "احفظ عاصمة كل بلد. انقر على البطاقة لرؤية الإجابة.",
 "cards": [
 {
-"text": "فرنسا",
+"text": "عاصمة فرنسا",
 "answer": "باريس"
 },
 {
-"text": "هولندا",
+"text": "عاصمة هولندا",
 "answer": "أمستردام",
 "tip": "<p>إنها مدينة <strong>القنوات</strong> وزهور التوليب!</p>"
 }
@@ -515,7 +515,7 @@ const translations_ar = {
     quiz_set_prompt_json_structure_main_object: "يحتوي الكائن الرئيس على المفاتيح التالية:",
     quiz_set_prompt_progress_type: "`progressType`: \"dots\"",
     quiz_set_prompt_pass_percentage: "`passPercentage`: 50",
-    quiz_set_prompt_questions_array: "`questions`: مصفوفة من 5 كائنات، يمثّل كلٌّ منها سؤالًا.",
+    quiz_set_prompt_questions_array: "`questions`: مصفوفة من ${nombreQuestions} كائنات، يمثّل كلٌّ منها سؤالًا.",
     quiz_set_prompt_content_rules_title: "**قواعد محتوى الأسئلة:**",
     quiz_set_prompt_rule1: "1. يجب أن يحتوي كل كائن سؤال على المفاتيح `library` و`params` و`subContentId`.",
     quiz_set_prompt_rule2: "2.  **البنية:** يجب أن تكون كل سؤال كائنًا يحتوي على المفاتيح `library` و `metadata` و `params`.",
@@ -537,7 +537,7 @@ const translations_ar = {
         "library": "H5P.TrueFalse 1.8",
         "metadata": { "title": "عنوان سؤال صح/خطأ" },
         "params": {
-            "question": "<p>هل فرنسا دولة؟</p>",
+            "question": "هل فرنسا دولة؟",
             "correct": "true",
             "feedbackOnCorrect": "صحيح! فرنسا بالفعل دولة.",
             "feedbackOnWrong": "خطأ. فرنسا معترف بها دوليًا كدولة.",
@@ -550,7 +550,7 @@ const translations_ar = {
         "library": "H5P.MultiChoice 1.16",
         "metadata": { "title": "عنوان MCQ" },
         "params": {
-            "question": "<p>ما هي عاصمة فرنسا؟</p>",
+            "question": "ما هي عاصمة فرنسا؟",
             "answers": [
                 { "text": "باريس", "correct": true },
                 { "text": "برلين", "correct": false }
@@ -572,7 +572,7 @@ const translations_ar = {
         "library": "H5P.Blanks 1.14",
         "metadata": { "title": "عنوان تمرين ملء الفراغات" },
         "params": {
-            "questions": ["<p>باريس هي *عاصمة* فرنسا.</p>"],
+            "questions": ["باريس هي *عاصمة* فرنسا."],
             "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "caseSensitive": false },
             "overallFeedback": [
                 { "from": 0, "to": 10, "feedback": "تقييم 0-10%" },
@@ -628,7 +628,7 @@ const translations_ar = {
         "library": "H5P.Essay 1.5",
         "metadata": { "title": "عنوان المقال" },
         "params": {
-            "taskDescription": "<p>ما هي عاصمة فرنسا؟</p>",
+            "taskDescription": "ما هي عاصمة فرنسا؟",
             "keywords": [
                 { "keyword": "باريس", "options": { "points": 1, "caseSensitive": false } }
             ],
@@ -1058,6 +1058,7 @@ const translations_ar = {
     // H5P champs textes vides
     generate_prompts_placeholder: "سيظهر موجّه الذكاء الاصطناعي هنا بمجرد أن تُكمِل حقلاً واحدًا على الأقل في الوضع السريع أو الوضع المتقدم.",
     paste_json_or_text: "الصِق هنا محتوى JSON أو النص الذي أنشأه الذكاء الاصطناعي لإنشاء نشاطك.",
+    info_prompt_copy: "لا تُلصق هذا الطلب في اللوحة اليمنى. انسخه في ذكاء اصطناعي خارجي للحصول على النتيجة، ثم ألصق هذه النتيجة في اللوحة اليمنى.",
 
     // Notifications
     prompts_generated_successfully: "تم توليد المطالبات بنجاح!",
@@ -1128,6 +1129,8 @@ const translations_ar = {
     legal_intellectual_property_content: "جميع أكواد المصدر والعناصر الرسومية والمحتوى مرخصة بموجب رخصة GNU AGPLv3 الحرة. يُسمح بإعادة استخدامها بموجب شروط تراخيصها المعنية. يجب أن يذكر أي إعادة توزيع أو تعديل المؤلفين الأصليين: غوتييه ريماند وإيمانويل غونار. يتم استرداد الصور المستخدمة في وحدات H5P من H5P.org.",
     legal_personal_data_title: "البيانات الشخصية",
     legal_personal_data_content: "لا يتم جمع أو تخزين أي بيانات شخصية. لا يتم استخدام أي ملفات تعريف ارتباط للتتبع. يتم تخزين محفوظات الجلسة في المتصفح المحلي للمستخدم (localStorage)، دون نقل. وفقًا للائحة العامة لحماية البيانات، لا يتم نقل أي معلومات شخصية إلى المحرر أو إلى طرف ثالث.",
+    legal_ai_models_title: "نماذج الذكاء الاصطناعي",
+    legal_ai_models_content: "يستخدم تطبيق Caramel، فقط عند الإنشاء بنقرة واحدة، نماذج الذكاء الاصطناعي Albert التي تقدمها المديرية الحكومية المشتركة للرقميات (DINUM). النماذج المتاحة هي: Albert-Small (Llama 3.1، 8 مليار معلمة)، Albert-Large (Mistral Small 3.2، 24 مليار معلمة)، و Albert-Code (Qwen 2.5 Coder، 32.5 مليار معلمة). تتم معالجة البيانات المرسلة لإنشاء المحتوى على خوادم DINUM ولا تتم مشاركتها مع جهات خارجية عامة للذكاء الاصطناعي، مما يضمن سرية وأمن المعلومات.",
     legal_accessibility_title: "إمكانية الوصول",
     legal_accessibility_content: "تم تصميم التطبيق ليكون متوافقًا مع استخدام الكمبيوتر، بما في ذلك الأوضاع الداكنة/الفاتحة، والتنقل بلوحة المفاتيح، والتباين العالي حسب السمات. يجري تحسين مستمر لإمكانية الوصول، بما يتماشى مع توصيات RGAA.",
     legal_applicable_law_title: "القانون المطبق",
@@ -1592,6 +1595,7 @@ const translations_ar = {
     generation_successful: "تم إنشاء محتوى H5P بنجاح!",
     generation_failed_empty: "فشل الإنشاء. كانت الاستجابة فارغة.",
     generation_failed_error: "خطأ أثناء الإنشاء: {errorMessage}",
+    generation_failed_albert: "فشل الإنشاء على Albert AI. السبب: {errorMessage}",
 
     // Albert models description
     albert_small_summary: "سريع، بسيط، مناسب للتمارين السريعة والمنظمة.",
@@ -1667,10 +1671,16 @@ const translations_ar = {
     ocr_success: "تمت معالجة المستند بنجاح.",
     ocr_error: "حدث خطأ أثناء المعالجة.",
     error_invalid_pdf: "يرجى تحديد ملف PDF صالح.",
+    error_duplicate_pdf: "تمت إضافة هذا الملف بالفعل.",
     error_fullscreen: "فشل وضع ملء الشاشة:",
     lock_text: "قفل",
     unlock_text: "فتح",
     rag_instruction: "\n\nيجب عليك فقط الرجوع إلى المعلومات التالية لإنشاء المحتوى:",
+    drag_drop_text: "اسحب وأفلت ملف PDF هنا",
+    or_text: "أو",
+    upload_pdf_btn: "اختر ملفًا",
+    paste_your_text_here: "انسخ والصق نصك هنا...",
+    rag_tags_tuto: "ستجدون أدناه المستندات المرفوعة. انقروا على الدائرة الملوّنة لتخصيص تمييز كل مستند.",
 
     // خطوات تحضير الكراميل
     caramel_animation_step_1: "نصب السكر في القدر...",
@@ -1725,9 +1735,5 @@ const translations_ar = {
   ]
 }
 \`\`\``,
-    page_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط، من دون أي تعليق.",
-    drag_drop_text: "اسحب وأفلت ملف PDF هنا",
-    or_text: "أو",
-    upload_pdf_btn: "اختر ملفًا",
-    paste_your_text_here: "انسخ والصق نصك هنا..."
+    page_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط، من دون أي تعليق."
 };

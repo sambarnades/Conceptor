@@ -8,6 +8,7 @@ import { loadTranslations, initLanguageSwitcher } from './modules/translation.js
 import { setupTabs, generateTiles, initDragToScroll } from './modules/ui.js';
 import { initOcr } from './modules/ocr.js';
 import { showHelpModal, setupEventListeners } from './modules/utils.js';
+import { initCaramelAnimationEffects } from './modules/animations.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialisation de l'interface de base
@@ -22,6 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialisation de la logique OCR
     initOcr();
+
+    // Initialisation des effets de l'animation caramel
+    initCaramelAnimationEffects();
 
     // Chargement de la traduction initiale et génération des tuiles
     loadTranslations('fr').then(() => {

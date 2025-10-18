@@ -158,17 +158,16 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.95);
-    width: 80vw; /* Largeur de 80% de la vue */
-    /* max-height est maintenant géré par le contenu */
+    width: 90vw; /* Largeur de 90% de la vue */
     max-width: 1400px; /* Limite la largeur maximale */
     background-color: #F5F5F7;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    border-radius: 1.25rem;
+    box-shadow: 0 1rem 2.5rem rgba(0,0,0,0.15);
     z-index: 1002;
     display: none;
     flex-direction: column;
     overflow: visible;
-    padding: 20px;
+    padding: 1.25rem;
     box-sizing: border-box;
     opacity: 0;
     visibility: hidden;
@@ -289,6 +288,8 @@ body {
     width: 100%;
     background-color: #f9f9f9; /* Fond très clair pour le bandeau */
     border-bottom: 1px solid #e5e5e5; /* Séparateur subtil */
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 }
 
 .mode-tab {
@@ -312,6 +313,15 @@ body {
     color: #007AFF; /* Texte bleu pour l'actif */
     font-weight: 600;
     background-color: #ffffff; /* Se fond avec le reste de la carte */
+    border-top: 3px solid #007AFF;
+}
+
+.mode-tab:first-child.active {
+    border-top-left-radius: 20px;
+}
+
+.mode-tab:last-child.active {
+    border-top-right-radius: 20px;
 }
 
 .mode-content {
@@ -479,6 +489,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: 165px;
 }
 
 .h5p-tile:hover {
@@ -523,11 +534,11 @@ body {
 
 textarea {
     width: 100%;
-    min-height: 200px; /* Plus grand */
+    min-height: 12.5rem; /* Plus grand */
     resize: none; /* Permet uniquement le redimensionnement vertical */
-    padding: 20px; /* Plus aéré */
+    padding: 1.25rem; /* Plus aéré */
     border: 1px solid #e5e5e5;
-    border-radius: 12px;
+    border-radius: 0.75rem;
     box-sizing: border-box;
     font-family: "SF Mono", "Menlo", "Monaco", monospace;
     font-size: 1em;
@@ -586,20 +597,57 @@ textarea::placeholder {
 /* NOUVELLE STRUCTURE DE LA MODALE */
 .modal-header-group {
     background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
-    margin-bottom: 15px;
+    border-radius: 1rem;
+    box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.07);
     flex-shrink: 0;
-    padding: 10px 20px;
+    padding: 0.625rem 1.25rem;
     position: relative;
     z-index: 10; /* z-index élevé pour être au-dessus du contenu */
+}
+
+.modal-header-actions .close-btn {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2em;
+    cursor: pointer;
+    color: #aaa;
+    transition: color 0.3s;
+}
+
+@media (max-width: 768px) {
+    .modal-header-actions .close-btn {
+        display: block;
+    }
+}
+
+.modal-header-actions .close-btn {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2em;
+    cursor: pointer;
+    color: #aaa;
+    transition: color 0.3s;
+}
+
+@media (max-width: 768px) {
+    .modal-header-actions .close-btn {
+        display: block;
+    }
 }
 
 
 .modal-title-container {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 1rem;
 }
 
 .top-controls-container {
@@ -609,8 +657,8 @@ textarea::placeholder {
 }
 
 .modal-title-icon {
-    width: 40px;
-    height: 40px;
+    width: 2.5rem;
+    height: 2.5rem;
     object-fit: contain;
 }
 
@@ -637,7 +685,7 @@ textarea::placeholder {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 0px;
+    padding: 1rem 0;
     animation: fadeIn 0.3s ease-in-out;
     position: relative;
     z-index: 2; /* En dessous du conteneur des boutons */
@@ -654,7 +702,7 @@ textarea::placeholder {
 
 .modal-main-content {
     display: flex;
-    gap: 20px;
+    gap: 1.25rem;
     flex-grow: 1;
     overflow: hidden; /* Empêche le débordement des enfants */
     max-height: 0;
@@ -668,7 +716,7 @@ textarea::placeholder {
 }
 
 #module-sidebar.advanced-view {
-    height: 80vh;
+    height: 95vh;
     overflow-y: auto;
 }
 
@@ -676,36 +724,9 @@ textarea::placeholder {
     max-height: 1000px; /* Valeur suffisamment grande */
     opacity: 1;
     transform: translateY(0);
-    margin-top: 15px;
+    margin-top: 1rem;
 }
 
-.close-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translate(50%, -50%);
-    background-color: white;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: #aaa;
-    cursor: pointer;
-    transition: all 0.3s;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    z-index: 10;
-    padding: 0;
-    line-height: 1;
-}
-
-.close-button:hover {
-    color: #1d1d1f;
-}
 
 .modal-panels-container {
     display: flex;
@@ -716,13 +737,14 @@ textarea::placeholder {
 
 .modal-panel {
     background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    border-radius: 1rem;
+    box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.07);
     width: 50%;
     display: flex;
     flex-direction: column;
-    padding: 15px 20px;
-    gap: 15px; /* Ajoute de l'espace entre les enfants flex */
+    min-width: 0; /* Stratégie pour empêcher le débordement du contenu flex */
+    padding: 1rem 1.25rem;
+    gap: 1rem; /* Ajoute de l'espace entre les enfants flex */
 }
 
 .modal-panel-header {
@@ -741,8 +763,6 @@ textarea::placeholder {
     margin-bottom: 0; /* Ajusté */
 }
 
-
-/* Cette règle est maintenant gérée par .prompt-area et .textarea-container */
 
 /* La classe .active sur les tuiles est maintenant gérée par JS pour le panneau latéral,
    mais on peut garder un style pour indiquer la sélection. */
@@ -768,17 +788,6 @@ textarea::placeholder {
     color: #1C1C1E;
 }
 
-.h5p-content-header .close-button {
-    font-size: 28px;
-    font-weight: bold;
-    color: #aaa;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.h5p-content-header .close-button:hover {
-    color: #1d1d1f;
-}
 
 .h5p-content-description {
     font-size: 1.2em;
@@ -997,7 +1006,7 @@ textarea::placeholder {
     }
     #module-sidebar {
         width: 95vw;
-        padding: 15px;
+        padding: 1rem;
     }
 
     #module-sidebar.menu-open {
@@ -1082,7 +1091,7 @@ textarea::placeholder {
     align-items: center;
     flex-shrink: 0;
     gap: 20px;
-    padding: 20px 0;
+    padding: 15px 0;
     background-color: #FFFFFF;
     color: #1d1d1f;
     border-bottom: 1px solid #e5e5e5;
@@ -1217,19 +1226,18 @@ textarea::placeholder {
 .textarea-container textarea {
     flex: 1;
     margin-bottom: 0; /* L'espacement est géré par le gap du parent */
-    min-height: 10px; /* Hauteur minimale pour le mode smartphone */
+    min-height: 0; /* Hauteur minimale pour le mode smartphone */
 }
 
 .floating-toolbar {
     display: flex;
-    gap: 15px;
+    gap: 1rem;
     z-index: 5;
     align-self: flex-start;
     opacity: 1;
     visibility: visible;
     background-color: transparent;
     padding: 0;
-    margin-bottom: 5px;
     justify-content: space-around; /* Répartir l'espace */
     width: 100%;
 }
@@ -1238,15 +1246,15 @@ textarea::placeholder {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 5px;
-    font-size: 12px; /* Taille de police pour le texte */
+    padding: 0.3rem;
+    font-size: 0.75rem; /* Taille de police pour le texte */
     color: #6e6e73; /* Couleur de texte grise */
     transition: color 0.2s;
     position: relative;
     display: flex;
     flex-direction: column; /* Icône au-dessus du texte */
     align-items: center;
-    gap: 4px; /* Espace entre l'icône et le texte */
+    gap: 0.25rem; /* Espace entre l'icône et le texte */
     flex: 1; /* Pour que les boutons occupent l'espace */
     text-align: center;
 }
@@ -1298,11 +1306,11 @@ textarea::placeholder {
     width: 85vw;  /* Occupe 85% de la largeur de la fenêtre */
     height: 85vh; /* Occupe 85% de la hauteur de la fenêtre */
     resize: none; /* Empêcher le redimensionnement en plein écran */
-    border-radius: 12px;
+    border-radius: 0.75rem;
     border: 1px solid rgba(255, 255, 255, 0.2);
     font-size: 1.2em;
     line-height: 1.6;
-    padding: 20px; /* Ajout d'un padding interne */
+    padding: 1.25rem; /* Ajout d'un padding interne */
     box-sizing: border-box;
 }
 
@@ -1321,8 +1329,8 @@ textarea::placeholder {
 .switch {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 34px;
+    width: 3.75rem;
+    height: 2.125rem;
 }
 
 .switch input {
@@ -1345,10 +1353,10 @@ textarea::placeholder {
 .slider:before {
     position: absolute;
     content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
+    height: 1.625rem;
+    width: 1.625rem;
+    left: 0.25rem;
+    bottom: 0.25rem;
     background-color: white;
     transition: .4s;
 }
@@ -1358,11 +1366,11 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-    transform: translateX(26px);
+    transform: translateX(1.625rem);
 }
 
 .slider.round {
-    border-radius: 34px;
+    border-radius: 2.125rem;
 }
 
 .slider.round:before {
@@ -1376,7 +1384,7 @@ input:checked + .slider:before {
     display: flex;
     flex-direction: column;
     background-color: #fff; /* Ajout d'un fond pour la visibilité */
-    border-radius: 12px;
+    border-radius: 0.75rem;
     overflow: hidden; /* Pour que le textarea ne dépasse pas */
 }
 
@@ -1388,10 +1396,10 @@ input:checked + .slider:before {
 
 /* La barre d'outils en plein écran */
 .fullscreen-modal-container .floating-toolbar {
-    flex-shrink: 0; /* Empêche la barre d'outils de se réduire */
-    padding: 10px 15px;
-    background-color: #f8f8f8;
-    border-bottom: 1px solid #e5e5e5;
+flex-shrink: 0; /* Empêche la barre d'outils de se réduire */
+padding: 0.625rem 1rem;
+background-color: #f8f8f8;
+border-bottom: 1px solid #e5e5e5;
     width: 100%;
     justify-content: flex-start; /* Aligner à gauche */
 }
@@ -1403,7 +1411,7 @@ input:checked + .slider:before {
     border-radius: 0;
     width: 100%;
     height: 100%;
-    padding: 20px;
+    padding: 1.25rem;
     box-sizing: border-box;
 }
 
@@ -1427,20 +1435,61 @@ input:checked + .slider:before {
 .marmite {
     width: 200px;
     height: 150px;
-    background-color: #d3d3d3;
-    border-radius: 10px 10px 50px 50px;
     position: relative;
-    border: 5px solid #8b4513;
-    overflow: hidden;
+    filter: drop-shadow(-10px 10px 8px rgba(0,0,0,0.3)); /* Ombre portée pour l'effet cartoon */
+    animation: shake 0.5s infinite; /* Ajout de l'animation de tremblement */
+}
+
+.marmite::before { /* Corps de la casserole */
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #8B4513 25%, #A0522D 25%, #A0522D 50%, #8B4513 50%, #8B4513 75%, #A0522D 75%, #A0522D 100%);
+    background-size: 80px 80px;
+    border-radius: 10px 10px 80px 80px;
+    border: 6px solid #000;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.marmite::after { /* Anse de la casserole */
+    content: '';
+    position: absolute;
+    top: 20px;
+    right: -40px;
+    width: 80px;
+    height: 40px;
+    border: 6px solid #000;
+    border-radius: 20px;
+    background-color: #A0522D;
+    z-index: 0;
 }
 
 .marmite-content {
     position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 0;
-    background-color: #daa520;
-    animation: fillMarmite 10s linear forwards;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 80%;
+    background: #D2691E; /* Couleur caramel */
+    border-radius: 0 0 60px 60px;
+    overflow: hidden;
+    z-index: 2;
+    animation: bubble 2s infinite ease-in-out, caramelize 10s linear forwards; /* Combinaison des animations */
+}
+
+.marmite-content::before { /* Brillance sur le caramel */
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
 }
 
 #recipe-steps {
@@ -1473,9 +1522,55 @@ input:checked + .slider:before {
     display: none;
 }
 
-@keyframes fillMarmite {
-    0% { height: 0%; }
-    100% { height: 80%; }
+@keyframes bubble {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.05); }
+}
+
+@keyframes caramelize {
+    0% { background-color: #FFD700; } /* Or clair (sucre) */
+    50% { background-color: #DAA520; } /* Or plus foncé */
+    100% { background-color: #D2691E; } /* Caramel ambré */
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    75% { transform: translateX(2px); }
+}
+
+.sparkle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: yellow;
+    border-radius: 50%;
+    animation: sparkle-anim 1s ease-out infinite;
+    opacity: 0;
+}
+
+@keyframes sparkle-anim {
+    0% { transform: translateY(0) scale(0); opacity: 1; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-80px) scale(1.5); opacity: 0; }
+}
+
+.bubble {
+    position: absolute;
+    background: rgba(255, 204, 102, 0.6);
+    border-radius: 50%;
+    animation: bubble-rise 2s ease-in-out infinite;
+}
+
+@keyframes bubble-rise {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) scale(0);
+        opacity: 0;
+    }
 }
 
 /* =======================================================================
@@ -1547,7 +1642,7 @@ input[type="file"] {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     margin-bottom: 0;
-    min-height: 250px;
+    height: 200px;
 }
 
 #ocr-output-container:fullscreen {
@@ -1594,9 +1689,20 @@ input[type="file"] {
 }
 
 .rag-content-area {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.rag-top-row {
+    display: flex;
+    gap: 15px;
+}
+
+.unified-rag-area,
+.drag-drop-area {
+    flex: 1 1 50%; /* Base de 50%, peut grandir et rétrécir */
+    box-sizing: border-box; /* S'assure que le padding/border est inclus dans la largeur */
 }
 
 .rag-content-area.fullscreen {
@@ -1616,13 +1722,48 @@ input[type="file"] {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    min-height: 350px; /* Hauteur minimale pour l'ensemble */
+    min-height: 200px; /* Hauteur minimale pour l'ensemble */
 }
 
-.unified-rag-area textarea {
-    flex-grow: 1; /* Permet au textarea de s'étendre */
-    min-height: 150px; /* Hauteur minimale pour le textarea */
-    resize: none !important; /* Empêche le redimensionnement manuel */
+.unified-rag-area.fullscreen {
+    height: 100%;
+    width: 100%;
+    border: none;
+}
+
+.unified-rag-area.fullscreen #ocr-output {
+    flex-grow: 1;
+    height: auto; /* Permet au flex-grow de fonctionner */
+    max-height: none; /* Supprime la limite de hauteur en plein écran */
+}
+
+#ocr-output[contenteditable="true"] {
+    flex-grow: 1;
+    resize: none !important;
+    padding: 20px;
+    border: none;
+    border-radius: 0;
+    font-family: "SF Mono", "Menlo", "Monaco", monospace;
+    font-size: 1em;
+    background-color: #FAFAFA;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-y: auto;
+}
+
+#ocr-output[contenteditable="true"]:focus {
+    outline: none; /* Supprime le cadre au focus */
+}
+
+#ocr-output[contenteditable="true"]:empty:before {
+    content: attr(data-placeholder);
+    color: #a0a0a0;
+    pointer-events: none;
+}
+
+#ocr-output mark {
+    padding: 2px 0;
+    border-radius: 3px;
 }
 
 .unified-rag-area .floating-toolbar {
@@ -1636,6 +1777,8 @@ input[type="file"] {
     border: none;
     border-radius: 0;
     margin-bottom: 0;
+    min-height: 7.5rem;
+    flex-grow: 1;
 }
 
 .drag-drop-area {
@@ -1807,22 +1950,23 @@ input[type="file"] {
 
 .modal-panel-footer {
     margin-top: auto;
-    padding-top: 15px;
+    padding-top: 1rem;
     border-top: 1px solid #f0f0f0;
     display: flex;
-    gap: 10px;
+    gap: 0.625rem;
+    align-items: stretch; /* Assure que les enfants prennent la même hauteur */
 }
 
 .action-buttons-group {
     display: flex;
-    gap: 10px;
+    gap: 0.625rem;
     flex-grow: 1;
 }
 
 .generation-button-group {
     gap: 0;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 15px; /* Appliquer le radius au conteneur pour l'ombre */
+    border-radius: 1rem; /* Appliquer le radius au conteneur pour l'ombre */
 }
 
 
@@ -1855,12 +1999,12 @@ input[type="file"] {
 
 /* Assurer la même hauteur pour tous les boutons */
 .modal-panel-footer .action-btn {
-    padding: 15px;
+    padding: 1rem;
     font-size: 1.1em;
     font-weight: 500;
-    border-radius: 15px;
+    border-radius: 1rem;
     text-align: center;
-    height: 100%; /* Assure la même hauteur */
+    flex-grow: 1;
 }
 
 .main-action-button {
@@ -1950,7 +2094,7 @@ input[type="file"] {
 
 
 .model-selector-dropdown {
-    max-width: 450px; /* Limite la largeur */
+    max-width: 90%; /* Limite la largeur */
     word-wrap: break-word; /* Permet au texte de revenir à la ligne */
 }
 
@@ -1977,9 +2121,17 @@ input[type="file"] {
 
 /* Améliorations responsives pour les modales */
 @media (max-width: 768px) {
-    .rag-content-area {
-        grid-template-columns: 1fr;
-    }
+    .rag-top-row {
+            flex-direction: column;
+        }
+    
+        .unified-rag-area,
+        .drag-drop-area {
+            flex-basis: 100%; /* Prend toute la largeur sur les petits écrans */
+        }
+        .rag-content-area {
+            grid-template-columns: 1fr;
+        }
 
     .modal-header {
         flex-direction: column;
@@ -2016,14 +2168,129 @@ input[type="file"] {
     .modal-main-content {
         overflow: visible !important; /* Forcer la désactivation du défilement sur ce conteneur */
     }
-    .close-button {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1003;
-    }
 }
 .hidden {
     display: none;
+}
+
+/* PDF Tags and Character Counter */
+#pdf-tags-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+    justify-content: flex-start;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+
+}
+
+.pdf-tag {
+    display: flex;
+    align-items: center;
+    background-color: #e0e0e0;
+    border-radius: 16px;
+    padding: 4px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px; /* Augmentation de la largeur maximale */
+}
+
+.pdf-tag .filename {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 8px;
+}
+
+.rag-tags-tuto {
+    font-size: 0.9em;
+    color: #6e6e73;
+    text-align: center;
+    margin: 0 0 0 0;
+}
+
+.pdf-tag .color-picker {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0; /* Empêche le rétrécissement de la bulle */
+}
+
+.pdf-tag .color-picker::-webkit-color-swatch {
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px #ccc;
+}
+
+.pdf-tag .color-picker::-moz-color-swatch {
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px #ccc;
+}
+
+.pdf-tag .remove-tag-btn {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
+    margin-left: 5px;
+    line-height: 1;
+}
+
+.pdf-tag .remove-tag-btn:hover {
+    color: #333;
+}
+
+.char-counter {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 12px;
+    color: #666;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.char-counter.warning {
+    color: #e67e22;
+    font-weight: bold;
+}
+
+.char-counter.error {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.ia-guidance-text {
+    font-size: 0.9em;
+    color: #6e6e73;
+    line-height: 1.4;
+    margin: 0;
+    text-align: left;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* Limite le texte à 3 lignes */
+    line-clamp: 3; /* Propriété standard */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 4.2em; /* Environ 3 lignes (3 * 1.4em) */
+}
+
+.ia-guidance-text .fa-info-circle {
+    margin-right: 0.3em;
+    color: #007AFF;
 }

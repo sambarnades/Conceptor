@@ -99,7 +99,7 @@ const translations_zh = {
             <p>用于获得最大控制力。左侧显示提示词（AI 指令）。</p>
             <ol>
                 <li>如需可先编辑提示词。</li>
-                <li>使用 <button class="help-btn-example-duck">打开 Duck.ai</button> 或 <button class="help-btn-example-mistral">打开 Le Chat</button>。这将<strong>自动复制提示词</strong>并在新标签页打开 AI。</li>
+                <li>请使用 <strong>复制提示词</strong> 按钮，并在新标签页中打开您选择的面向大众的人工智能服务。</li>
                 <li>将提示词粘贴到 AI，获取输出后，粘贴到右侧的 Caramel 结果区域。</li>
             </ol>
             <p>实用图标：<span class="help-badge-icon"><i class="fas fa-expand"></i> 全屏</span> 与 <span class="help-badge-icon"><i class="fas fa-lock"></i> 锁定</span>（保护提示词）。</p>
@@ -474,19 +474,19 @@ const translations_zh = {
     gift_prompt_generate_only_gift: "直接生成 GIFT 格式的测验，不要添加注释或额外标签。请严格遵守所述格式，因为我会将结果粘贴到另一个要求该格式的工具中。以预格式化代码形式给出答案。",
 
     // Flashcards Prompt
-    flashcards_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Flashcards（抽认卡）”活动。",
+    flashcards_prompt_role: "你是一名教学设计专家，正在创建一个 H5P “闪卡” 活动。",
     flashcards_prompt_mission: "**你的任务：**",
-    flashcards_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P 抽认卡活动。该 JSON 必须可直接使用。",
+    flashcards_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P 闪卡活动。JSON 必须可直接使用。",
     flashcards_prompt_json_structure_title: "**预期的 JSON 结构：**",
-    flashcards_prompt_json_structure_main_object: "对象必须包含：",
-    flashcards_prompt_title: "`title`：活动的恰当标题。",
-    flashcards_prompt_description: "`description`：给学生的清晰指令。",
-    flashcards_prompt_association_principle: "正面与背面必须由单一且稳定的标准相联系（例如：术语→定义、图形→边数、日期→事件、作者→作品）。对所有卡片使用相同的对应关系，并按如下方式表述指令：« 将每个 X 与 Y 匹配 »。规范化的答案（`answer`）：一个简单词或一个数字，使用小写，不带冠词和标点；数字用阿拉伯数字表示。",
-    flashcards_prompt_cards_array: "`cards`：包含 ${nombreQuestions} 个对象的数组，每个对象代表一张卡片，并包含：",
-    flashcards_prompt_text: "`text`：题目或要辨认的术语（正面）。",
-    flashcards_prompt_answer: "`answer`：答案或定义（背面）。注意：`answer` 只能包含一个简单单词或一个数字。",
-    flashcards_prompt_tip: "`tip`（可选）：用于在问题较难时帮助学生的提示。仅在你认为有必要时才添加提示。",
-    flashcards_prompt_tip_formatting: "对于提示（`tip`），你可以使用 `*mot*` 表示加粗，使用 `**mot**` 表示斜体，以突出重要信息。",
+    flashcards_prompt_json_structure_main_object: "该对象应包含：",
+    flashcards_prompt_title: "`title`: 活动的合适标题。",
+    flashcards_prompt_description: "`description`: 给学生的明确指令。",
+    flashcards_prompt_association_principle: "正反面应由单一且一致的标准关联（例如：定义→术语、图形→边数、事件→日期、作者→作品）。所有卡片应使用相同的关联关系，指令应这样表述：“将每个 X 与 Y 匹配”。答案 (`answer`) 应规范化：一个简单的单词或数字，小写，无冠词或标点；数字用阿拉伯数字表示。",
+    flashcards_prompt_cards_array: "`cards`: 一个包含 ${nombreQuestions} 个对象的数组，每个对象代表一张卡片，包含：",
+    flashcards_prompt_text: "`text`: 要猜的问题或术语（正面）。",
+    flashcards_prompt_answer: "`answer`: 答案或定义（反面）。注意：'answer' 只能包含一个简单单词或数字，不允许复合或分开的词。",
+    flashcards_prompt_tip: "`tip`（可选）：当问题较难时，为学生提供提示。仅在合适时添加提示。",
+    flashcards_prompt_tip_formatting: "在提示 (`tip`) 中，可以使用 `*词*` 表示粗体，`**词**` 表示斜体，用于强调重要信息。",
     flashcards_prompt_example_json_title: "**JSON 示例：**",
     flashcards_prompt_example: `\`\`\`json
 {
@@ -494,11 +494,11 @@ const translations_zh = {
 "description": "记住每个国家的首都。点击卡片查看答案。",
 "cards": [
 {
-"text": "法国",
+"text": "法国的首都",
 "answer": "巴黎"
 },
 {
-"text": "荷兰",
+"text": "荷兰的首都",
 "answer": "阿姆斯特丹",
 "tip": "<p>这是<strong>运河</strong>和郁金香之城！</p>"
 }
@@ -515,7 +515,7 @@ const translations_zh = {
     quiz_set_prompt_json_structure_main_object: "主对象必须包含以下键：",
     quiz_set_prompt_progress_type: "`progressType`：\"dots\"",
     quiz_set_prompt_pass_percentage: "`passPercentage`：50",
-    quiz_set_prompt_questions_array: "`questions`：包含 5 个对象的数组，每个对象代表一道题。",
+    quiz_set_prompt_questions_array: "`questions`：包含 ${nombreQuestions} 个对象的数组，每个对象代表一道题。",
     quiz_set_prompt_content_rules_title: "**题目内容规则：**",
     quiz_set_prompt_rule1: "1.  每个题目对象必须包含 `library`、`params` 与 `subContentId`。",
     quiz_set_prompt_rule2: "2.  **结构:** 每个问题都必须是一个包含`library`、`metadata`和`params`键的对象。",
@@ -537,7 +537,7 @@ const translations_zh = {
         "library": "H5P.TrueFalse 1.8",
         "metadata": { "title": "判断题标题" },
         "params": {
-            "question": "<p>法国是一个国家吗？</p>",
+            "question": "法国是一个国家吗？",
             "correct": "true",
             "feedbackOnCorrect": "正确！法国确实是一个国家。",
             "feedbackOnWrong": "错误。法国在国际上被认为是一个国家。",
@@ -550,7 +550,7 @@ const translations_zh = {
         "library": "H5P.MultiChoice 1.16",
         "metadata": { "title": "MCQ标题" },
         "params": {
-            "question": "<p>法国的首都是哪里？</p>",
+            "question": "法国的首都是哪里？",
             "answers": [
                 { "text": "巴黎", "correct": true },
                 { "text": "柏林", "correct": false }
@@ -572,7 +572,7 @@ const translations_zh = {
         "library": "H5P.Blanks 1.14",
         "metadata": { "title": "填空题标题" },
         "params": {
-            "questions": ["<p>巴黎是法国的*首都*。</p>"],
+            "questions": ["巴黎是法国的*首都*。"],
             "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "caseSensitive": false },
             "overallFeedback": [
                 { "from": 0, "to": 10, "feedback": "0-10%的反馈" },
@@ -628,7 +628,7 @@ const translations_zh = {
         "library": "H5P.Essay 1.5",
         "metadata": { "title": "文章标题" },
         "params": {
-            "taskDescription": "<p>法国的首都是哪里？</p>",
+            "taskDescription": "法国的首都是哪里？",
             "keywords": [
                 { "keyword": "巴黎", "options": { "points": 1, "caseSensitive": false } }
             ],
@@ -1058,7 +1058,8 @@ const translations_zh = {
     // H5P empty text fields
     generate_prompts_placeholder: "当你在快速模式或高级模式中至少填写一个字段后，这里将显示用于 AI 的提示词。",
     paste_json_or_text: "在此粘贴由 AI 生成的 JSON 内容或文本，以创建您的活动。",
-
+    info_prompt_copy: "请不要将此提示粘贴到右侧面板。请将其复制到外部人工智能中以获得结果，然后将该结果粘贴到右侧面板中。",
+    
     // Notifications
     prompts_generated_successfully: "提示词生成成功！",
     success_copy: "✓ 已复制 !",
@@ -1128,6 +1129,8 @@ const translations_zh = {
     legal_intellectual_property_content: "所有源代码、图形元素和内容均根据免费的GNU AGPLv3许可证进行许可。允许在其各自许可证的条款下重复使用。任何重新分发或修改必须注明原作者：Gauthier REMANDE和Emmanuel GAUNARD。H5P模块中使用的图像来自H5P.org。",
     legal_personal_data_title: "个人数据",
     legal_personal_data_content: "不收集或存储任何个人数据。不使用任何跟踪cookie。会话历史记录存储在用户的本地浏览器（localStorage）中，不进行传输。根据GDPR，任何个人信息都不会传输给编辑或第三方。",
+    legal_ai_models_title: "人工智能模型",
+    legal_ai_models_content: "Caramel应用程序仅在“一键生成”时使用由跨部门数字指导局（DINUM）提供的Albert人工智能模型。可用模型如下：Albert-Small（Llama 3.1，80亿参数）、Albert-Large（Mistral Small 3.2，240亿参数）和Albert-Code（Qwen 2.5 Coder，325亿参数）。为内容生成发送的数据在DINUM的服务器上处理，不与外部公共AI共享，从而确保信息的机密性和安全性。",
     legal_accessibility_title: "无障碍",
     legal_accessibility_content: "该应用程序设计为与计算机使用兼容，包括暗/亮模式、键盘导航和根据主题的高对比度。正在根据RGAA建议不断改进无障碍性。",
     legal_applicable_law_title: "适用法律",
@@ -1592,6 +1595,7 @@ const translations_zh = {
     generation_successful: "H5P内容已成功生成！",
     generation_failed_empty: "生成失败。响应为空。",
     generation_failed_error: "生成过程中出错：{errorMessage}",
+    generation_failed_albert: "在 Albert AI 上生成失败。原因：{errorMessage}",
 
     // Albert models description
     albert_small_summary: "快速、简单，适用于快速和结构化的练习。",
@@ -1667,10 +1671,16 @@ const translations_zh = {
     ocr_success: "文档已成功处理。",
     ocr_error: "处理过程中发生错误。",
     error_invalid_pdf: "请选择一个有效的PDF文件。",
+    error_duplicate_pdf: "该文件已添加。",
     error_fullscreen: "全屏模式失败：",
     lock_text: "锁定",
     unlock_text: "解锁",
     rag_instruction: "\n\n您只能查阅以下信息来生成内容：",
+    drag_drop_text: "将 PDF 文件拖放到此处",
+    or_text: "或",
+    upload_pdf_btn: "选择一个文件",
+    paste_your_text_here: "复制并在此处粘贴您的文本...",
+    rag_tags_tuto: "请在下方查看已上传的文件。点击彩色圆圈可自定义每个文件的高亮显示。",
 
     // 焦糖制作步骤
     caramel_animation_step_1: "将糖倒入锅中...",
@@ -1725,9 +1735,5 @@ const translations_zh = {
   ]
 }
 \`\`\``,
-    page_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释.",
-    drag_drop_text: "将 PDF 文件拖放到此处",
-    or_text: "或",
-    upload_pdf_btn: "选择一个文件",
-    paste_your_text_here: "复制并在此处粘贴您的文本..."
+    page_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释."
 };

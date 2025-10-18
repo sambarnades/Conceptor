@@ -64,3 +64,39 @@
     border-image: linear-gradient(to left, #32038D, #B9459B) 1;
     color: #B9459B;
 }
+/* =======================================================================
+   3. STYLE DU TEXTE D'AIDE POUR L'IA
+   ======================================================================= */
+.ia-guidance-text {
+    font-size: 13px;
+    color: #333; /* Couleur de texte plus foncée pour le contraste */
+    text-align: left;
+    padding: 10px 15px;
+    margin: 0;
+    line-height: 1.4;
+    background-color: #eaf2fa; /* Fond bleu clair */
+    border-left: 4px solid #037aff; /* Bordure gauche bleu-vert */
+    position: relative;
+}
+
+.ia-guidance-text a {
+    color: #0976E7; /* Bleu vif pour les liens */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.ia-guidance-text a:hover {
+    text-decoration: underline;
+}
+
+.modal-panel-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px; /* Ajout de padding pour l'espacement */
+    box-sizing: border-box; /* S'assurer que le padding est inclus dans la hauteur */
+}
+
+.action-buttons-group {
+    width: 100%;
+}

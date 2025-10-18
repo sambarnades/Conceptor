@@ -99,7 +99,7 @@ const translations_de = {
             <p>Für maximale Kontrolle. Der Prompt (Anweisung für die KI) erscheint links.</p>
             <ol>
                 <li>Bearbeite den Prompt bei Bedarf.</li>
-                <li>Nutze <button class="help-btn-example-duck">Zu Duck.ai</button> oder <button class="help-btn-example-mistral">Zu Le Chat</button>. Das <strong>kopiert den Prompt automatisch</strong> und öffnet die KI in einem neuen Tab.</li>
+                <li>Verwenden Sie die Schaltfläche <strong>Prompt kopieren</strong> und öffnen Sie eine öffentlich zugängliche KI Ihrer Wahl in einem neuen Tab.</li>
                 <li>Füge den Prompt in der KI ein, übernimm die Antwort und füge sie rechts im Ergebnisbereich in Caramel ein.</li>
             </ol>
             <p>Nützliche Icons helfen dir: <span class="help-badge-icon"><i class="fas fa-expand"></i> Vollbild</span> für mehr Komfort und <span class="help-badge-icon"><i class="fas fa-lock"></i> Sperren</span> zum Schutz des Prompts.</p>
@@ -474,31 +474,31 @@ const translations_de = {
     gift_prompt_generate_only_gift: "Generieren Sie das Quiz direkt im GIFT-Format, ohne Kommentare oder zusätzliche Tags. Halten Sie sich strikt an das beschriebene Format, da ich das Ergebnis in ein anderes Tool einfügen werde, das dieses Format erwartet. Erstellen Sie die Antwort in vorformatiertem Code.",
 
     // Flashcards Prompt
-    flashcards_prompt_role: "Sie sind ein Experte für pädagogische Ingenieurwissenschaften, der eine H5P \"Flashcards\"-Aktivität erstellt.",
-    flashcards_prompt_mission: "**Ihre Mission :**",
-    flashcards_prompt_generate_json: "Generieren Sie ein vollständiges und gültiges JSON-Objekt für eine H5P Flashcards-Aktivität. Das JSON muss direkt verwendbar sein.",
-    flashcards_prompt_json_structure_title: "**Erwartete JSON-Struktur :**",
-    flashcards_prompt_json_structure_main_object: "Das Objekt muss enthalten :",
-    flashcards_prompt_title: "`title`: Ein relevanter Titel für die Aktivität.",
-    flashcards_prompt_description: "`description`: Klare Anweisungen für den Schüler.",
-    flashcards_prompt_association_principle: "Vorder- und Rückseite müssen durch ein einziges, stabiles Kriterium verbunden sein (z. B.: Begriff→Definition, Figur→Anzahl der Seiten, Datum→Ereignis, Autor→Werk). Verwende für alle Karten dieselbe Beziehung und formuliere die Anweisung so: « Ordne jedes X einem Y zu ». Normalisierte Antworten (`answer`): ein einfaches Wort oder eine Zahl, in Kleinbuchstaben, ohne Artikel und ohne Satzzeichen; Zahlen in Ziffern.",
-    flashcards_prompt_cards_array: "`cards`: Ein Array mit ${nombreQuestions} Objekten, wobei jedes Objekt eine Karte darstellt und enthält :",
+    flashcards_prompt_role: "Du bist ein Experte für Lehrdesign und erstellst eine H5P-„Flashcards“-Aktivität.",
+    flashcards_prompt_mission: "**Deine Aufgabe:**",
+    flashcards_prompt_generate_json: "Erstelle ein vollständiges und gültiges JSON-Objekt für eine H5P-Flashcards-Aktivität. Das JSON muss direkt verwendbar sein.",
+    flashcards_prompt_json_structure_title: "**Erwartete JSON-Struktur:**",
+    flashcards_prompt_json_structure_main_object: "Das Objekt muss enthalten:",
+    flashcards_prompt_title: "`title`: Einen passenden Titel für die Aktivität.",
+    flashcards_prompt_description: "`description`: Eine klare Anweisung für den Lernenden.",
+    flashcards_prompt_association_principle: "Vorder- und Rückseite müssen durch ein einziges, konsistentes Kriterium verbunden sein (z. B.: Definition→Begriff, Figur→Anzahl der Seiten, Ereignis→Datum, Autor→Werk). Verwende dieselbe Beziehung für alle Karten und formuliere die Anweisung so: „Ordne jedes X dem Y zu.“ Antworten (`answer`) sollten normalisiert sein: ein einfaches Wort oder eine Zahl, klein geschrieben, ohne Artikel oder Satzzeichen; Zahlen in Ziffern.",
+    flashcards_prompt_cards_array: "`cards`: Ein Array von ${nombreQuestions} Objekten, wobei jedes Objekt eine Karte darstellt und enthält:",
     flashcards_prompt_text: "`text`: Die Frage oder der zu erratende Begriff (Vorderseite).",
-    flashcards_prompt_answer: "`answer`: Die Antwort oder Definition (Rückseite). Wichtig: Die Antwort darf nur ein einfaches Wort oder eine Zahl enthalten.",
-    flashcards_prompt_tip: "`tip` (optional): Ein Hinweis, um die Schülerin/den Schüler zu unterstützen, wenn die Frage schwierig ist. Fügen Sie nur einen Hinweis hinzu, wenn Sie ihn für relevant halten.",
-    flashcards_prompt_tip_formatting: "Für Hinweise (`tip`) können Sie `*mot*` für fett und `**mot**` für kursiv verwenden, um wichtige Informationen hervorzuheben.",
-    flashcards_prompt_example_json_title: "**Beispiel-JSON :**",
+    flashcards_prompt_answer: "`answer`: Die Antwort oder Definition (Rückseite). Wichtig: `answer` darf nur ein einfaches Wort oder eine Zahl enthalten, keine zusammengesetzten oder getrennten Wörter.",
+    flashcards_prompt_tip: "`tip` (optional): Ein Hinweis, der dem Lernenden hilft, wenn die Frage schwierig ist. Füge nur dann einen Hinweis hinzu, wenn es sinnvoll ist.",
+    flashcards_prompt_tip_formatting: "Für Hinweise (`tip`) kannst du `*Wort*` für Fett und `**Wort**` für Kursiv verwenden, um wichtige Informationen hervorzuheben.",
+    flashcards_prompt_example_json_title: "**Beispiel-JSON:**",
     flashcards_prompt_example: `\`\`\`json
 {
 "title": "Die Hauptstädte Europas",
 "description": "Merke dir die Hauptstadt jedes Landes. Klicke auf die Karte, um die Antwort zu sehen.",
 "cards": [
 {
-"text": "Frankreich",
+"text": "Die Hauptstadt von Frankreich",
 "answer": "Paris"
 },
 {
-"text": "Niederlande",
+"text": "Die Hauptstadt der Niederlande",
 "answer": "Amsterdam",
 "tip": "<p>Es ist die Stadt der <strong>Kanäle</strong> und der Tulpen!</p>"
 }
@@ -515,7 +515,7 @@ const translations_de = {
     quiz_set_prompt_json_structure_main_object: "Das Hauptobjekt muss die folgenden Schlüssel enthalten :",
     quiz_set_prompt_progress_type: "`progressType`: \"dots\"",
     quiz_set_prompt_pass_percentage: "`passPercentage`: 50",
-    quiz_set_prompt_questions_array: "`questions`: Ein Array mit 5 Objekten, die jeweils eine Frage darstellen.",
+    quiz_set_prompt_questions_array: "`questions`: Ein Array mit ${nombreQuestions} Objekten, die jeweils eine Frage darstellen.",
     quiz_set_prompt_content_rules_title: "**Regeln für den Frageninhalt :**",
     quiz_set_prompt_rule1: "1.  Jedes Fragenobjekt muss die Schlüssel `library`, `params` und `subContentId` enthalten.",
     quiz_set_prompt_rule2: "2.  **Struktur:** Jede Frage muss ein Objekt mit den Schlüsseln `library`, `metadata` und `params` sein.",
@@ -537,7 +537,7 @@ const translations_de = {
         "library": "H5P.TrueFalse 1.8",
         "metadata": { "title": "Titel der Wahr/Falsch-Frage" },
         "params": {
-            "question": "<p>Ist Frankreich ein Land?</p>",
+            "question": "Ist Frankreich ein Land?",
             "correct": "true",
             "feedbackOnCorrect": "Das ist richtig! Frankreich ist in der Tat ein Land.",
             "feedbackOnWrong": "Falsch. Frankreich ist international als Land anerkannt.",
@@ -550,7 +550,7 @@ const translations_de = {
         "library": "H5P.MultiChoice 1.16",
         "metadata": { "title": "Titel der MCQ" },
         "params": {
-            "question": "<p>Was ist die Hauptstadt von Frankreich?</p>",
+            "question": "Was ist die Hauptstadt von Frankreich?",
             "answers": [
                 { "text": "Paris", "correct": true },
                 { "text": "Berlin", "correct": false }
@@ -572,7 +572,7 @@ const translations_de = {
         "library": "H5P.Blanks 1.14",
         "metadata": { "title": "Titel des Lückentextes" },
         "params": {
-            "questions": ["<p>Paris ist die *Hauptstadt* von Frankreich.</p>"],
+            "questions": ["Paris ist die *Hauptstadt* von Frankreich."],
             "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "caseSensitive": false },
             "overallFeedback": [
                 { "from": 0, "to": 10, "feedback": "Feedback für 0-10%" },
@@ -628,7 +628,7 @@ const translations_de = {
         "library": "H5P.Essay 1.5",
         "metadata": { "title": "Titel des Aufsatzes" },
         "params": {
-            "taskDescription": "<p>Was ist die Hauptstadt von Frankreich?</p>",
+            "taskDescription": "Was ist die Hauptstadt von Frankreich?",
             "keywords": [
                 { "keyword": "Paris", "options": { "points": 1, "caseSensitive": false } }
             ],
@@ -1058,6 +1058,7 @@ const translations_de = {
     // H5P leere Textfelder
     generate_prompts_placeholder: "Die Eingabeaufforderung für die KI erscheint hier, sobald Sie mindestens ein Feld im Schnellmodus oder im Erweiterten Modus ausgefüllt haben.",
     paste_json_or_text: "Fügen Sie hier den von der KI erzeugten JSON-Inhalt oder Text ein, um Ihre Aktivität zu erstellen.",
+    info_prompt_copy: "Fügen Sie diesen Prompt nicht in das rechte Feld ein. Kopieren Sie ihn in eine externe KI, um das Ergebnis zu erhalten, und fügen Sie dieses Ergebnis anschließend in das rechte Feld ein.",
 
     // Notifications
     prompts_generated_successfully: "Prompts erfolgreich generiert!",
@@ -1149,6 +1150,8 @@ const translations_de = {
     legal_intellectual_property_content: "Alle Quellcodes, grafischen Elemente und Inhalte sind unter der freien Lizenz GNU AGPLv3 lizenziert. Ihre Wiederverwendung ist unter den Bedingungen ihrer jeweiligen Lizenzen gestattet. Jede Weiterverbreitung oder Änderung muss die ursprünglichen Autoren nennen: Gauthier REMANDE und Emmanuel GAUNARD. Die in den H5P-Modulen verwendeten Bilder stammen von H5P.org.",
     legal_personal_data_title: "Personenbezogene Daten",
     legal_personal_data_content: "Es werden keine personenbezogenen Daten erhoben oder gespeichert. Es werden keine Tracking-Cookies verwendet. Der Sitzungsverlauf wird im lokalen Browser des Nutzers (localStorage) gespeichert, ohne Übertragung. Gemäß der DSGVO werden keine personenbezogenen Informationen an den Herausgeber oder an Dritte übermittelt.",
+    legal_ai_models_title: "Modelle der künstlichen Intelligenz",
+    legal_ai_models_content: "Die Caramel-Anwendung verwendet ausschließlich bei der Ein-Klick-Generierung die von der Direction Interministérielle du Numérique (DINUM) angebotenen Albert-Modelle der künstlichen Intelligenz. Die verfügbaren Modelle sind: Albert-Small (Llama 3.1, 8 Mrd. Parameter), Albert-Large (Mistral Small 3.2, 24 Mrd. Parameter) und Albert-Code (Qwen 2.5 Coder, 32,5 Mrd. Parameter). Die zur Inhaltserstellung gesendeten Daten werden auf den Servern der DINUM verarbeitet und nicht mit externen öffentlichen KIs geteilt, wodurch die Vertraulichkeit und Sicherheit der Informationen gewährleistet wird.",
     legal_accessibility_title: "Barrierefreiheit",
     legal_accessibility_content: "Die Anwendung ist so konzipiert, dass sie mit der Nutzung am Computer kompatibel ist, einschließlich Hell-/Dunkel-Modi, Tastaturnavigation und hohem Kontrast je nach Thema. Eine kontinuierliche Verbesserung der Barrierefreiheit ist im Gange, in Anlehnung an die RGAA-Empfehlungen.",
     legal_applicable_law_title: "Anwendbares Recht",
@@ -1592,6 +1595,7 @@ const translations_de = {
     generation_successful: "H5P-Inhalt erfolgreich generiert!",
     generation_failed_empty: "Generierung fehlgeschlagen. Die Antwort war leer.",
     generation_failed_error: "Fehler bei der Generierung: {errorMessage}",
+    generation_failed_albert: "Die Generierung auf der Albert KI ist fehlgeschlagen. Ursache: {errorMessage}",
 
     // Albert models description
     albert_small_summary: "Schnell, einfach, geeignet für schnelle und strukturierte Übungen.",
@@ -1667,10 +1671,16 @@ const translations_de = {
     ocr_success: "Das Dokument wurde erfolgreich verarbeitet.",
     ocr_error: "Bei der Verarbeitung ist ein Fehler aufgetreten.",
     error_invalid_pdf: "Bitte wählen Sie eine gültige PDF-Datei aus.",
+    error_duplicate_pdf: "Diese Datei wurde bereits hinzugefügt.",
     error_fullscreen: "Vollbildmodus fehlgeschlagen:",
     lock_text: "Sperren",
     unlock_text: "Entsperren",
     rag_instruction: "\n\nSie dürfen zur Generierung des Inhalts nur die folgenden Informationen konsultieren:",
+    drag_drop_text: "Ziehen Sie eine PDF-Datei hierher und legen Sie sie ab",
+    or_text: "oder",
+    upload_pdf_btn: "Datei auswählen",
+    paste_your_text_here: "Kopieren Sie Ihren Text hierher und fügen Sie ihn ein...",
+    rag_tags_tuto: "Unten finden Sie die hochgeladenen Dokumente. Klicken Sie auf den farbigen Kreis, um die Hervorhebung jedes Dokuments anzupassen.",
 
     // Karamell-Zubereitungsschritte
     caramel_animation_step_1: "Zucker in den Topf geben...",
@@ -1725,9 +1735,5 @@ const translations_de = {
   ]
 }
 \`\`\``,
-    page_prompt_generate_only_json: "Erzeuge nur gültigen JSON-Code, ohne jeglichen Kommentar.",
-    drag_drop_text: "Ziehen Sie eine PDF-Datei hierher und legen Sie sie ab",
-    or_text: "oder",
-    upload_pdf_btn: "Datei auswählen",
-    paste_your_text_here: "Kopieren Sie Ihren Text hierher und fügen Sie ihn ein..."
+    page_prompt_generate_only_json: "Erzeuge nur gültigen JSON-Code, ohne jeglichen Kommentar."
 };

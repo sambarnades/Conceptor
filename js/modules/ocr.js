@@ -18,19 +18,83 @@ export function initOcr() {
     const ocrFullscreenBtn = document.getElementById('ocr-fullscreen-btn');
     const ocrLockBtn = document.getElementById('ocr-lock-btn');
     const ocrCopyBtn = document.getElementById('ocr-copy-btn');
-    const ragToggle = document.getElementById('ragToggle');
     const ragSectionContainer = document.getElementById('rag-section-container');
-    const unifiedRagArea = document.getElementById('unified-rag-area');
     const dragDropArea = document.querySelector('.drag-drop-area');
+    const charCounter = document.getElementById('char-counter');
+    const pdfTagsContainer = document.getElementById('pdf-tags-container');
 
+    let uploadedFiles = [];
+    const MAX_CHARS = 120000;
+    const PDF_COLORS = [
+        '#E6E6FA', '#F0F8FF', '#F5FFFA', '#FFF5EE', '#FAFAD2',
+        '#FFE4E1', '#FFF0F5', '#F0FFF0', '#F8F8FF', '#FFFAF0'
+    ];
+
+    function updateCharCounter() {
+        const currentLength = ocrOutput.innerText.length;
+        charCounter.textContent = `${currentLength} / ${MAX_CHARS}`;
+        charCounter.classList.remove('warning', 'error');
+        if (currentLength > MAX_CHARS) {
+            charCounter.classList.add('error');
+        } else if (currentLength > MAX_CHARS * 0.9) {
+            charCounter.classList.add('warning');
+        }
+        toggleSectionsVisibility();
+    }
+
+    function updateRagArea() {
+        pdfTagsContainer.innerHTML = '';
+        let combinedHtml = '';
+
+        uploadedFiles.forEach((file, index) => {
+            const tag = document.createElement('div');
+            tag.className = 'pdf-tag';
+            tag.style.backgroundColor = file.color;
+            tag.innerHTML = `
+                <input type="color" class="color-picker" value="${file.color}" data-index="${index}">
+                <span class="filename" title="${file.name}">${file.name}</span>
+                <button class="remove-tag-btn" data-index="${index}" title="Supprimer">&times;</button>
+            `;
+            pdfTagsContainer.appendChild(tag);
+            
+            const sanitizedContent = file.content.replace(/&/g, '&').replace(/</g, "<").replace(/>/g, ">");
+            combinedHtml += `<mark style="background-color:${file.color};">${sanitizedContent.replace(/\n/g, '<br>')}</mark><br><br>`;
+        });
+
+        ocrOutput.innerHTML = combinedHtml;
+        updateCharCounter();
+
+        pdfTagsContainer.querySelectorAll('.remove-tag-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const indexToRemove = parseInt(e.currentTarget.dataset.index, 10);
+                uploadedFiles.splice(indexToRemove, 1);
+                updateRagArea();
+            });
+        });
+
+        pdfTagsContainer.querySelectorAll('.color-picker').forEach(picker => {
+            picker.addEventListener('input', (e) => {
+                const indexToUpdate = parseInt(e.currentTarget.dataset.index, 10);
+                const newColor = e.currentTarget.value;
+                uploadedFiles[indexToUpdate].color = newColor;
+                updateRagArea();
+            });
+        });
+        
+        toggleSectionsVisibility();
+    }
 
     const handleFile = async (file) => {
         if (!file || file.type !== 'application/pdf') {
             showNotification(translations.error_invalid_pdf || 'Veuillez sélectionner un fichier PDF valide.', 'error');
             return;
         }
+        
+        if (uploadedFiles.some(f => f.name === file.name)) {
+            showNotification(translations.error_duplicate_pdf || 'Ce fichier a déjà été ajouté.', 'warning');
+            return;
+        }
 
-        ocrOutput.value = '';
         ocrStatus.textContent = translations.pdf_loading || 'Chargement du PDF...';
         ocrStatus.style.display = 'block';
 
@@ -66,7 +130,10 @@ export function initOcr() {
                 fullText += text + '\n\n';
             }
 
-            ocrOutput.value = fullText;
+            const initialColor = PDF_COLORS[uploadedFiles.length % PDF_COLORS.length];
+            uploadedFiles.push({ name: file.name, content: fullText, color: initialColor });
+            updateRagArea();
+
             ocrStatus.style.display = 'none';
             showNotification(translations.ocr_success || 'Le document a été traité avec succès.', 'success');
 
@@ -108,15 +175,15 @@ export function initOcr() {
 
     if (ocrFullscreenBtn) {
         ocrFullscreenBtn.addEventListener('click', () => {
-            const ragSectionContainer = document.getElementById('rag-section-container');
-            const ragContentArea = document.querySelector('.rag-content-area');
+            const unifiedRagArea = document.getElementById('unified-rag-area');
+            const ragTopRow = document.querySelector('.rag-top-row'); // Le parent original
             const existingOverlay = document.querySelector('.fullscreen-overlay');
             const icon = ocrFullscreenBtn.querySelector('i');
 
             if (existingOverlay) {
                 const modalContent = existingOverlay.querySelector('.fullscreen-modal-container');
-                ragSectionContainer.appendChild(modalContent.firstChild); // Re-déplacer ragContentArea
-                ragContentArea.classList.remove('fullscreen');
+                ragTopRow.insertBefore(modalContent.firstChild, ragTopRow.firstChild); // Re-déplacer unified-rag-area
+                unifiedRagArea.classList.remove('fullscreen');
                 existingOverlay.remove();
                 icon.classList.remove('fa-compress');
                 icon.classList.add('fa-expand');
@@ -127,8 +194,8 @@ export function initOcr() {
                 const modalContainer = document.createElement('div');
                 modalContainer.className = 'fullscreen-modal-container';
                 
-                ragContentArea.classList.add('fullscreen');
-                modalContainer.appendChild(ragContentArea);
+                unifiedRagArea.classList.add('fullscreen');
+                modalContainer.appendChild(unifiedRagArea); // Déplacer uniquement la zone unifiée
                 overlay.appendChild(modalContainer);
                 document.body.appendChild(overlay);
 
@@ -166,5 +233,21 @@ export function initOcr() {
                 ocrLockBtn.setAttribute('aria-label', translations.lock_text || 'Vérrouiller');
             }
         });
+    }
+
+    if (ocrOutput) {
+        ocrOutput.addEventListener('input', updateCharCounter);
+    }
+    
+    // Initial call
+    updateCharCounter();
+    
+    function toggleSectionsVisibility() {
+        const ragTagsTuto = document.querySelector('.rag-tags-tuto');
+        const pdfTagsContainer = document.getElementById('pdf-tags-container');
+        const hasFiles = uploadedFiles.length > 0;
+
+        ragTagsTuto.style.display = hasFiles ? 'block' : 'none';
+        pdfTagsContainer.style.display = hasFiles ? 'flex' : 'none';
     }
 }

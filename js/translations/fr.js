@@ -31,12 +31,12 @@ const translations_fr = {
             <p>Idéal pour aller à l'essentiel. Remplissez les deux champs :</p>
             <ul>
                 <li><strong>Qui êtes-vous ?</strong> Soyez direct. Pas besoin de phrase. Exemples : <em>Professeur de mathématiques</em>, <em>Formateur académique</em>.</li>
-                <li><strong>Que souhaitez-vous aborder ?</strong> C'est le cœur de votre demande. Soyez aussi complet que possible. N'hésitez pas à inclure le thème, le niveau, et les contraintes. Exemple : <em>Une introduction aux fractions pour des élèves de 6ème, avec des exemples concrets comme le partage d'un gâteau.</em></li>
+                <li><strong>Que souhaitez-vous aborder ?</strong> C'est le cœur de votre demande. Soyez aussi complet que possible. N'hésitez pas à inclure le thème, le niveau, et les contraintes. Exemple : <em>Une introduction aux fractions pour des élèves de 6e, avec des exemples concrets comme le partage d’un gâteau.</em></li>
             </ul>
         </div>
         <div class="help-subsection">
             <h5><span class="help-badge-mode">Mode Avancé</span></h5>
-            <p>Pour une demande plus structurée, ce mode vous cadre avec des champs précis :</p>
+            <p>Pour une demande plus structurée, ce mode vous guide avec des champs précis :</p>
             <ul>
                 <li><strong>Discipline, Thème, Niveau :</strong> Pour définir le contexte.</li>
                 <li><strong>Nombre d'éléments :</strong> Très important ! Cela correspond au nombre de questions, de dates sur une frise, de mots dans un glossaire, etc.</li>
@@ -99,7 +99,7 @@ const translations_fr = {
             <p>Pour un contrôle maximal. Le prompt (instruction pour l'IA) apparaît à gauche.</p>
             <ol>
                 <li>Modifiez le prompt si vous le souhaitez.</li>
-                <li>Utilisez les boutons <button class="help-btn-example-duck">Accéder à Duck.ai</button> ou <button class="help-btn-example-mistral">Accéder à Le Chat</button>. Cela <strong>copie automatiquement le prompt</strong> et ouvre l'IA dans un nouvel onglet.</li>
+                <li>Utilisez le bouton <strong>Copier le prompt</strong> et ouvrez une IA grand public de votre choix dans un nouvel onglet.</li>
                 <li>Collez le prompt dans l'IA, récupérez sa réponse, et collez-la dans la zone de résultat à droite dans Caramel.</li>
             </ol>
             <p>Des icônes utiles sont là pour vous aider : <span class="help-badge-icon"><i class="fas fa-expand"></i> Plein écran</span> pour plus de confort, et <span class="help-badge-icon"><i class="fas fa-lock"></i> Verrouiller</span> pour protéger le prompt.</p>
@@ -176,7 +176,7 @@ const translations_fr = {
     discipline: "Discipline (ex : Histoire)",
     theme: "Thème (ex : La Révolution française)",
     level: "Niveau (ex : Seconde professionnelle)",
-    number_of_elements: "Nombre d'éléments (ex : 10)",
+    number_of_elements: "Nombre d'éléments (ex : 5)",
     additional_info: "Informations complémentaires et spécifiques...",
     generate_prompts: "Générer les prompts",
     h5p_tab: "H5P",
@@ -481,10 +481,10 @@ const translations_fr = {
     flashcards_prompt_json_structure_main_object: "L'objet doit contenir :",
     flashcards_prompt_title: "`title`: Un titre pertinent pour l'activité.",
     flashcards_prompt_description: "`description`: Une consigne claire pour l'élève.",
-    flashcards_prompt_association_principle: "Le recto et le verso doivent être reliés par un critère unique et stable (ex.: terme→définition, figure→nombre de côtés, date→événement, auteur→œuvre). Utilise la même relation pour toutes les cartes et formule la consigne ainsi : « Associe chaque X à Y ». Réponses (`answer`) normalisées : un mot simple ou un nombre, minuscules, sans article ni ponctuation ; nombres en chiffres.",
+    flashcards_prompt_association_principle: "Le recto et le verso doivent être reliés par un critère unique et stable (ex.: définition→terme, figure→nombre de côtés, événement→date, auteur→œuvre). Utilise la même relation pour toutes les cartes et formule la consigne ainsi : « Associe chaque X à Y ». Réponses (`answer`) normalisées : un mot simple ou un nombre, minuscules, sans article ni ponctuation ; nombres en chiffres.",
     flashcards_prompt_cards_array: "`cards`: Un tableau de ${nombreQuestions} objets, où chaque objet représente une carte et contient :",
     flashcards_prompt_text: "`text`: La question ou le terme à deviner (recto).",
-    flashcards_prompt_answer: "`answer`: La réponse ou la définition (verso). Attention, important : answer ne peut contenir qu'un seul mot simple ou un nombre.",
+    flashcards_prompt_answer: "`answer`: La réponse ou la définition (verso). Attention, important : answer ne peut contenir qu'un seul mot simple ou un nombre, pas de mots composés ou séparés.",
     flashcards_prompt_tip: "`tip` (optionnel): Un indice pour aider l'élève si la question est difficile. N'ajoute un indice que si cela te semble pertinent.",
     flashcards_prompt_tip_formatting: "Pour les indices (`tip`), tu peux utiliser `*mot*` pour mettre en gras et `**mot**` pour mettre en italique afin de souligner les informations importantes.",
     flashcards_prompt_example_json_title: "**Exemple de JSON :**",
@@ -494,11 +494,11 @@ const translations_fr = {
 "description": "Mémorise la capitale de chaque pays. Clique sur la carte pour voir la réponse.",
 "cards": [
 {
-"text": "France",
+"text": "La capitale de la France",
 "answer": "Paris"
 },
 {
-"text": "Pays-Bas",
+"text": "La capitale des Pays-Bas",
 "answer": "Amsterdam",
 "tip": "C'est la ville des *canaux* et des tulipes !"
 }
@@ -515,7 +515,7 @@ const translations_fr = {
     quiz_set_prompt_json_structure_main_object: "L'objet principal doit contenir :",
     quiz_set_prompt_progress_type: "`progressType`: \"dots\"",
     quiz_set_prompt_pass_percentage: "`passPercentage`: 50",
-    quiz_set_prompt_questions_array: "`questions`: Un tableau de 5 objets, où chaque objet est une activité H5P.",
+    quiz_set_prompt_questions_array: "`questions`: Un tableau de ${nombreQuestions} objets, où chaque objet est une activité H5P.",
     quiz_set_prompt_content_rules_title: "**Règles pour chaque question :**",
     quiz_set_prompt_rule1: "1.  **Choix des activités :** Tu dois choisir parmi les types d'activités suivants. Ne propose rien d'autre : `H5P.TrueFalse`, `H5P.MultiChoice`, `H5P.Blanks` (Texte à trous), `H5P.DragText` (Glisser les mots), `H5P.MarkTheWords` (Surligner les mots), `H5P.Essay` (Rédaction).",
     quiz_set_prompt_rule2: "2.  **Structure :** Chaque question doit être un objet avec les clés `library`, `metadata` et `params`.",
@@ -537,7 +537,7 @@ const translations_fr = {
         "library": "H5P.TrueFalse 1.8",
         "metadata": { "title": "Titre de la question Vrai/Faux" },
         "params": {
-            "question": "<p>La France est un pays ?</p>",
+            "question": "La France est un pays ?",
             "correct": "true",
             "feedbackOnCorrect": "C'est exact ! La France est bien un pays.",
             "feedbackOnWrong": "Incorrect. La France est reconnue internationalement comme un pays.",
@@ -550,7 +550,7 @@ const translations_fr = {
         "library": "H5P.MultiChoice 1.16",
         "metadata": { "title": "Titre du QCM" },
         "params": {
-            "question": "<p>Quelle est la capitale de la France ?</p>",
+            "question": "Quelle est la capitale de la France ?",
             "answers": [
                 { "text": "Paris", "correct": true },
                 { "text": "Berlin", "correct": false }
@@ -572,7 +572,7 @@ const translations_fr = {
         "library": "H5P.Blanks 1.14",
         "metadata": { "title": "Titre du texte à trous" },
         "params": {
-            "questions": ["<p>Paris est la *capitale* de la France.</p>"],
+            "questions": ["Paris est la *capitale* de la France."],
             "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "caseSensitive": false },
             "overallFeedback": [
                 { "from": 0, "to": 10, "feedback": "Feedback pour 0-10%" },
@@ -628,7 +628,7 @@ const translations_fr = {
         "library": "H5P.Essay 1.5",
         "metadata": { "title": "Titre de la rédaction" },
         "params": {
-            "taskDescription": "<p>Quelle est la capitale de la France ?</p>",
+            "taskDescription": "Quelle est la capitale de la France ?",
             "keywords": [
                 { "keyword": "Paris", "options": { "points": 1, "caseSensitive": false } }
             ],
@@ -1021,8 +1021,8 @@ const translations_fr = {
     exit_fullscreen_prompt: "Quitter le plein écran",
     lock_prompt: "Verrouiller",
     unlock_prompt: "Déverrouiller",
-    go_duck: "Accéder à Duck.ai",
-    go_mistral: "Accéder à Le chat",
+    go_duck: "Copier et aller sur Duck.ai",
+    go_mistral: "Copier et aller sur Le chat",
     create_h5p_file: "Créer le fichier H5P",
     integrate_h5p_libraries: "Intégrer les bibliothèques H5P :",
     paste_ia_result: "Collez le résultat de l'IA dans la zone ci-dessous pour créer votre module.",
@@ -1058,6 +1058,7 @@ const translations_fr = {
     // H5P champs textes vides
     generate_prompts_placeholder: "Le prompt pour l'IA apparaîtra ici une fois que vous aurez complété au moins un champ du mode Rapide ou du mode Avancé.",
     paste_json_or_text: "Collez ici le contenu JSON ou le texte généré par l'IA pour créer votre activité.",
+    info_prompt_copy: "Ne collez pas ce prompt dans le panneau de droite. Copiez-le dans une IA grand public afin d’obtenir le résultat, puis collez ce résultat dans le panneau de droite.",
 
     // Notifications
     prompts_generated_successfully: "Prompts générés avec succès !",
@@ -1128,6 +1129,8 @@ const translations_fr = {
     legal_intellectual_property_content: "L’ensemble des codes sources, éléments graphiques et contenus sont placés sous licence libre GNU AGPLv3. Leur réutilisation est permise dans les conditions de leur licence respective. Toute redistribution ou modification doit citer les auteurs originaux : Gauthier REMANDE et Emmanuel GAUNARD. Les images utilisées dans les modules H5P sont récupérées depuis le site H5P.org.",
     legal_personal_data_title: "Données personnelles",
     legal_personal_data_content: "Aucune donnée personnelle n’est collectée ni stockée. Aucun cookie de suivi n’est utilisé. L'historique de session est stocké dans le navigateur local de l’utilisateur (localStorage), sans transmission. Conformément au RGPD, aucune information nominative n’est transmise à l’éditeur ou à un tiers.",
+    legal_ai_models_title: "Modèles d'Intelligence Artificielle",
+    legal_ai_models_content: "L'application Caramel utilise, unqiuement lors de la génération en un clic, les modèles d'intelligence artificielle Albert proposés par la Direction Interministérielle du Numérique (DINUM). Les modèles disponibles sont les suivants : Albert-Small (Llama 3.1, 8 Mrd paramètres), Albert-Large (Mistral Small 3.2, 24 Mrd paramètres) et Albert-Code (Qwen 2.5 Coder, 32,5 Mrd paramètres). Les données envoyées pour la génération de contenu sont traitées sur les serveurs de la DINUM et ne sont pas partagées avec des IA grand public externes, garantissant ainsi la confidentialité et la sécurité des informations.",
     legal_accessibility_title: "Accessibilité",
     legal_accessibility_content: "L’application est conçue pour être compatible avec une utilisation sur ordinateur, incluant les modes sombre/clair, la navigation au clavier et le contraste élevé selon les thèmes. Une amélioration continue de l’accessibilité est en cours, en lien avec les recommandations du RGAA.",
     legal_applicable_law_title: "Droit applicable",
@@ -1592,6 +1595,7 @@ const translations_fr = {
     generation_successful: "Contenu H5P généré avec succès !",
     generation_failed_empty: "La génération a échoué. La réponse était vide.",
     generation_failed_error: "Erreur lors de la génération : {errorMessage}",
+    generation_failed_albert: "La génération sur l'IA Albert a échoué. Cause : {errorMessage}",
 
     // Albert models description
     albert_small_summary: "Rapide, simple, adapté aux exercices rapides et structurés.",
@@ -1649,8 +1653,8 @@ const translations_fr = {
     tab_moodle: "Moodle",
 
     //Bandeau modale de génération
-    get_prompt_step: "1/2 Obtenir le prompt",
-    create_file_step: "2/2 Créer le fichier",
+    get_prompt_step: "1/2 Obtenir le prompt à copier",
+    create_file_step: "2/2 Créer le fichier à partir du JSON",
     generate_one_click: "Générer en un clic",
     simple_mode: "Simple",
     advanced_mode: "Guidé",
@@ -1667,10 +1671,16 @@ const translations_fr = {
     ocr_success: "Le document a été traité avec succès.",
     ocr_error: "Une erreur est survenue lors du traitement.",
     error_invalid_pdf: "Veuillez sélectionner un fichier PDF valide.",
+    error_duplicate_pdf: "Ce fichier a déjà été ajouté.",
     error_fullscreen: "Le mode plein écran a échoué:",
     lock_text: "Verrouiller",
     unlock_text: "Déverrouiller",
     rag_instruction: "\n\nTu devras uniquement pour générer le contenu consulter les infos suivantes :",
+    drag_drop_text: "Glissez-déposez un fichier PDF ici",
+    or_text: "ou",
+    upload_pdf_btn: "Choisissez un fichier",
+    paste_your_text_here: "Copiez-collez votre texte ici...",
+    rag_tags_tuto: "Retrouvez ci-dessous les documents déposés. Cliquez sur le cercle de couleur pour personnaliser le surlignage de chaque document.",
     
     // Caramel Animation Steps
     caramel_animation_step_1: "On verse le sucre dans la casserole...",
@@ -1725,9 +1735,5 @@ const translations_fr = {
   ]
 }
 \`\`\``,
-    page_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire.",
-    drag_drop_text: "Glissez-déposez un fichier PDF ici",
-    or_text: "ou",
-    upload_pdf_btn: "Choisissez un fichier",
-    paste_your_text_here: "Copiez-collez votre texte ici..."
+    page_prompt_generate_only_json: "Génère uniquement le code JSON valide, sans aucun commentaire."
 };

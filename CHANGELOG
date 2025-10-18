@@ -1,5 +1,28 @@
 # Caramel – Journal des modifications
 
+## 3.1 – 18-10-2025
+
+### ✨ Interface et expérience utilisateur (UX/UI)
+- **Coloration des modes** : Ajout d'une coloration pour distinguer le **Mode Rapide** du **Mode Avancé**.
+- **Gestion des fichiers améliorée** : Dans le **Mode Avancé**, les fichiers ajoutés sont maintenant colorisés pour une meilleure reconnaissance.
+- **Disparition du bouton "Générer en un clic"** : En **Mode Guidé**, ce bouton n'est plus visible pour ne laisser que la génération via les champs de prompts.
+- **Suppression des boutons "Duck.AI" et "Le chat"** : Remplacés par une note explicative sur l'utilisation des modèles.
+- **Modale étirée** : La modale de génération a été élargie pour offrir plus d'espace sur les petits écrans.
+- **Suppression de la croix de fermeture** : La croix pour fermer la modale a été retirée sur l'affichage bureau pour un design plus épuré (elle reste visible sur mobile).
+- **Ordre des langues** : L'ordre des langues dans le menu a été ajusté en fonction des usages les plus courants.
+- **Nouvelle animation de génération** : L'animation lors de la génération "en un clic" a été remplacée par une version plus dynamique.
+
+### 🚀 Fonctionnalités et améliorations
+- **Meilleure gestion des modèles** : Des informations sur les modèles d'IA utilisés pour le bouton "Générer en un clic" ont été ajoutées. Les modèles sont `Albert-Small`, `Albert-Large`, et `Albert-Code` proposés par la DINUM (France).
+- **Correction des prompts** : Ajustements mineurs dans la structure des prompts pour une meilleure stabilité des générations.
+- **Amélioration H5P FlashCards** : L'exemple de prompt a été retravaillé pour que la question et la réponse (courte) soient plus claires et pertinentes.
+- **Mise à jour du tutoriel** : Le tutoriel a été adapté pour correspondre aux nouvelles fonctionnalités.
+
+### 🐛 Correctifs
+- Correction de bugs mineurs et amélioration de la stabilité générale.
+
+---
+
 ## 3.0 – 12-10-2025
 
 ### ✨ Interface et expérience utilisateur (UX/UI)

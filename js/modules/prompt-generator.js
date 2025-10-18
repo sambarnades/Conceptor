@@ -31,13 +31,14 @@ export function generatePrompts() {
             const matiere = document.getElementById('matiere').value.trim();
             const niveau = document.getElementById('niveau').value.trim();
             const theme = document.getElementById('theme').value.trim();
-            const nombreQuestions = document.getElementById('nombreQuestions').value.trim();
+            const nombreQuestionsValue = document.getElementById('nombreQuestions').value.trim();
             const infosComplementaires = "";
 
-            if (!matiere && !niveau && !theme && !nombreQuestions) {
+            if (!matiere && !niveau && !theme && !nombreQuestionsValue) {
                 showNotification(translations.error_please_fill_guided_fields || 'Veuillez remplir au moins un champ du mode Avancé.', 'error');
                 return;
             }
+            const nombreQuestions = nombreQuestionsValue || '5';
             prompts = getPrompts(matiere, niveau, theme, nombreQuestions, infosComplementaires, true);
         }
         
@@ -92,14 +93,6 @@ export function generatePrompts() {
         // Accéder aux traductions des prompts via l'objet translations
         const pt = translations;
 
-        const ocrOutput = document.getElementById('ocr-output');
-
-        if (ocrOutput && ocrOutput.value.trim()) {
-            const ocrText = ocrOutput.value.trim();
-            const ragInstruction = pt.rag_instruction || "\n\nTu devras uniquement pour générer le contenu consulter les infos suivantes :";
-            contextPrompt = `${ragInstruction}\n"${ocrText}"`;
-        } else {
-
         if (isAdvanced) {
             matiere = arg1;
             niveau = arg2;
@@ -124,7 +117,14 @@ ${pt.prompt_simple_intro_part1}${qui}${pt.prompt_simple_intro_part2}${quoi}.`;
             // Pour le mode simple, on peut déduire un nombre par défaut si nécessaire
             nombreQuestions = 10;
         }
-    }
+
+        const ocrOutput = document.getElementById('ocr-output');
+
+        if (ocrOutput && ocrOutput.innerText.trim()) {
+            const ocrText = ocrOutput.innerText.trim();
+            const ragInstruction = pt.rag_instruction || "\n\nTu devras uniquement pour générer le contenu consulter les infos suivantes :";
+            contextPrompt = `${ragInstruction}\n"${ocrText}"${contextPrompt}`;
+        }
 
 const languageInstruction = `\n\n${pt.prompt_language_instruction}\n\n${pt.prompt_code_block_instruction}`;
 

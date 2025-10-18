@@ -99,7 +99,7 @@ const translations_es = {
             <p>Para un control máximo. El prompt (instrucción para la IA) aparece a la izquierda.</p>
             <ol>
                 <li>Modifica el prompt si lo deseas.</li>
-                <li>Usa los botones <button class="help-btn-example-duck">Acceder a Duck.ai</button> o <button class="help-btn-example-mistral">Acceder a Le Chat</button>. Esto <strong>copia automáticamente el prompt</strong> y abre la IA en una nueva pestaña.</li>
+                <li>Utilice el botón <strong>Copiar el prompt</strong> y abra una IA de acceso público de su elección en una nueva pestaña.</li>
                 <li>Pega el prompt en la IA, recupera su respuesta y pégala en el área de resultados a la derecha en Caramel.</li>
             </ol>
             <p>Hay iconos útiles para ayudarte: <span class="help-badge-icon"><i class="fas fa-expand"></i> Pantalla completa</span> para mayor comodidad, y <span class="help-badge-icon"><i class="fas fa-lock"></i> Bloquear</span> para proteger el prompt.</p>
@@ -474,31 +474,31 @@ const translations_es = {
     gift_prompt_generate_only_gift: "Genera el cuestionario directamente en formato GIFT, sin comentarios o etiquetas adicionales. Respeta escrupulosamente el formato descrito, ya que pegaré el resultado en otra herramienta que espera este formato. Produce la respuesta en formato de código preformateado.",
 
     // Flashcards Prompt
-    flashcards_prompt_role: "Eres un experto en ingeniería pedagógica creando una actividad H5P \"Flashcards\".",
-    flashcards_prompt_mission: "**Tu misión :**",
+    flashcards_prompt_role: "Eres un experto en diseño pedagógico que crea una actividad H5P de 'Tarjetas de memoria'.",
+    flashcards_prompt_mission: "**Tu misión:**",
     flashcards_prompt_generate_json: "Genera un objeto JSON completo y válido para una actividad H5P de tipo Flashcards. El JSON debe ser directamente utilizable.",
-    flashcards_prompt_json_structure_title: "**Estructura JSON esperada :**",
-    flashcards_prompt_json_structure_main_object: "El objeto debe contener :",
+    flashcards_prompt_json_structure_title: "**Estructura JSON esperada:**",
+    flashcards_prompt_json_structure_main_object: "El objeto debe contener:",
     flashcards_prompt_title: "`title`: Un título relevante para la actividad.",
-    flashcards_prompt_description: "`description`: Una instrucción clara para el alumno.",
-    flashcards_prompt_association_principle: "El anverso y el reverso deben estar vinculados por un criterio único y estable (p. ej.: término→definición, figura→número de lados, fecha→evento, autor→obra). Utiliza la misma relación para todas las cartas y formula la consigna así: « Asocia cada X con Y ». Respuestas normalizadas (`answer`): una sola palabra simple o un número, en minúsculas, sin artículo ni puntuación; los números en cifras.",
-    flashcards_prompt_cards_array: "`cards`: Un array de ${nombreQuestions} objetos, donde cada objeto representa una tarjeta y contiene :",
-    flashcards_prompt_text: "`text`: La pregunta o el término a adivinar (anverso).",
-    flashcards_prompt_answer: "`answer`: La respuesta o la definición (reverso). Importante: la respuesta solo puede contener una palabra simple o un número.",
-    flashcards_prompt_tip: "`tip` (opcional): Una pista para ayudar al alumno si la pregunta es difícil. Añade una pista solo si te parece pertinente.",
-    flashcards_prompt_tip_formatting: "Para las pistas (`tip`), puedes usar `*mot*` para negrita y `**mot**` para cursiva a fin de resaltar la información importante.",
-    flashcards_prompt_example_json_title: "**Ejemplo de JSON :**",
+    flashcards_prompt_description: "`description`: Una instrucción clara para el estudiante.",
+    flashcards_prompt_association_principle: "El anverso y el reverso deben estar relacionados por un criterio único y coherente (por ejemplo: definición→término, figura→número de lados, evento→fecha, autor→obra). Usa la misma relación para todas las tarjetas y formula la consigna así: «Asocia cada X con Y». Las respuestas (`answer`) deben estar normalizadas: una palabra simple o un número, en minúsculas, sin artículos ni puntuación; los números en cifras.",
+    flashcards_prompt_cards_array: "`cards`: Un array de ${nombreQuestions} objetos, donde cada objeto representa una tarjeta y contiene:",
+    flashcards_prompt_text: "`text`: La pregunta o el término que se debe adivinar (anverso).",
+    flashcards_prompt_answer: "`answer`: La respuesta o definición (reverso). Importante: 'answer' solo puede contener una palabra o número simple, sin palabras compuestas ni separadas.",
+    flashcards_prompt_tip: "`tip` (opcional): Una pista para ayudar al alumno si la pregunta es difícil. Añade una pista solo si es relevante.",
+    flashcards_prompt_tip_formatting: "En las pistas (`tip`), puedes usar `*palabra*` para negrita y `**palabra**` para cursiva para resaltar información importante.",
+    flashcards_prompt_example_json_title: "**Ejemplo de JSON:**",
     flashcards_prompt_example: `\`\`\`json
 {
 "title": "Las capitales de Europa",
 "description": "Memoriza la capital de cada país. Haz clic en la tarjeta para ver la respuesta.",
 "cards": [
 {
-"text": "Francia",
+"text": "La capital de Francia",
 "answer": "París"
 },
 {
-"text": "Países Bajos",
+"text": "La capital de los Países Bajos",
 "answer": "Ámsterdam",
 "tip": "<p>¡Es la ciudad de los <strong>canales</strong> y los tulipanes!</p>"
 }
@@ -515,7 +515,7 @@ const translations_es = {
     quiz_set_prompt_json_structure_main_object: "El objeto principal debe contener las siguientes claves :",
     quiz_set_prompt_progress_type: "`progressType`: \"dots\"",
     quiz_set_prompt_pass_percentage: "`passPercentage`: 50",
-    quiz_set_prompt_questions_array: "`questions`: Un array de 5 objetos, cada uno representando una pregunta.",
+    quiz_set_prompt_questions_array: "`questions`: Un array de ${nombreQuestions} objetos, cada uno representando una pregunta.",
     quiz_set_prompt_content_rules_title: "**Reglas para el contenido de las preguntas :**",
     quiz_set_prompt_rule1: "1.  Cada objeto de pregunta debe tener las claves `library`, `params` y `subContentId`.",
     quiz_set_prompt_rule2: "2.  **Estructura:** Cada pregunta debe ser un objeto con las claves `library`, `metadata` y `params`.",
@@ -537,7 +537,7 @@ const translations_es = {
         "library": "H5P.TrueFalse 1.8",
         "metadata": { "title": "Título de la pregunta Verdadero/Falso" },
         "params": {
-            "question": "<p>¿Es Francia un país?</p>",
+            "question": "¿Es Francia un país?",
             "correct": "true",
             "feedbackOnCorrect": "¡Correcto! Francia es efectivamente un país.",
             "feedbackOnWrong": "Incorrecto. Francia es reconocida internacionalmente como un país.",
@@ -550,7 +550,7 @@ const translations_es = {
         "library": "H5P.MultiChoice 1.16",
         "metadata": { "title": "Título del MCQ" },
         "params": {
-            "question": "<p>¿Cuál es la capital de Francia?</p>",
+            "question": "¿Cuál es la capital de Francia?",
             "answers": [
                 { "text": "París", "correct": true },
                 { "text": "Berlín", "correct": false }
@@ -572,7 +572,7 @@ const translations_es = {
         "library": "H5P.Blanks 1.14",
         "metadata": { "title": "Título del ejercicio de rellenar huecos" },
         "params": {
-            "questions": ["<p>París es la *capital* de Francia.</p>"],
+            "questions": ["París es la *capital* de Francia."],
             "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "caseSensitive": false },
             "overallFeedback": [
                 { "from": 0, "to": 10, "feedback": "Feedback para 0-10%" },
@@ -628,7 +628,7 @@ const translations_es = {
         "library": "H5P.Essay 1.5",
         "metadata": { "title": "Título del ensayo" },
         "params": {
-            "taskDescription": "<p>¿Cuál es la capital de Francia?</p>",
+            "taskDescription": "¿Cuál es la capital de Francia?",
             "keywords": [
                 { "keyword": "París", "options": { "points": 1, "caseSensitive": false } }
             ],
@@ -1058,6 +1058,7 @@ const translations_es = {
     // H5P campos de texto vacíos
     generate_prompts_placeholder: "El prompt para la IA aparecerá aquí una vez que haya completado al menos un campo en el modo Rápido o en el modo Avanzado.",
     paste_json_or_text: "Pega aquí el contenido JSON o el texto generado por la IA para crear tu actividad.",
+    info_prompt_copy: "No pegue este prompt en el panel derecho. Cópielo en una IA externa para obtener el resultado y luego pegue ese resultado en el panel derecho.",
 
     // Notifications
     prompts_generated_successfully: "¡Prompts generados con éxito!",
@@ -1128,6 +1129,8 @@ const translations_es = {
     legal_intellectual_property_content: "Todos los códigos fuente, elementos gráficos y contenidos están bajo la licencia libre GNU AGPLv3. Su reutilización está permitida bajo las condiciones de sus respectivas licencias. Cualquier redistribución o modificación debe citar a los autores originales: Gauthier REMANDE y Emmanuel GAUNARD. Las imágenes utilizadas en los módulos H5P se obtienen de H5P.org.",
     legal_personal_data_title: "Datos personales",
     legal_personal_data_content: "No se recopilan ni almacenan datos personales. No se utilizan cookies de seguimiento. El historial de la sesión se almacena en el navegador local del usuario (localStorage), sin transmisión. De conformidad con el RGPD, no se transmite ninguna información personal al editor ni a terceros.",
+    legal_ai_models_title: "Modelos de Inteligencia Artificial",
+    legal_ai_models_content: "La aplicación Caramel utiliza, únicamente durante la generación con un solo clic, los modelos de inteligencia artificial Albert ofrecidos por la Dirección Interministerial de lo Digital (DINUM). Los modelos disponibles son: Albert-Small (Llama 3.1, 8 mil millones de parámetros), Albert-Large (Mistral Small 3.2, 24 mil millones de parámetros) y Albert-Code (Qwen 2.5 Coder, 32,5 mil millones de parámetros). Los datos enviados para la generación de contenido se procesan en los servidores de la DINUM y no se comparten con IAs públicas externas, garantizando así la confidencialidad y seguridad de la información.",
     legal_accessibility_title: "Accesibilidad",
     legal_accessibility_content: "La aplicación está diseñada para ser compatible con el uso en ordenadores, incluyendo los modos oscuro/claro, la navegación por teclado y el alto contraste según los temas. Se está llevando a cabo una mejora continua de la accesibilidad, en línea con las recomendaciones del RGAA.",
     legal_applicable_law_title: "Derecho aplicable",
@@ -1592,6 +1595,7 @@ const translations_es = {
     generation_successful: "¡Contenido H5P generado con éxito!",
     generation_failed_empty: "La generación falló. La respuesta estaba vacía.",
     generation_failed_error: "Error durante la generación: {errorMessage}",
+    generation_failed_albert: "La generación en la IA Albert ha fallado. Causa: {errorMessage}",
 
     // Albert models description
     albert_small_summary: "Rápido, simple, adecuado para ejercicios rápidos y estructurados.",
@@ -1667,10 +1671,16 @@ const translations_es = {
     ocr_success: "El documento ha sido procesado con éxito.",
     ocr_error: "Ocurrió un error durante el procesamiento.",
     error_invalid_pdf: "Por favor, seleccione un archivo PDF válido.",
+    error_duplicate_pdf: "Este archivo ya se ha añadido.",
     error_fullscreen: "El modo de pantalla completa falló:",
     lock_text: "Bloquear",
     unlock_text: "Desbloquear",
     rag_instruction: "\n\nSolo deberás consultar la siguiente información para generar el contenido:",
+    drag_drop_text: "Arrastra y suelta un archivo PDF aquí",
+    or_text: "o",
+    upload_pdf_btn: "Seleccionar un archivo",
+    paste_your_text_here: "Copie y pegue su texto aquí...",
+    rag_tags_tuto: "A continuación encontrará los documentos subidos. Haga clic en el círculo de color para personalizar el resaltado de cada documento.",
 
     // Pasos para preparar el caramelo
     caramel_animation_step_1: "Vertemos el azúcar en la cacerola...",
@@ -1725,9 +1735,5 @@ const translations_es = {
   ]
 }
 \`\`\``,
-    page_prompt_generate_only_json: "Genera únicamente código JSON válido, sin ningún comentario.",
-    drag_drop_text: "Arrastra y suelta un archivo PDF aquí",
-    or_text: "o",
-    upload_pdf_btn: "Seleccionar un archivo",
-    paste_your_text_here: "Copie y pegue su texto aquí..."
+    page_prompt_generate_only_json: "Genera únicamente código JSON válido, sin ningún comentario."
 };

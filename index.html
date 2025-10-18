@@ -41,16 +41,16 @@
                 </button>
                 <ul class="language-dropdown">
                     <li><a href="#" data-lang="fr"><span class="fi fi-fr"></span>Français</a></li>
-                    <li><a href="#" data-lang="de"><span class="fi fi-de"></span>Deutsch</a></li>
                     <li><a href="#" data-lang="en"><span class="fi fi-gb"></span>English</a></li>
-                    <li><a href="#" data-lang="ar"><span class="fi fi-sa"></span>عربي</a></li>
-                    <li><a href="#" data-lang="zh"><span class="fi fi-cn"></span>中文</a></li>
                     <li><a href="#" data-lang="es"><span class="fi fi-es"></span>Español</a></li>
-                    <li><a href="#" data-lang="el"><span class="fi fi-gr"></span>ελληνικά</a></li>
+                    <li><a href="#" data-lang="de"><span class="fi fi-de"></span>Deutsch</a></li>
                     <li><a href="#" data-lang="it"><span class="fi fi-it"></span>Italiano</a></li>
-                    <li><a href="#" data-lang="jp"><span class="fi fi-jp"></span>日本語</a></li>
                     <li><a href="#" data-lang="nl"><span class="fi fi-nl"></span>Nederlands</a></li>
                     <li><a href="#" data-lang="pt"><span class="fi fi-pt"></span>Português</a></li>
+                    <li><a href="#" data-lang="ar"><span class="fi fi-sa"></span>عربي</a></li>
+                    <li><a href="#" data-lang="zh"><span class="fi fi-cn"></span>中文</a></li>
+                    <li><a href="#" data-lang="jp"><span class="fi fi-jp"></span>日本語</a></li>
+                    <li><a href="#" data-lang="el"><span class="fi fi-gr"></span>ελληνικά</a></li>
                 </ul>
             </div>
         </div>
@@ -87,21 +87,28 @@
                             <p class="rag-note" data-key="rag_note"></p>
                         </div>
                         <div class="rag-content-area">
-                            <div class="unified-rag-area" id="unified-rag-area">
-                                <div class="floating-toolbar">
-                                    <button class="toolbar-btn" id="ocr-copy-btn" data-tooltip-key="copy_prompt"><i class="fas fa-copy"></i><span class="toolbar-btn-text" data-key="copy_prompt"></span></button>
-                                    <button class="toolbar-btn" id="ocr-fullscreen-btn" data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i><span class="toolbar-btn-text" data-key="fullscreen_prompt"></span></button>
-                                    <button class="toolbar-btn" id="ocr-lock-btn" data-tooltip-key="unlock_prompt"><i class="fas fa-lock-open"></i><span class="toolbar-btn-text" data-key="unlock_prompt"></span></button>
+                            <div class="rag-top-row">
+                                <div class="unified-rag-area" id="unified-rag-area">
+                                    <div class="floating-toolbar">
+                                        <button class="toolbar-btn" id="ocr-copy-btn" data-tooltip-key="copy_prompt"><i class="fas fa-copy"></i><span class="toolbar-btn-text" data-key="copy_prompt"></span></button>
+                                        <button class="toolbar-btn" id="ocr-fullscreen-btn" data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i><span class="toolbar-btn-text" data-key="fullscreen_prompt"></span></button>
+                                        <button class="toolbar-btn" id="ocr-lock-btn" data-tooltip-key="unlock_prompt"><i class="fas fa-lock-open"></i><span class="toolbar-btn-text" data-key="unlock_prompt"></span></button>
+                                    </div>
+                                    <div id="ocr-output" contenteditable="true" data-placeholder="Copiez-collez votre texte ici..."></div>
+                                    <div id="char-counter" class="char-counter">0 / 120000</div>
                                 </div>
-                                <textarea id="ocr-output" data-key-placeholder="paste_your_text_here" placeholder="Copiez-collez votre texte ici..."></textarea>
+                                <div class="drag-drop-area">
+                                    <div class="drag-drop-content">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <p><span data-key="drag_drop_text">Glissez-déposez un fichier PDF ici</span> <br><span data-key="or_text">ou</span> <label for="pdfUpload" class="file-upload-label" data-key="upload_pdf_btn">choisissez un fichier</label></p>
+                                        <input type="file" id="pdfUpload" accept="application/pdf">
+                                        <div id="ocr-status"></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="drag-drop-area">
-                                <div class="drag-drop-content">
-                                    <i class="fas fa-cloud-upload-alt"></i>
-                                    <p><span data-key="drag_drop_text">Glissez-déposez un fichier PDF ici</span> <br><span data-key="or_text">ou</span> <label for="pdfUpload" class="file-upload-label" data-key="upload_pdf_btn">choisissez un fichier</label></p>
-                                    <input type="file" id="pdfUpload" accept="application/pdf">
-                                    <div id="ocr-status"></div>
-                                </div>
+                            <p class="rag-tags-tuto" data-key="rag_tags_tuto"></p>
+                            <div id="pdf-tags-container">
+                                <!-- Les tags des fichiers PDF seront insérés ici -->
                             </div>
                         </div>
                     </div>
@@ -160,6 +167,8 @@
     <div id="caramel-animation-overlay">
         <div class="marmite">
             <div class="marmite-content"></div>
+            <div id="sparkles-container"></div>
+            <div id="bubbles-container"></div>
         </div>
         <div id="recipe-steps"></div>
     </div>
@@ -171,7 +180,7 @@
 
     <footer class="footer">
         <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank"><i
-                class="fas fa-info-circle"></i> Caramel v3.0</a>
+                class="fas fa-info-circle"></i> Caramel v3.1</a>
         <a href="mailto:gauthier.remande@ac-nantes.fr"><i class="fas fa-envelope"></i> Gauthier REMANDE</a>
         <a href="mailto:emmanuel.gaunard@ac-grenoble.fr"><i class="fas fa-envelope"></i> Emmanuel GAUNARD</a>
         <a href="https://forge.apps.education.fr/caramel/caramel"><i class="fas fa-code-branch"></i> Forge</a>

@@ -99,7 +99,7 @@ const translations_jp = {
             <p>最大限のコントロールに。左側にプロンプト（AI への指示）が表示されます。</p>
             <ol>
                 <li>必要に応じてプロンプトを編集。</li>
-                <li><button class="help-btn-example-duck">Duck.ai を開く</button> または <button class="help-btn-example-mistral">Le Chat を開く</button> をクリック。<strong>プロンプトが自動コピー</strong>され、新しいタブで AI が開きます。</li>
+                <li><strong>プロンプトをコピー</strong> ボタンを使用し、お好みの一般向けAIを新しいタブで開いてください。</li>
                 <li>AI に貼り付けて実行し、結果を右の結果領域（Caramel）に貼り付けます。</li>
             </ol>
             <p>便利なアイコン：<span class="help-badge-icon"><i class="fas fa-expand"></i> 全画面</span>、<span class="help-badge-icon"><i class="fas fa-lock"></i> ロック</span>（プロンプト保護）。</p>
@@ -474,31 +474,31 @@ const translations_jp = {
     gift_prompt_generate_only_gift: "コメントや追加のタグなしで、GIFT形式のクイズを直接生成してください。説明された形式を厳密に守ってください。結果を他のツールに貼り付けるため、この形式が期待されています。回答をプリフォーマットされたコードとして生成してください。",
 
     // Flashcards Prompt
-    flashcards_prompt_role: "あなたはH5P「Flashcards」アクティビティを作成する教育工学の専門家です。",
-    flashcards_prompt_mission: "**あなたの使命：**",
-    flashcards_prompt_generate_json: "H5PのFlashcards型アクティビティ用の完全で有効なJSONオブジェクトを生成してください。JSONは直接使用可能である必要があります。",
-    flashcards_prompt_json_structure_title: "**期待されるJSON構造：**",
-    flashcards_prompt_json_structure_main_object: "オブジェクトには以下を含める必要があります：",
-    flashcards_prompt_title: "`title`：アクティビティに関連するタイトル。",
-    flashcards_prompt_description: "`description`：生徒への明確な指示。",
-    flashcards_prompt_association_principle: "表面と裏面は、単一で安定した基準で結び付ける必要があります（例: 用語→定義、図形→辺の数、日付→出来事、作者→作品）。すべてのカードで同じ関係を用い、指示は次のように表現してください: « 各XをYに対応させなさい ». 正規化した回答（`answer`）: 単純な語1語または数値。小文字、冠詞や句読点なし；数は数字表記。",
-    flashcards_prompt_cards_array: "`cards`：${nombreQuestions}個のオブジェクトの配列。各オブジェクトはカードを表し、以下を含みます：",
-    flashcards_prompt_text: "`text`：推測する質問または用語（表）。",
-    flashcards_prompt_answer: "`answer`：回答または定義（裏）。注意、重要：answerには単純な単語一つまたは数字のみを含めることができます。",
-    flashcards_prompt_tip: "`tip`（任意）: 質問が難しい場合に学習者を助けるためのヒントです。適切だと思う場合にのみヒントを追加してください。",
-    flashcards_prompt_tip_formatting: "ヒント（`tip`）では、重要な情報を強調するために、太字には `*mot*`、斜体には `**mot**` を使用できます。",
-    flashcards_prompt_example_json_title: "**JSONの例：**",
+    flashcards_prompt_role: "あなたは教育設計の専門家で、H5P の「フラッシュカード」アクティビティを作成しています。",
+    flashcards_prompt_mission: "**あなたのミッション：**",
+    flashcards_prompt_generate_json: "H5P フラッシュカード用の完全で有効な JSON オブジェクトを生成してください。JSON はそのまま利用できる形式であること。",
+    flashcards_prompt_json_structure_title: "**期待される JSON 構造：**",
+    flashcards_prompt_json_structure_main_object: "オブジェクトは次を含む必要があります：",
+    flashcards_prompt_title: "`title`: アクティビティにふさわしいタイトル。",
+    flashcards_prompt_description: "`description`: 学習者への明確な指示。",
+    flashcards_prompt_association_principle: "表（表面）と裏は、単一かつ一貫した基準で結びつけること（例：定義→用語、図形→辺の数、出来事→日付、著者→作品）。すべてのカードで同じ関係を使用し、指示は「各 X を Y に対応させなさい」の形で表現すること。回答（`answer`）は正規化：単語1語または数字のみ、小文字、冠詞や句読点なし；数字は数字で表記。",
+    flashcards_prompt_cards_array: "`cards`: ${nombreQuestions} 個のオブジェクトを含む配列。各オブジェクトはカードを表し、次を含む：",
+    flashcards_prompt_text: "`text`: 出題文または推測する用語（表面）。",
+    flashcards_prompt_answer: "`answer`: 回答または定義（裏面）。重要：`answer` は単語1つまたは数字のみ、複合語や区切られた語は不可。",
+    flashcards_prompt_tip: "`tip`（任意）：問題が難しい場合に学習者を助けるヒント。必要な場合にのみ追加すること。",
+    flashcards_prompt_tip_formatting: "ヒント（`tip`）では、重要な情報を強調するために `*語*` を太字、`**語**` を斜体として使うことができます。",
+    flashcards_prompt_example_json_title: "**JSON 例：**",
     flashcards_prompt_example: `\`\`\`json
 {
 "title": "ヨーロッパの首都",
 "description": "各国の首都を覚えましょう。カードをクリックすると答えが表示されます。",
 "cards": [
 {
-"text": "フランス",
+"text": "フランスの首都",
 "answer": "パリ"
 },
 {
-"text": "オランダ",
+"text": "オランダの首都",
 "answer": "アムステルダム",
 "tip": "<p><strong>運河</strong>とチューリップの街です！</p>"
 }
@@ -515,7 +515,7 @@ const translations_jp = {
     quiz_set_prompt_json_structure_main_object: "メインオブジェクトには以下のキーを含める必要があります：",
     quiz_set_prompt_progress_type: "`progressType`: \"dots\"",
     quiz_set_prompt_pass_percentage: "`passPercentage`: 50",
-    quiz_set_prompt_questions_array: "`questions`：5個のオブジェクトの配列。各オブジェクトは質問を表します。",
+    quiz_set_prompt_questions_array: "`questions`：${nombreQuestions}個のオブジェクトの配列。各オブジェクトは質問を表します。",
     quiz_set_prompt_content_rules_title: "**質問内容のルール：**",
     quiz_set_prompt_rule1: "1. 各質問オブジェクトには`library`、`params`、`subContentId`キーが必要です。",
     quiz_set_prompt_rule2: "2.  **構造:** 各質問は`library`、`metadata`、`params`のキーを持つオブジェクトでなければなりません。",
@@ -537,7 +537,7 @@ const translations_jp = {
         "library": "H5P.TrueFalse 1.8",
         "metadata": { "title": "正誤問題のタイトル" },
         "params": {
-            "question": "<p>フランスは国ですか？</p>",
+            "question": "フランスは国ですか？",
             "correct": "true",
             "feedbackOnCorrect": "正解です！フランスは確かに国です。",
             "feedbackOnWrong": "不正解です。フランスは国際的に国として認められています。",
@@ -550,7 +550,7 @@ const translations_jp = {
         "library": "H5P.MultiChoice 1.16",
         "metadata": { "title": "MCQのタイトル" },
         "params": {
-            "question": "<p>フランスの首都はどこですか？</p>",
+            "question": "フランスの首都はどこですか？",
             "answers": [
                 { "text": "パリ", "correct": true },
                 { "text": "ベルリン", "correct": false }
@@ -572,7 +572,7 @@ const translations_jp = {
         "library": "H5P.Blanks 1.14",
         "metadata": { "title": "穴埋め問題のタイトル" },
         "params": {
-            "questions": ["<p>パリはフランスの*首都*です。</p>"],
+            "questions": ["パリはフランスの*首都*です。"],
             "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "caseSensitive": false },
             "overallFeedback": [
                 { "from": 0, "to": 10, "feedback": "0-10%のフィードバック" },
@@ -1058,7 +1058,8 @@ const translations_jp = {
     // H5P 空のテキストフィールド
     generate_prompts_placeholder: "クイックモードまたは詳細モードの項目を少なくとも1つ入力すると、ここにAI用のプロンプトが表示されます。",
     paste_json_or_text: "アクティビティ作成のため、AI が生成した JSON コンテンツまたはテキストをここに貼り付けてください。",
-
+    info_prompt_copy: "このプロンプトを右側のパネルに貼り付けないでください。外部のAIにコピーして結果を取得し、その結果を右側のパネルに貼り付けてください。",
+    
     // Notifications
     prompts_generated_successfully: "プロンプトが正常に生成されました！",
     success_copy: "✓ コピーしました !",
@@ -1128,6 +1129,8 @@ const translations_jp = {
     legal_intellectual_property_content: "すべてのソースコード、グラフィック要素、コンテンツは、無料のGNU AGPLv3ライセンスの下でライセンスされています。それぞれのライセンスの条件の下で再利用が許可されています。再配布や変更を行う場合は、元の作成者であるGauthier REMANDEとEmmanuel GAUNARDをクレジットする必要があります。H5Pモジュールで使用されている画像はH5P.orgから取得しています。",
     legal_personal_data_title: "個人データ",
     legal_personal_data_content: "個人データは収集も保存もされません。追跡クッキーは使用されません。セッション履歴はユーザーのローカルブラウザ（localStorage）に保存され、送信されません。GDPRに従い、個人情報は編集者や第三者に送信されません。",
+    legal_ai_models_title: "人工知能モデル",
+    legal_ai_models_content: "Caramelアプリケーションは、ワンクリック生成時にのみ、省庁間デジタル局（DINUM）が提供するAlbert人工知能モデルを使用します。利用可能なモデルは次のとおりです：Albert-Small（Llama 3.1、80億パラメータ）、Albert-Large（Mistral Small 3.2、240億パラメータ）、Albert-Code（Qwen 2.5 Coder、325億パラメータ）。コンテンツ生成のために送信されたデータはDINUMのサーバーで処理され、外部の公共AIと共有されることはなく、情報の機密性とセキュリティが保証されます。",
     legal_accessibility_title: "アクセシビリティ",
     legal_accessibility_content: "このアプリケーションは、テーマに応じたダーク/ライトモード、キーボードナビゲーション、ハイコントラストなど、コンピュータでの使用に対応するように設計されています。RGAAの推奨事項に沿って、アクセシビリティの継続的な改善が進められています。",
     legal_applicable_law_title: "適用法",
@@ -1592,6 +1595,7 @@ const translations_jp = {
     generation_successful: "H5Pコンテンツが正常に生成されました！",
     generation_failed_empty: "生成に失敗しました。応答が空でした。",
     generation_failed_error: "生成中にエラーが発生しました：{errorMessage}",
+    generation_failed_albert: "Albert AIでの生成に失敗しました。原因：{errorMessage}",
 
     // Albert models description
     albert_small_summary: "高速、シンプル、迅速で構造化された演習に適しています。",
@@ -1667,10 +1671,16 @@ const translations_jp = {
     ocr_success: "ドキュメントは正常に処理されました。",
     ocr_error: "処理中にエラーが発生しました。",
     error_invalid_pdf: "有効なPDFファイルを選択してください。",
+    error_duplicate_pdf: "このファイルはすでに追加されています。",
     error_fullscreen: "フルスクリーンモードに失敗しました：",
     lock_text: "ロック",
     unlock_text: "ロック解除",
     rag_instruction: "\n\nコンテンツを生成するには、以下の情報のみを参照してください：",
+    drag_drop_text: "ここに PDF ファイルをドラッグ＆ドロップしてください",
+    or_text: "または",
+    upload_pdf_btn: "ファイルを選択",
+    paste_your_text_here: "ここにテキストをコピー＆ペーストしてください...",
+    rag_tags_tuto: "以下にアップロードされたドキュメントが表示されます。各ドキュメントのハイライトをカスタマイズするには、色付きの円をクリックしてください。",
 
     // キャラメル作りの手順
     caramel_animation_step_1: "鍋に砂糖を入れます...",
@@ -1725,9 +1735,5 @@ const translations_jp = {
   ]
 }
 \`\`\``,
-    page_prompt_generate_only_json: "有効な JSON コードのみを生成し、コメントは一切含めないでください。",
-    drag_drop_text: "ここに PDF ファイルをドラッグ＆ドロップしてください",
-    or_text: "または",
-    upload_pdf_btn: "ファイルを選択",
-    paste_your_text_here: "ここにテキストをコピー＆ペーストしてください..."
+    page_prompt_generate_only_json: "有効な JSON コードのみを生成し、コメントは一切含めないでください。"
 };

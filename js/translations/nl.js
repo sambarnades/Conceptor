@@ -99,7 +99,7 @@ const translations_nl = {
             <p>Voor maximale controle. De prompt (instructie voor de AI) verschijnt links.</p>
             <ol>
                 <li>Pas de prompt aan indien gewenst.</li>
-                <li>Gebruik <button class="help-btn-example-duck">Open Duck.ai</button> of <button class="help-btn-example-mistral">Open Le Chat</button>. Dit <strong>kopieert de prompt automatisch</strong> en opent de AI in een nieuw tabblad.</li>
+                <li>Gebruik de knop <strong>Prompt kopiëren</strong> en open een publiek toegankelijke AI naar keuze in een nieuw tabblad.</li>
                 <li>Plak de prompt in de AI, kopieer de output en plak die rechts in het resultaatgebied in Caramel.</li>
             </ol>
             <p>Handige pictogrammen: <span class="help-badge-icon"><i class="fas fa-expand"></i> Volledig scherm</span> en <span class="help-badge-icon"><i class="fas fa-lock"></i> Vergrendelen</span> om de prompt te beschermen.</p>
@@ -474,31 +474,31 @@ const translations_nl = {
     gift_prompt_generate_only_gift: "Genereer de quiz direct in GIFT-formaat, zonder extra commentaar of tags. Respecteer strikt het beschreven formaat; ik plak het resultaat in een andere tool die dit vereist. Lever het antwoord als vooraf opgemaakte code.",
 
     // Flashcards Prompt
-    flashcards_prompt_role: "Je bent een specialist in leerontwerp en maakt een H5P-activiteit \"Flashcards\".",
-    flashcards_prompt_mission: "**Jouw missie:**",
-    flashcards_prompt_generate_json: "Genereer een volledig en geldig JSON-object voor een H5P-flashcardsactiviteit. De JSON moet direct bruikbaar zijn.",
+    flashcards_prompt_role: "Je bent een expert in instructional design en maakt een H5P 'Flashcards' activiteit.",
+    flashcards_prompt_mission: "**Je missie:**",
+    flashcards_prompt_generate_json: "Genereer een compleet en geldig JSON-object voor een H5P Flashcards-activiteit. Het JSON moet direct bruikbaar zijn.",
     flashcards_prompt_json_structure_title: "**Verwachte JSON-structuur:**",
-    flashcards_prompt_json_structure_main_object: "Het object moet bevatten:",
-    flashcards_prompt_title: "`title`: Een passende titel voor de activiteit.",
+    flashcards_prompt_json_structure_main_object: "Het object moet het volgende bevatten:",
+    flashcards_prompt_title: "`title`: Een geschikte titel voor de activiteit.",
     flashcards_prompt_description: "`description`: Een duidelijke instructie voor de leerling.",
-    flashcards_prompt_association_principle: "De voor- en achterkant moeten verbonden zijn door één enkel, stabiel criterium (bijv.: term→definitie, figuur→aantal zijden, datum→gebeurtenis, auteur→werk). Gebruik voor alle kaarten dezelfde relatie en formuleer de instructie als volgt: « Koppel elke X aan Y ». Genormaliseerde antwoorden (`answer`): één eenvoudig woord of een getal, in kleine letters, zonder lidwoord of leestekens; getallen in cijfers.",
-    flashcards_prompt_cards_array: "`cards`: Een array van ${nombreQuestions} objecten; elk object stelt een kaart voor en bevat:",
-    flashcards_prompt_text: "`text`: De vraag of de te raden term (voorzijde).",
-    flashcards_prompt_answer: "`answer`: Het antwoord of de definitie (achterzijde). Let op: `answer` mag slechts één eenvoudig woord of een getal bevatten.",
-    flashcards_prompt_tip: "`tip` (optioneel): Een hint om de leerling te helpen als de vraag moeilijk is. Voeg alleen een hint toe als dat relevant lijkt.",
-    flashcards_prompt_tip_formatting: "Voor hints (`tip`) kun je `*mot*` gebruiken voor vet en `**mot**` voor cursief om belangrijke informatie te benadrukken.",
-    flashcards_prompt_example_json_title: "**JSON-voorbeeld:**",
+    flashcards_prompt_association_principle: "Voorkant en achterkant moeten gekoppeld zijn door één enkel, consistent criterium (bijv.: definitie→term, figuur→aantal zijden, gebeurtenis→datum, auteur→werk). Gebruik voor alle kaarten dezelfde relatie en formuleer de opdracht zo: “Koppel elke X aan Y.” Antwoorden (`answer`) gestandaardiseerd: een enkel woord of een getal, kleine letters, geen lidwoorden of interpunctie; getallen in cijfers.",
+    flashcards_prompt_cards_array: "`cards`: Een array van ${nombreQuestions} objecten, waarin elk object een kaart voorstelt en bevat:",
+    flashcards_prompt_text: "`text`: De vraag of term die geraden moet worden (voorkant).",
+    flashcards_prompt_answer: "`answer`: Het antwoord of de definitie (achterkant). Belangrijk: `answer` mag slechts één enkel woord of een getal bevatten, geen samengestelde of gescheiden woorden.",
+    flashcards_prompt_tip: "`tip` (optioneel): Een hint om de leerling te helpen als de vraag moeilijk is. Voeg een hint alleen toe als dat relevant is.",
+    flashcards_prompt_tip_formatting: "Voor hints (`tip`) kun je `*woord*` gebruiken voor vet en `**woord**` voor cursief om belangrijke informatie te benadrukken.",
+    flashcards_prompt_example_json_title: "**Voorbeeld JSON:**",
     flashcards_prompt_example: `\`\`\`json
 {
 "title": "De hoofdsteden van Europa",
 "description": "Onthoud de hoofdstad van elk land. Klik op de kaart om het antwoord te zien.",
 "cards": [
 {
-"text": "Frankrijk",
+"text": "De hoofdstad van Frankrijk",
 "answer": "Parijs"
 },
 {
-"text": "Nederland",
+"text": "De hoofdstad van Nederland",
 "answer": "Amsterdam",
 "tip": "<p>Het is de stad van de <strong>grachten</strong> en tulpen!</p>"
 }
@@ -515,7 +515,7 @@ const translations_nl = {
     quiz_set_prompt_json_structure_main_object: "Het hoofdobject bevat de volgende sleutels:",
     quiz_set_prompt_progress_type: "`progressType`: \"dots\"",
     quiz_set_prompt_pass_percentage: "`passPercentage`: 50",
-    quiz_set_prompt_questions_array: "`questions`: Een array van 5 objecten, elk een vraag.",
+    quiz_set_prompt_questions_array: "`questions`: Een array van ${nombreQuestions} objecten, elk een vraag.",
     quiz_set_prompt_content_rules_title: "**Regels voor de vraaginhoud:**",
     quiz_set_prompt_rule1: "1.  Elk vraagobject moet de sleutels `library`, `params` en `subContentId` hebben.",
     quiz_set_prompt_rule2: "2.  **Structuur:** Elke vraag moet een object zijn met de sleutels `library`, `metadata` en `params`.",
@@ -537,7 +537,7 @@ const translations_nl = {
         "library": "H5P.TrueFalse 1.8",
         "metadata": { "title": "Titel van de Waar/Onwaar-vraag" },
         "params": {
-            "question": "<p>Is Frankrijk een land?</p>",
+            "question": "Is Frankrijk een land?",
             "correct": "true",
             "feedbackOnCorrect": "Dat klopt! Frankrijk is inderdaad een land.",
             "feedbackOnWrong": "Onjuist. Frankrijk wordt internationaal erkend als een land.",
@@ -550,7 +550,7 @@ const translations_nl = {
         "library": "H5P.MultiChoice 1.16",
         "metadata": { "title": "Titel van de MCQ" },
         "params": {
-            "question": "<p>Wat is de hoofdstad van Frankrijk?</p>",
+            "question": "Wat is de hoofdstad van Frankrijk?",
             "answers": [
                 { "text": "Parijs", "correct": true },
                 { "text": "Berlijn", "correct": false }
@@ -572,7 +572,7 @@ const translations_nl = {
         "library": "H5P.Blanks 1.14",
         "metadata": { "title": "Titel van de invuloefening" },
         "params": {
-            "questions": ["<p>Parijs is de *hoofdstad* van Frankrijk.</p>"],
+            "questions": ["Parijs is de *hoofdstad* van Frankrijk."],
             "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "caseSensitive": false },
             "overallFeedback": [
                 { "from": 0, "to": 10, "feedback": "Feedback voor 0-10%" },
@@ -628,7 +628,7 @@ const translations_nl = {
         "library": "H5P.Essay 1.5",
         "metadata": { "title": "Titel van het essay" },
         "params": {
-            "taskDescription": "<p>Wat is de hoofdstad van Frankrijk?</p>",
+            "taskDescription": "Wat is de hoofdstad van Frankrijk?",
             "keywords": [
                 { "keyword": "Parijs", "options": { "points": 1, "caseSensitive": false } }
             ],
@@ -1058,6 +1058,7 @@ const translations_nl = {
     // H5P empty text fields
     generate_prompts_placeholder: "De AI-prompt verschijnt hier zodra u minimaal één veld in de Snelle modus of de Geavanceerde modus hebt ingevuld.",
     paste_json_or_text: "Plak hier de JSON-inhoud of de door de AI gegenereerde tekst om je activiteit te maken.",
+    info_prompt_copy: "Plak deze prompt niet in het rechterpaneel. Kopieer hem naar een externe AI om het resultaat te verkrijgen en plak dt resultaat vervolgens in het rechterpaneel.",
 
     // Notifications
     prompts_generated_successfully: "Prompts succesvol gegenereerd!",
@@ -1128,6 +1129,8 @@ const translations_nl = {
     legal_intellectual_property_content: "Alle broncodes, grafische elementen en content vallen onder de vrije GNU AGPLv3-licentie. Hergebruik is toegestaan onder de voorwaarden van hun respectieve licenties. Elke herdistributie of wijziging moet de oorspronkelijke auteurs vermelden: Gauthier REMANDE en Emmanuel GAUNARD. De afbeeldingen die in de H5P-modules worden gebruikt, zijn afkomstig van H5P.org.",
     legal_personal_data_title: "Persoonlijke gegevens",
     legal_personal_data_content: "Er worden geen persoonlijke gegevens verzameld of opgeslagen. Er worden geen trackingcookies gebruikt. De sessiegeschiedenis wordt opgeslagen in de lokale browser van de gebruiker (localStorage), zonder overdracht. In overeenstemming met de AVG wordt er geen persoonlijke informatie doorgegeven aan de redacteur of aan derden.",
+    legal_ai_models_title: "Modellen voor kunstmatige intelligentie",
+    legal_ai_models_content: "De Caramel-applicatie maakt, uitsluitend bij het genereren met één klik, gebruik van de Albert-modellen voor kunstmatige intelligentie die worden aangeboden door de Interministeriële Directie voor Digitale Zaken (DINUM). De beschikbare modellen zijn: Albert-Small (Llama 3.1, 8 miljard parameters), Albert-Large (Mistral Small 3.2, 24 miljard parameters) en Albert-Code (Qwen 2.5 Coder, 32,5 miljard parameters). Gegevens die worden verzonden voor het genereren van inhoud, worden verwerkt op de servers van DINUM en worden niet gedeeld met externe openbare AI's, waardoor de vertrouwelijkheid en veiligheid van de informatie wordt gewaarborgd.",
     legal_accessibility_title: "Toegankelijkheid",
     legal_accessibility_content: "De applicatie is ontworpen om compatibel te zijn met computergebruik, inclusief donkere/lichte modi, toetsenbordnavigatie en hoog contrast, afhankelijk van de thema's. Er wordt voortdurend gewerkt aan de verbetering van de toegankelijkheid, in lijn met de aanbevelingen van de RGAA.",
     legal_applicable_law_title: "Toepasselijk recht",
@@ -1592,6 +1595,7 @@ const translations_nl = {
     generation_successful: "H5P-inhoud succesvol gegenereerd!",
     generation_failed_empty: "Generatie mislukt. Het antwoord was leeg.",
     generation_failed_error: "Fout tijdens generatie: {errorMessage}",
+    generation_failed_albert: "Generatie op Albert AI mislukt. Oorzaak: {errorMessage}",
 
     // Albert models description
     albert_small_summary: "Snel, eenvoudig, geschikt voor snelle en gestructureerde oefeningen.",
@@ -1667,10 +1671,16 @@ const translations_nl = {
     ocr_success: "Het document is succesvol verwerkt.",
     ocr_error: "Er is een fout opgetreden tijdens de verwerking.",
     error_invalid_pdf: "Selecteer een geldig PDF-bestand.",
+    error_duplicate_pdf: "Dit bestand is al toegevoegd.",
     error_fullscreen: "Volledig scherm is mislukt:",
     lock_text: "Vergrendelen",
     unlock_text: "Ontgrendelen",
     rag_instruction: "\n\nU dient alleen de volgende informatie te raadplegen om de inhoud te genereren:",
+    drag_drop_text: "Sleep een PDF-bestand hierheen en laat het los",
+    or_text: "of",
+    upload_pdf_btn: "Kies een bestand",
+    paste_your_text_here: "Kopieer en plak hier je tekst...",
+    rag_tags_tuto: "Hieronder vindt u de geüploade documenten. Klik op de gekleurde cirkel om de markering van elk document aan te passen.",
 
     // Stappen om karamel te maken
     caramel_animation_step_1: "Giet de suiker in de pan...",
@@ -1725,9 +1735,5 @@ const translations_nl = {
   ]
 }
 \`\`\``,
-    page_prompt_generate_only_json: "Genereer alleen geldige JSON-code, zonder enig commentaar.",
-    drag_drop_text: "Sleep een PDF-bestand hierheen en laat het los",
-    or_text: "of",
-    upload_pdf_btn: "Kies een bestand",
-    paste_your_text_here: "Kopieer en plak hier je tekst..."
+    page_prompt_generate_only_json: "Genereer alleen geldige JSON-code, zonder enig commentaar."
 };
