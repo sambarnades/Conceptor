@@ -24,7 +24,6 @@
 1. génère des *prompts* prêts à l'emploi pour être utilisés dans l'IA du choix de l'utilisateur ;
 2. convertit la réponse de l'IA en fichiers **.h5p** (modules H5P) ou **.mbz** (activité Moodle/Éléa/Magistère) sans quitter le navigateur.
 
-Aucune donnée n'est envoyée vers un serveur : **tout est traité localement côté client**.
 
 ---
 
