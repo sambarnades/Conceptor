@@ -801,7 +801,7 @@ export function handleGlossaireXmlCreation(jsonInput) {
            ];
        }
        for (const path of structure) {
-           const response = await fetch(`${basePath}/${path}`);
+           const response = await fetch(`/${basePath}/${path}`);
            if (response.ok) {
                files[path] = await response.text();
            } else {
