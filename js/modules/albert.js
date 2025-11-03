@@ -88,7 +88,7 @@ export function populateModelSelector(moduleKey, models, onSelectCallback, selec
 export async function generateH5PWithAlbert(prompt, model) {
     console.log(`Appel au proxy n8n pour l'API Albert avec le modèle ${model} et le prompt :`, prompt);
 
-    const proxyUrl = "https://n8n.remande.fr/webhook/albert-proxy";
+    const proxyUrl = "https://n8n.incubateur.education.gouv.fr/webhook/albert-proxy";
 
     const requestBody = {
         prompt: prompt,
