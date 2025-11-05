@@ -10,7 +10,7 @@ import { generatePrompts } from './prompt-generator.js';
 import { handleH5PCreation } from './h5p-creator.js';
 import { handleGlossaireXmlCreation, handleMillionnaireCreation, handleAppariementCreation, handleQCMCreation, handlePageCreation, generateMoodleXml, generateMoodleGift } from './moodle-creator.js';
 import { cleanJsonInput, showNotification, copyToClipboard, downloadFile, setupToolbarListeners } from './utils.js';
-import { populateModelSelector, AVAILABLE_MODELS, generateH5PWithAlbert } from './albert.js';
+import { populateModelSelector, AVAILABLE_MODELS, generateH5PWithLLM } from './llm.js';
 
 /**
  * Génère et affiche les tuiles des modules d'activité dans les onglets correspondants.
@@ -129,6 +129,10 @@ export let activeTile = null;
             sidebar.innerHTML = '';
         }, 400); // Durée de la transition
     }
+
+    // Rendre accessible au handler inline de la croix en mode responsive
+    // (l'appel onclick="closeSidebar()" nécessite une fonction globale)
+    window.closeSidebar = closeSidebar;
 
     sidebarOverlay.addEventListener('click', closeSidebar);
 
@@ -293,7 +297,7 @@ export function toggleActivityContent(moduleKey, tileElement) {
                     <div class="top-controls-container">
                         <div class="action-buttons-group generation-button-group">
                             <div class="main-action-button">
-                                <button id="generate-albert-${moduleKey}" class="action-btn primary-btn">${translations.generate_one_click || "Générer en un clic"}</button>
+                                <button id="generate-llm-${moduleKey}" class="action-btn primary-btn">${translations.generate_one_click || "Générer en un clic"}</button>
                             </div>
                             <div class="more-actions-button">
                                 <button id="model-selector-btn-${moduleKey}" class="action-btn primary-btn dropdown-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Sélectionner le modèle">
@@ -382,7 +386,7 @@ export function toggleActivityContent(moduleKey, tileElement) {
             }
 
             if (['moodleXml', 'glossaireXml', 'Millionnaire', 'Appariement', 'QCM', 'Page'].includes(moduleKey)) {
-                attachAlbertLogic(moduleKey, sidebar);
+                attachLLMLogic(moduleKey, sidebar);
             }
 
             const promptIdForCopy = module.promptId || (moduleKey === 'gift' ? 'giftResultat' : (moduleKey === 'moodleXml' ? 'moodleXmlResultat' : (moduleKey === 'glossaireXml' ? 'glossaireXmlResultat' : (moduleKey === 'Page' ? 'pageResultat' : null))));
@@ -615,15 +619,20 @@ export function toggleActivityContent(moduleKey, tileElement) {
             });
         }
 
-        // Logique Albert (H5P seulement pour l'instant)
-        attachAlbertLogic(moduleKey, container);
+        // Logique LLM (H5P seulement pour l'instant)
+        attachLLMLogic(moduleKey, container);
     }
 
-    function attachAlbertLogic(moduleKey, container) {
-        const albertBtn = container.querySelector(`#generate-albert-${moduleKey}`);
-        if (!albertBtn) return;
+    function attachLLMLogic(moduleKey, container) {
+        const llmBtn = container.querySelector(`#generate-llm-${moduleKey}`);
+        if (!llmBtn) return;
 
-        let selectedModel = 'albert-large';
+        let selectedModel = (
+            AVAILABLE_MODELS.find(m => m.featured && m.order === 1)?.id ||
+            AVAILABLE_MODELS.find(m => m.featured)?.id ||
+            AVAILABLE_MODELS.find(m => m.type === 'text-generation')?.id ||
+            AVAILABLE_MODELS[0]?.id
+        );
         const modelSelectorBtn = container.querySelector(`#model-selector-btn-${moduleKey}`);
         const modelDropdown = container.querySelector(`#model-selector-dropdown-${moduleKey}`);
         const module = h5pModules[moduleKey] || moodleModules[moduleKey];
@@ -653,7 +662,7 @@ export function toggleActivityContent(moduleKey, tileElement) {
             });
         }
 
-        albertBtn.addEventListener('click', async () => {
+        llmBtn.addEventListener('click', async () => {
             const promptId = (moduleKey === 'moodleXml') ? 'moodleXmlResultat' : (moduleKey === 'glossaireXml') ? 'glossaireXmlResultat' : module.promptId;
             const promptTextarea = document.getElementById(promptId);
             const prompt = promptTextarea.value;
@@ -669,7 +678,7 @@ export function toggleActivityContent(moduleKey, tileElement) {
             startCaramelAnimation();
 
             try {
-                const content = await generateH5PWithAlbert(prompt, selectedModel);
+                const content = await generateH5PWithLLM(prompt, selectedModel);
                 if (content) {
                     jsonInputTarget.value = content;
  
@@ -699,8 +708,9 @@ export function toggleActivityContent(moduleKey, tileElement) {
                     showNotification(translations.generation_failed_empty, 'error');
                 }
             } catch (error) {
-                console.error("Erreur lors de la génération avec Albert:", error);
-                const errorMessage = translations.generation_failed_albert.replace('{errorMessage}', error.message);
+                console.error("Erreur lors de la génération avec le LLM:", error);
+                const tmpl = translations.generation_failed_llm || 'La génération a échoué. Cause : {errorMessage}';
+                const errorMessage = tmpl.replace('{errorMessage}', error.message);
                 showNotification(errorMessage, 'error');
                 jsonInputTarget.value = errorMessage;
             } finally {

@@ -1,5 +1,22 @@
 # Caramel – Journal des modifications
 
+## 3.2 – 05-11-2025
+
+### 🚀 Nouveauté majeure – Migration vers **ilaaS**
+- **Fin d’« Albert »** : Caramel utilise désormais les modèles du projet **ilaaS** (inférence GPU opérée par des universités partenaires).
+- **Trois LLM disponibles** :
+  - `mistralai/Mistral-Small-3.2-24B-Instruct-2506` *(Mistral-Small 3.2)*,
+  - `RedHatAI/Lama-3.3-70B-Instruct-FP8-dynamic` *(Llama-3.3)*,
+  - `openai/gpt-oss-120b` *(GPT-OSS)*.
+
+### ✨ Interface et expérience utilisateur (UX/UI)
+- **Modale responsive** : la **croix (X) de fermeture** de la modale de génération est désormais **fonctionnelle** en affichage responsive.
+
+### 🐛 Correctifs
+- **Génération de pages** : correctif appliqué — la génération de pages **fonctionne à nouveau**.
+
+---
+
 ## 3.1 – 18-10-2025
 
 ### ✨ Interface et expérience utilisateur (UX/UI)

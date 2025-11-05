@@ -829,7 +829,7 @@ textarea::placeholder {
     margin: 0;
 }
 
-.albert-generation-controls {
+.llm-generation-controls {
     display: flex;
     border-radius: 12px;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
@@ -837,13 +837,13 @@ textarea::placeholder {
     background-color: #3b82f6;
 }
 
-.albert-generation-controls .action-btn {
+.llm-generation-controls .action-btn {
     background-color: transparent !important; /* Force la transparence pour outrepasser les autres règles */
     transition: none;
     border-radius: 0;
 }
 
-.albert-generation-controls .action-btn:hover {
+.llm-generation-controls .action-btn:hover {
     transform: none;
     box-shadow: none;
 }
@@ -852,7 +852,7 @@ textarea::placeholder {
     display: flex;
 }
 
-.albert-generation-controls .model-selector-btn {
+.llm-generation-controls .model-selector-btn {
     border-left: 1px solid #2563eb;
     padding: 0 10px;
     min-width: 44px;

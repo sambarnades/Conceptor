@@ -1,4 +1,4 @@
-const translations_de = {
+﻿const translations_de = {
     subtitle: "KI-gestützte Erstellung von Ressourcen und Aktivitäten für Magistère und Éléa",
     help_button: "Hilfe",
     help_modal_title: "🚀 Umfassender Caramel-Leitfaden für Lehrkräfte",
@@ -92,7 +92,7 @@ const translations_de = {
         <p>Nach dem Klick auf eine Kachel öffnet sich ein Fenster. Hier interagierst du mit der KI.</p>
         <div class="help-subsection">
             <h5><i class="fas fa-rocket"></i> Option A: Mit einem Klick generieren</h5>
-            <p>Der Schnellweg. Klicke auf <button class="help-btn-example-albert">Mit einem Klick generieren</button>, damit die KI den Inhalt erstellt und direkt rechts im Ergebnisbereich platziert. Über den kleinen Pfeil am rechten Rand des Buttons kannst du zwischen KI-Modellen (schnell, leistungsstark ...) wählen.</p>
+            <p>Der Schnellweg. Klicke auf <button class="help-btn-example-llm">Mit einem Klick generieren</button>, damit die KI den Inhalt erstellt und direkt rechts im Ergebnisbereich platziert. Über den kleinen Pfeil am rechten Rand des Buttons kannst du zwischen KI-Modellen (schnell, leistungsstark ...) wählen.</p>
         </div>
         <div class="help-subsection">
             <h5><i class="fas fa-tools"></i> Option B: Externe KI verwenden</h5>
@@ -1151,7 +1151,9 @@ const translations_de = {
     legal_personal_data_title: "Personenbezogene Daten",
     legal_personal_data_content: "Es werden keine personenbezogenen Daten erhoben oder gespeichert. Es werden keine Tracking-Cookies verwendet. Der Sitzungsverlauf wird im lokalen Browser des Nutzers (localStorage) gespeichert, ohne Übertragung. Gemäß der DSGVO werden keine personenbezogenen Informationen an den Herausgeber oder an Dritte übermittelt.",
     legal_ai_models_title: "Modelle der künstlichen Intelligenz",
-    legal_ai_models_content: "Die Caramel-Anwendung verwendet ausschließlich bei der Ein-Klick-Generierung die von der Direction Interministérielle du Numérique (DINUM) angebotenen Albert-Modelle der künstlichen Intelligenz. Die verfügbaren Modelle sind: Albert-Small (Llama 3.1, 8 Mrd. Parameter), Albert-Large (Mistral Small 3.2, 24 Mrd. Parameter) und Albert-Code (Qwen 2.5 Coder, 32,5 Mrd. Parameter). Die zur Inhaltserstellung gesendeten Daten werden auf den Servern der DINUM verarbeitet und nicht mit externen öffentlichen KIs geteilt, wodurch die Vertraulichkeit und Sicherheit der Informationen gewährleistet wird.",
+    legal_ai_models_content: "Die Caramel‑Anwendung nutzt, ausschließlich bei der Ein‑Klick‑Generierung, von ILAAS betriebene KI‑Modelle – eine Föderation gemeinschaftlich genutzter KI‑Infrastrukturen. Anfragen werden über einen vom Inkubator gehosteten n8n‑Workflow geleitet und anschließend an ILAAS zur Ausführung auf vertrauenswürdigen Servern in vom Bereich Hochschul‑ und Forschungswesen (ESR) zertifizierten Rechenzentren übermittelt. Caramel führt keine Modelle aus und verarbeitet oder speichert Daten nicht selbst; die Daten dienen ausschließlich der Bearbeitung der Anfrage und werden nicht an öffentliche Consumer‑KIs übermittelt. Derzeit verfügbare Modelle sind u. a. Mistral Small 3.2 (24 Mrd. Parameter), Llama 3.3 (70 Mrd. Parameter) und GPT‑OSS 120B (120 Mrd. Parameter). Etwaige von ILAAS vorgenommene Hosting‑, Protokollierungs‑ und Aufbewahrungsmaßnahmen unterliegen deren Datenschutzerklärung und Nutzungsbedingungen.",
+    legal_user_requests_processing_title: "Verarbeitung von Benutzeranfragen über n8n und den Inkubator des Bildungsministeriums",
+    legal_user_requests_processing_content: "Unsere Website nutzt eine technische Lösung, die mit n8n entwickelt wurde, einem Open‑Source‑Tool, das vom Inkubator des Bildungsministeriums gehostet wird. Über einen automatisierten Workflow wandelt dieser Dienst Benutzeranfragen in strukturierte Daten (JSON‑Format) um, um mit einer KI der DINUM zu interagieren – und ist damit souverän. Es werden keine sensiblen Informationen unverschlüsselt offengelegt oder übertragen; Vertraulichkeit und Sicherheit der Kommunikation sind gewährleistet.",
     legal_accessibility_title: "Barrierefreiheit",
     legal_accessibility_content: "Die Anwendung ist so konzipiert, dass sie mit der Nutzung am Computer kompatibel ist, einschließlich Hell-/Dunkel-Modi, Tastaturnavigation und hohem Kontrast je nach Thema. Eine kontinuierliche Verbesserung der Barrierefreiheit ist im Gange, in Anlehnung an die RGAA-Empfehlungen.",
     legal_applicable_law_title: "Anwendbares Recht",
@@ -1588,29 +1590,35 @@ const translations_de = {
     quiz_a11y_show_solution: "Zeigen Sie die Lösung an. Die Aufgabe wird mit der richtigen Lösung markiert.",
     quiz_a11y_retry: "Versuchen Sie die Aufgabe erneut. Setzen Sie alle Antworten zurück und beginnen Sie von vorne.",
 
-    // Albert generation
-    generate_with_albert: "Mit Albert generieren",
+    // Caramel-KI — Generierung
+    generate_with_llm: "Mit der Caramel-KI generieren",
     generation_in_progress: "Generierung läuft, bitte warten...",
-    request_sent_to_ia: "Anfrage an KI gesendet, bitte warten...",
+    request_sent_to_ia: "Anfrage an die KI gesendet, bitte warten...",
     generation_successful: "H5P-Inhalt erfolgreich generiert!",
-    generation_failed_empty: "Generierung fehlgeschlagen. Die Antwort war leer.",
+    generation_failed_empty: "Die Generierung ist fehlgeschlagen. Die Antwort war leer.",
     generation_failed_error: "Fehler bei der Generierung: {errorMessage}",
-    generation_failed_albert: "Die Generierung auf der Albert KI ist fehlgeschlagen. Ursache: {errorMessage}",
+    generation_failed_llm: "Generierung über die Caramel-KI fehlgeschlagen. Ursache: {errorMessage}",
 
-    // Albert models description
-    albert_small_summary: "Schnell, einfach, geeignet für schnelle und strukturierte Übungen.",
-    albert_small_technical: "Llama 3.1",
-    albert_large_summary: "Leistungsstark, nuanciert, ideal für komplexe Aufgaben und das Schreiben.",
-    albert_large_technical: "Mistral Small 3.2",
-    albert_code_summary: "Spezialisiert, präzise, für Programmierung und Code konzipiert.",
-    albert_code_technical: "Qwen 2.5 Coder",
+    // Modellbeschreibungen (Caramel-KI)
+    llm_small_summary: "Weiches Karamell: schnell, leicht, perfekt für Blitzübungen und Antworten ohne Wartezeit. Verbraucht wenig.",
+    llm_small_technical: "Mistral AI",
+    llm_large_summary: "Fließendes Karamell: reicher und nuancierter, ideal für Aufgaben, die etwas Tiefe erfordern. Verbraucht mehr.",
+    llm_large_technical: "Meta AI",
+    llm_xl_summary: "Hartes Karamell: leistungsstark und komplex, für ambitionierte Projekte. Geduld erforderlich, Ergebnis garantiert! Verbraucht deutlich mehr.",
+    llm_xl_technical: "OpenAI",
 
-    // Albert models pills
-    albert_model_source: "Quellmodell:",
-    albert_model_parameters: "Modellgröße:",
-    albert_model_parameters_small: "8 Mrd. Parameter",
-    albert_model_parameters_large: "24 Mrd. Parameter",
-    albert_model_parameters_code: "32,5 Mrd. Parameter",
+    // Freundliche Modellnamen (Menüanzeige)
+    llm_display_small: "Mistral-Small-3.2",
+    llm_display_large: "LLaMa-3.3",
+    llm_display_xl: "GPT-OSS",
+
+    // Modellangaben (Caramel-KI)
+    llm_model_source: "Modellanbieter:",
+    llm_model_parameters: "Modellgröße:",
+    llm_model_parameters_small: "24 Mrd Parameter",
+    llm_model_parameters_large: "70 Mrd Parameter",
+    llm_model_parameters_xl: "120 Mrd Parameter",
+
     language: "Sprache",
     tutorial: "Anleitung",
 

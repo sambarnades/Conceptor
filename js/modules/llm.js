@@ -1,7 +1,7 @@
-/**
- * @file Gestion de l'intégration avec l'IA Albert.
+﻿/**
+ * @file Gestion de l'intégration avec l'IA LLM.
  * Ce module gère la configuration des modèles disponibles, l'interface du sélecteur de modèles,
- * et la communication avec l'API d'Albert via un serveur proxy (n8n).
+ * et la communication avec l'API du LLM via un serveur proxy (n8n).
  */
 
 // La clé API n'est pas stockée ici pour des raisons de sécurité.
@@ -9,15 +9,18 @@
 
 /**
  * @constant {Array<Object>} AVAILABLE_MODELS
- * Liste des modèles d'IA disponibles via l'API Albert.
+ * Liste des modèles d'IA disponibles via l'API du LLM.
  */
 export const AVAILABLE_MODELS = [
-    { id: 'albert-small', type: 'text-generation', owned_by: 'OpenGateLLM' },
-    { id: 'albert-large', type: 'image-text-to-text', owned_by: 'Albert API (prod)' },
-    { id: 'albert-code', type: 'text-generation', owned_by: 'OpenGateLLM' },
-    { id: 'embeddings-small', type: 'text-embeddings-inference', owned_by: 'OpenGateLLM' },
-    { id: 'rerank-small', type: 'text-classification', owned_by: 'OpenGateLLM' }
+    { id: 'mistralai/Mistral-Small-3.1-24B-Instruct-2503', type: 'text-generation', owned_by: 'mistralai' },
+    { id: 'mistralai/Mistral-Small-3.2-24B-Instruct-2506', type: 'text-generation', owned_by: 'mistralai', featured: true, order: 1, sizeTag: 'small' },
+    { id: 'neuralmagic/Meta-Llama-3.1-8B-Instruct-FP8', type: 'text-generation', owned_by: 'neuralmagic' },
+    { id: 'openai/gpt-oss-120b', type: 'text-generation', owned_by: 'openai', featured: true, order: 3, sizeTag: 'xl' },
+    { id: 'qwen2.5', type: 'text-generation', owned_by: 'Qwen' },
+    { id: 'qwen3', type: 'text-generation', owned_by: 'Qwen' },
+    { id: 'RedHatAI/Llama-3.3-70B-Instruct-FP8-dynamic', type: 'text-generation', owned_by: 'RedHatAI', featured: true, order: 2, sizeTag: 'large' }
 ];
+
 // =======================================================================
 
 /**
@@ -34,30 +37,43 @@ export function populateModelSelector(moduleKey, models, onSelectCallback, selec
     dropdown.innerHTML = ''; // Vider la liste
 
     const textModels = models.filter(model => model.type === 'text-generation' || model.type === 'image-text-to-text');
+    const featuredModels = textModels.filter(model => model.featured);
+    const modelsToShow = (featuredModels.length > 0)
+        ? featuredModels.slice().sort((a, b) => {
+            const ao = (typeof a.order === 'number') ? a.order : Number.POSITIVE_INFINITY;
+            const bo = (typeof b.order === 'number') ? b.order : Number.POSITIVE_INFINITY;
+            if (ao !== bo) return ao - bo;
+            return String(a.id).localeCompare(String(b.id));
+        })
+        : textModels;
 
-    textModels.forEach(model => {
+    modelsToShow.forEach(model => {
         const listItem = document.createElement('li');
         listItem.setAttribute('role', 'menuitem');
         listItem.dataset.modelId = model.id;
 
-        const summaryKey = `${model.id.replace('-', '_')}_summary`;
-        const technicalKey = `${model.id.replace('-', '_')}_technical`;
+        const sizeTag = model.sizeTag;
+
+        const summaryKey = sizeTag ? `llm_${sizeTag}_summary` : `${model.id.replace('-', '_')}_summary`;
+        const technicalKey = sizeTag ? `llm_${sizeTag}_technical` : `${model.id.replace('-', '_')}_technical`;
 
         const summary = translations[summaryKey] || '';
         const technical = translations[technicalKey] || '';
-        const parametersKey = `albert_model_parameters_${model.id.split('-')[1]}`;
-        const parameters = translations[parametersKey] || '';
 
+        const parametersKey = sizeTag ? `llm_model_parameters_${sizeTag}` : '';
+        const parameters = parametersKey ? (translations[parametersKey] || '') : '';
+
+        const displayName = model.sizeTag ? (translations[`llm_display_${model.sizeTag}`] || model.id) : model.id;
         listItem.innerHTML = `
-            <strong>${model.id}</strong><br>
+            <strong>${displayName}</strong><br>
             <small>${summary}</small>
             <div class="model-pills-container">
                 <div class="model-pills">
-                    <span class="pill-label">${translations.albert_model_parameters}</span>
+                    <span class="pill-label">${translations.llm_model_parameters}</span>
                     <span class="pill-value">${parameters}</span>
                 </div>
                 <div class="model-pills">
-                    <span class="pill-label">${translations.albert_model_source}</span>
+                    <span class="pill-label">${translations.llm_model_source}</span>
                     <span class="pill-value">${technical}</span>
                 </div>
             </div>
@@ -79,16 +95,16 @@ export function populateModelSelector(moduleKey, models, onSelectCallback, selec
 }
 
 /**
- * Envoie un prompt à l'API Albert via le proxy n8n et retourne le contenu généré.
+ * Envoie un prompt à l'API du LLM via le proxy n8n et retourne le contenu généré.
  * @param {string} prompt - Le prompt à envoyer au modèle d'IA.
- * @param {string} model - L'ID du modèle d'IA à utiliser (ex: 'albert-large').
+ * @param {string} model - L'ID du modèle d'IA à utiliser.
  * @returns {Promise<string>} Le contenu textuel généré par l'IA, nettoyé des blocs de code.
  * @throws {Error} Si la réponse du proxy n'est pas valide ou si une erreur réseau survient.
  */
-export async function generateH5PWithAlbert(prompt, model) {
-    console.log(`Appel au proxy n8n pour l'API Albert avec le modèle ${model} et le prompt :`, prompt);
+export async function generateH5PWithLLM(prompt, model) {
+    console.log(`Appel au proxy n8n pour l'API du LLM avec le modèle ${model} et le prompt :`, prompt);
 
-    const proxyUrl = "https://n8n.incubateur.education.gouv.fr/webhook/albert-proxy";
+    const proxyUrl = "https://n8n.incubateur.education.gouv.fr/webhook/llm";
 
     const requestBody = {
         prompt: prompt,
@@ -117,7 +133,7 @@ export async function generateH5PWithAlbert(prompt, model) {
             const data = JSON.parse(rawResponse);
 
             if (typeof data === 'object' && data !== null) {
-                if (data.choices && data.choices.length > 0) { // Cas 1: Le proxy renvoie la réponse brute d'Albert
+                if (data.choices && data.choices.length > 0) { // Cas 1: Le proxy renvoie la réponse brute du LLM
                     content = data.choices[0].message.content;
                 } else if (data.content) { // Cas 2: Le proxy renvoie un objet { "content": "..." }
                     content = data.content;
@@ -165,7 +181,7 @@ export async function generateH5PWithAlbert(prompt, model) {
         }
 
     } catch (error) {
-        console.error("Erreur lors de l'appel au proxy n8n Albert:", error);
+        console.error("Erreur lors de l'appel au proxy n8n pour le LLM", error);
         throw error;
     }
 }

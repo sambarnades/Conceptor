@@ -1,4 +1,4 @@
-const translations_ar = {
+﻿const translations_ar = {
     subtitle: "الإنشاء المُساعَد للموارد والأنشطة في Magistère وÉléa",
     help_button: "مساعدة",
     help_modal_title: "🚀 الدليل الكامل لـ Caramel للمعلمين",
@@ -92,7 +92,7 @@ const translations_ar = {
         <p>بعد النقر على بلاطة، تُفتح نافذة. هنا تتفاعل مع الذكاء الاصطناعي.</p>
         <div class="help-subsection">
             <h5><i class="fas fa-rocket"></i> الخيار أ: توليد بنقرة واحدة</h5>
-            <p>طريق سريع. انقر زر <button class="help-btn-example-albert">توليد بنقرة واحدة</button> ليُنتج الذكاء الاصطناعي المحتوى ويضعه مباشرة في منطقة النتائج على اليمين. يمكنك اختيار نماذج ذكاء اصطناعي مختلفة (سريع، قوي...) عبر السهم الصغير يمين الزر.</p>
+            <p>طريق سريع. انقر زر <button class="help-btn-example-llm">توليد بنقرة واحدة</button> ليُنتج الذكاء الاصطناعي المحتوى ويضعه مباشرة في منطقة النتائج على اليمين. يمكنك اختيار نماذج ذكاء اصطناعي مختلفة (سريع، قوي...) عبر السهم الصغير يمين الزر.</p>
         </div>
         <div class="help-subsection">
             <h5><i class="fas fa-tools"></i> الخيار ب: استخدام ذكاء اصطناعي خارجي</h5>
@@ -1130,7 +1130,9 @@ const translations_ar = {
     legal_personal_data_title: "البيانات الشخصية",
     legal_personal_data_content: "لا يتم جمع أو تخزين أي بيانات شخصية. لا يتم استخدام أي ملفات تعريف ارتباط للتتبع. يتم تخزين محفوظات الجلسة في المتصفح المحلي للمستخدم (localStorage)، دون نقل. وفقًا للائحة العامة لحماية البيانات، لا يتم نقل أي معلومات شخصية إلى المحرر أو إلى طرف ثالث.",
     legal_ai_models_title: "نماذج الذكاء الاصطناعي",
-    legal_ai_models_content: "يستخدم تطبيق Caramel، فقط عند الإنشاء بنقرة واحدة، نماذج الذكاء الاصطناعي Albert التي تقدمها المديرية الحكومية المشتركة للرقميات (DINUM). النماذج المتاحة هي: Albert-Small (Llama 3.1، 8 مليار معلمة)، Albert-Large (Mistral Small 3.2، 24 مليار معلمة)، و Albert-Code (Qwen 2.5 Coder، 32.5 مليار معلمة). تتم معالجة البيانات المرسلة لإنشاء المحتوى على خوادم DINUM ولا تتم مشاركتها مع جهات خارجية عامة للذكاء الاصطناعي، مما يضمن سرية وأمن المعلومات.",
+    legal_ai_models_content: "يعتمد تطبيق Caramel، فقط أثناء التوليد بنقرة واحدة، على نماذج ذكاء اصطناعي تُشغِّلها ILAAS، وهي اتحاد لبنى تحتية مشتركة للذكاء الاصطناعي. تُوجَّه الطلبات عبر تدفق عمل n8n تستضيفه الحاضنة، ثم تُرسَل إلى ILAAS للتنفيذ على خوادم موثوقة تستضيفها مراكز بيانات معتمدة من قطاع التعليم العالي والبحث (ESR). لا تقوم Caramel بتشغيل النماذج ولا بمعالجة البيانات أو تخزينها ذاتيًا؛ تُستخدم البيانات حصريًا لتنفيذ الطلب ولا تُرسَل إلى أنظمة ذكاء اصطناعي عامة موجهة للمستهلكين. تشمل النماذج المتاحة حاليًا: Mistral Small 3.2 (24B معامل) وLlama 3.3 (70B معامل) وGPT‑OSS 120B (120B معامل). تخضع أي عمليات استضافة أو تسجيل سجلات (Logging) أو احتفاظ بالبيانات تقوم بها ILAAS لسياسة الخصوصية وشروط الخدمة الخاصة بها.",
+    legal_user_requests_processing_title: "معالجة طلبات المستخدمين عبر n8n وحاضنة وزارة التربية الوطنية",
+    legal_user_requests_processing_content: "يستخدم موقعنا حلاً تقنياً مطوراً بواسطة n8n، وهي أداة مفتوحة المصدر تستضيفها حاضنة وزارة التربية الوطنية. من خلال سير عمل مؤتمت، يحوّل هذا الخدمة طلبات المستخدمين إلى بيانات منظمة (بصيغة JSON) للتفاعل مع ذكاء اصطناعي تابع لـ DINUM، وهو بذلك ذو سيادة. لا يتم كشف أو نقل أي معلومات حساسة بدون تشفير، بما يضمن سرية وأمان التبادلات.",
     legal_accessibility_title: "إمكانية الوصول",
     legal_accessibility_content: "تم تصميم التطبيق ليكون متوافقًا مع استخدام الكمبيوتر، بما في ذلك الأوضاع الداكنة/الفاتحة، والتنقل بلوحة المفاتيح، والتباين العالي حسب السمات. يجري تحسين مستمر لإمكانية الوصول، بما يتماشى مع توصيات RGAA.",
     legal_applicable_law_title: "القانون المطبق",
@@ -1588,29 +1590,35 @@ const translations_ar = {
     quiz_a11y_show_solution: "إظهار الحل. سيتم تمييز المهمة بالحل الصحيح.",
     quiz_a11y_retry: "إعادة محاولة المهمة. إعادة تعيين جميع الإجابات والبدء من جديد.",
 
-    // Albert generation
-    generate_with_albert: "إنشاء بواسطة Albert",
-    generation_in_progress: "قيد الإنشاء، يرجى الانتظار...",
+    // ذكاء Caramel الاصطناعي — التوليد
+    generate_with_llm: "إنشاء باستخدام ذكاء Caramel الاصطناعي",
+    generation_in_progress: "جاري الإنشاء، يرجى الانتظار...",
     request_sent_to_ia: "تم إرسال الطلب إلى الذكاء الاصطناعي، يرجى الانتظار...",
     generation_successful: "تم إنشاء محتوى H5P بنجاح!",
     generation_failed_empty: "فشل الإنشاء. كانت الاستجابة فارغة.",
-    generation_failed_error: "خطأ أثناء الإنشاء: {errorMessage}",
-    generation_failed_albert: "فشل الإنشاء على Albert AI. السبب: {errorMessage}",
+    generation_failed_error: "حدث خطأ أثناء الإنشاء: {errorMessage}",
+    generation_failed_llm: "فشل الإنشاء عبر ذكاء Caramel الاصطناعي. السبب: {errorMessage}",
 
-    // Albert models description
-    albert_small_summary: "سريع، بسيط، مناسب للتمارين السريعة والمنظمة.",
-    albert_small_technical: "Llama 3.1",
-    albert_large_summary: "قوي، دقيق، مثالي للمهام المعقدة والكتابة.",
-    albert_large_technical: "Mistral Small 3.2",
-    albert_code_summary: "متخصص، دقيق، مصمم للبرمجة والكود.",
-    albert_code_technical: "Qwen 2.5 Coder",
+    // أوصاف النماذج (ذكاء Caramel الاصطناعي)
+    llm_small_summary: "كاراميل طري: سريع، خفيف، مثالي للتمارين السريعة والإجابات دون انتظار. يستهلك قليلاً.",
+    llm_small_technical: "Mistral AI",
+    llm_large_summary: "كاراميل سائل: أكثر غنىً وتنوعًا في الدقة، مثالي للمهام التي تتطلب بعض العمق. يستهلك أكثر.",
+    llm_large_technical: "Meta AI",
+    llm_xl_summary: "كاراميل صلب: قوي ومعقد، يُحفظ للمشاريع الطموحة. الصبر مطلوب، النتيجة مضمونة! يستهلك أكثر بكثير.",
+    llm_xl_technical: "OpenAI",
 
-    // Albert models pills
-    albert_model_source: "نموذج المصدر:",
-    albert_model_parameters: "حجم النموذج:",
-    albert_model_parameters_small: "8 مليار معلمة",
-    albert_model_parameters_large: "24 مليار معلمة",
-    albert_model_parameters_code: "32.5 مليار معلمة",
+    // أسماء ودّية للنماذج (عرض القائمة)
+    llm_display_small: "Mistral-Small-3.2",
+    llm_display_large: "LLaMa-3.3",
+    llm_display_xl: "GPT-OSS",
+
+    // مؤشرات النماذج (ذكاء Caramel الاصطناعي)
+    llm_model_source: "مزود النموذج:",
+    llm_model_parameters: "حجم النموذج:",
+    llm_model_parameters_small: "24 Mrd معاملات",
+    llm_model_parameters_large: "70 Mrd معاملات",
+    llm_model_parameters_xl: "120 Mrd معاملات",
+
     language: "لغة",
     tutorial: "تعليمي",
  

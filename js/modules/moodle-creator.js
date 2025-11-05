@@ -111,6 +111,8 @@ export async function handlePageCreation(jsonInput, exportType) {
                     'TIMESTAMP': timestamp,
                     'BACKUP_DATE': timestamp
                 };
+                // Utilise le bon chemin (sensible à la casse) pour éviter des redirections
+                // et rester en même origine comme pour "Appariement".
                 const basePath = 'elea/page';
                 let files = await fetchAllFilesRecursively(basePath, 'page');
                 

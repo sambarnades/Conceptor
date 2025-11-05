@@ -150,7 +150,7 @@
 
 .help-modal-content button,
 .help-modal-content .btn-help-example,
-.help-modal-content .btn-help-example-albert,
+.help-modal-content .btn-help-example-llm,
 .help-modal-content .btn-help-example-copy,
 .help-modal-content .btn-help-example-generate {
     padding: 5px 12px; /* Taille réduite */
@@ -164,13 +164,13 @@
 
 /* Styles spécifiques pour chaque bouton pour conserver les couleurs */
 .help-modal-content #generateBtn { background-color: #007AFF; color: white; border: none; }
-.help-modal-content .action-btn.albert-btn { background-color: #3b82f6; color: white; }
+.help-modal-content .action-btn.llm-btn { background-color: #3b82f6; color: white; }
 .help-modal-content .copy-btn { background-color: #e9e9ed; color: #1C1C1E; border: none; }
 .help-modal-content .download-btn { background-color: #007AFF; color: white; border: none; }
 
 /* Annuler les effets de survol spécifiquement */
 .help-modal-content #generateBtn:hover,
-.help-modal-content .action-btn.albert-btn:hover,
+.help-modal-content .action-btn.llm-btn:hover,
 .help-modal-content .copy-btn:hover,
 .help-modal-content .download-btn:hover {
     transform: none !important;
@@ -180,7 +180,7 @@
 
 /* Rétablir la couleur de fond au survol pour correspondre à la couleur de base */
 .help-modal-content #generateBtn:hover { background-color: #007AFF; }
-.help-modal-content .action-btn.albert-btn:hover { background-color: #3b82f6; }
+.help-modal-content .action-btn.llm-btn:hover { background-color: #3b82f6; }
 .help-modal-content .copy-btn:hover { background-color: #e9e9ed; }
 .help-modal-content .download-btn:hover { background-color: #007AFF; }
 

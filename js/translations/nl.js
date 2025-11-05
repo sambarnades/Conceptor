@@ -1,4 +1,4 @@
-const translations_nl = {
+﻿const translations_nl = {
     subtitle: "Ondersteunde creatie van bronnen en activiteiten voor Magistère en Éléa",
     help_button: "Help",
     help_modal_title: "🚀 Compleet Caramel-handboek voor docenten",
@@ -92,7 +92,7 @@ const translations_nl = {
         <p>Na een klik op een tegel opent een venster. Hier werk je met de AI.</p>
         <div class="help-subsection">
             <h5><i class="fas fa-rocket"></i> Optie A: In één klik genereren</h5>
-            <p>De snelle route. Klik op <button class="help-btn-example-albert">In één klik genereren</button> zodat de AI de inhoud maakt en direct rechts in het resultaatgebied plaatst. Via het pijltje rechts op de knop kies je verschillende AI-modellen (snel, krachtig...).</p>
+            <p>De snelle route. Klik op <button class="help-btn-example-llm">In één klik genereren</button> zodat de AI de inhoud maakt en direct rechts in het resultaatgebied plaatst. Via het pijltje rechts op de knop kies je verschillende AI-modellen (snel, krachtig...).</p>
         </div>
         <div class="help-subsection">
             <h5><i class="fas fa-tools"></i> Optie B: Externe AI gebruiken</h5>
@@ -1130,7 +1130,9 @@ const translations_nl = {
     legal_personal_data_title: "Persoonlijke gegevens",
     legal_personal_data_content: "Er worden geen persoonlijke gegevens verzameld of opgeslagen. Er worden geen trackingcookies gebruikt. De sessiegeschiedenis wordt opgeslagen in de lokale browser van de gebruiker (localStorage), zonder overdracht. In overeenstemming met de AVG wordt er geen persoonlijke informatie doorgegeven aan de redacteur of aan derden.",
     legal_ai_models_title: "Modellen voor kunstmatige intelligentie",
-    legal_ai_models_content: "De Caramel-applicatie maakt, uitsluitend bij het genereren met één klik, gebruik van de Albert-modellen voor kunstmatige intelligentie die worden aangeboden door de Interministeriële Directie voor Digitale Zaken (DINUM). De beschikbare modellen zijn: Albert-Small (Llama 3.1, 8 miljard parameters), Albert-Large (Mistral Small 3.2, 24 miljard parameters) en Albert-Code (Qwen 2.5 Coder, 32,5 miljard parameters). Gegevens die worden verzonden voor het genereren van inhoud, worden verwerkt op de servers van DINUM en worden niet gedeeld met externe openbare AI's, waardoor de vertrouwelijkheid en veiligheid van de informatie wordt gewaarborgd.",
+    legal_ai_models_content: "De Caramel‑app maakt, uitsluitend tijdens de one‑click‑generatie, gebruik van door ILAAS beheerde AI‑modellen, een federatie van gedeelde AI‑infrastructuren. Verzoeken worden via een door de Incubator gehoste n8n‑workflow doorgestuurd en daarna aan ILAAS overgedragen voor uitvoering op vertrouwde servers in datacenters met een ESR‑label (hoger onderwijs en onderzoek). Caramel voert de modellen niet uit en verwerkt of bewaart geen gegevens zelf; gegevens worden alleen gebruikt om het verzoek uit te voeren en worden niet naar publieke consumenten‑AI’s verzonden. De momenteel beschikbare modellen omvatten Mistral Small 3.2 (24B parameters), Llama 3.3 (70B parameters) en GPT‑OSS 120B (120B parameters). Eventuele hosting, logging en bewaring door ILAAS vallen onder hun privacyverklaring en servicevoorwaarden.",
+    legal_user_requests_processing_title: "Verwerking van gebruikersverzoeken via n8n en de Incubator van het Ministerie van Nationaal Onderwijs",
+    legal_user_requests_processing_content: "Onze site gebruikt een technische oplossing gebouwd met n8n, een open‑source‑tool die wordt gehost door de Incubator van het Ministerie van Nationaal Onderwijs. Via een geautomatiseerde workflow zet deze dienst gebruikersverzoeken om in gestructureerde gegevens (JSON‑formaat) om te communiceren met een DINUM‑kunstmatige intelligentie, en is daardoor soeverein. Er wordt geen gevoelige informatie zonder versleuteling blootgesteld of verzonden, waardoor de vertrouwelijkheid en veiligheid van uitwisselingen wordt gewaarborgd.",
     legal_accessibility_title: "Toegankelijkheid",
     legal_accessibility_content: "De applicatie is ontworpen om compatibel te zijn met computergebruik, inclusief donkere/lichte modi, toetsenbordnavigatie en hoog contrast, afhankelijk van de thema's. Er wordt voortdurend gewerkt aan de verbetering van de toegankelijkheid, in lijn met de aanbevelingen van de RGAA.",
     legal_applicable_law_title: "Toepasselijk recht",
@@ -1588,29 +1590,35 @@ const translations_nl = {
     quiz_a11y_show_solution: "Toon de oplossing. De taak wordt gemarkeerd met de juiste oplossing.",
     quiz_a11y_retry: "Probeer de taak opnieuw. Reset alle antwoorden en begin de taak opnieuw.",
 
-    // Albert generation
-    generate_with_albert: "Genereer met Albert",
-    generation_in_progress: "Generatie wordt uitgevoerd, even geduld...",
-    request_sent_to_ia: "Verzoek naar AI verzonden, even geduld...",
+    // Caramel-AI — generatie
+    generate_with_llm: "Genereren met de AI van Caramel",
+    generation_in_progress: "Generatie bezig, even geduld...",
+    request_sent_to_ia: "Verzoek naar de AI verzonden, even geduld...",
     generation_successful: "H5P-inhoud succesvol gegenereerd!",
-    generation_failed_empty: "Generatie mislukt. Het antwoord was leeg.",
-    generation_failed_error: "Fout tijdens generatie: {errorMessage}",
-    generation_failed_albert: "Generatie op Albert AI mislukt. Oorzaak: {errorMessage}",
+    generation_failed_empty: "Genereren is mislukt. De respons was leeg.",
+    generation_failed_error: "Fout tijdens het genereren: {errorMessage}",
+    generation_failed_llm: "Genereren via de AI van Caramel is mislukt. Oorzaak: {errorMessage}",
 
-    // Albert models description
-    albert_small_summary: "Snel, eenvoudig, geschikt voor snelle en gestructureerde oefeningen.",
-    albert_small_technical: "Llama 3.1",
-    albert_large_summary: "Krachtig, genuanceerd, ideaal voor complexe taken en schrijven.",
-    albert_large_technical: "Mistral Small 3.2",
-    albert_code_summary: "Gespecialiseerd, nauwkeurig, ontworpen voor programmeren en code.",
-    albert_code_technical: "Qwen 2.5 Coder",
+    // Modelbeschrijvingen (AI van Caramel)
+    llm_small_summary: "Zachte karamel: snel, licht, perfect voor flitsoefeningen en antwoorden zonder wachttijd. Verbruikt weinig.",
+    llm_small_technical: "Mistral AI",
+    llm_large_summary: "Vloeiende karamel: rijker en genuanceerder, ideaal voor taken die wat diepgang vragen. Verbruikt meer.",
+    llm_large_technical: "Meta AI",
+    llm_xl_summary: "Harde karamel: krachtig en complex, voor ambitieuze projecten. Geduld vereist, resultaat gegarandeerd! Verbruikt veel meer.",
+    llm_xl_technical: "OpenAI",
 
-    // Albert models pills
-    albert_model_source: "Bronmodel:",
-    albert_model_parameters: "Modelgrootte:",
-    albert_model_parameters_small: "8 miljard parameters",
-    albert_model_parameters_large: "24 miljard parameters",
-    albert_model_parameters_code: "32,5 miljard parameters",
+    // Vriendelijke modelnamen (menuweergave)
+    llm_display_small: "Mistral-Small-3.2",
+    llm_display_large: "LLaMa-3.3",
+    llm_display_xl: "GPT-OSS",
+
+    // Modelindicatoren (AI van Caramel)
+    llm_model_source: "Aanbieder van het model:",
+    llm_model_parameters: "Modelgrootte:",
+    llm_model_parameters_small: "24 Mrd parameters",
+    llm_model_parameters_large: "70 Mrd parameters",
+    llm_model_parameters_xl: "120 Mrd parameters",
+
     language: "Taal",
     tutorial: "Handleiding",
 

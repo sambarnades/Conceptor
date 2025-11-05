@@ -1,4 +1,4 @@
-const translations_jp = {
+﻿const translations_jp = {
     subtitle: "Magistère と Éléa のための教材・活動の支援作成",
     help_button: "ヘルプ",
     help_modal_title: "🚀 先生のための Caramel 完全ガイド",
@@ -92,7 +92,7 @@ const translations_jp = {
         <p>タイルをクリックするとウィンドウが開き、ここで AI とやり取りします。</p>
         <div class="help-subsection">
             <h5><i class="fas fa-rocket"></i> オプションA：ワンクリック生成</h5>
-            <p>最短ルート。<button class="help-btn-example-albert">ワンクリック生成</button> を押すと、AI が内容を生成し、右の結果領域に直接配置します。ボタン右側の小さな矢印から（高速・高性能など）モデルを選べます。</p>
+            <p>最短ルート。<button class="help-btn-example-llm">ワンクリック生成</button> を押すと、AI が内容を生成し、右の結果領域に直接配置します。ボタン右側の小さな矢印から（高速・高性能など）モデルを選べます。</p>
         </div>
         <div class="help-subsection">
             <h5><i class="fas fa-tools"></i> オプションB：外部 AI を使う</h5>
@@ -1130,7 +1130,9 @@ const translations_jp = {
     legal_personal_data_title: "個人データ",
     legal_personal_data_content: "個人データは収集も保存もされません。追跡クッキーは使用されません。セッション履歴はユーザーのローカルブラウザ（localStorage）に保存され、送信されません。GDPRに従い、個人情報は編集者や第三者に送信されません。",
     legal_ai_models_title: "人工知能モデル",
-    legal_ai_models_content: "Caramelアプリケーションは、ワンクリック生成時にのみ、省庁間デジタル局（DINUM）が提供するAlbert人工知能モデルを使用します。利用可能なモデルは次のとおりです：Albert-Small（Llama 3.1、80億パラメータ）、Albert-Large（Mistral Small 3.2、240億パラメータ）、Albert-Code（Qwen 2.5 Coder、325億パラメータ）。コンテンツ生成のために送信されたデータはDINUMのサーバーで処理され、外部の公共AIと共有されることはなく、情報の機密性とセキュリティが保証されます。",
+    legal_ai_models_content: "Caramel アプリは、ワンクリック生成の際に限り、共有型 AI インフラの連合体である ILAAS が運用する AI モデルを利用します。リクエストはインキュベーターがホストする n8n ワークフロー経由で送信され、ESR（高等教育・研究）ラベルのデータセンターにホストされた信頼できるサーバー上で ILAAS により実行されます。Caramel はモデルを実行せず、データを自社で処理・保存しません。データはリクエストの実行のみに使用され、一般公開のコンシューマ向け AI には送信されません。現在提供しているモデルには、Mistral Small 3.2（24B パラメータ）、Llama 3.3（70B パラメータ）、GPT‑OSS 120B（120B パラメータ）が含まれます。ILAAS によるホスティング、ログ取得、保管の取り扱いは、ILAAS のプライバシーポリシーおよび利用規約に従います。",
+    legal_user_requests_processing_title: "n8n と教育省インキュベーターによるユーザーリクエストの処理",
+    legal_user_requests_processing_content: "当サイトは、教育省のインキュベーターがホストするオープンソースツール n8n を用いた技術的ソリューションを利用しています。自動化されたワークフローにより、ユーザーのリクエストを構造化データ（JSON 形式）に変換し、DINUM の人工知能と連携します（主権 AI）。機密情報は暗号化なしに開示・送信されることはなく、やり取りの機密性と安全性を確保しています。",
     legal_accessibility_title: "アクセシビリティ",
     legal_accessibility_content: "このアプリケーションは、テーマに応じたダーク/ライトモード、キーボードナビゲーション、ハイコントラストなど、コンピュータでの使用に対応するように設計されています。RGAAの推奨事項に沿って、アクセシビリティの継続的な改善が進められています。",
     legal_applicable_law_title: "適用法",
@@ -1588,29 +1590,35 @@ const translations_jp = {
     quiz_a11y_show_solution: "解答を表示します。課題には正解が表示されます。",
     quiz_a11y_retry: "課題を再試行します。すべての解答をリセットして、課題を最初からやり直します。",
 
-    // Albert generation
-    generate_with_albert: "Albertで生成",
-    generation_in_progress: "生成中です、お待ちください...",
-    request_sent_to_ia: "AIにリクエストを送信しました、お待ちください...",
-    generation_successful: "H5Pコンテンツが正常に生成されました！",
+    // Caramel のAI — 生成
+    generate_with_llm: "Caramel のAIで生成",
+    generation_in_progress: "生成中です、しばらくお待ちください...",
+    request_sent_to_ia: "AI にリクエストを送信しました、しばらくお待ちください...",
+    generation_successful: "H5P コンテンツの生成に成功しました！",
     generation_failed_empty: "生成に失敗しました。応答が空でした。",
-    generation_failed_error: "生成中にエラーが発生しました：{errorMessage}",
-    generation_failed_albert: "Albert AIでの生成に失敗しました。原因：{errorMessage}",
+    generation_failed_error: "生成中にエラーが発生しました: {errorMessage}",
+    generation_failed_llm: "Caramel のAI経由の生成に失敗しました。原因: {errorMessage}",
 
-    // Albert models description
-    albert_small_summary: "高速、シンプル、迅速で構造化された演習に適しています。",
-    albert_small_technical: "Llama 3.1",
-    albert_large_summary: "強力でニュアンスがあり、複雑なタスクやライティングに最適です。",
-    albert_large_technical: "Mistral Small 3.2",
-    albert_code_summary: "専門的で正確、プログラミングとコード用に設計されています。",
-    albert_code_technical: "Qwen 2.5 Coder",
+    // モデルの説明（Caramel のAI）
+    llm_small_summary: "ソフトキャラメル：高速で軽量、フラッシュ演習や待ち時間のない回答に最適。消費は少なめ。",
+    llm_small_technical: "Mistral AI",
+    llm_large_summary: "とろけるキャラメル：より豊かでニュアンスがあり、少し深みを要する作業に最適。消費は多め。",
+    llm_large_technical: "Meta AI",
+    llm_xl_summary: "ハードキャラメル：強力で複雑。野心的なプロジェクト向け。忍耐が必要、結果は保証！消費はかなり多い。",
+    llm_xl_technical: "OpenAI",
 
-    // Albert models pills
-    albert_model_source: "ソースモデル:",
-    albert_model_parameters: "モデルサイズ:",
-    albert_model_parameters_small: "80億パラメータ",
-    albert_model_parameters_large: "240億パラメータ",
-    albert_model_parameters_code: "325億パラメータ",
+    // モデルのわかりやすい名称（メニュー表示）
+    llm_display_small: "Mistral-Small-3.2",
+    llm_display_large: "LLaMa-3.3",
+    llm_display_xl: "GPT-OSS",
+
+    // モデル表示（Caramel のAI）
+    llm_model_source: "モデル提供元:",
+    llm_model_parameters: "モデルサイズ:",
+    llm_model_parameters_small: "24 Mrd パラメータ",
+    llm_model_parameters_large: "70 Mrd パラメータ",
+    llm_model_parameters_xl: "120 Mrd パラメータ",
+
     language: "言語",
     tutorial: "チュートリアル",
 

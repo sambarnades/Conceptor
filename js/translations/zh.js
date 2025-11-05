@@ -1,4 +1,4 @@
-const translations_zh = {
+﻿const translations_zh = {
     subtitle: "辅助创建 Magistère 与 Éléa 的资源与活动",
     help_button: "帮助",
     help_modal_title: "🚀 面向教师的 Caramel 全面指南",
@@ -92,7 +92,7 @@ const translations_zh = {
         <p>点击某个卡片后会打开窗口。你将在此与 AI 交互。</p>
         <div class="help-subsection">
             <h5><i class="fas fa-rocket"></i> 选项 A：一键生成</h5>
-            <p>快捷方式。点击 <button class="help-btn-example-albert">一键生成</button>，AI 将生成内容并直接放入右侧结果区域。你可通过按钮右侧的小箭头选择不同模型（快速、强力等）。</p>
+            <p>快捷方式。点击 <button class="help-btn-example-llm">一键生成</button>，AI 将生成内容并直接放入右侧结果区域。你可通过按钮右侧的小箭头选择不同模型（快速、强力等）。</p>
         </div>
         <div class="help-subsection">
             <h5><i class="fas fa-tools"></i> 选项 B：使用外部 AI</h5>
@@ -1130,7 +1130,9 @@ const translations_zh = {
     legal_personal_data_title: "个人数据",
     legal_personal_data_content: "不收集或存储任何个人数据。不使用任何跟踪cookie。会话历史记录存储在用户的本地浏览器（localStorage）中，不进行传输。根据GDPR，任何个人信息都不会传输给编辑或第三方。",
     legal_ai_models_title: "人工智能模型",
-    legal_ai_models_content: "Caramel应用程序仅在“一键生成”时使用由跨部门数字指导局（DINUM）提供的Albert人工智能模型。可用模型如下：Albert-Small（Llama 3.1，80亿参数）、Albert-Large（Mistral Small 3.2，240亿参数）和Albert-Code（Qwen 2.5 Coder，325亿参数）。为内容生成发送的数据在DINUM的服务器上处理，不与外部公共AI共享，从而确保信息的机密性和安全性。",
+    legal_ai_models_content: "Caramel 应用仅在一键生成时使用由 ILAAS 运营的人工智能模型；ILAAS 是一个共享式 AI 基础设施联合体。请求通过由孵化器托管的 n8n 工作流进行转发，随后交由 ILAAS 在受信任的服务器上执行，这些服务器托管于高等教育与科研（ESR）标识的数据中心。Caramel 不运行模型，也不自行处理或存储数据；数据仅用于完成该次请求，不会发送至面向公众的消费级 AI。当前提供的模型包括 Mistral Small 3.2（24B 参数）、Llama 3.3（70B 参数）和 GPT‑OSS 120B（120B 参数）。ILAAS 可能进行的托管、日志记录与数据保留事宜以其隐私政策和服务条款为准。",
+    legal_user_requests_processing_title: "通过 n8n 与教育部孵化器处理用户请求",
+    legal_user_requests_processing_content: "本站采用基于 n8n 的技术方案（该开源工具由教育部孵化器托管）。通过自动化工作流，本服务将用户请求转换为结构化数据（JSON 格式），以便与 DINUM 的人工智能进行交互，从而实现主权性保障。所有敏感信息在传输过程中均经过加密，确保交流的机密性与安全性。",
     legal_accessibility_title: "无障碍",
     legal_accessibility_content: "该应用程序设计为与计算机使用兼容，包括暗/亮模式、键盘导航和根据主题的高对比度。正在根据RGAA建议不断改进无障碍性。",
     legal_applicable_law_title: "适用法律",
@@ -1588,29 +1590,35 @@ const translations_zh = {
     quiz_a11y_show_solution: "显示答案。任务将标记其正确答案。",
     quiz_a11y_retry: "重试任务。重置所有回答并重新开始任务。",
 
-    // Albert generation
-    generate_with_albert: "使用Albert生成",
-    generation_in_progress: "正在生成，请稍候...",
-    request_sent_to_ia: "已向AI发送请求，请稍候...",
-    generation_successful: "H5P内容已成功生成！",
+    // Caramel 的 AI — 生成
+    generate_with_llm: "使用 Caramel 的 AI 生成",
+    generation_in_progress: "正在生成中，请稍候...",
+    request_sent_to_ia: "请求已发送至 AI，请稍候...",
+    generation_successful: "已成功生成 H5P 内容！",
     generation_failed_empty: "生成失败。响应为空。",
-    generation_failed_error: "生成过程中出错：{errorMessage}",
-    generation_failed_albert: "在 Albert AI 上生成失败。原因：{errorMessage}",
+    generation_failed_error: "生成时出错：{errorMessage}",
+    generation_failed_llm: "通过 Caramel 的 AI 生成失败。原因：{errorMessage}",
 
-    // Albert models description
-    albert_small_summary: "快速、简单，适用于快速和结构化的练习。",
-    albert_small_technical: "Llama 3.1",
-    albert_large_summary: "功能强大，细致入微，非常适合复杂的任务和写作。",
-    albert_large_technical: "Mistral Small 3.2",
-    albert_code_summary: "专业、精确，专为编程和代码设计。",
-    albert_code_technical: "Qwen 2.5 Coder",
+    // 模型说明（Caramel 的 AI）
+    llm_small_summary: "软焦糖：快速、轻量，适合闪练和无需等待的答复。消耗很少。",
+    llm_small_technical: "Mistral AI",
+    llm_large_summary: "流动焦糖：更丰富、更有层次，适合需要一些深度的任务。消耗更多。",
+    llm_large_technical: "Meta AI",
+    llm_xl_summary: "硬焦糖：强大且复杂，建议用于雄心勃勃的项目。需要耐心，结果有保障！消耗多得多。",
+    llm_xl_technical: "OpenAI",
 
-    // Albert models pills
-    albert_model_source: "源模型:",
-    albert_model_parameters: "模型大小:",
-    albert_model_parameters_small: "80亿参数",
-    albert_model_parameters_large: "240亿参数",
-    albert_model_parameters_code: "325亿参数",
+    // 模型的友好名称（菜单显示）
+    llm_display_small: "Mistral-Small-3.2",
+    llm_display_large: "LLaMa-3.3",
+    llm_display_xl: "GPT-OSS",
+
+    // 模型指示（Caramel 的 AI）
+    llm_model_source: "模型提供方：",
+    llm_model_parameters: "模型大小:",
+    llm_model_parameters_small: "24 Mrd 参数",
+    llm_model_parameters_large: "70 Mrd 参数",
+    llm_model_parameters_xl: "120 Mrd 参数",
+
     language: "语言",
     tutorial: "教程",
     
