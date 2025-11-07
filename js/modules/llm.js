@@ -101,7 +101,7 @@ export function populateModelSelector(moduleKey, models, onSelectCallback, selec
  * @returns {Promise<string>} Le contenu textuel généré par l'IA, nettoyé des blocs de code.
  * @throws {Error} Si la réponse du proxy n'est pas valide ou si une erreur réseau survient.
  */
-export async function generateH5PWithLLM(prompt, model) {
+export async function generateH5PWithLLM(prompt, model, activityMeta) {
     console.log(`Appel au proxy n8n pour l'API du LLM avec le modèle ${model} et le prompt :`, prompt);
 
     const proxyUrl = "https://n8n.incubateur.education.gouv.fr/webhook/llm";
@@ -110,6 +110,14 @@ export async function generateH5PWithLLM(prompt, model) {
         prompt: prompt,
         model: model // Utiliser le modèle passé en paramètre
     };
+
+    if (activityMeta) {
+        requestBody.activity = activityMeta;
+    }
+
+    if (requestBody.activity) {
+        console.log('LLM webhook payload activity:', requestBody.activity);
+    }
 
     try {
         const response = await fetch(proxyUrl, {

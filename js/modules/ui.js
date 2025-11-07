@@ -678,7 +678,23 @@ export function toggleActivityContent(moduleKey, tileElement) {
             startCaramelAnimation();
 
             try {
-                const content = await generateH5PWithLLM(prompt, selectedModel);
+                const activityMeta = {
+                    moduleKey,
+                    category: (module && Array.isArray(module.categories))
+                        ? (module.categories.includes('h5p') ? 'h5p' : (module.categories.includes('elea') ? 'elea' : null))
+                        : null,
+                    nameKey: (module && module.name) ? module.name : null,
+                    englishName: (module && module.englishName) ? module.englishName : null,
+                    machineName: (module && module.machineName) ? module.machineName : null,
+                    displayName: (module && module.name && translations && translations[module.name])
+                        ? translations[module.name]
+                        : (module && module.englishName)
+                            ? module.englishName
+                            : (module && module.machineName)
+                                ? module.machineName
+                                : moduleKey
+                };
+                const content = await generateH5PWithLLM(prompt, selectedModel, activityMeta);
                 if (content) {
                     jsonInputTarget.value = content;
  
