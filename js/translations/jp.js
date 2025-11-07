@@ -1061,6 +1061,7 @@
     info_prompt_copy: "このプロンプトを右側のパネルに貼り付けないでください。外部のAIにコピーして結果を取得し、その結果を右側のパネルに貼り付けてください。",
     
     // Notifications
+    caramel_success_title: "お菓子の準備ができました！",
     prompts_generated_successfully: "プロンプトが正常に生成されました！",
     success_copy: "✓ コピーしました !",
     error_please_fill_fields: "クイックモードで少なくとも1つのフィールドを入力してください。",

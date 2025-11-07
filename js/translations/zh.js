@@ -1061,6 +1061,7 @@
     info_prompt_copy: "请不要将此提示粘贴到右侧面板。请将其复制到外部人工智能中以获得结果，然后将该结果粘贴到右侧面板中。",
     
     // Notifications
+    caramel_success_title: "你的糖果准备好了！",
     prompts_generated_successfully: "提示词生成成功！",
     success_copy: "✓ 已复制 !",
     error_please_fill_fields: "请在快速模式中至少填写一个字段。",

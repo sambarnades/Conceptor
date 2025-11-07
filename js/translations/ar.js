@@ -1061,6 +1061,7 @@
     info_prompt_copy: "لا تُلصق هذا الطلب في اللوحة اليمنى. انسخه في ذكاء اصطناعي خارجي للحصول على النتيجة، ثم ألصق هذه النتيجة في اللوحة اليمنى.",
 
     // Notifications
+    caramel_success_title: "الحلوى جاهزة!",
     prompts_generated_successfully: "تم توليد المطالبات بنجاح!",
     success_copy: "✓ تم النسخ !",
     error_please_fill_fields: "يرجى ملء حقل واحد على الأقل في الوضع السريع.",

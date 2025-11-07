@@ -1061,6 +1061,7 @@
     info_prompt_copy: "Não cole este prompt no painel direito. Copie-o para uma IA externa para obter o resultado e, em seguida, cole esse resultado no painel direito.",
 
     // Notifications
+    caramel_success_title: "A sua guloseima está pronta!",
     prompts_generated_successfully: "Prompts gerados com sucesso!",
     success_copy: "✓ Copiado !",
     error_please_fill_fields: "Preencha pelo menos um campo no modo Rápido.",

@@ -1061,6 +1061,7 @@
     info_prompt_copy: "Plak deze prompt niet in het rechterpaneel. Kopieer hem naar een externe AI om het resultaat te verkrijgen en plak dt resultaat vervolgens in het rechterpaneel.",
 
     // Notifications
+    caramel_success_title: "Je snoepje is klaar!",
     prompts_generated_successfully: "Prompts succesvol gegenereerd!",
     success_copy: "✓ Gekopieerd !",
     error_please_fill_fields: "Vul ten minste één veld in de Snelle modus in.",

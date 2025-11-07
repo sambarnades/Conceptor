@@ -1061,6 +1061,7 @@
     info_prompt_copy: "Non incollate questo prompt nel pannello di destra. Copiatelo in un’IA esterna per ottenere il risultato, quindi incollate tale risultato nel pannello di destra.",
 
     // Notifications
+    caramel_success_title: "La tua caramella è pronta!",
     prompts_generated_successfully: "Prompt generati con successo!",
     success_copy: "✓ Copiato !",
     error_please_fill_fields: "Per favore, compila almeno un campo nella modalità Rapida.",

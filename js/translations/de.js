@@ -1061,6 +1061,7 @@
     info_prompt_copy: "Fügen Sie diesen Prompt nicht in das rechte Feld ein. Kopieren Sie ihn in eine externe KI, um das Ergebnis zu erhalten, und fügen Sie dieses Ergebnis anschließend in das rechte Feld ein.",
 
     // Notifications
+    caramel_success_title: "Deine Süßigkeit ist fertig!",
     prompts_generated_successfully: "Prompts erfolgreich generiert!",
     success_copy: "✓ Kopiert !",
     error_please_fill_fields: "Bitte füllen Sie mindestens ein Feld im Schnellmodus aus.",

@@ -1061,6 +1061,7 @@
     info_prompt_copy: "Ne collez pas ce prompt dans le panneau de droite. Copiez-le dans une IA grand public afin d’obtenir le résultat, puis collez ce résultat dans le panneau de droite.",
 
     // Notifications
+    caramel_success_title: "Votre sucrerie est prête !", 
     prompts_generated_successfully: "Prompts générés avec succès !",
     success_copy: "✓ Copié !",
     error_please_fill_fields: "Veuillez remplir au moins un champ du mode Rapide.",

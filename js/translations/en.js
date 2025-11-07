@@ -1061,6 +1061,7 @@
     info_prompt_copy: "Do not paste this prompt into the right panel. Copy it into an external AI to obtain the result, then paste that result into the right panel.",
 
     // Notifications
+    caramel_success_title: "Your treat is ready!",
     prompts_generated_successfully: "Prompts generated successfully!",
     success_copy: "✓ Copied !",
     error_please_fill_fields: "Please fill in at least one field in Quick Mode.",

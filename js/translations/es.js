@@ -1061,6 +1061,7 @@
     info_prompt_copy: "No pegue este prompt en el panel derecho. Cópielo en una IA externa para obtener el resultado y luego pegue ese resultado en el panel derecho.",
 
     // Notifications
+    caramel_success_title: "¡Tu golosina está lista!",
     prompts_generated_successfully: "¡Prompts generados con éxito!",
     success_copy: "✓ Copiado !",
     error_please_fill_fields: "Por favor, rellena al menos un campo en el modo Rápido.",
