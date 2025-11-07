@@ -682,6 +682,7 @@ export async function handleQCMCreation(jsonInput) {
             const a = document.createElement('a');
             a.href = URL.createObjectURL(new Blob([gzData], { type: 'application/gzip' }));
             a.download = fileName;
+            document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(a.href);
