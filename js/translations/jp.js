@@ -163,8 +163,8 @@
         <h4><i class="fas fa-users"></i> コミュニティとサポート</h4>
         <p>Caramel は生きたプロジェクト。皆さまの声が力になります！</p>
         <ul>
-            <li><strong>交流・質問：</strong> コミュニティと交流できる <a href="https://tchap.beta.gouv.fr/#/room/#Caramel:agent.dinum.tchap.gouv.fr" target="_blank" rel="noopener noreferrer">Tchap</a> ルームに参加してください。</li>
-            <li><strong>バグ報告：</strong> 問題が見つかったら <a href="https://github.com/g-rem/caramel/issues" target="_blank" rel="noopener noreferrer">Issue</a> を作成。可能ならエラーを引き起こした JSON を添付してください。</li>
+            <li><strong>交流・質問：</strong> コミュニティと交流できる <a href="https://edurl.fr/caramel-tchap" target="_blank" rel="noopener noreferrer">Tchap</a> ルームに参加してください。</li>
+            <li><strong>バグ報告：</strong> 問題が見つかったら <a href="https://forge.apps.education.fr/caramel/caramel.forge.apps.education.fr/-/issues" target="_blank" rel="noopener noreferrer">Issue</a> を作成。可能ならエラーを引き起こした JSON を添付してください。</li>
             <li><strong>プロジェクト支援：</strong> 気に入ったら <a href="https://forge.apps.education.fr/caramel/caramel" target="_blank" rel="noopener noreferrer">Forge ページ</a> にスターを。最高の励みになります！</li>
         </ul>
     </div>

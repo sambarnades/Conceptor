@@ -989,7 +989,10 @@ textarea::placeholder {
     }
 
     #module-sidebar.menu-open {
-        height: 69vh; /* Hauteur augmentée pour faire de la place au menu */
+        height: 97vh;
+        max-height: 97vh;
+        overflow-y: auto;
+        --llm-selector-max-height: calc(97vh - 12rem);
     }
 
     #module-sidebar.advanced-view {

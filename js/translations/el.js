@@ -163,8 +163,8 @@ const translations_el = {
         <h4><i class="fas fa-users"></i> Κοινότητα & Υποστήριξη</h4>
         <p>Το Caramel είναι ένα ζωντανό έργο και η γνώμη σας είναι πολύτιμη!</p>
         <ul>
-            <li><strong>Συζήτηση & Ερωτήσεις:</strong> Ελάτε στο <a href="https://tchap.beta.gouv.fr/#/room/#Caramel:agent.dinum.tchap.gouv.fr" target="_blank" rel="noopener noreferrer">Tchap</a> για ανταλλαγή με την κοινότητα.</li>
-            <li><strong>Αναφορά σφάλματος:</strong> Πρόβλημα; Δημιουργήστε <a href="https://github.com/g-rem/caramel/issues" target="_blank" rel="noopener noreferrer">issue</a>. Αν είναι δυνατόν, επισυνάψτε το JSON που προκάλεσε το σφάλμα.</li>
+            <li><strong>Συζήτηση & Ερωτήσεις:</strong> Ελάτε στο <a href="https://edurl.fr/caramel-tchap" target="_blank" rel="noopener noreferrer">Tchap</a> για ανταλλαγή με την κοινότητα.</li>
+            <li><strong>Αναφορά σφάλματος:</strong> Πρόβλημα; Δημιουργήστε <a href="https://forge.apps.education.fr/caramel/caramel.forge.apps.education.fr/-/issues" target="_blank" rel="noopener noreferrer">issue</a>. Αν είναι δυνατόν, επισυνάψτε το JSON που προκάλεσε το σφάλμα.</li>
             <li><strong>Στήριξη έργου:</strong> Αν σας αρέσει το εργαλείο, βάλτε μας ένα αστέρι στη <a href="https://forge.apps.education.fr/caramel/caramel" target="_blank" rel="noopener noreferrer">σελίδα Forge</a>. Είναι η καλύτερη ανταμοιβή!</li>
         </ul>
     </div>

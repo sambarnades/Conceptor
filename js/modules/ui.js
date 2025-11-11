@@ -295,16 +295,18 @@ export function toggleActivityContent(moduleKey, tileElement) {
                         <h2 class="modal-title">${translations[module.name]}</h2>
                     </div>
                     <div class="top-controls-container">
-                        <div class="action-buttons-group generation-button-group">
-                            <div class="main-action-button">
-                                <button id="generate-llm-${moduleKey}" class="action-btn primary-btn">${translations.generate_one_click || "Générer en un clic"}</button>
+                        <div class="action-buttons-group generation-button-group llm-selector-group">
+                            <div class="llm-buttons-row">
+                                <div class="main-action-button">
+                                    <button id="generate-llm-${moduleKey}" class="action-btn primary-btn">${translations.generate_one_click || "Générer en un clic"}</button>
+                                </div>
+                                <div class="more-actions-button">
+                                    <button id="model-selector-btn-${moduleKey}" class="action-btn primary-btn dropdown-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Sélectionner le modèle">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="more-actions-button">
-                                <button id="model-selector-btn-${moduleKey}" class="action-btn primary-btn dropdown-toggle" aria-haspopup="true" aria-expanded="false" aria-label="Sélectionner le modèle">
-                                    <i class="fas fa-chevron-down"></i>
-                                </button>
-                                <ul id="model-selector-dropdown-${moduleKey}" class="model-selector-dropdown" role="menu"></ul>
-                            </div>
+                            <ul id="model-selector-dropdown-${moduleKey}" class="model-selector-dropdown" role="menu"></ul>
                         </div>
                     </div>
                     <div class="modal-header-actions">
@@ -639,10 +641,57 @@ export function toggleActivityContent(moduleKey, tileElement) {
         const jsonInputId = (moduleKey === 'moodleXml') ? 'xmlEleaMoodleInput' : (moduleKey === 'glossaireXml') ? 'glossaireXmlJsonInput' : module.jsonInputId;
 
         if (modelSelectorBtn && modelDropdown) {
-            populateModelSelector(moduleKey, AVAILABLE_MODELS, (modelId) => {
-                selectedModel = modelId;
+            let dropdownHandlersAttached = false;
+
+            const resetDropdownSizing = () => {
+                modelDropdown.style.maxHeight = '';
+                modelDropdown.classList.remove('force-wide');
+            };
+
+            const adjustDropdownToViewport = () => {
+                if (!modelDropdown.classList.contains('show')) return;
+
+                resetDropdownSizing();
+                requestAnimationFrame(() => {
+                    if (!modelDropdown.classList.contains('show')) return;
+                    const rect = modelDropdown.getBoundingClientRect();
+                    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+
+                    if (rect.bottom > viewportHeight - 8) {
+                        const availableSpace = Math.max(viewportHeight - rect.top - 12, 140);
+                        modelDropdown.style.maxHeight = `${availableSpace}px`;
+                        modelDropdown.classList.add('force-wide');
+                    }
+                });
+            };
+
+            const dropdownVisibilityHandler = () => adjustDropdownToViewport();
+
+            const addDropdownHandlers = () => {
+                if (dropdownHandlersAttached) return;
+                window.addEventListener('resize', dropdownVisibilityHandler);
+                window.addEventListener('scroll', dropdownVisibilityHandler, true);
+                dropdownHandlersAttached = true;
+            };
+
+            const removeDropdownHandlers = () => {
+                if (!dropdownHandlersAttached) return;
+                window.removeEventListener('resize', dropdownVisibilityHandler);
+                window.removeEventListener('scroll', dropdownVisibilityHandler, true);
+                dropdownHandlersAttached = false;
+            };
+
+            const closeDropdown = () => {
                 modelDropdown.classList.remove('show');
                 modelSelectorBtn.setAttribute('aria-expanded', 'false');
+                sidebar.classList.remove('menu-open');
+                removeDropdownHandlers();
+                resetDropdownSizing();
+            };
+
+            populateModelSelector(moduleKey, AVAILABLE_MODELS, (modelId) => {
+                selectedModel = modelId;
+                closeDropdown();
             }, selectedModel, translations);
 
             modelSelectorBtn.addEventListener('click', (e) => {
@@ -650,14 +699,22 @@ export function toggleActivityContent(moduleKey, tileElement) {
                 const isCurrentlyShown = modelDropdown.classList.toggle('show');
                 modelSelectorBtn.setAttribute('aria-expanded', isCurrentlyShown);
                 sidebar.classList.toggle('menu-open', isCurrentlyShown);
+
+                if (isCurrentlyShown) {
+                    adjustDropdownToViewport();
+                    addDropdownHandlers();
+                } else {
+                    removeDropdownHandlers();
+                    resetDropdownSizing();
+                }
             });
 
             // Fermer le menu si on clique ailleurs
             document.addEventListener('click', (e) => {
                 if (!modelSelectorBtn.contains(e.target) && !modelDropdown.contains(e.target)) {
-                    modelDropdown.classList.remove('show');
-                    modelSelectorBtn.setAttribute('aria-expanded', 'false');
-                    sidebar.classList.remove('menu-open');
+                    if (modelDropdown.classList.contains('show')) {
+                        closeDropdown();
+                    }
                 }
             });
         }

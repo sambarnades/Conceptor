@@ -19,26 +19,33 @@
    2. EN-TÊTE DE LA MODALE
    ======================================================================= */
 .help-modal-header {
-    padding: 10px 0;
+    padding: 12px 60px 12px 24px;
     border-bottom: 1px solid #ddd;
     position: relative;
     text-align: center;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .help-modal-header h2 {
     margin: 0;
-    font-size: 1.5em;
+    font-size: clamp(1.15rem, 1vw + 1rem, 1.6rem);
     color: #1d1d1f;
+    padding: 0 0.5rem;
 }
 
 .help-close-modal-btn {
     position: absolute;
-    top: 5px;
-    right: 15px;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
     color: #8e8e93;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    line-height: 1;
 }
 
 .help-close-modal-btn:hover,
@@ -59,14 +66,15 @@
 
 .help-modal-content {
     background-color: #F5F5F7;
-    margin: 5% auto;
+    margin: clamp(12px, 4vh, 48px) auto;
     padding: 25px;
     border: 1px solid #888;
-    width: 80%;
-    max-width: 1200px;
+    width: clamp(320px, 88vw, 960px);
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     color: #1d1d1f;
+    font-size: clamp(0.9rem, 0.4vw + 0.85rem, 1rem);
+    line-height: 1.55;
 }
 
 .help-modal-body .help-section {
@@ -215,6 +223,21 @@
 
 .help-nav-link:hover {
     background-color: #dcdce1;
+}
+
+@media (max-width: 600px) {
+    .help-modal-content {
+        padding: 20px;
+    }
+
+    .help-modal-header {
+        padding: 12px 50px 12px 16px;
+    }
+
+    .help-close-modal-btn {
+        font-size: 24px;
+        right: 12px;
+    }
 }
 
 /* =======================================================================

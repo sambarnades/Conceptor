@@ -163,8 +163,8 @@
         <h4><i class="fas fa-users"></i> Communauté et Support</h4>
         <p>Caramel est un projet vivant, et votre avis est précieux !</p>
         <ul>
-            <li><strong>Discuter & Poser des questions :</strong> Rejoignez-nous sur le salon <a href="https://tchap.beta.gouv.fr/#/room/#Caramel:agent.dinum.tchap.gouv.fr" target="_blank" rel="noopener noreferrer">Tchap</a> pour échanger avec la communauté.</li>
-            <li><strong>Signaler un bug :</strong> Un problème ? Créez un <a href="https://github.com/g-rem/caramel/issues" target="_blank" rel="noopener noreferrer">ticket</a>. Si possible, joignez le fichier JSON qui a causé l'erreur, cela nous aide énormément à le corriger.</li>
+            <li><strong>Discuter & Poser des questions :</strong> Rejoignez-nous sur le salon <a href="https://edurl.fr/caramel-tchap" target="_blank" rel="noopener noreferrer">Tchap</a> pour échanger avec la communauté.</li>
+            <li><strong>Signaler un bug :</strong> Un problème ? Créez un <a href="https://forge.apps.education.fr/caramel/caramel.forge.apps.education.fr/-/issues" target="_blank" rel="noopener noreferrer">ticket</a>. Si possible, joignez le fichier JSON qui a causé l'erreur, cela nous aide énormément à le corriger.</li>
             <li><strong>Soutenir le projet :</strong> Si l'outil vous plaît, laissez-nous une petite étoile sur la <a href="https://forge.apps.education.fr/caramel/caramel" target="_blank" rel="noopener noreferrer">page de la Forge</a>. C'est notre meilleure récompense !</li>
         </ul>
     </div>

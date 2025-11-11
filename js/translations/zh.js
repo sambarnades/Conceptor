@@ -163,8 +163,8 @@
         <h4><i class="fas fa-users"></i> 社区与支持</h4>
         <p>Caramel 是一个不断成长的项目，你的反馈十分宝贵！</p>
         <ul>
-            <li><strong>交流与提问：</strong> 欢迎加入 <a href="https://tchap.beta.gouv.fr/#/room/#Caramel:agent.dinum.tchap.gouv.fr" target="_blank" rel="noopener noreferrer">Tchap</a> 房间与社区交流。</li>
-            <li><strong>报告问题：</strong> 发现 Bug？请提交 <a href="https://github.com/g-rem/caramel/issues" target="_blank" rel="noopener noreferrer">issue</a>。若可能，请附上导致错误的 JSON 文件，便于我们快速修复。</li>
+            <li><strong>交流与提问：</strong> 欢迎加入 <a href="https://edurl.fr/caramel-tchap" target="_blank" rel="noopener noreferrer">Tchap</a> 房间与社区交流。</li>
+            <li><strong>报告问题：</strong> 发现 Bug？请提交 <a href="https://forge.apps.education.fr/caramel/caramel.forge.apps.education.fr/-/issues" target="_blank" rel="noopener noreferrer">issue</a>。若可能，请附上导致错误的 JSON 文件，便于我们快速修复。</li>
             <li><strong>支持项目：</strong> 如果你喜欢本工具，请在 <a href="https://forge.apps.education.fr/caramel/caramel" target="_blank" rel="noopener noreferrer">Forge 页面</a> 点亮一颗星。这是对我们最大的鼓励！</li>
         </ul>
     </div>

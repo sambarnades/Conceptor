@@ -7,23 +7,32 @@
 /* =======================================================================
    2. SÉLECTEUR DE MODÈLE (DROPDOWN)
    ======================================================================= */
+:root {
+    --llm-selector-max-height: 70vh;
+}
 /* Dropdown sizing and wrapping (moved from style.css) */
 .model-selector-dropdown {
     display: none;
     position: absolute;
     background-color: #ffffff;
-    min-width: 40rem;
-    max-width: 90%;
+    min-width: 22rem;
+    width: clamp(22rem, 32vw, 30rem);
+    max-width: 90vw;
     word-wrap: break-word;
     box-shadow: 0 0.5rem 1rem 0 rgba(0,0,0,0.2);
     z-index: 10;
     list-style: none;
-    padding: 0;
+    padding: 0.25rem 0;
     margin: 0;
     border: 1px solid #ddd;
     border-radius: 8px;
     top: 100%;
     right: 0;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    max-height: var(--llm-selector-max-height, 70vh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
     margin-top: 8px;
 }
 
@@ -31,10 +40,69 @@
     display: block;
 }
 
+#module-sidebar .llm-selector-group {
+    position: relative;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#module-sidebar .llm-buttons-row {
+    display: flex;
+    width: 100%;
+    gap: 0;
+}
+
+#module-sidebar .llm-buttons-row .main-action-button {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+#module-sidebar .llm-buttons-row .main-action-button .action-btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#module-sidebar .llm-buttons-row .more-actions-button {
+    position: relative;
+    display: flex;
+    margin-left: -1px;
+}
+
+#module-sidebar .llm-buttons-row .more-actions-button .dropdown-toggle {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
 @media (max-width: 768px) {
-    .model-selector-dropdown {
-        transform: translateX(24%);
-        z-index: 20; /* z-index plus élevé pour le mode mobile */
+    #module-sidebar .llm-selector-group {
+        gap: 0;
+    }
+
+    #module-sidebar .llm-buttons-row {
+        flex-wrap: nowrap;
+    }
+
+    #module-sidebar .llm-selector-group .model-selector-dropdown {
+        position: static;
+        transform: none;
+        top: auto;
+        right: auto;
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 0.5rem;
+        margin-bottom: 0;
+        box-shadow: none;
+        border-radius: 1rem;
+        border: 1px solid #ddd;
+        max-height: var(--llm-selector-max-height, 70vh);
+        z-index: 1;
+    }
+
+    #module-sidebar .llm-selector-group .model-selector-dropdown.force-wide {
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
     }
 }
 
@@ -72,6 +140,12 @@
 
 .model-selector-dropdown li small {
     color: #555;
+}
+
+.model-selector-dropdown.force-wide {
+    min-width: 26rem;
+    width: clamp(26rem, 50vw, 42rem);
+    max-width: 95vw;
 }
 
 /* =======================================================================

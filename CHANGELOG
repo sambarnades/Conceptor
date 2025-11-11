@@ -1,8 +1,11 @@
 # Caramel – Journal des modifications
 
-## 3.3 – 11-11-2025
+## 3.3.3 – 11-11-2025
 - **Structuration du code** : Le coeur du code a été nettoyé et réorganisé.
 - **Traductions** : Ajout d'une traduction manquante à l'issue de la génération d'une activité.
+- **Menu déroulant choix LLM** : Modification du code pour que le menu déroulant du choix de le LLM soit responsive et bien affiché quel que soit l'écran, taille réduite du texte
+- **Modale Tutoriel** : La taille globale du texte a été réduite, correction du bug visuel de chevauchement de la croix de fermeture sur un petit écran.
+- **Modale Tutoriel** : Correction des liens redirigeant vers le salon Tchap et vers les tickets de la Forge.
 
 ---
 
