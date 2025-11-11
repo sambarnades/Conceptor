@@ -1,4 +1,4 @@
-/* =======================================================================
+﻿/* =======================================================================
     0. CLASSES UTILITAIRES
    ======================================================================= */
 .hidden {
@@ -153,6 +153,7 @@ body {
 /* =======================================================================
    4. BARRE LATÉRALE / MODALE D'ACTIVITÉ
    ======================================================================= */
+/* Module Sidebar - base */
 #module-sidebar {
     position: fixed;
     top: 50%;
@@ -181,17 +182,7 @@ body {
     transform: translate(-50%, -50%) scale(1);
 }
 
-.sidebar .close-btn {
-   position: absolute;
-   top: 10px;
-   right: 15px;
-   background: none;
-   border: none;
-   font-size: 2em;
-   cursor: pointer;
-   color: #aaa;
-   transition: color 0.3s;
-}
+/* .sidebar .close-btn hérite désormais du style de base */
 
 .sidebar .close-btn:hover {
    color: #1d1d1f;
@@ -605,8 +596,8 @@ textarea::placeholder {
     z-index: 10; /* z-index élevé pour être au-dessus du contenu */
 }
 
-.modal-header-actions .close-btn {
-    display: none;
+/* Bouton de fermeture — style de base partagé */
+.close-btn {
     position: absolute;
     top: 10px;
     right: 15px;
@@ -618,23 +609,8 @@ textarea::placeholder {
     transition: color 0.3s;
 }
 
-@media (max-width: 768px) {
-    .modal-header-actions .close-btn {
-        display: block;
-    }
-}
-
 .modal-header-actions .close-btn {
     display: none;
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: none;
-    border: none;
-    font-size: 2em;
-    cursor: pointer;
-    color: #aaa;
-    transition: color 0.3s;
 }
 
 @media (max-width: 768px) {
@@ -642,6 +618,8 @@ textarea::placeholder {
         display: block;
     }
 }
+
+/* (dédupliqué) styles déjà couverts par .close-btn et la règle responsive ci‑dessus */
 
 
 .modal-title-container {
@@ -1004,6 +982,7 @@ textarea::placeholder {
         gap: 15px;
         padding: 20px;
     }
+    /* Module Sidebar - responsive (<=768px), ajustements de dimension */
     #module-sidebar {
         width: 95vw;
         padding: 1rem;
@@ -1124,19 +1103,7 @@ textarea::placeholder {
     line-height: 1.6;
 }
 
-#legal-mentions-content h3 {
-    text-align: left;
-    font-size: 1.8em;
-    margin-bottom: 20px;
-}
 
-#legal-mentions-content h4 {
-    font-size: 1.3em;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 5px;
-}
 
 @keyframes fadeIn {
     from {opacity: 0;}
@@ -1950,17 +1917,20 @@ input[type="file"] {
 
 .modal-panel-footer {
     margin-top: auto;
-    padding-top: 1rem;
+    padding: 10px 15px;
     border-top: 1px solid #f0f0f0;
     display: flex;
     gap: 0.625rem;
-    align-items: stretch; /* Assure que les enfants prennent la même hauteur */
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
 .action-buttons-group {
     display: flex;
     gap: 0.625rem;
     flex-grow: 1;
+    width: 100%;
 }
 
 .generation-button-group {
@@ -2093,10 +2063,7 @@ input[type="file"] {
 }
 
 
-.model-selector-dropdown {
-    max-width: 90%; /* Limite la largeur */
-    word-wrap: break-word; /* Permet au texte de revenir à la ligne */
-}
+
 
 .expand-button-container {
     text-align: center;
@@ -2159,6 +2126,7 @@ input[type="file"] {
         text-align: center;
     }
 
+    /* Module Sidebar - responsive (<=768px), gestion du défilement */
     #module-sidebar {
         overflow-y: auto; /* Activer le défilement sur toute la modale */
         -webkit-overflow-scrolling: touch;

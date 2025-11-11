@@ -615,7 +615,7 @@ export function toggleActivityContent(moduleKey, tileElement) {
                     showNotification(translations.error_paste_ia_content || 'Veuillez coller le contenu généré par l\'IA.', 'error');
                     return;
                 }
-                handleH5PCreation(moduleKey, jsonInput, false);
+                handleH5PCreation(moduleKey, jsonInput);
             });
         }
 

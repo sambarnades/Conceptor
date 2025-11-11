@@ -67,7 +67,8 @@
 /* =======================================================================
    3. STYLE DU TEXTE D'AIDE POUR L'IA
    ======================================================================= */
-.ia-guidance-text {
+/* Scoped IA guidance (modal footer only) */
+.modal-panel-footer .ia-guidance-text {
     font-size: 13px;
     color: #333; /* Couleur de texte plus foncée pour le contraste */
     text-align: left;
@@ -79,24 +80,13 @@
     position: relative;
 }
 
-.ia-guidance-text a {
+.modal-panel-footer .ia-guidance-text a {
     color: #0976E7; /* Bleu vif pour les liens */
     text-decoration: none;
     font-weight: bold;
 }
 
-.ia-guidance-text a:hover {
+.modal-panel-footer .ia-guidance-text a:hover {
     text-decoration: underline;
 }
 
-.modal-panel-footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 15px; /* Ajout de padding pour l'espacement */
-    box-sizing: border-box; /* S'assurer que le padding est inclus dans la hauteur */
-}
-
-.action-buttons-group {
-    width: 100%;
-}

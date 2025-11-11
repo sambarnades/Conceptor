@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file Gestion de la création des activités H5P.
  * Ce module prend en charge la transformation du JSON généré par l'IA en une structure H5P valide,
  * l'enrichissement avec les traductions et les paramètres par défaut, et le packaging
@@ -6,6 +6,8 @@
  */
 
 import { h5pModules } from './definitions.js';
+
+
 import { translations, currentLang } from './translation.js';
 import { showNotification, generateUUID, formatTextToHtml } from './utils.js';
 
@@ -16,9 +18,8 @@ let downloadZip;
  * Adapte le JSON en fonction du type de module, puis appelle la fonction de packaging.
  * @param {string} moduleKey - La clé identifiant le module H5P (ex: 'Timeline').
  * @param {string} jsonInput - La chaîne JSON brute générée par l'IA.
- * @param {boolean} [includeLibs=false] - Si vrai, inclut les bibliothèques H5P dans le package.
  */
-export function handleH5PCreation(moduleKey, jsonInput, includeLibs = false) {
+export function handleH5PCreation(moduleKey, jsonInput) {
     const module = h5pModules[moduleKey];
     if (!module) {
         showNotification(translations.error_h5p_module_not_found.replace('{moduleKey}', moduleKey) || `Module '${moduleKey}' non trouvé.`, 'error');
@@ -680,7 +681,7 @@ export function handleH5PCreation(moduleKey, jsonInput, includeLibs = false) {
                 ? [...new Set(jsonObj.quiz.questions.map(q => q.library.split(' ')[0]))]
                 : [];
 
-            createH5PFile(machineName, JSON.stringify(content), options, dynamicDependencies, includeLibs, moduleKey);
+            createH5PFile(machineName, JSON.stringify(content), options, dynamicDependencies, moduleKey);
 
         } catch (error) {
             if (error instanceof SyntaxError) {
@@ -706,102 +707,10 @@ export function handleH5PCreation(moduleKey, jsonInput, includeLibs = false) {
       }
     })();
 
-    async function createH5PFile(mainLibraryIdentifier, jsonContent, options = {}, dynamicDependencies = [], includeLibs = false, moduleKey = '') {
+    async function createH5PFile(mainLibraryIdentifier, jsonContent, options = {}, dynamicDependencies = [], moduleKey = '') {
         try {
             const files = [];
             const moduleName = mainLibraryIdentifier.split('.')[1];
-            let allDependencies = new Map();
-
-            if (includeLibs) {
-                async function addLibraryFiles(machineName, processedLibs) {
-                    if (processedLibs.has(machineName)) return;
-                    const libPath = await findLatestLibraryPath(machineName);
-                    if (!libPath) {
-                        console.warn(`Bibliothèque locale '${machineName}' non trouvée.`);
-                        return;
-                    }
-                    const response = await fetch(`${libPath}/library.json`);
-                    if (!response.ok) {
-                        console.warn(`Fichier '${libPath}/library.json' introuvable.`);
-                        return;
-                    }
-                    const libraryInfo = await response.json();
-                    const libFolderName = libPath.split('/').pop();
-                    
-                    files.push({
-                      name: `${libFolderName}/library.json`,
-                      input: new TextEncoder().encode(JSON.stringify(libraryInfo, null, 2)),
-                      unixPermissions: 0o100644
-                    });
-
-                    const filesToAdd = (libraryInfo.preloadedJs || []).concat(libraryInfo.preloadedCss || []);
-                    for (const file of filesToAdd) {
-                      const sourcePath = `${libPath}/${file.path}`;
-                      const destinationPath = `${libFolderName}/${file.path}`;
-                      const fileResponse = await fetch(sourcePath);
-                      if (fileResponse.ok) {
-                        const blob = await fileResponse.blob();
-                        files.push({
-                          name: destinationPath,
-                          input: new Uint8Array(await blob.arrayBuffer()),
-                          unixPermissions: 0o100644
-                        });
-                      }
-                    }
-
-                    const optionalFiles = ['semantics.json', 'icon.svg'];
-                    for (const opt of optionalFiles) {
-                      const optResp = await fetch(`${libPath}/${opt}`);
-                      if (optResp.ok) { // Vérifier si la ressource existe avant de l'ajouter
-                        const blob = await optResp.blob();
-                        files.push({
-                          name: `${libFolderName}/${opt}`,
-                          input: new Uint8Array(await blob.arrayBuffer()),
-                          unixPermissions: 0o100644
-                        });
-                      }
-                    }
-
-                    const h5pLang = currentLang === 'zh' ? 'zh-cn' : currentLang;
-                    const langResponse = await fetch(`${libPath}/language/${h5pLang}.json`);
-                    if (langResponse.ok) { // Vérifier si la ressource existe avant de l'ajouter
-                      const blob = await langResponse.blob();
-                      files.push({
-                        name: `${libFolderName}/language/${h5pLang}.json`,
-                        input: new Uint8Array(await blob.arrayBuffer()),
-                        unixPermissions: 0o100644
-                      });
-                    }
-
-                    const fontFilesToCopy = {
-                      'FontAwesome': ['fontawesome-webfont.eot', 'fontawesome-webfont.svg', 'fontawesome-webfont.ttf', 'fontawesome-webfont.woff', 'fontawesome-webfont.woff2', 'FontAwesome.otf'],
-                      'H5P.FontIcons': ['fonts/h5p.eot', 'fonts/h5p.svg', 'fonts/h5p.ttf', 'fonts/h5p.woff'],
-                      'H5P.JoubelUI': ['fonts/joubel.eot', 'fonts/joubel.svg', 'fonts/joubel.ttf', 'fonts/joubel.woff']
-                    };
-                    if (fontFilesToCopy[machineName]) {
-                      for (const fontFile of fontFilesToCopy[machineName]) {
-                        const sourcePath = `${libPath}/${fontFile}`;
-                        const fileResponse = await fetch(sourcePath);
-                        if (fileResponse.ok) { // Vérifier si la ressource existe avant de l'ajouter
-                          const destinationPath = `${libFolderName}/${fontFile}`;
-                          const blob = await fileResponse.blob();
-                          files.push({ name: destinationPath, input: new Uint8Array(await blob.arrayBuffer()), unixPermissions: 0o100644 });
-                        }
-                      }
-                    }
-
-                    const allDeps = (libraryInfo.preloadedDependencies || []).concat(libraryInfo.editorDependencies || []);
-                    for (const dep of allDeps) {
-                      await addLibraryFiles(dep.machineName, processedLibs);
-                    }
-                    processedLibs.set(machineName, { machineName: libraryInfo.machineName, majorVersion: String(libraryInfo.majorVersion), minorVersion: String(libraryInfo.minorVersion) });
-                }
-
-                await addLibraryFiles(mainLibraryIdentifier, allDependencies);
-                for (const dep of dynamicDependencies) {
-                  await addLibraryFiles(dep, allDependencies);
-                }
-            }
 
             // Ajout du content.json
             let finalJsonContent = JSON.parse(jsonContent);
@@ -816,7 +725,7 @@ export function handleH5PCreation(moduleKey, jsonInput, includeLibs = false) {
 
             // Génération du manifeste h5p.json
             const title = options.title || finalJsonContent.title || `${moduleName} Activity`;
-            let dependenciesForJson = Array.from(allDependencies.values());
+            let dependenciesForJson = [];
 
             // Si aucune bibliothèque n'est incluse, il faut quand même déclarer la dépendance principale.
             if (dependenciesForJson.length === 0 && mainLibraryIdentifier) {
@@ -830,7 +739,7 @@ export function handleH5PCreation(moduleKey, jsonInput, includeLibs = false) {
                            minorVersion: "2"
                        });
                    } else {
-                        const libPath = await findLatestLibraryPath(moduleInfo.machineName);
+                         const libPath = null;
                         if (libPath) {
                             try {
                                 const response = await fetch(`${libPath}/library.json`);
@@ -865,6 +774,26 @@ export function handleH5PCreation(moduleKey, jsonInput, includeLibs = false) {
                             dependenciesForJson.push({ machineName: "H5P.Essay", majorVersion: "1", minorVersion: "5" });
                         } else if (moduleInfo.machineName === "H5P.Summary") {
                             dependenciesForJson.push({ machineName: "H5P.Summary", majorVersion: "1", minorVersion: "10" });
+                        } else if (moduleInfo.machineName === "H5P.Flashcards") {
+                            dependenciesForJson.push({ machineName: "H5P.Flashcards", majorVersion: "1", minorVersion: "6" });
+                        } else if (moduleInfo.machineName === "H5P.Timeline") {
+                            dependenciesForJson.push({ machineName: "H5P.Timeline", majorVersion: "1", minorVersion: "1" });
+                        } else if (moduleInfo.machineName === "H5P.Accordion") {
+                            dependenciesForJson.push({ machineName: "H5P.Accordion", majorVersion: "1", minorVersion: "0" });
+                        } else if (moduleInfo.machineName === "H5P.QuestionSet") {
+                            dependenciesForJson.push({ machineName: "H5P.QuestionSet", majorVersion: "1", minorVersion: "20" });
+                        } else if (moduleInfo.machineName === "H5P.AdvancedText") {
+                            dependenciesForJson.push({ machineName: "H5P.AdvancedText", majorVersion: "1", minorVersion: "1" });
+                        } else if (moduleInfo.machineName === "H5P.Video") {
+                            dependenciesForJson.push({ machineName: "H5P.Video", majorVersion: "1", minorVersion: "6" });
+                        } else if (moduleInfo.machineName === "H5P.Image") {
+                            dependenciesForJson.push({ machineName: "H5P.Image", majorVersion: "1", minorVersion: "1" });
+                        } else if (moduleInfo.machineName === "H5P.Blanks") {
+                            dependenciesForJson.push({ machineName: "H5P.Blanks", majorVersion: "1", minorVersion: "14" });
+                        } else if (moduleInfo.machineName === "H5P.DragText") {
+                            dependenciesForJson.push({ machineName: "H5P.DragText", majorVersion: "1", minorVersion: "10" });
+                        } else if (moduleInfo.machineName === "H5P.MarkTheWords") {
+                            dependenciesForJson.push({ machineName: "H5P.MarkTheWords", majorVersion: "1", minorVersion: "11" });
                         }
                    }
                }
@@ -926,48 +855,6 @@ export function handleH5PCreation(moduleKey, jsonInput, includeLibs = false) {
             showNotification(translations.h5p_creation_failed.replace('{errorMessage}', error.message) || `Échec de la création du fichier H5P : ${error.message}`, 'error');
             return { success: false, error: error.message };
         }
-    }
-
-    async function findLatestLibraryPath(machineName) {
-        const knownLibraries = {
-            'H5P.QuestionSet': './h5p-libs/H5P.QuestionSet-1.20',
-            'H5P.MultiChoice': './h5p-libs/H5P.MultiChoice-1.16',
-            'H5P.DragText': './h5p-libs/H5P.DragText-1.10',
-            'H5P.Blanks': './h5p-libs/H5P.Blanks-1.14',
-            'H5P.JoubelUI': './h5p-libs/H5P.JoubelUI-1.3',
-            'H5P.FontIcons': './h5p-libs/H5P.FontIcons-1.0',
-            'H5P.Transition': './h5p-libs/H5P.Transition-1.0',
-            'H5P.Question': './h5p-libs/H5P.Question-1.5',
-            'H5P.TextUtilities': './h5p-libs/H5P.TextUtilities-1.3',
-            'jQuery.ui': './h5p-libs/jQuery.ui-1.10',
-            'FontAwesome': './h5p-libs/FontAwesome-4.5',
-            'H5P.Timeline': './h5p-libs/H5P.Timeline-1.1',
-            'TimelineJS': './h5p-libs/TimelineJS-1.1',
-            'H5P.Flashcards': './h5p-libs/H5P.Flashcards-1.6',
-            'H5P.Accordion': './h5p-libs/H5P.Accordion-1.0',
-            'H5P.AdvancedText': './h5p-libs/H5P.AdvancedText-1.1',
-            'H5P.Crossword': './h5p-libs/H5P.Crossword-0.5',
-            'H5P.Essay': './h5p-libs/H5P.Essay-1.5',
-            'H5P.Video': './h5p-libs/H5P.Video-1.6',
-            'H5P.Image': './h5p-libs/H5P.Image-1.1',
-            'H5P.MaterialDesignIcons': './h5p-libs/H5P.MaterialDesignIcons-1.0',
-            'H5P.Summary': './h5p-libs/H5P.Summary-1.10',
-            'H5P.MarkTheWords': './h5p-libs/H5P.MarkTheWords-1.11',
-            'H5P.DragQuestion': './h5p-libs/H5P.DragQuestion-1.14',
-            'H5PEditor.VerticalTabs': './h5p-libs/H5PEditor.VerticalTabs-1.3',
-            'H5PEditor.ColorSelector': './h5p-libs/H5PEditor.ColorSelector-1.2',
-            'H5PEditor.Wizard': './h5p-libs/H5PEditor.Wizard-1.2',
-            'H5PEditor.RangeList': './h5p-libs/H5PEditor.RangeList-1.0'
-        };
-        
-        const path = knownLibraries[machineName];
-        if (path) {
-            const response = await fetch(`${path}/library.json`);
-            if (response.ok) {
-                return path;
-            }
-        }
-        return null;
     }
 
 // =======================================================================

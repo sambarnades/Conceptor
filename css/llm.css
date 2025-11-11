@@ -7,11 +7,14 @@
 /* =======================================================================
    2. SÉLECTEUR DE MODÈLE (DROPDOWN)
    ======================================================================= */
+/* Dropdown sizing and wrapping (moved from style.css) */
 .model-selector-dropdown {
     display: none;
     position: absolute;
     background-color: #ffffff;
     min-width: 40rem;
+    max-width: 90%;
+    word-wrap: break-word;
     box-shadow: 0 0.5rem 1rem 0 rgba(0,0,0,0.2);
     z-index: 10;
     list-style: none;

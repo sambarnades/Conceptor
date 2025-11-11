@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file Gestion de la création des activités Moodle/Éléa.
  * Ce module contient la logique pour transformer le JSON généré par l'IA en différents formats Moodle :
  * - Fichiers de sauvegarde d'activité (.mbz)
@@ -141,6 +141,32 @@ export async function handlePageCreation(jsonInput, exportType) {
                 }
                 files = newFiles;
 
+                // Post-processing: scrub template remnants (example values)
+                for (let p in files) {
+                    if (p.endsWith('moodle_backup.xml')) {
+                        const content = files[p];
+                        let updated = content;
+                        // Activity title under <contents><activities><activity><title>
+                        updated = updated.replace(/(<activities>[\s\S]*?<activity>[\s\S]*?<title>)[\s\S]*?(<\/title>)/, `$1${data.PAGE_NAME}$2`);
+                        // Course title under <contents><course><title>
+                        updated = updated.replace(/(<contents>[\s\S]*?<course>[\s\S]*?<title>)[\s\S]*?(<\/title>)/, `$1${data.COURSE_SHORTNAME}$2`);
+                        // Original course names
+                        updated = updated.replace(/(<original_course_fullname>)[\s\S]*?(<\/original_course_fullname>)/, `$1${data.COURSE_FULLNAME}$2`);
+                        updated = updated.replace(/(<original_course_shortname>)[\s\S]*?(<\/original_course_shortname>)/, `$1${data.COURSE_SHORTNAME}$2`);
+                        // IDs/date for consistency
+                        updated = updated.replace(/(<original_course_id>)[\s\S]*?(<\/original_course_id>)/, `$1${data.COURSE_ID}$2`);
+                        updated = updated.replace(/(<original_course_contextid>)[\s\S]*?(<\/original_course_contextid>)/, `$1${data.COURSE_CONTEXTID}$2`);
+                        updated = updated.replace(/(<backup_date>)[\s\S]*?(<\/backup_date>)/, `$1${data.BACKUP_DATE}$2`);
+                        files[p] = updated;
+                    } else if (p.endsWith('course/course.xml')) {
+                        const content = files[p];
+                        let updated = content;
+                        updated = updated.replace(/(<shortname>)[\s\S]*?(<\/shortname>)/, `$1${data.COURSE_SHORTNAME}$2`);
+                        updated = updated.replace(/(<fullname>)[\s\S]*?(<\/fullname>)/, `$1${data.COURSE_FULLNAME}$2`);
+                        files[p] = updated;
+                    }
+                }
+
                 files['moodle_backup.log'] = translations.millionnaire_backup_log || 'Backup created automatically by Caramel\n';
                 const gzData = await createMbz(files);
                 
@@ -166,6 +192,37 @@ export async function handlePageCreation(jsonInput, exportType) {
         const templateHtml = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(templateHtml, 'text/html');
+
+        // Ancrage déterministe du sommaire (#02_nav_summary)
+        // 1) Récupère les IDs dans l'ordre depuis links[].href
+        // 2) Chaque bloc titré suivant consomme le prochain ID
+        let __navAnchors = [];
+        let __navIdx = 0;
+        try {
+            const nav = (jsonData.blocks || []).find(b => b && b.type === '#02_nav_summary');
+            if (nav && nav.data && Array.isArray(nav.data.links)) {
+                __navAnchors = nav.data.links
+                    .map(l => (l && typeof l.href === 'string' ? l.href : ''))
+                    .map(h => h.replace(/^#/, '').trim())
+                    .filter(Boolean);
+            }
+        } catch (e) {}
+        function __attachNextNavAnchor(containerEl) {
+            try {
+                if (!containerEl) return;
+                if (__navIdx >= __navAnchors.length) return;
+                const id = __navAnchors[__navIdx];
+                if (!id) { __navIdx++; return; }
+                if (doc.getElementById(id)) { __navIdx++; return; }
+                const span = doc.createElement('span');
+                span.id = id;
+                span.setAttribute('aria-hidden', 'true');
+                span.setAttribute('style', 'display:block; height:0; margin:0; padding:0; scroll-margin-top:96px;');
+                const h2 = containerEl.querySelector('h2');
+                containerEl.insertBefore(span, h2 || containerEl.firstElementChild);
+                __navIdx++;
+            } catch (e) { __navIdx++; }
+        }
         console.log("Modèle HTML chargé et analysé.");
 
         const finalHtmlContainer = doc.createElement('div');
@@ -203,8 +260,41 @@ export async function handlePageCreation(jsonInput, exportType) {
                     // Je la remets ici pour être complet
                     switch (block.type) {
                         case '#01_hero_header':
-                            element.querySelector('h1').innerHTML = formatTextToHtml(data.title);
-                            element.querySelector('p').innerHTML = formatTextToHtml(data.subtitle);
+                            {
+                                const headerTitle = (jsonData && jsonData.title) ? jsonData.title : data.title;
+                                const h1 = element.querySelector('h1');
+                                if (h1) {
+                                    const replacement = element.ownerDocument.createElement('div');
+                                    replacement.setAttribute('role', 'heading');
+                                    replacement.setAttribute('aria-level', '1');
+                                    // Reprendre le style du modèle pour un rendu identique
+                                    replacement.setAttribute('style', h1.getAttribute('style') || 'margin:0 0 10px 0; font-size:2rem; color:#40228b;');
+                                    // Important: texte brut pour ne pas être supprimé par le nettoyage des <p>
+                                    replacement.textContent = headerTitle || '';
+                                    h1.replaceWith(replacement);
+                                }
+                            }
+                            {
+                                // Supprimer tous les <p> existants du modèle (évite le sous-titre par défaut)
+                                element.querySelectorAll('p').forEach(node => node.remove());
+                                const hasSubtitle = data.subtitle && String(data.subtitle).trim();
+                                if (hasSubtitle) {
+                                    const html = formatTextToHtml(data.subtitle);
+                                    const temp = element.ownerDocument.createElement('div');
+                                    temp.innerHTML = html;
+                                    let nodeToAppend = null;
+                                    if (temp.childElementCount === 1 && temp.firstElementChild.tagName === 'P') {
+                                        nodeToAppend = temp.firstElementChild;
+                                        nodeToAppend.style.margin = '12px 0 0 0';
+                                        nodeToAppend.style.color = '#374151';
+                                    } else {
+                                        nodeToAppend = element.ownerDocument.createElement('p');
+                                        nodeToAppend.style = 'margin:12px 0 0 0; color:#374151;';
+                                        nodeToAppend.innerHTML = html;
+                                    }
+                                    element.appendChild(nodeToAppend);
+                                }
+                            }
                             break;
                         case '#02_nav_summary':
                             const ulNav = element.querySelector('ul');
@@ -340,16 +430,19 @@ export async function handlePageCreation(jsonInput, exportType) {
                             break;
                         case '#13_monument_sheet_long':
                             element.querySelector('h2').innerHTML = formatTextToHtml(data.title);
-                            const sheetContainer = element.querySelector('div');
-                            // Vider les paragraphes existants tout en gardant le h2
-                             Array.from(sheetContainer.children).forEach(child => {
-                                if(child.tagName !== 'H2') child.remove();
+                            // Dans le modèle, le H2 est dans le 2e <div> (le 1er est une barre décorative)
+                            const h2 = element.querySelector('h2');
+                            const contentWrapper = h2 ? h2.parentElement : element;
+                            // Nettoyer tout sauf le H2 à l'intérieur du wrapper
+                            Array.from(contentWrapper.children).forEach(child => {
+                                if (child !== h2) child.remove();
                             });
+                            // Injecter les paragraphes après le H2
                             data.paragraphs.forEach(pText => {
                                 const p = document.createElement('p');
                                 p.style = "margin:0 0 8px 0;";
                                 p.innerHTML = formatTextToHtml(pText);
-                                sheetContainer.appendChild(p);
+                                contentWrapper.appendChild(p);
                             });
                             break;
                         case '#14_faq_block':
@@ -429,6 +522,42 @@ export async function handlePageCreation(jsonInput, exportType) {
             }
         });
 
+        // Deterministic in-page navigation anchors for #02_nav_summary
+        try {
+            const navEl = finalHtmlContainer.querySelector('nav[role="navigation"]');
+            if (navEl) {
+                const links = Array.from(navEl.querySelectorAll('a[href^="#"]'))
+                    .map(a => ({ id: (a.getAttribute('href') || '').replace(/^#/, '').trim(), text: (a.textContent || '').trim() }))
+                    .filter(x => x.id);
+                const allH2 = Array.from(finalHtmlContainer.querySelectorAll('h2'));
+                const titledAfter = allH2
+                    .filter(h2 => (navEl.compareDocumentPosition(h2) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0)
+                    .map(h2 => ({ h2, container: h2.parentElement }));
+                const used = new Set();
+                links.forEach(link => {
+                    if (finalHtmlContainer.ownerDocument.getElementById(link.id) || doc.getElementById(link.id)) {
+                        return;
+                    }
+                    let target = titledAfter.find(b => !used.has(b.h2) && ((b.h2.textContent || '').trim() === link.text));
+                    if (!target) {
+                        target = titledAfter.find(b => !used.has(b.h2));
+                    }
+                    const anchor = doc.createElement('span');
+                    anchor.id = link.id;
+                    anchor.setAttribute('aria-hidden', 'true');
+                    anchor.setAttribute('style', 'display:block; height:0; margin:0; padding:0; scroll-margin-top:96px;');
+                    if (target && target.container) {
+                        target.container.insertBefore(anchor, target.h2);
+                        used.add(target.h2);
+                    } else {
+                        finalHtmlContainer.appendChild(anchor);
+                    }
+                });
+            }
+        } catch (e) {
+            console.warn('Nav anchors mapping skipped', e);
+        }
+
         return finalHtmlContainer.innerHTML;
 
         return finalHtml;
@@ -467,6 +596,45 @@ export async function handleMillionnaireCreation(jsonInput) {
                }
                files[path] = content;
            }
+           // Post-traitement pour supprimer tout résidu d'ID/chemin du modèle
+           const mmTimestamp = Math.floor(Date.now() / 1000);
+           const mmCourseId = 1000 + Math.floor(Math.random() * 9000);
+           const mmModuleId = 10000 + Math.floor(Math.random() * 90000);
+           const mmSectionId = 1000 + Math.floor(Math.random() * 9000);
+           const mmActivityId = 100 + Math.floor(Math.random() * 900);
+           const mmCourseShort = `parcours-${Math.random().toString(36).substring(2, 15)}`;
+           const mmCourseCtx = 10000 + Math.floor(Math.random() * 90000);
+           const mmActivityCtx = mmCourseCtx + 2;
+           const remapped = {};
+           for (const p in files) {
+               let c = files[p];
+               if (p.endsWith('.xml')) {
+                   c = c.replace(/millionnairev2_59967/g, `millionnairev2_${mmModuleId}`)
+                        .replace(/<module id="59967"/g, `<module id="${mmModuleId}"`)
+                        .replace(/<sectionid>11207<\/sectionid>/g, `<sectionid>${mmSectionId}<\/sectionid>`)
+                        .replace(/<activity id="664" moduleid="59967" modulename="millionnairev2" contextid="110714">/g,
+                                 `<activity id="${mmActivityId}" moduleid="${mmModuleId}" modulename="millionnairev2" contextid="${mmActivityCtx}">`)
+                        .replace(/<millionnairev2 id="664">/g, `<millionnairev2 id="${mmActivityId}">`)
+                        .replace(/<course>3341<\/course>/g, `<course>${mmCourseId}<\/course>`)
+                        .replace(/<timecreated>\d+<\/timecreated>/g, `<timecreated>${mmTimestamp}<\/timecreated>`)
+                        .replace(/<timemodified>\d+<\/timemodified>/g, `<timemodified>${mmTimestamp}<\/timemodified>`)
+                        .replace(/<shortname>[^<]*<\/shortname>/g, `<shortname>${mmCourseShort}<\/shortname>`)
+                        .replace(/<fullname>[^<]*<\/fullname>/g, `<fullname>${escapeXml(activityTitle)}<\/fullname>`);
+                   if (p.endsWith('moodle_backup.xml')) {
+                       c = c.replace(/(<name>)[\s\S]*?(<\/name>)/, `$1${escapeXml(activityTitle + '.mbz')}$2`)
+                            .replace(/(<moduleid>)[\s\S]*?(<\/moduleid>)/, `$1${mmModuleId}$2`)
+                            .replace(/(<sectionid>)[\s\S]*?(<\/sectionid>)/, `$1${mmSectionId}$2`)
+                            .replace(/(<original_course_id>)[\s\S]*?(<\/original_course_id>)/, `$1${mmCourseId}$2`)
+                            .replace(/(<original_course_fullname>)[\s\S]*?(<\/original_course_fullname>)/, `$1${escapeXml(activityTitle)}$2`)
+                            .replace(/(<original_course_shortname>)[\s\S]*?(<\/original_course_shortname>)/, `$1${mmCourseShort}$2`)
+                            .replace(/(<directory>activities\/)millionnairev2_\d+(<\/directory>)/, `$1millionnairev2_${mmModuleId}$2`);
+                   }
+               }
+               let np = p.replace(/millionnairev2_59967/g, `millionnairev2_${mmModuleId}`)
+                          .replace(/section_11207/g, `section_${mmSectionId}`);
+               remapped[np] = c;
+           }
+           files = remapped;
            // Ajout automatique du fichier moodle_backup.log minimal
            files['moodle_backup.log'] = translations.millionnaire_backup_log || "Sauvegarde créée automatiquement par Caramel";
            const gzData = await createMbz(files);
@@ -501,7 +669,7 @@ export async function handleAppariementCreation(jsonInput) {
              if (typeof Tar === 'undefined' || typeof fflate === 'undefined') {
                  throw new Error(translations.millionnaire_error_compression_libs || "Les bibliothèques de compression (Tar.js ou fflate) ne sont pas chargées.");
              }
-             const jsonData = JSON.parse(jsonInput);
+             const jsonData = JSON.parse(cleanJsonInput(jsonInput));
             if (!jsonData.title || !Array.isArray(jsonData.pairs) || jsonData.pairs.length === 0 || jsonData.pairs.some(p => !p.question || !p.answer)) {
                 throw new Error(translations.appariement_error_invalid_json || "La structure du JSON est invalide. Assurez-vous qu'elle contient un 'title' et un tableau 'pairs' où chaque paire a une 'question' et une 'answer'.");
             }
@@ -511,9 +679,15 @@ export async function handleAppariementCreation(jsonInput) {
             const questions = {};
             const responses = {};
             pairs.forEach((pair, index) => {
-                questions[index + 1] = escapeHtmlTags(`<p dir=\"ltr\" style=\"text-align: left;\">${pair.question}<\/p>`);
-                responses[index + 1] = escapeHtmlTags(`<p dir=\"ltr\" style=\"text-align: left;\">${pair.answer}<\/p>`);
+                const q = String(pair.question ?? '').trim();
+                const a = String(pair.answer ?? '').trim();
+                // Conserver un paragraphe HTML mais neutralisé (balises échappées) pour l'éditeur Moodle
+                questions[index + 1] = escapeHtmlTags(`<p dir=\"ltr\" style=\"text-align: left;\">${q}<\/p>`);
+                responses[index + 1] = escapeHtmlTags(`<p dir=\"ltr\" style=\"text-align: left;\">${a}<\/p>`);
             });
+            // IMPORTANT: ne pas double-échanger ici. Les balises <p> sont déjà échappées
+            // dans chaque entrée via escapeHtmlTags(); conserver le JSON brut pour que
+            // Moodle restitue bien le HTML (sinon on verrait &lt;p&gt; s'afficher).
             const associations = JSON.stringify({ questions, responses });
 
             // --- Génération des IDs et Timestamps ---
@@ -529,10 +703,10 @@ export async function handleAppariementCreation(jsonInput) {
             const courseItemId = 1000 + Math.floor(Math.random() * 9000);
 
             const data = {
-                'ACTIVITY_TITLE': activityTitle,
-                'ACTIVITY_INTRO_HTML': escapeHtmlTags(`<p dir="ltr" style="text-align: left;">${translations.appariement_activity_intro || "Trouvez les paires correspondantes."}</p>`),
+                'ACTIVITY_TITLE': escapeXml(activityTitle),
+                'ACTIVITY_INTRO_HTML': escapeXml(`<p dir="ltr" style="text-align: left;">${jsonData.intro ? String(jsonData.intro) : (translations.appariement_activity_intro || "Trouvez les paires correspondantes.")}</p>`),
                 'ASSOCIATIONS_JSON': associations,
-                'COURSE_FULLNAME': activityTitle,
+                'COURSE_FULLNAME': escapeXml(activityTitle),
                 'COURSE_SHORTNAME': `parcours-${Math.random().toString(36).substring(2, 15)}`,
                 'COURSE_ID': courseId,
                 'MODULE_ID': moduleId,
@@ -557,16 +731,22 @@ export async function handleAppariementCreation(jsonInput) {
                     const regex = new RegExp(`{{${key}}}`, 'g');
                     content = content.replace(regex, data[key]);
                 }
-                
+
+                // Corriger les références internes d'IDs et chemins du modèle
+                // Dossier activité
                 let newPath = path.replace(/epikmatch_13863/g, `epikmatch_${data.MODULE_ID}`);
+                // Sections (si présentes)
                 newPath = newPath.replace(/section_3585/g, `section_${data.SECTION_ID}`);
-                
+                // Inforef: remapper l'ID d'item de note si un ID fixe est présent
+                if (newPath.endsWith('inforef.xml')) {
+                    content = content.replace(/<id>\d+<\/id>/, `<id>${data.GRADE_ITEM_ID}</id>`);
+                }
+
                 newFiles[newPath] = content;
             }
             files = newFiles;
- 
-            files['moodle_backup.log'] = translations.millionnaire_backup_log || 'Backup created automatically by Caramel\n';
-            const gzData = await createMbz(files);
+
+            // Met à jour le nom de sauvegarde dans moodle_backup.xml pour éviter toute trace du modèle
             const now = new Date();
             const dateString = now.getFullYear() + '-' +
                              String(now.getMonth() + 1).padStart(2, '0') + '-' +
@@ -575,6 +755,14 @@ export async function handleAppariementCreation(jsonInput) {
                              String(now.getMinutes()).padStart(2, '0');
             const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
             const fileName = `appariement_caramel_${dateString}_${lang}.mbz`;
+            if (files['moodle_backup.xml']) {
+                const backupName = jsonData.title ? `${jsonData.title}.mbz` : fileName;
+                const safeBackupName = escapeXml(backupName);
+                files['moodle_backup.xml'] = files['moodle_backup.xml'].replace(/(<name>)[\s\S]*?(<\/name>)/, `$1${safeBackupName}$2`);
+            }
+
+            files['moodle_backup.log'] = translations.millionnaire_backup_log || 'Backup created automatically by Caramel\n';
+            const gzData = await createMbz(files);
             
             const a = document.createElement('a');
             a.href = URL.createObjectURL(new Blob([gzData], { type: 'application/gzip' }));
@@ -667,7 +855,13 @@ export async function handleQCMCreation(jsonInput) {
                 newFiles[newPath] = content;
             }
             files = newFiles;
- 
+
+            // Mettre le nom de sauvegarde sur le titre JSON si présent
+            if (files['moodle_backup.xml']) {
+                const backupTitle = `${activityTitle}.mbz`;
+                files['moodle_backup.xml'] = files['moodle_backup.xml'].replace(/(<name>)[\s\S]*?(<\/name>)/, `$1${escapeXml(backupTitle)}$2`);
+            }
+
             files['moodle_backup.log'] = translations.millionnaire_backup_log || 'Backup created automatically by Caramel\n';
             const gzData = await createMbz(files);
             const now = new Date();
