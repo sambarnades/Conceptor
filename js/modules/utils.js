@@ -382,3 +382,19 @@ export function setupToolbarListeners(container) {
         }
     });
 }
+
+export function getCaramelVersionFromFooter() {
+    const footer = document.querySelector('footer.footer');
+    if (!footer) {
+        return null;
+    }
+
+    const footerLink = footer.querySelector('a[href*="CHANGELOG"]');
+    const versionText = footerLink?.textContent?.trim() || footer.textContent?.trim();
+    if (!versionText) {
+        return null;
+    }
+
+    const versionMatch = versionText.match(/v?(\d+(?:\.\d+)*)/i);
+    return versionMatch ? versionMatch[1] : null;
+}

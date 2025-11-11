@@ -9,7 +9,7 @@ import { translations, translatePage, currentLang } from './translation.js';
 import { generatePrompts } from './prompt-generator.js';
 import { handleH5PCreation } from './h5p-creator.js';
 import { handleGlossaireXmlCreation, handleMillionnaireCreation, handleAppariementCreation, handleQCMCreation, handlePageCreation, generateMoodleXml, generateMoodleGift } from './moodle-creator.js';
-import { cleanJsonInput, showNotification, copyToClipboard, downloadFile, setupToolbarListeners } from './utils.js';
+import { cleanJsonInput, showNotification, copyToClipboard, downloadFile, setupToolbarListeners, getCaramelVersionFromFooter } from './utils.js';
 import { populateModelSelector, AVAILABLE_MODELS, generateH5PWithLLM } from './llm.js';
 
 /**
@@ -692,8 +692,13 @@ export function toggleActivityContent(moduleKey, tileElement) {
                             ? module.englishName
                             : (module && module.machineName)
                                 ? module.machineName
-                                : moduleKey
+                            : moduleKey
                 };
+                // Ajoute la version indiquée dans le footer pour l'export vers n8n.
+                const caramelVersion = getCaramelVersionFromFooter();
+                if (caramelVersion) {
+                    activityMeta.caramelVersion = caramelVersion;
+                }
                 const content = await generateH5PWithLLM(prompt, selectedModel, activityMeta);
                 if (content) {
                     jsonInputTarget.value = content;
