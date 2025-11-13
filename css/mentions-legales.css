@@ -13,6 +13,14 @@
     counter-reset: section-counter; /* Initialise le compteur de section */
 }
 
+/* Harmoniser la largeur et le rayon avec la modale Tutoriel */
+#legal-mentions-modal .modal-content {
+    width: clamp(320px, 88vw, 960px);
+    max-width: none;
+    border-radius: 12px;
+    margin: clamp(12px, 4vh, 48px) auto;
+}
+
 /* Titre principal */
 #legal-mentions-content h3 {
     margin: 0 0 20px 0;
@@ -84,4 +92,67 @@
     top: 0;
     color: #34C759;
     font-weight: bold;
+}
+/* =======================================================================
+   EN-TÊTE ET BOUTON FERMETURE DE LA MODALE LÉGALE
+   Aligne le comportement sur la modale Tutoriel, sans chevauchement.
+   ======================================================================= */
+.legal-modal-header {
+    padding: 12px 60px 12px 24px;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+    min-height: 56px;
+    background: #FFFFFF;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.legal-modal-header h2 {
+    margin: 0;
+    font-size: clamp(1.15rem, 1vw + 1rem, 1.6rem);
+    color: #1d1d1f;
+    padding: 0 0.5rem;
+}
+
+.legal-close-modal-btn {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    color: #8e8e93;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.legal-close-modal-btn:hover,
+.legal-close-modal-btn:focus {
+    color: #1d1d1f;
+    text-decoration: none;
+}
+
+@media (max-width: 600px) {
+    .legal-modal-header {
+        padding: 12px 50px 12px 16px;
+        min-height: 52px;
+    }
+
+    .legal-close-modal-btn {
+        font-size: 24px;
+        right: 12px;
+    }
+
+    /* Rendu plus compact sur mobile */
+    #legal-mentions-modal .modal-content {
+        margin: clamp(8px, 2vh, 24px) auto;
+    }
+}
+
+/* Masquer le titre interne du contenu, déjà affiché dans l’en-tête */
+#legal-mentions-modal #legal-mentions-content > h3 {
+    display: none;
 }

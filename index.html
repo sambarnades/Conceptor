@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -124,8 +124,7 @@
             <button class="tab-link" data-tab="memory" data-key="tab_memory">Mémorisation & Découverte</button>
             <button class="tab-link" data-tab="elea" data-key="tab_elea">Éléa</button>
             <button class="tab-link" data-tab="h5p" data-key="tab_h5p">H5P</button>
-          <!--  <button class="tab-link" data-tab="moodle" data-key="tab_moodle">Moodle</button> -->
-        </div>
+         </div>
 
         <div id="all" class="tab-content active">
             <div class="grid">
@@ -147,8 +146,6 @@
         <div id="h5p" class="tab-content">
             <div class="grid"></div>
         </div>
-        <!-- <div id="moodle" class="tab-content"> -->
-        <!-- <div class="grid"></div> -->
         </div>
     </div>
 
@@ -180,7 +177,7 @@
 
     <footer class="footer">
         <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank"><i
-                class="fas fa-info-circle"></i> Caramel v3.3.3</a>
+                class="fas fa-info-circle"></i> Caramel v3.3.4</a>
         <a href="mailto:gauthier.remande@ac-nantes.fr"><i class="fas fa-envelope"></i> Gauthier REMANDE</a>
         <a href="mailto:emmanuel.gaunard@ac-grenoble.fr"><i class="fas fa-envelope"></i> Emmanuel GAUNARD</a>
         <a href="https://forge.apps.education.fr/caramel/caramel"><i class="fas fa-code-branch"></i> Forge</a>
@@ -191,9 +188,14 @@
         <a href="#" id="legal-mentions-link"><i class="fas fa-gavel"></i> <span data-key="legal_mentions">Mentions légales</span></a>
     </footer>
 
+    <!-- ================= Mentions légales ==================== -->
+
     <div id="legal-mentions-modal" class="modal">
         <div class="modal-content">
-            <!-- La croix de fermeture a été retirée pour correspondre au design de la modale d'aide -->
+            <div class="legal-modal-header">
+                <h2><i class="fas fa-gavel"></i> <span data-translate="legal_title"></span></h2>
+                <span class="legal-close-modal-btn" id="close-legal-modal">&times;</span>
+            </div>
             <div id="legal-mentions-content" class="legal-mentions-content"></div>
         </div>
     </div>

@@ -214,6 +214,7 @@ export function setupEventListeners() {
     const legalMentionsModal = document.getElementById('legal-mentions-modal');
     const closeModalBtn = document.querySelector('.close-modal-btn');
     const legalMentionsContent = document.getElementById('legal-mentions-content');
+    const closeLegalBtn = document.getElementById('close-legal-modal');
 
     if (legalMentionsLink) {
         legalMentionsLink.addEventListener('click', async (e) => {
@@ -234,17 +235,39 @@ export function setupEventListeners() {
         });
     }
 
-    /* if(closeModalBtn) {
-        closeModalBtn.addEventListener('click', () => {
+    if (closeLegalBtn && legalMentionsModal) {
+        closeLegalBtn.addEventListener('click', () => {
             legalMentionsModal.style.display = 'none';
         });
-    } */
+    }
 
     window.addEventListener('click', (e) => {
         if (e.target === legalMentionsModal) {
             legalMentionsModal.style.display = 'none';
         }
     });
+
+    // Harmoniser la fermeture au clavier (Echap) pour Aide et Mentions légales
+    if (!window._caramelEscHandlerAttached) {
+        window._caramelEscHandlerAttached = true;
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' || e.key === 'Esc') {
+                // Priorité à la modale Aide (dynamique)
+                const helpModal = document.getElementById('help-modal');
+                if (helpModal) {
+                    // showHelpModal supprime la modale au close; on réplique ici
+                    helpModal.remove();
+                    return;
+                }
+
+                // Puis la modale Mentions légales (statique)
+                const legalModal = document.getElementById('legal-mentions-modal');
+                if (legalModal && legalModal.style.display === 'block') {
+                    legalModal.style.display = 'none';
+                }
+            }
+        });
+    }
 }
 
 export function setupToolbarListeners(container) {

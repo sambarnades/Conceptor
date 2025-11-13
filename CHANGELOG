@@ -1,5 +1,11 @@
 # Caramel – Journal des modifications
 
+## 3.3.4 – 13-11-2025
+- **Changement du nom des LLM** : les LLM proposés précédemment ont été renommés par ilaas. Adaptation de Caramel en conséquence.
+- **Fermeture des modales** : La modale "Mentions légales" se voit dotée d'une croix de fermeture comme c'est le cas pour la modale "Tutoriel", ajustement pour un mode responsive amélioré, la touche Esc du clavier permet de fermer ces deux modales.
+
+---
+
 ## 3.3.3 – 11-11-2025
 - **Structuration du code** : Le coeur du code a été nettoyé et réorganisé.
 - **Traductions** : Ajout d'une traduction manquante à l'issue de la génération d'une activité.

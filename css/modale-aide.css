@@ -228,6 +228,8 @@
 @media (max-width: 600px) {
     .help-modal-content {
         padding: 20px;
+        /* Rendu plus compact sur mobile */
+        margin: clamp(8px, 2vh, 24px) auto;
     }
 
     .help-modal-header {
