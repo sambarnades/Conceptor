@@ -12,16 +12,6 @@
  * Liste des modèles d'IA disponibles via l'API du LLM.
  */
 
-//export const AVAILABLE_MODELS = [
-//    { id: 'mistralai/Mistral-Small-3.1-24B-Instruct-2503', type: 'text-generation', owned_by: 'mistralai' },
-//    { id: 'mistralai/Mistral-Small-3.2-24B-Instruct-2506', type: 'text-generation', owned_by: 'mistralai', featured: true, order: 1, sizeTag: 'small' },
-//    { id: 'neuralmagic/Meta-Llama-3.1-8B-Instruct-FP8', type: 'text-generation', owned_by: 'neuralmagic' },
-//    { id: 'openai/gpt-oss-120b', type: 'text-generation', owned_by: 'openai', featured: true, order: 3, sizeTag: 'xl' },
-//    { id: 'qwen2.5', type: 'text-generation', owned_by: 'Qwen' },
-//    { id: 'qwen3', type: 'text-generation', owned_by: 'Qwen' },
-//    { id: 'RedHatAI/Llama-3.3-70B-Instruct-FP8-dynamic', type: 'text-generation', owned_by: 'RedHatAI', featured: true, order: 2, sizeTag: 'large' }
-//];
-
 export const AVAILABLE_MODELS = [
     { id: 'mistral-small-3.2-24b', type: 'text-generation', owned_by: 'mistralai', featured: true, order: 1, sizeTag: 'small' },
     { id: 'llama-3.3-70b', type: 'text-generation', owned_by: 'RedHatAI', featured: true, order: 2, sizeTag: 'large' },
