@@ -670,14 +670,12 @@ export function toggleActivityContent(moduleKey, tileElement) {
             const addDropdownHandlers = () => {
                 if (dropdownHandlersAttached) return;
                 window.addEventListener('resize', dropdownVisibilityHandler);
-                window.addEventListener('scroll', dropdownVisibilityHandler, true);
                 dropdownHandlersAttached = true;
             };
 
             const removeDropdownHandlers = () => {
                 if (!dropdownHandlersAttached) return;
                 window.removeEventListener('resize', dropdownVisibilityHandler);
-                window.removeEventListener('scroll', dropdownVisibilityHandler, true);
                 dropdownHandlersAttached = false;
             };
 

@@ -15,9 +15,9 @@
 export const AVAILABLE_MODELS = [
     { id: 'mistral-small-3.2-24b', type: 'text-generation', owned_by: 'mistralai', featured: true, order: 1, sizeTag: 'small' },
     { id: 'llama-3.3-70b', type: 'text-generation', owned_by: 'RedHatAI', featured: true, order: 2, sizeTag: 'large' },
-    { id: 'llama-3.1-8b', type: 'text-generation', owned_by: 'neuralmagic' },
     { id: 'gpt-oss-120b', type: 'text-generation', owned_by: 'openai', featured: true, order: 3, sizeTag: 'xl' },
     { id: 'qwen-2.5-3b', type: 'text-generation', owned_by: 'Qwen' },
+    { id: 'llama-3.1-8b', type: 'text-generation', owned_by: 'neuralmagic' },
     { id: 'qwen-3-30b', type: 'text-generation', owned_by: 'Qwen' }
 ];
 
