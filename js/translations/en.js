@@ -1,4 +1,4 @@
-﻿const translations_en = {
+const translations_en = {
     subtitle: "Assisted Creation of Resources and Activities for Magistère and Éléa",
     help_button: "Help",
     help_modal_title: "🚀 Caramel Complete Guide for Teachers",
@@ -1116,7 +1116,7 @@
     legal_editor_emmanuel_gaunard_email: "Email: emmanuel.gaunard@ac-grenoble.fr",
     legal_editor_emmanuel_gaunard_address: "Address: 30 boulevard de la République, 38200 Vienne, France",
     legal_editor_emmanuel_gaunard_phone: "Phone: +33 6 46 74 20 94",
-    legal_app_description: "The “Caramel” web application is a free, non-commercial project for creating H5P content. No account is required, no personal data is collected, and all interactions occur locally in the browser.",
+    legal_app_description: "The “Caramel” web application is a free, non-commercial project for creating H5P content. No account is required, no personal data is collected.",
     legal_hosting_title: "Hosting",
     legal_host_name: "<strong>Host</strong>: Forge of Digital Educational Commons",
     legal_host_company: "<strong>Company name</strong>: Ministry of National Education and Youth",
@@ -1129,7 +1129,7 @@
     legal_intellectual_property_title: "Intellectual Property",
     legal_intellectual_property_content: "All source codes, graphic elements, and content are licensed under the free GNU AGPLv3 license. Their reuse is permitted under the terms of their respective licenses. Any redistribution or modification must credit the original authors: Gauthier REMANDE and Emmanuel GAUNARD. The images used in the H5P modules are retrieved from H5P.org.",
     legal_personal_data_title: "Personal Data",
-    legal_personal_data_content: "No personal data is collected or stored. No tracking cookies are used. The session history is stored in the user's local browser (localStorage), without transmission. In accordance with the GDPR, no personal information is transmitted to the editor or to a third party.",
+    legal_personal_data_content: "No personal data is collected or stored. No tracking cookies are used. The session history is stored in the user's local browser (localStorage).",
     legal_ai_models_title: "Artificial Intelligence Models",
     legal_ai_models_content: "The Caramel application relies, only during one‑click generation, on AI models operated by ILAAS, a federation of shared AI infrastructures. Requests are routed via an n8n workflow hosted by the Incubator, then sent to ILAAS for execution on trusted servers hosted in data centers labeled by the Higher Education and Research (ESR) sector. Caramel does not run the models and does not process or store data itself; data is used solely to fulfill the request and is not sent to public consumer AIs. The models currently offered include Mistral Small 3.2 (24B parameters), Llama 3.3 (70B parameters), and GPT‑OSS 120B (120B parameters). Any hosting, logging, or retention performed by ILAAS is governed by their privacy policy and terms of service.",
     legal_user_requests_processing_title: "Processing of user requests via n8n and the Incubator of the Ministry of National Education",
