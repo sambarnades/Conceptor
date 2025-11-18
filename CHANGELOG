@@ -1,5 +1,10 @@
 # Caramel – Journal des modifications
 
+## 3.3.6 – 18-11-2025
+- **Mentions légales** : corectifs dans les "Mentions légales" : pas de localStorage utilisé, la question du traitement des données adaptée au contexte des IA de ILAAS, modification des mentions pour spécifier que la plateforme génère des activités H5P et Éléa.
+
+---
+
 ## 3.3.5 – 17-11-2025
 - **Activité Page** : corectif d'un champ qui insérait un paragraphe qui n'était pas généré par l'IA.
 
