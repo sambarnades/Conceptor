@@ -1,4 +1,4 @@
-﻿const translations_de = {
+const translations_de = {
     subtitle: "KI-gestützte Erstellung von Ressourcen und Aktivitäten für Magistère und Éléa",
     help_button: "Hilfe",
     help_modal_title: "🚀 Umfassender Caramel-Leitfaden für Lehrkräfte",
@@ -1150,7 +1150,7 @@
     legal_intellectual_property_title: "Geistiges Eigentum",
     legal_intellectual_property_content: "Alle Quellcodes, grafischen Elemente und Inhalte sind unter der freien Lizenz GNU AGPLv3 lizenziert. Ihre Wiederverwendung ist unter den Bedingungen ihrer jeweiligen Lizenzen gestattet. Jede Weiterverbreitung oder Änderung muss die ursprünglichen Autoren nennen: Gauthier REMANDE und Emmanuel GAUNARD. Die in den H5P-Modulen verwendeten Bilder stammen von H5P.org.",
     legal_personal_data_title: "Personenbezogene Daten",
-    legal_personal_data_content: "Es werden keine personenbezogenen Daten erhoben oder gespeichert. Es werden keine Tracking-Cookies verwendet. Der Sitzungsverlauf wird im lokalen Browser des Nutzers (localStorage) gespeichert, ohne Übertragung. Gemäß der DSGVO werden keine personenbezogenen Informationen an den Herausgeber oder an Dritte übermittelt.",
+    legal_personal_data_content: "Es werden keine personenbezogenen Daten erhoben oder gespeichert. Es werden keine Tracking-Cookies verwendet. Der Sitzungsverlauf wird im lokalen Browser des Nutzers (localStorage) gespeichert, ohne Übertragung",
     legal_ai_models_title: "Modelle der künstlichen Intelligenz",
     legal_ai_models_content: "Die Caramel‑Anwendung nutzt, ausschließlich bei der Ein‑Klick‑Generierung, von ILAAS betriebene KI‑Modelle – eine Föderation gemeinschaftlich genutzter KI‑Infrastrukturen. Anfragen werden über einen vom Inkubator gehosteten n8n‑Workflow geleitet und anschließend an ILAAS zur Ausführung auf vertrauenswürdigen Servern in vom Bereich Hochschul‑ und Forschungswesen (ESR) zertifizierten Rechenzentren übermittelt. Caramel führt keine Modelle aus und verarbeitet oder speichert Daten nicht selbst; die Daten dienen ausschließlich der Bearbeitung der Anfrage und werden nicht an öffentliche Consumer‑KIs übermittelt. Derzeit verfügbare Modelle sind u. a. Mistral Small 3.2 (24 Mrd. Parameter), Llama 3.3 (70 Mrd. Parameter) und GPT‑OSS 120B (120 Mrd. Parameter). Etwaige von ILAAS vorgenommene Hosting‑, Protokollierungs‑ und Aufbewahrungsmaßnahmen unterliegen deren Datenschutzerklärung und Nutzungsbedingungen.",
     legal_user_requests_processing_title: "Verarbeitung von Benutzeranfragen über n8n und den Inkubator des Bildungsministeriums",
