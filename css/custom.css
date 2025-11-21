@@ -90,3 +90,8 @@
     text-decoration: underline;
 }
 
+/* Masque le bouton de copie uniquement dans la zone RAG du mode Avancé */
+#unified-rag-area .floating-toolbar #ocr-copy-btn {
+    display: none;
+}
+

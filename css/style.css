@@ -1707,7 +1707,7 @@ input[type="file"] {
     max-height: none; /* Supprime la limite de hauteur en plein écran */
 }
 
-#ocr-output[contenteditable="true"] {
+#ocr-output {
     flex-grow: 1;
     resize: none !important;
     padding: 20px;
@@ -1721,11 +1721,11 @@ input[type="file"] {
     overflow-y: auto;
 }
 
-#ocr-output[contenteditable="true"]:focus {
+#ocr-output:focus {
     outline: none; /* Supprime le cadre au focus */
 }
 
-#ocr-output[contenteditable="true"]:empty:before {
+#ocr-output:empty:before {
     content: attr(data-placeholder);
     color: #a0a0a0;
     pointer-events: none;
@@ -2228,7 +2228,7 @@ input[type="file"] {
 .char-counter {
     position: absolute;
     bottom: 10px;
-    right: 10px;
+    right: 18px;
     font-size: 12px;
     color: #666;
     background-color: rgba(255, 255, 255, 0.8);

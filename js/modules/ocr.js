@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file Gestion de la fonctionnalité d'OCR (Reconnaissance Optique de Caractères).
  * Ce module gère le téléversement de fichiers PDF, leur traitement côté client avec PDF.js et Tesseract.js
  * pour en extraire le texte, et l'affichage du résultat dans l'interface.
@@ -217,24 +217,45 @@ export function initOcr() {
         });
     }
 
-    if (ocrLockBtn) {
-        ocrOutput.readOnly = false;
+    if (ocrLockBtn && ocrOutput) {
+        let isLocked = false;
+
+        const applyLockState = (locked) => {
+            isLocked = locked;
+            ocrOutput.setAttribute('contenteditable', locked ? 'false' : 'true');
+            ocrOutput.classList.toggle('locked', locked);
+
+            const icon = ocrLockBtn.querySelector('i');
+            const textSpan = ocrLockBtn.querySelector('.toolbar-btn-text');
+
+            if (icon) {
+                icon.classList.toggle('fa-lock', locked);
+                icon.classList.toggle('fa-lock-open', !locked);
+            }
+
+            if (locked) {
+                ocrLockBtn.setAttribute('aria-label', translations.unlock_text || 'Déverrouiller');
+                ocrLockBtn.setAttribute('data-tooltip-key', 'unlock_prompt');
+                if (textSpan) {
+                    textSpan.setAttribute('data-key', 'unlock_prompt');
+                    textSpan.textContent = translations.unlock_prompt || textSpan.textContent;
+                }
+            } else {
+                ocrLockBtn.setAttribute('aria-label', translations.lock_text || 'Verrouiller');
+                ocrLockBtn.setAttribute('data-tooltip-key', 'lock_prompt');
+                if (textSpan) {
+                    textSpan.setAttribute('data-key', 'lock_prompt');
+                    textSpan.textContent = translations.lock_prompt || textSpan.textContent;
+                }
+            }
+        };
+
+        applyLockState(false);
 
         ocrLockBtn.addEventListener('click', () => {
-            ocrOutput.readOnly = !ocrOutput.readOnly;
-            const icon = ocrLockBtn.querySelector('i');
-            if (ocrOutput.readOnly) {
-                icon.classList.remove('fa-lock-open');
-                icon.classList.add('fa-lock');
-                ocrLockBtn.setAttribute('aria-label', translations.unlock_text || 'Dévérrouiller');
-            } else {
-                icon.classList.remove('fa-lock');
-                icon.classList.add('fa-lock-open');
-                ocrLockBtn.setAttribute('aria-label', translations.lock_text || 'Vérrouiller');
-            }
+            applyLockState(!isLocked);
         });
     }
-
     if (ocrOutput) {
         ocrOutput.addEventListener('input', updateCharCounter);
     }
