@@ -1131,7 +1131,7 @@ const translations_en = {
     legal_personal_data_title: "Personal Data",
     legal_personal_data_content: "No personal data is collected or stored. No tracking cookies are used.",
     legal_ai_models_title: "Artificial Intelligence Models",
-    legal_ai_models_content: "The Caramel application relies, only during one‑click generation, on AI models operated by ILAAS, a federation of shared AI infrastructures. Requests are routed via an n8n workflow hosted by the Incubator, then sent to ILAAS for execution on trusted servers hosted in data centers labeled by the Higher Education and Research (ESR) sector. Caramel does not run the models and does not process or store data itself; data is used solely to fulfill the request and is not sent to public consumer AIs. The models currently offered include Mistral Small 3.2 (24B parameters), Llama 3.3 (70B parameters), and GPT‑OSS 120B (120B parameters). Any hosting, logging, or retention performed by ILAAS is governed by their privacy policy and terms of service.",
+    legal_ai_models_content: "The Caramel application relies, only during one‑click generation, on AI models operated by ILAAS, a federation of shared AI infrastructures. Requests are routed via an n8n workflow hosted by the Incubator, then sent to ILAAS for execution on trusted servers hosted in data centers labeled by the Higher Education and Research (ESR) sector. Caramel does not run the models and does not process or store data itself; data is used solely to fulfill the request and is not sent to public consumer AIs. The models currently offered include {{llm_model_1_name}} ({{llm_model_1_param}} {{llm_model_parameters_unit}}), {{llm_model_2_name}} ({{llm_model_2_param}} {{llm_model_parameters_unit}}), and {{llm_model_3_name}} ({{llm_model_3_param}} {{llm_model_parameters_unit}}). Any hosting, logging, or retention performed by ILAAS is governed by their privacy policy and terms of service.",
     legal_user_requests_processing_title: "Processing of user requests via n8n and the Incubator of the Ministry of National Education",
     legal_user_requests_processing_content: "Our site uses a technical solution built with n8n, an open‑source tool hosted by the Incubator of the Ministry of National Education. Through an automated workflow, this service transforms user requests into structured data (JSON format) to interact with a DINUM artificial intelligence, and is therefore sovereign. No sensitive information is exposed or transmitted without encryption, ensuring the confidentiality and security of exchanges.",
     legal_accessibility_title: "Accessibility",
@@ -1602,23 +1602,15 @@ const translations_en = {
 
     // Model descriptions (Caramel AI)
     llm_small_summary: "Soft caramel: fast, light, perfect for quick drills and answers without waiting. Consumes little.",
-    llm_small_technical: "Mistral AI",
     llm_large_summary: "Runny caramel: richer, more nuanced, ideal for tasks that need some depth. Consumes more.",
-    llm_large_technical: "Meta AI",
     llm_xl_summary: "Hard caramel: powerful and complex, reserved for ambitious projects. Patience required, result guaranteed! Consumes much more.",
-    llm_xl_technical: "OpenAI",
 
     // Friendly names for models (menu display)
-    llm_display_small: "Mistral-Small-3.2",
-    llm_display_large: "LLaMa-3.3",
-    llm_display_xl: "GPT-OSS",
 
     // Model indicators (Caramel AI)
     llm_model_source: "Model provider:",
     llm_model_parameters: "Model size:",
-    llm_model_parameters_small: "24 Mrd parameters",
-    llm_model_parameters_large: "70 Mrd parameters",
-    llm_model_parameters_xl: "120 Mrd parameters",
+    llm_model_parameters_unit: "B parameters",
 
     language: "Language",
     tutorial: "Tutorial",

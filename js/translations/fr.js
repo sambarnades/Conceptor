@@ -1131,7 +1131,7 @@ const translations_fr = {
     legal_personal_data_title: "Données personnelles",
     legal_personal_data_content: "Aucune donnée personnelle n’est collectée ni stockée. Aucun cookie de suivi n’est utilisé.",
     legal_ai_models_title: "Modèles d'Intelligence Artificielle",
-    legal_ai_models_content: "L’application Caramel s’appuie, uniquement lors de la génération en un clic, sur des modèles d’IA opérés par ILAAS, une fédération d’infrastructures d’IA mutualisées. Les requêtes sont acheminées via un workflow n8n hébergé par l’Incubateur, puis transmises à ILAAS pour exécution sur des serveurs de confiance hébergés dans des data centers labellisés de l’Enseignement supérieur et de la recherche (ESR). Caramel n’exécute pas les modèles et ne traite ni ne stocke les données en propre ; les données sont utilisées uniquement pour exécuter la requête et ne sont pas envoyées à des IA grand public. Les modèles actuellement proposés incluent Mistral Small 3.2 (24 Mrd paramètres), Llama 3.3 (70 Mrd paramètres) et GPT‑OSS 120B (120 Mrd paramètres). Les modalités d’hébergement, de journalisation et de conservation éventuellement effectuées par ILAAS relèvent de leur politique de confidentialité et de leurs conditions de service, auxquelles il convient de se référer.",
+    legal_ai_models_content: "L’application Caramel s’appuie, uniquement lors de la génération en un clic, sur des modèles d’IA opérés par ILAAS, une fédération d’infrastructures d’IA mutualisées. Les requêtes sont acheminées via un workflow n8n hébergé par l’Incubateur, puis transmises à ILAAS pour exécution sur des serveurs de confiance hébergés dans des data centers labellisés de l’Enseignement supérieur et de la recherche (ESR). Caramel n’exécute pas les modèles et ne traite ni ne stocke les données en propre ; les données sont utilisées uniquement pour exécuter la requête et ne sont pas envoyées à des IA grand public. Les modèles actuellement proposés incluent {{llm_model_1_name}} ({{llm_model_1_param}} {{llm_model_parameters_unit}}), {{llm_model_2_name}} ({{llm_model_2_param}} {{llm_model_parameters_unit}}) et {{llm_model_3_name}} ({{llm_model_3_param}} {{llm_model_parameters_unit}}). Les modalités d’hébergement, de journalisation et de conservation éventuellement effectuées par ILAAS relèvent de leur politique de confidentialité et de leurs conditions de service, auxquelles il convient de se référer.",
     legal_user_requests_processing_title: "Traitement des requêtes utilisateurs via n8n et l’Incubateur du Ministère de l’Éducation nationale",
     legal_user_requests_processing_content: "Notre site utilise une solution technique développée par n8n, un outil open source hébergé par l’Incubateur du Ministère de l’Éducation nationale. Ce service permet, via un workflow automatisé, de transformer les requêtes des utilisateurs en données structurées (format JSON) afin d’interagir avec une intelligence artificielle de la DINUM, donc souveraine. Aucune information sensible n’est exposée ou transmise sans chiffrement, assurant ainsi la confidentialité et la sécurité des échanges.",
     legal_accessibility_title: "Accessibilité",
@@ -1602,23 +1602,15 @@ const translations_fr = {
 
     // Descriptions des modèles (IA de Caramel)
     llm_small_summary: "Caramel mou : rapide, léger, parfait pour les exercices flash et les réponses sans attente. Consomme peu.",
-    llm_small_technical: "Mistral AI",
     llm_large_summary: "Caramel coulant : plus riche, plus nuancé, idéal pour les tâches qui demandent un peu de profondeur. Consomme davantage.",
-    llm_large_technical: "Meta AI",
     llm_xl_summary: "Caramel dur : puissant et complexe, à réserver aux projets ambitieux. Patience requise, résultat garanti ! Consomme beaucoup plus.",
-    llm_xl_technical: "OpenAI",
  
     // Noms conviviaux pour les modèles (affichage menu)
-    llm_display_small: "Mistral-Small-3.2",
-    llm_display_large: "LLaMa-3.3",
-    llm_display_xl: "GPT-OSS",
 
     // Indications des modèles (IA de Caramel)
     llm_model_source: "Fournisseur du modèle :",
     llm_model_parameters: "Taille modèle :",
-    llm_model_parameters_small: "24 Mrd paramètres",
-    llm_model_parameters_large: "70 Mrd paramètres",
-    llm_model_parameters_xl: "120 Mrd paramètres",
+    llm_model_parameters_unit: "Mrd paramètres",
 
     language: "Langue",
     tutorial: "Tutoriel",

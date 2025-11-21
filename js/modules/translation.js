@@ -4,6 +4,7 @@
  * sur le DOM, et la logique du sélecteur de langue.
  */
 
+import { AVAILABLE_MODELS } from './llm.js';
 import { generateTiles, toggleActivityContent } from './ui.js';
 
 /**
@@ -34,6 +35,48 @@ const languageConfig = {
   'nl': { name: 'Nederlands',code: 'nl' },
   'pt': { name: 'Português', code: 'pt' }
 };
+
+function getFeaturedLLMModels(count = 3) {
+  return AVAILABLE_MODELS
+    .filter(model => model.featured)
+    .sort((a, b) => {
+      const ao = (typeof a.order === 'number') ? a.order : Number.POSITIVE_INFINITY;
+      const bo = (typeof b.order === 'number') ? b.order : Number.POSITIVE_INFINITY;
+      return ao - bo;
+    })
+    .slice(0, count);
+}
+
+function formatLLMModelLabel(model, unit) {
+  if (!model) return '';
+  const label = model.displayName || model.id || '';
+  if (!label) return '';
+  const value = model.param ? ` (${model.param}${unit ? ` ${unit}` : ''})` : '';
+  return `${label}${value}`;
+}
+
+function hydrateLegalLLMLine() {
+  const legalText = translations.legal_ai_models_content;
+  if (typeof legalText !== 'string') return;
+
+  const unit = translations.llm_model_parameters_unit || '';
+  const featured = getFeaturedLLMModels(3);
+
+  const replacements = { llm_model_parameters_unit: unit };
+  featured.forEach((model, index) => {
+    const idx = index + 1;
+    replacements[`llm_model_${idx}_name`] = model?.displayName || model?.id || '';
+    replacements[`llm_model_${idx}_param`] = model?.param || '';
+    replacements[`llm_model_${idx}`] = formatLLMModelLabel(model, unit);
+  });
+
+  translations.legal_ai_models_content = Object.entries(replacements).reduce(
+    (text, [key, value]) => text.replace(new RegExp(`\\{\\{${key}\\}\\}`, 'g'), value),
+    legalText
+  );
+}
+
+
 
 /**
  * Essaie de récupérer l'objet de traductions exposé par le fichier JS.
@@ -113,6 +156,7 @@ export async function loadTranslations(lang) {
     // On ne modifie plus la variable globale, on la réassigne
     translations = Object.assign(translations, data);
     currentLang = lang;
+    hydrateLegalLLMLine();
 
     // Mettre à jour l'attribut lang du <html>
     document.documentElement.lang = lang;

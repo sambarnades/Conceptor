@@ -13,12 +13,12 @@
  */
 
 export const AVAILABLE_MODELS = [
-    { id: 'mistral-small-3.2-24b', type: 'text-generation', owned_by: 'mistralai', featured: true, order: 1, sizeTag: 'small' },
-    { id: 'llama-3.3-70b', type: 'text-generation', owned_by: 'RedHatAI', featured: true, order: 2, sizeTag: 'large' },
-    { id: 'gpt-oss-120b', type: 'text-generation', owned_by: 'openai', featured: true, order: 3, sizeTag: 'xl' },
-    { id: 'qwen-2.5-3b', type: 'text-generation', owned_by: 'Qwen' },
-    { id: 'llama-3.1-8b', type: 'text-generation', owned_by: 'neuralmagic' },
-    { id: 'qwen-3-30b', type: 'text-generation', owned_by: 'Qwen' }
+    { id: 'mistral-small-3.2-24b', displayName: 'Mistral-Small-3.2', param: '24', owned_by: 'Mistral AI', type: 'text-generation', featured: true, order: 1, sizeTag: 'small' },
+    { id: 'llama-3.3-70b', displayName: 'LLaMa-3.3', param: '70', owned_by: 'RedHatAI', type: 'text-generation', featured: true, order: 2, sizeTag: 'large' },
+    { id: 'gpt-oss-120b', displayName: 'GPT-OSS', param: '120', owned_by: 'OpenAI', type: 'text-generation', featured: true, order: 3, sizeTag: 'xl' },
+    { id: 'qwen-2.5-3b', displayName: 'Qwen 2.5 3B', param: '3', owned_by: 'Qwen', type: 'text-generation' },
+    { id: 'llama-3.1-8b', displayName: 'LLaMa-3.1-8B', param: '8', owned_by: 'Neural Magic', type: 'text-generation' },
+    { id: 'qwen-3-30b', displayName: 'Qwen 3 30B', param: '30', owned_by: 'Qwen', type: 'text-generation' }
 ];
 
 // =======================================================================
@@ -58,12 +58,16 @@ export function populateModelSelector(moduleKey, models, onSelectCallback, selec
         const technicalKey = sizeTag ? `llm_${sizeTag}_technical` : `${model.id.replace('-', '_')}_technical`;
 
         const summary = translations[summaryKey] || '';
-        const technical = translations[technicalKey] || '';
+        const modelSource = model.owned_by || translations[technicalKey] || '';
 
-        const parametersKey = sizeTag ? `llm_model_parameters_${sizeTag}` : '';
-        const parameters = parametersKey ? (translations[parametersKey] || '') : '';
+        const parameterUnit = translations.llm_model_parameters_unit || '';
+        const parameters = model.param
+            ? `${model.param}${parameterUnit ? ` ${parameterUnit}` : ''}`.trim()
+            : (parameterUnit || '');
 
-        const displayName = model.sizeTag ? (translations[`llm_display_${model.sizeTag}`] || model.id) : model.id;
+        const displayName = model.displayName
+            || (sizeTag ? (translations[`llm_display_${sizeTag}`] || '') : '')
+            || model.id;
         listItem.innerHTML = `
             <strong>${displayName}</strong><br>
             <small>${summary}</small>
@@ -74,7 +78,7 @@ export function populateModelSelector(moduleKey, models, onSelectCallback, selec
                 </div>
                 <div class="model-pills">
                     <span class="pill-label">${translations.llm_model_source}</span>
-                    <span class="pill-value">${technical}</span>
+                    <span class="pill-value">${modelSource}</span>
                 </div>
             </div>
         `;

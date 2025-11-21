@@ -1131,7 +1131,7 @@ const translations_pt = {
     legal_personal_data_title: "Dados pessoais",
     legal_personal_data_content: "Nenhum dado pessoal é recolhido nem armazenado. Não são usados cookies de rastreamento.",
     legal_ai_models_title: "Modelos de Inteligência Artificial",
-    legal_ai_models_content: "A aplicação Caramel baseia‑se, apenas durante a geração com um clique, em modelos de IA operados pela ILAAS, uma federação de infraestruturas de IA partilhadas. Os pedidos são encaminhados por um workflow n8n alojado pela Incubadora e depois transmitidos à ILAAS para execução em servidores de confiança, alojados em data centers certificados pelo setor do Ensino Superior e Investigação (ESR). A Caramel não executa os modelos nem trata ou armazena dados por conta própria; os dados são usados exclusivamente para satisfazer o pedido e não são enviados para IAs públicas de consumo. Os modelos atualmente disponíveis incluem Mistral Small 3.2 (24B parâmetros), Llama 3.3 (70B parâmetros) e GPT‑OSS 120B (120B parâmetros). Qualquer alojamento, registo (logging) ou retenção efetuados pela ILAAS é regido pela sua política de privacidade e pelos seus termos de serviço.",
+    legal_ai_models_content: "A aplicação Caramel baseia‑se, apenas durante a geração com um clique, em modelos de IA operados pela ILAAS, uma federação de infraestruturas de IA partilhadas. Os pedidos são encaminhados por um workflow n8n alojado pela Incubadora e depois transmitidos à ILAAS para execução em servidores de confiança, alojados em data centers certificados pelo setor do Ensino Superior e Investigação (ESR). A Caramel não executa os modelos nem trata ou armazena dados por conta própria; os dados são usados exclusivamente para satisfazer o pedido e não são enviados para IAs públicas de consumo. Os modelos atualmente disponíveis incluem {{llm_model_1_name}} ({{llm_model_1_param}} {{llm_model_parameters_unit}}), {{llm_model_2_name}} ({{llm_model_2_param}} {{llm_model_parameters_unit}}) e {{llm_model_3_name}} ({{llm_model_3_param}} {{llm_model_parameters_unit}}). Qualquer alojamento, registo (logging) ou retenção efetuados pela ILAAS é regido pela sua política de privacidade e pelos seus termos de serviço.",
     legal_user_requests_processing_title: "Tratamento dos pedidos dos utilizadores via n8n e a Incubadora do Ministério da Educação Nacional",
     legal_user_requests_processing_content: "O nosso site utiliza uma solução técnica desenvolvida com o n8n, uma ferramenta open source alojada pela Incubadora do Ministério da Educação Nacional. Através de um fluxo de trabalho automatizado, este serviço transforma os pedidos dos utilizadores em dados estruturados (formato JSON) para interagir com uma inteligência artificial da DINUM, portanto soberana. Nenhuma informação sensível é exposta ou transmitida sem encriptação, garantindo a confidencialidade e a segurança das trocas.",
     legal_accessibility_title: "Acessibilidade",
@@ -1602,23 +1602,15 @@ const translations_pt = {
 
     // Descrições dos modelos (IA do Caramel)
     llm_small_summary: "Caramelo macio: rápido, leve, perfeito para exercícios relâmpago e respostas sem espera. Consome pouco.",
-    llm_small_technical: "Mistral AI",
     llm_large_summary: "Caramelo fluido: mais rico e mais matizado, ideal para tarefas que pedem um pouco de profundidade. Consome mais.",
-    llm_large_technical: "Meta AI",
     llm_xl_summary: "Caramelo duro: potente e complexo, reservado para projetos ambiciosos. Paciência necessária, resultado garantido! Consome muito mais.",
-    llm_xl_technical: "OpenAI",
 
     // Nomes amigáveis dos modelos (exibição do menu)
-    llm_display_small: "Mistral-Small-3.2",
-    llm_display_large: "LLaMa-3.3",
-    llm_display_xl: "GPT-OSS",
 
     // Indicações dos modelos (IA do Caramel)
     llm_model_source: "Fornecedor do modelo:",
     llm_model_parameters: "Tamanho do modelo:",
-    llm_model_parameters_small: "24 Mrd parâmetros",
-    llm_model_parameters_large: "70 Mrd parâmetros",
-    llm_model_parameters_xl: "120 Mrd parâmetros",
+    llm_model_parameters_unit: "Mrd parâmetros",
 
     language: "Língua",
     tutorial: "Tutorial",

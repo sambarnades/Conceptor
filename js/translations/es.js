@@ -1131,7 +1131,7 @@ const translations_es = {
     legal_personal_data_title: "Datos personales",
     legal_personal_data_content: "No se recopilan ni almacenan datos personales. No se utilizan cookies de seguimiento.",
     legal_ai_models_title: "Modelos de Inteligencia Artificial",
-    legal_ai_models_content: "La aplicación Caramel se apoya, únicamente durante la generación con un clic, en modelos de IA operados por ILAAS, una federación de infraestructuras de IA compartidas. Las solicitudes se enrutan mediante un flujo de trabajo n8n alojado por el Incubador y se transmiten a ILAAS para su ejecución en servidores de confianza alojados en centros de datos etiquetados por el sector de Educación Superior e Investigación (ESR). Caramel no ejecuta los modelos ni trata o almacena los datos por cuenta propia; los datos se usan únicamente para realizar la solicitud y no se envían a IA públicas de consumo. Los modelos disponibles actualmente incluyen Mistral Small 3.2 (24B parámetros), Llama 3.3 (70B parámetros) y GPT‑OSS 120B (120B parámetros). Cualquier alojamiento, registro o conservación realizada por ILAAS se rige por su política de privacidad y sus condiciones de servicio.",
+    legal_ai_models_content: "La aplicación Caramel se apoya, únicamente durante la generación con un clic, en modelos de IA operados por ILAAS, una federación de infraestructuras de IA compartidas. Las solicitudes se enrutan mediante un flujo de trabajo n8n alojado por el Incubador y se transmiten a ILAAS para su ejecución en servidores de confianza alojados en centros de datos etiquetados por el sector de Educación Superior e Investigación (ESR). Caramel no ejecuta los modelos ni trata o almacena los datos por cuenta propia; los datos se usan únicamente para realizar la solicitud y no se envían a IA públicas de consumo. Los modelos disponibles actualmente incluyen {{llm_model_1}}, {{llm_model_2}} y {{llm_model_3}}. Cualquier alojamiento, registro o conservación realizada por ILAAS se rige por su política de privacidad y sus condiciones de servicio.",
     legal_user_requests_processing_title: "Tratamiento de las solicitudes de los usuarios mediante n8n y la Incubadora del Ministerio de Educación Nacional",
     legal_user_requests_processing_content: "Nuestro sitio utiliza una solución técnica desarrollada con n8n, una herramienta de código abierto alojada por la Incubadora del Ministerio de Educación Nacional. Mediante un flujo de trabajo automatizado, este servicio transforma las solicitudes de los usuarios en datos estructurados (formato JSON) para interactuar con una inteligencia artificial de la DINUM, por lo tanto soberana. No se expone ni transmite ninguna información sensible sin cifrado, garantizando así la confidencialidad y la seguridad de los intercambios.",
     legal_accessibility_title: "Accesibilidad",
@@ -1602,23 +1602,15 @@ const translations_es = {
 
     // Descripciones de los modelos (IA de Caramel)
     llm_small_summary: "Caramelo blando: rápido, ligero, perfecto para ejercicios exprés y respuestas sin espera. Consume poco.",
-    llm_small_technical: "Mistral AI",
     llm_large_summary: "Caramelo líquido: más rico y más matizado, ideal para tareas que requieren algo de profundidad. Consume más.",
-    llm_large_technical: "Meta AI",
     llm_xl_summary: "Caramelo duro: potente y complejo, reservado para proyectos ambiciosos. Se requiere paciencia, ¡resultado garantizado! Consume mucho más.",
-    llm_xl_technical: "OpenAI",
 
     // Nombres amigables para los modelos (visualización del menú)
-    llm_display_small: "Mistral-Small-3.2",
-    llm_display_large: "LLaMa-3.3",
-    llm_display_xl: "GPT-OSS",
 
     // Indicaciones de los modelos (IA de Caramel)
     llm_model_source: "Proveedor del modelo:",
     llm_model_parameters: "Tamaño del modelo:",
-    llm_model_parameters_small: "24 Mrd parámetros",
-    llm_model_parameters_large: "70 Mrd parámetros",
-    llm_model_parameters_xl: "120 Mrd parámetros",
+    llm_model_parameters_unit: "Mrd parámetros",
 
     language: "Idioma",
     tutorial: "Tutorial",

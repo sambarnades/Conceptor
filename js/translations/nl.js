@@ -1131,7 +1131,7 @@ const translations_nl = {
     legal_personal_data_title: "Persoonlijke gegevens",
     legal_personal_data_content: "Er worden geen persoonsgegevens verzameld of opgeslagen. Er worden geen trackingcookies gebruikt.",
     legal_ai_models_title: "Modellen voor kunstmatige intelligentie",
-    legal_ai_models_content: "De Caramel‑app maakt, uitsluitend tijdens de one‑click‑generatie, gebruik van door ILAAS beheerde AI‑modellen, een federatie van gedeelde AI‑infrastructuren. Verzoeken worden via een door de Incubator gehoste n8n‑workflow doorgestuurd en daarna aan ILAAS overgedragen voor uitvoering op vertrouwde servers in datacenters met een ESR‑label (hoger onderwijs en onderzoek). Caramel voert de modellen niet uit en verwerkt of bewaart geen gegevens zelf; gegevens worden alleen gebruikt om het verzoek uit te voeren en worden niet naar publieke consumenten‑AI’s verzonden. De momenteel beschikbare modellen omvatten Mistral Small 3.2 (24B parameters), Llama 3.3 (70B parameters) en GPT‑OSS 120B (120B parameters). Eventuele hosting, logging en bewaring door ILAAS vallen onder hun privacyverklaring en servicevoorwaarden.",
+    legal_ai_models_content: "De Caramel‑app maakt, uitsluitend tijdens de one‑click‑generatie, gebruik van door ILAAS beheerde AI‑modellen, een federatie van gedeelde AI‑infrastructuren. Verzoeken worden via een door de Incubator gehoste n8n‑workflow doorgestuurd en daarna aan ILAAS overgedragen voor uitvoering op vertrouwde servers in datacenters met een ESR‑label (hoger onderwijs en onderzoek). Caramel voert de modellen niet uit en verwerkt of bewaart geen gegevens zelf; gegevens worden alleen gebruikt om het verzoek uit te voeren en worden niet naar publieke consumenten‑AI’s verzonden. De momenteel beschikbare modellen omvatten {{llm_model_1_name}} ({{llm_model_1_param}} {{llm_model_parameters_unit}}), {{llm_model_2_name}} ({{llm_model_2_param}} {{llm_model_parameters_unit}}) en {{llm_model_3_name}} ({{llm_model_3_param}} {{llm_model_parameters_unit}}). Eventuele hosting, logging en bewaring door ILAAS vallen onder hun privacyverklaring en servicevoorwaarden.",
     legal_user_requests_processing_title: "Verwerking van gebruikersverzoeken via n8n en de Incubator van het Ministerie van Nationaal Onderwijs",
     legal_user_requests_processing_content: "Onze site gebruikt een technische oplossing gebouwd met n8n, een open‑source‑tool die wordt gehost door de Incubator van het Ministerie van Nationaal Onderwijs. Via een geautomatiseerde workflow zet deze dienst gebruikersverzoeken om in gestructureerde gegevens (JSON‑formaat) om te communiceren met een DINUM‑kunstmatige intelligentie, en is daardoor soeverein. Er wordt geen gevoelige informatie zonder versleuteling blootgesteld of verzonden, waardoor de vertrouwelijkheid en veiligheid van uitwisselingen wordt gewaarborgd.",
     legal_accessibility_title: "Toegankelijkheid",
@@ -1602,23 +1602,15 @@ const translations_nl = {
 
     // Modelbeschrijvingen (AI van Caramel)
     llm_small_summary: "Zachte karamel: snel, licht, perfect voor flitsoefeningen en antwoorden zonder wachttijd. Verbruikt weinig.",
-    llm_small_technical: "Mistral AI",
     llm_large_summary: "Vloeiende karamel: rijker en genuanceerder, ideaal voor taken die wat diepgang vragen. Verbruikt meer.",
-    llm_large_technical: "Meta AI",
     llm_xl_summary: "Harde karamel: krachtig en complex, voor ambitieuze projecten. Geduld vereist, resultaat gegarandeerd! Verbruikt veel meer.",
-    llm_xl_technical: "OpenAI",
 
     // Vriendelijke modelnamen (menuweergave)
-    llm_display_small: "Mistral-Small-3.2",
-    llm_display_large: "LLaMa-3.3",
-    llm_display_xl: "GPT-OSS",
 
     // Modelindicatoren (AI van Caramel)
     llm_model_source: "Aanbieder van het model:",
     llm_model_parameters: "Modelgrootte:",
-    llm_model_parameters_small: "24 Mrd parameters",
-    llm_model_parameters_large: "70 Mrd parameters",
-    llm_model_parameters_xl: "120 Mrd parameters",
+    llm_model_parameters_unit: "Mrd parameters",
 
     language: "Taal",
     tutorial: "Handleiding",

@@ -1152,7 +1152,7 @@ const translations_de = {
     legal_personal_data_title: "Personenbezogene Daten",
     legal_personal_data_content: "Es werden keine personenbezogenen Daten erhoben oder gespeichert. Es werden keine Tracking-Cookies verwendet.",
     legal_ai_models_title: "Modelle der künstlichen Intelligenz",
-    legal_ai_models_content: "Die Caramel‑Anwendung nutzt, ausschließlich bei der Ein‑Klick‑Generierung, von ILAAS betriebene KI‑Modelle – eine Föderation gemeinschaftlich genutzter KI‑Infrastrukturen. Anfragen werden über einen vom Inkubator gehosteten n8n‑Workflow geleitet und anschließend an ILAAS zur Ausführung auf vertrauenswürdigen Servern in vom Bereich Hochschul‑ und Forschungswesen (ESR) zertifizierten Rechenzentren übermittelt. Caramel führt keine Modelle aus und verarbeitet oder speichert Daten nicht selbst; die Daten dienen ausschließlich der Bearbeitung der Anfrage und werden nicht an öffentliche Consumer‑KIs übermittelt. Derzeit verfügbare Modelle sind u. a. Mistral Small 3.2 (24 Mrd. Parameter), Llama 3.3 (70 Mrd. Parameter) und GPT‑OSS 120B (120 Mrd. Parameter). Etwaige von ILAAS vorgenommene Hosting‑, Protokollierungs‑ und Aufbewahrungsmaßnahmen unterliegen deren Datenschutzerklärung und Nutzungsbedingungen.",
+    legal_ai_models_content: "Die Caramel‑Anwendung nutzt, ausschließlich bei der Ein‑Klick‑Generierung, von ILAAS betriebene KI‑Modelle – eine Föderation gemeinschaftlich genutzter KI‑Infrastrukturen. Anfragen werden über einen vom Inkubator gehosteten n8n‑Workflow geleitet und anschließend an ILAAS zur Ausführung auf vertrauenswürdigen Servern in vom Bereich Hochschul‑ und Forschungswesen (ESR) zertifizierten Rechenzentren übermittelt. Caramel führt keine Modelle aus und verarbeitet oder speichert Daten nicht selbst; die Daten dienen ausschließlich der Bearbeitung der Anfrage und werden nicht an öffentliche Consumer‑KIs übermittelt. Derzeit verfügbare Modelle sind u. a. {{llm_model_1_name}} ({{llm_model_1_param}} {{llm_model_parameters_unit}}), {{llm_model_2_name}} ({{llm_model_2_param}} {{llm_model_parameters_unit}}) und {{llm_model_3_name}} ({{llm_model_3_param}} {{llm_model_parameters_unit}}). Etwaige von ILAAS vorgenommene Hosting‑, Protokollierungs‑ und Aufbewahrungsmaßnahmen unterliegen deren Datenschutzerklärung und Nutzungsbedingungen.",
     legal_user_requests_processing_title: "Verarbeitung von Benutzeranfragen über n8n und den Inkubator des Bildungsministeriums",
     legal_user_requests_processing_content: "Unsere Website nutzt eine technische Lösung, die mit n8n entwickelt wurde, einem Open‑Source‑Tool, das vom Inkubator des Bildungsministeriums gehostet wird. Über einen automatisierten Workflow wandelt dieser Dienst Benutzeranfragen in strukturierte Daten (JSON‑Format) um, um mit einer KI der DINUM zu interagieren – und ist damit souverän. Es werden keine sensiblen Informationen unverschlüsselt offengelegt oder übertragen; Vertraulichkeit und Sicherheit der Kommunikation sind gewährleistet.",
     legal_accessibility_title: "Barrierefreiheit",
@@ -1602,23 +1602,15 @@ const translations_de = {
 
     // Modellbeschreibungen (Caramel-KI)
     llm_small_summary: "Weiches Karamell: schnell, leicht, perfekt für Blitzübungen und Antworten ohne Wartezeit. Verbraucht wenig.",
-    llm_small_technical: "Mistral AI",
     llm_large_summary: "Fließendes Karamell: reicher und nuancierter, ideal für Aufgaben, die etwas Tiefe erfordern. Verbraucht mehr.",
-    llm_large_technical: "Meta AI",
     llm_xl_summary: "Hartes Karamell: leistungsstark und komplex, für ambitionierte Projekte. Geduld erforderlich, Ergebnis garantiert! Verbraucht deutlich mehr.",
-    llm_xl_technical: "OpenAI",
 
     // Freundliche Modellnamen (Menüanzeige)
-    llm_display_small: "Mistral-Small-3.2",
-    llm_display_large: "LLaMa-3.3",
-    llm_display_xl: "GPT-OSS",
 
     // Modellangaben (Caramel-KI)
     llm_model_source: "Modellanbieter:",
     llm_model_parameters: "Modellgröße:",
-    llm_model_parameters_small: "24 Mrd Parameter",
-    llm_model_parameters_large: "70 Mrd Parameter",
-    llm_model_parameters_xl: "120 Mrd Parameter",
+    llm_model_parameters_unit: "Mrd Parameter",
 
     language: "Sprache",
     tutorial: "Anleitung",

@@ -1131,16 +1131,7 @@
     legal_personal_data_title: "個人データ",
     legal_personal_data_content: "個人データは収集も保存もされません。追跡用のクッキーは使用しません。",
     legal_ai_models_title: "人工知能モデル",
-    legal_ai_models_content: "Caramel アプリは、ワンクリック生成の際に限り、共有型 AI インフラの連合体である ILAAS が運用する AI モデルを利用します。リクエストはインキュベーターがホストする n8n ワークフロー経由で送信され、ESR（高等教育・研究）ラベルのデータセンターにホストされた信頼できるサーバー上で ILAAS により実行されます。Caramel はモデルを実行せず、データを自社で処理・保存しません。データはリクエストの実行のみに使用され、一般公開のコンシューマ向け AI には送信されません。現在提供しているモデルには、Mistral Small 3.2（24B パラメータ）、Llama 3.3（70B パラメータ）、GPT‑OSS 120B（120B パラメータ）が含まれます。ILAAS によるホスティング、ログ取得、保管の取り扱いは、ILAAS のプライバシーポリシーおよび利用規約に従います。",
-    legal_user_requests_processing_title: "n8n と教育省インキュベーターによるユーザーリクエストの処理",
-    legal_user_requests_processing_content: "当サイトは、教育省のインキュベーターがホストするオープンソースツール n8n を用いた技術的ソリューションを利用しています。自動化されたワークフローにより、ユーザーのリクエストを構造化データ（JSON 形式）に変換し、DINUM の人工知能と連携します（主権 AI）。機密情報は暗号化なしに開示・送信されることはなく、やり取りの機密性と安全性を確保しています。",
-    legal_accessibility_title: "アクセシビリティ",
-    legal_accessibility_content: "このアプリケーションは、テーマに応じたダーク/ライトモード、キーボードナビゲーション、ハイコントラストなど、コンピュータでの使用に対応するように設計されています。RGAAの推奨事項に沿って、アクセシビリティの継続的な改善が進められています。",
-    legal_applicable_law_title: "適用法",
-    legal_applicable_law_content: "このサイトはフランス法に準拠します。紛争が生じた場合、管轄裁判所はリヨンの管轄区域内の裁判所とします。",
-    legal_external_libraries_title: "使用されている外部ライブラリ",
-    legal_external_libraries_intro: "Caramelアプリケーションは、以下のライセンスの下でいくつかのオープンソースライブラリを使用しています：",
-    legal_library_fontawesome: "<strong>Font Awesome Free</strong> (ライセンス: CC BY 4.0, SIL OFL 1.1, MIT): インターフェースで使用されるアイコンを提供し、ナビゲーションと視覚体験を向上させます。",
+    legal_ai_models_content: "Caramel アプリは、ワンクリック生成の際に限り、共有型 AI インフラの連合体である ILAAS が運用する AI モデルを利用します。リクエストはインキュベーターがホストする n8n ワークフロー経由で送信され、ESR（高等教育・研究）ラベルのデータセンターにホストされた信頼できるサーバー上で ILAAS により実行されます。Caramel はモデルを実行せず、データを自社で処理・保存しません。データはリクエストの実行のみに使用され、一般公開のコンシューマ向け AI には送信されません。現在提供しているモデルには、{{llm_model_1_name}} ({{llm_model_1_param}} {{llm_model_parameters_unit}})?{{llm_model_2_name}} ({{llm_model_2_param}} {{llm_model_parameters_unit}})?{{llm_model_3_name}} ({{llm_model_3_param}} {{llm_model_parameters_unit}}): インターフェースで使用されるアイコンを提供し、ナビゲーションと視覚体験を向上させます。",
     legal_library_jszip: "<strong>JSZip</strong> (ライセンス: MIT または GPLv3): 必要なコンテンツをzipアーカイブに圧縮して.h5pファイルを作成できます。",
     legal_library_clientzip: "<strong>client-zip</strong> (ライセンス: MIT): ファイル圧縮に使用される別のライブラリで、ブラウザで直接.h5pアーカイブを生成するための高性能な代替手段を提供します。",
     legal_library_fflate: "<strong>fflate</strong> (ライセンス: MIT): Moodleモジュール用の.mbzアーカイブを作成するために使用される、データ圧縮および解凍用の非常に高速なライブラリ。",
@@ -1602,23 +1593,15 @@
 
     // モデルの説明（Caramel のAI）
     llm_small_summary: "ソフトキャラメル：高速で軽量、フラッシュ演習や待ち時間のない回答に最適。消費は少なめ。",
-    llm_small_technical: "Mistral AI",
     llm_large_summary: "とろけるキャラメル：より豊かでニュアンスがあり、少し深みを要する作業に最適。消費は多め。",
-    llm_large_technical: "Meta AI",
     llm_xl_summary: "ハードキャラメル：強力で複雑。野心的なプロジェクト向け。忍耐が必要、結果は保証！消費はかなり多い。",
-    llm_xl_technical: "OpenAI",
 
     // モデルのわかりやすい名称（メニュー表示）
-    llm_display_small: "Mistral-Small-3.2",
-    llm_display_large: "LLaMa-3.3",
-    llm_display_xl: "GPT-OSS",
 
     // モデル表示（Caramel のAI）
     llm_model_source: "モデル提供元:",
     llm_model_parameters: "モデルサイズ:",
-    llm_model_parameters_small: "24 Mrd パラメータ",
-    llm_model_parameters_large: "70 Mrd パラメータ",
-    llm_model_parameters_xl: "120 Mrd パラメータ",
+    llm_model_parameters_unit: "Mrd パラメータ",
 
     language: "言語",
     tutorial: "チュートリアル",
