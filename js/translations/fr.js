@@ -1622,6 +1622,10 @@ const translations_fr = {
 
     language: "Langue",
     tutorial: "Tutoriel",
+    version_modal_title: "Nouvelle version disponible",
+    version_modal_message: "Vous utilisez actuellement la version {currentVersion}. Une version plus récente ({latestVersion}) est disponible. Rechargez la page pour profiter des dernières améliorations.",
+    version_modal_update: "Charger la nouvelle version",
+    version_modal_remind_later: "Me le rappeler plus tard",
 
     // Glossaire XML Prompt
     glossaire_xml_prompt_role: "Tu es un expert en ingénierie pédagogique et tu vas créer le contenu pour un glossaire.",

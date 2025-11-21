@@ -1,26 +1,31 @@
 # Caramel – Journal des modifications
 
+## 3.3.8 – 21-11-2025
+- **Vérification de la version du site** : Si une nouvelle version du site est déployée, un message propose à l'utilisateur de recharger la page ou de ne rien faire (traduction dans toutes les langues, adaptée au mode responsive).
+
+---
+
 ## 3.3.7 – 21-11-2025
-- **Mode Avancé : barre d'outils** : le bouton "Copier le prompt" a été dissimulé car il n'avait pas d'intérêt à être affiché ici.
-- **Mode Avancé : bouton de verrouillage** : le bouton "Verrouiller/Déverrouiller" fonctionne désormais correctement, le visuel aussi.
-- **Mode Avancé : visuel du champ** : la suggestion pour copier-coller le texte est désormais affichée dans la langue sélectionnée.
-- **Mode Avancé :compteur de caractères** : décalage léger du compteur pour éviter le chevauchement avec la barre de défilement.
-- **Écran principal** : le texte descriptif pour les activités "Choix multiples" et "Vrai/Faux" ont été modifiés afin de préciser que chacune de ces deux activités génèrent à chaque fois une question unique.
+- **Mode Avancé : barre d'outils** : Le bouton "Copier le prompt" a été dissimulé car il n'avait pas d'intérêt à être affiché ici.
+- **Mode Avancé : bouton de verrouillage** : Le bouton "Verrouiller/Déverrouiller" fonctionne désormais correctement, le visuel aussi.
+- **Mode Avancé : visuel du champ** : La suggestion pour copier-coller le texte est désormais affichée dans la langue sélectionnée.
+- **Mode Avancé :compteur de caractères** : Décalage léger du compteur pour éviter le chevauchement avec la barre de défilement.
+- **Écran principal** : Le texte descriptif pour les activités "Choix multiples" et "Vrai/Faux" ont été modifiés afin de préciser que chacune de ces deux activités génèrent à chaque fois une question unique.
 
 ---
 
 ## 3.3.6 – 18-11-2025
-- **Mentions légales** : corectifs dans les "Mentions légales" : pas de localStorage utilisé, la question du traitement des données adaptée au contexte des IA de ILAAS, modification des mentions pour spécifier que la plateforme génère des activités H5P et Éléa.
+- **Mentions légales** : Corectifs dans les "Mentions légales" : pas de localStorage utilisé, la question du traitement des données adaptée au contexte des IA de ILAAS, modification des mentions pour spécifier que la plateforme génère des activités H5P et Éléa.
 
 ---
 
 ## 3.3.5 – 17-11-2025
-- **Activité Page** : corectif d'un champ qui insérait un paragraphe qui n'était pas généré par l'IA.
+- **Activité Page** : Corectif d'un champ qui insérait un paragraphe qui n'était pas généré par l'IA.
 
 ---
 
 ## 3.3.4 – 13-11-2025
-- **Changement du nom des LLM** : les LLM proposés précédemment ont été renommés par ilaas. Adaptation de Caramel en conséquence.
+- **Changement du nom des LLM** : Les LLM proposés précédemment ont été renommés par ilaas. Adaptation de Caramel en conséquence.
 - **Fermeture des modales** : La modale "Mentions légales" se voit dotée d'une croix de fermeture comme c'est le cas pour la modale "Tutoriel", ajustement pour un mode responsive amélioré, la touche Esc du clavier permet de fermer ces deux modales.
 
 ---

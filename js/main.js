@@ -9,6 +9,7 @@ import { setupTabs, generateTiles, initDragToScroll } from './modules/ui.js';
 import { initOcr } from './modules/ocr.js';
 import { showHelpModal, setupEventListeners } from './modules/utils.js';
 import { initCaramelAnimationEffects } from './modules/animations.js';
+import { initVersionChecker } from './modules/version-checker.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialisation de l'interface de base
@@ -30,5 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Chargement de la traduction initiale et génération des tuiles
     loadTranslations('fr').then(() => {
         generateTiles();
+        initVersionChecker();
     });
 });

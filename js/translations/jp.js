@@ -1622,6 +1622,10 @@
 
     language: "言語",
     tutorial: "チュートリアル",
+    version_modal_title: "新しいバージョンがあります",
+    version_modal_message: "現在はバージョン {currentVersion} を利用しています。公開済みの最新版（{latestVersion}）を読み込むにはページを再読み込みしてください。",
+    version_modal_update: "最新版を読み込む",
+    version_modal_remind_later: "あとで知らせる",
 
     // 用語集 XML のプロンプト
     glossaire_xml_prompt_role: "あなたはインストラクショナルデザインの専門家で、用語集の内容を作成します。",

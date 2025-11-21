@@ -1622,6 +1622,10 @@ const translations_es = {
 
     language: "Idioma",
     tutorial: "Tutorial",
+    version_modal_title: "Nueva versión disponible",
+    version_modal_message: "Actualmente utilizas la versión {currentVersion}. Hay una versión más reciente ({latestVersion}) publicada. Recarga la página para obtener las últimas mejoras.",
+    version_modal_update: "Cargar la nueva versión",
+    version_modal_remind_later: "Recordármelo más tarde",
 
     // Glossaire XML Prompt
     glossaire_xml_prompt_role: "Eres un experto en diseño instruccional y vas a crear el contenido para un glosario de Moodle en formato XML.",

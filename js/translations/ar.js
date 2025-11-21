@@ -1622,6 +1622,10 @@ const translations_ar = {
 
     language: "لغة",
     tutorial: "تعليمي",
+    version_modal_title: "إصدار جديد متاح",
+    version_modal_message: "أنت تستخدم حالياً الإصدار {currentVersion}. يوجد إصدار أحدث ({latestVersion}) منشور. أعد تحميل الصفحة لتحصل على آخر التحسينات.",
+    version_modal_update: "تحميل الإصدار الجديد",
+    version_modal_remind_later: "ذكّرني لاحقاً",
  
     // توجيه مسرد XML
     glossaire_xml_prompt_role: "أنت خبير في التصميم التعليمي وستنشئ محتوى لمسرد.",

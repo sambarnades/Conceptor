@@ -1622,6 +1622,10 @@ const translations_el = {
 
     language: "Γλώσσα",
     tutorial: "Οδηγός",
+    version_modal_title: "Διαθέσιμη νέα έκδοση",
+    version_modal_message: "Χρησιμοποιείτε τώρα την έκδοση {currentVersion}. Μια νεότερη ({latestVersion}) είναι διαθέσιμη. Ανανεώστε τη σελίδα για να λάβετε τις πιο πρόσφατες βελτιώσεις.",
+    version_modal_update: "Φόρτωση νέας έκδοσης",
+    version_modal_remind_later: "Υπενθύμιση αργότερα",
 
     // Προτροπή Γλωσσαρίου XML
     glossaire_xml_prompt_role: "Είσαι ειδικός στον εκπαιδευτικό σχεδιασμό και θα δημιουργήσεις το περιεχόμενο για ένα γλωσσάρι.",

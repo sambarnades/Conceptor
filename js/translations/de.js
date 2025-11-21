@@ -1622,6 +1622,10 @@ const translations_de = {
 
     language: "Sprache",
     tutorial: "Anleitung",
+    version_modal_title: "Neue Version verfügbar",
+    version_modal_message: "Sie verwenden derzeit Version {currentVersion}. Eine aktuellere Version ({latestVersion}) steht bereit. Laden Sie die Seite neu, um die neuesten Verbesserungen zu erhalten.",
+    version_modal_update: "Neueste Version laden",
+    version_modal_remind_later: "Später erinnern",
 
     // Glossar-XML-Prompt
     glossaire_xml_prompt_role: "Du bist Experte für Instruktionsdesign und erstellst den Inhalt für ein Glossar.",

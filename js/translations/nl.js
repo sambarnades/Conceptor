@@ -1622,6 +1622,10 @@ const translations_nl = {
 
     language: "Taal",
     tutorial: "Handleiding",
+    version_modal_title: "Nieuwe versie beschikbaar",
+    version_modal_message: "Je gebruikt nu versie {currentVersion}. Er staat een nieuwere versie ({latestVersion}) online. Vernieuw de pagina om de laatste verbeteringen te ontvangen.",
+    version_modal_update: "Nieuwe versie laden",
+    version_modal_remind_later: "Later herinneren",
 
     // Woordenlijst-XML-prompt
     glossaire_xml_prompt_role: "Je bent een expert in instructieontwerp en je gaat inhoud maken voor een woordenlijst.",

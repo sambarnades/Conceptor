@@ -1622,6 +1622,10 @@
 
     language: "语言",
     tutorial: "教程",
+    version_modal_title: "发现新版",
+    version_modal_message: "您当前使用的是 {currentVersion} 版。线上已有更新的版本（{latestVersion}）。请刷新页面以获取最新改进。",
+    version_modal_update: "加载最新版本",
+    version_modal_remind_later: "稍后提醒我",
     
     // 术语表 XML 提示
     glossaire_xml_prompt_role: "你是一名教学设计专家，你将为一个术语表创建内容。",
