@@ -91,11 +91,11 @@
         <h4><span class="help-step-number">3</span> 生成して磨く</h4>
         <p>タイルをクリックするとウィンドウが開き、ここで AI とやり取りします。</p>
         <div class="help-subsection">
-            <h5><i class="fas fa-rocket"></i> オプションA：ワンクリック生成</h5>
+            <h5><i class="fas fa-rocket"></i> オプションA：シンプル表示 - ワンクリック生成</h5>
             <p>最短ルート。<button class="help-btn-example-llm">ワンクリック生成</button> を押すと、AI が内容を生成し、右の結果領域に直接配置します。ボタン右側の小さな矢印から（高速・高性能など）モデルを選べます。</p>
         </div>
         <div class="help-subsection">
-            <h5><i class="fas fa-tools"></i> オプションB：外部 AI を使う</h5>
+            <h5><i class="fas fa-tools"></i> オプションB：ガイド表示 - 外部 AI を使う</h5>
             <p>最大限のコントロールに。左側にプロンプト（AI への指示）が表示されます。</p>
             <ol>
                 <li>必要に応じてプロンプトを編集。</li>
@@ -134,11 +134,11 @@
                         <li>
                             <p>画面右側の編集メニューを開きます。閉じている場合は小さな矢印で展開してください。</p>
                             <div class="import-step-images" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;">
-                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
                                     <img src="images/tutoriels/elea-import-parcours-1.png" alt="右カラムに表示された編集メニュー" style="width:75%;height:auto;">
                                     <figcaption><em>編集メニューを展開。</em></figcaption>
                                 </figure>
-                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
                                     <img src="images/tutoriels/elea-import-parcours-2.png" alt="編集パネルを開く矢印" style="width:75%;height:auto;">
                                     <figcaption><em>必要ならパネルを開く。</em></figcaption>
                                 </figure>
@@ -1192,15 +1192,15 @@
     legal_title: "法的通知",
     legal_editor_title: "アプリケーション編集者",
     legal_editor_gauthier_remande: "<strong>Gauthier REMANDE</strong>",
-    legal_editor_gauthier_remande_function: "職務: 専門高校 文学-歴史 教師",
-    legal_editor_gauthier_remande_email: "メール: gauthier.remande@ac-nantes.fr",
-    legal_editor_gauthier_remande_address: "住所: 39 avenue de Chanzy, 53000 Laval, フランス",
-    legal_editor_gauthier_remande_phone: "電話: +33 2 43 67 24 00",
+    legal_editor_gauthier_remande_function: "<strong>職務:</strong> 専門高校 文学-歴史 教師",
+    legal_editor_gauthier_remande_email: "<strong>メール:</strong> gauthier.remande@ac-nantes.fr",
+    legal_editor_gauthier_remande_address: "<strong>住所:</strong> 39 avenue de Chanzy, 53000 Laval, フランス",
+    legal_editor_gauthier_remande_phone: "<strong>電話:</strong> +33 2 43 67 24 00",
     legal_editor_emmanuel_gaunard: "<strong>Emmanuel GAUNARD</strong>",
-    legal_editor_emmanuel_gaunard_function: "役職: 数学教師およびDRANEミッション担当 – グルノーブルアカデミー",
-    legal_editor_emmanuel_gaunard_email: "メール: emmanuel.gaunard@ac-grenoble.fr",
-    legal_editor_emmanuel_gaunard_address: "住所: 30 boulevard de la République, 38200 Vienne, France",
-    legal_editor_emmanuel_gaunard_phone: "電話: +33 6 46 74 20 94",
+    legal_editor_emmanuel_gaunard_function: "<strong>役職:</strong> 数学教師およびDRANEミッション担当 – グルノーブルアカデミー",
+    legal_editor_emmanuel_gaunard_email: "<strong>メール:</strong> emmanuel.gaunard@ac-grenoble.fr",
+    legal_editor_emmanuel_gaunard_address: "<strong>住所:</strong> 30 boulevard de la République, 38200 Vienne, France",
+    legal_editor_emmanuel_gaunard_phone: "<strong>電話:</strong> +33 6 46 74 20 94",
     legal_app_description: "Webアプリ「Caramel」は、H5PおよびÉléaコンテンツを作成するための自由で非商用のプロジェクトです。アカウントは不要で、個人データは収集されません。",
     legal_hosting_title: "ホスティング",
     legal_host_name: "<strong>ホスト</strong>: Forge of Digital Educational Commons",

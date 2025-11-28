@@ -91,11 +91,11 @@ const translations_nl = {
         <h4><span class="help-step-number">3</span> Inhoud genereren en verfijnen</h4>
         <p>Na een klik op een tegel opent een venster. Hier werk je met de AI.</p>
         <div class="help-subsection">
-            <h5><i class="fas fa-rocket"></i> Optie A: In één klik genereren</h5>
+            <h5><i class="fas fa-rocket"></i> Optie A: Eenvoudige Weergave - In één klik genereren</h5>
             <p>De snelle route. Klik op <button class="help-btn-example-llm">In één klik genereren</button> zodat de AI de inhoud maakt en direct rechts in het resultaatgebied plaatst. Via het pijltje rechts op de knop kies je verschillende AI-modellen (snel, krachtig...).</p>
         </div>
         <div class="help-subsection">
-            <h5><i class="fas fa-tools"></i> Optie B: Externe AI gebruiken</h5>
+            <h5><i class="fas fa-tools"></i> Optie B: Begeleide Weergave - Externe AI gebruiken</h5>
             <p>Voor maximale controle. De prompt (instructie voor de AI) verschijnt links.</p>
             <ol>
                 <li>Pas de prompt aan indien gewenst.</li>
@@ -134,11 +134,11 @@ const translations_nl = {
                         <li>
                             <p>Open het bewerkingsmenu helemaal rechts op het scherm. Als het is ingeklapt, gebruik dan het kleine pijltje om het zichtbaar te maken.</p>
                             <div class="import-step-images" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;">
-                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
                                     <img src="images/tutoriels/elea-import-parcours-1.png" alt="Bewerkingsmenu geopend in de rechterkolom" style="width:75%;height:auto;">
                                     <figcaption><em>Bewerkingsmenu geopend.</em></figcaption>
                                 </figure>
-                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
                                     <img src="images/tutoriels/elea-import-parcours-2.png" alt="Pijl om het bewerkingspaneel uit te klappen" style="width:75%;height:auto;">
                                     <figcaption><em>Klap het paneel uit indien nodig.</em></figcaption>
                                 </figure>
@@ -1192,15 +1192,15 @@ const translations_nl = {
     legal_title: "Wettelijke vermeldingen",
     legal_editor_title: "Applicatie-editor",
     legal_editor_gauthier_remande: "<strong>Gauthier REMANDE</strong>",
-    legal_editor_gauthier_remande_function: "Functie: Leraar in het Beroepslyceum Letteren-Geschiedenis",
-    legal_editor_gauthier_remande_email: "E-mail: gauthier.remande@ac-nantes.fr",
-    legal_editor_gauthier_remande_address: "Adres: 39 avenue de Chanzy, 53000 Laval, Frankrijk",
-    legal_editor_gauthier_remande_phone: "Telefoon: +33 2 43 67 24 00",
+    legal_editor_gauthier_remande_function: "<strong>Functie:</strong> Leraar in het Beroepslyceum Letteren-Geschiedenis",
+    legal_editor_gauthier_remande_email: "<strong>E-mail:</strong> gauthier.remande@ac-nantes.fr",
+    legal_editor_gauthier_remande_address: "<strong>Adres:</strong> 39 avenue de Chanzy, 53000 Laval, Frankrijk",
+    legal_editor_gauthier_remande_phone: "<strong>Telefoon:</strong> +33 2 43 67 24 00",
     legal_editor_emmanuel_gaunard: "<strong>Emmanuel GAUNARD</strong>",
-    legal_editor_emmanuel_gaunard_function: "Functie: Wiskundeleraar en DRANE-missieofficier – Academie van Grenoble",
-    legal_editor_emmanuel_gaunard_email: "E-mail: emmanuel.gaunard@ac-grenoble.fr",
-    legal_editor_emmanuel_gaunard_address: "Adres: 30 boulevard de la République, 38200 Vienne, Frankrijk",
-    legal_editor_emmanuel_gaunard_phone: "Telefoon: +33 6 46 74 20 94",
+    legal_editor_emmanuel_gaunard_function: "<strong>Functie:</strong> Wiskundeleraar en DRANE-missieofficier – Academie van Grenoble",
+    legal_editor_emmanuel_gaunard_email: "<strong>E-mail:</strong> emmanuel.gaunard@ac-grenoble.fr",
+    legal_editor_emmanuel_gaunard_address: "<strong>Adres:</strong> 30 boulevard de la République, 38200 Vienne, Frankrijk",
+    legal_editor_emmanuel_gaunard_phone: "<strong>Telefoon:</strong> +33 6 46 74 20 94",
     legal_app_description: "De webapplicatie ‘Caramel’ is een vrij, niet-commercieel project voor het aanmaken van H5P- en Éléa-content. Er is geen account nodig en er worden geen persoonsgegevens verzameld.",
     legal_hosting_title: "Hosting",
     legal_host_name: "<strong>Host</strong>: Forge of Digital Educational Commons",

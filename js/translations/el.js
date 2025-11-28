@@ -91,11 +91,11 @@
         <h4><span class="help-step-number">3</span> Δημιουργία και βελτίωση περιεχομένου</h4>
         <p>Μετά το κλικ σε πλακίδα, ανοίγει ένα παράθυρο. Εκεί αλληλεπιδράτε με την ΤΝ.</p>
         <div class="help-subsection">
-            <h5><i class="fas fa-rocket"></i> Επιλογή Α: Δημιουργία με ένα κλικ</h5>
+            <h5><i class="fas fa-rocket"></i> Επιλογή Α: Απλή Προβολή - Δημιουργία με ένα κλικ</h5>
             <p>Ο γρήγορος δρόμος. Κάντε κλικ στο <button class="help-btn-example-llm">Δημιουργία με ένα κλικ</button> ώστε η ΤΝ να παράγει το περιεχόμενο και να το τοποθετήσει δεξιά στην περιοχή αποτελεσμάτων. Μπορείτε να επιλέξετε διαφορετικά μοντέλα ΤΝ (γρήγορο, ισχυρό...) από το μικρό βέλος δεξιά του κουμπιού.</p>
         </div>
         <div class="help-subsection">
-            <h5><i class="fas fa-tools"></i> Επιλογή Β: Χρήση εξωτερικής ΤΝ</h5>
+            <h5><i class="fas fa-tools"></i> Επιλογή Β: Καθοδηγούμενη Προβολή - Χρήση εξωτερικής ΤΝ</h5>
             <p>Για μέγιστο έλεγχο. Το prompt (οδηγία προς την ΤΝ) εμφανίζεται αριστερά.</p>
             <ol>
                 <li>Τροποποιήστε το prompt αν θέλετε.</li>
@@ -134,11 +134,11 @@
                         <li>
                             <p>Ανοίξτε το μενού επεξεργασίας στα δεξιά της οθόνης. Αν είναι κρυμμένο, χρησιμοποιήστε το μικρό βέλος για να το εμφανίσετε.</p>
                             <div class="import-step-images" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;">
-                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
                                     <img src="images/tutoriels/elea-import-parcours-1.png" alt="Μενού επεξεργασίας ανοιχτό στη δεξιά στήλη" style="width:75%;height:auto;">
                                     <figcaption><em>Μενού επεξεργασίας ανοιχτό.</em></figcaption>
                                 </figure>
-                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
                                     <img src="images/tutoriels/elea-import-parcours-2.png" alt="Βέλος για ανάπτυξη του πίνακα επεξεργασίας" style="width:75%;height:auto;">
                                     <figcaption><em>Αναπτύξτε το πάνελ αν χρειάζεται.</em></figcaption>
                                 </figure>
@@ -1192,15 +1192,15 @@
     legal_title: "Νομικές σημειώσεις",
     legal_editor_title: "Εκδότης της εφαρμογής",
     legal_editor_gauthier_remande: "<strong>Gauthier REMANDE</strong>",
-    legal_editor_gauthier_remande_function: "Λειτουργία: Καθηγητής Επαγγελματικού Λυκείου Φιλολογίας-Ιστορίας",
-    legal_editor_gauthier_remande_email: "Email: gauthier.remande@ac-nantes.fr",
-    legal_editor_gauthier_remande_address: "Διεύθυνση: 39 avenue de Chanzy, 53000 Laval, Γαλλία",
-    legal_editor_gauthier_remande_phone: "Τηλέφωνο: +33 2 43 67 24 00",
+    legal_editor_gauthier_remande_function: "<strong>Λειτουργία:</strong> Καθηγητής Επαγγελματικού Λυκείου Φιλολογίας-Ιστορίας",
+    legal_editor_gauthier_remande_email: "<strong>Email:</strong> gauthier.remande@ac-nantes.fr",
+    legal_editor_gauthier_remande_address: "<strong>Διεύθυνση:</strong> 39 avenue de Chanzy, 53000 Laval, Γαλλία",
+    legal_editor_gauthier_remande_phone: "<strong>Τηλέφωνο:</strong> +33 2 43 67 24 00",
     legal_editor_emmanuel_gaunard: "<strong>Emmanuel GAUNARD</strong>",
-    legal_editor_emmanuel_gaunard_function: "Λειτουργία: Καθηγητής μαθηματικών και υπεύθυνος αποστολής DRANE – Ακαδημία της Γκρενόμπλ",
-    legal_editor_emmanuel_gaunard_email: "Email: emmanuel.gaunard@ac-grenoble.fr",
-    legal_editor_emmanuel_gaunard_address: "Διεύθυνση: 30 boulevard de la République, 38200 Vienne, Γαλλία",
-    legal_editor_emmanuel_gaunard_phone: "Τηλέφωνο: +33 6 46 74 20 94",
+    legal_editor_emmanuel_gaunard_function: "<strong>Λειτουργία:</strong> Καθηγητής μαθηματικών και υπεύθυνος αποστολής DRANE – Ακαδημία της Γκρενόμπλ",
+    legal_editor_emmanuel_gaunard_email: "<strong>Email:</strong> emmanuel.gaunard@ac-grenoble.fr",
+    legal_editor_emmanuel_gaunard_address: "<strong>Διεύθυνση:</strong> 30 boulevard de la République, 38200 Vienne, Γαλλία",
+    legal_editor_emmanuel_gaunard_phone: "<strong>Τηλέφωνο:</strong> +33 6 46 74 20 94",
     legal_app_description: "Η διαδικτυακή εφαρμογή «Caramel» είναι ένα ελεύθερο, μη εμπορικό έργο που προορίζεται για τη δημιουργία περιεχομένου H5P και Éléa. Δεν απαιτείται λογαριασμός και δεν συλλέγονται προσωπικά δεδομένα.",
     legal_hosting_title: "Φιλοξενία",
     legal_host_name: "<strong>Πάροχος φιλοξενίας</strong>: Forge of Digital Educational Commons",

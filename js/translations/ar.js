@@ -91,11 +91,11 @@
         <h4><span class="help-step-number">3</span> توليد المحتوى وتحسينه</h4>
         <p>بعد النقر على بلاطة، تُفتح نافذة. هنا تتفاعل مع الذكاء الاصطناعي.</p>
         <div class="help-subsection">
-            <h5><i class="fas fa-rocket"></i> الخيار أ: توليد بنقرة واحدة</h5>
+            <h5><i class="fas fa-rocket"></i> الخيار أ: عرض بسيط - توليد بنقرة واحدة</h5>
             <p>طريق سريع. انقر زر <button class="help-btn-example-llm">توليد بنقرة واحدة</button> ليُنتج الذكاء الاصطناعي المحتوى ويضعه مباشرة في منطقة النتائج على اليمين. يمكنك اختيار نماذج ذكاء اصطناعي مختلفة (سريع، قوي...) عبر السهم الصغير يمين الزر.</p>
         </div>
         <div class="help-subsection">
-            <h5><i class="fas fa-tools"></i> الخيار ب: استخدام ذكاء اصطناعي خارجي</h5>
+            <h5><i class="fas fa-tools"></i> الخيار ب: عرض موجه - استخدام ذكاء اصطناعي خارجي</h5>
             <p>لتحكّم أقصى. يظهر الـ prompt (تعليمات الذكاء الاصطناعي) على اليسار.</p>
             <ol>
                 <li>عدّل الـ prompt إن رغبت.</li>
@@ -134,11 +134,11 @@
                         <li>
                             <p>افتح قائمة التحرير الموجودة على يمين الشاشة. إذا كانت مطوية فاستخدم السهم الصغير لعرضها.</p>
                             <div class="import-step-images" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;">
-                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
                                     <img src="images/tutoriels/elea-import-parcours-1.png" alt="قائمة التحرير في العمود الأيمن" style="width:75%;height:auto;">
                                     <figcaption><em>قائمة التحرير مفتوحة.</em></figcaption>
                                 </figure>
-                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
                                     <img src="images/tutoriels/elea-import-parcours-2.png" alt="سهم توسيع لوحة التحرير" style="width:75%;height:auto;">
                                     <figcaption><em>استخدم السهم إذا كان اللوح مخفياً.</em></figcaption>
                                 </figure>
@@ -1192,15 +1192,15 @@
     legal_title: "ملاحظات قانونية",
     legal_editor_title: "محرر التطبيق",
     legal_editor_gauthier_remande: "<strong>غوتييه ريماند</strong>",
-    legal_editor_gauthier_remande_function: "الوظيفة: أستاذ في المدرسة الثانوية المهنية للآداب والتاريخ",
-    legal_editor_gauthier_remande_email: "البريد الإلكتروني: gauthier.remande@ac-nantes.fr",
-    legal_editor_gauthier_remande_address: "العنوان: 39 avenue de Chanzy، 53000 Laval، فرنسا",
-    legal_editor_gauthier_remande_phone: "الهاتف: +33 2 43 67 24 00",
+    legal_editor_gauthier_remande_function: "<strong>الوظيفة:</strong> أستاذ في المدرسة الثانوية المهنية للآداب والتاريخ",
+    legal_editor_gauthier_remande_email: "<strong>البريد الإلكتروني:</strong> gauthier.remande@ac-nantes.fr",
+    legal_editor_gauthier_remande_address: "<strong>العنوان:</strong> 39 avenue de Chanzy، 53000 Laval، فرنسا",
+    legal_editor_gauthier_remande_phone: "<strong>الهاتف:</strong> +33 2 43 67 24 00",
     legal_editor_emmanuel_gaunard: "<strong>إيمانويل غونار</strong>",
-    legal_editor_emmanuel_gaunard_function: "الوظيفة: أستاذ رياضيات ومسؤول بعثة DRANE – أكاديمية غرونوبل",
-    legal_editor_emmanuel_gaunard_email: "البريد الإلكتروني: emmanuel.gaunard@ac-grenoble.fr",
-    legal_editor_emmanuel_gaunard_address: "العنوان: 30 boulevard de la République, 38200 Vienne, France",
-    legal_editor_emmanuel_gaunard_phone: "الهاتف: +33 6 46 74 20 94",
+    legal_editor_emmanuel_gaunard_function: "<strong>الوظيفة:</strong> أستاذ رياضيات ومسؤول بعثة DRANE – أكاديمية غرونوبل",
+    legal_editor_emmanuel_gaunard_email: "<strong>البريد الإلكتروني:</strong> emmanuel.gaunard@ac-grenoble.fr",
+    legal_editor_emmanuel_gaunard_address: "<strong>العنوان:</strong> 30 boulevard de la République, 38200 Vienne, France",
+    legal_editor_emmanuel_gaunard_phone: "<strong>الهاتف:</strong> +33 6 46 74 20 94",
     legal_app_description: "تطبيق الويب «Caramel» هو مشروع حر وغير تجاري مخصص لإنشاء محتوى H5P وÉléa. لا يلزم أي حساب، ولا يتم جمع أي بيانات شخصية.",
     legal_hosting_title: "الاستضافة",
     legal_host_name: "<strong>المستضيف</strong>: Forge des Communs Numériques Éducatifs",

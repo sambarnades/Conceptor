@@ -91,11 +91,11 @@ const translations_it = {
         <h4><span class="help-step-number">3</span> Generare e affinare il contenuto</h4>
         <p>Dopo aver cliccato su una tessera, si apre una finestra. Qui interagisci con l’IA.</p>
         <div class="help-subsection">
-            <h5><i class="fas fa-rocket"></i> Opzione A: Genera con un clic</h5>
+            <h5><i class="fas fa-rocket"></i> Opzione A: Visualizzazione Semplice - Genera con un clic</h5>
             <p>La via rapida. Clicca su <button class="help-btn-example-llm">Genera con un clic</button> per far produrre all’IA il contenuto e collocarlo direttamente nell’area risultati a destra. Puoi scegliere tra diversi modelli (veloce, potente...) tramite la freccia a destra del pulsante.</p>
         </div>
         <div class="help-subsection">
-            <h5><i class="fas fa-tools"></i> Opzione B: Usa un’IA esterna</h5>
+            <h5><i class="fas fa-tools"></i> Opzione B: Visualizzazione Guidata - Usa un'IA esterna</h5>
             <p>Per il massimo controllo. Il prompt (istruzione per l’IA) appare a sinistra.</p>
             <ol>
                 <li>Modifica il prompt se vuoi.</li>
@@ -134,11 +134,11 @@ const translations_it = {
                         <li>
                             <p>Apri il menu di modifica sulla destra dello schermo. Se è chiuso, usa la piccola freccia per mostrarlo.</p>
                             <div class="import-step-images" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;">
-                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
                                     <img src="images/tutoriels/elea-import-parcours-1.png" alt="Menu di modifica aperto nella colonna destra" style="width:75%;height:auto;">
                                     <figcaption><em>Menu di modifica aperto.</em></figcaption>
                                 </figure>
-                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
                                     <img src="images/tutoriels/elea-import-parcours-2.png" alt="Freccia per aprire il pannello di modifica" style="width:75%;height:auto;">
                                     <figcaption><em>Apri il pannello se necessario.</em></figcaption>
                                 </figure>
@@ -1192,15 +1192,15 @@ const translations_it = {
     legal_title: "Note legali",
     legal_editor_title: "Editore dell'applicazione",
     legal_editor_gauthier_remande: "<strong>Gauthier REMANDE</strong>",
-    legal_editor_gauthier_remande_function: "Funzione: Professore di Liceo Professionale Lettere-Storia",
-    legal_editor_gauthier_remande_email: "Email: gauthier.remande@ac-nantes.fr",
-    legal_editor_gauthier_remande_address: "Indirizzo: 39 avenue de Chanzy, 53000 Laval, Francia",
-    legal_editor_gauthier_remande_phone: "Telefono: +33 2 43 67 24 00",
+    legal_editor_gauthier_remande_function: "<strong>Funzione:</strong> Professore di Liceo Professionale Lettere-Storia",
+    legal_editor_gauthier_remande_email: "<strong>Email:</strong> gauthier.remande@ac-nantes.fr",
+    legal_editor_gauthier_remande_address: "<strong>Indirizzo:</strong> 39 avenue de Chanzy, 53000 Laval, Francia",
+    legal_editor_gauthier_remande_phone: "<strong>Telefono:</strong> +33 2 43 67 24 00",
     legal_editor_emmanuel_gaunard: "<strong>Emmanuel GAUNARD</strong>",
-    legal_editor_emmanuel_gaunard_function: "Funzione: Insegnante di matematica e responsabile della missione DRANE – Accademia di Grenoble",
-    legal_editor_emmanuel_gaunard_email: "Email: emmanuel.gaunard@ac-grenoble.fr",
-    legal_editor_emmanuel_gaunard_address: "Indirizzo: 30 boulevard de la République, 38200 Vienne, Francia",
-    legal_editor_emmanuel_gaunard_phone: "Telefono: +33 6 46 74 20 94",
+    legal_editor_emmanuel_gaunard_function: "<strong>Funzione:</strong> Insegnante di matematica e responsabile della missione DRANE – Accademia di Grenoble",
+    legal_editor_emmanuel_gaunard_email: "<strong>Email:</strong> emmanuel.gaunard@ac-grenoble.fr",
+    legal_editor_emmanuel_gaunard_address: "<strong>Indirizzo:</strong> 30 boulevard de la République, 38200 Vienne, Francia",
+    legal_editor_emmanuel_gaunard_phone: "<strong>Telefono:</strong> +33 6 46 74 20 94",
     legal_app_description: "L’applicazione web «Caramel» è un progetto libero e non commerciale, pensato per creare contenuti H5P ed Éléa. Non è richiesto alcun account e non vengono raccolti dati personali.",
     legal_hosting_title: "Hosting",
     legal_host_name: "<strong>Host</strong>: Forge of Digital Educational Commons",

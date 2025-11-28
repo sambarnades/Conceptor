@@ -91,11 +91,11 @@
         <h4><span class="help-step-number">3</span> 生成并优化内容</h4>
         <p>点击某个卡片后会打开窗口。你将在此与 AI 交互。</p>
         <div class="help-subsection">
-            <h5><i class="fas fa-rocket"></i> 选项 A：一键生成</h5>
+            <h5><i class="fas fa-rocket"></i> 选项 A：简单显示 - 一键生成</h5>
             <p>快捷方式。点击 <button class="help-btn-example-llm">一键生成</button>，AI 将生成内容并直接放入右侧结果区域。你可通过按钮右侧的小箭头选择不同模型（快速、强力等）。</p>
         </div>
         <div class="help-subsection">
-            <h5><i class="fas fa-tools"></i> 选项 B：使用外部 AI</h5>
+            <h5><i class="fas fa-tools"></i> 选项 B：引导显示 - 使用外部 AI</h5>
             <p>用于获得最大控制力。左侧显示提示词（AI 指令）。</p>
             <ol>
                 <li>如需可先编辑提示词。</li>
@@ -134,11 +134,11 @@
                         <li>
                             <p>打开屏幕右侧的编辑菜单。如果被收起，请使用小箭头展开。</p>
                             <div class="import-step-images" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;">
-                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
                                     <img src="images/tutoriels/elea-import-parcours-1.png" alt="右侧展开的编辑菜单" style="width:75%;height:auto;">
                                     <figcaption><em>编辑菜单展开。</em></figcaption>
                                 </figure>
-                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
                                     <img src="images/tutoriels/elea-import-parcours-2.png" alt="展开编辑面板的小箭头" style="width:75%;height:auto;">
                                     <figcaption><em>需要时点击箭头展开。</em></figcaption>
                                 </figure>
@@ -1192,15 +1192,15 @@
     legal_title: "法律声明",
     legal_editor_title: "应用程序编辑",
     legal_editor_gauthier_remande: "<strong>Gauthier REMANDE</strong>",
-    legal_editor_gauthier_remande_function: "职务: 职业高中 文学-历史 教师",
-    legal_editor_gauthier_remande_email: "电子邮件: gauthier.remande@ac-nantes.fr",
-    legal_editor_gauthier_remande_address: "地址: 39 avenue de Chanzy, 53000 Laval, 法国",
-    legal_editor_gauthier_remande_phone: "电话: +33 2 43 67 24 00",
+    legal_editor_gauthier_remande_function: "<strong>职务:</strong> 职业高中 文学-历史 教师",
+    legal_editor_gauthier_remande_email: "<strong>电子邮件:</strong> gauthier.remande@ac-nantes.fr",
+    legal_editor_gauthier_remande_address: "<strong>地址:</strong> 39 avenue de Chanzy, 53000 Laval, 法国",
+    legal_editor_gauthier_remande_phone: "<strong>电话:</strong> +33 2 43 67 24 00",
     legal_editor_emmanuel_gaunard: "<strong>Emmanuel GAUNARD</strong>",
-    legal_editor_emmanuel_gaunard_function: "职务: 数学教师和DRANE任务官员 – 格勒诺布尔学院",
-    legal_editor_emmanuel_gaunard_email: "电子邮件: emmanuel.gaunard@ac-grenoble.fr",
-    legal_editor_emmanuel_gaunard_address: "地址: 30 boulevard de la République, 38200 Vienne, France",
-    legal_editor_emmanuel_gaunard_phone: "电话: +33 6 46 74 20 94",
+    legal_editor_emmanuel_gaunard_function: "<strong>职务:</strong> 数学教师和DRANE任务官员 – 格勒诺布尔学院",
+    legal_editor_emmanuel_gaunard_email: "<strong>电子邮件:</strong> emmanuel.gaunard@ac-grenoble.fr",
+    legal_editor_emmanuel_gaunard_address: "<strong>地址:</strong> 30 boulevard de la République, 38200 Vienne, France",
+    legal_editor_emmanuel_gaunard_phone: "<strong>电话:</strong> +33 6 46 74 20 94",
     legal_app_description: "“Caramel” 网络应用是一个自由、非商业的项目，用于创建 H5P 和 Éléa 内容。无需账户，也不收集任何个人数据。",
     legal_hosting_title: "托管",
     legal_host_name: "<strong>主机</strong>: Forge of Digital Educational Commons",

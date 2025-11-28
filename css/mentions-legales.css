@@ -63,9 +63,16 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.legal-card strong {
+.legal-card > strong {
     display: block;
     margin-bottom: 8px;
+    font-weight: bold;
+    color: #000;
+}
+
+.legal-card span strong,
+.legal-card p strong {
+    display: inline;
     font-weight: bold;
     color: #000;
 }

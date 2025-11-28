@@ -91,11 +91,11 @@ const translations_fr = {
         <h4><span class="help-step-number">3</span> Générer et affiner le contenu</h4>
         <p>Après avoir cliqué sur une tuile, une fenêtre s'ouvre. C'est ici que vous interagissez avec l'IA.</p>
         <div class="help-subsection">
-            <h5><i class="fas fa-rocket"></i> Option A : Générer en un clic</h5>
+            <h5><i class="fas fa-rocket"></i> Option A : Affichage Simple - Générer en un clic</h5>
             <p>La voie rapide. Cliquez sur le bouton <button class="help-btn-example-llm">Générer en un clic</button> pour que l'IA produise le contenu et le place directement dans la zone de résultat à droite. Vous pouvez choisir entre différents modèles d'IA (rapide, puissant...) via la petite flèche sur le côté droit du bouton.</p>
         </div>
         <div class="help-subsection">
-            <h5><i class="fas fa-tools"></i> Option B : Utiliser une IA externe</h5>
+            <h5><i class="fas fa-tools"></i> Option B : Affichage Guidé - Utiliser une IA externe</h5>
             <p>Pour un contrôle maximal. Le prompt (instruction pour l'IA) apparaît à gauche.</p>
             <ol>
                 <li>Modifiez le prompt si vous le souhaitez.</li>
@@ -108,7 +108,7 @@ const translations_fr = {
 
     <div id="integrer" class="help-section">
         <h4><span class="help-step-number">4</span> Télécharger et intégrer votre activité</h4>
-        <p>Une fois le contenu prêt, cliquez sur le bouton de téléchargement (ex: <button class="help-btn-example-download">Générer le H5P</button>). Voici comment intégrer les fichiers dans Éléa/Moodle :</p>
+        <p>Une fois le contenu prêt, cliquez sur le bouton de téléchargement (ex: <button class="help-btn-example-download">Générer le H5P</button>). Voici comment intégrer les fichiers dans Éléa/Magistère :</p>
         
         <div class="import-guide">
             <details class="import-details" open>
@@ -134,11 +134,11 @@ const translations_fr = {
                         <li>
                             <p>Ouvrez le menu d'édition situé à droite de l'écran. S'il est replié, utilisez la petite flèche pour le faire apparaître.</p>
                             <div class="import-step-images" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;">
-                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
                                     <img src="images/tutoriels/elea-import-parcours-1.png" alt="Menu d'édition ouvert dans la colonne de droite" style="width:75%;height:auto;">
                                     <figcaption><em>Menu d'édition ouvert.</em></figcaption>
                                 </figure>
-                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
                                     <img src="images/tutoriels/elea-import-parcours-2.png" alt="Flèche pour déplier le panneau d'édition" style="width:75%;height:auto;">
                                     <figcaption><em>Dépliez le panneau si besoin.</em></figcaption>
                                 </figure>
@@ -1192,15 +1192,15 @@ const translations_fr = {
     legal_title: "Mentions légales",
     legal_editor_title: "Éditeur de l’application",
     legal_editor_gauthier_remande: "<strong>Gauthier REMANDE</strong>",
-    legal_editor_gauthier_remande_function: "Fonction : PLP Lettres-Histoire",
-    legal_editor_gauthier_remande_email: "Email : gauthier.remande@ac-nantes.fr",
-    legal_editor_gauthier_remande_address: "Adresse : 39 avenue de Chanzy, 53000 Laval, France",
-    legal_editor_gauthier_remande_phone: "Téléphone : +33 2 43 67 24 00",
+    legal_editor_gauthier_remande_function: "<strong>Fonction :</strong> PLP Lettres-Histoire",
+    legal_editor_gauthier_remande_email: "<strong>Email :</strong> gauthier.remande@ac-nantes.fr",
+    legal_editor_gauthier_remande_address: "<strong>Adresse :</strong> 39 avenue de Chanzy, 53000 Laval, France",
+    legal_editor_gauthier_remande_phone: "<strong>Téléphone :</strong> +33 2 43 67 24 00",
     legal_editor_emmanuel_gaunard: "<strong>Emmanuel GAUNARD</strong>",
-    legal_editor_emmanuel_gaunard_function: "Fonction : Professeur de mathématiques et chargé de mission DRANE – Académie de Grenoble",
-    legal_editor_emmanuel_gaunard_email: "Email : emmanuel.gaunard@ac-grenoble.fr",
-    legal_editor_emmanuel_gaunard_address: "Adresse : 30 boulevard de la République, 38200 Vienne, France",
-    legal_editor_emmanuel_gaunard_phone: "Téléphone : +33 6 46 74 20 94",
+    legal_editor_emmanuel_gaunard_function: "<strong>Fonction :</strong> Professeur de mathématiques et chargé de mission DRANE – Académie de Grenoble",
+    legal_editor_emmanuel_gaunard_email: "<strong>Email :</strong> emmanuel.gaunard@ac-grenoble.fr",
+    legal_editor_emmanuel_gaunard_address: "<strong>Adresse :</strong> 30 boulevard de la République, 38200 Vienne, France",
+    legal_editor_emmanuel_gaunard_phone: "<strong>Téléphone :</strong> +33 6 46 74 20 94",
     legal_app_description: "L’application web « Caramel » est un projet libre, non commercial, destiné à la création de contenus H5P et Éléa. Aucun compte n’est requis, aucune donnée personnelle n’est collectée.",
     legal_hosting_title: "Hébergement",
     legal_host_name: "<strong>Hébergeur</strong> : Forge des Communs Numériques Éducatifs",
