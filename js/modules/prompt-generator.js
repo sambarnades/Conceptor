@@ -302,6 +302,7 @@ ${pt.quiz_set_prompt_rule3}
 ${pt.quiz_set_prompt_rule4}
 ${pt.quiz_set_prompt_rule5}
 ${pt.quiz_set_prompt_rule6}
+${pt.quiz_set_prompt_rule7}
 
 ${pt.quiz_set_prompt_example_json_title}
 

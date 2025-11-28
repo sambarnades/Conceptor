@@ -51,7 +51,8 @@ function shouldSkip(remoteVersion) {
         return true;
     }
 
-    return compareVersions(remoteVersion, localVersion) <= 0;
+    // Ne compare que les deux premières parties de la version du site
+    return compareVersions(remoteVersion, localVersion, 2) <= 0;
 }
 
 async function fetchPublishedVersion() {
@@ -88,7 +89,7 @@ function extractVersionNumber(text) {
     return match ? match[1] : null;
 }
 
-function compareVersions(a, b) {
+function compareVersions(a, b, segmentLimit = Infinity) {
     if (!a || !b) {
         return 0;
     }
@@ -97,8 +98,9 @@ function compareVersions(a, b) {
     const left = parse(a);
     const right = parse(b);
     const maxLength = Math.max(left.length, right.length);
+    const segmentsToCompare = Math.min(maxLength, segmentLimit);
 
-    for (let i = 0; i < maxLength; i++) {
+    for (let i = 0; i < segmentsToCompare; i++) {
         const diff = (left[i] || 0) - (right[i] || 0);
         if (diff > 0) return 1;
         if (diff < 0) return -1;

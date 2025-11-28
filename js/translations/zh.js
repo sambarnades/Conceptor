@@ -1,5 +1,5 @@
 ﻿const translations_zh = {
-    subtitle: "辅助创建 Magistère 与 Éléa 的资源与活动",
+    subtitle: "辅助创建 Moodle 与 Éléa 的资源与活动",
     help_button: "帮助",
     help_modal_title: "🚀 面向教师的 Caramel 全面指南",
     help_modal_content: `
@@ -115,32 +115,116 @@
                 <summary><span class="help-badge-file">.h5p</span>（H5P 活动）</summary>
                 <div class="import-content">
                     <ul>
-                        <li><strong>简单方法：</strong> 在课程中启用编辑模式，将 .h5p 文件直接拖放到目标章节。适合快速使用。</li>
-                        <li><strong>推荐方法（面向设计者）：</strong> 点击“添加活动或资源”→ 选择“交互式内容（H5P）”→ 在“文件”字段上传 .h5p。共享课程时可确保正确包含活动。</li>
+                        <li>
+                            <strong>快速方法：</strong> 启用课程的编辑模式，将 .h5p 文件直接拖放到目标区块。选择 “Ajouter une activité H5P”，再用 “DÉPOSER” 按钮完成。
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-ajouter-h5p.png" alt="快速添加 H5P 活动" style="max-width:360px;width:75%;height:auto;">
+                                <figcaption><em>添加 H5P 活动并点击 DÉPOSER。</em></figcaption>
+                            </figure>
+                        </li>
+                        <li><strong>推荐方法（适合设计者）：</strong> 点击 "添加活动或资源"，选择 "互动内容 (H5P)"，然后在 "编辑器" 字段选择 "Téléverser" 分页并继续 "Téléverser un fichier"。最后点击 "Utiliser"，补充必要信息后保存，分享课程时即可确保活动被打包。</li>
                     </ul>
                 </div>
             </details>
             <details class="import-details">
-                <summary><span class="help-badge-file">.mbz</span>（页面、百万富翁、配对、选择题）</summary>
+                <summary><span class="help-badge-file">.mbz</span>（页面、百万富翁、匹配、MCQ）</summary>
                 <div class="import-content">
                     <p>此格式会将完整活动导入课程。</p>
                     <ol>
-                        <li>在课程设置（齿轮）菜单中点击“还原”。</li>
-                        <li>将 .mbz 文件拖放到导入区域。</li>
-                        <li>点击“继续”并按步骤进行。活动将添加到课程中。</li>
+                        <li>
+                            <p>打开屏幕右侧的编辑菜单。如果被收起，请使用小箭头展开。</p>
+                            <div class="import-step-images" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                    <img src="images/tutoriels/elea-import-parcours-1.png" alt="右侧展开的编辑菜单" style="width:75%;height:auto;">
+                                    <figcaption><em>编辑菜单展开。</em></figcaption>
+                                </figure>
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                    <img src="images/tutoriels/elea-import-parcours-2.png" alt="展开编辑面板的小箭头" style="width:75%;height:auto;">
+                                    <figcaption><em>需要时点击箭头展开。</em></figcaption>
+                                </figure>
+                            </div>
+                        </li>
+                        <li>
+                            <p>点击 "IMPORT/EXPORT"，然后在子菜单中选择 "Importer un parcours"。</p>
+                            <figure class="import-step-figure" style="text-align:center;">
+                                <img src="images/tutoriels/elea-import-parcours-3.png" alt="Moodle/Éléa 的 IMPORT/EXPORT 按钮" style="max-width:360px;width:75%;height:auto;">
+                                <figcaption><em>选择 Importer un parcours。</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            将 .mbz 文件拖放到导入区域并点击 "IMPORTER"。
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-import-parcours-4.png" alt="拖放 MBZ 文件的区域" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>放入文件并用 IMPORTER 确认。</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>最后在向导的末步点击 "CONTINUER"，活动就会添加到课程中。</li>
                     </ol>
                 </div>
             </details>
             <details class="import-details">
-                <summary><span class="help-badge-file">.xml</span> 与 <span class="help-badge-file">GIFT</span>（测验活动）</summary>
+                <summary><span class="help-badge-file">.xml</span>（词汇表活动）</summary>
                 <div class="import-content">
-                    <p>这些格式会把题目导入到“题库”。</p>
+                    <p>此格式允许您将定义列表导入到 Éléa/Moodle 词汇表中。</p>
                     <ol>
-                        <li>进入课程的“更多”菜单 → “题库”。</li>
-                        <li>点击“导入”选项卡。</li>
-                        <li>选择 “Moodle XML 格式” 或 “GIFT 格式”。</li>
-                        <li>将文件拖到“导入”区域并确认。</li>
-                        <li>题目现已在题库中，可添加到“测验”活动。</li>
+                        <li>
+                            <p>在课程中创建一个空白的词汇表活动并打开它。</p>
+                        </li>
+                        <li>
+                            <p>进入词汇表后，点击 "IMPORTER DES ARTICLES" 按钮。</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-1.png" alt="词汇表中的 IMPORTER DES ARTICLES 按钮" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>点击 IMPORTER DES ARTICLES。</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>将 .xml 文件拖放到导入区域，然后点击 "ENVOYER" 按钮。</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-2.png" alt="词汇表 XML 文件的放置区域" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>放置文件并用 ENVOYER 验证。</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>您的条目已被检测到。点击 "CONTINUER" 按钮完成操作。</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-3.png" alt="确认检测到的条目" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>点击 CONTINUER 完成导入。</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>导入完成。您的定义现已在词汇表中可用。</li>
+                    </ol>
+                </div>
+            </details>
+            <details class="import-details">
+                <summary><span class="help-badge-file">.xml</span> 与 <span class="help-badge-file">.GIFT</span>（测验活动）</summary>
+                <div class="import-content">
+                    <p>这些格式会把题目导入到"题库"。</p>
+                    <ol>
+                        <li>
+                            <p>在您的 Éléa 课程中，转到"更多"选项卡，然后点击"题库"。</p>
+                        </li>
+                        <li>
+                            <p>在显示"题目"的下拉菜单中，选择"导入"。</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-importation-banquequestions-1.png" alt="在题库中选择导入按钮" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>在下拉菜单中选择导入。</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>选择与您的文件对应的格式：</p>
+                            <ul>
+                                <li><strong>Moodle XML 格式</strong>（推荐）：支持所有题目类型的完整格式。</li>
+                                <li><strong>GIFT 格式</strong>：更简单的替代方案，但题目类型有限。</li>
+                            </ul>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-importation-banquequestions-2.png" alt="在 Moodle XML 格式和 GIFT 格式之间选择" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>选择适合您文件的格式。</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>将文件拖放到上传区域。</li>
+                        <li>点击"IMPORTATION"按钮。屏幕将显示添加的题目（例如：已添加 10 道题目）。</li>
+                        <li>通过点击页面底部的"CONTINUER"完成操作。</li>
+                        <li>题目现已准备好添加到测验活动中。请参阅 <a href="https://moodle-doc.forge.apps.education.fr/elea/docs/Tutoriels/Concevoir_un_parcours/Ajouter_des_activites/Le_test/banque" target="_blank" rel="noopener noreferrer">Éléa 教程</a> 以创建测验活动并从题库加载题目。</li>
                     </ol>
                 </div>
             </details>
@@ -151,7 +235,7 @@
                     <ol>
                         <li>用文本编辑器（如记事本）打开 .html 文件并复制全部内容。</li>
                         <li>在 Éléa 中添加“页面” 活动。</li>
-                        <li>在页面编辑器中点击图标切换到 HTML 模式（通常显示为 \`</\>\`）。</li>
+                        <li>在页面编辑器中点击图标切换到 HTML 模式（通常以 "&lt;&gt;" 显示）。</li>
                         <li>粘贴复制的内容并保存。</li>
                     </ol>
                 </div>
@@ -523,6 +607,7 @@
     quiz_set_prompt_rule4: "4.  **反馈（关键规则）：** 对于**所有问题类型**（`MultiChoice`、`Blanks`、`DragText`、`MarkTheWords`、`Essay`），您**必须**生成一个包含6个分数范围的`overallFeedback`：0-10、11-30、31-50、51-70、71-90和91-100。对于`TrueFalse`问题，还需添加`feedbackOnCorrect`和`feedbackOnWrong`字段。反馈必须是善意的、渐进的，并且始终以肯定的方式表达。",
     quiz_set_prompt_rule5: "5.  **内容：** `params`中的内容必须在教学上相关，为多选题提供合理的干扰项，为其他活动提供连贯的文本。",
     quiz_set_prompt_rule6: "6.  **简洁性：** 不要添加图片或多余的行为参数。保持结构简单，如示例所示。",
+    quiz_set_prompt_rule7: "7.  **数学公式：** 对于数学公式，使用带双反斜杠转义的LaTeX表示法。用 \\( 和 \\) 包围公式。示例：不要写 ( (2^3)^2 )，而应写 \\( (2^3)^2 \\)。答案同样如此：写 \\( 2^{12} \\) 而不是 ( 2^{12} )。",
     quiz_set_prompt_example_json_title: "**每种授权问题类型的结构示例：**",
     quiz_set_example_true_false: "对/错 :",
     quiz_set_example_multiple_choice: "多项选择 :",
@@ -1131,7 +1216,16 @@
     legal_personal_data_title: "个人数据",
     legal_personal_data_content: "不收集或存储任何个人数据。不使用任何跟踪 cookie。",
     legal_ai_models_title: "人工智能模型",
-    legal_ai_models_content: "Caramel 应用仅在一键生成时使用由 ILAAS 运营的人工智能模型；ILAAS 是一个共享式 AI 基础设施联合体。请求通过由孵化器托管的 n8n 工作流进行转发，随后交由 ILAAS 在受信任的服务器上执行，这些服务器托管于高等教育与科研（ESR）标识的数据中心。Caramel 不运行模型，也不自行处理或存储数据；数据仅用于完成该次请求，不会发送至面向公众的消费级 AI。当前提供的模型包括 {{llm_model_1_name}} ({{llm_model_1_param}} {{llm_model_parameters_unit}})?{{llm_model_2_name}} ({{llm_model_2_param}} {{llm_model_parameters_unit}})?{{llm_model_3_name}} ({{llm_model_3_param}} {{llm_model_parameters_unit}}): 提供界面中使用的图标，以改善导航和视觉体验。",
+    legal_ai_models_content: "Caramel 应用仅在一键生成时使用由 ILAAS 运营的人工智能模型；ILAAS 是一个共享式 AI 基础设施联合体。请求通过由孵化器托管的 n8n 工作流进行转发，随后交由 ILAAS 在受信任的服务器上执行，这些服务器托管于高等教育与科研（ESR）标识的数据中心。Caramel 不运行模型，也不自行处理或存储数据；数据仅用于完成该次请求，不会发送至面向公众的消费级 AI。当前提供的模型包括 {{llm_model_1_name}} ({{llm_model_1_param}} {{llm_model_parameters_unit}})、{{llm_model_2_name}} ({{llm_model_2_param}} {{llm_model_parameters_unit}}) 和 {{llm_model_3_name}} ({{llm_model_3_param}} {{llm_model_parameters_unit}})。ILAAS 可能进行的托管、日志记录和保存方式受其隐私政策和服务条款的约束，应参考这些文件。",
+    legal_user_requests_processing_title: "通过 n8n 和国民教育部孵化器处理用户请求",
+    legal_user_requests_processing_content: "我们的网站使用由国民教育部孵化器托管的开源工具 n8n 开发的技术解决方案。该服务通过自动化工作流将用户请求转换为结构化数据（JSON 格式），以便与 DINUM 的主权人工智能进行交互。不会暴露或在未加密的情况下传输敏感信息，从而确保通信的机密性和安全性。",
+    legal_accessibility_title: "无障碍功能",
+    legal_accessibility_content: "该应用程序旨在与计算机上的使用兼容，包括深色/浅色模式、键盘导航和根据主题的高对比度。根据 RGAA 的建议，无障碍功能的持续改进正在进行中。",
+    legal_applicable_law_title: "适用法律",
+    legal_applicable_law_content: "本网站受法国法律管辖。如有争议，里昂管辖范围内的法院将具有管辖权。",
+    legal_external_libraries_title: "使用的外部库",
+    legal_external_libraries_intro: "Caramel 应用程序使用以下许可证下的多个开源库：",
+    legal_library_fontawesome: "<strong>Font Awesome Free</strong> (许可证: CC BY 4.0, SIL OFL 1.1, MIT): 提供界面中使用的图标，以改善导航和视觉体验。",
     legal_library_jszip: "<strong>JSZip</strong> (许可证: MIT or GPLv3): 通过将必要内容压缩到zip存档中来创建.h5p文件。",
     legal_library_clientzip: "<strong>client-zip</strong> (许可证: MIT): 另一个用于文件压缩的库，为直接在浏览器中生成.h5p存档提供了高性能的替代方案。",
     legal_library_fflate: "<strong>fflate</strong> (许可证: MIT): 用于数据压缩和解压缩的非常快的库，用于为Moodle模块创建.mbz存档。",

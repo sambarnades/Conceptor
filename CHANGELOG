@@ -1,5 +1,14 @@
 # Caramel – Journal des modifications
 
+
+## 3.3.9 – 28-11-2025
+- **Tutoriel** : Amélioration des tutoriels pour importer activités des activités H5P, mbz ou xml : explications améliorées et captures d'écran ajoutées.
+- **Bandeau d'urgence** : Un système de bandeau d'urgence fait désormais partie du site. En cas de problème sur des perturbations en cours ou à venir, nous pouvons désormais vous prévenir à parvenir d'une modification d'un fichier externe au site.
+- **Prompt amélioré** : Renforcement du prompt pour le Quizset pour supporter les exposants en mathématiques.
+- **Vérification de la version du site** : la notification de changement de version ne se déclenche qu'en cas d'utilisation d'une version du site où une des deux premières valeurs est différente du site en production (ex : 3.3.8 vers 3.3.9 ne notifie pas, 3.3.8 vers 3.4.0 notifie)
+
+---
+
 ## 3.3.8 – 21-11-2025
 - **Vérification de la version du site** : Si une nouvelle version du site est déployée, un message propose à l'utilisateur de recharger la page ou de ne rien faire (traduction dans toutes les langues, adaptée au mode responsive).
 

@@ -1,5 +1,5 @@
-const translations_ar = {
-    subtitle: "الإنشاء المُساعَد للموارد والأنشطة في Magistère وÉléa",
+﻿const translations_ar = {
+    subtitle: "الإنشاء المُساعَد للموارد والأنشطة في Moodle وÉléa",
     help_button: "مساعدة",
     help_modal_title: "🚀 الدليل الكامل لـ Caramel للمعلمين",
     help_modal_content: `
@@ -115,32 +115,116 @@ const translations_ar = {
                 <summary><span class="help-badge-file">.h5p</span> (أنشطة H5P)</summary>
                 <div class="import-content">
                     <ul>
-                        <li><strong>طريقة بسيطة:</strong> فعّل وضع التحرير في مقررك، ثم اسحب وأفلِت ملف .h5p مباشرة في القسم المطلوب. مثالي للاستخدام السريع بلا مشاركة معقّدة.</li>
-                        <li><strong>الطريقة المُوصى بها (للمصممين):</strong> انقر "إضافة نشاط أو مورد"، واختر "محتوى تفاعلي (H5P)"، ثم في حقل "ملف"، ارفع ملف .h5p. تضمن هذه الطريقة تضمين النشاط جيدًا عند مشاركة مسارك.</li>
+                        <li>
+                            <strong>طريقة بسيطة:</strong> فعِّل وضع التحرير في المقرر ثم اسحب ملف .h5p وأسقطه مباشرة في القسم المطلوب. اختر "Ajouter une activité H5P" ثم أنهِ بالزر "DÉPOSER".
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-ajouter-h5p.png" alt="إضافة نشاط H5P بسرعة" style="max-width:360px;width:75%;height:auto;">
+                                <figcaption><em>أضف نشاط H5P ثم اضغط DÉPOSER.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li><strong>طريقة موصى بها (للمصممين):</strong> انقر على "إضافة نشاط أو مورد"، اختر "محتوى تفاعلي (H5P)" ثم في حقل "المحرر" حدد تبويب "Téléverser" وتابع مع "Téléverser un fichier". اختتم بـ "Utiliser"، أضف العناصر المطلوبة ثم احفظ. بهذه الطريقة يتم تضمين النشاط عند مشاركة المقرر.</li>
                     </ul>
                 </div>
             </details>
             <details class="import-details">
-                <summary><span class="help-badge-file">.mbz</span> (صفحة، مليونير، مطابقة، اختيار متعدد)</summary>
+                <summary><span class="help-badge-file">.mbz</span> (صفحة، المليونير، مطابقة، اختيار من متعدد)</summary>
                 <div class="import-content">
-                    <p>يستورد هذا التنسيق نشاطًا كاملًا إلى مقررك.</p>
+                    <p>يستورد هذا التنسيق نشاطًا كاملاً إلى مقررك.</p>
                     <ol>
-                        <li>في المقرر، اذهب إلى قائمة التحرير (ترس)، وانقر "استعادة".</li>
-                        <li>اسحب وأفلِت ملف .mbz في منطقة الاستيراد.</li>
-                        <li>اتبع الخطوات بالنقر على "متابعة". سيُضاف النشاط إلى مقررك.</li>
+                        <li>
+                            <p>افتح قائمة التحرير الموجودة على يمين الشاشة. إذا كانت مطوية فاستخدم السهم الصغير لعرضها.</p>
+                            <div class="import-step-images" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                    <img src="images/tutoriels/elea-import-parcours-1.png" alt="قائمة التحرير في العمود الأيمن" style="width:75%;height:auto;">
+                                    <figcaption><em>قائمة التحرير مفتوحة.</em></figcaption>
+                                </figure>
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                    <img src="images/tutoriels/elea-import-parcours-2.png" alt="سهم توسيع لوحة التحرير" style="width:75%;height:auto;">
+                                    <figcaption><em>استخدم السهم إذا كان اللوح مخفياً.</em></figcaption>
+                                </figure>
+                            </div>
+                        </li>
+                        <li>
+                            <p>انقر على "IMPORT/EXPORT" ثم اختر "Importer un parcours" من القائمة الفرعية.</p>
+                            <figure class="import-step-figure" style="text-align:center;">
+                                <img src="images/tutoriels/elea-import-parcours-3.png" alt="زر IMPORT/EXPORT في Moodle/Éléa" style="max-width:360px;width:75%;height:auto;">
+                                <figcaption><em>اختر Importer un parcours.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            اسحب ملف .mbz وأسقطه في منطقة الاستيراد ثم اضغط "IMPORTER".
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-import-parcours-4.png" alt="منطقة إسقاط ملف MBZ" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>أفلت الملف ثم أكد عبر IMPORTER.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>اتبع الخطوات بالضغط على "CONTINUER". سيُضاف النشاط إلى مقررك.</li>
                     </ol>
                 </div>
             </details>
             <details class="import-details">
-                <summary><span class="help-badge-file">.xml</span> و<span class="help-badge-file">GIFT</span> (نشاط اختبار)</summary>
+                <summary><span class="help-badge-file">.xml</span> (نشاط المسرد)</summary>
+                <div class="import-content">
+                    <p>يتيح لك هذا التنسيق استيراد قائمة تعريفات إلى مسرد Éléa/Moodle.</p>
+                    <ol>
+                        <li>
+                            <p>أنشئ نشاط مسرد فارغًا في مقررك وافتحه.</p>
+                        </li>
+                        <li>
+                            <p>بمجرد دخولك إلى المسرد، انقر على زر "IMPORTER DES ARTICLES".</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-1.png" alt="زر IMPORTER DES ARTICLES في المسرد" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>انقر على IMPORTER DES ARTICLES.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>اسحب وأفلت ملف .xml في منطقة الاستيراد وانقر على زر "ENVOYER".</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-2.png" alt="منطقة الإفلات لملف XML الخاص بالمسرد" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>أفلت الملف وتحقق باستخدام ENVOYER.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>تم اكتشاف مقالاتك. أنهِ العملية بالنقر على زر "CONTINUER".</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-3.png" alt="تأكيد اكتشاف المقالات" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>انقر على CONTINUER لإنهاء الاستيراد.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>اكتمل الاستيراد. أصبحت تعريفاتك متاحة الآن في المسرد.</li>
+                    </ol>
+                </div>
+            </details>
+            <details class="import-details">
+                <summary><span class="help-badge-file">.xml</span> و<span class="help-badge-file">.GIFT</span> (نشاط اختبار)</summary>
                 <div class="import-content">
                     <p>تُدخل هذه التنسيقات أسئلة إلى "بنك الأسئلة".</p>
                     <ol>
-                        <li>اذهب إلى قائمة "المزيد" في المقرر، ثم "بنك الأسئلة".</li>
-                        <li>انقر تبويب "استيراد".</li>
-                        <li>اختر تنسيق "Moodle XML" أو "GIFT".</li>
-                        <li>اسحب ملفك إلى منطقة "استيراد" وأكد.</li>
-                        <li>تصبح أسئلتك الآن في البنك، جاهزة للإضافة إلى نشاط "اختبار".</li>
+                        <li>
+                            <p>في مقرر Éléa الخاص بك، انتقل إلى تبويب "المزيد"، ثم انقر على "بنك الأسئلة".</p>
+                        </li>
+                        <li>
+                            <p>في القائمة المنسدلة حيث يتم عرض "الأسئلة"، حدد "استيراد".</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-importation-banquequestions-1.png" alt="تحديد زر الاستيراد في بنك الأسئلة" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>حدد استيراد من القائمة المنسدلة.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>حدد التنسيق المطابق لملفك:</p>
+                            <ul>
+                                <li><strong>تنسيق Moodle XML</strong> (موصى به): تنسيق كامل يدعم جميع أنواع الأسئلة.</li>
+                                <li><strong>تنسيق GIFT</strong>: بديل أبسط ولكنه محدود في أنواع الأسئلة.</li>
+                            </ul>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-importation-banquequestions-2.png" alt="الاختيار بين تنسيق Moodle XML وتنسيق GIFT" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>حدد التنسيق المناسب لملفك.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>اسحب وأفلت ملفك في منطقة التحميل.</li>
+                        <li>انقر على زر "IMPORTATION". ستعرض الشاشة الأسئلة المضافة (على سبيل المثال: تمت إضافة 10 أسئلة).</li>
+                        <li>انتهِ بالنقر على "CONTINUER" في أسفل الصفحة.</li>
+                        <li>الأسئلة الآن جاهزة لإضافتها إلى نشاط اختبار. راجع <a href="https://moodle-doc.forge.apps.education.fr/elea/docs/Tutoriels/Concevoir_un_parcours/Ajouter_des_activites/Le_test/banque" target="_blank" rel="noopener noreferrer">برنامج Éléa التعليمي</a> لإنشاء نشاط اختبار وتحميل الأسئلة من البنك.</li>
                     </ol>
                 </div>
             </details>
@@ -151,7 +235,7 @@ const translations_ar = {
                     <ol>
                         <li>افتح ملف .html بمحرر نص (مثل: المفكرة) وانسخ كامل المحتوى.</li>
                         <li>في Éléa، أضف نشاط "صفحة".</li>
-                        <li>في محرّر نص الصفحة، انقر الأيقونة للتبديل إلى وضع HTML (غالبًا ممثّلة بـ \`</\>\`).</li>
+                        <li>في محرر الصفحة، انقر على الأيقونة للانتقال إلى وضع HTML (غالباً ما تظهر بالشكل "&lt;&gt;").</li>
                         <li>ألصق المحتوى الذي نسخته، ثم احفظ.</li>
                     </ol>
                 </div>
@@ -523,6 +607,7 @@ const translations_ar = {
     quiz_set_prompt_rule4: "4.  **التقييم (قاعدة حاسمة):** لـ **جميع أنواع الأسئلة** (`MultiChoice`, `Blanks`, `DragText`, `MarkTheWords`, `Essay`), **يجب** عليك إنشاء `overallFeedback` بستة نطاقات درجات بالضبط: 0-10، 11-30، 31-50، 51-70، 71-90، و 91-100. بالنسبة لأسئلة `TrueFalse`، أضف أيضًا حقلي `feedbackOnCorrect` و `feedbackOnWrong`. يجب أن يكون التقييم إيجابيًا وتدريجيًا ومصاغًا دائمًا بشكل إيجابي.",
     quiz_set_prompt_rule5: "5.  **المحتوى:** يجب أن يكون المحتوى في `params` ذا صلة من الناحية التربوية، مع مشتتات معقولة للأسئلة متعددة الخيارات ونصوص متماسكة للأنشطة الأخرى.",
     quiz_set_prompt_rule6: "6.  **البساطة:** لا تضف صورًا أو معلمات سلوك غير ضرورية. حافظ على بساطة البنية كما في الأمثلة.",
+    quiz_set_prompt_rule7: "7.  **الصيغ الرياضية:** بالنسبة للصيغ الرياضية، استخدم تدوين LaTeX مع escape مزدوج للـ backslash. أحط الصيغ بـ \\( و \\). مثال: بدلاً من كتابة ( (2^3)^2 )، اكتب \\( (2^3)^2 \\). وكذلك للإجابات: \\( 2^{12} \\) بدلاً من ( 2^{12} ).",
     quiz_set_prompt_example_json_title: "**أمثلة على الهياكل لكل نوع سؤال مسموح به:**",
     quiz_set_example_true_false: "صح/خطأ :",
     quiz_set_example_multiple_choice: "اختيار من متعدد :",

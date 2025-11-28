@@ -1,5 +1,5 @@
 ﻿const translations_jp = {
-    subtitle: "Magistère と Éléa のための教材・活動の支援作成",
+    subtitle: "Moodle と Éléa のための教材・活動の支援作成",
     help_button: "ヘルプ",
     help_modal_title: "🚀 先生のための Caramel 完全ガイド",
     help_modal_content: `
@@ -115,32 +115,116 @@
                 <summary><span class="help-badge-file">.h5p</span>（H5P 活動）</summary>
                 <div class="import-content">
                     <ul>
-                        <li><strong>簡単な方法：</strong> コースの編集を有効にし、.h5p ファイルを目的のセクションにドラッグ＆ドロップ。すばやい利用に最適。</li>
-                        <li><strong>推奨方法（設計者向け）：</strong> 「活動またはリソースを追加」→「インタラクティブコンテンツ（H5P）」→「ファイル」欄に .h5p をアップロード。コース共有時に活動が正しく含まれます。</li>
+                        <li>
+                            <strong>簡単な方法:</strong> コースの編集モードをオンにし、.h5p ファイルを目的のセクションへドラッグ＆ドロップします。「Ajouter une activité H5P」を選び、「DÉPOSER」ボタンで完了します。
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-ajouter-h5p.png" alt="H5P アクティビティを素早く追加" style="max-width:360px;width:75%;height:auto;">
+                                <figcaption><em>H5P アクティビティを追加して DÉPOSER をクリック。</em></figcaption>
+                            </figure>
+                        </li>
+                        <li><strong>推奨方法 (制作者向け):</strong> 「活動またはリソースを追加」をクリックし、「インタラクティブコンテンツ (H5P)」を選択。続いて「エディター」欄で「Téléverser」タブを開き、「Téléverser un fichier」を実行します。「Utiliser」で確定し、必要な要素を追加して保存してください。共有しても活動が確実に含まれます。</li>
                     </ul>
                 </div>
             </details>
             <details class="import-details">
-                <summary><span class="help-badge-file">.mbz</span>（ページ／ミリオネア／マッチング／MCQ）</summary>
+                <summary><span class="help-badge-file">.mbz</span>（ページ、ミリオネア、マッチング、MCQ）</summary>
                 <div class="import-content">
                     <p>この形式は完全な活動をコースにインポートします。</p>
                     <ol>
-                        <li>コースの設定（歯車）メニューで「復元」。</li>
-                        <li>.mbz ファイルをインポート領域へドラッグ＆ドロップ。</li>
-                        <li>「続行」を押して手順に従うと、活動がコースに追加されます。</li>
+                        <li>
+                            <p>画面右側の編集メニューを開きます。閉じている場合は小さな矢印で展開してください。</p>
+                            <div class="import-step-images" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                    <img src="images/tutoriels/elea-import-parcours-1.png" alt="右カラムに表示された編集メニュー" style="width:75%;height:auto;">
+                                    <figcaption><em>編集メニューを展開。</em></figcaption>
+                                </figure>
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                    <img src="images/tutoriels/elea-import-parcours-2.png" alt="編集パネルを開く矢印" style="width:75%;height:auto;">
+                                    <figcaption><em>必要ならパネルを開く。</em></figcaption>
+                                </figure>
+                            </div>
+                        </li>
+                        <li>
+                            <p>「IMPORT/EXPORT」をクリックし、表示されたサブメニューから「Importer un parcours」を選びます。</p>
+                            <figure class="import-step-figure" style="text-align:center;">
+                                <img src="images/tutoriels/elea-import-parcours-3.png" alt="Moodle/Éléa の IMPORT/EXPORT ボタン" style="max-width:360px;width:75%;height:auto;">
+                                <figcaption><em>Importer un parcours を選択。</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            .mbz ファイルをインポート領域へドラッグ＆ドロップし、「IMPORTER」をクリックします。
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-import-parcours-4.png" alt="MBZ ファイルを配置するエリア" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>ファイルを置き、IMPORTER で確定。</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>最後に「CONTINUER」を押してウィザードを完了すると、活動がコースに追加されます。</li>
                     </ol>
                 </div>
             </details>
             <details class="import-details">
-                <summary><span class="help-badge-file">.xml</span> と <span class="help-badge-file">GIFT</span>（テスト活動）</summary>
+                <summary><span class="help-badge-file">.xml</span>（用語集活動）</summary>
+                <div class="import-content">
+                    <p>この形式により、定義のリストをÉléa/Moodle用語集にインポートできます。</p>
+                    <ol>
+                        <li>
+                            <p>コースに空の用語集活動を作成し、開きます。</p>
+                        </li>
+                        <li>
+                            <p>用語集の中に入ったら、「IMPORTER DES ARTICLES」ボタンをクリックします。</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-1.png" alt="用語集のIMPORTER DES ARTICLESボタン" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>IMPORTER DES ARTICLESをクリックします。</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>.xmlファイルをインポート領域にドラッグ＆ドロップし、「ENVOYER」ボタンをクリックします。</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-2.png" alt="用語集XMLファイルのドロップゾーン" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>ファイルをドロップし、ENVOYERで検証します。</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>エントリが検出されました。「CONTINUER」ボタンをクリックして完了します。</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-3.png" alt="検出されたエントリの確認" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>CONTINUERをクリックしてインポートを完了します。</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>インポートが完了しました。定義が用語集で利用可能になりました。</li>
+                    </ol>
+                </div>
+            </details>
+            <details class="import-details">
+                <summary><span class="help-badge-file">.xml</span> と <span class="help-badge-file">.GIFT</span>（テスト活動）</summary>
                 <div class="import-content">
                     <p>これらは「問題バンク」に質問をインポートします。</p>
                     <ol>
-                        <li>コースの「その他」メニュー → 「問題バンク」。</li>
-                        <li>「インポート」タブをクリック。</li>
-                        <li>「Moodle XML 形式」または「GIFT 形式」を選択。</li>
-                        <li>ファイルを「インポート」領域にドラッグし、確定。</li>
-                        <li>質問はバンクに入り、「テスト」に追加できます。</li>
+                        <li>
+                            <p>Éléaコースで、「その他」タブに移動し、「問題バンク」をクリックします。</p>
+                        </li>
+                        <li>
+                            <p>「質問」と表示されているドロップダウンメニューで、「インポート」を選択します。</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-importation-banquequestions-1.png" alt="問題バンクのインポートボタンの選択" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>ドロップダウンメニューからインポートを選択します。</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>ファイルに対応する形式を選択します：</p>
+                            <ul>
+                                <li><strong>Moodle XML 形式</strong>（推奨）：すべての質問タイプをサポートする完全な形式。</li>
+                                <li><strong>GIFT 形式</strong>：より簡単な代替形式ですが、質問タイプが制限されています。</li>
+                            </ul>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-importation-banquequestions-2.png" alt="Moodle XML形式とGIFT形式の選択" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>ファイルに適した形式を選択します。</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>ファイルをアップロード領域にドラッグ＆ドロップします。</li>
+                        <li>「IMPORTATION」ボタンをクリックします。画面には追加された質問が表示されます（例：10問が追加されました）。</li>
+                        <li>ページ下部の「CONTINUER」をクリックして完了します。</li>
+                        <li>質問はテスト活動に追加する準備が整いました。テスト活動を作成し、バンクから質問を読み込む方法については、<a href="https://moodle-doc.forge.apps.education.fr/elea/docs/Tutoriels/Concevoir_un_parcours/Ajouter_des_activites/Le_test/banque" target="_blank" rel="noopener noreferrer">Éléaチュートリアル</a>を参照してください。</li>
                     </ol>
                 </div>
             </details>
@@ -151,7 +235,7 @@
                     <ol>
                         <li>.html をテキストエディタ（例：メモ帳）で開き、全内容をコピー。</li>
                         <li>Éléa で「ページ」活動を追加。</li>
-                        <li>ページのエディタで HTML モードに切り替えるアイコンをクリック（多くは \`</\>\` で表示）。</li>
+                        <li>ページのエディターでアイコンをクリックしてHTMLモードに切り替えます（多くの場合「&lt;&gt;」で表示されます）。</li>
                         <li>コピーした内容を貼り付け、保存します。</li>
                     </ol>
                 </div>
@@ -523,6 +607,7 @@
     quiz_set_prompt_rule4: "4.  **フィードバック（重要ルール）：** **すべての質問タイプ**（`MultiChoice`、`Blanks`、`DragText`、`MarkTheWords`、`Essay`）について、**必ず**6つのスコア範囲（0-10、11-30、31-50、51-70、71-90、91-100）を持つ`overallFeedback`を生成する必要があります。`TrueFalse`の質問には、`feedbackOnCorrect`と`feedbackOnWrong`フィールドも追加してください。フィードバックは親切で、段階的で、常に肯定的に表現する必要があります。",
     quiz_set_prompt_rule5: "5.  **内容：** `params`の内容は教育的に適切で、MCQにはもっともらしい選択肢を、他のアクティビティには一貫したテキストを含める必要があります。",
     quiz_set_prompt_rule6: "6.  **シンプルさ：** 画像や余分な動作パラメータを追加しないでください。例のように構造をシンプルに保ってください。",
+    quiz_set_prompt_rule7: "7.  **数式：** 数式には、バックスラッシュを二重にエスケープしたLaTeX表記を使用してください。数式を \\( と \\) で囲みます。例：( (2^3)^2 ) と書く代わりに、\\( (2^3)^2 \\) と書きます。回答も同様です：( 2^{12} ) の代わりに \\( 2^{12} \\) と書きます。",
     quiz_set_prompt_example_json_title: "**許可されている各質問タイプの構造例：**",
     quiz_set_example_true_false: "正誤問題 :",
     quiz_set_example_multiple_choice: "多肢選択 :",
@@ -1131,7 +1216,16 @@
     legal_personal_data_title: "個人データ",
     legal_personal_data_content: "個人データは収集も保存もされません。追跡用のクッキーは使用しません。",
     legal_ai_models_title: "人工知能モデル",
-    legal_ai_models_content: "Caramel アプリは、ワンクリック生成の際に限り、共有型 AI インフラの連合体である ILAAS が運用する AI モデルを利用します。リクエストはインキュベーターがホストする n8n ワークフロー経由で送信され、ESR（高等教育・研究）ラベルのデータセンターにホストされた信頼できるサーバー上で ILAAS により実行されます。Caramel はモデルを実行せず、データを自社で処理・保存しません。データはリクエストの実行のみに使用され、一般公開のコンシューマ向け AI には送信されません。現在提供しているモデルには、{{llm_model_1_name}} ({{llm_model_1_param}} {{llm_model_parameters_unit}})?{{llm_model_2_name}} ({{llm_model_2_param}} {{llm_model_parameters_unit}})?{{llm_model_3_name}} ({{llm_model_3_param}} {{llm_model_parameters_unit}}): インターフェースで使用されるアイコンを提供し、ナビゲーションと視覚体験を向上させます。",
+    legal_ai_models_content: "Caramel アプリは、ワンクリック生成の際に限り、共有型 AI インフラの連合体である ILAAS が運用する AI モデルを利用します。リクエストはインキュベーターがホストする n8n ワークフロー経由で送信され、ESR（高等教育・研究）ラベルのデータセンターにホストされた信頼できるサーバー上で ILAAS により実行されます。Caramel はモデルを実行せず、データを自社で処理・保存しません。データはリクエストの実行のみに使用され、一般公開のコンシューマ向け AI には送信されません。現在提供しているモデルには、{{llm_model_1_name}} ({{llm_model_1_param}} {{llm_model_parameters_unit}})、{{llm_model_2_name}} ({{llm_model_2_param}} {{llm_model_parameters_unit}})、{{llm_model_3_name}} ({{llm_model_3_param}} {{llm_model_parameters_unit}}) が含まれます。ILAAS が行う可能性のあるホスティング、ログ記録、保存の方法については、ILAAS のプライバシーポリシーとサービス条件を参照する必要があります。",
+    legal_user_requests_processing_title: "n8nと国民教育省インキュベーターを介したユーザーリクエストの処理",
+    legal_user_requests_processing_content: "当サイトは、国民教育省インキュベーターがホストするオープンソースツール n8n によって開発された技術ソリューションを使用しています。このサービスは、自動化されたワークフローを通じて、ユーザーのリクエストを構造化データ（JSON形式）に変換し、DINUM の主権型人工知能と対話できるようにします。機密情報は暗号化なしで公開または送信されることはなく、通信の機密性とセキュリティが保証されます。",
+    legal_accessibility_title: "アクセシビリティ",
+    legal_accessibility_content: "アプリケーションは、ダーク/ライトモード、キーボードナビゲーション、テーマに応じた高コントラストなど、コンピューター上での使用に対応するよう設計されています。RGAA の推奨事項に基づいて、アクセシビリティの継続的な改善が進行中です。",
+    legal_applicable_law_title: "適用法",
+    legal_applicable_law_content: "このサイトはフランス法の適用を受けます。紛争が発生した場合、リヨンの管轄裁判所が管轄権を持ちます。",
+    legal_external_libraries_title: "使用する外部ライブラリ",
+    legal_external_libraries_intro: "Caramel アプリケーションは、以下のライセンスの下で複数のオープンソースライブラリを使用しています：",
+    legal_library_fontawesome: "<strong>Font Awesome Free</strong> (ライセンス: CC BY 4.0, SIL OFL 1.1, MIT): インターフェースで使用されるアイコンを提供し、ナビゲーションと視覚体験を向上させます。",
     legal_library_jszip: "<strong>JSZip</strong> (ライセンス: MIT または GPLv3): 必要なコンテンツをzipアーカイブに圧縮して.h5pファイルを作成できます。",
     legal_library_clientzip: "<strong>client-zip</strong> (ライセンス: MIT): ファイル圧縮に使用される別のライブラリで、ブラウザで直接.h5pアーカイブを生成するための高性能な代替手段を提供します。",
     legal_library_fflate: "<strong>fflate</strong> (ライセンス: MIT): Moodleモジュール用の.mbzアーカイブを作成するために使用される、データ圧縮および解凍用の非常に高速なライブラリ。",

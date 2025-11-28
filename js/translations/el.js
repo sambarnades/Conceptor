@@ -1,5 +1,5 @@
-const translations_el = {
-    subtitle: "Δημιουργία Πόρων και Δραστηριοτήτων για Magistère και Éléa με Υποβοήθηση ΤΝ",
+﻿const translations_el = {
+    subtitle: "Δημιουργία Πόρων και Δραστηριοτήτων για Moodle και Éléa με Υποβοήθηση ΤΝ",
     help_button: "Βοήθεια",
     help_modal_title: "🚀 Πλήρης οδηγός Caramel για εκπαιδευτικούς",
     help_modal_content: `
@@ -115,32 +115,116 @@ const translations_el = {
                 <summary><span class="help-badge-file">.h5p</span> (Δραστηριότητες H5P)</summary>
                 <div class="import-content">
                     <ul>
-                        <li><strong>Απλή μέθοδος:</strong> Ενεργοποιήστε την επεξεργασία, έπειτα σύρετε και αποθέστε το .h5p στην επιθυμητή ενότητα. Ιδανικό για γρήγορη χρήση.</li>
-                        <li><strong>Συνιστώμενη μέθοδος (για σχεδιαστές):</strong> «Προσθήκη δραστηριότητας ή πόρου» → «Διαδραστικό περιεχόμενο (H5P)» → πεδίο «Αρχείο»: ανεβάστε το .h5p. Εξασφαλίζει σωστή συμπερίληψη κατά την κοινοποίηση του μαθήματος.</li>
+                        <li>
+                            <strong>Απλή μέθοδος:</strong> Ενεργοποιήστε τη λειτουργία επεξεργασίας στο μάθημά σας και σύρετε-αποθέστε το αρχείο .h5p απευθείας στην ενότητα που θέλετε. Επιλέξτε "Ajouter une activité H5P" και ολοκληρώστε με το κουμπί "DÉPOSER".
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-ajouter-h5p.png" alt="Γρήγορη προσθήκη δραστηριότητας H5P" style="max-width:360px;width:75%;height:auto;">
+                                <figcaption><em>Προσθέστε τη δραστηριότητα H5P και κάντε κλικ στο DÉPOSER.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li><strong>Συνιστώμενη μέθοδος (για σχεδιαστές):</strong> Κάντε κλικ στο "Προσθήκη δραστηριότητας ή πόρου", επιλέξτε "Διαδραστικό περιεχόμενο (H5P)" και στο πεδίο "Επεξεργαστής" διαλέξτε την καρτέλα "Téléverser" για να συνεχίσετε με "Téléverser un fichier". Ολοκληρώστε με "Utiliser", προσθέστε τα απαραίτητα στοιχεία και αποθηκεύστε. Έτσι η δραστηριότητα θα συμπεριληφθεί όταν κοινοποιήσετε το μάθημα.</li>
                     </ul>
                 </div>
             </details>
             <details class="import-details">
-                <summary><span class="help-badge-file">.mbz</span> (Σελίδα, Εκατομμυριούχος, Αντιστοίχιση, Πολλαπλής)</summary>
+                <summary><span class="help-badge-file">.mbz</span> (Σελίδα, Εκατομμυριούχος, Ταίριασμα, MCQ)</summary>
                 <div class="import-content">
                     <p>Η μορφή αυτή εισάγει πλήρη δραστηριότητα στο μάθημά σας.</p>
                     <ol>
-                        <li>Στο μάθημα: μενού ρυθμίσεων (γρανάζι) → «Επαναφορά».</li>
-                        <li>Σύρετε και αποθέστε το .mbz στην περιοχή εισαγωγής.</li>
-                        <li>Ακολουθήστε τα βήματα με «Συνέχεια». Η δραστηριότητα θα προστεθεί στο μάθημα.</li>
+                        <li>
+                            <p>Ανοίξτε το μενού επεξεργασίας στα δεξιά της οθόνης. Αν είναι κρυμμένο, χρησιμοποιήστε το μικρό βέλος για να το εμφανίσετε.</p>
+                            <div class="import-step-images" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                    <img src="images/tutoriels/elea-import-parcours-1.png" alt="Μενού επεξεργασίας ανοιχτό στη δεξιά στήλη" style="width:75%;height:auto;">
+                                    <figcaption><em>Μενού επεξεργασίας ανοιχτό.</em></figcaption>
+                                </figure>
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                    <img src="images/tutoriels/elea-import-parcours-2.png" alt="Βέλος για ανάπτυξη του πίνακα επεξεργασίας" style="width:75%;height:auto;">
+                                    <figcaption><em>Αναπτύξτε το πάνελ αν χρειάζεται.</em></figcaption>
+                                </figure>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Κάντε κλικ στο "IMPORT/EXPORT" και μετά στο "Importer un parcours" στο υπομενού.</p>
+                            <figure class="import-step-figure" style="text-align:center;">
+                                <img src="images/tutoriels/elea-import-parcours-3.png" alt="Κουμπί IMPORT/EXPORT στο Moodle/Éléa" style="max-width:360px;width:75%;height:auto;">
+                                <figcaption><em>Επιλέξτε Importer un parcours.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            Σύρετε-αποθέστε το αρχείο .mbz στη ζώνη εισαγωγής και κάντε κλικ στο "IMPORTER".
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-import-parcours-4.png" alt="Περιοχή απόθεσης για το αρχείο MBZ" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Αφήστε το αρχείο και επιβεβαιώστε με IMPORTER.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>Ολοκληρώστε πατώντας "CONTINUER" στο τελευταίο βήμα: η δραστηριότητα προστέθηκε στο μάθημα.</li>
                     </ol>
                 </div>
             </details>
             <details class="import-details">
-                <summary><span class="help-badge-file">.xml</span> και <span class="help-badge-file">GIFT</span> (Δραστηριότητα Τεστ)</summary>
+                <summary><span class="help-badge-file">.xml</span> (Δραστηριότητα Γλωσσάριο)</summary>
+                <div class="import-content">
+                    <p>Αυτή η μορφή σας επιτρέπει να εισάγετε μια λίστα ορισμών σε γλωσσάριο Éléa/Moodle.</p>
+                    <ol>
+                        <li>
+                            <p>Δημιουργήστε μια κενή δραστηριότητα Γλωσσάριο στο μάθημά σας και ανοίξτε τη.</p>
+                        </li>
+                        <li>
+                            <p>Μόλις βρεθείτε μέσα στο Γλωσσάριο, κάντε κλικ στο κουμπί "IMPORTER DES ARTICLES".</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-1.png" alt="Κουμπί IMPORTER DES ARTICLES στο γλωσσάριο" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Κάντε κλικ στο IMPORTER DES ARTICLES.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>Σύρετε και αποθέστε το αρχείο .xml στην περιοχή εισαγωγής και κάντε κλικ στο κουμπί "ENVOYER".</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-2.png" alt="Ζώνη απόθεσης για το αρχείο XML του γλωσσαρίου" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Αποθέστε το αρχείο και επικυρώστε με ENVOYER.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>Τα άρθρα σας εντοπίστηκαν. Ολοκληρώστε πατώντας το κουμπί "CONTINUER".</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-3.png" alt="Επιβεβαίωση εντοπισμένων άρθρων" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Κάντε κλικ στο CONTINUER για να ολοκληρώσετε την εισαγωγή.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>Η εισαγωγή ολοκληρώθηκε. Οι ορισμοί σας είναι πλέον διαθέσιμοι στο Γλωσσάριο.</li>
+                    </ol>
+                </div>
+            </details>
+            <details class="import-details">
+                <summary><span class="help-badge-file">.xml</span> και <span class="help-badge-file">.GIFT</span> (Δραστηριότητα Τεστ)</summary>
                 <div class="import-content">
                     <p>Οι μορφές αυτές εισάγουν ερωτήσεις στην «Τράπεζα ερωτήσεων».</p>
                     <ol>
-                        <li>Μενού «Περισσότερα» στο μάθημα → «Τράπεζα ερωτήσεων».</li>
-                        <li>Καρτέλα «Εισαγωγή».</li>
-                        <li>Επιλέξτε «Moodle XML» ή «GIFT».</li>
-                        <li>Σύρετε το αρχείο στην περιοχή «Εισαγωγή» και επιβεβαιώστε.</li>
-                        <li>Οι ερωτήσεις είναι πλέον στην τράπεζα, έτοιμες για δραστηριότητα «Τεστ».</li>
+                        <li>
+                            <p>Στο μάθημα Éléa σας, μεταβείτε στην καρτέλα «Περισσότερα» και κάντε κλικ στην «Τράπεζα ερωτήσεων».</p>
+                        </li>
+                        <li>
+                            <p>Στο αναπτυσσόμενο μενού όπου εμφανίζεται «Ερωτήσεις», επιλέξτε «Εισαγωγή».</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-importation-banquequestions-1.png" alt="Επιλογή του κουμπιού Εισαγωγή στην τράπεζα ερωτήσεων" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Επιλέξτε Εισαγωγή από το αναπτυσσόμενο μενού.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>Επιλέξτε τη μορφή που αντιστοιχεί στο αρχείο σας:</p>
+                            <ul>
+                                <li><strong>Μορφή Moodle XML</strong> (συνιστάται): πλήρης μορφή που υποστηρίζει όλους τους τύπους ερωτήσεων.</li>
+                                <li><strong>Μορφή GIFT</strong>: απλούστερη εναλλακτική αλλά περιορισμένη σε τύπους ερωτήσεων.</li>
+                            </ul>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-importation-banquequestions-2.png" alt="Επιλογή μεταξύ Μορφής Moodle XML και Μορφής GIFT" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Επιλέξτε τη μορφή που ταιριάζει στο αρχείο σας.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>Σύρετε και αποθέστε το αρχείο σας στην περιοχή μεταφόρτωσης.</li>
+                        <li>Κάντε κλικ στο κουμπί «IMPORTATION». Η οθόνη θα εμφανίσει τις προστεθείσες ερωτήσεις (για παράδειγμα: προστέθηκαν 10 ερωτήσεις).</li>
+                        <li>Ολοκληρώστε κάνοντας κλικ στο «CONTINUER» στο κάτω μέρος της σελίδας.</li>
+                        <li>Οι ερωτήσεις είναι πλέον έτοιμες να προστεθούν σε μια δραστηριότητα Τεστ. Συμβουλευτείτε το <a href="https://moodle-doc.forge.apps.education.fr/elea/docs/Tutoriels/Concevoir_un_parcours/Ajouter_des_activites/Le_test/banque" target="_blank" rel="noopener noreferrer">εκπαιδευτικό υλικό Éléa</a> για να δημιουργήσετε μια δραστηριότητα Τεστ και να φορτώσετε ερωτήσεις από την τράπεζα.</li>
                     </ol>
                 </div>
             </details>
@@ -151,7 +235,7 @@ const translations_el = {
                     <ol>
                         <li>Ανοίξτε το .html με πρόγραμμα επεξεργασίας κειμένου (π.χ. Σημειωματάριο) και αντιγράψτε όλο το περιεχόμενο.</li>
                         <li>Στο Éléa, προσθέστε δραστηριότητα «Σελίδα».</li>
-                        <li>Στον επεξεργαστή σελίδας, κάντε κλικ στο εικονίδιο για εναλλαγή σε HTML (συχνά με \`</\>\`).</li>
+                        <li>Στον επεξεργαστή σελίδας, κάντε κλικ στο εικονίδιο για να αλλάξετε σε λειτουργία HTML (συχνά με το "&lt;&gt;").</li>
                         <li>Επικολλήστε το περιεχόμενο και αποθηκεύστε.</li>
                     </ol>
                 </div>
@@ -523,6 +607,7 @@ const translations_el = {
     quiz_set_prompt_rule4: "4.  **Ανατροφοδότηση (ΚΡΙΣΙΜΟΣ ΚΑΝΟΝΑΣ):** Για **όλους τους τύπους ερωτήσεων** (`MultiChoice`, `Blanks`, `DragText`, `MarkTheWords`, `Essay`), **πρέπει** να δημιουργήσετε ένα `overallFeedback` με ακριβώς 6 κλίμακες βαθμολογίας: 0-10, 11-30, 31-50, 51-70, 71-90 και 91-100. Για τις ερωτήσεις `TrueFalse`, προσθέστε επίσης τα πεδία `feedbackOnCorrect` και `feedbackOnWrong`. Η ανατροφοδότηση πρέπει να είναι ενθαρρυντική, σταδιακή και πάντα διατυπωμένη θετικά.",
     quiz_set_prompt_rule5: "5.  **Περιεχόμενο:** Το περιεχόμενο στο `params` πρέπει να είναι παιδαγωγικά σχετικό, με εύλογους αντιπερισπασμούς για τα MCQ και συνεκτικά κείμενα για άλλες δραστηριότητες.",
     quiz_set_prompt_rule6: "6.  **Απλότητα:** Μην προσθέτετε εικόνες ή περιττές παραμέτρους συμπεριφοράς. Διατηρήστε τη δομή απλή όπως στα παραδείγματα.",
+    quiz_set_prompt_rule7: "7.  **Μαθηματικοί τύποι:** Για μαθηματικούς τύπους, χρησιμοποιήστε σημειογραφία LaTeX με διπλό escaping των backslash. Περιβάλλετε τους τύπους με \\( και \\). Παράδειγμα: αντί να γράψετε ( (2^3)^2 ), γράψτε \\( (2^3)^2 \\). Το ίδιο για τις απαντήσεις: \\( 2^{12} \\) αντί για ( 2^{12} ).",
     quiz_set_prompt_example_json_title: "**Παραδείγματα δομών για κάθε επιτρεπόμενο τύπο ερώτησης:**",
     quiz_set_example_true_false: "Σωστό/Λάθος :",
     quiz_set_example_multiple_choice: "Πολλαπλής επιλογής :",

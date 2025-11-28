@@ -10,6 +10,7 @@ import { initOcr } from './modules/ocr.js';
 import { showHelpModal, setupEventListeners } from './modules/utils.js';
 import { initCaramelAnimationEffects } from './modules/animations.js';
 import { initVersionChecker } from './modules/version-checker.js';
+import { initEmergencyNotifications } from './modules/emergency-notification.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialisation de l'interface de base
@@ -21,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialisation du sélecteur de langue
     initLanguageSwitcher();
+    initEmergencyNotifications();
 
     // Initialisation de la logique OCR
     initOcr();

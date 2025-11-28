@@ -1,5 +1,5 @@
 const translations_nl = {
-    subtitle: "Ondersteunde creatie van bronnen en activiteiten voor Magistère en Éléa",
+    subtitle: "Ondersteunde creatie van bronnen en activiteiten voor Moodle en Éléa",
     help_button: "Help",
     help_modal_title: "🚀 Compleet Caramel-handboek voor docenten",
     help_modal_content: `
@@ -115,8 +115,14 @@ const translations_nl = {
                 <summary><span class="help-badge-file">.h5p</span> (H5P-activiteiten)</summary>
                 <div class="import-content">
                     <ul>
-                        <li><strong>Eenvoudige methode:</strong> Zet bewerken aan in je cursus en sleep het .h5p-bestand naar de gewenste sectie. Ideaal voor snel gebruik.</li>
-                        <li><strong>Aanbevolen methode (voor ontwerpers):</strong> “Activiteit of bron toevoegen” → “Interactieve inhoud (H5P)” → upload je .h5p bij “Bestand”. Zo wordt de activiteit correct meegenomen bij het delen.</li>
+                        <li>
+                            <strong>Eenvoudige methode:</strong> Schakel bewerken in voor je cursus en sleep het .h5p-bestand rechtstreeks naar de gewenste sectie. Kies vervolgens "Ajouter une activité H5P" en rond af met de knop "DÉPOSER".
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-ajouter-h5p.png" alt="Snel een H5P-activiteit toevoegen" style="max-width:360px;width:75%;height:auto;">
+                                <figcaption><em>Voeg de H5P-activiteit toe en klik op DÉPOSER.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li><strong>Aanbevolen methode (voor ontwerpers):</strong> Klik op "Activiteit of bron toevoegen", kies "Interactieve inhoud (H5P)" en selecteer in het veld "Editor" het tabblad "Téléverser" om verder te gaan met "Téléverser un fichier". Rond af met "Utiliser", vul de nodige elementen in en sla op. Zo wordt de activiteit zeker meegenomen wanneer je de cursus deelt.</li>
                     </ul>
                 </div>
             </details>
@@ -125,22 +131,100 @@ const translations_nl = {
                 <div class="import-content">
                     <p>Dit formaat importeert een complete activiteit in je cursus.</p>
                     <ol>
-                        <li>In je cursus: tandwielmenu → “Herstellen”.</li>
-                        <li>Sleep je .mbz-bestand naar het importgebied.</li>
-                        <li>Volg de stappen via “Doorgaan”. De activiteit wordt toegevoegd.</li>
+                        <li>
+                            <p>Open het bewerkingsmenu helemaal rechts op het scherm. Als het is ingeklapt, gebruik dan het kleine pijltje om het zichtbaar te maken.</p>
+                            <div class="import-step-images" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                    <img src="images/tutoriels/elea-import-parcours-1.png" alt="Bewerkingsmenu geopend in de rechterkolom" style="width:75%;height:auto;">
+                                    <figcaption><em>Bewerkingsmenu geopend.</em></figcaption>
+                                </figure>
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                    <img src="images/tutoriels/elea-import-parcours-2.png" alt="Pijl om het bewerkingspaneel uit te klappen" style="width:75%;height:auto;">
+                                    <figcaption><em>Klap het paneel uit indien nodig.</em></figcaption>
+                                </figure>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Klik op "IMPORT/EXPORT" en vervolgens op "Importer un parcours" in het submenu.</p>
+                            <figure class="import-step-figure" style="text-align:center;">
+                                <img src="images/tutoriels/elea-import-parcours-3.png" alt="IMPORT/EXPORT-knop in Moodle/Éléa" style="max-width:360px;width:75%;height:auto;">
+                                <figcaption><em>Kies Importer un parcours.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            Sleep je .mbz-bestand naar het importgebied en klik op "IMPORTER".
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-import-parcours-4.png" alt="Zone om het MBZ-bestand neer te zetten" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Zet het bestand neer en bevestig met IMPORTER.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>Rond af door bij de laatste stap op "CONTINUER" te klikken: de activiteit staat nu in je cursus.</li>
                     </ol>
                 </div>
             </details>
             <details class="import-details">
-                <summary><span class="help-badge-file">.xml</span> en <span class="help-badge-file">GIFT</span> (Toetsactiviteit)</summary>
+                <summary><span class="help-badge-file">.xml</span> (Woordenlijst-activiteit)</summary>
                 <div class="import-content">
-                    <p>Deze formaten importeren vragen in de “Vragenbank”.</p>
+                    <p>Dit formaat stelt je in staat om een lijst met definities te importeren in een Éléa/Moodle-woordenlijst.</p>
                     <ol>
-                        <li>Ga naar “Meer” in je cursus → “Vragenbank”.</li>
-                        <li>Klik op het tabblad “Importeren”.</li>
-                        <li>Kies “Moodle XML-formaat” of “GIFT-formaat”.</li>
-                        <li>Sleep je bestand naar “Importeren” en bevestig.</li>
-                        <li>Je vragen staan nu in de bank en zijn klaar voor een “Toets”.</li>
+                        <li>
+                            <p>Maak een lege Woordenlijst-activiteit in je cursus en open deze.</p>
+                        </li>
+                        <li>
+                            <p>Eenmaal in de Woordenlijst, klik op de knop "IMPORTER DES ARTICLES".</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-1.png" alt="IMPORTER DES ARTICLES knop in de woordenlijst" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Klik op IMPORTER DES ARTICLES.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>Sleep je .xml-bestand naar het importgebied en klik op de knop "ENVOYER".</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-2.png" alt="Neerzetgebied voor het XML-bestand van de woordenlijst" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Plaats het bestand en valideer met ENVOYER.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>Je items zijn gedetecteerd. Rond af door op de knop "CONTINUER" te klikken.</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-3.png" alt="Bevestiging van gedetecteerde items" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Klik op CONTINUER om de import te voltooien.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>De import is voltooid. Je definities zijn nu beschikbaar in de Woordenlijst.</li>
+                    </ol>
+                </div>
+            </details>
+            <details class="import-details">
+                <summary><span class="help-badge-file">.xml</span> en <span class="help-badge-file">.GIFT</span> (Toetsactiviteit)</summary>
+                <div class="import-content">
+                    <p>Deze formaten importeren vragen in de "Vragenbank".</p>
+                    <ol>
+                        <li>
+                            <p>Ga in je Éléa-cursus naar het tabblad "Meer" en klik op "Vragenbank".</p>
+                        </li>
+                        <li>
+                            <p>In het vervolgkeuzemenu waar "Vragen" wordt weergegeven, selecteer "Importeren".</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-importation-banquequestions-1.png" alt="Selectie van de knop Importeren in de vragenbank" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Selecteer Importeren in het vervolgkeuzemenu.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>Selecteer het formaat dat overeenkomt met je bestand:</p>
+                            <ul>
+                                <li><strong>Moodle XML-formaat</strong> (aanbevolen): volledig formaat dat alle vraagtypen ondersteunt.</li>
+                                <li><strong>GIFT-formaat</strong>: eenvoudiger alternatief maar beperkt in vraagtypen.</li>
+                            </ul>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-importation-banquequestions-2.png" alt="Keuze tussen Moodle XML-formaat en GIFT-formaat" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Selecteer het passende formaat voor je bestand.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>Sleep je bestand naar het uploadgebied en laat het los.</li>
+                        <li>Klik op de knop "IMPORTATION". Het scherm toont vervolgens de toegevoegde vragen (bijvoorbeeld: 10 vragen zijn toegevoegd).</li>
+                        <li>Voltooi door onderaan de pagina op "CONTINUER" te klikken.</li>
+                        <li>De vragen zijn nu klaar om te worden toegevoegd aan een Toetsactiviteit. Raadpleeg de <a href="https://moodle-doc.forge.apps.education.fr/elea/docs/Tutoriels/Concevoir_un_parcours/Ajouter_des_activites/Le_test/banque" target="_blank" rel="noopener noreferrer">Éléa-tutorial</a> om een Toetsactiviteit te maken en vragen uit de bank te laden.</li>
                     </ol>
                 </div>
             </details>
@@ -151,7 +235,7 @@ const translations_nl = {
                     <ol>
                         <li>Open het .html-bestand met een teksteditor (bijv. Kladblok) en kopieer de volledige inhoud.</li>
                         <li>Voeg in Éléa een activiteit “Pagina” toe.</li>
-                        <li>Klik in de pagina-editor op het pictogram om naar HTML-modus te schakelen (vaak weergegeven als \`</\>\`).</li>
+                        <li>Klik in de pagina-editor op het pictogram om naar HTML-modus te schakelen (vaak weergegeven als "&lt;&gt;").</li>
                         <li>Plak de gekopieerde inhoud en sla op.</li>
                     </ol>
                 </div>
@@ -523,6 +607,7 @@ const translations_nl = {
     quiz_set_prompt_rule4: "4.  **Feedback (CRUCIALE REGEL):** Voor **alle vraagtypes** (`MultiChoice`, `Blanks`, `DragText`, `MarkTheWords`, `Essay`), **moet** u een `overallFeedback` genereren met exact 6 scorebereiken: 0-10, 11-30, 31-50, 51-70, 71-90 en 91-100. Voeg voor `TrueFalse`-vragen ook de velden `feedbackOnCorrect` en `feedbackOnWrong` toe. De feedback moet welwillend, stapsgewijs en altijd bevestigend geformuleerd zijn.",
     quiz_set_prompt_rule5: "5.  **Inhoud:** De inhoud in `params` moet pedagogisch relevant zijn, met plausibele afleiders voor MCQ's en coherente teksten voor andere activiteiten.",
     quiz_set_prompt_rule6: "6.  **Eenvoud:** Voeg geen afbeeldingen of overbodige gedragsparameters toe. Houd de structuur eenvoudig zoals in de voorbeelden.",
+    quiz_set_prompt_rule7: "7.  **Wiskundige formules:** Gebruik voor wiskundige formules LaTeX-notatie met dubbele backslash-escaping. Omring formules met \\( en \\). Voorbeeld: in plaats van ( (2^3)^2 ) te schrijven, schrijf \\( (2^3)^2 \\). Hetzelfde voor antwoorden: \\( 2^{12} \\) in plaats van ( 2^{12} ).",
     quiz_set_prompt_example_json_title: "**Voorbeeldstructuren voor elk toegestaan vraagtype:**",
     quiz_set_example_true_false: "Waar/Onwaar :",
     quiz_set_example_multiple_choice: "Meerkeuze :",

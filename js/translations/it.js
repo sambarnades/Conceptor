@@ -1,5 +1,5 @@
 const translations_it = {
-    subtitle: "Creazione Assistita di Risorse e Attività per Magistère ed Éléa",
+    subtitle: "Creazione Assistita di Risorse e Attività per Moodle ed Éléa",
     help_button: "Guida",
     help_modal_title: "🚀 Guida completa di Caramel per i docenti",
     help_modal_content: `
@@ -115,8 +115,14 @@ const translations_it = {
                 <summary><span class="help-badge-file">.h5p</span> (Attività H5P)</summary>
                 <div class="import-content">
                     <ul>
-                        <li><strong>Metodo semplice:</strong> Attiva la modifica nel corso e trascina il file .h5p nella sezione desiderata. Ideale per un uso rapido.</li>
-                        <li><strong>Metodo consigliato (per i progettisti):</strong> “Aggiungi attività o risorsa” → “Contenuto interattivo (H5P)” → campo “File”: carica il .h5p. Garantisce il corretto inserimento quando condividi il corso.</li>
+                        <li>
+                            <strong>Metodo semplice:</strong> Attiva la modifica nel corso e trascina il file .h5p direttamente nella sezione desiderata. Scegli "Ajouter une activité H5P" e termina con il pulsante "DÉPOSER".
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-ajouter-h5p.png" alt="Schermata per aggiungere rapidamente un'attività H5P" style="max-width:360px;width:75%;height:auto;">
+                                <figcaption><em>Aggiungi l'attività H5P e fai clic su DÉPOSER.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li><strong>Metodo consigliato (per i progettisti):</strong> Fai clic su "Aggiungi attività o risorsa", scegli "Contenuto interattivo (H5P)" e, nel campo "Editor", seleziona la scheda "Téléverser" per proseguire con "Téléverser un fichier". Concludi con "Utiliser", aggiungi gli elementi necessari e salva. Questo metodo garantisce che l'attività sia inclusa quando condividi il corso.</li>
                     </ul>
                 </div>
             </details>
@@ -125,22 +131,100 @@ const translations_it = {
                 <div class="import-content">
                     <p>Questo formato importa un’attività completa nel corso.</p>
                     <ol>
-                        <li>Nel corso, menu impostazioni (ingranaggio) → “Ripristina”.</li>
-                        <li>Trascina il file .mbz nell’area di importazione.</li>
-                        <li>Segui i passaggi cliccando su “Continua”. L’attività verrà aggiunta al corso.</li>
+                        <li>
+                            <p>Apri il menu di modifica sulla destra dello schermo. Se è chiuso, usa la piccola freccia per mostrarlo.</p>
+                            <div class="import-step-images" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;">
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                    <img src="images/tutoriels/elea-import-parcours-1.png" alt="Menu di modifica aperto nella colonna destra" style="width:75%;height:auto;">
+                                    <figcaption><em>Menu di modifica aperto.</em></figcaption>
+                                </figure>
+                                <figure class="import-step-figure" style="flex:1 1 240px;margin:0;">
+                                    <img src="images/tutoriels/elea-import-parcours-2.png" alt="Freccia per aprire il pannello di modifica" style="width:75%;height:auto;">
+                                    <figcaption><em>Apri il pannello se necessario.</em></figcaption>
+                                </figure>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Fai clic su "IMPORT/EXPORT" e poi su "Importer un parcours" nel sottomenu.</p>
+                            <figure class="import-step-figure" style="text-align:center;">
+                                <img src="images/tutoriels/elea-import-parcours-3.png" alt="Pulsante IMPORT/EXPORT in Moodle/Éléa" style="max-width:360px;width:75%;height:auto;">
+                                <figcaption><em>Seleziona Importer un parcours.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            Trascina il file .mbz nell'area di importazione e fai clic su "IMPORTER".
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-import-parcours-4.png" alt="Zona in cui rilasciare il file MBZ" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Rilascia il file e conferma con IMPORTER.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>Termina facendo clic su "CONTINUER" all'ultimo passaggio: l'attività è ora nel corso.</li>
                     </ol>
                 </div>
             </details>
             <details class="import-details">
-                <summary><span class="help-badge-file">.xml</span> e <span class="help-badge-file">GIFT</span> (Attività Quiz)</summary>
+                <summary><span class="help-badge-file">.xml</span> (Attività Glossario)</summary>
                 <div class="import-content">
-                    <p>Questi formati importano domande nella “Banca domande”.</p>
+                    <p>Questo formato consente di importare un elenco di definizioni in un glossario Éléa/Moodle.</p>
                     <ol>
-                        <li>Menu “Altro” del corso → “Banca domande”.</li>
-                        <li>Clic su “Importa”.</li>
-                        <li>Scegli “Formato Moodle XML” o “Formato GIFT”.</li>
-                        <li>Trascina il file nell’area “Importa” e conferma.</li>
-                        <li>Le domande sono ora pronte per essere aggiunte a un “Quiz”.</li>
+                        <li>
+                            <p>Crea un'attività Glossario vuota nel corso e aprila.</p>
+                        </li>
+                        <li>
+                            <p>Una volta all'interno del Glossario, fai clic sul pulsante "IMPORTER DES ARTICLES".</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-1.png" alt="Pulsante IMPORTER DES ARTICLES nel glossario" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Fai clic su IMPORTER DES ARTICLES.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>Trascina e rilascia il file .xml nell'area di importazione e fai clic sul pulsante "ENVOYER".</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-2.png" alt="Area di rilascio per il file XML del glossario" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Rilascia il file e convalida con ENVOYER.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>Le tue voci sono state rilevate. Termina facendo clic sul pulsante "CONTINUER".</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-glossaire-import-3.png" alt="Conferma delle voci rilevate" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Fai clic su CONTINUER per finalizzare l'importazione.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>L'importazione è completata. Le definizioni sono ora disponibili nel Glossario.</li>
+                    </ol>
+                </div>
+            </details>
+            <details class="import-details">
+                <summary><span class="help-badge-file">.xml</span> e <span class="help-badge-file">.GIFT</span> (Attività Quiz)</summary>
+                <div class="import-content">
+                    <p>Questi formati importano domande nella "Banca domande".</p>
+                    <ol>
+                        <li>
+                            <p>Nel tuo corso Éléa, vai alla scheda "Altro", quindi fai clic su "Banca domande".</p>
+                        </li>
+                        <li>
+                            <p>Nel menu a discesa dove è visualizzato "Domande", seleziona "Importa".</p>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-importation-banquequestions-1.png" alt="Selezione del pulsante Importa nella banca domande" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Seleziona Importa nel menu a discesa.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p>Seleziona il formato corrispondente al tuo file:</p>
+                            <ul>
+                                <li><strong>Formato Moodle XML</strong> (consigliato): formato completo che supporta tutti i tipi di domande.</li>
+                                <li><strong>Formato GIFT</strong>: alternativa più semplice ma limitata nei tipi di domande.</li>
+                            </ul>
+                            <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
+                                <img src="images/tutoriels/elea-importation-banquequestions-2.png" alt="Scelta tra Formato Moodle XML e Formato GIFT" style="max-width:460px;width:75%;height:auto;">
+                                <figcaption><em>Seleziona il formato adatto al tuo file.</em></figcaption>
+                            </figure>
+                        </li>
+                        <li>Trascina e rilascia il tuo file nell'area di caricamento.</li>
+                        <li>Fai clic sul pulsante "IMPORTATION". Lo schermo visualizzerà le domande aggiunte (ad esempio: sono state aggiunte 10 domande).</li>
+                        <li>Termina facendo clic su "CONTINUER" in fondo alla pagina.</li>
+                        <li>Le domande sono ora pronte per essere aggiunte a un'attività Quiz. Consulta il <a href="https://moodle-doc.forge.apps.education.fr/elea/docs/Tutoriels/Concevoir_un_parcours/Ajouter_des_activites/Le_test/banque" target="_blank" rel="noopener noreferrer">tutorial di Éléa</a> per creare un'attività Quiz e caricare domande dalla banca.</li>
                     </ol>
                 </div>
             </details>
@@ -151,7 +235,7 @@ const translations_it = {
                     <ol>
                         <li>Apri il file .html con un editor di testo (es.: Blocco note) e copia tutto il contenuto.</li>
                         <li>In Éléa, aggiungi un’attività “Pagina”.</li>
-                        <li>Nell’editor della pagina, clicca sull’icona per passare alla modalità HTML (spesso rappresentata da \`</\>\`).</li>
+                        <li>Nell'editor della pagina, clicca sull'icona per passare alla modalità HTML (spesso rappresentata da "&lt;&gt;").</li>
                         <li>Incolla il contenuto copiato e salva.</li>
                     </ol>
                 </div>
@@ -523,6 +607,7 @@ const translations_it = {
     quiz_set_prompt_rule4: "4.  **Feedback (REGOLA CRUCIALE):** Per **tutti i tipi di domande** (`MultiChoice`, `Blanks`, `DragText`, `MarkTheWords`, `Essay`), **devi** generare un `overallFeedback` con esattamente 6 fasce di punteggio: 0-10, 11-30, 31-50, 51-70, 71-90 e 91-100. Per le domande `TrueFalse`, aggiungi anche i campi `feedbackOnCorrect` e `feedbackOnWrong`. Il feedback deve essere benevolo, graduale e sempre formulato in modo affermativo.",
     quiz_set_prompt_rule5: "5.  **Contenuto:** Il contenuto in `params` deve essere pedagogicamente rilevante, con distrattori plausibili per i QCM e testi coerenti per le altre attività.",
     quiz_set_prompt_rule6: "6.  **Semplicità:** Non aggiungere immagini o parametri di comportamento superflui. Mantieni la struttura semplice come negli esempi.",
+    quiz_set_prompt_rule7: "7.  **Formule matematiche:** Per le formule matematiche, utilizza la notazione LaTeX con doppio escape dei backslash. Circonda le formule con \\( e \\). Esempio: invece di scrivere ( (2^3)^2 ), scrivi \\( (2^3)^2 \\). Lo stesso per le risposte: \\( 2^{12} \\) invece di ( 2^{12} ).",
     quiz_set_prompt_example_json_title: "**Esempi di strutture per ogni tipo di domanda autorizzata:**",
     quiz_set_example_true_false: "Vero/Falso :",
     quiz_set_example_multiple_choice: "Scelta multipla :",

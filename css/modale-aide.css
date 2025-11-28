@@ -4,7 +4,7 @@
 .help-modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 2100; /* Au-dessus du header (1100) et des autres modales */
     left: 0;
     top: 0;
     width: 100%;

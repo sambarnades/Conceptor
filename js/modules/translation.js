@@ -164,6 +164,7 @@ export async function loadTranslations(lang) {
     // Appliquer les traductions + mettre à jour l'UI du sélecteur
     translatePage();
     updateLanguageSelector();
+    window.dispatchEvent(new CustomEvent('caramel:language-changed', { detail: { lang } }));
   } catch (err) {
     console.error(`Erreur lors du chargement des traductions "${lang}" :`, err);
   }
