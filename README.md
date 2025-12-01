@@ -1,8 +1,8 @@
 # Caramel
 
-**Création Assistée de Ressources et d'Activités Moodle et Éléa**
+**Création Assistée de Ressources et d'Activités Magistère et Éléa**
 
-[![Version](https://img.shields.io/badge/version-3.3.9-blue.svg)](https://caramel.forge.apps.education.fr/)
+[![Version](https://img.shields.io/badge/version-3.3.10-blue.svg)](https://caramel.forge.apps.education.fr/)
 [![Licence](https://img.shields.io/badge/licence-GNU%20AGPLv3-green.svg)](LICENSE)
 [![Plateforme](https://img.shields.io/badge/plateforme-Web-orange.svg)](https://caramel.forge.apps.education.fr/)
 
@@ -594,8 +594,3 @@ Académie de Grenoble
 - **ilaaS** : mise à disposition de modèles IA souverains
 - **Communauté H5P** : ressources et templates de référence
 - **Contributeurs open source** : développeurs des bibliothèques utilisées
-
----
-
-*Caramel v3.3.9 – Novembre 2025*
-*Création Assistée de Ressources et d'Activités Moodle et Éléa*
