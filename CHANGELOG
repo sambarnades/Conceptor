@@ -1,12 +1,17 @@
 # Caramel – Journal des modifications
 
+## 3.3.12 – 15-12-2025
+- **Mode plein écran** : Correctif du mode plein écran dans le mode "Guidé" qui ne fonctionnait plus.
+
+---
+
 ## 3.3.11 – 08-12-2025
-- **LLM** : remplacement du LLM "llama-3.3-70b" (modèle trop lent provoquant des erreurs lors de la génération d'activités conséquentes) par le modèle "qwen-3-30b" beaucoup plus rapide et aux bonnes performances.
+- **LLM** : Remplacement du LLM "llama-3.3-70b" (modèle trop lent provoquant des erreurs lors de la génération d'activités conséquentes) par le modèle "qwen-3-30b" beaucoup plus rapide et aux bonnes performances.
 
 ---
 
 ## 3.3.10 – 01-12-2025
-- **Matomo** : activation des statistiques de la Forge avec Matomo
+- **Matomo** : Activation des statistiques de la Forge avec Matomo
 
 ---
 
@@ -14,7 +19,7 @@
 - **Tutoriel** : Amélioration des tutoriels pour importer activités des activités H5P, mbz ou xml : explications améliorées et captures d'écran ajoutées.
 - **Bandeau d'urgence** : Un système de bandeau d'urgence fait désormais partie du site. En cas de problème sur des perturbations en cours ou à venir, nous pouvons désormais vous prévenir à parvenir d'une modification d'un fichier externe au site.
 - **Prompt amélioré** : Renforcement du prompt pour le Quizset pour supporter les exposants en mathématiques.
-- **Vérification de la version du site** : la notification de changement de version ne se déclenche qu'en cas d'utilisation d'une version du site où une des deux premières valeurs est différente du site en production (ex : 3.3.8 vers 3.3.9 ne notifie pas, 3.3.8 vers 3.4.0 notifie)
+- **Vérification de la version du site** : La notification de changement de version ne se déclenche qu'en cas d'utilisation d'une version du site où une des deux premières valeurs est différente du site en production (ex : 3.3.8 vers 3.3.9 ne notifie pas, 3.3.8 vers 3.4.0 notifie)
 
 ---
 
@@ -67,10 +72,10 @@
   - `openai/gpt-oss-120b` *(GPT-OSS)*.
 
 ### ✨ Interface et expérience utilisateur (UX/UI)
-- **Modale responsive** : la **croix (X) de fermeture** de la modale de génération est désormais **fonctionnelle** en affichage responsive.
+- **Modale responsive** : La **croix (X) de fermeture** de la modale de génération est désormais **fonctionnelle** en affichage responsive.
 
 ### 🐛 Correctifs
-- **Génération de pages** : correctif appliqué — la génération de pages **fonctionne à nouveau**.
+- **Génération de pages** : Correctif appliqué — la génération de pages **fonctionne à nouveau**.
 
 ---
 

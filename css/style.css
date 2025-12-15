@@ -1267,10 +1267,11 @@ textarea::placeholder {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1999; /* Juste en dessous de la barre d'outils */
+    z-index: 2150; /* Au-dessus de la modale (2100) */
     padding: 0; /* Retiré pour que l'overlay prenne tout l'écran */
     box-sizing: border-box;
 }
+
 
 .textarea-fullscreen {
     width: 85vw;  /* Occupe 85% de la largeur de la fenêtre */

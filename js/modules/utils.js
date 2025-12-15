@@ -316,12 +316,7 @@ export function setupToolbarListeners(container) {
                     fullscreenModalContainer.appendChild(clonedTextarea);
                     
                     overlay.appendChild(fullscreenModalContainer);
-                    const sidebar = document.getElementById('module-sidebar');
-                    if (sidebar) {
-                        sidebar.appendChild(overlay);
-                    } else {
-                        document.body.appendChild(overlay); // Fallback
-                    }
+                    document.body.appendChild(overlay);
 
                     const clonedFullscreenBtn = overlay.querySelector('.fullscreen-btn');
                     if (clonedFullscreenBtn) {
