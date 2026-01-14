@@ -28,6 +28,7 @@
     // Références aux éléments DOM
     let elements = {
         container: null,
+        label: null,
         days: null,
         hours: null,
         minutes: null,
@@ -69,6 +70,7 @@
     function initCountdown() {
         // Récupérer les éléments DOM
         elements.container = document.querySelector('.countdown-container');
+        elements.label = document.querySelector('.countdown-label');
         elements.days = document.getElementById('countdown-days');
         elements.hours = document.getElementById('countdown-hours');
         elements.minutes = document.getElementById('countdown-minutes');

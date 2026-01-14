@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caramel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@500;800&family=Outfit:wght@400;600;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/all.min.css">
     <link rel="stylesheet" href="css/llm.css">
@@ -17,17 +22,17 @@
 
     <!-- Début Matomo Code -->
     <script>
-    var _paq = window._paq = window._paq || [];
-    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function() {
-        var u="https://wa.phm.education.gouv.fr/snp/";
-        _paq.push(['setTrackerUrl', u+'matomo.php']);
-        _paq.push(['setSiteId', '17']);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-    })();
+        var _paq = window._paq = window._paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function () {
+            var u = "https://wa.phm.education.gouv.fr/snp/";
+            _paq.push(['setTrackerUrl', u + 'matomo.php']);
+            _paq.push(['setSiteId', '17']);
+            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+            g.async = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);
+        })();
     </script>
     <!-- Fin Matomo Code -->
 
@@ -44,41 +49,40 @@
             </div>
         </div>
         <!-- Compte à rebours événementiel -->
-        <div class="countdown-container countdown-liquid" data-tooltip="Quoi de mieux que la journée de l'écriture manuscrite pour écrire une nouvelle page pour Caramel...">
+        <div class="countdown-container countdown-liquid"
+            data-tooltip="Quoi de mieux que la journée de l'écriture manuscrite pour écrire une nouvelle page pour Caramel...">
+            <span class="countdown-label">Caramel 4.0 dans</span>
             <div class="countdown-content">
                 <div class="countdown-display">
                     <div class="time-block">
                         <div class="counter-tile" id="tile-days">
                             <span class="time-value" id="countdown-days">--</span>
                         </div>
-                        <span class="time-label">j</span>
                     </div>
                     <span class="separator">:</span>
                     <div class="time-block">
                         <div class="counter-tile" id="tile-hours">
                             <span class="time-value" id="countdown-hours">--</span>
                         </div>
-                        <span class="time-label">h</span>
                     </div>
                     <span class="separator">:</span>
                     <div class="time-block">
                         <div class="counter-tile" id="tile-minutes">
                             <span class="time-value" id="countdown-minutes">--</span>
                         </div>
-                        <span class="time-label">m</span>
                     </div>
                     <span class="separator">:</span>
                     <div class="time-block">
                         <div class="counter-tile" id="tile-seconds">
                             <span class="time-value" id="countdown-seconds">--</span>
                         </div>
-                        <span class="time-label">s</span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="header-right">
-             <a href="https://edurl.fr/caramel-tchap" target="_blank" class="help-btn" id="tchap-button" aria-label="Tchap">
+            <a href="https://edurl.fr/caramel-tchap" target="_blank" class="help-btn" id="tchap-button"
+                aria-label="Tchap">
                 <img src="images/tchap.png" alt="Tchap" class="tchap-icon">
                 <span>Tchap</span>
             </a>
@@ -143,17 +147,29 @@
                             <div class="rag-top-row">
                                 <div class="unified-rag-area" id="unified-rag-area">
                                     <div class="floating-toolbar">
-                                        <button class="toolbar-btn" id="ocr-copy-btn" data-tooltip-key="copy_prompt"><i class="fas fa-copy"></i><span class="toolbar-btn-text" data-key="copy_prompt"></span></button>
-                                        <button class="toolbar-btn" id="ocr-fullscreen-btn" data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i><span class="toolbar-btn-text" data-key="fullscreen_prompt"></span></button>
-                                        <button class="toolbar-btn" id="ocr-lock-btn" data-tooltip-key="unlock_prompt"><i class="fas fa-lock-open"></i><span class="toolbar-btn-text" data-key="unlock_prompt"></span></button>
+                                        <button class="toolbar-btn" id="ocr-copy-btn" data-tooltip-key="copy_prompt"><i
+                                                class="fas fa-copy"></i><span class="toolbar-btn-text"
+                                                data-key="copy_prompt"></span></button>
+                                        <button class="toolbar-btn" id="ocr-fullscreen-btn"
+                                            data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i><span
+                                                class="toolbar-btn-text" data-key="fullscreen_prompt"></span></button>
+                                        <button class="toolbar-btn" id="ocr-lock-btn"
+                                            data-tooltip-key="unlock_prompt"><i class="fas fa-lock-open"></i><span
+                                                class="toolbar-btn-text" data-key="unlock_prompt"></span></button>
                                     </div>
-                                    <div id="ocr-output" contenteditable="true" data-placeholder="Copiez-collez votre texte ici..." data-placeholder-key="paste_your_text_here"></div>
+                                    <div id="ocr-output" contenteditable="true"
+                                        data-placeholder="Copiez-collez votre texte ici..."
+                                        data-placeholder-key="paste_your_text_here"></div>
                                     <div id="char-counter" class="char-counter">0 / 120000</div>
                                 </div>
                                 <div class="drag-drop-area">
                                     <div class="drag-drop-content">
                                         <i class="fas fa-cloud-upload-alt"></i>
-                                        <p><span data-key="drag_drop_text">Glissez-déposez un fichier PDF ici</span> <br><span data-key="or_text">ou</span> <label for="pdfUpload" class="file-upload-label" data-key="upload_pdf_btn">choisissez un fichier</label></p>
+                                        <p><span data-key="drag_drop_text">Glissez-déposez un fichier PDF ici</span>
+                                            <br><span data-key="or_text">ou</span> <label for="pdfUpload"
+                                                class="file-upload-label" data-key="upload_pdf_btn">choisissez un
+                                                fichier</label>
+                                        </p>
                                         <input type="file" id="pdfUpload" accept="application/pdf">
                                         <div id="ocr-status"></div>
                                     </div>
@@ -177,7 +193,7 @@
             <button class="tab-link" data-tab="memory" data-key="tab_memory">Mémorisation & Découverte</button>
             <button class="tab-link" data-tab="elea" data-key="tab_elea">Éléa</button>
             <button class="tab-link" data-tab="h5p" data-key="tab_h5p">H5P</button>
-         </div>
+        </div>
 
         <div id="all" class="tab-content active">
             <div class="grid">
@@ -199,7 +215,7 @@
         <div id="h5p" class="tab-content">
             <div class="grid"></div>
         </div>
-        </div>
+    </div>
     </div>
 
     <!-- Le conteneur pour le contenu H5P sera injecté dynamiquement par le JS -->
@@ -210,10 +226,10 @@
     <div id="module-sidebar" class="sidebar">
         <!-- Le contenu du module sera injecté ici par le JS -->
     </div>
- 
+
 
     <!-- ================= Animation de chargement "Caramel" ==================== -->
-  
+
     <div id="caramel-animation-overlay">
         <div class="marmite">
             <div class="marmite-content"></div>
@@ -238,7 +254,8 @@
                 data-key="ticket">Ticket</span></a>
         <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE"><i class="fas fa-scroll"></i>
             <span data-key="license_info">GNU GPL v3.0 ou ultérieure</span></a>
-        <a href="#" id="legal-mentions-link"><i class="fas fa-gavel"></i> <span data-key="legal_mentions">Mentions légales</span></a>
+        <a href="#" id="legal-mentions-link"><i class="fas fa-gavel"></i> <span data-key="legal_mentions">Mentions
+                légales</span></a>
     </footer>
 
     <!-- ================= Mentions légales ==================== -->
