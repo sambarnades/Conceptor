@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="css/modale-aide.css">
     <link rel="stylesheet" href="css/mentions-legales.css">
+    <link rel="stylesheet" href="css/countdown.css">
     <link rel="icon" href="images/logo_caramel.ico" type="image/x-icon">
 
     <!-- Début Matomo Code -->
@@ -40,6 +41,40 @@
                 <h1>Caramel</h1>
                 <p class="subtitle" data-key="subtitle">Création Assistée de Ressources et d'Activités Magistère et Éléa
                 </p>
+            </div>
+        </div>
+        <!-- Compte à rebours événementiel -->
+        <div class="countdown-container countdown-liquid" data-tooltip="Quoi de mieux que la journée de l'écriture manuscrite pour écrire une nouvelle page pour Caramel...">
+            <div class="countdown-content">
+                <div class="countdown-display">
+                    <div class="time-block">
+                        <div class="counter-tile" id="tile-days">
+                            <span class="time-value" id="countdown-days">--</span>
+                        </div>
+                        <span class="time-label">j</span>
+                    </div>
+                    <span class="separator">:</span>
+                    <div class="time-block">
+                        <div class="counter-tile" id="tile-hours">
+                            <span class="time-value" id="countdown-hours">--</span>
+                        </div>
+                        <span class="time-label">h</span>
+                    </div>
+                    <span class="separator">:</span>
+                    <div class="time-block">
+                        <div class="counter-tile" id="tile-minutes">
+                            <span class="time-value" id="countdown-minutes">--</span>
+                        </div>
+                        <span class="time-label">m</span>
+                    </div>
+                    <span class="separator">:</span>
+                    <div class="time-block">
+                        <div class="counter-tile" id="tile-seconds">
+                            <span class="time-value" id="countdown-seconds">--</span>
+                        </div>
+                        <span class="time-label">s</span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="header-right">
@@ -221,6 +256,7 @@
     <!-- ================= Scripts ==================== -->
 
     <script type="module" src="js/main.js"></script>
+    <script src="js/modules/countdown.js"></script>
     <script src="js/libs/jszip/jszip.min.js"></script>
     <script src="js/libs/fflate/index.js"></script>
     <script src="js/libs/tar-js/tar.bundle.js"></script>
