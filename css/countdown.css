@@ -1,7 +1,7 @@
 /**
  * Compte à rebours événementiel - Caramel
- * Style: Premium Caramel Glossy
- * Date cible: 23 janvier 2026, 16h00 (heure de Paris)
+ * Style: Compteur Subtil avec Effets Doux
+ * Date cible: 23 janvier 2026, 16h04 (heure de Paris)
  */
 
 /* Container principal du compte à rebours */
@@ -10,250 +10,196 @@
     align-items: center;
     justify-content: center;
     flex: 0 0 auto;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 24px;
-    padding: 4px 20px 4px 20px;
-    box-shadow:
-        0 4px 12px rgba(139, 69, 19, 0.08),
-        0 1px 2px rgba(139, 69, 19, 0.05),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    transition: all 0.3s ease;
-    gap: 16px;
-    margin: 0 auto;
-    /* Centrage si nécessaire */
+    height: 52px; /* Hauteur fixe pour ne pas déformer le header */
 }
 
-.countdown-container:hover {
-    transform: translateY(-1px);
-    box-shadow:
-        0 6px 16px rgba(139, 69, 19, 0.12),
-        0 2px 4px rgba(139, 69, 19, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    background: rgba(255, 255, 255, 0.7);
-}
-
-/* Texte "Sortie de Caramel v4 dans" */
-.countdown-label {
-    font-family: 'Outfit', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    color: #8B4513;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-    white-space: nowrap;
+/* Style du compte à rebours */
+.countdown-liquid {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+    height: 100%;
 }
 
 /* Contenu du compte à rebours */
-.countdown-content {
+.countdown-liquid .countdown-content {
     display: flex;
     align-items: center;
+    gap: 4px;
     height: 100%;
 }
 
 /* Affichage du compte à rebours */
-.countdown-display {
+.countdown-liquid .countdown-display {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 3px;
 }
 
 /* Bloc de temps (jours, heures, minutes, secondes) */
-.time-block {
+.countdown-liquid .time-block {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0;
+    gap: 1px;
 }
 
-/* Tuile de compteur - style "Bonbon Caramel" */
-.counter-tile {
+/* Tuile de compteur - style épuré */
+.countdown-liquid .counter-tile {
     position: relative;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
-
-    /* Gradient riche et brillant */
-    background: linear-gradient(135deg, #E6A35C 0%, #D68C45 50%, #B87333 100%);
-
-    /* Ombres pour la profondeur et l'effet 3D */
+    border-radius: 6px;
+    background: linear-gradient(135deg, #8B4513 0%, #A0522D 40%, #CD853F 100%);
     box-shadow:
-        0 2px 5px rgba(139, 69, 19, 0.25),
-        /* Ombre portée */
-        inset 0 1px 0 rgba(255, 255, 255, 0.4),
-        /* Highlight haut */
-        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-    /* Lowlight bas */
-
+        0 2px 6px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
     overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: all 0.3s ease;
 }
 
-/* Effet de brillance "Glossy" */
-.counter-tile::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 50%;
-    background: linear-gradient(to bottom,
-            rgba(255, 255, 255, 0.3) 0%,
-            rgba(255, 255, 255, 0.05) 100%);
-    border-radius: 8px 8px 0 0;
-    pointer-events: none;
-}
-
-/* Effet de reflet diagonal subtil */
-.counter-tile::after {
+/* Effet de brillance discrète qui se déplace lentement */
+.countdown-liquid .counter-tile::before {
     content: '';
     position: absolute;
     top: -50%;
     left: -50%;
     width: 200%;
     height: 200%;
-    background: linear-gradient(45deg,
-            transparent 45%,
-            rgba(255, 255, 255, 0.15) 50%,
-            transparent 55%);
-    animation: caramelShine 8s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+    background: linear-gradient(
+        45deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.06) 50%,
+        transparent 60%
+    );
+    animation: gentleShine 12s linear infinite;
     pointer-events: none;
 }
 
-@keyframes caramelShine {
+@keyframes gentleShine {
     0% {
         transform: translateX(-100%) translateY(-100%);
     }
-
-    20% {
-        transform: translateX(100%) translateY(100%);
-    }
-
     100% {
         transform: translateX(100%) translateY(100%);
     }
 }
 
-/* Animation lors du changement de chiffre */
-.counter-tile.changing {
-    transform: scale(0.96);
-    filter: brightness(1.1);
+/* Ligne de séparation subtile au milieu */
+.countdown-liquid .counter-tile::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.25);
+    transform: translateY(-0.5px);
+}
+
+/* Animation subtile lors du changement - juste un léger glow */
+.countdown-liquid .counter-tile.changing {
+    animation: subtleGlow 0.4s ease;
+}
+
+@keyframes subtleGlow {
+    0%, 100% {
+        box-shadow:
+            0 2px 6px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+    50% {
+        box-shadow:
+            0 2px 10px rgba(222, 184, 135, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.25),
+            0 0 15px rgba(222, 184, 135, 0.3);
+    }
 }
 
 /* Valeur du temps */
-.time-value {
+.countdown-liquid .time-value {
     position: relative;
     z-index: 2;
-    font-size: 16px;
-    font-weight: 800;
-    color: #FFF;
-    text-shadow: 0 1px 2px rgba(139, 69, 19, 0.3);
-    font-family: 'DM Mono', monospace, sans-serif;
-    /* Police monospace pour l'alignement */
-    line-height: 1;
-}
-
-/* Animation du chiffre */
-.counter-tile.changing .time-value {
-    animation: numberPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-@keyframes numberPop {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-
-    50% {
-        transform: scale(1.2);
-        opacity: 0.8;
-    }
-
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-/* Label sous les tuiles (j, h, m, s) - Optionnel si on veut l'intégrer, 
-   mais ici on garde le design compact, donc peut-être caché ou très discret */
-.time-label {
-    position: absolute;
-    bottom: -14px;
-    font-size: 9px;
-    color: #8B4513;
+    font-size: 22px;
     font-weight: 700;
-    text-transform: uppercase;
-    opacity: 0.7;
+    color: #FFF;
+    text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.3),
+        0 0 8px rgba(255, 255, 255, 0.1);
+    letter-spacing: -1px;
+    transition: all 0.3s ease;
 }
 
-/* Séparateurs (:) */
-.separator {
-    font-size: 14px;
-    font-weight: 800;
-    color: #D68C45;
-    margin: 0 1px;
-    opacity: 0.8;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-    animation: gentlePulse 2s ease-in-out infinite;
+/* Animation très subtile du chiffre lors du changement */
+.countdown-liquid .counter-tile.changing .time-value {
+    animation: numberChange 0.4s ease;
 }
 
-@keyframes gentlePulse {
-
-    0%,
-    100% {
-        opacity: 0.8;
+@keyframes numberChange {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
     }
-
     50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+}
+
+/* Label du temps (j, h, m, s) */
+.countdown-liquid .time-label {
+    font-size: 7px;
+    color: #8B4513;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+    opacity: 0.8;
+}
+
+/* Séparateurs entre les blocs - animation très douce */
+.countdown-liquid .separator {
+    font-size: 20px;
+    font-weight: 700;
+    color: #8B4513;
+    opacity: 0.5;
+    animation: gentlePulse 2s ease-in-out infinite;
+    margin: 0 2px;
+}
+
+/* Animation pulse très subtile pour les séparateurs */
+@keyframes gentlePulse {
+    0%, 100% {
         opacity: 0.5;
     }
-}
-
-/* Responsive - Tablettes */
-@media (max-width: 900px) {
-    .countdown-container {
-        padding: 4px 12px;
-        gap: 10px;
-    }
-
-    .countdown-label {
-        font-size: 12px;
+    50% {
+        opacity: 0.3;
     }
 }
 
-/* Responsive - Mobiles */
+/* Responsive - Tablettes et petits écrans */
 @media (max-width: 768px) {
     .countdown-container {
         display: none;
-        /* Masqué sur mobile pour ne pas encombrer */
     }
-
-    /* Si on voulait l'afficher sur mobile, voici comment : 
-    .countdown-container {
-        flex-direction: column;
-        height: auto;
-        padding: 8px;
-        position: fixed;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 2000;
-        width: 90%;
-        max-width: 300px;
-    }
-    */
 }
 
-/* Tooltip custom (inchangé mais stylisé) */
+/* Responsive - Très petits écrans (mobiles) */
+@media (max-width: 480px) {
+    /* Le compte à rebours est déjà masqué par la règle 768px */
+}
+
+/* État après événement */
+.countdown-liquid.event-completed .counter-tile {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 50%, #66BB6A 100%);
+}
+
+/* Infobulle simple au survol du compte à rebours */
 .countdown-container[data-tooltip] {
     position: relative;
 }
@@ -261,26 +207,45 @@
 .countdown-container[data-tooltip]::after {
     content: attr(data-tooltip);
     position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
     background: rgba(44, 24, 16, 0.95);
-    backdrop-filter: blur(4px);
     color: #F5DEB3;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 500;
+    padding: 6px 24px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 400;
     white-space: nowrap;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    line-height: 1.4;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     opacity: 0;
     pointer-events: none;
-    transition: all 0.2s ease;
+    transition: opacity 0.2s ease;
     z-index: 1200;
-    transform: translateY(-5px);
 }
 
+/* Affichage de l'infobulle au survol */
 .countdown-container[data-tooltip]:hover::after {
     opacity: 1;
-    transform: translateY(0);
+}
+
+/* Responsive - Adaptation de l'infobulle sur mobile */
+@media (max-width: 768px) {
+    .countdown-container[data-tooltip]::after {
+        font-size: 12px;
+        padding: 5px 18px;
+        white-space: normal;
+        max-width: 90vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .countdown-container[data-tooltip]::after {
+        font-size: 11px;
+        padding: 5px 14px;
+        white-space: normal;
+        max-width: 85vw;
+    }
 }
