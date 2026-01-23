@@ -1,0 +1,180 @@
+{
+  "title": "La Rome antique : naissance et apogée d’une civilisation",
+  "intro": "De la fondation légendaire de Rome à l’apogée de l’Empire, découvre comment une petite cité du Latium est devenue l’une des plus grandes puissances de l’Antiquité.",
+  "blocks": [
+    {
+      "type": "#01_hero_header",
+      "data": {
+        "title": "La Rome antique",
+        "subtitle": "Des origines de la cité à l’Empire romain"
+      }
+    },
+    {
+      "type": "#02_nav_summary",
+      "data": {
+        "links": [
+          { "href": "#reperes", "text": "Repères historiques" },
+          { "href": "#objectifs", "text": "Objectifs et notions clés" },
+          { "href": "#cours", "text": "Le cours" },
+          { "href": "#lexique", "text": "Lexique" },
+          { "href": "#sito", "text": "Sitographie" }
+        ]
+      }
+    },
+    {
+      "type": "#03_histo_reperes",
+      "data": {
+        "title": "Repères chronologiques essentiels",
+        "cards": [
+          {
+            "title": "753 av. J.-C.",
+            "text": "Fondation légendaire de Rome par Romulus, selon la tradition."
+          },
+          {
+            "title": "509 av. J.-C.",
+            "text": "Fin de la monarchie et naissance de la République romaine."
+          },
+          {
+            "title": "27 av. J.-C.",
+            "text": "Octave devient Auguste : début de l’Empire romain."
+          }
+        ]
+      }
+    },
+    {
+      "type": "#04_callout_set",
+      "data": {
+        "title": "Objectifs d’apprentissage",
+        "callouts": [
+          {
+            "type": "objectif",
+            "text": "Comprendre les grandes étapes de l’histoire de Rome, de la République à l’Empire."
+          },
+          {
+            "type": "savoir",
+            "text": "Identifier les principaux pouvoirs politiques et leur évolution."
+          },
+          {
+            "type": "alerte",
+            "text": "Ne pas confondre République romaine et démocratie moderne."
+          }
+        ]
+      }
+    },
+    {
+      "type": "#05_stats_cards",
+      "data": {
+        "title": "La puissance de Rome en chiffres",
+        "stats": [
+          { "value": "1 million", "label": "habitants à Rome au Ier siècle ap. J.-C." },
+          { "value": "5 millions km²", "label": "superficie maximale de l’Empire" },
+          { "value": "3 continents", "label": "Europe, Afrique, Asie" }
+        ]
+      }
+    },
+    {
+      "type": "#12_context_paragraphs",
+      "data": {
+        "title": "Rome, d’une cité à un empire",
+        "paragraphs": [
+          "À l’origine, Rome est une petite cité du Latium, en Italie. Selon la légende, elle est fondée en 753 av. J.-C. par Romulus. Rapidement, la ville s’organise autour d’institutions politiques et militaires solides.",
+          "En 509 av. J.-C., les Romains chassent leur roi et instaurent la République. Le pouvoir est alors partagé entre plusieurs magistrats, notamment les consuls, et le Sénat, composé des citoyens les plus riches.",
+          "À partir du Ier siècle av. J.-C., les conquêtes s’intensifient. Les guerres civiles fragilisent la République et conduisent à l’instauration de l’Empire. En 27 av. J.-C., Auguste concentre les pouvoirs tout en conservant les apparences républicaines."
+        ]
+      }
+    },
+    {
+      "type": "#08_monuments_grid",
+      "data": {
+        "title": "Monuments emblématiques de Rome",
+        "cards": [
+          {
+            "img_src": "https://upload.wikimedia.org/wikipedia/commons/d/de/Colosseo_2020.jpg",
+            "img_alt": "Le Colisée de Rome",
+            "caption": "Rome, Ier siècle ap. J.-C.",
+            "title": "Le Colisée",
+            "text": "Amphithéâtre géant où se déroulent combats de gladiateurs et spectacles publics."
+          },
+          {
+            "img_src": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Roman_Forum_cropped.jpg",
+            "img_alt": "Le Forum romain",
+            "caption": "Centre politique et religieux",
+            "title": "Le Forum",
+            "text": "Cœur de la vie politique, économique et religieuse de Rome."
+          },
+          {
+            "img_src": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Pantheon_Rome_2018.jpg",
+            "img_alt": "Le Panthéon de Rome",
+            "caption": "Temple antique",
+            "title": "Le Panthéon",
+            "text": "Temple dédié à tous les dieux, remarquable pour sa coupole."
+          }
+        ]
+      }
+    },
+    {
+      "type": "#11_definition_box",
+      "data": {
+        "title": "Définition",
+        "text": "Un empire est un vaste territoire dirigé par un seul pouvoir central, souvent exercé par un empereur."
+      }
+    },
+    {
+      "type": "#06_lexique_table",
+      "data": {
+        "title": "Lexique de la Rome antique",
+        "caption": "Mots-clés à connaître",
+        "headers": ["Terme", "Définition"],
+        "rows": [
+          ["République", "Régime politique sans roi, où le pouvoir est partagé entre magistrats et Sénat."],
+          ["Sénat", "Assemblée des citoyens les plus influents, conseillant les magistrats."],
+          ["Empire", "Territoire gouverné par un empereur disposant de pouvoirs étendus."],
+          ["Légion", "Unité de base de l’armée romaine, très disciplinée et organisée."]
+        ]
+      }
+    },
+    {
+      "type": "#07_glossary_chips",
+      "data": {
+        "title": "Notions essentielles",
+        "chips": ["Citoyen romain", "Empereur", "Conquête", "Province"]
+      }
+    },
+    {
+      "type": "#14_faq_block",
+      "data": {
+        "title": "FAQ",
+        "questions": [
+          {
+            "q": "Pourquoi Rome devient-elle si puissante ?",
+            "a": "Grâce à son armée efficace, à ses alliances et à l’intégration progressive des territoires conquis."
+          },
+          {
+            "q": "La vie est-elle la même pour tous les habitants ?",
+            "a": "Non, elle dépend du statut social : citoyens, femmes, esclaves n’ont pas les mêmes droits."
+          }
+        ]
+      }
+    },
+    {
+      "type": "#18_sito_graphy",
+      "data": {
+        "title": "Sitographie",
+        "links": [
+          {
+            "href": "https://eduscol.education.fr",
+            "text": "Éduscol – Programmes officiels d’histoire-géographie"
+          },
+          {
+            "href": "https://www.louvre.fr",
+            "text": "Musée du Louvre – Antiquités romaines"
+          },
+          {
+            "href": "https://www.universalis.fr",
+            "text": "Encyclopædia Universalis – Rome antique"
+          }
+        ]
+      }
+    }
+  ]
+}

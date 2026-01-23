@@ -1,0 +1,57 @@
+{
+  "taskDescription": "Bonjour à tous ! À l'aide de vos connaissances, rédigez un paragraphe d'une dizaine de lignes expliquant les bouleversements de l'année 1789 et la naissance d'une France nouvelle. \n\nVotre récit devra présenter la fin de la **monarchie absolue**, l'affirmation d'un nouveau centre de pouvoir et la mise en place de principes juridiques inédits qui transforment les sujets du roi. \n\n \n\nSoyez précis dans le vocabulaire historique utilisé !",
+  "keywords": [
+    {
+      "keyword": "Souveraineté nationale",
+      "options": { "points": 1, "caseSensitive": false }
+    },
+    {
+      "keyword": "Assemblée nationale",
+      "options": { "points": 1, "caseSensitive": false }
+    },
+    {
+      "keyword": "Citoyen",
+      "options": { "points": 1, "caseSensitive": false }
+    },
+    {
+      "keyword": "Constitution",
+      "options": { "points": 1, "caseSensitive": false }
+    },
+    {
+      "keyword": "Privilèges",
+      "options": { "points": 1, "caseSensitive": false }
+    }
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "C'est un début. Pense à bien réviser les événements de l'été 1789 pour identifier comment le pouvoir a changé de mains."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "Tu commences à cerner le sujet, mais il te manque les termes techniques essentiels. Relis les définitions de 'sujet' et de 'citoyen' pour enrichir ton texte."
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "Ton récit progresse ! Tu as compris que l'année 1789 est une rupture. Essaie d'intégrer davantage les notions de droit et de souveraineté pour gagner en précision."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail ! Tu maîtrises les bases de la période. Tu as su évoquer la fin de l'Ancien Régime et l'émergence de nouveaux acteurs politiques."
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Très bien ! Ta rédaction est solide et utilise un vocabulaire historique pertinent. Tu as bien compris le passage de la monarchie absolue à la nation."
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Excellent ! Ta maîtrise de la Révolution française est parfaite. Tu utilises tous les concepts clés avec brio pour expliquer la naissance de la France moderne."
+    }
+  ]
+}

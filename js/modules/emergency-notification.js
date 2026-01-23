@@ -12,7 +12,7 @@ import { currentLang } from './translation.js';
 const ENABLE_EMERGENCY_NOTIFICATIONS = true;     // Basculer sur false pour désactiver toute la mécanique.
 const POLLING_INTERVAL_MS = 60000;               // Fréquence de rafraîchissement (ex: 60 s).
 const REMOTE_NOTICE_URL = 'https://codimd.apps.education.fr/s/cEaAzWxKC/download';
-const REQUEST_TIMEOUT_MS = 8000;                 // Evite les requêtes pendantes.
+const REQUEST_TIMEOUT_MS = 8000;               // Evite les requêtes pendantes.
 
 /* ========================================================================= */
 let pollTimerId = null;
@@ -98,6 +98,8 @@ async function fetchRemotePayload() {
 
 /**
  * Convertit le fichier Markdown "clé = valeur" en dictionnaire.
+ * Ne conserve que la PREMIÈRE occurrence de chaque clé, permettant d'avoir
+ * des templates prêts à copier-coller plus bas dans le fichier.
  * @param {string} markdown
  */
 function parseMarkdownPayload(markdown) {
@@ -110,7 +112,12 @@ function parseMarkdownPayload(markdown) {
         const match = line.match(/^\s*([a-z0-9_]+)\s*=\s*(.+?)\s*$/i);
         if (!match) return;
         const [, key, value] = match;
-        config[key.trim().toLowerCase()] = value.trim();
+        const normalizedKey = key.trim().toLowerCase();
+
+        // Ne garde que la PREMIÈRE occurrence de chaque clé
+        if (!(normalizedKey in config)) {
+            config[normalizedKey] = value.trim();
+        }
     });
 
     const enabled = (config.notification || 'non').toLowerCase() === 'oui';

@@ -1,0 +1,20 @@
+{
+  "title": "Défi des Quadrilatères en 6e",
+  "words": [
+    {"answer": "Parallélogramme", "clue": "Quadrilatère ayant ses côtés opposés parallèles.", "extraClue": {"params": {"text": "Il a deux paires de côtés **parallèles**."}}},
+    {"answer": "Rectangle", "clue": "Parallélogramme ayant quatre angles droits.", "extraClue": {"params": {"text": "Chaque angle mesure **90 degrés**."}}},
+    {"answer": "Losange", "clue": "Parallélogramme ayant quatre côtés de même longueur.", "extraClue": {"params": {"text": "Ses diagonales sont **perpendiculaires**."}}},
+    {"answer": "Carré", "clue": "Rectangle qui est aussi un losange.", "extraClue": {"params": {"text": "Il combine les propriétés du **rectangle** et du **losange**."}}},
+    {"answer": "Trapèze", "clue": "Quadrilatère ayant une seule paire de côtés parallèles.", "extraClue": {"params": {"text": "Les côtés **parallèles** sont appelés bases."}}},
+    {"answer": "Droite", "clue": "Ligne qui ne s'incline ni vers la gauche ni vers la droite.", "extraClue": {"params": {"text": "Elle est **infinie** dans les deux sens."}}}
+  ],
+  "taskDescription": "**Identifie** les quadrilatères à partir de leurs propriétés.\nPour les mots composés, ne mettez ni espace ni tiret (ex: 'portecles' pour 'porte-clés').",
+  "overallFeedback": [
+    {"from": 0, "to": 10, "feedback": "Des efforts sont nécessaires pour bien comprendre les propriétés des quadrilatères."},
+    {"from": 11, "to": 30, "feedback": "Tu y es presque, continue à travailler les définitions et les caractéristiques."},
+    {"from": 31, "to": 50, "feedback": "C'est un bon début, mais certains quadrilatères restent mal maîtrisés."},
+    {"from": 51, "to": 70, "feedback": "Bon travail ! Tu as bien compris les principales propriétés des quadrilatères."},
+    {"from": 71, "to": 90, "feedback": "Très bon score ! Tu maîtrises bien les distinctions entre les quadrilatères."},
+    {"from": 91, "to": 100, "feedback": "Excellent ! Tu as une parfaite maîtrise des quadrilatères et de leurs propriétés."}
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "taskDescription": "Bonjour à tous ! Dans cet exercice de révision, identifiez les **acteurs** et les **notions clés** qui ont transformé la France à partir de 1789. \nCliquez sur les termes qui symbolisent le passage de la *monarchie absolue* à la *souveraineté nationale*.",
+  "textField": "En 1789 , la France connaît une rupture majeure . Le tiers - état se proclame Assemblée nationale et met fin à l' absolutisme .  \nLa rédaction de la *Déclaration* des *droits* de l' homme et du *citoyen* garantit désormais la liberté et l' égalité . La France devient une *monarchie* *constitutionnelle* avant que la chute des Tuileries ne mène à la proclamation de la *République* en 1792 .",
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "C'est un début. Prends le temps de relire ton cours sur les grandes étapes de 1789 pour bien identifier les mots clés de la rupture politique."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "Tu as repéré quelques éléments, mais attention à ne pas passer à côté des textes fondamentaux comme la Déclaration de 1789."
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "C'est un score encourageant ! Tu commences à bien distinguer les différents régimes politiques de cette période complexe."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail ! L'essentiel du vocabulaire de la Révolution est compris. Continue ainsi pour maîtriser parfaitement ce chapitre."
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Très bon score ! Tu as une lecture très précise des événements et des concepts juridiques nés durant la Révolution."
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Excellent ! Tu maîtrises parfaitement les notions clés du programme de 3e. Tu es prêt pour aborder la suite de l'histoire du XIXe siècle !"
+    }
+  ]
+}

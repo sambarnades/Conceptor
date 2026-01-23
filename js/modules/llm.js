@@ -162,7 +162,7 @@ export async function generateH5PWithLLM(prompt, model, activityMeta) {
 
         if (content && typeof content === 'string') {
             // On extrait le JSON s'il est dans un bloc de code
-            const jsonMatch = content.match(/```json\s*([\s-S]*?)\s*```/);
+            const jsonMatch = content.match(/```json\s*([\s\S]*?)\s*```/);
             if (jsonMatch && jsonMatch[1]) {
                 return jsonMatch[1].trim();
             }

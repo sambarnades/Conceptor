@@ -1,0 +1,42 @@
+{
+"graphMode": "barChart",
+"listOfTypes": [
+{
+"value": 155,
+"color": "#e60012",
+"fontColor": "#ffffff",
+"text": "Nintendo Switch"
+},
+{
+"value": 117,
+"color": "#003791",
+"fontColor": "#ffffff",
+"text": "PlayStation 4"
+},
+{
+"value": 76,
+"color": "#003087",
+"fontColor": "#ffffff",
+"text": "PlayStation 5"
+},
+{
+"value": 75,
+"color": "#ce181e",
+"fontColor": "#ffffff",
+"text": "Nintendo 3DS"
+},
+{
+"value": 58,
+"color": "#107c10",
+"fontColor": "#ffffff",
+"text": "Xbox One"
+},
+{
+"value": 33,
+"color": "#0078d4",
+"fontColor": "#ffffff",
+"text": "Xbox Series X/S"
+}
+],
+"figureDefinition": "Ventes mondiales de consoles (en millions d'unités) sur la période 2010-2026"
+}

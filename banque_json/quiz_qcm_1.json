@@ -1,0 +1,123 @@
+{
+  "title": "Quiz QCM - Fonctions racines carrées",
+  "questions": [
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Définition de la fonction racine carrée" },
+      "params": {
+        "question": "Quelle est la condition nécessaire pour que \\( \\sqrt{x} \\) soit définie dans l'ensemble des nombres réels ?",
+        "answers": [
+          { "text": "Il faut que \\( x \\) soit un entier positif.", "correct": false },
+          { "text": "Il faut que \\( x \\geq 0 \\).", "correct": true },
+          { "text": "Il faut que \\( x \\) soit un nombre décimal.", "correct": false },
+          { "text": "Il faut que \\( x \\neq 0 \\).", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Attention, la racine carrée n'est définie que pour les nombres positifs ou nuls. Revois la définition de la fonction racine carrée." },
+          { "from": 11, "to": 30, "feedback": "Tu es sur la bonne voie, mais il faut bien retenir que \\( x \\) doit être supérieur ou égal à zéro." },
+          { "from": 31, "to": 50, "feedback": "Tu as une bonne compréhension de la condition de définition. Continue à travailler." },
+          { "from": 51, "to": 70, "feedback": "Bien joué ! Tu maîtrises la condition de définition de la fonction racine carrée." },
+          { "from": 71, "to": 90, "feedback": "Très bien ! Tu as une excellente maîtrise de ce concept fondamental." },
+          { "from": 91, "to": 100, "feedback": "Excellent ! Tu as parfaitement compris la condition de définition." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Image d'un nombre par la fonction racine carrée" },
+      "params": {
+        "question": "Quelle est l'image de \\( 16 \\) par la fonction \\( f(x) = \\sqrt{x} \\) ?",
+        "answers": [
+          { "text": "4", "correct": true },
+          { "text": "-4", "correct": false },
+          { "text": "8", "correct": false },
+          { "text": "256", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Rappelle-toi que la racine carrée principale d'un nombre positif est toujours positive. Essaye de calculer \\( \\sqrt{16} \\) à la main." },
+          { "from": 11, "to": 30, "feedback": "Tu as une idée, mais attention : la racine carrée d'un nombre positif est toujours positive." },
+          { "from": 31, "to": 50, "feedback": "Tu es proche de la bonne réponse. N'oublie pas que \\( \\sqrt{16} = 4 \\), pas \\( -4 \\)." },
+          { "from": 51, "to": 70, "feedback": "Bien ! Tu as correctement calculé \\( \\sqrt{16} \\)." },
+          { "from": 71, "to": 90, "feedback": "Très bien ! Tu as parfaitement compris que \\( \\sqrt{16} = 4 \\)." },
+          { "from": 91, "to": 100, "feedback": "Excellent ! Tu maîtrises les calculs simples avec la fonction racine carrée." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Ensemble de définition d'une fonction racine carrée" },
+      "params": {
+        "question": "Quel est l'ensemble de définition de la fonction \\( f(x) = \\sqrt{2x - 6} \\) ?",
+        "answers": [
+          { "text": "\\( ]3, +\\infty[ \\)", "correct": false },
+          { "text": "\\( [3, +\\infty[ \\)", "correct": true },
+          { "text": "\\( ]-\\infty, 3] \\)", "correct": false },
+          { "text": "\\( ]-\\infty, 3[ \\)", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Rappelle-toi que l'expression sous la racine doit être \\( \\geq 0 \\). Résous l'inéquation \\( 2x - 6 \\geq 0 \\)." },
+          { "from": 11, "to": 30, "feedback": "Tu as bien commencé, mais attention aux inégalités. \\( 2x - 6 \\geq 0 \\) donne \\( x \\geq 3 \\)." },
+          { "from": 31, "to": 50, "feedback": "Tu es sur la bonne voie. N'oublie pas que l'égalité est autorisée dans la racine carrée." },
+          { "from": 51, "to": 70, "feedback": "Bien ! Tu as correctement déterminé que \\( x \\geq 3 \\)." },
+          { "from": 71, "to": 90, "feedback": "Très bien ! Tu as parfaitement déterminé l'ensemble de définition." },
+          { "from": 91, "to": 100, "feedback": "Excellent ! Tu as une excellente maîtrise des ensembles de définition." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Propriétés de la fonction racine carrée" },
+      "params": {
+        "question": "Parmi les affirmations suivantes, lesquelles sont vraies pour la fonction \\( f(x) = \\sqrt{x} \\) ?",
+        "answers": [
+          { "text": "Elle est croissante sur \\( [0, +\\infty[ \\).", "correct": true },
+          { "text": "Elle est définie pour tout \\( x \\in \\mathbb{R} \\).", "correct": false },
+          { "text": "Elle est décroissante sur \\( [0, +\\infty[ \\).", "correct": false },
+          { "text": "Elle prend uniquement des valeurs positives ou nulles.", "correct": true }
+        ],
+        "behaviour": { "singleAnswer": false },
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Revois les propriétés de la fonction racine carrée : elle est croissante et son image est \\( [0, +\\infty[ \\)." },
+          { "from": 11, "to": 30, "feedback": "Tu as une idée, mais attention : la fonction racine carrée est croissante, pas décroissante, et elle n'est pas définie pour les nombres négatifs." },
+          { "from": 31, "to": 50, "feedback": "Tu progresses bien. La fonction est croissante et ses valeurs sont positives." },
+          { "from": 51, "to": 70, "feedback": "Bien ! Tu as identifié correctement les deux propriétés essentielles." },
+          { "from": 71, "to": 90, "feedback": "Très bien ! Tu as une excellente compréhension des propriétés de la fonction racine carrée." },
+          { "from": 91, "to": 100, "feedback": "Excellent ! Tu maîtrises parfaitement les caractéristiques de la fonction racine carrée." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Résolution d'une équation avec racine carrée" },
+      "params": {
+        "question": "Quelle est la solution de l'équation \\( \\sqrt{x + 5} = 3 \\) ?",
+        "answers": [
+          { "text": "4", "correct": true },
+          { "text": "14", "correct": false },
+          { "text": "-4", "correct": false },
+          { "text": "9", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Pour résoudre une équation avec une racine carrée, élève les deux membres au carré. Puis vérifie la solution dans l'équation initiale." },
+          { "from": 11, "to": 30, "feedback": "Tu es sur la bonne voie, mais n'oublie pas de vérifier la solution après avoir élevé au carré." },
+          { "from": 31, "to": 50, "feedback": "Tu as bien commencé, mais vérifie que \\( x = 4 \\) satisfait bien l'équation." },
+          { "from": 51, "to": 70, "feedback": "Bien ! Tu as trouvé la bonne solution après avoir résolu l'équation." },
+          { "from": 71, "to": 90, "feedback": "Très bien ! Tu as correctement résolu l'équation et vérifié la solution." },
+          { "from": 91, "to": 100, "feedback": "Excellent ! Tu as parfaitement maîtrisé la résolution d'équations avec racine carrée." }
+        ]
+      }
+    }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "Résultat faible. Revoyez les notions de base sur les fonctions racines carrées, notamment leur définition et leurs propriétés." },
+    { "from": 11, "to": 30, "feedback": "Résultat insuffisant. Continuez vos efforts en travaillant sur les ensembles de définition et les calculs simples." },
+    { "from": 31, "to": 50, "feedback": "Résultat moyen. Vous progressez, mais certains concepts doivent être révisés." },
+    { "from": 51, "to": 70, "feedback": "Bon résultat. Vous maîtrisez plusieurs notions essentielles." },
+    { "from": 71, "to": 90, "feedback": "Très bon résultat. Vous êtes sur la bonne voie." },
+    { "from": 91, "to": 100, "feedback": "Excellent résultat. Félicitations ! Vous avez une excellente maîtrise du sujet." }
+  ]
+}

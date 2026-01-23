@@ -2,7 +2,7 @@
 
 **Création Assistée de Ressources et d'Activités Magistère et Éléa**
 
-[![Version](https://img.shields.io/badge/version-3.3.11-blue.svg)](https://caramel.forge.apps.education.fr/)
+[![Version](https://img.shields.io/badge/version-4.0.0-blue.svg)](https://caramel.forge.apps.education.fr/)
 [![Licence](https://img.shields.io/badge/licence-GNU%20AGPLv3-green.svg)](LICENSE)
 [![Plateforme](https://img.shields.io/badge/plateforme-Web-orange.svg)](https://caramel.forge.apps.education.fr/)
 
@@ -11,6 +11,7 @@
 ## 📋 Table des matières
 
 - [À propos](#-à-propos)
+- [Nouveautés de la version 4.0.0](#nouveautés-de-la-version-400)
 - [Fonctionnalités principales](#-fonctionnalités-principales)
 - [Types d'activités supportées](#-types-dactivités-supportées)
 - [Accès et utilisation](#-accès-et-utilisation)
@@ -50,14 +51,60 @@
 
 ---
 
+## Nouveautés de la version 4.0.0
+
+### Interface utilisateur modernisée
+
+- **Modes Rapide/Avancé refondus** : Fusion des divs communes pour une meilleure stabilité et nouveau design CSS du "Mode guidé" avec 4 lignes distinctes
+- **Tuiles intelligentes** : Les tuiles se grisent automatiquement pour inciter à remplir les champs initiaux et reprennent leur couleur dès la saisie
+- **Navigation optimisée** : Suppression de l'effet de rebond entre les onglets pour plus de stabilité
+- **Animations améliorées** : Fond sombre radial pour l'animation de génération et le bandeau de succès
+- **Cadenas unifiés** : Icônes de verrouillage harmonisées dans toute l'interface
+- **Champs de saisie dynamiques** : L'arrière-plan change selon l'état de verrouillage
+
+### OCR universel et traitement de documents
+
+- **Formats étendus** : Lecture instantanée de PDF textuels + support DOCX, PPTX, ODT, ODP, PNG, JPG et JPEG
+- **Double reconnaissance** : Identification de texte natif ou OCR selon le format
+- **Performance accrue** : Traitement quasi instantané des documents textuels
+
+### Nouvelles activités H5P
+
+- **Quizset QCM** : Création rapide de quiz contenant uniquement des questions à choix multiples
+- **Quizset Vrai/Faux** : Génération de quiz exclusivement composés de questions vrai/faux
+- **Quiz mixte** : L'ancienne activité "Quiz (Quizset)" renommée pour la distinguer, supporte toujours 5 formats de questions
+
+### Système de notifications et visualisation
+
+- **Menu des notifications** : Nouveau panneau avec historique complet des générations
+- **Fenêtre de visualisation** : Bouton "Visualiser" pour chaque activité permettant de :
+  - Prévisualiser les activités générées
+  - Télécharger à nouveau H5P et formats Éléa/Moodle/Magistère
+  - Naviguer entre toutes les activités créées
+
+### Exports multi-formats
+
+- **Nouveaux formats** : Toutes les activités sont désormais exportables en **DOCX, ODT et PDF** en plus des formats existants
+
+### Optimisations techniques
+
+- **Chargement accéléré** : Optimisation des librairies JavaScript pour un démarrage plus rapide
+- **Images WEBP** : Conversion de toutes les images (vignettes, logos) au format WebP pour réduire le poids
+- **Prompts repensés** : Structure commune et éléments contextuels pour une meilleure compréhension par l'IA
+- **Architecture H5P** : Chaque activité H5P dispose de son propre fichier de génération
+- **Traductions standardisées** : Fichiers de langue réorganisés et corrigés
+- **Mentions légales complètes** : Toutes les bibliothèques JS référencées avec traduction dans les 11 langues
+
+---
+
 ## ⚡ Fonctionnalités principales
 
 ### Génération assistée par IA
 
 - **Prompts pré-configurés** : modèles optimisés pour chaque type d'activité
 - **6 modèles IA** disponibles via ilaaS (Mistral, Llama, GPT-OSS, Qwen)
-- **RAG (Retrieval-Augmented Generation)** : enrichissement via upload de PDFs
-- **OCR intégré** : extraction de texte depuis documents scannés (Tesseract.js)
+- **RAG (Retrieval-Augmented Generation)** : enrichissement via upload de documents
+- **OCR universel** : extraction de texte depuis PDF, DOCX, PPTX, ODT, ODP, PNG, JPG et JPEG (Tesseract.js + reconnaissance native)
 - **Limite de contexte** : jusqu'à 120 000 caractères pour le RAG
 
 ### Exports multi-formats
@@ -65,12 +112,13 @@
 - **Fichiers H5P** (`.h5p`) : archives ZIP auto-contenues importables directement
 - **Backups Moodle** (`.mbz`) : archives compressées (TAR+GZIP) prêtes pour restauration
 - **Exports XML** : format GIFT/Moodle pour glossaires et questions
+- **Documents bureautiques** : export en **DOCX, ODT et PDF** pour toutes les activités
 
 ### Interface intuitive
 
 - **Design glassmorphism** inspiré d'iOS
 - **Navigation par onglets** : Quiz, Texte, Mémorisation, Éléa, Autres, Expérimentaux
-- **Notifications toast** : retours visuels non-intrusifs
+- **Système de notifications** : menu avec historique complet et fenêtre de visualisation pour re-télécharger les activités
 - **Mode responsive** : adapté ordinateurs et tablettes
 - **Thèmes clairs/sombres** : adaptation au système d'exploitation
 
@@ -78,11 +126,13 @@
 
 ## 📚 Types d'activités supportées
 
-### Activités H5P (18 types)
+### Activités H5P (20 types)
 
 #### 🧠 Quiz & Tests
-- **QuizSet** : ensembles de questions variées (QCM, vrai/faux, glisser-déposer)
-- **TrueFalse** : questions vrai/faux simples
+- **Quiz mixte (QuizSet)** : ensembles de questions variées (QCM, vrai/faux, glisser-déposer, texte à trous, etc.)
+- **Quizset QCM** : quiz composé uniquement de questions à choix multiples
+- **Quizset Vrai/Faux** : quiz composé uniquement de questions vrai/faux
+- **TrueFalse** : questions vrai/faux simples (une question unique)
 - **MultipleChoice** : questions à choix multiples (une question unique)
 - **SingleChoiceSet** : séries de choix uniques
 
@@ -157,9 +207,9 @@ Interface complète avec paramètres détaillés :
 3. **Niveau** (ex : 6e, Seconde professionnelle, Licence 1)
 4. **Nombre d'éléments** (ex : 10 questions, 15 flashcards)
 5. **RAG (optionnel)** :
-   - Upload de fichiers PDF (glisser-déposer)
-   - Extraction de texte via OCR (Tesseract.js)
-   - Coloration des PDFs traités
+   - Upload de documents multiformats (glisser-déposer) : **PDF, DOCX, PPTX, ODT, ODP, PNG, JPG, JPEG**
+   - Extraction de texte ultra-rapide (reconnaissance native + OCR Tesseract.js)
+   - Coloration des fichiers traités
    - Édition manuelle du contexte (120 000 caractères max)
    - Verrouillage du champ pour protection
 
@@ -228,7 +278,12 @@ Interface complète avec paramètres détaillés :
 
 #### Traitement de documents
 - **[PDF.js](https://mozilla.github.io/pdf.js/)** (Apache 2.0) : extraction de texte PDF
-- **[Tesseract.js](https://tesseract.projectnaptha.com/)** (Apache 2.0) : OCR multilingue
+- **[Tesseract.js](https://tesseract.projectnaptha.com/)** (Apache 2.0) : OCR multilingue (PDF scannés, images)
+- **[Mammoth.js](https://github.com/mwilliamson/mammoth.js)** (BSD-2-Clause) : lecture de fichiers DOCX
+- **[jsPDF](https://github.com/parallax/jsPDF)** (MIT) : génération de fichiers PDF
+- **[jsPDF-AutoTable](https://github.com/simonbengtsson/jsPDF-AutoTable)** (MIT) : création de tableaux dans les PDF
+- **[MathJax](https://www.mathjax.org/)** (Apache 2.0) : rendu des formules mathématiques
+- **[H5P Standalone](https://github.com/tunapanda/h5p-standalone)** (MIT) : visualisation des activités H5P
 
 #### Interface utilisateur
 - **[Font Awesome](https://fontawesome.com/)** (CC BY 4.0/MIT/SIL OFL) : bibliothèque d'icônes
@@ -411,16 +466,25 @@ caramel/
 │   ├── main.js ....................... Point d'entrée (38 lignes)
 │   │
 │   ├── modules/ ...................... Modules fonctionnels
-│   │   ├── definitions.js ............ Configuration des 27 activités
+│   │   ├── definitions.js ............ Configuration des 20+ activités
 │   │   ├── prompt-generator.js ....... Génération prompts IA (783 lignes)
 │   │   ├── h5p-creator.js ............ Packaging H5P (600+ lignes)
+│   │   ├── h5p-manager.js ............ Gestionnaire d'activités H5P
+│   │   ├── h5p-processors/ ........... Processeurs spécialisés par type H5P
 │   │   ├── moodle-creator.js ......... Packaging Moodle/Éléa (900+ lignes)
+│   │   ├── moodle-formats.js ......... Formats d'export Moodle
+│   │   ├── document-exporter.js ...... Export DOCX, ODT, PDF
+│   │   ├── document-formatter.js ..... Formatage des documents
+│   │   ├── image-utils.js ............ Traitement des images (téléchargement, conversion, dimensionnement)
+│   │   ├── math-renderer.js .......... Rendu des formules mathématiques
 │   │   ├── llm.js .................... Intégration IA n8n
 │   │   ├── ui.js ..................... Interface & interactions
-│   │   ├── ocr.js .................... OCR Tesseract.js
+│   │   ├── notifications.js .......... Système de notifications et historique
+│   │   ├── ocr.js .................... OCR universel (PDF, DOCX, images)
 │   │   ├── translation.js ............ i18n multilingue
 │   │   ├── utils.js .................. Fonctions utilitaires
 │   │   ├── animations.js ............. Effets visuels
+│   │   ├── json-editor/ .............. Éditeur JSON pour personnalisation
 │   │   ├── version-checker.js ........ Notifications de mise à jour
 │   │   └── emergency-notification.js . Bandeaux d'urgence
 │   │
@@ -430,7 +494,14 @@ caramel/
 │   │   ├── tar-js/ ................... tar-js (archives TAR)
 │   │   ├── client-zip/ ............... client-zip (Web Workers)
 │   │   ├── pdf-js/ ................... PDF.js (extraction PDF)
-│   │   └── tesseract/ ................ Tesseract.js (OCR)
+│   │   ├── tesseract/ ................ Tesseract.js (OCR)
+│   │   ├── docx/ ..................... Traitement fichiers DOCX
+│   │   ├── mammoths/ ................. Mammoth.js (lecture DOCX)
+│   │   ├── jspdf/ .................... jsPDF (génération PDF)
+│   │   ├── jspdf-autotable/ .......... jsPDF-AutoTable (tableaux PDF)
+│   │   ├── mathjax/ .................. MathJax (rendu formules maths)
+│   │   ├── h5p-standalone/ ........... H5P Standalone (visualisation)
+│   │   └── h5p-libs/ ................. Bibliothèques H5P
 │   │
 │   └── translations/ ................. Fichiers de langue
 │       ├── fr.js ..................... Français (1400+ clés)
@@ -456,11 +527,11 @@ caramel/
 │   ├── PLACEHOLDERS_MILLIONNAIRE.md .. Documentation Millionnaire
 │   └── PLACEHOLDERS_QCM.md ........... Documentation Quiz
 │
-├── images/ ........................... Icônes des activités (PNG)
-│   ├── logo_caramel.png .............. Logo principal
+├── images/ ........................... Icônes des activités (WebP)
+│   ├── logo_caramel.webp ............. Logo principal (optimisé)
 │   ├── logo_caramel.ico .............. Favicon
-│   ├── tchap.png ..................... Icône Tchap
-│   └── [27 icônes d'activités]
+│   ├── tchap.webp .................... Icône Tchap (optimisée)
+│   └── [20+ icônes d'activités au format WebP]
 │
 ├── flags/ ............................ Drapeaux pays (SVG)
 │
@@ -477,13 +548,18 @@ caramel/
 
 | Fichier | Lignes | Rôle |
 |---------|--------|------|
-| `definitions.js` | 311 | Configuration des 27 activités (métadonnées, IDs, catégories) |
+| `definitions.js` | 311 | Configuration des 20+ activités (métadonnées, IDs, catégories) |
 | `prompt-generator.js` | 783 | Génération de prompts optimisés pour chaque type |
 | `h5p-creator.js` | 600+ | Packaging H5P (JSZip, adaptations par module) |
+| `h5p-manager.js` | - | Gestionnaire centralisé des activités H5P |
 | `moodle-creator.js` | 900+ | Packaging Moodle/Éléa (TAR, GZIP, substitutions XML) |
+| `document-exporter.js` | - | Export multi-formats (DOCX, ODT, PDF) |
+| `document-formatter.js` | - | Formatage et mise en page des documents |
+| `notifications.js` | - | Système de notifications avec historique et visualisation |
 | `llm.js` | 199 | Intégration API n8n, gestion des 6 modèles |
-| `ui.js` | 400+ | Interface (grille, onglets, modales, notifications) |
-| `ocr.js` | 200+ | OCR Tesseract.js, upload PDF, extraction texte |
+| `ui.js` | 400+ | Interface (grille, onglets, modales) |
+| `ocr.js` | 200+ | OCR universel (PDF, DOCX, PPTX, ODT, images) |
+| `math-renderer.js` | - | Rendu des formules mathématiques (MathJax) |
 | `translation.js` | 300+ | Système i18n, chargement asynchrone langues |
 
 ---
@@ -557,6 +633,11 @@ Chaque bibliothèque utilisée conserve sa licence respective :
 | tar-js | MIT |
 | PDF.js | Apache 2.0 |
 | Tesseract.js | Apache 2.0 |
+| Mammoth.js | BSD-2-Clause |
+| jsPDF | MIT |
+| jsPDF-AutoTable | MIT |
+| MathJax | Apache 2.0 |
+| H5P Standalone | MIT |
 | flag-icons | MIT |
 
 Voir [LICENSE](LICENSE) pour le texte complet.

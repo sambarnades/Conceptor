@@ -1,0 +1,39 @@
+{
+  "taskDescription": "Bonjour ! Prêt pour un petit défi de géométrie ? \nDans cette activité, nous allons revoir les **propriétés caractéristiques** des quadrilatères que nous avons étudiés. \nL'objectif est de bien différencier chaque figure selon ses **angles** et ses **côtés**. Complète le texte ci-dessous pour valider tes connaissances !",
+  "questions": [
+    "Un quadrilatère est une figure plane qui possède obligatoirement quatre côtés. \n \nSi un quadrilatère possède quatre *angles droits:Utilise ton équerre pour les vérifier !*, alors c'est un *rectangle*. \nCependant, si ce quadrilatère a ses quatre côtés de la même longueur sans forcément avoir d'angles droits, on l'appelle un *losange:Ses diagonales se coupent en leur milieu et sont perpendiculaires*.",
+    " \nLe *carré:C'est une figure très spéciale !* est un cas particulier unique : il possède à la fois quatre côtés de même longueur et quatre *angles droits/sommets perpendiculaires:Il cumule les propriétés du rectangle et du losange*. \nPour tracer ces figures avec précision, n'oublie jamais d'utiliser ta règle graduée et ton *équerre:L'instrument indispensable pour la perpendicularité*."
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "Ne te décourage pas ! La géométrie demande de la pratique. Relis bien les définitions de ton cahier de cours et réessaie."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "C'est un début, mais il semble y avoir des confusions entre les figures. Rappelle-toi : le rectangle s'occupe des angles, le losange des côtés !"
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "Tu as compris quelques notions importantes. Utilise bien les indices dans les bulles pour t'aider à choisir le bon mot technique."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail ! Tu maîtrises l'essentiel des propriétés des quadrilatères particuliers. Encore un petit effort sur le vocabulaire précis."
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Très bien ! Tes connaissances sont solides. Tu sais différencier les figures grâce à leurs propriétés géométriques."
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Excellent ! Tu es un véritable expert des quadrilatères de 6e. Tes instruments de géométrie n'ont plus de secrets pour toi !"
+    }
+  ]
+}

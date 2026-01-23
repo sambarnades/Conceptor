@@ -1,0 +1,36 @@
+{
+  "taskDescription": "Bonjour à toutes et à tous ! Aujourd'hui, nous allons tester vos connaissances sur les figures géométriques à quatre côtés. Complétez ce résumé de cours en faisant glisser les termes mathématiques appropriés aux bons endroits. Soyez attentifs aux propriétés de chaque figure !",
+  "textField": "Un polygone qui possède quatre côtés s'appelle un *quadrilatère*.\nParmi eux, on trouve des figures particulières comme le *parallélogramme* dont les côtés opposés sont parallèles.\nSi cette figure possède quatre angles droits, alors il s'agit d'un *rectangle*.\nLorsqu'un quadrilatère a tous ses côtés de la même longueur, on le nomme *losange*.\nEnfin, le *carré* est une figure exceptionnelle car il possède à la fois quatre angles droits et quatre côtés égaux.\nN'oubliez pas d'utiliser votre équerre pour vérifier la perpendicularité et votre règle graduée pour les longueurs.\n",
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "Ne te décourage pas ! Relis bien les définitions de ton cours sur les propriétés des côtés et des angles, puis réessaie."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "C'est un début, mais il semble y avoir des confusions entre les différentes figures. Reprends tes instruments de géométrie pour visualiser les propriétés."
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "Tu as compris quelques bases ! Attention à bien distinguer le losange (côtés égaux) du rectangle (angles droits)."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail ! Tu connais l'essentiel des propriétés des quadrilatères particuliers. Continue tes efforts !"
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Très bon score ! Tu maîtrises bien le vocabulaire géométrique de la classe de 6e. C'est presque parfait !"
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Excellent ! Tu es un véritable expert des quadrilatères. Tu as su identifier parfaitement chaque figure grâce à ses propriétés spécifiques."
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "title": "La Révolution française (1789-1799) : Vers une France nouvelle",
+  "questions": [
+    {
+      "text": "En juin 1789, quel événement marque la fin de l'autorité absolue du roi et la naissance de la **souveraineté nationale** ? ",
+      "answers": [
+        {
+          "text": "Les députés du Tiers-État se proclament Assemblée nationale et prêtent le Serment du Jeu de Paume.",
+          "iscorrect": 1
+        },
+        {
+          "text": "Le roi Louis XVI accepte de dissoudre la monarchie lors de l'ouverture des États généraux.",
+          "iscorrect": 0
+        },
+        {
+          "text": "Le peuple de Paris organise des élections au suffrage universel pour remplacer le roi.",
+          "iscorrect": 0
+        }
+      ]
+    },
+    {
+      "text": "Quelle est la conséquence majeure de la **prise de la Bastille** le 14 juillet 1789 ? ",
+      "answers": [
+        {
+          "text": "L'effondrement du symbole de l'arbitraire royal et le début de l'intervention du peuple parisien.",
+          "iscorrect": 1
+        },
+        {
+          "text": "La proclamation immédiate de la République et l'exil de la famille royale.",
+          "iscorrect": 0
+        },
+        {
+          "text": "L'arrestation de Napoléon Bonaparte qui tentait de prendre le contrôle de la forteresse.",
+          "iscorrect": 0
+        },
+        {
+          "text": "Le rétablissement du calme et de l'ordre dans tout le royaume de France.",
+          "iscorrect": 0
+        }
+      ]
+    },
+    {
+      "text": "Quel principe fondamental est instauré par la **Déclaration des droits de l'homme et du citoyen** du 26 août 1789 ? ",
+      "answers": [
+        {
+          "text": "L'égalité des droits et la liberté pour tous les citoyens, mettant fin à la société d'ordres.",
+          "iscorrect": 1
+        },
+        {
+          "text": "Le maintien des privilèges de la noblesse à condition qu'ils paient leurs impôts.",
+          "iscorrect": 0
+        },
+        {
+          "text": "L'attribution de tous les pouvoirs exécutifs et législatifs au clergé.",
+          "iscorrect": 0
+        }
+      ]
+    },
+    {
+      "text": "Pourquoi la **Première République** est-elle proclamée en septembre 1792 ?",
+      "answers": [
+        {
+          "text": "Parce que le roi a été renversé suite à la prise du palais des Tuileries et à sa trahison perçue.",
+          "iscorrect": 1
+        },
+        {
+          "text": "Parce que Louis XVI a signé un décret pour transformer son titre de roi en président.",
+          "iscorrect": 0
+        },
+        {
+          "text": "Parce que la guerre contre l'Autriche a été gagnée en trois jours par les armées du roi.",
+          "iscorrect": 0
+        }
+      ]
+    },
+    {
+      "text": "Comment Napoléon Bonaparte stabilise-t-il la France après son coup d'État en 1799 ? ",
+      "answers": [
+        {
+          "text": "En créant le Code Civil qui garantit l'égalité devant la loi, tout en instaurant un pouvoir autoritaire.",
+          "iscorrect": 1
+        },
+        {
+          "text": "En rétablissant la monarchie de droit divin et la société d'ordres de 1788.",
+          "iscorrect": 0
+        },
+        {
+          "text": "En supprimant le droit de propriété pour tous les Français afin de calmer les révoltes.",
+          "iscorrect": 0
+        },
+        {
+          "text": "En rendant le pouvoir législatif aux sans-culottes parisiens.",
+          "iscorrect": 0
+        }
+      ]
+    }
+  ]
+}

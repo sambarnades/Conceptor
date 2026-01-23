@@ -1,0 +1,34 @@
+{
+    "title": "Les temps forts de la Révolution française (1789-1799)",
+    "intro": "Bonjour à toutes et à tous ! Prêts pour un petit défi historique ? Pour bien réviser le chapitre sur la naissance d'un nouveau monde politique, associe chaque événement ou concept clé à la définition qui lui correspond. C'est un excellent moyen de vérifier tes acquis pour le Brevet !",
+    "pairs": [
+        {
+            "question": "Le Serment du Jeu de Paume",
+            "answer": "Juin 1789 : les députés jurent de ne pas se séparer avant d'avoir rédigé une Constitution."
+        },
+        {
+            "question": "La prise de la Bastille",
+            "answer": "14 juillet 1789 : le peuple parisien s'arme et s'attaque à un symbole de l'absolutisme."
+        },
+        {
+            "question": "L'abolition des privilèges",
+            "answer": "Nuit du 4 août 1789 : fin de la société d'ordres et de la féodalité."
+        },
+        {
+            "question": "La Déclaration des Droits de l'Homme et du Citoyen",
+            "answer": "26 août 1789 : texte fondant l'égalité juridique et les libertés fondamentales."
+        },
+        {
+            "question": "Proclamation de la République",
+            "answer": "21 septembre 1792 : la monarchie est abolie après la chute du palais des Tuileries."
+        },
+        {
+            "question": "La Terreur",
+            "answer": "1793-1794 : période de guerre et de répression dirigée par Robespierre et le Comité de Salut Public."
+        },
+        {
+            "question": "Le 18 Brumaire",
+            "answer": "9 novembre 1799 : coup d'État de Napoléon Bonaparte qui met fin au Directoire."
+        }
+    ]
+}

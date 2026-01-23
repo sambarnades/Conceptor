@@ -1,0 +1,59 @@
+{
+    "title": "La Révolution française et l'Empire (1789-1815)",
+    "questions": [
+        {
+            "question": "Quel texte fondamental, adopté en août 1789, affirme que les hommes naissent et demeurent libres et égaux en droits ?",
+            "goodanswer": "La Déclaration des Droits de l'Homme et du Citoyen",
+            "badanswer": [
+                "Le Code Civil",
+                "La Constitution de la Ve République",
+                "Le Traité de Versailles"
+            ]
+        },
+        {
+            "question": "En quelle année la Première République est-elle proclamée après la chute de la monarchie ?",
+            "goodanswer": "1792",
+            "badanswer": [
+                "1789",
+                "1799",
+                "1804"
+            ]
+        },
+        {
+            "question": "Sous quel régime politique la France est-elle gouvernée entre 1793 et 1794, marquée par une forte répression menée par Robespierre ?",
+            "goodanswer": "La Terreur",
+            "badanswer": [
+                "Le Consulat",
+                "La Monarchie constitutionnelle",
+                "Le Directoire"
+            ]
+        },
+        {
+            "question": "Comment appelle-t-on les citoyens parisiens issus du peuple, reconnaissables à leurs vêtements, qui participent activement aux journées révolutionnaires ?",
+            "goodanswer": "Les sans-culottes",
+            "badanswer": [
+                "Les nobles",
+                "Les émigrés",
+                "Les chouans"
+            ]
+        },
+        {
+            "question": "Quel événement de 1799 permet à Napoléon Bonaparte de prendre le pouvoir et de mettre fin au Directoire ?",
+            "goodanswer": "Le coup d'État du 18 Brumaire",
+            "badanswer": [
+                "La bataille de Waterloo",
+                "Le sacre impérial",
+                "La fuite à Varennes"
+            ]
+        },
+        {
+            "question": "Parmi ces réformes de Napoléon Bonaparte, laquelle visait à stabiliser la société en unifiant les lois sur tout le territoire français en 1804 ?",
+            "goodanswer": "Le Code civil",
+            "badanswer": [
+                "La création des départements",
+                "L'invention du système métrique",
+                "La signature du Concordat"
+            ]
+        }
+    ]
+}

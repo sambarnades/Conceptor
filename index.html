@@ -12,22 +12,22 @@
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="css/modale-aide.css">
     <link rel="stylesheet" href="css/mentions-legales.css">
-    <link rel="stylesheet" href="css/countdown.css">
+    <link rel="stylesheet" href="css/json-editor.css">
     <link rel="icon" href="images/logo_caramel.ico" type="image/x-icon">
 
     <!-- Début Matomo Code -->
     <script>
-    var _paq = window._paq = window._paq || [];
-    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function() {
-        var u="https://wa.phm.education.gouv.fr/snp/";
-        _paq.push(['setTrackerUrl', u+'matomo.php']);
-        _paq.push(['setSiteId', '17']);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
-    })();
+        var _paq = window._paq = window._paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function () {
+            var u = "https://wa.phm.education.gouv.fr/snp/";
+            _paq.push(['setTrackerUrl', u + 'matomo.php']);
+            _paq.push(['setSiteId', '17']);
+            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+            g.async = true; g.src = u + 'matomo.js'; s.parentNode.insertBefore(g, s);
+        })();
     </script>
     <!-- Fin Matomo Code -->
 
@@ -36,50 +36,17 @@
 <body>
     <header class="app-bar">
         <div class="header-left">
-            <img src="images/logo_caramel.png" alt="Logo Caramel" class="logo">
+            <img src="images/logo_caramel.webp" alt="Logo Caramel" class="logo">
             <div class="title-container">
                 <h1>Caramel</h1>
                 <p class="subtitle" data-key="subtitle">Création Assistée de Ressources et d'Activités Magistère et Éléa
                 </p>
             </div>
         </div>
-        <!-- Compte à rebours événementiel -->
-        <div class="countdown-container countdown-liquid" data-tooltip="Quoi de mieux que la journée de l'écriture manuscrite pour écrire une nouvelle page pour Caramel...">
-            <div class="countdown-content">
-                <div class="countdown-display">
-                    <div class="time-block">
-                        <div class="counter-tile" id="tile-days">
-                            <span class="time-value" id="countdown-days">--</span>
-                        </div>
-                        <span class="time-label">j</span>
-                    </div>
-                    <span class="separator">:</span>
-                    <div class="time-block">
-                        <div class="counter-tile" id="tile-hours">
-                            <span class="time-value" id="countdown-hours">--</span>
-                        </div>
-                        <span class="time-label">h</span>
-                    </div>
-                    <span class="separator">:</span>
-                    <div class="time-block">
-                        <div class="counter-tile" id="tile-minutes">
-                            <span class="time-value" id="countdown-minutes">--</span>
-                        </div>
-                        <span class="time-label">m</span>
-                    </div>
-                    <span class="separator">:</span>
-                    <div class="time-block">
-                        <div class="counter-tile" id="tile-seconds">
-                            <span class="time-value" id="countdown-seconds">--</span>
-                        </div>
-                        <span class="time-label">s</span>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="header-right">
-             <a href="https://edurl.fr/caramel-tchap" target="_blank" class="help-btn" id="tchap-button" aria-label="Tchap">
-                <img src="images/tchap.png" alt="Tchap" class="tchap-icon">
+            <a href="https://edurl.fr/caramel-tchap" target="_blank" class="help-btn" id="tchap-button"
+                aria-label="Tchap">
+                <img src="images/tchap.webp" alt="Tchap" class="tchap-icon">
                 <span>Tchap</span>
             </a>
             <button class="help-btn" id="help-button" aria-label="Aide">
@@ -105,11 +72,34 @@
                     <li><a href="#" data-lang="el"><span class="fi fi-gr"></span>ελληνικά</a></li>
                 </ul>
             </div>
+            <div class="notification-center">
+                <button class="notification-btn" aria-label="Notifications" aria-expanded="false">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" data-count="0"></span>
+                    <span class="error-indicator"></span>
+                    <span data-key="notifications">Notifications</span>
+                </button>
+                <div class="notification-dropdown" role="menu" aria-labelledby="notification-btn">
+                    <div class="notification-dropdown__header">
+                        <span class="notification-dropdown__title" data-key="notifications">Notifications</span>
+                        <button class="notification-dropdown__clear" aria-label="Tout effacer">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="notification-list">
+                        <!-- Items dynamiques -->
+                    </div>
+                    <div class="notification-empty" data-key="no_notifications">
+                        Aucune notification
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
+    <div id="notification-toast-container"></div>
     <div id="emergency-notification-container"></div>
-    <div id="notification-container"></div>
+
 
     <div class="container">
         <div class="prompt-generator">
@@ -119,20 +109,22 @@
             </div>
 
             <div class="prompt-form-container">
-                <div id="simple-mode" class="mode-content active">
+
+                <!-- Champs communs aux deux modes -->
+                <div class="common-fields">
                     <input id="qui" type="text" placeholder="Qui êtes-vous ? (ex: Enseignant, formateur...)"
                         data-key="who_are_you" />
                     <input id="quoi" type="text"
-                        placeholder="Que souhaitez-vous aborder ? (ex: La nature d'un angle en 6e...)"
+                        placeholder="Que souhaitez-vous aborder ? (ex: La révolution française...)"
                         data-key="what_to_address" />
                 </div>
 
-                <div id="advanced-mode" class="mode-content">
-                    <input id="matiere" type="text" placeholder="Discipline (ex : Histoire)" data-key="discipline" />
-                    <input id="theme" type="text" placeholder="Thème (ex : La Révolution française)" data-key="theme" />
-                    <input id="niveau" type="text" placeholder="Niveau (ex : Seconde professionnelle)"
+                <!-- Champs supplémentaires du mode avancé -->
+                <div id="advanced-fields" class="advanced-fields">
+                    <input id="niveau" type="text" placeholder="Niveau (ex : Seconde en bac professionnel)"
                         data-key="level" />
-                    <input id="nombreQuestions" min="1" type="number" placeholder="Nombre d'éléments (ex : 10)"
+                    <input id="nombreQuestions" min="1" type="number"
+                        placeholder="Nombre de questions/éléments dans le module (ex : 5)"
                         data-key="number_of_elements" />
                     <div id="rag-section-container">
                         <div class="rag-section-header">
@@ -143,18 +135,31 @@
                             <div class="rag-top-row">
                                 <div class="unified-rag-area" id="unified-rag-area">
                                     <div class="floating-toolbar">
-                                        <button class="toolbar-btn" id="ocr-copy-btn" data-tooltip-key="copy_prompt"><i class="fas fa-copy"></i><span class="toolbar-btn-text" data-key="copy_prompt"></span></button>
-                                        <button class="toolbar-btn" id="ocr-fullscreen-btn" data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i><span class="toolbar-btn-text" data-key="fullscreen_prompt"></span></button>
-                                        <button class="toolbar-btn" id="ocr-lock-btn" data-tooltip-key="unlock_prompt"><i class="fas fa-lock-open"></i><span class="toolbar-btn-text" data-key="unlock_prompt"></span></button>
+                                        <button class="toolbar-btn" id="ocr-copy-btn" data-tooltip-key="copy_prompt"><i
+                                                class="fas fa-copy"></i><span class="toolbar-btn-text"
+                                                data-key="copy_prompt"></span></button>
+                                        <button class="toolbar-btn" id="ocr-fullscreen-btn"
+                                            data-tooltip-key="fullscreen_prompt"><i class="fas fa-expand"></i><span
+                                                class="toolbar-btn-text" data-key="fullscreen_prompt"></span></button>
+                                        <button class="toolbar-btn" id="ocr-lock-btn" data-tooltip-key="lock_prompt"><i
+                                                class="fas fa-lock-open"></i><span class="toolbar-btn-text"
+                                                data-key="lock_prompt"></span></button>
                                     </div>
-                                    <div id="ocr-output" contenteditable="true" data-placeholder="Copiez-collez votre texte ici..." data-placeholder-key="paste_your_text_here"></div>
+                                    <div id="ocr-output" contenteditable="true"
+                                        data-placeholder="Copiez-collez votre texte ici..."
+                                        data-placeholder-key="paste_your_text_here"></div>
                                     <div id="char-counter" class="char-counter">0 / 120000</div>
                                 </div>
                                 <div class="drag-drop-area">
                                     <div class="drag-drop-content">
                                         <i class="fas fa-cloud-upload-alt"></i>
-                                        <p><span data-key="drag_drop_text">Glissez-déposez un fichier PDF ici</span> <br><span data-key="or_text">ou</span> <label for="pdfUpload" class="file-upload-label" data-key="upload_pdf_btn">choisissez un fichier</label></p>
-                                        <input type="file" id="pdfUpload" accept="application/pdf">
+                                        <p><span data-key="drag_drop_text">Glissez-déposez un fichier ici (PDF, DOCX,
+                                                PPTX, ODT, ODP, PNG, JPEG)</span> <br><span data-key="or_text">ou</span>
+                                            <label for="pdfUpload" class="file-upload-label"
+                                                data-key="upload_pdf_btn">choisissez un fichier</label>
+                                        </p>
+                                        <input type="file" id="pdfUpload"
+                                            accept="application/pdf,.docx,.pptx,.odt,.odp,image/png,image/jpeg,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.presentation">
                                         <div id="ocr-status"></div>
                                     </div>
                                 </div>
@@ -177,7 +182,7 @@
             <button class="tab-link" data-tab="memory" data-key="tab_memory">Mémorisation & Découverte</button>
             <button class="tab-link" data-tab="elea" data-key="tab_elea">Éléa</button>
             <button class="tab-link" data-tab="h5p" data-key="tab_h5p">H5P</button>
-         </div>
+        </div>
 
         <div id="all" class="tab-content active">
             <div class="grid">
@@ -199,7 +204,7 @@
         <div id="h5p" class="tab-content">
             <div class="grid"></div>
         </div>
-        </div>
+    </div>
     </div>
 
     <!-- Le conteneur pour le contenu H5P sera injecté dynamiquement par le JS -->
@@ -210,10 +215,10 @@
     <div id="module-sidebar" class="sidebar">
         <!-- Le contenu du module sera injecté ici par le JS -->
     </div>
- 
+
 
     <!-- ================= Animation de chargement "Caramel" ==================== -->
-  
+
     <div id="caramel-animation-overlay">
         <div class="marmite">
             <div class="marmite-content"></div>
@@ -230,7 +235,7 @@
 
     <footer class="footer">
         <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank"><i
-                class="fas fa-info-circle"></i> Caramel v3.3.12</a>
+                class="fas fa-info-circle"></i> Caramel v4.0.0</a>
         <a href="mailto:gauthier.remande@ac-nantes.fr"><i class="fas fa-envelope"></i> Gauthier REMANDE</a>
         <a href="mailto:emmanuel.gaunard@ac-grenoble.fr"><i class="fas fa-envelope"></i> Emmanuel GAUNARD</a>
         <a href="https://forge.apps.education.fr/caramel/caramel"><i class="fas fa-code-branch"></i> Forge</a>
@@ -253,17 +258,72 @@
         </div>
     </div>
 
-    <!-- ================= Scripts ==================== -->
+    <!-- ================= Preview Modal ==================== -->
 
+    <div class="preview-modal-overlay" style="display: none;">
+        <div class="preview-modal" role="dialog" aria-modal="true" aria-labelledby="preview-modal-title">
+            <header class="preview-modal__header">
+                <div class="preview-modal__header-nav">
+                    <button class="preview-modal__nav-btn prev" aria-label="Précédent">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="preview-modal__nav-wrapper">
+                        <span class="preview-modal__nav-indicator">1 / 1</span>
+                        <div class="preview-modal__nav-dropdown">
+                            <!-- Items générés dynamiquement par JS -->
+                        </div>
+                    </div>
+                    <button class="preview-modal__nav-btn next" aria-label="Suivant">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="preview-modal__header-title-wrapper">
+                    <img class="preview-modal__icon" src="" alt="" style="display: none;">
+                    <h2 class="preview-modal__title" id="preview-modal-title"></h2>
+                </div>
+                <button class="preview-modal__close" aria-label="Fermer">
+                    <i class="fas fa-times"></i>
+                </button>
+            </header>
+
+            <div class="preview-modal__content">
+                <div class="preview-modal__preview">
+                    <p class="preview-modal__placeholder" data-key="preview_placeholder">
+                        Preview disponible prochainement
+                    </p>
+                </div>
+            </div>
+
+            <div class="preview-modal__warning" style="display: none;"></div>
+
+            <footer class="preview-modal__footer">
+                <div class="preview-modal__footer-left">
+                    <button class="preview-modal__edit" aria-label="Éditer">
+                        <i class="fas fa-pen"></i>
+                        <span data-key="edit_content">Éditer</span>
+                    </button>
+
+                    <div class="preview-modal__download-group">
+                        <span class="preview-modal__download-label" data-key="download">Télécharger</span>
+                        <span class="separator">:</span>
+                        <button class="preview-modal__download-btn">
+                            <span class="file-ext">FORMAT</span>
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="preview-modal__footer-right">
+                    <span class="preview-modal__compatibility-label" data-key="compatible_with">Compatible avec :</span>
+                    <div class="preview-modal__platforms-list"></div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- ================= Scripts ==================== -->
     <script type="module" src="js/main.js"></script>
-    <script src="js/modules/countdown.js"></script>
-    <script src="js/libs/jszip/jszip.min.js"></script>
-    <script src="js/libs/fflate/index.js"></script>
-    <script src="js/libs/tar-js/tar.bundle.js"></script>
-    <script src="js/libs/client-zip/worker.js"></script>
-    <script src="js/libs/pdf-js/pdf.min.js"></script>
-    <script src="js/libs/pdf-js/pdf.worker.min.js"></script>
-    <script src='js/libs/tesseract/tesseract.min.js'></script>
+    <!-- Bibliothèques chargées dynamiquement par lib-loader.js pour optimiser les performances -->
 
 </body>
 

@@ -1,0 +1,1003 @@
+/* =======================================================================
+   JSON EDITOR - Editeur JSON intelligent pour Caramel
+   Style Apple-like coherent avec le design existant
+   ======================================================================= */
+
+/* Container principal */
+.json-editor {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1d1d1f;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    overflow-y: auto;
+    /* Permettre le scroll interne */
+    flex: 1;
+    min-height: 0;
+    background: #f5f5f7;
+}
+
+/* Empecher la compression des elements de l'editeur */
+.json-editor>* {
+    flex-shrink: 0;
+}
+
+/* Header de l'editeur */
+.json-editor__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid #e5e5ea;
+    margin-bottom: 0.35rem;
+}
+
+.json-editor__title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1d1d1f;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.json-editor__title-icon {
+    color: #007AFF;
+}
+
+.json-editor__type-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    background: #e5e5ea;
+    border-radius: 6px;
+    color: #6e6e73;
+}
+
+/* Indicateur de modifications non sauvegardees */
+.json-editor__unsaved-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #FFF3CD;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: #856404;
+}
+
+.json-editor__unsaved-indicator i {
+    color: #f0ad4e;
+}
+
+/* =======================================================================
+   SECTIONS PLIABLES
+   ======================================================================= */
+
+.json-editor__section {
+    background: #ffffff;
+    border: 1px solid #e5e5ea;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 200ms ease;
+}
+
+.json-editor__section:hover {
+    border-color: #d2d2d7;
+}
+
+.json-editor__section-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    background: #fafafa;
+    border: none;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1d1d1f;
+    text-align: left;
+    transition: all 150ms ease;
+}
+
+.json-editor__section-header:hover {
+    background: #f0f0f2;
+}
+
+.json-editor__section--expanded .json-editor__section-header {
+    border-bottom-color: #e5e5ea;
+}
+
+.json-editor__section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.json-editor__section-title i {
+    color: #007AFF;
+    font-size: 0.9em;
+}
+
+.json-editor__section-count {
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.15rem 0.5rem;
+    background: #007AFF;
+    color: #ffffff;
+    border-radius: 10px;
+    margin-left: 0.5rem;
+}
+
+.json-editor__section-icon {
+    transition: transform 200ms ease;
+    color: #86868b;
+    font-size: 0.9em;
+}
+
+.json-editor__section--expanded .json-editor__section-icon {
+    transform: rotate(180deg);
+}
+
+.json-editor__section-content {
+    padding: 8px 10px 10px 10px;
+    display: none;
+    background: #ffffff;
+}
+
+.json-editor__section--expanded .json-editor__section-content {
+    display: block;
+}
+
+.json-editor__section-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+/* =======================================================================
+   CHAMPS DE FORMULAIRE
+   ======================================================================= */
+
+.json-editor__field {
+    margin-bottom: 0.5rem;
+}
+
+.json-editor__field:last-child {
+    margin-bottom: 0;
+}
+
+.json-editor__label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #6e6e73;
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.json-editor__label--required::after {
+    content: " *";
+    color: #FF3B30;
+}
+
+.json-editor__input,
+.json-editor__textarea,
+.json-editor__select {
+    width: 100%;
+    padding: 6px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    border: 1px solid #d2d2d7;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #1d1d1f;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.json-editor__input:focus,
+.json-editor__textarea:focus,
+.json-editor__select:focus {
+    outline: none;
+    border-color: #007AFF;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+}
+
+.json-editor__input::placeholder,
+.json-editor__textarea::placeholder {
+    color: #86868b;
+}
+
+.json-editor__textarea {
+    min-height: 50px;
+    resize: vertical;
+    line-height: 1.4;
+}
+
+.json-editor__textarea--large {
+    min-height: 70px;
+}
+
+.json-editor__input--error,
+.json-editor__textarea--error {
+    border-color: #FF3B30;
+}
+
+.json-editor__input--error:focus,
+.json-editor__textarea--error:focus {
+    box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.15);
+}
+
+.json-editor__error {
+    display: block;
+    font-size: 0.75rem;
+    color: #FF3B30;
+    margin-top: 0.3rem;
+}
+
+.json-editor__hint {
+    display: block;
+    font-size: 0.75rem;
+    color: #86868b;
+    margin-top: 0.3rem;
+}
+
+/* Select */
+.json-editor__select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2386868b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+}
+
+/* Checkbox */
+.json-editor__checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0;
+}
+
+.json-editor__checkbox {
+    width: 20px;
+    height: 20px;
+    accent-color: #007AFF;
+    cursor: pointer;
+}
+
+.json-editor__checkbox-label {
+    font-size: 14px;
+    color: #1d1d1f;
+    cursor: pointer;
+}
+
+/* Champs en ligne */
+.json-editor__field-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.json-editor__field-row>.json-editor__field {
+    flex: 1;
+}
+
+/* =======================================================================
+   ELEMENTS DE TABLEAU (cards, answers, pairs...)
+   ======================================================================= */
+
+.json-editor__array {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.json-editor__array-item {
+    background: #f5f5f7;
+    border: 1px solid #e5e5ea;
+    border-radius: 8px;
+    padding: 8px;
+    position: relative;
+    transition: all 150ms ease;
+}
+
+.json-editor__array-item:hover {
+    border-color: #d2d2d7;
+}
+
+.json-editor__array-item--dragging {
+    opacity: 0.5;
+    border-style: dashed;
+    border-color: #007AFF;
+}
+
+.json-editor__array-item--drag-over {
+    border-color: #007AFF;
+    background: rgba(0, 122, 255, 0.05);
+}
+
+.json-editor__array-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #e5e5ea;
+}
+
+.json-editor__array-item-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: #1d1d1f;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.json-editor__array-item-number {
+    width: 24px;
+    height: 24px;
+    background: #007AFF;
+    color: #ffffff;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.json-editor__array-item-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.json-editor__array-btn {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #6e6e73;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 150ms ease;
+    font-size: 12px;
+}
+
+.json-editor__array-btn:hover {
+    background: #e5e5ea;
+    color: #1d1d1f;
+}
+
+.json-editor__array-btn--danger:hover {
+    background: #FF3B30;
+    color: #ffffff;
+}
+
+.json-editor__array-btn--drag {
+    cursor: grab;
+}
+
+.json-editor__array-btn--drag:active {
+    cursor: grabbing;
+}
+
+/* Sous-section pliable dans un item */
+.json-editor__array-item-subsection {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #e5e5ea;
+}
+
+.json-editor__array-item-subsection-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #6e6e73;
+    cursor: pointer;
+    padding: 0.3rem 0;
+    margin-bottom: 0.5rem;
+}
+
+.json-editor__array-item-subsection-header:hover {
+    color: #1d1d1f;
+}
+
+.json-editor__array-item-subsection-header i {
+    font-size: 0.7em;
+    transition: transform 150ms ease;
+}
+
+.json-editor__array-item-subsection--expanded .json-editor__array-item-subsection-header i {
+    transform: rotate(90deg);
+}
+
+.json-editor__array-item-subsection-content {
+    display: none;
+    padding-left: 1rem;
+}
+
+.json-editor__array-item-subsection--expanded .json-editor__array-item-subsection-content {
+    display: block;
+}
+
+/* Bouton d'ajout */
+.json-editor__add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px;
+    border: 2px dashed #d2d2d7;
+    border-radius: 8px;
+    background: transparent;
+    color: #007AFF;
+    font-weight: 500;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 150ms ease;
+}
+
+.json-editor__add-btn:hover {
+    border-color: #007AFF;
+    background: rgba(0, 122, 255, 0.05);
+}
+
+.json-editor__add-btn i {
+    font-size: 0.9em;
+}
+
+/* =======================================================================
+   EDITEUR DE FEEDBACK RANGES
+   ======================================================================= */
+
+.json-editor__feedback-ranges {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.json-editor__feedback-range {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    padding: 10px;
+    background: #f5f5f7;
+    border: 1px solid #e5e5ea;
+    border-radius: 8px;
+}
+
+.json-editor__feedback-range-inputs {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.json-editor__feedback-range-input {
+    width: 50px;
+    text-align: center;
+    padding: 6px !important;
+    font-size: 13px !important;
+}
+
+.json-editor__feedback-range-separator {
+    color: #6e6e73;
+    font-weight: 500;
+}
+
+.json-editor__feedback-range-percent {
+    font-size: 12px;
+    color: #86868b;
+}
+
+.json-editor__feedback-range-text {
+    flex: 1;
+}
+
+.json-editor__feedback-range-text .json-editor__textarea {
+    min-height: 45px;
+}
+
+.json-editor__feedback-range-actions {
+    flex-shrink: 0;
+}
+
+/* Barre visuelle des tranches */
+.json-editor__feedback-bar {
+    height: 8px;
+    background: #e5e5ea;
+    border-radius: 4px;
+    display: flex;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.json-editor__feedback-bar-segment {
+    height: 100%;
+    transition: width 200ms ease;
+}
+
+.json-editor__feedback-bar-segment:nth-child(6n+1) {
+    background: #FF3B30;
+}
+
+.json-editor__feedback-bar-segment:nth-child(6n+2) {
+    background: #FF9500;
+}
+
+.json-editor__feedback-bar-segment:nth-child(6n+3) {
+    background: #FFCC00;
+}
+
+.json-editor__feedback-bar-segment:nth-child(6n+4) {
+    background: #34C759;
+}
+
+.json-editor__feedback-bar-segment:nth-child(6n+5) {
+    background: #007AFF;
+}
+
+.json-editor__feedback-bar-segment:nth-child(6n+6) {
+    background: #5856D6;
+}
+
+/* =======================================================================
+   BARRE D'ACTIONS (footer) - Cachée car les boutons sont dans le footer de la modale
+   ======================================================================= */
+
+.json-editor__actions {
+    display: none;
+}
+
+.json-editor__actions-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.json-editor__actions-right {
+    display: flex;
+    gap: 12px;
+}
+
+.json-editor__btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 150ms ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.json-editor__btn--primary {
+    background: #007AFF;
+    color: #ffffff;
+    border: none;
+}
+
+.json-editor__btn--primary:hover {
+    background: #006ee6;
+    transform: translateY(-1px);
+}
+
+.json-editor__btn--primary:active {
+    transform: translateY(0);
+}
+
+.json-editor__btn--primary:disabled {
+    background: #86868b;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.json-editor__btn--secondary {
+    background: #ffffff;
+    color: #1d1d1f;
+    border: 1px solid #d2d2d7;
+}
+
+.json-editor__btn--secondary:hover {
+    background: #f5f5f7;
+    border-color: #c7c7cc;
+}
+
+.json-editor__btn--danger {
+    background: #ffffff;
+    color: #FF3B30;
+    border: 1px solid #FF3B30;
+}
+
+.json-editor__btn--danger:hover {
+    background: #FF3B30;
+    color: #ffffff;
+}
+
+/* =======================================================================
+   OBJETS IMBRIQUES
+   ======================================================================= */
+
+.json-editor__nested {
+    background: #fafafa;
+    border: 1px solid #e5e5ea;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 0.5rem;
+}
+
+.json-editor__nested-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6e6e73;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* =======================================================================
+   LOADING & ETATS
+   ======================================================================= */
+
+.json-editor__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    color: #6e6e73;
+    gap: 1rem;
+}
+
+.json-editor__loading-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e5e5ea;
+    border-top-color: #007AFF;
+    border-radius: 50%;
+    animation: json-editor-spin 0.8s linear infinite;
+}
+
+@keyframes json-editor-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.json-editor__empty {
+    text-align: center;
+    padding: 2rem;
+    color: #86868b;
+}
+
+.json-editor__empty i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #d2d2d7;
+}
+
+/* =======================================================================
+   VALIDATION VISUELLE
+   ======================================================================= */
+
+.json-editor__validation-summary {
+    background: #FFEBEE;
+    border: 1px solid #FFCDD2;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 1rem;
+}
+
+.json-editor__validation-summary-title {
+    font-weight: 600;
+    color: #C62828;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.json-editor__validation-summary-list {
+    margin: 0;
+    padding-left: 1.5rem;
+    font-size: 0.85rem;
+    color: #B71C1C;
+}
+
+/* =======================================================================
+   BOUTONS FOOTER MODALE (mode édition)
+   ======================================================================= */
+
+.preview-modal__cancel-btn,
+.preview-modal__save-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 150ms ease;
+    font-family: inherit;
+}
+
+.preview-modal__cancel-btn {
+    background: #ffffff;
+    color: #1d1d1f;
+    border: 1px solid #d2d2d7;
+}
+
+.preview-modal__cancel-btn:hover {
+    background: #f5f5f7;
+    border-color: #c7c7cc;
+}
+
+.preview-modal__save-btn {
+    background: #007AFF;
+    color: #ffffff;
+    border: none;
+}
+
+.preview-modal__save-btn:hover {
+    background: #0056CC;
+    transform: translateY(-1px);
+}
+
+/* =======================================================================
+   RESPONSIVE
+   ======================================================================= */
+
+@media (max-width: 767px) {
+    .json-editor {
+        padding: 1rem;
+    }
+
+    .json-editor__field-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .json-editor__array-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .json-editor__array-item-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .json-editor__feedback-range {
+        flex-direction: column;
+    }
+
+    .json-editor__feedback-range-inputs {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .json-editor__actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .json-editor__actions-left,
+    .json-editor__actions-right {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .json-editor__btn {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+/* Desktop: colonnes pour les formulaires larges */
+@media (min-width: 1024px) {
+    .json-editor__section-content--two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+}
+
+/* =======================================================================
+   INTEGRATION AVEC LA MODALE DE PREVISUALISATION
+   ======================================================================= */
+
+/* Quand l'éditeur JSON est actif dans la modale, le conteneur preview s'adapte */
+.preview-modal__preview--editor {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    /* Empecher le scroll externe pour laisser l'editeur gerer le sien */
+    min-height: 0 !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+}
+
+/* Le content de la modale conserve son scroll naturel */
+.preview-modal__content--editor {
+    /* Garder overflow-y: auto du parent */
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    /* Eviter les doubles scrollbars */
+}
+
+/* =======================================================================
+   DARK MODE SUPPORT (si jamais implementé)
+   ======================================================================= */
+
+@media (prefers-color-scheme: dark) {
+    /* Preparer pour le dark mode futur */
+}
+
+/* =======================================================================
+   ANIMATIONS
+   ======================================================================= */
+
+.json-editor__section-content {
+    animation: json-editor-fadeIn 200ms ease;
+}
+
+@keyframes json-editor-fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.json-editor__array-item {
+    animation: json-editor-slideIn 200ms ease;
+}
+
+@keyframes json-editor-slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* =======================================================================
+   MODALE DE CONFIRMATION (3 BOUTONS)
+   ======================================================================= */
+
+.confirm-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 4000;
+    animation: confirm-fade-in 0.2s ease-out;
+}
+
+.confirm-modal {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    padding: 1.5rem;
+    animation: confirm-slide-up 0.2s ease-out;
+}
+
+.confirm-modal__header h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1d1d1f;
+}
+
+.confirm-modal__body p {
+    margin: 0 0 1.5rem 0;
+    font-size: 0.95rem;
+    color: #6e6e73;
+    line-height: 1.4;
+}
+
+.confirm-modal__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.confirm-modal__btn {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 150ms ease;
+    border: none;
+    font-family: inherit;
+}
+
+.confirm-modal__btn--primary {
+    background: #007AFF;
+    color: #ffffff;
+}
+
+.confirm-modal__btn--primary:hover {
+    background: #0056CC;
+}
+
+.confirm-modal__btn--secondary {
+    background: #f5f5f7;
+    color: #1d1d1f;
+}
+
+.confirm-modal__btn--secondary:hover {
+    background: #e5e5ea;
+}
+
+.confirm-modal__btn--danger {
+    background: #ffffff;
+    color: #FF3B30;
+    border: 1px solid #FF3B30;
+}
+
+.confirm-modal__btn--danger:hover {
+    background: #FF3B30;
+    color: #ffffff;
+}
+
+@keyframes confirm-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes confirm-slide-up {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

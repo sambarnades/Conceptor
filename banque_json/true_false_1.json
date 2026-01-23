@@ -1,0 +1,6 @@
+{
+"question": "Un **carré** est à la fois un *rectangle* et un *losange*.",
+"correct": "true",
+"feedbackOnCorrect": "Bravo ! C est tout a fait exact. Le carre possede les quatre angles droits du rectangle et les quatre cotes de meme longueur du losange. C est un quadrilatere tres special !",
+"feedbackOnWrong": "Dommage ! En fait, cette affirmation est vraie. Comme le carre a quatre angles droits, c est un rectangle particulier. Comme il a quatre cotes egaux, c est aussi un losange particulier."
+}

@@ -1,0 +1,41 @@
+{
+  "taskDescription": "Bonjour à toutes et à tous ! Dans cet exercice, vous allez explorer la **rupture politique** majeure de l'année 1789. \n\nRemettez ces paragraphes dans l'ordre pour reconstituer l'enchaînement des faits qui ont mené de la contestation royale à la naissance d'une France nouvelle. Fiez-vous à la **logique des événements** : de l'impasse politique à la création d'un nouveau cadre juridique.",
+  "paragraphs": [
+    "Le royaume traverse une crise financière profonde, poussant le roi à réunir les représentants des trois ordres pour trouver des solutions fiscales. Très vite, les députés du **Tiers-État** contestent le système de vote et revendiquent une meilleure représentation du peuple.",
+    "Devant le refus du monarque de réformer l'assemblée, ces députés décident de se séparer de l'autorité royale pour se proclamer **Assemblée nationale**. Ils s'engagent solennellement à ne pas se quitter avant d'avoir rédigé une règle commune pour le pays.",
+    "Face à cette démonstration de force politique et à l'agitation populaire qui gagne la capitale, les privilèges de la noblesse et du clergé sont abolis. Cette dynamique aboutit à la rédaction d'un texte fondateur proclamant la **liberté** et l'**égalité** de tous les citoyens.",
+    "Ce nouveau cadre juridique transforme radicalement l'organisation de la société en instaurant une **monarchie constitutionnelle**. Le pouvoir est désormais partagé, marquant la fin définitive de l'absolutisme et le début de la souveraineté de la Nation."
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "Il semble que la chronologie de la Révolution soit encore confuse. Relis bien le passage du statut de sujet à celui de citoyen dans ton manuel."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "C'est un début, mais la logique entre la crise politique et les répercussions juridiques n'est pas encore claire. Reprends les définitions de 'Souveraineté nationale'."
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "Tu as identifié quelques étapes clés. Pense bien au fait que l'action politique (l'Assemblée) précède toujours la création de la loi (la Constitution)."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail ! Tu as saisi l'essentiel du fil conducteur de l'année 1789 et la montée en puissance de la Nation face au Roi."
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Très bien ! Ta compréhension de la chaîne de causalité historique est solide. La structure du récit est presque parfaite."
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Excellent ! Tu maîtrises parfaitement la logique révolutionnaire. Tu as su lier la crise initiale à la transformation finale de l'État avec brio."
+    }
+  ]
+}

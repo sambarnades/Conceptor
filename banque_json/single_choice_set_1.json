@@ -1,0 +1,72 @@
+{
+  "choices": [
+    {
+      "question": "Quel événement du 20 juin 1789 marque la volonté des députés de ne pas se séparer avant d'avoir donné une Constitution à la France ?",
+      "answers": [
+        "Le serment du Jeu de paume",
+        "L'ouverture des États généraux",
+        "La prise de la Bastille",
+        "La nuit du 4 août"
+      ]
+    },
+    {
+      "question": "Quel texte fondamental, adopté en août 1789, proclame que « les hommes naissent et demeurent libres et égaux en droits » ?",
+      "answers": [
+        "La Déclaration des droits de l'homme et du citoyen",
+        "Le Code civil",
+        "La Constitution de l'an I",
+        "Le Cahier de doléances"
+      ]
+    },
+    {
+      "question": "En quelle année la Première République est-elle proclamée après la chute de la monarchie ?",
+      "answers": [
+        "1792",
+        "1789",
+        "1799",
+        "1804"
+      ]
+    },
+    {
+      "question": "Qui s'empare du pouvoir par un coup d'État en novembre 1799 (18 Brumaire) et met fin au Directoire ?",
+      "answers": [
+        "Napoléon Bonaparte",
+        "Maximilien de Robespierre",
+        "Louis XVI",
+        "Georges Danton"
+      ]
+    }
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "Il semble que les bases de la période soient encore fragiles. N'hésite pas à relire ta fiche de révision sur les grandes dates de 1789."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "Tu as quelques repères, mais attention aux confusions entre les différents acteurs de la Révolution. Continue tes efforts !"
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "C'est un début encourageant. Tu identifies certains moments clés, mais il faut encore consolider la chronologie des régimes politiques."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail ! Tu maîtrises les principaux événements qui ont marqué la fin de l'Ancien Régime et la naissance de la Nation."
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Très bon score ! Ta compréhension des enjeux révolutionnaires et du passage à l'Empire est solide. Bravo !"
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Excellent ! Tu as une parfaite maîtrise du programme d'histoire sur la Révolution et l'Empire. Tu es prêt pour le Brevet !"
+    }
+  ]
+}

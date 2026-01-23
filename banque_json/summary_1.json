@@ -1,0 +1,77 @@
+{
+  "intro": "Sélectionnez les affirmations correctes pour retracer les étapes majeures de la Révolution française et de l'Empire.",
+  "summaries": [
+    {
+      "summary": [
+        "En 1789, face à une crise majeure, Louis XVI convoque les États généraux, mais les députés du Tiers-État se proclament Assemblée nationale.",
+        "En 1789, Louis XVI décide d'abolir volontairement la monarchie pour instaurer une démocratie directe inspirée des États-Unis.",
+        "En 1789, le Clergé et la Noblesse rejoignent le peuple pour renverser le roi dès la séance d'ouverture des États généraux."
+      ],
+      "tip": "Rappelle-toi du blocage politique entre les trois ordres à Versailles."
+    },
+    {
+      "summary": [
+        "La Déclaration des Droits de l'Homme et du Citoyen du 26 août 1789 établit la souveraineté de la Nation et l'égalité des droits.",
+        "La Déclaration des Droits de l'Homme et du Citoyen interdit la propriété privée et impose la religion catholique pour tous.",
+        "La Déclaration des Droits de l'Homme et du Citoyen confirme les pouvoirs absolus du roi tout en accordant quelques libertés au peuple."
+      ],
+      "tip": "C'est la fin de la société d'ordres et de privilèges."
+    },
+    {
+      "summary": [
+        "La Ière République est proclamée en septembre 1792 après la prise des Tuileries et la chute définitive de la monarchie.",
+        "La Ière République est instaurée par Napoléon Bonaparte juste après son retour de la campagne d'Égypte en 1799.",
+        "La Ière République est un régime pacifique qui maintient Louis XVI au pouvoir en tant que simple citoyen d'honneur."
+      ],
+      "tip": "L'année 1792 marque une rupture radicale après la trahison perçue du roi."
+    },
+    {
+      "summary": [
+        "La période de la Terreur, dirigée par le Comité de Salut Public, vise à sauver la Révolution contre les menaces intérieures et extérieures.",
+        "La période de la Terreur est une alliance entre les monarchies européennes pour rétablir Louis XVI sur son trône.",
+        "La période de la Terreur est caractérisée par la suppression de la guillotine et le retour au calme dans tout le pays."
+      ],
+      "tip": "Pense aux mesures exceptionnelles prises par Robespierre."
+    },
+    {
+      "summary": [
+        "Napoléon Bonaparte s'empare du pouvoir par un coup d'État en 1799, puis fonde le Premier Empire en se faisant sacrer en 1804.",
+        "Napoléon Bonaparte est élu président au suffrage universel direct par tous les Français dès 1799.",
+        "Napoléon Bonaparte refuse le titre d'empereur pour rester fidèle aux principes démocratiques de la Révolution jusqu'en 1815."
+      ],
+      "tip": "Il passe du statut de Général à celui de Premier Consul, puis d'Empereur."
+    }
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "Il semble que les notions clés soient à revoir. Relis ton cours sur l'année 1789 et la chronologie des régimes."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "C'est un début, mais attention aux pièges chronologiques ! Ne confonds pas les différentes phases de la Révolution."
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "Des connaissances sont présentes, mais la distinction entre République et Empire reste fragile. Continue tes efforts."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail ! Tu as saisi les moments de rupture essentiels entre 1789 et 1804."
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Très bon score ! Tu maîtrises bien les transformations politiques majeures de cette période complexe."
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Excellent ! Tu as une vision parfaite de l'enchaînement des faits historiques, de la fin de l'Ancien Régime à l'Empire."
+    }
+  ]
+}

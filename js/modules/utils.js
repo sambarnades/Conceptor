@@ -1,158 +1,141 @@
 import { translations, translatePage } from './translation.js';
+import { addNotification } from './notifications.js';
 
 // =======================================================================
 // Fonctions utilitaires
 // =======================================================================
 export function cleanJsonInput(rawInput) {
-        let cleanedInput = rawInput.trim();
-        // Supprimer le ```json au début
-        if (cleanedInput.startsWith('```json')) {
-            cleanedInput = cleanedInput.substring(7);
-        }
-        // Supprimer le ``` à la fin
-        if (cleanedInput.endsWith('```')) {
-            cleanedInput = cleanedInput.slice(0, -3);
-        }
-        return cleanedInput.trim();
+    let cleanedInput = rawInput.trim();
+    // Supprimer le ```json au début
+    if (cleanedInput.startsWith('```json')) {
+        cleanedInput = cleanedInput.substring(7);
     }
+    // Supprimer le ``` à la fin
+    if (cleanedInput.endsWith('```')) {
+        cleanedInput = cleanedInput.slice(0, -3);
+    }
+    return cleanedInput.trim();
+}
 
 export function showHelpModal() {
-        // Supprimer une modale existante si elle existe
-        const existingModal = document.getElementById('help-modal');
-        if (existingModal) {
-            existingModal.remove();
-        }
+    // Supprimer une modale existante si elle existe
+    const existingModal = document.getElementById('help-modal');
+    if (existingModal) {
+        existingModal.remove();
+    }
 
-        // Créer les éléments de la modale
-        const modal = document.createElement('div');
-        modal.id = 'help-modal';
-        modal.className = 'help-modal';
+    // Créer les éléments de la modale
+    const modal = document.createElement('div');
+    modal.id = 'help-modal';
+    modal.className = 'help-modal';
 
-        const modalContent = document.createElement('div');
-        modalContent.className = 'help-modal-content';
+    const modalContent = document.createElement('div');
+    modalContent.className = 'help-modal-content';
 
-        const modalHeader = document.createElement('div');
-        modalHeader.className = 'help-modal-header';
-        modalHeader.innerHTML = `
+    const modalHeader = document.createElement('div');
+    modalHeader.className = 'help-modal-header';
+    modalHeader.innerHTML = `
             <h2>${translations.help_modal_title || 'Guide'}</h2>
             <span class="help-close-modal-btn" id="close-help-modal">&times;</span>
         `;
 
-        const modalBody = document.createElement('div');
-        modalBody.className = 'help-modal-body';
-        modalBody.innerHTML = translations.help_modal_content || '<p>Contenu d\'aide non disponible.</p>';
-        
-        // Traduire le contenu de la modale après son insertion
-        translatePage(modalBody);
+    const modalBody = document.createElement('div');
+    modalBody.className = 'help-modal-body';
+    modalBody.innerHTML = translations.help_modal_content || '<p>Contenu d\'aide non disponible.</p>';
 
-        // Assembler la modale
-        modalContent.appendChild(modalHeader);
-        modalContent.appendChild(modalBody);
-        modal.appendChild(modalContent);
-        document.body.appendChild(modal);
+    // Traduire le contenu de la modale après son insertion
+    translatePage(modalBody);
 
-        // Afficher la modale
-        modal.style.display = 'block';
+    // Assembler la modale
+    modalContent.appendChild(modalHeader);
+    modalContent.appendChild(modalBody);
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+
+    // Afficher la modale
+    modal.style.display = 'block';
 
 
-        // Les animations de section ont été supprimées pour améliorer les performances.
+    // Les animations de section ont été supprimées pour améliorer les performances.
 
-        // Gérer la fermeture
-        const closeModal = () => {
-            modal.style.display = 'none';
-            modal.remove(); // Nettoyer le DOM
-        };
+    // Gérer la fermeture
+    const closeModal = () => {
+        modal.style.display = 'none';
+        modal.remove(); // Nettoyer le DOM
+    };
 
-        document.getElementById('close-help-modal').addEventListener('click', closeModal);
-        window.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                closeModal();
+    document.getElementById('close-help-modal').addEventListener('click', closeModal);
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Logique de défilement automatique
+    const navLinks = modal.querySelectorAll('.help-nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = modal.querySelector(targetId);
+            if (targetElement) {
+                modalBody.scrollTo({
+                    top: targetElement.offsetTop - 70, // 70px pour compenser la barre de nav
+                    behavior: 'smooth'
+                });
             }
         });
-
-        // Logique de défilement automatique
-        const navLinks = modal.querySelectorAll('.help-nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = modal.querySelector(targetId);
-                if (targetElement) {
-                    modalBody.scrollTo({
-                        top: targetElement.offsetTop - 70, // 70px pour compenser la barre de nav
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-    }
+    });
+}
 
 
 export function copyToClipboard(textareaId, button) {
-        const textarea = document.getElementById(textareaId);
-        if (!textarea || !textarea.value.trim()) {
-            showNotification(translations.error_field_empty || 'Le champ est vide. Veuillez d\'abord générer un prompt.', 'error');
-            return;
-        }
-        navigator.clipboard.writeText(textarea.value).then(() => {
-            const originalHtml = button.innerHTML;
-            const textSpan = button.querySelector('span');
-            let originalText = '';
-
-            if (textSpan) {
-                originalText = textSpan.textContent;
-                textSpan.textContent = translations.success_copy || '✓ Copié !';
-            }
-            
-            button.classList.add('copied');
-            
-            setTimeout(() => {
-                if (textSpan) {
-                    textSpan.textContent = originalText;
-                }
-                button.classList.remove('copied');
-            }, 2000);
-        }).catch(err => {
-            console.error('Erreur de copie:', err);
-            showNotification(translations.error_copy_failed || 'La copie a échoué.', 'error');
-        });
+    const textarea = document.getElementById(textareaId);
+    if (!textarea || !textarea.value.trim()) {
+        showNotification(translations.error_field_empty || 'Le champ est vide. Veuillez d\'abord générer un prompt.', 'error');
+        return;
     }
+    navigator.clipboard.writeText(textarea.value).then(() => {
+        const originalHtml = button.innerHTML;
+        const textSpan = button.querySelector('span');
+        let originalText = '';
+
+        if (textSpan) {
+            originalText = textSpan.textContent;
+            textSpan.textContent = translations.success_copy || '✓ Copié !';
+        }
+
+        button.classList.add('copied');
+
+        setTimeout(() => {
+            if (textSpan) {
+                textSpan.textContent = originalText;
+            }
+            button.classList.remove('copied');
+        }, 2000);
+    }).catch(err => {
+        console.error('Erreur de copie:', err);
+        showNotification(translations.error_copy_failed || 'La copie a échoué.', 'error');
+    });
+}
 
 export function downloadFile(content, fileName, contentType) {
-       const a = document.createElement('a');
-       const file = new Blob([content], { type: contentType });
-       a.href = URL.createObjectURL(file);
-       a.download = fileName;
-       document.body.appendChild(a);
-       a.click();
-       document.body.removeChild(a);
-   }
+    const a = document.createElement('a');
+    const file = new Blob([content], { type: contentType });
+    a.href = URL.createObjectURL(file);
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
 
 export function showNotification(message, type = 'success') {
-        const container = document.getElementById('notification-container');
-        const notification = document.createElement('div');
-        notification.className = 'notification';
-        notification.textContent = message;
-
-        if (type === 'error') {
-            notification.classList.add('error');
-        }
-
-        container.appendChild(notification);
-
-        // Animate in
-        setTimeout(() => {
-            notification.classList.add('show');
-        }, 10);
-
-        // Animate out and remove
-        setTimeout(() => {
-            notification.classList.remove('show');
-            notification.addEventListener('transitionend', () => {
-                notification.remove();
-            });
-        }, 3000);
-    }
+    addNotification({
+        type: 'alert',
+        title: message,
+        status: type === 'error' ? 'error' : 'success'
+    });
+}
 
 
 // =======================================================================
@@ -163,8 +146,8 @@ export const formatTextToHtml = (text) => {
     // Gère les cas où le texte est déjà en HTML pour ne pas ajouter de balises en double
     if (text.trim().startsWith('<p>')) return text;
     return text
-        .replace(/\*\*(.*?)\*\*/g, '<em>$1</em>') // Italique
-        .replace(/\*(.*?)\*/g, '<strong>$1</strong>') // Gras
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Gras
+        .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italique
         .split('\n').map(p => `<p>${p.trim()}</p>`).join('');
 };
 
@@ -173,34 +156,33 @@ export const formatTextToHtml = (text) => {
 // 6.4. Fonctions d'échappement et UUID
 // =======================================================================
 export function escapeHtmlTags(str) {
-        return String(str)
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-    }
+    return String(str)
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
 
 export function generateUUID() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-    }
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
 
 export function setupEventListeners() {
     const modeTabs = document.querySelectorAll('.mode-tab');
-    const simpleMode = document.getElementById('simple-mode');
-    const advancedMode = document.getElementById('advanced-mode');
+    const advancedFields = document.getElementById('advanced-fields');
 
     modeTabs.forEach(tab => {
         tab.addEventListener('click', () => {
+            // Mise à jour des onglets actifs
             modeTabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
 
-            if (tab.dataset.mode === 'simple') {
-                simpleMode.classList.add('active');
-                advancedMode.classList.remove('active');
+            // Affiche/masque les champs avancés selon le mode
+            if (tab.dataset.mode === 'advanced') {
+                advancedFields.classList.add('active');
             } else {
-                simpleMode.classList.remove('active');
-                advancedMode.classList.add('active');
+                advancedFields.classList.remove('active');
             }
         });
     });
@@ -299,7 +281,7 @@ export function setupToolbarListeners(container) {
                 } else {
                     const overlay = document.createElement('div');
                     overlay.className = 'fullscreen-overlay';
-                    
+
                     const clonedToolbar = toolbar.cloneNode(true);
                     const clonedTextarea = textarea.cloneNode(true);
 
@@ -314,7 +296,7 @@ export function setupToolbarListeners(container) {
 
                     fullscreenModalContainer.appendChild(clonedToolbar);
                     fullscreenModalContainer.appendChild(clonedTextarea);
-                    
+
                     overlay.appendChild(fullscreenModalContainer);
                     document.body.appendChild(overlay);
 
@@ -324,7 +306,7 @@ export function setupToolbarListeners(container) {
                             fullscreenBtn.click();
                         });
                     }
-                    
+
                     [fullscreenBtn, clonedFullscreenBtn].forEach(btn => {
                         if (btn) {
                             const btnIcon = btn.querySelector('i');
@@ -343,7 +325,7 @@ export function setupToolbarListeners(container) {
                             translatePage(btn.parentElement);
                         }
                     });
-                    
+
                     const clonedLockBtn = overlay.querySelector('.lock-btn');
                     if (clonedLockBtn) {
                         clonedLockBtn.addEventListener('click', () => {
@@ -387,13 +369,13 @@ export function setupToolbarListeners(container) {
                             const icon = btn.querySelector('i');
                             const span = btn.querySelector('span');
                             if (isLocked) {
-                                icon.classList.remove('fa-unlock');
+                                icon.classList.remove('fa-lock-open');
                                 icon.classList.add('fa-lock');
                                 btn.setAttribute('data-tooltip-key', 'unlock_prompt');
                                 if (span) span.setAttribute('data-key', 'unlock_prompt');
                             } else {
                                 icon.classList.remove('fa-lock');
-                                icon.classList.add('fa-unlock');
+                                icon.classList.add('fa-lock-open');
                                 btn.setAttribute('data-tooltip-key', 'lock_prompt');
                                 if (span) span.setAttribute('data-key', 'lock_prompt');
                             }
@@ -420,4 +402,42 @@ export function getCaramelVersionFromFooter() {
 
     const versionMatch = versionText.match(/v?(\d+(?:\.\d+)*)/i);
     return versionMatch ? versionMatch[1] : null;
+}
+
+/**
+ * Synchronise les hauteurs des sections correspondantes entre les deux modal-panels.
+ * @param {HTMLElement} container - Le conteneur parent (.modal-main-content ou sidebar)
+ */
+export function syncPanelHeights(container) {
+    const panels = container.querySelectorAll('.modal-panel');
+    if (panels.length !== 2) return;
+
+    const [leftPanel, rightPanel] = panels;
+
+    // Sélecteurs des sections à synchroniser
+    const sections = [
+        '.modal-panel-header',
+        '.floating-toolbar',
+        '.modal-panel-footer'
+    ];
+
+    sections.forEach(selector => {
+        const leftSection = leftPanel.querySelector(selector);
+        const rightSection = rightPanel.querySelector(selector);
+
+        if (leftSection && rightSection) {
+            // Reset les hauteurs pour mesurer la hauteur naturelle
+            leftSection.style.minHeight = '';
+            rightSection.style.minHeight = '';
+
+            // Mesurer les hauteurs naturelles
+            const leftHeight = leftSection.offsetHeight;
+            const rightHeight = rightSection.offsetHeight;
+
+            // Appliquer la hauteur max aux deux
+            const maxHeight = Math.max(leftHeight, rightHeight);
+            leftSection.style.minHeight = `${maxHeight}px`;
+            rightSection.style.minHeight = `${maxHeight}px`;
+        }
+    });
 }

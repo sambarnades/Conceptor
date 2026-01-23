@@ -1,15 +1,14 @@
 ﻿const translations_ar = {
-    subtitle: "الإنشاء المُساعَد للموارد والأنشطة في Moodle وÉléa",
-    help_button: "مساعدة",
-    help_modal_title: "🚀 الدليل الكامل لـ Caramel للمعلمين",
-    help_modal_content: `
+  subtitle: "الإنشاء المُساعَد للموارد والأنشطة في Moodle وÉléa",
+  help_modal_title: "🚀 الدليل الكامل لـ Caramel للمعلمين",
+  help_modal_content: `
     <p>مرحبًا بك في <strong>Caramel</strong>! صُمِّم هذا الدليل ليرافقك خطوة بخطوة، حتى إن كنت مبتدئًا. هدفنا هو مساعدتك على إنشاء أنشطة تعليمية تفاعلية بطريقة بسيطة وفعّالة.</p>
     
     <div class="help-nav">
         <a href="#decrire" class="help-nav-link"><span class="help-step-number">1</span> الوصف</a>
         <a href="#choisir" class="help-nav-link"><span class="help-step-number">2</span> الاختيار</a>
         <a href="#generer" class="help-nav-link"><span class="help-step-number">3</span> التوليد</a>
-        <a href="#integrer" class="help-nav-link"><span class="help-step-number">4</span> تنزيل</a>
+        <a href="#integrer" class="help-nav-link"><span class="help-step-number">4</span> عرض وتحميل</a>
         <a href="#communaute" class="help-nav-link"><i class="fas fa-users"></i> المجتمع</a>
     </div>
 
@@ -43,8 +42,8 @@
                 <li><strong>معلومات إضافية:</strong> مساحة لإضافة تعليمات خاصة أو قيود أو أي تفاصيل ذات صلة.</li>
             </ul>
             <p><span class="help-badge-feature"><i class="fas fa-file-alt"></i> تفعيل قراءة المستند</span><br>
-            يتيح لك هذا الخيار القوي الاعتماد في التوليد على محتوى توفّره أنت. يمكنك إما <strong>نسخ/لصق نص</strong> أو <strong>رفع ملف PDF</strong>.
-            <br><strong><i class="fas fa-lock"></i> الخصوصية:</strong> لا تقلق، تتم معالجة مستندك <strong>محليًا بالكامل على جهازك</strong>. لا تُرسل أي بيانات إلى الإنترنت.</p>
+            يتيح لك هذا الخيار القوي الاعتماد في التوليد على محتوى توفّره أنت. يمكنك إما <strong>نسخ/لصق نص</strong> أو <strong>رفع مستند (PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG)</strong>.
+            <br><strong><i class="fas fa-lock"></i> الخصوصية :</strong> كن مطمئناً، تتم معالجة مستندك <strong>بالكامل محلياً على جهاز الكمبيوتر الخاص بك</strong>. لا يتم إرسال أي بيانات إلى الإنترنت.</p>
         </div>
     </div>
 
@@ -107,8 +106,38 @@
     </div>
 
     <div id="integrer" class="help-section">
-        <h4><span class="help-step-number">4</span> تنزيل نشاطك ودمجه</h4>
-        <p>بعد أن يصبح المحتوى جاهزًا، انقر زر التنزيل (مثل: <button class="help-btn-example-download">إنشاء H5P</button>). هكذا تدمج الملفات في Éléa/Moodle:</p>
+        <h4><span class="help-step-number">4</span> العرض والتحميل</h4>
+        <p>بمجرد إنشاء المحتوى، يمكنك عرضه واختباره وتحميله بتنسيقات مختلفة.</p>
+
+        <details class="help-subsection-details">
+            <summary><i class="fas fa-eye"></i> العرض والاختبار</summary>
+            <p>خذ وقتك للتحقق من نشاطك في نافذة العرض:</p>
+            <ul>
+                <li><strong>قم بالتمرير</strong> عبر المحتوى لمراجعة كل شيء.</li>
+                <li><strong>اختبر</strong> النشاط كطالب (انقر، اسحب، اكتب...).</li>
+                <li>بالنسبة لمحتوى <strong>Éléa/Magistère/Moodle</strong>، يظهر لك المحاكي العرض الحقيقي.</li>
+            </ul>
+            <figure class="help-figure" style="text-align:center; margin: 1rem 0;">
+                <img src="images/wiki/modale_visualisation.PNG" alt="نافذة العرض" style="max-width:90%; height:auto; border-radius:8px; border:1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <figcaption><em>اختبر النشاط مباشرة في المحاكي.</em></figcaption>
+            </figure>
+        </details>
+
+        <details class="help-subsection-details">
+            <summary><i class="fas fa-download"></i> التحميل (التنسيقات والصادرات)</summary>
+            <p>لديك عدة خيارات لاستعادة عملك:</p>
+            <ul>
+                <li><strong>التنسيق التفاعلي (الزر الرئيسي):</strong> لاستعادة الملف الرقمي (مثل: .h5p، .mbz) لوضعه على منصتك.</li>
+                <li><strong>تنسيقات أخرى (القائمة المنسدلة):</strong> انقر على السهم للتحميل بتنسيق <strong>PDF أو DOCX أو ODT</strong> (مفيد للطباعة أو الأرشفة).</li>
+            </ul>
+            <figure class="help-figure" style="text-align:center; margin: 1rem 0;">
+                <img src="images/wiki/modale_menu_export.PNG" alt="قائمة التصدير" style="max-width:90%; height:auto; border-radius:8px; border:1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <figcaption><em>افتح القائمة للوصول إلى صادرات PDF و DOCX...</em></figcaption>
+            </figure>
+        </details>
+
+        <h5><i class="fas fa-file-import"></i> الدمج في Éléa/Magistère</h5>
+        <p>بمجرد تحميل الملف، إليك كيفية إضافته إلى مقررك:</p>
         
         <div class="import-guide">
             <details class="import-details" open>
@@ -118,7 +147,7 @@
                         <li>
                             <strong>طريقة بسيطة:</strong> فعِّل وضع التحرير في المقرر ثم اسحب ملف .h5p وأسقطه مباشرة في القسم المطلوب. اختر "Ajouter une activité H5P" ثم أنهِ بالزر "DÉPOSER".
                             <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
-                                <img src="images/tutoriels/elea-ajouter-h5p.png" alt="إضافة نشاط H5P بسرعة" style="max-width:360px;width:75%;height:auto;">
+                                <img src="images/tutoriels/elea-ajouter-h5p.webp" alt="إضافة نشاط H5P بسرعة" style="max-width:360px;width:75%;height:auto;">
                                 <figcaption><em>أضف نشاط H5P ثم اضغط DÉPOSER.</em></figcaption>
                             </figure>
                         </li>
@@ -135,11 +164,11 @@
                             <p>افتح قائمة التحرير الموجودة على يمين الشاشة. إذا كانت مطوية فاستخدم السهم الصغير لعرضها.</p>
                             <div class="import-step-images" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;">
                                 <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
-                                    <img src="images/tutoriels/elea-import-parcours-1.png" alt="قائمة التحرير في العمود الأيمن" style="width:75%;height:auto;">
+                                    <img src="images/tutoriels/elea-import-parcours-1.webp" alt="قائمة التحرير في العمود الأيمن" style="width:75%;height:auto;">
                                     <figcaption><em>قائمة التحرير مفتوحة.</em></figcaption>
                                 </figure>
                                 <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
-                                    <img src="images/tutoriels/elea-import-parcours-2.png" alt="سهم توسيع لوحة التحرير" style="width:75%;height:auto;">
+                                    <img src="images/tutoriels/elea-import-parcours-2.webp" alt="سهم توسيع لوحة التحرير" style="width:75%;height:auto;">
                                     <figcaption><em>استخدم السهم إذا كان اللوح مخفياً.</em></figcaption>
                                 </figure>
                             </div>
@@ -147,14 +176,14 @@
                         <li>
                             <p>انقر على "IMPORT/EXPORT" ثم اختر "Importer un parcours" من القائمة الفرعية.</p>
                             <figure class="import-step-figure" style="text-align:center;">
-                                <img src="images/tutoriels/elea-import-parcours-3.png" alt="زر IMPORT/EXPORT في Moodle/Éléa" style="max-width:360px;width:75%;height:auto;">
+                                <img src="images/tutoriels/elea-import-parcours-3.webp" alt="زر IMPORT/EXPORT في Moodle/Éléa" style="max-width:360px;width:75%;height:auto;">
                                 <figcaption><em>اختر Importer un parcours.</em></figcaption>
                             </figure>
                         </li>
                         <li>
                             اسحب ملف .mbz وأسقطه في منطقة الاستيراد ثم اضغط "IMPORTER".
                             <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
-                                <img src="images/tutoriels/elea-import-parcours-4.png" alt="منطقة إسقاط ملف MBZ" style="max-width:460px;width:75%;height:auto;">
+                                <img src="images/tutoriels/elea-import-parcours-4.webp" alt="منطقة إسقاط ملف MBZ" style="max-width:460px;width:75%;height:auto;">
                                 <figcaption><em>أفلت الملف ثم أكد عبر IMPORTER.</em></figcaption>
                             </figure>
                         </li>
@@ -173,21 +202,21 @@
                         <li>
                             <p>بمجرد دخولك إلى المسرد، انقر على زر "IMPORTER DES ARTICLES".</p>
                             <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
-                                <img src="images/tutoriels/elea-glossaire-import-1.png" alt="زر IMPORTER DES ARTICLES في المسرد" style="max-width:460px;width:75%;height:auto;">
+                                <img src="images/tutoriels/elea-glossaire-import-1.webp" alt="زر IMPORTER DES ARTICLES في المسرد" style="max-width:460px;width:75%;height:auto;">
                                 <figcaption><em>انقر على IMPORTER DES ARTICLES.</em></figcaption>
                             </figure>
                         </li>
                         <li>
                             <p>اسحب وأفلت ملف .xml في منطقة الاستيراد وانقر على زر "ENVOYER".</p>
                             <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
-                                <img src="images/tutoriels/elea-glossaire-import-2.png" alt="منطقة الإفلات لملف XML الخاص بالمسرد" style="max-width:460px;width:75%;height:auto;">
+                                <img src="images/tutoriels/elea-glossaire-import-2.webp" alt="منطقة الإفلات لملف XML الخاص بالمسرد" style="max-width:460px;width:75%;height:auto;">
                                 <figcaption><em>أفلت الملف وتحقق باستخدام ENVOYER.</em></figcaption>
                             </figure>
                         </li>
                         <li>
                             <p>تم اكتشاف مقالاتك. أنهِ العملية بالنقر على زر "CONTINUER".</p>
                             <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
-                                <img src="images/tutoriels/elea-glossaire-import-3.png" alt="تأكيد اكتشاف المقالات" style="max-width:460px;width:75%;height:auto;">
+                                <img src="images/tutoriels/elea-glossaire-import-3.webp" alt="تأكيد اكتشاف المقالات" style="max-width:460px;width:75%;height:auto;">
                                 <figcaption><em>انقر على CONTINUER لإنهاء الاستيراد.</em></figcaption>
                             </figure>
                         </li>
@@ -206,7 +235,7 @@
                         <li>
                             <p>في القائمة المنسدلة حيث يتم عرض "الأسئلة"، حدد "استيراد".</p>
                             <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
-                                <img src="images/tutoriels/elea-importation-banquequestions-1.png" alt="تحديد زر الاستيراد في بنك الأسئلة" style="max-width:460px;width:75%;height:auto;">
+                                <img src="images/tutoriels/elea-importation-banquequestions-1.webp" alt="تحديد زر الاستيراد في بنك الأسئلة" style="max-width:460px;width:75%;height:auto;">
                                 <figcaption><em>حدد استيراد من القائمة المنسدلة.</em></figcaption>
                             </figure>
                         </li>
@@ -217,7 +246,7 @@
                                 <li><strong>تنسيق GIFT</strong>: بديل أبسط ولكنه محدود في أنواع الأسئلة.</li>
                             </ul>
                             <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
-                                <img src="images/tutoriels/elea-importation-banquequestions-2.png" alt="الاختيار بين تنسيق Moodle XML وتنسيق GIFT" style="max-width:460px;width:75%;height:auto;">
+                                <img src="images/tutoriels/elea-importation-banquequestions-2.webp" alt="الاختيار بين تنسيق Moodle XML وتنسيق GIFT" style="max-width:460px;width:75%;height:auto;">
                                 <figcaption><em>حدد التنسيق المناسب لملفك.</em></figcaption>
                             </figure>
                         </li>
@@ -253,1577 +282,1922 @@
         </ul>
     </div>
     `,
-    fast_mode: "الوضع السريع",
-    guided_mode: "الوضع المتقدم",
-    who_are_you: "من أنت؟ (مثال: معلّم، مدرّب...)",
-    what_to_address: "ما الذي ترغب في معالجته؟ (مثال: طبيعة الزاوية في الصف السادس...)",
-    discipline: "المادة (مثال: التاريخ)",
-    theme: "الموضوع (مثال: الثورة الفرنسية)",
-    level: "المستوى (مثال: الصف المهني الثاني)",
-    number_of_elements: "عدد العناصر (مثال: 10)",
-    additional_info: "معلومات إضافية...",
-    generate_prompts: "توليد المطالبات",
-    h5p_tab: "H5P",
-    moodle_tab: "وحدات Éléa/Moodle",
 
-    // General Context (Advanced Mode)
-    prompt_expert_intro: "أنت أستاذ خبير في التربية ستُكيِّف النبرة والمفردات وفق محتوى البرامج الحالية ومستوى المتعلمين لمادّة ",
-    prompt_context_title: "**السياق:**",
-    prompt_subject: "- **المادة:**",
-    prompt_student_level: "- **مستوى المتعلمين:**",
-    prompt_theme: "- **الموضوع:**",
-    prompt_number_of_elements: "- **عدد العناصر:**",
-    prompt_additional_info: "- **معلومات إضافية:**",
+  // ============================================================================
+  // الواجهة الرئيسية
+  // ============================================================================
+  language: "اللغة",
+  tutorial: "دليل تعليمي",
+  notifications: "الإشعارات",
+  fast_mode: "الوضع السريع",
+  guided_mode: "الوضع المتقدم",
+  who_are_you: "من أنت؟ (مثال: معلم، مدرب...)",
+  what_to_address: "ما الموضوع الذي تريد تناوله؟ (مثال: الثورة الفرنسية...)",
+  level: "لأي مستوى (مثال: الصف الأول الثانوي المهني)",
+  number_of_elements: "عدد الأسئلة/العناصر في الوحدة (مثال: 5)",
 
-    // General Context (Simple Mode)
-    prompt_simple_intro_part1: "أنا **",
-    prompt_simple_intro_part2: "** وأرغب في **",
-    prompt_language_instruction: "يجب أن يكون المحتوى المُولَّد باللغة العربية، ما لم تُحدَّد لغة أخرى في الطلب.",
-    prompt_code_block_instruction: "يجب عليك إنشاء النتيجة في كتلة تعليمة برمجية.",
+  // ============================================================================
+  // معالجة المستندات (RAG/OCR)
+  // ============================================================================
+  rag_title: "إرفاق مستندات (اختياري)",
+  rag_note: "إذا كنت تريد أن يعمل الذكاء الاصطناعي حصرياً بناءً على مستنداتك، فقم بلصق نصك أو وضع ملفاتك هنا. خلاف ذلك، اترك هذه المنطقة فارغة للسماح للذكاء الاصطناعي بالبحث عن المعلومات بنفسه.",
+  error_duplicate_file: "تمت إضافة هذا الملف بالفعل.",
+  error_unsupported_format: "تنسيق غير مدعوم. التنسيقات المقبولة: ",
+  ocr_scanned_page: "تم اكتشاف صفحة ممسوحة ضوئياً، جاري التعرف الضوئي (OCR)",
+  ocr_image_processing: "التعرف الضوئي (OCR) على الصورة",
+  ocr_initializing: "جاري تهيئة OCR...",
+  ocr_loading_language: "جاري تحميل نموذج اللغة...",
+  ocr_preparing: "جاري تحضير التحليل...",
+  docx_processing: "جاري استخراج نص DOCX...",
+  pptx_processing: "جاري استخراج نص PPTX...",
+  odt_processing: "جاري استخراج نص ODT...",
+  odp_processing: "جاري استخراج نص ODP...",
+  file_loading: "جاري تحميل الملف...",
+  extraction_success: "تمت معالجة المستند بنجاح.",
+  extraction_error: "حدث خطأ أثناء المعالجة.",
+  error_fullscreen: "فشل وضع ملء الشاشة:",
+  lock_text: "قفل",
+  unlock_text: "إلغاء القفل",
+  drag_drop_text: "قم بسحب وإفلات مستند هنا (PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG)",
+  or_text: "أو",
+  upload_pdf_btn: "اختر ملفاً",
+  paste_your_text_here: "انسخ وانصق نصك هنا...",
+  rag_tags_tuto: "تجدون أدناه المستندات التي تم رفعها. انقر على الدائرة الملونة لتخصيص تمييز كل مستند.",
 
-    // Timeline Prompt
-    timeline_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Timeline\".",
-    timeline_prompt_mission: "**مهمتك:**",
-    timeline_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط H5P من نوع Timeline. يجب أن يكون JSON قابلًا للاستخدام مباشرة.",
-    timeline_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
-    timeline_prompt_json_structure_main_object: "يجب أن يحتوي الكائن الرئيس على المفتاح \"timeline\". ويجب أن يتضمّن هذا الكائن:",
-    timeline_prompt_headline: "`headline`: عنوان عام للخط الزمني.",
-    timeline_prompt_text: "`text`: فقرة تمهيدية قصيرة.",
-    timeline_prompt_asset: "`asset`: كائن لصورة الغلاف يحتوي `media` (رابط)، و`caption` (توضيح)، و`credit` (المصدر).",
-    timeline_prompt_date_array: "`date`: مصفوفة تضم ${nombreQuestions} كائنات، يمثّل كلٌّ منها حدثًا.",
-    timeline_prompt_era_array: "`era`: مصفوفة كائنات لتحديد فترات تغطّي عدة أحداث.",
-    timeline_prompt_content_rules_title: "**قواعد المحتوى:**",
-    timeline_prompt_rule1: "1. يجب أن يحتوي كل حدث في مصفوفة `date` على:",
-    timeline_prompt_rule1_startDate: "-   `startDate` و `endDate`: تاريخ بالصيغة \"AAAA,MM,JJ\" أو \"AAAA\". استخدم `endDate` لتحديد فترة زمنية.",
-    timeline_prompt_rule1_headline: "-   `headline`: عنوان الحدث.",
-    timeline_prompt_rule1_text: "-   `text`: وصف للنص. استخدم `*كلمة*` للغامق، `**كلمة**` للمائل، و`\\n` لأسطر جديدة.",
-    timeline_prompt_rule1_asset: "-   `asset`: كائن اختياري لصورة توضّح الحدث.",
-    timeline_prompt_rule1_tag: "- `tag`: كلمة رئيسية تميز الفترة (مثال: 'تاريخ', 'علوم').",
-    timeline_prompt_rule2: "2. لكل `asset`، ابحث بنشاط عن صورة ذات صلة وخالية من الحقوق (مثل Wikimedia Commons). يجب أن يكون الرابط في `media` مباشرًا وصالحًا. اذكر المصدر والترخيص في `credit`. إذا لم يتم العثور على صورة مناسبة، فاحذف كائن `asset` بالكامل.",
-    timeline_prompt_rule3: "3. لكل فترة (`era`)، أضف حقل `text` مع وصف موجز و `tag`.",
-    timeline_prompt_example_json_title: "**مثال على بنية JSON:**",
-    timeline_prompt_example: `\`\`\`json
+  // ============================================================================
+  // التبويبات
+  // ============================================================================
+  tab_all: "الكل",
+  tab_quiz: "مسابقات واختبارات",
+  tab_text: "التعامل مع النصوص",
+  tab_memory: "حفظ واكتشاف",
+  tab_elea: "Éléa",
+  tab_h5p: "H5P",
+  tab_moodle: "Magistère",
+
+  // ============================================================================
+  // تفاصيل أنشطة H5P
+  // ============================================================================
+  h5p_timeline_name: "خط زمني",
+  h5p_timeline_description: "أنشئ خطاً زمنياً تفاعلياً لعرض تسلسل الأحداث.",
+  h5p_flashcards_name: "بطاقات تعليمية",
+  h5p_flashcards_description: "أنشئ بطاقات ذات وجهين للمساعدة في حفظ المصطلحات والتعاريف.",
+  h5p_quiz_set_name: "مسابقة مختلطة",
+  h5p_quiz_set_description: "قم بتكوين سلسلة من الأسئلة المتنوعة (اختيارات، سحب وإفلات، إلخ) لتقييم المعرفة.",
+  h5p_quiz_set_qcm_name: "مسابقة اختيار من متعدد",
+  h5p_quiz_set_qcm_description: "أنشئ مسابقة تتكون حصرياً من أسئلة اختيار من متعدد.",
+  h5p_quiz_set_vf_name: "مسابقة صح/خطأ",
+  h5p_quiz_set_vf_description: "أنشئ مسابقة تتكون حصرياً من أسئلة من نوع صح أو خطأ.",
+  h5p_glossary_name: "مسرد مصطلحات",
+  h5p_glossary_description: "أنشئ مسرداً أو أسئلة شائعة على شكل قوائم قابلة للطي.",
+  h5p_crossword_name: "كلمات متقاطعة",
+  h5p_crossword_description: "أنشئ شبكة كلمات متقاطعة من قائمة كلمات وتعاريف.",
+  h5p_essay_name: "كتابة موضوع",
+  h5p_essay_description: "اقترح موضوعاً للكتابة وحدد كلمات مفتاحية للتصحيح التلقائي.",
+  h5p_summary_name: "ملخص",
+  h5p_summary_description: "على الطلاب إعادة بناء ملخص صحيح باختيار الجمل المناسبة.",
+  h5p_drag_the_words_name: "سحب الكلمات",
+  h5p_drag_the_words_description: "أنشئ نصاً بفرغات حيث يجب على الطلاب سحب الكلمات المفقودة.",
+  h5p_fill_in_the_blanks_name: "نص بفرغات",
+  h5p_fill_in_the_blanks_description: "يجب على الطلاب ملء الكلمات المفقودة في النص مباشرة باستخدام لوحة المفاتيح.",
+  h5p_mark_the_words_name: "تظليل الكلمات",
+  h5p_mark_the_words_description: "اطلب من الطلاب تظليل كلمات معينة في فقرة.",
+  h5p_true_false_name: "صح/خطأ",
+  h5p_true_false_description: "أنشئ سؤالاً بسيطاً <strong style='color: red;'>واحداً</strong> بإجابة ثنائية: صح أو خطأ.",
+  h5p_multiple_choice_name: "خيارات متعددة",
+  h5p_multiple_choice_description: "أنشئ سؤالاً <strong style='color: red;'>واحداً</strong> متعدد الخيارات مع إجابة صحيحة واحدة أو أكثر.",
+  h5p_find_the_words_name: "البحث عن الكلمات",
+  h5p_find_the_words_description: "أنشئ شبكة حروف حيث يجب على الطلاب العثور على الكلمات.",
+  h5p_sort_the_paragraphs_name: "ترتيب الفقرات",
+  h5p_sort_the_paragraphs_description: "أنشئ مجموعة من الفقرات التي يجب على الطلاب إعادة ترتيبها بشكل صحيح.",
+  h5p_single_choice_set_name: "سلسلة خيارات وحيدة",
+  h5p_single_choice_set_description: "أنشئ سلسلة أسئلة حيث لكل سؤال إجابة صحيحة واحدة فقط.",
+  h5p_dialog_cards_name: "بطاقات حوارية",
+  h5p_dialog_cards_description: "أنشئ بطاقات تفاعلية ذات وجهين تحتوي على نص وربما صور.",
+  h5p_complex_fill_the_blanks_name: "نص بفرغات معقد",
+  h5p_complex_fill_the_blanks_description: "أنشئ نصاً بفرغات متقدماً مع تغذية راجعة محددة لكل خطأ.",
+  h5p_chart_name: "رسم بياني",
+  h5p_chart_description: "أنشئ رسماً بيانياً دائرياً أو بالأعمدة لتصور البيانات.",
+
+  // ============================================================================
+  // تفاصيل أنشطة ÉLÉA/MOODLE
+  // ============================================================================
+  moodle_xml_name: "اختبار",
+  moodle_xml_description: "أنشئ بنك أسئلة للاستيراد مباشرة في نشاط 'اختبار' (بتنسيق xml أو gift).",
+  moodle_xml_help: "لإضافة ملف XML في نشاط 'اختبار' على Moodle، ابدأ بإنشاء النشاط. ثم افتح قائمة <strong>المزيد</strong> واذهب إلى <strong>بنك الأسئلة</strong>. في هذه القائمة، انقر على <strong>استيراد</strong>، اختر تنسيق <strong>XML Moodle</strong>، ثم حدد ملفك وقم بالتأكيد.",
+  moodle_gift_name: "تنسيق GIFT",
+  moodle_gift_description: "أنشئ أسئلة بتنسيق GIFT، وهي طريقة بسيطة لاستيراد الأسئلة إلى Moodle.",
+  moodle_millionnaire_name: "من سيربح المليون",
+  moodle_millionnaire_description: "أنشئ نشاطاً فريداً من نوع 'من سيربح المليون' يتكون من 6 أسئلة متدرجة الصعوبة.",
+  moodle_appariement_name: "توصيل",
+  moodle_appariement_description: "أنشئ نشاط توصيل يتكون من 10 أسئلة.",
+  moodle_qcm_name: "QCM (اختيار من متعدد)",
+  moodle_qcm_description: "أنشئ نشاط اختيار من متعدد بسيط.",
+  moodle_glossaire_xml_name: "مسرد (XML)",
+  moodle_glossaire_xml_description: "أنشئ مسرداً جاهزاً للاستيراد بتنسيق XML.",
+  glossaire_success_generation: "تم إنشاء الملف {fileName} بنجاح!",
+  glossaire_error_creation: "خطأ أثناء إنشاء ملف XML للمسرد:",
+  glossaire_error_invalid_json: "يجب أن يحتوي ملف JSON على اسم ('name') ومصفوفة إدخالات ('entries').",
+  elea_page_name: "صفحة",
+  elea_page_description: "أنشئ صفحة محتوى Éléa منسقة بصرياً.",
+
+  // ============================================================================
+  // نافذة الإنشاء
+  // ============================================================================
+  get_prompt_step: "1/2 الحصول على الأمر للنسخ",
+  create_file_step: "2/2 إنشاء الملف من JSON",
+  generate_one_click: "إنشاء بنقرة واحدة",
+  simple_mode: "بسيط",
+  advanced_mode: "موجه",
+  prompt_for_ia: "أمر الذكاء الاصطناعي (Prompt)",
+  copy_prompt: "نسخ الأمر",
+  fullscreen_prompt: "ملء الشاشة",
+  exit_fullscreen_prompt: "الخروج من ملء الشاشة",
+  lock_prompt: "قفل",
+  unlock_prompt: "إلغاء القفل",
+  go_duck: "نسخ والذهاب إلى Duck.ai",
+  go_mistral: "نسخ والذهاب إلى Le chat",
+  create_h5p_file: "إنشاء ملف H5P",
+  integrate_h5p_libraries: "دمج مكتبات H5P:",
+  paste_ia_result: "قم بلصق نتيجة الذكاء الاصطناعي في المنطقة أدناه لإنشاء وحدتك.",
+  generate_h5p: "إنشاء H5P",
+  create_xml_file: "إنشاء ملف XML",
+  paste_ia_result_xml: "قم بلصق ملف XML الذي أنشأه الذكاء الاصطناعي أدناه.",
+  generate_xml_file: "إنشاء ملف XML",
+  export_mbz: "تنسيق MBZ",
+  export_gift: "تنسيق GIFT",
+  export_xml: "تنسيق XML",
+  export_html: "تنسيق HTML",
+  export_docx: "تنسيق DOCX",
+  export_odt: "تنسيق ODT",
+  export_pdf: "صيغة PDF",
+  export_error: "خطأ في التصدير",
+  create_mbz_file_appariement: "إنشاء ملف توصيل (.mbz)",
+  paste_ia_result_appariement: "قم بلصق JSON الذي أنشأه الذكاء الاصطناعي أدناه. سيتم استخراج عنوان النشاط تلقائياً من JSON.",
+  generate_mbz_appariement: "إنشاء نشاط التوصيل (mbz)",
+  create_mbz_file_millionnaire: "إنشاء ملف من سيربح المليون (.mbz)",
+  paste_ia_result_millionnaire: "قم بلصق JSON الذي أنشأه الذكاء الاصطناعي أدناه. سيتم استخراج عنوان النشاط تلقائياً من JSON.",
+  generate_mbz_millionnaire: "إنشاء نشاط المليونير (mbz)",
+  generate_mbz_test: "إنشاء نشاط اختبار (mbz)",
+  create_mbz_file_qcm: "إنشاء ملف QCM (.mbz)",
+  paste_ia_result_qcm: "قم بلصق JSON الذي أنشأه الذكاء الاصطناعي أدناه. سيتم استخراج عنوان النشاط تلقائياً من JSON.",
+  generate_mbz_qcm: "إنشاء نشاط QCM (mbz)",
+  create_mbz_file_page: "إنشاء ملف صفحة (.mbz)",
+  paste_ia_result_page: "قم بلصق JSON الذي أنشأه الذكاء الاصطناعي أدناه لبناء الصفحة.",
+  generate_mbz_page: "إنشاء نشاط صفحة (mbz)",
+  generate_prompts_placeholder: "سيظهر أمر الذكاء الاصطناعي هنا بمجرد إكمال حقل واحد على الأقل في الوضع السريع أو المتقدم.",
+  paste_json_or_text: "قم بلصق محتوى JSON أو النص الذي أنشأه الذكاء الاصطناعي هنا لإنشاء نشاطك.",
+  info_prompt_copy: "لا تقم بلصق هذا الأمر في اللوحة اليمنى. انسخه واستخدمه في ذكاء اصطناعي عام للحصول على النتيجة، ثم الصق تلك النتيجة في اللوحة اليمنى.",
+  generate_with_llm: "إنشاء باستخدام ذكاء Caramel",
+  generation_in_progress: "جاري الإنشاء، يرجى الانتظار...",
+  request_sent_to_ia: "تم إرسال الطلب إلى الذكاء الاصطناعي، يرجى الانتظار...",
+  generation_successful: "تم إنشاء محتوى H5P بنجاح!",
+  generation_failed_empty: "فشل الإنشاء. الرد كان فارغاً.",
+  generation_failed_error: "خطأ أثناء الإنشاء: {errorMessage}",
+  generation_failed_llm: "فشل الإنشاء عبر ذكاء Caramel. السبب: {errorMessage}",
+  llm_small_summary: "Caramel mou: سريع، خفيف، مثالي للتمارين السريعة والإجابات الفورية. استهلاك منخفض.",
+  llm_large_summary: "Caramel coulant: أكثر ثراءً ودقة، مثالي للمهام التي تتطلب بعض العمق. استهلاك متوسط.",
+  llm_xl_summary: "Caramel dur: قوي ومعقد، مخصص للمشاريع الطموحة. يتطلب الصبر، والنتيجة مضمونة! استهلاك عالٍ.",
+  llm_model_source: "مزود النموذج:",
+  llm_model_parameters: "حجم النموذج:",
+  llm_model_parameters_unit: "مليار بارامتر",
+
+  // ============================================================================
+  // رسوم متحركة لطهي الكراميل
+  // ============================================================================
+  caramel_animation_step_1: "نصب السكر في المقلاة...",
+  caramel_animation_step_2: "نضيف القليل من الماء...",
+  caramel_animation_step_3: "نسخن على نار متوسطة...",
+  caramel_animation_step_4: "يبدأ السكر في الذوبان...",
+  caramel_animation_step_5: "يبدأ اللون في التغير...",
+  caramel_animation_step_6: "نحرك بلطف...",
+  caramel_animation_step_7: "يأخذ الكراميل لونا عنبريا جميلا...",
+  caramel_animation_step_8: "نضيف الكريمة الساخنة...",
+  caramel_animation_step_9: "انتبه من الرذاذ!",
+  caramel_animation_step_10: "نخلط جيدا...",
+  caramel_animation_step_11: "لقد أوشك على الجاهزية!",
+  caramel_success_title: "حلواك جاهزة!",
+
+  // ============================================================================
+  // الإشعارات والأخطاء
+  // ============================================================================
+  prompts_generated_successfully: "تم إنشاء البرومبتات بنجاح!",
+  success_copy: "✓ تم النسخ!",
+  error_please_fill_fields: "يرجى ملء حقل واحد على الأقل في الوضع السريع.",
+  error_please_fill_guided_fields: "يرجى ملء حقل واحد على الأقل في الوضع المتقدم.",
+  error_field_empty: "الحقل فارغ. يرجى إنشاء برومبت أولاً.",
+  error_copy_failed: "فشلت عملية النسخ.",
+  error_h5p_module_not_found: "لم يتم العثور على الوحدة '{moduleKey}'.",
+  error_invalid_quiz_json: "ملف JSON الخاص بالاختبار غير صالح: {errorMessage}",
+  error_invalid_json: "ملف JSON المقدم غير صالح. الخطأ: {errorMessage}",
+  error_h5p_creation: "خطأ في إنشاء H5P: {errorMessage}",
+  error_paste_ia_content: "يرجى لصق المحتوى الذي تم إنشاؤه بواسطة الذكاء الاصطناعي.",
+  error_compression_module_not_ready: "وحدة الضغط ليست جاهزة بعد. حاول مرة أخرى بعد قليل.",
+  h5p_file_generated_successfully: "تم إنشاء الملف {fileName} بنجاح!",
+  h5p_creation_failed: "فشل إنشاء ملف H5P: {errorMessage}",
+  error_paste_json_content: "يرجى لصق محتوى JSON الذي تم إنشاؤه.",
+  error_paste_xml_content: "يرجى لصق محتوى XML الذي تم إنشاؤه.",
+  moodle_xml_success_generation: "تم إنشاء الملف {fileName} بنجاح!",
+  test_error_creation_mbz: "خطأ أثناء إنشاء ملف MBZ للاختبار:",
+  test_success_generation: "تم إنشاء الملف {fileName} بنجاح!",
+  test_error_generic: "خطأ:",
+  test_backup_log: "نسخة احتياطية تم إنشاؤها تلقائياً بواسطة Caramel\n",
+  millionnaire_error_compression_libs: "مكتبات الضغط (Tar.js أو fflate) غير محملة. يرجى التحقق من اتصالك بالإنترنت أو تحديث الصفحة.",
+  millionnaire_error_invalid_json: "بنية JSON غير صالحة. تأكد من أنها تحتوي على 'title' ومصفوفة 'questions' من 6 أسئلة مطابقة للمثال.",
+  millionnaire_activity_intro: "شارك في هذه اللعبة لاختبار معلوماتك.",
+  millionnaire_backup_log: "نسخة احتياطية تم إنشاؤها تلقائياً بواسطة Caramel\n",
+  millionnaire_success_generation: "تم إنشاء الملف {fileName} بنجاح!",
+  millionnaire_error_creation_mbz: "خطأ أثناء إنشاء ملف MBZ:",
+  millionnaire_error_generic: "خطأ:",
+  appariement_error_invalid_json: "بنية JSON غير صالحة. تأكد من أنها تحتوي على 'title' ومصفوفة 'pairs' حيث يحتوي كل زوج على 'question' و 'answer'.",
+  appariement_activity_intro: "جد الأزواج المتطابقة.",
+  appariement_success_generation: "تم إنشاء الملف {fileName} بنجاح!",
+  appariement_error_creation_mbz: "خطأ أثناء إنشاء ملف MBZ للمطابقة:",
+  qcm_error_invalid_json: "بنية JSON غير صالحة. تأكد من أنها تحتوي على 'title' ومصفوفة 'questions' مع سؤال واحد على الأقل وإجابات.",
+  qcm_activity_intro: "أجب على الأسئلة التالية.",
+  qcm_success_generation: "تم إنشاء الملف {fileName} بنجاح!",
+  qcm_error_creation_mbz: "خطأ أثناء إنشاء ملف MBZ لـ QCM:",
+  version_modal_title: "إصدار جديد متاح",
+  version_modal_message: "أنت تستخدم حالياً الإصدار {currentVersion}. يتوفر إصدار أحدث ({latestVersion}). أعد تحميل الصفحة للاستفادة من آخر التحسينات.",
+  version_modal_update: "تحميل الإصدار الجديد",
+  version_modal_remind_later: "ذكرني لاحقاً",
+
+  prompt_header_pedagogical_context: "السياق التربوي",
+  prompt_header_specific_rules: "القواعد الخاصة",
+  prompt_header_pedagogical_rules: "القواعد التربوية",
+  prompt_header_sources: "المصادر",
+  prompt_header_json_structure: "بنية JSON المتوقعة",
+  prompt_header_rendering_example: "مثال على العرض",
+  prompt_fallback_teacher: "معلم",
+  prompt_fallback_activity: "إنشاء نشاط تربوي",
+
+  // ============================================================================
+
+  // --- مفاتيح عامة ---
+  CONTEXTE_PEDAGOGIQUE_COMMUN: `- دورك: [QUI]. خبير في الديداكتيك والهندسة البيداغوجية
+- هدفك البيداغوجي: [QUOI]
+- جمهورك: [NIVEAU]`,
+
+  REGLES_PEDAGOGIQUES_COMMUNES: `- التكيف والمفردات: قم بتكييف النبرة والمفردات وصعوبة التعليمات مع الجمهور المستهدف. كن وثيق الصلة ومحفزاً.
+- النبرة والتعليقات: يجب أن تكون التعليمات والملاحظات بناءة، مشجعة، وموجهة نحو التعلم.
+- الامتثال: قم بتكييف المحتوى إجبارياً مع المراجع الرسمية المعمول بها. ما لم يذكر خلاف ذلك صراحة، استند افتراضياً إلى المناهج المدرسية الفرنسية (Eduscol) للجمهور المدرسي، وإلى النصوص التنظيمية للتدريب المهني للبالغين.
+- اللغة: يجب كتابة المحتوى والتعليمات باللغة العربية.`,
+
+  SOURCES_COMMUNES: `- ستستخدم حصرياً النصوص التالية لإنشاء نشاطك.
+---
+[RAG]
+---`,
+
+  // ============================================================================
+  // === خط زمني ===
+  // ============================================================================
+  TIMELINE_REGLES_SPECIFIQUES: `- عدد الأحداث: 5 أحداث على الأقل || [NOMBRE_ELEMENTS] أحداث.
+- الفترات (era): فترتان على الأقل تغطي مجموعات من الأحداث.
+- الوسائط: أضف الحقوق والتعليقات لكل أصل إن أمكن. ابحث بنشاط عن صورة ذات صلة وخالية من الحقوق (مثل: Wikimedia Commons).`,
+
+  TIMELINE_STRUCTURE_JSON: `- قم بإنشاء ملف JSON كامل وصالح حصرياً داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- **الكائن الجذر:** يحتوي على المفتاح \`timeline\` (كائن).
+- **محتوى \`timeline\`:** الهيكل الرئيسي للنشاط.
+  - \`headline\`: العنوان العام للخط الزمني (نص عادي إلزامي).
+  - \`text\`: مقدمة جذابة (يدعم Markdown).
+  - \`asset\`: وسائط الغلاف (\`media\`: رابط مباشر، \`caption\`: تعليق، \`credit\`: المصدر).
+  - \`date\`: مصفوفة الأحداث الزمنية.
+  - \`era\`: مصفوفة الفترات الخلفية (تحدد نطاقات ملونة في الخلفية).
+- **بنية كائنات \`date\` و \`era\`:**
+  - \`startDate\`: **تنسيق صارم** \`YYYY,MM,DD\` أو \`YYYY\`. (إلزامي)
+  - \`endDate\`: **تنسيق صارم** \`YYYY,MM,DD\` أو \`YYYY\`. (اختياري، يحدد مدة/نهاية الفترة)
+  - \`headline\`: عنوان صريح للعنصر (نص عادي إلزامي).
+  - \`text\`: سرد بيداغوجي. استخدم \`**كلمة**\` للخط العريض، و \`*كلمة*\` للخط المائل و \`\\n\` لفواصل الأسطر.
+  - \`asset\`: (اختياري) كائن وسائط (\`media\`: رابط مباشر Wikimedia Commons، \`caption\`، \`credit\`).
+  - \`tag\`: كلمة رئيسية قصيرة (مثل: 'سياسة'، 'علوم') تتيح التصفية.
+- **LaTeX:** استخدم الهروب المزدوج: \`\\\\( (2^3)^2 \\\\)\`.`,
+
+  TIMELINE_EXEMPLE_RENDU: `\`\`\`json
 {
-"timeline": {
-"headline": "عنوان الخط الزمني",
-"text": "مقدمة حول موضوع الخط الزمني.",
-"date": [
-{
-"startDate": "1914,07,28",
-"endDate": "1914,07,28",
-"headline": "بداية الحرب العالمية الأولى",
-"text": "النمسا-المجر تعلن الحرب على صربيا.",
-"asset": {
-"media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
-"caption": "الأرشيدوق فرانز فرديناند قبل اغتياله مباشرة.",
-"credit": "Wikimedia Commons / CC BY-SA 4.0"
-},
-"tag": "حرب"
-},
-{
-"startDate": "1918,11,11",
-"endDate": "1918,11,11",
-"headline": "هدنة 1918",
-"text": "توقيع الهدنة في ريتوند، التي أنهت القتال.",
-"tag": "معاهدة"
+  "timeline": {
+    "headline": "تاريخ غزو الفضاء",
+    "text": "اكتشف المراحل الكبرى التي ميزت مغامرة الإنسان في **الفضاء**.",
+    "asset": {
+      "media": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Apollo_11_launch.jpg",
+      "caption": "إقلاع مهمة أبولو 11.",
+      "credit": "ناسا / ويكيمديا كومنز"
+    },
+    "date": [
+      {
+        "startDate": "1957,10,04",
+        "headline": "إطلاق سبوتنيك 1",
+        "text": "تم وضع **أول قمر صناعي** في المدار من قبل الاتحاد السوفيتي.",
+        "tag": "روبوتات"
+      },
+      {
+        "startDate": "1969,07,20",
+        "headline": "أول خطوة على القمر",
+        "text": "نيل أرمسترونج يصبح أول إنسان يمشي على القمر خلال مهمة **أبولو 11**.",
+        "tag": "إنسان"
+      }
+    ],
+    "era": [
+      {
+        "startDate": "1957",
+        "endDate": "1975",
+        "headline": "الحرب الباردة الفضائية",
+        "text": "فترة تنافس شديد بين الولايات المتحدة والاتحاد السوفيتي.",
+        "tag": "سياق"
+      }
+    ]
+  }
 }
-],
-"era": [
+\`\`\``,
+
+  // ============================================================================
+  // === كلمات متقاطعة ===
+  // ============================================================================
+  CROSSWORD_REGLES_SPECIFIQUES: `- عدد الكلمات: 6 كلمات على الأقل || [NOMBRE_ELEMENTS] كلمات.
+- القواعد الطباعية: يجب أن تحتوي الإجابات (\`answer\`) على أحرف فقط. يجب دمج أي كلمة مركبة أو اختصار أو تعبير في كلمة واحدة بدون مسافات أو شرطات أو أحرف أخرى (مثال: 'arc-en-ciel' تصبح 'arcenciel').
+- التلميحات (\`clue\`): يحظر كتابة الكلمة المراد إيجادها في التلميح. يجب أن تكون قصيرة ودقيقة.
+- تلميح إضافي (\`extraClue\`): يجب على الذكاء الاصطناعي تقدير مدى ملاءمة إضافة تلميح.`,
+
+  CROSSWORD_STRUCTURE_JSON: `- قم بإنشاء ملف JSON كامل وصالح حصرياً داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- \`title\`: عنوان للنشاط.
+- \`words\`: مصفوفة من الكائنات تحتوي على:
+  - \`answer\`: الكلمة المراد تخمينها (مدمجة بدون مسافات أو شرطات).
+  - \`clue\`: التعريف القصير والدقيق.
+  - \`extraClue\` (اختياري): كائن \`{"params": {"text": "..."}}\`. يمكن للنص استخدام \`**كلمة**\` للخط العريض، و \`*كلمة*\` للخط المائل و \`\\n\` لفواصل الأسطر.
+- \`taskDescription\`: تعليمات واضحة وسياقية. استخدم \`**كلمة**\` للخط العريض، و \`*كلمة*\` للخط المائل و \`\\n\` لفواصل الأسطر. بعد فاصل الأسطر، حدد: "بالنسبة للكلمات المركبة، لا تضع مسافات أو شرطات."
+- \`overallFeedback\`: (قاعدة صارمة) يجب عليك إنشاء مصفوفة من 6 كائنات للتعليقات النهائية، مصممة حسب موضوع التمرين، مع احترام شرائح الدرجات التالية بدقة: 0-10، 11-30، 31-50، 51-70، 71-90، و 91-100.`,
+
+  CROSSWORD_EXEMPLE_RENDU: `\`\`\`json
 {
-"startDate": "1914,07,28",
-"endDate": "1918,11,11",
-"headline": "الحرب العالمية الأولى",
-"text": "إنها فترة الحرب العظمى.",
-"tag": "فترة تاريخية"
+  "title": "كلمات متقاطعة حول علم الأحياء",
+  "words": [
+    {"answer": "Cellule", "clue": "وحدة الحياة الأساسية.", "extraClue": {"params": {"text": "يمكن أن تكون **حيوانية** أو **نباتية**."}}},
+    {"answer": "ADN", "clue": "جزيء يحمل المعلومات الوراثية."}
+  ],
+  "taskDescription": "**أكمل** الشبكة بمصطلحات علم الأحياء.\\nبالنسبة للكلمات المركبة، لا تضع مسافات أو شرطات.",
+  "overallFeedback": [
+    {"from": 0, "to": 10, "feedback": "توجد حاجة لبذل جهود لفهم هذه المفاهيم في علم الأحياء بشكل جيد."},
+    {"from": 11, "to": 30, "feedback": "لقد اقتربت، استمر في جهودك لتعزيز معرفتك."},
+    {"from": 31, "to": 50, "feedback": "بداية جيدة، لكن بعض النقاط لا تزال بحاجة إلى توضيح."},
+    {"from": 51, "to": 70, "feedback": "عمل جيد! لقد فهمت أساسيات الموضوع."},
+    {"from": 71, "to": 90, "feedback": "درجة جيدة جداً! أنت تتقن المفاهيم التي تم تناولها."},
+    {"from": 91, "to": 100, "feedback": "ممتاز! لديك إتقان تام لهذا الدرس."}
+  ]
 }
+\`\`\``,
+
+  // ============================================================================
+  // === FLASHCARDS (Cartes mémoires) ===
+  // ============================================================================
+  FLASHCARDS_REGLES_SPECIFIQUES: `- عدد البطاقات: 5 بطاقات على الأقل || [NOMBRE_ELEMENTS] بطاقات.
+- الربط: يجب ربط الوجه والظهر بمعيار فريد ومستقر (مثال: تعريف -> مصطلح، حدث -> تاريخ، مؤلف -> عمل). استخدم نفس العلاقة لجميع البطاقات وصغ التعليمات هكذا: « اربط كل X بـ Y ».`,
+
+  FLASHCARDS_STRUCTURE_JSON: `- قم بإنشاء ملف JSON كامل وصالح حصرياً داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- يجب أن يحتوي الكائن على:
+  - \`title\`: عنوان صلة بالنشاط.
+  - \`description\`: تعليمات واضحة للطالب.
+  - \`cards\`: مصفوفة من الكائنات، حيث يمثل كل كائن بطاقة (flashcard) ويحتوي على:
+    - \`text\`: السؤال أو المصطلح المراد تخمينه (الوجه).
+    - \`answer\`: الإجابة أو التعريف (الظهر). قواعد التنميط: كلمة بسيطة واحدة أو رقم (لا توجد كلمات مركبة)، أحرف صغيرة (باستثناء الأسماء العلم)، بدون أداة تعريف أو علامات ترقيم، الأرقام بصيغة أرقام.
+    - \`tip\` (اختياري): تلميح لمساعدة الطالب. يمكنك استخدام \`**كلمة**\` للخط العريض و \`*كلمة*\` للخط المائل.`,
+
+  FLASHCARDS_EXEMPLE_RENDU: `\`\`\`json
+{
+  "title": "عواصم أوروبا",
+  "description": "اربط كل بلد بعاصمته.",
+  "cards": [
+    {
+      "text": "فرنسا",
+      "answer": "باريس",
+      "tip": "إنها مدينة **برج إيفل**."
+    },
+    {
+      "text": "إسبانيا",
+      "answer": "مدريد",
+      "tip": "تقع في وسط شبه الجزيرة *الإيبيرية*."
+    },
+    {
+      "text": "إيطاليا",
+      "answer": "روما",
+      "tip": "الملقبة بـ *المدينة الخالدة*."
+    }
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === ESSAY (التحرير) ===
+  // ============================================================================
+  ESSAY_REGLES_SPECIFIQUES: `- الكلمات المفتاحية: 5 كلمات مفتاحية أو تعبيرات على الأقل متوقعة في الإجابة || [NOMBRE_ELEMENTS] كلمات مفتاحية.
+- التعليمات: يجب ألا تدرج التعليمات الكلمات المفتاحية المتوقعة لتجنب إعطاء الإجابة، باستثناء اسم الموضوع العام.`,
+
+  ESSAY_STRUCTURE_JSON: `- قم بإنشاء ملف JSON كامل وصالح حصرياً داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+يتضمن الكائن ما يلي:
+- \`taskDescription\`: تعليمات واضحة تطلب من الطالب كتابة نص حول الموضوع. استخدم \`**كلمة**\` للخط العريض (المفاهيم الأساسية)، و \`*كلمة*\` للخط المائل و \`\\n\` لفواصل الأسطر.
+- \`keywords\`: مصفوفة من الكائنات تحدد الكلمات المفتاحية المتوقعة. يجب أن يكون كل كائن على النحو التالي:
+  \`\`\`json
+  {
+    "keyword": "كلمة أو تعبير",
+    "options": { "points": 1, "caseSensitive": false }
+  }
+  \`\`\`
+- \`overallFeedback\`: (قاعدة صارمة) يجب عليك إنشاء مصفوفة من 6 كائنات للتعليقات النهائية، مصممة حسب موضوع التمرين، مع احترام شرائح الدرجات التالية بدقة: 0-10، 11-30، 31-50، 51-70، 71-90، و 91-100.`,
+
+  ESSAY_EXEMPLE_RENDU: `\`\`\`json
+{
+  "taskDescription": "اكتب نصاً قصيراً تشرح فيه عملية **البناء الضوئي**. يجب أن تتناول إجابتك العناصر الأساسية التي تسمح للنباتات بإنتاج طاقتها الخاصة.",
+  "keywords": [
+    {"keyword": "ضوء", "options": { "points": 1, "caseSensitive": false }},
+    {"keyword": "كلوروفيل", "options": { "points": 1, "caseSensitive": false }},
+    {"keyword": "ثاني أكسيد الكربون", "options": { "points": 1, "caseSensitive": false }},
+    {"keyword": "ماء", "options": { "points": 1, "caseSensitive": false }},
+    {"keyword": "جلوكوز", "options": { "points": 1, "caseSensitive": false }}
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "هذه بداية. أعد قراءة الدرس عن البناء الضوئي جيداً." },
+    { "from": 11, "to": 30, "feedback": "لقد حددت بعض العناصر. استمر في جهودك." },
+    { "from": 31, "to": 50, "feedback": "فهمك في تطور. فكر في تقديم تفاصيل أكثر." },
+    { "from": 51, "to": 70, "feedback": "عمل جيد! أنت تتقن الأساسيات." },
+    { "from": 71, "to": 90, "feedback": "جيد جداً! تظهر كتابتك فهماً قوياً." },
+    { "from": 91, "to": 100, "feedback": "ممتاز! لديك إتقان تام للموضوع." }
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === ACCORDION (قائمة مصطلحات H5P) ===
+  // ============================================================================
+  ACCORDION_REGLES_SPECIFIQUES: `- عدد المدخلات: 5 مصطلحات على الأقل || [NOMBRE_ELEMENTS] مصطلحات.
+- اختيار المصطلحات: حدد المفاهيم التقنية أو المفردات الخاصة أو الكلمات المعقدة الموجودة في المصادر.
+- التعريفات: موجزة ودقيقة وملائمة تماماً للمستوى البيداغوجي المستهدف.`,
+
+  ACCORDION_STRUCTURE_JSON: `- قم بإنشاء ملف JSON كامل وصالح حصرياً داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- يجب أن يكون ملف JSON الناتج عبارة عن مصفوفة تحتوي على عدد من الكائنات مساوٍ لعدد المصطلحات المذكورة سابقاً.
+- \`title\`: الكلمة المفتاحية أو التعبير أو السؤال المراد تعريفه.
+- \`text\`: التعريف. استخدم \`**كلمة**\` للخط العريض، و \`*كلمة*\` للخط المائل و \`\\n\` لفواصل الأسطر. بالنسبة للمعادلات الرياضية، استخدم تنسيق LaTeX مع الهروب المزدوج، على سبيل المثال: \`\\\\( (2^3)^2 \\\\)\`.`,
+
+  ACCORDION_EXEMPLE_RENDU: `\`\`\`json
+[
+  {"title": "البناء الضوئي", "text": "العملية التي تقوم من خلالها النباتات بتحويل **ضوء** **الشمس** إلى طاقة.\\nوهي أساس السلسلة الغذائية."},
+  {"title": "الخلية", "text": "**الوحدة** الأساسية لجميع الكائنات الحية. يوجد منها خلايا *حقيقية النوى* وخلايا *بدائية النوى*."}
 ]
-}
-}
-\`\`\` `,
-    timeline_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات. سيتم استخدام النتيجة مباشرة في أداة أخرى.",
+\`\`\``,
 
-    // Crossword Prompt
-    crossword_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Crossword\".",
-    crossword_prompt_mission: "**مهمتك:**",
-    crossword_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط كلمات متقاطعة عبر H5P.",
-    crossword_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
-    crossword_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
-    crossword_prompt_title: "`title`: عنوان للنشاط.",
-    crossword_prompt_words_array: "`words`: مصفوفة من ${nombreQuestions} كائنات، يحتوي كل منها على:",
-    crossword_prompt_answer: "`answer`: الكلمة المطلوب اكتشافها.",
-    crossword_prompt_clue: "`clue`: التعريف المقابل. يُحظر كتابة الكلمة المطلوب إيجادها داخل التلميح.",
-    crossword_prompt_extra_clue_optional: "`extraClue` (اختياري): كائن يحتوي على تلميحًا إضافيًا. يمكن لنص التلميح استخدام `*كلمة*` للغامق، `**كلمة**` للمائل و`\\n` لأسطر جديدة. على الذكاء الاصطناعي أن يقيّم مدى جدوى إضافة تلميح.",
-    crossword_prompt_task_description: "`taskDescription`: توجيه واضح ومؤطَّر سياقيًا. استخدم `*كلمة*` للغامق، `**كلمة**` للمائل و`\\n` لأسطر جديدة. بعد سطر جديد، وضّح قاعدة الكلمات المركبة: \"بالنسبة إلى الكلمات المركبة، اكتبها كلمةً واحدة بلا مسافات أو شرطات.\"",
-    crossword_prompt_overall_feedback: "`overallFeedback`: (قاعِدة صارِمة) يجب عليك توليد مصفوفة من 6 كائنات للتغذية الراجعة النهائية، مُؤطّرة بموضوع التمرين، مع احترام الفترات التالية بدقة: 0-10، 11-30، 31-50، 51-70، 71-90، و91-100. يجب أن يكون لكل كائن الشكل `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. يجب أن يكون نص `feedback` إيجابيًا من دون مبالغة، تدريجيًا ودائمًا بصيغة إثبات.",
-    crossword_prompt_content_rules_title: "**قواعد المحتوى:**",
-    crossword_prompt_rule1: "1.  قاعِدة صارِمة: يجب أن تتكوّن الكلمات (`answer`) من أحرف فقط. تُدمَج الكلمات المركبة أو الاختصارات أو التعابير في كلمة واحدة من دون مسافات أو شرطات أو رموز أخرى.",
-    crossword_prompt_rule2: "2. ينبغي أن تكون التعريفات (`clue`) قصيرة ودقيقة.",
-    crossword_prompt_rule3: "3. تُحفَظ بقية بنية JSON (السلوك، السمة، إلخ) كما هي.",
-    crossword_prompt_example_json_title: "**مثال JSON لكلمة واحدة:**",
-    crossword_prompt_example: `\`\`\`json
-{
-"title": "كلمات متقاطعة عن علم الأحياء",
-"words": [
-{
-"answer": "خلية",
-"clue": "الوحدة الأساسية للحياة.",
-"extraClue": {
-"params": {
-"text": "يمكن أن تكون *حيوانية* أو *نباتية*."
-}
-}
-},
-{
-"answer": "دنا",
-"clue": "جزيء يحمل المعلومات الوراثية."
-}
-],
-"taskDescription": "*أكمِل* **شبكة** الكلمات المتقاطعة."
-}
-\`\`\` `,
-    crossword_prompt_generate_only_json: "ولِّد JSON كاملًا وصالحًا بملء العنوان والوصف ومصفوفة \"words\" دون أي تعليقات إضافية.",
+  // ============================================================================
+  // === SUMMARY (خلاصة) ===
+  // ============================================================================
+  SUMMARY_REGLES_SPECIFIQUES: `- عدد المراحل: أنشئ مصفوفة من 5 مراحل على الأقل || [NOMBRE_ELEMENTS] مراحل لتغطية الموضوع بالكامل.
+- المشتتات: اقترح مشتتين على الأقل لكل مرحلة. يجب أن تكون متسقة مع الموضوع ولكن تحتوي على أخطاء واقعية أو منطقية محتملة.`,
 
-    // Crossword UI translations
-    crossword_across: "أفقي",
-    crossword_down: "عمودي",
-    crossword_check_answer: "تحقق",
-    crossword_try_again: "إعادة المحاولة",
-    crossword_show_solution: "إظهار الحل",
-    crossword_extra_clue: "تلميح إضافي",
-    crossword_close_window: "إغلاق النافذة",
-    crossword_submit_answer: "إرسال",
+  SUMMARY_STRUCTURE_JSON: `- قم بإنشاء ملف JSON كامل وصالح حصرياً داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- \`intro\`: جملة مقدمة قصيرة (مثال: "اختر العبارة الصحيحة.").
+- \`summaries\`: مصفوفة من الكائنات التي تشكل المراحل. يحتوي كل كائن على:
+  - \`summary\`: مصفوفة واحدة من الجمل (**ربط**). يجب أن تكون الجملة الأولى في القائمة دائماً هي الخلاصة الصحيحة (عبارة دقيقة).
+  - \`tip\`: (اختياري) تلميح سياقي لمساعدة الطالب.
+- \`overallFeedback\`: مصفوفة من 6 كائنات للدرجة النهائية (0-10، 11-30، 31-50، 51-70، 71-90، 91-100).
+- **LaTeX:** استخدم الهروب المزدوج لـ LaTeX: \`\\\\( (2^3)^2 \\\\)\`.`,
 
-    // Essay Prompt
-    essay_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Essay\".",
-    essay_prompt_mission: "**مهمتك:**",
-    essay_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط مقال عبر H5P.",
-    essay_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
-    essay_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
-    essay_prompt_task_description: "`taskDescription`: تعليمات واضحة تدعو المتعلّم إلى كتابة نص حول الموضوع. استخدم `*word*` للنص العريض، `**word**` للنص المائل، و `\\n` للفواصل السطرية.",
-    essay_prompt_keywords_array: "`keywords`: مصفوفة من ${nombreQuestions} كائنات، يحدّد كلٌّ منها كلمة مفتاحية يجب أن يعثر عليها النظام في إجابة المتعلّم.",
-    essay_prompt_overall_feedback: "`overallFeedback`: (قاعِدة صارِمة) يجب عليك توليد مصفوفة من 6 كائنات للتغذية الراجعة النهائية، مُؤطّرة بموضوع التمرين، مع احترام الفترات التالية بدقة: 0-10، 11-30، 31-50، 51-70، 71-90، و91-100. يجب أن يكون لكل كائن الشكل `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. يجب أن يكون نص `feedback` إيجابيًا من دون مبالغة، تدريجيًا ودائمًا بصيغة إثبات.",
-    essay_prompt_content_rules_title: "**قواعد المحتوى:**",
-    essay_prompt_rule1: "1. يحتوي كل كائن في `keywords` على المفتاح `keyword` مع الكلمة المطلوب البحث عنها.",
-    essay_prompt_rule2: "2. يجب أن تكون الكلمات المفتاحية ذات صلة وأساسية لتقييم الفهم.",
-    essay_prompt_rule3: "3. تُحفَظ بنية JSON (السلوك، إلخ).",
-    essay_prompt_rule4: "4. يجب أن تشجع التعليمات (`taskDescription`) على الكتابة دون استخدام الكلمات المفتاحية المدرجة في `keywords`، باستثناء اسم الموضوع إذا كان ذلك ضروريًا للفهم.",
-    essay_prompt_example_json_title: "**مثال JSON لكلمة مفتاحية:**",
-    essay_prompt_example: `\`\`\`json
+  SUMMARY_EXEMPLE_RENDU: `\`\`\`json
 {
-"taskDescription": "اكتب نصًا قصيرًا يشرح عملية البناء الضوئي.",
-"keywords": [
-{
-"keyword": "ضوء",
-"options": { "points": 1, "caseSensitive": false }
-},
-{
-"keyword": "كلوروفيل",
-"options": { "points": 1, "caseSensitive": false }
+  "intro": "حدد العبارات الصحيحة لبناء ملخص الدرس.",
+  "summaries": [
+    {
+      "summary": [
+        "البناء الضوئي هو عملية بيولوجية تسمح للنباتات بتحويل الطاقة الضوئية إلى طاقة كيميائية.",
+        "البناء الضوئي هو عملية تحدث فقط خلال الليل.",
+        "البناء الضوئي هو الآلية التي تتنفس بها الحيوانات."
+      ],
+      "tip": "فكر في الضوء كمصدر للطاقة."
+    }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "توجد حاجة لبذل جهود لفهم هذه المفاهيم جيداً." },
+    { "from": 11, "to": 30, "feedback": "لقد اقتربت، استمر في جهودك." },
+    { "from": 31, "to": 50, "feedback": "بداية جيدة، ولكن بعض النقاط لا تزال بحاجة إلى توضيح." },
+    { "from": 51, "to": 70, "feedback": "عمل جيد! لقد فهمت الأساسيات." },
+    { "from": 71, "to": 90, "feedback": "درجة جيدة جداً! أنت تتقن المفاهيم جيداً." },
+    { "from": 91, "to": 100, "feedback": "ممتاز! لديك إتقان تام لهذا الدرس." }
+  ]
 }
-]
-}
-\`\`\` `,
-    essay_prompt_generate_only_json: "ولِّد JSON كاملًا وصالحًا بملء التعليمات وقائمة الكلمات المفتاحية دون أي تعليقات.",
+\`\`\``,
 
-    // موجّه Moodle XML
-    moodle_xml_prompt_role: "أنت خبير في الهندسة البيداغوجية. مهمتك هي إنشاء محتوى لنشاط اختبار مع بنك أسئلة Moodle/Éléa عبر توليد كائن JSON صالح.",
-    moodle_xml_prompt_intro: "أرغب في إنشاء اختبار من ${nombreQuestions} أسئلة.",
-    moodle_xml_prompt_content_title: "**قواعد المحتوى:**",
-    moodle_xml_prompt_content_rule1: "- يجب أن تكون الإجابات الخاطئة معقولة لكنها غير صحيحة.",
-    moodle_xml_prompt_content_rule2: "- يجب تنويع صعوبة الأسئلة.",
-    moodle_xml_prompt_content_rule3: "- ينبغي أن تكون الصياغة بسيطة ودقيقة.",
-    moodle_xml_prompt_content_rule4: "- يجب أن تشرح التغذية الراجعة بإيجاز الإجابة الصحيحة.",
-    moodle_xml_prompt_question_types_intro: "**البنية المتوقعة لـ JSON:**\nيجب أن يحتوي الكائن الرئيسي على المفاتيح التالية:\n- `bank_name`: اسم قصير ووصفي لبنك الأسئلة.\n- `bank_description`: جملة تصف محتوى البنك.\n- `questions`: مصفوفة من الكائنات حيث يمثل كل كائن سؤالًا ويجب أن يحتوي على `type` و`content`.",
-    moodle_xml_prompt_question_type_multichoice: `
-- **لنمط \`multichoice\` (اختيار من متعدد):**
+  // ============================================================================
+  // === DRAG_THE_WORDS (سحب الكلمات) ===
+  // ============================================================================
+  DRAG_THE_WORDS_REGLES_SPECIFIQUES: `- عدد الكلمات: فقرة مكونة من 50 كلمة على الأقل مع 5 كلمات على الأقل للسحب || [NOMBRE_ELEMENTS] كلمات.
+- التفرد: يجب أن تكون كل كلمة سحب فريدة في النص (لا يوجد تكرار).`,
+
+  DRAG_THE_WORDS_STRUCTURE_JSON: `- قم بإنشاء ملف JSON كامل وصالح حصرياً داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+يتضمن الكائن ما يلي:
+- \`taskDescription\`: تعليمات واضحة.
+- \`textField\`: النص المراد إكماله. يجب أن تنتهي كل جملة بفاصل أسطر \`\\n\`.
+  - **التنسيق**: \`*كلمة*\` لعنصر قابل للسحب.
+- \`overallFeedback\`: مصفوفة من 6 كائنات للدرجة النهائية (0-10، 11-30، 31-50، 51-70، 71-90، 91-100).`,
+
+  DRAG_THE_WORDS_EXEMPLE_RENDU: `\`\`\`json
+{
+  "taskDescription": "أكمل النص بسحب الكلمات.",
+  "textField": "يتكون *النظام الشمسي* من *ثمانية* كواكب تدور حول *الشمس*.\\nأكبر كوكب هو *المشتري*.",
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "توجد حاجة لبذل جهود." },
+    { "from": 11, "to": 30, "feedback": "لقد اقتربت." },
+    { "from": 31, "to": 50, "feedback": "هذه بداية جيدة." },
+    { "from": 51, "to": 70, "feedback": "عمل جيد!" },
+    { "from": 71, "to": 90, "feedback": "درجة جيدة جداً!" },
+    { "from": 91, "to": 100, "feedback": "ممتاز!" }
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === FILL_IN_THE_BLANKS (نص ذو فراغات) ===
+  // ============================================================================
+  FILL_IN_THE_BLANKS_REGLES_SPECIFIQUES: `- عدد الفراغات: فقرة مكونة من 50 كلمة على الأقل مع 3 كلمات على الأقل للفراغات || [NOMBRE_ELEMENTS] كلمات.
+- التوازن: لا تضع فراغات في كلمات تافهة (أدوات تعريف، حروف جر) إلا إذا كان هذا هو الهدف النحوي. استهدف المفاهيم الأساسية.`,
+
+  FILL_IN_THE_BLANKS_STRUCTURE_JSON: `- قم بإنشاء ملف JSON كامل وصالح حصرياً داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+يتضمن الكائن ما يلي:
+- \`taskDescription\`: تعليمات واضحة وقصيرة تشرح هدف النشاط في السياق العام. استخدم \`**كلمة**\` للخط العريض (المفاهيم الأساسية)، و \`*كلمة*\` للخط المائل و \`\\n\` لفواصل الأسطر.
+- \`questions\`: مصفوفة من السلاسل النصية. تمثل كل سلسلة كتلة نصية مراد إتمامها.
+  - **صيغة الفراغات**: أحط الكلمات المراد تخمينها بعلامات النجمة (مثال: \`*كلمة*\`).
+  - **البدائل**: استخدم \`/\` للإجابات المتعددة المقبولة (مثال: \`*كلمة1/كلمة2*\`).
+  - **المساعدة**: استخدم \`:\` لإضافة تلميح بيداغوجي مساعد (مثال: \`*كلمة:تلميح*\`).
+- \`overallFeedback\`: (قاعدة صارمة) يجب عليك إنشاء مصفوفة من 6 كائنات للتعليقات النهائية (0-10، 11-30، 31-50، 51-70، 71-90، 91-100).`,
+
+  FILL_IN_THE_BLANKS_EXEMPLE_RENDU: `\`\`\`json
+{
+  "taskDescription": "أكمل الفراغات في النص أدناه بخصوص النظام الشمسي.",
+  "questions": [
+    "الأرض هي *كوكب* في النظام *الشمسي*.",
+    "تدور حول *الشمس:نجمنا* في حوالي 365 يوماً."
+  ],
+  "overallFeedback": [
+    {"from": 0, "to": 10, "feedback": "توجد حاجة لبذل جهود لفهم هذه المفاهيم جيداً."},
+    {"from": 11, "to": 30, "feedback": "لقد اقتربت، استمر في جهودك لتعزيز معرفتك."},
+    {"from": 31, "to": 50, "feedback": "بداية جيدة، ولكن بعض النقاط لا تزال بحاجة إلى توضيح."},
+    {"from": 51, "to": 70, "feedback": "عمل جيد! لقد فهمت أساسيات الموضوع."},
+    {"from": 71, "to": 90, "feedback": "درجة جيدة جداً! أنت تتقن المفاهيم التي تم تناولها."},
+    {"from": 91, "to": 100, "feedback": "ممتاز! لديك إتقان تام لهذا الدرس."}
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === MARK_THE_WORDS (تمييز الكلمات) ===
+  // ============================================================================
+  MARK_THE_WORDS_REGLES_SPECIFIQUES: `- عدد الكلمات: فقرة مكونة من 50 كلمة على الأقل مع 5 كلمات للفراغات || [NOMBRE_ELEMENTS] كلمات.`,
+
+  MARK_THE_WORDS_STRUCTURE_JSON: `- قم بإنشاء ملف JSON كامل وصالح حصرياً داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+يتضمن الكائن ما يلي:
+- \`taskDescription\`: تعليمات واضحة وجذابة. يمكنك استخدام \`**كلمة**\` للخط العريض و \`*كلمة*\` للخط المائل هنا فقط.
+- \`textField\`: النص الكامل الذي يحتوي على الكلمات المراد تمييزها.
+  - **التمييز:** يجب إحاطة كل كلمة مراد تمييزها بعلامات النجمة بشكل منفرد. (مثال: \`*كلمة1* *كلمة2*\` صحيح؛ \`*كلمة1 كلمة2*\` غير صحيح).
+  - **علامات الترقيم:** يجب ألا تكون علامات الترقيم جزءاً من التمييز أبداً ويجب فصلها عن الكلمة بمسافة. (مثال: كتابة \`ال *عصفور*\` صحيح، \`ال*عصفور*\` غير صحيح).
+- \`overallFeedback\`: (قاعدة صارمة) يجب عليك إنشاء مصفوفة من 6 كائنات للتعليقات النهائية (0-10، 11-30، 31-50، 51-70، 71-90، 91-100).`,
+
+  MARK_THE_WORDS_EXEMPLE_RENDU: `\`\`\`json
+{
+  "taskDescription": "انقر على **أسماء العلم** في النص التالي.",
+  "textField": "*باريس* هي عاصمة *فرنسا*. إنها *أوروبا* التي تهمنا.",
+  "overallFeedback": [
+    {"from": 0, "to": 10, "feedback": "توجد حاجة لبذل جهود لفهم هذه المفاهيم جيداً."},
+    {"from": 11, "to": 30, "feedback": "لقد اقتربت، استمر في جهودك لتعزيز معرفتك."},
+    {"from": 31, "to": 50, "feedback": "بداية جيدة، ولكن بعض النقاط لا تزال بحاجة إلى توضيح."},
+    {"from": 51, "to": 70, "feedback": "عمل جيد! لقد فهمت أساسيات الموضوع."},
+    {"from": 71, "to": 90, "feedback": "درجة جيدة جداً! أنت تتقن المفاهيم التي تم تناولها."},
+    {"from": 91, "to": 100, "feedback": "ممتاز! لديك إتقان تام لهذا الدرس."}
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === TRUE_FALSE (صواب/خطأ) ===
+  // ============================================================================
+  TRUE_FALSE_REGLES_SPECIFIQUES: `- السؤال: عبارة واضحة ولا لبس فيها.
+- الإجابة: يجب أن تكون الإجابة "true" (صواب) أو "false" (خطأ) حصراً.
+- التعليقات: قدم رسائل محددة للنجاح (\`feedbackOnCorrect\`) وللفشل (\`feedbackOnWrong\`) لتعزيز التعلم.`,
+
+  TRUE_FALSE_STRUCTURE_JSON: `- قم بإنشاء ملف JSON كامل وصالح حصرياً داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- يجب أن يحتوي الكائن الرئيسي على المفاتيح التالية:
+  - \`question\`: (string) العبارة المراد تقييمها. يمكن أن تحتوي على HTML.
+  - \`correct\`: (string) الإجابة الصحيحة، إما "true" أو "false".
+  - \`feedbackOnCorrect\`: (string) تعليق يظهر إذا كانت الإجابة صحيحة.
+  - \`feedbackOnWrong\`: (string) التعليق الذي يتم عرضه إذا كانت الإجابة غير صحيحة.
+- **التنسيق:** استخدم صيغة Markdown للنص العريض (\`**نص**\`) والنص المائل (\`*نص*\`).
+- **LaTeX:** بالنسبة للمعادلات الرياضية، استخدم حصرًا تنسيق LaTeX المحاط بترميز الهروب المزدوج: \`\\\\( ... \\\\)\`. لا تستخدم أبدًا علامة \`$\` بمفردها.
+- **التعليقات (Feedback):** يجب ألا تحتوي التعليقات على LaTeX أو Markdown.`,
+
+  TRUE_FALSE_EXEMPLE_RENDU: `\`\`\`json
+{
+  "question": "أوسلو هي عاصمة النرويج.",
+  "correct": "true",
+  "feedbackOnCorrect": "إجابة صحيحة! أوسلو هي بالفعل عاصمة النرويج.",
+  "feedbackOnWrong": "إجابة خاطئة. عاصمة النرويج هي أوسلو."
+}
+\`\`\``,
+
+  // ============================================================================
+  // === MULTIPLE_CHOICE (خيارات متعددة) ===
+  // ============================================================================
+  MULTIPLE_CHOICE_REGLES_SPECIFIQUES: `- السؤال: سؤال واضح متعدد الخيارات.
+- الإجابات: اقترح عدة خيارات للإجابة (\`answers\`). يجب أن تكون هناك إجابة صحيحة واحدة فقط (\`"correct": true\`) وعدة مشتتات محتملة (\`"correct": false\`).
+- التعليقات:
+  - \`overallFeedback\`: (قاعدة صارمة) يجب عليك إنشاء مصفوفة من 6 كائنات للتعليقات النهائية (0-10، 11-30، 31-50، 51-70، 71-90، و 91-100).`,
+
+  MULTIPLE_CHOICE_STRUCTURE_JSON: `- قم بإنشاء ملف JSON كامل وصالح حصرياً داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- يجب أن يحتوي الكائن الرئيسي على المفاتيح التالية:
+  - \`question\`: (string) نص السؤال. يمكن أن يحتوي على HTML.
+  - \`answers\`: (array) مصفوفة من الكائنات، كل منها يمثل إجابة.
+    - \`text\`: (string) نص الإجابة.
+    - \`correct\`: (boolean) \`true\` إذا كانت إجابة صحيحة، و \`false\` خلاف ذلك.
+    - \`tipsAndFeedback\`: (object، اختياري) \`{ "tip": "", "chosenFeedback": "", "notChosenFeedback": "" }\`.
+- \`overallFeedback\`: (array) مصفوفة مكونة من 6 كائنات تحدد التعليقات لكل فئة من الدرجات.
+- **التنسيق:** استخدم صيغة Markdown للنص العريض (\`**نص**\`) والنص المائل (\`*نص*\`).
+- **LaTeX:** بالنسبة للمعادلات الرياضية، استخدم حصرًا تنسيق LaTeX المحاط بترميز الهروب المزدوج: \`\\\\( ... \\\\)\`. لا تستخدم أبدًا علامة \`$\` بمفردها.
+- **التعليقات (Feedback):** يجب ألا تحتوي التعليقات على LaTeX أو Markdown.`,
+
+  MULTIPLE_CHOICE_EXEMPLE_RENDU: `\`\`\`json
+{
+  "question": "ما هو اللون الحقيقي لثمرة الكشمش الأسود؟",
+  "answers": [
+    {"text": "بنفسجي غامق جداً", "correct": true, "tipsAndFeedback": { "chosenFeedback": "بالضبط!" }},
+    {"text": "أزرق", "correct": false, "tipsAndFeedback": { "chosenFeedback": "لا، إنه أغمق." }},
+    {"text": "أسود", "correct": false}
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "هناك حاجة إلى بذل جهود." },
+    { "from": 11, "to": 30, "feedback": "لقد اقتربت من الهدف." },
+    { "from": 31, "to": 50, "feedback": "هذه بداية جيدة." },
+    { "from": 51, "to": 70, "feedback": "عمل جيد!" },
+    { "from": 71, "to": 90, "feedback": "درجة جيدة جداً!" },
+    { "from": 91, "to": 100, "feedback": "ممتاز!" }
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === FIND_THE_WORDS (البحث عن الكلمات) ===
+  // ============================================================================
+  FIND_THE_WORDS_REGLES_SPECIFIQUES: `- عدد الكلمات: 6 كلمات كحد أدنى || [NOMBRE_ELEMENTS] كلمات.
+- القواعد الطباعية: يجب ألا تحتوي الكلمات على لهجات أو أرقام أو علامات ترقيم أو مسافات.`,
+
+  FIND_THE_WORDS_STRUCTURE_JSON: `- قم بتوليد JSON كامل وصحيح فقط داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- \`taskDescription\`: التعليمات للطالب.
+- \`wordList\`: قائمة الكلمات التي يجب العثور عليها مفصولة بفواصل (بدون مسافات).`,
+
+  FIND_THE_WORDS_EXEMPLE_RENDU: `\`\`\`json
+{
+  "taskDescription": "ابحث عن الكلمات المخفية في الشبكة.",
+  "wordList": "CELLULE,ADN,GENE,NOYAU"
+}
+\`\`\``,
+
+  // ============================================================================
+  // === SORT_THE_PARAGRAPHS (ترتيب الفقرات) ===
+  // ============================================================================
+  SORT_THE_PARAGRAPHS_REGLES_SPECIFIQUES: `- عدد المراحل: 3 مراحل أو فقرات كحد أدنى للترتيب || [NOMBRE_ELEMENTS] مراحل.
+- المنطق الجوهري: يجب أن تشكل الفقرات (\`paragraphs\`) تسلسلاً منطقياً يمكن استنتاجه من المحتوى نفسه.
+- حظر القرائن الاصطناعية: يجب ألا تستخدم أبداً الترقيم (1، 2، 3...)، أو علامات زمنية صريحة (تواريخ، أوقات) أو روابط منطقية شديدة البساطة ("أولاً"، "ثم"، "أخيراً")، إلا إذا طلب المستخدم ذلك صراحةً.
+- الخيط الناظم: يجب أن تدفع كل فقرة خيطاً ناظماً فريداً (مثلاً: سلسلة سببية، الانتقال من العام إلى الخاص، أو تسلسل تحضير ← إجراء ← نتيجة). يجب أن يكون الترتيب قابلاً للاستنتاج من خلال فهم المعنى.`,
+
+  SORT_THE_PARAGRAPHS_STRUCTURE_JSON: `- قم بتوليد JSON كامل وصحيح فقط داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- \`taskDescription\`: تعليمات واضحة (يدعم Markdown).
+- \`paragraphs\`: مصفوفة من السلاسل النصية (الفقرات) المعروضة في البداية بالترتيب المنطقي **الصحيح** في JSON. استخدم \`**كلمة**\` للتعبير عن الخط العريض، و \`*كلمة*\` للتعبير عن الخط المائل.
+- \`overallFeedback\`: مصفوفة من 6 كائنات للنتيجة النهائية (0-10، 11-30، 31-50، 51-70، 71-90، 91-100).
+- **LaTeX:** استخدم الهروب المزدوج لـ LaTeX: \`\\\\( (2^3)^2 \\\\)\`.`,
+
+  SORT_THE_PARAGRAPHS_EXEMPLE_RENDU: `\`\`\`json
+{
+  "taskDescription": "رتب هذه العناصر بالترتيب لعادة تكوين السلسلة السببية للاحتباس الحراري.",
+  "paragraphs": [
+    "تطلق الأنشطة البشرية، وبشكل رئيسي حرق الوقود الأحفوري، كميات هائلة من **ثاني أكسيد الكربون** في الغلاف الجوي.",
+    "يعزز هذا الفائض من الغازات تأثير الاحتباس الحراري الطبيعي، مما يمنع جزءاً من الأشعة تحت الحمراء من مغادرة الأرض.",
+    "تؤدي الطاقة المحتبسة بهذه الطريقة إلى زيادة تدريجية في متوسط درجة حرارة الهواء والمحيطات.",
+    "يؤدي هذا الاحترار العالمي إلى ذوبان الأنهار الجليدية وارتفاع مقلق في مستوى سطح البحر."
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "يجب مراجعة منطق السببية." },
+    { "from": 11, "to": 30, "feedback": "لديك بعض بوادر الفهم، أعد قراءة النص." },
+    { "from": 31, "to": 50, "feedback": "هذه بداية جيدة للترتيب." },
+    { "from": 51, "to": 70, "feedback": "تحليل جيد للتسلسل المنطقي." },
+    { "from": 71, "to": 90, "feedback": "عمل رائع جداً في الهيكلة!" },
+    { "from": 91, "to": 100, "feedback": "ممتاز! السلسلة المنطقية متقنة." }
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === SINGLE_CHOICE_SET (سلسلة خيارات وحيدة) ===
+  // ============================================================================
+  SINGLE_CHOICE_SET_REGLES_SPECIFIQUES: `- عدد الأسئلة: 3 أسئلة كحد أدنى || [NOMBRE_ELEMENTS] أسئلة.
+- الإجابات: اقترح من 2 إلى 3 مشتتات لكل سؤال. يجب أن تكون الإجابة الأولى في قائمة \`answers\` هي الإجابة الصحيحة دائماً.
+- المشتتات: متسقة ولكنها تتضمن أخطاء منطقية أو واقعية محتملة.`,
+
+  SINGLE_CHOICE_SET_STRUCTURE_JSON: `- قم بتوليد JSON كامل وصحيح فقط داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- \`choices\`: مصفوفة من الكائنات التي تشكل الأسئلة. يحتوي كل كائن على:
+  - \`question\`: نص السؤال.
+  - \`answers\`: مصفوفة من السلاسل النصية (الإجابات) تكون الأولى منها دائماً هي الإجابة الصحيحة.
+- \`overallFeedback\`: مصفوفة من 6 كائنات للنتيجة النهائية (0-10، 11-30، 31-50، 51-70، 71-90، 91-100).
+- **LaTeX:** استخدم الهروب المزدوج لـ LaTeX: \`\\\\( (2^3)^2 \\\\)\`.`,
+
+  SINGLE_CHOICE_SET_EXEMPLE_RENDU: `\`\`\`json
+{
+  "choices": [
+    {
+      "question": "ما هو الغاز الرئيسي المسؤول عن الاحتباس الحراري؟",
+      "answers": ["ثاني أكسيد الكربون", "الأكسجين", "النيتروجين", "الأرجون"]
+    },
+    {
+      "question": "ما هي عاصمة فرنسا؟",
+      "answers": ["باريس", "ليون", "مارسيليا", "بوردو"]
+    }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "هناك حاجة إلى بذل جهود." },
+    { "from": 11, "to": 30, "feedback": "لقد اقتربت من الهدف." },
+    { "from": 31, "to": 50, "feedback": "هذه بداية جيدة." },
+    { "from": 51, "to": 70, "feedback": "عمل جيد!" },
+    { "from": 71, "to": 90, "feedback": "درجة جيدة جداً!" },
+    { "from": 91, "to": 100, "feedback": "ممتاز!" }
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === DIALOG_CARDS (بطاقات الحوار) ===
+  // ============================================================================
+  DIALOG_CARDS_REGLES_SPECIFIQUES: `- عدد البطاقات: 3 بطاقات كحد أدنى || [NOMBRE_ELEMENTS] بطاقات.
+- مبدأ الارتباط: يجب أن يكون الوجه والظهر مرتبطين بمعيار فريد ومستقر (مثلاً: تعريف -> مصطلح، حدث -> تاريخ، مؤلف -> عمل).
+- التعليمات: يجب أن يتبع وصف النشاط الصيغة: "اربط كل [X] بـ [Y] الخاص به".`,
+
+  DIALOG_CARDS_STRUCTURE_JSON: `- قم بتوليد JSON كامل وصحيح فقط داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- يجب أن يحتوي الكائن الجذر على \`title\` و \`description\` و \`dialogs\`.
+- 1. \`title\`: عنوان النشاط (نص بسيط، **بدون** Markdown أو HTML).
+- 2. \`description\`: التعليمات أو الوصف (تنسيق HTML أو نص بسيط).
+- 3. \`dialogs\`: مصفوفة مبدأ ارتباط البطاقات: الوجه (text) والظهر (answer).
+- 4. \`text\`: وجه البطاقة. استخدم \`**كلمة**\` للتعبير عن الخط العريض و \`*كلمة*\` للتعبير عن الخط المائل.
+- 5. \`answer\`: ظهر البطاقة. يجب أن يكون قصيراً. استخدم \`**كلمة**\` للتعبير عن الخط العريض و \`*كلمة*\` للتعبير عن الخط المائل.
+- 6. \`tips\` (اختياري): أضف تلميحاً للوجه (\`front\`) و/أو الظهر (\`back\`) فقط إذا كان ذلك مناسباً. نص بسيط **بدون** تنسيق.`,
+
+  DIALOG_CARDS_EXEMPLE_RENDU: `\`\`\`json
+{
+  "title": "الأفعال الشاذة",
+  "description": "جد الفعل في المصدر.",
+  "dialogs": [
+    {"text": "He **visited** his grandmother.", "answer": "to **visit**", "tips": {"front": "حدد زمن الماضي.", "back": "الصيغة الأساسية."}},
+    {"text": "She **played** soccer.", "answer": "to **play**"}
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === CHART (رسم بياني) ===
+  // ============================================================================
+  CHART_REGLES_SPECIFIQUES: `- عدد العناصر: 5 عناصر مقارنة كحد أدنى || [NOMBRE_ELEMENTS] عناصر مقارنة.
+- نوع الرسم البياني: اختر بين الرسم البياني الدائري (\`pieChart\`) أو الرسم البياني الشريطي (\`barChart\`) حسب الملاءمة البيداغوجية.
+- المسميات والألوان: يجب أن تكون الألوان متباينة لسهولة القراءة. يجب أن تكون المسميات قصيرة وواضحة.`,
+
+  CHART_STRUCTURE_JSON: `- قم بتوليد JSON كامل وصحيح فقط داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- \`graphMode\`: نوع الرسم البياني (\`pieChart\` أو \`barChart\`).
+- \`listOfTypes\`: مصفوفة من الكائنات \`{"value": ..., "color": "...", "fontColor": "...", "text": "..."}\`.
+- \`figureDefinition\`: عنوان الرسم البياني.`,
+
+  CHART_EXEMPLE_RENDU: `\`\`\`json
+{
+  "graphMode": "pieChart",
+  "listOfTypes": [
+    {"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "عنب الثعلب"},
+    {"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "توت العليق"}
+  ],
+  "figureDefinition": "رسم بياني للفواكه المفضلة"
+}
+\`\`\``,
+
+  // ============================================================================
+  // === QUIZSET (Quiz H5P) ===
+  // ============================================================================
+  QUIZSET_REGLES_SPECIFIQUES: `- عدد الأسئلة: قم بإنشاء جدول من 5 أسئلة كحد أدنى || [NOMBRE_ELEMENTS] أسئلة.
+- التنوع: اختر أنواع الأنشطة الأكثر ملاءمة من بين الأنواع التالية لتنويع التمرين:
+  - **QCM** (\`H5P.MultiChoice\` 1.16)
+  - **سحب وإسقاط الكلمات** (\`H5P.DragText\` 1.10)
+  - **صح/خطأ** (\`H5P.TrueFalse\` 1.8)
+  - **ملء الفراغات** (\`H5P.Blanks\` 1.14)
+  - **تمييز الكلمات** (\`H5P.MarkTheWords\` 1.11)
+  - **تعبير / سؤال مفتوح** (\`H5P.Essay\` 1.5)`,
+
+  QUIZSET_STRUCTURE_JSON: `- قم بإنشاء JSON كامل وصالح فقط داخل كتلة كود. يجب أن يبدأ ردك بـ \`{\` وينتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- يجب أن يحتوي الكائن الأساسي على:
+  - \`title\`: عنوان النشاط.
+  - \`questions\`: مصفوفة من الكائنات. كل كائن يمثل سؤالاً ويجب أن يحتوي على:
+    - \`library\`: الاسم والإصدار الدقيق للمكتبة (مثال: \`H5P.MultiChoice 1.16\`).
+    - \`metadata\`: كائن يحتوي على مفتاح \`title\` (عنوان قصير للسؤال).
+    - \`params\`: بيانات السؤال.
+  - \`overallFeedback\`: مصفوفة عالمية من 6 كائنات للدرجة النهائية لـ QuizSet.
+
+**تفاصيل \`params\` حسب النوع:**
+1. **QCM (\`H5P.MultiChoice 1.16\`)**: \`question\`, \`answers\` (مصفوفة كائنات مع \`text\`, \`correct\`), \`behaviour: {singleAnswer: true}\`
+2. **صح/خطأ (\`H5P.TrueFalse 1.8\`)**: \`question\`, \`correct\` ("true" أو "false" كنص)
+3. **ملء الفراغات (\`H5P.Blanks 1.14\`)**: \`taskDescription\`, \`questions\` (مصفوفة نصوص مع \`*الكلمة*\`)
+4. **سحب الكلمات (\`H5P.DragText 1.10\`)**: \`taskDescription\`, \`textField\` (مع \`*الكلمة*\`)
+5. **تمييز الكلمات (\`H5P.MarkTheWords 1.11\`)**: \`taskDescription\`, \`textField\` (مع \`*الكلمة*\`)
+6. **تعبير (\`H5P.Essay 1.5\`)**: \`taskDescription\`, \`keywords\` (مصفوفة كائنات)
+
+**يجب أن يتضمن كل سؤال، باستثناء تلك من نوع H5P.TrueFalse 1.8، مفتاح \`overallFeedback\` الخاص به (مقسم إلى 6 فئات).**
+- **التنسيق:** استخدم صيغة Markdown للنص العريض (\`**نص**\`) والنص المائل (\`*نص*\`).
+- **LaTeX:** بالنسبة للمعادلات الرياضية، استخدم حصرًا تنسيق LaTeX المحاط بترميز الهروب المزدوج: \`\\\\( ... \\\\)\`. لا تستخدم أبدًا علامة \`$\` بمفردها.
+- **التعليقات (Feedback):** يجب ألا تحتوي التعليقات على LaTeX أو Markdown.`,
+
+  QUIZSET_EXEMPLE_RENDU: `\`\`\`json
+{
+  "title": "الثقافة العلمية العامة",
+  "questions": [
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "علم الفلك - QCM" },
+      "params": {
+        "question": "ما هو الكوكب الأقرب إلى الشمس؟",
+        "answers": [
+          { "text": "عطارد", "correct": true },
+          { "text": "الزهرة", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          {"from": 0, "to": 10, "feedback": "خطأ."},
+          {"from": 11, "to": 30, "feedback": "غير كافٍ."},
+          {"from": 31, "to": 50, "feedback": "متوسط."},
+          {"from": 51, "to": 70, "feedback": "جيد."},
+          {"from": 71, "to": 90, "feedback": "جيد جداً."},
+          {"from": 91, "to": 100, "feedback": "ممتاز."}
+        ]
+      }
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "الأحياء - صح/خطأ" },
+      "params": {
+        "question": "الحمض النووي (DNA) هو لولب مزدوج.",
+        "correct": "true"
+      }
+    }
+  ],
+  "overallFeedback": [
+    {"from": 0, "to": 10, "feedback": "نتيجة ضعيفة."},
+    {"from": 11, "to": 30, "feedback": "نتيجة غير كافية."},
+    {"from": 31, "to": 50, "feedback": "نتيجة متوسطة."},
+    {"from": 51, "to": 70, "feedback": "نتيجة جيدة."},
+    {"from": 71, "to": 90, "feedback": "نتيجة جيدة جداً."},
+    {"from": 91, "to": 100, "feedback": "نتيجة ممتازة."}
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === QUIZSET QCM (مسابقة اختيار من متعدد H5P) ===
+  // ============================================================================
+  QUIZSET_QCM_REGLES_SPECIFIQUES: `- عدد الأسئلة: أنشئ 5 أسئلة على الأقل || [NOMBRE_ELEMENTS] أسئلة.
+- النوع: يجب عليك إنشاء أسئلة من نوع **اختيار من متعدد** فقط (\`H5P.MultiChoice\` 1.16). لا يُسمح بأي نوع آخر.
+- جودة أسئلة الاختيار من متعدد:
+  - يجب أن يحتوي كل سؤال على 3 خيارات إجابة على الأقل.
+  - حسب طبيعة السؤال، يمكنك اقتراح إجابة صحيحة واحدة أو عدة إجابات صحيحة.
+  - يجب أن تكون المشتتات (الإجابات الخاطئة) معقولة وذات صلة.
+  - تجنب الصيغ السلبية في الأسئلة.
+  - نوّع موضع الإجابة/الإجابات الصحيحة.`,
+
+  QUIZSET_QCM_STRUCTURE_JSON: `- أنشئ JSON كاملاً وصالحاً فقط في كتلة كود. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا نص أو تعليقات أخرى.
+- يجب أن يحتوي الكائن الجذر على:
+  - \`title\`: عنوان النشاط.
+  - \`questions\`: مصفوفة من الكائنات. كل كائن يمثل سؤال اختيار من متعدد ويجب أن يحتوي على:
+    - \`library\`: دائماً \`H5P.MultiChoice 1.16\`.
+    - \`metadata\`: كائن يحتوي على مفتاح \`title\` (عنوان قصير للسؤال).
+    - \`params\`: بيانات السؤال.
+  - \`overallFeedback\`: مصفوفة عامة من 6 كائنات للدرجة النهائية للـ QuizSet.
+
+**تفاصيل \`params\` للاختيار من متعدد (\`H5P.MultiChoice 1.16\`)**:
+- \`question\`: السؤال المطروح (نص).
+- \`answers\`: مصفوفة من الكائنات مع \`text\` (نص) و \`correct\` (منطقي).
+- \`behaviour\`: كائن مع \`singleAnswer\`: \`true\` إذا كانت إجابة صحيحة واحدة، \`false\` إذا كانت عدة إجابات صحيحة.
+
+**يجب أن يتضمن كل سؤال \`overallFeedback\` الخاص به (6 فئات: 0-10، 11-30، 31-50، 51-70، 71-90، 91-100).**
+- **التنسيق:** استخدم صيغة Markdown للنص العريض (\`**نص**\`) والنص المائل (\`*نص*\`).
+- **LaTeX:** بالنسبة للمعادلات الرياضية، استخدم حصرًا تنسيق LaTeX المحاط بترميز الهروب المزدوج: \`\\\\( ... \\\\)\`. لا تستخدم أبدًا علامة \`$\` بمفردها.
+- **التعليقات (Feedback):** يجب ألا تحتوي التعليقات على LaTeX أو Markdown.`,
+
+  QUIZSET_QCM_EXEMPLE_RENDU: `\`\`\`json
+{
+  "title": "مسابقة اختيار من متعدد - العلوم",
+  "questions": [
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "علم الفلك - الكواكب" },
+      "params": {
+        "question": "أي كوكب هو الأقرب إلى الشمس؟",
+        "answers": [
+          { "text": "الزهرة", "correct": false },
+          { "text": "المريخ", "correct": false },
+          { "text": "عطارد", "correct": true },
+          { "text": "المشتري", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          {"from": 0, "to": 10, "feedback": "خطأ."},
+          {"from": 11, "to": 30, "feedback": "غير كافٍ."},
+          {"from": 31, "to": 50, "feedback": "متوسط."},
+          {"from": 51, "to": 70, "feedback": "جيد."},
+          {"from": 71, "to": 90, "feedback": "جيد جداً."},
+          {"from": 91, "to": 100, "feedback": "ممتاز!"}
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "علم الأحياء - العضيات" },
+      "params": {
+        "question": "أي العضيات تمتلك حمضها النووي الخاص؟",
+        "answers": [
+          { "text": "الريبوسوم", "correct": false },
+          { "text": "الميتوكوندريا", "correct": true },
+          { "text": "جهاز جولجي", "correct": false },
+          { "text": "البلاستيدة الخضراء", "correct": true }
+        ],
+        "behaviour": { "singleAnswer": false },
+        "overallFeedback": [
+          {"from": 0, "to": 10, "feedback": "خطأ."},
+          {"from": 11, "to": 30, "feedback": "غير كافٍ."},
+          {"from": 31, "to": 50, "feedback": "متوسط."},
+          {"from": 51, "to": 70, "feedback": "جيد."},
+          {"from": 71, "to": 90, "feedback": "جيد جداً."},
+          {"from": 91, "to": 100, "feedback": "ممتاز!"}
+        ]
+      }
+    }
+  ],
+  "overallFeedback": [
+    {"from": 0, "to": 10, "feedback": "نتيجة ضعيفة. راجع المفاهيم الأساسية."},
+    {"from": 11, "to": 30, "feedback": "نتيجة غير كافية. استمر في المحاولة."},
+    {"from": 31, "to": 50, "feedback": "نتيجة متوسطة. أنت تتقدم."},
+    {"from": 51, "to": 70, "feedback": "نتيجة جيدة. أنت تتقن عدة مفاهيم."},
+    {"from": 71, "to": 90, "feedback": "نتيجة جيدة جداً. أنت على الطريق الصحيح."},
+    {"from": 91, "to": 100, "feedback": "نتيجة ممتازة. تهانينا!"}
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === QUIZSET VF (مسابقة صح/خطأ H5P) ===
+  // ============================================================================
+  QUIZSET_VF_REGLES_SPECIFIQUES: `- عدد الأسئلة: قم بإنشاء جدول من 5 أسئلة كحد أدنى || [NOMBRE_ELEMENTS] أسئلة.
+- النوع: يجب عليك إنشاء أسئلة من نوع **صح/خطأ** (\`H5P.TrueFalse\` 1.8) فقط. لا يُسمح بأي نوع آخر.
+- جودة الأسئلة:
+  - يجب أن تكون العبارات واضحة ولا لبس فيها.
+  - تجنب النفي المزدوج.
+  - نوّع بين العبارات الصحيحة والخاطئة.`,
+
+  QUIZSET_VF_STRUCTURE_JSON: `- قم بتوليد JSON كامل وصالح حصرياً داخل كتلة كود. يجب أن يبدأ ردك بـ \`{\` وينتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- يجب أن يحتوي الكائن الجذري على:
+  - \`title\`: عنوان النشاط.
+  - \`questions\`: مصفوفة من الكائنات. كل كائن يمثل سؤالاً ويجب أن يحتوي على:
+    - \`library\`: دائماً \`H5P.TrueFalse 1.8\`.
+    - \`metadata\`: كائن يحتوي على مفتاح \`title\` (عنوان قصير للسؤال).
+    - \`params\`: بيانات السؤال.
+  - \`overallFeedback\`: مصفوفة عامة من 6 كائنات للدرجة النهائية للـ QuizSet: 0-10, 11-30, 31-50, 51-70, 71-90, 91-100.
+
+**تفاصيل \`params\` لـ صح/خطأ (\`H5P.TrueFalse 1.8\`)**:
+- \`question\`: العبارة أو السؤال المطروح (string).
+- \`correct\`: الإجابة الصحيحة. يجب أن تكون سلسلة نصية: "true" أو "false".
+- **التنسيق:** استخدم صيغة Markdown للنص العريض (\`**نص**\`) والنص المائل (\`*نص*\`).
+- **LaTeX:** بالنسبة للمعادلات الرياضية، استخدم حصرًا تنسيق LaTeX المحاط بترميز الهروب المزدوج: \`\\\\( ... \\\\)\`. لا تستخدم أبدًا علامة \`$\` بمفردها.
+- **التعليقات (Feedback):** يجب ألا تحتوي التعليقات على LaTeX أو Markdown.`,
+
+  QUIZSET_VF_EXEMPLE_RENDU: `\`\`\`json
+{
+  "title": "مسابقة صح/خطأ - الجغرافيا",
+  "questions": [
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "الجغرافيا - العواصم" },
+      "params": {
+        "question": "عاصمة أستراليا هي كانبيرا.",
+        "correct": "true"
+      }
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "الجغرافيا - القارات" },
+      "params": {
+        "question": "أفريقيا هي أكبر قارة في العالم.",
+        "correct": "false"
+      }
+    }
+  ],
+  "overallFeedback": [
+    {"from": 0, "to": 10, "feedback": "نتيجة ضعيفة. راجع المفاهيم الأساسية."},
+    {"from": 11, "to": 30, "feedback": "نتيجة غير كافية. استمر في المحاولة."},
+    {"from": 31, "to": 50, "feedback": "نتيجة متوسطة. أنت تتقدم."},
+    {"from": 51, "to": 70, "feedback": "نتيجة جيدة. أنت تتقن عدة مفاهيم."},
+    {"from": 71, "to": 90, "feedback": "نتيجة جيدة جداً. أنت على الطريق الصحيح."},
+    {"from": 91, "to": 100, "feedback": "نتيجة ممتازة. تهانينا!"}
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === ELEA_TEST (Test Moodle/Éléa) ===
+  // ============================================================================
+  ELEA_TEST_REGLES_SPECIFIQUES: `- عدد الأسئلة: 10 أسئلة كحد أدنى || [NOMBRE_ELEMENTS] أسئلة.
+- التنوع: اختر أنسب تنسيقات الأسئلة من بين ما يلي:
+  - **اختيار من متعدد** (\`multichoice\`)
+  - **مطابقة** (\`matching\`)
+  - **رقمي** (\`numerical\`)
+  - **صح/خطأ** (\`truefalse\`)
+  - **إجابة قصيرة** (\`shortanswer\`)
+  - **نص بفتحات** (\`cloze\`)
+- المشتتات: اقترح ما لا يقل عن 3 مشتتات لكل سؤال \`multichoice\`.`,
+
+  ELEA_TEST_STRUCTURE_JSON: `- قم بتوليد JSON كامل وصحيح فقط داخل كتلة برمجية. يجب أن تبدأ إجابتك بـ \`{\` وتنتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+
+يجب أن يحتوي الكائن الرئيسي على المفاتيح التالية:
+- \`bank_name\`: اسم قصير وصفي لبنك الأسئلة.
+- \`bank_description\`: جملة تصف محتوى البنك.
+- \`questions\`: مصفوفة من الكائنات حيث يمثل كل كائن سؤالاً (\`type\`، \`content\`).
+  - يجب أن يكون لكل سؤال \`content.name\` قصير وفريد (مثل: "س1 - الموضوع").
+
+**قواعد التنسيق:**
+- **الأرقام**: استخدم النقطة للكسور العشرية (مثل: 12.34).
+- **Cloze**: احترم بدقة الصيغة \`{1:TYPE:=الإجابة الصحيحة~الإجابة الخاطئة}\`.`,
+
+  ELEA_TEST_EXEMPLE_RENDU: `- **للنوع \`multichoice\` (اختيار من متعدد):**
   \`\`\`json
   {
     "type": "multichoice",
     "content": {
-      "name": "عنوان السؤال",
-      "questiontext": "نص السؤال.",
-      "feedback": "تغذية راجعة عامة.",
+      "name": "س1 - جغرافيا",
+      "questiontext": "ما هي عاصمة فرنسا؟",
+      "feedback": "باريس هي العاصمة السياسية والاقتصادية لفرنسا.",
       "answers": [
-        { "text": "إجابة 1", "fraction": 100, "feedback": "تغذية راجعة إذا تم اختيارها." },
-        { "text": "إجابة 2", "fraction": 0, "feedback": "تغذية راجعة إذا تم اختيارها." }
+        { "text": "باريس", "fraction": 100, "feedback": "بالضبط!" },
+        { "text": "ليون", "fraction": 0, "feedback": "لا، ليون مدينة كبيرة ولكنها ليست العاصمة." },
+        { "text": "مارسيليا", "fraction": 0, "feedback": "لا، إنها ثاني أكبر مدينة في فرنسا." }
       ]
     }
   }
   \`\`\`
-`,
-    moodle_xml_prompt_question_type_matching: `
-- **لنمط \`matching\` (مطابقة):**
+
+- **للنوع \`matching\` (مطابقة):**
   \`\`\`json
   {
     "type": "matching",
     "content": {
-      "name": "عنوان السؤال",
-      "questiontext": "نص السؤال.",
-      "feedback": "تغذية راجعة عامة.",
+      "name": "س2 - مفردات إنجليزية",
+      "questiontext": "اربط كل كلمة إنجليزية بترجمتها العربية.",
+      "feedback": "أحسنت، أنت تتقن المفردات الأساسية.",
       "subquestions": [
-        { "text": "نص السؤال 1", "answer": "إجابة 1" },
-        { "text": "نص السؤال 2", "answer": "إجابة 2" }
+        { "text": "Dog", "answer": "كلب" },
+        { "text": "Cat", "answer": "قطة" },
+        { "text": "Bird", "answer": "طائر" }
       ]
     }
   }
   \`\`\`
-`,
-    moodle_xml_prompt_question_type_numerical: `
-- **لنمط \`numerical\` (عددي):**
+
+- **للنوع \`numerical\` (رقمي):**
   \`\`\`json
   {
     "type": "numerical",
     "content": {
-      "name": "عنوان السؤال",
-      "questiontext": "نص السؤال.",
-      "feedback": "تغذية راجعة عامة.",
-      "answer": { "number": 12.34, "tolerance": 0.1, "feedback": "تغذية راجعة للإجابة." }
+      "name": "س3 - رياضيات",
+      "questiontext": "ما هي قيمة  pi مقربة لمنزلتين عشريتين؟",
+      "feedback": "pi هو ثابت غير نسبي يساوي تقريباً 3.14159...",
+      "answer": { "number": 3.14, "tolerance": 0.01, "feedback": "إنه بالفعل 3.14." }
     }
   }
   \`\`\`
-`,
-    moodle_xml_prompt_question_type_truefalse: `
-- **لنمط \`truefalse\` (صح/خطأ):**
+
+- **للنوع \`truefalse\` (صح/خطأ):**
   \`\`\`json
   {
     "type": "truefalse",
     "content": {
-      "name": "عنوان السؤال",
-      "questiontext": "نص السؤال.",
-      "feedback": "تغذية راجعة عامة.",
-      "answer": { "value": true, "feedback_true": "تغذية راجعة إذا كان صحيحًا.", "feedback_false": "تغذية راجعة إذا كان خاطئًا." }
+      "name": "س4 - علوم",
+      "questiontext": "يغلي الماء عند 100 درجة مئوية عند مستوى سطح البحر.",
+      "feedback": "هذه خاصية فيزيائية قياسية للماء.",
+      "answer": { "value": true, "feedback_true": "صح.", "feedback_false": "خطأ، الماء يغلي بالفعل عند 100 درجة مئوية تحت ضغط جوي واحد." }
     }
   }
   \`\`\`
-`,
-    moodle_xml_prompt_question_type_shortanswer: `
-- **لنمط \`shortanswer\` (إجابة قصيرة):**
+
+- **للنوع \`shortanswer\` (إجابة قصيرة):**
   \`\`\`json
   {
     "type": "shortanswer",
     "content": {
-      "name": "عنوان السؤال",
-      "questiontext": "نص السؤال.",
-      "feedback": "تغذية راجعة عامة.",
+      "name": "س5 - أدب",
+      "questiontext": "من كتب 'البؤساء'؟",
+      "feedback": "إنها واحدة من أعظم روايات القرن التاسع عشر.",
       "answers": [
-        { "text": "إجابة صحيحة 1", "fraction": 100, "feedback": "تغذية راجعة إذا تم اختيارها." },
-        { "text": "إجابة بديلة", "fraction": 100, "feedback": "تغذية راجعة إذا تم اختيارها." }
+        { "text": "فيكتور هوغو", "fraction": 100, "feedback": "صحيح!" },
+        { "text": "هوغو", "fraction": 100, "feedback": "صحيح!" }
       ]
     }
   }
   \`\`\`
-`,
-    moodle_xml_prompt_question_type_cloze: `
-- **لنمط \`cloze\` (نص بفراغات):**
+
+- **للنوع \`cloze\` (نص بفتحات):**
+  - انتبه للصيغة: \`{1:SHORTANSWER:=جيد~سيء}\`.
   \`\`\`json
   {
     "type": "cloze",
     "content": {
-      "name": "عنوان السؤال",
-      "questiontext": "هذا نص يتضمن فراغًا {1:SHORTANSWER:=إجابة صحيحة~تعليق} وآخر {1:MULTICHOICE:=إجابة صحيحة~إجابة خاطئة}.",
-      "feedback": "تغذية راجعة عامة."
+      "name": "س6 - تاريخ",
+      "questiontext": "ولد نابليون عام {1:SHORTANSWER:=1769} في {1:MULTICHOICE:=أجاكسيو~باستيا~باريس}.",
+      "feedback": "ولد نابليون بونابرت في كورسيكا."
     }
   }
-  \`\`\`
-`,
-    moodle_xml_prompt_form_title: "**تعليمات نهائية:**",
-    moodle_xml_prompt_form_rule1: "وزّع الأسئلة بالتساوي بين الأنماط المختلفة.",
-    moodle_xml_prompt_generate_only_json: "ولّد فقط كود JSON صالحًا، دون أي تعليق. يجب أن يكون الناتج كائن JSON واحدًا يحتوي على المفتاح `questions`.",
+  \`\`\``,
 
-    // إنشاء اختبار Éléa
-    moodle_xml_success_generation: "تم إنشاء الملف {fileName} بنجاح!",
-    test_error_creation_mbz: "حدث خطأ أثناء إنشاء ملف MBZ للاختبار:",
-    test_success_generation: "تم إنشاء الملف {fileName} بنجاح!",
-    test_error_generic: "خطأ:",
-    test_backup_log: "تم إنشاء نسخة احتياطية تلقائيًا بواسطة Caramel\n",
+  // ============================================================================
+  // === ELEA_MILLIONNAIRE (Millionnaire) ===
+  // ============================================================================
+  ELEA_MILLIONNAIRE_REGLES_SPECIFIQUES: `- عدد الأسئلة: 6 أسئلة بالضبط (يجب عدم تغيير هذا العدد مطلقاً)
+- التدرج: يجب أن تكون صعوبة الأسئلة **تصاعدية وتربوية**. توضع العناصر المهمة المراد حفظها في الأسئلة الأولى.
+- الصحة: يجب أن يكون المحتوى دقيقاً للغاية وذا صلة.`,
 
-    // GIFT Prompt
-    gift_prompt_role: "أنت خبير في هندسة التعلّم تنشئ بنك أسئلة لنشاط اختبار على Moodle/Éléa بصيغة GIFT.",
-    gift_prompt_intro: "أرغب في إنشاء اختبار مكوَّن من ${nombreQuestions} أسئلة.",
-    gift_prompt_format_info: "يجب أن يكون الاختبار بصيغة GIFT ليُستورد في Moodle.",
-    gift_prompt_question_quality: "على كل سؤال أن يكون واضحًا وموجزًا وبدون لبس، مع تغذية راجعة مفصّلة.",
-    gift_prompt_code_format_intro: "يجب أن يتبع الكود تمامًا نفس الصيغة الموضحة أدناه:",
-    gift_prompt_example_question_comment: "// question: 1  name: ما الجسم المركزي في مجموعتنا الشمسية؟",
-    gift_prompt_example_question_text: "::ما الجسم المركزي في مجموعتنا الشمسية؟::ما الجسم المركزي في مجموعتنا الشمسية؟{",
-    gift_prompt_example_answer_correct: "=الشمس#صحيح! الشمس هي النجم المركزي في مجموعتنا الشمسية. أحسنت!",
-    gift_prompt_example_answer_incorrect1: "~القمر#خطأ. القمر قمرٌ طبيعي للأرض. الشمس هي الجسم المركزي.",
-    gift_prompt_example_answer_incorrect2: "~المشتري#خطأ. المشتري كوكبٌ غازي عملاق. الشمس هي الجسم المركزي.",
-    gift_prompt_example_answer_incorrect3: "~الأرض#خطأ. الأرض هي الكوكب الذي نعيش عليه. الشمس هي الجسم المركزي.",
-    gift_prompt_example_end_bracket: "}",
-    gift_prompt_question_types_intro: "يجب أن يتضمن الاختبار عشوائيًا أنواعًا مختلفة من الأسئلة:",
-    gift_prompt_question_type_multichoice: "- أسئلة اختيار من متعدد (multichoice) مع إجابة صحيحة واحدة و3 مشتّتات.",
-    gift_prompt_question_type_truefalse: "- أسئلة صواب/خطأ (truefalse).",
-    gift_prompt_question_type_numerical: "- أسئلة عددية (numerical) بهامش خطأ مقبول.",
-    gift_prompt_question_type_matching: "- أسئلة مطابقة (matching) تحتوي على 4 أزواج على الأقل.",
-    gift_prompt_generate_only_gift: "ولِّد الاختبار مباشرة بصيغة GIFT دون تعليقات أو وسوم إضافية. التزم بدقة بالتنسيق الموصوف؛ سأُلصق النتيجة في أداة أخرى تتوقّع هذا التنسيق. قدِّم الإجابة ككود مُنسَّق مسبقًا.",
+  ELEA_MILLIONNAIRE_STRUCTURE_JSON: `- قم بإنشاء JSON كامل وصالح فقط داخل كتلة كود. يجب أن يبدأ ردك بـ \`{\` وينتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+كائن رئيسي يحتوي على المفاتيح التالية:
+- \`title\`: عنوان النشاط (سلسلة نصية).
+- \`questions\`: مصفوفة مكونة من 6 كائنات بالضبط، حيث يمثل كل كائن سؤالاً ويحتوي على:
+  - \`question\`: نص السؤال (سلسلة نصية).
+  - \`goodanswer\`: الإجابة الصحيحة (سلسلة نصية).
+  - \`badanswer\`: مصفوفة من 3 إجابات خاطئة بالضبط (مصفوفة سلاسل نصية).
+  - بالنسبة للصيغ الرياضية، يمنع استخدام LaTeX.`,
 
-    // Flashcards Prompt
-    flashcards_prompt_role: "أنت خبير في التصميم التربوي تقوم بإنشاء نشاط H5P من نوع 'بطاقات تعليمية'.",
-    flashcards_prompt_mission: "**مهمتك:**",
-    flashcards_prompt_generate_json: "أنشئ كائن JSON كامل وصالح لنشاط H5P من نوع Flashcards. يجب أن يكون JSON قابلاً للاستخدام مباشرة.",
-    flashcards_prompt_json_structure_title: "**هيكل JSON المتوقع:**",
-    flashcards_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
-    flashcards_prompt_title: "`title`: عنوان مناسب للنشاط.",
-    flashcards_prompt_description: "`description`: تعليمات واضحة للطالب.",
-    flashcards_prompt_association_principle: "يجب أن يكون الوجه الأمامي والخلفي مرتبطين بمعيار واحد وثابت (مثل: تعريف→مصطلح، شكل→عدد الأضلاع، حدث→تاريخ، مؤلف→عمل). استخدم نفس العلاقة لجميع البطاقات وصغ التعليمات على النحو التالي: «اربط كل X بـ Y». الإجابات (`answer`) يجب أن تكون موحدة: كلمة واحدة بسيطة أو رقم، بأحرف صغيرة، بدون أدوات تعريف أو علامات ترقيم؛ الأرقام بالأرقام.",
-    flashcards_prompt_cards_array: "`cards`: مصفوفة تحتوي على ${nombreQuestions} من الكائنات، يمثل كل كائن بطاقة ويحتوي على:",
-    flashcards_prompt_text: "`text`: السؤال أو المصطلح المراد تخمينه (الوجه الأمامي).",
-    flashcards_prompt_answer: "`answer`: الإجابة أو التعريف (الوجه الخلفي). ملاحظة مهمة: يجب أن تحتوي الإجابة على كلمة بسيطة واحدة أو رقم فقط، بدون كلمات مركبة أو منفصلة.",
-    flashcards_prompt_tip: "`tip` (اختياري): تلميح لمساعدة الطالب إذا كان السؤال صعبًا. أضف تلميحًا فقط إذا كان ذلك مناسبًا.",
-    flashcards_prompt_tip_formatting: "في التلميحات (`tip`)، يمكنك استخدام `*كلمة*` لتكون بالخط العريض و`**كلمة**` للمائل لتأكيد المعلومات المهمة.",
-    flashcards_prompt_example_json_title: "**مثال على JSON:**",
-    flashcards_prompt_example: `\`\`\`json
+  ELEA_MILLIONNAIRE_EXEMPLE_RENDU: `\`\`\`json
 {
-"title": "عواصم أوروبا",
-"description": "احفظ عاصمة كل بلد. انقر على البطاقة لرؤية الإجابة.",
-"cards": [
-{
-"text": "عاصمة فرنسا",
-"answer": "باريس"
-},
-{
-"text": "عاصمة هولندا",
-"answer": "أمستردام",
-"tip": "<p>إنها مدينة <strong>القنوات</strong> وزهور التوليب!</p>"
-}
-]
-}
-\`\`\` `,
-    flashcards_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
-
-    // QuizSet Prompt
-    quiz_set_prompt_role: "أنت خبير في هندسة التعلّم تُنشئ محتوى لنشاط \"H5P Quiz (Question Set)\".",
-    quiz_set_prompt_mission: "**مهمتك:**",
-    quiz_set_prompt_generate_json: "ولِّد كائن JSON **للمحتوى فقط** لاختبار H5P، بحيث يمكن استخدامه مباشرة كملف `content.json`.",
-    quiz_set_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
-    quiz_set_prompt_json_structure_main_object: "يحتوي الكائن الرئيس على المفاتيح التالية:",
-    quiz_set_prompt_progress_type: "`progressType`: \"dots\"",
-    quiz_set_prompt_pass_percentage: "`passPercentage`: 50",
-    quiz_set_prompt_questions_array: "`questions`: مصفوفة من ${nombreQuestions} كائنات، يمثّل كلٌّ منها سؤالًا.",
-    quiz_set_prompt_content_rules_title: "**قواعد محتوى الأسئلة:**",
-    quiz_set_prompt_rule1: "1. يجب أن يحتوي كل كائن سؤال على المفاتيح `library` و`params` و`subContentId`.",
-    quiz_set_prompt_rule2: "2.  **البنية:** يجب أن تكون كل سؤال كائنًا يحتوي على المفاتيح `library` و `metadata` و `params`.",
-    quiz_set_prompt_rule3: "3. نوِّع أنواع الأسئلة. استخدم المكتبات التالية بالإصدارات الدقيقة:",
-    quiz_set_prompt_rule4: "4.  **التقييم (قاعدة حاسمة):** لـ **جميع أنواع الأسئلة** (`MultiChoice`, `Blanks`, `DragText`, `MarkTheWords`, `Essay`), **يجب** عليك إنشاء `overallFeedback` بستة نطاقات درجات بالضبط: 0-10، 11-30، 31-50، 51-70، 71-90، و 91-100. بالنسبة لأسئلة `TrueFalse`، أضف أيضًا حقلي `feedbackOnCorrect` و `feedbackOnWrong`. يجب أن يكون التقييم إيجابيًا وتدريجيًا ومصاغًا دائمًا بشكل إيجابي.",
-    quiz_set_prompt_rule5: "5.  **المحتوى:** يجب أن يكون المحتوى في `params` ذا صلة من الناحية التربوية، مع مشتتات معقولة للأسئلة متعددة الخيارات ونصوص متماسكة للأنشطة الأخرى.",
-    quiz_set_prompt_rule6: "6.  **البساطة:** لا تضف صورًا أو معلمات سلوك غير ضرورية. حافظ على بساطة البنية كما في الأمثلة.",
-    quiz_set_prompt_rule7: "7.  **الصيغ الرياضية:** بالنسبة للصيغ الرياضية، استخدم تدوين LaTeX مع escape مزدوج للـ backslash. أحط الصيغ بـ \\( و \\). مثال: بدلاً من كتابة ( (2^3)^2 )، اكتب \\( (2^3)^2 \\). وكذلك للإجابات: \\( 2^{12} \\) بدلاً من ( 2^{12} ).",
-    quiz_set_prompt_example_json_title: "**أمثلة على الهياكل لكل نوع سؤال مسموح به:**",
-    quiz_set_example_true_false: "صح/خطأ :",
-    quiz_set_example_multiple_choice: "اختيار من متعدد :",
-    quiz_set_example_fill_in_the_blanks: "نص مع فراغات :",
-    quiz_set_example_drag_the_words: "اسحب الكلمات :",
-    quiz_set_example_mark_the_words: "تمييز الكلمات :",
-    quiz_set_example_essay: "كتابة :",
-    quiz_set_prompt_generate_only_json: "ولِّد فقط JSON صالحًا، بدءًا من `{\"progressType\": \"dots\", ...}`، دون أي تعليقات.",
-
-    // VRAI/FAUX
-    quiz_set_true_false_example: JSON.stringify({
-        "library": "H5P.TrueFalse 1.8",
-        "metadata": { "title": "عنوان سؤال صح/خطأ" },
-        "params": {
-            "question": "هل فرنسا دولة؟",
-            "correct": "true",
-            "feedbackOnCorrect": "صحيح! فرنسا بالفعل دولة.",
-            "feedbackOnWrong": "خطأ. فرنسا معترف بها دوليًا كدولة.",
-            "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
-        }
-    }, null, 4),
-
-    // QCM
-    quiz_set_multiple_choice_example: JSON.stringify({
-        "library": "H5P.MultiChoice 1.16",
-        "metadata": { "title": "عنوان MCQ" },
-        "params": {
-            "question": "ما هي عاصمة فرنسا؟",
-            "answers": [
-                { "text": "باريس", "correct": true },
-                { "text": "برلين", "correct": false }
-            ],
-            "behaviour": { "type": "auto", "singleAnswer": true, "enableRetry": true, "enableSolutionsButton": true },
-            "overallFeedback": [
-                { "from": 0, "to": 10, "feedback": "تقييم 0-10%" },
-                { "from": 11, "to": 30, "feedback": "تقييم 11-30%" },
-                { "from": 31, "to": 50, "feedback": "تقييم 31-50%" },
-                { "from": 51, "to": 70, "feedback": "تقييم 51-70%" },
-                { "from": 71, "to": 90, "feedback": "تقييم 71-90%" },
-                { "from": 91, "to": 100, "feedback": "تقييم 91-100%" }
-            ]
-        }
-    }, null, 4),
-
-    // Texte à trous
-    quiz_set_fill_in_the_blanks_example: JSON.stringify({
-        "library": "H5P.Blanks 1.14",
-        "metadata": { "title": "عنوان تمرين ملء الفراغات" },
-        "params": {
-            "questions": ["باريس هي *عاصمة* فرنسا."],
-            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "caseSensitive": false },
-            "overallFeedback": [
-                { "from": 0, "to": 10, "feedback": "تقييم 0-10%" },
-                { "from": 11, "to": 30, "feedback": "تقييم 11-30%" },
-                { "from": 31, "to": 50, "feedback": "تقييم 31-50%" },
-                { "from": 51, "to": 70, "feedback": "تقييم 51-70%" },
-                { "from": 71, "to": 90, "feedback": "تقييم 71-90%" },
-                { "from": 91, "to": 100, "feedback": "تقييم 91-100%" }
-            ]
-        }
-    }, null, 4),
-
-    // Glisser les mots
-    quiz_set_drag_the_words_example: JSON.stringify({
-        "library": "H5P.DragText 1.10",
-        "metadata": { "title": "عنوان نشاط سحب الكلمات" },
-        "params": {
-            "taskDescription": "أكمل الجملة.",
-            "textField": "*باريس* هي عاصمة فرنسا.",
-            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "instantFeedback": false },
-            "overallFeedback": [
-                { "from": 0, "to": 10, "feedback": "تقييم 0-10%" },
-                { "from": 11, "to": 30, "feedback": "تقييم 11-30%" },
-                { "from": 31, "to": 50, "feedback": "تقييم 31-50%" },
-                { "from": 51, "to": 70, "feedback": "تقييم 51-70%" },
-                { "from": 71, "to": 90, "feedback": "تقييم 71-90%" },
-                { "from": 91, "to": 100, "feedback": "تقييم 91-100%" }
-            ]
-        }
-    }, null, 4),
-
-    // Surligner les mots
-    quiz_set_mark_the_words_example: JSON.stringify({
-        "library": "H5P.MarkTheWords 1.11",
-        "metadata": { "title": "عنوان نشاط تحديد الكلمات" },
-        "params": {
-            "taskDescription": "حدد العاصمة.",
-            "textField": "عاصمة فرنسا هي *باريس*.",
-            "behaviour": { "enableRetry": true, "enableSolutionsButton": true },
-            "overallFeedback": [
-                { "from": 0, "to": 10, "feedback": "تقييم 0-10%" },
-                { "from": 11, "to": 30, "feedback": "تقييم 11-30%" },
-                { "from": 31, "to": 50, "feedback": "تقييم 31-50%" },
-                { "from": 51, "to": 70, "feedback": "تقييم 51-70%" },
-                { "from": 71, "to": 90, "feedback": "تقييم 71-90%" },
-                { "from": 91, "to": 100, "feedback": "تقييم 91-100%" }
-            ]
-        }
-    }, null, 4),
-
-    // Rédaction
-    quiz_set_essay_example: JSON.stringify({
-        "library": "H5P.Essay 1.5",
-        "metadata": { "title": "عنوان المقال" },
-        "params": {
-            "taskDescription": "ما هي عاصمة فرنسا؟",
-            "keywords": [
-                { "keyword": "باريس", "options": { "points": 1, "caseSensitive": false } }
-            ],
-            "behaviour": { "inputFieldSize": "1", "enableRetry": true },
-            "overallFeedback": [
-                { "from": 0, "to": 10, "feedback": "تقييم 0-10%" },
-                { "from": 11, "to": 30, "feedback": "تقييم 11-30%" },
-                { "from": 31, "to": 50, "feedback": "تقييم 31-50%" },
-                { "from": 51, "to": 70, "feedback": "تقييم 51-70%" },
-                { "from": 71, "to": 90, "feedback": "تقييم 71-90%" },
-                { "from": 91, "to": 100, "feedback": "تقييم 91-100%" }
-            ]
-        }
-    }, null, 4),
-
-    // Glossary Prompt
-    glossary_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Accordion\".",
-    glossary_prompt_mission: "**مهمتك:**",
-    glossary_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لمسرد مصطلحات (Accordion) عبر H5P. يجب أن يكون جاهزًا للاستخدام مباشرة.",
-    glossary_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
-    glossary_prompt_json_structure_main_object: "أنشئ مصفوفة من ${nombreQuestions} كائنات JSON.",
-    glossary_prompt_panel_object: "",
-    glossary_prompt_title: "`title`: الكلمة أو التعبير المراد تعريفه.",
-    glossary_prompt_content: "`text`: التعريف. استخدم `*كلمة*` للغامق، `**كلمة**` للمائل و`\\n` لأسطر جديدة.",
-    glossary_prompt_content_rules_title: "**قواعد المحتوى:**",
-    glossary_prompt_rule1: "1. يجب أن تكون التعريفات واضحة وموجزة ومناسبة لمستوى المتعلمين.",
-    glossary_prompt_rule2: "",
-    glossary_prompt_example_json_title: "**مثال JSON لمدخل واحد:**",
-    glossary_prompt_example: `\`\`\`json
-[
-{
-"title": "البناء الضوئي",
-"text": "عملية تقوم من خلالها النباتات الخضراء بتحويل ضوء الشمس إلى طاقة."
-},
-{
-"title": "خلية",
-"text": "الوحدة الأساسية لجميع الكائنات الحية."
-}
-]
-\`\`\` `,
-    glossary_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
-
-    // Summary Prompt
-    summary_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Summary\".",
-    summary_prompt_mission: "**مهمتك:**",
-    summary_prompt_generate_json: "ولِّد كائن JSON كاملًا لنشاط H5P من نوع Summary، جاهزًا للاستخدام مباشرة.",
-    summary_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
-    summary_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على المفاتيح التالية:",
-    summary_prompt_intro_field: "`intro`: جملة تمهيدية للنشاط (مثال: \"اختر العبارة الصحيحة.\").",
-    summary_prompt_summaries_array: "`summaries`: مصفوفة من ${nombreQuestions} كائنات، يمثل كل منها خطوة في الملخص.",
-    summary_prompt_summary_object: "يجب أن يحتوي كل كائن في `summaries` على:",
-    summary_prompt_summary_array: "- `summary`: مصفوفة من الجمل.",
-    summary_prompt_tip_field: "- `tip` (اختياري ولكن موصى به): تلميح لمساعدة الطالب.",
-    summary_prompt_content_rules_title: "**قواعد المحتوى:**",
-    summary_prompt_rule1: "1. في كل مصفوفة \"summary\" تكون **الجملة الأولى صحيحة**.",
-    summary_prompt_rule2: "2. الجمل التالية مُشتّتات معقولة لكنها غير صحيحة.",
-    summary_prompt_rule3: "3. يجب أن تكوّن جميع الجمل الصحيحة معًا ملخّصًا متماسكًا.",
-    summary_prompt_example_json_title: "**مثال JSON لخطوة واحدة:**",
-    summary_prompt_example: `\`\`\`json
-{
-"summaries": [
-{
-"summary": [
-    "هذه هي الجملة الصحيحة.",
-    "هذا خيار خاطئ.",
-    "هذا خيار خاطئ آخر."
-]
-}
-]
-}
-\`\`\` `,
-    summary_prompt_overall_feedback: "`overallFeedback`: (قاعِدة صارِمة) يجب عليك توليد مصفوفة من 6 كائنات للتغذية الراجعة النهائية، مُؤطّرة بموضوع التمرين، مع احترام الفترات التالية بدقة: 0-10، 11-30، 31-50، 51-70، 71-90، و91-100. يجب أن يكون لكل كائن الشكل `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. يجب أن يكون نص `feedback` إيجابيًا من دون مبالغة، تدريجيًا ودائمًا بصيغة إثبات.",
-    summary_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
-
-    // Summary UI translations
-    summary_intro: "اختر العبارة الصحيحة.",
-    summary_solved_label: "التقدم:",
-    summary_score_label: "إجابات خاطئة:",
-    summary_result_label: "نتيجتك",
-    summary_feedback: "لقد أجبت بشكل صحيح على @score من @total عبارة (@percent %).",
-    summary_label_correct: "صحيح.",
-    summary_label_incorrect: "خطأ! يرجى المحاولة مرة أخرى.",
-    summary_label_correct_answers: "الإجابات الصحيحة.",
-    summary_tip_button_label: "إظهار التلميح",
-    summary_score_bar_label: "لقد حصلت على :num من :total نقطة",
-    summary_progress_text: "التقدم :num من :total",
-    summary_alternative_incorrect_label: "خطأ",
-
-    // Drag the Words Prompt
-    drag_word_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Drag the Words\".",
-    drag_word_prompt_mission: "**مهمتك:**",
-    drag_word_prompt_generate_json: "ولِّد كائن JSON كاملًا لنشاط H5P من نوع Drag the Words، جاهزًا للاستخدام.",
-    drag_word_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
-    drag_word_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
-    drag_word_prompt_task_description: "`taskDescription`: تعليمات واضحة.",
-    drag_word_prompt_text_field: "`textField`: النص المراد إكماله. يجب أن تنتهي كل جملة بفاصل أسطر `\\n`.",
-    drag_word_prompt_content_rules_title: "**قواعد المحتوى:**",
-    drag_word_prompt_rule1: "1. أنشئ نصًا متماسكًا حول الموضوع، بجمل قصيرة تنتهي بـ `\\n`.",
-    drag_word_prompt_rule2: "2. الكلمات القابلة للسحب محاطة بنجوم. يمكنك إضافة تلميح باستخدام `:تلميحي` وملاحظات باستخدام `\\+ملاحظات صحيحة \\-ملاحظات غير صحيحة`.",
-    drag_word_prompt_example_json_title: "**مثال JSON:**",
-    drag_word_prompt_example: `\`\`\`json
-{
-"taskDescription": "أكمل النص عن طريق سحب الكلمات.",
-"textField": "يتكون *النظام الشمسي* من *ثماني* كواكب تدور حول *الشمس*."
-}
- \`\`\` `,
-    drag_word_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
-    drag_word_prompt_overall_feedback: "`overallFeedback`: (قاعِدة صارِمة) يجب عليك توليد مصفوفة من 6 كائنات للتغذية الراجعة النهائية، مُؤطّرة بموضوع التمرين، مع احترام الفترات التالية بدقة: 0-10، 11-30، 31-50، 51-70، 71-90، و91-100. يجب أن يكون لكل كائن الشكل `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. يجب أن يكون نص `feedback` إيجابيًا من دون مبالغة، تدريجيًا ودائمًا بصيغة إثبات.",
-
-    // Drag the Words UI translations
-    drag_words_check_answer: "تحقق",
-    drag_words_try_again: "إعادة المحاولة",
-    drag_words_show_solution: "إظهار الحل",
-    drag_words_score_feedback: "النتيجة: @score من @total.",
-    drag_words_tip_label: "إظهار تلميح",
-    drag_words_correct_text: "صحيح!",
-    drag_words_incorrect_text: "خطأ!",
-    drag_words_score_bar_label: "لقد حصلت على :num من :total نقطة",
-    drag_words_submit_answer: "إرسال",
-
-    // Fill in the Blanks Prompt
-    blanks_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Fill in the Blanks\".",
-    blanks_prompt_mission: "**مهمتك:**",
-    blanks_prompt_generate_json: "ولِّد كائن JSON كاملًا لنشاط H5P من نوع املأ الفراغات، جاهزًا للاستخدام.",
-    blanks_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
-    blanks_prompt_json_structure_main_object: "يحتوي الكائن على المفتاح `questions` وهي مصفوفة من سلاسل نصية؛ تمثّل كل سلسلة كتلة نص يجب إكمالها.",
-    blanks_prompt_content_rules_title: "**قواعد المحتوى:**",
-    blanks_prompt_rule1: "- تُحاط الكلمات المطلوب تخمينها بنجمتين (*كلمة*).",
-    blanks_prompt_rule2: "- للإجابات البديلة استخدم الشرطة المائلة: *Paris/مدينة النور*.",
-    blanks_prompt_rule3: "- لإضافة تلميح استخدم نقطتين: *open-source:مصدر مفتوح عام*. ",
-    blanks_prompt_example_json_title: "**مثال JSON:**",
-    blanks_prompt_example: `\`\`\`json
-{
-"questions": [
-"يتكون النظام الشمسي من *ثماني* كواكب. أكبرها هو *المشتري*.",
-"عاصمة فرنسا هي *باريس/مدينة النور*."
-]
-}
-\`\`\` `,
-    blanks_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
-    blanks_prompt_overall_feedback: "`overallFeedback`: (قاعِدة صارِمة) يجب عليك توليد مصفوفة من 6 كائنات للتغذية الراجعة النهائية، مُؤطّرة بموضوع التمرين، مع احترام الفترات التالية بدقة: 0-10، 11-30، 31-50، 51-70، 71-90، و91-100. يجب أن يكون لكل كائن الشكل `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. يجب أن يكون نص `feedback` إيجابيًا من دون مبالغة، تدريجيًا ودائمًا بصيغة إثبات.",
-
-    // Fill in the Blanks UI translations
-    blanks_show_solutions: "إظهار الحلول",
-    blanks_try_again: "إعادة المحاولة",
-    blanks_check_answer: "تحقق",
-    blanks_not_filled_out: "يرجى ملء جميع الفراغات.",
-    blanks_answer_is_correct: "'':ans' صحيح",
-    blanks_answer_is_wrong: "'':ans' خطأ",
-    blanks_answered_correctly: "تمت الإجابة بشكل صحيح",
-    blanks_answered_incorrectly: "تمت الإجابة بشكل غير صحيح",
-    blanks_solution_label: "الإجابة الصحيحة:",
-    blanks_input_label: "فراغ @num من @total",
-    blanks_input_has_tip_label: "تلميح متاح",
-    blanks_tip_label: "تلميح",
-    blanks_score_bar_label: "لقد حصلت على :num من :total نقطة",
-    blanks_submit_answer: "إرسال",
-    blanks_feedback: "لقد أجبت بشكل صحيح على @score من @total فراغ.",
-    blanks_finish_header: "إنهاء؟",
-    blanks_finish_body: "هل أنت متأكد من رغبتك في الإنهاء؟",
-    blanks_cancel_label: "إلغاء",
-    blanks_finish_label: "إنهاء",
-    blanks_retry_header: "إعادة المحاولة؟",
-    blanks_retry_body: "هل أنت متأكد من رغبتك في إعادة المحاولة؟",
-    blanks_retry_confirm_label: "تأكيد",
-    blanks_checking_mode_header: "وضع التحقق",
-    blanks_a11y_check: "تحقق من الإجابات. سيتم تمييز الإجابات بأنها صحيحة أو غير صحيحة أو لم تتم الإجابة عليها.",
-    blanks_a11y_show_solution: "إظهار الحل. سيتم تمييز المهمة بالحل الصحيح.",
-    blanks_a11y_retry: "إعادة محاولة المهمة. إعادة تعيين جميع الإجابات والبدء من جديد.",
-
-    // Mark the Words Prompt
-    mark_words_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Mark the Words\".",
-    mark_words_prompt_mission: "**مهمتك:**",
-    mark_words_prompt_generate_json: "ولِّد كائن JSON كاملًا لنشاط H5P من نوع Mark the Words، جاهزًا للاستخدام.",
-    mark_words_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
-    mark_words_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
-    mark_words_prompt_task_description: "`taskDescription`: تعليمات واضحة.",
-    mark_words_prompt_text_field: "`textField`: نص تُحاط فيه الكلمات المطلوب تعليمها بنجمتين (*كلمة*).",
-    mark_words_prompt_overall_feedback: "`overallFeedback`: (قاعِدة صارِمة) يجب عليك توليد مصفوفة من 6 كائنات للتغذية الراجعة النهائية، مُؤطّرة بموضوع التمرين، مع احترام الفترات التالية بدقة: 0-10، 11-30، 31-50، 51-70، 71-90، و91-100. يجب أن يكون لكل كائن الشكل `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. يجب أن يكون نص `feedback` إيجابيًا من دون مبالغة، تدريجيًا ودائمًا بصيغة إثبات.",
-    mark_words_prompt_content_rules_title: "**قواعد المحتوى:**",
-    mark_words_prompt_rule1: "1. اكتب فقرة ذات صلة بالموضوع.",
-    mark_words_prompt_rule2: "2. حدّد نحو ${nombreQuestions} كلمات مفتاحية مهمّة للتعليم.",
-    mark_words_prompt_rule3: "3.  يجب أن تكون كل كلمة مراد تحديدها محاطة بنجمة بشكل فردي. على سبيل المثال، `*كلمة1* *كلمة2*` صحيح، لكن `*كلمة1 كلمة2*` غير صحيح.",
-    mark_words_prompt_rule4: "4.  يجب ألا تكون الفواصل العليا أو علامات الترقيم الأخرى ملتصقة بالكلمات المحددة. على سبيل المثال، `ل'*الطائر*` غير صحيح؛ يجب أن تكتب `ال *طائر*` لكي تعمل.",
-    mark_words_prompt_example_json_title: "**مثال JSON:**",
-    mark_words_prompt_example: `\`\`\`json
-{
-"taskDescription": "انقر على الكلمات المهمة في النص.",
-"textField": "*النظام* *الشمسي* مكوّن من *ثماني* كواكب تدور حول *الشمس*."
-}
-\`\`\` `,
-    mark_words_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون تعليقات.",
-
-    // Mark the Words UI translations
-    mark_words_check_answer: "تحقق",
-    mark_words_try_again: "إعادة المحاولة",
-    mark_words_show_solution: "إظهار الحل",
-    mark_words_correct_answer: "صحيح!",
-    mark_words_incorrect_answer: "خطأ!",
-    mark_words_missed_answer: "فاتك!",
-    mark_words_display_solution_description: "تم تحديث المهمة لتتضمن الحل.",
-    mark_words_score_bar_label: "لقد حصلت على :num من :total نقطة",
-    mark_words_submit_answer: "إرسال",
-    mark_words_a11y_full_text_label: "نص كامل قابل للقراءة",
-    mark_words_a11y_clickable_text_label: "نص كامل يمكن فيه تمييز الكلمات",
-    mark_words_a11y_solution_mode_header: "وضع الحل",
-    mark_words_a11y_checking_header: "وضع التحقق",
-    mark_words_a11y_check: "تحقق من الإجابات. سيتم تمييز الإجابات بأنها صحيحة أو غير صحيحة أو لم تتم الإجابة عليها.",
-    mark_words_a11y_show_solution: "إظهار الحل. سيتم تمييز المهمة بالحل الصحيح.",
-    mark_words_a11y_retry: "إعادة محاولة المهمة. إعادة تعيين جميع الإجابات والبدء من جديد.",
-
-   // Millionnaire Creation
-    millionnaire_error_compression_libs: "لم يتم تحميل مكتبات الضغط (Tar.js أو fflate). يرجى التحقق من اتصال الإنترنت أو تحديث الصفحة.",
-    millionnaire_error_invalid_json: "بنية JSON غير صالحة. تأكد من أنها تحتوي على 'title' ومصفوفة 'questions' تتضمن 6 أسئلة مطابقة للمثال.",
-    millionnaire_activity_intro: "شارك في هذه اللعبة لاختبار معلوماتك.",
-    millionnaire_backup_log: "تم إنشاء نسخة احتياطية تلقائيًا بواسطة Caramel\n",
-    millionnaire_success_generation: "تم إنشاء الملف {fileName} بنجاح!",
-    millionnaire_error_creation_mbz: "حدث خطأ أثناء إنشاء ملف MBZ:",
-    millionnaire_error_generic: "خطأ:",
- 
-    // Millionnaire Prompt
-    millionnaire_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"Millionnaire\".",
-    millionnaire_prompt_num_questions: "**عدد الأسئلة:** 6",
-    millionnaire_prompt_mission: "**مهمتك:**",
-    millionnaire_prompt_generate_json: "ولِّد كائن JSON يحتوي على عنوان وقائمة من **6 أسئلة** للعبة من نوع \"من سيربح المليون\".",
-    millionnaire_prompt_important_rules_title: "**قواعد مهمّة:**",
-    millionnaire_prompt_rule1: "1. يجب أن يكون `title` عنوانًا مناسبًا وجذّابًا للنشاط.",
-    millionnaire_prompt_rule2: "2. ينبغي أن تتدرّج صعوبة الأسئلة في `questions` **تصاعديًا وبشكل تربوي** بما يلائم مستوى المتعلمين؛ السؤال الأول سهل جدًا والأخير صعب جدًا.",
-    millionnaire_prompt_rule3: "3. يجب أن يكون المحتوى دقيقًا تمامًا وملائمًا للموضوع والمستوى الدراسي.",
-    millionnaire_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
-    millionnaire_prompt_main_object: "كائن رئيس يضم مفتاحين:",
-    millionnaire_prompt_title: "- `title`: عنوان النشاط (سلسلة نصية).",
-    millionnaire_prompt_questions_array: "- `questions`: مصفوفة من 6 كائنات؛ يمثّل كل كائن سؤالًا ويحتوي على:",
-    millionnaire_prompt_question: "- `question`: السؤال (سلسلة).",
-    millionnaire_prompt_good_answer: "- `goodanswer`: الإجابة الصحيحة (سلسلة).",
-    millionnaire_prompt_bad_answer: "- `badanswer`: مصفوفة من 3 إجابات خاطئة (سلاسل).",
-    millionnaire_prompt_example_json_title: "**مثال JSON:**",
-    millionnaire_prompt_example: `\`\`\`json
-{
-"title": "اختبار حول الثورة الفرنسية",
-"questions": [
-{
-"question": "ما هي عاصمة فرنسا؟",
-"goodanswer": "باريس",
-"badanswer": ["برلين", "لندن", "مدريد"]
-}
-]
-}
-\`\`\` `,
-    millionnaire_prompt_generate_only_json: "ولِّد الكائن JSON الصالح فقط دون أي تعليقات.",
-
-    // Appariement Prompt
-    appariement_prompt_role: "أنت خبير في الهندسة البيداغوجية تنشئ نشاط مودل \"المطابقة\".",
-    appariement_prompt_num_questions: "**عدد الأزواج:** 10",
-    appariement_prompt_mission: "**مهمتك:**",
-    appariement_prompt_generate_json: "أنشئ كائن JSON يحتوي على عنوان وقائمة من **10 أزواج** للعبة مطابقة.",
-    appariement_prompt_important_rules_title: "**قواعد مهمة:**",
-    appariement_prompt_rule1: "1.  يجب أن يكون `title` عنوانًا ذا صلة وجاذبية للنشاط.",
-    appariement_prompt_rule2: "2.  يجب أن يحتوي مصفوف `pairs` على 10 كائنات، يحتوي كل منها على `question` (العنصر على اليسار) و`answer` (العنصر على اليمين للمطابقة).",
-    appariement_prompt_rule3: "3.  يجب أن يكون المحتوى دقيقًا وصحيحًا وملائمًا للموضوع والمستوى الدراسي.",
-    appariement_prompt_json_structure_title: "**بنية JSON المتوقعة:**",
-    appariement_prompt_main_object: "كائن رئيسي يحتوي على مفتاحين:",
-    appariement_prompt_title: "- `title`: عنوان النشاط (سلسلة محارف).",
-    appariement_prompt_pairs_array: "- `pairs`: مصفوفة من 10 كائنات، حيث يمثل كل كائن زوجًا ويحتوي على:",
-    appariement_prompt_question: "- `question`: المصطلح أو الصورة على اليسار (سلسلة محارف).",
-    appariement_prompt_answer: "- `answer`: التعريف أو المصطلح المقابل على اليمين (سلسلة محارف).",
-    appariement_prompt_example_json_title: "**مثال JSON:**",
-    appariement_prompt_example: `\`\`\`json
-{
-"title": "مطابقة حول الثورة الفرنسية",
-"pairs": [
-{
-"question": "اقتحام سجن الباستيل",
-"answer": "14 يوليو 1789"
-}
-]
-}
-\`\`\` `,
-    appariement_prompt_generate_only_json: "أنشئ فقط كائن JSON صالحًا، دون أي تعليق.",
- 
-    // إنشاء المطابقة
-   appariement_error_invalid_json: "بنية JSON غير صالحة. تأكد من أنها تحتوي على 'title' ومصفوفة 'pairs' حيث يحتوي كل زوج على 'question' و 'answer'.",
-   appariement_activity_intro: "اعثر على الأزواج المطابقة.",
-   appariement_success_generation: "تم إنشاء الملف {fileName} بنجاح !",
-   appariement_error_creation_mbz: "خطأ أثناء إنشاء MBZ للمطابقة:",
-
-    // QCM Prompt
-    qcm_prompt_role: "أنت خبير في تصميم التعليم تنشئ نشاط Moodle \"MCQ\".",
-    qcm_prompt_num_questions: "**عدد الأسئلة:** 10",
-    qcm_prompt_mission: "**مهمتك:**",
-    qcm_prompt_generate_json: "أنشئ كائن JSON يحتوي على عنوان وقائمة من **10 أسئلة** لـ MCQ.",
-    qcm_prompt_important_rules_title: "**قواعد مهمة:**",
-    qcm_prompt_rule1: "1.  يجب أن يكون `title` عنوانًا ذا صلة وجاذبية للنشاط.",
-    qcm_prompt_rule2: "2.  يجب أن يحتوي مصفوف `questions` على 10 كائنات، يحتوي كل منها على `text` (نص السؤال) ومصفوف `answers`.",
-    qcm_prompt_rule3: "3.  يجب أن يحتوي كل مصفوف `answers` على عدة إجابات محتملة. كل إجابة هي كائن يحتوي على `text` و `iscorrect` (1 للصواب، 0 للخطأ). بناءً على سياق السؤال، يمكنك اقتراح أسئلة بإجابة صحيحة واحدة أو عدة إجابات صحيحة.",
-    qcm_prompt_json_structure_title: "**بنية JSON المتوقعة:**",
-    qcm_prompt_main_object: "كائن رئيسي يحتوي على مفتاحين:",
-    qcm_prompt_title: "- `title`: عنوان النشاط (سلسلة محارف).",
-    qcm_prompt_questions_array: "- `questions`: مصفوفة من 10 كائنات، حيث يمثل كل كائن سؤالًا ويحتوي على:",
-    qcm_prompt_question_text: "- `text`: نص السؤال (سلسلة محارف، قد تحتوي على HTML).",
-    qcm_prompt_answers_array: "- `answers`: مصفوفة من الكائنات، حيث يمثل كل كائن إجابة ويحتوي على:",
-    qcm_prompt_answer_text: "- `text`: نص الإجابة (سلسلة محارف، قد تحتوي على HTML).",
-    qcm_prompt_answer_iscorrect: "- `iscorrect`: 1 إذا كانت الإجابة صحيحة، وإلا 0.",
-    qcm_prompt_example_json_title: "**مثال JSON:**",
-    qcm_prompt_example: `\`\`\`json
-{
-"title": "اختبار متعدد الاختيارات حول الثورة الفرنسية",
-"questions": [
-{
-"text": "ما هو تاريخ اقتحام سجن الباستيل؟",
-"answers": [
-{ "text": "14 يوليو 1789", "iscorrect": 1 },
-{ "text": "4 أغسطس 1789", "iscorrect": 0 },
-{ "text": "26 أغسطس 1789", "iscorrect": 0 }
-]
-}
-]
-}
-\`\`\` `,
-    qcm_prompt_generate_only_json: "أنشئ فقط كائن JSON صالحًا، دون أي تعليق.",
-
-    // إنشاء اختبار اختيارات متعددة
-    qcm_error_invalid_json: "بنية JSON غير صالحة. تأكد من أنها تحتوي على 'title' ومصفوفة 'questions' تضم سؤالًا واحدًا على الأقل وإجابات.",
-    qcm_activity_intro: "أجب عن الأسئلة التالية.",
-    qcm_success_generation: "تم إنشاء الملف {fileName} بنجاح !",
-    qcm_error_creation_mbz: "خطأ أثناء إنشاء MBZ لاختبار الاختيارات المتعددة:",
-
-    // H5P Modules
-    h5p_timeline_name: "الخط الزمني",
-    h5p_timeline_description: "أنشِئ خطًا زمنيًا تفاعليًا لعرض تسلسل من الأحداث.",
-    h5p_flashcards_name: "بطاقات الذاكرة",
-    h5p_flashcards_description: "أنشِئ بطاقات ذات وجهين للمساعدة على حفظ المصطلحات والتعاريف.",
-    h5p_quiz_set_name: "اختبار",
-    h5p_quiz_set_description: "كوِّن سلسلة من أسئلة متنوّعة (اختيار من متعدد، سحب وإفلات، إلخ) لتقييم المعارف.",
-    h5p_glossary_name: "مسرد",
-    h5p_glossary_description: "أنشِئ مسردًا أو قسم أسئلة شائعة بصيغة الأكورديون.",
-    h5p_crossword_name: "كلمات متقاطعة",
-    h5p_crossword_description: "ولِّد شبكة كلمات متقاطعة انطلاقًا من قائمة كلمات وتعريفات.",
-    h5p_essay_name: "مقال",
-    h5p_essay_description: "اقترح موضوع كتابة وحدِّد كلمات مفتاحية لتصحيح آلي.",
-    h5p_summary_name: "ملخّص",
-    h5p_summary_description: "على المتعلمين إعادة بناء ملخص صحيح باختيار الجمل المناسبة.",
-    h5p_drag_the_words_name: "اسحب الكلمات",
-    h5p_drag_the_words_description: "أنشِئ نصًا بفراغات يجرّ فيه المتعلمون الكلمات الناقصة.",
-    h5p_fill_in_the_blanks_name: "املأ الفراغات",
-    h5p_fill_in_the_blanks_description: "يملأ المتعلمون الكلمات الناقصة مباشرة بواسطة لوحة المفاتيح.",
-    h5p_mark_the_words_name: "علِّم الكلمات",
-    h5p_mark_the_words_description: "اطلب من المتعلمين تمييز كلمات معيّنة داخل فقرة.",
-    h5p_true_false_name: "سؤال صح/خطأ",
-    h5p_true_false_description: "أنشئ سؤالًا بسيطًا واحدًا بإجابة ثنائية: صح أم خطأ.",
-    h5p_multiple_choice_name: "الاختيار من متعدد",
-    h5p_multiple_choice_description: "أنشئ سؤالًا واحدًا من نوع الاختيار من متعدد مع إجابة صحيحة واحدة أو أكثر.",
-    h5p_find_the_words_name: "البحث عن الكلمات",
-    h5p_find_the_words_description: "أنشئ شبكة حروف حيث يجب على الطلاب العثور على الكلمات.",
-    h5p_sort_the_paragraphs_name: "ترتيب الفقرات",
-    h5p_sort_the_paragraphs_description: "أنشئ مجموعة من الفقرات التي يجب على الطلاب ترتيبها بالترتيب الصحيح.",
-    h5p_single_choice_set_name: "مجموعة الاختيار الفردي",
-    h5p_single_choice_set_description: "أنشئ سلسلة من الأسئلة حيث يكون لكل سؤال إجابة صحيحة واحدة فقط.",
-    h5p_dialog_cards_name: "بطاقات الحوار",
-    h5p_dialog_cards_description: "أنشئ بطاقات تفاعلية تحتوي على نص وصور اختيارية على كلا الوجهين.",
-    h5p_complex_fill_the_blanks_name: "املأ الفراغات المعقدة",
-    h5p_complex_fill_the_blanks_description: "أنشئ نصًا متقدمًا لملء الفراغات مع ملاحظات محددة لكل خطأ.",
-    h5p_chart_name: "رسم بياني",
-    h5p_chart_description: "أنشئ رسمًا بيانيًا دائريًا أو شريطيًا لتصور البيانات.",
-
-    // Moodle Modules
-    moodle_xml_name: "اختبار",
-    moodle_xml_description: "أنشئ بنك أسئلة للاستيراد مباشرة في نشاط اختبار (بصيغة xml أو gift)",
-    moodle_xml_help: "لإضافة ملف XML إلى نشاط «اختبار» على Moodle، ابدأ بإنشاء النشاط. بعد ذلك، افتح قائمة <strong>المزيد</strong> واذهب إلى <strong>بنك الأسئلة</strong>. في هذه القائمة، انقر على <strong>استيراد</strong>، واختر تنسيق <strong>Moodle XML</strong>، ثم حدد ملفك وقم بالتأكيد.",
-    moodle_gift_name: "تنسيق GIFT",
-    moodle_gift_description: "أنشئ أسئلة بتنسيق GIFT، وهو وسيلة بسيطة لاستيراد الأسئلة إلى Moodle.",
-    moodle_millionnaire_name: "من سيربح المليون؟",
-    moodle_millionnaire_description: "إنشاء نشاط فريد 'من سيربح المليون؟' من 6 أسئلة متدرجة في الصعوبة.",
-    moodle_appariement_name: "المطابقة",
-    moodle_appariement_description: "أنشئ نشاط مطابقة مكوّنًا من 10 أسئلة.",
-
-    moodle_qcm_name: "MCQ",
-    moodle_qcm_description: "إنشاء نشاط MCQ بسيط.",
-
-    moodle_glossaire_xml_name: "مسرد (XML)",
-    moodle_glossaire_xml_description: "قم بإنشاء مسرد جاهز للاستيراد بتنسيق XML.",
-
-    elea_page_name: "صفحة",
-    elea_page_description: "إنشاء صفحة محتوى Éléa مُنسّقة بصريًا.",
-
-    // Dynamic content
-    prompt_for_ia: "مطلب للذكاء الاصطناعي",
-    copy_prompt: " نسخ المطلب",
-    fullscreen_prompt: "ملء الشاشة",
-    exit_fullscreen_prompt: "الخروج من ملء الشاشة",
-    lock_prompt: "قفل البرومبت",
-    unlock_prompt: "إلغاء قفل البرومبت",
-    go_duck: "الانتقال إلى Duck.ai",
-    go_mistral: "الانتقال إلى Le Chat",
-    create_h5p_file: "إنشاء ملف H5P",
-    integrate_h5p_libraries: "دمج مكتبات H5P:",
-    paste_ia_result: "الصق نتيجة الذكاء الاصطناعي في المنطقة أدناه لإنشاء وحدتك.",
-    generate_h5p: "توليد H5P",
-    create_xml_file: "إنشاء ملف XML",
-    paste_ia_result_xml: "الصق هنا ملف XML المُولَّد بواسطة الذكاء الاصطناعي.",
-    generate_xml_file: "توليد ملف XML",
-    export_mbz: "تنسيق MBZ",
-    export_gift: "تنسيق GIFT",
-    export_xml: "تنسيق XML",
-    export_html: "تنسيق HTML",
-
-    create_mbz_file_appariement: "أنشئ ملف المطابقة (.mbz)",
-    paste_ia_result_appariement: "ألصق أدناه JSON الذي أنشأته الذكاء الاصطناعي. سيتم استخراج عنوان النشاط تلقائيًا من JSON.",
-    generate_mbz_appariement: "أنشئ نشاط المطابقة (mbz)",
-    create_mbz_file_millionnaire: "أنشئ ملف المليونير (.mbz)",
-    paste_ia_result_millionnaire: "ألصق أدناه JSON الذي أنشأته الذكاء الاصطناعي. سيتم استخراج عنوان النشاط تلقائيًا من JSON.",
-    generate_mbz_millionnaire: "أنشئ نشاط المليونير (mbz)",
-    generate_mbz_test: "إنشاء نشاط الاختبار (mbz)",
-
-    create_mbz_file_qcm: "إنشاء ملف MCQ (.mbz)",
-    paste_ia_result_qcm: "ألصق أدناه JSON الذي أنشأته الذكاء الاصطناعي. سيتم استخراج عنوان النشاط تلقائيًا من JSON.",
-    generate_mbz_qcm: "إنشاء نشاط MCQ (mbz)",
-
-    create_mbz_file_page: "إنشاء ملف صفحة (.mbz)",
-    paste_ia_result_page: "الصق JSON المُولَّد بواسطة الذكاء الاصطناعي أدناه لبناء الصفحة.",
-    generate_mbz_page: "توليد نشاط صفحة (mbz)",
-
-    // Moodle XML specific
-    moodle_xml_placeholder: "سيظهر Moodle XML هنا...",
-    paste_xml_placeholder: "الصق هنا ملف XML الكامل الذي ولّده الذكاء الاصطناعي...",
-
-    // H5P champs textes vides
-    generate_prompts_placeholder: "سيظهر موجّه الذكاء الاصطناعي هنا بمجرد أن تُكمِل حقلاً واحدًا على الأقل في الوضع السريع أو الوضع المتقدم.",
-    paste_json_or_text: "الصِق هنا محتوى JSON أو النص الذي أنشأه الذكاء الاصطناعي لإنشاء نشاطك.",
-    info_prompt_copy: "لا تُلصق هذا الطلب في اللوحة اليمنى. انسخه في ذكاء اصطناعي خارجي للحصول على النتيجة، ثم ألصق هذه النتيجة في اللوحة اليمنى.",
-
-    // Notifications
-    caramel_success_title: "الحلوى جاهزة!",
-    prompts_generated_successfully: "تم توليد المطالبات بنجاح!",
-    success_copy: "✓ تم النسخ !",
-    error_please_fill_fields: "يرجى ملء حقل واحد على الأقل في الوضع السريع.",
-    error_please_fill_guided_fields: "يرجى ملء حقل واحد على الأقل في الوضع المتقدم.",
-    error_field_empty: "الحقل فارغ. يرجى توليد مطلب أولًا.",
-    error_copy_failed: "فشل النسخ.",
-    error_h5p_module_not_found: "الوحدة '{moduleKey}' غير موجودة.",
-    error_invalid_quiz_json: "JSON الخاص بالاختبار غير صالح: {errorMessage}",
-    error_invalid_json: "JSON المزوَّد غير صالح. خطأ: {errorMessage}",
-    error_h5p_creation: "خطأ في إنشاء H5P: {errorMessage}",
-    error_paste_ia_content: "يرجى لصق المحتوى المُولَّد بواسطة الذكاء الاصطناعي.",
-    error_compression_module_not_ready: "وحدة الضغط غير جاهزة بعد. أعد المحاولة بعد قليل.",
-    h5p_file_generated_successfully: "تم إنشاء الملف {fileName} بنجاح!",
-    h5p_creation_failed: "فشل إنشاء ملف H5P: {errorMessage}",
-    license_info: "رخصة GNU GPL الإصدار 3.0 أو الأحدث",
-
-    // Notifications for JSON content
-    error_paste_json_content: "يرجى لصق محتوى JSON الذي تم إنشاؤه.",
-    error_paste_xml_content: "يرجى لصق محتوى XML الذي تم إنشاؤه.",
-
-    // Flashcards specific UI translations
-    flashcards_progress_text: "البطاقة @card من @total",
-    flashcards_next: "التالي",
-    flashcards_previous: "السابق",
-    flashcards_check_answer: "تحقق",
-    flashcards_your_answer: "إجابتك",
-    flashcards_correct_answer: "صحيح",
-    flashcards_incorrect_answer: "غير صحيح",
-    flashcards_show_solution: "الإجابة الصحيحة",
-    flashcards_results: "النتائج",
-    flashcards_of_correct: "@score من @total صحيح",
-    flashcards_show_results: "عرض النتائج",
-    flashcards_answer_short: "ج:",
-    flashcards_retry: "إعادة المحاولة",
-    flashcards_card_announcement: "إجابة غير صحيحة. الإجابة الصحيحة كانت @answer",
-    flashcards_correct_announcement: "@answer صحيح.",
-    flashcards_page_announcement: "صفحة @current من @total",
-
-    ticket: "تذكرة",
-    legal_mentions: "ملاحظات قانونية",
-
-    // Legal Mentions
-    legal_title: "ملاحظات قانونية",
-    legal_editor_title: "محرر التطبيق",
-    legal_editor_gauthier_remande: "<strong>غوتييه ريماند</strong>",
-    legal_editor_gauthier_remande_function: "<strong>الوظيفة:</strong> أستاذ في المدرسة الثانوية المهنية للآداب والتاريخ",
-    legal_editor_gauthier_remande_email: "<strong>البريد الإلكتروني:</strong> gauthier.remande@ac-nantes.fr",
-    legal_editor_gauthier_remande_address: "<strong>العنوان:</strong> 39 avenue de Chanzy، 53000 Laval، فرنسا",
-    legal_editor_gauthier_remande_phone: "<strong>الهاتف:</strong> +33 2 43 67 24 00",
-    legal_editor_emmanuel_gaunard: "<strong>إيمانويل غونار</strong>",
-    legal_editor_emmanuel_gaunard_function: "<strong>الوظيفة:</strong> أستاذ رياضيات ومسؤول بعثة DRANE – أكاديمية غرونوبل",
-    legal_editor_emmanuel_gaunard_email: "<strong>البريد الإلكتروني:</strong> emmanuel.gaunard@ac-grenoble.fr",
-    legal_editor_emmanuel_gaunard_address: "<strong>العنوان:</strong> 30 boulevard de la République, 38200 Vienne, France",
-    legal_editor_emmanuel_gaunard_phone: "<strong>الهاتف:</strong> +33 6 46 74 20 94",
-    legal_app_description: "تطبيق الويب «Caramel» هو مشروع حر وغير تجاري مخصص لإنشاء محتوى H5P وÉléa. لا يلزم أي حساب، ولا يتم جمع أي بيانات شخصية.",
-    legal_hosting_title: "الاستضافة",
-    legal_host_name: "<strong>المستضيف</strong>: Forge des Communs Numériques Éducatifs",
-    legal_host_company: "<strong>اسم الشركة</strong>: وزارة التربية الوطنية والشباب",
-    legal_host_address: "<strong>العنوان</strong>: 110 rue de Grenelle, 75007 Paris, France",
-    legal_host_phone: "<strong>الهاتف</strong>: +33 1 55 55 10 10",
-    legal_publication_director_title: "مدير النشر",
-    legal_publication_director_name: "غوتييه ريماند وإيمانويل غونار، بصفتهما محررين متطوعين.",
-    legal_terms_of_use_title: "الشروط العامة للاستخدام",
-    legal_terms_of_use_content: "يتيح هذا الموقع للمستخدمين إنشاء محتوى H5P وÉléa. يتم العرض محليًا دون نقل بيانات المستخدم. يكون المستخدم وحده مسؤولًا عن كيفية استخدام المحتوى المُولَّد. يُقدَّم التطبيق مجانًا دون أي ضمان للتشغيل أو للنتيجة. يتنصل الناشر من أي مسؤولية في حال سوء تفسير المحتوى أو استخدامه بطريقة غير مناسبة.",
-    legal_intellectual_property_title: "الملكية الفكرية",
-    legal_intellectual_property_content: "جميع أكواد المصدر والعناصر الرسومية والمحتوى مرخصة بموجب رخصة GNU AGPLv3 الحرة. يُسمح بإعادة استخدامها بموجب شروط تراخيصها المعنية. يجب أن يذكر أي إعادة توزيع أو تعديل المؤلفين الأصليين: غوتييه ريماند وإيمانويل غونار. يتم استرداد الصور المستخدمة في وحدات H5P من H5P.org.",
-    legal_personal_data_title: "البيانات الشخصية",
-    legal_personal_data_content: "لا يتم جمع أو تخزين أي بيانات شخصية. لا تُستخدم أي ملفات تعريف ارتباط للتتبع.",
-    legal_ai_models_title: "نماذج الذكاء الاصطناعي",
-    legal_ai_models_content: "يعتمد تطبيق Caramel، فقط أثناء التوليد بنقرة واحدة، على نماذج ذكاء اصطناعي تُشغِّلها ILAAS، وهي اتحاد لبنى تحتية مشتركة  على خوادم موثوقة تستضيفها مراكز بيانات معتمدة من قطاع التعليم العالي والبحث (ESR). لا تقوم Caramel بتشغيل النماذج ولا بمعالجة البيانات أو تخزينها ذاتيًا؛ تُستخدم البيانات حصريًا لتنفيذ الطلب ولا تُرسَل إلى أنظمة ذكاء اصطناعي عامة موجهة للمستهلكين. تشمل النماذج المتاحة حاليًا: {{llm_model_1_name}} ({{llm_model_1_param}} {{llm_model_parameters_unit}})? {{llm_model_2_name}} ({{llm_model_2_param}} {{llm_model_parameters_unit}}) ?{{llm_model_3_name}} ({{llm_model_3_param}} {{llm_model_parameters_unit}}). تخضع أي عمليات استضافة أو تسجيل سجلات (Logging) أو احتفاظ بالبيانات تقوم بها ILAAS لسياسة الخصوصية وشروط الخدمة الخاصة بها.",
-    legal_user_requests_processing_title: "معالجة طلبات المستخدمين عبر n8n وحاضنة وزارة التربية الوطنية",
-    legal_user_requests_processing_content: "يستخدم موقعنا حلاً تقنياً مطوراً بواسطة n8n، وهي أداة مفتوحة المصدر تستضيفها حاضنة وزارة التربية الوطنية. من خلال سير عمل مؤتمت، يحوّل هذا الخدمة طلبات المستخدمين إلى بيانات منظمة (بصيغة JSON) للتفاعل مع ذكاء اصطناعي تابع لـ DINUM، وهو بذلك ذو سيادة. لا يتم كشف أو نقل أي معلومات حساسة بدون تشفير، بما يضمن سرية وأمان التبادلات.",
-    legal_accessibility_title: "إمكانية الوصول",
-    legal_accessibility_content: "تم تصميم التطبيق ليكون متوافقًا مع استخدام الكمبيوتر، بما في ذلك الأوضاع الداكنة/الفاتحة، والتنقل بلوحة المفاتيح، والتباين العالي حسب السمات. يجري تحسين مستمر لإمكانية الوصول، بما يتماشى مع توصيات RGAA.",
-    legal_applicable_law_title: "القانون المطبق",
-    legal_applicable_law_content: "يخضع هذا الموقع للقانون الفرنسي. في حالة النزاع، تكون المحاكم المختصة هي تلك الموجودة في دائرة اختصاص ليون.",
-    legal_external_libraries_title: "المكتبات الخارجية المستخدمة",
-    legal_external_libraries_intro: "يستخدم تطبيق كراميل العديد من المكتبات مفتوحة المصدر، بموجب التراخيص التالية:",
-    legal_library_fontawesome: "<strong>Font Awesome Free</strong> (الترخيص: CC BY 4.0, SIL OFL 1.1, MIT): يوفر الرموز المستخدمة في الواجهة لتحسين التنقل والتجربة المرئية.",
-    legal_library_jszip: "<strong>JSZip</strong> (الترخيص: MIT أو GPLv3): يسمح بإنشاء ملفات .h5p عن طريق ضغط المحتوى الضروري في أرشيف مضغوط.",
-    legal_library_clientzip: "<strong>client-zip</strong> (الترخيص: MIT): مكتبة أخرى تستخدم لضغط الملفات، وتقدم بديلاً عالي الأداء لإنشاء أرشيفات .h5p مباشرة في المتصفح.",
-    legal_library_fflate: "<strong>fflate</strong> (الترخيص: MIT): مكتبة سريعة جدًا لضغط وفك ضغط البيانات، تستخدم لإنشاء أرشيفات .mbz لوحدات Moodle.",
-    legal_library_tarjs: "<strong>tar-js</strong> (الترخيص: MIT): يسمح بإنشاء أرشيفات .tar، وهي خطوة ضرورية قبل الضغط لتكوين ملفات .mbz لوحدات Moodle.",
-    legal_library_ownership: "تظل كل مكتبة ملكًا لمؤلفيها المعنيين وتستخدم وفقًا لترخيصها (تراخيصها).",
-
-    // Essay specific UI translations
-    essay_checkAnswer: "تحقق",
-    essay_tryAgain: "إعادة المحاولة",
-    essay_showSolution: "إظهار الحل",
-    essay_feedbackHeader: "ملاحظات",
-    essay_solutionTitle: "حل نموذجي",
-    remainingChars: "الأحرف المتبقية: @chars",
-    notEnoughChars: "يجب إدخال @chars أحرف على الأقل!",
-    messageSave: "تم الحفظ",
-    placeholderText: "ابدأ الكتابة هنا...",
-    ariaYourResult: "لقد حصلت على @score من @total نقطة",
-    ariaNavigatedToSolution: "تم الانتقال إلى الحل النموذجي المضمن حديثًا بعد منطقة النص.",
-
-    // Essay Overall Feedback
-    essay_overall_feedback_0_10: "عملك بداية جيدة. استمر في استكشاف الموضوع لإثراء أفكارك.",
-    essay_overall_feedback_11_30: "لقد وضعت أسسًا مثيرة للاهتمام. من خلال التعمق في نقاط معينة، سيكتسب عملك دقة أكبر.",
-    essay_overall_feedback_31_50: "فهمك للموضوع في طريقه الصحيح. فكر في تطوير حججك أكثر لتعزيز وجهة نظرك.",
-    essay_overall_feedback_51_70: "هذا عمل جيد. تظهر إتقانًا جيدًا للموضوع. بعض التفاصيل الإضافية يمكن أن تحسنه أكثر.",
-    essay_overall_feedback_71_90: "عمل جيد جدًا! تحليلك وثيق الصلة ومنظم جيدًا. تظهر فهمًا ممتازًا.",
-    essay_overall_feedback_91_100: "عمل ممتاز! تفكيرك عميق، مدعوم بحجج جيدة، ويظهر إتقانًا كاملاً للموضوع.",
-
-    // True/False Question
-    true_false_prompt_role: "أنت خبير في تصميم التعليم تنشئ سؤال صح/خطأ لنشاط H5P.",
-    true_false_prompt_mission: "مهمتك هي إنشاء كائن JSON لسؤال صح/خطأ.",
-    true_false_prompt_generate_json: "أنشئ كائن JSON بناءً على البنية التالية:",
-    true_false_prompt_json_structure_title: "--- بنية JSON المتوقعة ---",
-    true_false_prompt_json_structure_main_object: "يجب أن يحتوي الكائن الرئيسي على المفاتيح التالية:",
-    true_false_prompt_question: "`question`: (string) العبارة التي سيتم تقييمها. يمكن أن تحتوي على HTML.",
-    true_false_prompt_correct: "`correct`: (string) الإجابة الصحيحة، إما \"true\" أو \"false\".",
-    true_false_prompt_feedback_correct: "`feedbackOnCorrect`: (string) تعليق يظهر إذا كانت الإجابة صحيحة.",
-    true_false_prompt_feedback_wrong: "`feedbackOnWrong`: (string) تعليق يظهر إذا كانت الإجابة غير صحيحة.",
-    true_false_prompt_content_rules_title: "--- قواعد المحتوى ---",
-    true_false_prompt_rule1: "يجب أن يكون السؤال عبارة واضحة.",
-    true_false_prompt_rule2: "يجب أن تكون قيمة `correct` سلسلة نصية: \"true\" أو \"false\".",
-    true_false_prompt_example_json_title: "--- مثال على JSON ---",
-    true_false_prompt_example: `\`\`\`json
-{
-"question": "أوسلو هي عاصمة النرويج.",
-"correct": "true",
-"feedbackOnCorrect": "إجابة صحيحة! أوسلو هي بالفعل عاصمة النرويج.",
-"feedbackOnWrong": "إجابة خاطئة. عاصمة النرويج هي أوسلو."
-}
-    \`\`\` `,
-    true_false_prompt_generate_only_json: "أريدك أن تنشئ JSON فقط، بدون أي تعليقات أو نص تمهيدي.",
-    true_false_true_text: "صح",
-    true_false_false_text: "خطأ",
-    true_false_score: "لقد حصلت على @score من @total نقطة",
-    true_false_check_answer: "تحقق",
-    true_false_show_solution_button: "إظهار الحل",
-    true_false_try_again: "إعادة المحاولة",
-    true_false_wrong_answer_message: "إجابة خاطئة",
-    true_false_correct_answer_message: "إجابة صحيحة",
-    true_false_score_bar_label: "لقد حصلت على :num من :total نقطة",
-    true_false_submit_answer: "إرسال",
-    true_false_a11y_check: "تحقق من الإجابات. سيتم تمييز الإجابات بأنها صحيحة أو خاطئة أو لم تتم الإجابة عليها.",
-    true_false_a11y_show_solution: "إظهار الحل. سيتم تمييز المهمة بالحل الصحيح.",
-    true_false_a11y_retry: "أعد محاولة المهمة. أعد تعيين جميع الإجابات وابدأ المهمة من جديد.",
-    true_false_finish_header: "إنهاء؟",
-    true_false_finish_body: "هل أنت متأكد من رغبتك في الإنهاء؟",
-    true_false_cancel_label: "إلغاء",
-    true_false_finish_label: "إنهاء",
-    true_false_retry_header: "إعادة المحاولة؟",
-    true_false_retry_body: "هل أنت متأكد من رغبتك في إعادة المحاولة؟",
-    true_false_retry_confirm_label: "تأكيد",
-
-    // Multiple Choice UI translations
-    checkAnswerButton: "تحقق",
-    showSolutionButton: "إظهار الحل",
-    tryAgainButton: "إعادة المحاولة",
-    submitAnswerButton: "إرسال",
-    scoreBarLabel: "لقد حصلت على :num من :total نقطة",
-    confirmCheckHeader: "إنهاء؟",
-    confirmCheckBody: "هل أنت متأكد من رغبتك في الإنهاء؟",
-    confirmCheckCancelLabel: "إلغاء",
-    confirmCheckConfirmLabel: "إنهاء",
-    confirmRetryHeader: "إعادة المحاولة؟",
-    confirmRetryBody: "هل أنت متأكد من رغبتك في إعادة المحاولة؟",
-    confirmRetryCancelLabel: "إلغاء",
-    confirmRetryConfirmLabel: "تأكيد",
-
-    // Multiple Choice Prompt
-    multiple_choice_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"الاختيار من متعدد\".",
-    multiple_choice_prompt_mission: "**مهمتك:**",
-    multiple_choice_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط H5P من نوع الاختيار من متعدد.",
-    multiple_choice_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
-    multiple_choice_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
-    multiple_choice_prompt_question: "`question`: السؤال المراد طرحه (بصيغة HTML).",
-    multiple_choice_prompt_answers_array: "`answers`: مصفوفة من الكائنات، يمثّل كلٌّ منها إجابة.",
-    multiple_choice_prompt_text: "`text`: نص الإجابة (بصيغة HTML).",
-    multiple_choice_prompt_correct: "`correct`: قيمة منطقية (`true` أو `false`) تشير إلى ما إذا كانت الإجابة صحيحة.",
-    multiple_choice_prompt_overall_feedback: "`overallFeedback`: (قاعِدة صارِمة) يجب عليك توليد مصفوفة من 6 كائنات للتغذية الراجعة النهائية، مُؤطّرة بموضوع التمرين، مع احترام الفترات التالية بدقة: 0-10، 11-30، 31-50، 51-70، 71-90، و91-100. يجب أن يكون لكل كائن الشكل `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. يجب أن يكون نص `feedback` إيجابيًا من دون مبالغة، تدريجيًا ودائمًا بصيغة إثبات.",
-    multiple_choice_prompt_content_rules_title: "**قواعد المحتوى:**",
-    multiple_choice_prompt_rule1: "1.  يجب أن تكون هناك إجابة صحيحة واحدة فقط (`\"correct\": true`).",
-    multiple_choice_prompt_rule2: "2.  قدّم عدة إجابات خاطئة (`\"correct\": false`).",
-    multiple_choice_prompt_example_json_title: "**مثال JSON:**",
-    multiple_choice_prompt_example: `\`\`\`json
-{
-"question": "ما هو اللون الحقيقي لتوت الكاسيس؟",
-"answers": [
-{
-"correct": true,
-"text": "بنفسجي داكن جدًا"
-},
-{
-"correct": false,
-"text": "أزرق"
-},
-{
-"correct": false,
-"text": "أسود"
-}
-],
-"overallFeedback": [
-    { "from": 0, "to": 10, "feedback": "تقييم 0-10%" },
-    { "from": 11, "to": 30, "feedback": "تقييم 11-30%" },
-    { "from": 31, "to": 50, "feedback": "تقييم 31-50%" },
-    { "from": 51, "to": 70, "feedback": "تقييم 51-70%" },
-    { "from": 71, "to": 90, "feedback": "تقييم 71-90%" },
-    { "from": 91, "to": 100, "feedback": "تقييم 91-100%" }
-]
-}
-\`\`\` `,
-    multiple_choice_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات.",
-
-    // Find the Words UI translations
-    check: "تحقق",
-    tryAgain: "إعادة المحاولة",
-    showSolution: "إظهار الحل",
-    found: "تم العثور على @found من @totalWords",
-    timeSpent: "الوقت المستغرق",
-    score: "لقد حصلت على @score من @total نقطة",
-    wordListHeader: "قائمة الكلمات",
-
-    // Find the Words Prompt
-    find_the_words_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"البحث عن الكلمات\".",
-    find_the_words_prompt_mission: "**مهمتك:**",
-    find_the_words_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط H5P من نوع البحث عن الكلمات.",
-    find_the_words_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
-    find_the_words_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
-    find_the_words_prompt_task_description: "`taskDescription`: تعليمات واضحة للنشاط.",
-    find_the_words_prompt_word_list: "`wordList`: سلسلة من الكلمات للبحث عنها، مفصولة بفواصل وبدون مسافات.",
-    find_the_words_prompt_content_rules_title: "**قواعد المحتوى:**",
-    find_the_words_prompt_rule1: "1.  يجب أن تكون `wordList` سلسلة واحدة تتضمن كلمات مفصولة بفواصل. يجب أن تكون كل كلمة بسيطة (دون عبارات متعددة الكلمات). يُمنع استخدام الأرقام، وعلامات الترقيم، والحروف ذات العلامات/اللكنة؛ واكتب بالأحرف اللاتينية الأساسية فقط (مثال: اكتب 'eleve' بدلًا من 'élève').",
-    find_the_words_prompt_example_json_title: "**مثال JSON:**",
-    find_the_words_prompt_example: `\`\`\`json
-{
-"taskDescription": "ابحث عن أسماء المدن في الشبكة أدناه",
-"wordList": "كانبيرا,مينسك,بكين,أوسلو,باريس,لندن,مدريد,أثينا,طوكيو,موسكو,واشنطن,ستوكهولم"
-}
-\`\`\` `,
-    find_the_words_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات.",
-    fillPool: "ابتثجحخدذرزسشصضطظعغفقكلمنهوي",
-
-    // Sort the Paragraphs UI translations
-    checkAnswer: "تحقق",
-    submitAnswer: "إرسال",
-    up: "أعلى",
-    down: "أسفل",
-    disabled: "معطل",
-    a11y_yourResult: "لقد حصلت على @score من @total نقطة",
-    a11y_paragraph: "فقرة",
-    a11y_correct: "صحيح",
-    a11y_wrong: "خطأ",
-    a11y_point: "@score نقطة",
-    a11y_sevenOfNine: "@current من @total",
-    a11y_currentPosition: "الموضع الحالي في القائمة",
-    a11y_instructionsSelected: "اضغط على مفتاح المسافة لإعادة الترتيب",
-    a11y_instructionsGrabbed: "اضغط على مفاتيح الأسهم لأعلى ولأسفل لتغيير الموضع، ومفتاح المسافة للإفلات، ومفتاح الهروب للإلغاء",
-    a11y_grabbed: "تم الإمساك به",
-    a11y_moved: "تم نقله",
-    a11y_dropped: "تم إفلاته",
-    a11y_reorderCancelled: "تم إلغاء إعادة الترتيب",
-    a11y_finalPosition: "الموضع النهائي",
-    a11y_nextParagraph: "الفقرة التالية",
-    a11y_correctParagraph: "فقرة صحيحة في الموضع",
-    a11y_listDescription: "قائمة فقرات قابلة للفرز.",
-    a11y_listDescriptionCheckAnswer: "قائمة فقرات مع النتائج.",
-    a11y_listDescriptionShowSolution: "قائمة فقرات مع الحلول.",
-
-    // Sort the Paragraphs Prompt
-    sort_the_paragraphs_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"ترتيب الفقرات\".",
-    sort_the_paragraphs_prompt_mission: "**مهمتك:**",
-    sort_the_paragraphs_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط H5P من نوع ترتيب الفقرات.",
-    sort_the_paragraphs_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
-    sort_the_paragraphs_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
-    sort_the_paragraphs_prompt_task_description: "`taskDescription`: تعليمات واضحة للنشاط. استخدم `*word*` للنص العريض، `**word**` للنص المائل، و `\\n` للفواصل السطرية.",
-    sort_the_paragraphs_prompt_paragraphs_array: "`paragraphs`: مصفوفة من السلاسل النصية، تمثّل كلٌّ منها فقرة للترتيب. يجب أن تكون الفقرات بالترتيب الصحيح. استخدم `*word*` للنص العريض، `**word**` للنص المائل.",
-    sort_the_paragraphs_prompt_overall_feedback: "`overallFeedback`: (قاعِدة صارِمة) يجب عليك توليد مصفوفة من 6 كائنات للتغذية الراجعة النهائية، مُؤطّرة بموضوع التمرين، مع احترام الفترات التالية بدقة: 0-10، 11-30، 31-50، 51-70، 71-90، و91-100. يجب أن يكون لكل كائن الشكل `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. يجب أن يكون نص `feedback` إيجابيًا من دون مبالغة، تدريجيًا ودائمًا بصيغة إثبات.",
-    sort_the_paragraphs_prompt_content_rules_title: "**قواعد المحتوى:**",
-    sort_the_paragraphs_prompt_rule1: "1. يجب أن يُشكّل `paragraphs` تسلسلاً منطقيًا يمكن استنتاجه من المحتوى، دون مؤشرات مصطنعة (أرقام، تواريخ/أوقات، «أولًا/ثم/أخيرًا») إلا إذا طُلِب ذلك صراحةً.",
-    sort_the_paragraphs_prompt_rule2: "2. لا قائمة مسطّحة: يجب أن يدفع كلّ سطر الخيط نفسه قُدمًا (سبب→نتيجة، تهيئة→إجراء→نتيجة، عام→خاص) لجعل الترتيب قابلًا للاستدلال.",
-    sort_the_paragraphs_prompt_example_json_title: "**مثال JSON:**",
-    sort_the_paragraphs_prompt_example: `\`\`\`json
-{
-"taskDescription": "روتيني الصباحي:",
-"paragraphs": [
-  "أملأ الغلاية بالماء العذب.",
-  "أشغّلها.",
-  "أضع كيسَ شايٍ في الكوب.",
-  "أصبّ الماءَ المغليّ فوق الكيس.",
-  "أُزيل الكيس عندما تجهز عملية النقع."
-]
-}
- \`\`\` `, 
-    sort_the_paragraphs_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات.",
-
-    // Single Choice Set UI translations
-    showSolutionButtonLabel: "إظهار الحل",
-    retryButtonLabel: "إعادة المحاولة",
-    solutionViewTitle: "الحل",
-    correctText: "صحيح!",
-    incorrectText: "خطأ!",
-    muteButtonLabel: "كتم الصوت",
-    closeButtonLabel: "إغلاق",
-    slideOfTotal: "شريحة @slide من @total",
-    nextButtonLabel: "التالي",
-    solutionListQuestionNumber: "سؤال @question",
-    a11yShowSolution: "إظهار الحل. سيتم تمييز المهمة بالحل الصحيح.",
-    a11yRetry: "أعد محاولة المهمة. أعد تعيين جميع الإجابات وابدأ المهمة من جديد.",
-    shouldSelect: "يجب أن تختار",
-    shouldNotSelect: "لا يجب أن تختار",
-
-    // Single Choice Set Prompt
-    single_choice_set_prompt_role: "أنت خبير في هندسة التعلّم تنشئ نشاط H5P من نوع \"مجموعة الاختيار الفردي\".",
-    single_choice_set_prompt_mission: "**مهمتك:**",
-    single_choice_set_prompt_generate_json: "ولِّد كائن JSON كاملًا وصالحًا لنشاط H5P من نوع مجموعة الاختيار الفردي.",
-    single_choice_set_prompt_json_structure_title: "**البنية المتوقَّعة لملف JSON:**",
-    single_choice_set_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
-    single_choice_set_prompt_choices_array: "`choices`: مصفوفة من الكائنات، يمثّل كلٌّ منها سؤالًا ويحتوي على:",
-    single_choice_set_prompt_question: "`question`: السؤال المراد طرحه.",
-    single_choice_set_prompt_answers_array: "`answers`: مصفوفة من السلاسل النصية. السلسلة الأولى هي دائمًا الإجابة الصحيحة.",
-    single_choice_set_prompt_overall_feedback: "`overallFeedback`: (قاعِدة صارِمة) يجب عليك توليد مصفوفة من 6 كائنات للتغذية الراجعة النهائية، مُؤطّرة بموضوع التمرين، مع احترام الفترات التالية بدقة: 0-10، 11-30، 31-50، 51-70، 71-90، و91-100. يجب أن يكون لكل كائن الشكل `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`. يجب أن يكون نص `feedback` إيجابيًا من دون مبالغة، تدريجيًا ودائمًا بصيغة إثبات.",
-    single_choice_set_prompt_content_rules_title: "**قواعد المحتوى:**",
-    single_choice_set_prompt_rule1: "1. في كل مصفوفة `answers`، تكون الإجابة الأولى هي الصحيحة دائمًا.",
-    single_choice_set_prompt_example_json_title: "**مثال JSON:**",
-    single_choice_set_prompt_example: `\`\`\`json
-{
-"choices": [
-{
-"question": "تُعرف توت الغوجي أيضًا باسم ...",
-"answers": ["توت الذئب", "توت القط", "توت الدب"]
-},
-{
-"question": "توت الغوجي موطنها الأصلي ...",
-"answers": ["آسيا", "أفريقيا", "أوروبا"]
-}
-],
-"overallFeedback": [
-    { "from": 0, "to": 10, "feedback": "تقييم 0-10%" },
-    { "from": 11, "to": 30, "feedback": "تقييم 11-30%" },
-    { "from": 31, "to": 50, "feedback": "تقييم 31-50%" },
-    { "from": 51, "to": 70, "feedback": "تقييم 51-70%" },
-    { "from": 71, "to": 90, "feedback": "تقييم 71-90%" },
-    { "from": 91, "to": 100, "feedback": "تقييم 91-100%" }
-]
-}
-\`\`\` `,
-   single_choice_set_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط دون أي تعليقات.",
-
-    // Dialog Cards UI translations
-    answer: "اقلب",
-    next: "التالي",
-    prev: "السابق",
-    retry: "إعادة المحاولة",
-    progressText: "البطاقة @card من @total",
-    cardFrontLabel: "وجه البطاقة الأمامي",
-    cardBackLabel: "وجه البطاقة الخلفي",
-    tipButtonLabel: "إظهار التلميح",
-    audioNotSupported: "متصفحك لا يدعم هذا الصوت",
-
-    // Dialog Cards Prompt
-    dialog_cards_prompt_role: "أنت خبير في الهندسة البيداغوجية تنشئ نشاط H5P \"بطاقات الحوار\".",
-    dialog_cards_prompt_mission: "**مهمتك:**",
-    dialog_cards_prompt_generate_json: "أنشئ كائن JSON يحتوي uniquement على المفاتيح `title` و`description` و`dialogs` لنشاط H5P من نوع بطاقات الحوار.",
-    dialog_cards_prompt_json_structure_title: "**بنية JSON المتوقعة:**",
-    dialog_cards_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على :",
-    dialog_cards_prompt_title: "`title`: عنوان للنشاط. لا تتضمن وسوم HTML.",
-    dialog_cards_prompt_description: "`description`: وصف قصير أو توجيه (بتنسيق HTML).",
-    dialog_cards_prompt_dialogs_array: "`dialogs`: مصفوفة تضم ${nombreQuestions} كائنًا، يمثل كلٌّ منها بطاقة ويحتوي على :",
-    dialog_cards_prompt_text: "`text`: نص وجه البطاقة. لا تتضمن وسوم HTML.",
-    dialog_cards_prompt_answer: "`answer`: نص ظهر البطاقة. لا تتضمن وسوم HTML.",
-    dialog_cards_prompt_tips: "`tips` (اختياري) : كائن للتلميحات (نص عادي فقط، دون تنسيق). إذا رأيت ذلك مفيدًا تربويًا، أضف تلميحًا للوجه بالمفتاح `front` و/أو للظهر بالمفتاح `back`.",
-    dialog_cards_prompt_content_rules_title: "**قواعد المحتوى:**",
-    dialog_cards_prompt_rule1: "1.  بالنسبة إلى `text` و`answer`، يمكنك استخدام `*كلمة*` للخط العريض و`**كلمة**` للمائل.",
-    dialog_cards_prompt_example_json_title: "**مثال على JSON:**",
-    dialog_cards_prompt_example: `\`\`\`json
-{
-  "title": "تعلّم أسماء الفواكه بالإنجليزية",
-  "description": "تُعرَض أسماء الفواكه بالفرنسية. اقلب البطاقات لرؤية الترجمة الإنجليزية الصحيحة.",
-  "dialogs": [
+  "title": "مسابقة حول الثورة الفرنسية",
+  "questions": [
     {
-      "title": "استخرج الأفعال الإنجليزية في الزمن الحاضر",
-      "description": "انطلاقًا من جملة بالإنجليزية في الماضي البسيط، استخرج الفعل بصيغة المصدر. اقلب البطاقات للتحقق من إجاباتك.",
-      "dialogs": [
-        {
-          "text": "He *visited* his grandmother.",
-          "answer": "to *visit*",
-          "tips": {
-            "front": "حدِّد الفعل في صيغة الماضي.",
-            "back": "فكِّر في الصيغة الأساسية (المصدر) للفعل."
-          }
-        },
-        {
-          "text": "She *played* soccer.",
-          "answer": "to *play*",
-          "tips": {
-            "front": "ابحث عن الفعل الماضي.",
-            "back": "تخيّل الفعل بصيغته القاموسية."
-          }
-        }
+      "question": "ما هو الحدث الذي يمثل بداية الثورة الفرنسية في 14 يوليو 1789؟",
+      "goodanswer": "سقوط سجن الباستيل",
+      "badanswer": ["قسم ملعب التنس", "إعدام لويس السادس عشر", "معركة فالمي"]
+    }
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === ELEA_APPARIEMENT (Appariement) ===
+  // ============================================================================
+  ELEA_APPARIEMENT_REGLES_SPECIFIQUES: `- عدد الأزواج: 5 أزواج كحد أدنى || [NOMBRE_ELEMENTS] أزواج.
+- المنطق: يجب أن تكون العلاقة بين العنصرين واضحة بعد قراءة المصادر.`,
+
+  ELEA_APPARIEMENT_STRUCTURE_JSON: `- قم بإنشاء JSON كامل وصالح فقط داخل كتلة كود. يجب أن يبدأ ردك بـ \`{\` وينتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+كائن رئيسي يحتوي على المفاتيح التالية:
+- \`title\`: عنوان النشاط (سلسلة نصية).
+- \`intro\`: تعليمات قصيرة أو نص تقديمي (سلسلة نصية).
+- \`pairs\`: مصفوفة كائنات، حيث يمثل كل كائن زوجاً ويحتوي على:
+  - \`question\`: المصطلح أو العنصر الموجود على اليسار (سلسلة نصية).
+  - \`answer\`: التعريف أو العنصر المقابل على اليمين (سلسلة نصية).
+  - بالنسبة للصيغ الرياضية، استخدم تنسيق LaTeX مع هروب مزدوج، مثلاً: \`\\\\( (2^3)^2 \\\\)\`.`,
+
+  ELEA_APPARIEMENT_EXEMPLE_RENDU: `\`\`\`json
+{
+  "title": "مطابقة تاريخية",
+  "intro": "اربط كل تاريخ بالحدث المقابل له من الثورة الفرنسية.",
+  "pairs": [
+    {"question": "سقوط الباستيل", "answer": "14 يوليو 1789"},
+    {"question": "إلغاء الامتيازات", "answer": "4 أغسطس 1789"},
+    {"question": "إعلان حقوق الإنسان والمواطن", "answer": "26 أغسطس 1789"},
+    {"question": "مسيرة النساء", "answer": "5 أكتوبر 1789"},
+    {"question": "عيد الاتحاد", "answer": "14 يوليو 1790"}
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === ELEA_QCM (QCM Éléa) ===
+  // ============================================================================
+  ELEA_QCM_REGLES_SPECIFIQUES: `- عدد الأسئلة: 5 أسئلة كحد أدنى || [NOMBRE_ELEMENTS] أسئلة.
+- الإجابات: اقترح بين خيارين و 5 خيارات لكل سؤال.
+- المشتتات: متسقة مع الموضوع ولكنها تحتوي على أخطاء منطقية.`,
+
+  ELEA_QCM_STRUCTURE_JSON: `- قم بإنشاء JSON كامل وصالح فقط داخل كتلة كود. يجب أن يبدأ ردك بـ \`{\` وينتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- \`title\`: عنوان النشاط.
+- \`questions\`: مصفوفة كائنات. يجب أن يحتوي كل كائن سؤال على:
+  - \`text\`: نص السؤال (يمكن أن يحتوي على HTML بسيط مثل \`**\` للخط العريض).
+  - \`answers\`: مصفوفة كائنات \`{"text": "...", "iscorrect": 1/0}\`. القيمة \`1\` للإجابة الصحيحة، و \`0\` لغير ذلك.
+  - بالنسبة للصيغ الرياضية، استخدم تنسيق LaTeX مع هروب مزدوج، مثلاً: \`\\\\( (2^3)^2 \\\\)\`.`,
+
+  ELEA_QCM_EXEMPLE_RENDU: `\`\`\`json
+{
+  "title": "QCM حول الثورة الفرنسية",
+  "questions": [
+    {
+      "text": "ما هو تاريخ سقوط سجن الباستيل؟",
+      "answers": [
+        {"text": "14 يوليو 1789", "iscorrect": 1},
+        {"text": "4 أغسطس 1789", "iscorrect": 0},
+        {"text": "26 أغسطس 1789", "iscorrect": 0}
       ]
     }
   ]
 }
-\`\`\` `,
-   dialog_cards_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط يحتوي على المفاتيح `title` و `description` و `dialogs`، دون أي تعليقات.",
+\`\`\``,
 
-    // Dialog Cards specific UI translations
-    correctAnswer: "أجبت بشكل صحيح!",
-    incorrectAnswer: "أخطأت",
-    round: "جولة @round",
-    cardsLeft: "البطاقات المتبقية: @number",
-    nextRound: "الانتقال إلى الجولة @round",
-    startOver: "البدء من جديد",
-    showSummary: "التالي",
-    summary: "ملخص",
-    summaryCardsRight: "البطاقات التي أجبت عليها بشكل صحيح:",
-    summaryCardsWrong: "البطاقات التي أخطأت فيها:",
-    summaryCardsNotShown: "البطاقات غير المعروضة في المجموعة:",
-    summaryOverallScore: "النتيجة الإجمالية",
-    summaryCardsCompleted: "البطاقات التي أكملت تعلمها:",
-    summaryCompletedRounds: "الجولات المكتملة:",
-    summaryAllDone: "أحسنت! لقد أجبت على جميع البطاقات @cards بشكل صحيح @max مرات متتالية!",
-    confirmStartingOverHeader: "البدء من جديد؟",
-    confirmStartingOverBody: "سيتم فقدان كل التقدم. هل أنت متأكد من أنك تريد البدء من جديد؟",
-    confirmStartingOverCancelLabel: "إلغاء",
-    confirmStartingOverConfirmLabel: "البدء من جديد",
+  // ============================================================================
+  // === ELEA_GLOSSAIRE (Glossaire XML) ===
+  // ============================================================================
+  ELEA_GLOSSAIRE_REGLES_SPECIFIQUES: `- عدد المدخلات: 5 مصطلحات كحد أدنى || [NOMBRE_ELEMENTS] مصطلحات.
+- الاختيار: تحديد الكلمات المفتاحية، الاختصارات والمفاهيم التقنية.`,
 
-    // Complex Fill the Blanks Prompt
-    complex_blanks_prompt_role: "أنت خبير في تصميم التعليم تنشئ نشاط H5P \"املأ الفراغات المعقدة\".",
-    complex_blanks_prompt_mission: "**مهمتك:**",
-    complex_blanks_prompt_generate_json: "أنشئ كائن JSON كاملاً وصالحًا لنشاط H5P من نوع املأ الفراغات المعقدة.",
-    complex_blanks_prompt_json_structure_title: "**بنية JSON المتوقعة:**",
-    complex_blanks_prompt_json_structure_main_object: "يجب أن يحتوي الكائن الرئيسي على المفتاحين `content` و `overallFeedback`.",
-    complex_blanks_prompt_task: "`task`: تعليمات التمرين (بتنسيق HTML).",
-    complex_blanks_prompt_blanks_text: "`blanksText`: النص الذي يحتوي على الفراغات، ممثلة بـ `___________`.",
-    complex_blanks_prompt_blanks_list: "`blanksList`: مصفوفة من الكائنات، واحد لكل فراغ، بترتيب ظهورها.",
-    complex_blanks_prompt_correct_answer: "`correctAnswerText`: الإجابة الصحيحة (يمكن أن تتضمن بدائل مع `/`).",
-    complex_blanks_prompt_incorrect_answers_list: "`incorrectAnswersList`: مصفوفة من الكائنات للأخطاء الشائعة.",
-    complex_blanks_prompt_incorrect_answer_text: "`incorrectAnswerText`: نص خطأ شائع.",
-    complex_blanks_prompt_incorrect_answer_feedback: "`incorrectAnswerFeedback`: الملاحظات المحددة لهذا الخطأ (بتنسيق HTML).",
-    complex_blanks_prompt_overall_feedback: "`overallFeedback`: مصفوفة للملاحظات العامة بناءً على النتيجة.",
-    complex_blanks_prompt_content_rules_title: "**قواعد المحتوى:**",
-    complex_blanks_prompt_rule1: "1. يجب أن يتطابق عدد الكائنات في `blanksList` مع عدد الفراغات في `blanksText`.",
-    complex_blanks_prompt_rule2: "2. قدم أخطاء شائعة وملاحظات بناءة.",
-    complex_blanks_prompt_rule3: "3. يمكن أن يحتوي النص والملاحظات على علامات HTML بسيطة مثل `<p>` و `<strong>` و `<em>`.",
-    complex_blanks_prompt_example_json_title: "**مثال JSON:**",
-    complex_blanks_prompt_example: `\`\`\`json
+  ELEA_GLOSSAIRE_STRUCTURE_JSON: `- قم بإنشاء JSON كامل وصالح فقط داخل كتلة كود. يجب أن يبدأ ردك بـ \`{\` وينتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- **الجذر:** كائن رئيسي يحتوي على مفتاحين: \`name\` (اسم القاموس) و \`entries\` (مصفوفة كائنات).
+- **كل كائن في \`entries\` يجب أن يحتوي على:**
+  - \`concept\`: الكلمة أو العبارة المراد تعريفها.
+  - \`definition\`: تعريف واضح وموجز. استخدم **الكلمة** للخط العريض، *الكلمة* للخط المائل و \`\\n\` لتبديل السطر، فقط عندما يكون ذلك ذا أهمية تربوية.
+  - \`aliases\` (اختياري): مصفوفة سلاسل نصية للمرادفات أو المصطلحات البديلة. لا تضف هذا المفتاح إلا إذا وجدت مرادفات ذات صلة.
+  - بالنسبة للصيغ الرياضية، استخدم تنسيق LaTeX مع هروب مزدوج، مثلاً: \`\\\\( (2^3)^2 \\\\)\`.`,
+
+  ELEA_GLOSSAIRE_EXEMPLE_RENDU: `\`\`\`json
 {
-"content": {
-"task": "<p>ضع الأفعال في الزمن الصحيح. ستحصل على ملاحظات فردية للأخطاء الشائعة.</p>",
-"blanksList": [
-{
-"correctAnswerText": "لا يتحدث",
-"incorrectAnswersList": [
-{
-"incorrectAnswerText": "يتحدث لا",
-"incorrectAnswerFeedback": "<div>تذكر أن النفي يكون قبل الفعل في العربية <em>(يتحدث)</em>.</div>"
-},
-{
-"incorrectAnswerText": "لا نتحدث",
-"incorrectAnswerFeedback": "<div>لقد نسيت أن الفاعل هو الغائب المفرد <em>(هو)</em>.</div>"
-}
-]
-}
-],
-"blanksText": "<p>هو يتحدث الإنجليزية لكنه (لا / يتحدث) ___________<strong>&nbsp;</strong>الألمانية.</p>"
-},
-"overallFeedback": [
-    { "from": 0, "to": 10, "feedback": "تقييم 0-10%" },
-    { "from": 11, "to": 30, "feedback": "تقييم 11-30%" },
-    { "from": 31, "to": 50, "feedback": "تقييم 31-50%" },
-    { "from": 51, "to": 70, "feedback": "تقييم 51-70%" },
-    { "from": 71, "to": 90, "feedback": "تقييم 71-90%" },
-    { "from": 91, "to": 100, "feedback": "تقييم 91-100%" }
-]
-}
-\`\`\` `,
-   complex_blanks_prompt_generate_only_json: "أنشئ فقط كود JSON صالحًا، بدون أي تعليقات.",
-
-    // Chart Prompt
-    chart_prompt_role: "أنت خبير في تصميم التعليم تنشئ نشاط H5P \"رسم بياني\".",
-    chart_prompt_mission: "**مهمتك:**",
-    chart_prompt_generate_json: "أنشئ كائن JSON كاملاً وصالحًا لنشاط H5P من نوع رسم بياني.",
-    chart_prompt_json_structure_title: "**بنية JSON المتوقعة:**",
-    chart_prompt_json_structure_main_object: "يجب أن يحتوي الكائن على:",
-    chart_prompt_graph_mode: "`graphMode`: اختر نوع الرسم البياني الأنسب، 'pieChart' (دائري) أو 'barChart' (شريطي)، بناءً على السياق، ما لم يُطلب خلاف ذلك.",
-    chart_prompt_list_of_types: "`listOfTypes`: مصفوفة من الكائنات، يمثل كل منها نقطة بيانات في الرسم البياني.",
-    chart_prompt_value: "`value`: القيمة الرقمية لنقطة البيانات.",
-    chart_prompt_color: "`color`: لون نقطة البيانات (رمز ست عشري).",
-    chart_prompt_font_color: "`fontColor`: لون نص نقطة البيانات (رمز ست عشري).",
-    chart_prompt_text: "`text`: تسمية نقطة البيانات.",
-    chart_prompt_figure_definition: "`figureDefinition`: وصف موجز للرسم البياني.",
-    chart_prompt_content_rules_title: "**قواعد المحتوى:**",
-    chart_prompt_rule1: "1. اختر ألوانًا متباينة لسهولة القراءة.",
-    chart_prompt_rule2: "2. يجب أن تكون التسميات قصيرة وواضحة.",
-    chart_prompt_rule3: "3. إذا كانت إحدى القيم منخفضة جدًا مقارنة بالقيم الأخرى، ففضل 'barChart' لتصور أفضل.",
-    chart_prompt_example_json_title: "**مثال JSON:**",
-    chart_prompt_example: `\`\`\`json
-{
-"graphMode": "pieChart",
-"listOfTypes": [
-{"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "توت أزرق"},
-{"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "توت العليق"}
-],
-"figureDefinition": "رسم بياني"
-}
-\`\`\` `,
-    chart_prompt_generate_only_json: "أنشئ فقط كود JSON صالحًا، بدون أي تعليقات.",
-
-    // createH5PWithDynamicDependencies
-    quiz_prev_button: "السابق",
-    quiz_next_button: "التالي",
-    quiz_finish_button: "إنهاء",
-    quiz_submit_button: "إرسال",
-    quiz_textual_progress: "سؤال @current من @total",
-    quiz_no_result_message: "اكتمل",
-    quiz_result_message: "نتائجك:",
-    quiz_score_bar_label: "لقد حصلت على @finals من @totals نقطة",
-    quiz_solution_button_text: "عرض الحل",
-    quiz_retry_button_text: "إعادة المحاولة",
-    quiz_finish_button_text: "إنهاء",
-    quiz_submit_button_text: "إرسال",
-    quiz_feedback_available: "تقييم متاح",
-    quiz_read_feedback: "قراءة التقييم",
-    quiz_wrong_answer: "إجابة خاطئة",
-    quiz_correct_answer: "إجابة صحيحة",
-    quiz_should_check: "كان يجب تحديد هذا الخيار",
-    quiz_should_not_check: "لم يكن يجب تحديد هذا الخيار",
-    quiz_no_input: "يرجى الإجابة قبل عرض الحل.",
-    quiz_a11y_check: "تحقق من الإجابات. سيتم تمييز الإجابات بأنها صحيحة أو غير صحيحة أو لم تتم الإجابة عليها.",
-    quiz_a11y_show_solution: "إظهار الحل. سيتم تمييز المهمة بالحل الصحيح.",
-    quiz_a11y_retry: "إعادة محاولة المهمة. إعادة تعيين جميع الإجابات والبدء من جديد.",
-
-    // ذكاء Caramel الاصطناعي — التوليد
-    generate_with_llm: "إنشاء باستخدام ذكاء Caramel الاصطناعي",
-    generation_in_progress: "جاري الإنشاء، يرجى الانتظار...",
-    request_sent_to_ia: "تم إرسال الطلب إلى الذكاء الاصطناعي، يرجى الانتظار...",
-    generation_successful: "تم إنشاء محتوى H5P بنجاح!",
-    generation_failed_empty: "فشل الإنشاء. كانت الاستجابة فارغة.",
-    generation_failed_error: "حدث خطأ أثناء الإنشاء: {errorMessage}",
-    generation_failed_llm: "فشل الإنشاء عبر ذكاء Caramel الاصطناعي. السبب: {errorMessage}",
-
-    // أوصاف النماذج (ذكاء Caramel الاصطناعي)
-    llm_small_summary: "كاراميل طري: سريع، خفيف، مثالي للتمارين السريعة والإجابات دون انتظار. يستهلك قليلاً.",
-    llm_large_summary: "كاراميل سائل: أكثر غنىً وتنوعًا في الدقة، مثالي للمهام التي تتطلب بعض العمق. يستهلك أكثر.",
-    llm_xl_summary: "كاراميل صلب: قوي ومعقد، يُحفظ للمشاريع الطموحة. الصبر مطلوب، النتيجة مضمونة! يستهلك أكثر بكثير.",
-
-    // أسماء ودّية للنماذج (عرض القائمة)
-
-    // مؤشرات النماذج (ذكاء Caramel الاصطناعي)
-    llm_model_source: "مزود النموذج:",
-    llm_model_parameters: "حجم النموذج:",
-    llm_model_parameters_unit: "Mrd معاملات",
-
-    language: "لغة",
-    tutorial: "تعليمي",
-    version_modal_title: "إصدار جديد متاح",
-    version_modal_message: "أنت تستخدم حالياً الإصدار {currentVersion}. يوجد إصدار أحدث ({latestVersion}) منشور. أعد تحميل الصفحة لتحصل على آخر التحسينات.",
-    version_modal_update: "تحميل الإصدار الجديد",
-    version_modal_remind_later: "ذكّرني لاحقاً",
- 
-    // توجيه مسرد XML
-    glossaire_xml_prompt_role: "أنت خبير في التصميم التعليمي وستنشئ محتوى لمسرد.",
-    glossaire_xml_prompt_mission: "**مهمتك:** يجب أن تُنشئ كائن JSON بسيطًا يحتوي على قائمة مصطلحات لمسرد. يجب أن يحتوي كل مصطلح على مفهوم وتعريف، وإذا كان مناسبًا، قائمة بأسماء بديلة.",
-    glossaire_xml_prompt_structure_title: "**بنية JSON المتوقعة:**",
-    glossaire_xml_prompt_structure_rules: `
--   **الجذر:** كائن رئيسي يحتوي على مفتاحين: \`name\` (اسم المسرد) و\`entries\` (مصفوفة كائنات).
--   **يجب أن يحتوي كل كائن في \`entries\` على:**
-    -   \`concept\`: الكلمة أو التعبير المراد تعريفه.
-    -   \`definition\`: تعريف واضح وموجز. استخدم *mot* للخط العريض، **mot** للمائل و \\n لانتقالات الأسطر، فقط عندما يكون ذلك مناسبًا تربويًا.
-    -   \`aliases\` (اختياري): مصفوفة سلاسل نصية للمرادفات أو المصطلحات البديلة. أضِف هذا المفتاح فقط إذا وُجدت أسماء بديلة ذات صلة.`,
-    glossaire_xml_prompt_example_title: "**مثال JSON:**",
-    glossaire_xml_prompt_example: `\`\`\`json
-{
-  "name": "معجم المعلومات",
+  "name": "قاموس الصحافة",
   "entries": [
     {
       "concept": "صحفي",
-      "definition": "شخص **يجمع**، يتحقق وينشر *المعلومات*.",
-      "aliases": ["مراسل", "كاتب عمود"]
+      "definition": "شخص يقوم **بجمع** ونشر *المعلومات*.",
+      "aliases": ["مراسل", "محرر"]
     },
     {
       "concept": "مصدر",
-      "definition": "أصل *المعلومة*."
+      "definition": "أصل *معلومة* محققة."
     }
   ]
 }
 \`\`\``,
-    glossaire_xml_prompt_generate_only_xml: "أنشئ كود JSON صالحًا فقط، دون أي تعليقات.",
 
-    //Barre de menu
-    tab_all: "الكل",
-    tab_quiz: "اختبارات قصيرة وامتحانات",
-    tab_text: "معالجة النصوص",
-    tab_memory: "الحفظ والاستكشاف",
-    tab_elea: "Éléa",
-    tab_h5p: "H5P",
-    tab_moodle: "Moodle",
+  // ============================================================================
+  // === ELEA_PAGE (Page Éléa) ===
+  // ============================================================================
+  ELEA_PAGE_REGLES_SPECIFIQUES: `- الهيكل: يجب أن تحتوي الصفحة على 5 كتل مختلفة على الأقل || [NOMBRE_ELEMENTS] كتل.
+- المنطق التربوي: يجب أن يتبع المحتوى تسلسلاً منطقياً (مثال: الاستقبال -> الأهداف -> الدرس -> التفاصيل/المصطلحات -> المراجع).
+- توازن المحتوى: امزج بين التنسيقات للحفاظ على التفاعل (نصوص، جداول، قوائم، صناديق).
+- المحتويات الإلزامية: قم بدمج شريط افتتاحي (\`#01_hero_header\`) بشكل منهجي، وصناديق الأهداف أو نقاط الانتباه (\`#04_callout_set\`)، وقائمة مصطلحات للمصطلحات التقنية (\`#06_lexique_table\`)، وثلاث فقرات على الأقل من المحتوى الجوهري (\`#12_context_paragraphs\`) ومراجع المواقع (\`#18_sito_graphy\`).`,
 
-    //Bandeau modale de génération
-    get_prompt_step: "1/2 الحصول على الموجه",
-    create_file_step: "2/2 إنشاء الملف",
-    generate_one_click: "إنشاء بنقرة واحدة",
-    simple_mode: "بسيط",
-    advanced_mode: "موجَّه",
+  ELEA_PAGE_STRUCTURE_JSON: `- قم بإنشاء JSON كامل وصالح فقط داخل كتلة كود. يجب أن يبدأ ردك بـ \`{\` وينتهي بـ \`}\`. لا يوجد نص أو تعليق آخر.
+- \`title\`: عنوان الصفحة (سلسلة نصية).
+- \`intro\`: نص مقدمة قصير وجذاب (سلسلة نصية).
+- \`blocks\`: مصفوفة كائنات، حيث يمثل كل كائن قسماً من الصفحة. يجب أن يلتزم كل كائن بأحد الهياكل التالية:
 
-    // RAG feature
-    activate_rag: "تفعيل استشارة المستندات",
-    rag_tooltip: "يسمح بلصق نص أو تحميل ملف PDF. سيتم استخدام المحتوى كمصدر رئيسي لإنشاء الأنشطة.",
-    rag_title: "إرفاق مستندات (اختياري)",
-    rag_note: "إذا كنت تريد أن يعمل الذكاء الاصطناعي حصريًا من مستنداتك، فالصق النص أو أسقط ملفاتك هنا. وإلا، اترك هذه المنطقة فارغة للسماح للذكاء الاصطناعي بالبحث عن المعلومات بنفسه.",
-    upload_pdf: "أو قم بتحميل ملف PDF للتحليل",
-    pdf_loading: "جاري تحميل PDF...",
-    pdf_processing_page: "جاري معالجة الصفحة",
-    ocr_recognizing_page: "التعرف الضوئي على الحروف (OCR) للصفحة",
-    ocr_success: "تمت معالجة المستند بنجاح.",
-    ocr_error: "حدث خطأ أثناء المعالجة.",
-    error_invalid_pdf: "يرجى تحديد ملف PDF صالح.",
-    error_duplicate_pdf: "تمت إضافة هذا الملف بالفعل.",
-    error_fullscreen: "فشل وضع ملء الشاشة:",
-    lock_text: "قفل",
-    unlock_text: "فتح",
-    rag_instruction: "\n\nيجب عليك فقط الرجوع إلى المعلومات التالية لإنشاء المحتوى:",
-    drag_drop_text: "اسحب وأفلت ملف PDF هنا",
-    or_text: "أو",
-    upload_pdf_btn: "اختر ملفًا",
-    paste_your_text_here: "انسخ والصق نصك هنا...",
-    rag_tags_tuto: "ستجدون أدناه المستندات المرفوعة. انقروا على الدائرة الملوّنة لتخصيص تمييز كل مستند.",
+**قائمة الكتل المتاحة:**
+- \`#01_hero_header\`: شريط افتتاحي. \`{ "type": "#01_hero_header", "data": { "title": "...", "subtitle": "..." } }\`
+- \`#02_nav_summary\`: فهرس مع روابط داخلية. \`{ "type": "#02_nav_summary", "data": { "links": [{ "href": "#...", "text": "..." }] } }\`
+- \`#03_histo_reperes\`: معالم تاريخية في 3 بطاقات. \`{ "type": "#03_histo_reperes", "data": { "title": "...", "cards": [{ "title": "...", "text": "..." }] } }\` (أقصى حد 3 بطاقات)
+- \`#04_callout_set\`: أشرطة الأهداف، للمعرفة، تنبيه. \`{ "type": "#04_callout_set", "data": { "title": "...", "callouts": [{ "type": "objectif|savoir|alerte", "text": "..." }] } }\`
+- \`#05_stats_cards\`: أرقام رئيسية في بطاقات. \`{ "type": "#05_stats_cards", "data": { "title": "...", "stats": [{ "value": "...", "label": "..." }] } }\`
+- \`#06_lexique_table\`: جدول مفردات. \`{ "type": "#06_lexique_table", "data": { "title": "...", "caption": "...", "headers": ["...", "..."], "rows": [["...","..."]] } }\`
+- \`#07_glossary_chips\`: قاموس في شكل كبسولات. \`{ "type": "#07_glossary_chips", "data": { "title": "...", "chips": ["..."] } }\`
+- \`#08_monuments_grid\`: بطاقات معالم مع صور. \`{ "type": "#08_monuments_grid", "data": { "title": "...", "cards": [{ "img_src": "...", "img_alt": "...", "caption": "...", "title": "...", "text": "..." }] } }\`
+- \`#09_figures_comparison\`: مقارنة بين صورتين.
+- \`#10_table_comparison\`: جدول مقارنة.
+- \`#11_definition_box\`: صندوق تعريف. \`{ "type": "#11_definition_box", "data": { "title": "تعريف", "text": "..." } }\`
+- \`#12_context_paragraphs\`: فقرات الدرس. \`{ "type": "#12_context_paragraphs", "data": { "title": "...", "paragraphs": ["...", "..."] } }\`
+- \`#13_monument_sheet_long\`: بطاقة تفصيلية.
+- \`#14_faq_block\`: الأسئلة الشائعة. \`{ "type": "#14_faq_block", "data": { "title": "FAQ", "questions": [{ "q": "...", "a": "..." }] } }\`
+- \`#15_myths_realities\`: خرافات مقابل حقائق.
+- \`#17_method_image_desc\`: منهجية وصف صورة.
+- \`#18_sito_graphy\`: مراجع المواقع. \`{ "type": "#18_sito_graphy", "data": { "title": "المراجع", "links": [{ "href": "...", "text": "..." }] } }\`
+- \`#19_quote_bilingual\`: اقتباس ثنائي اللغة.`,
 
-    // خطوات تحضير الكراميل
-    caramel_animation_step_1: "نصب السكر في القدر...",
-    caramel_animation_step_2: "نضيف قليلًا من الماء...",
-    caramel_animation_step_3: "نسخن على نار متوسطة...",
-    caramel_animation_step_4: "يبدأ السكر بالذوبان...",
-    caramel_animation_step_5: "يبدأ لونه بالتغيّر...",
-    caramel_animation_step_6: "نحرّك بلطف...",
-    caramel_animation_step_7: "يأخذ الكراميل لونًا كهرمانيًا جميلًا...",
-    caramel_animation_step_8: "نضيف الكريمة الساخنة...",
-    caramel_animation_step_9: "احذر من تناثر السائل!",
-    caramel_animation_step_10: "نخلط جيدًا...",
-    caramel_animation_step_11: "يكاد أن يكون جاهزًا!",
-
-    // موجه الصفحة
-    page_prompt_role: "أنت خبير في هندسة التعليم تنشئ نشاط صفحة مُنظَّمًا لمنصتَي Éléa/Moodle.",
-    page_prompt_mission: "**مهمتك :**",
-    page_prompt_generate_json: "ولِّد كائن JSON لبناء صفحة محتوى خاصة بـ Éléa. تستند بنية الصفحة إلى كتل محددة مسبقًا. يجب عليك اختيار أكثر الكتل ملاءمة من القائمة أدناه لتلبية طلب المستخدم.",
-    page_prompt_json_structure_title: "**بنية JSON المتوقعة :**",
-    page_prompt_json_structure_main_object: "يجب أن يحتوي الكائن الرئيسي على المفتاح \"title\" لعنوان الصفحة، والمفتاح \"intro\" لمقدّمة واضحة ومفهومة للمحتوى الدراسي اللاحق، والمفتاح \"blocks\" وهو مصفوفة من الكائنات. يمثّل كل كائن كتلة محتوى ويجب أن يحتوي على \"type\" يطابق أحد الكتل أدناه، وكائن \"data\" يتضمن المعلومات الخاصة بالكتلة.",
-    page_prompt_blocks_list_title: "**قائمة الكتل المتاحة :**",
-    page_prompt_block_01: "- `#01_hero_header`: شريط افتتاحي. `{ \"type\": \"#01_hero_header\", \"data\": { \"title\": \"...\", \"subtitle\": \"...\" } }`",
-    page_prompt_block_02: "- `#02_nav_summary`: ملخص مع روابط داخلية. `{ \"type\": \"#02_nav_summary\", \"data\": { \"links\": [{ \"href\": \"#...\", \"text\": \"...\" }] } }`",
-    page_prompt_block_03: "- `#03_histo_reperes`: معالم تاريخية في 3 بطاقات. `{ \"type\": \"#03_histo_reperes\", \"data\": { \"title\": \"...\", \"cards\": [{ \"title\": \"...\", \"text\": \"...\" }] } }` (حد أقصى 3 بطاقات)",
-    page_prompt_block_04: "- `#04_callout_set`: لافتات الأهداف، الجدير بالمعرفة، التنبيه. `{ \"type\": \"#04_callout_set\", \"data\": { \"title\": \"...\", \"callouts\": [{ \"type\": \"objectif|savoir|alerte\", \"text\": \"...\" }] } }`",
-    page_prompt_block_05: "- `#05_stats_cards`: إحصاءات/أرقام رئيسية في بطاقات. `{ \"type\": \"#05_stats_cards\", \"data\": { \"title\": \"...\", \"stats\": [{ \"value\": \"...\", \"label\": \"...\" }] } }`",
-    page_prompt_block_06: "- `#06_lexique_table`: جدول مفردات. `{ \\\"type\\\": \\\"#06_lexique_table\\\", \\\"data\\\": { \\\"title\\\": \\\"...\\\", \\\"caption\\\": \\\"...\\\", \\\"headers\\\": [\\\"...\\\", \\\"...\\\"], \\\"rows\\\": [[\\\"...\\\",\\\"...\\\"]] } }`",
-    page_prompt_block_07: "- `#07_glossary_chips`: مسرد على هيئة شرائح. `{ \"type\": \"#07_glossary_chips\", \"data\": { \"title\": \"...\", \"chips\": [\"...\"] } }`",
-    page_prompt_block_08: "- `#08_monuments_grid`: بطاقات معالم مع صور. `{ \"type\": \"#08_monuments_grid\", \"data\": { \"title\": \"...\", \"cards\": [{ \"img_src\": \"...\", \"img_alt\": \"...\", \"caption\": \"...\", \"title\": \"...\", \"text\": \"...\" }] } }`",
-    page_prompt_block_09: "- `#09_figures_comparison`: صورتان للمقارنة. `{ \"type\": \"#09_figures_comparison\", \"data\": { \"title\": \"...\", \"images\": [{ \"src\": \"...\", \"alt\": \"...\", \"caption\": \"...\" }, { \"src\": \"...\", \"alt\": \"...\", \"caption\": \"...\" }] } }`",
-    page_prompt_block_10: "- `#10_table_comparison`: جدول مقارنة. `{ \\\"type\\\": \\\"#10_table_comparison\\\", \\\"data\\\": { \\\"title\\\": \\\"...\\\", \\\"caption\\\": \\\"...\\\", \\\"headers\\\": [\\\"...\\\", \\\"...\\\"], \\\"rows\\\": [[\\\"...\\\",\\\"...\\\"]] } }`",
-    page_prompt_block_11: "- `#11_definition_box`: صندوق تعريف. `{ \"type\": \"#11_definition_box\", \"data\": { \"title\": \"تعريف\", \"text\": \"...\" } }`",
-    page_prompt_block_12: "- `#12_context_paragraphs`: فقرات درسية. `{ \"type\": \"#12_context_paragraphs\", \"data\": { \"title\": \"...\", \"paragraphs\": [\"...\", \"...\"] } }`",
-    page_prompt_block_13: "- `#13_monument_sheet_long`: بطاقة تفصيلية. `{ \"type\": \"#13_monument_sheet_long\", \"data\": { \"title\": \"...\", \"paragraphs\": [\"...\"] } }`",
-    page_prompt_block_14: "- `#14_faq_block`: الأسئلة الشائعة. `{ \"type\": \"#14_faq_block\", \"data\": { \"title\": \"FAQ\", \"questions\": [{ \"q\": \"...\", \"a\": \"...\" }] } }`",
-    page_prompt_block_15: "- `#15_myths_realities`: خرافات مقابل حقائق. `{ \"type\": \"#15_myths_realities\", \"data\": { \"myths\": { \"title\": \"خرافات\", \"items\": [\"...\"] }, \"realities\": { \"title\": \"حقائق\", \"items\": [\"...\"] } } }`",
-    page_prompt_block_17: "- `#17_method_image_desc`: منهج لوصف صورة. `{ \"type\": \"#17_method_image_desc\", \"data\": { \"title\": \"...\", \"steps\": [\"...\"] } }`",
-    page_prompt_block_18: "- `#18_sito_graphy`: بيبليوغرافيا المواقع. `{ \"type\": \"#18_sito_graphy\", \"data\": { \"title\": \"بيبليوغرافيا المواقع\", \"links\": [{ \"href\": \"...\", \"text\": \"...\" }] } }`",
-    page_prompt_block_19: "- `#19_quote_bilingual`: اقتباس ثنائي اللغة. `{ \"type\": \"#19_quote_bilingual\", \"data\": { \"title\": \"...\", \"quote_fr\": \"...\", \"quote_alt\": \"...\", \"caption\": \"...\" } }`",
-    page_prompt_content_rules_title: "**قواعد المحتوى :**",
-    page_prompt_rule1: "1.  يجب أن يكون JSON صالحًا.",
-    page_prompt_rule2: "2.  يمكن للمحتوى النصي استخدام وسوم Markdown `*كلمة*` للنص العريض و`**كلمة**` للنص المائل.",
-    page_prompt_rule3: "3.  بالنسبة للصور، اعثر على عناوين URL ذات صلة وخالية من الحقوق (مثال: Wikimedia Commons).",
-    page_prompt_example_json_title: "**مثال JSON :**",
-    page_prompt_example_json: `\`\`\`json
+  ELEA_PAGE_EXEMPLE_RENDU: `\`\`\`json
 {
   "title": "الثورة الفرنسية",
+  "intro": "اكتشف اللحظات الرئيسية لهذه الفترة التاريخية.",
   "blocks": [
-    { "type": "#01_hero_header", "data": { "title": "الثورة الفرنسية", "subtitle": "مرتكزات أساسية" } },
-    { "type": "#12_context_paragraphs", "data": { "title": "السياق", "paragraphs": ["الثورة الفرنسية فترة من التحولات...", "تفسّر عدة أسباب هذا الحدث..."] } },
-    { "type": "#08_monuments_grid", "data": { "title": "أحداث رئيسية", "cards": [{ "img_src": "https://.../Prise_de_la_Bastille.jpg", "img_alt": "اقتحام الباستيل", "caption": "14 يوليو 1789", "title": "اقتحام الباستيل", "text": "يمثّل هذا الحدث بداية الثورة." }] } }
+    {
+      "type": "#01_hero_header",
+      "data": {"title": "الثورة", "subtitle": "1789-1799"}
+    },
+    {
+      "type": "#04_callout_set",
+      "data": {
+        "title": "الأهداف",
+        "callouts": [{"type": "objectif", "text": "فهم أسباب عام 1789."}]
+      }
+    },
+    {
+      "type": "#12_context_paragraphs",
+      "data": {
+        "title": "قسم ملعب التنس",
+        "paragraphs": [
+          "في 20 يونيو 1789، اجتمع نواب الطبقة الثالثة...",
+          "تمثل هذه الخطوة ميلاد الجمعية الوطنية.",
+          "إنها نقطة تحول كبرى نحو نهاية الحكم المطلق."
+        ]
+      }
+    },
+    {
+      "type": "#06_lexique_table",
+      "data": {
+        "title": "المفردات",
+        "headers": ["المصطلح", "التعريف"],
+        "rows": [["الطبقة الثالثة", "الجزء الأكبر من السكان..."]]
+      }
+    },
+    {
+      "type": "#18_sito_graphy",
+      "data": {
+        "title": "للمزيد من المعلومات",
+        "links": [{"href": "https://...", "text": "الموقع الرسمي للتاريخ"}]
+      }
+    }
   ]
 }
 \`\`\``,
-    page_prompt_generate_only_json: "ولِّد كود JSON صالحًا فقط، من دون أي تعليق."
+
+  // ============================================================================
+  // === ترجمة واجهة H5P (معيارية) ===
+  // ============================================================================
+
+  // مفاتيح مشتركة
+  h5p_check_answer: "تحقق",
+  h5p_try_again: "أعد المحاولة",
+  h5p_show_solution: "إظهار الحل",
+  h5p_submit_answer: "إرسال",
+  h5p_score: "لقد حصلت على @score من إجمالي @total نقاط",
+  h5p_score_bar_label: "لقد حصلت على :num من إجمالي :total نقاط",
+  h5p_tip_label: "تلميح",
+  h5p_next: "التالي",
+  h5p_previous: "السابق",
+  h5p_close: "إغلاق",
+  h5p_finish_header: "إنهاء؟",
+  h5p_finish_body: "هل أنت متأكد أنك تريد الإنهاء؟",
+  h5p_cancel_label: "إلغاء",
+  h5p_finish_label: "إنهاء",
+  h5p_retry_header: "إعادة المحاولة؟",
+  h5p_retry_body: "هل أنت متأكد أنك تريد إعادة المحاولة؟",
+  h5p_retry_confirm_label: "تأكيد",
+  h5p_resume: "استئناف",
+  h5p_audio_direction: "اتجاه الصوت",
+  h5p_a11y_check: "تحقق من الإجابات. سيتم تمييز الإجابات على أنها صحيحة أو غير صحيحة أو لم يتم الرد عليها.",
+  h5p_a11y_show_solution: "إظهار الحل. سيتم تمييز المهمة بحلها الصحيح.",
+  h5p_a11y_retry: "إعادة محاولة المهمة. إعادة تعيين كافة الإجابات وبدء المهمة من جديد.",
+
+  // الكلمات المتقاطعة (Crossword)
+  h5p_crossword_across: "أفقي",
+  h5p_crossword_down: "عمودي",
+  h5p_crossword_extra_clue: "تلميح إضافي",
+
+  // ملخص (Summary)
+  h5p_summary_intro: "اختر العبارة الصحيحة.",
+  h5p_summary_solved_label: "التقدم:",
+  h5p_summary_score_label: "إجابات خاطئة:",
+  h5p_summary_result_label: "نتيجتك",
+  h5p_summary_feedback: "لقد حصلت على @score من إجمالي @total عبارات صحيحة (@percent%).",
+  h5p_summary_label_correct: "صحيح.",
+  h5p_summary_label_incorrect: "غير صحيح! يرجى المحاولة مرة أخرى.",
+  h5p_summary_label_correct_answers: "إجابات صحيحة.",
+  h5p_summary_progress_text: "التقدم :num من :total",
+  h5p_summary_alternative_incorrect_label: "غير صحيح",
+
+  // سحب الكلمات (Drag the Words)
+  h5p_drag_words_score_feedback: "النتيجة: @score من @total.",
+  h5p_drag_words_correct_text: "صحيح!",
+  h5p_drag_words_incorrect_text: "غير صحيح!",
+
+  // ملء الفراغات (Fill in the Blanks)
+  h5p_blanks_not_filled_out: "يرجى ملء جميع الفراغات.",
+  h5p_blanks_answer_is_correct: "&#039;:ans&#039; صحيح",
+  h5p_blanks_answer_is_wrong: "&#039;:ans&#039; غير صحيح",
+  h5p_blanks_answered_correctly: "تمت الإجابة بشكل صحيح",
+  h5p_blanks_answered_incorrectly: "تمت الإجابة بشكل غير صحيح",
+  h5p_blanks_solution_label: "الإجابة الصحيحة:",
+  h5p_blanks_input_label: "فراغ @num من @total",
+  h5p_blanks_input_has_tip_label: "تلميح متاح",
+  h5p_blanks_feedback: "لقد حصلت على @score من إجمالي @total فراغات صحيحة.",
+  h5p_blanks_checking_mode_header: "وضع التحقق",
+
+  // تعليم الكلمات (Mark the Words)
+  h5p_mark_words_correct_answer: "صحيح!",
+  h5p_mark_words_incorrect_answer: "غير صحيح!",
+  h5p_mark_words_missed_answer: "مفقود!",
+  h5p_mark_words_display_solution_description: "تم تحديث المهمة لزيادة الحل.",
+  h5p_mark_words_a11y_full_text_label: "نص مقروء كامل",
+  h5p_mark_words_a11y_clickable_text_label: "نص كامل حيث يمكن تعليم الكلمات",
+  h5p_mark_words_a11y_solution_mode_header: "وضع الحل",
+  h5p_mark_words_a11y_checking_header: "وضع التحقق",
+
+  // بطاقات تعليمية (Flashcards)
+  h5p_flashcards_progress_text: "بطاقة @card من @total",
+  h5p_flashcards_your_answer: "إجابتك",
+  h5p_flashcards_correct_answer: "إجابة صحيحة",
+  h5p_flashcards_incorrect_answer: "إجابة غير صحيحة",
+  h5p_flashcards_show_solution: "إجابة صحيحة",
+  h5p_flashcards_results: "النتائج",
+  h5p_flashcards_of_correct: "@score من @total صحيح",
+  h5p_flashcards_show_results: "إظهار النتائج",
+  h5p_flashcards_answer_short: "ج:",
+  h5p_flashcards_card_announcement: "إجابة غير صحيحة. الإجابة الصحيحة كانت @answer",
+  h5p_flashcards_correct_announcement: "@answer صحيح.",
+  h5p_flashcards_page_announcement: "صفحة @current من @total",
+
+  // مقال (Essay)
+  h5p_essay_feedbackHeader: "تعليق",
+  h5p_essay_solutionTitle: "مثال للحل",
+  h5p_essay_remainingChars: "الحروف المتبقية: @chars",
+  h5p_essay_notEnoughChars: "يجب إدخال @chars حروف على الأقل!",
+  h5p_essay_messageSave: "تم الحفظ",
+  h5p_essay_placeholderText: "ابدأ الكتابة هنا...",
+  h5p_essay_ariaYourResult: "لقد حصلت على @score من إجمالي @total نقاط",
+  h5p_essay_ariaNavigatedToSolution: "الانتقال إلى مثال الحل المضمن حديثاً بعد منطقة النص.",
+
+  // صح/خطأ (True/False)
+  h5p_true_false_true_text: "صح",
+  h5p_true_false_false_text: "خطأ",
+  h5p_true_false_wrong_answer_message: "إجابة خاطئة",
+  h5p_true_false_correct_answer_message: "إجابة صحيحة",
+
+  // البحث عن الكلمات (Find the Words)
+  h5p_find_words_found: "تم العثور على @found من أصل @totalWords كلمات",
+  h5p_find_words_time_spent: "الوقت المستغرق",
+  h5p_find_words_word_list_header: "قائمة الكلمات",
+  h5p_find_words_fill_pool: "abcdefghijklmnopqrstuvwxyz",
+
+  // ترتيب الفقرات (Sort the Paragraphs)
+  h5p_sort_paragraphs_up: "للأعلى",
+  h5p_sort_paragraphs_down: "للأسفل",
+  h5p_sort_paragraphs_disabled: "معطل",
+  h5p_sort_paragraphs_paragraph: "فقرة",
+  h5p_sort_paragraphs_point: "@score نقطة",
+  h5p_sort_paragraphs_seven_of_nine: "@current من @total",
+  h5p_sort_paragraphs_current_position: "الموقع الحالي في القائمة",
+  h5p_sort_paragraphs_instructions_selected: "اضغط على مسطرة المسافة لإعادة الترتيب",
+  h5p_sort_paragraphs_instructions_grabbed: "اضغط على مفاتيح الأسهم لأعلى وأسفل لتغيير الموضع، ومسطرة المسافة للإسقاط، وهروب للإلغاء",
+  h5p_sort_paragraphs_grabbed: "ممسوك",
+  h5p_sort_paragraphs_moved: "منقول",
+  h5p_sort_paragraphs_dropped: "مُسقط",
+  h5p_sort_paragraphs_reorder_cancelled: "تم إلغاء إعادة الترتيب",
+  h5p_sort_paragraphs_final_position: "الموضع النهائي",
+  h5p_sort_paragraphs_next_paragraph: "الفقرة التالية",
+  h5p_sort_paragraphs_correct_paragraph: "فقرة صحيحة في الموضع",
+  h5p_sort_paragraphs_list_description: "قائمة فقرات قابلة للفرز.",
+  h5p_sort_paragraphs_list_description_check: "قائمة فقرات مع النتائج.",
+  h5p_sort_paragraphs_list_description_solution: "قائمة فقرات مع الحلول.",
+
+  // مجموعة خيار واحد (Single Choice Set)
+  h5p_single_choice_solution_view_title: "الحل",
+  h5p_single_choice_mute_button_label: "كتم الصوت",
+  h5p_single_choice_slide_of_total: "شريحة @slide من @total",
+  h5p_single_choice_solution_list_question_number: "سؤال @question",
+  h5p_single_choice_should_select: "يجب الاختيار",
+  h5p_single_choice_should_not_select: "لا يجب الاختيار",
+
+  // بطاقات الحوار (Dialog Cards)
+  h5p_dialog_cards_answer: "قلب",
+  h5p_dialog_cards_progress_text: "بطاقة @card من @total",
+  h5p_dialog_cards_card_front_label: "وجه البطاقة",
+  h5p_dialog_cards_card_back_label: "ظهر البطاقة",
+  h5p_dialog_cards_audio_not_supported: "متصفحك لا يدعم تنسيق الصوت هذا",
+  h5p_dialog_cards_correct_answer: "لقد أصبت!",
+  h5p_dialog_cards_incorrect_answer: "لقد أخطأت",
+  h5p_dialog_cards_round: "جولة @round",
+  h5p_dialog_cards_cards_left: "البطاقات المتبقية: @number",
+  h5p_dialog_cards_next_round: "انتقل إلى الجولة @round",
+  h5p_dialog_cards_start_over: "إعادة البدء",
+  h5p_dialog_cards_show_summary: "التالي",
+  h5p_dialog_cards_summary: "ملخص",
+  h5p_dialog_cards_summary_cards_right: "البطاقات التي أجبت عليها بشكل صحيح:",
+  h5p_dialog_cards_summary_cards_wrong: "البطاقات التي فاتتك:",
+  h5p_dialog_cards_summary_cards_not_shown: "البطاقات التي لم تظهر:",
+  h5p_dialog_cards_summary_overall_score: "النتيجة الإجمالية",
+  h5p_dialog_cards_summary_cards_completed: "البطاقات التي تعلمتها:",
+  h5p_dialog_cards_summary_completed_rounds: "الجولات المكتملة:",
+  h5p_dialog_cards_summary_all_done: "أحسنت! لقد أكملت جميع بطاقات @cards لـ @max مرات متتالية!",
+
+  // مجموعة أسئلة (Quiz Set)
+  h5p_quiz_textual_progress: "سؤال @current من @total",
+  h5p_quiz_no_result_message: "منتهٍ",
+  h5p_quiz_result_message: "نتائجك:",
+  h5p_quiz_feedback_available: "ملاحظات متاحة",
+  h5p_quiz_read_feedback: "اقرأ التعليق",
+  h5p_quiz_wrong_answer: "إجابة خاطئة",
+  h5p_quiz_correct_answer: "إجابة صحيحة",
+  h5p_quiz_should_check: "كان يجب وضع علامة هنا",
+  h5p_quiz_should_not_check: "لم يكن يجب وضع علامة هنا!",
+  h5p_quiz_no_input: "يرجى الإجابة قبل مشاهدة الحل.",
+
+  // ============================================================================
+  // === إشعار قانوني - تذييل الصفحة ===
+  // ============================================================================
+  license_info: "رخصة GNU GPL v3.0 أو أحدث",
+  ticket: "تذكرة",
+  legal_mentions: "إشعار قانوني",
+  legal_title: "إشعار قانوني",
+  legal_editor_title: "ناشر التطبيق",
+  legal_editor_gauthier_remande: "<strong>Gauthier REMANDE</strong>",
+  legal_editor_gauthier_remande_function: "<strong>الوظيفة:</strong> أستاذ آداب وتاريخ (PLP)",
+  legal_editor_gauthier_remande_email: "<strong>البريد الإلكتروني:</strong> gauthier.remande@ac-nantes.fr",
+  legal_editor_gauthier_remande_address: "<strong>العنوان:</strong> 39 avenue de Chanzy, 53000 Laval, France",
+  legal_editor_gauthier_remande_phone: "<strong>الهاتف:</strong> +33 2 43 67 24 00",
+  legal_editor_emmanuel_gaunard: "<strong>Emmanuel GAUNARD</strong>",
+  legal_editor_emmanuel_gaunard_function: "<strong>الوظيفة:</strong> أستاذ رياضيات ومكلف بمهمة في DRANE – أكاديمية غرونوبل",
+  legal_editor_emmanuel_gaunard_email: "<strong>البريد الإلكتروني:</strong> emmanuel.gaunard@ac-grenoble.fr",
+  legal_editor_emmanuel_gaunard_address: "<strong>العنوان:</strong> 30 boulevard de la République, 38200 Vienne, France",
+  legal_editor_emmanuel_gaunard_phone: "<strong>الهاتف:</strong> +33 6 46 74 20 94",
+  legal_app_description: "تطبيق الويب « Caramel » هو مشروع حر وغير تجاري، مخصص لإنشاء محتويات H5P و Éléa. لا يتطلب حساباً، ولا يتم جمع أي بيانات شخصية.",
+  legal_hosting_title: "الاستضافة",
+  legal_host_name: "<strong>المضيف</strong>: Forge des Communs Numériques Éducatifs",
+  legal_host_company: "<strong>الاسم التجاري</strong>: وزارة التربية الوطنية والشباب",
+  legal_host_address: "<strong>العنوان</strong>: 110 rue de Grenelle, 75007 Paris, France",
+  legal_host_phone: "<strong>الهاتف</strong>: +33 1 55 55 10 10",
+  legal_publication_director_title: "مسؤول النشر",
+  legal_publication_director_name: "Gauthier REMANDE و Emmanuel GAUNARD، بصفتهما ناشرين متطوعين.",
+  legal_terms_of_use_title: "شروط الاستخدام العامة",
+  legal_terms_of_use_content: "يتيح هذا الموقع للمستخدمين إنشاء محتويات H5P و Éléa. يتم العرض محلياً، دون نقل بيانات المستخدم. المستخدم هو المسؤول الوحيد عن استخدامه للمحتويات التي يتم إنشاؤها. يتم تقديم التطبيق مجاناً، دون أي ضمان للتشغيل أو النتائج. يخلي الناشر مسؤوليته في حالة التفسير الخاطئ للمحتويات أو الاستخدام غير المناسب.",
+  legal_intellectual_property_title: "الملكية الفكرية",
+  legal_intellectual_property_content: "جميع الأكواد المصدرية والعناصر الرسومية والمحتويات تخضع لرخصة GNU AGPLv3 الحرة. إعادة استخدامها مسموح بها بموجب شروط تراخيصها الخاصة. يجب أن تشير أي إعادة توزيع أو تعديل إلى المؤلفين الأصليين: Gauthier REMANDE و Emmanuel GAUNARD. الصور المستخدمة في وحدات H5P مأخوذة من موقع H5P.org.",
+  legal_personal_data_title: "البيانات الشخصية",
+  legal_personal_data_content: "لا يتم جمع أو تخزين أي بيانات شخصية. لا يتم استخدام أي ملفات تعريف ارتباط (cookies) للتتبع.",
+  legal_ai_models_title: "نماذج الذكاء الاصطناعي",
+  legal_ai_models_content: "يعتمد تطبيق Caramel، فقط عند التوليد بنقرة واحدة، على نماذج ذكاء اصطناعي مشغلة بواسطة ILAAS، وهي اتحاد للبنية التحتية المشتركة للذكاء الاصطناعي. يتم توجيه الطلبات عبر سير عمل n8n مستضاف من قبل الحاضنة (Incubateur)، ثم نقلها إلى ILAAS للتنفيذ على خوادم موثوقة مستضافة في مراكز بيانات معتمدة للتعليم العالي والبحث العلمي (ESR). لا يقوم Caramel بتشغيل النماذج ولا يعالج أو يخزن البيانات بنفسه؛ تستخدم البيانات فقط لتنفيذ الطلب ولا ترسل إلى ذكاء اصطناعي عام. تشمل النماذج المقترحة حالياً {{llm_model_1_name}} ({{llm_model_1_param}} {{llm_model_parameters_unit}})، {{llm_model_2_name}} ({{llm_model_2_param}} {{llm_model_parameters_unit}}) و {{llm_model_3_name}} ({{llm_model_3_param}} {{llm_model_parameters_unit}}). تعود إجراءات الاستضافة والتسجيل والحفظ التي قد تقوم بها ILAAS إلى سياسة الخصوصية وشروط الخدمة الخاصة بهم، والتي يجب الرجوع إليها.",
+  legal_user_requests_processing_title: "معالجة طلبات المستخدمين عبر n8n وحاضنة وزارة التربية الوطنية",
+  legal_user_requests_processing_content: "يستخدم موقعنا حلاً تقنياً تم تطويره بواسطة n8n، وهي أداة مفتوحة المصدر مستضافة من قبل حاضنة وزارة التربية الوطنية. تتيح هذه الخدمة، عبر سير عمل آلي، تحويل طلبات المستخدمين إلى بيانات منظمة (تنسيق JSON) من أجل التفاعل مع ذكاء اصطناعي تابع لـ DINUM، وبالتالي فهو سيادي. لا يتم عرض أو نقل أي معلومات حساسة دون تشفير، مما يضمن سرية وأمن التبادلات.",
+  legal_accessibility_title: "إمكانية الوصول",
+  legal_accessibility_content: "تم تصميم التطبيق ليكون متوافقاً مع الاستخدام على الكمبيوتر، بما في ذلك الوضع الداكن/الفاتح، والتنقل بلوحة المفاتيح، والتباين العالي حسب السمات. هناك تحسين مستمر لإمكانية الوصول جاري العمل عليه، بما يتماشى مع توصيات RGAA.",
+  legal_applicable_law_title: "القانون المعمول به",
+  legal_applicable_law_content: "يخضع هذا الموقع للقانون الفرنسي. في حالة حدوث نزاع، تكون المحاكم المختصة هي محاكم دائرة ليون (Lyon).",
+  legal_external_libraries_title: "المكتبات الخارجية المستخدمة",
+  legal_external_libraries_intro: "يستخدم تطبيق Caramel العديد من المكتبات مفتوحة المصدر، بموجب التراخيص التالية:",
+  legal_library_fontawesome: "<strong>Font Awesome Free</strong> (رخصة: CC BY 4.0, SIL OFL 1.1, MIT): توفر الأيقونات المستخدمة في الواجهة لتحسين التنقل والتجربة البصرية.",
+  legal_library_jszip: "<strong>JSZip</strong> (رخصة: MIT أو GPLv3): تتيح إنشاء ملفات .h5p عن طريق ضغط المحتوى اللازم في أرشيف zip.",
+  legal_library_clientzip: "<strong>client-zip</strong> (رخصة: MIT): مكتبة أخرى مستخدمة لضغط الملفات، توفر بديلاً عالي الأداء لإنشاء أرشيفات .h5p مباشرة في المتصفح.",
+  legal_library_fflate: "<strong>fflate</strong> (رخصة: MIT): مكتبة سريعة جداً لضغط وإلغاء ضغط البيانات، تُستخدم لإنشاء أرشيفات .mbz الخاصة بوحدات Moodle.",
+  legal_library_tarjs: "<strong>tar-js</strong> (رخصة: MIT): تتيح إنشاء أرشيفات .tar، وهي خطوة ضرورية قبل الضغط لتكوين ملفات .mbz الخاصة بوحدات Moodle.",
+  legal_library_mammoth: "<strong>Mammoth</strong> (رخصة: BSD 2-Clause): تتيح تحويل مستندات Word (.docx) إلى HTML، مما يسهل استيراد ودمج المحتويات من ملفات Microsoft Word.",
+  legal_library_pdfjs: "<strong>PDF.js</strong> (رخصة: Apache 2.0): تتيح استخراج النص الأصلي من ملفات PDF مباشرة في المتصفح، دون الحاجة إلى معالجة على الخادم.",
+  legal_library_tesseract: "<strong>Tesseract.js</strong> (رخصة: Apache 2.0): محرك للتعرف الضوئي على الحروف (OCR) يتيح استخراج النص من الصور (PNG, JPG, JPEG) ومستندات PDF الممسوحة ضوئياً.",
+  legal_library_mathjax: "<strong>MathJax</strong> (الرخصة: Apache 2.0): يستخدم لعرض الصيغ الرياضية (LaTeX) في المعاينات.",
+  legal_library_h5p_standalone: "<strong>H5P Standalone</strong> (الرخصة: MIT): يسمح بمعاينة محتوى H5P مباشرة في المتصفح دون الحاجة إلى خادم أو نظام إدارة محتوى (مثل Moodle أو WordPress).",
+  legal_library_jspdf: "<strong>jsPDF</strong> (الرخصة: MIT): مكتبة JavaScript لإنشاء مستندات PDF مباشرة في المتصفح، تُستخدم لتصدير المحتوى التعليمي إلى صيغة PDF.",
+  legal_library_jspdf_autotable: "<strong>jsPDF-autotable</strong> (الرخصة: MIT): امتداد لـ jsPDF يتيح إنشاء جداول منظمة في مستندات PDF المُصدّرة.",
+  legal_library_docx: "<strong>docx</strong> (الرخصة: MIT): مكتبة JavaScript لإنشاء مستندات Word (.docx) في المتصفح، تُستخدم لتصدير المحتوى التعليمي إلى صيغة Microsoft Word.",
+  legal_library_ownership: "تظل كل مكتبة ملكاً لمؤلفيها المعنيين وتُستخدم وفقاً لترخيصها (تراخيصها).",
+
+  // ============================================================================
+  // === إشعارات ===
+  // ============================================================================
+  no_notifications: "لا توجد إشعارات",
+  clear_all: "مسح الكل",
+  view: "عرض",
+  today: "اليوم",
+  error: "خطأ",
+  download: "تحميل",
+  edit_content: "تعديل",
+  compatible_with: "متوافق مع:",
+  preview_placeholder: "المعاينة متاحة قريباً",
+  previous: "السابق",
+  next: "التالي",
+  close_modal: "إغلاق",
+  loading: "جاري التحميل...",
+  preview_error: "تعذر معاينة هذا الملف",
+  simulator_warning: "معاينة عبر محاكي النشاط: قد يختلف العرض النهائي على Éléa قليلاً.",
+  editor_confirm_close_title: "تغييرات غير محفوظة",
+  editor_confirm_close_message: "هل تريد حفظ تغييراتك قبل الخروج؟",
+  editor_confirm_close_cancel: "البقاء في المحرر",
+  editor_confirm_close_save: "حفظ وخروج",
+  editor_confirm_close_discard: "خروج بدون حفظ",
+
+  // محرر JSON
+  editor_title_prefix: "تعديل:",
+  editor_loading: "جاري تحميل المحرر...",
+  editor_unknown_type: "نوع محتوى غير معترف به",
+  editor_no_schema: "المخطط غير متوفر لهذا النوع",
+  editor_init_error: "خطأ أثناء تهيئة المحرر",
+  editor_save: "حفظ",
+  editor_cancel: "إلغاء",
+  editor_unsaved_changes: "تغييرات غير محفوظة",
+  editor_confirm_discard: "هل أنت متأكد أنك تريد الإلغاء؟ ستفقد التغييرات غير المحفوظة.",
+  editor_validation_errors: "أخطاء في التحقق",
+
+  // أقسام
+  editor_section_general: "معلومات عامة",
+  editor_section_question: "سؤال",
+  editor_section_questions: "أسئلة",
+  editor_section_answers: "إجابات",
+  editor_section_answer: "إجابة",
+  editor_section_feedback: "تعليقات",
+  editor_section_cards: "بطاقات",
+  editor_section_sentences: "جمل",
+  editor_section_events: "أحداث",
+  editor_section_words: "كلمات",
+  editor_section_keywords: "كلمات مفتاحية",
+  editor_section_entries: "مدخلات",
+  editor_section_pairs: "أزواج",
+  editor_section_text: "نص",
+
+  // حقول عامة
+  editor_title: "العنوان",
+  editor_description: "الوصف",
+  editor_description_hint: "التعليمات المعروضة للطلاب",
+  editor_intro: "مقدمة",
+  editor_task_description: "تعليمات",
+  editor_question_text: "نص السؤال",
+
+  // بطاقات
+  editor_card: "بطاقة",
+  editor_card_front: "الوجه",
+  editor_card_front_placeholder: "السؤال أو المصطلح",
+  editor_card_back: "الظهر",
+  editor_card_back_placeholder: "الإجابة أو التعريف",
+  editor_card_tip: "تلميح",
+  editor_add_card: "إضافة بطاقة",
+
+  // إجابات
+  editor_answer: "إجابة",
+  editor_answer_text: "نص الإجابة",
+  editor_is_correct: "صحيح",
+  editor_add_answer: "إضافة إجابة",
+
+  // تلميحات وتعليقات
+  editor_tips_feedback: "تلميحات وتعليقات",
+  editor_tip: "تلميح",
+  editor_tip_optional: "تلميح (اختياري)",
+  editor_tips_optional: "تلميحات (اختياري)",
+  editor_tip_front: "تلميح الوجه",
+  editor_tip_back: "تلميح الظهر",
+  editor_chosen_feedback: "تعليق في حال الاختيار",
+  editor_not_chosen_feedback: "تعليق في حال عدم الاختيار",
+  editor_feedback_correct: "تعليق في حال الإجابة الصحيحة",
+  editor_feedback_wrong: "تعليق في حال الإجابة الخاطئة",
+  editor_overall_feedback: "تعليق عام حسب الدرجة",
+
+  // نطاقات التعليقات
+  editor_feedback_ranges_label: "تعليق بناءً على الدرجة",
+  editor_feedback_placeholder: "رسالة تعليق لهذا النطاق...",
+  editor_add_range: "إضافة نطاق",
+
+  // صح/خطأ
+  editor_correct_answer: "الإجابة الصحيحة",
+  editor_true: "صح",
+  editor_false: "خطأ",
+
+  // ملء الفراغات / سحب الكلمات
+  editor_sentence: "جملة",
+  editor_sentence_text: "نص الجملة",
+  editor_add_sentence: "إضافة جملة",
+  editor_blanks_hint: "أحط الكلمات المراد تخمينها بـ *نجمات*",
+  editor_text_with_blanks: "نص مع كلمات للوضع",
+  editor_drag_words_hint: "الكلمات بين *نجمات* ستكون عناصر للسحب والإفلات",
+
+  // الجدول الزمني
+  editor_event: "حدث",
+  editor_add_event: "إضافة حدث",
+  editor_start_date: "تاريخ البدء",
+  editor_end_date: "تاريخ الانتهاء",
+  editor_event_title: "عنوان الحدث",
+  editor_event_description: "الوصف",
+  editor_event_tag: "وسم",
+
+  // كلمات متقاطعة
+  editor_word: "كلمة",
+  editor_add_word: "إضافة كلمة",
+  editor_clue: "تلميح/تعريف",
+  editor_orientation: "الاتجاه",
+  editor_horizontal: "أفقي",
+  editor_vertical: "رأسي",
+  editor_crossword_answer_hint: "الكلمة بالأحرف الكبيرة",
+
+  // مقال
+  editor_keyword: "كلمة مفتاحية",
+  editor_keyword_text: "الكلمة المفتاحية المتوقعة",
+  editor_keyword_weight: "الوزن",
+  editor_add_keyword: "إضافة كلمة مفتاحية",
+
+  // قاموس المصطلحات
+  editor_entry: "مدخل",
+  editor_add_entry: "إضافة مدخل",
+  editor_term: "مصطلح",
+  editor_definition: "تعريف",
+
+  // موودل
+  editor_question: "سؤال",
+  editor_add_question: "إضافة سؤال",
+  editor_pair: "زوج",
+  editor_add_pair: "إضافة زوج",
+  editor_left_element: "العنصر الأيسر",
+  editor_right_element: "العنصر الأيمن",
+  editor_choice: "خيار",
+  editor_choice_text: "نص الخيار",
+  editor_add_choice: "إضافة خيار",
+
+  // إجراءات العناصر
+  editor_add_item: "إضافة",
+  editor_drag: "سحب",
+  editor_duplicate: "تكرار",
+  editor_delete: "حذف",
+  editor_confirm_delete: "هل أنت متأكد أنك تريد حذف هذا العنصر؟",
+  editor_min_items_reached: "تم الوصول إلى الحد الأدنى من العناصر",
+  editor_max_items_reached: "تم الوصول إلى الحد الأقصى من العناصر",
+
+  // أخطاء التحقق
+  editor_error_required: "هذا الحقل مطلوب",
+  editor_error_min_length: "الحد الأدنى {0} حرفاً",
+  editor_error_max_length: "الحد الأقصى {0} حرفاً",
+  editor_error_pattern: "صيغة غير صالحة",
+  editor_error_min_items: "الحد الأدنى {0} عنصر/عناصر",
+  editor_error_max_items: "الحد الأقصى {0} عنصر/عناصر",
+  editor_error_number: "يجب أن يكون رقماً",
+  editor_error_min: "الحد الأدنى {0}",
+  editor_error_max: "الحد الأقصى {0}",
+  editor_error_feedback_ranges: "يجب أن تغطي النطاقات من 0-100% دون تداخل",
+  editor_error_no_correct: "يجب أن تكون إجابة واحدة على الأقل صحيحة",
+  editor_error_date_format: "صيغة تاريخ غير صالحة (المتوقع: YYYY,M,D)",
+  editor_error_no_blanks: "يجب أن يحتوي النص على كلمة واحدة على الأقل بين *نجمات*",
+
+  // QuizSet
+  editor_library_type: "نوع المكتبة",
+  editor_question_title: "عنوان السؤال",
+  editor_question_params: "معايير السؤال",
+  editor_parameters: "المعايير",
+
+  // كلمات متقاطعة
+  editor_extra_clue: "تلميح إضافي",
+
+  // FindTheWords
+  editor_word_list: "قائمة الكلمات",
+
+  // SingleChoiceSet
+  editor_answers: "الإجابات الممكنة",
+
+  // MarkTheWords
+  editor_text_with_marks: "نص مع كلمات للتعليم",
+  editor_mark_words_hint: "أحط الكلمات المراد تعليمها بـ *نجمات*",
+
+  // SortParagraphs
+  editor_section_paragraphs: "فقرات",
+  editor_paragraph: "فقرة",
+  editor_add_paragraph: "إضافة فقرة",
+  editor_paragraph_text: "نص الفقرة",
+
+  // Summary
+  editor_section_summaries: "ملخصات",
+  editor_summary_item: "عنصر ملخص",
+  editor_add_summary_item: "إضافة عنصر",
+  editor_statement: "عبارة",
+  editor_add_statement: "إضافة عبارة",
+  editor_statement_text: "نص العبارة",
+
+  // اختبار موودل
+  editor_question_type: "نوع السؤال",
+
+  // صفحة موودل
+  editor_section_blocks: "كتل",
+  editor_block: "كتلة",
+  editor_add_block: "إضافة كتلة",
+  editor_block_type: "نوع الكتلة",
+  editor_block_content: "محتوى الكتلة",
+
+  // أنشطة Éléa المحددة
+  // قاموس المصطلحات
+  editor_glossary_name: "اسم القاموس",
+
+  // من سيربح المليون
+  editor_good_answer: "إجابة صحيحة",
+  editor_bad_answers: "إجابات خاطئة",
+  editor_bad_answer: "إجابة خاطئة",
+  editor_add_bad_answer: "إضافة إجابة خاطئة",
+
+  // اختبار (بنك الأسئلة)
+  editor_bank_name: "اسم البنك",
+  editor_bank_description: "وصف البنك",
+  editor_question_name: "اسم السؤال",
+  editor_question_feedback: "تعليق عام",
+  editor_answer_fraction: "النقاط/الدرجة",
+  editor_answer_feedback: "تعليق على الإجابة",
+  editor_subquestion: "سؤال فرعي",
+  editor_add_subquestion: "إضافة سؤال فرعي",
+  editor_numerical_value: "قيمة عددية",
+  editor_numerical_tolerance: "التسامح",
+  editor_section_subquestions: "أسئلة فرعية",
+  editor_section_content: "المحتوى",
+  editor_feedback_if_true: "تعليق في حال الصح",
+  editor_feedback_if_false: "تعليق في حال الخطأ",
+
+  // رسائل
+  editor_save_success: "تم حفظ التغييرات",
+  editor_save_error: "خطأ أثناء الحفظ",
+  editor_regenerating: "جاري إعادة إنشاء الملف...",
+
+  // ============================================================================
+  // === DOCUMENT FORMATTER ===
+  // ============================================================================
+
+  // --- Global Info ---
+  doc_fmt_header_title: "Caramel - Educational Resource",
+  doc_fmt_generation_date: "Generation Date: ",
+  doc_fmt_footer_text: "Document generated with Caramel (https://caramel.forge.apps.education.fr/)",
+  doc_fmt_page_title: "صفحة",
+  doc_fmt_summary_header: "الفهرس",
+  doc_fmt_quiz_title: "اختبار",
+  doc_fmt_instructions: "📝 التعليمات: أجب عن الأسئلة التالية.",
+  doc_fmt_question_header: "سؤال",
+
+  // --- Shared properties ---
+  doc_fmt_type: "النوع:",
+  doc_fmt_feedbacks: "💬 التقييمات:",
+  doc_fmt_global_feedbacks: "التقييمات العامة",
+  doc_fmt_answers: "الإجابات:",
+  doc_fmt_correct_answer_true: "الإجابة الصحيحة: صواب ✓",
+  doc_fmt_correct_answer_false: "الإجابة الصحيحة: خطأ ✓",
+  doc_fmt_text_if_true: "النص في حالة الصواب:",
+  doc_fmt_text_if_false: "النص في حالة الخطأ:",
+  doc_fmt_text_with_answers: "النص مع الإجابات:",
+  doc_fmt_text_with_marks: "النص مع الكلمات المراد تحديدها:",
+  doc_fmt_marks_to_find: "الكلمات المراد تحديدها:",
+  doc_fmt_keywords_expected: "الكلمات المفتاحية المتوقعة:",
+  doc_fmt_accepted_answers: "الإجابات المقبولة:",
+  doc_fmt_text_to_complete: "النص المراد إكماله:",
+  doc_fmt_also_called: "🏷️ يسمى أيضاً:",
+  doc_fmt_image_not_found: "⚠️ [الصورة غير موجودة]",
+
+  // --- Activity-Specific ---
+  doc_fmt_flashcards_title: "البطاقات التعليمية",
+  doc_fmt_card_index: "بطاقة",
+  doc_fmt_card_front: "الوجه:",
+  doc_fmt_card_back: "الظهر:",
+  doc_fmt_hint: "💡 تلميح:",
+  doc_fmt_crossword_title: "الكلمات المتقاطعة",
+  doc_fmt_definitions_and_answers: "التعاريف والإجابات",
+  doc_fmt_answer: "الإجابة:",
+  doc_fmt_extra_hint: "💡 تلميح إضافي:",
+  doc_fmt_timeline_events: "الأحداث",
+  doc_fmt_timeline_periods: "الفترات",
+  doc_fmt_drag_the_words_title: "سحب الكلمات",
+  doc_fmt_fill_in_the_blanks_title: "ملء الفراغات",
+  doc_fmt_mark_the_words_title: "تحديد الكلمات",
+  doc_fmt_glossary_title: "قاموس المصطلحات",
+  doc_fmt_term_index: "المصطلح",
+  doc_fmt_chart_title: "مخطط",
+  doc_fmt_data: "البيانات",
+  doc_fmt_summary_title: "ملخص",
+  doc_fmt_claim_index: "بيان",
+  doc_fmt_multiple_choice_title: "سؤال متعدد الخيارات",
+  doc_fmt_single_choice_set_title: "مجموعة أسئلة خيار واحد",
+  doc_fmt_true_false_title: "سؤال صواب/خطأ",
+  doc_fmt_dialog_cards_title: "بطاقات الحوار",
+  doc_fmt_hint_front: "💡 تلميح (وجه):",
+  doc_fmt_hint_back: "💡 تلميح (ظهر):",
+  doc_fmt_sort_paragraphs_title: "ترتيب الفقرات",
+  doc_fmt_paragraphs_ordered: "الفقرات بالترتيب الصحيح",
+  doc_fmt_find_the_words_title: "البحث عن الكلمات",
+  doc_fmt_words_to_find: "الكلمات المراد البحث عنها",
+  doc_fmt_matching_title: "طابق",
+  doc_fmt_matching_instructions: "📝 التعليمات: طابق كل عنصر بما يقابله.",
+  doc_fmt_pairs_to_match: "الأزواج المراد مطابقتها",
+  doc_fmt_millionnaire_title: "من سيربح المليون؟",
+  doc_fmt_millionnaire_instructions: "📝 التعليمات: ابحث عن الإجابة الصحيحة من بين الخيارات الأربعة.",
+
+  // --- Moodle / Quiz Types ---
+  doc_fmt_essay_title: "سؤال مفتوح",
+  doc_fmt_qcm_title: "سؤال متعدد الاختيارات",
+  doc_fmt_moodle_test_title: "اختبار",
+  doc_fmt_associations: "الربط:",
+
+  // --- Question Types Labels ---
+  doc_fmt_type_multichoice: "خيارات متعددة (QCM)",
+  doc_fmt_type_matching: "مطابقة",
+  doc_fmt_type_numerical: "عددي",
+  doc_fmt_type_truefalse: "صواب/خطأ",
+  doc_fmt_type_shortanswer: "إجابة قصيرة",
+  doc_fmt_type_cloze: "ملء الفراغات (كلووز)",
+  doc_fmt_type_blanks: "ملء الفراغات",
+  doc_fmt_type_dragtext: "سحب الكلمات",
+  doc_fmt_type_markwords: "تحديد الكلمات",
+  doc_fmt_type_essay: "سؤال مفتوح",
+  doc_fmt_type_default: "سؤال",
+
+  // مفاتيح جديدة للهيكل التربوي للبيان/التصحيح
+  doc_fmt_correction_title: "التصحيح",
+  doc_fmt_proposed_answers: "المقترحات:",
+  doc_fmt_correct_answer: "الإجابة الصحيحة",
+  doc_fmt_correct_answers: "الإجابات الصحيحة:",
+  doc_fmt_true: "صحيح",
+  doc_fmt_false: "خطأ",
+  doc_fmt_words_to_place: "الكلمات التي يجب وضعها:",
+  doc_fmt_completed_text: "النص المكتمل:",
+  doc_fmt_text_to_mark: "النص الذي تجد فيه الكلمات:",
+  doc_fmt_words_count_to_find: "عدد الكلمات التي يجب العثور عليها",
+  doc_fmt_words_to_mark: "الكلمات التي يجب تمييزها:",
+  doc_fmt_answer_space: "مساحة للإجابة:",
+  doc_fmt_open_answer: "إجابة مفتوحة - التقييم وفقاً للمعايير التي يحددها المعلم.",
+  doc_fmt_definitions: "التعاريف",
+  doc_fmt_letters: "الحروف",
+  doc_fmt_summary_instructions: "لكل مجموعة، اختر العبارة الصحيحة.",
+  doc_fmt_sort_instructions: "ضع الفقرات التالية في الترتيب الصحيح.",
+  doc_fmt_paragraphs_to_sort: "الفقرات المراد ترتيبها",
+  doc_fmt_correct_order: "الترتيب الصحيح",
+  doc_fmt_find_instructions: "يجد",
+  doc_fmt_hidden_words: "الكلمات المخفية في الشبكة.",
+  doc_fmt_hints: "تلميحات",
+  doc_fmt_flashcards_instructions: "لكل بطاقة، ابحث عن الإجابة المقابلة للسؤال.",
+  doc_fmt_elements_to_match: "العناصر المراد مطابقتها:",
+  doc_fmt_possible_matches: "التطابقات المحتملة:",
+  doc_fmt_correct_associations: "الارتباطات الصحيحة:",
+
 };

@@ -1,0 +1,36 @@
+{
+"name": "Glossaire de la Révolution française et de l'Empire",
+"entries": [
+{
+"concept": "Souveraineté nationale",
+"definition": "Principe selon lequel le **pouvoir politique** appartient à la *Nation* (l'ensemble des citoyens) et non plus à une seule personne (le Roi)."
+},
+{
+"concept": "Constitution",
+"definition": "Texte de loi fondamental qui définit l'**organisation des pouvoirs** au sein d'un État et fixe les droits des citoyens.",
+"aliases": ["Loi fondamentale"]
+},
+{
+"concept": "Suffrage censitaire",
+"definition": "Mode de suffrage où seul le citoyen payant un montant minimum d'impôt (le *cens*) a le **droit de voter**.",
+"aliases": ["Vote censitaire"]
+},
+{
+"concept": "République",
+"definition": "Régime politique sans roi, dans lequel le pouvoir est exercé par des **représants élus** du peuple.\nEn France, elle est proclamée pour la première fois le 21 septembre 1792."
+},
+{
+"concept": "Cahiers de doléances",
+"definition": "Registres rédigés en 1789 par les trois ordres (Tiers-État, Noblesse, Clergé) pour exprimer leurs **plaintes** et leurs *revendications* au roi Louis XVI."
+},
+{
+"concept": "Empire",
+"definition": "Régime politique dirigé par un **empereur** qui détient l'essentiel des pouvoirs. Le Premier Empire de *Napoléon Ier* débute en 1804."
+},
+{
+"concept": "Code civil",
+"definition": "Recueil de lois qui fixe les **règles entre les personnes** (famille, propriété, contrats). Créé par Napoléon en 1804, il unifie le droit sur tout le territoire.",
+"aliases": ["Code Napoléon"]
+}
+]
+}

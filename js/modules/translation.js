@@ -8,13 +8,67 @@ import { AVAILABLE_MODELS } from './llm.js';
 import { generateTiles, toggleActivityContent } from './ui.js';
 
 /**
- * @property {Object} translations - Dictionnaire contenant les clés de traduction de la langue courante.
+ * Traductions françaises par défaut pour les tuiles (affichage immédiat avant chargement complet)
  */
-export let translations = {};
+const defaultTranslations = {
+    // Noms des modules H5P
+    h5p_timeline_name: "Frise chronologique",
+    h5p_flashcards_name: "Cartes mémoires",
+    h5p_quiz_set_name: "Quiz mixte",
+    h5p_quiz_set_qcm_name: "Quiz QCM",
+    h5p_quiz_set_vf_name: "Quiz Vrai/Faux",
+    h5p_glossary_name: "Glossaire",
+    h5p_crossword_name: "Mots croisés",
+    h5p_essay_name: "Rédaction",
+    h5p_summary_name: "Résumé",
+    h5p_drag_the_words_name: "Glisser les mots",
+    h5p_fill_in_the_blanks_name: "Texte à trous",
+    h5p_mark_the_words_name: "Surligner les mots",
+    h5p_true_false_name: "Vrai/Faux",
+    h5p_multiple_choice_name: "Choix multiples",
+    h5p_find_the_words_name: "Mots mêlés",
+    h5p_sort_the_paragraphs_name: "Ordonner les paragraphes",
+    h5p_single_choice_set_name: "Série de choix uniques",
+    h5p_dialog_cards_name: "Cartes de dialogue",
+    h5p_complex_fill_the_blanks_name: "Texte à trous complexe",
+    h5p_chart_name: "Diagramme",
+    // Noms des modules Moodle/Éléa
+    moodle_xml_name: "Test",
+    moodle_gift_name: "Format GIFT",
+    moodle_millionnaire_name: "Millionnaire",
+    moodle_appariement_name: "Appariement",
+    moodle_qcm_name: "QCM",
+    moodle_glossaire_xml_name: "Glossaire (XML)",
+    elea_page_name: "Page",
+    // Onglets
+    tab_all: "Tout",
+    tab_quiz: "Quiz & Tests",
+    tab_text: "Manipulation de texte",
+    tab_memory: "Mémorisation & Découverte",
+    tab_elea: "Éléa",
+    tab_h5p: "H5P"
+};
+
+/**
+ * @property {Object} translations - Dictionnaire contenant les clés de traduction de la langue courante.
+ * Initialisé avec les traductions françaises par défaut pour un affichage immédiat des tuiles.
+ */
+export let translations = { ...defaultTranslations };
 /**
  * @property {string} currentLang - Code de la langue actuellement affichée (ex: 'fr').
  */
 export let currentLang  = 'fr';
+
+/**
+ * Fonction utilitaire pour obtenir une traduction.
+ * Retourne la clé elle-même si la traduction n'existe pas.
+ * @param {string} key - Clé de traduction
+ * @returns {string} - La traduction ou la clé
+ */
+export function t(key) {
+    if (!key) return '';
+    return translations[key] !== undefined ? translations[key] : key;
+}
 
 const languageSwitcher = document.querySelector('.language-switcher');
 const languageDropdown = document.querySelector('.language-dropdown');
@@ -104,6 +158,18 @@ function resolveLoadedTranslations(lang) {
 }
 
 /**
+ * Récupère le numéro de version depuis le footer (ex: "4.0.0")
+ * Utilisé pour le cache-busting des fichiers de traduction
+ */
+function getVersionFromFooter() {
+    const footerLink = document.querySelector('footer.footer a[href*="CHANGELOG"]');
+    const versionText = footerLink?.textContent?.trim();
+    if (!versionText) return null;
+    const match = versionText.match(/v?(\d+(?:\.\d+)*)/i);
+    return match ? match[1] : null;
+}
+
+/**
  * Charge js/translations/<lang>.js en <script> et résout quand le script est EXÉCUTÉ.
  */
 function loadTranslationScript(lang) {
@@ -113,10 +179,13 @@ function loadTranslationScript(lang) {
     const prev = document.getElementById(scriptId);
     if (prev) prev.remove();
 
+    // Récupérer la version pour le cache-busting (ex: ?v=4.0.0)
+    const version = getVersionFromFooter();
+    const versionQuery = version ? `?v=${version}` : '';
+
     const s = document.createElement('script');
     s.id = scriptId;
-    // Cache-bust léger pour éviter des surprises de cache en changement rapide
-    s.src = `js/translations/${lang}.js?v=${Date.now()}`;
+    s.src = `js/translations/${lang}.js${versionQuery}`;
     s.async = true;
 
     // Si la page utilise un nonce CSP, on le réplique (meilleure compat CSP)

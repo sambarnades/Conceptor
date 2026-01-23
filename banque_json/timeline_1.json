@@ -1,0 +1,91 @@
+{
+  "timeline": {
+    "headline": "La Révolution française et l'Empire (1789-1815)",
+    "text": "Bienvenue dans cette exploration d'une période charnière de notre histoire. En classe de **3e**, nous étudions comment la France est passée d'une monarchie absolue à une nation de citoyens.\n\nPréparez-vous à découvrir les événements qui ont jeté les bases de notre **République** actuelle !",
+    "asset": {
+      "media": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Prise_de_la_Bastille.jpg",
+      "caption": "La Prise de la Bastille, le 14 juillet 1789.",
+      "credit": "Jean-Pierre Houël / Wikimedia Commons"
+    },
+    "date": [
+      {
+        "startDate": "1789,05,05",
+        "headline": "Ouverture des États généraux",
+        "text": "Face à une crise financière et sociale, le roi **Louis XVI** réunit les représentants des trois ordres (Clergé, Noblesse et Tiers-État) à Versailles. C'est le début de la contestation politique.",
+        "asset": {
+          "media": "https://upload.wikimedia.org/wikipedia/commons/5/5a/Couder_Stati_generali.jpg",
+          "caption": "Séance d'ouverture des États généraux à Versailles.",
+          "credit": "Auguste Couder / Wikimedia Commons"
+        },
+        "tag": "Politique"
+      },
+      {
+        "startDate": "1789,07,14",
+        "headline": "La prise de la Bastille",
+        "text": "Le peuple de Paris s'empare de la prison de la Bastille, symbole de l'**arbitraire royal**. Cet événement marque l'entrée du peuple dans le processus révolutionnaire.",
+        "tag": "Social"
+      },
+      {
+        "startDate": "1789,08,26",
+        "headline": "Déclaration des Droits de l'Homme et du Citoyen",
+        "text": "Inspirée par les idées des **Lumières**, l'Assemblée nationale adopte un texte fondamental qui proclame l'égalité des droits, la liberté et la souveraineté de la Nation.",
+        "asset": {
+          "media": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Declaration_of_the_Rights_of_Man_and_of_the_Citizen_in_1789.jpg",
+          "caption": "La DDHC de 1789, un texte pilier de la démocratie.",
+          "credit": "Jean-Jacques-François Le Barbier / Wikimedia Commons"
+        },
+        "tag": "Droit"
+      },
+      {
+        "startDate": "1792,09,21",
+        "headline": "Proclamation de la République",
+        "text": "Après la chute de la monarchie le 10 août, la nouvelle assemblée (la Convention) vote l'abolition de la royauté. C'est la naissance de la **Ière République**.",
+        "tag": "Politique"
+      },
+      {
+        "startDate": "1793,01,21",
+        "headline": "Exécution de Louis XVI",
+        "text": "Jugé pour trahison, l'ancien roi Louis Capet est guillotiné sur la place de la Révolution à Paris. Cet acte marque une rupture définitive avec l'Ancien Régime.",
+        "asset": {
+          "media": "https://upload.wikimedia.org/wikipedia/commons/b/bb/Ex%C3%A9cution_de_Louis_Capet%2C_le_21_janvier_1793.jpg",
+          "caption": "L'exécution de Louis XVI.",
+          "credit": "Musée Carnavalet / Wikimedia Commons"
+        },
+        "tag": "Politique"
+      },
+      {
+        "startDate": "1799,11,09",
+        "headline": "Coup d'État de Napoléon Bonaparte",
+        "text": "Le général Bonaparte s'empare du pouvoir par le coup d'État du **18 Brumaire**. Il met fin au Directoire et instaure le Consulat.",
+        "tag": "Politique"
+      },
+      {
+        "startDate": "1804,12,02",
+        "headline": "Sacre de Napoléon Ier",
+        "text": "Napoléon est sacré Empereur des Français à la cathédrale Notre-Dame de Paris. Il stabilise la France mais instaure un régime autoritaire.",
+        "asset": {
+          "media": "https://upload.wikimedia.org/wikipedia/commons/9/98/Jacques-Louis_David%2C_The_Coronation_of_Napoleon.jpg",
+          "caption": "Le Sacre de Napoléon.",
+          "credit": "Jacques-Louis David / Wikimedia Commons"
+        },
+        "tag": "Empire"
+      }
+    ],
+    "era": [
+      {
+        "startDate": "1789",
+        "endDate": "1799",
+        "headline": "La Révolution Française",
+        "text": "Une décennie de transformations profondes, de la monarchie constitutionnelle à la République.",
+        "tag": "Période"
+      },
+      {
+        "startDate": "1799",
+        "endDate": "1815",
+        "headline": "Le Consulat et l'Empire",
+        "text": "La période dominée par la figure de **Napoléon Bonaparte** et la diffusion des principes révolutionnaires en Europe.",
+        "tag": "Période"
+      }
+    ]
+  }
+}

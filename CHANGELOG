@@ -1,164 +1,200 @@
-# Caramel – Journal des modifications
+# Journal des modifications - Caramel
 
-## 3.3.12 – 15-12-2025
-- **Mode plein écran** : Correctif du mode plein écran dans le mode "Guidé" qui ne fonctionnait plus.
-
----
-
-## 3.3.11 – 08-12-2025
-- **LLM** : Remplacement du LLM "llama-3.3-70b" (modèle trop lent provoquant des erreurs lors de la génération d'activités conséquentes) par le modèle "qwen-3-30b" beaucoup plus rapide et aux bonnes performances.
+Toutes les modifications notables apportées au projet **Caramel** sont consignées dans ce fichier. Cette présentation suit les standards du web pour garantir une lecture claire, structurée et accessible, que vous soyez enseignant ou développeur.
 
 ---
 
-## 3.3.10 – 01-12-2025
-- **Matomo** : Activation des statistiques de la Forge avec Matomo
+## [4.0.0] - 23-01-2026
+
+### 🚀 Nouveautés
+- **Champ OCR universel** : En mode "Avancé", le champ OCR devient plus rapide et plus puissant : les PDF textuels sont lus quasi instantanément. Les formats **DOCX, PPTX, ODT, OPD, PNG, JPG et JPEG** sont désormais supportés, soit par identification de texte, soit par reconnaissance de caractères.
+- **Activités H5P Quizset** : Ajout des activités **QCM** et **Vrai/Faux** basées sur Quizset, permettant de créer très rapidement des quiz thématiques. L'activité Quiz (Quizset) a été renommée "Quiz mixte".
+- **Exports bureautiques** : Toutes les activités sont désormais téléchargeables aux formats **DOCX, ODT et PDF**.
+- **Fenêtre de visualisation** : Un nouveau bouton "Visualiser" dans le menu des notifications permet de visualiser et télécharger toutes les activités générées (H5P réels et simulations Éléa/Moodle/Magistère).
+- **Bandeau d'urgence** : Amélioration de la lecture du CodiMD qui permet d'afficher le bandeau d'urgence.
+
+### ✨ Améliorations
+- **Interface Modes Rapide/Avancé** :
+  - Fusion des éléments communs pour une meilleure stabilité.
+  - Nouveau style pour le "Mode guidé" avec une structure claire en 4 étapes.
+  - Retrait de l'effet de rebond sur les onglets pour plus de fluidité.
+  - Arrière-plan des champs de saisie dynamique selon l'état de verrouillage.
+- **Expérience Utilisateur (UX)** :
+  - **Tuiles intelligentes** : Les tuiles sont légèrement grisées par défaut pour guider l'utilisateur. Elles reprennent leur couleur dès la saisie. Ajout d'un effet "smooth" et d'un contour coloré au survol.
+  - **Animations** : Fond sombre radial pour l'animation de génération et le bandeau de réussite.
+  - **Menu de notifications** : Refonte complète intégrant un historique des dernières notifications.
+- **Performance et Optimisation** :
+  - **Chargement** : Optimisation du chargement des bibliothèques JavaScript.
+  - **Format WebP** : Conversion de toutes les images (vignettes, logos) en `.webp` pour un chargement plus rapide.
+- **Contenu et Prompts** :
+  - **Prompts IA** : Entièrement repensés pour être plus précis, structurés et contextuels, garantissant de meilleurs résultats.
+  - **Traductions** : Fichiers retravaillés, corrigés et standardisés.
+  - **Mentions légales** : Référencement complet de toutes les bibliothèques utilisées, traduit en plusieurs langues.
+- **Divers** :
+  - Unification des icônes de cadenas.
+  - Mise en évidence (gras et rouge) du mot "unique" pour les activités Vrai/Faux et Choix multiples.
+
+### 🐛 Corrections
+- **Tutoriel OCR** : Mise à jour du tutoriel pour refléter les nouvelles capacités universelles.
+- **Structure Technique** : Chaque activité H5P dispose désormais de son propre fichier de génération dédié pour une meilleure maintenance.
 
 ---
 
-## 3.3.9 – 28-11-2025
-- **Tutoriel** : Amélioration des tutoriels pour importer activités des activités H5P, mbz ou xml : explications améliorées et captures d'écran ajoutées.
-- **Bandeau d'urgence** : Un système de bandeau d'urgence fait désormais partie du site. En cas de problème sur des perturbations en cours ou à venir, nous pouvons désormais vous prévenir à parvenir d'une modification d'un fichier externe au site.
-- **Prompt amélioré** : Renforcement du prompt pour le Quizset pour supporter les exposants en mathématiques.
-- **Vérification de la version du site** : La notification de changement de version ne se déclenche qu'en cas d'utilisation d'une version du site où une des deux premières valeurs est différente du site en production (ex : 3.3.8 vers 3.3.9 ne notifie pas, 3.3.8 vers 3.4.0 notifie)
+## [3.3.12] - 15-12-2025
+
+### 🐛 Corrections
+- **Mode plein écran** : Correctif du mode plein écran dans le mode "Guidé" qui était devenu inopérant.
 
 ---
 
-## 3.3.8 – 21-11-2025
-- **Vérification de la version du site** : Si une nouvelle version du site est déployée, un message propose à l'utilisateur de recharger la page ou de ne rien faire (traduction dans toutes les langues, adaptée au mode responsive).
+## [3.3.11] - 08-12-2025
+
+### ✨ Améliorations
+- **Modèle d'IA (LLM)** : Remplacement du modèle `llama-3.3-70b` (lent) par `qwen-3-30b`, offrant une bien meilleure rapidité tout en conservant d'excellentes performances.
 
 ---
 
-## 3.3.7 – 21-11-2025
-- **Mode Avancé : barre d'outils** : Le bouton "Copier le prompt" a été dissimulé car il n'avait pas d'intérêt à être affiché ici.
-- **Mode Avancé : bouton de verrouillage** : Le bouton "Verrouiller/Déverrouiller" fonctionne désormais correctement, le visuel aussi.
-- **Mode Avancé : visuel du champ** : La suggestion pour copier-coller le texte est désormais affichée dans la langue sélectionnée.
-- **Mode Avancé :compteur de caractères** : Décalage léger du compteur pour éviter le chevauchement avec la barre de défilement.
-- **Écran principal** : Le texte descriptif pour les activités "Choix multiples" et "Vrai/Faux" ont été modifiés afin de préciser que chacune de ces deux activités génèrent à chaque fois une question unique.
+## [3.3.10] - 01-12-2025
+
+### ✨ Améliorations
+- **Statistiques** : Activation du suivi statistique via la Forge avec Matomo.
 
 ---
 
-## 3.3.6 – 18-11-2025
-- **Mentions légales** : Corectifs dans les "Mentions légales" : pas de localStorage utilisé, la question du traitement des données adaptée au contexte des IA de ILAAS, modification des mentions pour spécifier que la plateforme génère des activités H5P et Éléa.
+## [3.3.9] - 28-11-2025
+
+### ✨ Améliorations
+- **Tutoriels** : Amélioration des guides pour l'import d'activités (H5P, mbz, xml) avec des explications clarifiées et l'ajout de captures d'écran.
+- **Bandeau d'urgence** : Mise en place d'un système de notification prioritaire piloté à distance pour vous informer de perturbations éventuelles en temps réel.
+- **Prompts Mathématiques** : Renforcement du support des exposants mathématiques dans le module Quizset.
+- **Gestion des versions** : La notification de mise à jour est désormais plus discrète (ne se déclenche que pour les changements majeurs ou mineurs, pas pour les simples correctifs).
 
 ---
 
-## 3.3.5 – 17-11-2025
-- **Activité Page** : Corectif d'un champ qui insérait un paragraphe qui n'était pas généré par l'IA.
+## [3.3.8] - 21-11-2025
+
+### ✨ Améliorations
+- **Information de version** : Alerte dynamique proposant de recharger la page lors du déploiement d'une nouvelle version (adapté au mobile et traduit).
 
 ---
 
-## 3.3.4 – 13-11-2025
-- **Changement du nom des LLM** : Les LLM proposés précédemment ont été renommés par ilaas. Adaptation de Caramel en conséquence.
-- **Fermeture des modales** : La modale "Mentions légales" se voit dotée d'une croix de fermeture comme c'est le cas pour la modale "Tutoriel", ajustement pour un mode responsive amélioré, la touche Esc du clavier permet de fermer ces deux modales.
+## [3.3.7] - 21-11-2025
+
+### ✨ Améliorations
+- **Mode Avancé** : Masquage du bouton "Copier le prompt" devenu inutile dans ce contexte.
+- **Langue** : Les suggestions de saisie s'affichent désormais automatiquement dans la langue sélectionnée par l'utilisateur.
+- **Précision du Catalogue** : Clarification du texte descriptif pour les activités "Choix multiples" et "Vrai/Faux" (génération d'une question unique).
+
+### 🐛 Corrections
+- **Bouton de verrouillage** : Correction du fonctionnement et du visuel du bouton de verrouillage en Mode Avancé.
+- **Compteur de caractères** : Ajustement visuel pour éviter le chevauchement avec la barre de défilement.
 
 ---
 
-## 3.3.3 – 11-11-2025
-- **Structuration du code** : Le coeur du code a été nettoyé et réorganisé.
-- **Traductions** : Ajout d'une traduction manquante à l'issue de la génération d'une activité.
-- **Menu déroulant choix LLM** : Modification du code pour que le menu déroulant du choix de le LLM soit responsive et bien affiché quel que soit l'écran, taille réduite du texte
-- **Modale Tutoriel** : La taille globale du texte a été réduite, correction du bug visuel de chevauchement de la croix de fermeture sur un petit écran.
-- **Modale Tutoriel** : Correction des liens redirigeant vers le salon Tchap et vers les tickets de la Forge.
+## [3.3.6] - 18-11-2025
+
+### ✨ Améliorations
+- **RGPD et Mentions légales** : Actualisation pour préciser l'absence de `localStorage`, adapter le traitement des données au contexte ILAAS et confirmer la génération hybride H5P/Éléa.
 
 ---
 
-## 3.2 – 05-11-2025
+## [3.3.5] - 17-11-2025
 
-### 🚀 Nouveauté majeure – Migration vers **ilaaS**
-- **Fin d’« Albert »** : Caramel utilise désormais les modèles du projet **ilaaS** (inférence GPU opérée par des universités partenaires).
-- **Trois LLM disponibles** :
-  - `mistralai/Mistral-Small-3.2-24B-Instruct-2506` *(Mistral-Small 3.2)*,
-  - `RedHatAI/Lama-3.3-70B-Instruct-FP8-dynamic` *(Llama-3.3)*,
-  - `openai/gpt-oss-120b` *(GPT-OSS)*.
-
-### ✨ Interface et expérience utilisateur (UX/UI)
-- **Modale responsive** : La **croix (X) de fermeture** de la modale de génération est désormais **fonctionnelle** en affichage responsive.
-
-### 🐛 Correctifs
-- **Génération de pages** : Correctif appliqué — la génération de pages **fonctionne à nouveau**.
+### 🐛 Corrections
+- **Module Page** : Suppression d'un champ parasite qui insérait du texte non généré par l'IA.
 
 ---
 
-## 3.1 – 18-10-2025
+## [3.3.4] - 13-11-2025
 
-### ✨ Interface et expérience utilisateur (UX/UI)
-- **Coloration des modes** : Ajout d'une coloration pour distinguer le **Mode Rapide** du **Mode Avancé**.
-- **Gestion des fichiers améliorée** : Dans le **Mode Avancé**, les fichiers ajoutés sont maintenant colorisés pour une meilleure reconnaissance.
-- **Disparition du bouton "Générer en un clic"** : En **Mode Guidé**, ce bouton n'est plus visible pour ne laisser que la génération via les champs de prompts.
-- **Suppression des boutons "Duck.AI" et "Le chat"** : Remplacés par une note explicative sur l'utilisation des modèles.
-- **Modale étirée** : La modale de génération a été élargie pour offrir plus d'espace sur les petits écrans.
-- **Suppression de la croix de fermeture** : La croix pour fermer la modale a été retirée sur l'affichage bureau pour un design plus épuré (elle reste visible sur mobile).
-- **Ordre des langues** : L'ordre des langues dans le menu a été ajusté en fonction des usages les plus courants.
-- **Nouvelle animation de génération** : L'animation lors de la génération "en un clic" a été remplacée par une version plus dynamique.
-
-### 🚀 Fonctionnalités et améliorations
-- **Meilleure gestion des modèles** : Des informations sur les modèles d'IA utilisés pour le bouton "Générer en un clic" ont été ajoutées. Les modèles sont `Albert-Small`, `Albert-Large`, et `Albert-Code` proposés par la DINUM (France).
-- **Correction des prompts** : Ajustements mineurs dans la structure des prompts pour une meilleure stabilité des générations.
-- **Amélioration H5P FlashCards** : L'exemple de prompt a été retravaillé pour que la question et la réponse (courte) soient plus claires et pertinentes.
-- **Mise à jour du tutoriel** : Le tutoriel a été adapté pour correspondre aux nouvelles fonctionnalités.
-
-### 🐛 Correctifs
-- Correction de bugs mineurs et amélioration de la stabilité générale.
+### ✨ Améliorations
+- **Infrastructure IA** : Adaptation du code suite au renommage des services vers **ilaaS**.
+- **Ergonomie des modales** :
+  - Ajout d'une croix de fermeture sur les mentions légales.
+  - Amélioration de l'affichage responsive.
+  - Support de la touche **Esc** (Échap) pour fermer les fenêtres.
 
 ---
 
-## 3.0 – 12-10-2025
+## [3.3.3] - 11-11-2025
 
-### ✨ Interface et expérience utilisateur (UX/UI)
-- **Refonte de l'interface** : L'interface a été entièrement repensée pour être plus intuitive, responsive et organisée par catégories de modules (H5P, Éléa, etc.).
-- **Nouveau parcours de génération** : La saisie se fait désormais via deux approches : le **Mode Rapide** (par défaut) et le **Mode Avancé**. Une fois les informations saisies, un clic sur une tuile lance directement la génération.
-- **Affichage Simple / Guidé** : Dans la modale de génération, il est possible de basculer entre un affichage **Simple** (copier-coller direct du JSON) et un affichage **Guidé** (champs de prompts détaillés).
-- **Améliorations visuelles** :
-    - Amélioration du rendu visuel des fichiers générés.
-    - Homogénéisation des couleurs et des boutons pour une meilleure cohérence.
-    - Ajout d'étiquettes "H5P" ou "ELEA" au survol des tuiles et dans la modale de génération pour identifier facilement le type de contenu.
-    - La zone d'OCR a été affinée visuellement.
-    - La modale d'aide a été repensée.
-    - Une animation de "caramélisation" se déclenche lors de la génération d'un fichier.
-- **Ergonomie et accessibilité** :
-    - Modes plein écran disponibles et copier-coller facilité.
-    - Le footer reste désormais fixé en bas de la page.
-    - Sur les petits écrans, une barre de défilement horizontale a été ajoutée pour le menu des catégories.
-    - La modale de génération est maintenant responsive pour éviter les débordements.
-- **Ajout d'un bouton "Chat"** dans le menu.
-
-### 🚀 Fonctionnalités et améliorations
-- **OCR (Reconnaissance de caractères)** :
-    - Un nouveau bouton dans le menu du **Mode Avancé** permet de charger un PDF.
-    - Le traitement est effectué localement dans le navigateur, garantissant la confidentialité des données (conforme RGPD).
-    - Le texte extrait peut ensuite être utilisé pour la génération de contenu via l'IA.
-- **IA Albert (DINUM)** :
-    - Intégration de l'IA de la DINUM, conforme au RGPD, garantissant qu'aucune donnée n'est envoyée sur des serveurs externes.
-    - Plusieurs modèles disponibles : `Albert-Large`, `Albert-Small`, et `Albert-Code`.
-    - Le modèle `Albert-Large` est utilisé par défaut pour des résultats plus qualitatifs.
-- **Nouveau module "Page"** :
-    - Permet de générer une page de contenu structurée avec des blocs HTML prédéfinis.
-    - Exporte aux formats `.mbz` (Moodle/Éléa) et `.html` (autonome).
-    - Il est conseillé de demander à l'IA de ne pas inclure d'images lors de l'utilisation de modèles légers.
-- **Module "Test" amélioré** :
-    - L'export a été fusionné et propose désormais les formats `XML Moodle` et `GIFT`.
-    - Il est recommandé de privilégier l'export `XML`, plus complet, car le format `GIFT` ne supporte pas les questions de type `CLOSE` (texte à trous).
-- **Fusion des modales** : Les deux types de modales pour H5P et ELEA ont été fusionnés en une seule, simplifiant la maintenance.
-- **Robustesse des générations IA** :
-    - **Gestion intelligente du copier-coller** : La plateforme gère les deux types de copie depuis une IA externe (copie du bloc de code seul ou de la réponse complète avec Markdown).
-    - **Détection de JSON améliorée** : Le système lit le contenu à partir de la première accolade `{`, ignorant tout texte potentiellement ajouté avant par l'IA.
-    - **Fiabilité des feedbacks** : Les prompts ont été renforcés pour mieux cadrer l'IA et garantir que les feedbacks des questions soient générés correctement.
-    - Les prompts ont été renforcés pour que les JSON générés ne contiennent plus de balises HTML.
-- **Logique des boutons** : Le bouton "Générer en un clic" est grisé si le **Mode Avancé** est sélectionné.
-- **Correction des popups** : Les popups affichent désormais le contenu correct en fonction de la génération effectuée.
+### ✨ Améliorations
+- **Interface Responsive** :
+  - Optimisation du menu de sélection de l'IA (LLM) pour tous les écrans.
+  - Ajustement de la taille du texte dans le tutoriel et correction des bugs de superposition sur petit écran.
+- **Traductions** : Ajout de messages manquants en fin de génération.
+- **Liens** : Correction des liens vers le salon Tchap et le gestionnaire de tickets.
 
 ### 🔧 Technique
-- **Refonte du code JavaScript** : Le fichier `script.js` a été découpé en plusieurs fichiers modulaires. Le point d'entrée est maintenant `main.js`.
+- **Nettoyage de code** : Réorganisation profonde du cœur de l'application.
 
 ---
 
-## 2.0 – 25-09-2025
+## [3.2] - 05-11-2025
 
-- **Génération automatique de prompts IA pour :**
-    - **H5P :** Timeline, Flashcards, Quiz (Question Set), Drag the Words, Mark the Words, Fill in the Blanks, Glossary, Crossword, Essay, Summary.
-    - **Moodle/Éléa :** export XML, format GIFT, activité unique "Millionnaire".
-- **Conversion côté client** des réponses IA en paquets .h5p prêts à importer.
-- **Création d’archives .mbz** pour l’activité "Millionnaire" – Moodle 3.x / 4.x.
-- **Interface web responsive**.
-- **Traitement 100 % local :** aucune donnée transmise à un serveur.
-- **Dépôt statique** compatible GitLab Pages.
+### 🚀 Nouveauté majeure : Migration vers **ilaaS**
+- **Fin d’« Albert »** : Caramel utilise désormais le projet **ilaaS** (Inférence GPU universitaire).
+- **Modèles disponibles** :
+  - `Mistral-Small 3.2`
+  - `Llama-3.3`
+  - `GPT-OSS`
+
+### ✨ Interface (UX/UI)
+- **Modale responsive** : La croix de fermeture de la fenêtre de génération est désormais pleinement opérationnelle sur mobile.
+
+### 🐛 Corrections
+- **Génération de pages** : Rétablissement du service de génération de pages.
+
+---
+
+## [3.1] - 18-10-2025
+
+### ✨ Interface (UX/UI)
+- **Distinction visuelle** : Coloration spécifique pour différencier le **Mode Rapide** du **Mode Avancé**.
+- **Fichiers** : Colorisation des fichiers ajoutés en Mode Avancé pour une meilleure lisibilité.
+- **Design épuré** :
+  - Retrait du bouton "Générer en un clic" en Mode Guidé.
+  - Suppression des anciens boutons Duck.AI/Le chat au profit d'explications claires.
+  - Élargissement de la fenêtre de génération.
+  - Suppression de la croix de fermeture sur l'affichage bureau (design plus épuré).
+- **Accessibilité** : Ajustement de l'ordre des langues et nouvelle animation de génération.
+
+### 🚀 Fonctionnalités
+- **Transparence IA** : Ajout d'informations sur les modèles utilisés (Albert-Small, Large, Code par la DINUM).
+- **H5P FlashCards** : Amélioration substantielle des exemples de prompts.
+- **Tutoriel** : Mise à jour globale.
+
+### 🐛 Corrections
+- Corrections de bugs mineurs et amélioration de la stabilité générale.
+
+---
+
+## [3.0] - 12-10-2025
+
+### 🚀 Nouveautés majeures
+- **Refonte complète de l'interface** : Organisation par catégories (H5P, Éléa, etc.) et design moderne.
+- **Modes Rapide & Avancé** : Nouvelle approche de saisie pour s'adapter à tous les profils.
+- **OCR (Reconnaissance de texte)** : Lecture locale des PDF (RGPD conforme) pour extraire du contenu.
+- **Module "Page"** : Création de pages structurées exportables en `.mbz` (Moodle) et `.html`.
+- **IA Albert (DINUM)** : Intégration conforme au RGPD (données locales). Plusieurs modèles disponibles (`Albert-Large`, `Small`, `Code`), avec `Albert-Large` par défaut pour plus de qualité.
+- **Module "Test" amélioré** : Fusion de l'export en formats `XML Moodle` (recommandé) et `GIFT`.
+
+### ✨ Expérience Utilisateur (UX)
+- **Affichage Hybride** : Bascule entre mode **Simple** (JSON) et **Guidé** (Prompts détaillés).
+- **Visuels & Identité** : Étiquettes de type de contenu, animation de "caramélisation", zone OCR affinée.
+- **Ergonomie** : Modes plein écran, footer fixe, défilement horizontal sur mobile.
+
+### 🔧 Améliorations techniques
+- **Fiabilité JSON** : Meilleure détection des données IA, suppression automatique des balises HTML parasites. Feedbacks des questions renforcés.
+- **Poids des fichiers** : Fusion des modales H5P/Éléa pour un code plus léger.
+- **Modularité** : Découpage du code JavaScript en modules gérés par `main.js`.
+- **Logique d'interface** : Correction des popups et des états de boutons (ex: bouton grisé si Mode Avancé actif).
+
+---
+
+## [2.0] - 25-09-2025
+
+- **Génération automatique** : Support de 10 types d'activités H5P et des formats Moodle/Éléa (XML, GIFT, Millionnaire).
+- **Traitement Client** : Conversion locale en paquets `.h5p` et `.mbz`.
+- **Confidentialité** : Traitement 100 % local (aucune donnée envoyée au serveur).
+- **Déploiement** : Compatibilité totale avec GitLab Pages.

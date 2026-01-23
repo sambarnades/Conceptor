@@ -1,0 +1,193 @@
+{
+    "bank_name": "L'Italie au XXe siècle",
+    "bank_description": "Une évaluation complète sur l'évolution politique, sociale et économique de l'Italie, de la montée du fascisme à la construction européenne.",
+    "questions": [
+        {
+            "type": "truefalse",
+            "content": {
+                "name": "Q1 - Alliance PGM",
+                "questiontext": "L'Italie a combattu aux côtés de l'Allemagne et de l'Autriche-Hongrie dès le déclenchement de la Première Guerre mondiale en 1914.",
+                "feedback": "L'Italie était initialement membre de la Triple Alliance, mais elle est restée neutre en 1914 avant de rejoindre l'Entente (France, Royaume-Uni, Russie) en 1915.",
+                "answer": {
+                    "value": false,
+                    "feedback_true": "C'est incorrect.",
+                    "feedback_false": "Exact. L'Italie a dénoncé la Triple Alliance pour rejoindre le camp de l'Entente en 1915."
+                }
+            }
+        },
+        {
+            "type": "cloze",
+            "content": {
+                "name": "Q2 - Prise du pouvoir",
+                "questiontext": " \nLe chef du Parti national fasciste, {1:SHORTANSWER:=Benito Mussolini}, accède au pouvoir après la {1:MULTICHOICE:=Marche sur Rome~Marche sur Milan~Marche sur Naples~Marche sur Turin} organisée en octobre {1:SHORTANSWER:=1922}.",
+                "feedback": "La Marche sur Rome a forcé le roi Victor-Emmanuel III à nommer Mussolini à la tête du gouvernement."
+            }
+        },
+        {
+            "type": "multichoice",
+            "content": {
+                "name": "Q3 - Accords du Latran",
+                "questiontext": "Que prévoient les accords du Latran signés en 1929 entre Mussolini et le Vatican ?",
+                "feedback": "Ces accords mettent fin à la 'Question romaine' en créant l'État de la Cité du Vatican.",
+                "answers": [
+                    {
+                        "text": "La réconciliation entre l'État italien et l'Église catholique",
+                        "fraction": 100,
+                        "feedback": "Bravo ! Cela a permis à Mussolini d'obtenir le soutien d'une partie importante de la population catholique."
+                    },
+                    {
+                        "text": "L'alliance militaire officielle entre l'Italie et l'Allemagne nazie",
+                        "fraction": 0,
+                        "feedback": "Non, cela correspond plutôt au Pacte d'Acier de 1939."
+                    },
+                    {
+                        "text": "L'abolition de la monarchie et la proclamation de la République",
+                        "fraction": 0,
+                        "feedback": "Attention, la monarchie subsiste en Italie jusqu'en 1946."
+                    },
+                    {
+                        "text": "Le retrait de l'Italie de la Société des Nations (SDN)",
+                        "fraction": 0,
+                        "feedback": "Non, le retrait de la SDN aura lieu plus tard, en 1937."
+                    }
+                ]
+            }
+        },
+        {
+            "type": "matching",
+            "content": {
+                "name": "Q4 - Figures historiques",
+                "questiontext": "Associez chaque personnalité italienne du 20ème siècle à son rôle ou à son courant politique.",
+                "feedback": "Ces acteurs ont façonné l'histoire complexe de l'Italie contemporaine.",
+                "subquestions": [
+                    {
+                        "text": "Victor-Emmanuel III",
+                        "answer": "Roi ayant favorisé l'ascension de Mussolini"
+                    },
+                    {
+                        "text": "Alcide De Gasperi",
+                        "answer": "Père de la République et de la construction européenne"
+                    },
+                    {
+                        "text": "Antonio Gramsci",
+                        "answer": "Théoricien et fondateur du Parti communiste italien"
+                    },
+                    {
+                        "text": "Enrico Mattei",
+                        "answer": "Dirigeant de l'ENI et symbole du boom économique"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "numerical",
+            "content": {
+                "name": "Q5 - Naissance République",
+                "questiontext": " \nEn quelle année l'Italie a-t-elle officiellement abandonné la monarchie pour devenir une République par référendum ?",
+                "feedback": "Le 2 juin 1946, les Italiens (et pour la première fois les Italiennes) votent pour la République.",
+                "answer": {
+                    "number": 1946,
+                    "tolerance": 0,
+                    "feedback": "C'est la bonne date. La République a été proclamée après une courte victoire au référendum."
+                }
+            }
+        },
+        {
+            "type": "shortanswer",
+            "content": {
+                "name": "Q6 - Titre Mussolini",
+                "questiontext": "Quel titre, signifiant 'le chef' ou 'le guide', Mussolini portait-il durant sa dictature ?",
+                "feedback": "Ce terme est dérivé du mot latin 'dux'.",
+                "answers": [
+                    {
+                        "text": "Duce",
+                        "fraction": 100,
+                        "feedback": "Exactement !"
+                    },
+                    {
+                        "text": "Le Duce",
+                        "fraction": 100,
+                        "feedback": "Exactement !"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "truefalse",
+            "content": {
+                "name": "Q7 - Construction européenne",
+                "questiontext": "L'Italie est l'un des pays signataires du traité de Rome en 1957, fondant la CEE.",
+                "feedback": "L'Italie a été l'un des moteurs de l'intégration européenne d'après-guerre.",
+                "answer": {
+                    "value": true,
+                    "feedback_true": "C'est exact ! L'Italie fait partie des 'Six' fondateurs.",
+                    "feedback_false": "C'est pourtant vrai. L'Italie a accueilli la signature des traités fondateurs."
+                }
+            }
+        },
+        {
+            "type": "multichoice",
+            "content": {
+                "name": "Q8 - Boom économique",
+                "questiontext": "Comment appelle-t-on la période de croissance exceptionnelle que l'Italie traverse entre 1958 et 1963 ?",
+                "feedback": "Cette période a vu le pays se transformer de société rurale en puissance industrielle.",
+                "answers": [
+                    {
+                        "text": "Le Miracle économique",
+                        "fraction": 100,
+                        "feedback": "Tout à fait. En italien, on parle de 'Miracolo economico'."
+                    },
+                    {
+                        "text": "Le Risorgimento industriel",
+                        "fraction": 0,
+                        "feedback": "Non, le Risorgimento désigne l'unification de l'Italie au 19ème siècle."
+                    },
+                    {
+                        "text": "Le Plan Marshall italien",
+                        "fraction": 0,
+                        "feedback": "Le Plan Marshall a aidé, mais il désigne l'aide américaine globale de 1947."
+                    },
+                    {
+                        "text": "Les Trente Glorieuses italiennes",
+                        "fraction": 0,
+                        "feedback": "C'est un terme surtout utilisé en France (inventé par Jean Fourastié)."
+                    }
+                ]
+            }
+        },
+        {
+            "type": "cloze",
+            "content": {
+                "name": "Q9 - Politique étrangère fasciste",
+                "questiontext": "L'Italie fasciste s'engage dans une politique impérialiste en envahissant l' {1:SHORTANSWER:=Éthiopie/Abyssinie} en 1935, puis renforce ses liens avec Hitler par le {1:MULTICHOICE:=Pacte d'Acier~Pacte de Varsovie~Pacte Atlantique~Pacte de Locarno} en 1939.",
+                "feedback": "L'invasion de l'Éthiopie a conduit à l'isolement diplomatique de l'Italie et à son rapprochement avec l'Allemagne."
+            }
+        },
+        {
+            "type": "matching",
+            "content": {
+                "name": "Q10 - Crises et transformations",
+                "questiontext": " \nAssociez chaque période ou événement à sa définition correspondante.",
+                "feedback": "La fin du 20ème siècle est marquée par des tensions sociales et des réformes majeures.",
+                "subquestions": [
+                    {
+                        "text": "Années de Plomb",
+                        "answer": "Période de terrorisme politique (1960-1980)"
+                    },
+                    {
+                        "text": "Mani Pulite",
+                        "answer": "Opération judiciaire anti-corruption des années 90"
+                    },
+                    {
+                        "text": "Compromis historique",
+                        "answer": "Tentative d'alliance entre démocrates-chrétiens et communistes"
+                    },
+                    {
+                        "text": "Biennio Rosso",
+                        "answer": "Période de grèves et d'occupations d'usines (1919-1920)"
+                    }
+                ]
+            }
+        }
+    ]
+}

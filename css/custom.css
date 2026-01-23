@@ -22,7 +22,8 @@
 
 .h5p-label {
     border-image: linear-gradient(to left, #0659B8, #0976E7) 1;
-    color: #0976E7; /* Fallback */
+    color: #0976E7;
+    /* Fallback */
 }
 
 .h5p-label span {
@@ -34,7 +35,8 @@
 
 .elea-label {
     border-image: linear-gradient(to left, #32038D, #B9459B) 1;
-    color: #B9459B; /* Fallback */
+    color: #B9459B;
+    /* Fallback */
 }
 
 .elea-label span {
@@ -43,6 +45,7 @@
     background-clip: text;
     color: transparent;
 }
+
 /* =======================================================================
    2. ÉTIQUETTES DANS LA MODALE
    ======================================================================= */
@@ -64,24 +67,29 @@
     border-image: linear-gradient(to left, #32038D, #B9459B) 1;
     color: #B9459B;
 }
+
 /* =======================================================================
    3. STYLE DU TEXTE D'AIDE POUR L'IA
    ======================================================================= */
 /* Scoped IA guidance (modal footer only) */
 .modal-panel-footer .ia-guidance-text {
     font-size: 13px;
-    color: #333; /* Couleur de texte plus foncée pour le contraste */
+    color: #333;
+    /* Couleur de texte plus foncée pour le contraste */
     text-align: left;
     padding: 10px 15px;
     margin: 0;
     line-height: 1.4;
-    background-color: #eaf2fa; /* Fond bleu clair */
-    border-left: 4px solid #037aff; /* Bordure gauche bleu-vert */
+    background-color: #eaf2fa;
+    /* Fond bleu clair */
+    border-left: 4px solid #037aff;
+    /* Bordure gauche bleu-vert */
     position: relative;
 }
 
 .modal-panel-footer .ia-guidance-text a {
-    color: #0976E7; /* Bleu vif pour les liens */
+    color: #0976E7;
+    /* Bleu vif pour les liens */
     text-decoration: none;
     font-weight: bold;
 }
@@ -96,7 +104,7 @@
 }
 
 /* =======================================================================
-   4. MODALE DE MISE � JOUR DE VERSION
+   4. MODALE DE MISE À JOUR DE VERSION
    ======================================================================= */
 .version-modal {
     position: fixed;
@@ -107,7 +115,8 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s ease;
-    z-index: 2100; /* Au-dessus du header (1100), même niveau que les autres modales */
+    z-index: 2100;
+    /* Au-dessus du header (1100), même niveau que les autres modales */
 }
 
 .version-modal.visible {
@@ -216,8 +225,10 @@ body.version-modal-open {
 /* Conteneur dédié au bandeau d'urgence */
 #emergency-notification-container {
     position: sticky;
-    top: 0; /* Colle en haut de l'écran quand on scroll */
-    z-index: 1050; /* Entre le header (1100) et le contenu, sous les modales (2100) */
+    top: 0;
+    /* Colle en haut de l'écran quand on scroll */
+    z-index: 1050;
+    /* Entre le header (1100) et le contenu, sous les modales (2100) */
     width: 100%;
     transition: all 0.3s ease;
 }
@@ -226,7 +237,8 @@ body.version-modal-open {
 .emergency-banner {
     display: flex;
     align-items: center;
-    justify-content: center; /* Centre le contenu */
+    justify-content: center;
+    /* Centre le contenu */
     gap: 16px;
     padding: 16px 24px;
     background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
@@ -235,7 +247,8 @@ body.version-modal-open {
     border-bottom: 3px solid rgba(0, 0, 0, 0.1);
     font-weight: 500;
     line-height: 1.5;
-    width: 100%; /* Pleine largeur */
+    width: 100%;
+    /* Pleine largeur */
 
     /* État initial : masqué */
     max-height: 0;
@@ -247,7 +260,8 @@ body.version-modal-open {
 
 /* État visible du bandeau */
 .emergency-banner.is-visible {
-    max-height: 200px; /* Hauteur max pour permettre le multi-lignes */
+    max-height: 200px;
+    /* Hauteur max pour permettre le multi-lignes */
     opacity: 1;
     transform: translateY(0);
 }
@@ -278,9 +292,12 @@ body.version-modal-open {
 
 /* Animation subtile pour attirer l'attention */
 @keyframes pulse-glow {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 4px 12px rgba(238, 90, 82, 0.25);
     }
+
     50% {
         box-shadow: 0 4px 20px rgba(238, 90, 82, 0.45);
     }
@@ -359,3 +376,12 @@ body.version-modal-open {
     }
 }
 
+/* =======================================================================
+   6. ÉTAT DES TUILES LORSQUE LES CHAMPS SONT VIDES
+   ======================================================================= */
+/* Applique un effet grisé sur les tuiles H5P quand les champs "qui" et "quoi" sont vides */
+.tiles-disabled .grid .h5p-tile {
+    filter: grayscale(40%);
+    opacity: 0.9;
+    transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}

@@ -280,3 +280,39 @@
 .import-details[open] summary {
     background-color: #e9e9ed;
 }
+
+/* Subsections pliables dans la section 4 */
+.help-subsection-details {
+    margin-top: 15px;
+    margin-bottom: 20px;
+    border-left: 3px solid #007AFF;
+    background-color: #fff;
+    border-radius: 0 8px 8px 0;
+}
+
+.help-subsection-details summary {
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #1d1d1f;
+    display: list-item; /* Garder la flèche par défaut */
+    list-style-position: inside;
+}
+
+.help-subsection-details summary:hover {
+    background-color: #f1f1f1;
+}
+
+.help-subsection-details summary i {
+    margin-right: 8px;
+    color: #007AFF;
+    width: 20px;
+    text-align: center;
+}
+
+.help-subsection-details .help-figure,
+.help-subsection-details p,
+.help-subsection-details ul {
+    padding: 0 15px 15px 15px;
+}

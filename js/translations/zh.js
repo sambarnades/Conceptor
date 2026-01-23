@@ -1,15 +1,14 @@
 ﻿const translations_zh = {
-    subtitle: "辅助创建 Moodle 与 Éléa 的资源与活动",
-    help_button: "帮助",
-    help_modal_title: "🚀 面向教师的 Caramel 全面指南",
-    help_modal_content: `
+  subtitle: "辅助创建 Moodle 与 Éléa 的资源与活动",
+  help_modal_title: "🚀 面向教师的 Caramel 全面指南",
+  help_modal_content: `
     <p>欢迎使用 <strong>Caramel</strong>！本指南将以循序渐进的方式引导你，即使是初学者也能轻松上手。我们的目标是帮助你以简单高效的方式创建交互式学习活动。</p>
     
     <div class="help-nav">
         <a href="#decrire" class="help-nav-link"><span class="help-step-number">1</span> 描述</a>
         <a href="#choisir" class="help-nav-link"><span class="help-step-number">2</span> 选择</a>
         <a href="#generer" class="help-nav-link"><span class="help-step-number">3</span> 生成</a>
-        <a href="#integrer" class="help-nav-link"><span class="help-step-number">4</span> 下载</a>
+        <a href="#integrer" class="help-nav-link"><span class="help-step-number">4</span> 预览与下载</a>
         <a href="#communaute" class="help-nav-link"><i class="fas fa-users"></i> 社区</a>
     </div>
 
@@ -43,8 +42,8 @@
                 <li><strong>补充信息：</strong> 用于添加具体要求、限制或其他相关细节。</li>
             </ul>
             <p><span class="help-badge-feature"><i class="fas fa-file-alt"></i> 启用文档阅读</span><br>
-            该功能允许基于你提供的内容进行生成。可以<strong>复制粘贴文本</strong>或<strong>上传 PDF 文件</strong>。
-            <br><strong><i class="fas fa-lock"></i> 隐私：</strong> 请放心，文档处理<strong>完全在你的电脑本地进行</strong>，不会向互联网发送任何数据。</p>
+            这一强大的功能允许你基于提供的多内容进行生成。你可以<strong>复制粘贴文本</strong>，或者<strong>上传文档 (PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG)</strong>。
+            <br><strong><i class="fas fa-lock"></i> 隐私：</strong> 请放心，你的文档处理<strong>完全在你的电脑本地完成</strong>。不会有任何数据被发送到互联网。 </p>
         </div>
     </div>
 
@@ -107,8 +106,38 @@
     </div>
 
     <div id="integrer" class="help-section">
-        <h4><span class="help-step-number">4</span> 下载并集成你的活动</h4>
-        <p>内容准备就绪后，点击下载按钮（如：<button class="help-btn-example-download">生成 H5P</button>）。以下是在 Éléa/Moodle 中集成文件的方法：</p>
+        <h4><span class="help-step-number">4</span> 预览与下载</h4>
+        <p>内容生成后，您可以进行预览、测试并以不同格式下载。</p>
+
+        <details class="help-subsection-details">
+            <summary><i class="fas fa-eye"></i> 预览与测试</summary>
+            <p>请花点时间在预览窗口中检查您的活动：</p>
+            <ul>
+                <li><strong>滚动</strong>查看内容以进行全文校对。</li>
+                <li>以学生身份<strong>测试</strong>活动（点击、拖动、输入...）。</li>
+                <li>对于 <strong>Éléa/Magistère/Moodle</strong> 内容，模拟器会向您展示真实效果。</li>
+            </ul>
+            <figure class="help-figure" style="text-align:center; margin: 1rem 0;">
+                <img src="images/wiki/modale_visualisation.PNG" alt="预览窗口" style="max-width:90%; height:auto; border-radius:8px; border:1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <figcaption><em>直接在模拟器中测试活动。</em></figcaption>
+            </figure>
+        </details>
+
+        <details class="help-subsection-details">
+            <summary><i class="fas fa-download"></i> 下载（格式与导出）</summary>
+            <p>您有多种获取作品的选择：</p>
+            <ul>
+                <li><strong>交互格式（主按钮）：</strong> 获取数字文件（如 .h5p, .mbz）并放置在您的平台上。</li>
+                <li><strong>其他格式（下拉菜单）：</strong> 点击箭头下载为 <strong>PDF, DOCX 或 ODT</strong>（适用于打印或存档）。</li>
+            </ul>
+            <figure class="help-figure" style="text-align:center; margin: 1rem 0;">
+                <img src="images/wiki/modale_menu_export.PNG" alt="导出菜单" style="max-width:90%; height:auto; border-radius:8px; border:1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <figcaption><em>展开菜单以访问 PDF, DOCX 导出...</em></figcaption>
+            </figure>
+        </details>
+
+        <h5><i class="fas fa-file-import"></i> 集成到 Éléa/Magistère</h5>
+        <p>文件下载后，以下是将其添加到课程的方法：</p>
         
         <div class="import-guide">
             <details class="import-details" open>
@@ -118,7 +147,7 @@
                         <li>
                             <strong>快速方法：</strong> 启用课程的编辑模式，将 .h5p 文件直接拖放到目标区块。选择 “Ajouter une activité H5P”，再用 “DÉPOSER” 按钮完成。
                             <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
-                                <img src="images/tutoriels/elea-ajouter-h5p.png" alt="快速添加 H5P 活动" style="max-width:360px;width:75%;height:auto;">
+                                <img src="images/tutoriels/elea-ajouter-h5p.webp" alt="快速添加 H5P 活动" style="max-width:360px;width:75%;height:auto;">
                                 <figcaption><em>添加 H5P 活动并点击 DÉPOSER。</em></figcaption>
                             </figure>
                         </li>
@@ -135,11 +164,11 @@
                             <p>打开屏幕右侧的编辑菜单。如果被收起，请使用小箭头展开。</p>
                             <div class="import-step-images" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;">
                                 <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
-                                    <img src="images/tutoriels/elea-import-parcours-1.png" alt="右侧展开的编辑菜单" style="width:75%;height:auto;">
+                                    <img src="images/tutoriels/elea-import-parcours-1.webp" alt="右侧展开的编辑菜单" style="width:75%;height:auto;">
                                     <figcaption><em>编辑菜单展开。</em></figcaption>
                                 </figure>
                                 <figure class="import-step-figure" style="flex:1 1 240px;margin:0;text-align:center;">
-                                    <img src="images/tutoriels/elea-import-parcours-2.png" alt="展开编辑面板的小箭头" style="width:75%;height:auto;">
+                                    <img src="images/tutoriels/elea-import-parcours-2.webp" alt="展开编辑面板的小箭头" style="width:75%;height:auto;">
                                     <figcaption><em>需要时点击箭头展开。</em></figcaption>
                                 </figure>
                             </div>
@@ -147,14 +176,14 @@
                         <li>
                             <p>点击 "IMPORT/EXPORT"，然后在子菜单中选择 "Importer un parcours"。</p>
                             <figure class="import-step-figure" style="text-align:center;">
-                                <img src="images/tutoriels/elea-import-parcours-3.png" alt="Moodle/Éléa 的 IMPORT/EXPORT 按钮" style="max-width:360px;width:75%;height:auto;">
+                                <img src="images/tutoriels/elea-import-parcours-3.webp" alt="Moodle/Éléa 的 IMPORT/EXPORT 按钮" style="max-width:360px;width:75%;height:auto;">
                                 <figcaption><em>选择 Importer un parcours。</em></figcaption>
                             </figure>
                         </li>
                         <li>
                             将 .mbz 文件拖放到导入区域并点击 "IMPORTER"。
                             <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
-                                <img src="images/tutoriels/elea-import-parcours-4.png" alt="拖放 MBZ 文件的区域" style="max-width:460px;width:75%;height:auto;">
+                                <img src="images/tutoriels/elea-import-parcours-4.webp" alt="拖放 MBZ 文件的区域" style="max-width:460px;width:75%;height:auto;">
                                 <figcaption><em>放入文件并用 IMPORTER 确认。</em></figcaption>
                             </figure>
                         </li>
@@ -173,21 +202,21 @@
                         <li>
                             <p>进入词汇表后，点击 "IMPORTER DES ARTICLES" 按钮。</p>
                             <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
-                                <img src="images/tutoriels/elea-glossaire-import-1.png" alt="词汇表中的 IMPORTER DES ARTICLES 按钮" style="max-width:460px;width:75%;height:auto;">
+                                <img src="images/tutoriels/elea-glossaire-import-1.webp" alt="词汇表中的 IMPORTER DES ARTICLES 按钮" style="max-width:460px;width:75%;height:auto;">
                                 <figcaption><em>点击 IMPORTER DES ARTICLES。</em></figcaption>
                             </figure>
                         </li>
                         <li>
                             <p>将 .xml 文件拖放到导入区域，然后点击 "ENVOYER" 按钮。</p>
                             <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
-                                <img src="images/tutoriels/elea-glossaire-import-2.png" alt="词汇表 XML 文件的放置区域" style="max-width:460px;width:75%;height:auto;">
+                                <img src="images/tutoriels/elea-glossaire-import-2.webp" alt="词汇表 XML 文件的放置区域" style="max-width:460px;width:75%;height:auto;">
                                 <figcaption><em>放置文件并用 ENVOYER 验证。</em></figcaption>
                             </figure>
                         </li>
                         <li>
                             <p>您的条目已被检测到。点击 "CONTINUER" 按钮完成操作。</p>
                             <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
-                                <img src="images/tutoriels/elea-glossaire-import-3.png" alt="确认检测到的条目" style="max-width:460px;width:75%;height:auto;">
+                                <img src="images/tutoriels/elea-glossaire-import-3.webp" alt="确认检测到的条目" style="max-width:460px;width:75%;height:auto;">
                                 <figcaption><em>点击 CONTINUER 完成导入。</em></figcaption>
                             </figure>
                         </li>
@@ -206,7 +235,7 @@
                         <li>
                             <p>在显示"题目"的下拉菜单中，选择"导入"。</p>
                             <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
-                                <img src="images/tutoriels/elea-importation-banquequestions-1.png" alt="在题库中选择导入按钮" style="max-width:460px;width:75%;height:auto;">
+                                <img src="images/tutoriels/elea-importation-banquequestions-1.webp" alt="在题库中选择导入按钮" style="max-width:460px;width:75%;height:auto;">
                                 <figcaption><em>在下拉菜单中选择导入。</em></figcaption>
                             </figure>
                         </li>
@@ -217,7 +246,7 @@
                                 <li><strong>GIFT 格式</strong>：更简单的替代方案，但题目类型有限。</li>
                             </ul>
                             <figure class="import-step-figure" style="text-align:center;margin-top:0.5rem;">
-                                <img src="images/tutoriels/elea-importation-banquequestions-2.png" alt="在 Moodle XML 格式和 GIFT 格式之间选择" style="max-width:460px;width:75%;height:auto;">
+                                <img src="images/tutoriels/elea-importation-banquequestions-2.webp" alt="在 Moodle XML 格式和 GIFT 格式之间选择" style="max-width:460px;width:75%;height:auto;">
                                 <figcaption><em>选择适合您文件的格式。</em></figcaption>
                             </figure>
                         </li>
@@ -253,1577 +282,1922 @@
         </ul>
     </div>
     `,
-    fast_mode: "快速模式",
-    guided_mode: "高级模式",
-    who_are_you: "你是谁？（如：教师、培训师……）",
-    what_to_address: "你想要讨论什么？（如：六年级的角的性质……）",
-    discipline: "学科（如：历史）",
-    theme: "主题（如：法国大革命）",
-    level: "年级（如：职业高中二年级）",
-    number_of_elements: "元素数量（如：10）",
-    additional_info: "补充信息...",
-    generate_prompts: "生成提示词",
-    h5p_tab: "H5P",
-    moodle_tab: "Éléa/Moodle 模块",
 
-    // General Context (Advanced Mode)
-    prompt_expert_intro: "你是一位教学法专家，将根据当前课程标准与学生水平，为以下课程调整语气与词汇：",
-    prompt_context_title: "**背景：**",
-    prompt_subject: "- **学科：**",
-    prompt_student_level: "- **学生水平：**",
-    prompt_theme: "- **主题：**",
-    prompt_number_of_elements: "- **元素数量：**",
-    prompt_additional_info: "- **补充信息：**",
+  // ============================================================================
+  // 主界面
+  // ============================================================================
+  language: "语言",
+  tutorial: "教程",
+  notifications: "通知",
+  fast_mode: "快速模式",
+  guided_mode: "高级模式",
+  who_are_you: "你是谁？（如：教师、培训师...）",
+  what_to_address: "你想讨论什么？（如：法国大革命...）",
+  level: "针对级别（如：高中）",
+  number_of_elements: "模块中的问题/元素数量（如：5）",
 
-    // General Context (Simple Mode)
-    prompt_simple_intro_part1: "我是一名**",
-    prompt_simple_intro_part2: "**，我希望**",
-    prompt_language_instruction: "生成的内容必须为中文，除非请求中指定了其他语言。",
-    prompt_code_block_instruction: "你必须在代码块中生成结果。",
+  // ============================================================================
+  // 文档处理 (RAG/OCR)
+  // ============================================================================
+  rag_title: "添加文档（可选）",
+  rag_note: "如果你希望 AI 仅根据你的文档工作，请在此处粘贴文本或上传文件。否则，请留空，让 AI 自行搜索信息。",
+  error_duplicate_file: "该文件已添加。",
+  error_unsupported_format: "不支持的格式。接受的格式：",
+  ocr_scanned_page: "检测到扫描页，正在运行 OCR",
+  ocr_image_processing: "正在进行图像文字识别 (OCR)",
+  ocr_initializing: "正在初始化 OCR...",
+  ocr_loading_language: "正在加载语言模型...",
+  ocr_preparing: "正在准备分析...",
+  docx_processing: "正在提取 DOCX 文本...",
+  pptx_processing: "正在提取 PPTX 文本...",
+  odt_processing: "正在提取 ODT 文本...",
+  odp_processing: "正在提取 ODP 文本...",
+  file_loading: "正在加载文件...",
+  extraction_success: "文档处理成功。",
+  extraction_error: "处理过程中发生错误。",
+  error_fullscreen: "全屏模式失败：",
+  lock_text: "锁定",
+  unlock_text: "解锁",
+  drag_drop_text: "在此处拖放文档 (PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG)",
+  or_text: "或",
+  upload_pdf_btn: "选择文件",
+  paste_your_text_here: "在此处粘贴你的文本...",
+  rag_tags_tuto: "以下是已上传的文档。点击彩色圆圈可自定义每个文档的高亮显示。",
 
-    // Timeline Prompt
-    timeline_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Timeline（时间轴）”活动。",
-    timeline_prompt_mission: "**你的任务：**",
-    timeline_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P 时间轴活动。该 JSON 必须可直接使用。",
-    timeline_prompt_json_structure_title: "**预期的 JSON 结构：**",
-    timeline_prompt_json_structure_main_object: "主对象必须包含键“timeline”。该“timeline”对象需包括：",
-    timeline_prompt_headline: "`headline`：时间轴的总标题。",
-    timeline_prompt_text: "`text`：一段简短的引言。",
-    timeline_prompt_asset: "`asset`：封面图片对象，包含 `media`（URL）、`caption`（说明）与 `credit`（来源）。",
-    timeline_prompt_date_array: "`date`：包含 ${nombreQuestions} 个对象的数组，每个对象代表一个事件。",
-    timeline_prompt_era_array: "`era`：用于定义覆盖多个事件的时期的对象数组。",
-    timeline_prompt_content_rules_title: "**内容规则：**",
-    timeline_prompt_rule1: "1.  `date` 数组中的每个事件必须包含：",
-    timeline_prompt_rule1_startDate: "-   `startDate` 和 `endDate`：日期格式为“AAAA,MM,JJ”或“AAAA”。使用 `endDate` 定义一个时间段。",
-    timeline_prompt_rule1_headline: "-   `headline`：事件标题。",
-    timeline_prompt_rule1_text: "-   `text`: 文本描述。加粗用 `*单词*`，斜体用 `**单词**`，换行用 `\\n`。",
-    timeline_prompt_rule1_asset: "-   `asset`：用于展示该事件的可选图片对象。",
-    timeline_prompt_rule1_tag: "- `tag`: 描述时期的关键词（例如：'历史'，'科学'）。",
-    timeline_prompt_rule2: "2.  对于每个 `asset`，主动搜索相关的、免版税的图片（例如维基共享资源）。`media` 中的 URL 必须是直接且有效的链接。在 `credit` 中提供来源和许可证。如果没有找到合适的图片，请完全省略 `asset` 对象。",
-    timeline_prompt_rule3: "3.  为每个时期（`era`）添加一个带有简短描述和`tag`的`text`字段。",
-    timeline_prompt_example_json_title: "**JSON 结构示例：**",
-    timeline_prompt_example: `\`\`\`json
+  // ============================================================================
+  // 标签页
+  // ============================================================================
+  tab_all: "全部",
+  tab_quiz: "测验与测试",
+  tab_text: "文本处理",
+  tab_memory: "记忆与发现",
+  tab_elea: "Éléa",
+  tab_h5p: "H5P",
+  tab_moodle: "Magistère",
+
+  // ============================================================================
+  // H5P 活动详情
+  // ============================================================================
+  h5p_timeline_name: "时间轴",
+  h5p_timeline_description: "创建交互式时间轴以展示一系列事件。",
+  h5p_flashcards_name: "抽认卡",
+  h5p_flashcards_description: "创建双面卡片以帮助记忆术语和定义。",
+  h5p_quiz_set_name: "混合测验",
+  h5p_quiz_set_description: "组合各种类型的问题（单选、拖放等）以评估知识。",
+  h5p_quiz_set_qcm_name: "选择题测验",
+  h5p_quiz_set_qcm_description: "创建一个完全由选择题组成的测验。",
+  h5p_quiz_set_vf_name: "判断对错测验",
+  h5p_quiz_set_vf_description: "创建一个仅包含“对”或“错”类型问题的测验。",
+  h5p_glossary_name: "术语表",
+  h5p_glossary_description: "以折叠面板的形式创建术语表或常见问题解答。",
+  h5p_crossword_name: "填字游戏",
+  h5p_crossword_description: "根据单词和定义列表生成填字游戏网格。",
+  h5p_essay_name: "作文",
+  h5p_essay_description: "布置作文题目并定义关键词以实现自动评分。",
+  h5p_summary_name: "总结",
+  h5p_summary_description: "学生必须通过选择正确的句子来重构一段总结。",
+  h5p_drag_the_words_name: "拖动单词",
+  h5p_drag_the_words_description: "创建一个文本填空，学生必须将缺失的单词拖入其中。",
+  h5p_fill_in_the_blanks_name: "文本填空",
+  h5p_fill_in_the_blanks_description: "学生必须通过键盘直接在文本中填写缺失的单词。",
+  h5p_mark_the_words_name: "标记单词",
+  h5p_mark_the_words_description: "要求学生在段落中标记出某些单词。",
+  h5p_true_false_name: "判断正误",
+  h5p_true_false_description: "创建<strong style='color: red;'>一个</strong>只有“正确”或“错误”两个选项的简单问题。",
+  h5p_multiple_choice_name: "多选题",
+  h5p_multiple_choice_description: "创建<strong style='color: red;'>一个</strong>具有一个或多个正确答案的多选题。",
+  h5p_find_the_words_name: "单词搜索",
+  h5p_find_the_words_description: "创建一个字母网格，学生必须在其中找到特定单词。",
+  h5p_sort_the_paragraphs_name: "段落排序",
+  h5p_sort_the_paragraphs_description: "创建一组段落，学生必须将它们重新排列成正确的顺序。",
+  h5p_single_choice_set_name: "单选题集",
+  h5p_single_choice_set_description: "创建一系列问题，每个问题只有一个正确答案。",
+  h5p_dialog_cards_name: "对话卡片",
+  h5p_dialog_cards_description: "创建包含文本（及可选图片）的交互式双面卡片。",
+  h5p_complex_fill_the_blanks_name: "复杂填空",
+  h5p_complex_fill_the_blanks_description: "创建一个高级填空练习，并为每个错误提供特定的反馈。",
+  h5p_chart_name: "图表",
+  h5p_chart_description: "创建饼图或条形图以可视化数据。",
+
+  // ============================================================================
+  // ÉLÉA/MOODLE 活动详情
+  // ============================================================================
+  moodle_xml_name: "测试",
+  moodle_xml_description: "生成可直接导入“测试”活动的题库（XML 或 GIFT 格式）。",
+  moodle_xml_help: "要在 Moodle 的“测试”活动中添加 XML 文件，请先创建活动。然后打开<strong>更多</strong>菜单并进入<strong>题库</strong>。点击<strong>导入</strong>，选择 <strong>Moodle XML 格式</strong>，然后选择你的文件并确认。",
+  moodle_gift_name: "GIFT 格式",
+  moodle_gift_description: "以 GIFT 格式创建问题，这是一种向 Moodle 导入问题的简单方式。",
+  moodle_millionnaire_name: "百万富翁",
+  moodle_millionnaire_description: "生成一个包含 6 个难度递增问题的“百万富翁”活动。",
+  moodle_appariement_name: "匹配",
+  moodle_appariement_description: "生成一个包含 10 个问题的匹配练习。",
+  moodle_qcm_name: "选择题 (QCM)",
+  moodle_qcm_description: "生成一个简单的选择题活动。",
+  moodle_glossaire_xml_name: "术语表 (XML)",
+  moodle_glossaire_xml_description: "生成一个准备以 XML 格式导入的术语表。",
+  glossaire_success_generation: "文件 {fileName} 生成成功！",
+  glossaire_error_creation: "创建术语表 XML 时出错：",
+  glossaire_error_invalid_json: "JSON 必须包含名称 ('name') 和条目数组 ('entries')。",
+  elea_page_name: "页面",
+  elea_page_description: "创建一个具有视觉美化效果的 Éléa 内容页面。",
+
+  // ============================================================================
+  // 生成弹窗
+  // ============================================================================
+  get_prompt_step: "1/2 获取并复制提示词",
+  create_file_step: "2/2 根据 JSON 创建文件",
+  generate_one_click: "一键生成",
+  simple_mode: "简单",
+  advanced_mode: "引导",
+  prompt_for_ia: "AI 提示词 (Prompt)",
+  copy_prompt: "复制提示词",
+  fullscreen_prompt: "全屏",
+  exit_fullscreen_prompt: "退出全屏",
+  lock_prompt: "锁定",
+  unlock_prompt: "解锁",
+  go_duck: "复制并前往 Duck.ai",
+  go_mistral: "复制并前往 Le chat",
+  create_h5p_file: "创建 H5P 文件",
+  integrate_h5p_libraries: "集成 H5P 库：",
+  paste_ia_result: "将 AI 的结果粘贴在下方区域以创建你的模块。",
+  generate_h5p: "生成 H5P",
+  create_xml_file: "创建 XML 文件",
+  paste_ia_result_xml: "请将 AI 生成的 XML 粘贴在下方。",
+  generate_xml_file: "生成 XML 文件",
+  export_mbz: "MBZ 格式",
+  export_gift: "GIFT 格式",
+  export_xml: "XML 格式",
+  export_html: "HTML 格式",
+  export_docx: "DOCX 格式",
+  export_odt: "ODT 格式",
+  export_pdf: "PDF 格式",
+  export_error: "导出错误",
+  create_mbz_file_appariement: "创建匹配文件 (.mbz)",
+  paste_ia_result_appariement: "请将 AI 生成的 JSON 粘贴在下方。活动标题将自动从 JSON 中提取。",
+  generate_mbz_appariement: "生成匹配活动 (mbz)",
+  create_mbz_file_millionnaire: "创建百万富翁文件 (.mbz)",
+  paste_ia_result_millionnaire: "请将 AI 生成的 JSON 粘贴在下方。活动标题将自动从 JSON 中提取。",
+  generate_mbz_millionnaire: "生成百万富翁活动 (mbz)",
+  generate_mbz_test: "生成测试活动 (mbz)",
+  create_mbz_file_qcm: "创建 QCM 文件 (.mbz)",
+  paste_ia_result_qcm: "请将 AI 生成的 JSON 粘贴在下方。活动标题将自动从 JSON 中提取。",
+  generate_mbz_qcm: "生成 QCM 活动 (mbz)",
+  create_mbz_file_page: "创建页面文件 (.mbz)",
+  paste_ia_result_page: "请将 AI 生成的 JSON 粘贴在下方以构建页面。",
+  generate_mbz_page: "生成页面活动 (mbz)",
+  generate_prompts_placeholder: "一旦你在快速或高级模式中完成至少一个字段，AI 提示词将显示在这里。",
+  paste_json_or_text: "在此处粘贴 AI 生成的 JSON 内容或文本以创建活动。",
+  info_prompt_copy: "请勿将此提示词粘贴在右侧面板。请将其复制到通用 AI 中获取结果，然后将该结果粘贴在右侧面板。",
+  generate_with_llm: "使用 Caramel AI 生成",
+  generation_in_progress: "正在生成，请稍候...",
+  request_sent_to_ia: "请求已发送至 AI，请稍候...",
+  generation_successful: "H5P 内容生成成功！",
+  generation_failed_empty: "生成失败。响应为空。",
+  generation_failed_error: "生成错误：{errorMessage}",
+  generation_failed_llm: "通过 Caramel AI 生成失败。原因：{errorMessage}",
+  llm_small_summary: "Caramel mou：快速、轻量，适合快速练习和即时回答。低资源消耗。",
+  llm_large_summary: "Caramel coulant：更丰富、细腻，适合需要一定深度的任务。中资源消耗。",
+  llm_xl_summary: "Caramel dur：强大且复杂，适用于雄心勃勃的项目。需耐心等待，结果有保证！高资源消耗。",
+  llm_model_source: "模型提供商：",
+  llm_model_parameters: "模型规模：",
+  llm_model_parameters_unit: "亿参数",
+
+  // ============================================================================
+  // 焦糖烹饪动画
+  // ============================================================================
+  caramel_animation_step_1: "将糖倒入锅中...",
+  caramel_animation_step_2: "加入少许水...",
+  caramel_animation_step_3: "用中火加热...",
+  caramel_animation_step_4: "糖开始融化...",
+  caramel_animation_step_5: "开始变色...",
+  caramel_animation_step_6: "轻轻搅拌...",
+  caramel_animation_step_7: "焦糖呈现出美丽的琥珀色...",
+  caramel_animation_step_8: "加入热奶油...",
+  caramel_animation_step_9: "小心溅洒！",
+  caramel_animation_step_10: "充分混合...",
+  caramel_animation_step_11: "快要准备好了！",
+  caramel_success_title: "您的甜点准备好了！",
+
+  // ============================================================================
+  // 通知与错误
+  // ============================================================================
+  prompts_generated_successfully: "提示词生成成功！",
+  success_copy: "✓ 已复制！",
+  error_please_fill_fields: "请在快速模式下至少填写一个字段。",
+  error_please_fill_guided_fields: "请在高级模式下至少填写一个字段。",
+  error_field_empty: "字段为空。请先生成提示词。",
+  error_copy_failed: "复制失败。",
+  error_h5p_module_not_found: "未找到模块 '{moduleKey}'。",
+  error_invalid_quiz_json: "测验的 JSON 无效：{errorMessage}",
+  error_invalid_json: "提供的 JSON 无效。错误：{errorMessage}",
+  error_h5p_creation: "H5P 创建错误：{errorMessage}",
+  error_paste_ia_content: "请粘贴由 AI 生成的内容。",
+  error_compression_module_not_ready: "压缩模块尚未准备好。请稍后再试。",
+  h5p_file_generated_successfully: "文件 {fileName} 生成成功！",
+  h5p_creation_failed: "H5P 文件创建失败：{errorMessage}",
+  error_paste_json_content: "请粘贴生成的 JSON 内容。",
+  error_paste_xml_content: "请粘贴生成的 XML 内容。",
+  moodle_xml_success_generation: "文件 {fileName} 生成成功！",
+  test_error_creation_mbz: "创建测试 MBZ 时出错：",
+  test_success_generation: "文件 {fileName} 生成成功！",
+  test_error_generic: "错误：",
+  test_backup_log: "由 Caramel 自动创建的备份\n",
+  millionnaire_error_compression_libs: "压缩库（Tar.js 或 fflate）未加载。请检查您的网络连接或刷新页面。",
+  millionnaire_error_invalid_json: "JSON 结构无效。请确保它包含 'title' 和一个包含 6 个符合示例问题的 'questions' 数组。",
+  millionnaire_activity_intro: "参加此游戏以测试您的知识。",
+  millionnaire_backup_log: "由 Caramel 自动创建的备份\n",
+  millionnaire_success_generation: "文件 {fileName} 生成成功！",
+  millionnaire_error_creation_mbz: "创建 MBZ 时出错：",
+  millionnaire_error_generic: "错误：",
+  appariement_error_invalid_json: "JSON 结构无效。请确保它包含 'title' 和一个 'pairs' 数组，其中每对都有 'question' 和 'answer'。",
+  appariement_activity_intro: "找到对应的配对。",
+  appariement_success_generation: "文件 {fileName} 生成成功！",
+  appariement_error_creation_mbz: "创建匹配 MBZ 时出错：",
+  qcm_error_invalid_json: "JSON 结构无效。请确保它包含 'title' 和一个至少包含一个问题及选项的 'questions' 数组。",
+  qcm_activity_intro: "回答以下问题。",
+  qcm_success_generation: "文件 {fileName} 生成成功！",
+  qcm_error_creation_mbz: "创建 QCM MBZ 时出错：",
+  version_modal_title: "有新版本可用",
+  version_modal_message: "您当前使用的是版本 {currentVersion}。已有更新的版本 ({latestVersion})。请重新加载页面以享受最新的改进。",
+  version_modal_update: "加载新版本",
+  version_modal_remind_later: "稍后提醒我",
+
+  prompt_header_pedagogical_context: "教学背景",
+  prompt_header_specific_rules: "特定规则",
+  prompt_header_pedagogical_rules: "教学规则",
+  prompt_header_sources: "来源",
+  prompt_header_json_structure: "预期 JSON 结构",
+  prompt_header_rendering_example: "渲染示例",
+  prompt_fallback_teacher: "一名教师",
+  prompt_fallback_activity: "创建教学活动",
+
+  // ============================================================================
+
+  // --- 通用键 ---
+  CONTEXTE_PEDAGOGIQUE_COMMUN: `- 你的角色：[QUI]。教学法和教学工程专家
+- 你的教学目标：[QUOI]
+- 你的受众：[NIVEAU]`,
+
+  REGLES_PEDAGOGIQUES_COMMUNES: `- 适应与词汇：根据指定的受众调整语言基调、词汇和指令难度。保持相关性和吸引力。
+- 基调与反馈：指令和备注应当具有建设性、鼓励性，并以学习为导向。
+- 合规性：强制要求内容符合现行的官方参考标准。除非有明确说明，否则默认针对学生受众参考法国学校教学大纲 (Eduscol)，针对成人受众参考职业培训的相关法律文件。
+- 语言：内容和指令必须以中文编写。`,
+
+  SOURCES_COMMUNES: `- 你将仅使用以下文本来生成你的活动。
+---
+[RAG]
+---`,
+
+  // ============================================================================
+  // === 时间轴 ===
+  // ============================================================================
+  TIMELINE_REGLES_SPECIFIQUES: `- 事件数量：至少 5 个事件 || [NOMBRE_ELEMENTS] 个事件。
+- 时期 (era)：至少 2 个时期，涵盖若干事件组。
+- 媒体：如果可能，为每个素材添加来源和说明。积极寻找相关的且无版权限制的图像（例如：Wikimedia Commons）。`,
+
+  TIMELINE_STRUCTURE_JSON: `- 在代码块中仅生成一个完整且有效的 JSON。你的回答必须以 \`{\` 开头，以 \`}\` 结尾。不要有任何其他文本或注释。
+- **根对象：** 包含键 \`timeline\` (对象)。
+- **\`timeline\` 的内容：** 活动的主体结构。
+  - \`headline\`: 时间轴的总标题（必须是纯文本）。
+  - \`text\`: 吸引人的介绍（支持 Markdown）。
+  - \`asset\`: 封面媒体 (\`media\`: 直接链接，\`caption\`: 说明，\`credit\`: 来源)。
+  - \`date\`: 按时间顺序排列的事件数组。
+  - \`era\`: 背景时期数组（在背景中定义彩色区域）。
+- **\`date\` 和 \`era\` 对象的结构：**
+  - \`startDate\`: **严格格式** \`YYYY,MM,DD\` 或 \`YYYY\`。(必填)
+  - \`endDate\`: **严格格式** \`YYYY,MM,DD\` 或 \`YYYY\`。(可选，定义时期的持续时间/结束)
+  - \`headline\`: 元素的明确标题（必须是纯文本）。
+  - \`text\`: 教学叙述。使用 \`**文字**\` 表示加粗，\`*文字*\` 表示斜体，\`\\n\` 表示换行。
+  - \`asset\`: (可选) 媒体对象 (\`media\`: Wikimedia Commons 直接链接，\`caption\`，\`credit\`)。
+  - \`tag\`: 用于筛选的简短关键词（例如：'政治'、'科学'）。
+- **LaTeX:** 使用双转义：\`\\\\( (2^3)^2 \\\\)\`。`,
+
+  TIMELINE_EXEMPLE_RENDU: `\`\`\`json
 {
-"timeline": {
-"headline": "时间线标题",
-"text": "关于时间线主题的介绍。",
-"date": [
-{
-"startDate": "1914,07,28",
-"endDate": "1914,07,28",
-"headline": "第一次世界大战的开始",
-"text": "奥匈帝国向塞尔维亚宣战。",
-"asset": {
-"media": "https://upload.wikimedia.org/wikipedia/commons/3/31/Sarajevo-1914-06-28a.jpg",
-"caption": "大公弗朗茨·斐迪南遇刺前不久。",
-"credit": "Wikimedia Commons / CC BY-SA 4.0"
-},
-"tag": "战争"
-},
-{
-"startDate": "1918,11,11",
-"endDate": "1918,11,11",
-"headline": "1918年停战协定",
-"text": "在雷东德签署停战协定，标志着战斗的结束。",
-"tag": "条约"
+  "timeline": {
+    "headline": "太空探索史",
+    "text": "了解人类在**太空**冒险中经历的重大阶段。",
+    "asset": {
+      "media": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Apollo_11_launch.jpg",
+      "caption": "阿波罗 11 号任务发射。",
+      "credit": "NASA / 维基共享资源"
+    },
+    "date": [
+      {
+        "startDate": "1957,10,04",
+        "headline": "斯普特尼克 1 号发射",
+        "text": "苏联成功将**首颗人造卫星**送入轨道。",
+        "tag": "机器人"
+      },
+      {
+        "startDate": "1969,07,20",
+        "headline": "月球第一步",
+        "text": "尼尔·阿姆斯特朗在**阿波罗 11 号**任务中成为首位登上月球的人。",
+        "tag": "人类"
+      }
+    ],
+    "era": [
+      {
+        "startDate": "1957",
+        "endDate": "1975",
+        "headline": "太空冷战",
+        "text": "美国与苏联之间激烈竞争的时期。",
+        "tag": "背景"
+      }
+    ]
+  }
 }
-],
-"era": [
+\`\`\``,
+
+  // ============================================================================
+  // === 填字游戏 ===
+  // ============================================================================
+  CROSSWORD_REGLES_SPECIFIQUES: `- 单词数量：至少 6 个单词 || [NOMBRE_ELEMENTS] 个单词。
+- 拼写规则：答案 (\`answer\`) 只能包含字母。任何复合词、缩写或短语必须合并为一个单词，不留空格、连字符或其他字符（例如：'arc-en-ciel' 变为 'arcenciel'）。
+- 提示 (\`clue\`)：禁止在提示中出现待猜单词。提示应当简短、准确。
+- 额外提示 (\`extraClue\`)：AI 应当判断是否有必要添加额外提示。`,
+
+  CROSSWORD_STRUCTURE_JSON: `- 在代码块中仅生成一个完整且有效的 JSON。你的回答必须以 \`{\` 开头，以 \`}\` 结尾。不要有任何其他文本或注释。
+- \`title\`: 活动的标题。
+- \`words\`: 包含以下内容的数组：
+  - \`answer\`: 待猜单词（合并后不含空格或连字符）。
+  - \`clue\`: 简短准确的定义。
+  - \`extraClue\` (可选): \`{"params": {"text": "..."}}\` 对象。文本可以使用 \`**文字**\` 表示加粗，\`*文字*\` 表示斜体，\`\\n\` 表示换行。
+- \`taskDescription\`: 明确且情境化的指令。使用 \`**文字**\` 表示加粗，\`*文字*\` 表示斜体，\`\\n\` 表示换行。换行后说明：“对于复合词，请勿使用空格或连字符”。
+- \`overallFeedback\`: (严格规则) 你必须生成一个包含 6 个最终反馈对象的数组，情境化地贴合练习主题，严格遵守以下分值段：0-10, 11-30, 31-50, 51-70, 71-90 和 91-100。`,
+
+  CROSSWORD_EXEMPLE_RENDU: `\`\`\`json
 {
-"startDate": "1914,07,28",
-"endDate": "1918,11,11",
-"headline": "第一次世界大战",
-"text": "这是“大战”的时期。",
-"tag": "历史时期"
+  "title": "生物学交叉词",
+  "words": [
+    {"answer": "Cellule", "clue": "生命的基本单位。", "extraClue": {"params": {"text": "它可以是**动物性的**或**植物性的**。"}}},
+    {"answer": "ADN", "clue": "携带遗传信息的分子。"}
+  ],
+  "taskDescription": "**完成**生物学术语填空。\\n对于复合词，请勿使用空格或连字符。",
+  "overallFeedback": [
+    {"from": 0, "to": 10, "feedback": "需要努力来更好地理解这些生物学概念。"},
+    {"from": 11, "to": 30, "feedback": "你快要成功了，继续努力巩固你的知识。"},
+    {"from": 31, "to": 50, "feedback": "这是一个良好的开始，但有些点仍需澄清。"},
+    {"from": 51, "to": 70, "feedback": "做的不错！你已经理解了主题的重点。"},
+    {"from": 71, "to": 90, "feedback": "非常棒的得分！你很好地掌握了所涉及的概念。"},
+    {"from": 91, "to": 100, "feedback": "卓越！你完全掌握了这节课的内容。"}
+  ]
 }
+\`\`\``,
+
+  // ============================================================================
+  // === FLASHCARDS (Cartes mémoires) ===
+  // ============================================================================
+  FLASHCARDS_REGLES_SPECIFIQUES: `- 卡片数量：至少 5 张卡片 || [NOMBRE_ELEMENTS] 张卡片。
+- 关联：正面和背面必须通过一个唯一且稳定的标准相关联（例如：定义 -> 术语、事件 -> 日期、作者 -> 作品）。对所有卡片使用相同的逻辑，并按以下格式编写指令：“将每个 X 与 Y 关联起来”。`,
+
+  FLASHCARDS_STRUCTURE_JSON: `- 在代码块中仅生成一个完整且有效的 JSON。你的回答必须以 \`{\` 开头，以 \`}\` 结尾。不要有任何其他文本或注释。
+- 该对象必须包含：
+  - \`title\`: 活动的相关标题。
+  - \`description\`: 给学生的明确指令。
+  - \`cards\`: 对象的数组，每个对象代表一张卡片并包含：
+    - \`text\`: 待猜的问题或术语（正面）。
+    - \`answer\`: 答案或定义（背面）。规范化规则：单个简单单词或数字（无复合词），小写（专有名词除外），无冠词或标点，数字使用阿拉伯数字。
+    - \`tip\` (可选): 帮助学生的提示。你可以使用 \`**文字**\` 表示加粗，\`*文字*\` 表示斜体。`,
+
+  FLASHCARDS_EXEMPLE_RENDU: `\`\`\`json
+{
+  "title": "欧洲国家首都",
+  "description": "将每个国家与其首都关联起来。",
+  "cards": [
+    {
+      "text": "法国",
+      "answer": "巴黎",
+      "tip": "这是**埃菲尔铁塔**所在的城市。"
+    },
+    {
+      "text": "西班牙",
+      "answer": "马德里",
+      "tip": "位于*伊比利亚*半岛的中心。"
+    },
+    {
+      "text": "意大利",
+      "answer": "罗马",
+      "tip": "被称为*永恒之城*。"
+    }
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === ESSAY (写作) ===
+  // ============================================================================
+  ESSAY_REGLES_SPECIFIQUES: `- 关键词：答案中至少应包含 5 个关键词或短语 || [NOMBRE_ELEMENTS] 个关键词。
+- 指令：指令不应列出预期的关键词，以免直接给出答案，但可以提及总主题的名称。`,
+
+  ESSAY_STRUCTURE_JSON: `- 仅在代码块中生成完整且有效的 JSON。你的回答必须以 \`{\` 开始，以 \`}\` 结束。没有其他文本或注释。
+对象必须包含：
+- \`taskDescription\`: 一个清晰的指令，邀请学生围绕该主题撰写文本。使用 \`**词**\` 表示加粗（核心概念），\`*词*\` 表示斜体，\`\\n\` 表示换行。
+- \`keywords\`: 一个定义预期关键词的对象数组。每个对象的形式如下：
+  \`\`\`json
+  {
+    "keyword": "词或短语",
+    "options": { "points": 1, "caseSensitive": false }
+  }
+  \`\`\`
+- \`overallFeedback\`: (严格规则) 你必须为最终反馈生成一个包含 6 个对象的数组，并结合练习主题，严格遵守以下分数段：0-10, 11-30, 31-50, 51-70, 71-90 和 91-100。`,
+
+  ESSAY_EXEMPLE_RENDU: `\`\`\`json
+{
+  "taskDescription": "写一段短文解释**光合作用**的过程。你的回答必须涵盖植物产生自身能量的核心要素。",
+  "keywords": [
+    {"keyword": "光", "options": { "points": 1, "caseSensitive": false }},
+    {"keyword": "叶绿素", "options": { "points": 1, "caseSensitive": false }},
+    {"keyword": "二氧化碳", "options": { "points": 1, "caseSensitive": false }},
+    {"keyword": "水", "options": { "points": 1, "caseSensitive": false }},
+    {"keyword": "葡萄糖", "options": { "points": 1, "caseSensitive": false }}
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "这是一个开始。请仔细阅读关于光合作用的课程。" },
+    { "from": 11, "to": 30, "feedback": "你已经识别出了一些要素。继续努力。" },
+    { "from": 31, "to": 50, "feedback": "你的理解正在进步。考虑增加更多细节。" },
+    { "from": 51, "to": 70, "feedback": "做得好！你掌握了基础知识。" },
+    { "from": 71, "to": 90, "feedback": "非常好！你的写作展示了扎实的理解。" },
+    { "from": 91, "to": 100, "feedback": "出色！你完美地掌握了该主题。" }
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === ACCORDION (H5P 词汇表) ===
+  // ============================================================================
+  ACCORDION_REGLES_SPECIFIQUES: `- 条目数量：至少 5 个术语 || [NOMBRE_ELEMENTS] 个术语。
+- 术语选择：识别资料中出现的专业概念、特定词汇或复杂词汇。
+- 定义：简洁、准确，并完全适应预期的教学水平。`,
+
+  ACCORDION_STRUCTURE_JSON: `- 仅在代码块中生成完整且有效的 JSON。你的回答必须以 \`{\` 开始，以 \`}\` 结束。没有其他文本或注释。
+- 生成的 JSON 必须是一个数组，其对象数量与上述术语数量一致。
+- \`title\`: 关键词、短语或要定义的问题。
+- \`text\`: 定义。使用 \`**词**\` 表示加粗，\`*词*\` 表示斜体，\`\\n\` 表示换行。对于数学公式，使用双转义的 LaTeX 格式，例如：\`\\\\( (2^3)^2 \\\\)\`。`,
+
+  ACCORDION_EXEMPLE_RENDU: `\`\`\`json
+[
+  {"title": "光合作用", "text": "植物将**太阳**光转化为能量的过程。\\n这是食物链的基础。"},
+  {"title": "细胞", "text": "所有生物的基本**单位**。存在*真核细胞*和*原核细胞*。"}
 ]
-}
-}
-\`\`\` `,
-    timeline_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。结果将被另一个工具直接使用。",
+\`\`\``,
 
-    // Crossword Prompt
-    crossword_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Crossword（纵横填字）”活动。",
-    crossword_prompt_mission: "**你的任务：**",
-    crossword_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P 纵横填字活动。",
-    crossword_prompt_json_structure_title: "**预期的 JSON 结构：**",
-    crossword_prompt_json_structure_main_object: "对象必须包含：",
-    crossword_prompt_title: "`title`：活动标题。",
-    crossword_prompt_words_array: "`words`：包含 ${nombreQuestions} 个对象的数组，每个对象包括：",
-    crossword_prompt_answer: "`answer`：要猜的词。",
-    crossword_prompt_clue: "`clue`: 文本对应的定义。提示中不得出现目标词本身。",
-    crossword_prompt_extra_clue_optional: "`extraClue`（可选）：包含额外提示的对象。提示文本可使用 `*词*` 表示加粗，`**词**` 表示斜体，换行使用 `\\n`。是否添加提示由AI判断其必要性。",
-    crossword_prompt_task_description: "`taskDescription`: 清晰且具语境的说明。加粗用 `*词*`，斜体用 `**词**`，换行用 `\\n`。换行后给出复合词规则：“复合词请连写为一个词，不要使用空格或连字符。”",
-    crossword_prompt_overall_feedback: "`overallFeedback`:（严格规则）必须生成由6个对象组成的数组作为最终反馈，并结合练习主题严格遵循 0-10、11-30、31-50、51-70、71-90、91-100 的分段。每个对象形式为 `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`。`feedback` 文本需友好、不过分、循序渐进且始终为肯定表达。",
-    crossword_prompt_content_rules_title: "**内容规则：**",
-    crossword_prompt_rule1: "1.  严格规则：答案（`answer`）仅包含文字字符。复合词、缩写或词组需连写为一个词，不含空格、连字符或其他符号。",
-    crossword_prompt_rule2: "2.  定义（`clue`）需简短且准确。",
-    crossword_prompt_rule3: "3.  其余 JSON 结构（行为、主题等）保持不变。",
-    crossword_prompt_example_json_title: "**单个词的 JSON 示例：**",
-    crossword_prompt_example: `\`\`\`json
-{
-"title": "生物学填字游戏",
-"words": [
-{
-"answer": "细胞",
-"clue": "生命的基本单位。",
-"extraClue": {
-"params": {
-"text": "它可以是*动物*或*植物*。"
-}
-}
-},
-{
-"answer": "DNA",
-"clue": "携带遗传信息的分子。"
-}
-],
-"taskDescription": "*完成*这份**填字游戏**。"
-}
-\`\`\` `,
-    crossword_prompt_generate_only_json: "生成完整有效的 JSON，填写标题、说明与“words”数组，不要添加其它注释。",
+  // ============================================================================
+  // === SUMMARY (总结) ===
+  // ============================================================================
+  SUMMARY_REGLES_SPECIFIQUES: `- 步骤数量：生成至少包含 5 个步骤的数组 || [NOMBRE_ELEMENTS] 个步骤，以涵盖整个主题。
+- 干扰项：每步至少提供 2 个干扰项。它们必须与主题一致，但包含合理的客观错误或逻辑错误。`,
 
-    // Crossword UI translations
-    crossword_across: "横向",
-    crossword_down: "纵向",
-    crossword_check_answer: "检查",
-    crossword_try_again: "重试",
-    crossword_show_solution: "显示答案",
-    crossword_extra_clue: "额外提示",
-    crossword_close_window: "关闭窗口",
-    crossword_submit_answer: "提交",
+  SUMMARY_STRUCTURE_JSON: `- 仅在代码块中生成完整且有效的 JSON。你的回答必须以 \`{\` 开始，以 \`}\` 结束。没有其他文本或注释。
+- \`intro\`: 一句简短的介绍语（例如：“选择正确的陈述。”）。
+- \`summaries\`: 构成步骤的对象数组。每个对象包含：
+  - \`summary\`: 一个句子数组（**关联**）。列表中的第一句话必须始终是正确的总结（准确的陈述）。
+  - \`tip\`: (可选) 帮助学生的背景提示。
+- \`overallFeedback\`: 用于最终分数的 6 个对象的数组 (0-10, 11-30, 31-50, 51-70, 71-90, 91-100)。
+- **LaTeX:** 对 LaTeX 使用双转义：\`\\\\( (2^3)^2 \\\\)\`。`,
 
-    // Essay Prompt
-    essay_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Essay（作文）”活动。",
-    essay_prompt_mission: "**你的任务：**",
-    essay_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P Essay 活动。",
-    essay_prompt_json_structure_title: "**预期的 JSON 结构：**",
-    essay_prompt_json_structure_main_object: "对象必须包含：",
-    essay_prompt_task_description: "`taskDescription`：清晰的指令，邀请学生就主题撰写一段文字。使用 `*单词*` 表示粗体，`**单词**` 表示斜体，`\\n` 表示换行。",
-    essay_prompt_keywords_array: "`keywords`：包含 ${nombreQuestions} 个对象的数组，每个对象定义系统需在学生回答中检索的关键词。",
-    essay_prompt_overall_feedback: "`overallFeedback`:（严格规则）必须生成由6个对象组成的数组作为最终反馈，并结合练习主题严格遵循 0-10、11-30、31-50、51-70、71-90、91-100 的分段。每个对象形式为 `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`。`feedback` 文本需友好、不过分、循序渐进且始终为肯定表达。",
-    essay_prompt_content_rules_title: "**内容规则：**",
-    essay_prompt_rule1: "1.  `keywords` 中的每个对象都必须包含键 `keyword`，其值为要检索的词。",
-    essay_prompt_rule2: "2.  关键词需与主题密切相关，并能有效评估理解程度。",
-    essay_prompt_rule3: "3. 保持 JSON 结构（行为等）不变。",
-    essay_prompt_rule4: "4. 指示（`taskDescription`）应鼓励写作，而不是使用`keywords`中列出的关键字，除非为了理解需要使用主题名称。",
-    essay_prompt_example_json_title: "**单个关键词的 JSON 示例：**",
-    essay_prompt_example: `\`\`\`json
+  SUMMARY_EXEMPLE_RENDU: `\`\`\`json
 {
-"taskDescription": "写一段简短的文字解释光合作用。",
-"keywords": [
-{
-"keyword": "光",
-"options": { "points": 1, "caseSensitive": false }
-},
-{
-"keyword": "叶绿素",
-"options": { "points": 1, "caseSensitive": false }
+  "intro": "选择正确的陈述来构建课程总结。",
+  "summaries": [
+    {
+      "summary": [
+        "光合作用是植物将光能转化为化学能的生物过程。",
+        "光合作用是一个仅在夜间进行的过程。",
+        "光合作用是动物呼吸的机制。"
+      ],
+      "tip": "将光视为能量来源。"
+    }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "需要努力才能很好地理解这些概念。" },
+    { "from": 11, "to": 30, "feedback": "你快成功了，继续努力。" },
+    { "from": 31, "to": 50, "feedback": "这是一个好的开始，但有些点仍需澄清。" },
+    { "from": 51, "to": 70, "feedback": "做得好！你已经理解了重点。" },
+    { "from": 71, "to": 90, "feedback": "非常好的分数！你很好地掌握了这些概念。" },
+    { "from": 91, "to": 100, "feedback": "优秀！你完美地掌握了这节课。" }
+  ]
 }
-]
-}
-\`\`\` `,
-    essay_prompt_generate_only_json: "生成完整有效的 JSON，填写指令与关键词清单，不要添加其它注释。",
+\`\`\``,
 
-    // Moodle XML 提示
-    moodle_xml_prompt_role: "你是教学设计专家。你的任务是通过生成有效的 JSON 对象，为包含 Moodle/Éléa 题库的测试活动创建内容。",
-    moodle_xml_prompt_intro: "我想创建一个包含 ${nombreQuestions} 道题的测验。",
-    moodle_xml_prompt_content_title: "**内容规则：**",
-    moodle_xml_prompt_content_rule1: "- 错误选项须看似合理但确为错误。",
-    moodle_xml_prompt_content_rule2: "- 题目难度应当多样化。",
-    moodle_xml_prompt_content_rule3: "- 表述应简洁准确。",
-    moodle_xml_prompt_content_rule4: "- 反馈需简要解释正确答案。",
-    moodle_xml_prompt_question_types_intro: "**期望的 JSON 结构：**\n主对象必须包含以下键：\n- `bank_name`: 题库的简短描述性名称。\n- `bank_description`: 一句描述题库内容的话。\n- `questions`: 一个对象数组，每个对象代表一道题，且必须包含 `type` 与 `content`。",
-    moodle_xml_prompt_question_type_multichoice: `
-- **\`multichoice\` 类型（选择题）：**
+  // ============================================================================
+  // === DRAG_THE_WORDS (拖拽词汇) ===
+  // ============================================================================
+  DRAG_THE_WORDS_REGLES_SPECIFIQUES: `- 单词数量：一段至少 50 个单词的文本，其中至少包含 5 个拖拽词 || [NOMBRE_ELEMENTS] 个单词。
+- 唯一性：文本中每个拖拽词必须是唯一的（无重复）。`,
+
+  DRAG_THE_WORDS_STRUCTURE_JSON: `- 仅在代码块中生成完整且有效的 JSON。你的回答必须以 \`{\` 开始，以 \`}\` 结束。没有其他文本或注释。
+对象必须包含：
+- \`taskDescription\`: 一个清晰的指令。
+- \`textField\`: 待补全的文本。每句话必须以换行符 \`\\n\` 结尾。
+  - **格式**: \`*词*\` 表示一个可拖拽元素。
+- \`overallFeedback\`: 用于最终分数的 6 个对象的数组 (0-10, 11-30, 31-50, 51-70, 71-90, 91-100)。`,
+
+  DRAG_THE_WORDS_EXEMPLE_RENDU: `\`\`\`json
+{
+  "taskDescription": "通过拖拽单词补全文本。",
+  "textField": "*太阳系*由围绕*太阳*旋转的*八*颗行星组成。\\n最大的行星是*木星*。",
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "需要努力。" },
+    { "from": 11, "to": 30, "feedback": "你快成功了。" },
+    { "from": 31, "to": 50, "feedback": "这是一个好的开始。" },
+    { "from": 51, "to": 70, "feedback": "做得好！" },
+    { "from": 71, "to": 90, "feedback": "非常好的分数！" },
+    { "from": 91, "to": 100, "feedback": "优秀！" }
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === FILL_IN_THE_BLANKS (填空题) ===
+  // ============================================================================
+  FILL_IN_THE_BLANKS_REGLES_SPECIFIQUES: `- 空位数量：一段至少 50 个单词的文本，其中至少包含 3 个填空词 || [NOMBRE_ELEMENTS] 个单词。
+- 平衡：不要在琐碎的词（冠词、介词）上设置空位，除非那是语法目标。针对核心概念。`,
+
+  FILL_IN_THE_BLANKS_STRUCTURE_JSON: `- 仅在代码块中生成完整且有效的 JSON。你的回答必须以 \`{\` 开始，以 \`}\` 结束。没有其他文本或注释。
+对象必须包含：
+- \`taskDescription\`: 一个清晰简洁的指令，说明活动在全局背景下的目标。使用 \`**词**\` 表示加粗（核心概念），\`*词*\` 表示斜体，\`\\n\` 表示换行。
+- \`questions\`: 一个字符串数组。每个字符串代表一个待补全的文本块。
+  - **空位语法**: 用星号包围要猜的词（例如：\`*词*\`）。
+  - **备选答案**: 使用 \`/\` 表示接受多个答案（例如：\`*答案1/答案2*\`）。
+  - **帮助**: 使用 \`:\` 添加教学帮助气泡（例如：\`*词:提示*\`）。
+- \`overallFeedback\`: (严格规则) 你必须为最终反馈生成一个包含 6 个对象的数组 (0-10, 11-30, 31-50, 51-70, 71-90, 91-100)。`,
+
+  FILL_IN_THE_BLANKS_EXEMPLE_RENDU: `\`\`\`json
+{
+  "taskDescription": "补全下面关于太阳系的文本空缺。",
+  "questions": [
+    "地球是*太阳系*的一颗*行星*。",
+    "它在大约 365 天内绕着*太阳:我们的恒星*旋转。"
+  ],
+  "overallFeedback": [
+    {"from": 0, "to": 10, "feedback": "需要努力才能很好地理解这些概念。"},
+    {"from": 11, "to": 30, "feedback": "你快成功了，继续努力巩固你的知识。"},
+    {"from": 31, "to": 50, "feedback": "这是一个好的开始，但有些点仍需澄清。"},
+    {"from": 51, "to": 70, "feedback": "做得好！你已经理解了主题的核心。"},
+    {"from": 71, "to": 90, "feedback": "非常好的分数！你很好地掌握了所涉及的概念。"},
+    {"from": 91, "to": 100, "feedback": "优秀！你完美地掌握了这节课。"}
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === MARK_THE_WORDS (标记单词) ===
+  // ============================================================================
+  MARK_THE_WORDS_REGLES_SPECIFIQUES: `- 单词数量：一段至少 50 个单词的文本，其中至少包含 5 个待标记单词 || [NOMBRE_ELEMENTS] 个单词。`,
+
+  MARK_THE_WORDS_STRUCTURE_JSON: `- 仅在代码块中生成完整且有效的 JSON。你的回答必须以 \`{\` 开始，以 \`}\` 结束。没有其他文本或注释。
+对象必须包含：
+- \`taskDescription\`: 一个清晰且吸引人的指令。在此只能使用 \`**词**\` 表示加粗和 \`*词*\` 表示斜体。
+- \`textField\`: 包含待标记单词的完整文本。
+  - **标记：** 每个待标记单词必须被星号单独包围。（例如：\`*词1* *词2*\` 是正确的；\`*词1 词2*\` 是错误的）。
+  - **标点：** 撇号或标点符号绝不能成为标记的一部分，必须通过空格与单词隔开。（例如：\`的 *词*\` 是正确的，\`的*词*\` 是错误的）。
+- \`overallFeedback\`: (严格规则) 你必须为最终反馈生成一个包含 6 个对象的数组 (0-10, 11-30, 31-50, 51-70, 71-90, 91-100)。`,
+
+  MARK_THE_WORDS_EXEMPLE_RENDU: `\`\`\`json
+{
+  "taskDescription": "点击下面文本中的**专有名词**。",
+  "textField": "*巴黎*是*法国*的首都。我们感兴趣的是*欧洲*。",
+  "overallFeedback": [
+    {"from": 0, "to": 10, "feedback": "需要努力才能很好地理解这些概念。"},
+    {"from": 11, "to": 30, "feedback": "你快成功了，继续努力巩固你的知识。"},
+    {"from": 31, "to": 50, "feedback": "这是一个好的开始，但有些点仍需澄清。"},
+    {"from": 51, "to": 70, "feedback": "做得好！你已经理解了主题的核心。"},
+    {"from": 71, "to": 90, "feedback": "非常好的分数！你很好地掌握了所涉及的概念。"},
+    {"from": 91, "to": 100, "feedback": "优秀！你完美地掌握了这节课。"}
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === TRUE_FALSE (正确/错误) ===
+  // ============================================================================
+  TRUE_FALSE_REGLES_SPECIFIQUES: `- 问题：一个清晰且明确的陈述。
+- 回答：回答必须严格为 "true" (正确) 或 "false" (错误)。
+- 反馈：为成功 (\`feedbackOnCorrect\`) 和失败 (\`feedbackOnWrong\`) 提供特定的消息，以加强学习。`,
+
+  TRUE_FALSE_STRUCTURE_JSON: `- 仅在代码块中生成完整且有效的 JSON。你的回答必须以 \`{\` 开始，以 \`}\` 结束。没有其他文本或注释。
+- 主对象必须包含以下键：
+  - \`question\`: (string) 要评估的陈述。可以包含 HTML。
+  - \`correct\`: (string) 正确答案，要么是 "true"，要么是 "false"。
+  - \`feedbackOnCorrect\`: (string) 回答正确时显示的评论。
+  - \`feedbackOnWrong\`: (string) 回答错误时显示的评论。
+- **格式：** 使用 Markdown 语法表示粗体（\`**文本**\`）和斜体（\`*文本*\`）。
+- **LaTeX：** 对于数学公式，**仅**使用带有双重转义的 LaTeX 格式：\`\\\\( ... \\\\)\`。**切勿**单独使用 \`$\` 符号。
+- **反馈：** 评论不得包含 LaTeX 或 Markdown。`,
+
+  TRUE_FALSE_EXEMPLE_RENDU: `\`\`\`json
+{
+  "question": "奥斯陆是挪威的首都。",
+  "correct": "true",
+  "feedbackOnCorrect": "回答正确！奥斯陆确实是挪威的首都。",
+  "feedbackOnWrong": "回答错误。挪威的首都是奥斯陆。"
+}
+\`\`\``,
+
+  // ============================================================================
+  // === MULTIPLE_CHOICE (多选题) ===
+  // ============================================================================
+  MULTIPLE_CHOICE_REGLES_SPECIFIQUES: `- 问题：一个清晰的多选题。
+- 回答：提供多个备选答案 (\`answers\`)。必须只有一个正确回答 (\`"correct": true\`) 和多个合理的干扰项 (\`"correct": false\`)。
+- 反馈：
+  - \`overallFeedback\`: (严格规则) 你必须为最终反馈生成一个包含 6 个对象的数组 (0-10, 11-30, 31-50, 51-70, 71-90, 91-100)。`,
+
+  MULTIPLE_CHOICE_STRUCTURE_JSON: `- 仅在代码块中生成完整且有效的 JSON。你的回答必须以 \`{\` 开始，以 \`}\` 结束。没有其他文本或注释。
+- 主对象必须包含以下键：
+  - \`question\`: (string) 问题的表述。可以包含 HTML。
+  - \`answers\`: (array) 对象数组，每个对象代表一个答案。
+    - \`text\`: (string) 答案文本。
+    - \`correct\`: (boolean) 如果是正确答案则为 \`true\`，否则为 \`false\`。
+    - \`tipsAndFeedback\`: (object, 可选) \`{ "tip": "", "chosenFeedback": "", "notChosenFeedback": "" }\`。
+  - \`overallFeedback\`: (array) 定义按分数段反馈的 6 个对象的数组定义。
+- **格式：** 使用 Markdown 语法表示粗体（\`**文本**\`）和斜体（\`*文本*\`）。
+- **LaTeX：** 对于数学公式，**仅**使用带有双重转义的 LaTeX 格式：\`\\\\( ... \\\\)\`。**切勿**单独使用 \`$\` 符号。
+- **反馈：** 评论不得包含 LaTeX 或 Markdown。`,
+
+  MULTIPLE_CHOICE_EXEMPLE_RENDU: `\`\`\`json
+{
+  "question": "黑醋栗真正的颜色是什么？",
+  "answers": [
+    {"text": "深紫色", "correct": true, "tipsAndFeedback": { "chosenFeedback": "完全正确！" }},
+    {"text": "蓝色", "correct": false, "tipsAndFeedback": { "chosenFeedback": "不，它更深一点。" }},
+    {"text": "黑色", "correct": false}
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "需要努力。" },
+    { "from": 11, "to": 30, "feedback": "你快成功了。" },
+    { "from": 31, "to": 50, "feedback": "这是一个好的开始。" },
+    { "from": 51, "to": 70, "feedback": "做得好！" },
+    { "from": 71, "to": 90, "feedback": "非常好的分数！" },
+    { "from": 91, "to": 100, "feedback": "优秀！" }
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === FIND_THE_WORDS (寻词游戏) ===
+  // ============================================================================
+  FIND_THE_WORDS_REGLES_SPECIFIQUES: `- 单词数量：至少 6 个单词 || [NOMBRE_ELEMENTS] 个单词。
+- 拼写规则：单词不应包含重音、数字、标点符号或空格。`,
+
+  FIND_THE_WORDS_STRUCTURE_JSON: `- 仅在代码块中生成完整且有效的 JSON。你的回答必须以 \`{\` 开始，以 \`}\` 结束。没有其他文本或注释。
+- \`taskDescription\`: 给学生的指令。
+- \`wordList\`: 待发现的单词列表，用逗号分隔（无空格）。`,
+
+  FIND_THE_WORDS_EXEMPLE_RENDU: `\`\`\`json
+{
+  "taskDescription": "找出网格中隐藏的单词。",
+  "wordList": "CELLULE,ADN,GENE,NOYAU"
+}
+\`\`\``,
+
+  // ============================================================================
+  // === SORT_THE_PARAGRAPHS (排序段落) ===
+  // ============================================================================
+  SORT_THE_PARAGRAPHS_REGLES_SPECIFIQUES: `- 步骤数量：至少 3 个待排序的步骤或段落 || [NOMBRE_ELEMENTS] 个步骤。
+- 内在逻辑：段落 (\`paragraphs\`) 必须通过内容本身推导出逻辑衔接。
+- 禁止人工线索：你绝不能使用编号 (1, 2, 3...)、显式时间标记 (日期、时间) 或过于简单的逻辑连接词 ("首先", "然后", "最后")，除非用户明确要求。
+- 核心脉络：每个段落必须推动一个单一的线索（例如：因果链、从一般到特殊，或 准备 → 行动 → 结果 序列）。顺序必须能通过理解意义推导出来。`,
+
+  SORT_THE_PARAGRAPHS_STRUCTURE_JSON: `- 仅在代码块中生成完整且有效的 JSON。你的回答必须以 \`{\` 开始，以 \`}\` 结束。没有其他文本或注释。
+- \`taskDescription\`: 一个清晰的指令（支持 Markdown）。
+- \`paragraphs\`: 一个字符串数组（段落），最初在 JSON 中以**正确逻辑顺序**呈现。使用 \`**词**\` 表示加粗，\`*词*\` 表示斜体。
+- \`overallFeedback\`: 用于最终分数的 6 个对象的数组 (0-10, 11-30, 31-50, 51-70, 71-90, 91-100)。
+- **LaTeX:** 对 LaTeX 使用双转义：\`\\\\( (2^3)^2 \\\\)\`。`,
+
+  SORT_THE_PARAGRAPHS_EXEMPLE_RENDU: `\`\`\`json
+{
+  "taskDescription": "将这些元素重新排序，以重构气候变暖的因果链。",
+  "paragraphs": [
+    "人类活动，主要是化石燃料的燃烧，向大气中大量排放**二氧化碳**。",
+    "这些过量的气体强化了自然温室效应，阻止了一部分红外线辐射离开地球。",
+    "被困住的能量导致空气和海洋的平均温度逐渐上升。",
+    "这种全球变暖导致冰川融化和令人担忧的海平面上升。"
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "因果逻辑需要重新审视。" },
+    { "from": 11, "to": 30, "feedback": "你有一些初步理解，请重新阅读文本。" },
+    { "from": 31, "to": 50, "feedback": "排序有一个好的开始。" },
+    { "from": 51, "to": 70, "feedback": "对逻辑进展分析得不错。" },
+    { "from": 71, "to": 90, "feedback": "结构化工作做得非常好！" },
+    { "from": 91, "to": 100, "feedback": "完美！逻辑结构已经掌握。" }
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === SINGLE_CHOICE_SET (单选题集) ===
+  // ============================================================================
+  SINGLE_CHOICE_SET_REGLES_SPECIFIQUES: `- 问题数量：至少 3 个问题 || [NOMBRE_ELEMENTS] 个问题。
+- 回答：每题提供 2 到 3 个干扰项。列表 \`answers\` 中的第一个回答必须始终是正确答案。
+- 干扰项：一致但包含合理的逻辑或事实错误。`,
+
+  SINGLE_CHOICE_SET_STRUCTURE_JSON: `- 仅在代码块中生成完整且有效的 JSON。你的回答必须以 \`{\` 开始，以 \`}\` 结束。没有其他文本或注释。
+- \`choices\`: 构成问题的对象数组。每个对象包含：
+  - \`question\`: 问题的表述。
+  - \`answers\`: 字符串数组（回答），其中第一个始终是正确答案。
+- \`overallFeedback\`: 用于最终分数的 6 个对象的数组 (0-10, 11-30, 31-50, 51-70, 71-90, 91-100)。
+- **LaTeX:** 对 LaTeX 使用双转义：\`\\\\( (2^3)^2 \\\\)\`。`,
+
+  SINGLE_CHOICE_SET_EXEMPLE_RENDU: `\`\`\`json
+{
+  "choices": [
+    {
+      "question": "导致温室效应的主要气体是什么？",
+      "answers": ["二氧化碳", "氧气", "氮气", "氩气"]
+    },
+    {
+      "question": "法国的首都是哪里？",
+      "answers": ["巴黎", "里昂", "马赛", "波尔多"]
+    }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "需要努力。" },
+    { "from": 11, "to": 30, "feedback": "你快成功了。" },
+    { "from": 31, "to": 50, "feedback": "这是一个好的开始。" },
+    { "from": 51, "to": 70, "feedback": "做得好！" },
+    { "from": 71, "to": 90, "feedback": "非常好的分数！" },
+    { "from": 91, "to": 100, "feedback": "优秀！" }
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === DIALOG_CARDS (对话卡) ===
+  // ============================================================================
+  DIALOG_CARDS_REGLES_SPECIFIQUES: `- 卡片数量：至少 3 张卡片 || [NOMBRE_ELEMENTS] 张卡片。
+- 关联原则：正面和反面必须通过一个唯一且稳定的标准相关联（例如：定义 -> 术语，事件 -> 日期，作者 -> 作品）。
+- 指令：活动描述必须遵循以下公式：“将每个 [X] 与其 [Y] 关联起来”。`,
+
+  DIALOG_CARDS_STRUCTURE_JSON: `- 仅在代码块中生成完整且有效的 JSON。你的回答必须以 \`{\` 开始，以 \`}\` 结束。没有其他文本或注释。
+- 根对象必须包含 \`title\`、\`description\` 和 \`dialogs\`。
+- 1. \`title\`: 活动标题（简单文本，**不含** Markdown 或 HTML）。
+- 2. \`description\`: 指令或描述（HTML 格式或简单文本）。
+- 3. \`dialogs\`: 卡片关联原则数组：正面 (text) 和反面 (answer)。
+- 4. \`text\`: 卡片正面。使用 \`**词**\` 表示加粗，\`*词*\` 表示斜体。
+- 5. \`answer\`: 卡片反面。应简短。使用 \`**词**\` 表示加粗，\`*词*\` 表示斜体。
+- 6. \`tips\` (可选): 仅在相关时为正面 (\`front\`) 和/或反面 (\`back\`) 添加提示。简单文本，**无**格式化。`,
+
+  DIALOG_CARDS_EXEMPLE_RENDU: `\`\`\`json
+{
+  "title": "不规则动词",
+  "description": "找出动词原形。",
+  "dialogs": [
+    {"text": "He **visited** his grandmother.", "answer": "to **visit**", "tips": {"front": "识别过去时。", "back": "基本形式。"}},
+    {"text": "She **played** soccer.", "answer": "to **play**"}
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === CHART (图表) ===
+  // ============================================================================
+  CHART_REGLES_SPECIFIQUES: `- 元素数量：至少 5 个比较元素 || [NOMBRE_ELEMENTS] 个比较元素。
+- 图表类型：根据教学相关性选择饼图 (\`pieChart\`) 或条形图 (\`barChart\`)。
+- 标签和颜色：颜色必须有对比度以保证良好的可读性。标签必须简短清晰。`,
+
+  CHART_STRUCTURE_JSON: `- 仅在代码块中生成完整且有效的 JSON。你的回答必须以 \`{\` 开始，以 \`}\` 结束。没有其他文本或注释。
+- \`graphMode\`: 图表类型 (\`pieChart\` 或 \`barChart\`)。
+- \`listOfTypes\`: 对象数组 \`{"value": ..., "color": "...", "fontColor": "...", "text": "..."}\`。
+- \`figureDefinition\`: 图表标题。`,
+
+  CHART_EXEMPLE_RENDU: `\`\`\`json
+{
+  "graphMode": "pieChart",
+  "listOfTypes": [
+    {"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "蓝莓"},
+    {"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "树莓"}
+  ],
+  "figureDefinition": "最喜爱的水果图表"
+}
+\`\`\``,
+
+  // ============================================================================
+  // === QUIZSET (H5P 测试集) ===
+  // ============================================================================
+  QUIZSET_REGLES_SPECIFIQUES: `- 问题数量：生成至少 5 个问题的列表 || [NOMBRE_ELEMENTS] 个问题。
+- 多样性：从以下类型中选择最合适的活动以增加练习的变化：
+  - **选择题** (\`H5P.MultiChoice\` 1.16)
+  - **拖拽填空** (\`H5P.DragText\` 1.10)
+  - **判断对错** (\`H5P.TrueFalse\` 1.8)
+  - **文本填空** (\`H5P.Blanks\` 1.14)
+  - **标记文本** (\`H5P.MarkTheWords\` 1.11)
+  - **写作/开放性问题** (\`H5P.Essay\` 1.5)`,
+
+  QUIZSET_STRUCTURE_JSON: `- 仅在一个代码块内生成完整且有效的 JSON。你的回答必须以 \`{\` 开头并以 \`}\` 结尾。不得有任何其他文字或注释。
+- 根对象必须包含：
+  - \`title\`：活动标题。
+  - \`questions\`：对象数组。每个对象代表一个问题，且必须包含：
+    - \`library\`：库的名称和准确版本（例如：\`H5P.MultiChoice 1.16\`）。
+    - \`metadata\`：包含 \`title\` 键的对象（问题的简短标题）。
+    - \`params\`：问题数据。
+  - \`overallFeedback\`：包含 6 个对象的全局数组，用于 QuizSet 的最终评分反馈。
+
+**各类型的 \`params\` 详情：**
+1. **选择题 (\`H5P.MultiChoice 1.16\`)**：\`question\`，\`answers\`（包含 \`text\` 和 \`correct\` 的对象数组），\`behaviour: {singleAnswer: true}\`
+2. **判断对错 (\`H5P.TrueFalse 1.8\`)**：\`question\`，\`correct\`（字符串形式的 "true" 或 "false"）
+3. **文本填空 (\`H5P.Blanks 1.14\`)**：\`taskDescription\`，\`questions\`（包含 \`*单词*\` 的字符串数组）
+4. **拖拽填空 (\`H5P.DragText 1.10\`)**：\`taskDescription\`，\`textField\`（包含 \`*单词*\`）
+5. **标记文本 (\`H5P.MarkTheWords 1.11\`)**：\`taskDescription\`，\`textField\`（包含 \`*单词*\`）
+6. **写作 (\`H5P.Essay 1.5\`)**：\`taskDescription\`，\`keywords\`（对象数组）
+
+**除 H5P.TrueFalse 1.8 类型的问题外，每个问题必须包含其自身的 \`overallFeedback\`（6 个分段）。**
+- **格式：** 使用 Markdown 语法表示粗体（\`**文本**\`）和斜体（\`*文本*\`）。
+- **LaTeX：** 对于数学公式，**仅**使用带有双重转义的 LaTeX 格式：\`\\\\( ... \\\\)\`。**切勿**单独使用 \`$\` 符号。
+- **反馈：** 评论不得包含 LaTeX 或 Markdown。`,
+
+  QUIZSET_EXEMPLE_RENDU: `\`\`\`json
+{
+  "title": "科学常识测试",
+  "questions": [
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "天文学 - 选择题" },
+      "params": {
+        "question": "哪颗行星距离太阳最近？",
+        "answers": [
+          { "text": "水星", "correct": true },
+          { "text": "金星", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          {"from": 0, "to": 10, "feedback": "错误。"},
+          {"from": 11, "to": 30, "feedback": "不合格。"},
+          {"from": 31, "to": 50, "feedback": "一般。"},
+          {"from": 51, "to": 70, "feedback": "良好。"},
+          {"from": 71, "to": 90, "feedback": "优秀。"},
+          {"from": 91, "to": 100, "feedback": "卓越。"}
+        ]
+      }
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "生物学 - 判断对错" },
+      "params": {
+        "question": "DNA 是双螺旋结构。",
+        "correct": "true"
+      }
+    }
+  ],
+  "overallFeedback": [
+    {"from": 0, "to": 10, "feedback": "成绩较差。"},
+    {"from": 11, "to": 30, "feedback": "成绩不合格。"},
+    {"from": 31, "to": 50, "feedback": "成绩一般。"},
+    {"from": 51, "to": 70, "feedback": "成绩良好。"},
+    {"from": 71, "to": 90, "feedback": "成绩优秀。"},
+    {"from": 91, "to": 100, "feedback": "成绩卓越。"}
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === QUIZSET QCM (H5P 选择题测验) ===
+  // ============================================================================
+  QUIZSET_QCM_REGLES_SPECIFIQUES: `- 问题数量：最少生成5个问题 || [NOMBRE_ELEMENTS]个问题。
+- 类型：您必须仅生成**选择题**类型的问题（\`H5P.MultiChoice\` 1.16）。不允许其他类型。
+- 选择题质量：
+  - 每个问题必须至少有3个答案选项。
+  - 根据问题的性质，您可以提供一个或多个正确答案。
+  - 干扰项（错误答案）必须合理且相关。
+  - 避免在问题中使用否定句式。
+  - 变化正确答案的位置。`,
+
+  QUIZSET_QCM_STRUCTURE_JSON: `- 仅生成完整有效的JSON代码块。您的回答必须以\`{\`开头，以\`}\`结尾。不得包含其他文本或注释。
+- 根对象必须包含：
+  - \`title\`：活动标题。
+  - \`questions\`：对象数组。每个对象代表一个选择题，必须包含：
+    - \`library\`：始终为\`H5P.MultiChoice 1.16\`。
+    - \`metadata\`：包含\`title\`键（问题简短标题）的对象。
+    - \`params\`：问题数据。
+  - \`overallFeedback\`：包含6个对象的全局数组，用于最终QuizSet分数。
+
+**选择题（\`H5P.MultiChoice 1.16\`）的\`params\`详细信息**：
+- \`question\`：提出的问题（字符串）。
+- \`answers\`：包含\`text\`（字符串）和\`correct\`（布尔值）的对象数组。
+- \`behaviour\`：对象，\`singleAnswer\`：如果只有一个正确答案则为\`true\`，如果有多个正确答案则为\`false\`。
+
+**每个问题都必须包含自己的\`overallFeedback\`（6个范围：0-10、11-30、31-50、51-70、71-90、91-100）。**
+- **格式：** 使用 Markdown 语法表示粗体（\`**文本**\`）和斜体（\`*文本*\`）。
+- **LaTeX：** 对于数学公式，**仅**使用带有双重转义的 LaTeX 格式：\`\\\\( ... \\\\)\`。**切勿**单独使用 \`$\` 符号。
+- **反馈：** 评论不得包含 LaTeX 或 Markdown。`,
+
+  QUIZSET_QCM_EXEMPLE_RENDU: `\`\`\`json
+{
+  "title": "选择题测验 - 科学",
+  "questions": [
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "天文学 - 行星" },
+      "params": {
+        "question": "哪颗行星离太阳最近？",
+        "answers": [
+          { "text": "金星", "correct": false },
+          { "text": "火星", "correct": false },
+          { "text": "水星", "correct": true },
+          { "text": "木星", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          {"from": 0, "to": 10, "feedback": "错误。"},
+          {"from": 11, "to": 30, "feedback": "不及格。"},
+          {"from": 31, "to": 50, "feedback": "一般。"},
+          {"from": 51, "to": 70, "feedback": "良好。"},
+          {"from": 71, "to": 90, "feedback": "很好。"},
+          {"from": 91, "to": 100, "feedback": "优秀！"}
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "生物学 - 细胞器" },
+      "params": {
+        "question": "哪些细胞器拥有自己的DNA？",
+        "answers": [
+          { "text": "核糖体", "correct": false },
+          { "text": "线粒体", "correct": true },
+          { "text": "高尔基体", "correct": false },
+          { "text": "叶绿体", "correct": true }
+        ],
+        "behaviour": { "singleAnswer": false },
+        "overallFeedback": [
+          {"from": 0, "to": 10, "feedback": "错误。"},
+          {"from": 11, "to": 30, "feedback": "不及格。"},
+          {"from": 31, "to": 50, "feedback": "一般。"},
+          {"from": 51, "to": 70, "feedback": "良好。"},
+          {"from": 71, "to": 90, "feedback": "很好。"},
+          {"from": 91, "to": 100, "feedback": "优秀！"}
+        ]
+      }
+    }
+  ],
+  "overallFeedback": [
+    {"from": 0, "to": 10, "feedback": "成绩较弱。复习基础知识。"},
+    {"from": 11, "to": 30, "feedback": "成绩不足。继续努力。"},
+    {"from": 31, "to": 50, "feedback": "成绩一般。您正在进步。"},
+    {"from": 51, "to": 70, "feedback": "成绩良好。您掌握了多个概念。"},
+    {"from": 71, "to": 90, "feedback": "成绩优秀。您走在正确的道路上。"},
+    {"from": 91, "to": 100, "feedback": "成绩卓越。恭喜！"}
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === QUIZSET VF (H5P 判断对错测验) ===
+  // ============================================================================
+  QUIZSET_VF_REGLES_SPECIFIQUES: `- 问题数量：生成至少 5 个问题的列表 || [NOMBRE_ELEMENTS] 个问题。
+- 类型：您必须仅生成**判断对错**（\`H5P.TrueFalse\` 1.8）类型的问题。不允许使用任何其他类型。
+- 问题质量：
+  - 陈述必须清晰且无歧义。
+  - 避免使用双重否定。
+  - 交替设置正确和错误的陈述。`,
+
+  QUIZSET_VF_STRUCTURE_JSON: `- 仅在代码块中生成完整且有效的 JSON。您的回答必须以 \`{\` 开头，以 \`}\` 结尾。不得有任何其他文本或注释。
+- 根对象必须包含：
+  - \`title\`：活动标题。
+  - \`questions\`：对象数组。每个对象代表一个问题，且必须包含：
+    - \`library\`：始终为 \`H5P.TrueFalse 1.8\`。
+    - \`metadata\`：包含 \`title\` 键的对象（问题的简短标题）。
+    - \`params\`：问题数据。
+  - \`overallFeedback\`：QuizSet 最终得分的 6 个对象的全局数组：0-10, 11-30, 31-50, 51-70, 71-90, 91-100。
+
+**真假题 (\`H5P.TrueFalse 1.8\`) 的 \`params\` 详情**：
+- \`question\`：提出的断言或问题 (string)。
+- \`correct\`：正确答案。必须是字符串："true" 或 "false"。
+- **格式设置：** 使用 Markdown 语法实现加粗 (\`**文本**\`) 和斜体 (\`*文本*\`)。
+- **LaTeX：** 对于数学公式，必须使用双反斜杠转义的 LaTeX 格式：\`\\\\( ... \\\\)\`。严禁单独使用 \`$\` 符号。
+- **反馈 (Feedback)：** 反馈内容不得包含 LaTeX 和 Markdown。`,
+
+  QUIZSET_VF_EXEMPLE_RENDU: `\`\`\`json
+{
+  "title": "判断对错测验 - 地理",
+  "questions": [
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "地理 - 首都" },
+      "params": {
+        "question": "澳大利亚的首都是堪培拉。",
+        "correct": "true"
+      }
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "地理 - 大洲" },
+      "params": {
+        "question": "非洲是世界上最大的洲。",
+        "correct": "false"
+      }
+    }
+  ],
+  "overallFeedback": [
+    {"from": 0, "to": 10, "feedback": "成绩较弱。请复习基础知识。"},
+    {"from": 11, "to": 30, "feedback": "成绩不足。请继续努力。"},
+    {"from": 31, "to": 50, "feedback": "成绩一般。你正在进步。"},
+    {"from": 51, "to": 70, "feedback": "成绩良好。你掌握了多个概念。"},
+    {"from": 71, "to": 90, "feedback": "成绩优秀。你走在正确的道路上。"},
+    {"from": 91, "to": 100, "feedback": "成绩卓越。恭喜！"}
+  ]
+}
+\`\`\``,
+
+  // ============================================================================
+  // === ELEA_TEST (Moodle/Éléa 测试) ===
+  // ============================================================================
+  ELEA_TEST_REGLES_SPECIFIQUES: `- 问题数量：至少 10 个问题 || [NOMBRE_ELEMENTS] 个问题。
+- 多样性：从以下类型中选择最合适的活动：
+  - **选择题** (\`multichoice\`)
+  - **配对题** (\`matching\`)
+  - **数值题** (\`numerical\`)
+  - **判断对错** (\`truefalse\`)
+  - **简答题** (\`shortanswer\`)
+  - **完形填空** (\`cloze\`)
+- 干扰项：为每个 \`multichoice\`（选择题）提供至少 3 个干扰项。`,
+
+  ELEA_TEST_STRUCTURE_JSON: `- 仅在代码块中生成完整且有效的 JSON。你的回答必须以 \`{\` 开始，以 \`}\` 结束。没有其他文本或注释。
+
+主对象必须包含以下键：
+- \`bank_name\`: 题库的简短描述性名称。
+- \`bank_description\`: 描述题库内容的短语。
+- \`questions\`: 对象数组，其中每个对象代表一个问题 (\`type\`, \`content\`)。
+  - 每个问题必须有一个简短且唯一的 \`content.name\`（例如："Q1 - 主题"）。
+
+**格式规则:**
+- **数字**: 小数使用点号（例如：12.34）。
+- **Cloze**: 严格遵守语法 \`{1:TYPE:=正确答案~错误答案}\`。`,
+
+  ELEA_TEST_EXEMPLE_RENDU: `- **对于 \`multichoice\` 类型 (选择题):**
   \`\`\`json
   {
     "type": "multichoice",
     "content": {
-      "name": "题目标题",
-      "questiontext": "题干。",
-      "feedback": "总体反馈。",
+      "name": "Q1 - 地理",
+      "questiontext": "法国的首都是哪里？",
+      "feedback": "巴黎是法国的政治和经济中心。",
       "answers": [
-        { "text": "选项 1", "fraction": 100, "feedback": "选择该项时的反馈。" },
-        { "text": "选项 2", "fraction": 0, "feedback": "选择该项时的反馈。" }
+        { "text": "巴黎", "fraction": 100, "feedback": "完全正确！" },
+        { "text": "里昂", "fraction": 0, "feedback": "不，里昂是大城市但不是首都。" },
+        { "text": "马赛", "fraction": 0, "feedback": "不，它是法国第二大城市。" }
       ]
     }
   }
   \`\`\`
-`,
-    moodle_xml_prompt_question_type_matching: `
-- **\`matching\` 类型（配对）：**
+
+- **对于 \`matching\` 类型 (配对题):**
   \`\`\`json
   {
     "type": "matching",
     "content": {
-      "name": "题目标题",
-      "questiontext": "题干。",
-      "feedback": "总体反馈。",
+      "name": "Q2 - 英语词汇",
+      "questiontext": "将每个英语单词与其中文翻译匹配。",
+      "feedback": "太棒了，你掌握了基础词汇。",
       "subquestions": [
-        { "text": "子题 1 文本", "answer": "答案 1" },
-        { "text": "子题 2 文本", "answer": "答案 2" }
+        { "text": "Dog", "answer": "狗" },
+        { "text": "Cat", "answer": "猫" },
+        { "text": "Bird", "answer": "鸟" }
       ]
     }
   }
   \`\`\`
-`,
-    moodle_xml_prompt_question_type_numerical: `
-- **\`numerical\` 类型（数值题）：**
+
+- **对于 \`numerical\` 类型 (数值题):**
   \`\`\`json
   {
     "type": "numerical",
     "content": {
-      "name": "题目标题",
-      "questiontext": "题干。",
-      "feedback": "总体反馈。",
-      "answer": { "number": 12.34, "tolerance": 0.1, "feedback": "对此答案的反馈。" }
+      "name": "Q3 - 数学",
+      "questiontext": "Pi 的值四舍五入到两位小数是多少？",
+      "feedback": "Pi 是一个无理常数，大约等于 3.14159...",
+      "answer": { "number": 3.14, "tolerance": 0.01, "feedback": "确实是 3.14。" }
     }
   }
   \`\`\`
-`,
-    moodle_xml_prompt_question_type_truefalse: `
-- **\`truefalse\` 类型（判断题）：**
+
+- **对于 \`truefalse\` 类型 (判断对错):**
   \`\`\`json
   {
     "type": "truefalse",
     "content": {
-      "name": "题目标题",
-      "questiontext": "题干。",
-      "feedback": "总体反馈。",
-      "answer": { "value": true, "feedback_true": "为 True 时的反馈。", "feedback_false": "为 False 时的反馈。" }
+      "name": "Q4 - 科学",
+      "questiontext": "水在海平面 100°C 沸腾。",
+      "feedback": "这是水的标准物理性质。",
+      "answer": { "value": true, "feedback_true": "正确。", "feedback_false": "错误，水确实在 1 个大气压下 100°C 沸腾。" }
     }
   }
   \`\`\`
-`,
-    moodle_xml_prompt_question_type_shortanswer: `
-- **\`shortanswer\` 类型（简答题）：**
+
+- **对于 \`shortanswer\` 类型 (简答题):**
   \`\`\`json
   {
     "type": "shortanswer",
     "content": {
-      "name": "题目标题",
-      "questiontext": "题干。",
-      "feedback": "总体反馈。",
+      "name": "Q5 - 文学",
+      "questiontext": "谁写了《悲惨世界》？",
+      "feedback": "这是 19 世纪最伟大的小说之一。",
       "answers": [
-        { "text": "精确答案 1", "fraction": 100, "feedback": "选择该项时的反馈。" },
-        { "text": "替代答案", "fraction": 100, "feedback": "选择该项时的反馈。" }
+        { "text": "维克多·雨果", "fraction": 100, "feedback": "正确！" },
+        { "text": "雨果", "fraction": 100, "feedback": "正确！" }
       ]
     }
   }
   \`\`\`
-`,
-    moodle_xml_prompt_question_type_cloze: `
-- **\`cloze\` 类型（完形/填空）：**
+
+- **对于 \`cloze\` 类型 (完形填空):**
+  - 注意语法：\`{1:SHORTANSWER:=好~坏}\`。
   \`\`\`json
   {
     "type": "cloze",
     "content": {
-      "name": "题目标题",
-      "questiontext": "这是一个包含空格 {1:SHORTANSWER:=正确答案~反馈} 以及另一个 {1:MULTICHOICE:=正确答案~错误答案} 的文本。",
-      "feedback": "总体反馈。"
+      "name": "Q6 - 历史",
+      "questiontext": "拿破仑出生于 {1:SHORTANSWER:=1769} 年在 {1:MULTICHOICE:=阿雅克肖~巴斯蒂亚~巴黎}。",
+      "feedback": "拿破仑·波拿巴出生于科西嘉岛。"
     }
   }
-  \`\`\`
-`,
-    moodle_xml_prompt_form_title: "**最终说明：**",
-    moodle_xml_prompt_form_rule1: "将问题在不同题型之间均衡分配。",
-    moodle_xml_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。结果必须是一个包含 `questions` 键的单一 JSON 对象。",
+  \`\`\``,
 
-    // 创建 Éléa 测试
-    moodle_xml_success_generation: "文件 {fileName} 生成成功！",
-    test_error_creation_mbz: "为测试创建 MBZ 时出错：",
-    test_success_generation: "文件 {fileName} 生成成功！",
-    test_error_generic: "错误：",
-    test_backup_log: "由 Caramel 自动创建的备份\n",
+  // ============================================================================
+  // === ELEA_MILLIONNAIRE (大富翁/百万富翁游戏) ===
+  // ============================================================================
+  ELEA_MILLIONNAIRE_REGLES_SPECIFIQUES: `- 问题数量：必须正好是 6 个问题（严禁修改数量）。
+- 循序渐进：问题的难度必须呈**递增式且符合教学逻辑**。需要重点记忆的内容应放在前几道题。
+- 准确性：内容必须严格准确且具有相关性。`,
 
-    // GIFT Prompt
-    gift_prompt_role: "你是一位教学工程专家，正在为Moodle/Éléa测试活动创建一个GIFT格式的题库。",
-    gift_prompt_intro: "我希望创建一个包含 ${nombreQuestions} 道题目的测验。",
-    gift_prompt_format_info: "测验须采用 GIFT 格式，以便导入 Moodle。",
-    gift_prompt_question_quality: "每道题都必须清晰、简洁、无歧义，并应包含详细反馈。",
-    gift_prompt_code_format_intro: "代码格式必须与下方提供的示例完全一致：",
-    gift_prompt_example_question_comment: "// question: 1  name: 我们太阳系的中心天体是什么？",
-    gift_prompt_example_question_text: "::我们太阳系的中心天体是什么？::我们太阳系的中心天体是什么？{",
-    gift_prompt_example_answer_correct: "=太阳#正确！太阳是我们太阳系的中心恒星。做得好！",
-    gift_prompt_example_answer_incorrect1: "~月球#错误。月球是地球的天然卫星。太阳才是中心天体。",
-    gift_prompt_example_answer_incorrect2: "~木星#错误。木星是气体巨行星。太阳才是中心天体。",
-    gift_prompt_example_answer_incorrect3: "~地球#错误。地球是我们居住的行星。太阳才是中心天体。",
-    gift_prompt_example_end_bracket: "}",
-    gift_prompt_question_types_intro: "测验应随机包含多种题型：",
-    gift_prompt_question_type_multichoice: "- 选择题（multichoice），1 个正确答案 + 3 个干扰项；",
-    gift_prompt_question_type_truefalse: "- 判断题（truefalse）；",
-    gift_prompt_question_type_numerical: "- 数值题（numerical），带可接受误差；",
-    gift_prompt_question_type_matching: "- 配对题（matching），至少 4 组配对；",
-    gift_prompt_generate_only_gift: "直接生成 GIFT 格式的测验，不要添加注释或额外标签。请严格遵守所述格式，因为我会将结果粘贴到另一个要求该格式的工具中。以预格式化代码形式给出答案。",
+  ELEA_MILLIONNAIRE_STRUCTURE_JSON: `- 仅在一个代码块内生成完整且有效的 JSON。你的回答必须以 \`{\` 开头并以 \`}\` 结尾。不得有任何其他文字或注释。
+包含以下键的主对象：
+- \`title\`：活动标题（字符串）。
+- \`questions\`：正好包含 6 个对象的数组，每个对象代表一个问题并包含：
+  - \`question\`：问题描述（字符串）。
+  - \`goodanswer\`：正确答案（字符串）。
+  - \`badanswer\`：正好包含 3 个错误答案的数组（字符串数组）。
+  - 数学公式禁止使用 LaTeX。`,
 
-    // Flashcards Prompt
-    flashcards_prompt_role: "你是一名教学设计专家，正在创建一个 H5P “闪卡” 活动。",
-    flashcards_prompt_mission: "**你的任务：**",
-    flashcards_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P 闪卡活动。JSON 必须可直接使用。",
-    flashcards_prompt_json_structure_title: "**预期的 JSON 结构：**",
-    flashcards_prompt_json_structure_main_object: "该对象应包含：",
-    flashcards_prompt_title: "`title`: 活动的合适标题。",
-    flashcards_prompt_description: "`description`: 给学生的明确指令。",
-    flashcards_prompt_association_principle: "正反面应由单一且一致的标准关联（例如：定义→术语、图形→边数、事件→日期、作者→作品）。所有卡片应使用相同的关联关系，指令应这样表述：“将每个 X 与 Y 匹配”。答案 (`answer`) 应规范化：一个简单的单词或数字，小写，无冠词或标点；数字用阿拉伯数字表示。",
-    flashcards_prompt_cards_array: "`cards`: 一个包含 ${nombreQuestions} 个对象的数组，每个对象代表一张卡片，包含：",
-    flashcards_prompt_text: "`text`: 要猜的问题或术语（正面）。",
-    flashcards_prompt_answer: "`answer`: 答案或定义（反面）。注意：'answer' 只能包含一个简单单词或数字，不允许复合或分开的词。",
-    flashcards_prompt_tip: "`tip`（可选）：当问题较难时，为学生提供提示。仅在合适时添加提示。",
-    flashcards_prompt_tip_formatting: "在提示 (`tip`) 中，可以使用 `*词*` 表示粗体，`**词**` 表示斜体，用于强调重要信息。",
-    flashcards_prompt_example_json_title: "**JSON 示例：**",
-    flashcards_prompt_example: `\`\`\`json
+  ELEA_MILLIONNAIRE_EXEMPLE_RENDU: `\`\`\`json
 {
-"title": "欧洲的首都",
-"description": "记住每个国家的首都。点击卡片查看答案。",
-"cards": [
-{
-"text": "法国的首都",
-"answer": "巴黎"
-},
-{
-"text": "荷兰的首都",
-"answer": "阿姆斯特丹",
-"tip": "<p>这是<strong>运河</strong>和郁金香之城！</p>"
+  "title": "法国大革命知识竞赛",
+  "questions": [
+    {
+      "question": "1789年7月14日，哪一事件标志着法国大革命的开始？",
+      "goodanswer": "攻占巴士底狱",
+      "badanswer": ["网球场宣誓", "处决路易十六", "瓦尔密战役"]
+    }
+  ]
 }
-]
+\`\`\``,
+
+  // ============================================================================
+  // === ELEA_APPARIEMENT (配对题) ===
+  // ============================================================================
+  ELEA_APPARIEMENT_REGLES_SPECIFIQUES: `- 配对数量：至少 5 对 || [NOMBRE_ELEMENTS] 对。
+- 逻辑：阅读素材后，两个元素之间的关系必须显而易见。`,
+
+  ELEA_APPARIEMENT_STRUCTURE_JSON: `- 仅在一个代码块内生成完整且有效的 JSON。你的回答必须以 \`{\` 开头并以 \`}\` 结尾。不得有任何其他文字或注释。
+包含以下键的主对象：
+- \`title\`：活动标题（字符串）。
+- \`intro\`：简短的指令或介绍文本（字符串）。
+- \`pairs\`：对象数组，每个对象代表一个配对并包含：
+  - \`question\`：左侧的术语或元素（字符串）。
+  - \`answer\`：右侧对应的定义或元素（字符串）。
+  - 对于数学公式，请使用带有双斜杠转义的 LaTeX 格式，例如：\`\\\\( (2^3)^2 \\\\)\`。`,
+
+  ELEA_APPARIEMENT_EXEMPLE_RENDU: `\`\`\`json
+{
+  "title": "历史配对练习",
+  "intro": "将每个日期与法国大革命中对应的事件联系起来。",
+  "pairs": [
+    {"question": "攻占巴士底狱", "answer": "1789年7月14日"},
+    {"question": "废除特权", "answer": "1789年8月4日"},
+    {"question": "人权宣言", "answer": "1789年8月26日"},
+    {"question": "凡尔赛妇女大游行", "answer": "1789年10月5日"},
+    {"question": "联盟节", "answer": "1790年7月14日"}
+  ]
 }
-\`\`\` `,
-    flashcards_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
+\`\`\``,
 
-    // QuizSet Prompt
-    quiz_set_prompt_role: "你是一位教学工程专家，正在为“H5P Quiz（Question Set）”活动编写内容。",
-    quiz_set_prompt_mission: "**你的任务：**",
-    quiz_set_prompt_generate_json: "生成一个**仅包含内容**的 H5P 测验 JSON 对象。该 JSON 可直接作为 `content.json` 使用。",
-    quiz_set_prompt_json_structure_title: "**预期的 JSON 结构：**",
-    quiz_set_prompt_json_structure_main_object: "主对象必须包含以下键：",
-    quiz_set_prompt_progress_type: "`progressType`：\"dots\"",
-    quiz_set_prompt_pass_percentage: "`passPercentage`：50",
-    quiz_set_prompt_questions_array: "`questions`：包含 ${nombreQuestions} 个对象的数组，每个对象代表一道题。",
-    quiz_set_prompt_content_rules_title: "**题目内容规则：**",
-    quiz_set_prompt_rule1: "1.  每个题目对象必须包含 `library`、`params` 与 `subContentId`。",
-    quiz_set_prompt_rule2: "2.  **结构:** 每个问题都必须是一个包含`library`、`metadata`和`params`键的对象。",
-    quiz_set_prompt_rule3: "3.  题型要多样化。请使用以下库及其精确版本：",
-    quiz_set_prompt_rule4: "4.  **反馈（关键规则）：** 对于**所有问题类型**（`MultiChoice`、`Blanks`、`DragText`、`MarkTheWords`、`Essay`），您**必须**生成一个包含6个分数范围的`overallFeedback`：0-10、11-30、31-50、51-70、71-90和91-100。对于`TrueFalse`问题，还需添加`feedbackOnCorrect`和`feedbackOnWrong`字段。反馈必须是善意的、渐进的，并且始终以肯定的方式表达。",
-    quiz_set_prompt_rule5: "5.  **内容：** `params`中的内容必须在教学上相关，为多选题提供合理的干扰项，为其他活动提供连贯的文本。",
-    quiz_set_prompt_rule6: "6.  **简洁性：** 不要添加图片或多余的行为参数。保持结构简单，如示例所示。",
-    quiz_set_prompt_rule7: "7.  **数学公式：** 对于数学公式，使用带双反斜杠转义的LaTeX表示法。用 \\( 和 \\) 包围公式。示例：不要写 ( (2^3)^2 )，而应写 \\( (2^3)^2 \\)。答案同样如此：写 \\( 2^{12} \\) 而不是 ( 2^{12} )。",
-    quiz_set_prompt_example_json_title: "**每种授权问题类型的结构示例：**",
-    quiz_set_example_true_false: "对/错 :",
-    quiz_set_example_multiple_choice: "多项选择 :",
-    quiz_set_example_fill_in_the_blanks: "填空题 :",
-    quiz_set_example_drag_the_words: "拖动单词 :",
-    quiz_set_example_mark_the_words: "标记单词 :",
-    quiz_set_example_essay: "写作 :",
-    quiz_set_prompt_generate_only_json: "`{\"progressType\": \"dots\", ...}`で始まる有効なJSONのみを、コメントなしで生成してください。",
+  // ============================================================================
+  // === ELEA_QCM (Éléa 选择题) ===
+  // ============================================================================
+  ELEA_QCM_REGLES_SPECIFIQUES: `- 问题数量：至少 5 个问题 || [NOMBRE_ELEMENTS] 个问题。
+- 选项：每个问题提供 2 到 5 个选项。
+- 干扰项：与主题相关但包含逻辑错误。`,
 
-    // VRAI/FAUX
-    quiz_set_true_false_example: JSON.stringify({
-        "library": "H5P.TrueFalse 1.8",
-        "metadata": { "title": "判断题标题" },
-        "params": {
-            "question": "法国是一个国家吗？",
-            "correct": "true",
-            "feedbackOnCorrect": "正确！法国确实是一个国家。",
-            "feedbackOnWrong": "错误。法国在国际上被认为是一个国家。",
-            "behaviour": { "enableRetry": true, "enableSolutionsButton": true }
-        }
-    }, null, 4),
+  ELEA_QCM_STRUCTURE_JSON: `- 仅在一个代码块内生成完整且有效的 JSON。你的回答必须以 \`{\` 开头并以 \`}\` 结尾。不得有任何其他文字或注释。
+- \`title\`：活动标题。
+- \`questions\`：对象数组。每个问题对象必须包含：
+  - \`text\`：问题描述（可以包含简单的 HTML，如 \`**\` 加粗）。
+  - \`answers\`：对象数组 \`{"text": "...", "iscorrect": 1/0}\`。\`1\` 代表正确答案，\`0\` 代表错误。
+  - 对于数学公式，请使用带有双斜杠转义的 LaTeX 格式，例如：\`\\\\( (2^3)^2 \\\\)\`。`,
 
-    // QCM
-    quiz_set_multiple_choice_example: JSON.stringify({
-        "library": "H5P.MultiChoice 1.16",
-        "metadata": { "title": "MCQ标题" },
-        "params": {
-            "question": "法国的首都是哪里？",
-            "answers": [
-                { "text": "巴黎", "correct": true },
-                { "text": "柏林", "correct": false }
-            ],
-            "behaviour": { "type": "auto", "singleAnswer": true, "enableRetry": true, "enableSolutionsButton": true },
-            "overallFeedback": [
-                { "from": 0, "to": 10, "feedback": "0-10%的反馈" },
-                { "from": 11, "to": 30, "feedback": "11-30%的反馈" },
-                { "from": 31, "to": 50, "feedback": "31-50%的反馈" },
-                { "from": 51, "to": 70, "feedback": "51-70%的反馈" },
-                { "from": 71, "to": 90, "feedback": "71-90%的反馈" },
-                { "from": 91, "to": 100, "feedback": "91-100%的反馈" }
-            ]
-        }
-    }, null, 4),
-
-    // Texte à trous
-    quiz_set_fill_in_the_blanks_example: JSON.stringify({
-        "library": "H5P.Blanks 1.14",
-        "metadata": { "title": "填空题标题" },
-        "params": {
-            "questions": ["巴黎是法国的*首都*。"],
-            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "caseSensitive": false },
-            "overallFeedback": [
-                { "from": 0, "to": 10, "feedback": "0-10%的反馈" },
-                { "from": 11, "to": 30, "feedback": "11-30%的反馈" },
-                { "from": 31, "to": 50, "feedback": "31-50%的反馈" },
-                { "from": 51, "to": 70, "feedback": "51-70%的反馈" },
-                { "from": 71, "to": 90, "feedback": "71-90%的反馈" },
-                { "from": 91, "to": 100, "feedback": "91-100%的反馈" }
-            ]
-        }
-    }, null, 4),
-
-    // Glisser les mots
-    quiz_set_drag_the_words_example: JSON.stringify({
-        "library": "H5P.DragText 1.10",
-        "metadata": { "title": "拖动单词活动标题" },
-        "params": {
-            "taskDescription": "完成句子。",
-            "textField": "*巴黎*是法国的首都。",
-            "behaviour": { "enableRetry": true, "enableSolutionsButton": true, "instantFeedback": false },
-            "overallFeedback": [
-                { "from": 0, "to": 10, "feedback": "0-10%的反馈" },
-                { "from": 11, "to": 30, "feedback": "11-30%的反馈" },
-                { "from": 31, "to": 50, "feedback": "31-50%的反馈" },
-                { "from": 51, "to": 70, "feedback": "51-70%的反馈" },
-                { "from": 71, "to": 90, "feedback": "71-90%的反馈" },
-                { "from": 91, "to": 100, "feedback": "91-100%的反馈" }
-            ]
-        }
-    }, null, 4),
-
-    // Surligner les mots
-    quiz_set_mark_the_words_example: JSON.stringify({
-        "library": "H5P.MarkTheWords 1.11",
-        "metadata": { "title": "标记单词活动标题" },
-        "params": {
-            "taskDescription": "突出显示首都。",
-            "textField": "法国的首都是*巴黎*。",
-            "behaviour": { "enableRetry": true, "enableSolutionsButton": true },
-            "overallFeedback": [
-                { "from": 0, "to": 10, "feedback": "0-10%的反馈" },
-                { "from": 11, "to": 30, "feedback": "11-30%的反馈" },
-                { "from": 31, "to": 50, "feedback": "31-50%的反馈" },
-                { "from": 51, "to": 70, "feedback": "51-70%的反馈" },
-                { "from": 71, "to": 90, "feedback": "71-90%的反馈" },
-                { "from": 91, "to": 100, "feedback": "91-100%的反馈" }
-            ]
-        }
-    }, null, 4),
-
-    // Rédaction
-    quiz_set_essay_example: JSON.stringify({
-        "library": "H5P.Essay 1.5",
-        "metadata": { "title": "文章标题" },
-        "params": {
-            "taskDescription": "法国的首都是哪里？",
-            "keywords": [
-                { "keyword": "巴黎", "options": { "points": 1, "caseSensitive": false } }
-            ],
-            "behaviour": { "inputFieldSize": "1", "enableRetry": true },
-            "overallFeedback": [
-                { "from": 0, "to": 10, "feedback": "0-10%的反馈" },
-                { "from": 11, "to": 30, "feedback": "11-30%的反馈" },
-                { "from": 31, "to": 50, "feedback": "31-50%的反馈" },
-                { "from": 51, "to": 70, "feedback": "51-70%的反馈" },
-                { "from": 71, "to": 90, "feedback": "71-90%的反馈" },
-                { "from": 91, "to": 100, "feedback": "91-100%的反馈" }
-            ]
-        }
-    }, null, 4),
-
-    // Glossary Prompt
-    glossary_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Accordion（手风琴）”活动。",
-    glossary_prompt_mission: "**你的任务：**",
-    glossary_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P 术语表（Accordion）活动。该 JSON 必须可直接使用。",
-    glossary_prompt_json_structure_title: "**预期的 JSON 结构：**",
-    glossary_prompt_json_structure_main_object: "生成一个包含 ${nombreQuestions} 个 JSON 对象的数组。",
-    glossary_prompt_panel_object: "",
-    glossary_prompt_title: "`title`：要定义的词或短语。",
-    glossary_prompt_content: "`text`: 定义。加粗用 `*单词*`，斜体用 `**单词**`，换行用 `\\n`。",
-    glossary_prompt_content_rules_title: "**内容规则：**",
-    glossary_prompt_rule1: "1.  定义应清晰、简洁，并与学生水平相适应。",
-    glossary_prompt_rule2: "",
-    glossary_prompt_example_json_title: "**单个词条的 JSON 示例：**",
-    glossary_prompt_example: `\`\`\`json
-[
+  ELEA_QCM_EXEMPLE_RENDU: `\`\`\`json
 {
-"title": "光合作用",
-"text": "绿色植物将阳光转化为能量的过程。"
-},
-{
-"title": "细胞",
-"text": "所有生物的基本单位。"
+  "title": "关于法国大革命的选择题",
+  "questions": [
+    {
+      "text": "攻占巴士底狱的日期是哪天？",
+      "answers": [
+        {"text": "1789年7月14日", "iscorrect": 1},
+        {"text": "1789年8月4日", "iscorrect": 0},
+        {"text": "1789年8月26日", "iscorrect": 0}
+      ]
+    }
+  ]
 }
-]
-\`\`\` `,
-    glossary_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
+\`\`\``,
 
-    // Summary Prompt
-    summary_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Summary（要点归纳）”活动。",
-    summary_prompt_mission: "**你的任务：**",
-    summary_prompt_generate_json: "生成一个完整的 JSON 对象，用于 H5P Summary 活动。该 JSON 必须可直接使用。",
-    summary_prompt_json_structure_title: "**预期的 JSON 结构：**",
-    summary_prompt_json_structure_main_object: "对象必须包含以下键：",
-    summary_prompt_intro_field: "`intro`: 活动的介绍性句子（例如，“选择正确的陈述。”）。",
-    summary_prompt_summaries_array: "`summaries`: 一个包含 ${nombreQuestions} 个对象的数组，每个对象代表一个摘要步骤。",
-    summary_prompt_summary_object: "`summaries` 中的每个对象必须包含：",
-    summary_prompt_summary_array: "- `summary`: 一个句子数组。",
-    summary_prompt_tip_field: "- `tip` (可选但建议): 帮助学生的提示。",
-    summary_prompt_content_rules_title: "**内容规则：**",
-    summary_prompt_rule1: "1.  在每个 \"summary\" 数组中，**第一句为正确陈述**。",
-    summary_prompt_rule2: "2.  其余句子为看似合理但错误的干扰项。",
-    summary_prompt_rule3: "3.  所有正确句子组合后应构成连贯的摘要。",
-    summary_prompt_example_json_title: "**单个步骤的 JSON 示例：**",
-   summary_prompt_example: `\`\`\`json
+  // ============================================================================
+  // === ELEA_GLOSSAIRE (XML 词汇表) ===
+  // ============================================================================
+  ELEA_GLOSSAIRE_REGLES_SPECIFIQUES: `- 条目数量：至少 5 个术语 || [NOMBRE_ELEMENTS] 个术语。
+- 筛选：识别关键词、缩写和技术概念。`,
+
+  ELEA_GLOSSAIRE_STRUCTURE_JSON: `- 仅在一个代码块内生成完整且有效的 JSON。你的回答必须以 \`{\` 开头并以 \`}\` 结尾。不得有任何其他文字或注释。
+- **根：** 一个包含两个键的主对象：\`name\`（词汇表名称）和 \`entries\`（对象数组）。
+- **\`entries\` 中的每个对象必须包含：**
+  - \`concept\`：要定义的词或短语。
+  - \`definition\`：清晰简洁的定义。使用 **单词** 表示加粗，*单词* 表示斜体，\`\\n\` 表示换行（仅在具有教学意义时使用）。
+  - \`aliases\`（可选）：字符串数组，用于存放同义词或替代术语。仅在存在相关别名时添加此键。
+  - 对于数学公式，请使用带有双斜杠转义的 LaTeX 格式，例如：\`\\\\( (2^3)^2 \\\\)\`。`,
+
+  ELEA_GLOSSAIRE_EXEMPLE_RENDU: `\`\`\`json
 {
-"summaries": [
-{
-"summary": [
-    "这是正确的句子。",
-    "这是一个干扰项。",
-    "这是另一个干扰项。"
-]
-}
-]
-}
-\`\`\` `,
-    summary_prompt_overall_feedback: "`overallFeedback`:（严格规则）必须生成由6个对象组成的数组作为最终反馈，并结合练习主题严格遵循 0-10、11-30、31-50、51-70、71-90、91-100 的分段。每个对象形式为 `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`。`feedback` 文本需友好、不过分、循序渐进且始终为肯定表达。",
-    summary_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
-
-    // Summary UI translations
-    summary_intro: "选择正确的陈述。",
-    summary_solved_label: "进度：",
-    summary_score_label: "错误答案：",
-    summary_result_label: "你的结果",
-    summary_feedback: "你答对了 @total 条陈述中的 @score 条（@percent %）。",
-    summary_label_correct: "正确。",
-    summary_label_incorrect: "不正确！请重试。",
-    summary_label_correct_answers: "正确答案。",
-    summary_tip_button_label: "显示提示",
-    summary_score_bar_label: "你得到了 :num 分（共 :total 分）",
-    summary_progress_text: "进度 :num / :total",
-    summary_alternative_incorrect_label: "不正确",
-
-    // Drag the Words Prompt
-    drag_word_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Drag the Words（拖动单词）”活动。",
-    drag_word_prompt_mission: "**你的任务：**",
-    drag_word_prompt_generate_json: "生成一个完整的 JSON 对象，用于 H5P 拖动单词活动。该 JSON 必须可直接使用。",
-    drag_word_prompt_json_structure_title: "**预期的 JSON 结构：**",
-    drag_word_prompt_json_structure_main_object: "对象必须包含：",
-    drag_word_prompt_task_description: "`taskDescription`：清晰的指令。",
-    drag_word_prompt_text_field: "`textField`：待完成的文本。每个句子应以换行符 `\\n` 结尾。",
-    drag_word_prompt_content_rules_title: "**内容规则：**",
-    drag_word_prompt_rule1: "1.  围绕主题创作连贯的短句文本，每句以 `\\n` 结尾。",
-    drag_word_prompt_rule2: "2.  可拖动的词用星号包裹。你可以用 `:我的提示` 添加提示，用 `\\+正确反馈 \\-错误反馈` 添加反馈。",
-    drag_word_prompt_example_json_title: "**JSON 示例：**",
-    drag_word_prompt_example: `\`\`\`json
-{
-"taskDescription": "通过拖动单词完成文本。",
-"textField": "*太阳系*由*八*颗行星组成，这些行星围绕*太阳*运行。"
-}
- \`\`\` `,
-    drag_word_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
-    drag_word_prompt_overall_feedback: "`overallFeedback`:（严格规则）必须生成由6个对象组成的数组作为最终反馈，并结合练习主题严格遵循 0-10、11-30、31-50、51-70、71-90、91-100 的分段。每个对象形式为 `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`。`feedback` 文本需友好、不过分、循序渐进且始终为肯定表达。",
-
-    // Drag the Words UI translations
-    drag_words_check_answer: "检查",
-    drag_words_try_again: "重试",
-    drag_words_show_solution: "显示答案",
-    drag_words_score_feedback: "得分：@score / @total。",
-    drag_words_tip_label: "显示提示",
-    drag_words_correct_text: "正确！",
-    drag_words_incorrect_text: "错误！",
-    drag_words_score_bar_label: "你得到了 :num 分（共 :total 分）",
-    drag_words_submit_answer: "提交",
-
-    // Fill in the Blanks Prompt
-    blanks_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Fill in the Blanks（填空）”活动。",
-    blanks_prompt_mission: "**你的任务：**",
-    blanks_prompt_generate_json: "生成一个完整的 JSON 对象，用于 H5P 填空活动。该 JSON 必须可直接使用。",
-    blanks_prompt_json_structure_title: "**预期的 JSON 结构：**",
-    blanks_prompt_json_structure_main_object: "对象必须包含键 `questions`，其值为字符串数组。每个字符串代表一段待完成的文本。",
-    blanks_prompt_content_rules_title: "**内容规则：**",
-    blanks_prompt_rule1: "-  要填写的词用星号包裹（*词*）。",
-    blanks_prompt_rule2: "-  若有备选答案，用斜杠分隔：*巴黎/光之城*。",
-    blanks_prompt_rule3: "-  若要添加提示，用冒号：*开源:公开的源代码*。",
-    blanks_prompt_example_json_title: "**JSON 示例：**",
-    blanks_prompt_example: `\`\`\`json
-{
-"questions": [
-"太阳系有*八*颗行星。最大的是*木星*。",
-"法国的首都是*巴黎/光之城*。"
-]
-}
-\`\`\` `,
-    blanks_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
-    blanks_prompt_overall_feedback: "`overallFeedback`:（严格规则）必须生成由6个对象组成的数组作为最终反馈，并结合练习主题严格遵循 0-10、11-30、31-50、51-70、71-90、91-100 的分段。每个对象形式为 `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`。`feedback` 文本需友好、不过分、循序渐进且始终为肯定表达。",
-
-    // Fill in the Blanks UI translations
-    blanks_show_solutions: "显示答案",
-    blanks_try_again: "重试",
-    blanks_check_answer: "检查",
-    blanks_not_filled_out: "请填写所有空格。",
-    blanks_answer_is_correct: "「:ans」是正确的",
-    blanks_answer_is_wrong: "「:ans」是错误的",
-    blanks_answered_correctly: "回答正确",
-    blanks_answered_incorrectly: "回答错误",
-    blanks_solution_label: "正确答案：",
-    blanks_input_label: "第 @num 空，共 @total 空",
-    blanks_input_has_tip_label: "有提示可用",
-    blanks_tip_label: "提示",
-    blanks_score_bar_label: "你得到了 :num 分（共 :total 分）",
-    blanks_submit_answer: "提交",
-    blanks_feedback: "你答对了 @total 个空格中的 @score 个。",
-    blanks_finish_header: "完成？",
-    blanks_finish_body: "你确定要完成吗？",
-    blanks_cancel_label: "取消",
-    blanks_finish_label: "完成",
-    blanks_retry_header: "重试？",
-    blanks_retry_body: "你确定要重试吗？",
-    blanks_retry_confirm_label: "确认",
-    blanks_checking_mode_header: "检查模式",
-    blanks_a11y_check: "检查答案。答案将被标记为正确、错误或未回答。",
-    blanks_a11y_show_solution: "显示答案。任务将标记其正确答案。",
-    blanks_a11y_retry: "重试任务。重置所有回答并重新开始任务。",
-
-    // Mark the Words Prompt
-    mark_words_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Mark the Words（标注词语）”活动。",
-    mark_words_prompt_mission: "**你的任务：**",
-    mark_words_prompt_generate_json: "生成一个完整的 JSON 对象，用于 H5P 标注词语活动。该 JSON 必须可直接使用。",
-    mark_words_prompt_json_structure_title: "**预期的 JSON 结构：**",
-    mark_words_prompt_json_structure_main_object: "对象必须包含：",
-    mark_words_prompt_task_description: "`taskDescription`：清晰的指令。",
-    mark_words_prompt_text_field: "`textField`：需要标注的词用星号包裹（*词*）的文本。",
-    mark_words_prompt_overall_feedback: "`overallFeedback`:（严格规则）必须生成由6个对象组成的数组作为最终反馈，并结合练习主题严格遵循 0-10、11-30、31-50、51-70、71-90、91-100 的分段。每个对象形式为 `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`。`feedback` 文本需友好、不过分、循序渐进且始终为肯定表达。",
-    mark_words_prompt_content_rules_title: "**内容规则：**",
-    mark_words_prompt_rule1: "1.  围绕主题写一段相关的文字。",
-    mark_words_prompt_rule2: "2.  选择大约 ${nombreQuestions} 个重要关键词供标注。",
-    mark_words_prompt_rule3: "3.  每个要标记的单词必须单独用星号括起来。例如, `*单词1* *单词2*` 是正确的, 但 `*单词1 单词2*` 是不正确的。",
-    mark_words_prompt_rule4: "4.  撇号或其他标点符号不能附加到标记的单词上。例如, `l'*oiseau*` 是不正确的; 它应该写成 `l' *oiseau*` 才能正常工作。",
-    mark_words_prompt_example_json_title: "**JSON 示例：**",
-    mark_words_prompt_example: `\`\`\`json
-{
-"taskDescription": "点击文本中的重要词语。",
-"textField": "*太阳* *系*由*八*颗行星组成，这些行星围绕*太阳*运行。"
-}
-\`\`\` `,
-    mark_words_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
-
-    // Mark the Words UI translations
-    mark_words_check_answer: "检查",
-    mark_words_try_again: "重试",
-    mark_words_show_solution: "显示答案",
-    mark_words_correct_answer: "正确！",
-    mark_words_incorrect_answer: "错误！",
-    mark_words_missed_answer: "未答！",
-    mark_words_display_solution_description: "任务已更新以包含答案。",
-    mark_words_score_bar_label: "你得到了 :num 分（共 :total 分）",
-    mark_words_submit_answer: "提交",
-    mark_words_a11y_full_text_label: "完整可读文本",
-    mark_words_a11y_clickable_text_label: "可以标记单词的完整文本",
-    mark_words_a11y_solution_mode_header: "答案模式",
-    mark_words_a11y_checking_header: "检查模式",
-    mark_words_a11y_check: "检查答案。答案将被标记为正确、错误或未回答。",
-    mark_words_a11y_show_solution: "显示答案。任务将标记其正确答案。",
-    mark_words_a11y_retry: "重试任务。重置所有回答并重新开始任务。",
-
-    // Millionnaire Creation
-    millionnaire_error_compression_libs: "压缩库（Tar.js 或 fflate）未加载。请检查您的互联网连接或刷新页面。",
-    millionnaire_error_invalid_json: "JSON 结构无效。请确保其中包含 'title' 和一个包含 6 个问题的 'questions' 数组，与示例一致。",
-    millionnaire_activity_intro: "参与此游戏以测试您的知识。",
-    millionnaire_backup_log: "由 Caramel 自动创建的备份\n",
-    millionnaire_success_generation: "文件 {fileName} 已成功生成！",
-    millionnaire_error_creation_mbz: "创建 MBZ 文件时出错：",
-    millionnaire_error_generic: "错误：",
-
-    // Millionnaire Prompt
-    millionnaire_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“Millionnaire（百万富翁）”活动。",
-    millionnaire_prompt_num_questions: "**题目数量：** 6",
-    millionnaire_prompt_mission: "**你的任务：**",
-    millionnaire_prompt_generate_json: "生成一个 JSON 对象，其中包含标题以及 **6 道题**，用于“谁想成为百万富翁”类型的游戏。",
-    millionnaire_prompt_important_rules_title: "**重要规则：**",
-    millionnaire_prompt_rule1: "1.  `title` 必须是针对该活动的恰当且有吸引力的标题。",
-    millionnaire_prompt_rule2: "2.  `questions` 数组中的题目难度需**循序渐进且具有教学性**，适配学生水平。第一题应非常简单，最后一题应非常困难。",
-    millionnaire_prompt_rule3: "3.  内容必须严格准确，并与主题和学段相关。",
-    millionnaire_prompt_json_structure_title: "**预期的 JSON 结构：**",
-    millionnaire_prompt_main_object: "一个包含两项键的主对象：",
-    millionnaire_prompt_title: "- `title`：活动标题（字符串）。",
-    millionnaire_prompt_questions_array: "- `questions`：包含 6 个对象的数组，每个对象代表一道题，并包含：",
-    millionnaire_prompt_question: "- `question`：题干（字符串）。",
-    millionnaire_prompt_good_answer: "- `goodanswer`：正确答案（字符串）。",
-    millionnaire_prompt_bad_answer: "- `badanswer`：3 个错误答案的数组（字符串）。",
-    millionnaire_prompt_example_json_title: "**JSON 示例：**",
-    millionnaire_prompt_example: `\`\`\`json
-{
-"title": "关于法国大革命的测验",
-"questions": [
-{
-"question": "法国的首都是哪里？",
-"goodanswer": "巴黎",
-"badanswer": ["柏林", "伦敦", "马德里"]
-}
-]
-}
-\`\`\` `,
-    millionnaire_prompt_generate_only_json: "仅生成有效的 JSON 对象，不要添加任何注释。",
-
-    // Appariement Prompt
-    appariement_prompt_role: "你是一名教学工程专家，正在创建一个 Moodle “配对” 活动。",
-    appariement_prompt_num_questions: "**配对数：** 10",
-    appariement_prompt_mission: "**你的任务：**",
-    appariement_prompt_generate_json: "生成一个 JSON 对象，其中包含一个标题以及用于配对游戏的 **10 对**。",
-    appariement_prompt_important_rules_title: "**重要规则：**",
-    appariement_prompt_rule1: "1.  `title` 必须是与活动相关且有吸引力的标题。",
-    appariement_prompt_rule2: "2.  `pairs` 数组必须包含 10 个对象，每个对象包含 `question`（左侧项）和 `answer`（右侧要匹配的项）。",
-    appariement_prompt_rule3: "3.  内容必须严格准确，并与主题和学段相符。",
-    appariement_prompt_json_structure_title: "**预期的 JSON 结构：**",
-    appariement_prompt_main_object: "一个包含两个键的主对象：",
-    appariement_prompt_title: "- `title`：活动标题（字符串）。",
-    appariement_prompt_pairs_array: "- `pairs`：包含 10 个对象的数组，每个对象代表一对，并包含：",
-    appariement_prompt_question: "- `question`：左侧的术语或图片（字符串）。",
-    appariement_prompt_answer: "- `answer`：右侧对应的定义或术语（字符串）。",
-    appariement_prompt_example_json_title: "**JSON 示例：**",
-    appariement_prompt_example: `\`\`\`json
-{
-"title": "关于法国大革命的配对题",
-"pairs": [
-{
-"question": "攻占巴士底狱",
-"answer": "1789年7月14日"
-}
-]
-}
-\`\`\` `,
-    appariement_prompt_generate_only_json: "仅生成有效的 JSON 对象，不要添加任何注释。",
-
-    // 配对创建
-    appariement_error_invalid_json: "JSON 结构无效。请确保其中包含 'title' 和数组 'pairs'，并且每个配对都具有 'question' 和 'answer'。",
-    appariement_activity_intro: "找到对应的配对。",
-    appariement_success_generation: "文件 {fileName} 生成成功 !",
-    appariement_error_creation_mbz: "为配对创建 MBZ 时出错:",
-
-    // QCM Prompt
-    qcm_prompt_role: "你是一名教学工程专家，正在创建一个 Moodle “MCQ” 活动。",
-    qcm_prompt_num_questions: "**问题数量：** 10",
-    qcm_prompt_mission: "**你的任务：**",
-    qcm_prompt_generate_json: "生成一个 JSON 对象，其中包含一个标题以及用于 MCQ 的 **10 个问题**的列表。",
-    qcm_prompt_important_rules_title: "**重要规则：**",
-    qcm_prompt_rule1: "1.  `title` 必须是与活动相关且有吸引力的标题。",
-    qcm_prompt_rule2: "2.  `questions` 数组必须包含 10 个对象，每个对象包含 `text`（问题措辞）和 `answers` 数组。",
-    qcm_prompt_rule3: "3.  每个 `answers` 数组必须包含几个可能的答案。每个答案都是一个包含 `text` 和 `iscorrect`（1 为真，0 为假）的对象。根据问题的上下文，你可以提出只有一个正确答案或有多个正确答案的问题。",
-    qcm_prompt_json_structure_title: "**预期的 JSON 结构：**",
-    qcm_prompt_main_object: "一个包含两个键的主对象：",
-    qcm_prompt_title: "- `title`：活动标题（字符串）。",
-    qcm_prompt_questions_array: "- `questions`：包含 10 个对象的数组，每个对象代表一个问题并包含：",
-    qcm_prompt_question_text: "- `text`：问题措辞（字符串，可以包含 HTML）。",
-    qcm_prompt_answers_array: "- `answers`：对象的数组，每个对象代表一个答案并包含：",
-    qcm_prompt_answer_text: "- `text`：答案文本（字符串，可以包含 HTML）。",
-    qcm_prompt_answer_iscorrect: "- `iscorrect`：如果答案正确则为 1，否则为 0。",
-    qcm_prompt_example_json_title: "**JSON 示例：**",
-    qcm_prompt_example: `\`\`\`json
-{
-"title": "关于法国大革命的多项选择题",
-"questions": [
-{
-"text": "攻占巴士底狱的日期是？",
-"answers": [
-{ "text": "1789年7月14日", "iscorrect": 1 },
-{ "text": "1789年8月4日", "iscorrect": 0 },
-{ "text": "1789年8月26日", "iscorrect": 0 }
-]
-}
-]
-}
-\`\`\` `,
-    qcm_prompt_generate_only_json: "仅生成有效的 JSON 对象，不要添加任何注释。",
-
-    // 多项选择题创建
-    qcm_error_invalid_json: "JSON 结构无效。请确保其中包含 'title' 和数组 'questions'，且至少有一个问题和答案。",
-    qcm_activity_intro: "请回答以下问题。",
-    qcm_success_generation: "文件 {fileName} 生成成功 !",
-    qcm_error_creation_mbz: "为多项选择题创建 MBZ 时出错:",
-
-    // H5P Modules
-    h5p_timeline_name: "时间轴",
-    h5p_timeline_description: "创建交互式时间轴，以展示一系列事件。",
-    h5p_flashcards_name: "抽认卡",
-    h5p_flashcards_description: "创建双面卡片，帮助记忆术语与定义。",
-    h5p_quiz_set_name: "测验",
-    h5p_quiz_set_description: "编制一组多样化题目（QCM、拖放等）以评估知识。",
-    h5p_glossary_name: "术语表",
-    h5p_glossary_description: "以手风琴折叠形式创建术语表或常见问答。",
-    h5p_crossword_name: "纵横填字",
-    h5p_crossword_description: "根据词语与定义列表生成纵横填字网格。",
-    h5p_essay_name: "写作",
-    h5p_essay_description: "给出写作主题并设定关键词，以便自动化批改。",
-    h5p_summary_name: "摘要",
-    h5p_summary_description: "学生需通过选择正确句子来重建正确摘要。",
-    h5p_drag_the_words_name: "拖动单词",
-    h5p_drag_the_words_description: "创建填空文本，学生需拖入缺失的词。",
-    h5p_fill_in_the_blanks_name: "填空文本",
-    h5p_fill_in_the_blanks_description: "学生直接用键盘填入文本中的缺失词语。",
-    h5p_mark_the_words_name: "标注词语",
-    h5p_mark_the_words_description: "要求学生在段落中标出特定词语。",
-    h5p_true_false_name: "判断题",
-    h5p_true_false_description: "创建一道答案为“是”或“否”的简单问题。",
-    h5p_multiple_choice_name: "多项选择",
-    h5p_multiple_choice_description: "创建一道具有一个或多个正确答案的多项选择题。",
-    h5p_find_the_words_name: "单词搜索",
-    h5p_find_the_words_description: "创建一个字母网格，学生必须在其中找到单词。",
-    h5p_sort_the_paragraphs_name: "段落排序",
-    h5p_sort_the_paragraphs_description: "创建一组段落，学生必须按正确顺序排序。",
-    h5p_single_choice_set_name: "单选题集",
-    h5p_single_choice_set_description: "创建一系列问题，每个问题只有一个正确答案。",
-    h5p_dialog_cards_name: "对话卡",
-    h5p_dialog_cards_description: "创建带有文本和可选图片（双面）的交互式卡片。",
-    h5p_complex_fill_the_blanks_name: "复杂填空",
-    h5p_complex_fill_the_blanks_description: "创建一个高级填空文本，并为每个错误提供具体反馈。",
-    h5p_chart_name: "图表",
-    h5p_chart_description: "创建饼图或条形图以可视化数据。",
-
-    // Moodle Modules
-    moodle_xml_name: "测验",
-    moodle_xml_description: "生成一个问题库，以直接导入到测试活动中（支持xml或gift格式）",
-    moodle_xml_help: "要在 Moodle 的“测验”活动中添加 XML 文件，首先创建活动。然后打开 <strong>更多</strong> 菜单并进入 <strong>题库</strong>。在此菜单中，点击 <strong>导入</strong>，选择 <strong>Moodle XML</strong> 格式，然后选择您的文件并确认。",
-    moodle_gift_name: "GIFT 格式",
-    moodle_gift_description: "以 GIFT 格式创建题目，这是一种将题目导入 Moodle 的简单方法。",
-    moodle_millionnaire_name: "百万富翁",
-    moodle_millionnaire_description: "生成一个独特的“百万富翁”活动，包含 6 道逐渐变难的问题。",
-    moodle_appariement_name: "配对",
-    moodle_appariement_description: "生成一个包含 10 个问题的配对活动。",
-
-    moodle_qcm_name: "MCQ",
-    moodle_qcm_description: "生成一个简单的 MCQ 活动。",
-
-    moodle_glossaire_xml_name: "术语表 (XML)",
-    moodle_glossaire_xml_description: "生成一个可导入为 XML 格式的术语表。",
-
-    elea_page_name: "页面",
-    elea_page_description: "创建一个经过视觉排版的 Éléa 内容页面.",
-
-    // Dynamic content
-    prompt_for_ia: "供 AI 使用的提示词",
-    copy_prompt: "复制提示词",
-    fullscreen_prompt: "全屏",
-    exit_fullscreen_prompt: "退出全屏",
-    lock_prompt: "锁定提示词",
-    unlock_prompt: "解锁提示词",
-    go_duck: "访问 Duck.ai",
-    go_mistral: "访问 Le Chat",
-    create_h5p_file: "创建 H5P 文件",
-    integrate_h5p_libraries: "集成 H5P 库：",
-    paste_ia_result: "将 AI 的结果粘贴到下方区域以创建你的模块。",
-    generate_h5p: "生成 H5P",
-    create_xml_file: "创建 XML 文件",
-    paste_ia_result_xml: "在下方粘贴 AI 生成的 XML。",
-    generate_xml_file: "生成 XML 文件",
-    export_mbz: "MBZ 格式",
-    export_gift: "GIFT 格式",
-    export_xml: "XML 格式",
-    export_html: "HTML 格式",
-
-    create_mbz_file_appariement: "创建“配对”文件 (.mbz)",
-    paste_ia_result_appariement: "在下方粘贴由 AI 生成的 JSON。活动标题将自动从 JSON 中提取。",
-    generate_mbz_appariement: "生成“配对”活动 (mbz)",
-    create_mbz_file_millionnaire: "创建“百万富翁”文件 (.mbz)",
-    paste_ia_result_millionnaire: "在下方粘贴由 AI 生成的 JSON。活动标题将自动从 JSON 中提取。",
-    generate_mbz_millionnaire: "生成“百万富翁”活动 (mbz)",
-    generate_mbz_test: "生成测试活动（mbz）",
-
-    create_mbz_file_qcm: "创建 MCQ 文件 (.mbz)",
-    paste_ia_result_qcm: "在下方粘贴由 AI 生成的 JSON。活动标题将自动从 JSON 中提取。",
-    generate_mbz_qcm: "生成 MCQ 活动 (mbz)",
-
-    create_mbz_file_page: "创建页面文件 (.mbz)",
-    paste_ia_result_page: "在下方粘贴由 AI 生成的 JSON 以构建页面.",
-    generate_mbz_page: "生成页面活动 (mbz)",
-
-    // Moodle XML specific
-    moodle_xml_placeholder: "此处将显示 Moodle XML……",
-    paste_xml_placeholder: "在此粘贴 AI 生成的完整 XML……",
-
-    // H5P empty text fields
-    generate_prompts_placeholder: "当你在快速模式或高级模式中至少填写一个字段后，这里将显示用于 AI 的提示词。",
-    paste_json_or_text: "在此粘贴由 AI 生成的 JSON 内容或文本，以创建您的活动。",
-    info_prompt_copy: "请不要将此提示粘贴到右侧面板。请将其复制到外部人工智能中以获得结果，然后将该结果粘贴到右侧面板中。",
-    
-    // Notifications
-    caramel_success_title: "你的糖果准备好了！",
-    prompts_generated_successfully: "提示词生成成功！",
-    success_copy: "✓ 已复制 !",
-    error_please_fill_fields: "请在快速模式中至少填写一个字段。",
-    error_please_fill_guided_fields: "请在高级模式中至少填写一个字段。",
-    error_field_empty: "字段为空。请先生成一个提示词。",
-    error_copy_failed: "复制失败。",
-    error_h5p_module_not_found: "未找到模块“{moduleKey}”。",
-    error_invalid_quiz_json: "测验的 JSON 无效：{errorMessage}",
-    error_invalid_json: "提供的 JSON 无效。错误：{errorMessage}",
-    error_h5p_creation: "创建 H5P 出错：{errorMessage}",
-    error_paste_ia_content: "请粘贴 AI 生成的内容。",
-    error_compression_module_not_ready: "压缩模块尚未就绪。请稍后重试。",
-    h5p_file_generated_successfully: "文件 {fileName} 已成功生成！",
-    h5p_creation_failed: "创建 H5P 文件失败：{errorMessage}",
-    license_info: "GNU GPL v3.0 或更高版本",
-
-    // Notifications for JSON content
-    error_paste_json_content: "请粘贴生成的JSON内容。",
-    error_paste_xml_content: "请粘贴生成的XML内容。",
-
-    // Flashcards specific UI translations
-    flashcards_progress_text: "卡片 @card / @total",
-    flashcards_next: "下一个",
-    flashcards_previous: "上一个",
-    flashcards_check_answer: "检查",
-    flashcards_your_answer: "你的答案",
-    flashcards_correct_answer: "正确",
-    flashcards_incorrect_answer: "不正确",
-    flashcards_show_solution: "正确答案",
-    flashcards_results: "结果",
-    flashcards_of_correct: "总共 @total 个，答对 @score 个",
-    flashcards_show_results: "显示结果",
-    flashcards_answer_short: "答：",
-    flashcards_retry: "重试",
-    flashcards_card_announcement: "回答错误。正确答案是 @answer",
-    flashcards_correct_announcement: "@answer 是正确的。",
-    flashcards_page_announcement: "第 @current 页，共 @total 页",
-
-    ticket: "工单",
-    legal_mentions: "法律声明",
-
-    // Legal Mentions
-    legal_title: "法律声明",
-    legal_editor_title: "应用程序编辑",
-    legal_editor_gauthier_remande: "<strong>Gauthier REMANDE</strong>",
-    legal_editor_gauthier_remande_function: "<strong>职务:</strong> 职业高中 文学-历史 教师",
-    legal_editor_gauthier_remande_email: "<strong>电子邮件:</strong> gauthier.remande@ac-nantes.fr",
-    legal_editor_gauthier_remande_address: "<strong>地址:</strong> 39 avenue de Chanzy, 53000 Laval, 法国",
-    legal_editor_gauthier_remande_phone: "<strong>电话:</strong> +33 2 43 67 24 00",
-    legal_editor_emmanuel_gaunard: "<strong>Emmanuel GAUNARD</strong>",
-    legal_editor_emmanuel_gaunard_function: "<strong>职务:</strong> 数学教师和DRANE任务官员 – 格勒诺布尔学院",
-    legal_editor_emmanuel_gaunard_email: "<strong>电子邮件:</strong> emmanuel.gaunard@ac-grenoble.fr",
-    legal_editor_emmanuel_gaunard_address: "<strong>地址:</strong> 30 boulevard de la République, 38200 Vienne, France",
-    legal_editor_emmanuel_gaunard_phone: "<strong>电话:</strong> +33 6 46 74 20 94",
-    legal_app_description: "“Caramel” 网络应用是一个自由、非商业的项目，用于创建 H5P 和 Éléa 内容。无需账户，也不收集任何个人数据。",
-    legal_hosting_title: "托管",
-    legal_host_name: "<strong>主机</strong>: Forge of Digital Educational Commons",
-    legal_host_company: "<strong>公司名称</strong>: 国家教育和青年部",
-    legal_host_address: "<strong>地址</strong>: 110 rue de Grenelle, 75007 Paris, France",
-    legal_host_phone: "<strong>电话</strong>: +33 1 55 55 10 10",
-    legal_publication_director_title: "出版总监",
-    legal_publication_director_name: "Gauthier REMANDE 和 Emmanuel GAUNARD，作为志愿者编辑。",
-    legal_terms_of_use_title: "一般使用条款",
-    legal_terms_of_use_content: "本网站允许用户生成 H5P 和 Éléa 内容。展示在本地完成，不传输用户数据。用户对生成内容的使用承担全部责任。该应用免费提供，不对运行或结果作任何保证。若内容被误解或使用不当，发布方概不负责。",
-    legal_intellectual_property_title: "知识产权",
-    legal_intellectual_property_content: "所有源代码、图形元素和内容均根据免费的GNU AGPLv3许可证进行许可。允许在其各自许可证的条款下重复使用。任何重新分发或修改必须注明原作者：Gauthier REMANDE和Emmanuel GAUNARD。H5P模块中使用的图像来自H5P.org。",
-    legal_personal_data_title: "个人数据",
-    legal_personal_data_content: "不收集或存储任何个人数据。不使用任何跟踪 cookie。",
-    legal_ai_models_title: "人工智能模型",
-    legal_ai_models_content: "Caramel 应用仅在一键生成时使用由 ILAAS 运营的人工智能模型；ILAAS 是一个共享式 AI 基础设施联合体。请求通过由孵化器托管的 n8n 工作流进行转发，随后交由 ILAAS 在受信任的服务器上执行，这些服务器托管于高等教育与科研（ESR）标识的数据中心。Caramel 不运行模型，也不自行处理或存储数据；数据仅用于完成该次请求，不会发送至面向公众的消费级 AI。当前提供的模型包括 {{llm_model_1_name}} ({{llm_model_1_param}} {{llm_model_parameters_unit}})、{{llm_model_2_name}} ({{llm_model_2_param}} {{llm_model_parameters_unit}}) 和 {{llm_model_3_name}} ({{llm_model_3_param}} {{llm_model_parameters_unit}})。ILAAS 可能进行的托管、日志记录和保存方式受其隐私政策和服务条款的约束，应参考这些文件。",
-    legal_user_requests_processing_title: "通过 n8n 和国民教育部孵化器处理用户请求",
-    legal_user_requests_processing_content: "我们的网站使用由国民教育部孵化器托管的开源工具 n8n 开发的技术解决方案。该服务通过自动化工作流将用户请求转换为结构化数据（JSON 格式），以便与 DINUM 的主权人工智能进行交互。不会暴露或在未加密的情况下传输敏感信息，从而确保通信的机密性和安全性。",
-    legal_accessibility_title: "无障碍功能",
-    legal_accessibility_content: "该应用程序旨在与计算机上的使用兼容，包括深色/浅色模式、键盘导航和根据主题的高对比度。根据 RGAA 的建议，无障碍功能的持续改进正在进行中。",
-    legal_applicable_law_title: "适用法律",
-    legal_applicable_law_content: "本网站受法国法律管辖。如有争议，里昂管辖范围内的法院将具有管辖权。",
-    legal_external_libraries_title: "使用的外部库",
-    legal_external_libraries_intro: "Caramel 应用程序使用以下许可证下的多个开源库：",
-    legal_library_fontawesome: "<strong>Font Awesome Free</strong> (许可证: CC BY 4.0, SIL OFL 1.1, MIT): 提供界面中使用的图标，以改善导航和视觉体验。",
-    legal_library_jszip: "<strong>JSZip</strong> (许可证: MIT or GPLv3): 通过将必要内容压缩到zip存档中来创建.h5p文件。",
-    legal_library_clientzip: "<strong>client-zip</strong> (许可证: MIT): 另一个用于文件压缩的库，为直接在浏览器中生成.h5p存档提供了高性能的替代方案。",
-    legal_library_fflate: "<strong>fflate</strong> (许可证: MIT): 用于数据压缩和解压缩的非常快的库，用于为Moodle模块创建.mbz存档。",
-    legal_library_tarjs: "<strong>tar-js</strong> (许可证: MIT): 允许创建.tar存档，这是压缩前形成Moodle模块的.mbz文件的必要步骤。",
-    legal_library_ownership: "每个库均为其各自作者的财产，并根据其许可证使用。",
-
-    // Essay specific UI translations
-    essay_checkAnswer: "检查",
-    essay_tryAgain: "重试",
-    essay_showSolution: "显示答案",
-    essay_feedbackHeader: "反馈",
-    essay_solutionTitle: "范例答案",
-    remainingChars: "剩余字符数：@chars",
-    notEnoughChars: "您必须输入至少 @chars 个字符！",
-    messageSave: "已保存",
-    placeholderText: "从这里开始写作...",
-    ariaYourResult: "您获得了 @total 分中的 @score 分",
-    ariaNavigatedToSolution: "已导航至文本区域后新包含的范例答案。",
-
-    // Essay Overall Feedback
-    essay_overall_feedback_0_10: "你的作品是一个好的开始。继续探索这个主题，以丰富你的想法。",
-    essay_overall_feedback_11_30: "你已经奠定了有趣的基础。通过深入研究某些要点，你的作品将变得更加精确。",
-    essay_overall_feedback_31_50: "你对这个主题的理解正在顺利进行中。考虑进一步发展你的论点，以加强你的观点。",
-    essay_overall_feedback_51_70: "这是一件好作品。你对这个主题有很好的掌握。再增加一些细节可以进一步改进它。",
-    essay_overall_feedback_71_90: "非常好的作品！你的分析是相关的，结构良好。你表现出色的理解力。",
-    essay_overall_feedback_91_100: "优秀的作品！你的思考是透彻的，论证充分，并显示出对主题的完全掌握。",
-
-    // True/False Question
-    true_false_prompt_role: "你是一位教学设计专家，正在为H5P活动创建一个判断题。",
-    true_false_prompt_mission: "你的任务是为判断题生成一个JSON对象。",
-    true_false_prompt_generate_json: "根据以下结构生成一个JSON对象：",
-    true_false_prompt_json_structure_title: "--- 预期的JSON结构 ---",
-    true_false_prompt_json_structure_main_object: "主对象必须包含以下键：",
-    true_false_prompt_question: "`question`: (string) 待评估的陈述。可以包含HTML。",
-    true_false_prompt_correct: "`correct`: (string) 正确答案，为“true”或“false”。",
-    true_false_prompt_feedback_correct: "`feedbackOnCorrect`: (string) 如果答案正确，则显示评论。",
-    true_false_prompt_feedback_wrong: "`feedbackOnWrong`: (string) 如果答案不正确，则显示评论。",
-    true_false_prompt_content_rules_title: "--- 内容规则 ---",
-    true_false_prompt_rule1: "问题必须是一个明确的陈述。",
-    true_false_prompt_rule2: "`correct`的值必须是字符串：“true”或“false”。",
-    true_false_prompt_example_json_title: "--- JSON示例 ---",
-    true_false_prompt_example: `\`\`\`json
-{
-"question": "奥斯陆是挪威的首都。",
-"correct": "true",
-"feedbackOnCorrect": "回答正确！奥斯陆确实是挪威的首都。",
-"feedbackOnWrong": "回答错误。挪威的首都是奥斯陆。"
-}
-    \`\`\` `,
-    true_false_prompt_generate_only_json: "我希望你只生成JSON，不带任何注释或介绍性文字。",
-    true_false_true_text: "正确",
-    true_false_false_text: "错误",
-    true_false_score: "你得到了@score/@total分",
-    true_false_check_answer: "检查",
-    true_false_show_solution_button: "显示答案",
-    true_false_try_again: "重试",
-    true_false_wrong_answer_message: "回答错误",
-    true_false_correct_answer_message: "回答正确",
-    true_false_score_bar_label: "你得到了:num/:total分",
-    true_false_submit_answer: "提交",
-    true_false_a11y_check: "检查答案。答案将被标记为正确、错误或未回答。",
-    true_false_a11y_show_solution: "显示答案。任务将标记其正确答案。",
-    true_false_a11y_retry: "重试任务。重置所有回答并重新开始任务。",
-    true_false_finish_header: "完成？",
-    true_false_finish_body: "你确定要完成吗？",
-    true_false_cancel_label: "取消",
-    true_false_finish_label: "完成",
-    true_false_retry_header: "重试？",
-    true_false_retry_body: "你确定要重试吗？",
-    true_false_retry_confirm_label: "确认",
-
-    // Multiple Choice UI translations
-    checkAnswerButton: "检查",
-    showSolutionButton: "显示答案",
-    tryAgainButton: "重试",
-    submitAnswerButton: "提交",
-    scoreBarLabel: "你得到了:num/:total分",
-    confirmCheckHeader: "完成？",
-    confirmCheckBody: "你确定要完成吗？",
-    confirmCheckCancelLabel: "取消",
-    confirmCheckConfirmLabel: "完成",
-    confirmRetryHeader: "重试？",
-    confirmRetryBody: "你确定要重试吗？",
-    confirmRetryCancelLabel: "取消",
-    confirmRetryConfirmLabel: "确认",
-
-    // Multiple Choice Prompt
-    multiple_choice_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“多项选择”活动。",
-    multiple_choice_prompt_mission: "**你的任务:**",
-    multiple_choice_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P 多项选择活动。",
-    multiple_choice_prompt_json_structure_title: "**预期的 JSON 结构:**",
-    multiple_choice_prompt_json_structure_main_object: "对象必须包含：",
-    multiple_choice_prompt_question: "`question`: 要提出的问题（HTML 格式）。",
-    multiple_choice_prompt_answers_array: "`answers`: 一个对象数组，每个对象代表一个答案。",
-    multiple_choice_prompt_text: "`text`: 答案文本（HTML 格式）。",
-    multiple_choice_prompt_correct: "`correct`: 一个布尔值（`true` 或 `false`），指示是否为正确答案。",
-    multiple_choice_prompt_overall_feedback: "`overallFeedback`:（严格规则）必须生成由6个对象组成的数组作为最终反馈，并结合练习主题严格遵循 0-10、11-30、31-50、51-70、71-90、91-100 的分段。每个对象形式为 `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`。`feedback` 文本需友好、不过分、循序渐进且始终为肯定表达。",
-    multiple_choice_prompt_content_rules_title: "**内容规则:**",
-    multiple_choice_prompt_rule1: "1.  只能有一个正确答案 (`\"correct\": true`)。",
-    multiple_choice_prompt_rule2: "2.  提供几个不正确的答案 (`\"correct\": false`)。",
-    multiple_choice_prompt_example_json_title: "**JSON 示例:**",
-    multiple_choice_prompt_example: `\`\`\`json
-{
-"question": "黑加仑（cassis）的真实颜色是什么？",
-"answers": [
-{
-"correct": true,
-"text": "深紫色"
-},
-{
-"correct": false,
-"text": "蓝色"
-},
-{
-"correct": false,
-"text": "黑色"
-}
-],
-"overallFeedback": [
-    { "from": 0, "to": 10, "feedback": "0-10%的反馈" },
-    { "from": 11, "to": 30, "feedback": "11-30%的反馈" },
-    { "from": 31, "to": 50, "feedback": "31-50%的反馈" },
-    { "from": 51, "to": 70, "feedback": "51-70%的反馈" },
-    { "from": 71, "to": 90, "feedback": "71-90%的反馈" },
-    { "from": 91, "to": 100, "feedback": "91-100%的反馈" }
-]
-}
-\`\`\` `,
-    multiple_choice_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
-
-    // Find the Words UI translations
-    check: "检查",
-    tryAgain: "重试",
-    showSolution: "显示答案",
-    found: "已找到 @found / @totalWords 个单词",
-    timeSpent: "用时",
-    score: "您获得了 @score / @total 分",
-    wordListHeader: "单词列表",
-
-    // Find the Words Prompt
-    find_the_words_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“单词搜索”活动。",
-    find_the_words_prompt_mission: "**你的任务:**",
-    find_the_words_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P 单词搜索活动。",
-    find_the_words_prompt_json_structure_title: "**预期的 JSON 结构:**",
-    find_the_words_prompt_json_structure_main_object: "对象必须包含：",
-    find_the_words_prompt_task_description: "`taskDescription`: 活动的清晰说明。",
-    find_the_words_prompt_word_list: "`wordList`: 要查找的单词字符串，用逗号分隔，不含空格。",
-    find_the_words_prompt_content_rules_title: "**内容规则:**",
-    find_the_words_prompt_rule1: "1.  `wordList` 必须是一个用逗号分隔单词的单个字符串。每个词必须是单独的简单词（不可为多词短语）。禁止使用数字、标点符号和带变音符的字母；只用基础拉丁字母（例如将 'élève' 写成 'eleve'）。",
-    find_the_words_prompt_example_json_title: "**JSON 示例:**",
-    find_the_words_prompt_example: `\`\`\`json
-{
-"taskDescription": "在下面的字母网格中找出城市名称",
-"wordList": "堪培拉,明斯克,北京,奥斯陆,巴黎,伦敦,马德里,雅典,东京,莫斯科,华盛顿,斯德哥尔摩"
-}
-\`\`\` `,
-    find_the_words_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
-    fillPool: "",
-
-    // Sort the Paragraphs UI translations
-    checkAnswer: "检查",
-    submitAnswer: "提交",
-    up: "上",
-    down: "下",
-    disabled: "已禁用",
-    a11y_yourResult: "您获得了 @total 分中的 @score 分",
-    a11y_paragraph: "段落",
-    a11y_correct: "正确",
-    a11y_wrong: "错误",
-    a11y_point: "@score 分",
-    a11y_sevenOfNine: "@total 中的 @current",
-    a11y_currentPosition: "列表中的当前位置",
-    a11y_instructionsSelected: "按空格键重新排序",
-    a11y_instructionsGrabbed: "按上下箭头键更改位置，按空格键放下，按 escape 取消",
-    a11y_grabbed: "已抓住",
-    a11y_moved: "已移动",
-    a11y_dropped: "已放下",
-    a11y_reorderCancelled: "重新排序已取消",
-    a11y_finalPosition: "最终位置",
-    a11y_nextParagraph: "下一段",
-    a11y_correctParagraph: "位置正确的段落",
-    a11y_listDescription: "可排序的段落列表。",
-    a11y_listDescriptionCheckAnswer: "带结果的段落列表。",
-    a11y_listDescriptionShowSolution: "带答案的段落列表。",
-
-    // Sort the Paragraphs Prompt
-    sort_the_paragraphs_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“段落排序”活动。",
-    sort_the_paragraphs_prompt_mission: "**你的任务:**",
-    sort_the_paragraphs_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P 段落排序活动。",
-    sort_the_paragraphs_prompt_json_structure_title: "**预期的 JSON 结构:**",
-    sort_the_paragraphs_prompt_json_structure_main_object: "对象必须包含：",
-    sort_the_paragraphs_prompt_task_description: "`taskDescription`: 活动的清晰说明。使用 `*单词*` 表示粗体，`**单词**` 表示斜体，`\\n` 表示换行。",
-    sort_the_paragraphs_prompt_paragraphs_array: "`paragraphs`: 字符串数组，每个字符串代表一个要排序的段落。段落必须按正确顺序排列。使用 `*单词*` 表示粗体，`**单词**` 表示斜体。",
-    sort_the_paragraphs_prompt_overall_feedback: "`overallFeedback`:（严格规则）必须生成由6个对象组成的数组作为最终反馈，并结合练习主题严格遵循 0-10、11-30、31-50、51-70、71-90、91-100 的分段。每个对象形式为 `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`。`feedback` 文本需友好、不过分、循序渐进且始终为肯定表达。",
-    sort_the_paragraphs_prompt_content_rules_title: "**内容规则:**",
-    sort_the_paragraphs_prompt_rule1: "1. `paragraphs` 必须由内容可推断出逻辑上的递进，不能使用人为线索（编号、日期/时间、“首先/然后/最后”），除非有明确要求。",
-    sort_the_paragraphs_prompt_rule2: "2. 不要平铺直叙的清单：每句话都要推进同一条主线（原因→结果、准备→行动→结果、一般→特殊），使顺序可被推断。",
-    sort_the_paragraphs_prompt_example_json_title: "**JSON 示例:**",
-    sort_the_paragraphs_prompt_example: `\`\`\`json
-{
-"taskDescription": "我的早晨日常：",
-"paragraphs": [
-  "我把水壶装满清水。",
-  "我打开电源。",
-  "我把一个茶包放入杯子。",
-  "我把沸水倒在茶包上。",
-  "泡好后我把茶包取出。"
-]
-}
- \`\`\` `, 
-    sort_the_paragraphs_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
-
-    // Single Choice Set UI translations
-    showSolutionButtonLabel: "显示答案",
-    retryButtonLabel: "重试",
-    solutionViewTitle: "答案",
-    correctText: "正确！",
-    incorrectText: "错误！",
-    muteButtonLabel: "静音",
-    closeButtonLabel: "关闭",
-    slideOfTotal: "幻灯片 @slide / @total",
-    nextButtonLabel: "下一个",
-    solutionListQuestionNumber: "问题 @question",
-    a11yShowSolution: "显示答案。任务将标记其正确答案。",
-    a11yRetry: "重试任务。重置所有回答并重新开始任务。",
-    shouldSelect: "应选择",
-    shouldNotSelect: "不应选择",
-
-    // Single Choice Set Prompt
-    single_choice_set_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“单选题集”活动。",
-    single_choice_set_prompt_mission: "**你的任务:**",
-    single_choice_set_prompt_generate_json: "生成一个完整且有效的 JSON 对象，用于 H5P 单选题集活动。",
-    single_choice_set_prompt_json_structure_title: "**预期的 JSON 结构:**",
-    single_choice_set_prompt_json_structure_main_object: "对象必须包含：",
-    single_choice_set_prompt_choices_array: "`choices`: 一个对象数组，每个对象代表一个问题并包含：",
-    single_choice_set_prompt_question: "`question`: 要提出的问题。",
-    single_choice_set_prompt_answers_array: "`answers`: 一个字符串数组。第一个字符串始终是正确答案。",
-    single_choice_set_prompt_overall_feedback: "`overallFeedback`:（严格规则）必须生成由6个对象组成的数组作为最终反馈，并结合练习主题严格遵循 0-10、11-30、31-50、51-70、71-90、91-100 的分段。每个对象形式为 `{ \"from\": 0, \"to\": 10, \"feedback\": \"...\" }`。`feedback` 文本需友好、不过分、循序渐进且始终为肯定表达。",
-    single_choice_set_prompt_content_rules_title: "**内容规则:**",
-    single_choice_set_prompt_rule1: "1. 在每个 `answers` 数组中，第一个答案始终是正确的。",
-    single_choice_set_prompt_example_json_title: "**JSON 示例:**",
-    single_choice_set_prompt_example: `\`\`\`json
-{
-"choices": [
-{
-"question": "枸杞也被称为 ...",
-"answers": ["狼莓", "猫莓", "熊莓"]
-},
-{
-"question": "枸杞原产于 ...",
-"answers": ["亚洲", "非洲", "欧洲"]
-}
-],
-"overallFeedback": [
-    { "from": 0, "to": 10, "feedback": "0-10%的反馈" },
-    { "from": 11, "to": 30, "feedback": "11-30%的反馈" },
-    { "from": 31, "to": 50, "feedback": "31-50%的反馈" },
-    { "from": 51, "to": 70, "feedback": "51-70%的反馈" },
-    { "from": 71, "to": 90, "feedback": "71-90%的反馈" },
-    { "from": 91, "to": 100, "feedback": "91-100%的反馈" }
-]
-}
-\`\`\` `,
-    single_choice_set_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释。",
-
-    // Dialog Cards UI translations
-    answer: "翻转",
-    next: "下一个",
-    prev: "上一个",
-    retry: "重试",
-    progressText: "卡片 @card / @total",
-    cardFrontLabel: "卡片正面",
-    cardBackLabel: "卡片背面",
-    tipButtonLabel: "显示提示",
-    audioNotSupported: "您的浏览器不支持此音频",
-
-    // Dialog Cards Prompt
-    dialog_cards_prompt_role: "你是一位教学工程专家，正在创建一项 H5P“对话卡”活动。",
-    dialog_cards_prompt_mission: "**你的任务:**",
-    dialog_cards_prompt_generate_json: "生成一个仅包含 `title`、`description` 和 `dialogs` 键的 JSON 对象，用于 H5P 对话卡活动。",
-    dialog_cards_prompt_json_structure_title: "**预期的 JSON 结构:**",
-    dialog_cards_prompt_json_structure_main_object: "对象必须包含：",
-    dialog_cards_prompt_title: "`title`: 活动的标题（HTML 格式）。",
-    dialog_cards_prompt_description: "`description`: 简短的描述或说明（HTML 格式）。",
-    dialog_cards_prompt_dialogs_array: "`dialogs`: 一个包含 ${nombreQuestions} 个对象的数组，每个对象代表一张卡片并包含：",
-    dialog_cards_prompt_text: "`text`: 卡片正面的文本（HTML 格式）。",
-    dialog_cards_prompt_answer: "`answer`: 卡片背面的文本（HTML 格式）。",
-    dialog_cards_prompt_tips: "`tips` (可选): 提示对象。如果您认为在教学上有用，请使用 `front` 键为正面添加提示，和/或使用 `back` 键为背面添加提示。",
-    dialog_cards_prompt_content_rules_title: "**内容规则:**",
-    dialog_cards_prompt_rule1: "1. 正面（`text`）和背面（`answer`）的文本必须清晰简洁。**使用HTML（<strong>表示粗体，<em>表示斜体）格式化内容，以提高可读性并突出重要信息。**",
-    dialog_cards_prompt_example_json_title: "**JSON 示例:**",
-    dialog_cards_prompt_example: `\`\`\`json
-{
-"title": "学习英语中的水果名称",
-"description": "水果名称以法语呈现。翻转卡片以查看正确的英文翻译。",
-"dialogs": [
-{
-"title": "找出英语动词的一般现在时",
-"description": "根据一条英语一般过去时的句子，找出动词的不定式。翻转卡片核对你的答案。",
-"dialogs": [
-{
-"text": "He *visited* his grandmother.",
-"answer": "to *visit*",
-"tips": {
-"front": "识别过去式动词。",
-"back": "想到动词的基本形式（不定式）。"
-}
-},
-{
-"text": "She *played* soccer.",
-"answer": "to *play*",
-"tips": {
-"front": "寻找句子中的过去式动词。",
-"back": "想象动词的词典形式（不定式）。"
-}
-}
-]
-}
-]
-}
-\`\`\` `,
-   dialog_cards_prompt_generate_only_json: "仅生成包含 `title`、`description` 和 `dialogs` 键的有效 JSON 代码，不要添加任何注释。",
-
-    // Dialog Cards specific UI translations
-    correctAnswer: "我答对了！",
-    incorrectAnswer: "我答错了",
-    round: "第 @round 轮",
-    cardsLeft: "剩余卡片：@number",
-    nextRound: "进入第 @round 轮",
-    startOver: "重新开始",
-    showSummary: "下一步",
-    summary: "总结",
-    summaryCardsRight: "您答对的卡片：",
-    summaryCardsWrong: "您答错的卡片：",
-    summaryCardsNotShown: "牌组中未显示的卡片：",
-    summaryOverallScore: "总分",
-    summaryCardsCompleted: "您已完成学习的卡片：",
-    summaryCompletedRounds: "已完成的轮次：",
-    summaryAllDone: "做得好！您连续 @max 次答对了所有 @cards 张卡片！",
-    confirmStartingOverHeader: "重新开始？",
-    confirmStartingOverBody: "所有进度都将丢失。您确定要重新开始吗？",
-    confirmStartingOverCancelLabel: "取消",
-    confirmStartingOverConfirmLabel: "重新开始",
-
-    // Complex Fill the Blanks Prompt
-    complex_blanks_prompt_role: "你是一位教学设计专家，正在创建一个H5P活动“复杂填空”。",
-    complex_blanks_prompt_mission: "**你的任务：**",
-    complex_blanks_prompt_generate_json: "为H5P的“复杂填空”类型活动生成一个完整且有效的JSON对象。",
-    complex_blanks_prompt_json_structure_title: "**预期的JSON结构：**",
-    complex_blanks_prompt_json_structure_main_object: "主对象必须包含`content`和`overallFeedback`键。",
-    complex_blanks_prompt_task: "`task`: 练习的说明（HTML格式）。",
-    complex_blanks_prompt_blanks_text: "`blanksText`: 包含由`___________`表示的空格的文本。",
-    complex_blanks_prompt_blanks_list: "`blanksList`: 对象的数组，每个空格一个，按出现顺序列出。",
-    complex_blanks_prompt_correct_answer: "`correctAnswerText`: 正确答案（可以包含用`/`分隔的备选答案）。",
-    complex_blanks_prompt_incorrect_answers_list: "`incorrectAnswersList`: 常见错误的对象数组。",
-    complex_blanks_prompt_incorrect_answer_text: "`incorrectAnswerText`: 常见错误的文本。",
-    complex_blanks_prompt_incorrect_answer_feedback: "`incorrectAnswerFeedback`: 此错误的具体反馈（HTML格式）。",
-    complex_blanks_prompt_overall_feedback: "`overallFeedback`: 基于分数的总体反馈数组。",
-    complex_blanks_prompt_content_rules_title: "**内容规则：**",
-    complex_blanks_prompt_rule1: "1. `blanksList`中对象的数量必须与`blanksText`中空格的数量相匹配。",
-    complex_blanks_prompt_rule2: "2. 提供常见的错误和建设性的反馈。",
-    complex_blanks_prompt_rule3: "3. 文本和反馈可以包含简单的HTML标签，如`<p>`、`<strong>`、`<em>`。",
-    complex_blanks_prompt_example_json_title: "**JSON示例：**",
-    complex_blanks_prompt_example: `\`\`\`json
-{
-"content": {
-"task": "<p>把动词放在正确的时态。你会得到典型错误的个别反馈。</p>",
-"blanksList": [
-{
-"correctAnswerText": "不会说",
-"incorrectAnswersList": [
-{
-"incorrectAnswerText": "说不",
-"incorrectAnswerFeedback": "<div>记住中文的否定形式是在动词前加“不”或“没”。<em>(说 → 不会说)</em></div>"
-},
-{
-"incorrectAnswerText": "我们不会说",
-"incorrectAnswerFeedback": "<div>你忘了这里的主语是第三人称单数 <em>(他)</em>。</div>"
-}
-]
-}
-],
-"blanksText": "<p>他会说英语，但他 (不会说) ___________<strong>&nbsp;</strong>德语。</p>"
-},
-"overallFeedback": [
-    { "from": 0, "to": 10, "feedback": "0-10%的反馈" },
-    { "from": 11, "to": 30, "feedback": "11-30%的反馈" },
-    { "from": 31, "to": 50, "feedback": "31-50%的反馈" },
-    { "from": 51, "to": 70, "feedback": "51-70%的反馈" },
-    { "from": 71, "to": 90, "feedback": "71-90%的反馈" },
-    { "from": 91, "to": 100, "feedback": "91-100%的反馈" }
-]
-}
-\`\`\` `,
-    complex_blanks_prompt_generate_only_json: "只生成有效的JSON代码，不含任何注释。",
-
-    // Chart Prompt
-    chart_prompt_role: "你是一位教学设计专家，正在创建一个H5P活动“图表”。",
-    chart_prompt_mission: "**你的任务：**",
-    chart_prompt_generate_json: "为H5P的图表类型活动生成一个完整且有效的JSON对象。",
-    chart_prompt_json_structure_title: "**预期的JSON结构：**",
-    chart_prompt_json_structure_main_object: "对象必须包含：",
-    chart_prompt_graph_mode: "`graphMode`: 根据上下文选择最相关的图表类型，'pieChart'（饼图）或'barChart'（条形图），除非另有指示。",
-    chart_prompt_list_of_types: "`listOfTypes`: 对象的数组，每个对象代表图表中的一个数据点。",
-    chart_prompt_value: "`value`: 数据点的数值。",
-    chart_prompt_color: "`color`: 数据点的颜色（十六进制代码）。",
-    chart_prompt_font_color: "`fontColor`: 数据点文本的颜色（十六进制代码）。",
-    chart_prompt_text: "`text`: 数据点的标签。",
-    chart_prompt_figure_definition: "`figureDefinition`: 图表的简要说明。",
-    chart_prompt_content_rules_title: "**内容规则：**",
-    chart_prompt_rule1: "1. 选择对比鲜明的颜色以便于阅读。",
-    chart_prompt_rule2: "2. 标签应简短明了。",
-    chart_prompt_rule3: "3. 如果某个值与其他值相比非常低，请优先选择'barChart'以获得更好的可视化效果。",
-    chart_prompt_example_json_title: "**JSON示例：**",
-    chart_prompt_example: `\`\`\`json
-{
-"graphMode": "pieChart",
-"listOfTypes": [
-{"value": 6, "color": "#f3c74f", "fontColor": "#fff", "text": "蓝莓"},
-{"value": 4, "color": "#6bc98d", "fontColor": "#fff", "text": "覆盆子"}
-],
-"figureDefinition": "图表"
-}
-\`\`\` `,
-    chart_prompt_generate_only_json: "只生成有效的JSON代码，不含任何注释。",
-
-    // createH5PWithDynamicDependencies
-    quiz_prev_button: "上一个",
-    quiz_next_button: "下一个",
-    quiz_finish_button: "完成",
-    quiz_submit_button: "提交",
-    quiz_textual_progress: "问题 @current / @total",
-    quiz_no_result_message: "已完成",
-    quiz_result_message: "你的结果：",
-    quiz_score_bar_label: "你获得了 @totals 分中的 @finals 分",
-    quiz_solution_button_text: "显示答案",
-    quiz_retry_button_text: "重试",
-    quiz_finish_button_text: "完成",
-    quiz_submit_button_text: "提交",
-    quiz_feedback_available: "反馈可用",
-    quiz_read_feedback: "阅读反馈",
-    quiz_wrong_answer: "错误答案",
-    quiz_correct_answer: "正确答案",
-    quiz_should_check: "应该已勾选",
-    quiz_should_not_check: "不应该已勾选",
-    quiz_no_input: "请在查看答案前回答。",
-    quiz_a11y_check: "检查答案。答案将被标记为正确、错误或未回答。",
-    quiz_a11y_show_solution: "显示答案。任务将标记其正确答案。",
-    quiz_a11y_retry: "重试任务。重置所有回答并重新开始任务。",
-
-    // Caramel 的 AI — 生成
-    generate_with_llm: "使用 Caramel 的 AI 生成",
-    generation_in_progress: "正在生成中，请稍候...",
-    request_sent_to_ia: "请求已发送至 AI，请稍候...",
-    generation_successful: "已成功生成 H5P 内容！",
-    generation_failed_empty: "生成失败。响应为空。",
-    generation_failed_error: "生成时出错：{errorMessage}",
-    generation_failed_llm: "通过 Caramel 的 AI 生成失败。原因：{errorMessage}",
-
-    // 模型说明（Caramel 的 AI）
-    llm_small_summary: "软焦糖：快速、轻量，适合闪练和无需等待的答复。消耗很少。",
-    llm_large_summary: "流动焦糖：更丰富、更有层次，适合需要一些深度的任务。消耗更多。",
-    llm_xl_summary: "硬焦糖：强大且复杂，建议用于雄心勃勃的项目。需要耐心，结果有保障！消耗多得多。",
-
-    // 模型的友好名称（菜单显示）
-
-    // 模型指示（Caramel 的 AI）
-    llm_model_source: "模型提供方：",
-    llm_model_parameters: "模型大小:",
-    llm_model_parameters_unit: "Mrd 参数",
-
-    language: "语言",
-    tutorial: "教程",
-    version_modal_title: "发现新版",
-    version_modal_message: "您当前使用的是 {currentVersion} 版。线上已有更新的版本（{latestVersion}）。请刷新页面以获取最新改进。",
-    version_modal_update: "加载最新版本",
-    version_modal_remind_later: "稍后提醒我",
-    
-    // 术语表 XML 提示
-    glossaire_xml_prompt_role: "你是一名教学设计专家，你将为一个术语表创建内容。",
-    glossaire_xml_prompt_mission: "**你的任务：** 你需要生成一个简单的 JSON 对象，其中包含术语表的术语列表。每个术语都应包含一个概念、一个定义，以及（如适用）一个别名列表。",
-    glossaire_xml_prompt_structure_title: "**期望的 JSON 结构：**",
-    glossaire_xml_prompt_structure_rules: `
--   **根：** 一个主对象，包含两个键：\`name\`（术语表名称）和\`entries\`（对象数组）。
--   **\`entries\` 中的每个对象必须包含：**
-    -   \`concept\`：需要定义的词或短语。
-    -   \`definition\`：清晰而简明的定义。加粗用 *mot*，斜体用 **mot**，换行用 \\n，仅在教学上合适时使用。
-    -   \`aliases\`（可选）：用于同义词或替代术语的字符串数组。仅在存在相关别名时添加此键。`,
-    glossaire_xml_prompt_example_title: "**JSON 示例：**",
-    glossaire_xml_prompt_example: `\`\`\`json
-{
-  "name": "信息词汇表",
+  "name": "新闻术语表",
   "entries": [
     {
       "concept": "记者",
-      "definition": "**采集**、核实并传播*信息*的人。",
-      "aliases": ["通讯员", "专栏作家"]
+      "definition": "**搜集**并传播*信息*的人。",
+      "aliases": ["特派员", "专栏作家"]
     },
     {
-      "concept": "来源",
-      "definition": "一则*信息*的来源。"
+      "concept": "消息源",
+      "definition": "经过验证的*信息*出处。"
     }
   ]
 }
 \`\`\``,
-    glossaire_xml_prompt_generate_only_xml: "只生成有效的 JSON 代码，不要添加任何注释。",
 
-    //Barre de menu
-    tab_all: "全部",
-    tab_quiz: "测验与测试",
-    tab_text: "文本处理",
-    tab_memory: "记忆与发现",
-    tab_elea: "Éléa",
-    tab_h5p: "H5P",
-    tab_moodle: "Moodle",
+  // ============================================================================
+  // === ELEA_PAGE (Éléa 页面) ===
+  // ============================================================================
+  ELEA_PAGE_REGLES_SPECIFIQUES: `- 结构：页面必须包含至少 5 个不同的区块 || [NOMBRE_ELEMENTS] 个区块。
+- 教学逻辑：内容必须遵循连贯的递进过程（例如：欢迎 -> 目标 -> 课程 -> 详情/词汇表 -> 参考网站）。
+- 内容平衡：混合多种格式以保持参与度（文本、表格、列表、侧边栏）。
+- 必填内容：系统地整合开启横幅 (\`#01_hero_header\`)、目标或注意事项侧边栏 (\`#04_callout_set\`)、技术术语表 (\`#06_lexique_table\`)、至少三个实质性的内容段落 (\`#12_context_paragraphs\`) 以及参考网站 (\`#18_sito_graphy\`)。`,
 
-    //Bandeau modale de génération
-    get_prompt_step: "1/2 获取提示",
-    create_file_step: "2/2 创建文件",
-    generate_one_click: "一键生成",
-    simple_mode: "简单",
-    advanced_mode: "引导",
+  ELEA_PAGE_STRUCTURE_JSON: `- 仅在一个代码块内生成完整且有效的 JSON。你的回答必须以 \`{\` 开头并以 \`}\` 结尾。不得有任何其他文字或注释。
+- \`title\`：页面标题（字符串）。
+- \`intro\`：简短且引人入胜的介绍文本（字符串）。
+- \`blocks\`：对象数组，每个对象代表页面的一个部分。每个区块必须符合以下结构之一：
 
-    // RAG feature
-    activate_rag: "启用文档查阅",
-    rag_tooltip: "允许粘贴文本或上传PDF。内容将作为生成活动的主要来源。",
-    rag_title: "附加文件（可选）",
-    rag_note: "如果您希望AI完全基于您的文档进行工作，请在此处粘贴文本或拖放文件。否则，请将此区域留空，以允许AI自行搜索信息。",
-    upload_pdf: "或上传PDF进行分析",
-    pdf_loading: "正在加载PDF...",
-    pdf_processing_page: "正在处理页面",
-    ocr_recognizing_page: "正在识别（OCR）页面",
-    ocr_success: "文档已成功处理。",
-    ocr_error: "处理过程中发生错误。",
-    error_invalid_pdf: "请选择一个有效的PDF文件。",
-    error_duplicate_pdf: "该文件已添加。",
-    error_fullscreen: "全屏模式失败：",
-    lock_text: "锁定",
-    unlock_text: "解锁",
-    rag_instruction: "\n\n您只能查阅以下信息来生成内容：",
-    drag_drop_text: "将 PDF 文件拖放到此处",
-    or_text: "或",
-    upload_pdf_btn: "选择一个文件",
-    paste_your_text_here: "复制并在此处粘贴您的文本...",
-    rag_tags_tuto: "请在下方查看已上传的文件。点击彩色圆圈可自定义每个文件的高亮显示。",
+**可用区块列表：**
+- \`#01_hero_header\`: 开启横幅。\`{ "type": "#01_hero_header", "data": { "title": "...", "subtitle": "..." } }\`
+- \`#02_nav_summary\`: 带有内部链接的目录。\`{ "type": "#02_nav_summary", "data": { "links": [{ "href": "#...", "text": "..." }] } }\`
+- \`#03_histo_reperes\`: 3 张卡片形式的历史地标。\`{ "type": "#03_histo_reperes", "data": { "title": "...", "cards": [{ "title": "...", "text": "..." }] } }\`（最多 3 张）
+- \`#04_callout_set\`: 目标、须知、警示横幅。\`{ "type": "#04_callout_set", "data": { "title": "...", "callouts": [{ "type": "objectif|savoir|alerte", "text": "..." }] } }\`
+- \`#05_stats_cards\`: 卡片形式的关键数字。\`{ "type": "#05_stats_cards", "data": { "title": "...", "stats": [{ "value": "...", "label": "..." }] } }\`
+- \`#06_lexique_table\`: 词汇表表格。\`{ "type": "#06_lexique_table", "data": { "title": "...", "caption": "...", "headers": ["...", "..."], "rows": [["...","..."]] } }\`
+- \`#07_glossary_chips\`: 标签形式的词汇表。\`{ "type": "#07_glossary_chips", "data": { "title": "...", "chips": ["..."] } }\`
+- \`#08_monuments_grid\`: 带有图像的古迹卡片。\`{ "type": "#08_monuments_grid", "data": { "title": "...", "cards": [{ "img_src": "...", "img_alt": "...", "caption": "...", "title": "...", "text": "..." }] } }\`
+- \`#09_figures_comparison\`: 两个图像对比。
+- \`#10_table_comparison\`: 对比表格。
+- \`#11_definition_box\`: 定义框。\`{ "type": "#11_definition_box", "data": { "title": "定义", "text": "..." } }\`
+- \`#12_context_paragraphs\`: 课程段落。\`{ "type": "#12_context_paragraphs", "data": { "title": "...", "paragraphs": ["...", "..."] } }\`
+- \`#13_monument_sheet_long\`: 详细卡片。
+- \`#14_faq_block\`: 常见问题解答。\`{ "type": "#14_faq_block", "data": { "title": "FAQ", "questions": [{ "q": "...", "a": "..." }] } }\`
+- \`#15_myths_realities\`: 神话 vs 现实。
+- \`#17_method_image_desc\`: 描述图像的方法。
+- \`#18_sito_graphy\`: 参考网站。\`{ "type": "#18_sito_graphy", "data": { "title": "参考网站", "links": [{ "href": "...", "text": "..." }] } }\`
+- \`#19_quote_bilingual\`: 双语引用。`,
 
-    // 焦糖制作步骤
-    caramel_animation_step_1: "将糖倒入锅中...",
-    caramel_animation_step_2: "加入少许水...",
-    caramel_animation_step_3: "用中火加热...",
-    caramel_animation_step_4: "糖开始融化...",
-    caramel_animation_step_5: "开始上色...",
-    caramel_animation_step_6: "轻轻搅拌...",
-    caramel_animation_step_7: "焦糖呈现出漂亮的琥珀色...",
-    caramel_animation_step_8: "加入热奶油...",
-    caramel_animation_step_9: "小心溅出！",
-    caramel_animation_step_10: "充分搅拌...",
-    caramel_animation_step_11: "快要完成了！",
-
-    // 页面提示
-    page_prompt_role: "你是一名教学设计专家，正在为 Éléa/Moodle 创建一个结构化的“页面”活动。",
-    page_prompt_mission: "**你的任务 :**",
-    page_prompt_generate_json: "生成一个 JSON 对象，用于构建 Éléa 内容页面。页面结构基于预定义的区块。你需要从下方列表中选择最相关的区块来满足用户的需求。",
-    page_prompt_json_structure_title: "**期望的 JSON 结构 :**",
-    page_prompt_json_structure_main_object: "主对象必须包含用于页面标题的键 \"title\"、用于对后续课程内容进行清晰易懂介绍的键 \"intro\"，以及作为对象数组的键 \"blocks\"。每个对象代表一个内容区块，必须具有与下列某个区块对应的 \"type\"，以及包含区块特定信息的 \"data\" 对象。",
-    page_prompt_blocks_list_title: "**可用区块列表 :**",
-    page_prompt_block_01: "- `#01_hero_header`: 开场横幅。 `{ \"type\": \"#01_hero_header\", \"data\": { \"title\": \"...\", \"subtitle\": \"...\" } }`",
-    page_prompt_block_02: "- `#02_nav_summary`: 带内部链接的目录。 `{ \"type\": \"#02_nav_summary\", \"data\": { \"links\": [{ \"href\": \"#...\", \"text\": \"...\" }] } }`",
-    page_prompt_block_03: "- `#03_histo_reperes`: 历史要点（3 张卡片）。 `{ \"type\": \"#03_histo_reperes\", \"data\": { \"title\": \"...\", \"cards\": [{ \"title\": \"...\", \"text\": \"...\" }] } }` (最多 3 张)",
-    page_prompt_block_04: "- `#04_callout_set`: 横幅：目标、须知、警示。 `{ \"type\": \"#04_callout_set\", \"data\": { \"title\": \"...\", \"callouts\": [{ \"type\": \"objectif|savoir|alerte\", \"text\": \"...\" }] } }`",
-    page_prompt_block_05: "- `#05_stats_cards`: 关键数据卡片。 `{ \"type\": \"#05_stats_cards\", \"data\": { \"title\": \"...\", \"stats\": [{ \"value\": \"...\", \"label\": \"...\" }] } }`",
-    page_prompt_block_06: "- `#06_lexique_table`: 词汇表（表格）。 `{ \\\"type\\\": \\\"#06_lexique_table\\\", \\\"data\\\": { \\\"title\\\": \\\"...\\\", \\\"caption\\\": \\\"...\\\", \\\"headers\\\": [\\\"...\\\", \\\"...\\\"], \\\"rows\\\": [[\\\"...\\\",\\\"...\\\"]] } }`",
-    page_prompt_block_07: "- `#07_glossary_chips`: 术语表（chips 形式）。 `{ \"type\": \"#07_glossary_chips\", \"data\": { \"title\": \"...\", \"chips\": [\"...\"] } }`",
-    page_prompt_block_08: "- `#08_monuments_grid`: 含图片的纪念性建筑卡片。 `{ \"type\": \"#08_monuments_grid\", \"data\": { \"title\": \"...\", \"cards\": [{ \"img_src\": \"...\", \"img_alt\": \"...\", \"caption\": \"...\", \"title\": \"...\", \"text\": \"...\" }] } }`",
-    page_prompt_block_09: "- `#09_figures_comparison`: 两幅图像对比。 `{ \"type\": \"#09_figures_comparison\", \"data\": { \"title\": \"...\", \"images\": [{ \"src\": \"...\", \"alt\": \"...\", \"caption\": \"...\" }, { \"src\": \"...\", \"alt\": \"...\", \"caption\": \"...\" }] } }`",
-    page_prompt_block_10: "- `#10_table_comparison`: 对比表。 `{ \\\"type\\\": \\\"#10_table_comparison\\\", \\\"data\\\": { \\\"title\\\": \\\"...\\\", \\\"caption\\\": \\\"...\\\", \\\"headers\\\": [\\\"...\\\", \\\"...\\\"], \\\"rows\\\": [[\\\"...\\\",\\\"...\\\"]] } }`",
-    page_prompt_block_11: "- `#11_definition_box`: 定义框。 `{ \"type\": \"#11_definition_box\", \"data\": { \"title\": \"定义\", \"text\": \"...\" } }`",
-    page_prompt_block_12: "- `#12_context_paragraphs`: 课程段落。 `{ \"type\": \"#12_context_paragraphs\", \"data\": { \"title\": \"...\", \"paragraphs\": [\"...\", \"...\"] } }`",
-    page_prompt_block_13: "- `#13_monument_sheet_long`: 详细资料卡。 `{ \"type\": \"#13_monument_sheet_long\", \"data\": { \"title\": \"...\", \"paragraphs\": [\"...\"] } }`",
-    page_prompt_block_14: "- `#14_faq_block`: 常见问题。 `{ \"type\": \"#14_faq_block\", \"data\": { \"title\": \"FAQ\", \"questions\": [{ \"q\": \"...\", \"a\": \"...\" }] } }`",
-    page_prompt_block_15: "- `#15_myths_realities`: 谬误 vs 事实。 `{ \"type\": \"#15_myths_realities\", \"data\": { \"myths\": { \"title\": \"谬误\", \"items\": [\"...\"] }, \"realities\": { \"title\": \"事实\", \"items\": [\"...\"] } } }`",
-    page_prompt_block_17: "- `#17_method_image_desc`: 描述图片的方法。 `{ \"type\": \"#17_method_image_desc\", \"data\": { \"title\": \"...\", \"steps\": [\"...\"] } }`",
-    page_prompt_block_18: "- `#18_sito_graphy`: 网络参考文献。 `{ \"type\": \"#18_sito_graphy\", \"data\": { \"title\": \"网络参考文献\", \"links\": [{ \"href\": \"...\", \"text\": \"...\" }] } }`",
-    page_prompt_block_19: "- `#19_quote_bilingual`: 双语引文。 `{ \"type\": \"#19_quote_bilingual\", \"data\": { \"title\": \"...\", \"quote_fr\": \"...\", \"quote_alt\": \"...\", \"caption\": \"...\" } }`",
-    page_prompt_content_rules_title: "**内容规则 :**",
-    page_prompt_rule1: "1.  JSON 必须有效。",
-    page_prompt_rule2: "2.  文本内容可以使用 Markdown 标签 `*词*` 表示加粗，`**词**` 表示斜体。",
-    page_prompt_rule3: "3.  对于图片，请寻找相关且免版权的 URL（例如：Wikimedia Commons）。",
-    page_prompt_example_json_title: "**JSON 示例 :**",
-    page_prompt_example_json: `\`\`\`json
+  ELEA_PAGE_EXEMPLE_RENDU: `\`\`\`json
 {
   "title": "法国大革命",
+  "intro": "探索这一历史时期的关键时刻。",
   "blocks": [
-    { "type": "#01_hero_header", "data": { "title": "法国大革命", "subtitle": "关键参照点" } },
-    { "type": "#12_context_paragraphs", "data": { "title": "背景", "paragraphs": ["法国大革命是一个巨变的时期...", "多种原因解释了这一事件..."] } },
-    { "type": "#08_monuments_grid", "data": { "title": "关键事件", "cards": [{ "img_src": "https://.../Prise_de_la_Bastille.jpg", "img_alt": "攻占巴士底狱", "caption": "1789年7月14日", "title": "攻占巴士底狱", "text": "这一事件标志着革命的开始。" }] } }
+    {
+      "type": "#01_hero_header",
+      "data": {"title": "大革命", "subtitle": "1789-1799"}
+    },
+    {
+      "type": "#04_callout_set",
+      "data": {
+        "title": "教学目标",
+        "callouts": [{"type": "objectif", "text": "了解 1789 年爆发的原因。"}]
+      }
+    },
+    {
+      "type": "#12_context_paragraphs",
+      "data": {
+        "title": "网球场宣誓",
+        "paragraphs": [
+          "1789年6月20日，第三等级的代表们聚集在...",
+          "这一举动标志着国民议会的诞生。",
+          "这是走向专制制度终结的重要转折点。"
+        ]
+      }
+    },
+    {
+      "type": "#06_lexique_table",
+      "data": {
+        "title": "词汇表",
+        "headers": ["术语", "定义"],
+        "rows": [["第三等级", "占人口绝大多数的阶层..."]]
+      }
+    },
+    {
+      "type": "#18_sito_graphy",
+      "data": {
+        "title": "延伸阅读",
+        "links": [{"href": "https://...", "text": "官方历史网站"}]
+      }
+    }
   ]
 }
 \`\`\``,
-    page_prompt_generate_only_json: "仅生成有效的 JSON 代码，不要添加任何注释."
+
+  // ============================================================================
+  // === H5P 界面翻译 (标准化) ===
+  // ============================================================================
+
+  // 通用键
+  h5p_check_answer: "检查",
+  h5p_try_again: "重试",
+  h5p_show_solution: "显示答案",
+  h5p_submit_answer: "提交",
+  h5p_score: "你在 @total 分中获得了 @score 分",
+  h5p_score_bar_label: "你在 :total 分中获得了 :num 分",
+  h5p_tip_label: "提示",
+  h5p_next: "下一步",
+  h5p_previous: "上一步",
+  h5p_close: "关闭",
+  h5p_finish_header: "结束？",
+  h5p_finish_body: "你确定要结束吗？",
+  h5p_cancel_label: "取消",
+  h5p_finish_label: "结束",
+  h5p_retry_header: "重试？",
+  h5p_retry_body: "你确定要重试吗？",
+  h5p_retry_confirm_label: "确认",
+  h5p_resume: "继续",
+  h5p_audio_direction: "音频方向",
+  h5p_a11y_check: "检查答案。答案将被标记为正确、错误或未回答。",
+  h5p_a11y_show_solution: "显示答案。任务将标记出正确答案。",
+  h5p_a11y_retry: "重试任务。重置所有答案并重新开始任务。",
+
+  // 填字游戏 (Crossword)
+  h5p_crossword_across: "横向",
+  h5p_crossword_down: "纵向",
+  h5p_crossword_extra_clue: "额外线索",
+
+  // 总结 (Summary)
+  h5p_summary_intro: "选择正确的陈述。",
+  h5p_summary_solved_label: "进度：",
+  h5p_summary_score_label: "错误回答：",
+  h5p_summary_result_label: "你的结果",
+  h5p_summary_feedback: "你在 @total 个陈述中答对了 @score 个 (@percent%)。",
+  h5p_summary_label_correct: "正确。",
+  h5p_summary_label_incorrect: "错误！请重试。",
+  h5p_summary_label_correct_answers: "正确答案。",
+  h5p_summary_progress_text: "进度 :num / :total",
+  h5p_summary_alternative_incorrect_label: "错误",
+
+  // 拖动单词 (Drag the Words)
+  h5p_drag_words_score_feedback: "得分：@score / @total。",
+  h5p_drag_words_correct_text: "正确！",
+  h5p_drag_words_incorrect_text: "错误！",
+
+  // 填空题 (Fill in the Blanks)
+  h5p_blanks_not_filled_out: "请填写所有空格。",
+  h5p_blanks_answer_is_correct: "&#039;:ans&#039; 是正确的",
+  h5p_blanks_answer_is_wrong: "&#039;:ans&#039; 是错误的",
+  h5p_blanks_answered_correctly: "回答正确",
+  h5p_blanks_answered_incorrectly: "回答错误",
+  h5p_blanks_solution_label: "正确答案：",
+  h5p_blanks_input_label: "第 @num 个空格，共 @total 个",
+  h5p_blanks_input_has_tip_label: "有可用提示",
+  h5p_blanks_feedback: "你在 @total 个空格中填对了 @score 个。",
+  h5p_blanks_checking_mode_header: "检查模式",
+
+  // 标记单词 (Mark the Words)
+  h5p_mark_words_correct_answer: "正确！",
+  h5p_mark_words_incorrect_answer: "错误！",
+  h5p_mark_words_missed_answer: "遗漏！",
+  h5p_mark_words_display_solution_description: "任务已更新以包含答案。",
+  h5p_mark_words_a11y_full_text_label: "完整可读文本",
+  h5p_mark_words_a11y_clickable_text_label: "可标记单词的完整文本",
+  h5p_mark_words_a11y_solution_mode_header: "答案模式",
+  h5p_mark_words_a11y_checking_header: "检查模式",
+
+  // 闪卡 (Flashcards)
+  h5p_flashcards_progress_text: "第 @card 张卡片，共 @total 张",
+  h5p_flashcards_your_answer: "你的回答",
+  h5p_flashcards_correct_answer: "正确答案",
+  h5p_flashcards_incorrect_answer: "错误答案",
+  h5p_flashcards_show_solution: "正确答案",
+  h5p_flashcards_results: "结果",
+  h5p_flashcards_of_correct: "@total 个中答对 @score 个",
+  h5p_flashcards_show_results: "显示结果",
+  h5p_flashcards_answer_short: "答:",
+  h5p_flashcards_card_announcement: "回答错误。正确答案是 @answer",
+  h5p_flashcards_correct_announcement: "@answer 是正确的。",
+  h5p_flashcards_page_announcement: "第 @current 页，共 @total 页",
+
+  // 文章 (Essay)
+  h5p_essay_feedbackHeader: "反馈",
+  h5p_essay_solutionTitle: "标准答案",
+  h5p_essay_remainingChars: "剩余字符：@chars",
+  h5p_essay_notEnoughChars: "你必须输入至少 @chars 个字符！",
+  h5p_essay_messageSave: "已保存",
+  h5p_essay_placeholderText: "在这里开始写作...",
+  h5p_essay_ariaYourResult: "你在 @total 分中获得了 @score 分",
+  h5p_essay_ariaNavigatedToSolution: "已导航到文本框后新增的标准答案。",
+
+  // 正误题 (True/False)
+  h5p_true_false_true_text: "正确",
+  h5p_true_false_false_text: "错误",
+  h5p_true_false_wrong_answer_message: "错误回答",
+  h5p_true_false_correct_answer_message: "正确回答",
+
+  // 找单词 (Find the Words)
+  h5p_find_words_found: "已找到 @totalWords 个单词中的 @found 个",
+  h5p_find_words_time_spent: "所用时间",
+  h5p_find_words_word_list_header: "单词列表",
+  h5p_find_words_fill_pool: "abcdefghijklmnopqrstuvwxyz",
+
+  // 段落排序 (Sort the Paragraphs)
+  h5p_sort_paragraphs_up: "上移",
+  h5p_sort_paragraphs_down: "下移",
+  h5p_sort_paragraphs_disabled: "已禁用",
+  h5p_sort_paragraphs_paragraph: "段落",
+  h5p_sort_paragraphs_point: "@score 分",
+  h5p_sort_paragraphs_seven_of_nine: "@current / @total",
+  h5p_sort_paragraphs_current_position: "列表中的当前位置",
+  h5p_sort_paragraphs_instructions_selected: "按空格键重新排序",
+  h5p_sort_paragraphs_instructions_grabbed: "按上下箭头键更改位置，空格键放置，Esc 键取消",
+  h5p_sort_paragraphs_grabbed: "已抓取",
+  h5p_sort_paragraphs_moved: "已移动",
+  h5p_sort_paragraphs_dropped: "已放置",
+  h5p_sort_paragraphs_reorder_cancelled: "重新排序已取消",
+  h5p_sort_paragraphs_final_position: "最终位置",
+  h5p_sort_paragraphs_next_paragraph: "下一段落",
+  h5p_sort_paragraphs_correct_paragraph: "该位置的正确段落",
+  h5p_sort_paragraphs_list_description: "可排序的段落列表。",
+  h5p_sort_paragraphs_list_description_check: "带结果的段落列表。",
+  h5p_sort_paragraphs_list_description_solution: "带答案的段落列表。",
+
+  // 单选题集 (Single Choice Set)
+  h5p_single_choice_solution_view_title: "答案",
+  h5p_single_choice_mute_button_label: "静音",
+  h5p_single_choice_slide_of_total: "第 @slide 页，共 @total 页",
+  h5p_single_choice_solution_list_question_number: "第 @question 题",
+  h5p_single_choice_should_select: "应该选择",
+  h5p_single_choice_should_not_select: "不应该选择",
+
+  // 对话卡 (Dialog Cards)
+  h5p_dialog_cards_answer: "反转",
+  h5p_dialog_cards_progress_text: "第 @card 张卡片，共 @total 张",
+  h5p_dialog_cards_card_front_label: "卡片正面",
+  h5p_dialog_cards_card_back_label: "卡片反面",
+  h5p_dialog_cards_audio_not_supported: "您的浏览器不支持该音频格式",
+  h5p_dialog_cards_correct_answer: "我答对了！",
+  h5p_dialog_cards_incorrect_answer: "我答错了",
+  h5p_dialog_cards_round: "第 @round 轮",
+  h5p_dialog_cards_cards_left: "剩余卡片：@number",
+  h5p_dialog_cards_next_round: "进入第 @round 轮",
+  h5p_dialog_cards_start_over: "重新开始",
+  h5p_dialog_cards_show_summary: "下一步",
+  h5p_dialog_cards_summary: "总结",
+  h5p_dialog_cards_summary_cards_right: "你答对的卡片：",
+  h5p_dialog_cards_summary_cards_wrong: "你答错的卡片：",
+  h5p_dialog_cards_summary_cards_not_shown: "未显示的卡片：",
+  h5p_dialog_cards_summary_overall_score: "总分",
+  h5p_dialog_cards_summary_cards_completed: "你掌握的卡片：",
+  h5p_dialog_cards_summary_completed_rounds: "已完成轮次：",
+  h5p_dialog_cards_summary_all_done: "做得好！你已经连续 @max 次完成所有 @cards 张卡片！",
+
+  // 问题集 (Quiz Set)
+  h5p_quiz_textual_progress: "第 @current 题，共 @total 题",
+  h5p_quiz_no_result_message: "已完成",
+  h5p_quiz_result_message: "你的结果：",
+  h5p_quiz_feedback_available: "有反馈可用",
+  h5p_quiz_read_feedback: "阅读反馈",
+  h5p_quiz_wrong_answer: "错误回答",
+  h5p_quiz_correct_answer: "正确回答",
+  h5p_quiz_should_check: "本该勾选此处",
+  h5p_quiz_should_not_check: "不该勾选此处",
+  h5p_quiz_no_input: "请在查看答案前回答问题。",
+
+  // ============================================================================
+  // === 法律声明 - 页脚 ===
+  // ============================================================================
+  license_info: "GNU GPL v3.0 或更高版本",
+  ticket: "工单/反馈",
+  legal_mentions: "法律声明",
+  legal_title: "法律声明",
+  legal_editor_title: "应用程序编辑器",
+  legal_editor_gauthier_remande: "<strong>Gauthier REMANDE</strong>",
+  legal_editor_gauthier_remande_function: "<strong>职务：</strong> 文学与历史 PLP 教师",
+  legal_editor_gauthier_remande_email: "<strong>电子邮件：</strong> gauthier.remande@ac-nantes.fr",
+  legal_editor_gauthier_remande_address: "<strong>地址：</strong> 39 avenue de Chanzy, 53000 Laval, France",
+  legal_editor_gauthier_remande_phone: "<strong>电话：</strong> +33 2 43 67 24 00",
+  legal_editor_emmanuel_gaunard: "<strong>Emmanuel GAUNARD</strong>",
+  legal_editor_emmanuel_gaunard_function: "<strong>职务：</strong> 数学教师及 DRANE 项目负责人 – 格勒诺布尔学区",
+  legal_editor_emmanuel_gaunard_email: "<strong>电子邮件：</strong> emmanuel.gaunard@ac-grenoble.fr",
+  legal_editor_emmanuel_gaunard_address: "<strong>地址：</strong> 30 boulevard de la République, 38200 Vienne, France",
+  legal_editor_emmanuel_gaunard_phone: "<strong>电话：</strong> +33 6 46 74 20 94",
+  legal_app_description: "“Caramel” Web 应用程序是一个自由、非商业性的项目，旨在创建 H5P 和 Éléa 内容。无需账户，不收集任何个人数据。",
+  legal_hosting_title: "托管信息",
+  legal_host_name: "<strong>服务商</strong>：教育数字公共锻造 (Forge des Communs Numériques Éducatifs)",
+  legal_host_company: "<strong>组织名称</strong>：法国国民教育部和青年部",
+  legal_host_address: "<strong>地址</strong>：110 rue de Grenelle, 75007 Paris, France",
+  legal_host_phone: "<strong>电话</strong>：+33 1 55 55 10 10",
+  legal_publication_director_title: "出版负责人",
+  legal_publication_director_name: "Gauthier REMANDE 和 Emmanuel GAUNARD，作为志愿者编辑。",
+  legal_terms_of_use_title: "一般使用条款",
+  legal_terms_of_use_content: "本网站允许用户生成 H5P 和 Éléa 内容。所有内容均在本地显示，不传输用户数据。用户对其生成的內容的使用承担全部责任。本应用程序免费提供，不保证运行或结果。编辑器对内容的误解或不当使用不承担任何责任。",
+  legal_intellectual_property_title: "知识产权",
+  legal_intellectual_property_content: "所有源代码、图形元素和内容均采用 GNU AGPLv3 自由许可协议。在符合各自许可条款的前提下允许重用。任何再分发或修改必须注明原作者：Gauthier REMANDE 和 Emmanuel GAUNARD。H5P 模块中使用的图像来源于 H5P.org 网站。",
+  legal_personal_data_title: "个人数据",
+  legal_personal_data_content: "不收集也不存储任何个人数据。不使用追踪 Cookie。",
+  legal_ai_models_title: "人工智能模型",
+  legal_ai_models_content: "Caramel 应用程序仅在点击生成功能时，调用由 ILAAS（一个共享 AI 基础设施联盟）运行的 AI 模型。请求通过由 Incubateur 托管的 n8n 工作流进行路由，随后传输至 ILAAS，在托管于高等教育与研究部 (ESR) 认证的数据中心内的可信服务器上执行。Caramel 不直接运行模型，也不处理或存储自有数据；数据仅用于执行请求，不会发送给大众消费类 AI。目前提供的模型包括 {{llm_model_1_name}} ({{llm_model_1_param}} {{llm_model_parameters_unit}})、{{llm_model_2_name}} ({{llm_model_2_param}} {{llm_model_parameters_unit}}) 和 {{llm_model_3_name}} ({{llm_model_3_param}} {{llm_model_parameters_unit}})。ILAAS 可能执行的托管、日志记录和存储方式受其隐私政策和服务条款约束，请参阅相关说明。",
+  legal_user_requests_processing_title: "通过 n8n 和国民教育部孵化器 (Incubateur) 处理用户请求",
+  legal_user_requests_processing_content: "我们的网站使用由 n8n 开发的技术解决方案，这是一个由国民教育部孵化器托管的开源工具。该服务通过自动化工作流，将用户请求转化为结构化数据（JSON 格式），以便与 DINUM 提供的具有主权的 AI 进行交互。在不加密的情况下，不会暴露或传输任何敏感信息，从而确保交流的机密性和安全性。",
+  legal_accessibility_title: "无障碍环境",
+  legal_accessibility_content: "本应用程序专为电脑端使用设计，包括深色/浅色模式、键盘导航和符合主题的高对比度。无障碍环境的持续改进正在根据 RGAA 建议进行中。",
+  legal_applicable_law_title: "适用法律",
+  legal_applicable_law_content: "本网站受法国法律约束。如发生争议，里昂管辖范围内的法院具有管辖权。",
+  legal_external_libraries_title: "使用的外部库",
+  legal_external_libraries_intro: "Caramel 应用程序使用了多个开源库，分别遵循以下许可协议：",
+  legal_library_fontawesome: "<strong>Font Awesome Free</strong>（许可：CC BY 4.0, SIL OFL 1.1, MIT）：提供界面中使用的图标，以改善导航和视觉体验。",
+  legal_library_jszip: "<strong>JSZip</strong>（许可：MIT 或 GPLv3）：通过将必要内容压缩到 zip 存档中来创建 .h5p 文件。",
+  legal_library_clientzip: "<strong>client-zip</strong>（许可：MIT）：另一个用于文件压缩的库，为直接在浏览器中生成 .h5p 存档提供高性能替代方案。",
+  legal_library_fflate: "<strong>fflate</strong>（许可：MIT）：极速数据压解库，用于创建 Moodle 模块的 .mbz 存档。",
+  legal_library_tarjs: "<strong>tar-js</strong>（许可：MIT）：用于创建 .tar 存档，这是在压缩形成 Moodle 模块 .mbz 文件之前的必要步骤。",
+  legal_library_mammoth: "<strong>Mammoth</strong>（许可：BSD 2-Clause）：可将 Word 文档 (.docx) 转换为 HTML，便于从 Microsoft Word 文件导入和集成内容。",
+  legal_library_pdfjs: "<strong>PDF.js</strong>（许可：Apache 2.0）：允许直接在浏览器中提取 PDF 文件的原生文本，无需服务器处理。",
+  legal_library_tesseract: "<strong>Tesseract.js</strong>（许可：Apache 2.0）：光学字符识别 (OCR) 引擎，可从图像 (PNG, JPG, JPEG) 和扫描的 PDF 文档中提取文本。",
+  legal_library_mathjax: "<strong>MathJax</strong> (许可证: Apache 2.0): 用于在预览中渲染数学公式 (LaTeX)。",
+  legal_library_h5p_standalone: "<strong>H5P Standalone</strong> (许可证: MIT): 允许直接在浏览器中预览 H5P 内容，无需服务器或 CMS（如 Moodle 或 WordPress）。",
+  legal_library_jspdf: "<strong>jsPDF</strong> (许可证: MIT): 用于在浏览器中直接生成 PDF 文档的 JavaScript 库，用于将教育内容导出为 PDF 格式。",
+  legal_library_jspdf_autotable: "<strong>jsPDF-autotable</strong> (许可证: MIT): jsPDF 的扩展，可在导出的 PDF 文档中生成结构化表格。",
+  legal_library_docx: "<strong>docx</strong> (许可证: MIT): 用于在浏览器中创建 Word 文档 (.docx) 的 JavaScript 库，用于将教育内容导出为 Microsoft Word 格式。",
+  legal_library_ownership: "每个库均归其各自作者所有，并按照其许可协议使用。",
+
+  // ============================================================================
+  // === 通知 ===
+  // ============================================================================
+  no_notifications: "没有通知",
+  clear_all: "全部清除",
+  view: "查看",
+  today: "今天",
+  error: "错误",
+  download: "下载",
+  edit_content: "编辑",
+  compatible_with: "兼容:",
+  preview_placeholder: "预览即将推出",
+  previous: "上一个",
+  next: "下一个",
+  close_modal: "关闭",
+  loading: "正在加载...",
+  preview_error: "无法预览此文件",
+  simulator_warning: "通过活动模拟器预览：在 Éléa 上的最终呈现可能会略有不同。",
+  editor_confirm_close_title: "未保存的更改",
+  editor_confirm_close_message: "您想在退出前保存更改吗？",
+  editor_confirm_close_cancel: "留在编辑器中",
+  editor_confirm_close_save: "保存并退出",
+  editor_confirm_close_discard: "退出但不保存",
+
+  // JSON 编辑器
+  editor_title_prefix: "编辑：",
+  editor_loading: "正在加载编辑器...",
+  editor_unknown_type: "无法识别的内容类型",
+  editor_no_schema: "此类型没有可用的架构",
+  editor_init_error: "初始化编辑器时出错",
+  editor_save: "保存",
+  editor_cancel: "取消",
+  editor_unsaved_changes: "未保存的更改",
+  editor_confirm_discard: "您确定要取消吗？未保存的更改将丢失。",
+  editor_validation_errors: "验证错误",
+
+  // 章节
+  editor_section_general: "基本信息",
+  editor_section_question: "问题",
+  editor_section_questions: "问题",
+  editor_section_answers: "回答",
+  editor_section_answer: "回答",
+  editor_section_feedback: "反馈",
+  editor_section_cards: "卡片",
+  editor_section_sentences: "句子",
+  editor_section_events: "事件",
+  editor_section_words: "单词",
+  editor_section_keywords: "关键词",
+  editor_section_entries: "条目",
+  editor_section_pairs: "配对",
+  editor_section_text: "文本",
+
+  // 通用字段
+  editor_title: "标题",
+  editor_description: "描述",
+  editor_description_hint: "面向学生的说明",
+  editor_intro: "介绍",
+  editor_task_description: "说明",
+  editor_question_text: "问题正文",
+
+  // 卡片
+  editor_card: "卡片",
+  editor_card_front: "正面",
+  editor_card_front_placeholder: "问题或术语",
+  editor_card_back: "反面",
+  editor_card_back_placeholder: "回答或定义",
+  editor_card_tip: "提示",
+  editor_add_card: "添加卡片",
+
+  // 回答
+  editor_answer: "回答",
+  editor_answer_text: "回答文本",
+  editor_is_correct: "正确",
+  editor_add_answer: "添加回答",
+
+  // 提示与反馈
+  editor_tips_feedback: "提示与反馈",
+  editor_tip: "提示",
+  editor_tip_optional: "提示（可选）",
+  editor_tips_optional: "提示（可选）",
+  editor_tip_front: "正面提示",
+  editor_tip_back: "反面提示",
+  editor_chosen_feedback: "选中时的反馈",
+  editor_not_chosen_feedback: "未选中时的反馈",
+  editor_feedback_correct: "正确时的反馈",
+  editor_feedback_wrong: "错误时的反馈",
+  editor_overall_feedback: "按分数划分的总体反馈",
+
+  // 反馈范围
+  editor_feedback_ranges_label: "根据分数反馈",
+  editor_feedback_placeholder: "此范围的反馈消息...",
+  editor_add_range: "添加范围",
+
+  // 正确/错误
+  editor_correct_answer: "正确答案",
+  editor_true: "正确",
+  editor_false: "错误",
+
+  // 填空 / 拖拽单词
+  editor_sentence: "句子",
+  editor_sentence_text: "句子文本",
+  editor_add_sentence: "添加句子",
+  editor_blanks_hint: "用 *星号* 括起需要猜测的单词",
+  editor_text_with_blanks: "带有待放置单词的文本",
+  editor_drag_words_hint: "*星号* 之间的单词将作为拖拽元素",
+
+  // 时间轴
+  editor_event: "事件",
+  editor_add_event: "添加事件",
+  editor_start_date: "开始日期",
+  editor_end_date: "结束日期",
+  editor_event_title: "事件标题",
+  editor_event_description: "描述",
+  editor_event_tag: "标签",
+
+  // 填字游戏
+  editor_word: "单词",
+  editor_add_word: "添加单词",
+  editor_clue: "提示/定义",
+  editor_orientation: "方向",
+  editor_horizontal: "水平",
+  editor_vertical: "垂直",
+  editor_crossword_answer_hint: "单词请使用大写",
+
+  // 论文
+  editor_keyword: "关键词",
+  editor_keyword_text: "预期关键词",
+  editor_keyword_weight: "权重",
+  editor_add_keyword: "添加关键词",
+
+  // 术语表
+  editor_entry: "条目",
+  editor_add_entry: "添加条目",
+  editor_term: "术语",
+  editor_definition: "定义",
+
+  // Moodle
+  editor_question: "问题",
+  editor_add_question: "添加问题",
+  editor_pair: "配对",
+  editor_add_pair: "添加配对",
+  editor_left_element: "左侧元素",
+  editor_right_element: "右侧元素",
+  editor_choice: "选项",
+  editor_choice_text: "选项文本",
+  editor_add_choice: "添加选项",
+
+  // 条目操作
+  editor_add_item: "添加",
+  editor_drag: "移动",
+  editor_duplicate: "复制",
+  editor_delete: "删除",
+  editor_confirm_delete: "您确定要删除此条目吗？",
+  editor_min_items_reached: "已达到最小条目数",
+  editor_max_items_reached: "已达到最大条目数",
+
+  // 验证错误
+  editor_error_required: "此字段为必填项",
+  editor_error_min_length: "至少 {0} 个字符",
+  editor_error_max_length: "最多 {0} 个字符",
+  editor_error_pattern: "格式无效",
+  editor_error_min_items: "至少 {0} 个条目",
+  editor_error_max_items: "最多 {0} 个条目",
+  editor_error_number: "必须是数字",
+  editor_error_min: "最小值为 {0}",
+  editor_error_max: "最大值为 {0}",
+  editor_error_feedback_ranges: "范围必须覆盖 0-100% 且不得重叠",
+  editor_error_no_correct: "至少有一个答案必须是正确的",
+  editor_error_date_format: "日期格式无效（预期格式：YYYY,M,D）",
+  editor_error_no_blanks: "文本必须包含至少一个由 *星号* 括起的单词",
+
+  // QuizSet
+  editor_library_type: "库类型",
+  editor_question_title: "问题标题",
+  editor_question_params: "问题参数",
+  editor_parameters: "参数",
+
+  // 填字游戏
+  editor_extra_clue: "额外提示",
+
+  // FindTheWords
+  editor_word_list: "单词列表",
+
+  // SingleChoiceSet
+  editor_answers: "可能答案",
+
+  // MarkTheWords
+  editor_text_with_marks: "带有标记单词的文本",
+  editor_mark_words_hint: "用 *星号* 括起需要标记的单词",
+
+  // SortParagraphs
+  editor_section_paragraphs: "段落",
+  editor_paragraph: "段落",
+  editor_add_paragraph: "添加段落",
+  editor_paragraph_text: "段落文本",
+
+  // Summary
+  editor_section_summaries: "总结",
+  editor_summary_item: "总结条目",
+  editor_add_summary_item: "添加条目",
+  editor_statement: "陈述",
+  editor_add_statement: "添加陈述",
+  editor_statement_text: "陈述文本",
+
+  // Moodle Test
+  editor_question_type: "问题类型",
+
+  // Moodle Page
+  editor_section_blocks: "区块",
+  editor_block: "区块",
+  editor_add_block: "添加区块",
+  editor_block_type: "区块类型",
+  editor_block_content: "区块内容",
+
+  // 特殊 Éléa 活动
+  // 术语表
+  editor_glossary_name: "术语表名称",
+
+  // 百万富翁
+  editor_good_answer: "正确答案",
+  editor_bad_answers: "错误答案",
+  editor_bad_answer: "错误答案",
+  editor_add_bad_answer: "添加错误答案",
+
+  // 测试（题库）
+  editor_bank_name: "题库名称",
+  editor_bank_description: "题库描述",
+  editor_question_name: "问题名称",
+  editor_question_feedback: "总体反馈",
+  editor_answer_fraction: "点数/分数",
+  editor_answer_feedback: "回答反馈",
+  editor_subquestion: "子问题",
+  editor_add_subquestion: "添加子问题",
+  editor_numerical_value: "数值",
+  editor_numerical_tolerance: "容差",
+  editor_section_subquestions: "子问题",
+  editor_section_content: "内容",
+  editor_feedback_if_true: "正确时的反馈",
+  editor_feedback_if_false: "错误时的反馈",
+
+  // 消息
+  editor_save_success: "更改已保存",
+  editor_save_error: "保存时出错",
+  editor_regenerating: "正在重新生成文件...",
+
+  // ============================================================================
+  // === DOCUMENT FORMATTER ===
+  // ============================================================================
+
+  // --- Global Info ---
+  doc_fmt_header_title: "Caramel - Educational Resource",
+  doc_fmt_generation_date: "Generation Date: ",
+  doc_fmt_footer_text: "Document generated with Caramel (https://caramel.forge.apps.education.fr/)",
+  doc_fmt_page_title: "页面",
+  doc_fmt_summary_header: "目录",
+  doc_fmt_quiz_title: "测验",
+  doc_fmt_instructions: "📝 说明：回答以下问题。",
+  doc_fmt_question_header: "问题",
+
+  // --- Shared properties ---
+  doc_fmt_type: "类型：",
+  doc_fmt_feedbacks: "💬 反馈：",
+  doc_fmt_global_feedbacks: "总体反馈",
+  doc_fmt_answers: "答案：",
+  doc_fmt_correct_answer_true: "正确答案：正确 ✓",
+  doc_fmt_correct_answer_false: "正确答案：错误 ✓",
+  doc_fmt_text_if_true: "正确时的文本：",
+  doc_fmt_text_if_false: "错误时的文本：",
+  doc_fmt_text_with_answers: "包含答案的文本：",
+  doc_fmt_text_with_marks: "包含标记词的文本：",
+  doc_fmt_marks_to_find: "待标记词汇：",
+  doc_fmt_keywords_expected: "预期的关键词：",
+  doc_fmt_accepted_answers: "接受的答案：",
+  doc_fmt_text_to_complete: "待完成文本：",
+  doc_fmt_also_called: "🏷️ 也称为：",
+  doc_fmt_image_not_found: "⚠️ [找不到图片]",
+
+  // --- Activity-Specific ---
+  doc_fmt_flashcards_title: "抽认卡",
+  doc_fmt_card_index: "卡片",
+  doc_fmt_card_front: "正面：",
+  doc_fmt_card_back: "背面：",
+  doc_fmt_hint: "💡 提示：",
+  doc_fmt_crossword_title: "填字游戏",
+  doc_fmt_definitions_and_answers: "定义与答案",
+  doc_fmt_answer: "答案：",
+  doc_fmt_extra_hint: "💡 额外提示：",
+  doc_fmt_timeline_events: "事件",
+  doc_fmt_timeline_periods: "时期",
+  doc_fmt_drag_the_words_title: "拖动词汇",
+  doc_fmt_fill_in_the_blanks_title: "填空",
+  doc_fmt_mark_the_words_title: "标记词汇",
+  doc_fmt_glossary_title: "术语表",
+  doc_fmt_term_index: "术语",
+  doc_fmt_chart_title: "图表",
+  doc_fmt_data: "数据",
+  doc_fmt_summary_title: "摘要",
+  doc_fmt_claim_index: "陈述",
+  doc_fmt_multiple_choice_title: "多项选择题",
+  doc_fmt_single_choice_set_title: "单项选择题集",
+  doc_fmt_true_false_title: "判断题",
+  doc_fmt_dialog_cards_title: "对话卡",
+  doc_fmt_hint_front: "💡 提示（正面）：",
+  doc_fmt_hint_back: "💡 提示（背面）：",
+  doc_fmt_sort_paragraphs_title: "段落排序",
+  doc_fmt_paragraphs_ordered: "正确顺序后的段落",
+  doc_fmt_find_the_words_title: "单词搜索",
+  doc_fmt_words_to_find: "待搜索单词",
+  doc_fmt_matching_title: "配对",
+  doc_fmt_matching_instructions: "📝 说明：将每个项目与其对应的项目匹配。",
+  doc_fmt_pairs_to_match: "待配对项",
+  doc_fmt_millionnaire_title: "谁想成为百万富翁？",
+  doc_fmt_millionnaire_instructions: "📝 说明：在四个选项中找出正确答案。",
+
+  // --- Moodle / Quiz Types ---
+  doc_fmt_essay_title: "开放式问题",
+  doc_fmt_qcm_title: "多选题",
+  doc_fmt_moodle_test_title: "测试",
+  doc_fmt_associations: "关联：",
+
+  // --- Question Types Labels ---
+  doc_fmt_type_multichoice: "多项选择 (MCQ)",
+  doc_fmt_type_matching: "配对",
+  doc_fmt_type_numerical: "数值",
+  doc_fmt_type_truefalse: "判断",
+  doc_fmt_type_shortanswer: "简答",
+  doc_fmt_type_cloze: "填空 (Cloze)",
+  doc_fmt_type_blanks: "填空",
+  doc_fmt_type_dragtext: "拖动词语",
+  doc_fmt_type_markwords: "标记词语",
+  doc_fmt_type_essay: "开放式问题",
+  doc_fmt_type_default: "问题",
+
+  // 教学结构陈述/校正的新键
+  doc_fmt_correction_title: "校正",
+  doc_fmt_proposed_answers: "建议：",
+  doc_fmt_correct_answer: "正确答案",
+  doc_fmt_correct_answers: "正确答案：",
+  doc_fmt_true: "正确",
+  doc_fmt_false: "错误",
+  doc_fmt_words_to_place: "要放置的单词：",
+  doc_fmt_completed_text: "完成的文本：",
+  doc_fmt_text_to_mark: "可在其中找到单词的文本：",
+  doc_fmt_words_count_to_find: "要查找的单词数",
+  doc_fmt_words_to_mark: "要标记的单词：",
+  doc_fmt_answer_space: "回答空间：",
+  doc_fmt_open_answer: "开放式回答 - 根据教师定义的标准进行评估。",
+  doc_fmt_definitions: "定义",
+  doc_fmt_letters: "字母",
+  doc_fmt_summary_instructions: "对于每个组，选择正确的陈述。",
+  doc_fmt_sort_instructions: "将以下段落按正确顺序排列。",
+  doc_fmt_paragraphs_to_sort: "要排序的段落",
+  doc_fmt_correct_order: "正确顺序",
+  doc_fmt_find_instructions: "查找",
+  doc_fmt_hidden_words: "网格中的隐藏单词。",
+  doc_fmt_hints: "提示",
+  doc_fmt_flashcards_instructions: "对于每张卡片，找出与问题对应的答案。",
+  doc_fmt_elements_to_match: "要配对的项目：",
+  doc_fmt_possible_matches: "可能的匹配项：",
+  doc_fmt_correct_associations: "正确的关联：",
+
 };
