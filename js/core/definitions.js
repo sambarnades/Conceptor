@@ -335,6 +335,7 @@ export const h5pModules = {
 export const moodleModules = {
     test_elea: {
         name: "elea_test_xml_name",
+        subtitleKey: "elea_test_xml_subtitle",
         description: "elea_test_xml_description",
         image: "assets/images/activities/test.webp",
         categories: ["quiz", "elea"],
@@ -344,6 +345,7 @@ export const moodleModules = {
     },
     glossaireXml: {
         name: "elea_glossaire_xml_name",
+        subtitleKey: "elea_glossaire_xml_subtitle",
         description: "elea_glossaire_xml_description",
         image: "assets/images/activities/glossaire.webp",
         categories: ["memory", "elea"],
@@ -353,6 +355,7 @@ export const moodleModules = {
     },
     Millionnaire: {
         name: "elea_millionnaire_name",
+        subtitleKey: "elea_millionnaire_subtitle",
         description: "elea_millionnaire_description",
         image: "assets/images/activities/millionnaire.webp",
         promptId: "millionnaireResultat",
@@ -365,6 +368,7 @@ export const moodleModules = {
     },
     Appariement: {
         name: "elea_appariement_name",
+        subtitleKey: "elea_appariement_subtitle",
         description: "elea_appariement_description",
         image: "assets/images/activities/appariement.webp",
         promptId: "appariementResultat",
@@ -377,6 +381,7 @@ export const moodleModules = {
     },
     QCM: {
         name: "elea_qcm_name",
+        subtitleKey: "elea_qcm_subtitle",
         description: "elea_qcm_description",
         image: "assets/images/activities/qcm.webp",
         promptId: "qcmResultat",
@@ -398,6 +403,7 @@ export const moodleModules = {
     },
     Page: {
         name: "elea_page_name",
+        subtitleKey: "elea_page_subtitle",
         description: "elea_page_description",
         image: "assets/images/activities/page.webp",
         promptId: "pageResultat",
@@ -410,6 +416,7 @@ export const moodleModules = {
     },
     Devoir: {
         name: "elea_devoir_name",
+        subtitleKey: "elea_devoir_subtitle",
         description: "elea_devoir_description",
         image: "assets/images/activities/devoirs.webp",
         promptId: "devoirResultat",

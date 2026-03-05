@@ -62,6 +62,7 @@ export function generateTiles() {
                 <div class="tile-text">
                     <span class="tile-name-fr" data-key="${module.name}">${translations[module.name]}</span>
                     ${module.englishName ? `<span class="tile-name-en">(${module.englishName})</span>` : ''}
+                    ${module.subtitleKey ? `<span class="tile-name-en" data-key="${module.subtitleKey}">${translations[module.subtitleKey] || ''}</span>` : ''}
                 </div>
             `;
 

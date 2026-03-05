@@ -39,9 +39,17 @@ const defaultTranslations = {
     elea_millionnaire_name: "Millionnaire",
     elea_appariement_name: "Appariement",
     elea_qcm_name: "QCM",
-    elea_glossaire_xml_name: "Glossaire (XML)",
+    elea_glossaire_xml_name: "Glossaire",
     elea_page_name: "Page",
     elea_devoir_name: "Devoir",
+    // Sous-titres des modules Moodle/Éléa
+    elea_test_xml_subtitle: "(Banque de questions)",
+    elea_millionnaire_subtitle: "(Activité pour Éléa)",
+    elea_appariement_subtitle: "(Activité pour Éléa)",
+    elea_qcm_subtitle: "(Activité pour Éléa)",
+    elea_glossaire_xml_subtitle: "(Articles en XML)",
+    elea_page_subtitle: "(Page de cours)",
+    elea_devoir_subtitle: "(Grille d'évaluation)",
     // Onglets
     tab_all: "Tout",
     tab_quiz: "Quiz & Tests",

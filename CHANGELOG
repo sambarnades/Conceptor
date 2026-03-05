@@ -9,6 +9,8 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 ### Nouveautés
 
 - **Bouton d'arrêt du traitement OCR** : Un bouton « Arrêter » apparaît désormais sous le message de progression lors de l'extraction de texte (PDF, DOCX, images, etc.). Il permet d'interrompre le traitement en cours sans attendre la fin, notamment pour les documents volumineux. Traduit dans les 11 langues.
+- **Sous-titres des activités Éléa** : Chaque tuile d'activité Moodle/Éléa affiche désormais un sous-titre descriptif entre parenthèses sous le nom (ex : Test → « Banque de questions », Page → « Page de cours », Devoir → « Grille d'évaluation »). Traduit dans les 11 langues.
+- **Renommage de l'activité Glossaire** : Le nom affiché passe de « Glossaire (XML) » à « Glossaire », le format XML étant précisé dans le sous-titre « Articles en XML ».
 
 ### Correctifs
 
