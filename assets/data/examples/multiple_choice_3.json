@@ -1,0 +1,46 @@
+{
+  "question": "Quelle est la valeur de \\begin{equation}\\sqrt{144}\\end{equation} ?",
+  "answers": [
+    {
+      "text": "\\(\\displaystyle\\frac{144}{12}\\)",
+      "correct": false,
+      "tipsAndFeedback": {
+        "tip": "Attention, \\(\\displaystyle\\frac{a}{b}\\) n'est pas la racine carrée.",
+        "chosenFeedback": "Non, la fraction n'est pas l'opération demandée.",
+        "notChosenFeedback": ""
+      }
+    },
+    {
+      "text": "12",
+      "correct": true,
+      "tipsAndFeedback": {
+        "tip": "Quel nombre multiplié par lui-même donne 144 ?",
+        "chosenFeedback": "Bravo ! \\(12 \\times 12 = 144\\).",
+        "notChosenFeedback": ""
+      }
+    },
+    {
+      "text": "\\(\\sqrt{12}$",
+      "correct": false,
+      "tipsAndFeedback": {
+        "tip": "Attention à ne pas confondre \\(\\sqrt{144}\\) et \\(\\sqrt{12}\\).",
+        "chosenFeedback": "Non, \\(\\sqrt{12} &lt; 4\\) alors que \\(\\sqrt{144} = 12\\).",
+        "notChosenFeedback": ""
+      }
+    },
+    {
+      "text": "72",
+      "correct": false,
+      "tipsAndFeedback": {
+        "tip": "La racine carrée n'est pas la division par 2.",
+        "chosenFeedback": "Non, 72 est la moitié de 144, pas sa racine carrée.",
+        "notChosenFeedback": ""
+      }
+    }
+  ],
+  "overallFeedback": [
+    {"from": 0, "to": 50, "feedback": "Revois la définition de la racine carrée."},
+    {"from": 51, "to": 75, "feedback": "Bon début, continue à t'entraîner."},
+    {"from": 76, "to": 100, "feedback": "Excellent, tu maîtrises les racines carrées !"}
+  ]
+}

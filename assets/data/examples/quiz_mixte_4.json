@@ -1,0 +1,93 @@
+{
+  "title": "Les fonctions racine carrée",
+  "questions": [
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Définition - QCM" },
+      "params": {
+        "question": "Quelle affirmation décrit correctement la fonction racine carrée ?",
+        "answers": [
+          { "text": "Elle associe à chaque nombre réel positif son unique nombre positif dont le carré vaut ce nombre.", "correct": true },
+          { "text": "Elle associe à chaque nombre réel son opposé.", "correct": false },
+          { "text": "Elle n'est définie que sur les nombres négatifs.", "correct": false },
+          { "text": "Elle renvoie toujours deux valeurs, l'une positive et l'autre négative.", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Révisez la définition de la racine carrée." },
+          { "from": 11, "to": 30, "feedback": "Vous avez besoin de consolider vos connaissances." },
+          { "from": 31, "to": 50, "feedback": "Moyen, mais des précisions sont à apporter." },
+          { "from": 51, "to": 70, "feedback": "Bon travail, continuez ainsi." },
+          { "from": 71, "to": 90, "feedback": "Très bien, vous maîtrisez le concept." },
+          { "from": 91, "to": 100, "feedback": "Excellent, réponse parfaite." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "Identité - Vrai/Faux" },
+      "params": {
+        "question": "Pour tout réel \\(x\\), \\(\\sqrt{x^2}=x\\).",
+        "correct": "false"
+      }
+    },
+    {
+      "library": "H5P.DragText 1.10",
+      "metadata": { "title": "Calculs simples - Glisser les mots" },
+      "params": {
+        "taskDescription": "Complète les égalités suivantes en faisant glisser les bonnes valeurs.",
+        "textField": "La racine carrée de 9 vaut *3* et la racine carrée de 16 vaut *4*.",
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Aucun glissement correct." },
+          { "from": 11, "to": 30, "feedback": "Beaucoup d'erreurs, revoyez les calculs." },
+          { "from": 31, "to": 50, "feedback": "Résultat moyen, il faut s'améliorer." },
+          { "from": 51, "to": 70, "feedback": "Bon effort, quelques points à corriger." },
+          { "from": 71, "to": 90, "feedback": "Très bien, presque tout correct." },
+          { "from": 91, "to": 100, "feedback": "Parfait, toutes les réponses sont justes." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.Blanks 1.14",
+      "metadata": { "title": "Domaine - Mots à trous" },
+      "params": {
+        "taskDescription": "Indique le domaine de la fonction racine carrée.",
+        "questions": [
+          "Le domaine de la fonction \\(f(x)=\\sqrt{x}\\) est *[0 ; +\\infty)*."
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Réponse incorrecte ou hors sujet." },
+          { "from": 11, "to": 30, "feedback": "Des imprécisions subsistent." },
+          { "from": 31, "to": 50, "feedback": "Réponse partielle, il manque des détails." },
+          { "from": 51, "to": 70, "feedback": "Bonne compréhension, mais pas parfaite." },
+          { "from": 71, "to": 90, "feedback": "Très bien, la réponse est presque exacte." },
+          { "from": 91, "to": 100, "feedback": "Parfait, le domaine est correctement indiqué." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MarkTheWords 1.11",
+      "metadata": { "title": "Vocabulaire - Surligner les mots clés" },
+      "params": {
+        "taskDescription": "Surligne les mots qui sont des **termes spécifiques à la fonction racine carrée** dans le texte suivant.",
+        "textField": "Dans \\(\\sqrt{x}\\), le *radicande* est le nombre sous le signe radical, le *résultat* est toujours *positif* et l'*opération* inverse du carré.",
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Aucun mot clé trouvé." },
+          { "from": 11, "to": 30, "feedback": "Très peu de mots correctement identifiés." },
+          { "from": 31, "to": 50, "feedback": "Des efforts, mais il manque plusieurs termes." },
+          { "from": 51, "to": 70, "feedback": "Bon travail, la plupart des mots sont surlignés." },
+          { "from": 71, "to": 90, "feedback": "Très bien, toutes les notions importantes sont reconnues." },
+          { "from": 91, "to": 100, "feedback": "Excellent, vous avez identifié chaque terme clé." }
+        ]
+      }
+    }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "Résultat très faible, revoir les notions de base." },
+    { "from": 11, "to": 30, "feedback": "Résultat insuffisant, il faut approfondir vos révisions." },
+    { "from": 31, "to": 50, "feedback": "Résultat moyen, continuez à travailler." },
+    { "from": 51, "to": 70, "feedback": "Bon résultat, vous avez une bonne maîtrise." },
+    { "from": 71, "to": 90, "feedback": "Très bon résultat, félicitations." },
+    { "from": 91, "to": 100, "feedback": "Excellent résultat, vous maitrisez parfaitement le sujet." }
+  ]
+}

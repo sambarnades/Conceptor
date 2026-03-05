@@ -1,0 +1,112 @@
+{
+"title": "Oral de Soutenance du Diplôme National du Brevet (DNB)",
+"description": "Cette épreuve orale de 15 minutes (5 minutes d'exposé et 10 minutes d'entretien) permet d'évaluer votre capacité à présenter un projet mené dans le cadre des parcours éducatifs, des EPI ou d'une thématique artistique. Vous devez faire preuve d'une expression orale claire et structurée tout en montrant votre implication personnelle.",
+"rubricName": "Grille d'évaluation officielle de l'oral du Brevet - Niveau 3ème",
+"criteria": [
+{
+"description": "Qualité de l'expression orale",
+"levels": [
+{
+"score": 0,
+"definition": "La parole est difficilement audible ou hachée. Le vocabulaire est imprécis ou familier. L'élève lit ses notes sans regarder l'auditoire."
+},
+{
+"score": 1,
+"definition": "Le débit est régulier mais la voix manque parfois d'assurance. Le lexique est correct mais simple. Quelques coups d'œil aux notes sont nécessaires."
+},
+{
+"score": 2,
+"definition": "La voix est posée, l'articulation est nette et le ton est dynamique. Le vocabulaire est précis et adapté au sujet. L'élève s'appuie sur ses notes sans les lire."
+},
+{
+"score": 3,
+"definition": "Le discours est fluide, convaincant et nuancé. L'élève capte l'attention du jury par un regard constant et une posture assurée. Le lexique est riche et choisi."
+}
+]
+},
+{
+"description": "Organisation et structure de l'exposé",
+"levels": [
+{
+"score": 0,
+"definition": "Le propos est confus, sans plan apparent. Les étapes du projet ne sont pas identifiées. La gestion du temps est très insuffisante."
+},
+{
+"score": 1,
+"definition": "Le plan est annoncé mais n'est pas toujours respecté. Les transitions entre les parties sont maladroites. Le temps imparti est partiellement respecté."
+},
+{
+"score": 2,
+"definition": "L'exposé suit une progression logique (introduction, développement, conclusion). Les idées sont enchaînées de façon cohérente. Le temps est maîtrisé."
+},
+{
+"score": 3,
+"definition": "La structure est rigoureuse et met en valeur les points clés. L'introduction accroche le jury et la conclusion synthétise parfaitement l'expérience. Le timing est idéal."
+}
+]
+},
+{
+"description": "Maîtrise du sujet et des connaissances",
+"levels": [
+{
+"score": 0,
+"definition": "Les notions abordées sont superficielles ou comportent des erreurs majeures. L'élève ne parvient pas à expliquer l'objectif de son projet."
+},
+{
+"score": 1,
+"definition": "Le contenu est globalement exact mais reste descriptif. Les connaissances liées au parcours ou à l'EPI sont limitées au strict nécessaire."
+},
+{
+"score": 2,
+"definition": "Le contenu est solide et bien documenté. L'élève définit correctement les termes techniques et démontre une bonne compréhension des enjeux du projet."
+},
+{
+"score": 3,
+"definition": "L'élève fait preuve d'une expertise approfondie. Il prend du recul sur son travail, cite des sources précises et établit des liens avec d'autres disciplines."
+}
+]
+},
+{
+"description": "Implication personnelle et esprit critique",
+"levels": [
+{
+"score": 0,
+"definition": "L'élève ne justifie pas le choix de son sujet. Il ne mentionne aucun ressenti ni aucune difficulté rencontrée durant le projet."
+},
+{
+"score": 1,
+"definition": "L'élève explique brièvement ses motivations mais le propos reste impersonnel. L'auto-évaluation de son travail est très succincte."
+},
+{
+"score": 2,
+"definition": "L'élève explique clairement ses choix et son rôle dans le projet. Il est capable d'identifier ses réussites et les points qu'il aurait pu améliorer."
+},
+{
+"score": 3,
+"definition": "L'implication est manifeste. L'élève analyse avec pertinence son propre parcours, les compétences acquises et l'impact du projet sur son orientation future."
+}
+]
+},
+{
+"description": "Qualité de l'interaction (Entretien)",
+"levels": [
+{
+"score": 0,
+"definition": "L'élève ne répond pas aux questions ou se limite à des réponses par oui ou par non. Il ne parvient pas à reformuler son propos."
+},
+{
+"score": 1,
+"definition": "L'élève répond aux questions mais a besoin d'être guidé par le jury. Les réponses sont courtes et manquent de développement."
+},
+{
+"score": 2,
+"definition": "L'élève réagit avec pertinence. Il écoute les questions, argumente ses réponses et sait préciser sa pensée de façon autonome."
+},
+{
+"score": 3,
+"definition": "L'échange est constructif et fluide. L'élève approfondit ses réponses, rebondit sur les remarques du jury et montre une réelle aisance relationnelle."
+}
+]
+}
+]
+}

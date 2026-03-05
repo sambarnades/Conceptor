@@ -1,0 +1,39 @@
+{
+  "title": "Évaluation – Suites numériques et convergence",
+  "description": "Cette évaluation porte sur les suites numériques. Tu seras évalué(e) sur ta maîtrise des suites arithmétiques (raison r, terme général u_n = u_0 + n \\times r), géométriques (raison q, terme général u_n = u_0 \\times q^n), et sur la notion de limite : \\lim_{n \\to +\\infty} u_n = l lorsque la suite converge.",
+  "rubricName": "Grille d'évaluation – Suites numériques (Terminale)",
+  "criteria": [
+    {
+      "description": "Identification et calcul du terme général u_n",
+      "levels": [
+        { "score": 0, "definition": "L'élève ne distingue pas suite arithmétique et géométrique. Il ne parvient pas à établir u_n, ou confond la raison r avec la valeur initiale u_0." },
+        { "score": 1, "definition": "L'élève identifie correctement le type de suite mais commet une erreur de calcul dans l'expression de u_n, par exemple en écrivant u_n = u_0 + n \\times r au lieu de u_n = u_0 + (n-1) \\times r pour une suite indicée à partir de 1." },
+        { "score": 2, "definition": "L'élève établit et justifie l'expression exacte du terme général, aussi bien pour une suite arithmétique \\( u_n = u_0 + n \\times r \\) que géométrique \\( u_n = u_0 \\times q^n \\), en précisant le domaine de définition (n \\geq 0 ou n \\geq 1)." }
+      ]
+    },
+    {
+      "description": "Calcul de la somme des n premiers termes",
+      "levels": [
+        { "score": 0, "definition": "L'élève n'applique aucune formule de sommation ou utilise une formule erronée. Il ne perçoit pas le lien entre \\sum_{k=0}^{n} u_k et la nature de la suite." },
+        { "score": 1, "definition": "L'élève connaît l'une des deux formules (arithmétique ou géométrique) mais ne l'applique pas correctement : erreur sur les bornes de la somme, oubli du facteur \\frac{1}{2} pour la somme arithmétique, ou mauvais calcul de la raison q dans le cas géométrique." },
+        { "score": 2, "definition": "L'élève calcule correctement la somme S_n en utilisant la formule appropriée : S_n = \\frac{n(u_0 + u_{n-1})}{2} pour une suite arithmétique, ou S_n = u_0 \\times \\frac{1 - q^n}{1 - q} (avec q \\neq 1) pour une suite géométrique, en vérifiant les conditions d'application." }
+      ]
+    },
+    {
+      "description": "Étude de la convergence et calcul de limite",
+      "levels": [
+        { "score": 0, "definition": "L'élève ne définit pas la convergence ou affirme à tort qu'une suite est convergente. Il ne sait pas calculer \\lim_{n \\to +\\infty} u_n, même pour des cas simples comme u_n = \\frac{1}{n}." },
+        { "score": 1, "definition": "L'élève identifie que |q| < 1 implique la convergence vers 0 pour une suite géométrique, mais ne traite pas les cas |q| > 1 (divergence vers \\pm \\infty) ni q = 1 (suite constante). Il confond parfois convergence et décroissance." },
+        { "score": 2, "definition": "L'élève distingue les trois cas (|q| < 1, |q| = 1, |q| > 1) et utilise correctement la définition : \\(\\lim_{n \\to +\\infty} u_n = l\\) si pour tout \\varepsilon > 0 il existe un rang N tel que |u_n - l| \\leq \\varepsilon pour tout n \\geq N. Il justifie ses calculs de limite avec les théorèmes appropriés." }
+      ]
+    },
+    {
+      "description": "Raisonnement par récurrence",
+      "levels": [
+        { "score": 0, "definition": "L'élève ne structure pas le raisonnement par récurrence. Il manque l'initialisation (vérification pour n = 0 ou n = 1) ou l'hérédité (hypothèse de récurrence : si P(n) est vraie, alors P(n+1) est vraie)." },
+        { "score": 1, "definition": "La structure du raisonnement est présente (initialisation et hérédité annoncées), mais l'étape d'hérédité est incomplète : l'élève suppose P(n) mais n'exploite pas cette hypothèse pour établir P(n+1), ou commet une erreur de calcul lors de la substitution de u_{n+1} = f(u_n)." },
+        { "score": 2, "definition": "L'élève conduit la récurrence complète et rigoureuse : initialisation vérifiée, hypothèse explicitement posée (supposons u_n \\geq 0 pour un certain n), calcul de u_{n+1} à partir de la relation de récurrence, conclusion portant sur \\forall n \\in \\mathbb{N}." }
+      ]
+    }
+  ]
+}

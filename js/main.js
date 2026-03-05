@@ -4,20 +4,19 @@
  * Il importe les fonctions nécessaires depuis les modules spécialisés et les exécute dans l'ordre approprié.
  */
 
-import { loadTranslations, initLanguageSwitcher } from './modules/translation.js';
-import { setupTabs, generateTiles, initDragToScroll } from './modules/ui.js';
-import { initOcr } from './modules/ocr.js';
-import { showHelpModal, setupEventListeners } from './modules/utils.js';
-import { initCaramelAnimationEffects } from './modules/animations.js';
-import { initVersionChecker } from './modules/version-checker.js';
-import { initEmergencyNotifications } from './modules/emergency-notification.js';
-import { initSmartPreloading } from './modules/lib-loader.js';
-import { initNotificationCenter, initNotificationDropdown, initToastNotifications, initPreviewModal } from './modules/notifications.js';
+import { loadTranslations, initLanguageSwitcher } from './core/translation.js';
+import { setupFilters, generateTiles, initGenerationResultModal } from './ui/ui.js';
+import { initOcr } from './services/ocr.js';
+import { showHelpModal, setupEventListeners } from './core/utils.js';
+import { initCaramelAnimationEffects } from './ui/animations.js';
+import { initVersionChecker } from './ui/version-checker.js';
+import { initEmergencyNotifications } from './ui/emergency-notification.js';
+import { initSmartPreloading } from './core/lib-loader.js';
+import { initNotificationCenter, initNotificationDropdown, initToastNotifications, initPreviewModal } from './ui/notifications.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialisation de l'interface de base
-    setupTabs();
-    initDragToScroll();
+    setupFilters();
 
     // Génération immédiate des tuiles avec les traductions françaises par défaut
     // (les traductions par défaut sont déjà chargées dans translation.js)
@@ -33,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initToastNotifications();
     initPreviewModal();
     initEmergencyNotifications();
+    initGenerationResultModal();
 
     // Initialisation de la logique OCR
     initOcr();

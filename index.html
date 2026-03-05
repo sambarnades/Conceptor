@@ -5,15 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caramel</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/all.min.css">
-    <link rel="stylesheet" href="css/llm.css">
-    <link rel="stylesheet" href="css/flag-icons.min.css">
-    <link rel="stylesheet" href="css/custom.css">
-    <link rel="stylesheet" href="css/modale-aide.css">
-    <link rel="stylesheet" href="css/mentions-legales.css">
-    <link rel="stylesheet" href="css/json-editor.css">
-    <link rel="icon" href="images/logo_caramel.ico" type="image/x-icon">
+    <!-- Vendor CSS (external libraries) -->
+    <link rel="stylesheet" href="css/vendor/all.min.css">
+    <link rel="stylesheet" href="css/vendor/flag-icons.min.css">
+
+    <!-- Base CSS (global styles) -->
+    <link rel="stylesheet" href="css/base/style.css">
+    <link rel="stylesheet" href="css/base/custom.css">
+
+    <!-- Component CSS (modular specific styles) -->
+    <link rel="stylesheet" href="css/components/json-editor.css">
+    <link rel="stylesheet" href="css/components/llm.css">
+    <link rel="stylesheet" href="css/components/modale-aide.css">
+    <link rel="stylesheet" href="css/components/mentions-legales.css">
+    <link rel="icon" href="assets/images/branding/logo_caramel.ico" type="image/x-icon">
 
     <!-- Début Matomo Code -->
     <script>
@@ -36,7 +41,7 @@
 <body>
     <header class="app-bar">
         <div class="header-left">
-            <img src="images/logo_caramel.webp" alt="Logo Caramel" class="logo">
+            <a href="./"><img src="assets/images/branding/logo_caramel.webp" alt="Logo Caramel" class="logo"></a>
             <div class="title-container">
                 <h1>Caramel</h1>
                 <p class="subtitle" data-key="subtitle">Création Assistée de Ressources et d'Activités Magistère et Éléa
@@ -46,7 +51,7 @@
         <div class="header-right">
             <a href="https://edurl.fr/caramel-tchap" target="_blank" class="help-btn" id="tchap-button"
                 aria-label="Tchap">
-                <img src="images/tchap.webp" alt="Tchap" class="tchap-icon">
+                <img src="assets/images/branding/tchap.webp" alt="Tchap" class="tchap-icon">
                 <span>Tchap</span>
             </a>
             <button class="help-btn" id="help-button" aria-label="Aide">
@@ -82,8 +87,9 @@
                 <div class="notification-dropdown" role="menu" aria-labelledby="notification-btn">
                     <div class="notification-dropdown__header">
                         <span class="notification-dropdown__title" data-key="notifications">Notifications</span>
-                        <button class="notification-dropdown__clear" aria-label="Tout effacer">
-                            <i class="fas fa-trash"></i>
+                        <button class="notification-dropdown__download-all" title="Tout télécharger" style="display:none;">
+                            <i class="fas fa-download"></i>
+                            <span data-key="download_all">Tout télécharger</span>
                         </button>
                     </div>
                     <div class="notification-list">
@@ -101,7 +107,7 @@
     <div id="emergency-notification-container"></div>
 
 
-    <div class="container">
+    <div class="container tiles-disabled">
         <div class="prompt-generator">
             <div class="mode-tabs">
                 <button class="mode-tab active" data-mode="simple" data-key="fast_mode">Mode Rapide</button>
@@ -175,34 +181,26 @@
             </div>
         </div>
 
-        <div class="tabs">
-            <button class="tab-link active" data-tab="all" data-key="tab_all">Tout</button>
-            <button class="tab-link" data-tab="quiz" data-key="tab_quiz">Quiz & Tests</button>
-            <button class="tab-link" data-tab="text" data-key="tab_text">Manipulation de texte</button>
-            <button class="tab-link" data-tab="memory" data-key="tab_memory">Mémorisation & Découverte</button>
-            <button class="tab-link" data-tab="elea" data-key="tab_elea">Éléa</button>
-            <button class="tab-link" data-tab="h5p" data-key="tab_h5p">H5P</button>
+        <div class="filter-bar">
+            <div class="filter-group filter-group--activity">
+                <button class="filter-chip filter-chip--activity active" data-filter-type="all" data-key="tab_all">Tout</button>
+                <button class="filter-chip filter-chip--activity" data-filter-type="quiz" data-key="tab_quiz">Quiz & Tests</button>
+                <button class="filter-chip filter-chip--activity" data-filter-type="text" data-key="tab_text">Manipulation de texte</button>
+                <button class="filter-chip filter-chip--activity" data-filter-type="memory" data-key="tab_memory">Mémorisation & Découverte</button>
+            </div>
+            <div class="filter-separator"></div>
+            <div class="filter-group filter-group--platform">
+                <button class="filter-chip filter-chip--h5p" data-filter-platform="h5p" data-key="tab_h5p">H5P</button>
+                <button class="filter-chip filter-chip--elea" data-filter-platform="elea" data-key="tab_elea">Éléa</button>
+                <button class="filter-chip filter-chip--magistere" data-filter-platform="magistere" data-key="tab_magistere">Magistère</button>
+                <button class="filter-chip filter-chip--moodle" data-filter-platform="moodle" data-key="tab_moodle">Moodle</button>
+            </div>
         </div>
 
-        <div id="all" class="tab-content active">
+        <div class="activity-grid">
             <div class="grid">
                 <!-- Les tuiles seront insérées ici par le JS -->
             </div>
-        </div>
-        <div id="quiz" class="tab-content">
-            <div class="grid"></div>
-        </div>
-        <div id="text" class="tab-content">
-            <div class="grid"></div>
-        </div>
-        <div id="memory" class="tab-content">
-            <div class="grid"></div>
-        </div>
-        <div id="elea" class="tab-content">
-            <div class="grid"></div>
-        </div>
-        <div id="h5p" class="tab-content">
-            <div class="grid"></div>
         </div>
     </div>
     </div>
@@ -227,15 +225,43 @@
         </div>
         <div id="recipe-steps"></div>
     </div>
-    <div id="success-message" class="hidden">
-        <h1 data-key="caramel_success_title">Votre sucrerie est prête !</h1>
+    <div id="generation-result-modal" class="generation-result-modal hidden" role="dialog" aria-modal="true">
+        <div class="generation-result-modal__card">
+            <div class="generation-result-modal__header">
+                <img src="assets/images/branding/logo_caramel.webp" alt="Caramel" class="generation-result-modal__logo">
+                <h2 class="generation-result-modal__title" data-key="caramel_success_title">Votre sucrerie est prête !</h2>
+            </div>
+            <div class="generation-result-modal__activity">
+                <img class="generation-result-modal__icon" src="" alt="">
+                <span class="generation-result-modal__name"></span>
+            </div>
+            <div class="generation-result-modal__actions">
+                <div class="generation-result-modal__download-wrapper">
+                    <button class="generation-result-modal__btn generation-result-modal__btn--primary" data-action="download">
+                        <i class="fas fa-download"></i>
+                        <span class="generation-result-modal__download-label">Télécharger en H5P</span>
+                    </button>
+                    <button class="generation-result-modal__dropdown-toggle" aria-label="Autres formats de téléchargement">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="generation-result-modal__dropdown hidden"></div>
+                </div>
+                <button class="generation-result-modal__btn generation-result-modal__btn--secondary" data-action="preview">
+                    <i class="fas fa-eye"></i>
+                    <span data-key="result_preview_edit">Visualiser et éditer</span>
+                </button>
+            </div>
+            <a class="generation-result-modal__continue" data-action="continue" data-key="result_continue">
+                Continuer <i class="fas fa-arrow-right fa-xs"></i>
+            </a>
+        </div>
     </div>
 
     <!-- ================= Footer ==================== -->
 
     <footer class="footer">
         <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank"><i
-                class="fas fa-info-circle"></i> Caramel v4.0.0</a>
+                class="fas fa-info-circle"></i> Caramel v5.0.0</a>
         <a href="mailto:gauthier.remande@ac-nantes.fr"><i class="fas fa-envelope"></i> Gauthier REMANDE</a>
         <a href="mailto:emmanuel.gaunard@ac-grenoble.fr"><i class="fas fa-envelope"></i> Emmanuel GAUNARD</a>
         <a href="https://forge.apps.education.fr/caramel/caramel"><i class="fas fa-code-branch"></i> Forge</a>
@@ -243,12 +269,13 @@
                 data-key="ticket">Ticket</span></a>
         <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE"><i class="fas fa-scroll"></i>
             <span data-key="license_info">GNU GPL v3.0 ou ultérieure</span></a>
-        <a href="#" id="legal-mentions-link"><i class="fas fa-gavel"></i> <span data-key="legal_mentions">Mentions légales</span></a>
+        <a href="#" id="legal-mentions-link"><i class="fas fa-gavel"></i> <span data-key="legal_mentions">Mentions
+                légales</span></a>
     </footer>
 
     <!-- ================= Mentions légales ==================== -->
 
-    <div id="legal-mentions-modal" class="modal">
+    <div id="legal-mentions-modal" class="modal" role="dialog" aria-modal="true">
         <div class="modal-content">
             <div class="legal-modal-header">
                 <h2><i class="fas fa-gavel"></i> <span data-translate="legal_title"></span></h2>
@@ -280,6 +307,7 @@
                 <div class="preview-modal__header-title-wrapper">
                     <img class="preview-modal__icon" src="" alt="" style="display: none;">
                     <h2 class="preview-modal__title" id="preview-modal-title"></h2>
+                    <div class="preview-modal__platforms-list"></div>
                 </div>
                 <button class="preview-modal__close" aria-label="Fermer">
                     <i class="fas fa-times"></i>
@@ -298,11 +326,6 @@
 
             <footer class="preview-modal__footer">
                 <div class="preview-modal__footer-left">
-                    <button class="preview-modal__edit" aria-label="Éditer">
-                        <i class="fas fa-pen"></i>
-                        <span data-key="edit_content">Éditer</span>
-                    </button>
-
                     <div class="preview-modal__download-group">
                         <span class="preview-modal__download-label" data-key="download">Télécharger</span>
                         <span class="separator">:</span>
@@ -314,8 +337,9 @@
                 </div>
 
                 <div class="preview-modal__footer-right">
-                    <span class="preview-modal__compatibility-label" data-key="compatible_with">Compatible avec :</span>
-                    <div class="preview-modal__platforms-list"></div>
+                    <button class="preview-modal__edit-btn action-btn secondary-btn" aria-label="Éditer l'activité">
+                        <i class="fas fa-pen"></i> <span data-key="edit_content">Éditer</span>
+                    </button>
                 </div>
             </footer>
         </div>

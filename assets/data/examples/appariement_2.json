@@ -1,0 +1,30 @@
+{
+  "title": "La longueur du cercle : Associe les bons éléments !",
+  "intro": "Bonjour ! Pour bien maîtriser le calcul du périmètre d'un cercle, essaie d'associer chaque question à sa réponse correspondante. N'hésite pas à utiliser ta calculatrice pour t'aider !",
+  "pairs": [
+    {
+      "question": "Formule de la longueur avec le diamètre \\( d \\)",
+      "answer": "\\( \\pi \\times d \\)"
+    },
+    {
+      "question": "Valeur approchée de \\( \\pi \\) souvent utilisée",
+      "answer": "3,14"
+    },
+    {
+      "question": "Diamètre d'un cercle de rayon 4 cm",
+      "answer": "8 cm"
+    },
+    {
+      "question": "Longueur d'un cercle de diamètre 10 cm",
+      "answer": "31,4 cm"
+    },
+    {
+      "question": "Longueur d'un cercle de rayon 1 cm",
+      "answer": "6,28 cm"
+    },
+    {
+      "question": "Lien entre le rayon \\( r \\) et le diamètre \\( d \\)",
+      "answer": "\\( d = 2 \\times r \\)"
+    }
+  ]
+}

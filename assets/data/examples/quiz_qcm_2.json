@@ -1,0 +1,119 @@
+{
+  "title": "Quiz QCM - Suites de fonctions inverses dans les complexes",
+  "questions": [
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Inverse de la fonction 1/z" },
+      "params": {
+        "question": "**Quelle est la forme de la fonction inverse** de \\(f(z)=\\dfrac{1}{z}\\) définie sur \\(\\mathbb{C}\\setminus\\{0\\}\\) ?",
+        "answers": [
+          { "text": "\\(f^{-1}(z)=\\dfrac{1}{z}\\)", "correct": true },
+          { "text": "\\(f^{-1}(z)=z^{2}\\)", "correct": false },
+          { "text": "\\(f^{-1}(z)=\\overline{z}\\)", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Vous avez besoin de revoir la notion d'inverse d'une fonction." },
+          { "from": 11, "to": 30, "feedback": "Pas mal, mais il faut approfondir la définition." },
+          { "from": 31, "to": 50, "feedback": "Correct, continuez à vous entraîner." },
+          { "from": 51, "to": 70, "feedback": "Très bien, vous êtes sur la bonne voie." },
+          { "from": 71, "to": 90, "feedback": "Excellent, vous maîtrisez la notion d'inverse." },
+          { "from": 91, "to": 100, "feedback": "Parfait, vous avez une excellente compréhension." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Composition de l'inverse" },
+      "params": {
+        "question": "**Quelle propriété** satisfait la composition de \\(f(z)=\\dfrac{1}{z}\\) avec elle‑même ?",
+        "answers": [
+          { "text": "\\(f\\circ f = \\text{Id}_{\\mathbb{C}\\setminus\\{0\\}}\\)", "correct": true },
+          { "text": "\\(f\\circ f = f\\)", "correct": false },
+          { "text": "\\(f\\circ f = 0\\)", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Révisez la notion de composition d'applications." },
+          { "from": 11, "to": 30, "feedback": "Vous vous rapprochez, mais ce n'est pas encore cela." },
+          { "from": 31, "to": 50, "feedback": "Bonne réponse, continuez ainsi." },
+          { "from": 51, "to": 70, "feedback": "Très bon résultat, vous avez compris." },
+          { "from": 71, "to": 90, "feedback": "Excellent, la propriété est bien maîtrisée." },
+          { "from": 91, "to": 100, "feedback": "Parfait, aucune erreur." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Points fixes de l'inverse" },
+      "params": {
+        "question": "**Quels sont les points fixes** de la fonction \\(f(z)=\\dfrac{1}{z}\\) dans \\(\\mathbb{C}\\setminus\\{0\\}\\) ?",
+        "answers": [
+          { "text": "\\(z=1\\)", "correct": true },
+          { "text": "\\(z=-1\\)", "correct": true },
+          { "text": "\\(z=i\\)", "correct": false },
+          { "text": "\\(z=0\\)", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": false },
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Aucun point fixe n'a été identifié correctement." },
+          { "from": 11, "to": 30, "feedback": "Vous avez trouvé un point fixe, mais il en manque." },
+          { "from": 31, "to": 50, "feedback": "Bonne moitié de la réponse, poursuivez vos efforts." },
+          { "from": 51, "to": 70, "feedback": "Vous avez identifié correctement les deux points fixes." },
+          { "from": 71, "to": 90, "feedback": "Excellent, vous maîtrisez parfaitement les points fixes." },
+          { "from": 91, "to": 100, "feedback": "Parfait, aucune erreur." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Itération d'une rotation inverse" },
+      "params": {
+        "question": "**Quelle expression** représente la n‑ième itération de la fonction inverse \\(f^{-1}(z)=e^{-i\\theta}z\\) ?",
+        "answers": [
+          { "text": "\\(g_{n}(z)=e^{-i n\\theta}z\\)", "correct": true },
+          { "text": "\\(g_{n}(z)=e^{i n\\theta}z\\)", "correct": false },
+          { "text": "\\(g_{n}(z)=e^{-i\\theta/n}z\\)", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "L'expression proposée n'est pas correcte." },
+          { "from": 11, "to": 30, "feedback": "Proche, mais il manque un signe." },
+          { "from": 31, "to": 50, "feedback": "Bonne réponse, continuez à pratiquer." },
+          { "from": 51, "to": 70, "feedback": "Très bien, vous avez compris l'itération." },
+          { "from": 71, "to": 90, "feedback": "Excellent, l'expression est exacte." },
+          { "from": 91, "to": 100, "feedback": "Parfait, aucune erreur." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Image du carré sur le demi‑plan" },
+      "params": {
+        "question": "**Quelle est l'image** de la fonction \\(f(z)=z^{2}\\) lorsque \\(z\\) parcourt le demi‑plan supérieur \\(\\{z\\in\\mathbb{C}\\mid \\operatorname{Im}(z)\\ge0\\}\\) ?",
+        "answers": [
+          { "text": "Le plan complexe privé de l'axe réel négatif", "correct": true },
+          { "text": "Le demi‑plan supérieur uniquement", "correct": false },
+          { "text": "Tout le plan complexe", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Réponse incorrecte, revoyez l'image d'une fonction carré." },
+          { "from": 11, "to": 30, "feedback": "Vous êtes proche, mais l'image n'est pas limitée au demi‑plan." },
+          { "from": 31, "to": 50, "feedback": "Bonne réponse, continuez ainsi." },
+          { "from": 51, "to": 70, "feedback": "Très bien, vous avez bien compris l'image." },
+          { "from": 71, "to": 90, "feedback": "Excellent, l'image est correctement identifiée." },
+          { "from": 91, "to": 100, "feedback": "Parfait, aucune erreur." }
+        ]
+      }
+    }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "Résultat faible. Revoyez les notions de bases sur les fonctions inverses." },
+    { "from": 11, "to": 30, "feedback": "Résultat insuffisant. Continuez vos efforts et réexercez les concepts." },
+    { "from": 31, "to": 50, "feedback": "Résultat moyen. Vous progressez, persévérez." },
+    { "from": 51, "to": 70, "feedback": "Bon résultat. Vous maîtrisez plusieurs notions." },
+    { "from": 71, "to": 90, "feedback": "Très bon résultat. Vous êtes sur la bonne voie." },
+    { "from": 91, "to": 100, "feedback": "Excellent résultat. Félicitations !" }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "title": "Quiz Vrai/Faux – Fonctions racines carrées et formules",
+  "questions": [
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "Domaine de la racine carrée" },
+      "params": {
+        "question": "La fonction \\(\\sqrt{x}\\) est définie pour tout réel \\(x\\).",
+        "correct": "false",
+        "feedbackOnCorrect": "Bien vu, le domaine de la racine carrée est \\(x \\ge 0\\).",
+        "feedbackOnWrong": "Attention, la racine carrée n'est pas définie pour les nombres négatifs."
+      }
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "Valeur de la racine de zéro" },
+      "params": {
+        "question": "La racine carrée de 0 est 0.",
+        "correct": "true",
+        "feedbackOnCorrect": "Exact, \\(\\sqrt{0}=0\\).",
+        "feedbackOnWrong": "En fait, la racine carrée de zéro vaut bien 0."
+      }
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "Identité avec le carré" },
+      "params": {
+        "question": "Pour tout réel \\(a\\), \\(\\sqrt{a^{2}} = a\\).",
+        "correct": "false",
+        "feedbackOnCorrect": "Correct, l'égalité vraie est \\(\\sqrt{a^{2}} = |a|\\).",
+        "feedbackOnWrong": "Ce n'est pas toujours vrai : la racine carrée d'un carré donne la valeur absolue."
+      }
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "Domaine d'une fonction affine sous racine" },
+      "params": {
+        "question": "La fonction \\(f(x)=\\sqrt{2x+1}\\) est définie pour \\(x \\ge -\\frac{1}{2}\\).",
+        "correct": "true",
+        "feedbackOnCorrect": "Exact, le radicande doit être positif ou nul.",
+        "feedbackOnWrong": "Le radicande \\(2x+1\\) doit être ≥0, ce qui donne bien \\(x \\ge -\\frac{1}{2}\\)."
+      }
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "Résolution d'une équation racine" },
+      "params": {
+        "question": "Si \\(\\sqrt{x}=5\\) alors \\(x=25\\).",
+        "correct": "true",
+        "feedbackOnCorrect": "Bien joué, en élevant les deux membres au carré on obtient \\(x=25\\).",
+        "feedbackOnWrong": "En faisant le carré des deux côtés, on trouve bien \\(x=25\\)."
+      }
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "Produit de racines" },
+      "params": {
+        "question": "Pour tout \\(a,b \\ge 0\\), \\(\\sqrt{a}\\,\\sqrt{b}=\\sqrt{ab}\\).",
+        "correct": "true",
+        "feedbackOnCorrect": "Exact, la propriété du produit des racines s'applique aux nombres non négatifs.",
+        "feedbackOnWrong": "Cette propriété est vraie lorsque les deux radicands sont non négatifs."
+      }
+    }
+  ],
+  "overallFeedback": [
+    {"from": 0, "to": 10, "feedback": "Résultat faible. Reprenez les notions de base sur les racines carrées."},
+    {"from": 11, "to": 30, "feedback": "Résultat insuffisant. Continuez à vous exercer sur les domaines de définition."},
+    {"from": 31, "to": 50, "feedback": "Résultat moyen. Vous avez compris une partie des concepts, mais il reste des points à consolider."},
+    {"from": 51, "to": 70, "feedback": "Bon résultat. Vous maîtrisez la plupart des propriétés des fonctions racines."},
+    {"from": 71, "to": 90, "feedback": "Très bon résultat. Vous êtes à l'aise avec les formules et leurs applications."},
+    {"from": 91, "to": 100, "feedback": "Excellent résultat. Félicitations, vous avez une parfaite maîtrise des fonctions racines carrées."}
+  ]
+}

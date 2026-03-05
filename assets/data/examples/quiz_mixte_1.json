@@ -1,0 +1,150 @@
+{
+  "title": "Découverte des fonctions racines carrées",
+  "questions": [
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Définition de la fonction racine carrée" },
+      "params": {
+        "question": "Quelle est la définition correcte de la fonction racine carrée sur l'ensemble des réels positifs ?",
+        "answers": [
+          {
+            "text": "La fonction qui à tout réel positif x associe son carré.",
+            "correct": false
+          },
+          {
+            "text": "La fonction qui à tout réel positif x associe le nombre dont le carré est égal à x.",
+            "correct": true
+          },
+          {
+            "text": "La fonction qui à tout réel x associe \\(\\sqrt{x}\\) pour tout x réel.",
+            "correct": false
+          },
+          {
+            "text": "La fonction qui à tout réel x associe \\(x^2\\).",
+            "correct": false
+          }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Il semble que tu aies besoin de revoir la définition de la racine carrée. N'hésite pas à consulter ton manuel ou à revoir les exemples donnés en classe." },
+          { "from": 11, "to": 30, "feedback": "Tu es sur la bonne voie, mais il y a encore des confusions. Revois attentivement la relation entre une racine carrée et son carré." },
+          { "from": 31, "to": 50, "feedback": "Tu as une bonne compréhension partielle. Essaye de préciser davantage la relation entre un nombre et sa racine carrée." },
+          { "from": 51, "to": 70, "feedback": "Bien joué ! Tu as compris le principe fondamental. Continue à t'entraîner avec des exemples concrets." },
+          { "from": 71, "to": 90, "feedback": "Excellent ! Tu maîtrises bien la définition. Tu es prêt à passer à des applications plus complexes." },
+          { "from": 91, "to": 100, "feedback": "Parfait ! Tu as une excellente maîtrise du concept. Continue ainsi, tu es en voie de devenir un expert en fonctions." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.Blanks 1.14",
+      "metadata": { "title": "Compléter les propriétés" },
+      "params": {
+        "taskDescription": "Complète les phrases suivantes en utilisant les mots clés : *positif*, *racine carrée*, *carré*, *non négatif*.",
+        "questions": [
+          "La **racine carrée** d'un nombre réel *positif* est le nombre *non négatif* dont le *carré* est égal à ce nombre.",
+          "Pour tout nombre réel *positif* a, on a : \\(\\sqrt{a^2} = *a*\\).",
+          "L'ensemble de définition de la fonction \\(f(x) = \\sqrt{x}\\) est l'ensemble des nombres *positifs* ou *nuls*."
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Il y a encore des lacunes dans ta compréhension des propriétés de la racine carrée. Revois les bases avec des exemples numériques." },
+          { "from": 11, "to": 30, "feedback": "Tu as quelques bonnes idées, mais des erreurs de formulation. Travaille sur les définitions précises." },
+          { "from": 31, "to": 50, "feedback": "Tu t'approches du bon niveau. Vérifie bien les conditions d'existence et les propriétés fondamentales." },
+          { "from": 51, "to": 70, "feedback": "Très bien ! Tu maîtrises les grandes lignes. Continue à t'entraîner pour consolider tes connaissances." },
+          { "from": 71, "to": 90, "feedback": "Excellent ! Tu as bien compris les propriétés essentielles. Tu es prêt à résoudre des problèmes plus complexes." },
+          { "from": 91, "to": 100, "feedback": "Parfait ! Tu as une maîtrise totale des propriétés. Tu es en excellente position pour aborder les applications." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.DragText 1.10",
+      "metadata": { "title": "Associer les expressions" },
+      "params": {
+        "taskDescription": "Glisse les expressions de la colonne de gauche vers les valeurs correspondantes dans la colonne de droite.",
+        "textField": "Les expressions suivantes ont pour valeur : *\\(\\sqrt{16}\\)*, *\\(\\sqrt{25}\\)*, *\\(\\sqrt{0}\\)*, *\\(\\sqrt{49}\\)*. Les valeurs sont : *4*, *5*, *0*, *7*.",
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Il semble que tu aies du mal à calculer les racines carrées simples. Utilise une calculatrice ou revois les carrés parfaits." },
+          { "from": 11, "to": 30, "feedback": "Tu as quelques bonnes correspondances, mais des erreurs importantes. Revois les définitions des racines carrées." },
+          { "from": 31, "to": 50, "feedback": "Tu t'approches du bon niveau. Vérifie bien que la racine carrée est toujours *non négative*." },
+          { "from": 51, "to": 70, "feedback": "Très bien ! Tu as bien compris les calculs de base. Continue à t'entraîner pour gagner en rapidité." },
+          { "from": 71, "to": 90, "feedback": "Excellent ! Tu maîtrises parfaitement les racines carrées simples. Tu es prêt à passer à des expressions plus complexes." },
+          { "from": 91, "to": 100, "feedback": "Parfait ! Tu as une excellente intuition des racines carrées. Continue ainsi, tu es en voie de devenir un expert." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MarkTheWords 1.11",
+      "metadata": { "title": "Identifier les erreurs" },
+      "params": {
+        "taskDescription": "Surligne les mots ou expressions incorrects dans le texte suivant.",
+        "textField": "La fonction racine carrée est définie pour tout réel x. Elle associe à chaque nombre x son *carré*. Par exemple, \\(\\sqrt{9} = 3\\), car 3 est *le seul* nombre dont le carré est 9. Cependant, \\(\\sqrt{4} = -2\\) est aussi correct car (-2)² = 4.",
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Tu as du mal à identifier les erreurs dans les propriétés de la racine carrée. Revois l'ensemble de définition et la définition de la racine carrée." },
+          { "from": 11, "to": 30, "feedback": "Tu as repéré certaines erreurs, mais pas toutes. Attention : la racine carrée est toujours *non négative*." },
+          { "from": 31, "to": 50, "feedback": "Tu as bien repéré les points clés. Vérifie que la racine carrée d'un nombre positif est toujours positive." },
+          { "from": 51, "to": 70, "feedback": "Très bien ! Tu as identifié les erreurs importantes. Tu comprends bien les limites de la racine carrée." },
+          { "from": 71, "to": 90, "feedback": "Excellent ! Tu as une excellente sensibilité aux erreurs fréquentes. Continue à être vigilant." },
+          { "from": 91, "to": 100, "feedback": "Parfait ! Tu as une maîtrise totale des subtilités de la racine carrée. Tu es en excellente position pour enseigner ce concept." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.Essay 1.5",
+      "metadata": { "title": "Rédaction libre" },
+      "params": {
+        "taskDescription": "Explique, en quelques phrases, pourquoi la fonction \\(f(x) = \\sqrt{x}\\) n'est pas définie pour les nombres négatifs dans l'ensemble des réels.",
+        "keywords": [
+          { "keyword": "réel", "options": { "points": 1, "caseSensitive": false } },
+          { "keyword": "carré", "options": { "points": 1, "caseSensitive": false } },
+          { "keyword": "racine carrée", "options": { "points": 1, "caseSensitive": false } },
+          { "keyword": "ensemble de définition", "options": { "points": 1, "caseSensitive": false } }
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Ton explication manque de clarté. Revois la relation entre les carrés et les racines carrées. Essaie de t'imaginer un nombre dont le carré serait négatif." },
+          { "from": 11, "to": 30, "feedback": "Tu as quelques idées correctes, mais tu n'as pas bien articulé la raison fondamentale. Pense à la propriété des carrés des réels." },
+          { "from": 31, "to": 50, "feedback": "Tu t'approches du bon raisonnement. Essaie de préciser que le carré d'un réel ne peut pas être négatif." },
+          { "from": 51, "to": 70, "feedback": "Très bien ! Tu as bien compris le lien entre les carrés et les racines carrées. Tu pourrais aller plus loin en précisant l'ensemble de définition." },
+          { "from": 71, "to": 90, "feedback": "Excellent ! Tu as bien expliqué pourquoi les racines carrées des nombres négatifs ne sont pas définies dans les réels." },
+          { "from": 91, "to": 100, "feedback": "Parfait ! Ton explication est claire, complète et rigoureuse. Tu maîtrises parfaitement le concept. Bravo !" }
+        ]
+      }
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "Vrai ou Faux ?" },
+      "params": {
+        "question": "La fonction \\(f(x) = \\sqrt{x}\\) est définie pour tout réel x.",
+        "correct": "false"
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Calcul de racine carrée" },
+      "params": {
+        "question": "Quelle est la valeur de \\(\\sqrt{121} + \\sqrt{25}\\) ?",
+        "answers": [
+          { "text": "16", "correct": true },
+          { "text": "17", "correct": false },
+          { "text": "18", "correct": false },
+          { "text": "11", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Il semble que tu aies du mal à calculer les racines carrées. Revois les carrés parfaits jusqu'à 144." },
+          { "from": 11, "to": 30, "feedback": "Tu es sur la bonne voie, mais il y a une erreur de calcul. Vérifie que \\(\\sqrt{121} = 11\\) et \\(\\sqrt{25} = 5\\)." },
+          { "from": 31, "to": 50, "feedback": "Tu as bien calculé une partie, mais l'addition est erronée. Fais attention aux calculs." },
+          { "from": 51, "to": 70, "feedback": "Bien joué ! Tu as trouvé la bonne réponse. Continue à t'entraîner pour gagner en rapidité." },
+          { "from": 71, "to": 90, "feedback": "Excellent ! Tu maîtrises bien les calculs de racines carrées. Tu es prêt à passer à des expressions plus complexes." },
+          { "from": 91, "to": 100, "feedback": "Parfait ! Tu as une excellente maîtrise des calculs. Tu es en voie de devenir un expert en calculs algébriques." }
+        ]
+      }
+    }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "Résultat faible. Il est important de revoir les bases des fonctions racines carrées : définition, ensemble de définition, calculs simples." },
+    { "from": 11, "to": 30, "feedback": "Résultat insuffisant. Tu as des lacunes importantes. Revois les définitions et fais des exercices simples pour consolider." },
+    { "from": 31, "to": 50, "feedback": "Résultat moyen. Tu as compris certains points, mais il reste des erreurs fréquentes. Travaille sur les propriétés fondamentales." },
+    { "from": 51, "to": 70, "feedback": "Bon résultat. Tu as une bonne compréhension du concept. Continue à t'entraîner pour atteindre la maîtrise." },
+    { "from": 71, "to": 90, "feedback": "Très bon résultat. Tu maîtrises bien les fonctions racines carrées. Tu es prêt à aborder des applications plus avancées." },
+    { "from": 91, "to": 100, "feedback": "Excellent résultat. Tu as une excellente maîtrise du sujet. Bravo, tu es un véritable expert en fonctions racines carrées !" }
+  ]
+}

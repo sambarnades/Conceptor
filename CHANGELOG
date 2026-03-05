@@ -4,6 +4,95 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 
 ---
 
+## [5.0.0] - 05-03-2026
+
+### 🚀 Nouveautés
+- **Éditeur d'activités intégré** : Une nouvelle fonctionnalité d'édition fait son apparition directement dans la modale de visualisation. Elle permet de modifier le contenu des activités (H5P et simulations Éléa/Moodle) avant le téléchargement. Les modifications sont répercutées en temps réel sur tous les formats d'export.
+- **Activité Drag and Drop** : Nouvelle activité H5P permettant de créer des exercices de glisser-déposer d'étiquettes dans des zones dédiées. L'IA génère un nombre d'étiquettes au choix et les adapte au nombre de zones de dépôt. Ce paramètre peut être directement modifié dans le prompt en "Mode guidé". Elle propose trois dispositions pour les étiquettes : en haut, en bas ou empilées au centre (similaire à LearningApps).
+- **Activité Devoir** : Nouvelle activité Moodle native (`assign`) permettant de créer des devoirs avec grilles d'évaluation critériée. L'IA génère des critères d'évaluation indépendants avec des niveaux de réussite (2 à 4 niveaux) et des descripteurs précis et observables. Chaque critère dispose d'une rubrique Moodle complète compatible avec Éléa, Magistère et toute instance Moodle 4.5+. La génération inclut : un simulateur visuel intégré pour prévisualiser la grille, un éditeur pour modifier/ajouter/supprimer des critères, et des exports bureautiques (DOCX, ODT, PDF) du devoir et de sa grille.
+- **Bouton contextuel « Générer en un clic » en mode guidé** : En mode guidé, le bouton principal du pied de modale s'adapte automatiquement au contexte :
+  - **Pas de JSON valide** (textarea vide ou texte libre) → le bouton affiche **« Générer en un clic »** accompagné d'un sélecteur de modèle IA. Un clic lance la génération par l'IA, remplit le champ JSON, puis déclenche automatiquement le packaging de l'activité.
+  - **JSON valide détecté** (après génération IA ou collage manuel) → le bouton bascule sur **« Générer l'activité »** pour un packaging direct sans repasser par l'IA.
+  - **Modification du prompt** → le champ JSON est vidé automatiquement (l'ancien contenu n'est plus pertinent) et le bouton revient à l'état « Générer en un clic ».
+  Ce comportement évite les clics inutiles et offre un workflow fluide : générer, ajuster le prompt, régénérer — le tout sans quitter la modale.
+- **Aide contextuelle à l'import** : Ajout de boutons d'aide (icônes point d'interrogation) à côté des boutons de téléchargement pour les formats spécifiques (MBZ, XML, GIFT). Ces aides guident l'utilisateur pas à pas pour l'importation de ces fichiers dans Éléa ou Moodle.
+- **Auto-réparateur de JSON (JSON Healer)** : Intégration d'un module de correction automatique pour les données "IA-First". Ce système défensif détecte et répare les erreurs de syntaxe JSON (comme les backslashes mal échappés dans les formules LaTeX `\pi`, `\times`, etc.) et normalise les structures de données (enveloppement automatique dans `params`, correction des versions de bibliothèques H5P) avant le traitement final.
+- **Modale post-génération** : Après la génération d'une activité, une modale contextuelle propose trois actions :
+  1. **Télécharger** : accès direct au fichier généré (H5P, MBZ, etc.)
+  2. **Visualiser et éditer** : prévisualisation en direct avec possibilité d'éditer le JSON avant téléchargement
+  3. **Continuer** : fermeture de la modale pour générer rapidement une autre activité
+  Cette modale améliore grandement le workflow et permet de gagner du temps lors de générations en série.
+- **Téléchargement groupé des notifications** : Nouveau bouton "Tout télécharger" stylisé (pill/étiquette bleue) dans la barre de notifications. Il permet de télécharger en un seul clic tous les fichiers générés récemment, regroupés dans une archive ZIP. Particulièrement utile pour les sessions d'enseignants générant plusieurs activités d'affilée.
+
+### ✨ Améliorations
+- **Standardisation des exports bureautiques** :
+  - Utilisation systématique de la police **Arial** pour les exports DOCX et **Liberation Sans** pour les exports PDF et ODT.
+  - Rendu haute fidélité des formules mathématiques grâce à une conversion intelligente du LaTeX vers des caractères Unicode (gestion des vecteurs, lettres grecques, exposants et opérateurs).
+  - **Détection automatique de la langue** : Les exports DOCX, ODT et PDF définissent maintenant automatiquement la langue du document en fonction de la langue sélectionnée dans l'interface. Cela assure une correction orthographique correcte et une meilleure accessibilité (lecteurs d'écran).
+- **Nettoyage profond des activités** :
+  - **Validation métier renforcée** : Chaque type d'activité dispose d'une validation spécifique qui détecte les contenus pédagogiques manquants (questions vides, réponses insuffisantes, mots croisés incomplets). Les messages d'erreur sont clairs et contextuels.
+  - **Healing structurel intelligent** : Les erreurs non-pédagogiques (métadonnées, versions de bibliothèques, UUIDs manquants) sont réparées automatiquement avant la validation, sans intervention de l'utilisateur.
+  - **Robustesse accrue des cas limites** : Tous les processeurs H5P et Moodle traitent désormais les données partielles ou malformées de façon prévisible (pas de crash, retour de structures valides même incomplètes).
+- **Mots croisés enrichis** : Les exports DOCX/ODT/PDF des mots croisés incluent désormais la grille (vide dans l'énoncé et complétée dans le corrigé), générée dynamiquement à partir du contenu.
+- **Intégration Quiz mixte enrichie** : Le **Quiz Mixte** intègre désormais le **Glisser-déposer** (`H5P.DragQuestion`) comme 7ᵉ type de sous-question, complétant les types existants (QCM, Vrai/Faux, Mots à trous, Glisser les mots, Surligner les mots, Rédaction). Intégration améliorée des solutions pour les questions de type "Composition" (Essay) au sein des Quizsets H5P. Les exports DOCX/ODT/PDF ont été adaptés pour ce contexte : le Glisser-déposer dans un Quiz affiche un tableau simple avec les zones en en-têtes et des cases vides pour que l'élève écrive les mots directement, sans besoin de découper des étiquettes.
+- **Indices et feedbacks ciblés pour les QCM** : Les activités **Quiz QCM**, **Quiz Vrai/Faux** et **Quiz Mixte** peuvent désormais générer des indices (`tip`) et des feedbacks ciblés (`chosenFeedback`) sur les réponses. L'indice guide l'élève **avant** sa validation ; le feedback ciblé explique **après** validation pourquoi une mauvaise réponse est incorrecte. Ces éléments sont optionnels et réservés aux cas pédagogiquement les plus formateurs (erreurs fréquentes, confusions typiques). L'éditeur intégré permet de les modifier, ajouter ou supprimer après génération. Les prompts IA et les 11 fichiers de langue ont été mis à jour.
+- **Affichage mobile des tuiles** : Les tuiles d'activités sont désormais plus compactes sur téléphone pour faciliter la navigation et le choix des activités sur petit écran.
+- **Sous-section feedback compacte dans l'éditeur** : Les champs « Indice », « Feedback si sélectionné » et « Feedback si non sélectionné » dans l'éditeur JSON sont désormais plus fins et auto-dimensionnants : leur hauteur s'adapte automatiquement au contenu (1 ligne si 1 phrase, 2 lignes si le texte déborde).
+- **Refonte et enrichissement des tutoriels** : Réorganisation modulaire du système avec chargement dynamique. Le menu a été enrichi pour une navigation plus claire. Ajout d'une section dédiée à l'**édition des activités**, expliquant la modification du contenu après génération (illustrée par une capture d'écran). Mise à jour globale pour refléter les derniers contenus (**Quiz QCM**, **Quiz Vrai/Faux** et **Glisser-déposer**).
+- **Restructuration complète du site** : Refonte totale de l'arborescence pour une structure ultra-modulaire. Le code est désormais organisé par domaines fonctionnels (`core/`, `services/`, `ui/`, `h5p/`, `moodle/`, `export/`, `editor/`, `renderers/`). Cette organisation améliore grandement la maintenabilité, la scalabilité et facilite les futurs développements. L'historique Git a été méticuleusement préservé. Plus de détails dans [RESTRUCTURATION_COMPLETE.md](file:///d:/Bureau/Caramel/cara_dev2/docs/RESTRUCTURATION_COMPLETE.md).
+- **Réorganisation des ressources** : Segmentation des feuilles de style (`css/vendor/`, `css/base/`, `css/components/`) et centralisation des ressources statiques (images, flags, fonts, prompts) dans un répertoire `assets/` dédié.
+- **Migration js/libs vers js/vendor** : Standardisation du nommage des bibliothèques tierces pour une meilleure clarté.
+- **Vue OCR** : Affichage du compteur de caractères au format européen avec espaces insécables (ex: `120 000` au lieu de `120000`).
+- **Génération MBZ optimisée** : Centralisation complète de la génération des fichiers MBZ dans `js/modules/moodle-processors/`. Élimination des appels réseau multiples et injection de templates directement en JavaScript. La génération est désormais considérablement plus rapide et plus fiable. Suppression du répertoire `/elea/` devenu obsolète.
+- **Workflow n8n renforcé** : Refonte du workflow n8n responsable de la génération des activités par l'IA. Cette nouvelle version est plus robuste, gère mieux les erreurs de parsing et réduit significativement le taux d'échec lors des générations complexes.
+- **Mentions légales** : Ajout des références à la bibliothèque **DOMPurify** et à la police **Liberation Sans** dans la liste des dépendances.
+- **Simulateur QCM (Éléa)** : 
+  - L'ordre des propositions de réponse est désormais aléatoire, évitant que la bonne réponse ne soit systématiquement en première position.
+  - Interface rendue plus compacte : Optimisation de l’agencement visuel du simulateur QCM pour améliorer la lisibilité, réduire l’espace vertical inutile et offrir une expérience plus proche des environnements réels d’évaluation.
+- **Gestion des dépendances JavaScript** : Restructuration de l'arborescence des librairies JavaScript pour inclure explicitement les numéros de version dans les chemins (`js/libs/jspdf/2.5.1/`, `js/libs/dompurify/3.2.4/`, etc.). Centralisation du chargement de **client-zip** (index.js) dans le module `lib-loader.js` et suppression du fichier `worker.js` devenu obsolète. Cette organisation facilite grandement l'identification des versions et la détection des mises à jour disponibles. Création d'un fichier de monitoring centralisé pour le suivi des versions des bibliothèques utilisées.
+- **Formules Unicode généralisées** : Tous les exports bureautiques (DOCX, ODT, PDF) intègrent désormais systématiquement les formules mathématiques au format Unicode. Ce choix garantit une compatibilité maximale, un affichage homogène sur toutes les plateformes et une meilleure accessibilité (copier-coller, lecteurs d’écran).
+- **Renforcement des activités Quizset** : Les activités **Mark the Words** et **Fill in the Blanks** bénéficient d'une conversion renforcée du LaTeX vers des symboles Unicode pour les formules mathématiques, garantissant un rendu optimal.
+- **Activité Page renforcée** : Structure complètement refondée pour garantir une fidélité extrême au rendu final dans Éléa. Le simulateur reproduit désormais précisément l'affichage que les apprenants verront. Quatre thèmes distincts sont disponibles pour personnaliser l'apparence :
+  1. **Éléa** — Thème par défaut reprenant l'identité visuelle de la plateforme
+  2. **DSFR** — Système de Design de l'État français
+  3. **Accessibilité** — Contraste renforcé WCAG AAA pour les utilisateurs malvoyants ou DYS
+  4. **Couleurs vives** — Palette engageante et colorée pour les jeunes élèves
+  Tous les thèmes sont modifiables directement dans l'éditeur intégré, et chaque export propose les quatre versions du fichier au téléchargement.
+- **Traductions renforcées des simulateurs** : Complétude des traductions pour tous les éléments des simulateurs d'activités (Millionnaire, Appariement, QCM, Glossaire, Test, Devoir, Page). L'infobulle du bouton plein écran et tous les messages système sont maintenant disponibles dans les 11 langues supportées.
+- **Bandeau d'urgence renforcé** : Refonte du code de lecture CodiMD pour une structure plus flexible. Le système gère désormais l'affichage conditionnel en fonction de la version de l'application : un bandeau peut cibler une version spécifique, un intervalle de versions, ou s'afficher pour toutes. La détection de nouvelle version disponible déclenche automatiquement un bandeau dédié invitant à mettre à jour, distinct des notifications d'urgence classiques.
+- **Système de tests unitaires** : Mise en place d'un système de tests automatisés pour valider le processus d'extraction et de traitement des données, permettant de fiabiliser les générations et d'éliminer de nombreux cas d'erreur.
+- **Système de filtrage amélioré** : Les étiquettes de filtrage (H5P, Éléa, Magistère, Moodle et catégories d'activités à gauche) réagissent désormais de la même façon que les tuiles. Elles sont légèrement opacifiées quand aucun texte n'est saisi dans les champs initiaux ("Qui êtes-vous" et "Que souhaitez-vous aborder"), guidant visuellement l'utilisateur. Elles retrouvent leurs couleurs normales dès qu'un caractère est tapé.
+- **Pipeline de déploiement optimisé** : La chaîne CI/CD intègre désormais une minification automatique de l'ensemble des fichiers CSS (via `csso`) et JavaScript (via `terser`), appliquée uniquement au site déployé — le code source reste lisible dans le dépôt. L'allègement du jeu d'icônes de drapeaux (11 drapeaux conservés sur 270+, de ~33 Ko à ~2 Ko) et la suppression de ~520 fichiers SVG inutilisés (~4,6 Mo) complètent cette optimisation. Le gain en temps de chargement pour les navigateurs est considérable.
+- **Migration des traductions vers les modules ES6 natifs** : Les fichiers de traduction ont été convertis en véritables modules ES6 (`export default`) et leur chargement s'appuie désormais sur `import()` dynamique natif, en remplacement de l'ancienne injection de balise `<script>` couplée à une résolution par `eval()`. Ce changement simplifie et fiabilise le mécanisme d'internationalisation tout en améliorant la compatibilité avec les politiques de sécurité CSP. Combinées à la minification du pipeline, ces deux optimisations réduisent drastiquement les temps de chargement du site.
+
+### 🔒 Sécurité
+- **Protection contre les injections** : Intégration de **DOMPurify** pour assainir le JSON généré et prévenir toute injection de code malveillant.
+- **Mise à jour des bibliothèques JavaScript** : Montée de version généralisée des dépendances tiers (dont **pdf.js**) vers leurs versions fonctionnelles les plus récentes. Ce renforcement garantit une meilleure sécurité globale et une compatibilité optimale avec les navigateurs modernes.
+- **Échappement des contenus** : Tous les contenus utilisateur insérés dans les exports XML (Moodle) et HTML (H5P) sont désormais correctement échappés pour prévenir les injections HTML/XML. Les URLs et attributs spéciaux sont traités en toute sécurité.
+
+### 🐛 Corrections
+- **Robustesse du parsing LLM** : Amélioration de l'extraction JSON depuis les réponses IA pour gérer les cas limites (bloc ```json sans espace, troncature, plusieurs blocs JSON). Les cas mal formés sont maintenant détectés et signalés clairement.
+- **Messages d'erreur utilisateur** : Classification et amélioration des messages d'erreur lors de l'échec de génération (erreur de parsing, validation, réseau, packaging) avec suggestions d'actions pour l'utilisateur.
+- **Mode debug activable** : Activation via le paramètre `?debug` dans l'URL. Ce mode permet d'accéder aux logs détaillés (LLM, healer, éditeur) dans la console et d'afficher, directement dans la modale de génération, le JSON brut, le JSON corrigé (healed) ainsi que le différentiel entre les deux pour faciliter le diagnostic.
+- **Bibliothèque MathDisplay** : Analyse intelligente du JSON pour détecter la présence de formules LaTeX et n'injecter la dépendance MathDisplay que si nécessaire. Cela évite l'incompatibilité avec Lumi tout en préservant le fonctionnement sur Logiquiz/Digiquiz/Éléa.
+- **Simulateur Appariement** : Correction d'un problème d'affichage où les formules mathématiques étaient collées au texte environnant (insertion d'espaces insécables).
+- **LLM par défaut et spécifiques** :
+  - La constante du modèle par défaut est désormais visible dès le départ dans `llm.js`.
+  - **GPT OSS** est maintenant le LLM par défaut pour les activités **Quiz QCM**, **Quiz Vrai/Faux**, **Quiz Mixte**, **Page** et **Test (XML)** (pour éviter les plantages dus aux temps de génération trop longs de Mistral). Le LLM par défaut reste inchangé pour les autres activités.
+- **Conservation des données utilisateur** :
+  - Le prompt et le JSON sont désormais conservés lors de la fermeture/ouverture de la modale.
+  - Régénération du prompt et effacement du JSON uniquement lors d'un changement de contexte.
+  - Conservation du prompt mais vidage du JSON avant une nouvelle génération en un clic.
+  - Fermeture automatique de la modale 800ms après le lancement du téléchargement.
+- **Noms de fichiers standardisés** : Les fichiers exportés au format Éléa/Moodle (`.mbz`, `.xml`, `.html`) suivent désormais le même format que les fichiers H5P : tirets comme séparateurs et date compacte (`type-caramel-YYYYMMDDHHMI-lang.ext`). Exemple : `devoir-caramel-202603022109-fr.mbz`.
+- **Compatibilité Safari (iPad)** : Correction de l'extension des fichiers téléchargés sur Safari qui ajoutait `.zip` aux fichiers `.h5p` et `.gz` aux fichiers `.mbz`. Adaptation du MIME type pour respecter le comportement natif de Safari.
+- **Barre de navigation** : Correctif apporté dans la barre de navigation qui permet de naviguer entre les notifications.
+- **Mise à jour de version** : L'actualisation de la page lors d'une nouvelle version n'altère plus l'URL du site (suppression du paramètre `caramel-refresh`).
+- **Ouverture rapide des modales** : Correction d'une race condition qui pouvait laisser la modale vide quand l'utilisateur fermait et rouvrait rapidement une modale avant la fin de l'animation de fermeture. Le contenu précédent ne s'efface plus prématurément.
+- **Activité Page** : Correctif pour les activités de type "Page" qui gèrent désormais correctement l'affichage des formules mathématiques.
+
+---
+
 ## [4.0.0] - 23-01-2026
 
 ### 🚀 Nouveautés

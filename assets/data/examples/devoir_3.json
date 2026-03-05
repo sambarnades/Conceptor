@@ -1,0 +1,70 @@
+{
+  "title": "Évaluation des fonctions racines carrées",
+  "description": "Dans ce devoir, tu vas appliquer tes connaissances sur les fonctions racines carrées. Tu devras déterminer l'ensemble de définition, tracer une courbe, et résoudre une équation ou une inéquation impliquant une racine carrée. Ton travail sera évalué selon les critères suivants.",
+  "rubricName": "Grille d'évaluation : Fonctions racines carrées",
+  "criteria": [
+    {
+      "description": "Détermination correcte de l'ensemble de définition",
+      "levels": [
+        {
+          "score": 0,
+          "definition": "L'élève ne détermine pas l'ensemble de définition ou donne une réponse erronée sans justification."
+        },
+        {
+          "score": 1,
+          "definition": "L'élève détermine l'ensemble de définition avec une erreur de raisonnement ou une justification incomplète."
+        },
+        {
+          "score": 2,
+          "definition": "L'élève détermine correctement l'ensemble de définition avec une justification claire et pertinente."
+        },
+        {
+          "score": 3,
+          "definition": "L'élève détermine correctement l'ensemble de définition, justifie rigoureusement à l’aide de propriétés des racines carrées et traite les cas limites."
+        }
+      ]
+    },
+    {
+      "description": "Tracé de la courbe représentative",
+      "levels": [
+        {
+          "score": 0,
+          "definition": "L'élève ne trace pas la courbe ou la trace de manière totalement inexacte."
+        },
+        {
+          "score": 1,
+          "definition": "L'élève trace une courbe approximative, avec des points clés mal placés ou une forme incorrecte."
+        },
+        {
+          "score": 2,
+          "definition": "L'élève trace la courbe avec une forme correcte et des points clés bien placés, mais avec une échelle ou un repère inapproprié."
+        },
+        {
+          "score": 3,
+          "definition": "L'élève trace la courbe avec précision, en respectant l'échelle, les points remarquables et la forme caractéristique de la fonction racine carrée."
+        }
+      ]
+    },
+    {
+      "description": "Résolution d'une équation ou inéquation avec racine carrée",
+      "levels": [
+        {
+          "score": 0,
+          "definition": "L'élève ne traite pas l'équation ou l'inéquation, ou donne une solution sans démarche."
+        },
+        {
+          "score": 1,
+          "definition": "L'élève applique une méthode partielle ou commet une erreur de transformation, sans vérification de l'ensemble de définition."
+        },
+        {
+          "score": 2,
+          "definition": "L'élève résout correctement l'équation ou l'inéquation avec une démarche claire, mais oublie de vérifier les solutions dans le domaine de définition."
+        },
+        {
+          "score": 3,
+          "definition": "L'élève résout l'équation ou l'inéquation avec une démarche rigoureuse, en justifiant chaque étape, en vérifiant les solutions et en précisant l'ensemble des solutions."
+        }
+      ]
+    }
+  ]
+}

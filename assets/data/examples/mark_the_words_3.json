@@ -1,0 +1,26 @@
+{
+  "taskDescription": "En tant que futur historien, repère les **concepts clés** de la Révolution française dans ce texte. Clique sur les mots qui définissent cette période de grands **changements** sociaux et politiques.",
+  "textField": "La **Révolution** de 1789 marque un tournant décisif où le **peuple** renverse la **monarchie**. Sous l'impulsion de l'*égalité* et de la *liberté*, la **société** française se transforme radicalement pour fonder une **République** durable.",
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 25,
+      "feedback": "Il est important de revenir sur les dates et les acteurs principaux pour mieux saisir le contexte."
+    },
+    {
+      "from": 26,
+      "to": 50,
+      "feedback": "Tu as identifié quelques termes, mais attention à distinguer les causes des événements."
+    },
+    {
+      "from": 51,
+      "to": 75,
+      "feedback": "Très bien ! Tu maîtrises les notions essentielles comme l'abolition des privilèges."
+    },
+    {
+      "from": 76,
+      "to": 100,
+      "feedback": "Parfait ! Ta compréhension des valeurs de 1789 et de leurs impacts est excellente."
+    }
+  ]
+}

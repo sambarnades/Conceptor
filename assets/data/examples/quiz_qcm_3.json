@@ -1,0 +1,343 @@
+{
+"title": "Maîtriser les racines carrées en 3e",
+"questions": [
+{
+"library": "H5P.MultiChoice 1.16",
+"metadata": {
+"title": "Définition de base"
+},
+"params": {
+"question": "Parmi les propositions suivantes, quelle est la valeur exacte de \( \sqrt{64} \) ?",
+"answers": [
+{
+"text": "32",
+"correct": false
+},
+{
+"text": "8",
+"correct": true
+},
+{
+"text": "-8",
+"correct": false
+},
+{
+"text": "16",
+"correct": false
+}
+],
+"behaviour": {
+"singleAnswer": true
+},
+"overallFeedback": [
+{
+"from": 0,
+"to": 10,
+"feedback": "Repensez a la definition : quel nombre multiplie par lui-meme donne 64 ?"
+},
+{
+"from": 11,
+"to": 30,
+"feedback": "Il semble y avoir une confusion avec la division par 2."
+},
+{
+"from": 31,
+"to": 50,
+"feedback": "Vous y etes presque, revoyez vos tables de carres parfaits."
+},
+{
+"from": 51,
+"to": 70,
+"feedback": "Bonne reponse, la definition est comprise."
+},
+{
+"from": 71,
+"to": 90,
+"feedback": "Tres bien, c est une reponse precise."
+},
+{
+"from": 91,
+"to": 100,
+"feedback": "Parfait !"
+}
+]
+}
+},
+{
+"library": "H5P.MultiChoice 1.16",
+"metadata": {
+"title": "Propriétés de calcul"
+},
+"params": {
+"question": "Quelles sont les égalités vraies pour tous nombres **positifs** \( a \) et \( b \) ?",
+"answers": [
+{
+"text": "\( \sqrt{a \times b} = \sqrt{a} \times \sqrt{b} \)",
+"correct": true
+},
+{
+"text": "\( \sqrt{a + b} = \sqrt{a} + \sqrt{b} \)",
+"correct": false
+},
+{
+"text": "\( \sqrt{a^2} = a \)",
+"correct": true
+},
+{
+"text": "\( \sqrt{a} - \sqrt{b} = \sqrt{a - b} \)",
+"correct": false
+}
+],
+"behaviour": {
+"singleAnswer": false
+},
+"overallFeedback": [
+{
+"from": 0,
+"to": 10,
+"feedback": "Attention, la racine carree est compatible avec la multiplication, mais pas l addition."
+},
+{
+"from": 11,
+"to": 30,
+"feedback": "Relisez votre cours sur les proprietes de distributivite de la racine."
+},
+{
+"from": 31,
+"to": 50,
+"feedback": "Vous avez identifie une partie des regles, continuez."
+},
+{
+"from": 51,
+"to": 70,
+"feedback": "C est bien, les regles fondamentales sont acquises."
+},
+{
+"from": 71,
+"to": 90,
+"feedback": "Tres bon travail sur les proprietes algebriques."
+},
+{
+"from": 91,
+"to": 100,
+"feedback": "Excellent, vous maitrisez parfaitement les proprietes du cours."
+}
+]
+}
+},
+{
+"library": "H5P.MultiChoice 1.16",
+"metadata": {
+"title": "Géométrie et carrés"
+},
+"params": {
+"question": "Si l'aire d'un carré est de **49 cm²**, quelle est la mesure de son côté ?",
+"answers": [
+{
+"text": "24,5 cm",
+"correct": false
+},
+{
+"text": "7 cm",
+"correct": true
+},
+{
+"text": "9 cm",
+"correct": false
+}
+],
+"behaviour": {
+"singleAnswer": true
+},
+"overallFeedback": [
+{
+"from": 0,
+"to": 10,
+"feedback": "Rappel : l aire d un carre est egale au cote au carre."
+},
+{
+"from": 11,
+"to": 30,
+"feedback": "Ne confondez pas le perimetre et l aire."
+},
+{
+"from": 31,
+"to": 50,
+"feedback": "Cherchez le nombre qui, multiplie par lui-meme, donne 49."
+},
+{
+"from": 51,
+"to": 70,
+"feedback": "Bonne application de la racine carree a la geometrie."
+},
+{
+"from": 71,
+"to": 90,
+"feedback": "Tres bien vu."
+},
+{
+"from": 91,
+"to": 100,
+"feedback": "C est exact, bravo !"
+}
+]
+}
+},
+{
+"library": "H5P.MultiChoice 1.16",
+"metadata": {
+"title": "Équations de type x² = a"
+},
+"params": {
+"question": "Quelles sont les solutions réelles de l'équation \( x^2 = 25 \) ?",
+"answers": [
+{
+"text": "5",
+"correct": true
+},
+{
+"text": "-5",
+"correct": true
+},
+{
+"text": "12,5",
+"correct": false
+},
+{
+"text": "Aucune solution",
+"correct": false
+}
+],
+"behaviour": {
+"singleAnswer": false
+},
+"overallFeedback": [
+{
+"from": 0,
+"to": 10,
+"feedback": "Attention, un nombre negatif eleve au carre devient positif."
+},
+{
+"from": 11,
+"to": 30,
+"feedback": "N oubliez pas qu il peut y avoir deux solutions."
+},
+{
+"from": 31,
+"to": 50,
+"feedback": "Vous avez trouve la solution positive, cherchez son oppose."
+},
+{
+"from": 51,
+"to": 70,
+"feedback": "Bien joue, vous avez pense aux deux possibilites."
+},
+{
+"from": 71,
+"to": 90,
+"feedback": "Tres bonne maitrise des equations."
+},
+{
+"from": 91,
+"to": 100,
+"feedback": "Excellent, c est sans faute !"
+}
+]
+}
+},
+{
+"library": "H5P.MultiChoice 1.16",
+"metadata": {
+"title": "Simplification d'écriture"
+},
+"params": {
+"question": "Quelle est la forme simplifiée de l'expression \( \sqrt{50} \) ?",
+"answers": [
+{
+"text": "\( 25\sqrt{2} \)",
+"correct": false
+},
+{
+"text": "\( 5\sqrt{2} \)",
+"correct": true
+},
+{
+"text": "\( 2\sqrt{5} \)",
+"correct": false
+},
+{
+"text": "7,07",
+"correct": false
+}
+],
+"behaviour": {
+"singleAnswer": true
+},
+"overallFeedback": [
+{
+"from": 0,
+"to": 10,
+"feedback": "Utilisez la propriete de la multiplication : 50 = 25 x 2."
+},
+{
+"from": 11,
+"to": 30,
+"feedback": "Cherchez le plus grand carre parfait qui divise 50."
+},
+{
+"from": 31,
+"to": 50,
+"feedback": "La methode est de sortir le carre parfait de la racine."
+},
+{
+"from": 51,
+"to": 70,
+"feedback": "C est correct, vous savez extraire un facteur."
+},
+{
+"from": 71,
+"to": 90,
+"feedback": "Tres bien, la simplification est exacte."
+},
+{
+"from": 91,
+"to": 100,
+"feedback": "Parfait, vous maitrisez l extraction des carres parfaits."
+}
+]
+}
+}
+],
+"overallFeedback": [
+{
+"from": 0,
+"to": 10,
+"feedback": "Il est necessaire de revoir la definition de base d une racine carree et la liste des carres parfaits."
+},
+{
+"from": 11,
+"to": 30,
+"feedback": "Des confusions persistent entre division par 2 et racine carree. Relisez votre cours attentivement."
+},
+{
+"from": 31,
+"to": 50,
+"feedback": "Vous avez quelques bases, mais attention aux proprietes de calcul (addition) et aux solutions des equations."
+},
+{
+"from": 51,
+"to": 70,
+"feedback": "Bon travail global. Vous maîtrisez les concepts principaux des racines carrees."
+},
+{
+"from": 71,
+"to": 90,
+"feedback": "Tres bon score ! Vous etes a l aise avec les calculs et les simplifications."
+},
+{
+"from": 91,
+"to": 100,
+"feedback": "Felicitation ! Vous avez une parfaite maitrise du chapitre sur les racines carrees."
+}
+]
+}

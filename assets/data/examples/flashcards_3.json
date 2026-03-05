@@ -1,0 +1,26 @@
+{
+  "title": "Formules de dérivation",
+  "description": "Associe chaque fonction à sa dérivée.",
+  "cards": [
+    {
+      "text": "\\begin{equation}f(x) = x^2\\end{equation}",
+      "answer": "\\(f'(x) = 2x\\)"
+    },
+    {
+      "text": "\\(\\displaystyle f(x) = \\frac{1}{x}\\)",
+      "answer": "$f'(x) = -\\frac{1}{x^2}$"
+    },
+    {
+      "text": "$\\displaystyle f(x) = \\sqrt{x}$",
+      "answer": "\\(f'(x) = \\frac{1}{2\\sqrt{x}}\\)"
+    },
+    {
+      "text": "\\begin{math}f(x) = \\cos(x)\\end{math}",
+      "answer": "\\(f'(x) = -\\sin(x)\\)"
+    },
+    {
+      "text": "\\(f(x) = e^x\\)",
+      "answer": "\\(f'(x) = e^x\\)"
+    }
+  ]
+}

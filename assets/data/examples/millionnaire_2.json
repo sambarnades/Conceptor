@@ -1,0 +1,35 @@
+{
+  "title": "Quiz sur les fonctions racines carrées et formules",
+  "questions": [
+    {
+      "question": "Quelle est la forme générale d'une fonction racine carrée ?",
+      "goodanswer": "f(x) = √x",
+      "badanswer": ["f(x) = x²", "f(x) = 1/x", "f(x) = x³"]
+    },
+    {
+      "question": "Quel est le domaine de définition de la fonction f(x) = √(x + 3) ?",
+      "goodanswer": "x ≥ -3",
+      "badanswer": ["x ≥ 0", "x ≥ 3", "x ≤ -3"]
+    },
+    {
+      "question": "Si f(x) = √(2x - 5), quelle est la valeur de f(3) ?",
+      "goodanswer": "1",
+      "badanswer": ["2", "3", "4"]
+    },
+    {
+      "question": "Quelle est la forme développée de (√a + √b)² ?",
+      "goodanswer": "a + b + 2√(ab)",
+      "badanswer": ["a + b", "a² + b²", "2a + 2b"]
+    },
+    {
+      "question": "Si g(x) = √(x² + 4), quelle est la valeur de g(2) ?",
+      "goodanswer": "√8 ou 2√2",
+      "badanswer": ["√4", "√6", "√10"]
+    },
+    {
+      "question": "Résolvez l'équation √(3x + 1) = 4.",
+      "goodanswer": "x = 15/3 ou x = 5",
+      "badanswer": ["x = 1", "x = 2", "x = 3"]
+    }
+  ]
+}

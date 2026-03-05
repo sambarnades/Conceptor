@@ -3,8 +3,47 @@
  * Permet de prévisualiser le rendu des activités sans avoir besoin de les importer dans Moodle/Éléa.
  */
 
-import { translations } from './modules/translation.js';
-import { mathRenderer } from './modules/math-renderer.js';
+import { translations } from './core/translation.js';
+import { debugLog } from './core/utils.js';
+import { mathRenderer } from './renderers/math-renderer.js';
+import { sanitizeSync } from './export/sanitizer.js';
+
+/** Helper raccourci pour accéder aux traductions avec fallback */
+const tr = (key, fallback) => (translations && translations[key]) || fallback;
+
+/**
+ * Helper pour formater le texte Markdown en HTML sécurisé.
+ * ORDRE : Sanitize d'abord, puis conversion Markdown (préserve le formatage).
+ * @param {string} text - Texte brut avec formatage Markdown basique
+ * @returns {string} - HTML sanitizé
+ */
+function formatTextSafe(text) {
+    if (!text) return '';
+    // 1. Sanitize d'abord pour supprimer le HTML malveillant
+    const sanitized = sanitizeSync(text, 'EDUCATIONAL');
+    // 2. Puis convertir le Markdown en HTML
+    return sanitized
+        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+        .replace(/\*(.*?)\*/g, '<i>$1</i>');
+}
+
+/**
+ * Ajoute des espaces autour des délimiteurs mathématiques LaTeX pour améliorer la lisibilité.
+ * Ne s'applique que si le délimiteur est collé à un caractère (lettre ou chiffre).
+ * @param {string} text - Texte brut
+ * @returns {string} - Texte avec espaces autour de LaTeX
+ */
+function fixMathSpacing(text) {
+    if (!text) return '';
+    // Utilisation d'espaces insécables (\u00A0) pour forcer l'affichage dans les conteneurs Flexbox
+    // qui tendent à ignorer les espaces normaux en début/fin de nœuds de texte.
+    const nbs = '\u00A0';
+    return text
+        // Avant \( ou \[ : s'il y a un caractère alphanumérique avant (avec ou sans espace)
+        .replace(/([a-zA-Z0-9à-ÿÀ-Ÿ])\s?(\\\(|\\\[)/g, '$1' + nbs + '$2')
+        // Après \) ou \] : s'il y a un caractère alphanumérique après (avec ou sans espace)
+        .replace(/(\\\)|\\\])\s?([a-zA-Z0-9à-ÿÀ-Ÿ])/g, '$1' + nbs + '$2');
+}
 
 /**
  * Crée et retourne un bouton plein écran pour les simulateurs.
@@ -16,7 +55,7 @@ function createFullscreenButton(integrated = true) {
     btn.className = 'preview-modal__fullscreen-btn';
     if (integrated) btn.classList.add('preview-modal__fullscreen-btn--integrated');
 
-    const title = (translations && translations.fullscreen) || 'Plein écran';
+    const title = tr('fullscreen', 'Plein écran');
     btn.title = title;
     btn.setAttribute('aria-label', title);
 
@@ -56,9 +95,18 @@ export function renderMillionnaire(container, data) {
 
     function prepareQuestions() {
         questionsWithShuffledAnswers = data.questions.map(q => {
+            // S'assurer que badanswer est un tableau (peut être une string après édition)
+            let badAnswers = q.badanswer;
+            if (!Array.isArray(badAnswers)) {
+                // Si c'est une string, la convertir en tableau
+                badAnswers = typeof badAnswers === 'string'
+                    ? badAnswers.split('\n').map(s => s.trim()).filter(s => s.length > 0)
+                    : [];
+            }
+
             const answers = [
                 { text: q.goodanswer, correct: true },
-                ...q.badanswer.map(text => ({ text, correct: false }))
+                ...badAnswers.map(text => ({ text, correct: false }))
             ];
             // Simple shuffle
             return {
@@ -87,11 +135,11 @@ export function renderMillionnaire(container, data) {
 
         // Use translation or fallback. Since we are in JS module, we use the imported translations object.
         // Assuming 'millionnaire_intro' key might exist or we use hardcoded french from screenshot request.
-        const introText = "Réponds aux questions qui te seront posées !";
+        const introText = tr('simulator_mill_intro', "Réponds aux questions qui te seront posées !");
 
         header.innerHTML = `
             <div class="millionnaire-nav-tabs">
-                <span class="active">${data.title || 'Millionnaire'}</span>
+                <span class="active">${sanitizeSync(data.title || tr('simulator_mill_title', 'Millionnaire'), 'STRICT')}</span>
             </div>
             <p class="millionnaire-intro">${introText}</p>
         `;
@@ -113,9 +161,9 @@ export function renderMillionnaire(container, data) {
             endScreenDiv.innerHTML = `
                 <div class="millionnaire-fireworks-left"></div>
                 <div class="millionnaire-end-content">
-                    <h2>Bravo ! Tu remportes...</h2>
+                    <h2>${tr('simulator_mill_congrats', 'Bravo ! Tu remportes...')}</h2>
                     <div class="millionnaire-final-score">
-                        <i class="fas fa-star"></i> 1 000 000 points
+                        <i class="fas fa-star"></i> 1 000 000 ${tr('simulator_points', 'points')}
                     </div>
                 </div>
                 <div class="millionnaire-fireworks-right"></div>
@@ -144,7 +192,7 @@ export function renderMillionnaire(container, data) {
         const questionBox = document.createElement('div');
         questionBox.className = 'millionnaire-question-box';
         // "Question X : ..." logic
-        questionBox.innerHTML = `<span class="question-label">Question ${currentQuestionIndex + 1} :</span> ${currentQ.question}`;
+        questionBox.innerHTML = `<span class="question-label">${tr('simulator_question', 'Question')} ${currentQuestionIndex + 1} :</span> ${sanitizeSync(currentQ.question, 'EDUCATIONAL')}`;
 
         // Answers Grid
         const answersDiv = document.createElement('div');
@@ -184,14 +232,14 @@ export function renderMillionnaire(container, data) {
                 // Correct answer -> Show "Next Question"
                 const nextBtn = document.createElement('button');
                 nextBtn.className = 'millionnaire-next-btn';
-                nextBtn.textContent = 'QUESTION SUIVANTE';
+                nextBtn.textContent = tr('simulator_next_question', 'QUESTION SUIVANTE');
                 nextBtn.onclick = handleNextQuestion;
                 actionBtnContainer.appendChild(nextBtn);
             } else {
                 // Wrong answer -> Show "Restart"
                 const restartBtn = document.createElement('button');
                 restartBtn.className = 'millionnaire-restart-btn';
-                restartBtn.textContent = 'RECOMMENCER';
+                restartBtn.textContent = tr('simulator_restart', 'RECOMMENCER');
                 restartBtn.onclick = handleRestart;
                 actionBtnContainer.appendChild(restartBtn);
             }
@@ -220,13 +268,13 @@ export function renderMillionnaire(container, data) {
             // Active state: The level currently being played.
             if (correspondingQuestionIndex === currentQuestionIndex) {
                 li.classList.add('current');
-                li.innerHTML = `<i class="fas fa-star" style="margin-right:8px; font-size:0.8em;"></i> ${val} points`;
+                li.innerHTML = `<i class="fas fa-star" style="margin-right:8px; font-size:0.8em;"></i> ${val} ${tr('simulator_points', 'points')}`;
             } else if (correspondingQuestionIndex < currentQuestionIndex) {
                 // Passed levels (optional styling, traditionally they just stay "won")
                 li.classList.add('passed');
-                li.textContent = `${val} points`;
+                li.textContent = `${val} ${tr('simulator_points', 'points')}`;
             } else {
-                li.textContent = `${val} points`;
+                li.textContent = `${val} ${tr('simulator_points', 'points')}`;
             }
 
             pyramidList.appendChild(li);
@@ -337,9 +385,9 @@ export function renderMatching(container, data) {
         // Titre style Millionnaire/QCM (petit, gauche, souligné)
         header.innerHTML = `
             <div class="matching-nav-tabs">
-                <span class="active">${data.title || 'Appariement'}</span>
+                <span class="active">${sanitizeSync(data.title || tr('simulator_matching_title', 'Appariement'), 'STRICT')}</span>
             </div>
-            <p class="matching-intro">${data.intro || "Bonjour les mathématiciens ! Dans cette activité, tu vas associer chaque type de quadrilatère à sa définition..."}</p>
+            <p class="matching-intro">${sanitizeSync(fixMathSpacing(data.intro || tr('simulator_matching_default_intro', "Associe chaque élément de gauche avec l'élément correspondant à droite.")), 'EDUCATIONAL')}</p>
         `;
         const navTabs = header.querySelector('.matching-nav-tabs');
         if (navTabs) {
@@ -380,10 +428,10 @@ export function renderMatching(container, data) {
             if (feedbackClass) row.classList.add(feedbackClass);
 
             row.innerHTML = `
-                <div class="fused-left">${match.left.text}</div>
-                <div class="fused-right">${match.right.text}</div>
+                <div class="fused-left">${sanitizeSync(fixMathSpacing(match.left.text), 'EDUCATIONAL')}</div>
+                <div class="fused-right">${sanitizeSync(fixMathSpacing(match.right.text), 'EDUCATIONAL')}</div>
                 <div class="fused-actions">
-                    ${!isFinished ? `<button class="unlink-btn" title="Dissocier"><i class="fas fa-unlink"></i></button>` : iconHtml}
+                    ${!isFinished ? `<button class="unlink-btn" title="${tr('simulator_unlink', 'Dissocier')}"><i class="fas fa-unlink"></i></button>` : iconHtml}
                 </div>
             `;
 
@@ -446,7 +494,7 @@ export function renderMatching(container, data) {
         if (!isFinished) {
             const checkBtn = document.createElement('button');
             checkBtn.className = 'matching-check-btn';
-            checkBtn.textContent = 'Vérifier la réponse';
+            checkBtn.textContent = tr('simulator_check_answer', 'Vérifier la réponse');
             // Enable only if all matched
             if (matches.length < allLeftItems.length) {
                 checkBtn.disabled = true;
@@ -456,7 +504,7 @@ export function renderMatching(container, data) {
         } else {
             const restartBtn = document.createElement('button');
             restartBtn.className = 'matching-restart-btn';
-            restartBtn.textContent = 'Recommencer';
+            restartBtn.textContent = tr('simulator_restart', 'Recommencer');
             restartBtn.onclick = handleRestart;
             actionBar.appendChild(restartBtn);
         }
@@ -473,7 +521,7 @@ export function renderMatching(container, data) {
     function createItemElement(item) {
         const el = document.createElement('div');
         el.className = 'matching-pool-item';
-        el.innerHTML = item.text;
+        el.innerHTML = sanitizeSync(fixMathSpacing(item.text), 'EDUCATIONAL');
 
         if (selectedItem && selectedItem.id === item.id) {
             el.classList.add('selected');
@@ -553,7 +601,7 @@ export function renderGlossary(container, data) {
     // Sort entries alphabetically by concept
     let entries = [...data.entries].sort((a, b) => a.concept.localeCompare(b.concept));
 
-    // Simple parser for bold (**text**) and italic (*text*)
+    // Simple parser for bold (**text**) and italic (*text*) with XSS protection
     function parseFormatting(text) {
         if (!text) return '';
         let html = text;
@@ -561,7 +609,7 @@ export function renderGlossary(container, data) {
         html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         // Italic: *text* -> <em>text</em>
         html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        return html;
+        return sanitizeSync(html, 'EDUCATIONAL');
     }
 
     function render() {
@@ -578,7 +626,7 @@ export function renderGlossary(container, data) {
         header.className = 'glossary-header';
         header.innerHTML = `
             <div class="glossary-title-row">
-                <h2>${data.name || 'Glossaire'}</h2>
+                <h2>${sanitizeSync(data.name || tr('simulator_glossary_title', 'Glossaire'), 'STRICT')}</h2>
             </div>
         `;
         const titleRow = header.querySelector('.glossary-title-row');
@@ -596,7 +644,7 @@ export function renderGlossary(container, data) {
         entriesContainer.className = 'glossary-entries-compact';
 
         if (entries.length === 0) {
-            entriesContainer.innerHTML = `<p class="glossary-no-results">Aucune entrée dans ce glossaire.</p>`;
+            entriesContainer.innerHTML = `<p class="glossary-no-results">${tr('simulator_glossary_empty', 'Aucune entrée dans ce glossaire.')}</p>`;
         } else {
             entries.forEach(entry => {
                 const card = document.createElement('div');
@@ -606,7 +654,7 @@ export function renderGlossary(container, data) {
                 const definitionHtml = parseFormatting(entry.definition);
 
                 card.innerHTML = `
-                    <div class="glossary-term">${entry.concept}</div>
+                    <div class="glossary-term">${sanitizeSync(entry.concept, 'STRICT')}</div>
                     <div class="glossary-def">${definitionHtml}</div>
                 `;
                 entriesContainer.appendChild(card);
@@ -645,13 +693,26 @@ export function renderQcmElea(container, data) {
     // Normalisation des questions (gestion du format simple vs format complet)
     // On s'attend à data.questions = [{ text, answers: [{text, correct}, ...] }]
     // Support pour le format Éléa où correct peut être un booléen OU iscorrect peut être 1/0
-    const questions = data.questions.map(q => ({
-        ...q,
-        answers: q.answers.map(ans => ({
+    const questions = data.questions.map(q => {
+        let answers = q.answers.map(ans => ({
             ...ans,
             correct: ans.correct !== undefined ? ans.correct : (ans.iscorrect === 1)
-        }))
-    }));
+        }));
+
+        // Utilisation de la technique du "Schwartzian transform" pour un mélange aléatoire robuste
+        // Cela attribue un poids aléatoire à chaque réponse puis trie selon ce poids
+        answers = answers
+            .map(value => ({ value, sort: Math.random() }))
+            .sort((a, b) => a.sort - b.sort)
+            .map(({ value }) => value);
+
+        debugLog('simulators',`Question "${q.text ? q.text.substring(0, 20) : 'Sans titre'}..." : ${answers.length} options mélangées.`);
+
+        return {
+            ...q,
+            answers: answers
+        };
+    });
 
     function render() {
         container.innerHTML = '';
@@ -666,7 +727,7 @@ export function renderQcmElea(container, data) {
         if (data.title) {
             header.innerHTML = `
                 <div class="qcm-nav-tabs">
-                    <span class="active">${data.title}</span>
+                    <span class="active">${sanitizeSync(data.title, 'STRICT')}</span>
                 </div>
             `;
             const navTabs = header.querySelector('.qcm-nav-tabs');
@@ -685,12 +746,12 @@ export function renderQcmElea(container, data) {
             const endScreen = document.createElement('div');
             endScreen.className = 'qcm-end-screen';
             endScreen.innerHTML = `
-                <div class="qcm-header-text">Répondez aux questions suivantes.</div>
+                <div class="qcm-header-text">${tr('simulator_qcm_header', 'Répondez aux questions suivantes.')}</div>
                 <div class="qcm-result-card">
-                    <div class="qcm-score-line">Score obtenu : ${percentage}%</div>
-                    <div class="qcm-score-line">Meilleur score : ${percentage}%</div>
-                    <div class="qcm-score-info">Seul le meilleur score est conservé.</div>
-                    <button class="qcm-btn restart-btn">RECOMMENCER</button>
+                    <div class="qcm-score-line">${tr('simulator_score_obtained', 'Score obtenu')} : ${percentage}%</div>
+                    <div class="qcm-score-line">${tr('simulator_best_score', 'Meilleur score')} : ${percentage}%</div>
+                    <div class="qcm-score-info">${tr('simulator_best_score_info', 'Seul le meilleur score est conservé.')}</div>
+                    <button class="qcm-btn restart-btn">${tr('simulator_restart', 'RECOMMENCER')}</button>
                 </div>
             `;
 
@@ -712,13 +773,13 @@ export function renderQcmElea(container, data) {
 
 
 
-        // Helper simple de formatage Markdown
+        // Helper simple de formatage Markdown avec protection XSS
         const formatText = (text) => {
             if (!text) return '';
             let formatted = text
                 .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
                 .replace(/\*(.*?)\*/g, '<i>$1</i>');
-            return formatted;
+            return sanitizeSync(formatted, 'EDUCATIONAL');
         };
 
         // Header logic moved up
@@ -741,7 +802,7 @@ export function renderQcmElea(container, data) {
         qText = formatText(qText);
 
         // Si c'est wrapped dans <p>, on essaie de garder le style, sinon on affiche direct
-        questionLabel.innerHTML = `<span class="qcm-q-num">Question ${currentQuestionIndex + 1} :</span> ${qText}`;
+        questionLabel.innerHTML = `<span class="qcm-q-num">${tr('simulator_question', 'Question')} ${currentQuestionIndex + 1} :</span> ${qText}`;
         questionContainer.appendChild(questionLabel);
 
         // Réponses
@@ -759,23 +820,23 @@ export function renderQcmElea(container, data) {
                     if (ans.correct) {
                         ansCard.classList.add('correct');
                         ansCard.innerHTML = `
-                            <div class="qcm-ans-text">${ans.text}</div>
+                            <div class="qcm-ans-text">${sanitizeSync(ans.text, 'EDUCATIONAL')}</div>
                             <div class="qcm-ans-icon"><i class="fas fa-check"></i></div>
                         `;
                     } else if (idx === selectedAnswerIndex) {
                         ansCard.classList.add('wrong');
                         ansCard.innerHTML = `
-                            <div class="qcm-ans-text">${ans.text}</div>
+                            <div class="qcm-ans-text">${sanitizeSync(ans.text, 'EDUCATIONAL')}</div>
                             <div class="qcm-ans-icon"><i class="fas fa-times"></i></div>
                         `;
                     } else {
                         // Réponses non sélectionnées et fausses : neutre ou désactivé
-                        ansCard.innerHTML = `<div class="qcm-ans-text">${ans.text}</div>`;
+                        ansCard.innerHTML = `<div class="qcm-ans-text">${sanitizeSync(ans.text, 'EDUCATIONAL')}</div>`;
                         ansCard.classList.add('disabled');
                     }
                 } else {
                     // Mode sélection
-                    ansCard.innerHTML = `<div class="qcm-ans-text">${ans.text}</div>`;
+                    ansCard.innerHTML = `<div class="qcm-ans-text">${sanitizeSync(ans.text, 'EDUCATIONAL')}</div>`;
                     if (idx === selectedAnswerIndex) {
                         ansCard.classList.add('selected');
                     }
@@ -792,9 +853,9 @@ export function renderQcmElea(container, data) {
             const feedbackDiv = document.createElement('div');
             feedbackDiv.className = 'qcm-feedback-text';
             const isCorrect = currentQ.answers[selectedAnswerIndex]?.correct;
-            feedbackDiv.textContent = isCorrect ? "Bonne réponse" : "Mauvaise réponse";
+            feedbackDiv.textContent = isCorrect ? tr('simulator_correct_answer', 'Bonne réponse') : tr('simulator_wrong_answer', 'Mauvaise réponse');
             feedbackDiv.style.fontStyle = 'italic';
-            feedbackDiv.style.margin = '20px 0';
+            feedbackDiv.style.margin = '8px 0';
             feedbackDiv.style.textAlign = 'center';
             feedbackDiv.style.color = '#1d1d1f';
             questionContainer.appendChild(feedbackDiv);
@@ -808,10 +869,10 @@ export function renderQcmElea(container, data) {
         actionBtn.className = 'qcm-btn';
 
         if (hasValidated) {
-            actionBtn.textContent = 'QUESTION SUIVANTE';
+            actionBtn.textContent = tr('simulator_next_question', 'QUESTION SUIVANTE');
             actionBtn.onclick = handleNext;
         } else {
-            actionBtn.textContent = 'VÉRIFIER LA RÉPONSE';
+            actionBtn.textContent = tr('simulator_check_answer', 'VÉRIFIER LA RÉPONSE');
             // Désactivé si rien n'est sélectionné
             if (selectedAnswerIndex === null) {
                 actionBtn.disabled = true;
@@ -886,7 +947,7 @@ export function renderQcmElea(container, data) {
  * @param {Object} data - Le JSON de l'activité.
  */
 export function renderEleaTest(container, data) {
-    console.log("renderEleaTest called with:", data);
+    debugLog('simulators',"renderEleaTest called with:", data);
     if (!container) {
         console.error("renderEleaTest: No container provided");
         return;
@@ -895,23 +956,23 @@ export function renderEleaTest(container, data) {
     let questions = [];
     if (data && Array.isArray(data.questions)) {
         questions = data.questions;
-        console.log("renderEleaTest: Found questions in data.questions, count:", questions.length);
+        debugLog('simulators',"renderEleaTest: Found questions in data.questions, count:", questions.length);
     } else if (Array.isArray(data)) {
         questions = data;
-        console.log("renderEleaTest: Data is array, count:", questions.length);
+        debugLog('simulators',"renderEleaTest: Data is array, count:", questions.length);
     } else {
         console.error("renderEleaTest: Invalid data format", data);
-        container.innerHTML = '<div class="elea-test-simulator"><div class="elea-test-card"><p class="elea-error" style="color:red; text-align:center;">Erreur : Format de données invalide pour le simulateur.</p></div></div>';
+        container.innerHTML = `<div class="elea-test-simulator"><div class="elea-test-card"><p class="elea-error" style="color:red; text-align:center;">${tr('simulator_test_invalid_format', 'Erreur : Format de données invalide pour le simulateur.')}</p></div></div>`;
         return;
     }
 
     if (questions.length === 0) {
         console.warn("renderEleaTest: No questions to display");
-        container.innerHTML = '<div class="elea-test-simulator"><div class="elea-test-card"><p class="elea-error" style="color:orange; text-align:center;">Aucune question à afficher.</p></div></div>';
+        container.innerHTML = `<div class="elea-test-simulator"><div class="elea-test-card"><p class="elea-error" style="color:orange; text-align:center;">${tr('simulator_test_no_questions', 'Aucune question à afficher.')}</p></div></div>`;
         return;
     }
 
-    console.log("renderEleaTest: Rendering", questions.length, "questions");
+    debugLog('simulators',"renderEleaTest: Rendering", questions.length, "questions");
 
     // --- State ---
     let currentQuestionIndex = 0;
@@ -922,10 +983,11 @@ export function renderEleaTest(container, data) {
     // --- Helper functions (must be defined before render()) ---
     const formatMarkdown = (text) => {
         if (!text) return '';
-        return text
+        const formatted = text
             .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
             .replace(/\*(.*?)\*/g, '<i>$1</i>')
             .replace(/\n/g, '<br>');
+        return sanitizeSync(formatted, 'EDUCATIONAL');
     };
 
     function escapeHtml(text) {
@@ -945,8 +1007,8 @@ export function renderEleaTest(container, data) {
         header.className = 'elea-test-header';
 
         // Titre et description
-        const title = data.bank_name || 'Test Moodle/Éléa';
-        const desc = data.bank_description || '';
+        const title = sanitizeSync(data.bank_name || tr('simulator_test_title', 'Test Moodle/Éléa'), 'STRICT');
+        const desc = sanitizeSync(data.bank_description || '', 'EDUCATIONAL');
 
 
         header.innerHTML = `
@@ -959,7 +1021,7 @@ export function renderEleaTest(container, data) {
                 </div>
             </div>
             ${desc ? `<div class="elea-test-desc">${desc}</div>` : ''}
-            <div class="elea-test-progress">Question ${currentQuestionIndex + 1} / ${questions.length}</div>
+            <div class="elea-test-progress">${tr('simulator_question', 'Question')} ${currentQuestionIndex + 1} / ${questions.length}</div>
         `;
         const navArrows = header.querySelector('.elea-test-nav-arrows');
         if (navArrows) navArrows.appendChild(createFullscreenButton(true));
@@ -980,11 +1042,11 @@ export function renderEleaTest(container, data) {
         // Pour cloze, ne pas afficher le questiontext brut (il sera rendu par renderCloze)
         if (qType === 'cloze') {
             qHeader.innerHTML = `
-                <div class="elea-question-name">${content.name || `Question ${currentQuestionIndex + 1}`}</div>
+                <div class="elea-question-name">${content.name || `${tr('simulator_question', 'Question')} ${currentQuestionIndex + 1}`}</div>
             `;
         } else {
             qHeader.innerHTML = `
-                <div class="elea-question-name">${content.name || `Question ${currentQuestionIndex + 1}`}</div>
+                <div class="elea-question-name">${content.name || `${tr('simulator_question', 'Question')} ${currentQuestionIndex + 1}`}</div>
                 <div class="elea-question-text">${formatMarkdown(content.questiontext)}</div>
             `;
         }
@@ -1002,7 +1064,7 @@ export function renderEleaTest(container, data) {
             case 'truefalse': renderTrueFalse(answerZone, content, currentQuestionIndex); break;
             case 'shortanswer': renderShortAnswer(answerZone, content, currentQuestionIndex); break;
             case 'cloze': renderCloze(answerZone, content, currentQuestionIndex); break;
-            default: answerZone.innerHTML = '<p class="elea-error">Type de question non supporté.</p>';
+            default: answerZone.innerHTML = `<p class="elea-error">${tr('simulator_unsupported_type', 'Type de question non supporté.')}</p>`;
         }
 
         card.appendChild(answerZone);
@@ -1015,7 +1077,7 @@ export function renderEleaTest(container, data) {
             feedbackDiv.innerHTML = `
                 <div class="elea-feedback-icon"><i class="fas ${fState.isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i></div>
                 <div class="elea-feedback-content">
-                    <div class="elea-feedback-title">${fState.isCorrect ? 'Correct !' : 'Incorrect'}</div>
+                    <div class="elea-feedback-title">${fState.isCorrect ? tr('simulator_correct', 'Correct !') : tr('simulator_incorrect', 'Incorrect')}</div>
                     <div class="elea-feedback-text">${formatMarkdown(fState.message)}</div>
                 </div>
             `;
@@ -1035,15 +1097,15 @@ export function renderEleaTest(container, data) {
         if (fState && fState.show) {
             // Si feedback affiché => bouton Suivant (ou Terminer)
             if (currentQuestionIndex < questions.length - 1) {
-                actionBtn.textContent = 'Question Suivante';
+                actionBtn.textContent = tr('simulator_next_question', 'Question Suivante');
                 actionBtn.onclick = handleNext;
             } else {
-                actionBtn.textContent = 'Terminer le test';
+                actionBtn.textContent = tr('simulator_finish_test', 'Terminer le test');
                 actionBtn.onclick = handleFinish;
             }
         } else {
             // Pas de feedback => bouton Valider
-            actionBtn.textContent = 'Vérifier';
+            actionBtn.textContent = tr('simulator_check', 'Vérifier');
             actionBtn.onclick = () => handleCheck(qType, content, currentQuestionIndex);
         }
 
@@ -1051,7 +1113,7 @@ export function renderEleaTest(container, data) {
         if (currentQuestionIndex > 0) {
             const prevBtn = document.createElement('button');
             prevBtn.className = 'elea-btn secondary';
-            prevBtn.textContent = 'Précédent';
+            prevBtn.textContent = tr('simulator_previous', 'Précédent');
             prevBtn.onclick = handlePrev;
             footer.appendChild(prevBtn);
         }
@@ -1171,7 +1233,7 @@ export function renderEleaTest(container, data) {
         const input = document.createElement('input');
         input.type = 'number';
         input.className = 'elea-input';
-        input.placeholder = 'Votre réponse numérique...';
+        input.placeholder = tr('simulator_numerical_placeholder', 'Votre réponse numérique...');
         input.value = userAnswers[qIdx] || '';
         input.disabled = feedbackState[qIdx]?.show;
         input.oninput = (e) => {
@@ -1184,7 +1246,7 @@ export function renderEleaTest(container, data) {
 
     function renderTrueFalse(container, content, qIdx) {
         // Similar to multichoice single but fixed True/False
-        const options = [{ text: 'Vrai', val: true }, { text: 'Faux', val: false }];
+        const options = [{ text: tr('simulator_true', 'Vrai'), val: true }, { text: tr('simulator_false', 'Faux'), val: false }];
         const list = document.createElement('div');
         list.className = 'elea-options-list';
 
@@ -1226,7 +1288,7 @@ export function renderEleaTest(container, data) {
         const input = document.createElement('input');
         input.type = 'text';
         input.className = 'elea-input';
-        input.placeholder = 'Votre réponse courte...';
+        input.placeholder = tr('simulator_short_answer_placeholder', 'Votre réponse courte...');
         input.value = userAnswers[qIdx] || '';
         input.disabled = feedbackState[qIdx]?.show;
         input.oninput = (e) => {
@@ -1423,10 +1485,10 @@ export function renderEleaTest(container, data) {
         container.innerHTML = `
             <div class="elea-test-end" style="position: relative;">
                 <div class="elea-test-end-icon"><i class="fas fa-flag-checkered"></i></div>
-                <h3>Test terminé !</h3>
-                <p>Ceci était une prévisualisation de votre activité.</p>
+                <h3>${tr('simulator_test_finished', 'Test terminé !')}</h3>
+                <p>${tr('simulator_test_preview_message', 'Ceci était une prévisualisation de votre activité.')}</p>
                 <div class="elea-actions">
-                    <button class="elea-btn primary" onclick="document.querySelector('.preview-modal__close').click()">Fermer</button>
+                    <button class="elea-btn primary" onclick="document.querySelector('.preview-modal__close').click()">${tr('simulator_close', 'Fermer')}</button>
                     <button class="elea-btn secondary" id="elea-restart-btn">Recommencer</button>
                 </div>
                 <div class="elea-test-end-fullscreen" style="position: absolute; top: 15px; right: 15px;"></div>
@@ -1465,7 +1527,7 @@ export function renderPage(container, data, previewHtml) {
         container.innerHTML = '';
         const wrapper = document.createElement('div');
         wrapper.className = 'elea-page-fidelity-wrapper';
-        wrapper.style.cssText = 'position: relative; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#111827; background:#ffffff; padding:28px; border-radius:14px; max-width:1000px; margin:0 auto; line-height:1.65; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);';
+        wrapper.style.cssText = 'position: relative; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#111827; background:#ffffff; padding:28px; border-radius:14px; max-width:1000px; margin:0 auto; line-height:1.65; text-align: left; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);';
         wrapper.innerHTML = previewHtml;
 
         const fsBtnContainer = document.createElement('div');
@@ -1485,13 +1547,14 @@ export function renderPage(container, data, previewHtml) {
     // --- State ---
     const blocks = data.blocks || [];
 
-    // Helper to format markdown-like text
+    // Helper to format markdown-like text with XSS protection
     const formatText = (text) => {
         if (!text) return '';
-        return text
+        const formatted = text
             .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
             .replace(/\*(.*?)\*/g, '<i>$1</i>')
             .replace(/\n/g, '<br>');
+        return sanitizeSync(formatted, 'EDUCATIONAL');
     };
 
     function render() {
@@ -1505,7 +1568,7 @@ export function renderPage(container, data, previewHtml) {
             pageHeader.className = 'elea-page-main-header';
 
             let titleHtml = '';
-            if (data.title) titleHtml = `<h1>${data.title}</h1>`;
+            if (data.title) titleHtml = `<h1>${sanitizeSync(data.title, 'STRICT')}</h1>`;
 
             pageHeader.innerHTML = `
                 <div class="elea-page-title-row" style="display:flex; justify-content:space-between; align-items:center;">
@@ -1534,32 +1597,45 @@ export function renderPage(container, data, previewHtml) {
                 case '#01_hero_header':
                     blockDiv.innerHTML = `
                         <div class="elea-hero-header">
-                            <h2>${bData.title || ''}</h2>
-                            <div class="elea-hero-subtitle">${bData.subtitle || ''}</div>
+                            <h2>${sanitizeSync(bData.title || '', 'STRICT')}</h2>
+                            <div class="elea-hero-subtitle">${sanitizeSync(bData.subtitle || '', 'EDUCATIONAL')}</div>
                         </div>
                     `;
                     break;
 
                 case '#02_nav_summary':
                     if (bData.links) {
-                        const linksHtml = bData.links.map(l => `<li><a href="${l.href}">${l.text}</a></li>`).join('');
+                        const linksHtml = bData.links.map(l => `<li><a href="${sanitizeSync(l.href || '#', 'STRICT')}">${sanitizeSync(l.text, 'STRICT')}</a></li>`).join('');
                         blockDiv.innerHTML = `
                              <nav class="elea-summary">
-                                <h3>Sommaire</h3>
+                                <h3>${tr('simulator_page_summary', 'Sommaire')}</h3>
                                 <ul>${linksHtml}</ul>
                              </nav>
                         `;
                     }
                     break;
 
+                case '#03_histo_reperes':
+                    blockDiv.innerHTML = `<h3>${sanitizeSync(bData.title || tr('simulator_page_history', 'Repères historiques'), 'STRICT')}</h3>`;
+                    if (bData.events) {
+                        const eventsHtml = bData.events.map(ev => `
+                            <div class="elea-repere-card">
+                                <h4>${sanitizeSync(ev.period || '', 'STRICT')}</h4>
+                                <p>${formatText(ev.description)}</p>
+                            </div>
+                        `).join('');
+                        blockDiv.innerHTML += `<div class="elea-reperes-grid">${eventsHtml}</div>`;
+                    }
+                    break;
+
                 case '#04_callout_set':
-                    blockDiv.innerHTML = `<h3>${bData.title || ''}</h3>`;
+                    blockDiv.innerHTML = `<h3>${sanitizeSync(bData.title || '', 'STRICT')}</h3>`;
                     if (bData.callouts) {
                         const calloutsDiv = document.createElement('div');
                         calloutsDiv.className = 'elea-callouts';
                         bData.callouts.forEach(c => {
                             const cDiv = document.createElement('div');
-                            cDiv.className = `elea-callout type-${c.type}`;
+                            cDiv.className = `elea-callout type-${sanitizeSync(c.type || '', 'STRICT')}`;
                             cDiv.innerHTML = formatText(c.text);
                             calloutsDiv.appendChild(cDiv);
                         });
@@ -1567,23 +1643,99 @@ export function renderPage(container, data, previewHtml) {
                     }
                     break;
 
+                case '#05_stats_cards':
+                    blockDiv.innerHTML = `<h3>${sanitizeSync(bData.title || tr('simulator_page_stats', 'Chiffres-clés'), 'STRICT')}</h3>`;
+                    if (bData.stats) {
+                        const statsHtml = bData.stats.map(stat => `
+                            <div class="elea-stat-card">
+                                <div class="elea-stat-value">${sanitizeSync(stat.value || '', 'STRICT')}</div>
+                                <div class="elea-stat-label">${sanitizeSync(stat.label || '', 'EDUCATIONAL')}</div>
+                            </div>
+                        `).join('');
+                        blockDiv.innerHTML += `<div class="elea-stats-grid">${statsHtml}</div>`;
+                    }
+                    break;
+
                 case '#06_lexique_table':
-                    blockDiv.innerHTML = `<h3>${bData.title || 'Vocabulaire'}</h3>`;
+                    blockDiv.innerHTML = `<h3>${sanitizeSync(bData.title || tr('simulator_page_vocabulary', 'Vocabulaire'), 'STRICT')}</h3>`;
                     if (bData.headers && bData.rows) {
                         const table = document.createElement('table');
                         table.className = 'elea-table';
-                        const thead = `<thead><tr>${bData.headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>`;
+                        const thead = `<thead><tr>${bData.headers.map(h => `<th>${sanitizeSync(h, 'STRICT')}</th>`).join('')}</tr></thead>`;
                         const tbody = `<tbody>${bData.rows.map(row => `<tr>${row.map(cell => `<td>${formatText(cell)}</td>`).join('')}</tr>`).join('')}</tbody>`;
                         table.innerHTML = thead + tbody;
                         blockDiv.appendChild(table);
                     }
                     if (bData.caption) {
-                        blockDiv.innerHTML += `<div class="elea-table-caption">${bData.caption}</div>`;
+                        blockDiv.innerHTML += `<div class="elea-table-caption">${sanitizeSync(bData.caption, 'EDUCATIONAL')}</div>`;
                     }
                     break;
 
+                case '#07_glossary_chips':
+                    blockDiv.innerHTML = `<h3>${sanitizeSync(bData.title || tr('simulator_page_glossary', 'Glossaire'), 'STRICT')}</h3>`;
+                    if (bData.terms) {
+                        const termsHtml = bData.terms.map(term => `
+                            <span class="elea-chip">${sanitizeSync(term.fr || '', 'STRICT')} → <span lang="it">${sanitizeSync(term.it || '', 'STRICT')}</span></span>
+                        `).join('');
+                        blockDiv.innerHTML += `<div class="elea-chips-container">${termsHtml}</div>`;
+                    }
+                    break;
+
+                case '#08_monuments_grid':
+                    blockDiv.innerHTML = `<h3>${sanitizeSync(bData.title || tr('simulator_page_monuments', 'Monuments'), 'STRICT')}</h3>`;
+                    if (bData.monuments) {
+                        const monumentsHtml = bData.monuments.map(mon => `
+                            <article class="elea-monument-card">
+                                <img src="${sanitizeSync(mon.img_src || '', 'STRICT')}" alt="${sanitizeSync(mon.img_alt || '', 'STRICT')}" loading="lazy">
+                                <div class="elea-monument-content">
+                                    <h4>${sanitizeSync(mon.name || '', 'STRICT')}</h4>
+                                    <p>${formatText(mon.description)}</p>
+                                </div>
+                            </article>
+                        `).join('');
+                        blockDiv.innerHTML += `<div class="elea-monuments-grid">${monumentsHtml}</div>`;
+                    }
+                    break;
+
+                case '#09_figures_comparison':
+                    blockDiv.innerHTML = `<h3>${sanitizeSync(bData.title || tr('simulator_page_comparison', 'Comparer deux vues'), 'STRICT')}</h3>`;
+                    if (bData.figures) {
+                        const figuresHtml = bData.figures.map(fig => `
+                            <figure class="elea-comparison-figure">
+                                <img src="${sanitizeSync(fig.img_src || '', 'STRICT')}" alt="${sanitizeSync(fig.img_alt || '', 'STRICT')}" loading="lazy">
+                                <figcaption>${sanitizeSync(fig.caption || '', 'EDUCATIONAL')}</figcaption>
+                            </figure>
+                        `).join('');
+                        blockDiv.innerHTML += `<div class="elea-figures-grid">${figuresHtml}</div>`;
+                    }
+                    break;
+
+                case '#10_table_comparison':
+                    blockDiv.innerHTML = `<h3>${sanitizeSync(bData.title || tr('simulator_page_table_comparison', 'Tableau comparatif'), 'STRICT')}</h3>`;
+                    if (bData.headers && bData.rows) {
+                        const table = document.createElement('table');
+                        table.className = 'elea-table';
+                        const thead = `<thead><tr>${bData.headers.map(h => `<th>${sanitizeSync(h, 'STRICT')}</th>`).join('')}</tr></thead>`;
+                        const tbody = `<tbody>${bData.rows.map(row => `<tr>${row.map(cell => `<td>${formatText(cell)}</td>`).join('')}</tr>`).join('')}</tbody>`;
+                        table.innerHTML = thead + tbody;
+                        blockDiv.appendChild(table);
+                    }
+                    if (bData.caption) {
+                        blockDiv.innerHTML += `<div class="elea-table-caption">${sanitizeSync(bData.caption, 'EDUCATIONAL')}</div>`;
+                    }
+                    break;
+
+                case '#11_definition_box':
+                    blockDiv.innerHTML = `
+                        <div class="elea-definition-box">
+                             <h4>${sanitizeSync(bData.title || tr('simulator_page_definition', 'Définition'), 'STRICT')}</h4>
+                             <p>${formatText(bData.text)}</p>
+                        </div>
+                     `;
+                    break;
+
                 case '#12_context_paragraphs':
-                    if (bData.title) blockDiv.innerHTML += `<h3>${bData.title}</h3>`;
+                    if (bData.title) blockDiv.innerHTML += `<h3>${sanitizeSync(bData.title, 'STRICT')}</h3>`;
                     if (bData.paragraphs) {
                         bData.paragraphs.forEach(p => {
                             blockDiv.innerHTML += `<p>${formatText(p)}</p>`;
@@ -1591,35 +1743,107 @@ export function renderPage(container, data, previewHtml) {
                     }
                     break;
 
-                case '#18_sito_graphy':
-                    blockDiv.innerHTML = `<h3>${bData.title || 'Sitographie'}</h3>`;
-                    if (bData.links) {
-                        const linksHtml = bData.links.map(l => `<li><a href="${l.href}" target="_blank">${l.text}</a></li>`).join('');
-                        blockDiv.innerHTML += `<ul>${linksHtml}</ul>`;
+                case '#13_monument_sheet_long':
+                    blockDiv.innerHTML = `<h3>${sanitizeSync(bData.title || tr('simulator_page_document_sheet', 'Fiche document'), 'STRICT')}</h3>`;
+                    if (bData.img_src) {
+                        blockDiv.innerHTML += `<img src="${sanitizeSync(bData.img_src, 'STRICT')}" alt="${sanitizeSync(bData.img_alt || '', 'STRICT')}" class="elea-sheet-image" loading="lazy">`;
+                    }
+                    if (bData.sections) {
+                        bData.sections.forEach(sec => {
+                            blockDiv.innerHTML += `
+                                <div class="elea-sheet-section">
+                                    <h4>${sanitizeSync(sec.subtitle || '', 'STRICT')}</h4>
+                                    <p>${formatText(sec.text)}</p>
+                                </div>
+                            `;
+                        });
                     }
                     break;
 
-                case '#11_definition_box':
-                    blockDiv.innerHTML = `
-                        <div class="elea-definition-box">
-                             <h4>${bData.title || 'Définition'}</h4>
-                             <p>${formatText(bData.text)}</p>
-                        </div>
-                     `;
-                    break;
-
                 case '#14_faq_block':
-                    blockDiv.innerHTML = `<h3>${bData.title || 'FAQ'}</h3>`;
+                    blockDiv.innerHTML = `<h3>${sanitizeSync(bData.title || tr('simulator_page_faq', 'FAQ'), 'STRICT')}</h3>`;
                     if (bData.questions) {
                         bData.questions.forEach(q => {
                             blockDiv.innerHTML += `
                                  <details>
-                                     <summary>${q.q}</summary>
+                                     <summary>${sanitizeSync(q.q, 'EDUCATIONAL')}</summary>
                                      <p>${formatText(q.a)}</p>
                                  </details>
                              `;
                         });
                     }
+                    break;
+
+                case '#15_myths_realities':
+                    blockDiv.innerHTML = `<h3>${sanitizeSync(bData.title || tr('simulator_page_myths_realities', 'Mythes et Réalités'), 'STRICT')}</h3>`;
+                    const mythsRealitiesContainer = document.createElement('div');
+                    mythsRealitiesContainer.className = 'elea-myths-realities-grid';
+                    if (bData.myths) {
+                        const mythsDiv = document.createElement('div');
+                        mythsDiv.className = 'elea-myths-column';
+                        mythsDiv.innerHTML = `<h4>${tr('simulator_page_myths', 'Mythes')}</h4>`;
+                        const mythsList = document.createElement('ul');
+                        bData.myths.forEach(myth => {
+                            mythsList.innerHTML += `<li>${formatText(myth)}</li>`;
+                        });
+                        mythsDiv.appendChild(mythsList);
+                        mythsRealitiesContainer.appendChild(mythsDiv);
+                    }
+                    if (bData.realities) {
+                        const realitiesDiv = document.createElement('div');
+                        realitiesDiv.className = 'elea-realities-column';
+                        realitiesDiv.innerHTML = `<h4>${tr('simulator_page_realities', 'Réalités')}</h4>`;
+                        const realitiesList = document.createElement('ul');
+                        bData.realities.forEach(reality => {
+                            realitiesList.innerHTML += `<li>${formatText(reality)}</li>`;
+                        });
+                        realitiesDiv.appendChild(realitiesList);
+                        mythsRealitiesContainer.appendChild(realitiesDiv);
+                    }
+                    blockDiv.appendChild(mythsRealitiesContainer);
+                    break;
+
+                case '#16_method_image_desc':
+                    blockDiv.innerHTML = `<h3>${sanitizeSync(bData.title || tr('simulator_page_method', 'Méthode'), 'STRICT')}</h3>`;
+                    if (bData.steps) {
+                        const stepsList = document.createElement('ol');
+                        stepsList.className = 'elea-method-steps';
+                        bData.steps.forEach(step => {
+                            stepsList.innerHTML += `<li>${formatText(step)}</li>`;
+                        });
+                        blockDiv.appendChild(stepsList);
+                    }
+                    break;
+
+                case '#18_sito_graphy':
+                    blockDiv.innerHTML = `<h3>${sanitizeSync(bData.title || tr('simulator_page_sitography', 'Sitographie'), 'STRICT')}</h3>`;
+                    if (bData.links) {
+                        const linksHtml = bData.links.map(l => `<li><a href="${sanitizeSync(l.href || '#', 'STRICT')}" target="_blank">${sanitizeSync(l.text, 'STRICT')}</a></li>`).join('');
+                        blockDiv.innerHTML += `<ul>${linksHtml}</ul>`;
+                    }
+                    break;
+
+                case '#17_quote_bilingual':
+                    blockDiv.innerHTML = `<h3>${sanitizeSync(bData.title || tr('simulator_page_bilingual_quote', 'Citation bilingue'), 'STRICT')}</h3>`;
+                    const quoteContainer = document.createElement('figure');
+                    quoteContainer.className = 'elea-quote-bilingual';
+                    if (bData.quote_langue_initiale) {
+                        const quote1 = document.createElement('blockquote');
+                        quote1.innerHTML = formatText(bData.quote_langue_initiale);
+                        quoteContainer.appendChild(quote1);
+                    }
+                    if (bData.quote_langue_arrivee) {
+                        const quote2 = document.createElement('blockquote');
+                        quote2.setAttribute('lang', 'it');
+                        quote2.innerHTML = formatText(bData.quote_langue_arrivee);
+                        quoteContainer.appendChild(quote2);
+                    }
+                    if (bData.author) {
+                        const caption = document.createElement('figcaption');
+                        caption.textContent = `— ${bData.author}`;
+                        quoteContainer.appendChild(caption);
+                    }
+                    blockDiv.appendChild(quoteContainer);
                     break;
 
                 default:
@@ -1658,6 +1882,120 @@ export function renderPage(container, data, previewHtml) {
     }
 
     // addWarning supprimé car géré par notifications.js (preview-modal__warning)
+
+    render();
+}
+
+/**
+ * Rendu du simulateur pour l'activité Devoir (grille d'évaluation critériée).
+ * Affiche un tableau de rubrique avec les critères en lignes et les niveaux en colonnes.
+ * @param {HTMLElement} container - Le conteneur DOM où injecter le simulateur.
+ * @param {Object} data - Le JSON de l'activité (title, description, rubricName, criteria[]).
+ */
+export function renderDevoir(container, data) {
+    if (!container || !data || !data.criteria) return;
+
+    const criteria = data.criteria;
+    const maxLevels = Math.max(...criteria.map(c => (c.levels || []).length), 0);
+
+    function render() {
+        container.innerHTML = '';
+
+        const root = document.createElement('div');
+        root.className = 'devoir-simulator';
+
+        // --- En-tête avec titre et bouton plein écran ---
+        const header = document.createElement('div');
+        header.className = 'devoir-header';
+
+        const titleRow = document.createElement('div');
+        titleRow.className = 'devoir-nav-tabs';
+        titleRow.innerHTML = `<span class="active">${sanitizeSync(data.rubricName || data.title || tr('simulator_devoir_title', 'Devoir'), 'STRICT')}</span>`;
+        titleRow.appendChild(createFullscreenButton(true));
+        header.appendChild(titleRow);
+
+        if (data.description) {
+            const desc = document.createElement('p');
+            desc.className = 'devoir-description';
+            desc.innerHTML = formatTextSafe(data.description);
+            header.appendChild(desc);
+        }
+
+        root.appendChild(header);
+
+        // --- Tableau de la grille d'évaluation ---
+        const tableWrapper = document.createElement('div');
+        tableWrapper.className = 'devoir-table-wrapper';
+
+        const table = document.createElement('table');
+        table.className = 'devoir-table';
+
+        // Corps du tableau (pas d'en-tête de colonnes, conforme au mockup)
+        const tbody = document.createElement('tbody');
+
+        criteria.forEach(criterion => {
+            const tableRow = document.createElement('tr');
+
+            // Cellule du critère (première colonne)
+            const tdCriterion = document.createElement('td');
+            tdCriterion.className = 'devoir-td-criterion';
+            tdCriterion.innerHTML = formatTextSafe(criterion.description || '');
+            tableRow.appendChild(tdCriterion);
+
+            // Cellules des niveaux
+            const levels = criterion.levels || [];
+            levels.forEach(level => {
+                const td = document.createElement('td');
+                td.className = 'devoir-td-level';
+
+                const defSpan = document.createElement('div');
+                defSpan.className = 'devoir-level-definition';
+                defSpan.innerHTML = formatTextSafe(level.definition || '');
+
+                const scoreSpan = document.createElement('div');
+                scoreSpan.className = 'devoir-level-score';
+                const pts = parseFloat(level.score || 0);
+                const unit = pts <= 1
+                    ? tr('simulator_devoir_point', 'pt')
+                    : tr('simulator_devoir_points', 'pts');
+                scoreSpan.textContent = `${pts} ${unit}`;
+
+                td.appendChild(defSpan);
+                td.appendChild(scoreSpan);
+                tableRow.appendChild(td);
+            });
+
+            // Cellules vides si le critère a moins de niveaux que le max
+            for (let i = levels.length; i < maxLevels; i++) {
+                const td = document.createElement('td');
+                td.className = 'devoir-td-level devoir-td-empty';
+                tableRow.appendChild(td);
+            }
+
+            tbody.appendChild(tableRow);
+        });
+
+        table.appendChild(tbody);
+        tableWrapper.appendChild(table);
+        root.appendChild(tableWrapper);
+
+        // --- Note maximale ---
+        const totalScore = criteria.reduce((sum, c) => {
+            const maxLevel = Math.max(...(c.levels || []).map(l => parseFloat(l.score || 0)), 0);
+            return sum + maxLevel;
+        }, 0);
+
+        const totalDiv = document.createElement('div');
+        totalDiv.className = 'devoir-total';
+        const totalLabel = tr('simulator_devoir_total', 'Note maximale');
+        const totalUnit = totalScore <= 1
+            ? tr('simulator_devoir_point', 'pt')
+            : tr('simulator_devoir_points', 'pts');
+        totalDiv.textContent = `${totalLabel} : ${totalScore} ${totalUnit}`;
+        root.appendChild(totalDiv);
+
+        container.appendChild(root);
+    }
 
     render();
 }

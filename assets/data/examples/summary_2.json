@@ -1,0 +1,53 @@
+{
+  "intro": "Choisissez l'affirmation correcte pour bien comprendre les fonctions racines carrées.",
+  "summaries": [
+    {
+      "summary": [
+        "La fonction racine carrée, notée \\( f(x) = \\sqrt{x} \\), est définie uniquement pour les nombres réels \\( x \\geq 0 \\).",
+        "La fonction racine carrée est définie pour tous les réels, y compris les nombres négatifs.",
+        "La racine carrée d’un nombre négatif est toujours un nombre réel."
+      ],
+      "tip": "Pense à la définition de la racine carrée dans \\( \\mathbb{R} \\)."
+    },
+    {
+      "summary": [
+        "La courbe représentative de la fonction \\( f(x) = \\sqrt{x} \\) est une demi-parabole tournée vers la droite, située dans le premier quadrant.",
+        "La fonction \\( \\sqrt{x} \\) est décroissante sur son ensemble de définition.",
+        "La racine carrée d’un nombre est toujours inférieure ou égale à ce nombre."
+      ],
+      "tip": "Représente mentalement la courbe ou utilise une calculatrice pour vérifier les variations."
+    },
+    {
+      "summary": [
+        "Pour tout \\( x \\geq 0 \\), on a \\( \\left( \\sqrt{x} \\right)^2 = x \\).",
+        "La racine carrée de \\( x^2 \\) est toujours égale à \\( x \\).",
+        "On peut écrire \\( \\sqrt{a \\cdot b} = \\sqrt{a} \\cdot \\sqrt{b} \\) pour tous réels \\( a \\) et \\( b \\), même négatifs."
+      ],
+      "tip": "Attention à la condition \\( a \\geq 0 \\) et \\( b \\geq 0 \\) pour la propriété de la racine d’un produit."
+    },
+    {
+      "summary": [
+        "L'ensemble de définition de \\( f(x) = \\sqrt{2x - 4} \\) est \\( [2, +\\infty[ \\).",
+        "L'ensemble de définition de \\( f(x) = \\sqrt{2x - 4} \\) est \\( ]-\\infty, 2] \\).",
+        "La fonction \\( f(x) = \\sqrt{2x - 4} \\) est définie pour \\( x \\geq 0 \\)."
+      ],
+      "tip": "Résous l'inéquation \\( 2x - 4 \\geq 0 \\) pour déterminer l'ensemble de définition."
+    },
+    {
+      "summary": [
+        "La fonction racine carrée est croissante sur son ensemble de définition \\( [0, +\\infty[ \\).",
+        "La fonction \\( \\sqrt{x} \\) est décroissante sur \\( [0, +\\infty[ \\).",
+        "La fonction \\( \\sqrt{x} \\) est constante pour \\( x \\geq 1 \\)."
+      ],
+      "tip": "Compare les images de deux valeurs : par exemple, \\( \\sqrt{1} \\) et \\( \\sqrt{4} \\)."
+    }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "Des efforts sont nécessaires pour bien comprendre ces notions." },
+    { "from": 11, "to": 30, "feedback": "Tu y es presque, continue tes efforts." },
+    { "from": 31, "to": 50, "feedback": "C'est un bon début, mais certains points restent à éclaircir." },
+    { "from": 51, "to": 70, "feedback": "Bon travail ! Tu as compris l'essentiel." },
+    { "from": 71, "to": 90, "feedback": "Très bon score ! Tu maîtrises bien les concepts." },
+    { "from": 91, "to": 100, "feedback": "Excellent ! Tu as une parfaite maîtrise de cette leçon." }
+  ]
+}

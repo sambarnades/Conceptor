@@ -1,0 +1,309 @@
+<!-- =========================================================
+     PAGE MODÈLE — Tuiles pédagogiques autonomes (1..20)
+     Palette : violet/bleu/orange (Éléa) – sans JS – RGAA
+     Chaque TUITE = 1 bloc réutilisable par l’IA
+========================================================= -->
+
+<div role="document" aria-label="Leçon sur Rome — Tuiles pédagogiques"
+     lang="fr" dir="ltr"
+     style="font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#111827; background:#ffffff; padding:28px; border-radius:14px; max-width:1000px; margin:0 auto; line-height:1.65;">
+
+  <!-- =============== 01. HERO_HEADER ===================== -->
+  <!-- #01: HERO_HEADER — Bandeau d’ouverture avec titre et barre dégradée -->
+  <section style="margin:0 0 20px 0; text-align:center; border:1px solid #e5e7eb; border-radius:14px; padding:18px;">
+    <h1 style="margin:0 0 10px 0; font-size:2rem; color:#40228b;">Rome — repères essentiels</h1>
+    <div aria-hidden="true" style="height:6px; width:240px; margin:8px auto 0 auto; border-radius:6px;
+      background:linear-gradient(90deg,#5b2e90 0%, #1f4fff 60%, #ff7a18 100%);"></div>
+    <p style="margin:12px 0 0 0; color:#374151;">Objectif : comprendre quelques monuments majeurs, leurs fonctions et le vocabulaire clé (FR→IT).</p>
+  </section>
+
+  <!-- =============== 02. NAV_SUMMARY ===================== -->
+  <!-- #02: NAV_SUMMARY — Sommaire pilles (liens internes) -->
+  <nav role="navigation" aria-label="Sommaire" style="margin:0 0 20px 0; border:1px solid #e5e7eb; border-radius:14px; padding:12px;">
+    <ul style="list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:10px;">
+      <li><a href="#t03" style="display:inline-block; padding:8px 12px; border-radius:999px; color:#fff; text-decoration:none; font-weight:600; background:linear-gradient(90deg,#5b2e90,#1f4fff);">Repères</a></li>
+      <li><a href="#t06" style="display:inline-block; padding:8px 12px; border-radius:999px; color:#fff; text-decoration:none; font-weight:600; background:linear-gradient(90deg,#1f4fff,#5b2e90);">Lexique</a></li>
+      <li><a href="#t08" style="display:inline-block; padding:8px 12px; border-radius:999px; color:#111827; text-decoration:underline; font-weight:600; background:#ffe9dc; border:1px solid #ff7a18;">Monuments</a></li>
+      <li><a href="#t18" style="display:inline-block; padding:8px 12px; border-radius:999px; color:#111827; text-decoration:underline; font-weight:600; background:#eef2ff; border:1px solid #5b2e90;">Sitographie</a></li>
+    </ul>
+  </nav>
+
+  <!-- =============== 03. HISTO_REPERES =================== -->
+  <!-- #03: HISTO_REPERES — Repères historiques en 3 cartes -->
+  <section id="t03" style="margin:0 0 20px 0; border:1px solid #e5e7eb; border-radius:14px; padding:16px;">
+    <h2 style="margin:0 0 12px 0; color:#2233aa; font-size:1.35rem;">Repères historiques (bref)</h2>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:12px;">
+      <div style="background:#f6f7ff; border:1px solid #dfe3ff; border-radius:12px; padding:12px;">
+        <h3 style="margin:0 0 6px 0; font-size:1.05rem; color:#2233aa;">Antiquité</h3>
+        <p style="margin:0;">Forum (vie publique), Colisée (spectacles), Panthéon (temple).</p>
+      </div>
+      <div style="background:#eefcf6; border:1px solid #cdeee0; border-radius:12px; padding:12px;">
+        <h3 style="margin:0 0 6px 0; font-size:1.05rem; color:#126e4b;">Renaissance / Baroque</h3>
+        <p style="margin:0;">Saint-Pierre, Trevi, grands escaliers (mise en scène de l’espace urbain).</p>
+      </div>
+      <div style="background:#fff6ef; border:1px solid #ffd1b0; border-radius:12px; padding:12px;">
+        <h3 style="margin:0 0 6px 0; font-size:1.05rem; color:#b04a12;">Ville actuelle</h3>
+        <p style="margin:0;">Superposition d’époques ; places très fréquentées (Piazza di Spagna, Trinité-des-Monts).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== 04. CALLOUT_SET ===================== -->
+  <!-- #04: CALLOUT_SET — Bandeaux Objectifs / À savoir / Alerte -->
+  <section style="margin:0 0 20px 0; border:1px solid #e5e7eb; border-radius:14px; padding:16px;">
+    <h2 style="margin:0 0 10px 0; color:#40228b; font-size:1.3rem;">Bandeaux de cours</h2>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:12px;">
+      <div role="note" style="border:1px solid #dfe3ff; border-left:6px solid #1f4fff; background:#f6f7ff; border-radius:12px; padding:12px;"><p style="margin:0;"><strong>Objectifs :</strong> repérer 5 monuments, associer fonction & vocabulaire (FR→IT).</p></div>
+      <div role="note" style="border:1px solid #ffd1b0; border-left:6px solid #ff7a18; background:#fff6ef; border-radius:12px; padding:12px;"><p style="margin:0;"><strong>À savoir :</strong> “Colosseo” = Colisée ; la coupole du Panthéon est percée d’un <em>ouverture</em>.</p></div>
+      <div role="alert" style="border:1px solid #f7c4c4; border-left:6px solid #b91c1c; background:#fff5f5; border-radius:12px; padding:12px;"><p style="margin:0;"><strong>Attention :</strong> privilégier des informations vérifiées (éviter les clichés).</p></div>
+    </div>
+  </section>
+
+  <!-- =============== 05. STATS_CARDS ===================== -->
+  <!-- #05: STATS_CARDS — Chiffres-clés en cartes -->
+  <section style="margin:0 0 20px 0; border:1px solid #e5e7eb; border-radius:16px; padding:16px;">
+    <h2 style="margin:0 0 10px 0; color:#2233aa; font-size:1.3rem;">Chiffres-clés</h2>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap:12px;">
+      <div style="border:1px solid #e5e7eb; border-radius:16px; padding:14px; text-align:center;">
+        <div aria-hidden="true" style="height:4px; margin:-14px -14px 10px -14px; border-radius:16px 16px 0 0; background:linear-gradient(90deg,#5b2e90,#1f4fff);"></div>
+        <p style="margin:2px 0 0 0; font-size:2rem; font-weight:800; color:#1f4fff;">50 000</p>
+        <p style="margin:2px 0 0 0; color:#6b7280;">Spectateurs (Colisée)</p>
+      </div>
+      <div style="border:1px solid #e5e7eb; border-radius:16px; padding:14px; text-align:center;">
+        <div aria-hidden="true" style="height:4px; margin:-14px -14px 10px -14px; border-radius:16px 16px 0 0; background:linear-gradient(90deg,#1f4fff,#ff7a18);"></div>
+        <p style="margin:2px 0 0 0; font-size:2rem; font-weight:800; color:#ff7a18;">43,3 m</p>
+        <p style="margin:2px 0 0 0; color:#6b7280;">Diamètre de la coupole (≈ Panthéon)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== 06. LEXIQUE_TABLE =================== -->
+  <!-- #06: LEXIQUE_TABLE — Tableau vocabulaire FR→IT avec caption -->
+  <section id="t06" style="margin:0 0 20px 0; border:1px solid #e5e7eb; border-radius:14px; padding:16px;">
+    <h2 style="margin:0 0 10px 0; color:#40228b; font-size:1.3rem;">Lexique utile (FR → IT)</h2>
+    <table role="table" style="width:100%; border-collapse:collapse; font-size:0.98rem;">
+      <caption style="text-align:left; padding:6px 0; color:#6b7280;">Vocabulaire de base pour décrire un monument</caption>
+      <thead style="background:#f3f4f6;">
+        <tr><th scope="col" style="text-align:left; padding:10px; border-bottom:2px solid #e5e7eb;">Français</th><th scope="col" style="text-align:left; padding:10px; border-bottom:2px solid #e5e7eb;">Italiano</th><th scope="col" style="text-align:left; padding:10px; border-bottom:2px solid #e5e7eb;">Remarque</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:10px; border-bottom:1px solid #eef2f7;">amphithéâtre</td><td style="padding:10px; border-bottom:1px solid #eef2f7;"><span lang="it">anfiteatro</span></td><td style="padding:10px; border-bottom:1px solid #eef2f7;">Colisée = <span lang="it">Colosseo</span></td></tr>
+        <tr><td style="padding:10px; border-bottom:1px solid #eef2f7;">coupole / dôme</td><td style="padding:10px; border-bottom:1px solid #eef2f7;"><span lang="it">cupola</span></td><td style="padding:10px; border-bottom:1px solid #eef2f7;">Panthéon, Saint-Pierre</td></tr>
+        
+        <tr><td style="padding:10px; border-bottom:1px solid #eef2f7;">colonne</td><td style="padding:10px; border-bottom:1px solid #eef2f7;"><span lang="it">colonna</span></td><td style="padding:10px; border-bottom:1px solid #eef2f7;"></td></tr>
+        <tr><td style="padding:10px; border-bottom:1px solid #eef2f7;">fontaine</td><td style="padding:10px; border-bottom:1px solid #eef2f7;"><span lang="it">fontana</span></td><td style="padding:10px; border-bottom:1px solid #eef2f7;">Trevi</td></tr>
+        <tr><td style="padding:10px; border-bottom:1px solid #eef2f7;">escalier</td><td style="padding:10px; border-bottom:1px solid #eef2f7;"><span lang="it">scalinata</span></td><td style="padding:10px; border-bottom:1px solid #eef2f7;">Trinità dei Monti</td></tr>
+        <tr><td style="padding:10px;">place (urbaine)</td><td style="padding:10px;"><span lang="it">piazza</span></td><td style="padding:10px;">Piazza di Spagna</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- =============== 07. GLOSSARY_CHIPS ================== -->
+  <!-- #07: GLOSSARY_CHIPS — Glossaire en pastilles (chips) -->
+  <section style="margin:0 0 20px 0; border:1px solid #e5e7eb; border-radius:14px; padding:16px;">
+    <h2 style="margin:0 0 10px 0; color:#2233aa; font-size:1.3rem;">Glossaire (pastilles)</h2>
+    <ul style="list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px;">
+      <li><span style="display:inline-block; padding:6px 10px; border-radius:999px; background:#eef2ff; border:1px solid #dfe3ff; color:#2233aa;">amphithéâtre → <span lang="it">anfiteatro</span></span></li>
+      <li><span style="display:inline-block; padding:6px 10px; border-radius:999px; background:#fff6ef; border:1px solid #ffd1b0; color:#b04a12;">coupole → <span lang="it">cupola</span></span></li>
+      <li><span style="display:inline-block; padding:6px 10px; border-radius:999px; background:#f0fff7; border:1px solid #cdeee0; color:#126e4b;">fontaine → <span lang="it">fontana</span></span></li>
+      <li><span style="display:inline-block; padding:6px 10px; border-radius:999px; background:#f9fafb; border:1px solid #e5e7eb; color:#374151;">colonne → <span lang="it">colonna</span></span></li>
+    </ul>
+  </section>
+
+  <!-- =============== 08. MONUMENTS_GRID ================== -->
+  <!-- #08: MONUMENTS_GRID — Cartes monuments (avec images) -->
+  <section id="t08" style="margin:0 0 20px 0; border:1px solid #e5e7eb; border-radius:14px; padding:16px;">
+    <h2 style="margin:0 0 12px 0; color:#1f4fff; font-size:1.3rem;">Monuments — à retenir</h2>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:18px;">
+      <!-- Carte modèle avec barre dégradée -->
+      <article style="background:#fff; border:1px solid #e5e7eb; border-radius:14px; overflow:hidden;">
+        <div aria-hidden="true" style="height:4px; background:linear-gradient(90deg,#5b2e90,#1f4fff);"></div>
+        <figure style="margin:0;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/8/80/Colosseum_Rome.jpg" alt="Intérieur du Colisée montrant gradins et souterrains" loading="lazy" decoding="async" style="width:100%; height:180px; object-fit:cover;">
+          <figcaption style="padding:8px; font-size:0.9rem; color:#4b5563;">Colisée — amphithéâtre (Iᵉʳ s.).</figcaption>
+        </figure>
+        <div style="padding:12px;">
+          <h3 style="margin:0 0 6px 0; color:#40228b; font-size:1.05rem;">Colisée</h3>
+          <p style="margin:0;">Spectacles publics ; structure elliptique (gradins, arène, souterrains). <span lang="it">anfiteatro</span>.</p>
+        </div>
+      </article>
+
+      <article style="background:#fff; border:1px solid #e5e7eb; border-radius:14px; overflow:hidden;">
+        <div aria-hidden="true" style="height:4px; background:linear-gradient(90deg,#1f4fff,#5b2e90);"></div>
+        <figure style="margin:0;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Pantheon%2C_Rome.jpg" alt="Intérieur du Panthéon avec coupole et ouverture" loading="lazy" decoding="async" style="width:100%; height:180px; object-fit:cover;">
+          <figcaption style="padding:8px; font-size:0.9rem; color:#4b5563;">Panthéon — temple (IIᵉ s.).</figcaption>
+        </figure>
+        <div style="padding:12px;">
+          <h3 style="margin:0 0 6px 0; color:#1f4fff; font-size:1.05rem;">Panthéon</h3>
+          <p style="margin:0;">Coupole en béton, ouverture central. <span lang="it">cupola</span>, <span lang="it">ouverture</span>, <span lang="it">colonna</span>.</p>
+        </div>
+      </article>
+
+      <article style="background:#fff; border:1px solid #e5e7eb; border-radius:14px; overflow:hidden;">
+        <div aria-hidden="true" style="height:4px; background:linear-gradient(90deg,#5b2e90,#ff7a18);"></div>
+        <figure style="margin:0;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Saint_Peter%27s_Basilica_facade%2C_Rome%2C_Italy.jpg" alt="Façade et dôme de la Basilique Saint-Pierre" loading="lazy" decoding="async" style="width:100%; height:180px; object-fit:cover;">
+          <figcaption style="padding:8px; font-size:0.9rem; color:#4b5563;">Basilique Saint-Pierre — dôme (XVIᵉ–XVIIᵉ).</figcaption>
+        </figure>
+        <div style="padding:12px;">
+          <h3 style="margin:0 0 6px 0; color:#40228b; font-size:1.05rem;">Saint-Pierre</h3>
+          <p style="margin:0;">Vaste nef, coupole de Michel-Ange. <span lang="it">basilica</span>, <span lang="it">cupola</span>, <span lang="it">facciata</span>.</p>
+        </div>
+      </article>
+
+      <article style="background:#fff; border:1px solid #e5e7eb; border-radius:14px; overflow:hidden;">
+        <div aria-hidden="true" style="height:4px; background:linear-gradient(90deg,#1f4fff,#ff7a18);"></div>
+        <figure style="margin:0;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Trevi_fountain_2008.jpg" alt="Fontaine de Trevi : décor baroque et eau turquoise" loading="lazy" decoding="async" style="width:100%; height:180px; object-fit:cover;">
+          <figcaption style="padding:8px; font-size:0.9rem; color:#4b5563;">Fontaine de Trevi — baroque (XVIIIᵉ).</figcaption>
+        </figure>
+        <div style="padding:12px;">
+          <h3 style="margin:0 0 6px 0; color:#1f4fff; font-size:1.05rem;">Trevi</h3>
+          <p style="margin:0;">Façade-scène et bassin. <span lang="it">fontana</span>.</p>
+        </div>
+      </article>
+
+      <article style="background:#fff; border:1px solid #e5e7eb; border-radius:14px; overflow:hidden;">
+        <div aria-hidden="true" style="height:4px; background:linear-gradient(90deg,#ff7a18,#5b2e90);"></div>
+        <figure style="margin:0;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Spanish_Steps_and_Trinit%C3%A0_dei_Monti_church_-_Rome.JPG" alt="Grand escalier de la Piazza di Spagna menant à la Trinité-des-Monts" loading="lazy" decoding="async" style="width:100%; height:180px; object-fit:cover;">
+          <figcaption style="padding:8px; font-size:0.9rem; color:#4b5563;">Trinité-des-Monts — grande <span lang="it">scalinata</span>.</figcaption>
+        </figure>
+        <div style="padding:12px;">
+          <h3 style="margin:0 0 6px 0; color:#2233aa; font-size:1.05rem;">Piazza di Spagna</h3>
+          <p style="margin:0;">Escalier urbain (1723–1726) reliant place et église. <span lang="it">scalinata</span>, <span lang="it">piazza</span>.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- =============== 09. FIGURES_COMPARISON ============== -->
+  <!-- #09: FIGURES_COMPARISON — Deux images comparées -->
+  <section style="margin:0 0 20px 0; border:1px solid #e5e7eb; border-radius:14px; padding:16px;">
+    <h2 style="margin:0 0 10px 0; color:#40228b; font-size:1.3rem;">Comparer deux vues</h2>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap:12px;">
+      <figure style="margin:0; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/80/Colosseum_Rome.jpg" alt="Intérieur du Colisée, arène et souterrains" loading="lazy" decoding="async" style="width:100%; height:180px; object-fit:cover;">
+        <figcaption style="padding:8px; color:#4b5563;">Colisée — amphithéâtre.</figcaption>
+      </figure>
+      <figure style="margin:0; border:1px solid #e5e7eb; border-radius:12px; overflow:hidden;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Pantheon%2C_Rome.jpg" alt="Coupole du Panthéon avec ouverture" loading="lazy" decoding="async" style="width:100%; height:180px; object-fit:cover;">
+        <figcaption style="padding:8px; color:#4b5563;">Panthéon — coupole + ouverture.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- =============== 10. TABLE_COMPARISON ================= -->
+  <!-- #10: TABLE_COMPARISON — Tableau fonction vs structure -->
+  <section style="margin:0 0 20px 0; border:1px solid #e5e7eb; border-radius:14px; padding:16px;">
+    <h2 style="margin:0 0 10px 0; color:#2233aa; font-size:1.3rem;">Fonction / Structure</h2>
+    <table role="table" style="width:100%; border-collapse:collapse; font-size:0.98rem;">
+      <caption style="text-align:left; padding:6px 0; color:#6b7280;">Comparer deux lieux</caption>
+      <thead style="background:#f3f4f6;">
+        <tr><th scope="col" style="text-align:left; padding:10px; border-bottom:2px solid #e5e7eb;">Lieu</th><th scope="col" style="text-align:left; padding:10px; border-bottom:2px solid #e5e7eb;">Fonction</th><th scope="col" style="text-align:left; padding:10px; border-bottom:2px solid #e5e7eb;">Structure</th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row" style="text-align:left; padding:10px; border-bottom:1px solid #eef2f7;">Colisée</th><td style="padding:10px; border-bottom:1px solid #eef2f7;">Spectacles</td><td style="padding:10px; border-bottom:1px solid #eef2f7;">Ellipse, gradins, arène</td></tr>
+        <tr><th scope="row" style="text-align:left; padding:10px;">Panthéon</th><td style="padding:10px;">Culte / église</td><td style="padding:10px;">Coupole, ouverture, portique</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- =============== 11. DEFINITION_BOX =================== -->
+  <!-- #11: DEFINITION_BOX — Encadré “Définition” -->
+  <section style="margin:0 0 20px 0; border:1px solid #e5e7eb; border-radius:14px; padding:14px; background:#f9fafb;">
+    <h2 style="margin:0 0 6px 0; color:#40228b; font-size:1.2rem;">Définition</h2>
+    </section>
+
+  <!-- =============== 12. CONTEXT_PARAGRAPHS =============== -->
+  <!-- #12: CONTEXT_PARAGRAPHS — Paragraphe de cours structuré -->
+  <section style="margin:0 0 20px 0; border:1px solid #e5e7eb; border-radius:14px; padding:14px;">
+    <h2 style="margin:0 0 8px 0; color:#2233aa; font-size:1.3rem;">Contexte — trois moments</h2>
+    <p style="margin:0 0 8px 0;">La <strong>Rome antique</strong> concentre la vie civique au <em>Forum</em> et multiplie les édifices monumentaux (théâtres, thermes, amphithéâtres). Ces architectures expriment la puissance de la cité.</p>
+    <p style="margin:0 0 8px 0;">À la <strong>Renaissance</strong>, la ville est reconfigurée (places, églises, palais). Le <strong>Baroque</strong> met en scène l’espace urbain par des effets visuels (fontaines, escaliers, perspectives).</p>
+    <p style="margin:0;">La <strong>ville actuelle</strong> juxtapose ces héritages : ruines, édifices religieux, places fréquentées. Lire Rome, c’est reconnaître cette stratification.</p>
+  </section>
+
+  <!-- =============== 13. MONUMENT_SHEET_LONG ============== -->
+  <!-- #13: MONUMENT_SHEET_LONG — Fiche “Panthéon” détaillée -->
+  <article style="margin:0 0 20px 0; border:1px solid #e5e7eb; border-radius:16px; overflow:hidden;">
+    <div aria-hidden="true" style="height:4px; background:linear-gradient(90deg,#5b2e90,#1f4fff);"></div>
+    <div style="padding:14px;">
+      <h2 style="margin:0 0 6px 0; color:#1f4fff; font-size:1.3rem;">Panthéon — lecture guidée</h2>
+      <p style="margin:0 0 8px 0;"><strong>Fonction :</strong> temple antique devenu église. <strong>Plan :</strong> rotonde couverte d’une coupole en béton ; <strong>façade :</strong> portique à colonnes corinthiennes.</p>
+      <p style="margin:0 0 8px 0;"><strong>À observer :</strong> caissons (allègement), ouverture (lumière), jonction portique/rotonde. <strong>Idée clé :</strong> associer forme simple et prouesse technique.</p>
+      <p style="margin:0;"><strong>Vocabulaire :</strong> <span lang="it">cupola</span>, <span lang="it">ouverture</span>, <span lang="it">colonna</span>, <span lang="it">frontone</span>.</p>
+    </div>
+  </article>
+
+  <!-- =============== 14. FAQ_BLOCK ======================== -->
+  <!-- #14: FAQ_BLOCK — Foire aux questions courte -->
+  <section style="margin:0 0 20px 0; border:1px solid #e5e7eb; border-radius:14px; padding:14px; background:#f9fafb;">
+    <h2 style="margin:0 0 8px 0; color:#40228b; font-size:1.3rem;">FAQ</h2>
+    <h3 style="margin:0 0 6px 0; color:#40228b; font-size:1.05rem;">Le Colisée était-il un théâtre ?</h3>
+    <p style="margin:0 0 8px 0;">Non. C’est un <em>amphithéâtre</em> pour les jeux et chasses ; le théâtre (demi-cercle) sert aux pièces.</p>
+    <h3 style="margin:0 0 6px 0; color:#40228b; font-size:1.05rem;">À quoi sert l’ouverture du Panthéon ?</h3>
+    <p style="margin:0;">Il éclaire la rotonde et allège la coupole ; l’eau est évacuée par le sol drainant.</p>
+  </section>
+
+  <!-- =============== 15. MYTHS_REALITIES ================== -->
+  <!-- #15: MYTHS_REALITIES — Deux colonnes “Mythes / Réalités” -->
+  <section style="margin:0 0 20px 0; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+    <div style="border:1px solid #ffd1b0; border-radius:12px; padding:12px; background:#fff6ef;">
+      <h2 style="margin:0 0 6px 0; color:#b04a12; font-size:1.15rem;">Mythes</h2>
+      <ul style="margin:0; padding-left:18px;">
+        <li>“Tous les combats finissaient par la mort.”</li>
+        <li>“L’ouverture est une cheminée.”</li>
+      </ul>
+    </div>
+    <div style="border:1px solid #dfe3ff; border-radius:12px; padding:12px; background:#f6f7ff;">
+      <h2 style="margin:0 0 6px 0; color:#2233aa; font-size:1.15rem;">Réalités</h2>
+      <ul style="margin:0; padding-left:18px;">
+        <li>De nombreux jeux étaient réglés et non mortels.</li>
+        <li>L’ouverture éclaire et allège la coupole (pas une cheminée).</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- =============== 16. METHOD_IMAGE_DESC ================= -->
+  <!-- #16: METHOD_IMAGE_DESC — Méthode pour décrire une image -->
+  <section style="margin:0 0 20px 0; border:1px solid #e5e7eb; border-radius:14px; padding:14px; background:#f9fafb;">
+    <h2 style="margin:0 0 8px 0; color:#40228b; font-size:1.3rem;">Méthode — décrire une image d’architecture</h2>
+    <ol style="margin:0; padding-left:18px;">
+      <li><strong>Identifier</strong> le lieu : nom, époque, fonction.</li>
+      <li><strong>Observer</strong> la structure : plan, volumes, éléments clés.</li>
+      <li><strong>Nommer</strong> avec le lexique (FR→IT) : <span lang="it">cupola</span>, <span lang="it">colonna</span>, etc.</li>
+      <li><strong>Relier</strong> au contexte : Antiquité, Renaissance/Baroque, époque actuelle.</li>
+    </ol>
+  </section>
+
+  <!-- =============== 17. QUOTE_BILINGUAL ================== -->
+  <!-- #17: QUOTE_BILINGUAL — Citation bilingue FR/IT -->
+  <section style="margin:0 0 20px 0; border:1px solid #e5e7eb; border-radius:14px; padding:16px;">
+    <figure style="margin:0;">
+      <blockquote style="margin:0 0 6px 0; padding:8px 0 8px 16px; border-left:4px solid #9ca3af; font-size:1.15rem; font-weight:600; color:#1f2937;">« À Rome, chaque pierre raconte une époque. »</blockquote>
+      <blockquote lang="it" style="margin:0; padding:8px 0 8px 16px; border-left:4px solid #9ca3af; font-size:1.05rem; color:#374151;">« A Roma, ogni pietra racconta un’epoca. »</blockquote>
+      <figcaption style="margin-top:8px; color:#6b7280;">— Repère pédagogique</figcaption>
+    </figure>
+  </section>
+
+  <!-- =============== 18. SITO_GRAPHY ====================== -->
+  <!-- #18: SITO_GRAPHY — Sitographie (liens soulignés) -->
+  <section id="t18" style="margin:0 0 20px 0; border:1px solid #e5e7eb; border-radius:14px; padding:14px;">
+    <h2 style="margin:0 0 8px 0; color:#1f4fff; font-size:1.3rem;">Sitographie</h2>
+    <ul style="margin:0; padding-left:18px;">
+      <li><a href="https://fr.wikipedia.org/wiki/Colys%C3%A9e" style="color:#1f4fff; text-decoration:underline;">Wikipédia — Colisée</a></li>
+      <li><a href="https://fr.wikipedia.org/wiki/Panth%C3%A9on_(Rome)" style="color:#1f4fff; text-decoration:underline;">Wikipédia — Panthéon</a></li>
+      <li><a href="https://fr.wikipedia.org/wiki/Basilique_Saint-Pierre" style="color:#1f4fff; text-decoration:underline;">Wikipédia — Basilique Saint-Pierre</a></li>
+      <li><a href="https://fr.wikipedia.org/wiki/Fontaine_de_Trevi" style="color:#1f4fff; text-decoration:underline;">Wikipédia — Fontaine de Trevi</a></li>
+      <li><a href="https://fr.wikipedia.org/wiki/Forum_Romain" style="color:#1f4fff; text-decoration:underline;">Wikipédia — Forum romain</a></li>
+    </ul>
+  </section>
+
+  <!-- =============== FOOTER =============================== -->
+  <footer style="margin-top:22px; font-size:0.9rem; color:#374151;">
+    <p style="margin:0;">Images : Wikimedia Commons (usage pédagogique). Texte alternatif fourni ; tableaux avec <em>caption</em> et en-têtes ; mots italiens marqués avec <code>lang="it"</code>. Liens soulignés.</p>
+  </footer>
+</div>
+

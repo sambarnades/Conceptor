@@ -1,0 +1,14 @@
+{
+  "taskDescription": "Complète les lacunes du texte ci-dessous afin de consolider ta compréhension des **racines carrées** et de leur rôle dans les **fonctions**.",
+  "questions": [
+    "Dans le cadre du programme de Seconde, la *racine carrée:opération inverse du carré* d’un nombre réel non négatif, notée \\(\\sqrt{\\,}\\), ne prend que des valeurs *positives/strictement positives* : elle constitue ainsi le *principal* (ou *principal*/*principal*) de la solution. Le *domaine* de la fonction racine carrée \\(f(x)=\\sqrt{x}\\) est donc l’ensemble des réels *supérieurs ou égaux à zéro: x\\ge0*. Cette fonction est *strictement croissante* sur son domaine, ce qui signifie que si \\(a<b\\) alors \\(\\sqrt{a}<\\sqrt{b}\\). En pratique, pour résoudre une équation du type \\(\\sqrt{x}=5\\), on élève les deux membres au carré, obtenant ainsi \\(x=25\\)."
+  ],
+  "overallFeedback": [
+    {"from": 0, "to": 10, "feedback": "Des efforts sont nécessaires pour bien comprendre ces notions. Revois les définitions et essaie à nouveau."},
+    {"from": 11, "to": 30, "feedback": "Tu y es presque, continue tes efforts pour consolider tes connaissances sur les propriétés de la racine carrée."},
+    {"from": 31, "to": 50, "feedback": "Bon début, mais certains points restent à éclaircir, notamment le domaine et la notion de valeur principale."},
+    {"from": 51, "to": 70, "feedback": "Bon travail ! Tu as compris l’essentiel du sujet et les règles de manipulation des racines carrées."},
+    {"from": 71, "to": 90, "feedback": "Très bon score ! Tu maîtrises bien les concepts abordés et sais les appliquer correctement."},
+    {"from": 91, "to": 100, "feedback": "Excellent ! Tu as une parfaite maîtrise de cette leçon et de ses applications."}
+  ]
+}

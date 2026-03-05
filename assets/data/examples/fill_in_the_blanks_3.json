@@ -1,0 +1,15 @@
+{
+  "taskDescription": "Complétez les propriétés des fonctions de référence. Les formules utilisent la notation mathématique standard.",
+  "questions": [
+    "La dérivée de \\(x^2\\) est *2x*. On note \\begin{equation}f'(x) = 2x\\end{equation} pour cette fonction.",
+    "La racine carrée de 9 vaut *3*. En effet, \\(\\displaystyle\\sqrt{9} = 3\\) car \\(3 \\times 3 = 9\\).",
+    "L'inégalité $x &gt; 0$ est nécessaire pour définir *\\(\\sqrt{x}\\):racine carrée de x*.",
+    "La fonction inverse est définie pour \\(x \\neq 0\\). Sa dérivée est *\\(-\\frac{1}{x^2}\\):moins 1 sur x carré*."
+  ],
+  "overallFeedback": [
+    {"from": 0, "to": 30, "feedback": "Revoyez les fonctions de référence et leurs propriétés."},
+    {"from": 31, "to": 60, "feedback": "Bon début ! Continuez à réviser les dérivées."},
+    {"from": 61, "to": 90, "feedback": "Très bien ! Vous maîtrisez les bases de l'analyse."},
+    {"from": 91, "to": 100, "feedback": "Parfait ! Excellente maîtrise des fonctions de référence."}
+  ]
+}

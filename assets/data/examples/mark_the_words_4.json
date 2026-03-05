@@ -1,0 +1,10 @@
+{
+  "taskDescription": "En tant qu'historien en herbe, relisez ce texte sur la *Révolution* et identifiez les **termes clés** qui expliquent la chute de l'Ancien Régime. Surlignez les mots *important* qui définissent cette période de changement.",
+  "textField": "Au printemps 1789, le *peuple* parisien se lève pour exiger des *réformes* fondamentales. Ce *moment* décisif marque la fin de l' *absolutisme* royal au profit de nouveaux idéaux *politiques* et *citoyens*.",
+  "overallFeedback": [
+    {"from": 0, "to": 25, "feedback": "Prends le temps de relire attentivement les premières phrases pour repérer les acteurs principaux."},
+    {"from": 26, "to": 50, "feedback": "Tu progresses bien, assure-toi de distinguer les dates des concepts clés."},
+    {"from": 51, "to": 75, "feedback": "Très bonne identification des notions, tu as saisi les enjeux du contexte révolutionnaire."},
+    {"from": 76, "to": 100, "feedback": "Parfait ! Tu maîtrises parfaitement les termes essentiels de la Révolution française."}
+  ]
+}

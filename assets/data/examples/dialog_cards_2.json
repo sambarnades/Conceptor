@@ -1,0 +1,35 @@
+{
+  "title": "Fonctions racine carrée – activité d'association",
+  "description": "Associe chaque définition, propriété ou caractéristique à son terme correspondant.",
+  "dialogs": [
+    {
+      "text": "Ensemble des réels pour lesquels la fonction \\(\\sqrt{x}\\) est définie.",
+      "answer": "**domaine**",
+      "tips": {
+        "front": "Pense au jeu de valeurs possibles pour x.",
+        "back": "Il faut que x soit positif ou nul."
+      }
+    },
+    {
+      "text": "Ensemble des valeurs prises par \\(\\sqrt{x}\\) lorsque x parcourt son domaine.",
+      "answer": "**image**",
+      "tips": {
+        "front": "Quel est le signe de la racine carrée ?"
+      }
+    },
+    {
+      "text": "Courbe obtenue en ne retenant que la partie supérieure de la parabole \\(y^2 = x\\).",
+      "answer": "**graphique**",
+      "tips": {
+        "back": "C'est une demi‑parabole qui débute à l'origine."
+      }
+    },
+    {
+      "text": "Pour tout a, b ≥ 0, \\(\\sqrt{a\\,b}=\\sqrt{a}\\,\\sqrt{b}\\).",
+      "answer": "**propriété**",
+      "tips": {
+        "front": "Rappel de la règle de multiplicativité."
+      }
+    }
+  ]
+}

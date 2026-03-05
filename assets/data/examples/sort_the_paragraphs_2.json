@@ -1,0 +1,17 @@
+{
+  "taskDescription": "Analysez les éléments suivants et réorganisez-les dans un ordre qui illustre la construction progressive de la notion de fonction racine carrée, en respectant une progression logique naturelle : du concept fondamental à son application concrète.",
+  "paragraphs": [
+    "La *fonction racine carrée*, notée \\( \\sqrt{x} \\), est définie uniquement pour les valeurs de \\( x \\) supérieures ou égales à zéro, car la racine carrée d’un nombre négatif n’existe pas dans l’ensemble des réels.",
+    "Elle associe à chaque nombre réel positif ou nul son unique racine carrée positive, ce qui en fait une fonction croissante sur son domaine de définition \\( [0, +\\infty[ \\).",
+    "En représentant graphiquement cette fonction, on observe une courbe partant de l’origine et s’élevant progressivement, avec une pente décroissante, illustrant ainsi une croissance ralentie.",
+    "Cette fonction trouve des applications concrètes dans des domaines tels que la géométrie (calcul de longueurs à partir d’aires), la physique (relations entre distances et temps dans des mouvements accélérés), ou encore l’économie (modélisation de phénomènes non linéaires)."
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "La compréhension du domaine de définition est encore floue." },
+    { "from": 11, "to": 30, "feedback": "Tu as identifié quelques éléments clés, mais la progression logique reste à consolider." },
+    { "from": 31, "to": 50, "feedback": "Tu commences à saisir la structure de la fonction, mais l’ordre des idées peut être amélioré." },
+    { "from": 51, "to": 70, "feedback": "Bonne progression : les concepts sont bien reliés dans un ordre cohérent." },
+    { "from": 71, "to": 90, "feedback": "Très bien ! La logique de construction est claire et pertinente." },
+    { "from": 91, "to": 100, "feedback": "Parfait ! La progression du général au particulier est maîtrisée avec précision." }
+  ]
+}

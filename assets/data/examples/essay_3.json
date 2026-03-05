@@ -1,0 +1,23 @@
+{
+  "taskDescription": "Expliquez pourquoi la fonction \\begin{equation}f(x) = \\sqrt{x}\\end{equation} n'est définie que pour \\(x \\geq 0\\). Utilisez la notion d'ensemble de définition et donnez un exemple avec \\(\\displaystyle\\frac{d}{dx}\\sqrt{x} = \\frac{1}{2\\sqrt{x}}\\).",
+  "keywords": [
+    {
+      "keyword": "ensemble de définition",
+      "options": {"points": 1, "caseSensitive": false}
+    },
+    {
+      "keyword": "racine carrée",
+      "options": {"points": 1, "caseSensitive": false}
+    },
+    {
+      "keyword": "positif",
+      "options": {"points": 1, "caseSensitive": false}
+    }
+  ],
+  "overallFeedback": [
+    {"from": 0, "to": 25, "feedback": "Reprenez la définition de la fonction racine carrée."},
+    {"from": 26, "to": 50, "feedback": "C'est un début, mais il manque des arguments mathématiques."},
+    {"from": 51, "to": 75, "feedback": "Bon travail ! Vous avez bien identifié les concepts clés."},
+    {"from": 76, "to": 100, "feedback": "Excellent ! Argumentation claire et complète."}
+  ]
+}

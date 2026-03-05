@@ -1,0 +1,863 @@
+/**
+ * Validators - Validation en temps reel des donnees editees
+ *
+ * Fournit des regles de validation et des fonctions pour
+ * valider les champs et les schemas complets.
+ */
+
+import { t } from '../core/translation.js';
+import { getNestedValue } from './json-utils.js';
+
+// =======================================================================
+// REGLES DE VALIDATION
+// =======================================================================
+
+/**
+ * Validateurs de base
+ * Chaque validateur retourne true si valide, false sinon
+ */
+export const validators = {
+    /**
+     * Verifie qu'une valeur n'est pas vide
+     */
+    required: (value) => {
+        if (value === null || value === undefined) return false;
+        if (typeof value === 'string') return value.trim() !== '';
+        if (Array.isArray(value)) return value.length > 0;
+        return true;
+    },
+
+    /**
+     * Verifie la longueur minimale
+     */
+    minLength: (min) => (value) => {
+        if (value === null || value === undefined) return true;
+        return String(value).length >= min;
+    },
+
+    /**
+     * Verifie la longueur maximale
+     */
+    maxLength: (max) => (value) => {
+        if (value === null || value === undefined) return true;
+        return String(value).length <= max;
+    },
+
+    /**
+     * Verifie un pattern regex
+     */
+    pattern: (regex) => (value) => {
+        if (value === null || value === undefined || value === '') return true;
+        return regex.test(String(value));
+    },
+
+    /**
+     * Verifie le nombre minimum d'elements dans un tableau
+     */
+    minItems: (min) => (arr) => {
+        if (!Array.isArray(arr)) return false;
+        return arr.length >= min;
+    },
+
+    /**
+     * Verifie le nombre maximum d'elements dans un tableau
+     */
+    maxItems: (max) => (arr) => {
+        if (!Array.isArray(arr)) return true;
+        return arr.length <= max;
+    },
+
+    /**
+     * Verifie qu'une valeur est un nombre
+     */
+    isNumber: (value) => {
+        if (value === null || value === undefined || value === '') return true;
+        return !isNaN(Number(value));
+    },
+
+    /**
+     * Verifie une valeur minimale
+     */
+    min: (minVal) => (value) => {
+        if (value === null || value === undefined || value === '') return true;
+        return Number(value) >= minVal;
+    },
+
+    /**
+     * Verifie une valeur maximale
+     */
+    max: (maxVal) => (value) => {
+        if (value === null || value === undefined || value === '') return true;
+        return Number(value) <= maxVal;
+    },
+
+    /**
+     * Verifie les tranches de feedback (couverture 0-100, pas de chevauchement)
+     */
+    feedbackRanges: (ranges) => {
+        if (!Array.isArray(ranges) || ranges.length === 0) return false;
+
+        // Trier par 'from'
+        const sorted = [...ranges].sort((a, b) => a.from - b.from);
+
+        // Verifier que ca commence a 0
+        if (sorted[0].from !== 0) return false;
+
+        // Verifier que ca finit a 100
+        if (sorted[sorted.length - 1].to !== 100) return false;
+
+        // Verifier la continuite et l'absence de chevauchement
+        for (let i = 0; i < sorted.length - 1; i++) {
+            // La fin de cette tranche doit etre le debut de la suivante - 1
+            if (sorted[i].to >= sorted[i + 1].from) return false;
+            if (sorted[i].to + 1 !== sorted[i + 1].from && sorted[i].to !== sorted[i + 1].from - 1) {
+                // Accepter une tolerance de 1
+                if (Math.abs(sorted[i].to - sorted[i + 1].from) > 1) return false;
+            }
+        }
+
+        return true;
+    },
+
+    /**
+     * Verifie qu'au moins une reponse est correcte (pour QCM)
+     */
+    hasCorrectAnswer: (answers) => {
+        if (!Array.isArray(answers)) return false;
+        return answers.some(a => a.correct === true || a.iscorrect === 1);
+    },
+
+    /**
+     * Verifie le format de date Timeline (YYYY,M,D)
+     */
+    timelineDate: (value) => {
+        if (value === null || value === undefined || value === '') return true;
+        return /^\d{4}(,\d{1,2}(,\d{1,2})?)?$/.test(value);
+    },
+
+    /**
+     * Verifie que le texte contient des trous (pour FillInTheBlanks, DragTheWords)
+     */
+    hasBlanks: (value) => {
+        if (typeof value !== 'string') return false;
+        return /\*[^*]+\*/.test(value);
+    }
+};
+
+// =======================================================================
+// MESSAGES D'ERREUR
+// =======================================================================
+
+/**
+ * Messages d'erreur par type de validation
+ */
+const errorMessages = {
+    required: 'editor_error_required',
+    minLength: 'editor_error_min_length',
+    maxLength: 'editor_error_max_length',
+    pattern: 'editor_error_pattern',
+    minItems: 'editor_error_min_items',
+    maxItems: 'editor_error_max_items',
+    isNumber: 'editor_error_number',
+    min: 'editor_error_min',
+    max: 'editor_error_max',
+    feedbackRanges: 'editor_error_feedback_ranges',
+    hasCorrectAnswer: 'editor_error_no_correct',
+    timelineDate: 'editor_error_date_format',
+    hasBlanks: 'editor_error_no_blanks'
+};
+
+// =======================================================================
+// FONCTIONS DE VALIDATION
+// =======================================================================
+
+/**
+ * Valide un champ unique contre un ensemble de regles
+ * @param {*} value - La valeur a valider
+ * @param {Object} config - La configuration du champ (avec les regles)
+ * @returns {Object} { valid: boolean, errors: string[] }
+ */
+export function validateField(value, config) {
+    const errors = [];
+
+    // Required
+    if (config.required && !validators.required(value)) {
+        errors.push(t(errorMessages.required) || 'Ce champ est obligatoire');
+    }
+
+    // Si vide et pas required, pas d'autres validations
+    if (!validators.required(value) && !config.required) {
+        return { valid: true, errors: [] };
+    }
+
+    // MinLength
+    if (config.minLength && !validators.minLength(config.minLength)(value)) {
+        errors.push((t(errorMessages.minLength) || 'Minimum {0} caracteres').replace('{0}', config.minLength));
+    }
+
+    // MaxLength
+    if (config.maxLength && !validators.maxLength(config.maxLength)(value)) {
+        errors.push((t(errorMessages.maxLength) || 'Maximum {0} caracteres').replace('{0}', config.maxLength));
+    }
+
+    // Pattern
+    if (config.pattern && !validators.pattern(config.pattern)(value)) {
+        errors.push(t(errorMessages.pattern) || 'Format invalide');
+    }
+
+    // Number validations
+    if (config.type === 'number') {
+        if (!validators.isNumber(value)) {
+            errors.push(t(errorMessages.isNumber) || 'Doit etre un nombre');
+        }
+        if (config.min !== undefined && !validators.min(config.min)(value)) {
+            errors.push((t(errorMessages.min) || 'Minimum {0}').replace('{0}', config.min));
+        }
+        if (config.max !== undefined && !validators.max(config.max)(value)) {
+            errors.push((t(errorMessages.max) || 'Maximum {0}').replace('{0}', config.max));
+        }
+    }
+
+    // Array validations
+    if (config.type === 'array' && Array.isArray(value)) {
+        if (config.minItems && !validators.minItems(config.minItems)(value)) {
+            errors.push((t(errorMessages.minItems) || 'Minimum {0} elements').replace('{0}', config.minItems));
+        }
+        if (config.maxItems && !validators.maxItems(config.maxItems)(value)) {
+            errors.push((t(errorMessages.maxItems) || 'Maximum {0} elements').replace('{0}', config.maxItems));
+        }
+    }
+
+    // FeedbackRanges validation
+    if (config.type === 'feedbackRanges' && !validators.feedbackRanges(value)) {
+        errors.push(t(errorMessages.feedbackRanges) || 'Les tranches doivent couvrir 0-100% sans chevauchement');
+    }
+
+    // Custom validations
+    if (config.validate && typeof config.validate === 'function') {
+        const customResult = config.validate(value);
+        if (customResult !== true) {
+            errors.push(customResult || t('editor_error_invalid_value') || 'Valeur invalide');
+        }
+    }
+
+    return {
+        valid: errors.length === 0,
+        errors
+    };
+}
+
+/**
+ * Valide un objet complet contre un schema
+ * @param {Object} data - Les donnees a valider
+ * @param {Object} schema - Le schema de validation
+ * @returns {boolean} true si valide
+ */
+export function validateSchema(data, schema) {
+    const errors = getValidationErrors(data, schema);
+    return errors.length === 0;
+}
+
+/**
+ * Retourne toutes les erreurs de validation pour un schema
+ * @param {Object} data - Les donnees a valider
+ * @param {Object} schema - Le schema de validation
+ * @returns {Array} Liste des erreurs { path, field, message }
+ */
+export function getValidationErrors(data, schema) {
+    const errors = [];
+
+    if (!schema || !schema.sections) return errors;
+
+    for (const section of schema.sections) {
+        if (!section.fields) continue;
+
+        for (const [fieldKey, fieldConfig] of Object.entries(section.fields)) {
+            const value = getNestedValue(data, fieldKey);
+            const fieldErrors = validateFieldRecursive(value, fieldConfig, fieldKey, data);
+            errors.push(...fieldErrors);
+        }
+    }
+
+    // Validations specifiques par type
+    errors.push(...getTypeSpecificErrors(data, schema));
+
+    return errors;
+}
+
+/**
+ * Valide un champ recursivement (pour les tableaux et objets imbriques)
+ */
+function validateFieldRecursive(value, config, path, rootData) {
+    const errors = [];
+
+    // Validation du champ lui-meme
+    const fieldValidation = validateField(value, config);
+    if (!fieldValidation.valid) {
+        for (const err of fieldValidation.errors) {
+            errors.push({
+                path,
+                field: config.label || path,
+                message: err
+            });
+        }
+    }
+
+    // Si c'est un tableau, valider chaque element
+    if (config.type === 'array' && Array.isArray(value) && config.itemSchema) {
+        value.forEach((item, index) => {
+            // Si l'item est une valeur simple (isArrayValue)
+            if (config.itemSchema._value && config.itemSchema._value.isArrayValue) {
+                const itemErrors = validateFieldRecursive(
+                    item,
+                    config.itemSchema._value,
+                    `${path}.${index}`,
+                    rootData
+                );
+                errors.push(...itemErrors);
+            } else {
+                // L'item est un objet
+                for (const [subKey, subConfig] of Object.entries(config.itemSchema)) {
+                    if (subKey === '_value') continue;
+                    const subValue = getNestedValue(item, subKey);
+                    const itemErrors = validateFieldRecursive(
+                        subValue,
+                        subConfig,
+                        `${path}.${index}.${subKey}`,
+                        rootData
+                    );
+                    errors.push(...itemErrors);
+                }
+            }
+        });
+    }
+
+    // Si c'est un objet imbrique
+    if (config.type === 'object' && config.schema && value && typeof value === 'object') {
+        for (const [subKey, subConfig] of Object.entries(config.schema)) {
+            const subValue = getNestedValue(value, subKey);
+            const subErrors = validateFieldRecursive(
+                subValue,
+                subConfig,
+                `${path}.${subKey}`,
+                rootData
+            );
+            errors.push(...subErrors);
+        }
+    }
+
+    return errors;
+}
+
+/**
+ * Validations specifiques par type de module.
+ * Ces validations s'executent APRES le healing structurel,
+ * donc elles ne portent QUE sur le contenu pedagogique irreparable.
+ */
+function getTypeSpecificErrors(data, schema) {
+    const errors = [];
+    const moduleKey = schema?._moduleKey || '';
+
+    // =================================================================
+    // VALIDATIONS H5P
+    // =================================================================
+
+    // --- QuizSet / QuizSetQCM / QuizSetVF ---
+    if (moduleKey === 'QuizSet' || moduleKey === 'QuizSetQCM' || moduleKey === 'QuizSetVF') {
+        if (!Array.isArray(data.questions) || data.questions.length === 0) {
+            errors.push({
+                path: 'questions',
+                field: 'Quiz',
+                message: t('validation_quiz_no_questions') || 'Le quiz doit contenir au moins une question'
+            });
+        } else {
+            data.questions.forEach((q, i) => {
+                if (!q.library) {
+                    errors.push({
+                        path: `questions.${i}.library`,
+                        field: `Question ${i + 1}`,
+                        message: t('validation_question_no_type') || `La question ${i + 1} n'a pas de type defini`
+                    });
+                }
+            });
+        }
+    }
+
+    // --- MultipleChoice ---
+    if (moduleKey === 'MultipleChoice') {
+        if (!Array.isArray(data.answers) || data.answers.length === 0) {
+            errors.push({
+                path: 'answers',
+                field: t('editor_section_answers') || 'Reponses',
+                message: t('validation_no_answers') || 'Au moins une reponse est requise'
+            });
+        }
+    }
+
+    // --- TrueFalse ---
+    if (moduleKey === 'TrueFalse') {
+        if (!data.question || (typeof data.question === 'string' && data.question.trim() === '')) {
+            errors.push({
+                path: 'question',
+                field: 'Question',
+                message: t('validation_question_empty') || 'La question est vide'
+            });
+        }
+    }
+
+    // --- FindTheWords ---
+    if (moduleKey === 'FindTheWords') {
+        const wl = data.wordList;
+        if (!wl || (typeof wl === 'string' && wl.trim() === '')) {
+            errors.push({
+                path: 'wordList',
+                field: t('editor_word_list') || 'Liste de mots',
+                message: t('validation_wordlist_empty') || 'La liste de mots est vide'
+            });
+        }
+    }
+
+    // --- FillInTheBlanks ---
+    if (moduleKey === 'FillInTheBlanks' || moduleKey === 'ComplexFillTheBlanks') {
+        if (!Array.isArray(data.questions) || data.questions.length === 0) {
+            errors.push({
+                path: 'questions',
+                field: t('editor_section_sentences') || 'Phrases',
+                message: t('validation_no_sentences') || 'Au moins une phrase est requise'
+            });
+        }
+    }
+
+    // --- MarkTheWords ---
+    if (moduleKey === 'MarkTheWords') {
+        if (!data.textField || (typeof data.textField === 'string' && data.textField.trim() === '')) {
+            errors.push({
+                path: 'textField',
+                field: t('editor_text_with_blanks') || 'Texte',
+                message: t('validation_text_empty') || 'Le texte est vide'
+            });
+        }
+    }
+
+    // --- DragTheWords ---
+    if (moduleKey === 'DragTheWords') {
+        if (!data.textField || (typeof data.textField === 'string' && data.textField.trim() === '')) {
+            errors.push({
+                path: 'textField',
+                field: t('editor_text_with_blanks') || 'Texte',
+                message: t('validation_text_empty') || 'Le texte est vide'
+            });
+        }
+    }
+
+    // --- DragAndDrop ---
+    if (moduleKey === 'DragAndDrop') {
+        if (!Array.isArray(data.dropZones) || data.dropZones.length < 2) {
+            errors.push({
+                path: 'dropZones',
+                field: t('editor_section_zones') || 'Zones',
+                message: t('validation_min_zones') || 'Au moins 2 zones de dépôt sont requises'
+            });
+        }
+        if (!Array.isArray(data.elements) || data.elements.length < 2) {
+            errors.push({
+                path: 'elements',
+                field: t('editor_section_elements') || 'Étiquettes',
+                message: t('validation_min_elements') || 'Au moins 2 étiquettes sont requises'
+            });
+        }
+        // Vérifier que chaque élément a au moins une zone cible valide
+        if (Array.isArray(data.elements) && Array.isArray(data.dropZones)) {
+            data.elements.forEach((el, i) => {
+                const zoneIndices = Array.isArray(el.zoneIndices) ? el.zoneIndices : [];
+                if (zoneIndices.length === 0) {
+                    errors.push({
+                        path: `elements.${i}.zoneIndices`,
+                        field: `${t('editor_element') || 'Étiquette'} ${i + 1}`,
+                        message: t('validation_no_zone_selected') || 'Au moins une zone cible doit être sélectionnée'
+                    });
+                } else {
+                    const hasInvalid = zoneIndices.some(zi => {
+                        const idx = typeof zi === 'string' ? parseInt(zi, 10) : zi;
+                        return idx < 0 || idx >= data.dropZones.length;
+                    });
+                    if (hasInvalid) {
+                        errors.push({
+                            path: `elements.${i}.zoneIndices`,
+                            field: `${t('editor_element') || 'Étiquette'} ${i + 1}`,
+                            message: t('validation_invalid_zone') || 'Zone cible invalide'
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+    // --- Crossword ---
+    if (moduleKey === 'Crossword') {
+        if (!Array.isArray(data.words) || data.words.length === 0) {
+            errors.push({
+                path: 'words',
+                field: t('editor_section_words') || 'Mots',
+                message: t('validation_no_words') || 'Au moins un mot est requis'
+            });
+        } else {
+            data.words.forEach((word, i) => {
+                if (!word.answer || word.answer.trim() === '') {
+                    errors.push({
+                        path: `words.${i}.answer`,
+                        field: `${t('editor_word') || 'Mot'} ${i + 1}`,
+                        message: t('validation_word_no_answer') || `Le mot ${i + 1} n'a pas de reponse`
+                    });
+                }
+                if (!word.clue || word.clue.trim() === '') {
+                    errors.push({
+                        path: `words.${i}.clue`,
+                        field: `${t('editor_word') || 'Mot'} ${i + 1}`,
+                        message: t('validation_word_no_clue') || `Le mot ${i + 1} n'a pas d'indice`
+                    });
+                }
+            });
+        }
+    }
+
+    // --- Flashcards ---
+    if (moduleKey === 'Flashcards') {
+        if (!Array.isArray(data.cards) || data.cards.length === 0) {
+            errors.push({
+                path: 'cards',
+                field: t('editor_section_cards') || 'Cartes',
+                message: t('validation_no_cards') || 'Au moins une carte est requise'
+            });
+        } else {
+            data.cards.forEach((card, i) => {
+                if (!card.text || card.text.trim() === '') {
+                    errors.push({
+                        path: `cards.${i}.text`,
+                        field: `${t('editor_card') || 'Carte'} ${i + 1}`,
+                        message: t('validation_card_no_question') || `La carte ${i + 1} n'a pas de question`
+                    });
+                }
+                if (!card.answer || card.answer.trim() === '') {
+                    errors.push({
+                        path: `cards.${i}.answer`,
+                        field: `${t('editor_card') || 'Carte'} ${i + 1}`,
+                        message: t('validation_card_no_answer') || `La carte ${i + 1} n'a pas de reponse`
+                    });
+                }
+            });
+        }
+    }
+
+    // --- DialogCards ---
+    if (moduleKey === 'DialogCards') {
+        if (!Array.isArray(data.dialogs) || data.dialogs.length === 0) {
+            errors.push({
+                path: 'dialogs',
+                field: t('editor_section_dialogs') || 'Dialogues',
+                message: t('validation_no_dialogs') || 'Au moins un dialogue est requis'
+            });
+        } else {
+            data.dialogs.forEach((dialog, i) => {
+                if (!dialog.text || dialog.text.trim() === '') {
+                    errors.push({
+                        path: `dialogs.${i}.text`,
+                        field: `${t('editor_dialog') || 'Dialogue'} ${i + 1}`,
+                        message: t('validation_dialog_no_front') || `Le dialogue ${i + 1} n'a pas de recto`
+                    });
+                }
+                if (!dialog.answer || dialog.answer.trim() === '') {
+                    errors.push({
+                        path: `dialogs.${i}.answer`,
+                        field: `${t('editor_dialog') || 'Dialogue'} ${i + 1}`,
+                        message: t('validation_dialog_no_back') || `Le dialogue ${i + 1} n'a pas de verso`
+                    });
+                }
+            });
+        }
+    }
+
+    // --- Timeline ---
+    if (moduleKey === 'Timeline') {
+        const dates = data.timeline?.date;
+        if (!Array.isArray(dates) || dates.length === 0) {
+            errors.push({
+                path: 'timeline.date',
+                field: 'Timeline',
+                message: t('validation_no_events') || 'Au moins un evenement est requis'
+            });
+        }
+    }
+
+    // --- Essay ---
+    if (moduleKey === 'Essay') {
+        if (!Array.isArray(data.keywords) || data.keywords.length === 0) {
+            errors.push({
+                path: 'keywords',
+                field: t('editor_section_keywords') || 'Mots-cles',
+                message: t('validation_no_keywords') || 'Au moins un mot-cle est requis'
+            });
+        }
+    }
+
+    // --- Summary ---
+    if (moduleKey === 'Summary') {
+        if (!Array.isArray(data.summaries) || data.summaries.length === 0) {
+            errors.push({
+                path: 'summaries',
+                field: t('editor_section_summaries') || 'Groupes',
+                message: t('validation_no_summaries') || 'Au moins un groupe est requis'
+            });
+        }
+    }
+
+    // --- SingleChoiceSet ---
+    if (moduleKey === 'SingleChoiceSet') {
+        if (!Array.isArray(data.choices) || data.choices.length === 0) {
+            errors.push({
+                path: 'choices',
+                field: t('editor_section_choices') || 'Questions',
+                message: t('validation_no_choices') || 'Au moins une question est requise'
+            });
+        } else {
+            data.choices.forEach((choice, i) => {
+                if (!choice.question || choice.question.trim() === '') {
+                    errors.push({
+                        path: `choices.${i}.question`,
+                        field: `Question ${i + 1}`,
+                        message: t('validation_choice_empty') || `La question ${i + 1} est vide`
+                    });
+                }
+            });
+        }
+    }
+
+    // --- SortParagraphs ---
+    if (moduleKey === 'SortParagraphs') {
+        if (!Array.isArray(data.paragraphs) || data.paragraphs.length === 0) {
+            errors.push({
+                path: 'paragraphs',
+                field: t('editor_section_paragraphs') || 'Paragraphes',
+                message: t('validation_no_paragraphs') || 'Au moins un paragraphe est requis'
+            });
+        }
+    }
+
+    // --- Chart ---
+    if (moduleKey === 'Chart') {
+        if (!Array.isArray(data.listOfTypes) || data.listOfTypes.length === 0) {
+            errors.push({
+                path: 'listOfTypes',
+                field: t('editor_section_data') || 'Donnees',
+                message: t('validation_no_chart_data') || 'Au moins une donnee est requise'
+            });
+        }
+    }
+
+    // =================================================================
+    // VALIDATIONS MOODLE
+    // =================================================================
+
+    // --- Millionnaire ---
+    if (moduleKey === 'Millionnaire') {
+        if (!Array.isArray(data.questions) || data.questions.length !== 6) {
+            errors.push({
+                path: 'questions',
+                field: 'Millionnaire',
+                message: t('validation_millionnaire_exact_6') || 'Le jeu doit contenir exactement 6 questions'
+            });
+        }
+        if (Array.isArray(data.questions)) {
+            data.questions.forEach((q, i) => {
+                if (!q.question || q.question.trim() === '') {
+                    errors.push({
+                        path: `questions.${i}.question`,
+                        field: `Question ${i + 1}`,
+                        message: t('validation_question_empty') || `La question ${i + 1} est vide`
+                    });
+                }
+                if (!q.goodanswer || q.goodanswer.trim() === '') {
+                    errors.push({
+                        path: `questions.${i}.goodanswer`,
+                        field: `Question ${i + 1}`,
+                        message: t('validation_no_good_answer') || `La question ${i + 1} n'a pas de bonne reponse`
+                    });
+                }
+            });
+        }
+    }
+
+    // --- Appariement ---
+    if (moduleKey === 'Appariement') {
+        if (!Array.isArray(data.pairs) || data.pairs.length === 0) {
+            errors.push({
+                path: 'pairs',
+                field: t('editor_section_pairs') || 'Paires',
+                message: t('validation_no_pairs') || 'Au moins une paire est requise'
+            });
+        } else {
+            data.pairs.forEach((pair, i) => {
+                if ((!pair.question || pair.question.trim() === '') || (!pair.answer || pair.answer.trim() === '')) {
+                    errors.push({
+                        path: `pairs.${i}`,
+                        field: `${t('editor_pair') || 'Paire'} ${i + 1}`,
+                        message: t('validation_pair_incomplete') || `La paire ${i + 1} est incomplete`
+                    });
+                }
+            });
+        }
+    }
+
+    // --- QCM (Moodle) ---
+    if (moduleKey === 'QCM') {
+        if (!Array.isArray(data.questions) || data.questions.length === 0) {
+            errors.push({
+                path: 'questions',
+                field: 'QCM',
+                message: t('validation_no_questions') || 'Au moins une question est requise'
+            });
+        } else {
+            data.questions.forEach((q, i) => {
+                if (!q.text || q.text.trim() === '') {
+                    errors.push({
+                        path: `questions.${i}.text`,
+                        field: `Question ${i + 1}`,
+                        message: t('validation_question_empty') || `La question ${i + 1} est vide`
+                    });
+                }
+            });
+        }
+    }
+
+    // --- Glossaire (elea_glossaire) ---
+    if (moduleKey === 'glossaireXml') {
+        if (!Array.isArray(data.entries) || data.entries.length === 0) {
+            errors.push({
+                path: 'entries',
+                field: t('editor_section_entries') || 'Entrees',
+                message: t('validation_no_entries') || 'Au moins une entree est requise'
+            });
+        } else {
+            data.entries.forEach((entry, i) => {
+                if (!entry.concept || entry.concept.trim() === '') {
+                    errors.push({
+                        path: `entries.${i}.concept`,
+                        field: `${t('editor_entry') || 'Entree'} ${i + 1}`,
+                        message: t('validation_entry_no_concept') || `L'entree ${i + 1} n'a pas de concept`
+                    });
+                }
+                if (!entry.definition || entry.definition.trim() === '') {
+                    errors.push({
+                        path: `entries.${i}.definition`,
+                        field: `${t('editor_entry') || 'Entree'} ${i + 1}`,
+                        message: t('validation_entry_no_definition') || `L'entree ${i + 1} n'a pas de definition`
+                    });
+                }
+            });
+        }
+    }
+
+    // --- Page (Moodle) ---
+    if (moduleKey === 'Page') {
+        if (!Array.isArray(data.blocks) || data.blocks.length === 0) {
+            errors.push({
+                path: 'blocks',
+                field: t('editor_section_blocks') || 'Blocs',
+                message: t('validation_no_blocks') || 'Au moins un bloc est requis'
+            });
+        } else {
+            data.blocks.forEach((block, i) => {
+                if (!block.type || block.type.trim() === '') {
+                    errors.push({
+                        path: `blocks.${i}.type`,
+                        field: `${t('editor_block') || 'Bloc'} ${i + 1}`,
+                        message: t('validation_block_no_type') || `Le bloc ${i + 1} n'a pas de type`
+                    });
+                }
+            });
+        }
+    }
+
+    // =================================================================
+    // VALIDATIONS TRANSVERSALES (existantes, conservées)
+    // =================================================================
+
+    // QCM: au moins une reponse correcte par question
+    if (data.answers && Array.isArray(data.answers)) {
+        if (!validators.hasCorrectAnswer(data.answers)) {
+            errors.push({
+                path: 'answers',
+                field: t('editor_section_answers') || 'Reponses',
+                message: t(errorMessages.hasCorrectAnswer) || 'Au moins une reponse doit etre correcte'
+            });
+        }
+    }
+
+    // QCM Moodle: verifier chaque question (hasCorrectAnswer)
+    if (moduleKey === 'QCM' && Array.isArray(data.questions)) {
+        data.questions.forEach((q, i) => {
+            if (q.answers && Array.isArray(q.answers)) {
+                if (!validators.hasCorrectAnswer(q.answers)) {
+                    errors.push({
+                        path: `questions.${i}.answers`,
+                        field: `Question ${i + 1}`,
+                        message: t(errorMessages.hasCorrectAnswer) || 'Au moins une reponse doit etre correcte'
+                    });
+                }
+            }
+        });
+    }
+
+    // FillInTheBlanks/DragTheWords: verifier la presence de trous
+    if (data.textField !== undefined && typeof data.textField === 'string') {
+        if (!validators.hasBlanks(data.textField)) {
+            errors.push({
+                path: 'textField',
+                field: t('editor_text_with_blanks') || 'Texte',
+                message: t(errorMessages.hasBlanks) || 'Le texte doit contenir au moins un mot entre *asterisques*'
+            });
+        }
+    }
+
+    // FillInTheBlanks: verifier les questions
+    if (data.questions && Array.isArray(data.questions) && typeof data.questions[0] === 'string') {
+        const hasAnyBlanks = data.questions.some(q => validators.hasBlanks(q));
+        if (!hasAnyBlanks) {
+            errors.push({
+                path: 'questions',
+                field: t('editor_section_sentences') || 'Phrases',
+                message: t('editor_error_no_blanks_sentence') || 'Au moins une phrase doit contenir un mot entre *asterisques*'
+            });
+        }
+    }
+
+    return errors;
+}
+
+// =======================================================================
+// UTILITAIRES
+// =======================================================================
+
+/**
+ * Cree un validateur personnalise
+ * @param {Function} fn - Fonction de validation (value) => true | errorMessage
+ * @returns {Function}
+ */
+export function createValidator(fn) {
+    return fn;
+}
+
+/**
+ * Combine plusieurs validateurs
+ * @param {...Function} validators - Validateurs a combiner
+ * @returns {Function}
+ */
+export function combineValidators(...validatorFns) {
+    return (value) => {
+        for (const fn of validatorFns) {
+            const result = fn(value);
+            if (result !== true) return result;
+        }
+        return true;
+    };
+}

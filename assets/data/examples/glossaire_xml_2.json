@@ -1,0 +1,30 @@
+{
+  "name": "Glossaire des Fonctions Racines Carrées et Inverses",
+  "entries": [
+    {
+      "concept": "Fonction racine carrée",
+      "definition": "Fonction définie sur l'intervalle \\([0; +\\infty[\\) qui à tout nombre réel \\(x\\) associe son **racine carrée** notée \\(\\sqrt{x}\\). Elle est *croissante* et *continue* sur son ensemble de définition.",
+      "aliases": ["Fonction carrée inverse", "Racine carrée"]
+    },
+    {
+      "concept": "Fonction inverse",
+      "definition": "Fonction définie sur \\(\\mathbb{R}^* = \\mathbb{R} \\setminus \\{0\\}\\) qui à tout nombre réel non nul \\(x\\) associe son **inverse** noté \\(\\frac{1}{x}\\). Elle est *décroissante* sur chaque intervalle de son domaine.",
+      "aliases": ["Fonction homographique simple", "Inverse"]
+    },
+    {
+      "concept": "Ensemble de définition",
+      "definition": "L'ensemble des valeurs de \\(x\\) pour lesquelles une fonction est **définie**. Pour la fonction racine carrée, il s'agit de \\([0; +\\infty[\\), et pour la fonction inverse, de \\(\\mathbb{R}^*\\).",
+      "aliases": ["Domaine de définition", "Domaine"]
+    },
+    {
+      "concept": "Branches infinies",
+      "definition": "Comportement d'une fonction lorsque \\(x\\) tend vers \\(+\\infty\\) ou \\(-\\infty\\). La fonction inverse présente une **branche infinie** en \\(0\\) (asymptote verticale) et en \\(\\pm\\infty\\) (asymptote horizontale).",
+      "aliases": ["Comportement asymptotique", "Limites à l'infini"]
+    },
+    {
+      "concept": "Asymptote",
+      "definition": "Droite dont la distance à la courbe de la fonction tend vers **zéro** lorsque \\(x\\) tend vers une valeur donnée ou vers \\(\\pm\\infty\\). La fonction inverse admet une asymptote verticale en \\(x = 0\\) et une asymptote horizontale en \\(y = 0\\).",
+      "aliases": ["Droite asymptote", "Limite infinie"]
+    }
+  ]
+}

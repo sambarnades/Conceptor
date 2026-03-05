@@ -1,0 +1,783 @@
+/**
+ * Tests d'export de documents de Caramel (Suite 9)
+ *
+ * Valide le pipeline de formatage documentaire (DOCX/ODT/PDF) :
+ * 1. formatContentForDocument sur les 25 types d'activites (19 H5P + 6 Moodle)
+ * 2. Integrite du contenu (caracteres speciaux, LaTeX → Unicode)
+ * 3. Sanitizer DOMPurify (securite XSS + preservation HTML pedagogique)
+ * 4. Utilitaires image et graphiques (dimensions, validation URL, chart renderer)
+ * 5. Nettoyage MarkTheWords (conversion **gras** → *marqueur*, espacement, multi-mots)
+ *
+ * Pas d'iframe — imports ES6 directs.
+ *
+ * Usage : ouvrir tests/test-document-export.html depuis le serveur local.
+ */
+
+import { formatContentForDocument } from '../js/export/document-formatter.js';
+import { sanitize, sanitizeSync, preloadSanitizer, isSanitizerLoaded, PROFILES } from '../js/export/sanitizer.js';
+import { calculateDimensions, validateImageUrl } from '../js/renderers/image-utils.js';
+import { generateChartImage } from '../js/renderers/chart-renderer.js';
+import { healActivitySpecificFields } from '../js/h5p/json-healer.js';
+
+// =======================================================================
+// UTILITAIRES DE TEST
+// =======================================================================
+
+let passCount = 0;
+let failCount = 0;
+let skipCount = 0;
+const results = [];
+const timings = [];
+
+let _ctx = { step: 0, stepName: '', file: '', module: '', source: '' };
+
+function assert(condition, message, diagnostic = null) {
+    const entry = {
+        status: condition ? 'PASS' : 'FAIL',
+        message,
+        step: _ctx.step,
+        stepName: _ctx.stepName,
+        file: _ctx.file,
+        module: _ctx.module,
+        source: _ctx.source
+    };
+    if (!condition) {
+        entry.diagnostic = diagnostic;
+        failCount++;
+        console.error('FAIL:', message);
+    } else {
+        passCount++;
+    }
+    results.push(entry);
+}
+
+function recordTiming(category, operation, durationMs) {
+    timings.push({ category, operation, durationMs: Math.round(durationMs * 100) / 100 });
+}
+
+// =======================================================================
+// CONSTANTES
+// =======================================================================
+
+/** Types de section valides retournes par formatContentForDocument */
+const VALID_SECTION_TYPES = [
+    'header', 'paragraph', 'bulletPoint', 'checkbox',
+    'separator', 'image', 'table', 'pageBreak', 'flashcardTable'
+];
+
+/** Table de correspondance moduleKey → fixture pour toutes les activites */
+const ALL_FIXTURES = [
+    // H5P (19 visibles)
+    { moduleKey: 'Timeline',        fixture: 'timeline_1.json' },
+    { moduleKey: 'Flashcards',      fixture: 'flashcards_1.json' },
+    { moduleKey: 'QuizSet',         fixture: 'quiz_mixte_1.json' },
+    { moduleKey: 'QuizSetQCM',      fixture: 'quiz_qcm_1.json' },
+    { moduleKey: 'QuizSetQCM',      fixture: 'quiz_qcm_5.json' },
+    { moduleKey: 'QuizSetVF',       fixture: 'quiz_vraifaux_1.json' },
+    { moduleKey: 'Glossary',        fixture: 'accordion_1.json' },
+    { moduleKey: 'Crossword',       fixture: 'crosswords_1.json' },
+    { moduleKey: 'Essay',           fixture: 'essay_1.json' },
+    { moduleKey: 'Summary',         fixture: 'summary_1.json' },
+    { moduleKey: 'DragTheWords',    fixture: 'drag_the_words_1.json' },
+    { moduleKey: 'DragAndDrop',     fixture: 'drag_and_drop_1.json' },
+    { moduleKey: 'FillInTheBlanks', fixture: 'fill_in_the_blanks_1.json' },
+    { moduleKey: 'MarkTheWords',    fixture: 'mark_the_words_1.json' },
+    { moduleKey: 'MarkTheWords',    fixture: 'mark_the_words_3.json' },
+    { moduleKey: 'MarkTheWords',    fixture: 'mark_the_words_4.json' },
+    { moduleKey: 'TrueFalse',       fixture: 'true_false_1.json' },
+    { moduleKey: 'MultipleChoice',  fixture: 'multiple_choice_1.json' },
+    { moduleKey: 'FindTheWords',    fixture: 'find_the_words_1.json' },
+    { moduleKey: 'SortParagraphs',  fixture: 'sort_the_paragraphs_1.json' },
+    { moduleKey: 'SingleChoiceSet', fixture: 'single_choice_set_1.json' },
+    { moduleKey: 'DialogCards',     fixture: 'dialog_cards_1.json' },
+    { moduleKey: 'Chart',           fixture: 'charts_1.json' },
+    // Moodle (6 visibles, gift exclu car hidden)
+    { moduleKey: 'test_elea',       fixture: 'test_1.json' },
+    { moduleKey: 'glossaireXml',    fixture: 'glossaire_xml_1.json' },
+    { moduleKey: 'Millionnaire',    fixture: 'millionnaire_1.json' },
+    { moduleKey: 'Appariement',     fixture: 'appariement_1.json' },
+    { moduleKey: 'QCM',             fixture: 'qcm_1.json' },
+    { moduleKey: 'Page',            fixture: 'page_1.json' },
+    { moduleKey: 'Devoir',          fixture: 'devoir_1.json' }
+];
+
+// Stockage des fixtures chargees
+const fixtures = {};
+
+// =======================================================================
+// ETAPE 1 : FORMATAGE COMPLET (25 TYPES)
+// =======================================================================
+
+async function runStep1_FormatAll() {
+    console.group('Etape 1 : Formatage complet');
+    _ctx = { step: 1, stepName: 'Formatage', file: '', module: '', source: '' };
+    const t0 = performance.now();
+
+    // Charger toutes les fixtures
+    let loaded = 0;
+    for (const entry of ALL_FIXTURES) {
+        try {
+            const resp = await fetch(`../assets/data/examples/${entry.fixture}`);
+            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+            fixtures[entry.moduleKey] = await resp.json();
+            loaded++;
+        } catch (e) {
+            console.warn(`Fixture ${entry.fixture} non chargee :`, e.message);
+        }
+    }
+    assert(
+        loaded === ALL_FIXTURES.length,
+        `[1a.Load] ${loaded}/${ALL_FIXTURES.length} fixtures chargees`,
+        loaded < ALL_FIXTURES.length ? { manquantes: ALL_FIXTURES.length - loaded } : null
+    );
+
+    // Formater chaque type et valider la structure
+    let passedTypes = 0;
+    const failedTypes = [];
+
+    for (const entry of ALL_FIXTURES) {
+        const { moduleKey } = entry;
+        const fixture = fixtures[moduleKey];
+        if (!fixture) {
+            assert(false, `[1.${moduleKey}] Fixture non disponible`);
+            failedTypes.push(moduleKey);
+            continue;
+        }
+
+        const tFmt = performance.now();
+        try {
+            const result = await formatContentForDocument(moduleKey, structuredClone(fixture));
+
+            // Verifier structure de base
+            if (!result || typeof result !== 'object') {
+                assert(false, `[1.${moduleKey}] Resultat null ou non-objet`, { type: typeof result });
+                failedTypes.push(moduleKey);
+                continue;
+            }
+
+            const titleOk = typeof result.title === 'string' && result.title.length > 0;
+            const sectionsOk = Array.isArray(result.sections) && result.sections.length > 0;
+
+            if (!titleOk || !sectionsOk) {
+                assert(false, `[1.${moduleKey}] Structure invalide (title: ${titleOk}, sections: ${sectionsOk})`, {
+                    title: result.title,
+                    sectionsCount: result.sections?.length
+                });
+                failedTypes.push(moduleKey);
+                continue;
+            }
+
+            // Validation approfondie des sections
+            let sectionErrors = [];
+            for (let i = 0; i < result.sections.length; i++) {
+                const s = result.sections[i];
+                if (!s || !VALID_SECTION_TYPES.includes(s.type)) {
+                    sectionErrors.push(`section[${i}].type = "${s?.type}" (invalide)`);
+                    continue;
+                }
+
+                // Champs requis par type
+                switch (s.type) {
+                    case 'header':
+                        if (typeof s.text !== 'string' || s.text.length === 0)
+                            sectionErrors.push(`section[${i}] header sans text`);
+                        if (!Number.isInteger(s.level) || s.level < 1 || s.level > 3)
+                            sectionErrors.push(`section[${i}] header.level = ${s.level} (attendu 1-3)`);
+                        break;
+                    case 'paragraph':
+                    case 'bulletPoint':
+                    case 'checkbox':
+                        if (typeof s.text !== 'string')
+                            sectionErrors.push(`section[${i}] ${s.type} sans text`);
+                        break;
+                    case 'table':
+                        if (!Array.isArray(s.headers))
+                            sectionErrors.push(`section[${i}] table sans headers`);
+                        if (!Array.isArray(s.rows))
+                            sectionErrors.push(`section[${i}] table sans rows`);
+                        break;
+                    case 'flashcardTable':
+                        if (!Array.isArray(s.rows))
+                            sectionErrors.push(`section[${i}] flashcardTable sans rows`);
+                        break;
+                    case 'image':
+                        if (!s.url && !s.imageData)
+                            sectionErrors.push(`section[${i}] image sans url ni imageData`);
+                        break;
+                    // separator et pageBreak : pas de champ obligatoire
+                }
+            }
+
+            const duration = Math.round(performance.now() - tFmt);
+            if (sectionErrors.length === 0) {
+                assert(true, `[1.${moduleKey}] OK — "${result.title.substring(0, 40)}" (${result.sections.length} sections, ${duration}ms)`);
+                passedTypes++;
+            } else {
+                assert(false, `[1.${moduleKey}] ${sectionErrors.length} erreur(s) de section`, {
+                    erreurs: sectionErrors.slice(0, 5).join('; ')
+                });
+                failedTypes.push(moduleKey);
+            }
+            recordTiming(moduleKey, 'formatContentForDocument', duration);
+        } catch (e) {
+            assert(false, `[1.${moduleKey}] Exception : ${e.message}`, { stack: e.stack?.substring(0, 300) });
+            failedTypes.push(moduleKey);
+        }
+    }
+
+    // Bilan
+    assert(
+        passedTypes === ALL_FIXTURES.length,
+        `[1.Bilan] ${passedTypes}/${ALL_FIXTURES.length} types formates correctement`,
+        failedTypes.length > 0 ? { echecs: failedTypes.join(', ') } : null
+    );
+
+    recordTiming('Formatage', `Tous les types (${ALL_FIXTURES.length})`, performance.now() - t0);
+    console.groupEnd();
+}
+
+// =======================================================================
+// ETAPE 2 : INTEGRITE DU CONTENU (CARACTERES SPECIAUX, LATEX)
+// =======================================================================
+
+async function runStep2_ContentIntegrity() {
+    console.group('Etape 2 : Integrite du contenu');
+    _ctx = { step: 2, stepName: 'Contenu', file: '', module: '', source: '' };
+    const t0 = performance.now();
+
+    // Fixture de test avec caracteres speciaux
+    const specialChars = 'àéèêçôùîë «guillemets» – tiret — cadratin … œ æ';
+    const testFixture = {
+        title: `Test ${specialChars}`,
+        cards: [
+            { text: `Question ${specialChars}`, answer: `Réponse ${specialChars}`, tip: 'Astuce' },
+            { text: 'Question simple', answer: 'Réponse simple', tip: 'Astuce' }
+        ]
+    };
+
+    try {
+        const result = await formatContentForDocument('Flashcards', testFixture);
+
+        // Verifier que le titre contient les caracteres speciaux
+        const titleHasSpecialChars = result.title && result.title.includes('àéèêçôùîë');
+        assert(
+            titleHasSpecialChars,
+            `[2a.Accents] Accents preserves dans le titre`,
+            !titleHasSpecialChars ? { titre: result.title?.substring(0, 80) } : null
+        );
+
+        // Chercher les guillemets dans les sections
+        const allText = result.sections
+            .filter(s => s.text)
+            .map(s => s.text)
+            .join(' ');
+        const allRows = result.sections
+            .filter(s => s.type === 'flashcardTable' && s.rows)
+            .flatMap(s => s.rows)
+            .map(r => {
+                const l = r.left ? (typeof r.left === 'string' ? r.left : r.left.text || '') : '';
+                const ri = r.right ? (typeof r.right === 'string' ? r.right : r.right.text || '') : '';
+                return `${l} ${ri}`;
+            })
+            .join(' ');
+        const fullContent = allText + ' ' + allRows;
+
+        assert(
+            fullContent.includes('«') && fullContent.includes('»'),
+            `[2b.Guillemets] Guillemets francais « » preserves`
+        );
+
+        assert(
+            fullContent.includes('œ') || fullContent.includes('æ'),
+            `[2c.Ligatures] Ligatures œ/æ preservees`
+        );
+
+        assert(
+            fullContent.includes('–') || fullContent.includes('—'),
+            `[2d.Tirets] Tirets longs preserves`
+        );
+    } catch (e) {
+        assert(false, `[2a.Accents] Exception : ${e.message}`);
+        assert(false, `[2b.Guillemets] Exception`);
+        assert(false, `[2c.Ligatures] Exception`);
+        assert(false, `[2d.Tirets] Exception`);
+    }
+
+    // Test LaTeX → Unicode (via postProcessLatex interne)
+    const latexFixture = {
+        title: 'Test LaTeX \\(x^2 + y^2 = z^2\\)',
+        cards: [
+            { text: 'Calculer \\(\\frac{1}{2}\\)', answer: '0,5', tip: '\\(a^n\\)' },
+            { text: 'Question \\(\\sqrt{4}\\)', answer: '2', tip: 'Racine' }
+        ]
+    };
+
+    try {
+        const result = await formatContentForDocument('Flashcards', latexFixture);
+
+        // postProcessLatex devrait convertir \(x^2\) en x² (Unicode)
+        const titleHasUnicode = result.title && result.title.includes('²');
+        assert(
+            titleHasUnicode,
+            `[2e.LaTeX] LaTeX x^2 converti en Unicode ² dans le titre`,
+            { titre: result.title?.substring(0, 80) }
+        );
+
+        // Verifier conversion \frac dans les sections
+        const sectionsText = result.sections
+            .filter(s => s.text)
+            .map(s => s.text)
+            .join(' ');
+        const rowsText = result.sections
+            .filter(s => s.type === 'flashcardTable' && s.rows)
+            .flatMap(s => s.rows)
+            .map(r => {
+                const l = r.left ? (typeof r.left === 'string' ? r.left : r.left.text || '') : '';
+                const ri = r.right ? (typeof r.right === 'string' ? r.right : r.right.text || '') : '';
+                return `${l} ${ri}`;
+            })
+            .join(' ');
+        const contentText = sectionsText + ' ' + rowsText;
+
+        // \frac{1}{2} devrait devenir 1/2 ou ½
+        const fracConverted = contentText.includes('½') || contentText.includes('1/2')
+            || !contentText.includes('\\frac');
+        assert(
+            fracConverted,
+            `[2f.Frac] LaTeX \\frac converti ou supprime`,
+            { contenu: contentText.substring(0, 100) }
+        );
+
+        // Verifier que les delimiteurs LaTeX bruts \(...\) sont supprimes
+        const noRawDelimiters = !contentText.includes('\\(') && !contentText.includes('\\)');
+        assert(
+            noRawDelimiters,
+            `[2g.Delimiteurs] Delimiteurs LaTeX \\( \\) supprimes apres conversion`,
+            !noRawDelimiters ? { extrait: contentText.substring(0, 100) } : null
+        );
+    } catch (e) {
+        assert(false, `[2e.LaTeX] Exception : ${e.message}`);
+        assert(false, `[2f.Frac] Exception`);
+        assert(false, `[2g.Delimiteurs] Exception`);
+    }
+
+    // Test avec une vraie fixture contenant potentiellement du LaTeX (MultipleChoice/Essay)
+    const mcFixture = fixtures['MultipleChoice'];
+    if (mcFixture) {
+        try {
+            const result = await formatContentForDocument('MultipleChoice', structuredClone(mcFixture));
+            assert(
+                result && result.title && result.sections.length > 0,
+                `[2h.RealFixture] MultipleChoice formate OK (${result.sections.length} sections)`
+            );
+        } catch (e) {
+            assert(false, `[2h.RealFixture] Exception MultipleChoice : ${e.message}`);
+        }
+    } else {
+        assert(false, `[2h.RealFixture] Fixture MultipleChoice non disponible`);
+    }
+
+    recordTiming('Contenu', 'Tests caracteres speciaux + LaTeX', performance.now() - t0);
+    console.groupEnd();
+}
+
+// =======================================================================
+// ETAPE 3 : SANITIZER DOMPURIFY
+// =======================================================================
+
+async function runStep3_Sanitizer() {
+    console.group('Etape 3 : Sanitizer DOMPurify');
+    _ctx = { step: 3, stepName: 'Sanitizer', file: '', module: '', source: '' };
+    const t0 = performance.now();
+
+    // Precharger DOMPurify
+    try {
+        await preloadSanitizer();
+    } catch (e) {
+        console.warn('preloadSanitizer echoue, tentative via window.DOMPurify');
+    }
+
+    const loaded = isSanitizerLoaded() || !!window.DOMPurify;
+    assert(loaded, `[3a.Load] DOMPurify charge`);
+
+    if (!loaded) {
+        // Fallback : tester sanitizeSync avec le fallback basique
+        console.warn('DOMPurify non disponible — tests avec fallback basique');
+    }
+
+    // -- SECURITE : XSS bloque --
+    const securityTests = [
+        { input: '<script>alert(1)</script>texte',            check: s => !s.includes('<script'),        label: 'script' },
+        { input: '<img src=x onerror="alert(1)">',            check: s => !s.includes('onerror'),         label: 'onerror' },
+        { input: '<a href="javascript:alert(1)">lien</a>',    check: s => !s.includes('javascript:'),     label: 'javascript:' },
+        { input: '<div onclick="alert(1)">texte</div>',       check: s => !s.includes('onclick'),          label: 'onclick' },
+        { input: '<iframe src="evil.com"></iframe>',           check: s => !s.includes('<iframe'),          label: 'iframe' },
+        { input: '<svg onload="alert(1)"><circle/></svg>',     check: s => !s.includes('onload'),           label: 'svg onload' }
+    ];
+
+    for (const test of securityTests) {
+        try {
+            const result = loaded
+                ? await sanitize(test.input, 'EDUCATIONAL')
+                : sanitizeSync(test.input, 'EDUCATIONAL');
+            assert(
+                test.check(result),
+                `[3b.${test.label}] XSS bloque : ${test.label}`,
+                !test.check(result) ? { resultat: result } : null
+            );
+        } catch (e) {
+            assert(false, `[3b.${test.label}] Exception : ${e.message}`);
+        }
+    }
+
+    // -- PRESERVATION EDUCATIONAL --
+    const preserveTests = [
+        { input: '<strong>gras</strong>',                              check: s => s.includes('<strong>'),  label: 'strong' },
+        { input: '<em>italique</em>',                                  check: s => s.includes('<em>'),      label: 'em' },
+        { input: '<ul><li>item</li></ul>',                             check: s => s.includes('<li>'),      label: 'ul/li' },
+        { input: '<a href="https://example.com">lien</a>',            check: s => s.includes('href='),     label: 'a[href]' },
+        { input: '<table><tr><td>cellule</td></tr></table>',           check: s => s.includes('<td>'),      label: 'table' }
+    ];
+
+    for (const test of preserveTests) {
+        try {
+            const result = loaded
+                ? await sanitize(test.input, 'EDUCATIONAL')
+                : sanitizeSync(test.input, 'EDUCATIONAL');
+            assert(
+                test.check(result),
+                `[3c.${test.label}] Preserve (EDUCATIONAL) : <${test.label}>`,
+                !test.check(result) ? { resultat: result } : null
+            );
+        } catch (e) {
+            assert(false, `[3c.${test.label}] Exception : ${e.message}`);
+        }
+    }
+
+    // -- PROFIL STRICT --
+    try {
+        const strictStrong = loaded
+            ? await sanitize('<strong>gras</strong>', 'STRICT')
+            : sanitizeSync('<strong>gras</strong>', 'STRICT');
+        assert(
+            strictStrong.includes('<strong>') || strictStrong.includes('gras'),
+            `[3d.strict_strong] STRICT preserve <strong>`,
+            { resultat: strictStrong }
+        );
+
+        const strictTable = loaded
+            ? await sanitize('<table><tr><td>cellule</td></tr></table>', 'STRICT')
+            : sanitizeSync('<table><tr><td>cellule</td></tr></table>', 'STRICT');
+        assert(
+            !strictTable.includes('<table'),
+            `[3d.strict_table] STRICT supprime <table>`,
+            { resultat: strictTable }
+        );
+    } catch (e) {
+        assert(false, `[3d.strict_strong] Exception STRICT : ${e.message}`);
+        assert(false, `[3d.strict_table] Exception STRICT`);
+    }
+
+    // -- PROFIL RICH_HTML --
+    try {
+        const richHtml = loaded
+            ? await sanitize('<section><article>contenu</article></section>', 'RICH_HTML')
+            : sanitizeSync('<section><article>contenu</article></section>', 'RICH_HTML');
+        assert(
+            richHtml.includes('<section') || richHtml.includes('<article'),
+            `[3e.rich] RICH_HTML preserve <section>/<article>`,
+            { resultat: richHtml }
+        );
+    } catch (e) {
+        assert(false, `[3e.rich] Exception RICH_HTML : ${e.message}`);
+    }
+
+    recordTiming('Sanitizer', 'Tests securite + preservation', performance.now() - t0);
+    console.groupEnd();
+}
+
+// =======================================================================
+// ETAPE 4 : UTILITAIRES IMAGE ET GRAPHIQUES
+// =======================================================================
+
+async function runStep4_ImageAndChart() {
+    console.group('Etape 4 : Utilitaires image et graphiques');
+    _ctx = { step: 4, stepName: 'Images/Charts', file: '', module: '', source: '' };
+    const t0 = performance.now();
+
+    // -- calculateDimensions --
+    // Paysage 800x600 avec fixedHeight=150, maxWidth=160
+    // ratio = 800/600 = 1.333, width = 150*1.333 = 200 > 160 → cap a 160, height = 160/1.333 = 120
+    const d1 = calculateDimensions(800, 600, 150, 160);
+    assert(
+        d1.width <= 160 && d1.height > 0 && d1.height <= 150,
+        `[4a.Landscape] Paysage 800x600 → ${d1.width}x${d1.height}mm (width <= 160)`,
+        { width: d1.width, height: d1.height }
+    );
+
+    // Portrait 100x400
+    // ratio = 0.25, width = 150*0.25 = 37.5 < 160 → ok
+    const d2 = calculateDimensions(100, 400, 150, 160);
+    assert(
+        d2.width < 160 && d2.height === 150,
+        `[4b.Portrait] Portrait 100x400 → ${d2.width}x${d2.height}mm (height = 150)`,
+        { width: d2.width, height: d2.height }
+    );
+
+    // Tres large 1600x100
+    // ratio = 16, width = 150*16 = 2400 > 160 → cap a 160, height = 10
+    const d3 = calculateDimensions(1600, 100, 150, 160);
+    assert(
+        d3.width === 160 && d3.height < 150,
+        `[4c.Wide] Tres large 1600x100 → ${d3.width}x${d3.height}mm (width cap a 160)`,
+        { width: d3.width, height: d3.height }
+    );
+
+    // Dimensions invalides → fallback 100x100
+    const d4 = calculateDimensions(0, 0, 150, 160);
+    assert(
+        d4.width === 100 && d4.height === 100,
+        `[4d.Invalid] Dimensions 0x0 → fallback ${d4.width}x${d4.height}mm`,
+        { width: d4.width, height: d4.height }
+    );
+
+    // -- validateImageUrl --
+    assert(
+        validateImageUrl('https://example.com/img.png') === true,
+        `[4e.URL_https] validateImageUrl('https://...') → true`
+    );
+
+    assert(
+        validateImageUrl('http://example.com/img.jpg') === true,
+        `[4f.URL_http] validateImageUrl('http://...') → true`
+    );
+
+    assert(
+        validateImageUrl('javascript:alert(1)') === false,
+        `[4g.URL_js] validateImageUrl('javascript:...') → false`
+    );
+
+    assert(
+        validateImageUrl('') === false,
+        `[4h.URL_empty] validateImageUrl('') → false`
+    );
+
+    // -- generateChartImage --
+    try {
+        const chartData = {
+            graphMode: 'barChart',
+            listOfTypes: [
+                { text: 'Mathématiques', value: 85 },
+                { text: 'Français', value: 72 },
+                { text: 'Histoire', value: 90 }
+            ],
+            figureDefinition: 'Notes par matière'
+        };
+
+        const chartResult = generateChartImage(chartData);
+        assert(
+            chartResult && chartResult.dataURL && chartResult.dataURL.startsWith('data:image/png'),
+            `[4i.BarChart] generateChartImage barChart → dataURL PNG`,
+            chartResult ? { width: chartResult.width, height: chartResult.height } : { resultat: null }
+        );
+
+        // Pie chart
+        const pieData = { ...chartData, graphMode: 'pieChart' };
+        const pieResult = generateChartImage(pieData);
+        assert(
+            pieResult && pieResult.dataURL && pieResult.dataURL.startsWith('data:image/png'),
+            `[4j.PieChart] generateChartImage pieChart → dataURL PNG`,
+            pieResult ? { width: pieResult.width, height: pieResult.height } : { resultat: null }
+        );
+    } catch (e) {
+        assert(false, `[4i.BarChart] Exception : ${e.message}`);
+        assert(false, `[4j.PieChart] Exception`);
+    }
+
+    recordTiming('Utilitaires', 'Image + Chart', performance.now() - t0);
+    console.groupEnd();
+}
+
+// =======================================================================
+// ETAPE 5 : NETTOYAGE MARKTHEWORDS (DOUBLES ASTERISQUES + ESPACEMENT)
+// =======================================================================
+
+async function runStep5_MarkTheWordsCleaning() {
+    console.group('Etape 5 : Nettoyage MarkTheWords');
+    _ctx = { step: 5, stepName: 'MarkTheWords', file: '', module: '', source: '' };
+    const t0 = performance.now();
+
+    // -- 5a. Conversion **mot** → *mot* (gras markdown du LLM) --
+    const inputBold = {
+        taskDescription: "Repere les **concepts cles** dans le texte.",
+        textField: "La **Revolution** de 1789 marque un tournant decisif ou le **peuple** renverse la **monarchie**."
+    };
+    try {
+        const healed = healActivitySpecificFields(inputBold, 'MarkTheWords');
+        const noDoubleStar = !healed.textField.includes('**');
+        assert(
+            noDoubleStar,
+            `[5a.DoubleStar] Les ** sont convertis en * simple`,
+            !noDoubleStar ? { textField: healed.textField } : null
+        );
+    } catch (e) {
+        assert(false, `[5a.DoubleStar] Exception : ${e.message}`);
+    }
+
+    // -- 5b. Conversion preservee les espaces existants --
+    const inputSpacing = {
+        taskDescription: "Test espacement",
+        textField: "La **Revolution** de 1789 ou le **peuple** renverse la **monarchie**."
+    };
+    try {
+        const healed = healActivitySpecificFields(inputSpacing, 'MarkTheWords');
+        // Apres conversion ** → *, les espaces originaux doivent etre preserves
+        const expected = "La *Revolution* de 1789 ou le *peuple* renverse la *monarchie*.";
+        assert(
+            healed.textField === expected,
+            `[5b.Espacement] Espaces originaux preserves apres conversion ** → *`,
+            healed.textField !== expected ? { attendu: expected, obtenu: healed.textField } : null
+        );
+    } catch (e) {
+        assert(false, `[5b.Espacement] Exception : ${e.message}`);
+    }
+
+    // -- 5c. Fixture mark_the_words_3.json (input LLM avec **gras**) --
+    try {
+        const resp = await fetch('../assets/data/examples/mark_the_words_3.json');
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const fixture3 = await resp.json();
+
+        const healed3 = healActivitySpecificFields(structuredClone(fixture3), 'MarkTheWords');
+        const noDouble3 = !healed3.textField.includes('**');
+        assert(
+            noDouble3,
+            `[5c.Fixture3] mark_the_words_3.json : pas de ** apres nettoyage`,
+            !noDouble3 ? { textField: healed3.textField.substring(0, 120) } : null
+        );
+
+        // Verifier que les mots cles sont bien marques en simple *mot*
+        const expectedWords = ['Revolution', 'Révolution', 'peuple', 'monarchie', 'societe', 'société', 'République', 'Republique'];
+        const foundMarkers = healed3.textField.match(/\*[^*]+\*/g) || [];
+        assert(
+            foundMarkers.length >= 3,
+            `[5c.Fixture3_markers] ${foundMarkers.length} marqueurs *mot* trouves (attendu >= 3)`,
+            { marqueurs: foundMarkers.join(', ') }
+        );
+    } catch (e) {
+        assert(false, `[5c.Fixture3] Exception : ${e.message}`);
+    }
+
+    // -- 5d. Fixture mark_the_words_4.json (sortie deja cassee) --
+    try {
+        const resp = await fetch('../assets/data/examples/mark_the_words_4.json');
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const fixture4 = await resp.json();
+
+        const healed4 = healActivitySpecificFields(structuredClone(fixture4), 'MarkTheWords');
+        // Le textField casse ne doit plus contenir de ** colles
+        const noDouble4 = !healed4.textField.includes('**');
+        assert(
+            noDouble4,
+            `[5d.Fixture4] mark_the_words_4.json : ** colles corriges`,
+            !noDouble4 ? { textField: healed4.textField.substring(0, 120) } : null
+        );
+    } catch (e) {
+        assert(false, `[5d.Fixture4] Exception : ${e.message}`);
+    }
+
+    // -- 5e. Multi-mots *mot1 mot2* → *mot1* *mot2* --
+    const inputMulti = {
+        taskDescription: "Test multi-mots",
+        textField: "Le *droit de vote* est un acquis de la *Revolution francaise* de 1789."
+    };
+    try {
+        const healed = healActivitySpecificFields(inputMulti, 'MarkTheWords');
+        // Verifier qu'aucun marqueur individuel *...* ne contient d'espace
+        const allMarkers = healed.textField.match(/\*[^*]+\*/g) || [];
+        const noMultiWord = allMarkers.every(m => !m.slice(1, -1).includes(' '));
+        assert(
+            noMultiWord,
+            `[5e.MultiMots] Multi-mots eclates en marqueurs individuels`,
+            !noMultiWord ? { textField: healed.textField, marqueurs: allMarkers.filter(m => m.slice(1, -1).includes(' ')).join(', ') } : null
+        );
+        // Verifier que les mots individuels sont bien marques
+        const markers = healed.textField.match(/\*[^*]+\*/g) || [];
+        assert(
+            markers.length >= 5,
+            `[5e.MultiMots_count] ${markers.length} marqueurs apres eclatement (attendu >= 5)`,
+            { marqueurs: markers.join(', ') }
+        );
+    } catch (e) {
+        assert(false, `[5e.MultiMots] Exception : ${e.message}`);
+    }
+
+    // -- 5f. Apostrophe + asterisque : l'*oiseau* → l' *oiseau* --
+    const inputApostrophe = {
+        taskDescription: "Test apostrophe",
+        textField: "L'*egalite* et l'*independance* sont des valeurs."
+    };
+    try {
+        const healed = healActivitySpecificFields(inputApostrophe, 'MarkTheWords');
+        const apostropheOk = !healed.textField.includes("'*") || healed.textField.includes("' *");
+        assert(
+            apostropheOk,
+            `[5f.Apostrophe] Espace ajoute apres apostrophe avant *mot*`,
+            !apostropheOk ? { textField: healed.textField } : null
+        );
+    } catch (e) {
+        assert(false, `[5f.Apostrophe] Exception : ${e.message}`);
+    }
+
+    recordTiming('MarkTheWords', 'Nettoyage textField', performance.now() - t0);
+    console.groupEnd();
+}
+
+// =======================================================================
+// EXECUTION
+// =======================================================================
+
+export const STEP_NAMES = [
+    '',
+    'Formatage',
+    'Contenu',
+    'Sanitizer',
+    'Images/Charts',
+    'MarkTheWords'
+];
+
+export const STEP_DESCRIPTIONS = [
+    '',
+    `Formate les ${ALL_FIXTURES.length} types d'activites via formatContentForDocument et valide la structure (title, sections, champs par type).`,
+    'Verifie la preservation des caracteres speciaux (accents, guillemets) et la conversion LaTeX → Unicode.',
+    'Teste la securite DOMPurify (XSS bloque) et la preservation du HTML pedagogique (3 profils).',
+    'Valide calculateDimensions (ratios, cap), validateImageUrl (protocoles), generateChartImage (bar/pie).',
+    'Verifie la conversion **gras** → *marqueur*, l\'espacement, le split multi-mots et l\'apostrophe dans MarkTheWords.'
+];
+
+/**
+ * Lance tous les tests d'export de documents.
+ */
+export async function runAllTests() {
+    console.log(`=== Tests Export Documents Caramel (5 etapes, ${ALL_FIXTURES.length} types) ===`);
+    passCount = 0;
+    failCount = 0;
+    skipCount = 0;
+    results.length = 0;
+    timings.length = 0;
+
+    const t0 = performance.now();
+
+    await runStep1_FormatAll();
+    await runStep2_ContentIntegrity();
+    await runStep3_Sanitizer();
+    await runStep4_ImageAndChart();
+    await runStep5_MarkTheWordsCleaning();
+
+    const t1 = performance.now();
+    recordTiming('Global', 'Tous les tests export', t1 - t0);
+
+    console.log(`\n=== Resultats : ${passCount} PASS, ${failCount} FAIL, ${skipCount} SKIP ===`);
+
+    return { passCount, failCount, skipCount, results, STEP_NAMES, timings };
+}

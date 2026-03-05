@@ -1,0 +1,325 @@
+{
+  "title": "La fonction racine carrée et ses formules",
+  "intro": "Découvre la fonction racine carrée, son histoire fascinante et ses propriétés essentielles. Un chapitre au cœur du programme de Seconde !",
+  "blocks": [
+    {
+      "type": "#01_hero_header",
+      "data": {
+        "title": "La fonction racine carrée",
+        "subtitle": "Définition, propriétés et formules de référence"
+      }
+    },
+    {
+      "type": "#02_nav_summary",
+      "data": {
+        "links": [
+          {"href": "#objectifs", "text": "Objectifs pédagogiques"},
+          {"href": "#histoire", "text": "Repères historiques"},
+          {"href": "#definition", "text": "Définition"},
+          {"href": "#cours", "text": "Propriétés et formules"},
+          {"href": "#lexique", "text": "Vocabulaire"},
+          {"href": "#faq", "text": "Questions fréquentes"},
+          {"href": "#sitographie", "text": "Ressources"}
+        ]
+      }
+    },
+    {
+      "type": "#03_histo_reperes",
+      "data": {
+        "title": "Quelques repères historiques",
+        "cards": [
+          {
+            "title": "Vers -1800 : Tablette babylonienne YBC 7289",
+            "text": "La première représentation connue d'une racine carrée figure sur cette tablette cunéiforme : on y trouve une valeur approchée de \\\\( \\\\sqrt{2} \\\\) à six décimales, utilisée pour calculer la diagonale d'un carré. Un chef-d'œuvre mathématique !"
+          },
+          {
+            "title": "1220 : Leonardo de Pise (Fibonacci)",
+            "text": "Dans son ouvrage *Practica geometriae*, Leonardo de Pise utilise pour la première fois un symbole spécifique pour représenter la racine carrée, ancêtre de notre notation moderne \\\\( \\\\sqrt{\\\\phantom{x}} \\\\)."
+          },
+          {
+            "title": "1525 : Christoff Rudolff",
+            "text": "Le mathématicien allemand Christoff Rudolff introduit le symbole \\\\( \\\\sqrt{\\\\phantom{x}} \\\\) tel qu'on le connaît aujourd'hui dans son traité d'algèbre. Ce signe deviendra universel !"
+          }
+        ]
+      }
+    },
+    {
+      "type": "#04_callout_set",
+      "data": {
+        "title": "Objectifs pédagogiques",
+        "callouts": [
+          {
+            "type": "objectif",
+            "text": "Connaître la définition de la fonction racine carrée et son ensemble de définition \\\\( [0~;~+\\\\infty[ \\\\)."
+          },
+          {
+            "type": "objectif",
+            "text": "Savoir tracer la courbe représentative de \\\\( f(x) = \\\\sqrt{x} \\\\) et identifier ses caractéristiques graphiques."
+          },
+          {
+            "type": "objectif",
+            "text": "Maîtriser les propriétés algébriques et les formules de calcul avec les racines carrées."
+          },
+          {
+            "type": "objectif",
+            "text": "Utiliser la croissance de la fonction racine carrée pour comparer des nombres et résoudre des équations."
+          },
+          {
+            "type": "savoir",
+            "text": "La fonction racine carrée est **strictement croissante** sur \\\\( [0~;~+\\\\infty[ \\\\) : si \\\\( a < b \\\\), alors \\\\( \\\\sqrt{a} < \\\\sqrt{b} \\\\)."
+          },
+          {
+            "type": "alerte",
+            "text": "Attention : la racine carrée d'un nombre négatif n'existe **pas** dans l'ensemble des nombres réels \\\\( \\\\mathbb{R} \\\\) !"
+          }
+        ]
+      }
+    },
+    {
+      "type": "#05_stats_cards",
+      "data": {
+        "title": "Quelques valeurs remarquables",
+        "stats": [
+          {"value": "\\\\( \\\\sqrt{0} = 0 \\\\)", "label": "Racine de zéro"},
+          {"value": "\\\\( \\\\sqrt{1} = 1 \\\\)", "label": "Racine de un"},
+          {"value": "\\\\( \\\\sqrt{4} = 2 \\\\)", "label": "Racine de quatre"},
+          {"value": "\\\\( \\\\sqrt{9} = 3 \\\\)", "label": "Racine de neuf"},
+          {"value": "\\\\( \\\\sqrt{16} = 4 \\\\)", "label": "Racine de seize"},
+          {"value": "\\\\( \\\\sqrt{2} \\\\approx 1{,}414 \\\\)", "label": "Racine de deux (irrationnel)"}
+        ]
+      }
+    },
+    {
+      "type": "#06_lexique_table",
+      "data": {
+        "title": "Vocabulaire mathématique",
+        "caption": "Termes essentiels à connaître pour maîtriser la fonction racine carrée",
+        "headers": ["Terme", "Définition"],
+        "rows": [
+          ["Racine carrée de \\\\( x \\\\)", "Nombre positif (ou nul) dont le carré vaut \\\\( x \\\\). On le note \\\\( \\\\sqrt{x} \\\\)."],
+          ["Ensemble de définition", "Ensemble des valeurs pour lesquelles la fonction est définie. Pour \\\\( f(x) = \\\\sqrt{x} \\\\), c'est \\\\( [0~;~+\\\\infty[ \\\\)."],
+          ["Fonction croissante", "Fonction qui conserve l'ordre : si \\\\( a < b \\\\), alors \\\\( f(a) < f(b) \\\\)."],
+          ["Nombre irrationnel", "Nombre qui ne peut pas s'écrire sous forme de fraction \\\\( \\\\frac{p}{q} \\\\). Exemple : \\\\( \\\\sqrt{2} \\\\)."],
+          ["Courbe représentative", "Ensemble des points de coordonnées \\\\( (x~;~f(x)) \\\\) dans un repère. Pour \\\\( f(x) = \\\\sqrt{x} \\\\), elle ressemble à une demi-parabole couchée."]
+        ]
+      }
+    },
+    {
+      "type": "#07_glossary_chips",
+      "data": {
+        "title": "Mots-clés du chapitre",
+        "chips": [
+          "Fonction racine carrée",
+          "Ensemble de définition",
+          "Strictement croissante",
+          "Nombre irrationnel",
+          "Propriétés algébriques",
+          "Équation",
+          "Inéquation",
+          "Courbe représentative",
+          "Formules de calcul"
+        ]
+      }
+    },
+    {
+      "type": "#08_monuments_grid",
+      "data": {
+        "title": "Illustrations et exemples",
+        "cards": [
+          {
+            "img_src": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Square_root_0_25.svg/800px-Square_root_0_25.svg.png",
+            "img_alt": "Graphique de la fonction racine carrée",
+            "caption": "Représentation de \\\\( f(x) = \\\\sqrt{x} \\\\) entre 0 et 25",
+            "title": "Allure de la courbe",
+            "text": "La courbe de la fonction racine carrée passe par l'origine \\\\( (0~;~0) \\\\), puis croît de manière continue, en ralentissant progressivement."
+          },
+          {
+            "img_src": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Babylonian_numerals.svg/640px-Babylonian_numerals.svg.png",
+            "img_alt": "Chiffres babyloniens",
+            "caption": "Système de numération babylonien",
+            "title": "Les Babyloniens et \\\\( \\\\sqrt{2} \\\\)",
+            "text": "Les Babyloniens ont calculé \\\\( \\\\sqrt{2} \\\\) avec une précision remarquable il y a près de 4000 ans, en utilisant des algorithmes itératifs."
+          }
+        ]
+      }
+    },
+    {
+      "type": "#09_figures_comparison",
+      "data": {
+        "title": "Comparaison visuelle : \\\\( x^2 \\\\) et \\\\( \\\\sqrt{x} \\\\)",
+        "left": {
+          "img_src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Parabola.svg/640px-Parabola.svg.png",
+          "img_alt": "Graphique de la fonction carré",
+          "caption": "Fonction carré \\\\( f(x) = x^2 \\\\)"
+        },
+        "right": {
+          "img_src": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Square_root_0_25.svg/640px-Square_root_0_25.svg.png",
+          "img_alt": "Graphique de la fonction racine carrée",
+          "caption": "Fonction racine carrée \\\\( f(x) = \\\\sqrt{x} \\\\)"
+        },
+        "text": "Les fonctions \\\\( x^2 \\\\) et \\\\( \\\\sqrt{x} \\\\) sont des **fonctions réciproques** : leurs courbes sont symétriques par rapport à la droite d'équation \\\\( y = x \\\\)."
+      }
+    },
+    {
+      "type": "#10_table_comparison",
+      "data": {
+        "title": "Fonction carré et fonction racine carrée : différences",
+        "caption": "Comparaison des propriétés principales",
+        "headers": ["Propriété", "Fonction carré \\\\( f(x) = x^2 \\\\)", "Fonction racine carrée \\\\( f(x) = \\\\sqrt{x} \\\\)"],
+        "rows": [
+          ["Ensemble de définition", "\\\\( \\\\mathbb{R} \\\\) (tous les réels)", "\\\\( [0~;~+\\\\infty[ \\\\) (réels positifs ou nuls)"],
+          ["Ensemble d'arrivée", "\\\\( [0~;~+\\\\infty[ \\\\)", "\\\\( [0~;~+\\\\infty[ \\\\)"],
+          ["Sens de variation sur \\\\( [0~;~+\\\\infty[ \\\\)", "Strictement croissante", "Strictement croissante"],
+          ["Valeur en 0", "\\\\( f(0) = 0 \\\\)", "\\\\( f(0) = 0 \\\\)"],
+          ["Valeur en 1", "\\\\( f(1) = 1 \\\\)", "\\\\( f(1) = 1 \\\\)"],
+          ["Allure de la courbe", "Parabole (croissance rapide)", "Demi-parabole couchée (croissance ralentie)"]
+        ]
+      }
+    },
+    {
+      "type": "#11_definition_box",
+      "data": {
+        "title": "Définition",
+        "text": "On appelle **fonction racine carrée** la fonction \\\\( f \\\\) définie sur l'intervalle \\\\( [0~;~+\\\\infty[ \\\\) qui, à tout nombre réel positif ou nul \\\\( x \\\\), associe **le nombre réel positif ou nul** noté \\\\( \\\\sqrt{x} \\\\) dont le carré vaut \\\\( x \\\\).\\n\\nAutrement dit : pour tout \\\\( x \\\\geq 0 \\\\), on note \\\\( f(x) = \\\\sqrt{x} \\\\) et on a \\\\( \\\\left(\\\\sqrt{x}\\\\right)^2 = x \\\\)."
+      }
+    },
+    {
+      "type": "#12_context_paragraphs",
+      "data": {
+        "title": "Propriétés essentielles de la fonction racine carrée",
+        "paragraphs": [
+          "**1. Ensemble de définition et croissance**\\nLa fonction racine carrée est définie uniquement pour les réels positifs ou nuls : \\\\( \\\\mathcal{D}_f = [0~;~+\\\\infty[ \\\\). Elle est **strictement croissante** sur cet intervalle, ce qui signifie que l'ordre est conservé : si \\\\( 0 \\\\leq a < b \\\\), alors \\\\( \\\\sqrt{a} < \\\\sqrt{b} \\\\). Cette propriété est très utile pour comparer des racines carrées ou résoudre des inéquations.",
+          "**2. Relation fondamentale avec le carré**\\nPour tout \\\\( x \\\\geq 0 \\\\), on a \\\\( \\\\left(\\\\sqrt{x}\\\\right)^2 = x \\\\). Réciproquement, pour tout \\\\( x \\\\geq 0 \\\\), on a \\\\( \\\\sqrt{x^2} = x \\\\). Attention : si \\\\( x < 0 \\\\), alors \\\\( \\\\sqrt{x^2} = |x| = -x \\\\). Cette distinction est importante pour bien manipuler les racines carrées dans les calculs algébriques.",
+          "**3. Formules de calcul avec les racines carrées**\\nIl existe plusieurs formules algébriques essentielles à connaître. Pour tous réels \\\\( a \\\\) et \\\\( b \\\\) positifs ou nuls :\\n• **Produit** : \\\\( \\\\sqrt{a} \\\\times \\\\sqrt{b} = \\\\sqrt{a \\\\times b} \\\\)\\n• **Quotient** (avec \\\\( b \\\\neq 0 \\\\)) : \\\\( \\\\frac{\\\\sqrt{a}}{\\\\sqrt{b}} = \\\\sqrt{\\\\frac{a}{b}} \\\\)\\n• **Carré** : \\\\( \\\\left(\\\\sqrt{a}\\\\right)^2 = a \\\\)\\n• **Puissance** : \\\\( \\\\sqrt{a^2} = a \\\\) si \\\\( a \\\\geq 0 \\\\)\\nCes formules permettent de simplifier de nombreuses expressions et de résoudre des équations du type \\\\( \\\\sqrt{x} = k \\\\).",
+          "**4. Représentation graphique**\\nLa courbe représentative de \\\\( f(x) = \\\\sqrt{x} \\\\) passe par les points \\\\( (0~;~0) \\\\), \\\\( (1~;~1) \\\\), \\\\( (4~;~2) \\\\), \\\\( (9~;~3) \\\\)… Elle a une allure caractéristique : elle démarre de l'origine, croît rapidement au début, puis ralentit progressivement. Cette courbe est la **symétrique** de la parabole \\\\( y = x^2 \\\\) (sur \\\\( [0~;~+\\\\infty[ \\\\)) par rapport à la droite d'équation \\\\( y = x \\\\).",
+          "**5. Résolution d'équations et d'inéquations**\\nPour résoudre une équation du type \\\\( \\\\sqrt{x} = k \\\\) avec \\\\( k \\\\geq 0 \\\\), on élève au carré les deux membres : \\\\( x = k^2 \\\\). Il faut toujours vérifier que la solution trouvée appartient bien à l'ensemble de définition. Pour une inéquation comme \\\\( \\\\sqrt{x} < k \\\\), on utilise la croissance de la fonction racine carrée : \\\\( x < k^2 \\\\) (si \\\\( k \\\\geq 0 \\\\) et \\\\( x \\\\geq 0 \\\\)). Graphiquement, résoudre \\\\( \\\\sqrt{x} = k \\\\) revient à chercher l'abscisse du point d'intersection entre la courbe de \\\\( f(x) = \\\\sqrt{x} \\\\) et la droite horizontale \\\\( y = k \\\\).",
+          "**6. Quelques valeurs remarquables et approximations**\\nIl est utile de mémoriser certaines valeurs exactes : \\\\( \\\\sqrt{0} = 0 \\\\), \\\\( \\\\sqrt{1} = 1 \\\\), \\\\( \\\\sqrt{4} = 2 \\\\), \\\\( \\\\sqrt{9} = 3 \\\\), \\\\( \\\\sqrt{16} = 4 \\\\), \\\\( \\\\sqrt{25} = 5 \\\\)… Pour des valeurs non carrées parfaites, on utilise souvent des approximations : \\\\( \\\\sqrt{2} \\\\approx 1{,}414 \\\\), \\\\( \\\\sqrt{3} \\\\approx 1{,}732 \\\\), \\\\( \\\\sqrt{5} \\\\approx 2{,}236 \\\\). Ces nombres sont **irrationnels**, c'est-à-dire qu'ils ne peuvent pas s'écrire sous forme de fraction."
+        ]
+      }
+    },
+    {
+      "type": "#13_monument_sheet_long",
+      "data": {
+        "title": "Exemple détaillé : simplification d'une expression avec racines carrées",
+        "img_src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Algebra_example.svg/640px-Algebra_example.svg.png",
+        "img_alt": "Exemple d'algèbre",
+        "sections": [
+          {
+            "subtitle": "Énoncé",
+            "text": "Simplifie l'expression suivante : \\\\( A = \\\\sqrt{50} + 3\\\\sqrt{8} - \\\\sqrt{32} \\\\)."
+          },
+          {
+            "subtitle": "Étape 1 : Décomposer en produits de carrés parfaits",
+            "text": "On commence par décomposer chaque nombre sous le radical :\\n• \\\\( 50 = 25 \\\\times 2 = 5^2 \\\\times 2 \\\\)\\n• \\\\( 8 = 4 \\\\times 2 = 2^2 \\\\times 2 \\\\)\\n• \\\\( 32 = 16 \\\\times 2 = 4^2 \\\\times 2 \\\\)"
+          },
+          {
+            "subtitle": "Étape 2 : Utiliser la formule \\\\( \\\\sqrt{a \\\\times b} = \\\\sqrt{a} \\\\times \\\\sqrt{b} \\\\)",
+            "text": "On applique cette formule à chaque terme :\\n• \\\\( \\\\sqrt{50} = \\\\sqrt{5^2 \\\\times 2} = \\\\sqrt{5^2} \\\\times \\\\sqrt{2} = 5\\\\sqrt{2} \\\\)\\n• \\\\( \\\\sqrt{8} = \\\\sqrt{2^2 \\\\times 2} = \\\\sqrt{2^2} \\\\times \\\\sqrt{2} = 2\\\\sqrt{2} \\\\)\\n• \\\\( \\\\sqrt{32} = \\\\sqrt{4^2 \\\\times 2} = \\\\sqrt{4^2} \\\\times \\\\sqrt{2} = 4\\\\sqrt{2} \\\\)"
+          },
+          {
+            "subtitle": "Étape 3 : Remplacer dans l'expression initiale",
+            "text": "On remplace chaque racine par sa forme simplifiée :\\n\\\\( A = 5\\\\sqrt{2} + 3 \\\\times 2\\\\sqrt{2} - 4\\\\sqrt{2} \\\\)\\n\\\\( A = 5\\\\sqrt{2} + 6\\\\sqrt{2} - 4\\\\sqrt{2} \\\\)"
+          },
+          {
+            "subtitle": "Étape 4 : Regrouper les termes en \\\\( \\\\sqrt{2} \\\\)",
+            "text": "On factorise par \\\\( \\\\sqrt{2} \\\\) :\\n\\\\( A = (5 + 6 - 4)\\\\sqrt{2} = 7\\\\sqrt{2} \\\\)\\n\\n**Réponse finale** : \\\\( A = 7\\\\sqrt{2} \\\\)."
+          }
+        ]
+      }
+    },
+    {
+      "type": "#14_faq_block",
+      "data": {
+        "title": "Questions fréquentes",
+        "questions": [
+          {
+            "q": "Pourquoi la racine carrée d'un nombre négatif n'existe-t-elle pas dans \\\\( \\\\mathbb{R} \\\\) ?",
+            "a": "Parce qu'aucun nombre réel élevé au carré ne peut donner un résultat négatif : \\\\( x^2 \\\\geq 0 \\\\) pour tout \\\\( x \\\\in \\\\mathbb{R} \\\\). Pour définir \\\\( \\\\sqrt{-1} \\\\), il faut introduire les nombres complexes avec l'unité imaginaire \\\\( i \\\\)."
+          },
+          {
+            "q": "Comment résout-on l'équation \\\\( \\\\sqrt{x} = 5 \\\\) ?",
+            "a": "On élève les deux membres au carré : \\\\( \\\\left(\\\\sqrt{x}\\\\right)^2 = 5^2 \\\\), donc \\\\( x = 25 \\\\). On vérifie : \\\\( \\\\sqrt{25} = 5 \\\\), donc la solution est bien \\\\( x = 25 \\\\)."
+          },
+          {
+            "q": "Peut-on additionner directement \\\\( \\\\sqrt{a} + \\\\sqrt{b} \\\\) ?",
+            "a": "Non, il n'existe pas de formule du type \\\\( \\\\sqrt{a} + \\\\sqrt{b} = \\\\sqrt{a+b} \\\\). Par exemple, \\\\( \\\\sqrt{4} + \\\\sqrt{9} = 2 + 3 = 5 \\\\), mais \\\\( \\\\sqrt{4+9} = \\\\sqrt{13} \\\\approx 3{,}6 \\\\). Attention à ne pas confondre addition et multiplication !"
+          },
+          {
+            "q": "Comment simplifier \\\\( \\\\sqrt{75} \\\\) ?",
+            "a": "On décompose 75 en produit de facteurs : \\\\( 75 = 25 \\\\times 3 = 5^2 \\\\times 3 \\\\). Donc \\\\( \\\\sqrt{75} = \\\\sqrt{5^2 \\\\times 3} = 5\\\\sqrt{3} \\\\)."
+          },
+          {
+            "q": "Quelle est la différence entre \\\\( \\\\sqrt{x^2} \\\\) et \\\\( x \\\\) ?",
+            "a": "Si \\\\( x \\\\geq 0 \\\\), alors \\\\( \\\\sqrt{x^2} = x \\\\). Mais si \\\\( x < 0 \\\\), alors \\\\( \\\\sqrt{x^2} = |x| = -x \\\\). Par exemple, \\\\( \\\\sqrt{(-3)^2} = \\\\sqrt{9} = 3 = |-3| \\\\)."
+          },
+          {
+            "q": "Pourquoi dit-on que \\\\( \\\\sqrt{2} \\\\) est irrationnel ?",
+            "a": "Parce qu'il ne peut pas s'écrire sous forme de fraction \\\\( \\\\frac{p}{q} \\\\) avec \\\\( p \\\\) et \\\\( q \\\\) entiers. Les Grecs (notamment l'école de Pythagore) ont démontré cette propriété au Ve siècle av. J.-C., ce qui a bouleversé leur vision des mathématiques !"
+          }
+        ]
+      }
+    },
+    {
+      "type": "#15_myths_realities",
+      "data": {
+        "title": "Mythes et réalités sur la fonction racine carrée",
+        "items": [
+          {
+            "myth": "\\\\( \\\\sqrt{a+b} = \\\\sqrt{a} + \\\\sqrt{b} \\\\)",
+            "reality": "**Faux** ! Il n'existe pas de formule de ce type. Par exemple, \\\\( \\\\sqrt{4+9} = \\\\sqrt{13} \\\\approx 3{,}6 \\\\), mais \\\\( \\\\sqrt{4} + \\\\sqrt{9} = 2 + 3 = 5 \\\\)."
+          },
+          {
+            "myth": "La racine carrée de zéro n'existe pas.",
+            "reality": "**Faux** ! \\\\( \\\\sqrt{0} = 0 \\\\) existe bien : c'est le seul nombre dont le carré vaut 0."
+          },
+          {
+            "myth": "\\\\( \\\\sqrt{2} \\\\) vaut environ 1,4.",
+            "reality": "**Vrai** ! Plus précisément, \\\\( \\\\sqrt{2} \\\\approx 1{,}414213562\\\\ldots \\\\). C'est un nombre irrationnel."
+          },
+          {
+            "myth": "On peut calculer \\\\( \\\\sqrt{-4} \\\\) avec une calculatrice.",
+            "reality": "**Faux** dans \\\\( \\\\mathbb{R} \\\\) ! Les calculatrices classiques affichent une erreur. Il faut passer aux nombres complexes : \\\\( \\\\sqrt{-4} = 2i \\\\)."
+          }
+        ]
+      }
+    },
+    {
+      "type": "#16_method_image_desc",
+      "data": {
+        "title": "Méthode : tracer la courbe de \\\\( f(x) = \\\\sqrt{x} \\\\)",
+        "steps": [
+          "**Étape 1 :** Établir un tableau de valeurs en choisissant plusieurs valeurs de \\\\( x \\\\geq 0 \\\\) (par exemple : 0, 1, 4, 9, 16).",
+          "**Étape 2 :** Calculer les images correspondantes : \\\\( f(0) = 0 \\\\), \\\\( f(1) = 1 \\\\), \\\\( f(4) = 2 \\\\), \\\\( f(9) = 3 \\\\), \\\\( f(16) = 4 \\\\).",
+          "**Étape 3 :** Placer les points \\\\( (0~;~0) \\\\), \\\\( (1~;~1) \\\\), \\\\( (4~;~2) \\\\), \\\\( (9~;~3) \\\\), \\\\( (16~;~4) \\\\) dans un repère orthogonal.",
+          "**Étape 4 :** Relier les points par une courbe continue et croissante, en partant de l'origine.",
+          "**Étape 5 :** Vérifier que la courbe ressemble à une demi-parabole couchée et qu'elle ralentit sa croissance au fur et à mesure."
+        ],
+        "img_src": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Square_root_0_25.svg/800px-Square_root_0_25.svg.png",
+        "img_alt": "Courbe représentative de la fonction racine carrée",
+        "caption": "Allure typique de la fonction \\\\( f(x) = \\\\sqrt{x} \\\\)"
+      }
+    },
+    {
+      "type": "#17_quote_bilingual",
+      "data": {
+        "quote_langue_initiale": "Les mathématiques sont la clé et la porte de la science.",
+        "quote_langue_arrivee": "Mathematics is the key and door to the sciences.",
+        "author": "Galilée (1564–1642)"
+      }
+    },
+    {
+      "type": "#18_sito_graphy",
+      "data": {
+        "title": "Sitographie et ressources",
+        "links": [
+          {"href": "https://eduscol.education.fr/298/histoire-geographie-cycle-4", "text": "Éduscol – Programmes et ressources en mathématiques (cycle 4 et lycée)"},
+          {"href": "https://www.schoolmouv.fr/cours/la-fonction-racine-carree/fiche-de-cours", "text": "SchoolMouv – Cours détaillé sur la fonction racine carrée (Seconde)"},
+          {"href": "https://www.maxicours.com/se/cours/la-fonction-racine-carree/", "text": "Maxicours – Fonction racine carrée : définition et propriétés"},
+          {"href": "https://www.techno-science.net/glossaire-definition/Histoire-de-la-racine-carree.html", "text": "Techno-Science – Histoire de la racine carrée (de l'Antiquité au XIXe siècle)"},
+          {"href": "https://fr.wikipedia.org/wiki/Racine_carr%C3%A9e", "text": "Wikipédia – Article complet sur la racine carrée"},
+          {"href": "https://www.youtube.com/watch?v=8Atxa6iMVsw", "text": "Yvan Monka (Maths et tiques) – Le cours complet sur les racines carrées (vidéo)"}
+        ]
+      }
+    }
+  ]
+}

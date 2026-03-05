@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <title>Pipeline H5P complet — Timing par activite</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; padding: 24px; color: #1a1a2e; }
+        h1 { font-size: 1.5rem; margin-bottom: 4px; }
+        .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+
+        .summary { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .summary__card { padding: 14px 24px; border-radius: 10px; font-weight: 700; font-size: 1.3rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-width: 120px; text-align: center; }
+        .summary__card small { display: block; font-size: 0.7rem; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+        .card--pass { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; }
+        .card--fail { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: #721c24; }
+        .card--time { background: linear-gradient(135deg, #d1ecf1, #bee5eb); color: #0c5460; }
+
+        /* Tableau principal */
+        table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px; }
+        th { background: #1a1a2e; color: #fff; padding: 10px 12px; text-align: right; font-size: 0.75rem; text-transform: uppercase; white-space: nowrap; }
+        th:first-child { text-align: left; }
+        td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; font-size: 0.85rem; text-align: right; font-variant-numeric: tabular-nums; }
+        td:first-child { text-align: left; font-weight: 600; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background: #f8f9fa; }
+        .fast { color: #155724; }
+        .medium { color: #856404; font-weight: 600; }
+        .slow { color: #c0392b; font-weight: 700; }
+        .err { color: #721c24; font-weight: 700; background: #fff5f5; }
+        .err td { background: #fff5f5; }
+
+        /* Conteneur de rendu H5P (visible pour debug, cache sinon) */
+        #h5p-render-container {
+            width: 100%; max-width: 800px; min-height: 200px;
+            margin: 0 auto 20px; border: 1px solid #ddd; border-radius: 8px;
+            background: #fff; overflow: hidden;
+        }
+
+        /* Assertions et rapport */
+        .section { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); padding: 16px; margin-bottom: 20px; }
+        .section summary { cursor: pointer; font-weight: 600; font-size: 0.9rem; }
+        .assert-line { padding: 3px 0; font-size: 0.82rem; border-bottom: 1px solid #f5f5f5; }
+        .badge { display: inline-block; padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 0.7rem; margin-right: 6px; }
+        .badge--pass { background: #d4edda; color: #155724; }
+        .badge--fail { background: #f8d7da; color: #721c24; }
+        .ai-box { margin-top: 10px; background: #1e1e2e; color: #cdd6f4; padding: 16px; border-radius: 8px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.75rem; line-height: 1.6; white-space: pre-wrap; word-break: break-word; max-height: 500px; overflow-y: auto; position: relative; }
+        .ai-copy { position: sticky; top: 0; float: right; background: #89b4fa; color: #1e1e2e; border: none; border-radius: 6px; padding: 6px 14px; cursor: pointer; font-weight: 700; font-size: 0.75rem; }
+        .ai-copy:hover { background: #74c7ec; }
+        .ok-msg { color: #28a745; font-weight: 600; padding: 20px; text-align: center; }
+
+        .loading { text-align: center; padding: 60px; color: #666; }
+        .spinner { display: inline-block; width: 36px; height: 36px; border: 3px solid #ddd; border-top-color: #1a1a2e; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .progress { margin-top: 12px; font-size: 0.9rem; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <h1>Pipeline H5P complet — Timing par activite</h1>
+    <p class="subtitle">Fixture → Processeur → Packaging → Prefetch → Rendu H5P (19 activites)</p>
+
+    <div id="h5p-render-container"></div>
+
+    <div id="output">
+        <div class="loading">
+            <div class="spinner"></div>
+            <p class="progress" id="progress-text">Chargement des modules...</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { runAllTests } from './tests/test-h5p-prefetch.js';
+        const output = document.getElementById('output');
+        const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+        // Afficher la progression
+        let activityCount = 0;
+        const originalLog = console.log;
+        console.log = (...args) => {
+            originalLog(...args);
+            const msg = args.join(' ');
+            const match = msg.match(/\[(\d+)\/(\d+)\]\s+(\w+)/);
+            if (match) {
+                const el = document.getElementById('progress-text');
+                if (el) el.textContent = `${match[3]}... (${match[1]}/${match[2]})`;
+            }
+        };
+
+        function cls(ms) { return ms < 200 ? 'fast' : ms < 1000 ? 'medium' : 'slow'; }
+        function fmt(ms) { return ms > 0 ? Math.round(ms) + 'ms' : '-'; }
+
+        try {
+            const { passCount, failCount, results, timings, totalDuration } = await runAllTests();
+
+            // Trier par temps total decroissant (les plus lents en haut)
+            const sorted = [...timings].sort((a, b) => b.total - a.total);
+
+            let html = '';
+
+            // Cartes resume
+            html += `<div class="summary">
+                <div class="summary__card card--pass">${passCount}<small>PASS</small></div>
+                ${failCount > 0 ? `<div class="summary__card card--fail">${failCount}<small>FAIL</small></div>` : ''}
+                <div class="summary__card card--time">${Math.round(totalDuration / 1000)}s<small>duree totale</small></div>
+            </div>`;
+
+            // Tableau timing detaille
+            html += `<table><thead><tr>
+                <th>Activite</th>
+                <th>Processeur</th>
+                <th>Packaging</th>
+                <th>Prefetch</th>
+                <th>Rendu</th>
+                <th>Total</th>
+                <th>Statut</th>
+            </tr></thead><tbody>`;
+
+            for (const t of sorted) {
+                const hasErr = !!t.error;
+                html += `<tr class="${hasErr ? 'err' : ''}">
+                    <td>${esc(t.moduleKey)}</td>
+                    <td class="${cls(t.process)}">${fmt(t.process)}</td>
+                    <td class="${cls(t.package)}">${fmt(t.package)}</td>
+                    <td class="${cls(t.prefetch)}">${fmt(t.prefetch)}</td>
+                    <td class="${cls(t.render)}">${fmt(t.render)}</td>
+                    <td class="${cls(t.total)}" style="font-weight:700">${fmt(t.total)}</td>
+                    <td>${hasErr ? `<span class="slow">${esc(t.error)}</span>` : '<span class="fast">OK</span>'}</td>
+                </tr>`;
+            }
+            html += `</tbody></table>`;
+
+            // Assertions (repliees)
+            html += `<details class="section"><summary>Assertions (${passCount} pass, ${failCount} fail)</summary><div style="margin-top:10px">`;
+            for (const r of results) {
+                const c = r.status === 'PASS' ? 'badge--pass' : 'badge--fail';
+                html += `<div class="assert-line"><span class="badge ${c}">${r.status}</span>${esc(r.message)}</div>`;
+            }
+            html += `</div></details>`;
+
+            // Rapport copiable
+            html += `<div class="section">`;
+            let report = `Pipeline H5P complet — ${failCount === 0 ? 'OK' : failCount + ' echec(s)'}\n`;
+            report += `Duree totale : ${Math.round(totalDuration / 1000)}s\n\n`;
+            report += `${'Activite'.padEnd(22)} ${'Process'.padStart(8)} ${'Package'.padStart(8)} ${'Prefetch'.padStart(9)} ${'Rendu'.padStart(8)} ${'Total'.padStart(8)}  Statut\n`;
+            report += `${'─'.repeat(22)} ${'─'.repeat(8)} ${'─'.repeat(8)} ${'─'.repeat(9)} ${'─'.repeat(8)} ${'─'.repeat(8)}  ${'─'.repeat(10)}\n`;
+            for (const t of sorted) {
+                const f = ms => ms > 0 ? (Math.round(ms) + 'ms').padStart(7) : '     -';
+                report += `${t.moduleKey.padEnd(22)} ${f(t.process)} ${f(t.package)} ${f(t.prefetch)}  ${f(t.render)} ${f(t.total)}  ${t.error || 'OK'}\n`;
+            }
+            if (failCount > 0) {
+                report += `\n=== ERREURS ===\n`;
+                for (const r of results.filter(r => r.status === 'FAIL')) {
+                    report += `- ${r.message}\n`;
+                    if (r.diagnostic) report += `  ${JSON.stringify(r.diagnostic)}\n`;
+                }
+            }
+            html += `<details${failCount > 0 ? ' open' : ''}><summary>Rapport copiable</summary>`;
+            html += `<div class="ai-box"><button class="ai-copy">Copier</button>${esc(report)}</div></details>`;
+            html += `</div>`;
+
+            output.innerHTML = html;
+
+            // Boutons copier
+            output.querySelectorAll('.ai-copy').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const box = btn.closest('.ai-box');
+                    navigator.clipboard.writeText(box.textContent.replace('Copier', '').trim()).then(() => {
+                        btn.textContent = 'Copie !';
+                        setTimeout(() => btn.textContent = 'Copier', 1500);
+                    });
+                });
+            });
+
+        } catch (e) {
+            output.innerHTML = `<div style="background:#f8d7da;color:#721c24;padding:20px;border-radius:10px;">
+                <strong>Erreur fatale :</strong> ${esc(e.message)}<pre style="margin-top:8px;font-size:0.8rem;">${esc(e.stack)}</pre></div>`;
+        }
+    </script>
+</body>
+</html>

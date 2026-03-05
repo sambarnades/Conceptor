@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Fonction racine carrée",
+    "text": "Fonction qui associe à chaque nombre réel **positif** ou nul son unique nombre **positif** dont le carré donne l’argument. Elle se note \\(f(x)=\\sqrt{x}\\).\nSon **domaine** est \\(\\mathbb{R}_{\\ge 0}\\) et son **image** est également \\(\\mathbb{R}_{\\ge 0}\\)."
+  },
+  {
+    "title": "Domaine de définition",
+    "text": "Ensemble des valeurs d’entrée **x** pour lesquelles la fonction est bien définie. Pour \\(f(x)=\\sqrt{x}\\) le domaine est \\([0;+\\infty[\\).\nOn vérifie cette condition avant toute manipulation."
+  },
+  {
+    "title": "Image (ou ensemble d'arrivée)",
+    "text": "Ensemble des valeurs **y** que la fonction peut prendre. Pour la fonction racine carrée, l’image est \\([0;+\\infty[\\).\nElle correspond à tous les résultats possibles de \\(\\sqrt{x}\\)."
+  },
+  {
+    "title": "Fonction inverse",
+    "text": "Fonction qui « défait » une fonction donnée. L’inverse de la fonction racine carrée est le **carré** : \\(f^{-1}(y)=y^{2}\\).\nElle n’est définie que sur \\([0;+\\infty[\\) pour être bijective."
+  },
+  {
+    "title": "Continuité de la fonction racine carrée",
+    "text": "Propriété qui indique qu’aucune **saut** n’apparaît sur son graphe. \\(\\sqrt{x}\\) est continue sur tout son domaine \\([0;+\\infty[\\).\nCette continuité permet d’utiliser le théorème des valeurs intermédiaires en classe."
+  }
+]

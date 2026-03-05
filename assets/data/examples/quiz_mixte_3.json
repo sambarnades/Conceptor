@@ -1,0 +1,115 @@
+{
+  "title": "Fonctions racine carrée - Exercices interactifs",
+  "questions": [
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "QCM - Valeur exacte de la racine" },
+      "params": {
+        "question": "Quelle est la valeur exacte de \\\\(...\\\\sqrt{25}\\\\) ?",
+        "answers": [
+          { "text": "5", "correct": true },
+          { "text": "±5", "correct": false },
+          { "text": "25", "correct": false },
+          { "text": "-5", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Très insuffisant, il faut revoir la définition de la racine carrée." },
+          { "from": 11, "to": 30, "feedback": "Insuffisant, continue d'essayer." },
+          { "from": 31, "to": 50, "feedback": "Moyen, tu es sur la bonne voie." },
+          { "from": 51, "to": 70, "feedback": "Bien, tu as compris le principe." },
+          { "from": 71, "to": 90, "feedback": "Très bien, presque parfait." },
+          { "from": 91, "to": 100, "feedback": "Excellent, réponse parfaite." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "Vrai/Faux - Racine d'un nombre négatif" },
+      "params": {
+        "question": "Le nombre \\\\(...\\\\sqrt{-9}\\\\) est un nombre réel.",
+        "correct": "false"
+      }
+    },
+    {
+      "library": "H5P.Blanks 1.14",
+      "metadata": { "title": "Mots à trous - Domaine et image" },
+      "params": {
+        "taskDescription": "Complète les propositions suivantes.",
+        "questions": [
+          "La fonction \\\\(...\\\\sqrt{x}\\\\) est définie pour *x ≥ 0*.",
+          "Son image est *[0, +∞[*."
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Très insuffisant, repasse les définitions." },
+          { "from": 11, "to": 30, "feedback": "Insuffisant, il manque des éléments clés." },
+          { "from": 31, "to": 50, "feedback": "Moyen, tu progresses." },
+          { "from": 51, "to": 70, "feedback": "Bien, presque tout est correct." },
+          { "from": 71, "to": 90, "feedback": "Très bien, presque parfait." },
+          { "from": 91, "to": 100, "feedback": "Excellent, toutes les réponses sont justes." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.DragText 1.10",
+      "metadata": { "title": "Glisser‑déposer - Forme de la racine d'un carré" },
+      "params": {
+        "taskDescription": "Réordonne les mots pour obtenir l'égalité correcte.",
+        "textField": "Pour calculer \\\\(...\\\\sqrt{a^2}\\\\) on obtient la *valeur* *absolue* de *a*.",
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Très insuffisant, revise la notion de valeur absolue." },
+          { "from": 11, "to": 30, "feedback": "Insuffisant, il manque des mots." },
+          { "from": 31, "to": 50, "feedback": "Moyen, correct mais à améliorer." },
+          { "from": 51, "to": 70, "feedback": "Bien, presque correct." },
+          { "from": 71, "to": 90, "feedback": "Très bien, aucune erreur." },
+          { "from": 91, "to": 100, "feedback": "Excellent, ordre parfait." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MarkTheWords 1.11",
+      "metadata": { "title": "Surligner - Domaine de définition" },
+      "params": {
+        "taskDescription": "Surligne les mots qui décrivent le domaine de définition de la fonction racine carrée.",
+        "textField": "Le domaine de définition de \\\\(...\\\\sqrt{x}\\\\) est *[0, +∞[*, il exclut les nombres *négatifs*.",
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Très insuffisant, aucun mot n'est correct." },
+          { "from": 11, "to": 30, "feedback": "Insuffisant, il manque des mots clés." },
+          { "from": 31, "to": 50, "feedback": "Moyen, quelques erreurs restent." },
+          { "from": 51, "to": 70, "feedback": "Bien, la plupart des mots sont justes." },
+          { "from": 71, "to": 90, "feedback": "Très bien, presque parfait." },
+          { "from": 91, "to": 100, "feedback": "Excellent, tous les mots surlignés sont corrects." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.Essay 1.5",
+      "metadata": { "title": "Rédaction - Résolution d'équation radicale" },
+      "params": {
+        "taskDescription": "Explique, en quelques lignes, comment résoudre l'équation \\\\(...\\\\sqrt{x+3}=5\\\\).",
+        "keywords": [
+          { "keyword": "isoler", "options": { "points": 1, "caseSensitive": false } },
+          { "keyword": "carré", "options": { "points": 1, "caseSensitive": false } },
+          { "keyword": "solution", "options": { "points": 1, "caseSensitive": false } },
+          { "keyword": "vérifier", "options": { "points": 1, "caseSensitive": false } }
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 10, "feedback": "Très insuffisant, aucune idée de la procédure." },
+          { "from": 11, "to": 30, "feedback": "Insuffisant, il manque des étapes essentielles." },
+          { "from": 31, "to": 50, "feedback": "Moyen, la démarche est partiellement correcte." },
+          { "from": 51, "to": 70, "feedback": "Bien, la méthode est claire mais perfectible." },
+          { "from": 71, "to": 90, "feedback": "Très bien, réponse complète et précise." },
+          { "from": 91, "to": 100, "feedback": "Excellent, explication parfaite." }
+        ]
+      }
+    }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "Résultat très faible, il faut revoir les bases." },
+    { "from": 11, "to": 30, "feedback": "Résultat insuffisant, continue à travailler." },
+    { "from": 31, "to": 50, "feedback": "Résultat moyen, des progrès sont à faire." },
+    { "from": 51, "to": 70, "feedback": "Bon résultat, tu maîtrises bien le sujet." },
+    { "from": 71, "to": 90, "feedback": "Très bon résultat, félicitations." },
+    { "from": 91, "to": 100, "feedback": "Excellent résultat, tu as tout compris." }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Fonctions racines carrées",
+  "taskDescription": "Associez chaque expression à sa bonne catégorie selon ses propriétés mathématiques.",
+  "dropZones": [
+    { "label": "Définition", "correctElements": [0, 1] },
+    { "label": "Domaine", "correctElements": [2, 3] },
+    { "label": "Image", "correctElements": [4, 5] },
+    { "label": "Graphique", "correctElements": [6, 7] }
+  ],
+  "elements": [
+    { "text": "f(x) = \\( \\sqrt{x} \\)" },
+    { "text": "f(x) = \\( \\sqrt{2x} \\)" },
+    { "text": "x \\( \\geq 0 \\)" },
+    { "text": "x \\( \\geq -1 \\)" },
+    { "text": "y \\( \\geq 0 \\)" },
+    { "text": "y \\( \\leq 0 \\)" },
+    { "text": "Courbe croissante" },
+    { "text": "Symétrie axiale" }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "Il faut revoir les bases des fonctions racines carrées." },
+    { "from": 11, "to": 30, "feedback": "Tu as des idées, mais il reste des confusions à clarifier." },
+    { "from": 31, "to": 50, "feedback": "Bon début ! Continue à travailler les propriétés des fonctions." },
+    { "from": 51, "to": 70, "feedback": "Très bien, tu maîtrises les concepts clés." },
+    { "from": 71, "to": 90, "feedback": "Excellent travail, tu comprends parfaitement les fonctions racines carrées." },
+    { "from": 91, "to": 100, "feedback": "Parfait ! Tu es un expert en fonctions racines carrées !" }
+  ]
+}

@@ -65,7 +65,7 @@ Décrivez le sujet, le niveau et vos attentes de manière fluide.
 - `La Révolution française pour des élèves de 4e, focus sur 1789`
 - `Les accords du participe passé en 3e`
 
-![Capture d'écran Mode Rapide](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/wiki/menu_moderapide.PNG)
+![Capture d'écran Mode Rapide](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/wiki/menu_moderapide.PNG)
 
 > 💡 **Astuce** : Les tuiles sont désormais **intelligentes** ! Elles restent grisées tant que vous n'avez pas commencé à remplir les champs, pour vous guider dans les étapes essentielles.
 
@@ -85,7 +85,7 @@ Le **Mode Avancé** vous offre un contrôle précis sur chaque paramètre grâce
 
 > 💡 **Astuce** : Commencez petit (5-10 éléments) pour tester, puis augmentez !
 
-![Capture d'écran Mode Avancé](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/wiki/menu_modeavance.PNG)
+![Capture d'écran Mode Avancé](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/wiki/menu_modeavance.PNG)
 
 </details>
 
@@ -127,7 +127,7 @@ Cette fonctionnalité vous permet de **donner un document de référence** à l'
 
 Une fois votre contexte pédagogique défini, cliquez sur l'activité qui correspond à votre objectif.
 
-![Toutes les activités Caramel](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/wiki/activites_caramel.PNG)
+![Toutes les activités Caramel](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/wiki/activites_caramel.PNG)
 
 ### 🧩 Les 6 onglets de navigation
 
@@ -137,7 +137,7 @@ Une fois votre contexte pédagogique défini, cliquez sur l'activité qui corres
 | **🎯 Quiz & Tests** | Quiz mixte, Quiz QCM, Quiz Vrai/faux, Vrai/Faux (1 question), Choix multiples (1 seule question), Single Choice Set, Test, Millionnaire, Appariement, QCM |
 | **✏️ Manipulation de texte** | Textes à trous, Glisser les mots, Marquer les mots, Trier paragraphes |
 | **🧠 Mémorisation & Découverte** | Flashcards, Frises, Glossaires, Accordéons, Mots croisés, Mots mêlés |
-| **🎓 Éléa** | Pages, QCM, Appariement, Millionnaire, Glossaire, Banque de questions |
+| **🎓 Éléa** | Pages, QCM, Appariement, Millionnaire, Glossaire, Banque de questions, Devoir |
 | **🔷 H5P** | Toutes les activités H5P uniquement |
 
 <details>
@@ -164,6 +164,7 @@ Les fichiers **H5P** sont des modules interactifs universels, compatibles avec M
 | **Texte à trous** | Compléter les mots manquants par saisie | Exercice de complétion classique |
 | **Marquer les mots** | Cliquer sur les mots corrects dans un texte | Repérage de mots-clés, analyse |
 | **Trier des paragraphes** | Remettre des paragraphes dans l'ordre | Reconstitution de texte, chronologie |
+| **Glisser-déposer (Drag & Drop)** ✨ | Déplacer des étiquettes dans des zones dédiées | Associations spatiales, étiquetage d'images, tris thématiques |
 
 ### Mémorisation et révision
 
@@ -199,6 +200,7 @@ Les activités **Éléa/Moodle** sont des modules natifs optimisés pour les pla
 | **Appariement** | `.mbz` | Associer des paires (questions ↔ réponses) |
 | **Millionnaire** | `.mbz` | Jeu "Qui veut gagner des millions" pédagogique |
 | **Glossaire** | `.mbz` | Dictionnaire de termes collaboratif |
+| **Devoir** | `.mbz` | Création d'une grille d'évaluation critériée et niveaux de réussite au sein d'une activité Devoir |
 
 ### Quelle différence entre H5P et Éléa ?
 
@@ -227,7 +229,19 @@ Le **Mode Simple** automatise tout le processus grâce à l'intelligence artific
 4. ⏳ Patientez quelques secondes (10-30 secondes selon la complexité)
 5. ✅ Le contenu apparaît automatiquement dans l'éditeur JSON
 
-![Capture d'écran Mode Simple](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/wiki/modale_mode_simple.PNG)
+![Capture d'écran Mode Simple](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/wiki/modale_mode_simple.PNG)
+
+### Après la génération : Modale post-génération
+
+Une fois l'IA a fini de générer, **une modale contextuelle apparaît** avec **trois actions possibles** :
+
+| Action | Description |
+|--------|-------------|
+| **📥 Télécharger** | Accès direct au fichier généré (H5P, MBZ, XML, etc.). Le fichier se télécharge immédiatement dans vos téléchargements. |
+| **👁️ Visualiser et éditer** | Prévisualisation en direct de l'activité avec possibilité d'**éditer le contenu** (questions, réponses, termes, etc.) avant téléchargement. Les modifications sont appliquées instantanément au fichier final. |
+| **➕ Continuer** | Ferme la modale pour générer rapidement une autre activité, sans quitter l'interface. Vos fichiers générés restent accessibles dans la **barre de notifications**. |
+
+> 💡 **Astuce** : Cette modale vous fait gagner un temps précieux ! Vous pouvez générer plusieurs activités d'affilée sans interruption.
 
 </details>
 
@@ -253,7 +267,7 @@ Le **Mode Guidé** vous permet d'utiliser n'importe quelle IA externe (ChatGPT, 
 - Cliquez dans la zone de droite et collez avec **Ctrl+V**
 - Caramel valide automatiquement le JSON
 
-![Capture d'écran Mode Guidé](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/wiki/modale_mode_guide.PNG)
+![Capture d'écran Mode Guidé](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/wiki/modale_mode_guide.PNG)
 
 ### Outils pratiques
 
@@ -266,9 +280,9 @@ Le **Mode Guidé** vous permet d'utiliser n'importe quelle IA externe (ChatGPT, 
 </details>
 
 <details>
-<summary><strong>👁️ Visualisation et Exports</strong></summary>
+<summary><strong>👁️ Visualisation, Édition et Exports</strong></summary>
 
-Une fois votre activité générée, Caramel vous offre des outils pour gérer votre travail sans stress.
+Une fois votre activité générée, Caramel vous offre des outils pour gérer et affiner votre travail sans stress.
 
 ### 🎥 Visualisation en temps réel (Aperçu)
 Un bouton **"Visualiser"** apparaît dans votre menu de notifications dès qu'une génération est prête.
@@ -276,14 +290,32 @@ Un bouton **"Visualiser"** apparaît dans votre menu de notifications dès qu'un
 - **Historique** : Retrouvez vos dernières générations et visualisez-les à nouveau sans les régénérer.
 - **Navigation** : Faites défiler vos créations vers la gauche ou la droite pour comparer.
 
-![Fenêtre de visualisation](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/wiki/modale_visualisation.PNG)
+![Fenêtre de visualisation](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/wiki/modale_visualisation.PNG)
+
+### ✏️ Éditeur d'activités intégré
+Dans la fenêtre de visualisation, vous pouvez désormais **modifier le contenu directement** sans quitter Caramel :
+
+- **Questions et réponses** : Corrigez ou reformulez les questions générées par l'IA
+- **Termes et définitions** : Adaptez le glossaire à votre vocabulaire
+- **Images et références** : Ajoutez ou modifiez les ressources pédagogiques
+- **Niveaux de difficulté** : Réglez la progressivité du quiz à votre guise
+- **Mises à jour en temps réel** : Les modifications sont immédiatement appliquées au fichier téléchargeable
+
+> 💡 **Avantage** : L'édition intégrée vous permet de **peaufiner** votre activité avant téléchargement, sans avoir besoin d'outils externes complexes !
 
 ### 📄 Exports bureautiques (DOCX, ODT, PDF)
 En plus du format interactif, Caramel permet d'exporter vos activités pour des supports papier ou des révisions hors-ligne.
 - **Universalité** : Disponible pour toutes les activités (Quiz, Textes à trous, Frises...).
 - **Adaptabilité** : Les exports sont formatés proprement pour être imprimés directement pour vos élèves.
+- **Formules mathématiques** : Les formules LaTeX sont converties en symboles Unicode pour un affichage optimal sur tous les supports.
 
-![Menu d'export bureautique](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/wiki/modale_menu_export.PNG)
+![Menu d'export bureautique](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/wiki/modale_menu_export.webp)
+
+### 📥 Téléchargement groupé (barre de notifications)
+Lorsque vous générez **plusieurs activités**, un bouton **"Tout télécharger"** (stylisé en étiquette bleue) apparaît dans votre **barre de notifications** :
+- **Un seul clic** : Télécharge tous vos fichiers générés
+- **Archive ZIP** : Les fichiers sont regroupés dans une archive pour un téléchargement groupé
+- **Gain de temps** : Idéal pour les sessions intensives de création d'activités
 
 </details>
 
@@ -324,7 +356,7 @@ Une fois le contenu finalisé, cliquez sur **"Générer le [Type d'activité]"**
 2. **Glissez-déposez** le fichier `.h5p` directement dans la section voulue
 3. ✅ L'activité apparaît immédiatement !
 
-![Glisser-déposer H5P](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/tutoriels/elea-ajouter-h5p.png)
+![Glisser-déposer H5P](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/tutorials/elea-ajouter-h5p.png)
 
 > ⚠️ **Limitation** : Avec cette méthode, l'activité n'est pas vraiment "intégrée" au cours. Elle ne sera pas incluse dans les sauvegardes automatiques ni les exports de cours.
 
@@ -365,19 +397,21 @@ Les fichiers **`.mbz`** sont des sauvegardes Moodle complètes contenant une act
 
 2. Identifiez la **barre du menu d'édition** en haut à droite
 
-![Barre menu d'édition](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/tutoriels/elea-import-parcours-1.png)
+![Barre menu d'édition](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/tutorials/elea-import-parcours-1.png)
 
 3. Si la barre est fermée, cliquez sur le bouton pour l'ouvrir
 
-![Ouvrir menu édition](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/tutoriels/elea-import-parcours-2.png)
+![Ouvrir menu édition](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/tutorials/elea-import-parcours-2.png)
 
 4. Cliquez sur **"Importer"** dans le menu
 
-![Bouton Importer](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/tutoriels/elea-import-parcours-3.png)
+![Bouton Importer](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/tutorials/elea-import-parcours-3.png)
 
 5. **Glissez-déposez** votre fichier `.mbz` ou cliquez sur **"Choisir un fichier..."**
 
-![Zone dépôt MBZ](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/tutoriels/elea-import-parcours-4.png)
+> 💡 **Aide contextuelle** : Un bouton d'aide (❓) apparaît à côté des formats de téléchargement (MBZ, XML, GIFT, HTML) pour vous guider pas à pas lors de l'importation. Consultez-le si vous êtes bloqué !
+
+![Zone dépôt MBZ](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/tutorials/elea-import-parcours-4.png)
 
 6. Cliquez sur **"Importer"** puis **"Continuer"**
 7. Choisissez **"Restaurer dans ce cours"** → **"Continuer"**
@@ -393,6 +427,7 @@ Les fichiers **`.mbz`** sont des sauvegardes Moodle complètes contenant une act
 - 🎮 **Millionnaire** : Jeu pédagogique "Qui veut gagner des millions"
 - 📄 **Page** : Page de cours avec mise en forme riche
 - 📚 **Glossaire** : Dictionnaire collaboratif de termes
+- 📋 **Devoir** : Création d'un devoir avec grille d'évaluation critériée et niveaux de réussite
 
 > 💡 **Astuce** : Les fichiers `.mbz` conservent tous les paramètres (notation, affichage, feedback). Vous pouvez les modifier après importation !
 
@@ -408,13 +443,13 @@ Les fichiers **XML** et **GIFT** contiennent des **questions pour la banque**. E
 1. **Ouvrez votre cours** Magistère/Éléa
 2. Cliquez sur **⚙️ Plus** → **Banque de questions**
 
-![Bouton import banque](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/tutoriels/elea-importation-banquequestions-1.png)
+![Bouton import banque](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/tutorials/elea-importation-banquequestions-1.png)
 
 3. Dans le menu de gauche, sélectionnez **"Importer"**
 
 4. Choisissez le **format de fichier** :
 
-![Choix format](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/tutoriels/elea-importation-banquequestions-2.png)
+![Choix format](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/tutorials/elea-importation-banquequestions-2.png)
 
    - **Moodle XML** (pour les fichiers `.xml`)
    - **GIFT** (pour les fichiers `.gift`)
@@ -455,17 +490,17 @@ Si vous avez généré un **Glossaire**, le fichier `.xml` peut être importé d
 
 2. Cliquez sur le bouton d'**importation** dans le glossaire
 
-![Bouton import glossaire](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/tutoriels/elea-glossaire-import-1.png)
+![Bouton import glossaire](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/tutorials/elea-glossaire-import-1.png)
 
 3. Glissez-déposez votre fichier `.xml` ou cliquez pour le sélectionner
 
-![XML déposé](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/tutoriels/elea-glossaire-import-2.png)
+![XML déposé](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/tutorials/elea-glossaire-import-2.png)
 
 4. Cliquez sur **"Envoyer"** ou **"Importer"**
 
 5. ✅ Les termes sont importés !
 
-![Import réussi](https://forge.apps.education.fr/caramel/bas/-/raw/main/images/tutoriels/elea-glossaire-import-3.png)
+![Import réussi](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/tutorials/elea-glossaire-import-3.png)
 
 </details>
 
@@ -842,7 +877,7 @@ Caramel intègre une **fenêtre d'aide complète** accessible à tout moment.
 - 🔧 Solutions aux erreurs courantes
 - 📚 Instructions d'importation détaillées
 
-![Capture modale tutoriel](images/wiki/modale_tutoriels.PNG)
+![Capture modale tutoriel](assets/images/wiki/modale_tutoriels.PNG)
 
 ---
 
@@ -935,7 +970,7 @@ La façon la plus simple de soutenir Caramel :
 <details>
 <summary><strong>🌐 Traduire Caramel</strong></summary>
 
-Caramel est disponible en **11 langues**. Contribuez aux traductions dans `/js/translations/`
+Caramel est disponible en **11 langues**. Contribuez aux traductions dans `/js/locales/`
 
 </details>
 
@@ -978,8 +1013,9 @@ Caramel est distribué sous **licence GNU Affero General Public License v3.0 (AG
 🔗 [Consultez le Journal complet des modifications (CHANGELOG)](https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG)
 
 ### Dernières mises à jour :
-- **v4.0.0** : OCR Universel, Exports DOCX/ODT/PDF, Fenêtre de visualisation, Quizset, Optimisation performance (WebP).
-- **v3.3.x** : Nouveaux modèles iLaaS, interface responsive améliorée.
+- **v5.0.0** : 🎉 **Modale post-génération**, **Éditeur intégré**, **Activité Drag & Drop**, **Activité Devoir**, **Téléchargement groupé**, Aide contextuelle à l'import, Auto-réparation JSON (JSON Healer), Restructuration complète du code.
+- **v4.1.0** : OCR Universel, Exports DOCX/ODT/PDF, Fenêtre de visualisation, Quizset, Optimisation performance (WebP).
+- **v4.0.0** : Modes Rapide & Avancé refondus, Interface utilisateur améliorée, Notifications enrichies.
 - **v3.0.0** : Refonte complète de l'interface, Modes Rapide & Avancé.
 
 ---

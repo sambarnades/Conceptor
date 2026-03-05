@@ -1,0 +1,10 @@
+{
+  "chartType": "bar",
+  "listOfTypes": [
+    {"text": "\\(\\sqrt{x}\\)", "value": 15, "color": "#4e79a7"},
+    {"text": "\\(x^2\\)", "value": 30, "color": "#f28e2b"},
+    {"text": "Constante \\(\\pi\\)", "value": 25, "color": "#e15759"},
+    {"text": "Linéaire", "value": 20, "color": "#76b7b2"},
+    {"text": "\\(\\frac{1}{x}\\)", "value": 10, "color": "#59a14f"}
+  ]
+}

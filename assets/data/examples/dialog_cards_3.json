@@ -1,0 +1,46 @@
+{
+  "title": "Identités remarquables",
+  "description": "Retrouvez les identités remarquables du programme de seconde.",
+  "dialogs": [
+    {
+      "text": "\\begin{align}(a+b)^2\\end{align}",
+      "answer": "\\(a^2 + 2ab + b^2\\)",
+      "tips": {
+        "front": "Développez le carré d'une somme.",
+        "back": "C'est la première identité remarquable."
+      }
+    },
+    {
+      "text": "$(a-b)^2$",
+      "answer": "\\(a^2 - 2ab + b^2\\)",
+      "tips": {
+        "front": "Développez le carré d'une différence.",
+        "back": "Attention au signe du terme central."
+      }
+    },
+    {
+      "text": "\\((a+b)(a-b)\\)",
+      "answer": "\\(a^2 - b^2\\)",
+      "tips": {
+        "front": "Produit d'une somme par une différence.",
+        "back": "Le résultat est une différence de deux carrés."
+      }
+    },
+    {
+      "text": "Factoriser \\(x^2 - 9\\)",
+      "answer": "\\((x+3)(x-3)\\)",
+      "tips": {
+        "front": "C'est une différence de deux carrés : \\(x^2 - 3^2\\).",
+        "back": "On applique \\(a^2 - b^2 = (a+b)(a-b)\\)."
+      }
+    },
+    {
+      "text": "Développer \\(\\displaystyle (2x+3)^2\\)",
+      "answer": "\\(4x^2 + 12x + 9\\)",
+      "tips": {
+        "front": "Appliquez \\((a+b)^2\\) avec \\(a=2x\\) et \\(b=3\\).",
+        "back": "\\(\\displaystyle (2x)^2 + 2 \\cdot 2x \\cdot 3 + 3^2\\)"
+      }
+    }
+  ]
+}

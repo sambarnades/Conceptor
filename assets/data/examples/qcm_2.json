@@ -1,0 +1,50 @@
+{
+  "title": "QCM sur les fonctions racines carrées et leurs formules",
+  "questions": [
+    {
+      "text": "Quel est l'ensemble de définition de la fonction \\( f(x) = \\sqrt{x - 3} \\) ?",
+      "answers": [
+        {"text": " \\( [3; +\\infty[ \\) ", "iscorrect": 1},
+        {"text": " \\( ]3; +\\infty[ \\) ", "iscorrect": 0},
+        {"text": " \\( ]-\\infty; 3] \\) ", "iscorrect": 0},
+        {"text": " \\( \\mathbb{R} \\) ", "iscorrect": 0}
+      ]
+    },
+    {
+      "text": "On considère la fonction \\( g(x) = \\sqrt{4x + 8} \\). Quelle est l'image de \\( x = 1 \\) par cette fonction ?",
+      "answers": [
+        {"text": " \\( \\sqrt{12} \\) ", "iscorrect": 1},
+        {"text": " \\( 2\\sqrt{3} \\) ", "iscorrect": 0},
+        {"text": " \\( 6 \\) ", "iscorrect": 0},
+        {"text": " \\( 4 \\) ", "iscorrect": 0}
+      ]
+    },
+    {
+      "text": "Quelle est la forme simplifiée de \\( \\sqrt{50} \\) ?",
+      "answers": [
+        {"text": " \\( 5\\sqrt{2} \\) ", "iscorrect": 1},
+        {"text": " \\( 2\\sqrt{5} \\) ", "iscorrect": 0},
+        {"text": " \\( 10 \\) ", "iscorrect": 0},
+        {"text": " \\( \\sqrt{25 \\times 2} \\) ", "iscorrect": 0}
+      ]
+    },
+    {
+      "text": "Laquelle de ces égalités est correcte pour tout \\( x \\geq 0 \\) ?",
+      "answers": [
+        {"text": " \\( \\sqrt{x^2} = x \\) ", "iscorrect": 1},
+        {"text": " \\( \\sqrt{x^2} = -x \\) ", "iscorrect": 0},
+        {"text": " \\( \\sqrt{x^2} = |x| \\) ", "iscorrect": 0},
+        {"text": " \\( \\sqrt{x^2} = 0 \\) ", "iscorrect": 0}
+      ]
+    },
+    {
+      "text": "On veut résoudre l'équation \\( \\sqrt{2x + 1} = 3 \\). Quelle est la solution ?",
+      "answers": [
+        {"text": " \\( x = 4 \\) ", "iscorrect": 1},
+        {"text": " \\( x = 5 \\) ", "iscorrect": 0},
+        {"text": " \\( x = 9 \\) ", "iscorrect": 0},
+        {"text": " \\( x = \\frac{1}{2} \\) ", "iscorrect": 0}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "question": "Une fraction décimale est une fraction dont le dénominateur est une puissance de 10, comme 10, 100, 1000, etc.",
+  "correct": "true",
+  "feedbackOnCorrect": "Excellent ! Tu as bien compris que les fractions décimales ont un dénominateur qui est une puissance de 10, ce qui permet de les écrire facilement sous forme décimale.",
+  "feedbackOnWrong": "Pas tout à fait. Une fraction décimale est spécifiquement une fraction dont le dénominateur est une puissance de 10, comme \\(10\\), \\(100\\), \\(1000\\), etc. Essaye encore avec cette définition en tête."
+}

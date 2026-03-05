@@ -1,0 +1,131 @@
+{
+  "title": "Les grandes découvertes scientifiques",
+  "questions": [
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Astronomie - QCM" },
+      "params": {
+        "question": "Quelle planète est la plus proche du Soleil ?",
+        "answers": [
+          { "text": "Mercure", "correct": true },
+          { "text": "Vénus", "correct": false },
+          { "text": "Mars", "correct": false },
+          { "text": "Jupiter", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Ce n'est pas la bonne réponse. Mercure est la planète la plus proche du Soleil." },
+          { "from": 26, "to": 50, "feedback": "Résultat moyen." },
+          { "from": 51, "to": 75, "feedback": "Bien joué !" },
+          { "from": 76, "to": 100, "feedback": "Excellent !" }
+        ]
+      }
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "Biologie - Vrai/Faux" },
+      "params": {
+        "question": "L'ADN est une double hélice.",
+        "correct": "true",
+        "feedbackOnCorrect": "Bravo ! L'ADN a bien une structure en double hélice, découverte par Watson et Crick en 1953.",
+        "feedbackOnWrong": "En fait, l'ADN est bien une double hélice. C'est l'une des découvertes majeures de la biologie moléculaire."
+      }
+    },
+    {
+      "library": "H5P.DragQuestion 1.14",
+      "metadata": { "title": "Sciences naturelles - Glisser-déposer" },
+      "params": {
+        "title": "Classe chaque animal dans la bonne catégorie selon son mode de reproduction.",
+        "dropZones": [
+          { "label": "Ovipares", "correctElements": [0, 1, 2] },
+          { "label": "Vivipares", "correctElements": [3, 4, 5] }
+        ],
+        "elements": [
+          { "text": "Poule" },
+          { "text": "Tortue" },
+          { "text": "Crocodile" },
+          { "text": "Chat" },
+          { "text": "Baleine" },
+          { "text": "Dauphin" }
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "La classification est à revoir. Révise les modes de reproduction des animaux." },
+          { "from": 26, "to": 50, "feedback": "C'est un début, mais il reste des confusions." },
+          { "from": 51, "to": 75, "feedback": "Bonne classification, continue ainsi !" },
+          { "from": 76, "to": 100, "feedback": "Parfait ! Tu maîtrises la classification ovipares/vivipares." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.Blanks 1.14",
+      "metadata": { "title": "Chimie - Mots à trous" },
+      "params": {
+        "taskDescription": "Complète les phrases suivantes sur les éléments chimiques.",
+        "questions": [
+          "Le symbole chimique de l'eau est *H2O*.",
+          "L'oxygène a pour symbole chimique *O*.",
+          "Le tableau périodique a été créé par *Mendeleïev*."
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Beaucoup d'erreurs, revois tes bases en chimie." },
+          { "from": 26, "to": 50, "feedback": "Résultat moyen, certains éléments sont à revoir." },
+          { "from": 51, "to": 75, "feedback": "Bonne maîtrise des bases." },
+          { "from": 76, "to": 100, "feedback": "Excellent ! Tu connais bien tes éléments chimiques." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MarkTheWords 1.11",
+      "metadata": { "title": "Physique - Surligner les mots" },
+      "params": {
+        "taskDescription": "Surligne les **unités de mesure** dans le texte suivant.",
+        "textField": "La vitesse se mesure en *mètres* par *seconde*. La masse s'exprime en *kilogrammes* et la température en *degrés* Celsius.",
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Aucune unité trouvée." },
+          { "from": 26, "to": 50, "feedback": "Résultat partiel." },
+          { "from": 51, "to": 75, "feedback": "Bonne identification des unités." },
+          { "from": 76, "to": 100, "feedback": "Excellent ! Toutes les unités sont identifiées." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.DragText 1.10",
+      "metadata": { "title": "Histoire des sciences - Glisser les mots" },
+      "params": {
+        "taskDescription": "Associe chaque scientifique à sa découverte.",
+        "textField": "La théorie de la relativité a été formulée par *Einstein*. La pénicilline a été découverte par *Fleming*. La radioactivité a été étudiée par *Curie*.",
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Aucun scientifique bien placé." },
+          { "from": 26, "to": 50, "feedback": "Résultat moyen." },
+          { "from": 51, "to": 75, "feedback": "Bonne maîtrise de l'histoire des sciences." },
+          { "from": 76, "to": 100, "feedback": "Bravo ! Sans faute." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.Essay 1.5",
+      "metadata": { "title": "Réflexion scientifique - Rédaction" },
+      "params": {
+        "taskDescription": "Explique en quelques phrases pourquoi la **méthode scientifique** est importante pour valider une découverte.",
+        "keywords": [
+          { "keyword": "hypothèse", "options": { "points": 1, "caseSensitive": false } },
+          { "keyword": "expérience", "options": { "points": 1, "caseSensitive": false } },
+          { "keyword": "observation", "options": { "points": 1, "caseSensitive": false } },
+          { "keyword": "preuve", "options": { "points": 1, "caseSensitive": false } }
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Réponse insuffisante." },
+          { "from": 26, "to": 50, "feedback": "Réponse partielle, des éléments importants manquent." },
+          { "from": 51, "to": 75, "feedback": "Bonne réponse, les idées principales sont présentes." },
+          { "from": 76, "to": 100, "feedback": "Excellente réponse, claire et complète." }
+        ]
+      }
+    }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 25, "feedback": "Résultat faible. Revois les grandes découvertes scientifiques." },
+    { "from": 26, "to": 50, "feedback": "Résultat moyen, il faut approfondir tes connaissances." },
+    { "from": 51, "to": 75, "feedback": "Bon résultat ! Tu connais bien les grandes découvertes." },
+    { "from": 76, "to": 100, "feedback": "Excellent résultat ! Tu maîtrises parfaitement le sujet." }
+  ]
+}

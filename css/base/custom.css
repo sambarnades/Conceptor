@@ -1,0 +1,463 @@
+/* =======================================================================
+   1. ÉTIQUETTES DES TUILES (H5P/ÉLÉA) — hover badges
+   ======================================================================= */
+.h5p-tile .module-label {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    background-color: white;
+    opacity: 0;
+    transition: none;
+}
+
+.h5p-tile:hover .module-label {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.h5p-label {
+    border: 1.5px solid #0976E7;
+    color: #0976E7;
+}
+
+.h5p-label span {
+    color: #0976E7;
+}
+
+.elea-label {
+    border: 1.5px solid #B9459B;
+    color: #B9459B;
+}
+
+.elea-label span {
+    color: #B9459B;
+}
+
+/* =======================================================================
+   2. ÉTIQUETTES DANS LA MODALE
+   ======================================================================= */
+.modal-description-label {
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.h5p-label-modal {
+    border: 1.5px solid #0976E7;
+    color: #0976E7;
+}
+
+.elea-label-modal {
+    border: 1.5px solid #B9459B;
+    color: #B9459B;
+}
+
+/* =======================================================================
+   3. STYLE DU TEXTE D'AIDE POUR L'IA
+   ======================================================================= */
+/* Scoped IA guidance (modal footer only) */
+.modal-panel-footer .ia-guidance-text {
+    font-size: 13px;
+    color: #333;
+    /* Couleur de texte plus foncée pour le contraste */
+    text-align: left;
+    padding: 10px 15px;
+    margin: 0;
+    line-height: 1.4;
+    background-color: #eaf2fa;
+    /* Fond bleu clair */
+    border-left: 4px solid #037aff;
+    /* Bordure gauche bleu-vert */
+    position: relative;
+}
+
+.modal-panel-footer .ia-guidance-text a {
+    color: #0976E7;
+    /* Bleu vif pour les liens */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.modal-panel-footer .ia-guidance-text a:hover {
+    text-decoration: underline;
+}
+
+/* Masque le bouton de copie uniquement dans la zone RAG du mode Avancé */
+#unified-rag-area .floating-toolbar #ocr-copy-btn {
+    display: none;
+}
+
+/* =======================================================================
+   4. MODALE DE MISE À JOUR DE VERSION
+   ======================================================================= */
+.version-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: var(--z-modal);
+}
+
+.version-modal.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.version-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(7, 11, 25, 0.55);
+    backdrop-filter: blur(2px);
+}
+
+.version-modal__dialog {
+    position: relative;
+    width: min(420px, calc(100% - 32px));
+    margin: 0 16px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 1.25rem 2.5rem rgba(7, 11, 25, 0.25);
+    transform: translateY(12px);
+    transition: transform 0.25s ease;
+    overflow: hidden;
+}
+
+.version-modal.visible .version-modal__dialog {
+    transform: translateY(0);
+}
+
+.version-modal__content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    align-items: stretch;
+}
+
+.version-modal__icon {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #0659B8, #0976E7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 24px;
+    box-shadow: 0 8px 20px rgba(9, 118, 231, 0.35);
+    margin: 0 auto 12px;
+}
+
+.version-modal__text h3 {
+    margin: 0 0 8px;
+    font-size: 1.125rem;
+    color: #050b21;
+}
+
+.version-modal__text p {
+    margin: 0;
+    color: #2f3546;
+    line-height: 1.4;
+}
+
+.version-modal__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.version-modal__actions .action-btn {
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.version-modal__dismiss {
+    border: none;
+    background: none;
+    color: #0976E7;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 6px 4px;
+    transition: color 0.2s ease;
+    text-align: center;
+}
+
+.version-modal__dismiss:hover,
+.version-modal__dismiss:focus-visible {
+    color: #0659B8;
+}
+
+body.version-modal-open {
+    overflow: hidden;
+}
+
+@media (max-width: 520px) {
+    /* Reserved for future tweaks */
+}
+
+/* =======================================================================
+   5. BANDEAU DE NOTIFICATION D'URGENCE
+   ======================================================================= */
+
+/* Conteneur dédié au bandeau d'urgence */
+#emergency-notification-container {
+    position: sticky;
+    top: 0;
+    /* Colle en haut de l'écran quand on scroll */
+    z-index: var(--z-banner);
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+/* Le bandeau lui-même — la couleur peut être surchargée via --banner-color */
+.emergency-banner {
+    --_banner-base: var(--banner-color, #ee5a52);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Centre le contenu */
+    gap: 16px;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--_banner-base), #fff 15%) 0%, var(--_banner-base) 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--_banner-base), transparent 75%);
+    border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+    font-weight: 500;
+    line-height: 1.5;
+    width: 100%;
+    /* Pleine largeur */
+
+    /* État initial : masqué */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(-100%);
+    transition: max-height 0.4s ease, opacity 0.3s ease, transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* État visible du bandeau */
+.emergency-banner.is-visible {
+    max-height: 200px;
+    /* Hauteur max pour permettre le multi-lignes */
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Icône d'alerte */
+.emergency-banner__icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.25);
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 1;
+}
+
+/* Message du bandeau */
+.emergency-banner__message {
+    flex: 1;
+    margin: 0;
+    font-size: 15px;
+    color: #ffffff;
+}
+
+/* Animation subtile pour attirer l'attention */
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 4px 12px color-mix(in srgb, var(--_banner-base), transparent 75%);
+    }
+    50% {
+        box-shadow: 0 4px 20px color-mix(in srgb, var(--_banner-base), transparent 55%);
+    }
+}
+
+.emergency-banner.is-visible {
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* =======================================================================
+   RESPONSIVE - MODE MOBILE
+   ======================================================================= */
+
+@media (max-width: 768px) {
+    .emergency-banner {
+        gap: 12px;
+        padding: 12px 16px;
+        border-bottom-width: 2px;
+    }
+
+    .emergency-banner__icon {
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+    }
+
+    .emergency-banner__message {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+}
+
+@media (max-width: 480px) {
+    .emergency-banner {
+        gap: 10px;
+        padding: 10px 12px;
+    }
+
+    .emergency-banner__icon {
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+    }
+
+    .emergency-banner__message {
+        font-size: 13px;
+    }
+}
+
+/* =======================================================================
+   ACCESSIBILITÉ & PRÉFÉRENCES UTILISATEUR
+   ======================================================================= */
+
+/* Respect de la préférence "réduire les mouvements" */
+@media (prefers-reduced-motion: reduce) {
+    .emergency-banner {
+        transition: opacity 0.2s ease, max-height 0.2s ease;
+        transform: none;
+        animation: none;
+    }
+
+    .emergency-banner.is-visible {
+        animation: none;
+    }
+}
+
+/* Mode contrasté élevé */
+@media (prefers-contrast: high) {
+    .emergency-banner {
+        border-bottom-width: 4px;
+        border-bottom-color: #000000;
+    }
+
+    .emergency-banner__icon {
+        border-width: 3px;
+    }
+}
+
+/* =======================================================================
+   6. TUILES COMPACTES EN MODE MOBILE (désactivé — décommenter pour réactiver)
+   =======================================================================*/
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .h5p-tile {
+        flex-direction: row;
+        height: auto;
+        padding: 10px 14px;
+        border-radius: 12px;
+        gap: 12px;
+        text-align: left;
+        justify-content: flex-start;
+    }
+
+    .h5p-tile img {
+        max-width: 40px;
+        height: 40px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+
+    .h5p-tile .tile-text {
+        align-items: flex-start;
+        min-width: 0;
+    }
+
+    .h5p-tile .tile-name-fr {
+        font-size: 0.9em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+
+    .h5p-tile .tile-name-en {
+        font-size: 0.75em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+
+    .h5p-tile .module-label {
+        top: 50%;
+        transform: translateY(-50%);
+        right: 10px;
+        opacity: 1;
+    }
+
+    .h5p-tile:hover {
+        transform: none;
+    }
+}
+
+
+/* =======================================================================
+   7. TEXTE "VOTRE SUCRERIE EST PRÊTE" CENTRÉ SUR MOBILE
+   ======================================================================= */
+@media (max-width: 768px) {
+    .generation-result-modal__header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .generation-result-modal__title {
+        text-align: center;
+    }
+
+    .generation-result-modal__actions {
+        flex-wrap: wrap;
+    }
+
+    .generation-result-modal__actions > .generation-result-modal__download-wrapper,
+    .generation-result-modal__actions > .generation-result-modal__btn--secondary {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+}
+
+/* =======================================================================
+   8. ÉTAT DES TUILES LORSQUE LES CHAMPS SONT VIDES
+   ======================================================================= */
+/* Applique un effet grisé sur les tuiles H5P quand les champs "qui" et "quoi" sont vides */
+.tiles-disabled .grid .h5p-tile {
+    filter: grayscale(40%);
+    opacity: 0.9;
+    transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Applique le même effet grisé sur les étiquettes de filtre quand les champs sont vides */
+.tiles-disabled .filter-chip {
+    filter: grayscale(40%);
+    opacity: 0.9;
+}

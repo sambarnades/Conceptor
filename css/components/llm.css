@@ -1,0 +1,370 @@
+/* =======================================================================
+   1. STYLES DU BOUTON DE GENERATION AVEC LE LLM
+   Les styles sont principalement gérés par .generation-button-group dans style.css
+   Ce fichier conserve les styles spécifiques au dropdown.
+   ======================================================================= */
+
+/* =======================================================================
+   2. SÉLECTEUR DE MODÈLE (DROPDOWN)
+   ======================================================================= */
+:root {
+    --llm-selector-max-height: 70vh;
+}
+/* Dropdown sizing and wrapping (moved from style.css) */
+.model-selector-dropdown {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 22rem;
+    width: clamp(22rem, 32vw, 30rem);
+    max-width: 90vw;
+    word-wrap: break-word;
+    box-shadow: 0 0.5rem 1rem 0 rgba(0,0,0,0.2);
+    z-index: 10;
+    list-style: none;
+    padding: 0.25rem 0;
+    margin: 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    top: 100%;
+    right: 0;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    max-height: var(--llm-selector-max-height, 70vh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    margin-top: 8px;
+}
+
+.model-selector-dropdown.show {
+    display: block;
+}
+
+#module-sidebar .llm-selector-group {
+    position: relative;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#module-sidebar .llm-buttons-row {
+    display: flex;
+    width: 100%;
+    gap: 0;
+}
+
+#module-sidebar .llm-buttons-row .main-action-button {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+#module-sidebar .llm-buttons-row .main-action-button .action-btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#module-sidebar .llm-buttons-row .more-actions-button {
+    position: relative;
+    display: flex;
+    margin-left: -1px;
+}
+
+#module-sidebar .llm-buttons-row .more-actions-button .dropdown-toggle {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+@media (max-width: 768px) {
+    #module-sidebar .llm-selector-group {
+        gap: 0;
+    }
+
+    #module-sidebar .llm-buttons-row {
+        flex-wrap: nowrap;
+    }
+
+    #module-sidebar .llm-selector-group .model-selector-dropdown {
+        position: static;
+        transform: none;
+        top: auto;
+        right: auto;
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 0.5rem;
+        margin-bottom: 0;
+        box-shadow: none;
+        border-radius: 1rem;
+        border: 1px solid #ddd;
+        max-height: var(--llm-selector-max-height, 70vh);
+        z-index: 1;
+    }
+
+    #module-sidebar .llm-selector-group .model-selector-dropdown.force-wide {
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+.model-selector-dropdown li {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.model-selector-dropdown li:last-child {
+    border-bottom: none;
+}
+
+.model-selector-dropdown li:hover {
+    background-color: #ddd;
+}
+
+.model-selector-dropdown li.selected {
+    background-color: #e9e9e9;
+    font-weight: bold;
+}
+
+.model-selector-dropdown li.selected::before {
+    content: '✔ ';
+    color: #007bff;
+    margin-right: 5px;
+}
+
+.model-selector-dropdown li strong {
+    font-weight: bold;
+}
+
+.model-selector-dropdown li small {
+    color: #555;
+}
+
+.model-selector-dropdown.force-wide {
+    min-width: 26rem;
+    width: clamp(26rem, 50vw, 42rem);
+    max-width: 95vw;
+}
+
+/* =======================================================================
+   3. STYLES DES "PILULES" D'INFORMATION
+   ======================================================================= */
+.model-pills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 8px;
+}
+
+.model-pills {
+    display: inline-flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 1px 0px;
+    font-size: 0.65em;
+    overflow: hidden;
+}
+
+.model-pills .pill-label {
+    background-color: #e0e0e0;
+    padding: 1px 5px;
+    font-weight: bold;
+    border-right: 1px solid #ccc;
+}
+
+.model-pills .pill-value {
+    padding: 1px 5px;
+    color: #333;
+}
+
+/* =======================================================================
+   4. BOUTON CONTEXTUEL MODE GUIDÉ
+   Principe : en mode guidé, le .generation-button-group passe en CSS Grid.
+   Les deux wrappers (.ctx-state-package et .ctx-state-llm) sont empilés
+   dans la même cellule → la div ne bouge jamais, seul le contenu fond
+   en crossfade (opacity).
+   ======================================================================= */
+
+/* --- Wrappers : cachés par défaut, transition flou → net --- */
+.ctx-state-package,
+.ctx-state-llm {
+    opacity: 0;
+    filter: blur(6px);
+    pointer-events: none;
+    overflow: hidden;
+    display: flex;
+    transition: opacity 0.35s ease, filter 0.35s ease;
+}
+
+/* Mode Simple (pas de .advanced-view) : package affiché normalement en flex */
+.generation-button-group .ctx-state-package {
+    opacity: 1;
+    filter: blur(0);
+    pointer-events: auto;
+    width: 100%;
+}
+
+/* LLM caché en mode simple (pas dans le grid, taille nulle) */
+.generation-button-group .ctx-state-llm {
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+/* --- Mode Guidé : grid stacking (bouton du BAS uniquement, dans .modal-panel-footer) --- */
+/* Le fond bleu permanent évite le scintillement blanc pendant le crossfade */
+#module-sidebar.advanced-view .modal-panel-footer .generation-button-group {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    background-color: #007AFF;
+    border-radius: 1rem;
+}
+
+/* Les deux wrappers occupent la même cellule grid */
+#module-sidebar.advanced-view .modal-panel-footer .generation-button-group > .ctx-state-package,
+#module-sidebar.advanced-view .modal-panel-footer .generation-button-group > .ctx-state-llm {
+    grid-row: 1;
+    grid-column: 1;
+    width: 100%;
+    height: auto;
+    position: relative;
+}
+
+/* Mode Guidé : les deux cachés par défaut */
+#module-sidebar.advanced-view .modal-panel-footer .generation-button-group .ctx-state-package {
+    opacity: 0;
+    filter: blur(6px);
+    pointer-events: none;
+}
+
+#module-sidebar.advanced-view .modal-panel-footer .generation-button-group .ctx-state-llm {
+    opacity: 0;
+    filter: blur(6px);
+    pointer-events: none;
+}
+
+/* Mode Guidé + JSON vide → afficher le bouton LLM */
+#module-sidebar.advanced-view .modal-panel-footer .generation-button-group.ctx-state--empty .ctx-state-llm {
+    opacity: 1;
+    filter: blur(0);
+    pointer-events: auto;
+    overflow: visible;
+}
+
+/* Mode Guidé + JSON valide → afficher le bouton packaging */
+#module-sidebar.advanced-view .modal-panel-footer .generation-button-group.ctx-state--json .ctx-state-package {
+    opacity: 1;
+    filter: blur(0);
+    pointer-events: auto;
+}
+
+/* Mode Guidé + JSON valide → bouton pleine largeur avec arrondi complet (pas de split) */
+#module-sidebar.advanced-view .modal-panel-footer .generation-button-group.ctx-state--json .ctx-state-package .main-action-button .action-btn {
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+/* Mode Guidé → cacher la flèche export (le format se choisit après génération) */
+#module-sidebar.advanced-view .modal-panel-footer .generation-button-group .ctx-state-package .more-actions-button {
+    display: none;
+}
+
+/* Dropdown modèle LLM contextuel : ouverture vers le HAUT, au-dessus de tout */
+.ctx-model-dropdown {
+    top: auto !important;
+    bottom: 100%;
+    margin-top: 0;
+    margin-bottom: 8px;
+    z-index: var(--z-popover, 6000);
+}
+
+/*
+ * Quand le dropdown est ouvert (.menu-open sur la sidebar) :
+ * 1. Élever .modal-main-content au-dessus du header (z-index: 10)
+ * 2. Élever le .modal-panel-footer au-dessus de la floating-toolbar (z-index: 5)
+ *    du même panel — le dropdown est dans le footer, la toolbar est au-dessus dans le DOM
+ */
+#module-sidebar.menu-open .modal-main-content {
+    z-index: 20;
+}
+
+#module-sidebar.menu-open .modal-panel-footer:has(.ctx-model-dropdown.show) {
+    position: relative;
+    z-index: 10;
+}
+
+/* Le wrapper LLM a besoin d'un positionnement relatif pour le dropdown */
+.ctx-state-llm {
+    position: relative;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Split button dans le wrapper LLM : mêmes dimensions que le bouton packaging du footer */
+.ctx-state-llm .llm-buttons-row {
+    display: flex;
+    width: 100%;
+    gap: 0;
+}
+
+.ctx-state-llm .llm-buttons-row .main-action-button {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+}
+
+.ctx-state-llm .llm-buttons-row .main-action-button .action-btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    width: 100%;
+    /* Mêmes dimensions que .modal-panel-footer .action-btn */
+    padding: 1rem;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.ctx-state-llm .llm-buttons-row .more-actions-button {
+    position: relative;
+    display: flex;
+    margin-left: -1px;
+}
+
+.ctx-state-llm .llm-buttons-row .more-actions-button .dropdown-toggle {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    /* Mêmes dimensions que le bouton principal */
+    padding: 1rem;
+    font-size: 1.1em;
+}
+
+@media (max-width: 768px) {
+    /* En mobile, le dropdown contextuel reste positionné en absolu vers le HAUT */
+    .ctx-model-dropdown {
+        position: absolute;
+        top: auto !important;
+        bottom: 100%;
+        left: 0;
+        right: 0;
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 0;
+        margin-bottom: 8px;
+        border-radius: 1rem;
+        border: 1px solid #ddd;
+        z-index: var(--z-popover, 6000);
+    }
+}
+
+/* =======================================================================
+   5. ÉTAT DÉSACTIVÉ
+   ======================================================================= */
+.greyed-out {
+    filter: grayscale(90%);
+    opacity: 1;
+}

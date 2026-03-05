@@ -1,0 +1,114 @@
+{
+  "timeline": {
+    "headline": "L'Histoire des nombres",
+    "text": "Objectif : découvrir comment les nombres et les systèmes de numération ont évolué à travers l'histoire, de l'Antiquité à nos jours.\\n\\nConsigne : pour chaque événement, lis attentivement la description puis réfléchis à cette question : **Pourquoi cette découverte ou cette invention a-t-elle changé les mathématiques ?** Tu peux aussi te demander comment tu écrirais certains nombres sans ces inventions !",
+    "asset": {
+      "media": "https://upload.wikimedia.org/wikipedia/commons/3/36/Babylonian_numerals.svg",
+      "caption": "Les chiffres babyloniens : l'un des premiers systèmes de numération de position.",
+      "credit": "Wikimedia Commons"
+    },
+    "date": [
+      {
+        "startDate": "-3300",
+        "headline": "Premiers chiffres à Sumer",
+        "text": "Les Sumériens inventent la **première numérotation écrite** sur des tablettes d'argile : c'est le début de l'écriture des nombres, essentielle pour compter les récoltes, les animaux et organiser la société.\\nRéflexion : comment ferais-tu pour compter de grandes quantités sans écrire de chiffres ?",
+        "tag": "Antiquité"
+      },
+      {
+        "startDate": "-1800",
+        "headline": "Numérotation babylonienne de position",
+        "text": "Les Babyloniens créent le **premier système de position** (comme notre système actuel) : la valeur d'un chiffre dépend de sa place dans le nombre ! Par exemple, dans 23, le 2 vaut 20.\\nRéflexion : essaie d'écrire le nombre 2026 en expliquant la valeur de chaque chiffre selon sa position.",
+        "tag": "Antiquité"
+      },
+      {
+        "startDate": "-500",
+        "headline": "Découverte des nombres irrationnels",
+        "text": "**Pythagore** et ses disciples découvrent que certains nombres ne peuvent pas s'écrire sous forme de fraction : par exemple \\\\( \\\\sqrt{2} \\\\), la diagonale d'un carré de côté 1. C'est un choc pour les mathématiciens grecs !\\nRéflexion : peux-tu trouver la valeur approchée de \\\\( \\\\sqrt{2} \\\\) avec ta calculatrice ?",
+        "tag": "Géométrie"
+      },
+      {
+        "startDate": "-300",
+        "headline": "Le zéro babylonien",
+        "text": "Apparition du **premier zéro** dans la numérotation savante babylonienne : il sert à marquer une position vide (comme dans 205, où le zéro indique qu'il n'y a pas de dizaines).\\nRéflexion : essaie d'écrire des nombres comme 1003 ou 2050 sans utiliser de zéro. Est-ce clair ?",
+        "tag": "Notation"
+      },
+      {
+        "startDate": "458",
+        "headline": "Le zéro en Inde",
+        "text": "Le zéro apparaît dans un traité indien : il devient un **véritable nombre** (pas seulement un symbole de position) et permet de faire des calculs avec lui.\\nRéflexion : que se passe-t-il quand tu multiplies ou additionnes un nombre par zéro ?",
+        "tag": "Inde"
+      },
+      {
+        "startDate": "628",
+        "headline": "Les nombres négatifs selon Brahmagupta",
+        "text": "Le mathématicien indien **Brahmagupta** décrit les règles de calcul avec les **nombres négatifs** : addition, soustraction, multiplication. Ces nombres représentent des dettes ou des températures sous zéro.\\nRéflexion : calcule \\\\( (-3) \\\\times (+5) \\\\) et \\\\( (-2) \\\\times (-4) \\\\). Observe les signes !",
+        "tag": "Algèbre"
+      },
+      {
+        "startDate": "820",
+        "headline": "Al-Khwarizmi et l'algèbre",
+        "text": "Le savant perse **Al-Khwarizmi** écrit un traité qui pose les bases de l'**algèbre** : il y présente les équations, l'inconnue et les méthodes de résolution. Son nom donnera le mot « algorithme » !\\nRéflexion : qu'est-ce qu'une équation ? Donne un exemple simple.",
+        "tag": "Algèbre"
+      },
+      {
+        "startDate": "1202",
+        "headline": "Fibonacci et les chiffres arabes en Europe",
+        "text": "Le mathématicien italien **Fibonacci** publie le *Liber Abaci* et popularise les **chiffres indo-arabes** (0, 1, 2, 3...) en Europe, remplaçant progressivement les chiffres romains (I, V, X, L...).\\nRéflexion : essaie d'écrire 2026 en chiffres romains. Lequel des deux systèmes est le plus pratique pour calculer ?",
+        "tag": "Notation"
+      },
+      {
+        "startDate": "1545",
+        "headline": "Cardan et les nombres complexes",
+        "text": "Le mathématicien italien **Cardan** formule pour la première fois les **nombres complexes**, avec la fameuse unité imaginaire \\\\( i \\\\) telle que \\\\( i^2 = -1 \\\\). Ces nombres semblent étranges mais sont très utiles !\\nRéflexion : pourquoi \\\\( \\\\sqrt{-1} \\\\) n'existe-t-il pas parmi les nombres réels ?",
+        "tag": "Algèbre"
+      },
+      {
+        "startDate": "1585",
+        "headline": "Simon Stevin et les nombres décimaux",
+        "text": "Le mathématicien flamand **Simon Stevin** étudie les **fractions décimales** et propose de décimaliser la monnaie et les mesures. C'est l'ancêtre de notre écriture à virgule : 3,14 ou 12,5.\\nRéflexion : écris la fraction \\\\( \\\\frac{3}{4} \\\\) sous forme décimale.",
+        "tag": "Notation"
+      },
+      {
+        "startDate": "1797",
+        "headline": "Gauss et la géométrie des complexes",
+        "text": "Le mathématicien allemand **Gauss** donne une **interprétation géométrique** des nombres complexes dans un plan : chaque nombre complexe \\\\( a + ib \\\\) correspond à un point de coordonnées \\\\( (a, b) \\\\).\\nRéflexion : place le nombre complexe \\\\( 2 + 3i \\\\) dans un repère.",
+        "tag": "Géométrie"
+      },
+      {
+        "startDate": "1872",
+        "headline": "Dedekind et la construction des réels",
+        "text": "Le mathématicien allemand **Dedekind** donne une construction rigoureuse de l'ensemble des **nombres réels** \\\\( \\\\mathbb{R} \\\\), qui rassemble les nombres rationnels et irrationnels.\\nRéflexion : cite un nombre rationnel et un nombre irrationnel que tu connais.",
+        "tag": "Fondements"
+      },
+      {
+        "startDate": "1895",
+        "headline": "Peano et les ensembles de nombres",
+        "text": "Le mathématicien italien **Peano** donne une définition formelle des ensembles de nombres (\\\\( \\\\mathbb{N} \\\\), \\\\( \\\\mathbb{Z} \\\\), \\\\( \\\\mathbb{Q} \\\\)...) et invente des symboles encore utilisés aujourd'hui : \\\\( \\\\in \\\\), \\\\( \\\\subset \\\\)...\\nRéflexion : à quel ensemble appartient le nombre \\\\( -5 \\\\) ? Et le nombre \\\\( \\\\frac{1}{2} \\\\) ?",
+        "tag": "Fondements"
+      }
+    ],
+    "era": [
+      {
+        "startDate": "-3300",
+        "endDate": "800",
+        "headline": "Antiquité et Moyen Âge : naissance des nombres",
+        "text": "Période d'invention des systèmes de numération, du zéro et des premières opérations sur les nombres négatifs. Les civilisations sumérienne, babylonienne, grecque, chinoise et indienne posent les **bases fondamentales**.",
+        "tag": "Contexte"
+      },
+      {
+        "startDate": "800",
+        "endDate": "1600",
+        "headline": "Moyen Âge et Renaissance : algèbre et notation",
+        "text": "Développement de l'**algèbre** avec Al-Khwarizmi, diffusion des chiffres indo-arabes en Europe grâce à Fibonacci, et apparition des nombres complexes avec Cardan. Les notations mathématiques se modernisent.",
+        "tag": "Contexte"
+      },
+      {
+        "startDate": "1600",
+        "endDate": "1900",
+        "headline": "Époque moderne : rigueur et fondements",
+        "text": "Construction rigoureuse des ensembles de nombres (réels, complexes) et développement de la **théorie des nombres**. Les mathématiciens comme Gauss, Dedekind et Peano établissent les fondements solides des mathématiques modernes.",
+        "tag": "Contexte"
+      }
+    ]
+  }
+}

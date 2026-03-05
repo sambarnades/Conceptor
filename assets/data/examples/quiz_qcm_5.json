@@ -1,0 +1,312 @@
+{
+  "title": "Quiz QCM - Fonctions racine carrée",
+  "questions": [
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "title": "Domaine de définition"
+      },
+      "params": {
+        "question": "Quelle est le domaine de définition de la fonction \\( f(x)=\\sqrt{x-3}\\) ?",
+        "answers": [
+          {
+            "text": "Tous les réels",
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "Quel est le signe exigé sous la racine ?",
+              "chosenFeedback": "Le radical doit être positif ou nul, pas n’importe quel réel."
+            }
+          },
+          {
+            "text": "x > 3",
+            "correct": false,
+            "chosenFeedback": "Il faut aussi autoriser la valeur où le radicande vaut 0."
+          },
+          {
+            "text": "x \\ge 3",
+            "correct": true
+          },
+          {
+            "text": "x < 3",
+            "correct": false,
+            "chosenFeedback": "Pour x < 3 le nombre sous la racine devient négatif."
+          }
+        ],
+        "behaviour": {
+          "singleAnswer": true
+        },
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 25,
+            "feedback": "Il faut revoir les bases du domaine d’une racine."
+          },
+          {
+            "from": 26,
+            "to": 50,
+            "feedback": "Pas mal, continuez à vous exercer."
+          },
+          {
+            "from": 51,
+            "to": 75,
+            "feedback": "Bon travail, vous êtes sur la bonne voie."
+          },
+          {
+            "from": 76,
+            "to": 100,
+            "feedback": "Excellent, vous avez parfaitement compris !"
+          }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "title": "Valeur d'une fonction racine"
+      },
+      "params": {
+        "question": "On considère \\( f(x)=\\sqrt{2x+1}\\). Quelle est la valeur de \\( f(7)\\) ?",
+        "answers": [
+          {
+            "text": "\\( \\sqrt{15} \\)",
+            "correct": true
+          },
+          {
+            "text": "\\( \\sqrt{13} \\)",
+            "correct": false,
+            "chosenFeedback": "2·7+1 = 15, pas 13."
+          },
+          {
+            "text": "\\( \\sqrt{9} \\)",
+            "correct": false,
+            "chosenFeedback": "Le calcul donne 15, pas 9."
+          },
+          {
+            "text": "\\( \\sqrt{5} \\)",
+            "correct": false,
+            "chosenFeedback": "Vérifiez le calcul du radicande."
+          }
+        ],
+        "behaviour": {
+          "singleAnswer": true
+        },
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 25,
+            "feedback": "Reprenez le calcul du radicande."
+          },
+          {
+            "from": 26,
+            "to": 50,
+            "feedback": "Vous avez compris le principe, il faut encore pratiquer."
+          },
+          {
+            "from": 51,
+            "to": 75,
+            "feedback": "Bonne réponse, continuez ainsi."
+          },
+          {
+            "from": 76,
+            "to": 100,
+            "feedback": "Parfait, vous maîtrisez le calcul !"
+          }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "title": "Graphique de la fonction racine"
+      },
+      "params": {
+        "question": "Quelle description correspond à la représentation graphique de la fonction \\( g(x)=\\sqrt{x}\\) ?",
+        "answers": [
+          {
+            "text": "Une courbe qui part de l'origine (0,0) et augmente doucement pour \\(x>0\\).",
+            "correct": true
+          },
+          {
+            "text": "Une droite passant par l'origine.",
+            "correct": false,
+            "chosenFeedback": "La fonction racine n’est pas linéaire."
+          },
+          {
+            "text": "Une courbe qui descend vers la droite.",
+            "correct": false,
+            "chosenFeedback": "Le signe de la fonction est toujours positif."
+          },
+          {
+            "text": "Une courbe qui part de (0,0) puis diminue pour \\(x>0\\).",
+            "correct": false,
+            "chosenFeedback": "Le graphe de \\(\\sqrt{x}\\) est croissant, pas décroissant."
+          }
+        ],
+        "behaviour": {
+          "singleAnswer": true
+        },
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 25,
+            "feedback": "Revoyez la forme du graphe d’une racine carrée."
+          },
+          {
+            "from": 26,
+            "to": 50,
+            "feedback": "Vous êtes proche, continuez à observer les courbes."
+          },
+          {
+            "from": 51,
+            "to": 75,
+            "feedback": "Bonne description, vous avez compris."
+          },
+          {
+            "from": 76,
+            "to": 100,
+            "feedback": "Excellent, vous visualisez parfaitement le graphe."
+          }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "title": "Résolution d'équation racine"
+      },
+      "params": {
+        "question": "Résolvez l’équation \\( \\sqrt{x+4}=5 \\). Quelle est la solution ?",
+        "answers": [
+          {
+            "text": "x = 9",
+            "correct": false,
+            "chosenFeedback": "5² = 25, pas 13."
+          },
+          {
+            "text": "x = 21",
+            "correct": true
+          },
+          {
+            "text": "x = 25",
+            "correct": false,
+            "chosenFeedback": "5² - 4 = 21, pas 25."
+          },
+          {
+            "text": "x = 1",
+            "correct": false,
+            "chosenFeedback": "Le radicande doit être 25."
+          }
+        ],
+        "behaviour": {
+          "singleAnswer": true
+        },
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 25,
+            "feedback": "Vérifiez le passage du radical au carré."
+          },
+          {
+            "from": 26,
+            "to": 50,
+            "feedback": "Vous avez compris la méthode, il faut encore la consolider."
+          },
+          {
+            "from": 51,
+            "to": 75,
+            "feedback": "Bonne réponse, continuez ainsi."
+          },
+          {
+            "from": 76,
+            "to": 100,
+            "feedback": "Parfait, vous résolvez les équations avec assurance."
+          }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "title": "Identification de fonctions racine"
+      },
+      "params": {
+        "question": "Parmi les expressions suivantes, lesquelles sont des fonctions de type racine carrée (c’est‑à‑dire de la forme \\( k\\sqrt{ax+b}\\) avec \\(k\\neq0\\) ) ? (plusieurs réponses possibles)",
+        "answers": [
+          {
+            "text": "\\( f(x)=3\\sqrt{2x-5}\\)",
+            "correct": true
+          },
+          {
+            "text": "\\( g(x)=\\sqrt{x^{2}}\\)",
+            "correct": false,
+            "chosenFeedback": "Cette expression vaut |x|, ce n’est pas une fonction racine carrée au sens algébrique."
+          },
+          {
+            "text": "\\( h(x)=\\sqrt{x}+2\\)",
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "Regardez la partie contenant la racine.",
+              "chosenFeedback": "On peut écrire \\(h(x)=1\\cdot\\sqrt{1\\cdot x+0}+2\\), la partie racine correspond bien au modèle."
+            }
+          },
+          {
+            "text": "\\( k(x)=5x^{1/2}\\)",
+            "correct": true
+          },
+          {
+            "text": "\\( m(x)=\\sqrt{\\frac{1}{x}}\\)",
+            "correct": false,
+            "chosenFeedback": "Le radicande n’est pas de la forme ax+b."
+          }
+        ],
+        "behaviour": {
+          "singleAnswer": false
+        },
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 25,
+            "feedback": "Il faut revoir la forme générale d’une fonction racine."
+          },
+          {
+            "from": 26,
+            "to": 50,
+            "feedback": "Vous avez identifié quelques fonctions, continuez à pratiquer."
+          },
+          {
+            "from": 51,
+            "to": 75,
+            "feedback": "Bonne compréhension, vous êtes sur la bonne voie."
+          },
+          {
+            "from": 76,
+            "to": 100,
+            "feedback": "Excellent, vous distinguez parfaitement les fonctions racine carrée."
+          }
+        ]
+      }
+    }
+  ],
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 25,
+      "feedback": "Résultat faible. Revoyez les notions de base sur les fonctions racine carrée."
+    },
+    {
+      "from": 26,
+      "to": 50,
+      "feedback": "Résultat moyen. Vous progressez, continuez à vous entraîner."
+    },
+    {
+      "from": 51,
+      "to": 75,
+      "feedback": "Bon résultat. Vous maîtrisez la plupart des concepts."
+    },
+    {
+      "from": 76,
+      "to": 100,
+      "feedback": "Excellent résultat. Félicitations, vous avez une très bonne maîtrise des fonctions racine carrée !"
+    }
+  ]
+}

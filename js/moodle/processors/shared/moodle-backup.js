@@ -1,0 +1,608 @@
+/**
+ * @file Builder pour le fichier moodle_backup.xml.
+ * Ce fichier est le manifest principal de l'archive MBZ.
+ */
+
+import { replacePlaceholders } from './placeholder.js';
+
+/**
+ * Constantes pour la version Moodle cible (4.5).
+ */
+const MOODLE_VERSION = '2024100706';
+const MOODLE_RELEASE = '4.5.6 (Build: 20250811)';
+const BACKUP_VERSION = '2024100700';
+const BACKUP_RELEASE = '4.5';
+const ORIGINAL_WWWROOT = 'https://caramel.forge.apps.education.fr/';
+const SITE_IDENTIFIER_HASH = '31f4b05dd157f31e868a2589d8961f99';
+
+/**
+ * Constantes Moodle 4.1 pour les sauvegardes singleactivity.
+ */
+const MOODLE_41_VERSION = '2022112818';
+const MOODLE_41_RELEASE = '4.1.18 (Build: 20250414)';
+const BACKUP_41_VERSION = '2022112800';
+const BACKUP_41_RELEASE = '4.1';
+
+/**
+ * Génère le contenu du fichier moodle_backup.xml pour une sauvegarde de type "activity".
+ * @param {Object} data - Les données avec les placeholders
+ * @param {string} moduleName - Nom du module (epikmatch, simplequiz, etc.)
+ * @returns {string} Le contenu XML du fichier moodle_backup.xml
+ */
+export function buildMoodleBackup(data, moduleName) {
+    const template = `<?xml version="1.0" encoding="UTF-8"?>
+<moodle_backup>
+  <information>
+    <name>sauvegarde-moodle2-activity-{{MODULE_ID}}-${moduleName}{{MODULE_ID}}-caramel.mbz</name>
+    <moodle_version>${MOODLE_VERSION}</moodle_version>
+    <moodle_release>${MOODLE_RELEASE}</moodle_release>
+    <backup_version>${BACKUP_VERSION}</backup_version>
+    <backup_release>${BACKUP_RELEASE}</backup_release>
+    <backup_date>{{BACKUP_DATE}}</backup_date>
+    <mnet_remoteusers>0</mnet_remoteusers>
+    <include_files>1</include_files>
+    <include_file_references_to_external_content>0</include_file_references_to_external_content>
+    <original_wwwroot>${ORIGINAL_WWWROOT}</original_wwwroot>
+    <original_site_identifier_hash>${SITE_IDENTIFIER_HASH}</original_site_identifier_hash>
+    <original_course_id>{{COURSE_ID}}</original_course_id>
+    <original_course_format>singleactivity</original_course_format>
+    <original_course_fullname>{{COURSE_FULLNAME}}</original_course_fullname>
+    <original_course_shortname>{{COURSE_SHORTNAME}}</original_course_shortname>
+    <original_course_startdate>0</original_course_startdate>
+    <original_course_enddate>0</original_course_enddate>
+    <original_course_contextid>{{COURSE_CONTEXTID}}</original_course_contextid>
+    <original_system_contextid>1</original_system_contextid>
+    <details>
+      <detail backup_id="df6efda5e4345c33d5c6fb0efd80d6b3">
+        <type>activity</type>
+        <format>moodle2</format>
+        <interactive>1</interactive>
+        <mode>10</mode>
+        <execution>1</execution>
+        <executiontime>0</executiontime>
+      </detail>
+    </details>
+    <contents>
+      <activities>
+        <activity>
+          <moduleid>{{MODULE_ID}}</moduleid>
+          <sectionid>{{SECTION_ID}}</sectionid>
+          <modulename>${moduleName}</modulename>
+          <title>{{ACTIVITY_TITLE}}</title>
+          <directory>activities/${moduleName}_{{MODULE_ID}}</directory>
+          <insubsection></insubsection>
+        </activity>
+      </activities>
+    </contents>
+    <settings>
+      <setting>
+        <level>root</level>
+        <name>filename</name>
+        <value>sauvegarde-moodle2-activity-{{MODULE_ID}}-${moduleName}{{MODULE_ID}}-caramel.mbz</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>users</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>anonymize</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>role_assignments</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>activities</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>blocks</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>files</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>filters</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>comments</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>badges</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>calendarevents</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>userscompletion</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>logs</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>grade_histories</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>questionbank</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>groups</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>competencies</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>customfield</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>contentbankcontent</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>xapistate</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>legacyfiles</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>activity</level>
+        <activity>${moduleName}_{{MODULE_ID}}</activity>
+        <name>${moduleName}_{{MODULE_ID}}_included</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>activity</level>
+        <activity>${moduleName}_{{MODULE_ID}}</activity>
+        <name>${moduleName}_{{MODULE_ID}}_userinfo</name>
+        <value>0</value>
+      </setting>
+    </settings>
+  </information>
+</moodle_backup>`;
+
+    return replacePlaceholders(template, data);
+}
+
+/**
+ * Génère le contenu du fichier moodle_backup.xml pour une sauvegarde de type "course".
+ * Utilisé pour les activités Page qui incluent course et section.
+ * @param {Object} data - Les données avec les placeholders
+ * @param {string} moduleName - Nom du module (page, etc.)
+ * @returns {string} Le contenu XML du fichier moodle_backup.xml
+ */
+export function buildCourseBackup(data, moduleName) {
+    const template = `<?xml version="1.0" encoding="UTF-8"?>
+<moodle_backup>
+  <information>
+    <name>sauvegarde-moodle2-course-{{COURSE_ID}}-{{COURSE_SHORTNAME}}-caramel.mbz</name>
+    <moodle_version>${MOODLE_VERSION}</moodle_version>
+    <moodle_release>${MOODLE_RELEASE}</moodle_release>
+    <backup_version>${BACKUP_VERSION}</backup_version>
+    <backup_release>${BACKUP_RELEASE}</backup_release>
+    <backup_date>{{BACKUP_DATE}}</backup_date>
+    <mnet_remoteusers>0</mnet_remoteusers>
+    <include_files>1</include_files>
+    <include_file_references_to_external_content>0</include_file_references_to_external_content>
+    <original_wwwroot>${ORIGINAL_WWWROOT}</original_wwwroot>
+    <original_site_identifier_hash>${SITE_IDENTIFIER_HASH}</original_site_identifier_hash>
+    <original_course_id>{{COURSE_ID}}</original_course_id>
+    <original_course_format>topics</original_course_format>
+    <original_course_fullname>{{COURSE_FULLNAME}}</original_course_fullname>
+    <original_course_shortname>{{COURSE_SHORTNAME}}</original_course_shortname>
+    <original_course_startdate>0</original_course_startdate>
+    <original_course_enddate>0</original_course_enddate>
+    <original_course_contextid>{{COURSE_CONTEXTID}}</original_course_contextid>
+    <original_system_contextid>1</original_system_contextid>
+    <details>
+      <detail backup_id="b1904924ce499b878a2f32a7569d6ad0">
+        <type>course</type>
+        <format>moodle2</format>
+        <interactive>1</interactive>
+        <mode>10</mode>
+        <execution>1</execution>
+        <executiontime>0</executiontime>
+      </detail>
+    </details>
+    <contents>
+      <activities>
+        <activity>
+          <moduleid>{{MODULE_ID}}</moduleid>
+          <sectionid>{{SECTION_ID}}</sectionid>
+          <modulename>${moduleName}</modulename>
+          <title>{{ACTIVITY_TITLE}}</title>
+          <directory>activities/${moduleName}_{{MODULE_ID}}</directory>
+          <insubsection></insubsection>
+        </activity>
+      </activities>
+      <sections>
+        <section>
+          <sectionid>{{SECTION_ID}}</sectionid>
+          <title>0</title>
+          <directory>sections/section_{{SECTION_ID}}</directory>
+          <parentcmid></parentcmid>
+          <modname></modname>
+        </section>
+      </sections>
+      <course>
+        <courseid>{{COURSE_ID}}</courseid>
+        <title>{{COURSE_SHORTNAME}}</title>
+        <directory>course</directory>
+      </course>
+    </contents>
+    <settings>
+      <setting>
+        <level>root</level>
+        <name>filename</name>
+        <value>sauvegarde-moodle2-course-{{COURSE_ID}}-{{COURSE_SHORTNAME}}-caramel.mbz</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>imscc11</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>users</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>anonymize</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>role_assignments</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>activities</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>blocks</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>files</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>filters</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>comments</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>badges</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>calendarevents</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>userscompletion</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>logs</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>grade_histories</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>questionbank</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>groups</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>competencies</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>customfield</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>contentbankcontent</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>xapistate</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>legacyfiles</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>section</level>
+        <section>section_{{SECTION_ID}}</section>
+        <name>section_{{SECTION_ID}}_included</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>section</level>
+        <section>section_{{SECTION_ID}}</section>
+        <name>section_{{SECTION_ID}}_userinfo</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>activity</level>
+        <activity>${moduleName}_{{MODULE_ID}}</activity>
+        <name>${moduleName}_{{MODULE_ID}}_included</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>activity</level>
+        <activity>${moduleName}_{{MODULE_ID}}</activity>
+        <name>${moduleName}_{{MODULE_ID}}_userinfo</name>
+        <value>0</value>
+      </setting>
+    </settings>
+  </information>
+</moodle_backup>`;
+
+    return replacePlaceholders(template, data);
+}
+
+/**
+ * Génère le contenu du fichier moodle_backup.xml pour une sauvegarde de type "singleactivity".
+ * Utilisé pour Millionnaire et activités similaires avec format singleactivity.
+ * @param {Object} data - Les données avec les placeholders
+ * @param {string} moduleName - Nom du module (millionnairev2, etc.)
+ * @returns {string} Le contenu XML du fichier moodle_backup.xml
+ */
+export function buildSingleActivityBackup(data, moduleName) {
+    const template = `<?xml version="1.0" encoding="UTF-8"?>
+<moodle_backup>
+  <information>
+    <name>modele.mbz</name>
+    <moodle_version>${MOODLE_41_VERSION}</moodle_version>
+    <moodle_release>${MOODLE_41_RELEASE}</moodle_release>
+    <backup_version>${BACKUP_41_VERSION}</backup_version>
+    <backup_release>${BACKUP_41_RELEASE}</backup_release>
+    <backup_date>{{BACKUP_DATE}}</backup_date>
+    <mnet_remoteusers>0</mnet_remoteusers>
+    <include_files>0</include_files>
+    <include_file_references_to_external_content>0</include_file_references_to_external_content>
+    <original_wwwroot>${ORIGINAL_WWWROOT}</original_wwwroot>
+    <original_site_identifier_hash>${SITE_IDENTIFIER_HASH}</original_site_identifier_hash>
+    <original_course_id>{{COURSE_ID}}</original_course_id>
+    <original_course_format>singleactivity</original_course_format>
+    <original_course_fullname>{{ACTIVITY_TITLE}}</original_course_fullname>
+    <original_course_shortname>{{COURSE_SHORTNAME}}</original_course_shortname>
+    <original_course_startdate>0</original_course_startdate>
+    <original_course_enddate>0</original_course_enddate>
+    <original_course_contextid>{{COURSE_CONTEXTID}}</original_course_contextid>
+    <original_system_contextid>1</original_system_contextid>
+    <details>
+      <detail backup_id="6dadfa92577123d3c42a6c8c137387d4">
+        <type>course</type>
+        <format>moodle2</format>
+        <interactive>1</interactive>
+        <mode>10</mode>
+        <execution>1</execution>
+        <executiontime>0</executiontime>
+      </detail>
+    </details>
+    <contents>
+      <activities>
+        <activity>
+          <moduleid>{{MODULE_ID}}</moduleid>
+          <sectionid>{{SECTION_ID}}</sectionid>
+          <modulename>${moduleName}</modulename>
+          <title>{{ACTIVITY_TITLE}}</title>
+          <directory>activities/${moduleName}_{{MODULE_ID}}</directory>
+        </activity>
+      </activities>
+      <sections>
+        <section>
+          <sectionid>{{SECTION_ID}}</sectionid>
+          <title>0</title>
+          <directory>sections/section_{{SECTION_ID}}</directory>
+        </section>
+      </sections>
+      <course>
+        <courseid>{{COURSE_ID}}</courseid>
+        <title>{{COURSE_SHORTNAME}}</title>
+        <directory>course</directory>
+      </course>
+    </contents>
+    <settings>
+      <setting>
+        <level>root</level>
+        <name>filename</name>
+        <value>modele.mbz</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>imscc11</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>users</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>anonymize</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>role_assignments</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>activities</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>blocks</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>files</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>filters</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>comments</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>badges</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>calendarevents</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>userscompletion</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>logs</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>grade_histories</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>questionbank</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>groups</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>competencies</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>customfield</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>contentbankcontent</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>root</level>
+        <name>legacyfiles</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>section</level>
+        <section>section_{{SECTION_ID}}</section>
+        <name>section_{{SECTION_ID}}_included</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>section</level>
+        <section>section_{{SECTION_ID}}</section>
+        <name>section_{{SECTION_ID}}_userinfo</name>
+        <value>0</value>
+      </setting>
+      <setting>
+        <level>activity</level>
+        <activity>${moduleName}_{{MODULE_ID}}</activity>
+        <name>${moduleName}_{{MODULE_ID}}_included</name>
+        <value>1</value>
+      </setting>
+      <setting>
+        <level>activity</level>
+        <activity>${moduleName}_{{MODULE_ID}}</activity>
+        <name>${moduleName}_{{MODULE_ID}}_userinfo</name>
+        <value>0</value>
+      </setting>
+    </settings>
+  </information>
+</moodle_backup>`;
+
+    return replacePlaceholders(template, data);
+}

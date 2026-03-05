@@ -1,0 +1,47 @@
+{
+  "title": "Évaluation – La fonction racine carrée",
+  "description": "Cette évaluation porte sur la fonction racine carrée f définie par f(x) = √x. Tu seras évalué(e) sur ta capacité à déterminer son domaine de définition, à tracer et lire sa représentation graphique, à calculer des images et des antécédents, à décrire ses variations, et à résoudre des équations ou inéquations associées. Lis chaque question attentivement et pense à justifier tes réponses.",
+  "rubricName": "Grille d'évaluation – Fonction racine carrée (Seconde)",
+  "criteria": [
+    {
+      "description": "Domaine de définition",
+      "levels": [
+        { "score": 0, "definition": "L'élève ne reconnaît pas la contrainte sur x, ou donne un domaine incorrect (par exemple ℝ entier, ou un ensemble vide) sans justification." },
+        { "score": 1, "definition": "L'élève identifie que x doit être positif ou nul, mais la notation du domaine est incorrecte ou la justification (condition x ≥ 0 liée à la racine) est absente." },
+        { "score": 2, "definition": "L'élève détermine et écrit correctement le domaine de définition [0 ; +∞[, en justifiant explicitement que la condition x ≥ 0 est nécessaire pour que √x soit défini dans ℝ." }
+      ]
+    },
+    {
+      "description": "Représentation graphique et lecture de courbe",
+      "levels": [
+        { "score": 0, "definition": "L'élève ne place pas de points corrects ou donne une courbe d'allure erronée (droite, courbe décroissante, parabole, etc.)." },
+        { "score": 1, "definition": "L'élève place correctement au moins deux points caractéristiques (ex. : (0 ; 0), (1 ; 1), (4 ; 2)), mais l'allure de la courbe reste imprécise, incomplète ou ne passe pas par l'ensemble des points tracés." },
+        { "score": 2, "definition": "L'élève trace une courbe correcte sur [0 ; +∞[, avec au moins quatre points bien placés, une allure croissante et concave (courbure vers le bas) conforme à la fonction racine carrée." }
+      ]
+    },
+    {
+      "description": "Calcul d'images et d'antécédents",
+      "levels": [
+        { "score": 0, "definition": "L'élève ne parvient pas à calculer une image ou un antécédent, ou confond systématiquement les deux notions (ex. : cherche f(a) = x au lieu de résoudre √x = a)." },
+        { "score": 1, "definition": "L'élève calcule correctement des images simples (ex. : f(9) = 3), mais commet des erreurs lors de la recherche d'antécédents (oubli de la mise au carré, ou solution non vérifiée par rapport au domaine)." },
+        { "score": 2, "definition": "L'élève calcule correctement des images et des antécédents : il formule l'équation √x = a, la résout en x = a² en vérifiant a ≥ 0, et vérifie que la solution appartient au domaine de définition." }
+      ]
+    },
+    {
+      "description": "Sens de variation et tableau de variations",
+      "levels": [
+        { "score": 0, "definition": "L'élève n'indique pas de sens de variation, ou donne un sens incorrect (ex. : décroissante, ou non monotone) sans tentative de justification." },
+        { "score": 1, "definition": "L'élève affirme que la fonction est croissante mais sans préciser l'intervalle, sans dresser un tableau de variations correct, ou sans être en mesure d'utiliser cette propriété pour comparer deux valeurs." },
+        { "score": 2, "definition": "L'élève dresse un tableau de variations complet et correct (croissante sur [0 ; +∞[, f(0) = 0, tendant vers +∞), et mobilise cette propriété pour comparer des valeurs ou justifier qu'un minimum est atteint en 0." }
+      ]
+    },
+    {
+      "description": "Résolution d'équations ou d'inéquations impliquant la racine carrée",
+      "levels": [
+        { "score": 0, "definition": "L'élève ne met pas en place de méthode de résolution, ou commet une erreur fondamentale rendant la démarche invalide (ex. : conclut √x = a ⟹ x = a sans mise au carré, ou ignore la condition de validité)." },
+        { "score": 1, "definition": "L'élève applique partiellement la méthode : il met correctement au carré ou utilise la monotonie, mais oublie de vérifier la condition a ≥ 0 ou ne contrôle pas que la solution appartient au domaine de définition." },
+        { "score": 2, "definition": "L'élève résout correctement l'équation ou l'inéquation en posant explicitement la condition de validité, en appliquant la méthode appropriée (mise au carré avec étude des cas, ou monotonie de la fonction), et en vérifiant la solution obtenue." }
+      ]
+    }
+  ]
+}

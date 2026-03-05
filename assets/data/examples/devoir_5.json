@@ -1,0 +1,38 @@
+{
+  "title": "Compte-rendu de TP – Observation microscopique en SVT",
+  "description": "Réalisez l'observation d'une préparation microscopique et rédigez un compte-rendu complet. Vous serez évalué(e) sur la qualité de votre démarche scientifique, de vos schémas et de votre rédaction.",
+  "rubricName": "Grille d'évaluation – Compte-rendu TP Microscope (4ème)",
+  "criteria": [
+    {
+      "description": "Qualité de l'observation et prise de notes",
+      "levels": [
+        { "score": 0, "definition": "L'élève ne parvient pas à décrire ce qu'il observe ou les notes sont absentes. Aucun élément de la préparation n'est identifié." },
+        { "score": 1, "definition": "L'élève décrit partiellement l'observation avec quelques éléments corrects, mais des structures importantes sont omises ou confondues." },
+        { "score": 2, "definition": "L'élève décrit précisément et complètement les éléments observés, en utilisant un vocabulaire scientifique adapté et en citant les structures identifiées." }
+      ]
+    },
+    {
+      "description": "Précision et légende du schéma",
+      "levels": [
+        { "score": 0, "definition": "Le schéma est absent, illisible ou ne représente pas la préparation observée. Aucune légende n'est présente." },
+        { "score": 1, "definition": "Le schéma représente correctement la préparation mais la légende est incomplète ou contient des erreurs de dénomination." },
+        { "score": 2, "definition": "Le schéma est soigné, à l'échelle, avec un titre, une légende complète et des flèches qui pointent précisément les structures identifiées." }
+      ]
+    },
+    {
+      "description": "Rédaction de la conclusion scientifique",
+      "levels": [
+        { "score": 0, "definition": "La conclusion est absente ou hors sujet. L'élève ne relie pas ses observations à la notion étudiée en cours." },
+        { "score": 2, "definition": "La conclusion est rédigée en phrases complètes, répond à la problématique posée et fait le lien explicite avec les notions du cours." }
+      ]
+    },
+    {
+      "description": "Respect du protocole et de la sécurité",
+      "levels": [
+        { "score": 0, "definition": "L'élève ne respecte pas les consignes de sécurité ou manipule le matériel de façon dangereuse ou incorrecte." },
+        { "score": 1, "definition": "L'élève respecte globalement le protocole mais commet quelques erreurs de manipulation (réglage du microscope, dépôt de la lamelle) sans mettre en danger le matériel." },
+        { "score": 2, "definition": "L'élève suit scrupuleusement le protocole étape par étape, manipule le microscope avec soin et range le matériel proprement en fin de séance." }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "title": "La Révolution française - Quiz de révision (3e)",
+  "questions": [
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Début de la Révolution - QCM" },
+      "params": {
+        "question": "En quelle année la Révolution française commence-t-elle ?",
+        "answers": [
+          { "text": "1789", "correct": true },
+          { "text": "1792", "correct": false },
+          { "text": "1776", "correct": false },
+          { "text": "1804", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 0, "feedback": "Très mauvais. Revois les dates clés du début de la Révolution." },
+          { "from": 1, "to": 39, "feedback": "Insuffisant. Tu as besoin de consolider tes connaissances chronologiques." },
+          { "from": 40, "to": 59, "feedback": "Moyen. Continue à travailler, la date exacte se rapproche." },
+          { "from": 60, "to": 79, "feedback": "Bien. Tu es sur la bonne voie, garde le cap." },
+          { "from": 80, "to": 99, "feedback": "Très bien. Tu maîtrises la chronologie principale." },
+          { "from": 100, "to": 100, "feedback": "Excellent ! Tu connais parfaitement la date du déclencheur de la Révolution." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.TrueFalse 1.8",
+      "metadata": { "title": "Prise de la Bastille - Vrai/Faux" },
+      "params": {
+        "question": "La prise de la Bastille a eu lieu le 14 juillet 1790.",
+        "correct": "false"
+      }
+    },
+    {
+      "library": "H5P.Blanks 1.14",
+      "metadata": { "title": "Les acteurs majeurs - Mots à trous" },
+      "params": {
+        "taskDescription": "Complète les phrases avec les mots manquants.",
+        "questions": [
+          "*Louis XVI* était le *roi* de *France* en *1789*.",
+          "L'*Assemblée nationale* a été constituée le *17 juin 1789*."
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 0, "feedback": "Aucun point. Reprends les noms des personnages et institutions." },
+          { "from": 1, "to": 39, "feedback": "Très faible. Il faut mieux connaître les acteurs de 1789." },
+          { "from": 40, "to": 59, "feedback": "Passable. Tu t’en rapproches, continue d’étudier les fiches." },
+          { "from": 60, "to": 79, "feedback": "Correct. Tu as une bonne maîtrise des notions clés." },
+          { "from": 80, "to": 99, "feedback": "Très bon. Tu identifies très bien les éléments essentiels." },
+          { "from": 100, "to": 100, "feedback": "Parfait ! Tous les mots sont correctement remplis." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.DragText 1.10",
+      "metadata": { "title": "Événements clés - Glisser‑déposer" },
+      "params": {
+        "taskDescription": "Déplace les mots entre les astérisques (*) vers les bons emplacements dans le texte.",
+        "textField": "Le 14 juillet *Bastille* a été prise. Le même jour, l'*Assemblée nationale* se proclame souveraine.",
+        "overallFeedback": [
+          { "from": 0, "to": 0, "feedback": "Tu n’as déplacé aucune réponse correcte. Relis les dates et événements." },
+          { "from": 1, "to": 39, "feedback": "Résultat très faible. Révise les faits majeurs de 1789‑1791." },
+          { "from": 40, "to": 59, "feedback": "Moyen. Tu connais les principaux événements mais certaines associations manquent." },
+          { "from": 60, "to": 79, "feedback": "Bien. La plupart des éléments sont correctement placés." },
+          { "from": 80, "to": 99, "feedback": "Très bien. Tu as presque tout juste." },
+          { "from": 100, "to": 100, "feedback": "Excellent ! Toutes les associations sont correctes." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MarkTheWords 1.11",
+      "metadata": { "title": "Institutions révolutionnaires - Surligner" },
+      "params": {
+        "taskDescription": "Surligne les noms des institutions créées pendant la Révolution française.",
+        "textField": "Parmi les nouvelles institutions, on retrouve l’Assemblée *nationale*, la Convention *nationale*, le *Directoire* et le Comité de salut *public*.",
+        "overallFeedback": [
+          { "from": 0, "to": 0, "feedback": "Aucun mot correctement surligné. Revois les organes politiques de la Révolution." },
+          { "from": 1, "to": 39, "feedback": "Faible. Tu dois différencier les différentes instances." },
+          { "from": 40, "to": 59, "feedback": "Passable. Certains termes sont corrects, d'autres manquent." },
+          { "from": 60, "to": 79, "feedback": "Correct. La majorité des institutions sont bien identifiées." },
+          { "from": 80, "to": 99, "feedback": "Très bon. Tu as reconnu presque toutes les institutions." },
+          { "from": 100, "to": 100, "feedback": "Parfait ! Toutes les institutions sont correctement surlignées." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.Essay 1.5",
+      "metadata": { "title": "Causes de la Révolution - Question ouverte" },
+      "params": {
+        "taskDescription": "En 150 mots maximum, explique les principales causes de la Révolution française en 1789.",
+        "keywords": [
+          { "keyword": "crise financière", "options": { "points": 1, "caseSensitive": false } },
+          { "keyword": "inégalités sociales", "options": { "points": 1, "caseSensitive": false } },
+          { "keyword": "influence des Lumières", "options": { "points": 1, "caseSensitive": false } },
+          { "keyword": "mauvaise récolte", "options": { "points": 1, "caseSensitive": false } },
+          { "keyword": "monarchie absolue", "options": { "points": 1, "caseSensitive": false } }
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 0, "feedback": "Aucune réponse fournie. Réfléchis aux éléments clés du contexte." },
+          { "from": 1, "to": 39, "feedback": "Réponse très insuffisante. Il manque la plupart des causes majeures." },
+          { "from": 40, "to": 59, "feedback": "Réponse moyenne. Tu as mentionné quelques causes mais sans les articuler." },
+          { "from": 60, "to": 79, "feedback": "Bonne réponse. Tu identifies les principaux facteurs de la Révolution." },
+          { "from": 80, "to": 99, "feedback": "Très bonne réponse. Tu as présenté les causes de façon claire et concise." },
+          { "from": 100, "to": 100, "feedback": "Excellente réponse ! Tu as parfaitement intégré les différents éléments causaux." }
+        ]
+      }
+    }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "Résultat très faible. Tu dois revoir l’ensemble du chapitre." },
+    { "from": 11, "to": 30, "feedback": "Résultat insuffisant. Un travail supplémentaire est nécessaire." },
+    { "from": 31, "to": 50, "feedback": "Résultat moyen. Tu as des bases, mais il faut consolider tes connaissances." },
+    { "from": 51, "to": 70, "feedback": "Bon résultat. Continue ainsi pour atteindre la maîtrise." },
+    { "from": 71, "to": 90, "feedback": "Très bon résultat. Tu maîtrises bien le sujet." },
+    { "from": 91, "to": 100, "feedback": "Excellent résultat ! Tu as une compréhension approfondie de la Révolution française." }
+  ]
+}

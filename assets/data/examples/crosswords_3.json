@@ -1,0 +1,19 @@
+{
+  "title": "Vocabulaire mathématique - Fonctions",
+  "words": [
+    {"answer": "Racine carrée", "clue": "Opération inverse de l'élévation au carré. Notée \\(\\sqrt{x}\\).", "extraClue": {"params": {"text": "Par exemple, \\(\\sqrt{9} = 3\\)."}}},
+    {"answer": "Valeur absolue", "clue": "Distance d'un nombre à zéro sur la droite numérique.", "extraClue": {"params": {"text": "On la note \\(|x|\\). Par exemple, \\(|-5| = 5\\)."}}},
+    {"answer": "Dérivée", "clue": "Mesure le taux de variation instantané d'une fonction.", "extraClue": {"params": {"text": "La dérivée de \\(x^2\\) est \\(2x\\)."}}},
+    {"answer": "Cosinus", "clue": "Rapport du côté adjacent sur l'hypoténuse.", "extraClue": {"params": {"text": "Dans un triangle rectangle, \\(\\cos(\\theta) = \\frac{adjacent}{hypotenuse}\\)."}}},
+    {"answer": "Nombre premier", "clue": "Entier naturel supérieur à 1, divisible uniquement par 1 et lui-même.", "extraClue": {"params": {"text": "2, 3, 5, 7, 11 sont les premiers **nombres premiers**."}}},
+    {"answer": "\\(\\pi\\)", "clue": "Constante égale au rapport de la circonférence d'un cercle par son diamètre.", "extraClue": {"params": {"text": "Sa valeur approchée est \\(3{,}14159\\)."}}},
+    {"answer": "Équation", "clue": "Égalité contenant une ou plusieurs inconnues à déterminer.", "extraClue": {"params": {"text": "Par exemple : \\(2x + 3 = 7\\)."}}}
+  ],
+  "taskDescription": "Retrouvez le vocabulaire mathématique lié aux **fonctions** et à l'**analyse**.\nPour les mots composés, ne mettez ni espace ni tiret.",
+  "overallFeedback": [
+    {"from": 0, "to": 30, "feedback": "Revoyez les définitions de base en mathématiques."},
+    {"from": 31, "to": 60, "feedback": "Bon début ! Continuez à réviser le vocabulaire."},
+    {"from": 61, "to": 90, "feedback": "Très bien ! Vous maîtrisez la plupart des termes."},
+    {"from": 91, "to": 100, "feedback": "Excellent ! Parfaite maîtrise du vocabulaire mathématique."}
+  ]
+}

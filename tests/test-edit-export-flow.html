@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <title>Tests Pipeline Caramel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; padding: 24px; color: #1a1a2e; }
+        h1 { font-size: 1.5rem; margin-bottom: 8px; }
+        .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+
+        /* === Barre de resume globale === */
+        .global-summary {
+            display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+        }
+        .global-summary__card {
+            padding: 14px 24px; border-radius: 10px; font-weight: 700; font-size: 1.3rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-width: 120px; text-align: center;
+        }
+        .global-summary__card small { display: block; font-size: 0.7rem; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+        .card--pass { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; }
+        .card--fail { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: #721c24; }
+        .card--total { background: linear-gradient(135deg, #d1ecf1, #bee5eb); color: #0c5460; }
+        .card--files { background: linear-gradient(135deg, #e2e3e5, #d6d8db); color: #383d41; }
+
+        /* === Description pliable === */
+        .info-box {
+            background: #fff; padding: 14px 18px; border-radius: 10px; margin-bottom: 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06); font-size: 0.82rem; line-height: 1.6; color: #444;
+        }
+        .info-box summary { cursor: pointer; font-weight: 600; color: #1a1a2e; font-size: 0.9rem; }
+        .info-box ol { margin: 8px 0 0 22px; }
+        .info-box code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 0.8rem; }
+
+        /* === Tabs === */
+        .tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 2px solid #ddd; padding-bottom: 0; }
+        .tab {
+            padding: 10px 20px; cursor: pointer; border-radius: 8px 8px 0 0;
+            font-weight: 600; font-size: 0.85rem; background: #e9ecef; color: #666;
+            border: 1px solid transparent; border-bottom: none; position: relative; top: 2px;
+        }
+        .tab:hover { background: #f8f9fa; color: #333; }
+        .tab--active { background: #fff; color: #1a1a2e; border-color: #ddd; border-bottom: 2px solid #fff; }
+        .tab-panel { display: none; }
+        .tab-panel--active { display: block; }
+
+        /* === Tableau synthese par activite === */
+        .summary-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px; }
+        .summary-table th { background: #1a1a2e; color: #fff; padding: 10px 14px; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .summary-table td { padding: 8px 14px; border-bottom: 1px solid #f0f0f0; font-size: 0.82rem; }
+        .summary-table tr:last-child td { border-bottom: none; }
+        .summary-table tr:hover { background: #f8f9fa; }
+        .summary-table .cell--pass { color: #155724; font-weight: 600; }
+        .summary-table .cell--fail { color: #721c24; font-weight: 700; background: #fff5f5; }
+        .summary-table .cell--perfect { color: #155724; }
+        .badge-source { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
+        .badge-source--h5p { background: #dbeafe; color: #1e40af; }
+        .badge-source--moodle { background: #fef3c7; color: #92400e; }
+        .badge-source--moodle_xml { background: #ede9fe; color: #5b21b6; }
+
+        /* === Synthese par etape === */
+        .step-bar { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+        .step-card {
+            flex: 1; min-width: 130px; padding: 10px 14px; border-radius: 8px;
+            background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.06); text-align: center;
+        }
+        .step-card__name { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 4px; }
+        .step-card__count { font-size: 1.1rem; font-weight: 700; }
+        .step-card--ok { border-left: 3px solid #28a745; }
+        .step-card--ko { border-left: 3px solid #dc3545; }
+
+        /* === Filtres === */
+        .filter-bar { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+        .filter-bar__label { font-size: 0.75rem; color: #888; font-weight: 600; text-transform: uppercase; margin-right: 4px; }
+        .filter-btn {
+            padding: 5px 12px; border: 1px solid #ddd; border-radius: 6px;
+            background: #fff; cursor: pointer; font-size: 0.8rem; transition: all 0.15s;
+        }
+        .filter-btn:hover { background: #f0f0f0; }
+        .filter-btn--active { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
+        .filter-btn--fail-only { background: #dc3545; color: #fff; border-color: #dc3545; }
+
+        /* === Resultats detailles === */
+        .results { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
+        .result {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 7px 14px; border-bottom: 1px solid #f5f5f5; font-size: 0.82rem;
+        }
+        .result:last-child { border-bottom: none; }
+        .result__badge {
+            display: inline-block; padding: 2px 7px; border-radius: 4px;
+            font-weight: 700; font-size: 0.7rem; min-width: 38px; text-align: center; flex-shrink: 0;
+        }
+        .result__badge--pass { background: #d4edda; color: #155724; }
+        .result__badge--fail { background: #f8d7da; color: #721c24; }
+        .result__step { font-size: 0.65rem; color: #888; min-width: 72px; flex-shrink: 0; padding-top: 3px; }
+        .result--fail { background: #fff5f5; }
+
+        /* === Diagnostic === */
+        .diagnostic {
+            margin-top: 6px; padding: 10px; background: #1e1e2e; color: #cdd6f4;
+            border-radius: 6px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.72rem; line-height: 1.5; overflow-x: auto;
+        }
+        .diagnostic summary { color: #cba6f7; font-weight: 600; cursor: pointer; margin-bottom: 6px; }
+        .diagnostic .diag-section { margin-bottom: 6px; }
+        .diagnostic .diag-label { color: #89b4fa; font-weight: 600; }
+        .diagnostic .diag-missing { color: #f38ba8; }
+        .diagnostic pre { white-space: pre-wrap; word-break: break-word; max-height: 250px; overflow-y: auto; background: #11111b; padding: 8px; border-radius: 4px; margin-top: 4px; }
+        .diagnostic .copy-btn { background: #313244; color: #cdd6f4; border: 1px solid #45475a; border-radius: 4px; padding: 2px 8px; cursor: pointer; font-size: 0.65rem; margin-left: 6px; }
+        .diagnostic .copy-btn:hover { background: #45475a; }
+
+        /* === Prompt IA === */
+        .ai-prompt-section {
+            margin-top: 24px; background: #fff; border-radius: 10px; padding: 18px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .ai-prompt-section summary {
+            cursor: pointer; font-weight: 700; font-size: 1rem; color: #1a1a2e;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .ai-prompt-section summary .ai-icon { font-size: 1.2rem; }
+        .ai-prompt-box {
+            margin-top: 12px; background: #1e1e2e; color: #cdd6f4; padding: 16px;
+            border-radius: 8px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.75rem; line-height: 1.6; white-space: pre-wrap; word-break: break-word;
+            max-height: 600px; overflow-y: auto; position: relative;
+        }
+        .ai-prompt-copy {
+            position: sticky; top: 0; float: right; background: #89b4fa; color: #1e1e2e;
+            border: none; border-radius: 6px; padding: 6px 14px; cursor: pointer;
+            font-weight: 700; font-size: 0.75rem; z-index: 1;
+        }
+        .ai-prompt-copy:hover { background: #74c7ec; }
+        .ai-prompt-none { color: #28a745; font-weight: 600; padding: 20px; text-align: center; font-size: 0.95rem; }
+
+        /* === Bouton ZIP === */
+        .zip-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 24px; border: none; border-radius: 10px; cursor: pointer;
+            font-weight: 700; font-size: 0.9rem; color: #fff;
+            background: linear-gradient(135deg, #5b2e90, #1f4fff);
+            box-shadow: 0 2px 8px rgba(31,79,255,0.3); transition: all 0.2s;
+        }
+        .zip-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(31,79,255,0.4); }
+        .zip-btn:active { transform: translateY(0); }
+        .zip-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .zip-btn__icon { font-size: 1.1rem; }
+
+        /* === Loading === */
+        .loading { text-align: center; padding: 60px; color: #666; }
+        .loading__spinner { display: inline-block; width: 36px; height: 36px; border: 3px solid #ddd; border-top-color: #1a1a2e; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <h1>Tests pipeline complet Caramel</h1>
+    <p class="subtitle">JSON brut IA &rarr; Healer &rarr; Processeur &rarr; Math pre-edit &rarr; Editeur &rarr; Sauvegarde &rarr; Re-export &rarr; Math post-edit</p>
+
+    <details class="info-box">
+        <summary>Comment ca marche ?</summary>
+        <p style="margin-top:8px;"><strong>Objectif :</strong> Tester le pipeline complet de bout en bout. Le JSON brut genere par l'IA traverse 8 etapes, chacune verifiee individuellement.</p>
+        <ol style="margin-top:8px;">
+            <li><strong>Chargement</strong> &mdash; Lecture du fichier JSON brut depuis <code>assets/data/examples/</code>.</li>
+            <li><strong>Healer</strong> &mdash; healJsonString &rarr; parse &rarr; healJsonObject &rarr; healActivitySpecificFields &rarr; healStructureForActivity + detection + schema.</li>
+            <li><strong>Generation</strong> &mdash; Processeurs H5P / Moodle + creation et relecture du blob ZIP/MBZ + verification LaTeX et structure.</li>
+            <li><strong>Math pre-edit</strong> &mdash; Tests synthetiques + exemples existants : verifie l'encodage math <strong>avant</strong> l'editeur. Detecte double-echappement, verifie MathJax/Unicode.</li>
+            <li><strong>Edition</strong> &mdash; normalizeDataForEditor + simulation modification utilisateur (marqueur <code>__EDITED_BY_TEST__</code>).</li>
+            <li><strong>Sauvegarde</strong> &mdash; denormalizeDataForSave + verification marqueur + textes originaux preserves + LaTeX.</li>
+            <li><strong>Re-export</strong> &mdash; Re-heal + re-processing + nouveau blob. Marqueur, structure, LaTeX verifies.</li>
+            <li><strong>Math post-edit</strong> &mdash; Verifie que les formules survivent au round-trip complet (edit &rarr; save &rarr; re-export). Comparaison pre/post.</li>
+        </ol>
+        <p style="margin-top:8px;"><strong>Donnees :</strong> fichiers JSON de <code>assets/data/examples/</code>. Pour ajouter un type, ajouter une entree dans <code>testCases</code> de <code>tests/test-edit-export-flow.js</code>.</p>
+    </details>
+
+    <div id="output">
+        <div class="loading">
+            <div class="loading__spinner"></div>
+            <p style="margin-top:14px">Execution des tests en cours...</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { runAllTests, downloadMasterZip, getGeneratedFilesCount, MATH_REFERENCE } from './tests/test-edit-export-flow.js';
+
+        const output = document.getElementById('output');
+        const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+        try {
+            const { passCount, failCount, skipCount, results, testCases, STEP_NAMES, generatedFilesCount } = await runAllTests();
+            const totalCount = passCount + failCount + skipCount;
+
+            // ================================================================
+            // 1. RESUME GLOBAL
+            // ================================================================
+            let html = `<div class="global-summary">
+                <div class="global-summary__card card--pass">${passCount}<small>PASS</small></div>
+                <div class="global-summary__card card--fail">${failCount}<small>FAIL</small></div>
+                <div class="global-summary__card card--total">${totalCount}<small>assertions</small></div>
+                <div class="global-summary__card card--files">${testCases.length}<small>fichiers</small></div>
+                <button class="zip-btn" id="download-zip-btn" ${generatedFilesCount === 0 ? 'disabled' : ''}>
+                    <span class="zip-btn__icon">&#128230;</span>
+                    Telecharger ZIP (${generatedFilesCount} fichiers)
+                </button>
+            </div>`;
+
+            // ================================================================
+            // 2. SYNTHESE PAR ETAPE
+            // ================================================================
+            const stepCount = STEP_NAMES.length - 1; // Nombre d'etapes (index 0 inutilise)
+            html += `<div class="step-bar">`;
+            for (let s = 1; s <= stepCount; s++) {
+                const stepResults = results.filter(r => r.step === s);
+                const stepPass = stepResults.filter(r => r.status === 'PASS').length;
+                const stepFail = stepResults.filter(r => r.status === 'FAIL').length;
+                const hasFailures = stepFail > 0;
+                html += `<div class="step-card ${hasFailures ? 'step-card--ko' : 'step-card--ok'}">
+                    <div class="step-card__name">${s}. ${esc(STEP_NAMES[s])}</div>
+                    <div class="step-card__count ${hasFailures ? 'cell--fail' : 'cell--pass'}">${stepPass}/${stepPass + stepFail}</div>
+                </div>`;
+            }
+            html += `</div>`;
+
+            // ================================================================
+            // 3. TABS
+            // ================================================================
+            html += `<div class="tabs">
+                <div class="tab tab--active" data-tab="by-activity">Par activite</div>
+                <div class="tab" data-tab="by-detail">Detail complet</div>
+                <div class="tab" data-tab="by-math-ref">Reference Math</div>
+                <div class="tab" data-tab="by-ai">Prompt IA</div>
+            </div>`;
+
+            // ================================================================
+            // TAB 1 : SYNTHESE PAR ACTIVITE
+            // ================================================================
+            // Grouper par module
+            const moduleMap = new Map();
+            for (const tc of testCases) {
+                if (!moduleMap.has(tc.expectedModule)) {
+                    moduleMap.set(tc.expectedModule, { source: tc.source, files: [] });
+                }
+                moduleMap.get(tc.expectedModule).files.push(tc.file);
+            }
+
+            html += `<div class="tab-panel tab-panel--active" id="panel-by-activity">`;
+            html += `<table class="summary-table">
+                <thead><tr>
+                    <th>Type d'activite</th><th>Source</th><th>Fichiers</th>`;
+            for (let s = 1; s <= stepCount; s++) {
+                html += `<th>${s}. ${esc(STEP_NAMES[s])}</th>`;
+            }
+            html += `<th>Total</th>
+                </tr></thead><tbody>`;
+
+            for (const [mod, info] of moduleMap) {
+                const modResults = results.filter(r => r.module === mod);
+                const modPass = modResults.filter(r => r.status === 'PASS').length;
+                const modFail = modResults.filter(r => r.status === 'FAIL').length;
+                const modTotal = modPass + modFail;
+                const perfect = modFail === 0;
+
+                const sourceBadge = `<span class="badge-source badge-source--${info.source}">${info.source}</span>`;
+
+                let stepCells = '';
+                for (let s = 1; s <= stepCount; s++) {
+                    const sr = modResults.filter(r => r.step === s);
+                    const sp = sr.filter(r => r.status === 'PASS').length;
+                    const sf = sr.filter(r => r.status === 'FAIL').length;
+                    if (sf > 0) {
+                        stepCells += `<td class="cell--fail">${sp}/${sp+sf}</td>`;
+                    } else if (sp > 0) {
+                        stepCells += `<td class="cell--pass">${sp}/${sp+sf}</td>`;
+                    } else {
+                        stepCells += `<td style="color:#ccc;">-</td>`;
+                    }
+                }
+
+                html += `<tr>
+                    <td><strong>${esc(mod)}</strong></td>
+                    <td>${sourceBadge}</td>
+                    <td>${info.files.length}</td>
+                    ${stepCells}
+                    <td class="${perfect ? 'cell--perfect' : 'cell--fail'}"><strong>${modPass}/${modTotal}</strong></td>
+                </tr>`;
+            }
+
+            html += `</tbody></table></div>`;
+
+            // ================================================================
+            // TAB 2 : DETAIL COMPLET (avec filtres)
+            // ================================================================
+            html += `<div class="tab-panel" id="panel-by-detail">`;
+
+            // Filtres
+            html += `<div class="filter-bar">
+                <span class="filter-bar__label">Statut :</span>
+                <button class="filter-btn filter-btn--active" data-filter-status="all">Tous</button>
+                <button class="filter-btn" data-filter-status="FAIL">Echecs uniquement</button>
+                <button class="filter-btn" data-filter-status="PASS">Succes</button>
+            </div>
+            <div class="filter-bar">
+                <span class="filter-bar__label">Etape :</span>
+                <button class="filter-btn filter-btn--active" data-filter-step="all">Toutes</button>`;
+            for (let s = 1; s <= stepCount; s++) {
+                html += `<button class="filter-btn" data-filter-step="${s}">${s}. ${esc(STEP_NAMES[s])}</button>`;
+            }
+            html += `</div>`;
+
+            // Resultats
+            html += `<div class="results">`;
+            for (const r of results) {
+                const badgeClass = r.status === 'PASS' ? 'pass' : 'fail';
+                const rowClass = r.status === 'FAIL' ? ' result--fail' : '';
+                html += `<div class="result${rowClass}" data-status="${r.status}" data-step="${r.step}" data-module="${esc(r.module)}">
+                    <span class="result__badge result__badge--${badgeClass}">${r.status}</span>
+                    <span class="result__step">${r.step}.${esc(r.stepName)}</span>
+                    <span class="result__msg">${esc(r.message)}${r.diagnostic ? renderDiagnostic(r.diagnostic) : ''}</span>
+                </div>`;
+            }
+            html += `</div></div>`;
+
+            // ================================================================
+            // TAB 3 : REFERENCE MATH
+            // ================================================================
+            html += `<div class="tab-panel" id="panel-by-math-ref">`;
+            html += buildMathReferencePanel();
+            html += `</div>`;
+
+            // ================================================================
+            // TAB 4 : PROMPT IA
+            // ================================================================
+            html += `<div class="tab-panel" id="panel-by-ai">`;
+            html += buildAIPromptSection(results, testCases, STEP_NAMES, moduleMap);
+            html += `</div>`;
+
+            output.innerHTML = html;
+
+            // ================================================================
+            // INTERACTIVITE
+            // ================================================================
+
+            // Tabs
+            output.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    output.querySelectorAll('.tab').forEach(t => t.classList.remove('tab--active'));
+                    output.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('tab-panel--active'));
+                    tab.classList.add('tab--active');
+                    const panel = output.querySelector(`#panel-${tab.dataset.tab}`);
+                    if (panel) panel.classList.add('tab-panel--active');
+                });
+            });
+
+            // Filtres statut
+            output.querySelectorAll('[data-filter-status]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    output.querySelectorAll('[data-filter-status]').forEach(b => b.classList.remove('filter-btn--active'));
+                    btn.classList.add('filter-btn--active');
+                    applyFilters();
+                });
+            });
+
+            // Filtres etape
+            output.querySelectorAll('[data-filter-step]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    output.querySelectorAll('[data-filter-step]').forEach(b => b.classList.remove('filter-btn--active'));
+                    btn.classList.add('filter-btn--active');
+                    applyFilters();
+                });
+            });
+
+            function applyFilters() {
+                const statusFilter = output.querySelector('[data-filter-status].filter-btn--active')?.dataset.filterStatus || 'all';
+                const stepFilter = output.querySelector('[data-filter-step].filter-btn--active')?.dataset.filterStep || 'all';
+                output.querySelectorAll('.result').forEach(row => {
+                    const matchStatus = statusFilter === 'all' || row.dataset.status === statusFilter;
+                    const matchStep = stepFilter === 'all' || row.dataset.step === stepFilter;
+                    row.style.display = (matchStatus && matchStep) ? '' : 'none';
+                });
+            }
+
+            // Boutons copier dans les diagnostics
+            output.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const pre = btn.parentElement.querySelector('pre');
+                    if (pre) {
+                        navigator.clipboard.writeText(pre.textContent).then(() => {
+                            btn.textContent = 'Copie !';
+                            setTimeout(() => btn.textContent = 'Copier', 1500);
+                        });
+                    }
+                });
+            });
+
+            // Bouton telecharger ZIP master
+            const zipBtn = output.querySelector('#download-zip-btn');
+            if (zipBtn) {
+                zipBtn.addEventListener('click', async () => {
+                    zipBtn.disabled = true;
+                    zipBtn.innerHTML = '<span class="zip-btn__icon">&#9203;</span> Generation en cours...';
+                    try {
+                        await downloadMasterZip();
+                        zipBtn.innerHTML = `<span class="zip-btn__icon">&#9989;</span> ZIP telecharge !`;
+                        setTimeout(() => {
+                            zipBtn.innerHTML = `<span class="zip-btn__icon">&#128230;</span> Telecharger ZIP (${generatedFilesCount} fichiers)`;
+                            zipBtn.disabled = false;
+                        }, 3000);
+                    } catch (e) {
+                        zipBtn.innerHTML = `<span class="zip-btn__icon">&#10060;</span> Erreur : ${e.message}`;
+                        zipBtn.disabled = false;
+                    }
+                });
+            }
+
+            // Copier prompt IA
+            const aiCopyBtn = output.querySelector('.ai-prompt-copy');
+            if (aiCopyBtn) {
+                aiCopyBtn.addEventListener('click', () => {
+                    const box = output.querySelector('.ai-prompt-box');
+                    if (box) {
+                        const clone = box.cloneNode(true);
+                        clone.querySelector('button')?.remove();
+                        navigator.clipboard.writeText(clone.textContent).then(() => {
+                            aiCopyBtn.textContent = 'Copie !';
+                            setTimeout(() => aiCopyBtn.textContent = 'Copier le prompt', 1500);
+                        });
+                    }
+                });
+            }
+
+        } catch (e) {
+            output.innerHTML = `<div style="color:red;padding:24px;background:#fff;border-radius:10px;">
+                <h2>Erreur fatale</h2>
+                <pre style="margin-top:12px;white-space:pre-wrap;">${e.message}\n${e.stack}</pre>
+            </div>`;
+        }
+
+        // ================================================================
+        // FONCTIONS AUXILIAIRES
+        // ================================================================
+
+        function renderDiagnostic(diag) {
+            if (!diag) return '';
+            const label = diag.moduleKey ? ' (' + esc(diag.moduleKey) + ')' : '';
+            let h = '<details class="diagnostic"><summary>Diagnostic' + label + '</summary>';
+
+            if (diag.missingValues && diag.missingValues.length) {
+                h += '<div class="diag-section"><span class="diag-label">Valeurs manquantes (' + diag.missingValues.length + ') :</span><button class="copy-btn">Copier</button>';
+                h += '<pre class="diag-missing">' + diag.missingValues.map(v => esc(v)).join('\n') + '</pre></div>';
+            }
+            if (diag.missing && diag.missing.length) {
+                h += '<div class="diag-section"><span class="diag-label">Patterns manquants (' + diag.missing.length + ') :</span><button class="copy-btn">Copier</button>';
+                h += '<pre class="diag-missing">' + diag.missing.map(v => esc(v)).join('\n') + '</pre></div>';
+            }
+            if (diag.issues && diag.issues.length) {
+                h += '<div class="diag-section"><span class="diag-label">Problemes :</span>';
+                h += '<pre class="diag-missing">' + diag.issues.map(v => esc(v)).join('\n') + '</pre></div>';
+            }
+            if (diag.keysOriginal) {
+                h += '<div class="diag-section"><span class="diag-label">Cles original :</span> <span style="color:#a6adc8;">' + esc(diag.keysOriginal.join(', ')) + '</span></div>';
+            }
+            if (diag.keysDenormalized || diag.keysNormalized) {
+                h += '<div class="diag-section"><span class="diag-label">Cles resultat :</span> <span style="color:#a6adc8;">' + esc((diag.keysDenormalized || diag.keysNormalized || []).join(', ')) + '</span></div>';
+            }
+            if (diag.original) {
+                h += '<div class="diag-section"><span class="diag-label">JSON original :</span><button class="copy-btn">Copier</button>';
+                h += '<pre>' + esc(JSON.stringify(diag.original, null, 2)) + '</pre></div>';
+            }
+            const result = diag.denormalized || diag.normalized;
+            if (result) {
+                h += '<div class="diag-section"><span class="diag-label">JSON resultat :</span><button class="copy-btn">Copier</button>';
+                h += '<pre>' + esc(JSON.stringify(result, null, 2)) + '</pre></div>';
+            }
+            h += '</details>';
+            return h;
+        }
+
+        function buildMathReferencePanel() {
+            let h = `<div style="background:#fff;border-radius:10px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,0.06);">`;
+            h += `<h2 style="font-size:1.1rem;margin-bottom:6px;">Reference : encodage des formules mathematiques par type d'activite</h2>`;
+            h += `<p style="font-size:0.82rem;color:#666;margin-bottom:14px;">Ce tableau definit les regles <strong>exactes</strong> d'encodage math attendu pour chaque type. Utilisez-le comme memo pour diagnostiquer les problemes.</p>`;
+
+            // Regles generales
+            h += `<details style="margin-bottom:16px;background:#f8f9fa;padding:12px;border-radius:8px;">`;
+            h += `<summary style="cursor:pointer;font-weight:700;font-size:0.9rem;">Regles generales d'encodage LaTeX</summary>`;
+            h += `<div style="font-size:0.82rem;line-height:1.7;margin-top:8px;">`;
+            h += `<p><strong>1. Delimiteurs MathJax :</strong> Toujours <code>\\(...\\)</code> (inline) ou <code>\\[...\\]</code> (block). Jamais <code>$...$</code> ni <code>$$...$$</code>.</p>`;
+            h += `<p><strong>2. Simple backslash :</strong> Les commandes LaTeX dans une chaine JS doivent avoir un <strong>seul</strong> backslash : <code>\\sqrt{x}</code>, <code>\\frac{a}{b}</code>.</p>`;
+            h += `<p><strong>3. Dans le JSON :</strong> Le JSON echappe les backslashs, donc <code>\\(\\sqrt{x}\\)</code> en JS devient <code>"\\\\(\\\\sqrt{x}\\\\)"</code> dans le JSON.</p>`;
+            h += `<p><strong>4. Double-echappement interdit :</strong> Apres parsing, <code>\\(\\\\sqrt{x}\\)</code> = BUG. Les delimiteurs <code>\\(</code> sont corrects mais la commande <code>\\\\sqrt</code> est double-echappee.</p>`;
+            h += `<p><strong>5. Conversion Unicode :</strong> DragTheWords et MarkTheWords convertissent le LaTeX en caracteres Unicode (<code>\\sqrt{x}</code> &rarr; <code>&radic;(x)</code>). Aucun <code>\\commande</code> ne doit rester.</p>`;
+            h += `<p><strong>6. FindTheWords :</strong> La consigne (<code>taskDescription</code>) supporte MathJax normalement (H5P.MathDisplay). Par contre, la <code>wordList</code> sert a generer une grille de lettres : aucune formule LaTeX, delimiteur <code>\\(...\\)</code>, ni symbole Unicode math (&pi;, &radic;) ne doit s'y trouver.</p>`;
+            h += `<p><strong>7. Pipeline healer :</strong> <code>healJsonString</code> double les backslashs pour reparer le JSON &rarr; <code>normalizeDoubleEscapedLatex</code> doit tout corriger apres parse.</p>`;
+            h += `</div></details>`;
+
+            // Tableau par mode
+            const modes = [
+                { key: 'mathjax', label: 'MathJax (\\(...\\) preserve)', color: '#dbeafe', textColor: '#1e40af', desc: 'Les formules sont preservees telles quelles. H5P.MathDisplay ou MathJax Moodle les rend.' },
+                { key: 'mathjax+wordlist', label: 'MathJax + wordList protegee', color: '#fef3c7', textColor: '#92400e', desc: 'La consigne (taskDescription) supporte MathJax via H5P.MathDisplay. Mais la wordList sert a generer une grille de lettres : aucune formule LaTeX ni symbole Unicode math ne doit s\'y trouver.' },
+                { key: 'mathjax+answer', label: 'MathJax + answers protegees', color: '#fef3c7', textColor: '#92400e', desc: 'Les indices (clue, taskDescription) supportent MathJax via H5P.MathDisplay. Mais les reponses (answer) servent a generer une grille de lettres : aucune formule, aucun symbole math, et aucun espace.' },
+                { key: 'unicode', label: 'Unicode (latexToUnicode)', color: '#dcfce7', textColor: '#166534', desc: 'Le LaTeX est converti en caracteres Unicode. Aucune commande \\xxx ne doit rester dans le resultat final.' },
+                { key: 'no-latex', label: 'Texte brut (pas de LaTeX)', color: '#fee2e2', textColor: '#991b1b', desc: 'Ce type n\'a pas H5P.MathDisplay. Les champs text ne doivent contenir que du texte brut ou Unicode, aucun LaTeX ni delimiteur \\(...\\).' },
+                { key: 'none', label: 'Pas de math', color: '#f3f4f6', textColor: '#6b7280', desc: 'Ce type ne gere pas les formules mathematiques.' }
+            ];
+
+            for (const mode of modes) {
+                const refs = MATH_REFERENCE.filter(r => r.mathMode === mode.key);
+                if (refs.length === 0) continue;
+
+                h += `<div style="margin-bottom:20px;">`;
+                h += `<h3 style="font-size:0.95rem;margin-bottom:8px;"><span style="display:inline-block;padding:2px 10px;border-radius:4px;background:${mode.color};color:${mode.textColor};font-size:0.75rem;font-weight:700;margin-right:8px;">${esc(mode.key).toUpperCase()}</span>${esc(mode.label)}</h3>`;
+                h += `<p style="font-size:0.78rem;color:#666;margin-bottom:8px;">${esc(mode.desc)}</p>`;
+
+                h += `<table class="summary-table"><thead><tr>`;
+                h += `<th>Type</th><th>Source</th><th>Description</th><th>Exemple (chaine JS)</th><th>Rendu attendu</th>`;
+                const showForbidden = (mode.key === 'unicode' || mode.key === 'mathjax+wordlist' || mode.key === 'mathjax+answer' || mode.key === 'no-latex');
+                if (showForbidden) h += `<th>Interdit</th>`;
+                h += `</tr></thead><tbody>`;
+
+                for (const ref of refs) {
+                    const sourceBadge = `<span class="badge-source badge-source--${ref.source}">${ref.source}</span>`;
+                    h += `<tr>`;
+                    h += `<td><strong>${esc(ref.moduleKey)}</strong></td>`;
+                    h += `<td>${sourceBadge}</td>`;
+                    h += `<td style="font-size:0.78rem;">${esc(ref.description)}</td>`;
+                    h += `<td><code style="font-size:0.72rem;background:#1e1e2e;color:#cdd6f4;padding:2px 6px;border-radius:3px;">${esc(ref.example)}</code></td>`;
+                    h += `<td style="font-size:0.78rem;">${esc(ref.rendered)}</td>`;
+                    if (showForbidden) h += `<td style="color:#dc3545;font-size:0.75rem;font-weight:600;">${esc(ref.forbidden || '')}</td>`;
+                    h += `</tr>`;
+                }
+                h += `</tbody></table></div>`;
+            }
+
+            // Cas pathologiques
+            h += `<details style="margin-top:16px;background:#fff5f5;padding:12px;border-radius:8px;border:1px solid #f5c6cb;">`;
+            h += `<summary style="cursor:pointer;font-weight:700;font-size:0.9rem;color:#721c24;">Cas pathologiques courants (erreurs IA)</summary>`;
+            h += `<table class="summary-table" style="margin-top:8px;"><thead><tr>`;
+            h += `<th>Probleme</th><th>Exemple brut IA</th><th>Correction attendue</th><th>Healer responsable</th>`;
+            h += `</tr></thead><tbody>`;
+            const pathCases = [
+                { problem: 'Delimiteurs $ au lieu de \\(...\\)', raw: '$\\sqrt{4}=2$', fix: '\\(\\sqrt{4}=2\\)', healer: 'convertLatexDelimitersDeep' },
+                { problem: 'LaTeX nu sans delimiteurs', raw: 'Calculer \\sqrt{9}', fix: 'Calculer \\(\\sqrt{9}\\)', healer: 'autoWrapLatex' },
+                { problem: 'Double-echappement \\\\sqrt dans \\(...\\)', raw: '\\(\\\\sqrt{x}\\)', fix: '\\(\\sqrt{x}\\)', healer: 'normalizeDoubleEscapedLatex (cas 2)' },
+                { problem: 'Delimiteurs double-echappes \\\\(', raw: '\\\\(\\sqrt{x}\\\\)', fix: '\\(\\sqrt{x}\\)', healer: 'normalizeDoubleEscapedLatex (cas 1)' },
+                { problem: 'Melange $ et \\(...\\)', raw: '$\\frac{1}{2}$ et \\(\\pi\\)', fix: '\\(\\frac{1}{2}\\) et \\(\\pi\\)', healer: 'convertLatexDelimitersDeep' },
+                { problem: 'Triple echappement', raw: '\\\\\\(\\\\\\sqrt{x}\\\\\\)', fix: '\\(\\sqrt{x}\\)', healer: 'normalizeDoubleEscapedLatex (recursif)' },
+                { problem: 'Crossword answer = formule LaTeX', raw: 'answer: "\\(\\pi\\)"', fix: 'answer: "PI"', healer: 'healStructureForActivity (Crossword)' },
+                { problem: 'Crossword answer avec espaces', raw: 'answer: "Racine carree"', fix: 'answer: "Racinecarree"', healer: 'healStructureForActivity (Crossword)' },
+                { problem: 'Chart text avec LaTeX', raw: 'text: "\\(\\sqrt{x}\\)"', fix: 'text: "\\u221A(x)"', healer: 'healActivitySpecificFields (Chart)' },
+                { problem: '\\begin{equation} (ChatGPT)', raw: '\\begin{equation}\\sqrt{x}\\end{equation}', fix: '\\[\\sqrt{x}\\]', healer: 'convertLatexEnvironmentsDeep' },
+                { problem: '\\begin{align} (ChatGPT)', raw: '\\begin{align}a^2+b^2\\end{align}', fix: '\\[a^2+b^2\\]', healer: 'convertLatexEnvironmentsDeep' },
+                { problem: '\\begin{math} (inline)', raw: '\\begin{math}\\cos(x)\\end{math}', fix: '\\(\\cos(x)\\)', healer: 'convertLatexEnvironmentsDeep' },
+                { problem: '\\displaystyle inutile', raw: '\\(\\displaystyle\\frac{1}{2}\\)', fix: '\\(\\frac{1}{2}\\)', healer: 'stripDisplaystyleDeep' },
+                { problem: 'Entites HTML dans LaTeX', raw: '\\(x &gt; 0\\)', fix: '\\(x > 0\\)', healer: 'fixHtmlEntitiesInLatexDeep' },
+                { problem: 'Delimiteur mixte \\( ... $', raw: '\\(\\sqrt{16}$', fix: '\\(\\sqrt{16}\\)', healer: 'fixMixedDelimitersDeep' },
+                { problem: 'Bloc LaTeX vide', raw: '\\(\\) texte', fix: 'texte', healer: 'fixMixedDelimitersDeep' },
+            ];
+            for (const pc of pathCases) {
+                h += `<tr>`;
+                h += `<td style="font-weight:600;">${esc(pc.problem)}</td>`;
+                h += `<td><code style="font-size:0.72rem;background:#1e1e2e;color:#f38ba8;padding:2px 6px;border-radius:3px;">${esc(pc.raw)}</code></td>`;
+                h += `<td><code style="font-size:0.72rem;background:#1e1e2e;color:#a6e3a1;padding:2px 6px;border-radius:3px;">${esc(pc.fix)}</code></td>`;
+                h += `<td style="font-size:0.75rem;"><code>${esc(pc.healer)}</code></td>`;
+                h += `</tr>`;
+            }
+            h += `</tbody></table></details>`;
+
+            h += `</div>`;
+            return h;
+        }
+
+        function buildAIPromptSection(results, testCases, STEP_NAMES, moduleMap) {
+            const failures = results.filter(r => r.status === 'FAIL');
+            if (failures.length === 0) {
+                return `<div class="ai-prompt-section">
+                    <div class="ai-prompt-none">Aucune erreur ! Tous les tests passent. Rien a corriger.</div>
+                </div>`;
+            }
+
+            // Grouper les erreurs par module puis par etape
+            const failByModule = new Map();
+            for (const f of failures) {
+                const key = f.module || 'inconnu';
+                if (!failByModule.has(key)) failByModule.set(key, []);
+                failByModule.get(key).push(f);
+            }
+
+            let prompt = '';
+            prompt += `Je travaille sur Caramel, une application web qui genere des activites H5P et Moodle.\n`;
+            prompt += `Les tests de non-regression du pipeline complet (8 etapes) montrent ${failures.length} echecs sur ${results.length} assertions.\n\n`;
+            prompt += `Le pipeline est : JSON brut -> healJsonString -> JSON.parse -> healJsonObject -> healActivitySpecificFields -> healStructureForActivity -> detectContentType -> processH5PContent/getActivityFiles -> ZIP/MBZ blob -> normalizeDataForEditor -> simulateEdit -> denormalizeDataForSave -> healStructureForActivity -> re-processH5PContent/getActivityFiles -> re-blob.\n\n`;
+            prompt += `Fichiers sources :\n`;
+            prompt += `- js/h5p/json-healer.js (healJsonString, healJsonObject, healActivitySpecificFields, healStructureForActivity)\n`;
+            prompt += `- js/editor/content-detector.js (detectContentType, normalizeDataForEditor, denormalizeDataForSave, getSchemaForType)\n`;
+            prompt += `- js/h5p/processors/index.js et js/h5p/processors/*.js (processH5PContent, getModuleMetadata)\n`;
+            prompt += `- js/moodle/processors/index.js (getActivityFiles, generateBaseData)\n\n`;
+            prompt += `=== ERREURS PAR TYPE D'ACTIVITE ===\n\n`;
+
+            for (const [mod, modFailures] of failByModule) {
+                const info = moduleMap.get(mod);
+                const sourceLabel = info ? info.source : '?';
+                prompt += `--- ${mod} (${sourceLabel}) : ${modFailures.length} echec(s) ---\n`;
+
+                // Grouper par etape
+                const byStep = new Map();
+                for (const f of modFailures) {
+                    const s = f.step || 0;
+                    if (!byStep.has(s)) byStep.set(s, []);
+                    byStep.get(s).push(f);
+                }
+
+                for (const [step, stepFailures] of byStep) {
+                    const stepName = STEP_NAMES[step] || '?';
+                    prompt += `  Etape ${step} (${stepName}) :\n`;
+                    for (const f of stepFailures) {
+                        prompt += `    - ${f.message}\n`;
+                        if (f.diagnostic) {
+                            if (f.diagnostic.missingValues) {
+                                prompt += `      Valeurs manquantes : ${f.diagnostic.missingValues.slice(0, 3).join(' | ')}${f.diagnostic.missingValues.length > 3 ? ' ... (+' + (f.diagnostic.missingValues.length - 3) + ')' : ''}\n`;
+                            }
+                            if (f.diagnostic.missing) {
+                                prompt += `      Patterns manquants : ${f.diagnostic.missing.slice(0, 3).join(' | ')}${f.diagnostic.missing.length > 3 ? ' ... (+' + (f.diagnostic.missing.length - 3) + ')' : ''}\n`;
+                            }
+                            if (f.diagnostic.issues) {
+                                prompt += `      Problemes : ${f.diagnostic.issues.join(', ')}\n`;
+                            }
+                        }
+                    }
+                }
+                prompt += `\n`;
+            }
+
+            prompt += `=== CE QUE JE TE DEMANDE ===\n\n`;
+            prompt += `Analyse ces echecs et propose des corrections dans les fichiers sources concernes.\n`;
+            prompt += `Pour chaque correction, indique :\n`;
+            prompt += `1. Le fichier et la fonction a modifier\n`;
+            prompt += `2. Ce qui ne va pas (cause racine)\n`;
+            prompt += `3. Le code corrige\n`;
+            prompt += `Commence par les erreurs les plus en amont (etape 1-2) car elles cascadent sur les etapes suivantes.\n`;
+
+            return `<div class="ai-prompt-section">
+                <details open>
+                    <summary><span class="ai-icon">&#129302;</span> Prompt pour corriger les erreurs (${failures.length} echecs)</summary>
+                    <div class="ai-prompt-box"><button class="ai-prompt-copy">Copier le prompt</button>${esc(prompt)}</div>
+                </details>
+            </div>`;
+        }
+    </script>
+</body>
+</html>

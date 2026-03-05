@@ -1,0 +1,123 @@
+{
+  "timeline": {
+    "headline": "1789–1815 : Révolution française et Empire",
+    "text": "Objectif : te repérer dans le temps et comprendre comment la France passe de la monarchie absolue à de nouveaux régimes politiques entre 1789 et 1815 (histoire, **cycle 4 – 4e**). \\n\\nConsigne : pour chaque événement, lis la narration puis réponds à la mini-question (Qui ? Quoi ? Pourquoi ?). Tu peux aussi ajouter un mot-clé personnel (ex. *liberté*, *peur*, *guerre*, *citoyen*) pour t’aider à mémoriser.",
+    "asset": {
+      "media": "https://commons.wikimedia.org/wiki/Special:FilePath/Anonymous_-_Prise_de_la_Bastille.jpg",
+      "caption": "Une représentation de la prise de la Bastille (14 juillet 1789).",
+      "credit": "Anonyme (œuvre) / Wikimedia Commons"
+    },
+    "date": [
+      {
+        "startDate": "1789,05,05",
+        "headline": "Ouverture des États généraux",
+        "text": "Le roi Louis XVI réunit les **États généraux** : c’est le début d’une crise politique majeure, car les Français demandent des changements et contestent l’organisation du pouvoir.\\nQuestion : qui décide au départ de réunir les États généraux, et dans quel but ?",
+        "tag": "Politique"
+      },
+      {
+        "startDate": "1789,06,20",
+        "headline": "Serment du Jeu de Paume",
+        "text": "Des députés jurent de ne pas se séparer avant d’avoir donné une **Constitution** à la France : l’idée que la loi doit encadrer le pouvoir devient centrale.\\nQuestion : qu’est-ce qu’une Constitution change concrètement pour les citoyens ?",
+        "asset": {
+          "media": "https://commons.wikimedia.org/wiki/Special:FilePath/Jacques_Louis_David_-_Le_serment_du_Jeu_de_Paume_-_Google_Art_Project_cropped.jpg",
+          "caption": "Le serment du Jeu de Paume, projet attribué à Jacques-Louis David.",
+          "credit": "Jacques-Louis David (œuvre) / Google Art Project / Wikimedia Commons"
+        },
+        "tag": "Institutions"
+      },
+      {
+        "startDate": "1789,07,14",
+        "headline": "Prise de la Bastille",
+        "text": "À Paris, une foule s’empare de la **Bastille**, symbole du pouvoir royal et de l’arbitraire : l’événement marque une entrée en scène du peuple dans la Révolution.\\nQuestion : pourquoi un symbole peut-il déclencher (ou accélérer) un mouvement politique ?",
+        "asset": {
+          "media": "https://commons.wikimedia.org/wiki/Special:FilePath/Anonymous_-_Prise_de_la_Bastille.jpg",
+          "caption": "La prise de la Bastille, vue par un peintre anonyme.",
+          "credit": "Anonyme (œuvre) / Wikimedia Commons"
+        },
+        "tag": "Révolution"
+      },
+      {
+        "startDate": "1789,08,26",
+        "headline": "Déclaration des droits de l’homme et du citoyen",
+        "text": "Les révolutionnaires proclament des principes comme la **liberté** et l’égalité devant la loi : c’est un texte de référence pour penser les droits et la citoyenneté.\\nQuestion : repère un droit (ou un principe) et explique comment il pourrait se traduire dans la vie quotidienne.",
+        "asset": {
+          "media": "https://commons.wikimedia.org/wiki/Special:FilePath/DDHC_1789_AE_II_1129_page1.jpg",
+          "caption": "Première page de la Déclaration des droits de l’homme et du citoyen (1789).",
+          "credit": "Archives nationales (source) / Wikimedia Commons"
+        },
+        "tag": "Droits"
+      },
+      {
+        "startDate": "1791,06,21",
+        "headline": "Fuite à Varennes",
+        "text": "Le roi tente de quitter la France : cet épisode abîme la confiance entre le roi et une partie du peuple, et aggrave les tensions politiques.\\nQuestion : en quoi la confiance est-elle un élément essentiel pour faire fonctionner un régime politique ?",
+        "tag": "Crise"
+      },
+      {
+        "startDate": "1792,09,21",
+        "headline": "Proclamation de la République",
+        "text": "La monarchie est remplacée par la **République** : on cherche une nouvelle façon d’organiser le pouvoir, mais le contexte est instable et conflictuel.\\nQuestion : quelle différence fais-tu entre monarchie et république (sans entrer dans les détails) ?",
+        "tag": "Régime"
+      },
+      {
+        "startDate": "1793,01,21",
+        "headline": "Exécution de Louis XVI",
+        "text": "Le roi est condamné et exécuté : la Révolution franchit une étape radicale et les divisions s’accentuent, en France et en Europe.\\nQuestion : pourquoi cet événement peut-il être vu comme un *point de non-retour* ?",
+        "tag": "Politique"
+      },
+      {
+        "startDate": "1793,09,05",
+        "headline": "Début de la Terreur (radicalisation)",
+        "text": "Face aux menaces (guerres, oppositions internes), le pouvoir révolutionnaire durcit la répression : la période est marquée par la peur, la surveillance et des condamnations.\\nQuestion : selon toi, un État peut-il protéger la République tout en respectant les droits ? Donne un argument.",
+        "tag": "Violence"
+      },
+      {
+        "startDate": "1794,07,27",
+        "headline": "Chute de Robespierre (9 Thermidor)",
+        "text": "La chute de Robespierre marque la fin progressive de la Terreur : la Révolution change de direction et cherche un nouvel équilibre politique.\\nQuestion : comment un changement de dirigeants peut-il changer les règles du jeu politique ?",
+        "tag": "Tournant"
+      },
+      {
+        "startDate": "1799,11,09",
+        "headline": "Coup d’État du 18 Brumaire",
+        "text": "Napoléon Bonaparte prend le pouvoir : on passe d’une République instable à un régime plus autoritaire, censé rétablir l’ordre.\\nQuestion : quelles peuvent être les *forces* et les *risques* d’un pouvoir très concentré ?",
+        "tag": "Pouvoir"
+      },
+      {
+        "startDate": "1804,12,02",
+        "headline": "Sacre de Napoléon Ier",
+        "text": "Napoléon devient empereur : on observe une continuité (certaines réformes) mais aussi une rupture, car le pouvoir personnel s’affirme fortement.\\nQuestion : repère une continuité et une rupture possibles entre Révolution et Empire.",
+        "tag": "Empire"
+      },
+      {
+        "startDate": "1815,06,18",
+        "headline": "Défaite de Waterloo",
+        "text": "La défaite de Waterloo marque la fin de l’Empire napoléonien : une nouvelle période politique s’ouvre en France et l’Europe se réorganise.\\nQuestion : pourquoi une défaite militaire peut-elle provoquer un changement politique ?",
+        "tag": "Guerre"
+      }
+    ],
+    "era": [
+      {
+        "startDate": "1789,05,05",
+        "endDate": "1792,08,10",
+        "headline": "1789–1792 : Vers une monarchie constitutionnelle",
+        "text": "Période de transformations rapides : on conteste l’Ancien Régime et on cherche à encadrer le pouvoir par une **Constitution**.",
+        "tag": "Contexte"
+      },
+      {
+        "startDate": "1792,08,10",
+        "endDate": "1799,11,09",
+        "headline": "1792–1799 : Une République en révolution",
+        "text": "Période de fortes tensions et de guerres : le régime change, se radicalise puis se recompose, avec des débats sur la citoyenneté et la violence politique.",
+        "tag": "Contexte"
+      },
+      {
+        "startDate": "1799,11,09",
+        "endDate": "1815,06,18",
+        "headline": "1799–1815 : Consulat et Empire",
+        "text": "Napoléon installe un pouvoir personnel et mène des guerres en Europe : la France connaît des réformes, mais aussi un contrôle politique accru. (Cette séquence s’inscrit dans l’étude de la Révolution française et de l’Empire au cycle 4.) [web:16]",
+        "tag": "Contexte"
+      }
+    ]
+  }
+}

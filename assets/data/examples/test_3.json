@@ -1,0 +1,192 @@
+{
+  "bank_name": "Fonctions Inverses",
+  "bank_description": "Banque de questions sur les fonctions inverses, conforme aux programmes de mathématiques du secondaire français (cycle 4 et lycée).",
+  "questions": [
+    {
+      "type": "multichoice",
+      "content": {
+        "name": "Q1 - Définition",
+        "questiontext": "Quelle est la définition correcte d'une fonction inverse ?",
+        "feedback": "Bravo ! La fonction inverse est bien celle qui associe à chaque nombre non nul son inverse multiplicatif.",
+        "answers": [
+          {
+            "text": "C'est la fonction f(x) = 1/x pour x ≠ 0.",
+            "fraction": 100,
+            "feedback": "Exactement ! C'est la définition fondamentale de la fonction inverse."
+          },
+          {
+            "text": "C'est la fonction f(x) = x².",
+            "fraction": 0,
+            "feedback": "Non, cette fonction est quadratique, pas inverse."
+          },
+          {
+            "text": "C'est la fonction f(x) = -x.",
+            "fraction": 0,
+            "feedback": "Non, c'est l'opposée, pas l'inverse."
+          },
+          {
+            "text": "C'est la fonction f(x) = |x|.",
+            "fraction": 0,
+            "feedback": "Non, c'est une fonction valeur absolue."
+          }
+        ]
+      }
+    },
+    {
+      "type": "matching",
+      "content": {
+        "name": "Q2 - Propriétés",
+        "questiontext": "Associez chaque propriété à la fonction inverse f(x) = 1/x.",
+        "feedback": "Bien joué ! Tu as bien identifié les caractéristiques de la fonction inverse.",
+        "subquestions": [
+          {
+            "text": "Domaine de définition",
+            "answer": "ℝ \\ {0}"
+          },
+          {
+            "text": "Sens de variation sur ]0 ; +∞[",
+            "answer": "Décroissante"
+          },
+          {
+            "text": "Sens de variation sur ]-∞ ; 0[",
+            "answer": "Décroissante"
+          },
+          {
+            "text": "Symétrie de la courbe",
+            "answer": "Symétrique par rapport à l'origine"
+          }
+        ]
+      }
+    },
+    {
+      "type": "numerical",
+      "content": {
+        "name": "Q3 - Calcul",
+        "questiontext": "Quelle est l'image de 2 par la fonction inverse ? (Donne la réponse sous forme de fraction)",
+        "feedback": "Très bien ! L'image de 2 est bien 1/2.",
+        "answer": {
+          "number": 0.5,
+          "tolerance": 0.01,
+          "feedback": "C'est correct : f(2) = 1/2 = 0.5."
+        }
+      }
+    },
+    {
+      "type": "truefalse",
+      "content": {
+        "name": "Q4 - Propriété",
+        "questiontext": "La fonction inverse est définie pour x = 0.",
+        "feedback": "Attention, la fonction inverse n'est pas définie en 0 car la division par zéro est impossible.",
+        "answer": {
+          "value": false,
+          "feedback_true": "Faux, elle n'est pas définie en 0.",
+          "feedback_false": "Exactement ! Elle n'est pas définie en 0."
+        }
+      }
+    },
+    {
+      "type": "shortanswer",
+      "content": {
+        "name": "Q5 - Nom de la fonction",
+        "questiontext": "Quel est le nom de la fonction définie par f(x) = 1/x ?",
+        "feedback": "C'est bien la fonction inverse ! Tu maîtrises le vocabulaire.",
+        "answers": [
+          {
+            "text": "fonction inverse",
+            "fraction": 100,
+            "feedback": "Parfait ! C'est bien la fonction inverse."
+          },
+          {
+            "text": "fonction réciproque",
+            "fraction": 50,
+            "feedback": "Presque ! C'est une fonction réciproque, mais on dit plus précisément fonction inverse."
+          }
+        ]
+      }
+    },
+    {
+      "type": "cloze",
+      "content": {
+        "name": "Q6 - Courbe",
+        "questiontext": "La courbe de la fonction inverse est une {1:SHORTANSWER:=hyperbole} qui admet comme axes de symétrie les droites {1:SHORTANSWER:=y = x} et {1:SHORTANSWER:=y = -x}.",
+        "feedback": "Excellent ! La courbe de la fonction inverse est une hyperbole équilatère."
+      }
+    },
+    {
+      "type": "multichoice",
+      "content": {
+        "name": "Q7 - Sens de variation",
+        "questiontext": "Sur l'intervalle ]0 ; +∞[, la fonction inverse est :",
+        "feedback": "Très bien ! Elle est décroissante sur cet intervalle.",
+        "answers": [
+          {
+            "text": "Décroissante",
+            "fraction": 100,
+            "feedback": "Exactement ! Si x augmente, f(x) diminue."
+          },
+          {
+            "text": "Croissante",
+            "fraction": 0,
+            "feedback": "Non, c'est le contraire : la fonction diminue quand x augmente."
+          },
+          {
+            "text": "Constante",
+            "fraction": 0,
+            "feedback": "Non, elle varie en fonction de x."
+          },
+          {
+            "text": "Non définie",
+            "fraction": 0,
+            "feedback": "Non, elle est bien définie sur ]0 ; +∞[."
+          }
+        ]
+      }
+    },
+    {
+      "type": "numerical",
+      "content": {
+        "name": "Q8 - Antécédent",
+        "questiontext": "Quel est l'antécédent de 0.25 par la fonction inverse ?",
+        "feedback": "Très bien ! L'antécédent est 4, car 1/4 = 0.25.",
+        "answer": {
+          "number": 4,
+          "tolerance": 0.01,
+          "feedback": "C'est correct : f(4) = 1/4 = 0.25."
+        }
+      }
+    },
+    {
+      "type": "truefalse",
+      "content": {
+        "name": "Q9 - Symétrie",
+        "questiontext": "La courbe de la fonction inverse est symétrique par rapport à l'origine du repère.",
+        "feedback": "Parfait ! C'est une fonction impaire, donc symétrique par rapport à l'origine.",
+        "answer": {
+          "value": true,
+          "feedback_true": "C'est vrai, c'est une fonction impaire.",
+          "feedback_false": "Faux, elle est bien symétrique par rapport à l'origine."
+        }
+      }
+    },
+    {
+      "type": "shortanswer",
+      "content": {
+        "name": "Q10 - Asymptote",
+        "questiontext": "Quelle est l'équation de l'asymptote verticale de la fonction inverse ?",
+        "feedback": "Excellent ! L'asymptote verticale est la droite x = 0.",
+        "answers": [
+          {
+            "text": "x = 0",
+            "fraction": 100,
+            "feedback": "Parfait ! C'est l'asymptote verticale."
+          },
+          {
+            "text": "y = 0",
+            "fraction": 50,
+            "feedback": "C'est l'asymptote horizontale, pas verticale."
+          }
+        ]
+      }
+    }
+  ]
+}

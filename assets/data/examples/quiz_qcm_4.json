@@ -1,0 +1,206 @@
+{
+"title": "La Révolution française et l'Empire (1789-1815)",
+"questions": [
+{
+"library": "H5P.MultiChoice 1.16",
+"metadata": {
+"title": "Les causes de 1789"
+},
+"params": {
+"question": "En 1789, pour quelle raison principale le roi Louis XVI convoque-t-il les **États généraux** ?",
+"answers": [
+{
+"text": "Pour abolir les privilèges de la noblesse et du clergé",
+"correct": false,
+"tipsAndFeedback": {
+"chosenFeedback": "Le roi cherchait avant tout une solution à la crise financière, pas une réforme sociale profonde."
+}
+},
+{
+"text": "Pour résoudre la grave crise financière du royaume",
+"correct": true
+},
+{
+"text": "Pour déclarer la guerre à l'Angleterre",
+"correct": false,
+"tipsAndFeedback": {
+"chosenFeedback": "La France sortait déjà de la guerre d'Indépendance américaine, ce qui avait vidé les caisses."
+}
+}
+],
+"behaviour": {
+"singleAnswer": true
+},
+"overallFeedback": [
+{ "from": 0, "to": 25, "feedback": "Il faut revoir le contexte financier de 1789." },
+{ "from": 26, "to": 50, "feedback": "C'est un début, relisez les causes de la convocation." },
+{ "from": 51, "to": 75, "feedback": "Bonne compréhension du contexte initial." },
+{ "from": 76, "to": 100, "feedback": "Excellent ! Vous avez identifié le déclencheur économique." }
+]
+}
+},
+{
+"library": "H5P.MultiChoice 1.16",
+"metadata": {
+"title": "Ruptures de 1789"
+},
+"params": {
+"question": "Quels événements marquants de l'année **1789** marquent la fin de l'Ancien Régime ?",
+"answers": [
+{
+"text": "La prise de la Bastille (14 juillet)",
+"correct": true
+},
+{
+"text": "L'abolition des privilèges (nuit du 4 août)",
+"correct": true
+},
+{
+"text": "Le sacre de Napoléon Bonaparte",
+"correct": false,
+"tipsAndFeedback": {
+"tip": "Cherchez des événements se déroulant au tout début de la Révolution.",
+"chosenFeedback": "Le sacre de Napoléon a lieu bien plus tard, en 1804."
+}
+},
+{
+"text": "La proclamation de la Déclaration des Droits de l'Homme et du Citoyen",
+"correct": true
+}
+],
+"behaviour": {
+"singleAnswer": false
+},
+"overallFeedback": [
+{ "from": 0, "to": 25, "feedback": "Relisez la chronologie de l'année 1789." },
+{ "from": 26, "to": 50, "feedback": "Vous avez trouvé une partie des ruptures majeures." },
+{ "from": 51, "to": 75, "feedback": "Très bien, vous maîtrisez les temps forts de l'été 1789." },
+{ "from": 76, "to": 100, "feedback": "Parfait ! Vous avez identifié toutes les ruptures politiques et sociales." }
+]
+}
+},
+{
+"library": "H5P.MultiChoice 1.16",
+"metadata": {
+"title": "La Monarchie constitutionnelle"
+},
+"params": {
+"question": "Quel événement en juin 1791 brise la confiance entre le peuple et **Louis XVI** ?",
+"answers": [
+{
+"text": "La fuite du roi à Varennes",
+"correct": true
+},
+{
+"text": "La signature de la Constitution",
+"correct": false,
+"tipsAndFeedback": {
+"chosenFeedback": "La signature de la Constitution était au contraire un moment de réconciliation apparente."
+}
+},
+{
+"text": "L'ouverture des États généraux",
+"correct": false,
+"tipsAndFeedback": {
+"tip": "Le roi a tenté de quitter Paris secrètement.",
+"chosenFeedback": "C'est un événement de mai 1789, pas de 1791."
+}
+}
+],
+"behaviour": {
+"singleAnswer": true
+},
+"overallFeedback": [
+{ "from": 0, "to": 25, "feedback": "Cet événement est crucial pour comprendre la chute de la monarchie." },
+{ "from": 26, "to": 50, "feedback": "Moyen, revoyez l'épisode de Varennes." },
+{ "from": 51, "to": 75, "feedback": "Bien ! La trahison perçue du roi est bien comprise." },
+{ "from": 76, "to": 100, "feedback": "Excellent ! C'est le tournant vers la République." }
+]
+}
+},
+{
+"library": "H5P.MultiChoice 1.16",
+"metadata": {
+"title": "La Première République"
+},
+"params": {
+"question": "Sous la Convention (1792-1794), quelle période est marquée par la suspension des libertés et de nombreuses exécutions ?",
+"answers": [
+{
+"text": "Le Consulat",
+"correct": false,
+"tipsAndFeedback": {
+"chosenFeedback": "Le Consulat est la période de stabilisation sous Bonaparte après 1799."
+}
+},
+{
+"text": "La Terreur",
+"correct": true
+},
+{
+"text": "La Restauration",
+"correct": false,
+"tipsAndFeedback": {
+"tip": "C'est une période associée au Comité de Salut Public et à Robespierre.",
+"chosenFeedback": "La Restauration est le retour des rois après la chute de Napoléon."
+}
+}
+],
+"behaviour": {
+"singleAnswer": true
+},
+"overallFeedback": [
+{ "from": 0, "to": 25, "feedback": "Recherchez le rôle de Robespierre et du Comité de Salut Public." },
+{ "from": 26, "to": 50, "feedback": "C'est la période la plus radicale de la République." },
+{ "from": 51, "to": 75, "feedback": "Bien maîtrisé." },
+{ "from": 76, "to": 100, "feedback": "Parfait, vous connaissez les phases sombres de la Convention." }
+]
+}
+},
+{
+"library": "H5P.MultiChoice 1.16",
+"metadata": {
+"title": "L'œuvre de Napoléon"
+},
+"params": {
+"question": "Parmi ces réformes, lesquelles sont des « **Masses de granit** » créées par Napoléon Bonaparte pour stabiliser la France ?",
+"answers": [
+{
+"text": "Le Code civil (1804)",
+"correct": true
+},
+{
+"text": "La création des Préfets",
+"correct": true
+},
+{
+"text": "Le droit de vote des femmes",
+"correct": false,
+"tipsAndFeedback": {
+"chosenFeedback": "Le droit de vote des femmes n'est accordé en France qu'en 1944."
+}
+},
+{
+"text": "La création de la Légion d'honneur",
+"correct": true
+}
+],
+"behaviour": {
+"singleAnswer": false
+},
+"overallFeedback": [
+{ "from": 0, "to": 25, "feedback": "Les masses de granit sont les piliers de la société napoléonienne." },
+{ "from": 26, "to": 50, "feedback": "Vous en avez identifié quelques-unes." },
+{ "from": 51, "to": 75, "feedback": "Très bon travail sur les réformes consulaires." },
+{ "from": 76, "to": 100, "feedback": "Félicitations ! Vous maîtrisez l'héritage durable de Napoléon." }
+]
+}
+}
+],
+"overallFeedback": [
+{ "from": 0, "to": 25, "feedback": "Des lacunes importantes. Prenez le temps de relire votre cours sur les grandes étapes de la Révolution." },
+{ "from": 26, "to": 50, "feedback": "Résultat encourageant mais fragile. Focalisez-vous sur la chronologie des régimes politiques." },
+{ "from": 51, "to": 75, "feedback": "Bonne maîtrise de l'ensemble ! Vous comprenez bien les enjeux et les ruptures de la période." },
+{ "from": 76, "to": 100, "feedback": "Excellent travail ! Vous avez une connaissance précise de la période 1789-1815. Bravo !" }
+]
+}

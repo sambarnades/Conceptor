@@ -1,0 +1,42 @@
+<h3>{{h5p_multiple_choice_name}}</h3>
+<p class="help-activity-desc">{{eh_multiplechoice_desc}}</p>
+
+<h4><i class="fas fa-list"></i> {{eh_section_fields}}</h4>
+<table class="help-fields-table">
+  <tr><th>{{eh_col_field}}</th><th>{{eh_col_description}}</th><th>{{eh_col_required}}</th></tr>
+  <tr><td>{{editor_question_text}}</td><td>{{eh_multiplechoice_field_question}}</td><td>{{eh_yes}}</td></tr>
+  <tr><td>{{editor_answer_text}}</td><td>{{eh_multiplechoice_field_answer_text}}</td><td>{{eh_yes}}</td></tr>
+  <tr><td>{{editor_is_correct}}</td><td>{{eh_multiplechoice_field_correct}}</td><td>{{eh_yes}}</td></tr>
+</table>
+
+<h4><i class="fas fa-exclamation-triangle" style="color:#FF9500"></i> {{eh_section_rules}}</h4>
+<ul>
+  <li>{{eh_multiplechoice_rule_one_correct}}</li>
+  <li>{{eh_multiplechoice_rule_multiple}}</li>
+</ul>
+
+<h4><i class="fas fa-font"></i> {{eh_section_formatting}}</h4>
+<ul>
+  <li><strong>{{eh_fmt_bold}}</strong> <code>&lt;strong&gt;texte&lt;/strong&gt;</code></li>
+  <li><strong>{{eh_fmt_italic}}</strong> <code>&lt;em&gt;texte&lt;/em&gt;</code></li>
+</ul>
+
+<h4><i class="fas fa-square-root-variable"></i> {{eh_section_math}}</h4>
+<div class="help-math-grid">
+  <code>\(x^2\)</code> <span>{{eh_math_inline}}</span>
+  <code>\[x^2\]</code> <span>{{eh_math_block}}</span>
+  <code>\frac{1}{2}</code> <span>{{eh_math_fraction}}</span>
+  <code>\sqrt{x}</code> <span>{{eh_math_sqrt}}</span>
+</div>
+
+<h4><i class="fas fa-check-circle" style="color:#34C759"></i> {{eh_section_good}}</h4>
+<div class="help-example help-example--good">
+  <div class="help-example-label"><i class="fas fa-check"></i> {{eh_label_good}}</div>
+  {{eh_multiplechoice_good_example}}
+</div>
+
+<h4><i class="fas fa-times-circle" style="color:#FF3B30"></i> {{eh_section_bad}}</h4>
+<div class="help-example help-example--bad">
+  <div class="help-example-label"><i class="fas fa-times"></i> {{eh_label_bad}}</div>
+  {{eh_multiplechoice_bad_example}}
+</div>

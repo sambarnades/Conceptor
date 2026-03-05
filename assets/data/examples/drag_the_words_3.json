@@ -1,0 +1,26 @@
+{
+  "taskDescription": "Complète le texte sur les fonctions racines carrées en faisant glisser les mots manquants.",
+  "textField": "La fonction *racine* carrée est notée √x et est définie pour *x* positif ou nul.\nSon *graphe* est toujours situé dans le premier quadrant.\nLa *parité* de cette fonction est *impair* car √(-x) = -√x.\nElle est *croissante* sur son ensemble de définition.\nUn *exemple* classique est √9 = 3.",
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 25,
+      "feedback": "Des efforts sont nécessaires pour maîtriser ce concept."
+    },
+    {
+      "from": 26,
+      "to": 50,
+      "feedback": "C'est un bon début, continue à t'entraîner."
+    },
+    {
+      "from": 51,
+      "to": 75,
+      "feedback": "Bon travail ! Tu as bien compris les bases."
+    },
+    {
+      "from": 76,
+      "to": 100,
+      "feedback": "Excellent ! Tu as parfaitement assimilé la notion."
+    }
+  ]
+}

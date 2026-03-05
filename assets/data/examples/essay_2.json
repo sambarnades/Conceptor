@@ -1,0 +1,18 @@
+{
+  "taskDescription": "Rédigez un texte d'environ 150 mots qui explique la **fonction racine carrée**. Vous devez préciser sa *définition*, son *domaine* de définition, son *image*, la forme de son *graphique* ainsi que son utilité dans la résolution d'équations. N'oubliez pas d'illustrer votre propos avec l'expression \\( f(x)=\\sqrt{x} \\) et d'expliquer pourquoi la fonction n'est définie que pour \\( x\\geq0 \\).\\nSoyez clair, structuré et utilisez des exemples concrets pour montrer votre compréhension.",
+  "keywords": [
+    { "keyword": "racine carrée", "options": { "points": 1, "caseSensitive": false } },
+    { "keyword": "définition", "options": { "points": 1, "caseSensitive": false } },
+    { "keyword": "domaine", "options": { "points": 1, "caseSensitive": false } },
+    { "keyword": "image", "options": { "points": 1, "caseSensitive": false } },
+    { "keyword": "graphique", "options": { "points": 1, "caseSensitive": false } }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "Ton texte est très incomplet. Revois la leçon sur la fonction racine carrée et essaie d'inclure les notions essentielles." },
+    { "from": 11, "to": 30, "feedback": "Tu as commencé à mentionner quelques éléments, mais il manque encore plusieurs points clés comme le domaine ou le graphique." },
+    { "from": 31, "to": 50, "feedback": "Bonne progression ! Tu as couvert plusieurs notions, mais ton explication du domaine et de l'image reste vague." },
+    { "from": 51, "to": 70, "feedback": "Très bien ! Tu décris correctement la définition, le domaine et le graphique, avec des exemples pertinents." },
+    { "from": 71, "to": 90, "feedback": "Excellent travail ! Ta rédaction est claire, complète et illustrée, montrant une solide maîtrise de la fonction racine carrée." },
+    { "from": 91, "to": 100, "feedback": "Parfait ! Tu as non seulement expliqué toutes les notions avec précision, mais en plus tu as apporté des liens utiles avec d'autres domaines des maths." }
+  ]
+}

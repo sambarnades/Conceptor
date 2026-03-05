@@ -1,0 +1,27 @@
+{
+  "title": "Classification des verbes",
+  "taskDescription": "Glissez chaque verbe dans le groupe qui lui correspond.",
+  "dropZones": [
+    { "label": "1er groupe", "correctElements": [0, 1, 2] },
+    { "label": "2e groupe", "correctElements": [3, 4] },
+    { "label": "3e groupe", "correctElements": [5, 6, 7] }
+  ],
+  "elements": [
+    { "text": "marcher" },
+    { "text": "parler" },
+    { "text": "chanter" },
+    { "text": "finir" },
+    { "text": "choisir" },
+    { "text": "aller" },
+    { "text": "être" },
+    { "text": "avoir" }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "La classification des verbes est à revoir." },
+    { "from": 11, "to": 30, "feedback": "Tu confonds encore certains groupes, relis tes leçons de conjugaison." },
+    { "from": 31, "to": 50, "feedback": "C'est un bon début, mais il reste des confusions entre les groupes." },
+    { "from": 51, "to": 70, "feedback": "Bon travail ! Tu connais les bases de la classification verbale." },
+    { "from": 71, "to": 90, "feedback": "Très bonne maîtrise des groupes de verbes !" },
+    { "from": 91, "to": 100, "feedback": "Excellent ! Tu maîtrises parfaitement la classification des verbes français !" }
+  ]
+}

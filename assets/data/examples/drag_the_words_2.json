@@ -1,0 +1,12 @@
+{
+  "taskDescription": "Complète le texte en faisant glisser les mots manquants.",
+  "textField": "En classe de seconde, la *racine* carrée est introduite comme la fonction qui, à tout nombre réel *positif*, associe le nombre dont le carré donne la valeur de départ, notée \\( \\sqrt{x} \\).\nOn étudie d'abord son domaine de définition, qui exclut les nombres négatifs, afin de respecter la propriété fondamentale de la *carrée*.\nEnsuite, on observe que la fonction est strictement croissante et que son *inverse* est la fonction carrée, notée \\( x \\mapsto x^{2} \\).\nLe *graphique* de la racine carrée est une courbe située dans le premier quadrant, qui se rapproche de l'axe des abscisses sans jamais le toucher.\nPour résoudre des équations du type \\( \\sqrt{x}=a \\), on élève au carré les deux membres, en s’assurant que *valeur* soit cohérente avec le domaine.\nAinsi, maîtriser ces notions permet de développer la capacité à modéliser des phénomènes physiques où la relation de proportionnalité implique une racine.\n",
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "Des efforts sont nécessaires. Revois les concepts de base." },
+    { "from": 11, "to": 30, "feedback": "Tu y es presque. Continue à t'exercer sur les propriétés de la racine carrée." },
+    { "from": 31, "to": 50, "feedback": "C'est un bon début. Tu maîtrises les notions essentielles." },
+    { "from": 51, "to": 70, "feedback": "Bon travail ! Tu appliques correctement les définitions." },
+    { "from": 71, "to": 90, "feedback": "Très bon score ! Tu as bien intégré les liens avec le graphique." },
+    { "from": 91, "to": 100, "feedback": "Excellent ! Tu maîtrises parfaitement la fonction racine carrée." }
+  ]
+}

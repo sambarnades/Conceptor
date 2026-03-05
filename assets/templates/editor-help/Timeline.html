@@ -1,0 +1,43 @@
+<h3>{{h5p_timeline_name}}</h3>
+<p class="help-activity-desc">{{eh_timeline_desc}}</p>
+
+<h4><i class="fas fa-list"></i> {{eh_section_fields}}</h4>
+<table class="help-fields-table">
+  <tr><th>{{eh_col_field}}</th><th>{{eh_col_description}}</th><th>{{eh_col_required}}</th></tr>
+  <tr><td>{{editor_title}}</td><td>{{eh_timeline_field_headline}}</td><td>{{eh_yes}}</td></tr>
+  <tr><td>{{editor_description}}</td><td>{{eh_timeline_field_text}}</td><td>{{eh_no}}</td></tr>
+  <tr><td>{{editor_start_date}}</td><td>{{eh_timeline_field_startdate}}</td><td>{{eh_yes}}</td></tr>
+  <tr><td>{{editor_end_date}}</td><td>{{eh_timeline_field_enddate}}</td><td>{{eh_no}}</td></tr>
+  <tr><td>{{editor_event_title}}</td><td>{{eh_timeline_field_event_headline}}</td><td>{{eh_yes}}</td></tr>
+  <tr><td>{{editor_event_description}}</td><td>{{eh_timeline_field_event_text}}</td><td>{{eh_no}}</td></tr>
+  <tr><td>{{editor_start_date}}</td><td>{{eh_timeline_field_era_start}}</td><td>{{eh_yes}}</td></tr>
+  <tr><td>{{editor_end_date}}</td><td>{{eh_timeline_field_era_end}}</td><td>{{eh_yes}}</td></tr>
+  <tr><td>{{editor_era_name}}</td><td>{{eh_timeline_field_era_headline}}</td><td>{{eh_yes}}</td></tr>
+</table>
+
+<h4><i class="fas fa-exclamation-triangle" style="color:#FF9500"></i> {{eh_section_rules}}</h4>
+<ul>
+  <li>{{eh_timeline_rule_date_format}}</li>
+  <li>{{eh_timeline_rule_date_optional}}</li>
+  <li>{{eh_timeline_rule_chronological}}</li>
+</ul>
+
+<h4><i class="fas fa-font"></i> {{eh_section_formatting}}</h4>
+<ul>
+  <li><strong>{{eh_fmt_bold}}</strong> <code>&lt;strong&gt;texte&lt;/strong&gt;</code></li>
+  <li><strong>{{eh_fmt_italic}}</strong> <code>&lt;em&gt;texte&lt;/em&gt;</code></li>
+</ul>
+
+<h4><i class="fas fa-check-circle" style="color:#34C759"></i> {{eh_section_good}}</h4>
+<div class="help-example help-example--good">
+  <div class="help-example-label"><i class="fas fa-check"></i> {{eh_label_good}}</div>
+  <code>startDate</code> : 1789,07,14<br>
+  <code>headline</code> : {{eh_timeline_good_headline}}
+</div>
+
+<h4><i class="fas fa-times-circle" style="color:#FF3B30"></i> {{eh_section_bad}}</h4>
+<div class="help-example help-example--bad">
+  <div class="help-example-label"><i class="fas fa-times"></i> {{eh_label_bad}}</div>
+  <code>startDate</code> : 14/07/1789<br>
+  {{eh_timeline_bad_explanation}}
+</div>

@@ -1,0 +1,128 @@
+{
+  "title": "Les ventes de consoles de jeux vidéo",
+  "words": [
+    {
+      "answer": "PlayStation",
+      "clue": "Console de Sony la plus vendue de l'histoire.",
+      "extraClue": {
+        "params": {
+          "text": "Sa **première version** est sortie en 1994 et a dépassé les 100 millions d'unités vendues."
+        }
+      }
+    },
+    {
+      "answer": "Nintendo",
+      "clue": "Entreprise japonaise créatrice de la Switch.",
+      "extraClue": {
+        "params": {
+          "text": "Cette marque a aussi créé des consoles mythiques comme la **NES** et la **Wii**."
+        }
+      }
+    },
+    {
+      "answer": "Xbox",
+      "clue": "Console de Microsoft lancée en 2001.",
+      "extraClue": {
+        "params": {
+          "text": "Sa version **360** a été l'une des plus populaires des années 2000."
+        }
+      }
+    },
+    {
+      "answer": "portable",
+      "clue": "Type de console qu'on peut emporter partout.",
+      "extraClue": {
+        "params": {
+          "text": "La Game Boy et la Switch sont des exemples de consoles **de ce type**."
+        }
+      }
+    },
+    {
+      "answer": "dématérialisé",
+      "clue": "Mode de vente de jeux sans support physique.",
+      "extraClue": {
+        "params": {
+          "text": "On télécharge le jeu directement sur la console via **Internet**."
+        }
+      }
+    },
+    {
+      "answer": "génération",
+      "clue": "Période qui regroupe des consoles sorties à la même époque.",
+      "extraClue": {
+        "params": {
+          "text": "La PS5 et la Xbox Series X appartiennent à la même **période** technologique."
+        }
+      }
+    },
+    {
+      "answer": "milliards",
+      "clue": "Unité pour compter les revenus des jeux vidéo en euros.",
+      "extraClue": {
+        "params": {
+          "text": "L'industrie du jeu vidéo génère plus de 200 **de cette unité** de dollars par an."
+        }
+      }
+    },
+    {
+      "answer": "exclusivité",
+      "clue": "Jeu disponible uniquement sur une seule console.",
+      "extraClue": {
+        "params": {
+          "text": "Mario est une **spécificité** de Nintendo, Halo de Xbox."
+        }
+      }
+    },
+    {
+      "answer": "marché",
+      "clue": "Ensemble des acheteurs et vendeurs de consoles.",
+      "extraClue": {
+        "params": {
+          "text": "Ce secteur économique représente des **transactions** de plusieurs dizaines de milliards d'euros."
+        }
+      }
+    },
+    {
+      "answer": "concurrent",
+      "clue": "Entreprise qui rivalise avec une autre pour vendre plus.",
+      "extraClue": {
+        "params": {
+          "text": "Sony, Microsoft et Nintendo sont en **compétition** permanente."
+        }
+      }
+    }
+  ],
+  "taskDescription": "**Complète** cette grille de mots croisés sur l'univers des consoles de jeux vidéo et leurs ventes.\\n\\nUtilise tes connaissances sur les grandes marques, les types de consoles et le marché du jeu vidéo pour trouver les mots correspondant aux définitions.\\n\\nPour les mots composés, ne mettez ni espace ni tiret (ex: 'portecles' pour 'porte-clés').",
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 10,
+      "feedback": "Le monde des consoles de jeux vidéo mérite d'être mieux exploré. N'hésite pas à te documenter sur les grandes marques et leur histoire."
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "feedback": "Tu commences à identifier quelques éléments, mais il te reste beaucoup à découvrir sur ce secteur économique passionnant."
+    },
+    {
+      "from": 31,
+      "to": 50,
+      "feedback": "C'est encourageant ! Tu connais certaines consoles, mais approfondis tes connaissances sur le marché et les stratégies commerciales."
+    },
+    {
+      "from": 51,
+      "to": 70,
+      "feedback": "Bon travail ! Tu maîtrises l'essentiel du sujet et tu identifies bien les acteurs majeurs du secteur."
+    },
+    {
+      "from": 71,
+      "to": 90,
+      "feedback": "Très bon score ! Tu as une solide connaissance des consoles de jeux vidéo et de leur place sur le marché."
+    },
+    {
+      "from": 91,
+      "to": 100,
+      "feedback": "Excellent ! Tu es un véritable expert des ventes de consoles et du marché du jeu vidéo. Bravo !"
+    }
+  ]
+}

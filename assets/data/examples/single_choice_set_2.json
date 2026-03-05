@@ -1,0 +1,39 @@
+{
+  "choices": [
+    {
+      "question": "Quel est l'ensemble de définition de la fonction $ f(x) = \\sqrt{2x - 4} $ ?",
+      "answers": [
+        " $ [2; +\\infty[ $ ",
+        " $ ]2; +\\infty[ $ ",
+        " $ ]-\\infty; 2] $ ",
+        " $ ]-\\infty; 2[ $ "
+      ]
+    },
+    {
+      "question": "On considère la fonction $ g(x) = \\sqrt{x^2} $. Quelle est une expression simplifiée de $ g(x) $ pour tout $ x \\in \\mathbb{R} $ ?",
+      "answers": [
+        " $ |x| $ ",
+        " $ x $ ",
+        " $ x^2 $ ",
+        " $ \\sqrt{x} $ "
+      ]
+    },
+    {
+      "question": "Soit $ h(x) = \\sqrt{9 - x^2} $. Pour quelle valeur de $ x $ la fonction $ h $ atteint-elle son maximum ?",
+      "answers": [
+        " $ x = 0 $ ",
+        " $ x = 3 $ ",
+        " $ x = -3 $ ",
+        " $ x = 9 $ "
+      ]
+    }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 10, "feedback": "Des efforts sont nécessaires. Reviens sur les propriétés des racines carrées et les conditions de définition." },
+    { "from": 11, "to": 30, "feedback": "Tu y es presque. Vérifie bien les conditions d'existence des expressions avec racines carrées." },
+    { "from": 31, "to": 50, "feedback": "C'est un bon début. Travaille davantage sur les simplifications et les ensembles de définition." },
+    { "from": 51, "to": 70, "feedback": "Bon travail ! Tu maîtrises les bases des fonctions racines carrées. Continue ainsi !" },
+    { "from": 71, "to": 90, "feedback": "Très bon score ! Tu as bien compris les propriétés et les comportements des fonctions racines carrées." },
+    { "from": 91, "to": 100, "feedback": "Excellent ! Tu maîtrises parfaitement les fonctions racines carrées. Félicitations !" }
+  ]
+}

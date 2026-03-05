@@ -1,0 +1,11 @@
+{
+  "graphMode": "pieChart",
+  "listOfTypes": [
+    {"value": 35, "color": "#ff6384", "fontColor": "#fff", "text": "PlayStation 5"},
+    {"value": 28, "color": "#36a2eb", "fontColor": "#fff", "text": "Xbox Series X"},
+    {"value": 20, "color": "#ffce56", "fontColor": "#000", "text": "Nintendo Switch"},
+    {"value": 12, "color": "#4bc0c0", "fontColor": "#fff", "text": "PC Gaming"},
+    {"value": 5, "color": "#9966ff", "fontColor": "#fff", "text": "Autres"}
+  ],
+  "figureDefinition": "Répartition des consoles de jeux vidéo préférées"
+}

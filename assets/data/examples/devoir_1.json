@@ -1,0 +1,31 @@
+{
+  "title": "Évaluation de l'oral de français",
+  "description": "Présentez votre analyse du texte étudié en classe. Vous serez évalué selon les critères de la grille ci-dessous.",
+  "rubricName": "Grille d'évaluation de l'oral",
+  "criteria": [
+    {
+      "description": "Clarté de l'expression",
+      "levels": [
+        { "score": 0, "definition": "L'élève s'exprime de façon confuse, incompréhensible ou ne répond pas." },
+        { "score": 1, "definition": "L'élève s'exprime de façon partiellement claire, avec quelques hésitations gênantes." },
+        { "score": 2, "definition": "L'élève s'exprime clairement, de façon audible et compréhensible." }
+      ]
+    },
+    {
+      "description": "Maîtrise du contenu",
+      "levels": [
+        { "score": 0, "definition": "L'élève ne montre pas de compréhension du sujet ou fait des erreurs importantes." },
+        { "score": 1, "definition": "L'élève montre une compréhension partielle, avec quelques imprécisions ou erreurs mineures." },
+        { "score": 2, "definition": "L'élève maîtrise le contenu, répond avec justesse et précision." }
+      ]
+    },
+    {
+      "description": "Qualité de l'échange",
+      "levels": [
+        { "score": 0, "definition": "L'élève ne répond pas aux questions ou reste passif." },
+        { "score": 1, "definition": "L'élève répond aux questions mais de façon courte ou hésitante." },
+        { "score": 2, "definition": "L'élève échange avec aisance, reformule et argumente si nécessaire." }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "title": "Les fonctions racines carrées",
+  "description": "Associe chaque expression mathématique à son résultat ou sa propriété.",
+  "cards": [
+    {
+      "text": "Ensemble de définition de la fonction \\(f(x) = \\sqrt{x}\\)",
+      "answer": "[0;+∞[",
+      "tip": "La racine carrée n'est définie que pour les nombres **positifs ou nuls**."
+    },
+    {
+      "text": "\\(\\sqrt{16}\\)",
+      "answer": "4",
+      "tip": "Quel nombre au carré donne **16** ?"
+    },
+    {
+      "text": "\\(\\sqrt{49}\\)",
+      "answer": "7",
+      "tip": "\\(7 \\times 7\\) est égal à ce nombre."
+    },
+    {
+      "text": "\\(\\sqrt{0}\\)",
+      "answer": "0",
+      "tip": "C'est le seul nombre dont la racine carrée est **lui-même** et qui est aussi nul."
+    },
+    {
+      "text": "\\(\\sqrt{a^2}\\) pour \\(a \\geq 0\\)",
+      "answer": "a",
+      "tip": "La racine carrée d'un carré donne la **valeur absolue** du nombre."
+    },
+    {
+      "text": "\\(\\sqrt{100}\\)",
+      "answer": "10",
+      "tip": "C'est un nombre **rond** très courant."
+    },
+    {
+      "text": "Variation de la fonction \\(f(x) = \\sqrt{x}\\) sur \\([0;+\\infty[\\)",
+      "answer": "croissante",
+      "tip": "Quand \\(x\\) augmente, \\(\\sqrt{x}\\) augmente aussi."
+    },
+    {
+      "text": "\\((\\sqrt{a})^2\\) pour \\(a \\geq 0\\)",
+      "answer": "a",
+      "tip": "Élever une racine carrée au **carré** annule l'opération."
+    },
+    {
+      "text": "\\(\\sqrt{a \\times b}\\) pour \\(a, b \\geq 0\\)",
+      "answer": "\\(\\sqrt{a} \\times \\sqrt{b}\\)",
+      "tip": "La racine d'un **produit** est le produit des racines."
+    },
+    {
+      "text": "\\(\\sqrt{25}\\)",
+      "answer": "5",
+      "tip": "C'est la moitié de **10**."
+    }
+  ]
+}
