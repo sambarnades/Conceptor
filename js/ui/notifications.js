@@ -1237,7 +1237,7 @@ async function renderPreview(notification, modal) {
         let _perfMod = null;
         import('../core/perf-tracker.js').then(m => { _perfMod = m; }).catch(() => {});
 
-        loadJSZip().then(() => {
+        _h5pRenderPromise = loadJSZip().then(() => {
             // Si l'utilisateur a navigué entre-temps, abandonner silencieusement
             if (currentRenderGen !== previewRenderGeneration) return;
             if (_perfMod) _perfMod.markStart('render', 'renderPreview → H5PManager.load()');
@@ -1358,11 +1358,16 @@ let currentPreviewBlobUrl = null;
 /** Compteur de génération pour invalider les rendus obsolètes lors de navigation rapide */
 let previewRenderGeneration = 0;
 
+/** Promesse de chargement H5P en cours dans la modale de prévisualisation (pour attendre avant capture de grille) */
+let _h5pRenderPromise = null;
+
 /**
  * Nettoie les ressources de prévisualisation (URL blob, instances H5P).
  * @private
  */
 function cleanupPreview() {
+    _h5pRenderPromise = null;
+
     // Si une URL blob a été créée pour la preview H5P, la révoquer
     if (currentPreviewBlobUrl) {
         URL.revokeObjectURL(currentPreviewBlobUrl);
@@ -1751,6 +1756,11 @@ export function initPreviewModal() {
                 if (!moduleKey && notification.titleKey) {
                     const entry = Object.entries(allModules).find(([k, m]) => m.name === notification.titleKey);
                     moduleKey = entry ? entry[0] : notification.titleKey;
+                }
+
+                // Attendre que le H5P soit complètement rendu avant la capture de grille
+                if (_h5pRenderPromise && (moduleKey === 'Crossword' || moduleKey === 'FindTheWords')) {
+                    try { await _h5pRenderPromise; } catch { /* erreur déjà gérée dans renderPreview */ }
                 }
 
                 // Capture de la grille pour les mots croisés (vide + corrigée)

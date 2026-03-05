@@ -83,7 +83,7 @@ async function ocrPdfPage(page, pageNum, totalPages, updateStatus) {
 /**
  * Traite un fichier PDF - extraction intelligente (texte natif ou OCR selon le contenu)
  */
-async function processPdf(file, updateStatus) {
+async function processPdf(file, updateStatus, checkCancel = () => {}) {
     const { pdfjsLib } = window;
     if (!pdfjsLib) {
         throw new Error("PDF.js n'est pas chargé.");
@@ -94,6 +94,7 @@ async function processPdf(file, updateStatus) {
     const TEXT_THRESHOLD = 50; // Minimum de caractères pour considérer une page comme "textuelle"
 
     for (let i = 1; i <= pdf.numPages; i++) {
+        checkCancel();
         updateStatus(`${translations.pdf_processing_page || 'Traitement de la page'} ${i}/${pdf.numPages}...`);
         const page = await pdf.getPage(i);
 
@@ -105,6 +106,7 @@ async function processPdf(file, updateStatus) {
             fullText += nativeText + '\n\n';
         } else {
             // Page probablement scannée - utiliser OCR
+            checkCancel();
             updateStatus(`${translations.ocr_scanned_page || 'Page scannée détectée, OCR en cours'} ${i}/${pdf.numPages}...`);
             const ocrText = await ocrPdfPage(page, i, pdf.numPages, updateStatus);
             fullText += ocrText + '\n\n';
@@ -318,6 +320,34 @@ export function initOcr() {
         toggleSectionsVisibility();
     }
 
+    // --- Annulation du traitement en cours ---
+    let _cancelRequested = false;
+    let _cancelBtn = null;
+
+    /** Vérifie si l'annulation a été demandée et lance une erreur le cas échéant */
+    function checkCancel() {
+        if (_cancelRequested) throw new DOMException('Traitement annulé', 'AbortError');
+    }
+
+    function showCancelButton() {
+        _cancelRequested = false;
+        if (!_cancelBtn) {
+            _cancelBtn = document.createElement('button');
+            _cancelBtn.className = 'ocr-cancel-btn';
+            _cancelBtn.type = 'button';
+            _cancelBtn.innerHTML = `<i class="fas fa-times"></i> <span>${translations.ocr_cancel || 'Arrêter'}</span>`;
+            _cancelBtn.addEventListener('click', () => { _cancelRequested = true; });
+        }
+        _cancelBtn.querySelector('span').textContent = translations.ocr_cancel || 'Arrêter';
+        ocrStatus.after(_cancelBtn);
+        _cancelBtn.style.display = 'inline-flex';
+    }
+
+    function hideCancelButton() {
+        if (_cancelBtn) _cancelBtn.style.display = 'none';
+        _cancelRequested = false;
+    }
+
     function updateStatus(message) {
         ocrStatus.textContent = message;
         ocrStatus.style.display = 'block';
@@ -325,6 +355,7 @@ export function initOcr() {
 
     function hideStatus() {
         ocrStatus.style.display = 'none';
+        hideCancelButton();
     }
 
     function updateRagArea() {
@@ -388,16 +419,18 @@ export function initOcr() {
         }
 
         updateStatus(translations.file_loading || 'Chargement du fichier...');
+        showCancelButton();
 
         try {
             // Charger les bibliothèques OCR nécessaires
             await loadOcrLibs();
+            checkCancel();
 
             let extractedText = '';
 
             switch (fileType) {
                 case 'pdf':
-                    extractedText = await processPdf(file, updateStatus);
+                    extractedText = await processPdf(file, updateStatus, checkCancel);
                     break;
                 case 'docx':
                     extractedText = await processDocx(file, updateStatus);
@@ -415,6 +448,7 @@ export function initOcr() {
                     extractedText = await processImage(file, updateStatus);
                     break;
             }
+            checkCancel();
 
             const initialColor = FILE_COLORS[uploadedFiles.length % FILE_COLORS.length];
             uploadedFiles.push({ name: file.name, content: extractedText, color: initialColor });
@@ -424,6 +458,12 @@ export function initOcr() {
             showNotification(translations.extraction_success || 'Le document a été traité avec succès.', 'success');
 
         } catch (error) {
+            hideCancelButton();
+            if (error.name === 'AbortError') {
+                hideStatus();
+                showNotification(translations.extraction_cancelled || 'Traitement arrêté.', 'info');
+                return;
+            }
             console.error('Erreur lors du traitement du fichier:', error);
             updateStatus(translations.extraction_error || 'Une erreur est survenue lors du traitement.');
             showNotification(translations.extraction_error || 'Une erreur est survenue lors du traitement.', 'error');

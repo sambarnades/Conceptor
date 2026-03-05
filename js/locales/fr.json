@@ -87,6 +87,8 @@
   "file_loading": "Chargement du fichier...",
   "extraction_success": "Le document a été traité avec succès.",
   "extraction_error": "Une erreur est survenue lors du traitement.",
+  "extraction_cancelled": "Traitement arrêté.",
+  "ocr_cancel": "Arrêter",
   "error_fullscreen": "Le mode plein écran a échoué:",
   "lock_text": "Verrouiller",
   "unlock_text": "Déverrouiller",

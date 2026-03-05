@@ -87,6 +87,8 @@
   "file_loading": "Bestand laden...",
   "extraction_success": "Document succesvol verwerkt.",
   "extraction_error": "Er is een fout opgetreden tijdens de verwerking.",
+  "extraction_cancelled": "Verwerking gestopt.",
+  "ocr_cancel": "Stoppen",
   "error_fullscreen": "Volledig scherm mislukt:",
   "lock_text": "Vergrendelen",
   "unlock_text": "Ontgrendelen",

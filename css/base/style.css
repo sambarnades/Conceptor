@@ -2597,6 +2597,34 @@ input[type="file"] {
     color: #6e6e73;
 }
 
+.ocr-cancel-btn {
+    display: none;
+    align-items: center;
+    gap: 3px;
+    margin-top: 6px;
+    padding: 2px 8px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #6e6e73;
+    font-size: 11px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.ocr-cancel-btn:hover {
+    color: #007AFF;
+    background: rgba(0, 122, 255, 0.08);
+}
+
+.drag-drop-content .ocr-cancel-btn i {
+    font-size: 11px;
+    line-height: 1;
+    color: inherit;
+    margin-bottom: 0;
+}
+
 #ocr-output-container {
     grid-column: 1 / -1;
     position: relative;

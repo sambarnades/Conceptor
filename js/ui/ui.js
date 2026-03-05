@@ -1920,6 +1920,8 @@ function stopCaramelAnimation() {
 // =======================================================================
 
 let generationResultData = null;
+/** Promesse de capture de grille (Crossword/FindTheWords), résolue quand les images sont prêtes */
+let _gridCapturePromise = null;
 
 /**
  * Affiche la modale de résultat après la génération d'une activité.
@@ -2003,6 +2005,13 @@ function showGenerationResult(e) {
     if (isH5PResult) {
         import('../h5p/h5p-manager.js').catch(() => {});
         import('../core/lib-loader.js').then(m => m.loadJSZip()).catch(() => {});
+
+        // Lancer la génération de grille en arrière-plan (standalone, sans H5P)
+        if (moduleKey === 'Crossword' || moduleKey === 'FindTheWords') {
+            const notif = getNotificationById(notificationId);
+            const jsonData = notif?.originalJsonData || notif?.jsonData;
+            _gridCapturePromise = _captureGridInBackground(moduleKey, jsonData);
+        }
     } else {
         import('../simulators.js').catch(() => {});
     }
@@ -2013,6 +2022,30 @@ function showGenerationResult(e) {
     setTimeout(() => {
         modal.classList.remove('entering');
     }, 300);
+}
+
+/**
+ * Génère les images de grille en arrière-plan (standalone, sans H5P).
+ * Fonctionne pour Crossword (placement déterministe) et FindTheWords (placement aléatoire).
+ */
+async function _captureGridInBackground(moduleKey, jsonData) {
+    if (moduleKey === 'Crossword' && jsonData?.words?.length > 0) {
+        try {
+            const { generateCrosswordGridImages } = await import('../renderers/crossword-grid-generator.js');
+            return await generateCrosswordGridImages(jsonData.words);
+        } catch (err) {
+            console.warn('[GridCapture] Génération de grille Crossword échouée, export sans image:', err);
+        }
+    }
+    if (moduleKey === 'FindTheWords' && jsonData?.wordList) {
+        try {
+            const { generateFindTheWordsGridImages } = await import('../renderers/find-the-words-grid-generator.js');
+            return await generateFindTheWordsGridImages(jsonData.wordList);
+        } catch (err) {
+            console.warn('[GridCapture] Génération de grille FindTheWords échouée, export sans image:', err);
+        }
+    }
+    return null;
 }
 
 /**
@@ -2028,6 +2061,7 @@ function closeGenerationResultModal(showToast = false) {
 
     modal.classList.add('hidden');
     generationResultData = null;
+    _gridCapturePromise = null;
 
     // Révéler la notification dans le badge (incrémente le compteur)
     revealNotification();
@@ -2087,10 +2121,28 @@ export function initGenerationResultModal() {
 
             (async () => {
                 try {
+                    // Enrichir les données avec les images de grille (Crossword/FindTheWords)
+                    let dataToExport = jsonDataToExport;
+                    if (_gridCapturePromise && (resolvedKey === 'Crossword' || resolvedKey === 'FindTheWords')) {
+                        try {
+                            const grids = await _gridCapturePromise;
+                            if (grids) {
+                                if (grids.emptyGrid) {
+                                    dataToExport = { ...dataToExport, _gridImage: grids.emptyGrid };
+                                }
+                                if (grids.solutionGrid) {
+                                    dataToExport = { ...dataToExport, _solutionGridImage: grids.solutionGrid };
+                                }
+                            }
+                        } catch (err) {
+                            console.warn('Capture grille échouée, export sans image:', err);
+                        }
+                    }
+
                     const { exportToDOCX, exportToPDF, exportToODT } = await import('../export/document-exporter.js');
-                    if (format === 'DOCX') await exportToDOCX(resolvedKey, jsonDataToExport);
-                    else if (format === 'PDF') await exportToPDF(resolvedKey, jsonDataToExport);
-                    else if (format === 'ODT') await exportToODT(resolvedKey, jsonDataToExport);
+                    if (format === 'DOCX') await exportToDOCX(resolvedKey, dataToExport);
+                    else if (format === 'PDF') await exportToPDF(resolvedKey, dataToExport);
+                    else if (format === 'ODT') await exportToODT(resolvedKey, dataToExport);
                 } catch (error) {
                     console.error(`Erreur lors de l'export ${format}:`, error);
                     showNotification(translations.export_error || "Erreur lors de l'export", 'error');

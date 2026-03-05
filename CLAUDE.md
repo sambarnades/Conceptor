@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Caramel** is a 100% client-side web application (v5.0.0) for generating H5P and Moodle/Éléa educational activities using AI. Built for French teachers, it creates interactive content packages (.h5p, .mbz) directly in the browser without any server-side processing of pedagogical data.
+**Caramel** is a 100% client-side web application (v5.0.1) for generating H5P and Moodle/Éléa educational activities using AI. Built for French teachers, it creates interactive content packages (.h5p, .mbz) directly in the browser without any server-side processing of pedagogical data.
 
 **Key characteristics:**
 - Pure frontend JavaScript (ES6 modules), no build system, no npm
@@ -54,7 +54,7 @@ Append `?debug` to the URL to enable:
 - `ui/` — User interface: `ui.js` (tiles, tabs, modals), `notifications.js` (toasts, history), `animations.js`, `version-checker.js`, `emergency-notification.js`
 - `h5p/` — H5P ecosystem: `h5p-creator.js` (ZIP packaging), `h5p-manager.js` (preview), `h5p-prefetch.js` (H5P library preloading), `json-healer.js` (AI output repair), `processors/` (20 type-specific processors)
 - `moodle/` — Moodle/Éléa ecosystem: `moodle-creator.js` (MBZ packaging), `moodle-formats.js` (XML/GIFT), `page-themes.js` (theme registry), `page-themes/` (4 visual themes), `processors/` (7 activity processors + shared utilities)
-- `renderers/` — Rendering: `chart-renderer.js`, `math-renderer.js`, `image-utils.js`, `crossword-grid-capture.js`, `find-the-words-grid-capture.js`
+- `renderers/` — Rendering: `chart-renderer.js`, `math-renderer.js`, `image-utils.js`, `crossword-grid-capture.js`, `crossword-grid-generator.js` (standalone grid), `find-the-words-grid-capture.js`, `find-the-words-grid-generator.js` (standalone grid)
 - `export/` — Document export: `document-exporter.js` (DOCX/ODT/PDF), `document-formatter.js` (content formatting), `sanitizer.js` (DOMPurify)
 - `editor/` — Visual JSON editor (8 files, see JSON Editor System section)
 - `locales/` — 11 JSON language files (fr, en, es, de, it, nl, pt, ar, zh, jp, el)

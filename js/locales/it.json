@@ -87,6 +87,8 @@
   "file_loading": "Caricamento del file...",
   "extraction_success": "Il documento è stato elaborato con successo.",
   "extraction_error": "Si è verificato un errore durante l'elaborazione.",
+  "extraction_cancelled": "Elaborazione interrotta.",
+  "ocr_cancel": "Interrompi",
   "error_fullscreen": "La modalità a schermo intero è fallita:",
   "lock_text": "Blocca",
   "unlock_text": "Sblocca",

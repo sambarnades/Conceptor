@@ -204,7 +204,7 @@ function extractJsonContent(content) {
 export async function generateH5PWithLLM(prompt, model, activityMeta) {
     debugLog('LLM', `Appel au proxy n8n avec le modèle ${model}`);
 
-    const proxyUrl = "https://n8n.incubateur.education.gouv.fr/webhook/llm-prod";
+    const proxyUrl = "https://n8n.incubateur.education.gouv.fr/webhook/llmdev2";
 
     const requestBody = {
         prompt: prompt,

@@ -4,6 +4,20 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 
 ---
 
+## [5.0.1] - 05-03-2026
+
+### Nouveautés
+
+- **Bouton d'arrêt du traitement OCR** : Un bouton « Arrêter » apparaît désormais sous le message de progression lors de l'extraction de texte (PDF, DOCX, images, etc.). Il permet d'interrompre le traitement en cours sans attendre la fin, notamment pour les documents volumineux. Traduit dans les 11 langues.
+
+### Correctifs
+
+- **Export grille mots croisés et mots mêlés depuis la modale de résultat** : Les exports DOCX, ODT et PDF incluent désormais correctement les grilles (vide et corrigée) même lorsque le H5P n'est pas rendu. Deux nouveaux générateurs standalone (`crossword-grid-generator.js`, `find-the-words-grid-generator.js`) produisent les images de grille directement à partir des données JSON, sans dépendre du rendu H5P.
+- **Attente du rendu H5P avant capture de grille en prévisualisation** : Dans la modale de prévisualisation, l'export attend désormais que le H5P soit complètement chargé (`_h5pRenderPromise`) avant de capturer les grilles de mots croisés et mots mêlés, évitant les exports sans image.
+- **Génération proactive des grilles** : Dès l'ouverture de la modale de résultat pour un Crossword ou FindTheWords, les images de grille sont générées en arrière-plan (`_captureGridInBackground`), puis injectées dans les données d'export au moment du clic sur DOCX/ODT/PDF.
+
+---
+
 ## [5.0.0] - 05-03-2026
 
 ### 🚀 Nouveautés

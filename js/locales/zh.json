@@ -87,6 +87,8 @@
   "file_loading": "正在加载文件...",
   "extraction_success": "文档处理成功。",
   "extraction_error": "处理过程中发生错误。",
+  "extraction_cancelled": "处理已停止。",
+  "ocr_cancel": "停止",
   "error_fullscreen": "全屏模式失败：",
   "lock_text": "锁定",
   "unlock_text": "解锁",

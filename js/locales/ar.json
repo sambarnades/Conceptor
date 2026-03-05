@@ -87,6 +87,8 @@
   "file_loading": "جاري تحميل الملف...",
   "extraction_success": "تمت معالجة المستند بنجاح.",
   "extraction_error": "حدث خطأ أثناء المعالجة.",
+  "extraction_cancelled": "تم إيقاف المعالجة.",
+  "ocr_cancel": "إيقاف",
   "error_fullscreen": "فشل وضع ملء الشاشة:",
   "lock_text": "قفل",
   "unlock_text": "إلغاء القفل",

@@ -87,6 +87,8 @@
   "file_loading": "Datei wird geladen...",
   "extraction_success": "Dokument erfolgreich verarbeitet.",
   "extraction_error": "Fehler bei der Verarbeitung.",
+  "extraction_cancelled": "Verarbeitung abgebrochen.",
+  "ocr_cancel": "Abbrechen",
   "error_fullscreen": "Vollbildmodus fehlgeschlagen:",
   "lock_text": "Sperren",
   "unlock_text": "Entsperren",

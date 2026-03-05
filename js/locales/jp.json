@@ -87,6 +87,8 @@
   "file_loading": "ファイルを読み込み中...",
   "extraction_success": "ドキュメントの処理に成功しました。",
   "extraction_error": "処理中にエラーが発生しました。",
+  "extraction_cancelled": "処理を中止しました。",
+  "ocr_cancel": "中止",
   "error_fullscreen": "全画面表示に失敗しました:",
   "lock_text": "ロック",
   "unlock_text": "ロック解除",

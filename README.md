@@ -2,7 +2,7 @@
 
 **Création Assistée de Ressources et d'Activités Magistère et Éléa**
 
-[![Version](https://img.shields.io/badge/version-5.0.0-blue.svg)](https://caramel.forge.apps.education.fr/)
+[![Version](https://img.shields.io/badge/version-5.0.1-blue.svg)](https://caramel.forge.apps.education.fr/)
 [![Licence](https://img.shields.io/badge/licence-GNU%20AGPLv3-green.svg)](LICENSE)
 [![Plateforme](https://img.shields.io/badge/plateforme-Web-orange.svg)](https://caramel.forge.apps.education.fr/)
 
@@ -11,7 +11,7 @@
 ## 📋 Table des matières
 
 - [À propos](#-à-propos)
-- [Nouveautés de la version 5.0.0](#nouveautés-de-la-version-500)
+- [Nouveautés de la version 5.0.1](#nouveautés-de-la-version-501)
 - [Fonctionnalités principales](#-fonctionnalités-principales)
 - [Types d'activités supportées](#-types-dactivités-supportées)
 - [Accès et utilisation](#-accès-et-utilisation)
@@ -51,7 +51,7 @@
 
 ---
 
-## Nouveautés de la version 5.0.0
+## Nouveautés de la version 5.0.1
 
 ### Édition et nouvelles activités
 
@@ -629,8 +629,10 @@ caramel/
 │   │   ├── chart-renderer.js          # Rendu des diagrammes
 │   │   ├── math-renderer.js           # Rendu des formules mathématiques
 │   │   ├── image-utils.js             # Traitement des images
-│   │   ├── crossword-grid-capture.js  # Capture grille mots croisés
-│   │   └── find-the-words-grid-capture.js # Capture grille mots mêlés
+│   │   ├── crossword-grid-capture.js  # Capture grille mots croisés (depuis H5P)
+│   │   ├── crossword-grid-generator.js # Génération grille mots croisés (standalone)
+│   │   ├── find-the-words-grid-capture.js # Capture grille mots mêlés (depuis H5P)
+│   │   └── find-the-words-grid-generator.js # Génération grille mots mêlés (standalone)
 │   │
 │   ├── export/                         # Export documentaire
 │   │   ├── document-exporter.js       # Export DOCX/ODT/PDF
@@ -778,6 +780,10 @@ caramel/
 | math-renderer.js | `js/renderers/` | Rendu formules mathématiques (MathJax, Unicode) |
 | chart-renderer.js | `js/renderers/` | Rendu diagrammes et graphiques |
 | image-utils.js | `js/renderers/` | Traitement des images |
+| crossword-grid-captur.js | `js/renderers/` | Capture de la grille des mots croisés |
+| crossword-grid-generator.js | `js/renderers/` | Génération standalone grille mots croisés |
+| find-the-words-grid-captur.js | `js/renderers/` | Capture de la grille des mots fléchés |
+| find-the-words-grid-generator.js | `js/renderers/` | Génération standalone grille mots mêlés |
 
 ---
 

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <title>Tests Integration Grille Export Caramel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; padding: 24px; color: #1a1a2e; }
+        h1 { font-size: 1.5rem; margin-bottom: 8px; }
+        .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+        .global-summary { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .global-summary__card { padding: 14px 24px; border-radius: 10px; font-weight: 700; font-size: 1.3rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-width: 120px; text-align: center; }
+        .global-summary__card small { display: block; font-size: 0.7rem; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+        .card--pass { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; }
+        .card--fail { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: #721c24; }
+        .card--total { background: linear-gradient(135deg, #d1ecf1, #bee5eb); color: #0c5460; }
+        .info-box { background: #fff; padding: 14px 18px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); font-size: 0.82rem; line-height: 1.6; color: #444; }
+        .info-box summary { cursor: pointer; font-weight: 600; color: #1a1a2e; font-size: 0.9rem; }
+        .info-box ol { margin: 8px 0 0 22px; }
+        .info-box code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 0.8rem; }
+        .step-bar { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+        .step-card { flex: 1; min-width: 130px; padding: 10px 14px; border-radius: 8px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.06); text-align: center; }
+        .step-card__name { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 4px; }
+        .step-card__count { font-size: 1.1rem; font-weight: 700; }
+        .step-card--ok { border-left: 3px solid #28a745; }
+        .step-card--ko { border-left: 3px solid #dc3545; }
+        .tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 2px solid #ddd; padding-bottom: 0; }
+        .tab { padding: 10px 20px; cursor: pointer; border-radius: 8px 8px 0 0; font-weight: 600; font-size: 0.85rem; background: #e9ecef; color: #666; border: 1px solid transparent; border-bottom: none; position: relative; top: 2px; }
+        .tab:hover { background: #f8f9fa; color: #333; }
+        .tab--active { background: #fff; color: #1a1a2e; border-color: #ddd; border-bottom: 2px solid #fff; }
+        .filter-bar { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+        .filter-bar__label { font-size: 0.75rem; color: #888; font-weight: 600; text-transform: uppercase; margin-right: 4px; }
+        .filter-btn { padding: 5px 12px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; font-size: 0.8rem; transition: all 0.15s; }
+        .filter-btn:hover { background: #f0f0f0; }
+        .filter-btn--active { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
+        .results { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
+        .result { display: flex; align-items: flex-start; gap: 10px; padding: 7px 14px; border-bottom: 1px solid #f5f5f5; font-size: 0.82rem; }
+        .result:last-child { border-bottom: none; }
+        .result__badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-weight: 700; font-size: 0.7rem; min-width: 38px; text-align: center; flex-shrink: 0; }
+        .result__badge--pass { background: #d4edda; color: #155724; }
+        .result__badge--fail { background: #f8d7da; color: #721c24; }
+        .result__step { font-size: 0.65rem; color: #888; min-width: 80px; flex-shrink: 0; padding-top: 3px; }
+        .result--fail { background: #fff5f5; }
+        .diagnostic { margin-top: 6px; padding: 10px; background: #1e1e2e; color: #cdd6f4; border-radius: 6px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.72rem; line-height: 1.5; overflow-x: auto; }
+        .diagnostic summary { color: #cba6f7; font-weight: 600; cursor: pointer; margin-bottom: 6px; }
+        .diagnostic .diag-label { color: #89b4fa; font-weight: 600; }
+        .perf-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px; }
+        .perf-table th { background: #1a1a2e; color: #fff; padding: 10px 14px; text-align: left; font-size: 0.78rem; text-transform: uppercase; }
+        .perf-table td { padding: 8px 14px; border-bottom: 1px solid #f0f0f0; font-size: 0.82rem; }
+        .perf-table tr:last-child td { border-bottom: none; }
+        .perf-table tr:hover { background: #f8f9fa; }
+        .perf-table .perf-fast { color: #155724; font-weight: 600; }
+        .perf-table .perf-slow { color: #856404; font-weight: 600; }
+        .ai-prompt-section { background: #fff; border-radius: 10px; padding: 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+        .ai-prompt-section summary { cursor: pointer; font-weight: 700; font-size: 1rem; color: #1a1a2e; display: flex; align-items: center; gap: 8px; }
+        .ai-prompt-section summary .ai-icon { font-size: 1.2rem; }
+        .ai-prompt-box { margin-top: 12px; background: #1e1e2e; color: #cdd6f4; padding: 16px; border-radius: 8px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.75rem; line-height: 1.6; white-space: pre-wrap; word-break: break-word; max-height: 600px; overflow-y: auto; position: relative; }
+        .ai-prompt-copy { position: sticky; top: 0; float: right; background: #89b4fa; color: #1e1e2e; border: none; border-radius: 6px; padding: 6px 14px; cursor: pointer; font-weight: 700; font-size: 0.75rem; z-index: 1; }
+        .ai-prompt-copy:hover { background: #74c7ec; }
+        .ai-prompt-none { color: #28a745; font-weight: 600; padding: 20px; text-align: center; font-size: 0.95rem; }
+        .loading { text-align: center; padding: 60px; color: #666; }
+        .loading__spinner { display: inline-block; width: 36px; height: 36px; border: 3px solid #ddd; border-top-color: #1a1a2e; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <h1>Tests integration grille export</h1>
+    <p class="subtitle">Images de grille Crossword/FindTheWords &rarr; formatContentForDocument &rarr; modale resultat &rarr; modale preview</p>
+
+    <details class="info-box">
+        <summary>Comment ca marche ?</summary>
+        <p style="margin-top:8px;"><strong>Objectif :</strong> Verifier que les images de grille (<code>_gridImage</code>, <code>_solutionGridImage</code>) sont correctement integrees dans les exports documentaires (DOCX/PDF/ODT) depuis les deux chemins d'export : modale de resultat de generation (<code>ui.js</code>) et modale de previsualisation (<code>notifications.js</code>).</p>
+        <ol>
+            <li><strong>Formatage grille</strong> : verifie que <code>formatContentForDocument</code> produit des sections <code>image</code> quand <code>_gridImage</code>/<code>_solutionGridImage</code> sont presentes</li>
+            <li><strong>Modale resultat</strong> : verifie que <code>ui.js</code> contient la capture proactive via conteneur offscreen (<code>_captureGridInBackground</code>)</li>
+            <li><strong>Modale preview</strong> : verifie que <code>notifications.js</code> attend le rendu H5P (<code>_h5pRenderPromise</code>) avant la capture</li>
+            <li><strong>Coherence</strong> : verifie que les deux chemins utilisent les memes proprietes, modules et exporteurs</li>
+        </ol>
+    </details>
+
+    <div id="output">
+        <div class="loading"><div class="loading__spinner"></div><p style="margin-top:14px">Execution des tests en cours...</p></div>
+    </div>
+
+    <script type="module">
+        import { runAllTests, STEP_DESCRIPTIONS } from './tests/test-grid-export.js';
+        const output = document.getElementById('output');
+        const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+        function buildAIPromptSection(results, STEP_NAMES) {
+            const failures = results.filter(r => r.status === 'FAIL');
+            if (failures.length === 0) return `<div class="ai-prompt-section"><div class="ai-prompt-none">Aucune erreur ! Tous les tests d'integration grille passent.</div></div>`;
+            const byStep = new Map();
+            for (const f of failures) { const s = f.step || 0; if (!byStep.has(s)) byStep.set(s, []); byStep.get(s).push(f); }
+            let prompt = `Je travaille sur Caramel, une application web de generation d'activites pedagogiques.\nLes tests d'integration grille export (4 etapes) montrent ${failures.length} echec(s) sur ${results.length} assertions.\n\nFichiers concernes :\n- js/export/document-formatter.js (formatCrossword, formatFindTheWords)\n- js/ui/ui.js (_captureGridInBackground, export handler)\n- js/ui/notifications.js (_h5pRenderPromise, capture handler)\n- js/renderers/crossword-grid-capture.js\n- js/renderers/find-the-words-grid-capture.js\n\n=== ERREURS ===\n\n`;
+            for (const [step, sf] of byStep) {
+                prompt += `--- Etape ${step} : ${STEP_NAMES[step] || '?'} ---\n`;
+                for (const f of sf) {
+                    prompt += `  - ${f.message}\n`;
+                    if (f.diagnostic) { for (const [k, v] of Object.entries(f.diagnostic)) prompt += `    ${k}: ${Array.isArray(v) ? v.join(', ') : v}\n`; }
+                }
+                prompt += '\n';
+            }
+            prompt += `=== CE QUE JE TE DEMANDE ===\nAnalyse ces echecs. Pour chaque correction, indique le fichier, la cause racine, et le code corrige.\n`;
+            return `<div class="ai-prompt-section"><details open><summary><span class="ai-icon">&#129302;</span> Prompt pour corriger (${failures.length} echec(s))</summary><div class="ai-prompt-box"><button class="ai-prompt-copy">Copier le prompt</button>${esc(prompt)}</div></details></div>`;
+        }
+
+        try {
+            const { passCount, failCount, results, STEP_NAMES, timings } = await runAllTests();
+            const totalCount = passCount + failCount;
+            let html = `<div class="global-summary">
+                <div class="global-summary__card card--pass">${passCount}<small>PASS</small></div>
+                <div class="global-summary__card card--fail">${failCount}<small>FAIL</small></div>
+                <div class="global-summary__card card--total">${totalCount}<small>assertions</small></div>
+            </div>`;
+            const stepCount = STEP_NAMES.length - 1;
+            html += `<div class="step-bar">`;
+            for (let s = 1; s <= stepCount; s++) {
+                const sr = results.filter(r => r.step === s); const sp = sr.filter(r => r.status === 'PASS').length; const sf = sr.filter(r => r.status === 'FAIL').length;
+                const tt = STEP_DESCRIPTIONS[s] || '';
+                const cls = sf > 0 ? 'step-card--ko' : 'step-card--ok';
+                html += `<div class="step-card ${cls}"><div class="step-card__name">${STEP_NAMES[s]}</div><div class="step-card__count">${sp}/${sr.length}</div></div>`;
+            }
+            html += `</div>`;
+            // Filter
+            html += `<div class="filter-bar"><span class="filter-bar__label">Filtre :</span>
+                <button class="filter-btn filter-btn--active" data-filter="all">Tout</button>
+                <button class="filter-btn" data-filter="fail">Echecs</button>
+                <button class="filter-btn" data-filter="pass">OK</button></div>`;
+            // Results
+            html += `<div class="results" id="results-list">`;
+            for (const r of results) {
+                const cls = r.status === 'PASS' ? '' : 'result--fail';
+                const badge = r.status === 'PASS' ? '<span class="result__badge result__badge--pass">PASS</span>' : '<span class="result__badge result__badge--fail">FAIL</span>';
+                let diag = '';
+                if (r.diagnostic) {
+                    diag = `<div class="diagnostic"><details><summary>Diagnostic</summary>`;
+                    for (const [k, v] of Object.entries(r.diagnostic)) diag += `<span class="diag-label">${esc(k)}:</span> ${esc(JSON.stringify(v))}\n`;
+                    diag += `</details></div>`;
+                }
+                html += `<div class="result ${cls}" data-status="${r.status}"><span class="result__step">${STEP_NAMES[r.step] || ''}</span>${badge}<span class="result__msg">${esc(r.message)}${diag}</span></div>`;
+            }
+            html += `</div>`;
+            // Perf
+            if (timings.length > 0) {
+                html += `<h2 style="margin:20px 0 10px;font-size:1rem;">Performance</h2><table class="perf-table"><thead><tr><th>Categorie</th><th>Operation</th><th>Duree</th></tr></thead><tbody>`;
+                for (const t of timings) {
+                    const cls = t.durationMs < 50 ? 'perf-fast' : 'perf-slow';
+                    html += `<tr><td>${esc(t.category)}</td><td>${esc(t.operation)}</td><td class="${cls}">${t.durationMs} ms</td></tr>`;
+                }
+                html += `</tbody></table>`;
+            }
+            // AI prompt
+            html += buildAIPromptSection(results, STEP_NAMES);
+            output.innerHTML = html;
+            // Filter buttons
+            output.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    output.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('filter-btn--active'));
+                    btn.classList.add('filter-btn--active');
+                    const f = btn.dataset.filter;
+                    output.querySelectorAll('.result').forEach(r => {
+                        if (f === 'all') r.style.display = '';
+                        else if (f === 'fail') r.style.display = r.dataset.status === 'FAIL' ? '' : 'none';
+                        else r.style.display = r.dataset.status === 'PASS' ? '' : 'none';
+                    });
+                });
+            });
+            // Copy button
+            const copyBtn = output.querySelector('.ai-prompt-copy');
+            if (copyBtn) copyBtn.addEventListener('click', () => {
+                const text = copyBtn.parentElement.textContent.replace('Copier le prompt', '').trim();
+                navigator.clipboard.writeText(text);
+                copyBtn.textContent = 'Copie !';
+                setTimeout(() => copyBtn.textContent = 'Copier le prompt', 1500);
+            });
+        } catch (err) {
+            output.innerHTML = `<div style="color:red;padding:20px;background:#fff;border-radius:10px;"><strong>Erreur fatale :</strong> ${esc(err.message)}<pre style="margin-top:10px;font-size:0.75rem;color:#666;">${esc(err.stack)}</pre></div>`;
+        }
+    </script>
+</body>
+</html>
