@@ -215,8 +215,14 @@ export async function runAllTests() {
     // Charger tous les modules
     const importDur = await loadModules();
 
-    // Creer un conteneur de rendu
-    const container = document.getElementById('h5p-render-container');
+    // Creer un conteneur de rendu (le creer dynamiquement s'il n'existe pas, ex: lance depuis test-all.html)
+    let container = document.getElementById('h5p-render-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'h5p-render-container';
+        container.style.cssText = 'position:absolute;width:800px;height:600px;overflow:hidden;opacity:0;pointer-events:none;';
+        document.body.appendChild(container);
+    }
     const manager = new H5PManager();
 
     // Pipeline pour chaque activite

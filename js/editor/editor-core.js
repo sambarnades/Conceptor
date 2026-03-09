@@ -383,7 +383,7 @@ function setNestedValue(obj, path, value) {
 
     for (let i = 0; i < keys.length - 1; i++) {
         const key = isNaN(keys[i]) ? keys[i] : parseInt(keys[i]);
-        if (current[key] === undefined) {
+        if (current[key] === undefined || current[key] === null || typeof current[key] !== 'object') {
             current[key] = isNaN(keys[i + 1]) ? {} : [];
         }
         current = current[key];

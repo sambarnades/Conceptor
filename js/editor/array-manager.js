@@ -361,6 +361,18 @@ export class ArrayManager {
      * Rend le tableau complet
      */
     render() {
+        // Nettoyer les feedbackEditors orphelins dont le path commence par ce tableau
+        // (ils sont recréés par renderDynamicObjectField lors du re-render)
+        const { feedbackEditors } = window._jsonEditorFeedback || {};
+        if (feedbackEditors) {
+            const prefix = this.path + '.';
+            for (const key of feedbackEditors.keys()) {
+                if (key.startsWith(prefix)) {
+                    feedbackEditors.delete(key);
+                }
+            }
+        }
+
         this.container.innerHTML = '';
         this.container.className = 'json-editor__array';
 
@@ -849,22 +861,33 @@ export class ArrayManager {
         // Objet vide avec les champs du schema
         const item = {};
         for (const [key, fieldConfig] of Object.entries(this.config.itemSchema)) {
+            let defaultValue;
             if (fieldConfig.type === 'array') {
-                item[key] = [];
+                defaultValue = [];
+            } else if (fieldConfig.type === 'dynamicObject') {
+                // dynamicObject doit être un objet, jamais une chaîne
+                defaultValue = {};
             } else if (fieldConfig.type === 'object' && fieldConfig.schema) {
-                item[key] = {};
+                defaultValue = {};
                 for (const subKey of Object.keys(fieldConfig.schema)) {
-                    item[key][subKey] = '';
+                    defaultValue[subKey] = '';
                 }
             } else if (fieldConfig.type === 'checkbox') {
-                item[key] = fieldConfig.valueType === 'number' ? 0 : false;
+                defaultValue = fieldConfig.valueType === 'number' ? 0 : false;
             } else if (fieldConfig.type === 'number') {
-                item[key] = fieldConfig.default !== undefined ? fieldConfig.default : 0;
+                defaultValue = fieldConfig.default !== undefined ? fieldConfig.default : 0;
             } else if (fieldConfig.type === 'select' && fieldConfig.default) {
                 // Utiliser la valeur par défaut si définie (crucial pour le selector dynamicObject)
-                item[key] = fieldConfig.default;
+                defaultValue = fieldConfig.default;
             } else {
-                item[key] = fieldConfig.default || '';
+                defaultValue = fieldConfig.default || '';
+            }
+
+            // Clés pointées (ex: 'metadata.title') → créer la structure imbriquée
+            if (key.includes('.')) {
+                setNestedValue(item, key, defaultValue);
+            } else {
+                item[key] = defaultValue;
             }
         }
         return item;

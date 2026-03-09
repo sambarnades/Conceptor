@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <title>Caramel - Tous les tests</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; padding: 24px; color: #1a1a2e; }
+        h1 { font-size: 1.6rem; margin-bottom: 4px; }
+        .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+
+        /* === Resume global === */
+        .global-summary { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .global-summary__card {
+            padding: 14px 24px; border-radius: 10px; font-weight: 700; font-size: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-width: 130px; text-align: center;
+        }
+        .global-summary__card small { display: block; font-size: 0.7rem; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+        .card--pass { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; }
+        .card--fail { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: #721c24; }
+        .card--total { background: linear-gradient(135deg, #d1ecf1, #bee5eb); color: #0c5460; }
+        .card--suites { background: linear-gradient(135deg, #e2e3e5, #d6d8db); color: #383d41; }
+        .card--time { background: linear-gradient(135deg, #fff3cd, #ffeeba); color: #856404; }
+
+        /* === Tabs === */
+        .tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 2px solid #ddd; padding-bottom: 0; }
+        .tab {
+            padding: 10px 20px; cursor: pointer; border-radius: 8px 8px 0 0;
+            font-weight: 600; font-size: 0.85rem; background: #e9ecef; color: #666;
+            border: 1px solid transparent; border-bottom: none; position: relative; top: 2px;
+        }
+        .tab:hover { background: #f8f9fa; color: #333; }
+        .tab--active { background: #fff; color: #1a1a2e; border-color: #ddd; border-bottom: 2px solid #fff; }
+        .tab-panel { display: none; }
+        .tab-panel--active { display: block; }
+
+        /* === Tableau des suites === */
+        .summary-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px; }
+        .summary-table th { background: #1a1a2e; color: #fff; padding: 10px 14px; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .summary-table td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; font-size: 0.82rem; }
+        .summary-table tr:last-child td { border-bottom: none; }
+        .summary-table tr:hover { background: #f8f9fa; }
+        .cell--pass { color: #155724; font-weight: 600; }
+        .cell--fail { color: #721c24; font-weight: 700; background: #fff5f5; }
+        .cell--running { color: #856404; }
+        .cell--error { color: #721c24; font-style: italic; }
+
+        /* === Badge statut === */
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.7rem; }
+        .badge--pass { background: #d4edda; color: #155724; }
+        .badge--fail { background: #f8d7da; color: #721c24; }
+        .badge--running { background: #fff3cd; color: #856404; }
+        .badge--pending { background: #e2e3e5; color: #383d41; }
+        .badge--error { background: #f8d7da; color: #721c24; }
+
+        /* === Bouton relancer === */
+        .btn { padding: 6px 14px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; font-size: 0.8rem; }
+        .btn:hover { background: #f0f0f0; }
+        .btn--primary { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
+        .btn--primary:hover { background: #2a2a4e; }
+        .btn--small { padding: 3px 8px; font-size: 0.72rem; }
+
+        /* === Prompt IA === */
+        .ai-prompt-section { margin-top: 24px; background: #fff; border-radius: 10px; padding: 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+        .ai-prompt-section summary { cursor: pointer; font-weight: 700; font-size: 1rem; color: #1a1a2e; display: flex; align-items: center; gap: 8px; }
+        .ai-prompt-section summary .ai-icon { font-size: 1.2rem; }
+        .ai-prompt-box {
+            margin-top: 12px; background: #1e1e2e; color: #cdd6f4; padding: 16px;
+            border-radius: 8px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.75rem; line-height: 1.6; white-space: pre-wrap; word-break: break-word;
+            max-height: 600px; overflow-y: auto; position: relative;
+        }
+        .ai-prompt-copy {
+            position: sticky; top: 0; float: right; background: #89b4fa; color: #1e1e2e;
+            border: none; border-radius: 6px; padding: 6px 14px; cursor: pointer;
+            font-weight: 700; font-size: 0.75rem; z-index: 1;
+        }
+        .ai-prompt-copy:hover { background: #74c7ec; }
+        .ai-prompt-none { color: #28a745; font-weight: 600; padding: 20px; text-align: center; font-size: 0.95rem; }
+
+        /* === Detail par suite === */
+        .suite-detail { margin-bottom: 16px; background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
+        .suite-detail__header { padding: 10px 14px; background: #f8f9fa; border-bottom: 1px solid #eee; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .suite-detail__header:hover { background: #f0f0f0; }
+        .suite-detail__body { display: none; }
+        .suite-detail__body--open { display: block; }
+        .suite-detail__row {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 5px 14px; border-bottom: 1px solid #f5f5f5; font-size: 0.78rem;
+        }
+        .suite-detail__row:last-child { border-bottom: none; }
+        .suite-detail__row--fail { background: #fff5f5; }
+        .suite-detail__group { font-size: 0.62rem; color: #888; min-width: 160px; flex-shrink: 0; padding-top: 2px; }
+
+        /* === Filtres === */
+        .filter-bar { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+        .filter-bar__label { font-size: 0.75rem; color: #888; font-weight: 600; text-transform: uppercase; margin-right: 4px; }
+        .filter-btn { padding: 5px 12px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; font-size: 0.8rem; }
+        .filter-btn:hover { background: #f0f0f0; }
+        .filter-btn--active { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
+
+        /* === Loading === */
+        .loading { text-align: center; padding: 60px; color: #666; }
+        .loading__spinner { display: inline-block; width: 36px; height: 36px; border: 3px solid #ddd; border-top-color: #1a1a2e; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* === Iframe cachee === */
+        .hidden-iframes { position: absolute; width: 0; height: 0; overflow: hidden; }
+    </style>
+</head>
+<body>
+    <h1>Caramel &mdash; Tous les tests</h1>
+    <p class="subtitle">Lance les 14 suites de tests sequentiellement et agrege les resultats</p>
+
+    <div id="output">
+        <div class="loading">
+            <div class="loading__spinner"></div>
+            <p style="margin-top:14px">Initialisation des suites de tests...</p>
+        </div>
+    </div>
+
+    <!-- Conteneur pour les iframes cachees (CSS, UI, Integration) -->
+    <div class="hidden-iframes" id="iframe-container"></div>
+
+    <script type="module">
+        // =======================================================================
+        // DEFINITION DES SUITES
+        // =======================================================================
+
+        const SUITES = [
+            // --- Tests autonomes (sans iframe) ---
+            { id: 'definitions', name: 'Definitions', file: 'test-definitions.js', needsIframe: false },
+            { id: 'i18n', name: 'Internationalisation', file: 'test-i18n.js', needsIframe: false },
+            { id: 'editor-array', name: 'Editeur (ArrayManager)', file: 'test-editor-array.js', needsIframe: false },
+            { id: 'robustness', name: 'Robustesse (Healer)', file: 'test-robustness.js', needsIframe: false },
+            { id: 'h5p-prefetch', name: 'H5P Prefetch', file: 'test-h5p-prefetch.js', needsIframe: false },
+            { id: 'vendor-libs', name: 'Bibliotheques externes', file: 'test-vendor-libs.js', needsIframe: false },
+            { id: 'performance', name: 'Performance', file: 'test-performance.js', needsIframe: false },
+            { id: 'grid-export', name: 'Export grilles', file: 'test-grid-export.js', needsIframe: false },
+            { id: 'document-export', name: 'Export documents', file: 'test-document-export.js', needsIframe: false },
+            { id: 'edit-export-flow', name: 'Pipeline complet', file: 'test-edit-export-flow.js', needsIframe: false },
+            { id: 'generation-download', name: 'Generation & telechargement', file: 'test-generation-download.js', needsIframe: false },
+            // --- Tests avec iframe (necessitent le DOM de index.html) ---
+            { id: 'css', name: 'CSS & styles', file: 'test-css.js', needsIframe: true },
+            { id: 'ui', name: 'Interface utilisateur', file: 'test-ui.js', needsIframe: true },
+            { id: 'integration', name: 'Integration', file: 'test-integration.js', needsIframe: true, needsWindow: true }
+        ];
+
+        // =======================================================================
+        // ETAT
+        // =======================================================================
+
+        const suiteResults = new Map(); // id → { status, passCount, failCount, results, duration, error }
+        let totalPass = 0;
+        let totalFail = 0;
+        let totalDuration = 0;
+        const startTime = performance.now();
+
+        const output = document.getElementById('output');
+        const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+        // Initialiser toutes les suites comme 'pending'
+        for (const suite of SUITES) {
+            suiteResults.set(suite.id, { status: 'pending', passCount: 0, failCount: 0, results: [], duration: 0, error: null });
+        }
+
+        // =======================================================================
+        // RENDU
+        // =======================================================================
+
+        function render() {
+            totalPass = 0;
+            totalFail = 0;
+            totalDuration = 0;
+            let completedCount = 0;
+
+            for (const [id, r] of suiteResults) {
+                totalPass += r.passCount;
+                totalFail += r.failCount;
+                totalDuration += r.duration;
+                if (r.status !== 'pending' && r.status !== 'running') completedCount++;
+            }
+
+            const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
+
+            let html = '';
+
+            // --- Resume global ---
+            html += `<div class="global-summary">
+                <div class="global-summary__card card--pass">${totalPass}<small>PASS</small></div>
+                <div class="global-summary__card card--fail">${totalFail}<small>FAIL</small></div>
+                <div class="global-summary__card card--total">${totalPass + totalFail}<small>assertions</small></div>
+                <div class="global-summary__card card--suites">${completedCount}/${SUITES.length}<small>suites</small></div>
+                <div class="global-summary__card card--time">${elapsed}s<small>temps total</small></div>
+            </div>`;
+
+            // --- Tabs ---
+            html += `<div class="tabs">
+                <div class="tab tab--active" data-tab="suites">Suites de tests</div>
+                <div class="tab" data-tab="detail">Detail par suite</div>
+                <div class="tab" data-tab="ai">Prompt IA</div>
+            </div>`;
+
+            // ================================================================
+            // TAB 1 : Tableau des suites
+            // ================================================================
+            html += `<div class="tab-panel tab-panel--active" id="panel-suites">`;
+            html += `<table class="summary-table">
+                <thead><tr><th>Suite</th><th>Statut</th><th>Pass</th><th>Fail</th><th>Total</th><th>Duree</th><th></th></tr></thead><tbody>`;
+
+            for (const suite of SUITES) {
+                const r = suiteResults.get(suite.id);
+                const total = r.passCount + r.failCount;
+                const dur = (r.duration / 1000).toFixed(2);
+
+                let statusBadge, resultCell;
+                switch (r.status) {
+                    case 'pass':
+                        statusBadge = '<span class="badge badge--pass">PASS</span>';
+                        resultCell = `<td class="cell--pass"><strong>${r.passCount}/${total}</strong></td>`;
+                        break;
+                    case 'fail':
+                        statusBadge = '<span class="badge badge--fail">FAIL</span>';
+                        resultCell = `<td class="cell--fail"><strong>${r.passCount}/${total}</strong></td>`;
+                        break;
+                    case 'error':
+                        statusBadge = '<span class="badge badge--error">ERREUR</span>';
+                        resultCell = `<td class="cell--error" title="${esc(r.error)}">${esc(r.error?.substring(0, 60) || 'Erreur inconnue')}</td>`;
+                        break;
+                    case 'running':
+                        statusBadge = '<span class="badge badge--running">EN COURS</span>';
+                        resultCell = '<td class="cell--running">...</td>';
+                        break;
+                    default:
+                        statusBadge = '<span class="badge badge--pending">EN ATTENTE</span>';
+                        resultCell = '<td style="color:#ccc;">-</td>';
+                }
+
+                html += `<tr>
+                    <td><strong>${esc(suite.name)}</strong><br><span style="font-size:0.7rem;color:#999;">${esc(suite.file)}</span></td>
+                    <td>${statusBadge}</td>
+                    <td class="${r.passCount > 0 ? 'cell--pass' : ''}">${r.passCount || '-'}</td>
+                    <td class="${r.failCount > 0 ? 'cell--fail' : ''}">${r.failCount || '-'}</td>
+                    ${resultCell}
+                    <td style="font-size:0.78rem;color:#666;">${r.status === 'pass' || r.status === 'fail' ? dur + 's' : '-'}</td>
+                    <td>${r.status !== 'pending' && r.status !== 'running' ? `<a href="tests/${suite.file.replace('.js', '.html')}" target="_blank" class="btn btn--small">Ouvrir</a>` : ''}</td>
+                </tr>`;
+            }
+            html += `</tbody></table></div>`;
+
+            // ================================================================
+            // TAB 2 : Detail par suite
+            // ================================================================
+            html += `<div class="tab-panel" id="panel-detail">`;
+
+            // Filtre
+            html += `<div class="filter-bar">
+                <span class="filter-bar__label">Afficher :</span>
+                <button class="filter-btn filter-btn--active" data-filter-detail="all">Toutes les suites</button>
+                <button class="filter-btn" data-filter-detail="fail">Echecs uniquement</button>
+            </div>`;
+
+            for (const suite of SUITES) {
+                const r = suiteResults.get(suite.id);
+                if (r.status === 'pending' || r.status === 'running') continue;
+
+                const hasFails = r.failCount > 0;
+                const statusCls = hasFails ? 'badge--fail' : r.status === 'error' ? 'badge--error' : 'badge--pass';
+                const statusLabel = r.status === 'error' ? 'ERREUR' : (hasFails ? 'FAIL' : 'PASS');
+
+                html += `<div class="suite-detail" data-suite-has-fail="${hasFails}">
+                    <div class="suite-detail__header" data-toggle-suite="${suite.id}">
+                        <span class="badge ${statusCls}">${statusLabel}</span>
+                        <strong>${esc(suite.name)}</strong>
+                        <span style="color:#888;font-size:0.78rem;margin-left:auto;">${r.passCount} pass, ${r.failCount} fail</span>
+                    </div>
+                    <div class="suite-detail__body" id="suite-body-${suite.id}">`;
+
+                if (r.status === 'error') {
+                    html += `<div class="suite-detail__row suite-detail__row--fail">
+                        <span class="badge badge--error">ERR</span>
+                        <span>${esc(r.error)}</span>
+                    </div>`;
+                } else {
+                    for (const res of r.results) {
+                        const badge = res.status === 'PASS' ? 'badge--pass' : 'badge--fail';
+                        const rowCls = res.status === 'FAIL' ? ' suite-detail__row--fail' : '';
+                        const grp = res.group || res.stepName || '';
+                        html += `<div class="suite-detail__row${rowCls}">
+                            <span class="badge ${badge}">${res.status}</span>
+                            <span class="suite-detail__group">${esc(grp)}</span>
+                            <span>${esc(res.message)}</span>
+                        </div>`;
+                    }
+                }
+
+                html += `</div></div>`;
+            }
+            html += `</div>`;
+
+            // ================================================================
+            // TAB 3 : Prompt IA
+            // ================================================================
+            html += `<div class="tab-panel" id="panel-ai">`;
+
+            const allFailures = [];
+            for (const suite of SUITES) {
+                const r = suiteResults.get(suite.id);
+                if (r.status === 'error') {
+                    allFailures.push({ suite: suite.name, file: suite.file, message: `ERREUR FATALE : ${r.error}`, group: 'Fatal' });
+                } else {
+                    for (const res of r.results) {
+                        if (res.status === 'FAIL') {
+                            allFailures.push({ suite: suite.name, file: suite.file, message: res.message, group: res.group || res.stepName || '' });
+                        }
+                    }
+                }
+            }
+
+            if (allFailures.length === 0 && completedCount === SUITES.length) {
+                html += `<div class="ai-prompt-section">
+                    <div class="ai-prompt-none">Aucune erreur ! Tous les tests de toutes les suites passent.</div>
+                </div>`;
+            } else if (allFailures.length > 0) {
+                // Grouper par suite
+                const failBySuite = new Map();
+                for (const f of allFailures) {
+                    if (!failBySuite.has(f.suite)) failBySuite.set(f.suite, { file: f.file, failures: [] });
+                    failBySuite.get(f.suite).failures.push(f);
+                }
+
+                let prompt = '';
+                prompt += `Je travaille sur Caramel, une application web qui genere des activites H5P et Moodle.\n`;
+                prompt += `Les tests de non-regression montrent ${allFailures.length} echecs sur ${totalPass + totalFail} assertions, repartis sur ${failBySuite.size} suite(s).\n\n`;
+                prompt += `Architecture : JavaScript ES6 modules, pas de build system, pas de npm.\n`;
+                prompt += `Arborescence tests : tests/*.js avec HTML correspondants.\n\n`;
+                prompt += `=== ECHECS PAR SUITE ===\n\n`;
+
+                for (const [suiteName, info] of failBySuite) {
+                    prompt += `--- ${suiteName} (${info.file}) : ${info.failures.length} echec(s) ---\n`;
+
+                    // Grouper par group dans la suite
+                    const byGroup = new Map();
+                    for (const f of info.failures) {
+                        const g = f.group || '(sans groupe)';
+                        if (!byGroup.has(g)) byGroup.set(g, []);
+                        byGroup.get(g).push(f);
+                    }
+
+                    for (const [grp, grpFails] of byGroup) {
+                        if (grp !== '(sans groupe)') prompt += `  [${grp}]\n`;
+                        for (const f of grpFails) {
+                            prompt += `    - ${f.message}\n`;
+                        }
+                    }
+                    prompt += `\n`;
+                }
+
+                prompt += `=== CE QUE JE TE DEMANDE ===\n\n`;
+                prompt += `Analyse ces echecs et propose des corrections dans les fichiers sources concernes.\n`;
+                prompt += `Pour chaque correction, indique :\n`;
+                prompt += `1. Le fichier et la fonction a modifier\n`;
+                prompt += `2. Ce qui ne va pas (cause racine)\n`;
+                prompt += `3. Le code corrige\n`;
+                prompt += `Commence par les erreurs les plus en amont car elles peuvent cascader.\n`;
+
+                html += `<div class="ai-prompt-section">
+                    <details open>
+                        <summary><span class="ai-icon">&#129302;</span> Prompt pour corriger les erreurs (${allFailures.length} echecs dans ${failBySuite.size} suite(s))</summary>
+                        <div class="ai-prompt-box"><button class="ai-prompt-copy">Copier le prompt</button>${esc(prompt)}</div>
+                    </details>
+                </div>`;
+            } else {
+                html += `<div class="ai-prompt-section">
+                    <div class="ai-prompt-none" style="color:#856404;">Tests en cours d'execution... Le prompt sera genere une fois tous les tests termines.</div>
+                </div>`;
+            }
+
+            html += `</div>`;
+
+            output.innerHTML = html;
+
+            // --- Interactivite ---
+            bindEvents();
+        }
+
+        function bindEvents() {
+            // Tabs
+            output.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    output.querySelectorAll('.tab').forEach(t => t.classList.remove('tab--active'));
+                    output.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('tab-panel--active'));
+                    tab.classList.add('tab--active');
+                    const panel = output.querySelector(`#panel-${tab.dataset.tab}`);
+                    if (panel) panel.classList.add('tab-panel--active');
+                });
+            });
+
+            // Toggle detail suites
+            output.querySelectorAll('[data-toggle-suite]').forEach(header => {
+                header.addEventListener('click', () => {
+                    const body = output.querySelector(`#suite-body-${header.dataset.toggleSuite}`);
+                    if (body) body.classList.toggle('suite-detail__body--open');
+                });
+            });
+
+            // Filtre detail
+            output.querySelectorAll('[data-filter-detail]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    output.querySelectorAll('[data-filter-detail]').forEach(b => b.classList.remove('filter-btn--active'));
+                    btn.classList.add('filter-btn--active');
+                    const filter = btn.dataset.filterDetail;
+                    output.querySelectorAll('.suite-detail').forEach(sd => {
+                        if (filter === 'all') {
+                            sd.style.display = '';
+                        } else {
+                            sd.style.display = sd.dataset.suiteHasFail === 'true' ? '' : 'none';
+                        }
+                    });
+                });
+            });
+
+            // Copier prompt IA
+            const aiCopyBtn = output.querySelector('.ai-prompt-copy');
+            if (aiCopyBtn) {
+                aiCopyBtn.addEventListener('click', () => {
+                    const box = output.querySelector('.ai-prompt-box');
+                    if (box) {
+                        const clone = box.cloneNode(true);
+                        clone.querySelector('button')?.remove();
+                        navigator.clipboard.writeText(clone.textContent).then(() => {
+                            aiCopyBtn.textContent = 'Copie !';
+                            setTimeout(() => aiCopyBtn.textContent = 'Copier le prompt', 1500);
+                        });
+                    }
+                });
+            }
+        }
+
+        // =======================================================================
+        // EXECUTION DES SUITES
+        // =======================================================================
+
+        /**
+         * Lance une suite de tests autonome (sans iframe)
+         */
+        async function runStandaloneSuite(suite) {
+            const r = suiteResults.get(suite.id);
+            r.status = 'running';
+            render();
+
+            const t0 = performance.now();
+            try {
+                const mod = await import(`./tests/${suite.file}`);
+                const result = await mod.runAllTests();
+                r.passCount = result.passCount || 0;
+                r.failCount = result.failCount || 0;
+                r.results = result.results || [];
+                r.status = r.failCount > 0 ? 'fail' : 'pass';
+            } catch (e) {
+                r.status = 'error';
+                r.error = `${e.message}`;
+                console.error(`[${suite.name}] Erreur fatale:`, e);
+            }
+            r.duration = performance.now() - t0;
+            render();
+        }
+
+        /**
+         * Lance une suite de tests qui necessite une iframe (CSS, UI, Integration)
+         */
+        async function runIframeSuite(suite) {
+            const r = suiteResults.get(suite.id);
+            r.status = 'running';
+            render();
+
+            const t0 = performance.now();
+            try {
+                const iframe = document.createElement('iframe');
+                iframe.src = 'index.html';
+                iframe.style.width = '1200px';
+                iframe.style.height = '800px';
+                document.getElementById('iframe-container').appendChild(iframe);
+
+                // Attendre le chargement de l'iframe
+                await new Promise((resolve, reject) => {
+                    const timeout = setTimeout(() => reject(new Error('Timeout chargement iframe (30s)')), 30000);
+                    iframe.addEventListener('load', () => {
+                        clearTimeout(timeout);
+                        resolve();
+                    });
+                    iframe.addEventListener('error', () => {
+                        clearTimeout(timeout);
+                        reject(new Error('Erreur chargement iframe'));
+                    });
+                });
+
+                // Attendre que les tuiles soient generees (indique que le JS est initialise)
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                const iframeWindow = iframe.contentWindow;
+                await new Promise((resolve) => {
+                    const check = () => {
+                        const tiles = iframeDoc.querySelectorAll('.activity-tile');
+                        if (tiles.length > 0) resolve();
+                        else setTimeout(check, 200);
+                    };
+                    // Timeout securite
+                    setTimeout(resolve, 10000);
+                    check();
+                });
+
+                // Attendre les CSS si necessaire
+                if (suite.id === 'css') {
+                    await new Promise(r => setTimeout(r, 500));
+                }
+
+                const mod = await import(`./tests/${suite.file}`);
+                const result = suite.needsWindow
+                    ? await mod.runAllTests(iframeDoc, iframeWindow)
+                    : await mod.runAllTests(iframeDoc);
+
+                r.passCount = result.passCount || 0;
+                r.failCount = result.failCount || 0;
+                r.results = result.results || [];
+                r.status = r.failCount > 0 ? 'fail' : 'pass';
+
+                // Nettoyer l'iframe
+                iframe.remove();
+            } catch (e) {
+                r.status = 'error';
+                r.error = `${e.message}`;
+                console.error(`[${suite.name}] Erreur fatale:`, e);
+            }
+            r.duration = performance.now() - t0;
+            render();
+        }
+
+        // =======================================================================
+        // LANCEMENT SEQUENTIEL
+        // =======================================================================
+
+        render(); // Premier rendu (tout en attente)
+
+        for (const suite of SUITES) {
+            if (suite.needsIframe) {
+                await runIframeSuite(suite);
+            } else {
+                await runStandaloneSuite(suite);
+            }
+        }
+
+        // Rendu final
+        render();
+        console.log(`\n=== TOUS LES TESTS : ${totalPass} PASS, ${totalFail} FAIL, ${((performance.now() - startTime) / 1000).toFixed(1)}s ===`);
+    </script>
+</body>
+</html>

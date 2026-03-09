@@ -1013,7 +1013,7 @@ Caramel est distribué sous **licence GNU Affero General Public License v3.0 (AG
 🔗 [Consultez le Journal complet des modifications (CHANGELOG)](https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG)
 
 ### Dernières mises à jour :
-- **v5.0.1** : 🔧 Correctif export grilles mots croisés et mots mêlés (DOCX/ODT/PDF) depuis la modale de résultat. Nouveaux générateurs standalone de grilles (sans H5P). Attente du rendu H5P avant capture en prévisualisation.
+- **v5.0.2** : 🔧 Correctif export grilles mots croisés et mots mêlés (DOCX/ODT/PDF) depuis la modale de résultat. Nouveaux générateurs standalone de grilles (sans H5P). Attente du rendu H5P avant capture en prévisualisation.
 - **v5.0.0** : 🎉 **Modale post-génération**, **Éditeur intégré**, **Activité Drag & Drop**, **Activité Devoir**, **Téléchargement groupé**, Aide contextuelle à l'import, Auto-réparation JSON (JSON Healer), Restructuration complète du code.
 - **v4.1.0** : OCR Universel, Exports DOCX/ODT/PDF, Fenêtre de visualisation, Quizset, Optimisation performance (WebP).
 - **v4.0.0** : Modes Rapide & Avancé refondus, Interface utilisateur améliorée, Notifications enrichies.

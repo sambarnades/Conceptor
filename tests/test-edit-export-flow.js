@@ -242,18 +242,151 @@ function containsEditMarker(obj, marker = '__EDITED_BY_TEST__') {
 const ADDED_ELEMENT_MARKER = '__ADDED_BY_TEST__';
 
 /**
- * Simule l'ajout d'un element dans un tableau (critere, paire, question, bloc).
+ * Simule l'ajout d'un element dans un tableau (critere, paire, question, carte, mot...).
+ * Couvre TOUS les types H5P et Moodle/Elea ayant des tableaux editables.
  * Pour Devoir, ajoute aussi un niveau au premier critere existant (test imbrication).
  * Retourne un objet descriptif ou null si le type n'est pas concerne.
  */
 function simulateAddElement(obj, moduleKey) {
     if (!obj || typeof obj !== 'object') return null;
 
+    // --- Helper generique pour les tableaux simples ---
+    function addToArray(arrayKey, newItem) {
+        const arr = obj[arrayKey];
+        if (!Array.isArray(arr)) return null;
+        const originalCount = arr.length;
+        arr.push(newItem);
+        return { added: true, arrayKey, originalCount, newCount: arr.length };
+    }
+
     switch (moduleKey) {
+        // === H5P ===
+        case 'Flashcards':
+            return addToArray('cards', {
+                text: `Carte recto ${ADDED_ELEMENT_MARKER}`,
+                answer: `Carte verso ${ADDED_ELEMENT_MARKER}`
+            });
+
+        case 'MultipleChoice': {
+            if (!Array.isArray(obj.answers)) return null;
+            const originalCount = obj.answers.length;
+            obj.answers.push({
+                text: `Reponse ${ADDED_ELEMENT_MARKER}`,
+                correct: false,
+                tipsAndFeedback: { tip: '', chosenFeedback: '', notChosenFeedback: '' }
+            });
+            return { added: true, arrayKey: 'answers', originalCount, newCount: obj.answers.length };
+        }
+
+        case 'DialogCards':
+            return addToArray('dialogs', {
+                text: `Recto ${ADDED_ELEMENT_MARKER}`,
+                answer: `Verso ${ADDED_ELEMENT_MARKER}`
+            });
+
+        case 'Timeline': {
+            // timeline.date est le tableau d'evenements
+            const tl = obj.timeline;
+            if (!tl || !Array.isArray(tl.date)) return null;
+            const originalCount = tl.date.length;
+            tl.date.push({
+                startDate: '2025',
+                headline: `Evenement ${ADDED_ELEMENT_MARKER}`,
+                text: `Description ${ADDED_ELEMENT_MARKER}`
+            });
+            return { added: true, arrayKey: 'timeline.date', originalCount, newCount: tl.date.length };
+        }
+
+        case 'Crossword':
+            return addToArray('words', {
+                answer: 'TESTAJOUT',
+                clue: `Indice ${ADDED_ELEMENT_MARKER}`
+            });
+
+        case 'Essay':
+            return addToArray('keywords', {
+                keyword: `Motcle ${ADDED_ELEMENT_MARKER}`
+            });
+
+        case 'Chart':
+            return addToArray('listOfTypes', {
+                text: `Categorie ${ADDED_ELEMENT_MARKER}`,
+                value: 42,
+                color: 'rgba(70,130,180,0.8)'
+            });
+
+        case 'DragAndDrop': {
+            // Ajouter un element ET une zone
+            if (!Array.isArray(obj.elements) || !Array.isArray(obj.dropZones)) return null;
+            const originalCount = obj.elements.length;
+            const newZoneIdx = obj.dropZones.length;
+            obj.dropZones.push({ label: `Zone ${ADDED_ELEMENT_MARKER}` });
+            obj.elements.push({ text: `Element ${ADDED_ELEMENT_MARKER}`, zoneIndices: [newZoneIdx] });
+            return { added: true, arrayKey: 'elements', originalCount, newCount: obj.elements.length,
+                nestedAdd: { criterionIndex: -1, levelArrayKey: 'dropZones', originalLevelCount: newZoneIdx, newLevelCount: obj.dropZones.length } };
+        }
+
+        case 'Glossary':
+            return addToArray('items', {
+                title: `Terme ${ADDED_ELEMENT_MARKER}`,
+                text: `Definition ${ADDED_ELEMENT_MARKER}`
+            });
+
+        case 'QuizSet':
+        case 'QuizSetQCM':
+        case 'QuizSetVF': {
+            if (!Array.isArray(obj.questions)) return null;
+            const originalCount = obj.questions.length;
+            // Ajouter une question TrueFalse simple
+            obj.questions.push({
+                library: 'H5P.TrueFalse 1.8',
+                subContentId: crypto.randomUUID ? crypto.randomUUID() : 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
+                metadata: { title: `Question ${ADDED_ELEMENT_MARKER}` },
+                params: { question: `Vrai ou faux ? ${ADDED_ELEMENT_MARKER}`, correct: 'true' }
+            });
+            return { added: true, arrayKey: 'questions', originalCount, newCount: obj.questions.length };
+        }
+
+        case 'SortParagraphs': {
+            if (!Array.isArray(obj.paragraphs)) return null;
+            const originalCount = obj.paragraphs.length;
+            obj.paragraphs.push(`Paragraphe ${ADDED_ELEMENT_MARKER}`);
+            return { added: true, arrayKey: 'paragraphs', originalCount, newCount: obj.paragraphs.length };
+        }
+
+        case 'FillInTheBlanks': {
+            if (!Array.isArray(obj.questions)) return null;
+            const originalCount = obj.questions.length;
+            obj.questions.push(`Phrase avec un *trou* ${ADDED_ELEMENT_MARKER}`);
+            return { added: true, arrayKey: 'questions', originalCount, newCount: obj.questions.length };
+        }
+
+        case 'Summary': {
+            if (!Array.isArray(obj.summaries)) return null;
+            const originalCount = obj.summaries.length;
+            obj.summaries.push({
+                summary: [
+                    `Enonce correct ${ADDED_ELEMENT_MARKER}`,
+                    `Enonce incorrect ${ADDED_ELEMENT_MARKER}`
+                ]
+            });
+            return { added: true, arrayKey: 'summaries', originalCount, newCount: obj.summaries.length };
+        }
+
+        case 'SingleChoiceSet': {
+            if (!Array.isArray(obj.choices)) return null;
+            const originalCount = obj.choices.length;
+            obj.choices.push({
+                question: `Question ${ADDED_ELEMENT_MARKER}`,
+                answers: [`Bonne reponse ${ADDED_ELEMENT_MARKER}`, `Mauvaise reponse ${ADDED_ELEMENT_MARKER}`]
+            });
+            return { added: true, arrayKey: 'choices', originalCount, newCount: obj.choices.length };
+        }
+
+        // === Moodle/Elea ===
         case 'elea_devoir': {
             if (!Array.isArray(obj.criteria) || obj.criteria.length === 0) return null;
             const originalCount = obj.criteria.length;
-            // 1. Ajouter un nouveau critere complet
             obj.criteria.push({
                 description: `Critere ${ADDED_ELEMENT_MARKER}`,
                 levels: [
@@ -261,7 +394,6 @@ function simulateAddElement(obj, moduleKey) {
                     { score: 1, definition: `Niveau 1 ${ADDED_ELEMENT_MARKER}` }
                 ]
             });
-            // 2. Ajouter un niveau au premier critere existant (test tableau imbrique)
             const firstCriterion = obj.criteria[0];
             const originalLevelCount = firstCriterion.levels.length;
             const maxScore = Math.max(...firstCriterion.levels.map(l => l.score));
@@ -278,15 +410,13 @@ function simulateAddElement(obj, moduleKey) {
                 }
             };
         }
-        case 'elea_appariement': {
-            if (!Array.isArray(obj.pairs)) return null;
-            const originalCount = obj.pairs.length;
-            obj.pairs.push({
+
+        case 'elea_appariement':
+            return addToArray('pairs', {
                 question: `Question ${ADDED_ELEMENT_MARKER}`,
                 answer: `Reponse ${ADDED_ELEMENT_MARKER}`
             });
-            return { added: true, arrayKey: 'pairs', originalCount, newCount: obj.pairs.length };
-        }
+
         case 'elea_millionnaire': {
             if (!Array.isArray(obj.questions)) return null;
             const originalCount = obj.questions.length;
@@ -297,6 +427,7 @@ function simulateAddElement(obj, moduleKey) {
             });
             return { added: true, arrayKey: 'questions', originalCount, newCount: obj.questions.length };
         }
+
         case 'elea_qcm': {
             if (!Array.isArray(obj.questions)) return null;
             const originalCount = obj.questions.length;
@@ -309,10 +440,10 @@ function simulateAddElement(obj, moduleKey) {
             });
             return { added: true, arrayKey: 'questions', originalCount, newCount: obj.questions.length };
         }
+
         case 'elea_page': {
             if (!Array.isArray(obj.blocks)) return null;
             const originalCount = obj.blocks.length;
-            // Structure conforme au schema : type = valeur du select, data = objet pageBlockData
             obj.blocks.push({
                 type: '#12_context_paragraphs',
                 data: {
@@ -324,9 +455,164 @@ function simulateAddElement(obj, moduleKey) {
             });
             return { added: true, arrayKey: 'blocks', originalCount, newCount: obj.blocks.length };
         }
+
+        case 'elea_glossaire':
+            return addToArray('entries', {
+                concept: `Concept ${ADDED_ELEMENT_MARKER}`,
+                definition: `Definition ${ADDED_ELEMENT_MARKER}`
+            });
+
+        case 'elea_test': {
+            if (!Array.isArray(obj.questions)) return null;
+            const originalCount = obj.questions.length;
+            obj.questions.push({
+                type: 'truefalse',
+                content: {
+                    name: `Question ${ADDED_ELEMENT_MARKER}`,
+                    questiontext: `Enonce ${ADDED_ELEMENT_MARKER}`,
+                    feedback: `Feedback ${ADDED_ELEMENT_MARKER}`,
+                    answer: { value: true, feedback_true: 'Correct', feedback_false: 'Incorrect' }
+                }
+            });
+            return { added: true, arrayKey: 'questions', originalCount, newCount: obj.questions.length };
+        }
+
+        // === Types sans tableau : modifications structurelles sur champs texte ===
+
+        case 'TrueFalse': {
+            // Supprimer les feedbacks existants puis en recreer de nouveaux
+            const hadCorrect = !!obj.feedbackOnCorrect;
+            const hadWrong = !!obj.feedbackOnWrong;
+            delete obj.feedbackOnCorrect;
+            delete obj.feedbackOnWrong;
+            obj.feedbackOnCorrect = `Feedback correct ${ADDED_ELEMENT_MARKER}`;
+            obj.feedbackOnWrong = `Feedback incorrect ${ADDED_ELEMENT_MARKER}`;
+            return { added: true, arrayKey: '_feedbacks', originalCount: (hadCorrect ? 1 : 0) + (hadWrong ? 1 : 0), newCount: 2, fieldMode: 'replace' };
+        }
+
+        case 'DragTheWords': {
+            // Ajouter un mot marque *...*  et supprimer le premier mot marque existant
+            if (typeof obj.textField !== 'string') return null;
+            const markedWords = obj.textField.match(/\*[^*]+\*/g) || [];
+            const originalCount = markedWords.length;
+            if (originalCount === 0) return null;
+            // Supprimer le premier mot marque
+            obj.textField = obj.textField.replace(/\*[^*]+\*/, '___');
+            // Ajouter un mot marque a la fin (AJOUTTEST : sans underscores ni espaces pour rester un mot valide)
+            obj.textField += '\nLe mot final est *AJOUTTEST*.';
+            const newMarked = obj.textField.match(/\*[^*]+\*/g) || [];
+            return { added: true, arrayKey: '_textField.markedWords', originalCount, newCount: newMarked.length, fieldMode: 'textField' };
+        }
+
+        case 'MarkTheWords': {
+            // Ajouter un mot marque *...*  et supprimer le premier mot marque existant
+            if (typeof obj.textField !== 'string') return null;
+            const markedWords = obj.textField.match(/\*[^*]+\*/g) || [];
+            const originalCount = markedWords.length;
+            if (originalCount === 0) return null;
+            // Supprimer le premier mot marque
+            obj.textField = obj.textField.replace(/\*[^*]+\*/, '___');
+            // Ajouter un mot marque a la fin
+            obj.textField += ' *AJOUTTEST*';
+            const newMarked = obj.textField.match(/\*[^*]+\*/g) || [];
+            return { added: true, arrayKey: '_textField.markedWords', originalCount, newCount: newMarked.length, fieldMode: 'textField' };
+        }
+
+        case 'FindTheWords': {
+            // Ajouter un mot et supprimer le premier dans la liste CSV
+            if (typeof obj.wordList !== 'string') return null;
+            const words = obj.wordList.split(',').map(w => w.trim()).filter(Boolean);
+            const originalCount = words.length;
+            if (originalCount === 0) return null;
+            // Supprimer le premier mot
+            words.shift();
+            // Ajouter un mot a la fin (majuscules, pas d'espaces — contrainte grille)
+            words.push('AJOUTTEST');
+            obj.wordList = words.join(',');
+            return { added: true, arrayKey: '_wordList', originalCount, newCount: words.length, fieldMode: 'csv' };
+        }
+
         default:
             return null;
     }
+}
+
+// Marqueur pour identifier les elements supprimes par le test
+const DELETED_ELEMENT_MARKER = '__DELETED_BY_TEST__';
+
+/**
+ * Simule la suppression du dernier element d'un tableau principal.
+ * Retourne un objet descriptif ou null si le type n'a pas de tableau supprimable
+ * ou si le tableau est trop petit (min 2 elements pour pouvoir supprimer).
+ */
+function simulateDeleteElement(obj, moduleKey) {
+    if (!obj || typeof obj !== 'object') return null;
+
+    // Correspondance moduleKey → cle du tableau principal
+    const ARRAY_KEYS = {
+        // H5P
+        'Flashcards': 'cards',
+        'MultipleChoice': 'answers',
+        'DialogCards': 'dialogs',
+        'Crossword': 'words',
+        'Essay': 'keywords',
+        'Chart': 'listOfTypes',
+        'Glossary': 'items',
+        'QuizSet': 'questions',
+        'QuizSetQCM': 'questions',
+        'QuizSetVF': 'questions',
+        'SortParagraphs': 'paragraphs',
+        'FillInTheBlanks': 'questions',
+        'Summary': 'summaries',
+        'SingleChoiceSet': 'choices',
+        // Moodle
+        'elea_devoir': 'criteria',
+        'elea_appariement': 'pairs',
+        'elea_millionnaire': 'questions',
+        'elea_qcm': 'questions',
+        'elea_page': 'blocks',
+        'elea_glossaire': 'entries',
+        'elea_test': 'questions'
+    };
+
+    // Cas speciaux : Timeline (tableau imbrique) et DragAndDrop (2 tableaux)
+    if (moduleKey === 'Timeline') {
+        const tl = obj.timeline;
+        if (!tl || !Array.isArray(tl.date) || tl.date.length < 2) return null;
+        const originalCount = tl.date.length;
+        const removed = tl.date.pop();
+        return { deleted: true, arrayKey: 'timeline.date', originalCount, newCount: tl.date.length, removedItem: removed };
+    }
+
+    if (moduleKey === 'DragAndDrop') {
+        if (!Array.isArray(obj.elements) || obj.elements.length < 2) return null;
+        const originalCount = obj.elements.length;
+        const removed = obj.elements.pop();
+        return { deleted: true, arrayKey: 'elements', originalCount, newCount: obj.elements.length, removedItem: removed };
+    }
+
+    const arrayKey = ARRAY_KEYS[moduleKey];
+    if (!arrayKey) return null;
+
+    const arr = obj[arrayKey];
+    if (!Array.isArray(arr) || arr.length < 2) return null;
+
+    const originalCount = arr.length;
+    const removed = arr.pop();
+    return { deleted: true, arrayKey, originalCount, newCount: arr.length, removedItem: removed };
+}
+
+/**
+ * Resout un tableau a partir d'un objet et d'une cle.
+ * Gere : Glossary (obj est un tableau brut apres denorm), Timeline (timeline.date), cas standard.
+ */
+function _resolveArray(obj, arrayKey) {
+    // Glossary : denormalizeDataForSave retourne un tableau brut, pas {items: [...]}
+    if (Array.isArray(obj) && arrayKey === 'items') return obj;
+    // Timeline : tableau imbrique
+    if (arrayKey === 'timeline.date') return obj?.timeline?.date;
+    // Cas standard
+    return obj?.[arrayKey];
 }
 
 /** Verifie la structure H5P selon le type */
@@ -1083,20 +1369,53 @@ async function runStep5_EditorNormalize() {
                 `[5d.EditMarker] ${tc.file} : marqueur __EDITED_BY_TEST__ present`
             );
 
-            // Simuler l'ajout d'un element (activites Elea : tableaux criteria/pairs/questions/blocks)
+            // Simuler l'ajout d'un element (H5P + Moodle : tous les types)
             const addResult = simulateAddElement(editClone, tc.expectedModule);
             if (addResult) {
-                assert(
-                    addResult.newCount === addResult.originalCount + 1,
-                    `[5e.AddElement] ${tc.file} : element ajoute dans ${addResult.arrayKey} (${addResult.originalCount} → ${addResult.newCount})`
-                );
-                if (addResult.nestedAdd) {
+                if (addResult.fieldMode) {
+                    // Types sans tableau (TrueFalse, DragTheWords, MarkTheWords, FindTheWords)
+                    // L'ajout et la suppression sont combines en une seule operation
                     assert(
-                        addResult.nestedAdd.newLevelCount === addResult.nestedAdd.originalLevelCount + 1,
-                        `[5e2.AddLevel] ${tc.file} : niveau ajoute dans criteria[0].levels (${addResult.nestedAdd.originalLevelCount} → ${addResult.nestedAdd.newLevelCount})`
+                        addResult.added === true,
+                        `[5e.FieldEdit] ${tc.file} : modification ${addResult.fieldMode} dans ${addResult.arrayKey} (${addResult.originalCount} → ${addResult.newCount})`
+                    );
+                    assert(
+                        JSON.stringify(editClone).includes(ADDED_ELEMENT_MARKER) || JSON.stringify(editClone).includes('AJOUTTEST'),
+                        `[5e2.FieldMarker] ${tc.file} : marqueur present apres modification ${addResult.fieldMode}`
+                    );
+                } else {
+                    // Types avec tableau : ajout classique (+1)
+                    assert(
+                        addResult.newCount === addResult.originalCount + 1,
+                        `[5e.AddElement] ${tc.file} : element ajoute dans ${addResult.arrayKey} (${addResult.originalCount} → ${addResult.newCount})`
+                    );
+                    if (addResult.nestedAdd) {
+                        assert(
+                            addResult.nestedAdd.newLevelCount === addResult.nestedAdd.originalLevelCount + 1,
+                            `[5e2.AddNested] ${tc.file} : element imbrique ajoute dans ${addResult.nestedAdd.levelArrayKey} (${addResult.nestedAdd.originalLevelCount} → ${addResult.nestedAdd.newLevelCount})`
+                        );
+                    }
+                    // Verifier que le marqueur d'ajout est present
+                    assert(
+                        JSON.stringify(editClone).includes(ADDED_ELEMENT_MARKER),
+                        `[5e3.AddMarker] ${tc.file} : marqueur ADDED_BY_TEST present apres ajout`
                     );
                 }
                 state.addElementResult = addResult;
+            }
+
+            // Simuler la suppression d'un element (types avec tableau uniquement — les fieldMode font deja les deux)
+            const deleteResult = simulateDeleteElement(editClone, tc.expectedModule);
+            if (deleteResult) {
+                assert(
+                    deleteResult.newCount === deleteResult.originalCount - 1,
+                    `[5f.DeleteElement] ${tc.file} : element supprime de ${deleteResult.arrayKey} (${deleteResult.originalCount} → ${deleteResult.newCount})`
+                );
+                assert(
+                    deleteResult.removedItem !== undefined,
+                    `[5f2.DeletedItem] ${tc.file} : element supprime recupere`
+                );
+                state.deleteElementResult = deleteResult;
             }
 
             state.normalizedObj = normalized;
@@ -1140,24 +1459,34 @@ async function runStep6_SaveDenormalize() {
             );
 
             // Verification des textes preserves (vs l'original heale, en excluant le marqueur)
-            // On verifie que les valeurs de l'original sont dans le resultat
+            // Types fieldMode (TrueFalse, DragTheWords, MarkTheWords, FindTheWords) :
+            // l'edition a volontairement supprime/remplace des champs texte → comparer vs editedObj
+            // Glossary : structure change (tableau → {items}) → exclure
             if (tc.expectedModule !== 'Glossary') {
-                const origTexts = extractTextValues(state.healedObj);
+                const refObj = (state.addElementResult && state.addElementResult.fieldMode)
+                    ? state.editedObj   // Comparer vs l'objet apres edition (les champs modifies sont deja la)
+                    : state.healedObj;  // Comparer vs l'original (l'edition n'a ajoute qu'un marqueur)
+                const origTexts = extractTextValues(refObj);
                 const savedTexts = extractTextValues(saved);
-                // Chercher les textes originaux dans les textes sauves (en tenant compte du marqueur)
+                // Chercher les textes de reference dans les textes sauves (en tenant compte du marqueur)
                 const missing = origTexts.filter(t => {
                     return !savedTexts.some(st => st.includes(t) || t.includes(st.replace(' __EDITED_BY_TEST__', '')));
                 });
                 assert(
                     missing.length === 0,
-                    `[6c.Textes] ${tc.file} : textes originaux preserves apres save${missing.length > 0 ? ' (' + missing.length + ' manquants)' : ''}`,
+                    `[6c.Textes] ${tc.file} : textes preserves apres save${missing.length > 0 ? ' (' + missing.length + ' manquants)' : ''}`,
                     missing.length > 0 ? { missingValues: missing.slice(0, 5) } : null
                 );
             }
 
             // Verification LaTeX
-            if (state.latexPatternsHealed && state.latexPatternsHealed.length > 0) {
-                const latexCheck = verifyLatexPreserved(state.latexPatternsHealed, saved);
+            // Pour les types fieldMode, les patterns de reference sont ceux de l'objet edite
+            // (certains champs contenant du LaTeX ont ete supprimes par l'edition)
+            const latexRef = (state.addElementResult && state.addElementResult.fieldMode)
+                ? extractLatexPatterns(state.editedObj)
+                : state.latexPatternsHealed;
+            if (latexRef && latexRef.length > 0) {
+                const latexCheck = verifyLatexPreserved(latexRef, saved);
                 assert(
                     latexCheck.ok,
                     `[6d.LaTeX] ${tc.file} : LaTeX preserve apres round-trip edition${latexCheck.ok ? '' : ' (' + latexCheck.missing.length + ' manquants)'}`,
@@ -1165,10 +1494,32 @@ async function runStep6_SaveDenormalize() {
                 );
             }
 
-            // Verifier que les elements ajoutes ont survecu la denormalisation
-            if (state.addElementResult) {
+            // Verifier que l'ajout + suppression ont survecu la denormalisation
+            if (state.addElementResult && state.deleteElementResult) {
+                // On a ajoute puis supprime : le tableau doit avoir la taille finale apres suppression
+                const { arrayKey } = state.deleteElementResult;
+                const expectedCount = state.deleteElementResult.newCount;
+
+                // Resoudre le tableau cible (Glossary: saved est un tableau brut apres denorm, Timeline: imbrique)
+                const savedArray = _resolveArray(saved, arrayKey);
+
+                assert(
+                    Array.isArray(savedArray) && savedArray.length === expectedCount,
+                    `[6e.ArrayCount] ${tc.file} : tableau ${arrayKey} preserve apres ajout+suppression+denormalisation (${savedArray?.length || 0}/${expectedCount})`
+                );
+            } else if (state.addElementResult && state.addElementResult.fieldMode) {
+                // Types sans tableau (TrueFalse, DragTheWords, MarkTheWords, FindTheWords)
+                // L'ajout+suppression sont combines : verifier que le contenu modifie a survecu
+                const savedStr = JSON.stringify(saved);
+                const markerPresent = savedStr.includes(ADDED_ELEMENT_MARKER) || savedStr.includes('AJOUTTEST');
+                assert(
+                    markerPresent,
+                    `[6e.FieldEdit] ${tc.file} : modification ${state.addElementResult.fieldMode} preservee apres denormalisation`
+                );
+            } else if (state.addElementResult) {
+                // Pas de suppression : verifier que l'ajout a survecu
                 const { arrayKey, newCount, nestedAdd } = state.addElementResult;
-                const savedArray = saved[arrayKey];
+                const savedArray = _resolveArray(saved, arrayKey);
                 assert(
                     Array.isArray(savedArray) && savedArray.length === newCount,
                     `[6e.AddElement] ${tc.file} : element ajoute preserve apres denormalisation (${arrayKey}: ${savedArray?.length || 0}/${newCount})`
@@ -1181,7 +1532,7 @@ async function runStep6_SaveDenormalize() {
                     const levels = savedArray?.[nestedAdd.criterionIndex]?.levels;
                     assert(
                         Array.isArray(levels) && levels.length === nestedAdd.newLevelCount,
-                        `[6e2.AddLevel] ${tc.file} : niveau ajoute preserve dans criteria[0].levels (${levels?.length || 0}/${nestedAdd.newLevelCount})`
+                        `[6e2.AddNested] ${tc.file} : element imbrique preserve (${nestedAdd.levelArrayKey}: ${levels?.length || 0}/${nestedAdd.newLevelCount})`
                     );
                 }
             }
@@ -1216,6 +1567,23 @@ async function runStep7_RegenerateVerify() {
             reHealed = healStructureForActivity(reHealed, tc.expectedModule);
 
             if (tc.source === 'h5p') {
+                // Verifier que l'ajout+suppression ont survecu dans les donnees re-healees (avant processing)
+                if (state.deleteElementResult) {
+                    const { arrayKey, newCount } = state.deleteElementResult;
+                    const reHealedArray = _resolveArray(reHealed, arrayKey);
+                    assert(
+                        Array.isArray(reHealedArray) && reHealedArray.length === newCount,
+                        `[7f.ArrayCount] ${tc.file} : tableau ${arrayKey} preserve apres ajout+suppression+re-heal (${reHealedArray?.length || 0}/${newCount})`
+                    );
+                } else if (state.addElementResult && state.addElementResult.fieldMode) {
+                    const reHealedStr = JSON.stringify(reHealed);
+                    const markerPresent = reHealedStr.includes(ADDED_ELEMENT_MARKER) || reHealedStr.includes('AJOUTTEST');
+                    assert(
+                        markerPresent,
+                        `[7f.FieldEdit] ${tc.file} : modification ${state.addElementResult.fieldMode} preservee apres re-heal`
+                    );
+                }
+
                 // Re-processing H5P
                 const clone = JSON.parse(JSON.stringify(reHealed));
                 const reProcessed = await processH5PContent(tc.expectedModule, clone);
@@ -1253,9 +1621,12 @@ async function runStep7_RegenerateVerify() {
                     );
                 }
 
-                // LaTeX preserves
-                if (state.latexPatternsHealed && state.latexPatternsHealed.length > 0) {
-                    const latexCheck = verifyLatexPreserved(state.latexPatternsHealed, reContent);
+                // LaTeX preserves (utiliser les patterns post-edition pour les types fieldMode)
+                const latexRef7 = (state.addElementResult && state.addElementResult.fieldMode)
+                    ? extractLatexPatterns(state.editedObj)
+                    : state.latexPatternsHealed;
+                if (latexRef7 && latexRef7.length > 0) {
+                    const latexCheck = verifyLatexPreserved(latexRef7, reContent);
                     assert(
                         latexCheck.ok,
                         `[7d.LaTeX] ${tc.file} : LaTeX preserve dans la re-generation${latexCheck.ok ? '' : ' (' + latexCheck.missing.length + ' manquants)'}`
@@ -1305,10 +1676,17 @@ async function runStep7_RegenerateVerify() {
                     assert(false, `[7a.MoodleRegen] ${tc.file} : echec re-generation - ${e.message}`);
                 }
 
-                // Verifier que les elements ajoutes ont survecu la re-generation MBZ
-                if (state.addElementResult) {
+                // Verifier que l'ajout+suppression ont survecu la re-generation MBZ
+                if (state.deleteElementResult) {
+                    const { arrayKey, newCount } = state.deleteElementResult;
+                    const reHealedArray = _resolveArray(reHealed, arrayKey);
+                    assert(
+                        Array.isArray(reHealedArray) && reHealedArray.length === newCount,
+                        `[7f.ArrayCount] ${tc.file} : tableau ${arrayKey} preserve apres ajout+suppression+re-generation (${reHealedArray?.length || 0}/${newCount})`
+                    );
+                } else if (state.addElementResult) {
                     const { arrayKey, newCount, nestedAdd } = state.addElementResult;
-                    const reHealedArray = reHealed[arrayKey];
+                    const reHealedArray = _resolveArray(reHealed, arrayKey);
                     assert(
                         Array.isArray(reHealedArray) && reHealedArray.length === newCount,
                         `[7f.AddElement] ${tc.file} : element ajoute preserve dans MBZ re-genere (${arrayKey}: ${reHealedArray?.length || 0}/${newCount})`
@@ -1321,7 +1699,7 @@ async function runStep7_RegenerateVerify() {
                         const levels = reHealedArray?.[nestedAdd.criterionIndex]?.levels;
                         assert(
                             Array.isArray(levels) && levels.length === nestedAdd.newLevelCount,
-                            `[7f2.AddLevel] ${tc.file} : niveau ajoute preserve dans MBZ (criteria[0].levels: ${levels?.length || 0}/${nestedAdd.newLevelCount})`
+                            `[7f2.AddNested] ${tc.file} : element imbrique preserve dans MBZ (${nestedAdd.levelArrayKey}: ${levels?.length || 0}/${nestedAdd.newLevelCount})`
                         );
                     }
                 }
@@ -2183,9 +2561,13 @@ async function runStep8_MathEncodingPostEdit() {
         }
 
         // 8d. Comparaison pre/post : les formules math ne doivent pas avoir ete degradees
-        const preContent = state.processedContent || state.blobContent;
-        if (preContent) {
-            const mathPre = collectMathStrings(preContent);
+        // Pour les types fieldMode, utiliser l'objet edite comme reference
+        // (certains champs contenant des formules ont ete supprimes par l'edition)
+        const preContent8d = (state.addElementResult && state.addElementResult.fieldMode)
+            ? state.editedObj
+            : (state.processedContent || state.blobContent);
+        if (preContent8d) {
+            const mathPre = collectMathStrings(preContent8d);
             const mathPost = collectMathStrings(reContent);
             // On verifie que le nombre de formules n'a pas diminue significativement
             if (mathPre.length > 0) {

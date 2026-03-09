@@ -2,7 +2,7 @@
 
 **Création Assistée de Ressources et d'Activités Magistère et Éléa**
 
-[![Version](https://img.shields.io/badge/version-5.0.1-blue.svg)](https://caramel.forge.apps.education.fr/)
+[![Version](https://img.shields.io/badge/version-5.0.2-blue.svg)](https://caramel.forge.apps.education.fr/)
 [![Licence](https://img.shields.io/badge/licence-GNU%20AGPLv3-green.svg)](LICENSE)
 [![Plateforme](https://img.shields.io/badge/plateforme-Web-orange.svg)](https://caramel.forge.apps.education.fr/)
 
@@ -11,7 +11,7 @@
 ## 📋 Table des matières
 
 - [À propos](#-à-propos)
-- [Nouveautés de la version 5.0.1](#nouveautés-de-la-version-501)
+- [Nouveautés de la version 5.0.2](#nouveautés-de-la-version-502)
 - [Fonctionnalités principales](#-fonctionnalités-principales)
 - [Types d'activités supportées](#-types-dactivités-supportées)
 - [Accès et utilisation](#-accès-et-utilisation)
@@ -51,7 +51,7 @@
 
 ---
 
-## Nouveautés de la version 5.0.1
+## Nouveautés de la version 5.0.2
 
 ### Édition et nouvelles activités
 
@@ -731,7 +731,7 @@ caramel/
 ├── 📄 Fichiers de configuration et documentation (racine)
 │   ├── CLAUDE.md                        # 🤖 Instructions pour Claude Code
 │   ├── README.md                        # 📖 Documentation (ce fichier)
-│   ├── CHANGELOG                        # 📋 Journal de versions (v5.0.0 et antérieures)
+│   ├── CHANGELOG                        # 📋 Journal de versions (v5.0.2 et antérieures)
 │   ├── wiki.md                          # 📝 Page wiki du projet
 │   ├── LICENSE                          # ⚖️ Licence GNU AGPLv3
 │   ├── .mcp.json                        # Configuration MCP servers

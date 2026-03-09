@@ -31,8 +31,8 @@ export function setNestedValue(obj, path, value) {
     let current = obj;
     for (let i = 0; i < keys.length - 1; i++) {
         const key = keys[i];
-        if (current[key] === undefined || current[key] === null) {
-            // Creer l'objet ou le tableau manquant
+        if (current[key] === undefined || current[key] === null || typeof current[key] !== 'object') {
+            // Creer l'objet ou le tableau manquant (ou remplacer une primitive)
             const nextKey = keys[i + 1];
             current[key] = /^\d+$/.test(nextKey) ? [] : {};
         }

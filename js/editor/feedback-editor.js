@@ -46,14 +46,11 @@ export class FeedbackEditor {
      */
     normalizeRanges(ranges) {
         if (!Array.isArray(ranges) || ranges.length === 0) {
-            // Tranches par defaut (6 tranches standards)
+            // Tranches par defaut : 2 tranches (echec / reussite)
+            // L'enseignant peut scinder une tranche pour en ajouter si besoin
             return [
-                { from: 0, to: 10, feedback: '' },
-                { from: 11, to: 30, feedback: '' },
-                { from: 31, to: 50, feedback: '' },
-                { from: 51, to: 70, feedback: '' },
-                { from: 71, to: 90, feedback: '' },
-                { from: 91, to: 100, feedback: '' }
+                { from: 0, to: 50, feedback: '' },
+                { from: 51, to: 100, feedback: '' }
             ];
         }
 

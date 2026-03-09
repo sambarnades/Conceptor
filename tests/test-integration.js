@@ -210,12 +210,21 @@ async function runStep2_UIPipelineAll(doc) {
         console.log(`  [${i + 1}/${ALL_H5P_FIXTURES.length}] ${moduleKey}...`);
 
         try {
-            // 1. Cliquer sur la tuile
+            // 1. Cliquer sur la tuile (si deja active, cliquer ailleurs d'abord pour eviter le toggle)
             const tile = doc.querySelector(`.h5p-tile[data-module="${moduleKey}"]`);
             if (!tile) {
                 assert(false, `[2.${moduleKey}] Tuile introuvable dans le DOM`);
                 failedModules.push(moduleKey);
                 continue;
+            }
+            if (tile.classList.contains('active')) {
+                // La tuile est deja active : un clic la fermerait (toggle).
+                // On clique sur une autre tuile pour la desactiver, puis on re-clique.
+                const otherTile = doc.querySelector(`.h5p-tile:not([data-module="${moduleKey}"])`);
+                if (otherTile) {
+                    otherTile.click();
+                    await wait(300);
+                }
             }
             tile.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             tile.click();
@@ -315,7 +324,10 @@ async function runStep3_Notifications(doc) {
 
     await wait(300);
 
-    const expected = shared.generated;
+    // Les notifications sont par module unique (pas par fixture) :
+    // QuizSetQCM x2 et MarkTheWords x3 ne generent qu'une notification chacun.
+    const uniqueModules = new Set(ALL_H5P_FIXTURES.map(e => e.moduleKey));
+    const expected = Math.min(shared.generated, uniqueModules.size);
     const notifList = doc.querySelector('.notification-list');
     assert(!!notifList, `[3a.List] .notification-list presente`);
 

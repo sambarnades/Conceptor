@@ -4,6 +4,30 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 
 ---
 
+## [5.0.2] - 09-03-2026
+
+### Améliorations
+
+- **Tranches de feedback par défaut réduites** : Lors de l'ajout d'une nouvelle question dans l'éditeur (Quiz QCM, Quiz Vrai/Faux, Quiz Mixte…), le nombre de tranches de feedback passe de 6 (0-10, 11-30, 31-50, 51-70, 71-90, 91-100) à 2 (0-50%, 51-100%). Cela allège l'interface tout en conservant la possibilité d'ajouter manuellement des tranches supplémentaires.
+
+### Correctifs
+
+- **Éditeur QuizSet — ajout et suppression de questions** : Correction d'un crash (`Cannot create property on string`) qui empêchait l'ajout de nouvelles questions et la sauvegarde après suppression d'une question dans l'éditeur de Quiz. Le champ `params` (dynamicObject) était initialisé comme chaîne vide au lieu d'un objet, et les clés imbriquées (`metadata.title`) étaient créées à plat. Les feedbackEditors orphelins (issus de questions supprimées) provoquaient également une erreur lors de la collecte des données.
+
+### Tests
+
+- **Suite de tests globale (`test-all.html`)** : Nouveau fichier maître qui lance séquentiellement les 14 suites de tests existantes et affiche un tableau de synthèse avec statut, nombre de PASS/FAIL, durée et lien vers chaque suite. Trois onglets : résumé par suite, détail par assertion, et prompt IA prêt à copier en cas d'échec.
+- **Tests éditeur — ajout/suppression pour toutes les activités (`test-editor-array.js`)** : Nouvelle suite de tests unitaires vérifiant `createEmptyItem`, `setNestedValue` et `getNestedValue` pour les 25 schémas d'activités (H5P + Moodle). Pour chaque type ayant un tableau (questions, cartes, mots, critères…), le test crée des éléments, écrit via `setNestedValue`, supprime, réindexe et purge les `feedbackEditors` orphelins. Couvre aussi les sous-tableaux imbriqués. Ajout d'un groupe de 8 tests pour `FeedbackEditor.normalizeRanges` : vérification des 2 tranches par défaut (0-50/51-100) pour entrées vides, null et undefined, préservation des tranches existantes, et intégration DOM avec conteneur réel.
+- **Tests pipeline édition-export (`test-edit-export-flow.js`)** : Extension majeure de la couverture — simulation d'ajout et de suppression d'éléments pour **tous** les types d'activités dans la chaîne complète (8 étapes). Couvre désormais :
+  - **14 types H5P avec tableaux** : Flashcards (cards), MultipleChoice (answers), DialogCards (dialogs), Timeline (timeline.date), Crossword (words), Essay (keywords), Chart (listOfTypes), DragAndDrop (elements+dropZones), Glossary (items), QuizSet/QuizSetQCM/QuizSetVF (questions), SortParagraphs (paragraphs), FillInTheBlanks (questions), Summary (summaries), SingleChoiceSet (choices).
+  - **4 types H5P sans tableau** : TrueFalse (suppression/recréation des feedbacks), DragTheWords (ajout/suppression de mots marqués `*...*`), MarkTheWords (idem), FindTheWords (ajout/suppression dans la wordList CSV).
+  - **7 types Moodle/Éléa** : elea_devoir (criteria + niveaux imbriqués), elea_appariement (pairs), elea_millionnaire (questions), elea_qcm (questions), elea_page (blocks), elea_glossaire (entries), elea_test (questions).
+  - Vérification de la préservation des tailles de tableaux, des marqueurs et du LaTeX à travers normalisation, dénormalisation, re-heal et re-processing.
+- **Tests intégration (`test-integration.js`)** : Correction du comptage des notifications (modules uniques vs fixtures dupliquées) et du toggle de sidebar pour les fixtures répétées (QuizSetQCM ×2, MarkTheWords ×3).
+- **Tests H5P prefetch (`test-h5p-prefetch.js`)** : Correction de la création dynamique du conteneur `h5p-render-container` quand le test est lancé depuis `test-all.html`.
+
+---
+
 ## [5.0.1] - 05-03-2026
 
 ### Nouveautés

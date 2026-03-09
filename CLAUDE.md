@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Caramel** is a 100% client-side web application (v5.0.1) for generating H5P and Moodle/Éléa educational activities using AI. Built for French teachers, it creates interactive content packages (.h5p, .mbz) directly in the browser without any server-side processing of pedagogical data.
+**Caramel** is a 100% client-side web application (v5.0.2) for generating H5P and Moodle/Éléa educational activities using AI. Built for French teachers, it creates interactive content packages (.h5p, .mbz) directly in the browser without any server-side processing of pedagogical data.
 
 **Key characteristics:**
 - Pure frontend JavaScript (ES6 modules), no build system, no npm
