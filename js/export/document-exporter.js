@@ -3385,45 +3385,258 @@ const _odtMathCtx = {
 
 /**
  * Estime les dimensions d'une formule LaTeX pour le draw:frame ODT (en cm).
- * Basé sur l'analyse des tailles réelles calculées par LibreOffice :
+ * Utilise l'AST produit par parseLatex() pour un calcul récursif précis
+ * qui gère correctement les structures imbriquées (fractions dans fractions,
+ * racines avec exposants, matrices, etc.).
+ *
+ * Constantes calibrées sur les mesures réelles de LibreOffice Math :
  *   - \(x\) → 0.235 × 0.471 cm
  *   - \(\sqrt{x^2}=x\) → 1.219 × 0.572 cm
  *   - \(f(x)=\sqrt{x}\) → 1.639 × 0.540 cm
- * Heuristique : largeur proportionnelle au nombre de caractères « visuels »,
- * hauteur augmentée pour les structures verticales (frac, sqrt, sum...).
  */
+
+// Constantes de dimensionnement (cm) — calibrées sur LibreOffice Math 7.x
+const _MATH_DIM = {
+    CHAR_W:     0.22,   // largeur d'un caractère standard
+    DIGIT_W:    0.20,   // largeur d'un chiffre (légèrement plus étroit)
+    OP_W:       0.28,   // largeur d'un opérateur (+, =, etc.)
+    SYMBOL_W:   0.30,   // largeur d'un symbole grec/mathématique
+    SPACE_W:    0.10,   // largeur d'un espacement fin
+    DELIM_W:    0.15,   // largeur d'un délimiteur (parenthèse, crochet)
+    BASE_H:     0.45,   // hauteur de base d'une ligne de texte
+    FRAC_GAP:   0.12,   // espacement barre de fraction (au-dessus + en-dessous)
+    FRAC_PAD_W: 0.10,   // marge horizontale numérateur/dénominateur
+    SQRT_PAD_W: 0.18,   // largeur du radical (crochet √)
+    SQRT_PAD_H: 0.10,   // hauteur ajoutée par le radical au-dessus du contenu
+    NARY_W:     0.45,   // largeur d'un grand opérateur (∑, ∏, ∫)
+    NARY_H:     0.70,   // hauteur d'un grand opérateur seul
+    SCRIPT_SCALE: 0.65, // facteur d'échelle pour exposants/indices
+    ACCENT_H:   0.10,   // hauteur ajoutée par un accent (hat, vec, overline)
+    FUNC_W:     0.20,   // largeur par caractère du nom de fonction (sin, cos)
+    MATRIX_GAP_W: 0.25, // espacement entre colonnes de matrice
+    MATRIX_GAP_H: 0.10, // espacement entre lignes de matrice
+    DELIM_EXTRA_H: 0.08, // hauteur supplémentaire par délimiteur extensible
+    MIN_W:      0.20,   // largeur minimale
+    MIN_H:      0.40,   // hauteur minimale
+    MARGIN_W:   0.08,   // marge globale ajoutée à la largeur finale
+    MARGIN_H:   0.08,   // marge globale ajoutée à la hauteur finale
+};
+
+/**
+ * Calcule récursivement les dimensions {w, h} d'une liste de nœuds AST.
+ * @param {Array} nodes — Nœuds AST produits par parseLatex()
+ * @returns {{w: number, h: number}} Dimensions en cm
+ */
+function _measureNodes(nodes) {
+    if (!nodes || nodes.length === 0) return { w: 0, h: _MATH_DIM.BASE_H };
+
+    let totalW = 0;
+    let maxH = _MATH_DIM.BASE_H;
+
+    for (const node of nodes) {
+        const m = _measureNode(node);
+        totalW += m.w;
+        if (m.h > maxH) maxH = m.h;
+    }
+
+    return { w: totalW, h: maxH };
+}
+
+/**
+ * Calcule les dimensions d'un seul nœud AST.
+ * @param {Object} node — Nœud AST
+ * @returns {{w: number, h: number}}
+ */
+function _measureNode(node) {
+    if (!node) return { w: 0, h: _MATH_DIM.BASE_H };
+    const D = _MATH_DIM;
+
+    switch (node.type) {
+
+    // --- Atomes ---
+    case 'text':
+    case 'textContent':
+        return { w: (node.value || '').length * D.CHAR_W, h: D.BASE_H };
+
+    case 'number':
+        return { w: (node.value || '').length * D.DIGIT_W, h: D.BASE_H };
+
+    case 'operator':
+        return { w: D.OP_W, h: D.BASE_H };
+
+    case 'symbol':
+        return { w: D.SYMBOL_W, h: D.BASE_H };
+
+    case 'space':
+        return { w: D.SPACE_W, h: D.BASE_H };
+
+    case 'newline':
+        return { w: 0, h: 0 };
+
+    // --- Groupe (accolades) ---
+    case 'group':
+        return _measureNodes(node.children);
+
+    case 'font':
+        return _measureNodes(node.body);
+
+    // --- Fraction / Binôme ---
+    case 'frac':
+    case 'binom': {
+        const num = _measureNodes(node.type === 'binom' ? node.top : node.num);
+        const den = _measureNodes(node.type === 'binom' ? node.bottom : node.den);
+        const w = Math.max(num.w, den.w) + D.FRAC_PAD_W * 2;
+        const h = num.h + den.h + D.FRAC_GAP;
+        return { w, h };
+    }
+
+    // --- Racine carrée ---
+    case 'sqrt': {
+        const body = _measureNodes(node.body);
+        let w = body.w + D.SQRT_PAD_W;
+        let h = body.h + D.SQRT_PAD_H;
+        if (node.index) {
+            const idx = _measureNodes(node.index);
+            w += idx.w * D.SCRIPT_SCALE * 0.5;
+        }
+        return { w, h };
+    }
+
+    // --- Exposant ---
+    case 'sup': {
+        const base = _measureNode(node.base);
+        const sup = _measureNodes(node.sup);
+        const w = base.w + sup.w * D.SCRIPT_SCALE;
+        const h = Math.max(base.h, base.h * 0.5 + sup.h * D.SCRIPT_SCALE);
+        return { w, h };
+    }
+
+    // --- Indice ---
+    case 'sub': {
+        const base = _measureNode(node.base);
+        const sub = _measureNodes(node.sub);
+        const w = base.w + sub.w * D.SCRIPT_SCALE;
+        const h = Math.max(base.h, base.h * 0.5 + sub.h * D.SCRIPT_SCALE);
+        return { w, h };
+    }
+
+    // --- Exposant + Indice ---
+    case 'subsup': {
+        const base = _measureNode(node.base);
+        const sup = _measureNodes(node.sup);
+        const sub = _measureNodes(node.sub);
+        const scriptW = Math.max(sup.w, sub.w) * D.SCRIPT_SCALE;
+        const w = base.w + scriptW;
+        const h = Math.max(base.h, sub.h * D.SCRIPT_SCALE + sup.h * D.SCRIPT_SCALE + base.h * 0.2);
+        return { w, h };
+    }
+
+    // --- Grand opérateur (∑, ∏, ∫) ---
+    case 'nary': {
+        return { w: D.NARY_W, h: D.NARY_H };
+    }
+
+    // --- Fonction nommée (sin, cos, log...) ---
+    case 'func': {
+        const nameW = (node.name || '').length * D.FUNC_W;
+        return { w: nameW, h: D.BASE_H };
+    }
+
+    // --- Accent (hat, vec, overline...) ---
+    case 'accent': {
+        const body = _measureNodes(node.body);
+        return { w: body.w, h: body.h + D.ACCENT_H };
+    }
+
+    // --- Délimiteurs (\left ... \right) ---
+    case 'delimited': {
+        const body = _measureNodes(node.body);
+        const w = body.w + D.DELIM_W * 2;
+        const h = body.h + D.DELIM_EXTRA_H;
+        return { w, h };
+    }
+
+    // --- Matrice / Tableau ---
+    case 'matrix': {
+        if (!node.rows || node.rows.length === 0) return { w: D.MIN_W, h: D.BASE_H };
+        const numCols = Math.max(...node.rows.map(r => r.length));
+        const colWidths = new Array(numCols).fill(0);
+        const rowHeights = [];
+        for (const row of node.rows) {
+            let rowH = D.BASE_H;
+            for (let c = 0; c < row.length; c++) {
+                const cell = _measureNodes(row[c]);
+                if (cell.w > colWidths[c]) colWidths[c] = cell.w;
+                if (cell.h > rowH) rowH = cell.h;
+            }
+            rowHeights.push(rowH);
+        }
+        const w = colWidths.reduce((s, v) => s + v, 0) + D.MATRIX_GAP_W * (numCols - 1) + D.DELIM_W * 2;
+        const h = rowHeights.reduce((s, v) => s + v, 0) + D.MATRIX_GAP_H * (node.rows.length - 1);
+        return { w, h };
+    }
+
+    // --- Cas (système d'équations) ---
+    case 'cases': {
+        if (!node.rows || node.rows.length === 0) return { w: D.MIN_W, h: D.BASE_H };
+        let maxW = 0;
+        const rowHeights = [];
+        for (const row of node.rows) {
+            // Chaque ligne de cases est un tableau de cellules (souvent 1-2)
+            const flat = Array.isArray(row[0]) ? row.flat() : row;
+            const m = _measureNodes(flat);
+            if (m.w > maxW) maxW = m.w;
+            rowHeights.push(m.h);
+        }
+        const w = maxW + D.DELIM_W; // accolade ouvrante
+        const h = rowHeights.reduce((s, v) => s + v, 0) + D.MATRIX_GAP_H * (node.rows.length - 1);
+        return { w, h };
+    }
+
+    // --- Alignement multi-lignes ---
+    case 'aligned': {
+        if (!node.lines || node.lines.length === 0) return { w: D.MIN_W, h: D.BASE_H };
+        let maxW = 0;
+        const lineHeights = [];
+        for (const line of node.lines) {
+            const m = _measureNodes(line);
+            if (m.w > maxW) maxW = m.w;
+            lineHeights.push(m.h);
+        }
+        const w = maxW;
+        const h = lineHeights.reduce((s, v) => s + v, 0) + D.MATRIX_GAP_H * (node.lines.length - 1);
+        return { w, h };
+    }
+
+    // --- Align (séparateur &) ---
+    case 'align':
+        return { w: D.SPACE_W, h: 0 };
+
+    default:
+        return { w: D.CHAR_W, h: D.BASE_H };
+    }
+}
+
 function _estimateFormulaDimensions(latex) {
-    if (!latex) return { w: '0.5', h: '0.45' };
+    if (!latex) return { w: '0.500', h: '0.450' };
 
-    // Compter la complexité horizontale (nombre de caractères rendus)
-    let stripped = latex
-        .replace(/\\(frac|dfrac|sqrt|sum|prod|int|binom|left|right|begin|end|text|mathrm|mathbb|overline|vec|hat)\b/g, '')
-        .replace(/\\[a-zA-Z]+/g, 'X')   // chaque commande → 1 caractère
-        .replace(/[{}\\]/g, '')          // retirer accolades et backslashes
-        .replace(/\s+/g, '');            // retirer espaces
-    const charCount = Math.max(stripped.length, 1);
+    const D = _MATH_DIM;
 
-    // Détecter les structures qui influencent les dimensions
-    const hasFrac = /\\frac|\\dfrac|\\binom/.test(latex);
-    const hasSqrt = /\\sqrt/.test(latex);
-    const sqrtCount = (latex.match(/\\sqrt/g) || []).length;
-    const hasSum = /\\sum|\\prod|\\int/.test(latex);
-    const hasSup = /\^/.test(latex) || /\\hat|\\vec|\\overline/.test(latex);
+    try {
+        const ast = parseLatex(latex);
+        const { w: rawW, h: rawH } = _measureNodes(ast);
 
-    // Largeur : ~0.25cm par caractère + bonus pour les symboles structurels
-    let wVal = charCount * 0.25;
-    wVal += sqrtCount * 0.25;   // le radical prend de la place
-    if (hasSum) wVal += 0.3;    // le gros symbole somme/intégrale
-    const w = Math.max(0.25, wVal).toFixed(3);
+        // Appliquer les marges et les minimums
+        const w = Math.max(D.MIN_W, rawW + D.MARGIN_W).toFixed(3);
+        const h = Math.max(D.MIN_H, rawH + D.MARGIN_H).toFixed(3);
 
-    // Hauteur : base 0.47cm, +0.12 pour exposants/racines, +0.25 pour fractions
-    let h = 0.47;
-    if (hasSup || hasSqrt) h += 0.10;
-    if (hasFrac) h += 0.25;
-    if (hasSum) h += 0.15;
-    h = h.toFixed(3);
-
-    return { w, h };
+        return { w, h };
+    } catch (_e) {
+        // Fallback si le parsing échoue : estimation grossière
+        const charCount = Math.max(latex.replace(/\\[a-zA-Z]+|[{}\\]/g, '').replace(/\s+/g, '').length, 1);
+        const w = Math.max(D.MIN_W, charCount * D.CHAR_W + D.MARGIN_W).toFixed(3);
+        return { w, h: '0.530' };
+    }
 }
 
 /** Réinitialise le collecteur pour un nouvel export */
