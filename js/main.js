@@ -13,8 +13,12 @@ import { initVersionChecker } from './ui/version-checker.js';
 import { initEmergencyNotifications } from './ui/emergency-notification.js';
 import { initSmartPreloading } from './core/lib-loader.js';
 import { initNotificationCenter, initNotificationDropdown, initToastNotifications, initPreviewModal } from './ui/notifications.js';
+import { initDebugLogger } from './ui/debug-logger.js';
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Panneau de logs debug (ne fait rien si ?debug absent)
+    initDebugLogger();
+
     // Initialisation de l'interface de base
     setupFilters();
 

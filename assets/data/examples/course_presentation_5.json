@@ -1,0 +1,286 @@
+{
+  "title": "Le système solaire",
+  "slides": [
+    {
+      "type": "title",
+      "title": "Le système solaire",
+      "subtitle": "Découverte des planètes et de leurs caractéristiques"
+    },
+    {
+      "type": "content",
+      "title": "Qu'est-ce que le système solaire ?",
+      "text": "Le **système solaire** est un ensemble composé d'une étoile, le *Soleil*, et de tous les objets célestes qui gravitent autour de lui :\n- **8 planètes** : Mercure, Vénus, Terre, Mars, Jupiter, Saturne, Uranus, Neptune\n- Des **planètes naines** comme Pluton\n- Des **satellites naturels** (la Lune, Titan, Europe…)\n- Des astéroïdes, comètes et poussières interplanétaires\n\nLe Soleil concentre **99,86 %** de la masse totale du système."
+    },
+    {
+      "type": "content-with-table",
+      "title": "Les planètes en chiffres",
+      "text": "Voici les **caractéristiques principales** des 8 planètes du système solaire :",
+      "table": {
+        "headers": ["Planète", "Distance au Soleil (UA)", "Type", "Diamètre (km)"],
+        "rows": [
+          ["Mercure", "0,39", "Tellurique", "4 879"],
+          ["Vénus", "0,72", "Tellurique", "12 104"],
+          ["Terre", "1,00", "Tellurique", "12 756"],
+          ["Mars", "1,52", "Tellurique", "6 792"],
+          ["Jupiter", "5,20", "**Gazeuse**", "142 984"],
+          ["Saturne", "9,54", "**Gazeuse**", "120 536"],
+          ["Uranus", "19,19", "**Glacée**", "51 118"],
+          ["Neptune", "30,07", "**Glacée**", "49 528"]
+        ]
+      }
+    },
+    {
+      "type": "content",
+      "title": "Planètes telluriques et gazeuses",
+      "text": "On distingue deux grandes familles de planètes :\n\n**Les planètes telluriques** (Mercure, Vénus, Terre, Mars) :\n- Surface rocheuse et solide\n- Taille relativement petite\n- Proches du Soleil\n\n**Les planètes gazeuses** (Jupiter, Saturne) et **glacées** (Uranus, Neptune) :\n- Pas de surface solide définie\n- Taille beaucoup plus grande\n- Éloignées du Soleil\n- Possèdent de nombreux satellites et des anneaux"
+    },
+    {
+      "type": "quiz",
+      "title": "QCM — Les planètes",
+      "exercise": {
+        "library": "H5P.MultiChoice 1.16",
+        "question": "Quelle est la plus grande planète du système solaire ?",
+        "answers": [
+          { "text": "Jupiter", "correct": true, "tipsAndFeedback": { "chosenFeedback": "Exact ! Jupiter est une géante gazeuse avec un diamètre de 142 984 km." } },
+          { "text": "Saturne", "correct": false, "tipsAndFeedback": { "chosenFeedback": "Non, Saturne est la deuxième plus grande planète." } },
+          { "text": "Neptune", "correct": false },
+          { "text": "Terre", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Revoyez les caractéristiques des planètes." },
+          { "from": 26, "to": 50, "feedback": "C'est un début, continuez vos révisions." },
+          { "from": 51, "to": 75, "feedback": "Bonne connaissance !" },
+          { "from": 76, "to": 100, "feedback": "Excellent ! Vous connaissez bien les planètes." }
+        ]
+      }
+    },
+    {
+      "type": "content-quiz",
+      "title": "Le Soleil, notre étoile",
+      "text": "Le **Soleil** est une étoile de type *naine jaune*. Sa température de surface atteint environ **5 500 °C** et son noyau dépasse les 15 millions de degrés.",
+      "exercise": {
+        "library": "H5P.TrueFalse 1.8",
+        "question": "Le Soleil est la plus grande étoile de notre galaxie.",
+        "correct": "false",
+        "feedbackOnCorrect": "Bravo ! Le Soleil est une étoile de taille moyenne. De nombreuses étoiles sont bien plus massives.",
+        "feedbackOnWrong": "Non, le Soleil est en réalité une étoile de taille moyenne. Des étoiles comme Bételgeuse sont beaucoup plus grandes."
+      }
+    },
+    {
+      "type": "quiz",
+      "title": "Complétez les définitions",
+      "exercise": {
+        "library": "H5P.Blanks 1.14",
+        "taskDescription": "Retrouvez les termes manquants sur le système solaire.",
+        "questions": [
+          "Les planètes *telluriques* ont une surface rocheuse et sont proches du *Soleil*.",
+          "La planète *Jupiter* est la plus grande du système solaire, c'est une géante *gazeuse*.",
+          "L'unité de mesure des distances dans le système solaire est l' *unité astronomique/UA:Distance Terre-Soleil*."
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Revoyez les définitions de base du système solaire." },
+          { "from": 26, "to": 50, "feedback": "Certains termes sont encore à revoir." },
+          { "from": 51, "to": 75, "feedback": "Bonne maîtrise du vocabulaire !" },
+          { "from": 76, "to": 100, "feedback": "Excellent ! Vous maîtrisez parfaitement les termes." }
+        ]
+      }
+    },
+    {
+      "type": "content",
+      "title": "Les mouvements des planètes",
+      "text": "Chaque planète effectue deux mouvements principaux :\n\n**La révolution** : mouvement orbital autour du Soleil. Plus une planète est éloignée, plus sa période de révolution est longue.\n- Mercure : 88 jours\n- Terre : 365,25 jours\n- Neptune : 165 ans\n\n**La rotation** : mouvement sur elle-même autour de son axe.\n- La Terre tourne en 24 heures\n- Jupiter tourne en seulement 10 heures malgré sa taille"
+    },
+    {
+      "type": "content-quiz",
+      "title": "Les acteurs du système solaire",
+      "text": "Chaque planète a des caractéristiques uniques qui la distinguent des autres.",
+      "exercise": {
+        "library": "H5P.DragText 1.10",
+        "taskDescription": "Replacez les mots manquants pour compléter les descriptions des planètes.",
+        "textField": "*Mercure* est la planète la plus proche du Soleil.\n*Vénus* est surnommée l'étoile du berger.\n*Mars* est appelée la planète rouge.\n*Jupiter* possède la Grande Tache rouge.\n*Saturne* est célèbre pour ses anneaux visibles.",
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Revoyez les caractéristiques de chaque planète." },
+          { "from": 26, "to": 50, "feedback": "C'est un début, relisez le cours." },
+          { "from": 51, "to": 75, "feedback": "Bon travail !" },
+          { "from": 76, "to": 100, "feedback": "Parfait ! Vous connaissez bien les planètes." }
+        ]
+      }
+    },
+    {
+      "type": "quiz",
+      "title": "Repérez les mots clés",
+      "exercise": {
+        "library": "H5P.MarkTheWords 1.11",
+        "taskDescription": "Cliquez sur les **noms des planètes telluriques** dans le texte ci-dessous.",
+        "textField": "Le système solaire comprend huit planètes. *Mercure* est la plus proche du Soleil. *Vénus* est la plus chaude. La *Terre* abrite la vie. *Mars* possède le plus grand volcan. Jupiter est une géante gazeuse. Saturne a de magnifiques anneaux. Uranus tourne sur le côté. Neptune est la plus éloignée.",
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Revoyez la distinction entre planètes telluriques et gazeuses." },
+          { "from": 26, "to": 50, "feedback": "Attention, vérifiez bien quelles planètes sont telluriques." },
+          { "from": 51, "to": 75, "feedback": "Bien joué !" },
+          { "from": 76, "to": 100, "feedback": "Excellent ! Vous identifiez parfaitement les planètes telluriques." }
+        ]
+      }
+    },
+    {
+      "type": "quiz",
+      "title": "Quiz rapide — Vrai ou Faux",
+      "exercise": {
+        "library": "H5P.SingleChoiceSet 1.11",
+        "choices": [
+          {
+            "question": "Quelle planète est surnommée la planète rouge ?",
+            "answers": ["Mars", "Vénus", "Jupiter", "Mercure"]
+          },
+          {
+            "question": "Quelle planète possède le plus grand nombre de satellites connus ?",
+            "answers": ["Saturne", "Jupiter", "Uranus", "Neptune"]
+          },
+          {
+            "question": "Combien de planètes composent le système solaire ?",
+            "answers": ["8", "9", "7", "10"]
+          },
+          {
+            "question": "Quelle est la planète la plus proche du Soleil ?",
+            "answers": ["Mercure", "Vénus", "Terre", "Mars"]
+          }
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Il faut revoir les bases du système solaire." },
+          { "from": 26, "to": 50, "feedback": "Quelques erreurs, continuez vos efforts." },
+          { "from": 51, "to": 75, "feedback": "Bon travail !" },
+          { "from": 76, "to": 100, "feedback": "Excellent !" }
+        ]
+      }
+    },
+    {
+      "type": "content",
+      "title": "Les satellites et anneaux",
+      "text": "La plupart des planètes possèdent des **satellites naturels** :\n- La Terre a **la Lune**\n- Jupiter a plus de 90 satellites, dont les 4 galiléens : **Io**, **Europe**, **Ganymède**, **Callisto**\n- Saturne possède **Titan**, le seul satellite avec une atmosphère dense\n\nLes **anneaux** de Saturne sont composés de milliards de particules de glace et de roche, visibles depuis la Terre avec un télescope."
+    },
+    {
+      "type": "quiz",
+      "title": "Classez les planètes",
+      "exercise": {
+        "library": "H5P.DragQuestion 1.14",
+        "title": "Glissez chaque planète dans la bonne catégorie.",
+        "dropZones": [
+          { "label": "Telluriques", "correctElements": [0, 1, 2, 3] },
+          { "label": "Gazeuses", "correctElements": [4, 5] },
+          { "label": "Glacées", "correctElements": [6, 7] }
+        ],
+        "elements": [
+          { "text": "Mercure" },
+          { "text": "Vénus" },
+          { "text": "Terre" },
+          { "text": "Mars" },
+          { "text": "Jupiter" },
+          { "text": "Saturne" },
+          { "text": "Uranus" },
+          { "text": "Neptune" }
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Revoyez la classification des planètes." },
+          { "from": 26, "to": 50, "feedback": "Quelques confusions subsistent." },
+          { "from": 51, "to": 75, "feedback": "Bonne classification !" },
+          { "from": 76, "to": 100, "feedback": "Parfait ! Vous classez correctement toutes les planètes." }
+        ]
+      }
+    },
+    {
+      "type": "content-quiz",
+      "title": "Vocabulaire du système solaire",
+      "text": "Révisez les termes essentiels avec ces cartes de dialogue.",
+      "exercise": {
+        "library": "H5P.Dialogcards 1.9",
+        "title": "Vocabulaire du système solaire",
+        "description": "Retournez chaque carte pour vérifier votre réponse.",
+        "dialogs": [
+          {
+            "text": "Qu'est-ce qu'une unité astronomique (UA) ?",
+            "answer": "C'est la distance moyenne entre la Terre et le Soleil, soit environ 150 millions de km.",
+            "tips": { "front": "C'est une unité de mesure de distance." }
+          },
+          {
+            "text": "Qu'est-ce qu'une planète tellurique ?",
+            "answer": "Une planète à surface rocheuse et solide, proche du Soleil (Mercure, Vénus, Terre, Mars)."
+          },
+          {
+            "text": "Qu'est-ce que la révolution d'une planète ?",
+            "answer": "C'est le mouvement orbital d'une planète autour du Soleil. La Terre met 365,25 jours."
+          },
+          {
+            "text": "Qu'est-ce qu'un satellite naturel ?",
+            "answer": "Un corps céleste qui orbite autour d'une planète. Exemple : la Lune pour la Terre.",
+            "tips": { "front": "La Terre en possède un très connu." }
+          },
+          {
+            "text": "Pourquoi Mars est-elle rouge ?",
+            "answer": "Sa surface contient de l'oxyde de fer (rouille), ce qui lui donne sa couleur caractéristique."
+          }
+        ]
+      }
+    },
+    {
+      "type": "content-with-table",
+      "title": "Comparaison Terre / Mars",
+      "text": "La **Terre** et **Mars** sont souvent comparées car Mars est la planète la plus accessible pour l'exploration spatiale :",
+      "table": {
+        "headers": ["Caractéristique", "Terre", "Mars"],
+        "rows": [
+          ["Diamètre", "12 756 km", "6 792 km"],
+          ["Gravité", "9,81 m/s²", "3,72 m/s²"],
+          ["Atmosphère", "Azote + oxygène", "CO₂ (95 %)"],
+          ["Eau liquide", "Oui (océans)", "Non (glace aux pôles)"],
+          ["Satellites", "1 (Lune)", "2 (Phobos, Déimos)"]
+        ]
+      }
+    },
+    {
+      "type": "summary",
+      "title": "Synthèse du cours",
+      "exercise": {
+        "library": "H5P.Summary 1.10",
+        "intro": "Sélectionnez les affirmations correctes pour construire le résumé du cours.",
+        "summaries": [
+          {
+            "summary": [
+              "Le système solaire comporte 8 planètes",
+              "Le système solaire comporte 9 planètes",
+              "Le système solaire comporte 7 planètes"
+            ],
+            "tip": "Pluton a été reclassée comme planète naine en 2006."
+          },
+          {
+            "summary": [
+              "Les planètes telluriques ont une surface rocheuse",
+              "Les planètes telluriques sont les plus grandes",
+              "Les planètes telluriques n'ont pas de satellite"
+            ]
+          },
+          {
+            "summary": [
+              "Jupiter est la plus grande planète du système solaire",
+              "Saturne est la plus grande planète du système solaire",
+              "Neptune est la plus grande planète du système solaire"
+            ]
+          },
+          {
+            "summary": [
+              "Le Soleil est une étoile de taille moyenne",
+              "Le Soleil est la plus grande étoile de la galaxie",
+              "Le Soleil est une planète gazeuse"
+            ],
+            "tip": "Le Soleil est classé comme une naine jaune."
+          }
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Revoyez les points essentiels du cours." },
+          { "from": 26, "to": 50, "feedback": "C'est un bon début, quelques notions restent à consolider." },
+          { "from": 51, "to": 75, "feedback": "Bonne maîtrise d'ensemble du sujet !" },
+          { "from": 76, "to": 100, "feedback": "Parfait ! Vous maîtrisez le système solaire." }
+        ]
+      }
+    }
+  ]
+}

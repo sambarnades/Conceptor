@@ -293,6 +293,7 @@ export function buildFiles(data, options = {}) {
     );
     files[`${activityDir}/inforef.xml`] = replacePlaceholders(TEMPLATES.ACTIVITY_INFOREF_XML, data);
     files[`${activityDir}/roles.xml`] = TEMPLATES.ACTIVITY_ROLES_XML;
+    files[`${activityDir}/calendar.xml`] = TEMPLATES.ACTIVITY_CALENDAR_XML;
     files[`${activityDir}/filters.xml`] = TEMPLATES.ACTIVITY_FILTERS_XML;
 
     return files;

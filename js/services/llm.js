@@ -39,7 +39,8 @@ export const ACTIVITY_MODEL_OVERRIDES = {
     'QuizSetVF': 'gpt-oss-120b',    // Idem pour les Vrai/Faux
     'QuizSet': 'gpt-oss-120b',    // Idem pour les Quiz génériques
     'Page': 'gpt-oss-120b',       // Idem pour Page
-    'test_elea': 'gpt-oss-120b' // Idem pour Test (XML)
+    'test_elea': 'gpt-oss-120b', // Idem pour Test (XML)
+    'CoursePresentation': 'gpt-oss-120b' // Structure complexe avec slides et sous-exercices
 };
 
 // =======================================================================

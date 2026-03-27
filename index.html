@@ -15,6 +15,8 @@
 
     <!-- Component CSS (modular specific styles) -->
     <link rel="stylesheet" href="css/components/json-editor.css">
+    <link rel="stylesheet" href="css/components/richtext-editor.css">
+    <link rel="stylesheet" href="css/components/cloze-editor.css">
     <link rel="stylesheet" href="css/components/llm.css">
     <link rel="stylesheet" href="css/components/modale-aide.css">
     <link rel="stylesheet" href="css/components/mentions-legales.css">
@@ -39,6 +41,7 @@
 </head>
 
 <body>
+    <a href="#main-content" class="sr-only sr-only-focusable" data-key="skip_to_content">Aller au contenu principal</a>
     <header class="app-bar">
         <div class="header-left">
             <a href="./"><img src="assets/images/branding/logo_caramel.webp" alt="Logo Caramel" class="logo"></a>
@@ -107,7 +110,7 @@
     <div id="emergency-notification-container"></div>
 
 
-    <div class="container tiles-disabled">
+    <main id="main-content" class="container tiles-disabled">
         <div class="prompt-generator">
             <div class="mode-tabs">
                 <button class="mode-tab active" data-mode="simple" data-key="fast_mode">Mode Rapide</button>
@@ -118,17 +121,21 @@
 
                 <!-- Champs communs aux deux modes -->
                 <div class="common-fields">
+                    <label for="qui" class="sr-only" data-key="who_are_you">Qui êtes-vous ?</label>
                     <input id="qui" type="text" placeholder="Qui êtes-vous ? (ex: Enseignant, formateur...)"
-                        data-key="who_are_you" />
+                        data-key="who_are_you" aria-required="true" />
+                    <label for="quoi" class="sr-only" data-key="what_to_address">Que souhaitez-vous aborder ?</label>
                     <input id="quoi" type="text"
                         placeholder="Que souhaitez-vous aborder ? (ex: La révolution française...)"
-                        data-key="what_to_address" />
+                        data-key="what_to_address" aria-required="true" />
                 </div>
 
                 <!-- Champs supplémentaires du mode avancé -->
                 <div id="advanced-fields" class="advanced-fields">
+                    <label for="niveau" class="sr-only" data-key="level">Niveau</label>
                     <input id="niveau" type="text" placeholder="Niveau (ex : Seconde en bac professionnel)"
                         data-key="level" />
+                    <label for="nombreQuestions" class="sr-only" data-key="number_of_elements">Nombre de questions</label>
                     <input id="nombreQuestions" min="1" type="number"
                         placeholder="Nombre de questions/éléments dans le module (ex : 5)"
                         data-key="number_of_elements" />
@@ -197,13 +204,13 @@
             </div>
         </div>
 
-        <div class="activity-grid">
-            <div class="grid">
+        <div class="activity-grid" aria-live="polite">
+            <div class="grid" role="list">
                 <!-- Les tuiles seront insérées ici par le JS -->
             </div>
         </div>
     </div>
-    </div>
+    </main>
 
     <!-- Le conteneur pour le contenu H5P sera injecté dynamiquement par le JS -->
 
@@ -225,14 +232,14 @@
         </div>
         <div id="recipe-steps"></div>
     </div>
-    <div id="generation-result-modal" class="generation-result-modal hidden" role="dialog" aria-modal="true">
+    <div id="generation-result-modal" class="generation-result-modal hidden" role="dialog" aria-modal="true" aria-labelledby="generation-result-title">
         <div class="generation-result-modal__card">
             <div class="generation-result-modal__header">
                 <img src="assets/images/branding/logo_caramel.webp" alt="Caramel" class="generation-result-modal__logo">
-                <h2 class="generation-result-modal__title" data-key="caramel_success_title">Votre sucrerie est prête !</h2>
+                <h2 id="generation-result-title" class="generation-result-modal__title" data-key="caramel_success_title">Votre sucrerie est prête !</h2>
             </div>
             <div class="generation-result-modal__activity">
-                <img class="generation-result-modal__icon" src="" alt="">
+                <img class="generation-result-modal__icon" src="" alt="" role="presentation">
                 <span class="generation-result-modal__name"></span>
             </div>
             <div class="generation-result-modal__actions">
@@ -261,7 +268,7 @@
 
     <footer class="footer">
         <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank"><i
-                class="fas fa-info-circle"></i> Caramel v5.0.2</a>
+                class="fas fa-info-circle"></i> Caramel v5.1.0</a>
         <a href="mailto:gauthier.remande@ac-nantes.fr"><i class="fas fa-envelope"></i> Gauthier REMANDE</a>
         <a href="mailto:emmanuel.gaunard@ac-grenoble.fr"><i class="fas fa-envelope"></i> Emmanuel GAUNARD</a>
         <a href="https://forge.apps.education.fr/caramel/caramel"><i class="fas fa-code-branch"></i> Forge</a>
@@ -305,7 +312,7 @@
                     </button>
                 </div>
                 <div class="preview-modal__header-title-wrapper">
-                    <img class="preview-modal__icon" src="" alt="" style="display: none;">
+                    <img class="preview-modal__icon" src="" alt="" role="presentation" style="display: none;">
                     <h2 class="preview-modal__title" id="preview-modal-title"></h2>
                     <div class="preview-modal__platforms-list"></div>
                 </div>

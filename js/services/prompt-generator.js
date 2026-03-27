@@ -49,7 +49,8 @@ const ACTIVITY_CONFIG = {
     eleaQcm: { prefix: 'prompt_elea_qcm', resultKey: 'qcmResultat' },
     eleaGlossaire: { prefix: 'prompt_elea_glossaire', resultKey: 'glossaireXmlResultat' },
     eleaPage: { prefix: 'prompt_elea_page', resultKey: 'pageResultat' },
-    eleaDevoir: { prefix: 'prompt_elea_devoir', resultKey: 'devoirResultat' }
+    eleaDevoir: { prefix: 'prompt_elea_devoir', resultKey: 'devoirResultat' },
+    coursePresentation: { prefix: 'prompt_course_presentation', resultKey: 'coursePresentationResultat' }
 };
 
 // ============================================================================

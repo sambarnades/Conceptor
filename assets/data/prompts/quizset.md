@@ -18,7 +18,7 @@
 - Adaptation et vocabulaire : Adapte le ton, le vocabulaire et la difficulté des consignes au public indiqué. Sois pertinent et engageant.
 - Ton et feedback : Les consignes et remarques doivent être constructives, encourageantes, tournées vers l'apprentissage.
 - Conformité : Adapte OBLIGATOIREMENT les contenus aux références officielles en vigueur. Sauf mention contraire explicite, base-toi par défaut sur les programmes scolaires français (Eduscol) pour le public scolaire, et sur les textes réglementaires de la formation professionnelle pour les adultes.
-- Langue : Le contenu et les consignes doivent être rédigés en français.
+- Langue : Le contenu et les consignes doivent être rédigés dans la langue cible (français sauf indication contraire).
 
 # SOURCES
 - Tu utiliseras UNIQUEMENT les textes suivants pour générer ton activité.
@@ -51,8 +51,9 @@
 - \`chosenFeedback\` : feedback affiché **après** validation sous une mauvaise réponse cochée, expliquant en 1 phrase pourquoi elle est incorrecte. À réserver aux distracteurs ciblant une confusion fréquente.
 N'ajoute pas \`tipsAndFeedback\` sur toutes les réponses. Cible uniquement les cas les plus formateurs. Exemple : \`"tipsAndFeedback": { "tip": "Indice court", "chosenFeedback": "Explication en 1 phrase" }\`.
 - **Mise en forme :** Utilise la syntaxe Markdown pour le gras (\`**texte**\`) et l'italique (\`*texte*\`).
-- **LaTeX :** Pour les formules mathématiques, utilise EXCLUSIVEMENT le format LaTeX encapsulé par double échappement : \`\\\\( ... \\\\)\`. N'utilise JAMAIS le signe \`$\` seul.
+- **LaTeX :** Pour les formules mathématiques, utilise EXCLUSIVEMENT le format LaTeX encapsulé par double échappement : \`\\\\( ... \\\\)\`. N'utilise JAMAIS le signe \`$\` seul. Exemples : \`\\\\( \\\\frac{1}{2} \\\\)\`, \`\\\\( \\\\sqrt{2} \\\\)\`, \`\\\\( \\\\alpha \\\\)\`, \`\\\\( x^{2} \\\\)\`, \`\\\\( \\\\mathbb{R} \\\\)\`, \`\\\\( \\\\sin(\\\\theta) \\\\)\`, \`\\\\( \\\\sum_{k=0}^{n} k \\\\)\`, \`\\\\( x \\\\geq 0 \\\\)\`, \`\\\\( \\\\forall x \\\\in \\\\mathbb{R} \\\\)\`.
 - **Feedback :** Les feedbacks NE DOIVENT PAS contenir de LaTeX et de Markdown.
+- **Types d'exercices enfants :** Chaque question du QuizSet doit correspondre à l'un des types listés dans les RÈGLES SPÉCIFIQUES (QCM, Vrai/Faux, Mots à trous, Glisser les mots, Surligner les mots, Rédaction, Glisser-déposer). N'utilise aucun autre type de bibliothèque H5P.
 
 # EXEMPLE DE RENDU
 ```json

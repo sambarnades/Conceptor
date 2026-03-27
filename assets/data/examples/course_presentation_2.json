@@ -1,0 +1,115 @@
+{
+  "title": "Les fonctions en mathématiques",
+  "slides": [
+    {
+      "type": "title",
+      "title": "Les fonctions en mathématiques",
+      "subtitle": "Définitions, représentations et propriétés"
+    },
+    {
+      "type": "content",
+      "title": "Qu'est-ce qu'une fonction ?",
+      "text": "Une **fonction** est une relation qui associe à chaque élément d'un ensemble de départ *exactement un* élément d'un ensemble d'arrivée.\n\nOn note \\\\( f : x \\mapsto f(x) \\\\) où :\n- \\\\( x \\\\) est la **variable** (ou antécédent)\n- \\\\( f(x) \\\\) est l'**image** de \\\\( x \\\\) par \\\\( f \\\\)\n\nExemple : la fonction \\\\( f(x) = 2x + 3 \\\\) est une fonction **affine**."
+    },
+    {
+      "type": "content-with-table",
+      "title": "Tableau de valeurs",
+      "text": "Voici le tableau de valeurs de la fonction \\\\( f(x) = 2x + 3 \\\\) :",
+      "table": {
+        "headers": ["x", "-2", "-1", "0", "1", "2", "3"],
+        "rows": [
+          ["f(x)", "-1", "1", "3", "5", "7", "9"]
+        ]
+      }
+    },
+    {
+      "type": "quiz",
+      "title": "QCM — Images et antécédents",
+      "exercise": {
+        "library": "H5P.MultiChoice 1.16",
+        "question": "Si \\\\( f(x) = 2x + 3 \\\\), quelle est l'image de 4 ?",
+        "answers": [
+          { "text": "11", "correct": true, "tipsAndFeedback": { "chosenFeedback": "Exact ! f(4) = 2×4 + 3 = 11." } },
+          { "text": "8", "correct": false, "tipsAndFeedback": { "chosenFeedback": "Attention, il faut aussi ajouter 3." } },
+          { "text": "14", "correct": false },
+          { "text": "7", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Revoyez le calcul d'image." },
+          { "from": 26, "to": 50, "feedback": "Presque, vérifiez votre calcul." },
+          { "from": 51, "to": 75, "feedback": "Bien !" },
+          { "from": 76, "to": 100, "feedback": "Parfait !" }
+        ]
+      }
+    },
+    {
+      "type": "content-quiz",
+      "title": "Fonction affine vs linéaire",
+      "text": "Une fonction **linéaire** passe par l'origine : \\\\( f(x) = ax \\\\).\nUne fonction **affine** a une ordonnée à l'origine : \\\\( f(x) = ax + b \\\\) avec \\\\( b \\neq 0 \\\\).",
+      "exercise": {
+        "library": "H5P.TrueFalse 1.8",
+        "question": "La fonction \\\\( f(x) = 3x \\\\) est une fonction affine.",
+        "correct": "false",
+        "feedbackOnCorrect": "Bravo ! C'est une fonction linéaire car b = 0.",
+        "feedbackOnWrong": "Non, f(x) = 3x est une fonction linéaire (pas affine) car il n'y a pas de terme constant."
+      }
+    },
+    {
+      "type": "quiz",
+      "title": "Compléter les définitions",
+      "exercise": {
+        "library": "H5P.Blanks 1.14",
+        "taskDescription": "Complétez les définitions suivantes sur les fonctions.",
+        "questions": [
+          "L' *image* de x par f est le nombre f(x).",
+          "Si f(x) = y, alors x est un *antécédent* de y par f.",
+          "Une fonction *affine* s'écrit sous la forme f(x) = ax + b."
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Revoyez les définitions de base." },
+          { "from": 26, "to": 50, "feedback": "Certaines notions sont encore fragiles." },
+          { "from": 51, "to": 75, "feedback": "Bonne maîtrise du vocabulaire." },
+          { "from": 76, "to": 100, "feedback": "Excellent ! Vous maîtrisez le vocabulaire des fonctions." }
+        ]
+      }
+    },
+    {
+      "type": "summary",
+      "title": "Synthèse du cours",
+      "exercise": {
+        "library": "H5P.Summary 1.10",
+        "intro": "Sélectionnez les affirmations correctes pour construire le résumé.",
+        "summaries": [
+          {
+            "summary": [
+              "Une fonction associe à chaque élément exactement une image",
+              "Une fonction associe à chaque élément plusieurs images",
+              "Une fonction n'a pas besoin d'ensemble de départ"
+            ]
+          },
+          {
+            "summary": [
+              "f(x) = ax + b est une fonction affine",
+              "f(x) = ax + b est une fonction linéaire",
+              "f(x) = ax + b est une fonction constante"
+            ]
+          },
+          {
+            "summary": [
+              "Une fonction linéaire passe par l'origine",
+              "Une fonction linéaire ne passe jamais par l'origine",
+              "Une fonction linéaire est toujours croissante"
+            ]
+          }
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Revoyez les notions clés du cours." },
+          { "from": 26, "to": 50, "feedback": "C'est un bon début." },
+          { "from": 51, "to": 75, "feedback": "Bonne compréhension d'ensemble." },
+          { "from": 76, "to": 100, "feedback": "Parfait ! Vous maîtrisez les fonctions." }
+        ]
+      }
+    }
+  ]
+}

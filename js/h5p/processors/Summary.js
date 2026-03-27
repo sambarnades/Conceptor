@@ -8,7 +8,7 @@
  * @exports {Object} default.process - Transformation principale
  */
 import { translations } from '../../core/translation.js';
-import { generateUUID } from '../../core/utils.js';
+import { formatTextToHtml, generateUUID } from '../../core/utils.js';
 
 
 export default {
@@ -17,13 +17,15 @@ export default {
             intro: jsonObj.intro || translations.h5p_summary_intro || "Choisissez l'affirmation correcte.",
             summaries: (Array.isArray(jsonObj.summaries) ? jsonObj.summaries : []).map(s => ({
                 ...s,
+                summary: Array.isArray(s.summary) ? s.summary.map(text => formatTextToHtml(text)) : s.summary,
                 subContentId: generateUUID(),
                 tip: s?.tip || ""
             })),
             behaviour: {
                 enableRetry: true,
                 enableSolutionsButton: true,
-                passPercentage: 50
+                passPercentage: 50,
+                ...(jsonObj.behaviour || {})
             },
             solvedLabel: translations.h5p_summary_solved_label || "Progression :",
             scoreLabel: translations.h5p_summary_score_label || "Mauvaises réponses :",

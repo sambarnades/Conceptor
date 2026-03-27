@@ -28,7 +28,18 @@ export default {
                 tips: {
                     front: tips?.front ? formatTextToHtml(tips.front) : '',
                     back: tips?.back ? formatTextToHtml(tips.back) : ''
-                }
+                },
+                // Image optionnelle — structure attendue par H5P.Dialogcards semantics
+                ...(dialog.image && dialog.image.path ? {
+                    image: {
+                        path: dialog.image.path,
+                        mime: dialog.image.mime || "image/jpeg",
+                        copyright: { license: "U" },
+                        width: dialog.image.width || 0,
+                        height: dialog.image.height || 0
+                    },
+                    imageAltText: dialog.imageAltText || ""
+                } : {})
             };
         });
 
@@ -40,7 +51,8 @@ export default {
                 enableRetry: true,
                 disableBackwardsNavigation: false,
                 scaleTextNotCard: true,
-                randomCards: false
+                randomCards: false,
+                ...(jsonObj.behaviour || {})
             },
             answer: translations.h5p_dialog_cards_answer || "Retourner",
             next: translations.h5p_next || "Suivant",
@@ -51,7 +63,7 @@ export default {
             cardBackLabel: translations.h5p_dialog_cards_card_back_label || "Verso de la carte",
             tipButtonLabel: translations.h5p_tip_label || "Indice",
             audioNotSupported: translations.h5p_dialog_cards_audio_not_supported || "Votre navigateur ne supporte pas ce format audio",
-            mode: "normal",
+            mode: jsonObj.mode || "normal",
             correctAnswer: translations.h5p_dialog_cards_correct_answer || "J'ai eu bon !",
             incorrectAnswer: translations.h5p_dialog_cards_incorrect_answer || "Je me suis trompé",
             round: translations.h5p_dialog_cards_round || "Manche @round",

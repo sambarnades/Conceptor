@@ -55,7 +55,8 @@ const ALL_H5P = [
     { key: 'DialogCards',      fixture: 'dialog_cards_1.json' },
     { key: 'QuizSet',          fixture: 'quiz_mixte_1.json' },
     { key: 'QuizSetQCM',       fixture: 'quiz_qcm_1.json' },
-    { key: 'QuizSetQCM',       fixture: 'quiz_qcm_5.json' }
+    { key: 'QuizSetQCM',       fixture: 'quiz_qcm_5.json' },
+    { key: 'QuizSetQCM',       fixture: 'quiz_qcm_formules_test.json' }
 ];
 
 // ============================================================================

@@ -2,7 +2,7 @@
 
 **Création Assistée de Ressources et d'Activités Magistère et Éléa**
 
-[![Version](https://img.shields.io/badge/version-5.0.2-blue.svg)](https://caramel.forge.apps.education.fr/)
+[![Version](https://img.shields.io/badge/version-5.1.0-blue.svg)](https://caramel.forge.apps.education.fr/)
 [![Licence](https://img.shields.io/badge/licence-GNU%20AGPLv3-green.svg)](LICENSE)
 [![Plateforme](https://img.shields.io/badge/plateforme-Web-orange.svg)](https://caramel.forge.apps.education.fr/)
 
@@ -11,7 +11,7 @@
 ## 📋 Table des matières
 
 - [À propos](#-à-propos)
-- [Nouveautés de la version 5.0.2](#nouveautés-de-la-version-502)
+- [Nouveautés de la version 5.1.0](#nouveautés-de-la-version-510)
 - [Fonctionnalités principales](#-fonctionnalités-principales)
 - [Types d'activités supportées](#-types-dactivités-supportées)
 - [Accès et utilisation](#-accès-et-utilisation)
@@ -51,9 +51,39 @@
 
 ---
 
-## Nouveautés de la version 5.0.2
+## Nouveautés de la version 5.1.0
 
-### Édition et nouvelles activités
+### Nouvelle activité
+
+- **Course Presentation (H5P)** : Nouvelle activité permettant de créer des présentations interactives multi-diapositives contenant du texte, des images et des éléments interactifs. Idéal pour structurer un cours sous forme de diaporama intégrable dans Éléa, Magistère ou toute plateforme compatible H5P.
+
+### Images utilisateur dans les activités H5P
+
+- **12 activités compatibles** : Ajoutez vos propres images directement dans l'éditeur intégré, par glisser-déposer ou sélection de fichier. Les images sont redimensionnées automatiquement et intégrées dans le fichier .h5p — 100% client-side, aucun traitement serveur.
+  - **Flashcards** et **DialogCards** : image optionnelle par carte
+  - **DragAndDrop** : image d'arrière-plan + images d'étiquettes
+  - **Crossword** : image d'arrière-plan de la grille
+  - **CoursePresentation** : image par diapositive (4 positions au choix)
+  - **Timeline** : choix entre URL externe ou image uploadée (couverture + événements)
+  - **MultipleChoice, TrueFalse, Essay, FillInTheBlanks, DragTheWords, MarkTheWords** : image de contexte
+- **Export document** : Les images sont incluses dans les exports DOCX, ODT et PDF (Flashcards/DialogCards dans les tableaux recto/verso, activités media après l'énoncé, Timeline et CoursePresentation).
+- **Preview instantanée** : Les images uploadées sont visibles dans la prévisualisation H5P intégrée.
+
+### Éditeur visuel enrichi
+
+- **Texte enrichi (WYSIWYG)** : Les champs compatibles affichent une barre d'outils contextuelle avec mise en forme (gras, italique, souligné, barré, exposant, indice), couleur, listes, liens et bascule code source. Les champs courts disposent d'une version compacte.
+- **Assistant de formules mathématiques** : Bouton √x pour insérer des formules LaTeX avec aperçu MathJax en temps réel, 6 catégories de symboles et double-clic pour éditer une formule existante.
+- **Marqueurs visuels** : Mode spécial pour Glisser les mots, Marquer les mots et Texte à trous (H5P) avec surlignage automatique des mots marqués par astérisques.
+- **Éditeur Cloze visuel** : Pour l'activité Test Éléa, les trous Moodle (`{1:MULTICHOICE:...}`) sont remplacés par des pastilles colorées (bleu/jaune/vert) configurables d'un double-clic.
+- **Rendu MathJax dans la preview** : Les formules LaTeX sont rendues correctement dans la prévisualisation H5P intégrée.
+- **Exports enrichis** : Support complet du texte enrichi (couleur, liens, souligné, barré, exposant, indice, listes) dans les exports DOCX, ODT et PDF. Les formules mathématiques LaTeX sont exportées comme formules éditables (OMML dans Word, MathML dans LibreOffice) au lieu de simples caractères Unicode.
+
+### Correctifs
+
+- **Export Moodle (Devoir, Glossaire, Page)** : Correction de l'import MBZ dans Moodle grâce à l'ajout du fichier `calendar.xml` manquant.
+- **Prompts IA — Langue cible adaptable** : Les prompts permettent désormais aux enseignants de langues de générer du contenu directement dans la langue enseignée en le précisant dans leur description.
+
+### Rappel des nouveautés de la version 5.0
 
 - **Éditeur d'activités intégré** : Modification complète du contenu JSON directement dans la modale de visualisation, avec mises à jour en temps réel sur tous les formats d'export. L'édition fine-tuned permet de corriger ou adapter le contenu généré avant téléchargement.
 - **Drag and Drop H5P** : Nouvelle activité permettant de créer des exercices de glisser-déposer d'étiquettes dans des zones dédiées. Trois dispositions proposées (haut, bas, centre) et nombre d'étiquettes configurable directement dans le prompt en Mode guidé.
@@ -144,7 +174,7 @@
 
 ## 📚 Types d'activités supportées
 
-### Activités H5P (20 types)
+### Activités H5P (21 types)
 
 #### 🧠 Quiz & Tests
 - **Quiz mixte (QuizSet)** : ensembles de questions variées (QCM, vrai/faux, glisser-déposer, texte à trous, etc.)
@@ -170,6 +200,7 @@
 - **FindTheWords** : grilles de recherche de mots cachés
 - **Glossary/Accordion** : glossaires déroulants
 - **Chart** : graphiques et diagrammes visuels
+- **Course Presentation** : présentations interactives multi-diapositives
 
 ### Activités Moodle/Éléa (7 types)
 
@@ -298,13 +329,13 @@ Interface complète avec paramètres détaillés :
 - **[client-zip](https://github.com/Touffy/client-zip)** (MIT) : compression via Web Workers
 
 #### Traitement de documents
-- **[PDF.js](https://mozilla.github.io/pdf.js/)** (Apache 2.0) : extraction de texte PDF
-- **[Tesseract.js](https://tesseract.projectnaptha.com/)** (Apache 2.0) : OCR multilingue (PDF scannés, images)
-- **[Mammoth.js](https://github.com/mwilliamson/mammoth.js)** (BSD-2-Clause) : lecture de fichiers DOCX
-- **[jsPDF](https://github.com/parallax/jsPDF)** (MIT) : génération de fichiers PDF
-- **[jsPDF-AutoTable](https://github.com/simonbengtsson/jsPDF-AutoTable)** (MIT) : création de tableaux dans les PDF
-- **[MathJax](https://www.mathjax.org/)** (Apache 2.0) : rendu des formules mathématiques
-- **[H5P Standalone](https://github.com/tunapanda/h5p-standalone)** (MIT) : visualisation des activités H5P
+- **[PDF.js](https://mozilla.github.io/pdf.js/)** 5.5.207 (Apache 2.0) : extraction de texte PDF
+- **[Tesseract.js](https://tesseract.projectnaptha.com/)** 7.0.0 (Apache 2.0) : OCR multilingue (PDF scannés, images)
+- **[Mammoth.js](https://github.com/mwilliamson/mammoth.js)** 1.12.0 (BSD-2-Clause) : lecture de fichiers DOCX
+- **[jsPDF](https://github.com/parallax/jsPDF)** 4.2.1 (MIT) : génération de fichiers PDF
+- **[jsPDF-AutoTable](https://github.com/simonbengtsson/jsPDF-AutoTable)** 5.0.7 (MIT) : création de tableaux dans les PDF
+- **[MathJax](https://www.mathjax.org/)** 3.2.2 (Apache 2.0) : rendu des formules mathématiques
+- **[H5P Standalone](https://github.com/tunapanda/h5p-standalone)** 3.8.2 (MIT) : visualisation des activités H5P
 
 #### Interface utilisateur
 - **[Font Awesome](https://fontawesome.com/)** (CC BY 4.0/MIT/SIL OFL) : bibliothèque d'icônes
@@ -471,50 +502,7 @@ Aucune configuration requise ! L'application est pré-configurée pour utiliser 
 ```
 caramel/
 │
-├── .bmad-core/                          # 🤖 Configuration BMad (agents, workflows)
-│   ├── agents/                          # 9 agents pour différents rôles
-│   │   ├── analyst.md
-│   │   ├── architect.md
-│   │   ├── bmad-master.md
-│   │   ├── bmad-orchestrator.md
-│   │   ├── dev.md
-│   │   ├── pm.md
-│   │   ├── po.md
-│   │   ├── qa.md
-│   │   └── ux-expert.md
-│   ├── agent-teams/                     # Configurations d'équipes
-│   │   ├── team-all.yaml
-│   │   ├── team-fullstack.yaml
-│   │   ├── team-ide-minimal.yaml
-│   │   └── team-no-ui.yaml
-│   ├── checklists/                      # Listes de contrôle
-│   │   ├── architect-checklist.md
-│   │   ├── change-checklist.md
-│   │   ├── pm-checklist.md
-│   │   ├── po-master-checklist.md
-│   │   ├── story-dod-checklist.md
-│   │   └── story-draft-checklist.md
-│   ├── data/                            # Données de référence
-│   │   ├── bmad-kb.md
-│   │   ├── brainstorming-techniques.md
-│   │   ├── elicitation-methods.md
-│   │   ├── technical-preferences.md
-│   │   ├── test-levels-framework.md
-│   │   └── test-priorities-matrix.md
-│   ├── tasks/                           # Définitions de tâches (27 fichiers)
-│   ├── templates/                       # Templates projet (14 fichiers)
-│   ├── workflows/                       # Workflows développement (6 fichiers)
-│   ├── core-config.yaml                 # Configuration centrale
-│   ├── install-manifest.yaml            # Manifest d'installation
-│   ├── user-guide.md                    # Guide utilisateur
-│   ├── enhanced-ide-development-workflow.md
-│   └── working-in-the-brownfield.md
-│
 ├── .claude/                             # 🔧 Configuration Claude Code
-│   ├── commands/                        # Commandes personnalisées BMad
-│   │   └── BMad/
-│   │       ├── agents/                  # Liens vers agents BMad
-│   │       └── tasks/                   # Liens vers tasks BMad
 │   ├── settings.local.json              # Paramètres locaux
 │   └── keybindings.json (optionnel)
 │
@@ -548,11 +536,14 @@ caramel/
 │   ├── base/                           # Styles globaux (139.5K)
 │   │   ├── style.css                  # CSS principal
 │   │   └── custom.css                 # Surcharges globales
-│   └── components/                     # Composants modulaires (44.9K)
+│   └── components/                     # Composants modulaires
 │       ├── json-editor.css
 │       ├── llm.css
 │       ├── modale-aide.css
-│       └── mentions-legales.css
+│       ├── mentions-legales.css
+│       ├── richtext-editor.css
+│       ├── cloze-editor.css
+│       └── debug-logger.css
 │
 ├── js/                                  # 💻 Code JavaScript (ES6 modules)
 │   ├── core/                           # Modules fondamentaux
@@ -579,7 +570,8 @@ caramel/
 │   │   ├── h5p-manager.js             # Gestion des bibliothèques H5P
 │   │   ├── h5p-prefetch.js            # Préchargement des libs H5P
 │   │   ├── json-healer.js             # Réparation JSON (LaTeX, structure)
-│   │   └── processors/                # 20 processeurs H5P
+│   │   ├── field-constraints.js       # Contraintes de rendu par champ/activité (27 activités, 99 champs, 6 types)
+│   │   └── processors/                # 21 processeurs H5P
 │   │       ├── index.js               # Routeur de processeurs
 │   │       ├── Timeline.js            # Frise chronologique
 │   │       ├── Flashcards.js          # Cartes mémoires
@@ -599,7 +591,8 @@ caramel/
 │   │       ├── Glossary.js            # Glossaire/Accordion
 │   │       ├── Chart.js               # Diagrammes
 │   │       ├── SingleChoiceSet.js     # Série de choix uniques
-│   │       └── ComplexFillTheBlanks.js # Texte à trous complexe
+│   │       ├── ComplexFillTheBlanks.js # Texte à trous complexe
+│   │       └── CoursePresentation.js  # Présentation interactive multi-diapositives
 │   │
 │   ├── moodle/                         # Écosystème Moodle/Éléa
 │   │   ├── moodle-creator.js          # Packaging MBZ (TAR+GZIP)
@@ -637,20 +630,27 @@ caramel/
 │   ├── export/                         # Export documentaire
 │   │   ├── document-exporter.js       # Export DOCX/ODT/PDF
 │   │   ├── document-formatter.js      # Formatage par type
-│   │   └── sanitizer.js               # Nettoyage HTML/XML
+│   │   ├── sanitizer.js               # Nettoyage HTML/XML
+│   │   ├── latex-parser.js            # Parser LaTeX → AST (partagé)
+│   │   ├── math-catalog.js            # Catalogue 177 symboles (Unicode/MathML/OMML/StarMath)
+│   │   ├── latex-to-omml.js           # AST → OMML (formules éditables Word)
+│   │   └── latex-to-mathml.js         # AST → MathML (formules éditables LibreOffice)
 │   │
-│   ├── editor/                         # Éditeur JSON visuel (8 fichiers)
+│   ├── editor/                         # Éditeur JSON visuel (11 fichiers)
 │   │   ├── index.js                   # Point d'entrée éditeur
 │   │   ├── editor-core.js             # Logique centrale de l'éditeur
 │   │   ├── field-renderers.js         # Rendu des champs JSON
 │   │   ├── array-manager.js           # Gestion des tableaux
+│   │   ├── richtext-editor.js         # Éditeur WYSIWYG (texte enrichi, LaTeX, marqueurs)
+│   │   ├── formula-assistant.js       # Assistant de formules mathématiques
+│   │   ├── cloze-editor.js            # Éditeur visuel Cloze (texte à trous)
 │   │   ├── feedback-editor.js         # Édition des retours/feedback
 │   │   ├── content-detector.js        # Détection de contenu
 │   │   ├── json-utils.js              # Utilitaires JSON
 │   │   └── validators.js              # Validateurs de champs
 │   │
 │   ├── locales/                         # Fichiers de langues JSON (11)
-│   │   ├── fr.json .................. Français (1651 clés)
+│   │   ├── fr.json .................. Français (2034 clés)
 │   │   ├── en.json .................. Anglais
 │   │   ├── es.json .................. Espagnol
 │   │   ├── de.json .................. Allemand
@@ -689,6 +689,9 @@ caramel/
 │   ├── guide-themes-page.md             # Guide thèmes visuels Page
 │   ├── plan-tests.md                    # Plan de test global
 │   ├── checklist-quizset-dragquestion.md # Checklist QuizSet/DragQuestion
+│   ├── PRD_FIELD_CONSTRAINTS_LATEX.md   # PRD contraintes de champs & enrichissement LaTeX
+│   ├── PRD_COURSE_PRESENTATION.md       # PRD activité Course Presentation
+│   ├── PRD_NOUVELLE_ACTIVITE_H5P.md     # PRD template nouvelle activité H5P
 │   ├── audits/                          # Audits et analyses
 │   │   ├── AUDIT_COMPLET.md            # Audit complet du projet
 │   │   ├── RESTRUCTURATION_COMPLETE.md # Architecture détaillée de la refonte
@@ -712,6 +715,17 @@ caramel/
 │       ├── CLES_TRADUCTION_DOUBLON.MD
 │       └── remove-translations.py
 │
+├── scripts/                             # 🔧 Scripts utilitaires (Node.js)
+│   ├── update-locale-latex.mjs          # Propagation contraintes LaTeX dans les 11 locales
+│   ├── verify-all-locales.mjs           # Vérification des contraintes dans toutes les locales
+│   ├── verify-locale-latex.mjs          # Vérification LaTeX par locale
+│   ├── debug-old-patterns.mjs           # Diagnostic patterns LaTeX obsolètes
+│   ├── translate-course-presentation.mjs # Traduction Course Presentation (langues latines)
+│   ├── translate-cp-ar.mjs              # Traduction Course Presentation (arabe)
+│   ├── translate-cp-zh.mjs              # Traduction Course Presentation (chinois)
+│   ├── translate-cp-jp.mjs              # Traduction Course Presentation (japonais)
+│   └── translate-cp-el.mjs              # Traduction Course Presentation (grec)
+│
 ├── tests/                               # 🧪 Tests automatisés (12 suites, ~2500 assertions)
 │   ├── test-generation-download.html/js # Suite 1 : Génération & téléchargement H5P/MBZ
 │   ├── test-edit-export-flow.html/js    # Suite 2 : Flux édition & re-export
@@ -724,7 +738,8 @@ caramel/
 │   ├── test-document-export.html/js     # Suite 9 : Export documents (25 types)
 │   ├── test-performance.html/js         # Suite 10 : Benchmarks performance
 │   ├── test-vendor-libs.html/js         # Suite 11 : Chargement bibliothèques externes
-│   └── test-h5p-prefetch.html/js        # Suite 12 : Préchargement libs H5P
+│   ├── test-h5p-prefetch.html/js        # Suite 12 : Préchargement libs H5P
+│   └── field-constraints-dashboard.html # Dashboard interactif des contraintes de champs
 │
 ├── index.html                           # 🏠 Application web principale
 │
@@ -762,8 +777,9 @@ caramel/
 | h5p-creator.js | `js/h5p/` | Packaging H5P (JSZip), création `.h5p` |
 | h5p-manager.js | `js/h5p/` | Gestionnaire centralisé H5P |
 | h5p-prefetch.js | `js/h5p/` | Préchargement intelligent des libs H5P |
-| h5p-processors/* | `js/h5p/processors/` | 20 processeurs spécialisés (Timeline, Quiz, etc.) |
+| h5p-processors/* | `js/h5p/processors/` | 21 processeurs spécialisés (Timeline, Quiz, CoursePresentation, etc.) |
 | json-healer.js | `js/h5p/` | Réparation JSON (LaTeX, versions, structure) |
+| field-constraints.js | `js/h5p/` | Contraintes de rendu par champ/activité (27 activités, 99 champs, 6 types) |
 | moodle-creator.js | `js/moodle/` | Packaging MBZ (TAR+GZIP, substitutions XML) |
 | moodle-formats.js | `js/moodle/` | Génération XML/GIFT |
 | moodle-processors/* | `js/moodle/processors/` | 8 processeurs (QCM, Appariement, Page, Devoir, etc.) |
@@ -777,6 +793,10 @@ caramel/
 | document-exporter.js | `js/export/` | Export DOCX/ODT/PDF |
 | document-formatter.js | `js/export/` | Formatage et mise en page |
 | sanitizer.js | `js/export/` | Assainissement HTML/XML/JSON |
+| latex-parser.js | `js/export/` | Parser LaTeX → AST (partagé OMML/MathML) |
+| math-catalog.js | `js/export/` | Catalogue 177 symboles LaTeX/Unicode/MathML/StarMath |
+| latex-to-omml.js | `js/export/` | Formules éditables Word (OMML via docx.js) |
+| latex-to-mathml.js | `js/export/` | Formules éditables LibreOffice (MathML + StarMath) |
 | math-renderer.js | `js/renderers/` | Rendu formules mathématiques (MathJax, Unicode) |
 | chart-renderer.js | `js/renderers/` | Rendu diagrammes et graphiques |
 | image-utils.js | `js/renderers/` | Traitement des images |

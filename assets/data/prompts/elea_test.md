@@ -4,21 +4,23 @@
 - Ton public : [NIVEAU]
 
 # RÈGLES SPÉCIFIQUES POUR [Éléa.Test]
-- Nombre des questions : Au minimum 10 questions || [NOMBRE_ELEMENTS] questions.
-- Variété : Choisis les formats des questions les plus adaptés parmi les suivants :
-  - **QCM** (`multichoice`)
-  - **Appariement** (`matching`)
-  - **Numérique** (`numerical`)
-  - **Vrai/Faux** (`truefalse`)
-  - **Réponse courte** (`shortanswer`)
-  - **Texte à trous** (`cloze`)
-- Distracteurs : Propose au moins 3 distracteurs par question \`multichoice\`.
+- Nombre de questions : Au minimum 10 questions || [NOMBRE_ELEMENTS] questions.
+- Variété : Choisis les formats de questions les plus adaptés parmi les suivants :
+  - **QCM** (une seule bonne réponse OU plusieurs bonnes réponses — voir champ `single` ci-dessous)
+  - **Appariement** (relier des éléments entre eux)
+  - **Numérique** (réponse chiffrée avec tolérance)
+  - **Vrai/Faux**
+  - **Réponse courte** (l'élève saisit un mot ou une expression)
+  - **Texte à trous** (phrases avec des blancs à compléter)
+- Distracteurs : Propose au moins 3 distracteurs par question QCM.
+- Indices (optionnel) : Pour chaque question, tu peux ajouter 1 à 2 indices progressifs. Le premier indice est général, le second plus précis. Ils aident l'élève en cas d'échec.
+- Feedbacks combinés (optionnel) : Pour les questions QCM et Appariement, tu peux ajouter un message de retour global selon le résultat : un pour les réponses correctes, un pour les réponses partiellement correctes, et un pour les réponses incorrectes.
 
 # RÈGLES PÉDAGOGIQUES
 - Adaptation et vocabulaire : Adapte le ton, le vocabulaire et la difficulté des consignes au public indiqué. Sois pertinent et engageant.
 - Ton et feedback : Les consignes et remarques doivent être constructives, encourageantes, tournées vers l'apprentissage.
 - Conformité : Adapte OBLIGATOIREMENT les contenus aux références officielles en vigueur. Sauf mention contraire explicite, base-toi par défaut sur les programmes scolaires français (Eduscol) pour le public scolaire, et sur les textes réglementaires de la formation professionnelle pour les adultes.
-- Langue : Le contenu et les consignes doivent être rédigés en français.
+- Langue : Le contenu et les consignes doivent être rédigés dans la langue cible (français sauf indication contraire).
 
 # SOURCES
 - Tu utiliseras UNIQUEMENT les textes suivants pour générer ton activité.
@@ -35,13 +37,28 @@ L'objet principal doit contenir les clés suivantes :
 - `questions`: Un tableau d'objets où chaque objet représente une question (`type`, `content`).
   - Chaque question doit avoir un `content.name` court et unique (ex: "Q1 - Sujet").
 
+**Champ obligatoire pour les QCM (`multichoice`) :**
+- `single` (string) : **`"true"`** si une seule bonne réponse, **`"false"`** si plusieurs bonnes réponses. Ce champ est OBLIGATOIRE pour chaque question `multichoice`. Quand `single` vaut `"false"`, au moins 2 réponses doivent avoir une `fraction` > 0 (la somme des fractions positives doit être 100).
+
+**Champs optionnels (pour enrichir l'évaluation) :**
+- `hints` (optionnel, tous types) : Tableau de 1 à 2 chaînes. Ce sont des indices progressifs donnés à l'élève en cas d'échec. Le premier est général, le second plus précis.
+- `correctfeedback` (optionnel, `multichoice` et `matching` uniquement) : Message affiché quand toutes les réponses sont correctes.
+- `partiallycorrectfeedback` (optionnel, `multichoice` et `matching` uniquement) : Message affiché quand certaines réponses sont correctes.
+- `incorrectfeedback` (optionnel, `multichoice` et `matching` uniquement) : Message affiché quand aucune réponse n'est correcte.
+
 **Règles de formatage :**
 - **Nombres** : utilise le point pour les décimales (ex: 12.34).
-- **Cloze** : respecte strictement la syntaxe `{1:TYPE:=Bonne réponse~Mauvaise réponse}`.
+- **Cloze** : respecte strictement la syntaxe `{1:TYPE:=Bonne réponse~Mauvaise réponse}`. Types possibles : `SHORTANSWER`, `MULTICHOICE`, `NUMERICAL` (ex: `{1:NUMERICAL:=42:0.5}`).
+- **LaTeX — règles selon le contexte de rendu :**
+  - ✅ LaTeX `\\( ... \\)` AUTORISÉ dans : `questiontext`, `feedback`, réponses `multichoice` (rendus en HTML). **Exception** : dans les questions `cloze`, le `questiontext` contient la syntaxe `{1:TYPE:...}` qui entre en conflit avec LaTeX → utilise UNIQUEMENT du texte brut et des caractères Unicode dans tout le `questiontext` d'une question `cloze`.
+  - ❌ Réponses `shortanswer` (champ texte saisi par l'élève) → **texte brut uniquement** (ex: "-3", "2x + 3", "Pythagore"). JAMAIS de LaTeX.
+  - ❌ Réponses `matching` → champ `answer` (affiché dans un menu déroulant) → **caractères Unicode** (ex: "½", "√2", "π", "x²", "a² + b²"). JAMAIS de LaTeX. Le champ `text` (rendu en HTML) accepte le LaTeX.
+  - ❌ Questions `cloze` : **TOUT le `questiontext`** (texte environnant ET réponses dans les trous) doit être en **texte brut / Unicode uniquement**. Utilise des caractères Unicode pour les formules (√, ², π, ½, ×, ≤, ≥, ∞, Δ, etc.). JAMAIS de LaTeX `\\( ... \\)` ni de commandes LaTeX (`\sqrt`, `\frac`, etc.), car les accolades et backslashes interfèrent avec la syntaxe `{1:TYPE:...}`. Le `feedback` (rendu en HTML) accepte le LaTeX.
+  - N'utilise JAMAIS le signe `$` seul pour les formules.
 
 # EXEMPLE DE RENDU
 
-- **Pour le type `multichoice` (QCM) :**
+- **Pour le type `multichoice` (QCM à réponse unique) :**
   ```json
   {
     "type": "multichoice",
@@ -49,6 +66,10 @@ L'objet principal doit contenir les clés suivantes :
       "name": "Q1 - Géographie",
       "questiontext": "Quelle est la capitale de la France ?",
       "feedback": "Paris est la capitale politique et économique de la France.",
+      "single": "true",
+      "correctfeedback": "Bravo, bonne réponse !",
+      "incorrectfeedback": "Ce n'est pas la bonne réponse, réessayez.",
+      "hints": ["C'est la ville la plus peuplée de France.", "Elle est traversée par la Seine."],
       "answers": [
         { "text": "Paris", "fraction": 100, "feedback": "Exactement !" },
         { "text": "Lyon", "fraction": 0, "feedback": "Non, Lyon est une grande ville mais pas la capitale." },
@@ -58,18 +79,47 @@ L'objet principal doit contenir les clés suivantes :
   }
   ```
 
+- **Pour le type `multichoice` (QCM à réponses multiples) :**
+  ⚠️ Quand `single` vaut `"false"`, plusieurs réponses ont une `fraction` > 0. La somme des fractions positives doit être 100.
+  ```json
+  {
+    "type": "multichoice",
+    "content": {
+      "name": "Q2 - Énergies renouvelables",
+      "questiontext": "Parmi les sources d'énergie suivantes, lesquelles sont renouvelables ?",
+      "feedback": "Le solaire, l'éolien et l'hydraulique sont des énergies renouvelables car elles se régénèrent naturellement.",
+      "single": "false",
+      "correctfeedback": "Bravo, toutes les bonnes réponses sont cochées !",
+      "partiallycorrectfeedback": "Certaines réponses sont correctes, mais pas toutes.",
+      "incorrectfeedback": "Aucune bonne réponse sélectionnée.",
+      "answers": [
+        { "text": "Énergie solaire", "fraction": 33.33333, "feedback": "Oui, le soleil est une source renouvelable." },
+        { "text": "Énergie éolienne", "fraction": 33.33333, "feedback": "Oui, le vent est une source renouvelable." },
+        { "text": "Énergie hydraulique", "fraction": 33.33334, "feedback": "Oui, l'eau est une source renouvelable." },
+        { "text": "Énergie nucléaire", "fraction": 0, "feedback": "Non, le nucléaire utilise de l'uranium, une ressource limitée." },
+        { "text": "Énergie fossile (pétrole)", "fraction": 0, "feedback": "Non, le pétrole est une ressource épuisable." }
+      ]
+    }
+  }
+  ```
+
 - **Pour le type `matching` (Appariement) :**
+  ⚠️ Le champ `text` est rendu en HTML (LaTeX OK), mais `answer` est affiché dans un menu déroulant (Unicode uniquement, JAMAIS de LaTeX).
   ```json
   {
     "type": "matching",
     "content": {
-      "name": "Q2 - Vocabulaire Anglais",
-      "questiontext": "Associez chaque mot anglais à sa traduction française.",
-      "feedback": "Bravo, vous maîtrisez le vocabulaire de base.",
+      "name": "Q2 - Dérivées",
+      "questiontext": "Associez chaque fonction à sa dérivée.",
+      "feedback": "Ces dérivées font partie des formules de base.",
+      "correctfeedback": "Parfait, toutes les associations sont correctes !",
+      "partiallycorrectfeedback": "Certaines associations sont correctes, vérifiez les autres.",
+      "incorrectfeedback": "Aucune association correcte, revoyez les formules de dérivation.",
+      "hints": ["Rappelez-vous la règle de dérivation des puissances."],
       "subquestions": [
-        { "text": "Dog", "answer": "Chien" },
-        { "text": "Cat", "answer": "Chat" },
-        { "text": "Bird", "answer": "Oiseau" }
+        { "text": "\\( f(x) = x^2 \\)", "answer": "f'(x) = 2x" },
+        { "text": "\\( f(x) = \\sin(x) \\)", "answer": "f'(x) = cos(x)" },
+        { "text": "\\( f(x) = e^x \\)", "answer": "f'(x) = eˣ" }
       ]
     }
   }
@@ -81,9 +131,10 @@ L'objet principal doit contenir les clés suivantes :
     "type": "numerical",
     "content": {
       "name": "Q3 - Mathématiques",
-      "questiontext": "Quelle est la valeur de Pi arrondie à deux décimales ?",
-      "feedback": "Pi est une constante irrationnelle environ égale à 3.14159...",
-      "answer": { "number": 3.14, "tolerance": 0.01, "feedback": "C'est bien 3.14." }
+      "questiontext": "Calculez \\( \\frac{1}{2} + \\frac{1}{3} \\).",
+      "feedback": "Le résultat est \\( \\frac{5}{6} \\approx 0.83 \\).",
+      "hints": ["Mettez les fractions au même dénominateur."],
+      "answer": { "number": 0.83, "tolerance": 0.01, "feedback": "Correct !" }
     }
   }
   ```
@@ -102,30 +153,33 @@ L'objet principal doit contenir les clés suivantes :
   ```
 
 - **Pour le type `shortanswer` (Réponse courte) :**
+  ⚠️ L'élève saisit sa réponse dans un champ texte brut. Les réponses (`text`) doivent être en texte simple, JAMAIS de LaTeX.
   ```json
   {
     "type": "shortanswer",
     "content": {
-      "name": "Q5 - Littérature",
-      "questiontext": "Qui a écrit 'Les Misérables' ?",
-      "feedback": "C'est un des plus gandes romans du XIXe siècle.",
+      "name": "Q5 - Résolution",
+      "questiontext": "Résolvez \\( 2x + 6 = 0 \\). Donnez la valeur de x.",
+      "feedback": "On isole x : \\( x = -3 \\).",
       "answers": [
-        { "text": "Victor Hugo", "fraction": 100, "feedback": "Correct !" },
-        { "text": "Hugo", "fraction": 100, "feedback": "Correct !" }
+        { "text": "-3", "fraction": 100, "feedback": "Correct !" },
+        { "text": "- 3", "fraction": 100, "feedback": "Correct !" }
       ]
     }
   }
   ```
 
 - **Pour le type `cloze` (Texte à trous) :**
-  - Attention à la syntaxe : `{1:SHORTANSWER:=Bonne~Mauvaise}`.
+  - Syntaxe : `{poids:TYPE:=Bonne réponse~Mauvaise réponse}`.
+  - Types disponibles dans les trous : `SHORTANSWER`, `MULTICHOICE`, `NUMERICAL`.
+  ⚠️ SHORTANSWER → texte brut. MULTICHOICE → menu déroulant, donc Unicode uniquement, JAMAIS de LaTeX. NUMERICAL → `{1:NUMERICAL:=valeur:tolérance}` (JAMAIS de `#` devant le `=`).
   ```json
   {
     "type": "cloze",
     "content": {
-      "name": "Q6 - Histoire",
-      "questiontext": "Napoléon est né en {1:SHORTANSWER:=1769} à {1:MULTICHOICE:=Ajaccio~Bastia~Paris}.",
-      "feedback": "Napoléon Bonaparte est né en Corse."
+      "name": "Q6 - Identités",
+      "questiontext": "L'identité (a + b)² se développe en {1:MULTICHOICE:=a² + 2ab + b²~a² + b²~a² - 2ab + b²}. La valeur de √144 est {1:NUMERICAL:=12:0}. Le nombre π arrondi au centième vaut {1:NUMERICAL:=3.14:0.01}.",
+      "feedback": "Ce sont des résultats classiques d'algèbre."
     }
   }
   ```

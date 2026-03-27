@@ -2,7 +2,7 @@
  * Tests d'export de documents de Caramel (Suite 9)
  *
  * Valide le pipeline de formatage documentaire (DOCX/ODT/PDF) :
- * 1. formatContentForDocument sur les 25 types d'activites (19 H5P + 6 Moodle)
+ * 1. formatContentForDocument sur les 27 types d'activites (20 H5P + 7 Moodle)
  * 2. Integrite du contenu (caracteres speciaux, LaTeX → Unicode)
  * 3. Sanitizer DOMPurify (securite XSS + preservation HTML pedagogique)
  * 4. Utilitaires image et graphiques (dimensions, validation URL, chart renderer)
@@ -73,6 +73,7 @@ const ALL_FIXTURES = [
     { moduleKey: 'QuizSet',         fixture: 'quiz_mixte_1.json' },
     { moduleKey: 'QuizSetQCM',      fixture: 'quiz_qcm_1.json' },
     { moduleKey: 'QuizSetQCM',      fixture: 'quiz_qcm_5.json' },
+    { moduleKey: 'QuizSetQCM',      fixture: 'quiz_qcm_formules_test.json' },
     { moduleKey: 'QuizSetVF',       fixture: 'quiz_vraifaux_1.json' },
     { moduleKey: 'Glossary',        fixture: 'accordion_1.json' },
     { moduleKey: 'Crossword',       fixture: 'crosswords_1.json' },
@@ -91,8 +92,11 @@ const ALL_FIXTURES = [
     { moduleKey: 'SingleChoiceSet', fixture: 'single_choice_set_1.json' },
     { moduleKey: 'DialogCards',     fixture: 'dialog_cards_1.json' },
     { moduleKey: 'Chart',           fixture: 'charts_1.json' },
+    { moduleKey: 'CoursePresentation', fixture: 'course_presentation_1.json' },
+    { moduleKey: 'CoursePresentation', fixture: 'course_presentation_4.json' },
     // Moodle (6 visibles, gift exclu car hidden)
     { moduleKey: 'test_elea',       fixture: 'test_1.json' },
+    { moduleKey: 'test_elea',       fixture: 'test_4.json' },
     { moduleKey: 'glossaireXml',    fixture: 'glossaire_xml_1.json' },
     { moduleKey: 'Millionnaire',    fixture: 'millionnaire_1.json' },
     { moduleKey: 'Appariement',     fixture: 'appariement_1.json' },
@@ -734,6 +738,197 @@ async function runStep5_MarkTheWordsCleaning() {
 }
 
 // =======================================================================
+// ETAPE 6 : NETTOYAGE HTML (cleanHtml)
+// =======================================================================
+
+/**
+ * Teste le nettoyage HTML utilise dans tous les exports documents.
+ * On passe par formatContentForDocument qui appelle cleanHtml en interne.
+ */
+async function runStep6_CleanHtml() {
+    _ctx = { step: 6, stepName: 'CleanHtml', file: '', module: '', source: '' };
+    console.group('Etape 6 : Nettoyage HTML (cleanHtml)');
+    const t0 = performance.now();
+
+    // Helper : extrait le texte du premier paragraphe 'description' dans le resultat formate
+    function getDescriptionText(formatted) {
+        if (!formatted || !formatted.sections) return null;
+        const desc = formatted.sections.find(s => s.style === 'description' || s.style === 'question');
+        return desc ? desc.text : null;
+    }
+
+    // 6a. Literal \n (backslash-n) dans taskDescription → vrais sauts de ligne
+    try {
+        const data = {
+            title: 'Test newlines',
+            taskDescription: 'Ligne 1.\\nLigne 2.\\n\\nLigne 3.',
+            textField: 'Le *chat* est *grand*',
+            overallFeedback: [{ from: 0, to: 100, feedback: '' }]
+        };
+        const formatted = await formatContentForDocument('MarkTheWords', data);
+        const text = getDescriptionText(formatted);
+        assert(text !== null, '[6a] taskDescription presente dans le formatage');
+        if (text) {
+            assert(!text.includes('\\n'), '[6a] Pas de \\n litteral dans le texte formate', { text });
+            assert(text.includes('\n'), '[6a] Vrais sauts de ligne presents', { text });
+            assert(text.includes('Ligne 1.'), '[6a] Contenu preserve apres nettoyage');
+            assert(text.includes('Ligne 3.'), '[6a] Troisieme ligne preserve');
+        }
+    } catch (e) {
+        assert(false, `[6a] Exception literal \\n : ${e.message}`);
+    }
+
+    // 6b. HTML <br> et <p> → sauts de ligne
+    try {
+        const data = {
+            title: 'Test HTML',
+            taskDescription: '<p>Paragraphe 1.</p><p>Paragraphe 2.</p>',
+            textField: 'Le *mot*',
+            overallFeedback: []
+        };
+        const formatted = await formatContentForDocument('DragTheWords', data);
+        const text = getDescriptionText(formatted);
+        assert(text !== null, '[6b] taskDescription HTML presente');
+        if (text) {
+            assert(text.includes('Paragraphe 1.'), '[6b] Premier paragraphe preserve');
+            assert(text.includes('Paragraphe 2.'), '[6b] Deuxieme paragraphe preserve');
+            assert(!text.includes('<p>'), '[6b] Balises <p> supprimees');
+        }
+    } catch (e) {
+        assert(false, `[6b] Exception HTML : ${e.message}`);
+    }
+
+    // 6c. <strong>/<em> → markdown **gras**/*italique*
+    try {
+        const data = {
+            question: '<strong>Important</strong> et <em>remarque</em>.',
+            answers: [{ text: 'A', correct: true }],
+            overallFeedback: []
+        };
+        const formatted = await formatContentForDocument('MultipleChoice', data);
+        const text = getDescriptionText(formatted);
+        assert(text !== null, '[6c] Question formatee presente');
+        if (text) {
+            assert(text.includes('**Important**'), '[6c] <strong> → **gras**', { text });
+            assert(text.includes('*remarque*'), '[6c] <em> → *italique*', { text });
+        }
+    } catch (e) {
+        assert(false, `[6c] Exception strong/em : ${e.message}`);
+    }
+
+    // 6d. Entites HTML decodees
+    try {
+        const data = {
+            question: 'L&amp;R &lt;test&gt; &quot;guillemets&quot;',
+            answers: [{ text: 'A', correct: true }],
+            overallFeedback: []
+        };
+        const formatted = await formatContentForDocument('MultipleChoice', data);
+        const text = getDescriptionText(formatted);
+        assert(text !== null, '[6d] Question avec entites presente');
+        if (text) {
+            assert(text.includes('L&R'), '[6d] &amp; decode', { text });
+            assert(text.includes('<test>'), '[6d] &lt;&gt; decode', { text });
+            assert(text.includes('"guillemets"'), '[6d] &quot; decode', { text });
+        }
+    } catch (e) {
+        assert(false, `[6d] Exception entites : ${e.message}`);
+    }
+
+    // 6e. Vrais sauts de ligne (pas literal) preserves
+    try {
+        const data = {
+            question: 'Ligne 1.\nLigne 2.',
+            answers: [{ text: 'A', correct: true }],
+            overallFeedback: []
+        };
+        const formatted = await formatContentForDocument('MultipleChoice', data);
+        const text = getDescriptionText(formatted);
+        assert(text !== null, '[6e] Question avec vrais \\n presente');
+        if (text) {
+            assert(text.includes('Ligne 1.'), '[6e] Premiere ligne preservee');
+            assert(text.includes('Ligne 2.'), '[6e] Deuxieme ligne preservee');
+        }
+    } catch (e) {
+        assert(false, `[6e] Exception vrais newlines : ${e.message}`);
+    }
+
+    // 6f. Crossword taskDescription avec \n (cas reel du bug)
+    try {
+        const data = {
+            title: 'Mots croises',
+            taskDescription: '**Complete** cette grille.\\n\\nUtilise tes connaissances.\\n\\nPour les mots composes, pas d\'espace.',
+            words: [{ answer: 'MOT', clue: 'Indice 1' }, { answer: 'TEST', clue: 'Indice 2' }],
+            overallFeedback: [{ from: 0, to: 100, feedback: '' }]
+        };
+        const formatted = await formatContentForDocument('Crossword', data);
+        const text = getDescriptionText(formatted);
+        assert(text !== null, '[6f] Crossword taskDescription presente');
+        if (text) {
+            assert(!text.includes('\\n'), '[6f] Pas de \\n litteral dans le Crossword', { text });
+            assert(text.includes('**Complete**'), '[6f] Markdown **gras** preserve');
+            assert(text.includes('Utilise tes connaissances'), '[6f] Deuxieme paragraphe present');
+            assert(text.includes('pas d\'espace'), '[6f] Troisieme paragraphe present');
+        }
+    } catch (e) {
+        assert(false, `[6f] Exception Crossword : ${e.message}`);
+    }
+
+    // 6g. Ne casse pas les marqueurs *mot* dans les textes DragTheWords/MarkTheWords
+    try {
+        const data = {
+            taskDescription: 'Consigne',
+            textField: 'Le *chat* mange du *poisson*.\\nSur la *table*.',
+            overallFeedback: []
+        };
+        const formatted = await formatContentForDocument('DragTheWords', data);
+        // Verifier que les mots entre * sont bien traites dans le contenu
+        const allText = JSON.stringify(formatted);
+        assert(allText.includes('chat'), '[6g] Mot "chat" present dans le formatage');
+        assert(allText.includes('poisson'), '[6g] Mot "poisson" present dans le formatage');
+        assert(allText.includes('table'), '[6g] Mot "table" present apres \\n');
+    } catch (e) {
+        assert(false, `[6g] Exception marqueurs : ${e.message}`);
+    }
+
+    // 6h. Valeur null/undefined/vide ne provoque pas d'erreur
+    try {
+        const data = {
+            question: null,
+            answers: [{ text: 'A', correct: true }],
+            overallFeedback: []
+        };
+        const formatted = await formatContentForDocument('MultipleChoice', data);
+        assert(formatted !== null, '[6h] Formatage avec question null ne crash pas');
+    } catch (e) {
+        assert(false, `[6h] Exception null : ${e.message}`);
+    }
+
+    // 6i. Symboles Unicode remplaces
+    try {
+        const data = {
+            title: 'Test symboles',
+            taskDescription: 'Cochez ✓ ou refusez ✗. Suivez la fleche → et tolerez ±5%.',
+            textField: 'Le *mot*',
+            overallFeedback: []
+        };
+        const formatted = await formatContentForDocument('DragTheWords', data);
+        const text = getDescriptionText(formatted);
+        if (text) {
+            assert(text.includes('[V]'), '[6i] ✓ → [V]', { text });
+            assert(text.includes('[X]'), '[6i] ✗ → [X]', { text });
+            assert(text.includes('->'), '[6i] → → ->', { text });
+            assert(text.includes('+/-'), '[6i] ± → +/-', { text });
+        }
+    } catch (e) {
+        assert(false, `[6i] Exception symboles : ${e.message}`);
+    }
+
+    recordTiming('CleanHtml', 'Tests cleanHtml', performance.now() - t0);
+    console.groupEnd();
+}
+
+// =======================================================================
 // EXECUTION
 // =======================================================================
 
@@ -743,7 +938,8 @@ export const STEP_NAMES = [
     'Contenu',
     'Sanitizer',
     'Images/Charts',
-    'MarkTheWords'
+    'MarkTheWords',
+    'CleanHtml'
 ];
 
 export const STEP_DESCRIPTIONS = [
@@ -752,7 +948,8 @@ export const STEP_DESCRIPTIONS = [
     'Verifie la preservation des caracteres speciaux (accents, guillemets) et la conversion LaTeX → Unicode.',
     'Teste la securite DOMPurify (XSS bloque) et la preservation du HTML pedagogique (3 profils).',
     'Valide calculateDimensions (ratios, cap), validateImageUrl (protocoles), generateChartImage (bar/pie).',
-    'Verifie la conversion **gras** → *marqueur*, l\'espacement, le split multi-mots et l\'apostrophe dans MarkTheWords.'
+    'Verifie la conversion **gras** → *marqueur*, l\'espacement, le split multi-mots et l\'apostrophe dans MarkTheWords.',
+    'Verifie le nettoyage HTML : \\n litteraux, balises, entites, symboles Unicode, marqueurs *mot*, valeurs nulles.'
 ];
 
 /**
@@ -773,6 +970,7 @@ export async function runAllTests() {
     await runStep3_Sanitizer();
     await runStep4_ImageAndChart();
     await runStep5_MarkTheWordsCleaning();
+    await runStep6_CleanHtml();
 
     const t1 = performance.now();
     recordTiming('Global', 'Tous les tests export', t1 - t0);

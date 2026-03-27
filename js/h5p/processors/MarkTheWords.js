@@ -12,6 +12,7 @@
 import { translations } from '../../core/translation.js';
 import { formatTextToHtml, debugLog } from '../../core/utils.js';
 import { latexToUnicode } from '../json-healer.js';
+import { buildMediaStructure } from '../image-manager.js';
 
 export default {
     process: (jsonObj) => {
@@ -24,7 +25,8 @@ export default {
                 enableRetry: true,
                 enableSolutionsButton: true,
                 enableCheckButton: true,
-                showScorePoints: true
+                showScorePoints: true,
+                ...(jsonObj.behaviour || {})
             },
             overallFeedback: jsonObj.overallFeedback || [{ "from": 0, "to": 100, "feedback": "You got @score of @total points." }],
             checkAnswerButton: translations.h5p_check_answer || "Vérifier",
@@ -38,9 +40,7 @@ export default {
             submitAnswerButton: translations.h5p_submit_answer || "Valider",
             a11yFullTextLabel: translations.h5p_mark_words_a11y_full_text_label || "Texte complet lisible",
             a11yClickableTextLabel: translations.h5p_mark_words_a11y_clickable_text_label || "Texte complet où les mots peuvent être marqués",
-            media: {
-                "disableImageZooming": false
-            },
+            media: buildMediaStructure(jsonObj.mediaImage, jsonObj.mediaImageAlt),
             a11ySolutionModeHeader: translations.h5p_mark_words_a11y_solution_mode_header || "Mode solution",
             a11yCheckingHeader: translations.h5p_mark_words_a11y_checking_header || "Mode de vérification",
             a11yCheck: translations.h5p_a11y_check || "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",

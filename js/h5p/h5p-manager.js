@@ -75,7 +75,17 @@ export class H5PManager {
                     const file = h5pManager.currentZip.file(path);
                     if (file) {
                         try {
-                            if (path.endsWith('.json')) {
+                            if (path === 'content/content.json') {
+                                // Injecter les images du ZIP comme data URLs dans content.json
+                                // pour que H5P.getPath les reconnaisse comme absolues
+                                const text = await file.async('string');
+                                const json = JSON.parse(text);
+                                await h5pManager._embedImagesAsDataUrls(json);
+                                return new Response(JSON.stringify(json), {
+                                    status: 200,
+                                    headers: { 'Content-Type': 'application/json' }
+                                });
+                            } else if (path.endsWith('.json')) {
                                 const text = await file.async('string');
                                 return new Response(text, {
                                     status: 200,
@@ -261,6 +271,16 @@ export class H5PManager {
             // Vérification finale après le rendu H5P
             if (loadGen !== this._loadGeneration) return null;
 
+            // Forcer un resize différé pour les sous-contenus qui s'initialisent
+            // après le chargement asynchrone de leurs dépendances (ex: DragQuestion
+            // dépend de jQuery.ui qui peut ne pas être prêt au moment de l'init).
+            this._scheduleResize(container);
+
+            // Rendre les formules LaTeX via MathJax dans la preview
+            // (H5P.MathDisplay charge MathJax dans le vrai player Éléa/Moodle,
+            // mais h5p-standalone ne l'active pas — on le fait ici manuellement)
+            this._renderMathInPreview(container);
+
             return {
                 zip: this.currentZip,
                 content: this.currentContent,
@@ -348,6 +368,141 @@ export class H5PManager {
     }
 
     /**
+     * Planifie des événements resize différés pour forcer la ré-initialisation
+     * des sous-contenus H5P dans un CoursePresentation.
+     *
+     * Problème : CP met preventResize=true sur les sous-instances (DragQuestion, etc.)
+     * et ne propage jamais le resize vers elles. Leur seul resize est un
+     * setTimeout(200) interne. Si les dimensions du conteneur ne sont pas stables
+     * à ce moment (ex: sidebar keywordList en cours de rendu), les drop zones
+     * ne se positionnent pas.
+     *
+     * Solution : accéder aux elementInstances dans l'iframe, désactiver
+     * preventResize et déclencher le resize directement sur chaque sous-instance.
+     *
+     * @param {HTMLElement} container - Le conteneur H5P
+     */
+    _scheduleResize(container) {
+        const fixSubInstances = () => {
+            const iframe = container.querySelector('iframe');
+            if (!iframe || !iframe.contentWindow) return;
+
+            try {
+                const iframeH5P = iframe.contentWindow.H5P;
+                if (!iframeH5P || !iframeH5P.instances) return;
+
+                // L'instance principale (CoursePresentation)
+                const cpInstance = iframeH5P.instances[0];
+                if (!cpInstance || !cpInstance.elementInstances) return;
+
+                // Parcourir tous les slides et leurs instances
+                for (const slideInstances of cpInstance.elementInstances) {
+                    if (!slideInstances) continue;
+                    for (const inst of slideInstances) {
+                        if (!inst) continue;
+                        // Désactiver preventResize pour permettre les futurs resize
+                        if (inst.preventResize === true) {
+                            inst.preventResize = false;
+                        }
+                        // Déclencher le resize si l'instance est attachée au DOM
+                        if (inst.trigger && inst.$) {
+                            iframeH5P.trigger(inst, 'resize');
+                        }
+                    }
+                }
+
+                // Resize global sur l'iframe
+                iframe.contentWindow.dispatchEvent(new Event('resize'));
+            } catch {
+                // Cross-origin ou iframe pas prête — on réessaie au prochain tick
+            }
+        };
+
+        // Plusieurs tentatives avec délais croissants :
+        // 500ms → scripts simples déjà chargés
+        // 2s → scripts réseau + rendu sidebar
+        // 5s → connexions lentes
+        setTimeout(fixSubInstances, 500);
+        setTimeout(fixSubInstances, 2000);
+        setTimeout(fixSubInstances, 5000);
+    }
+
+    /**
+     * Rend les formules LaTeX dans la preview H5P via MathJax.
+     * H5P.MathDisplay gère cela dans le vrai player Éléa/Moodle,
+     * mais h5p-standalone ne l'active pas.
+     * On injecte MathJax directement dans l'iframe avec un chemin absolu.
+     */
+    _renderMathInPreview(container) {
+        let injected = false;
+
+        const tryRender = () => {
+            try {
+                if (injected) return;
+
+                const iframe = container.querySelector('iframe');
+                if (!iframe) return;
+
+                const iframeWin = iframe.contentWindow;
+                const iframeDoc = iframe.contentDocument || iframeWin?.document;
+                if (!iframeDoc || !iframeDoc.body) return;
+
+                // Vérifier si le contenu contient des formules LaTeX
+                const html = iframeDoc.body.innerHTML;
+                if (!html.includes('\\(') && !html.includes('\\[') && !html.includes('$$')) return;
+
+                // Si MathJax est déjà dans l'iframe, juste re-typeset
+                if (iframeWin.MathJax && iframeWin.MathJax.typesetPromise) {
+                    iframeWin.MathJax.typesetPromise([iframeDoc.body]);
+                    return;
+                }
+
+                injected = true;
+
+                // Configurer MathJax dans l'iframe AVANT le chargement du script
+                const configScript = iframeDoc.createElement('script');
+                configScript.type = 'text/javascript';
+                configScript.textContent = [
+                    'window.MathJax = {',
+                    '  tex: {',
+                    '    inlineMath: [["\\\\(","\\\\)"],["$","$"]],',
+                    '    displayMath: [["\\\\[","\\\\]"],["$$","$$"]],',
+                    '    processEscapes: true,',
+                    '    processEnvironments: true',
+                    '  },',
+                    '  svg: { fontCache: "global" },',
+                    '  startup: {',
+                    '    ready: function() {',
+                    '      MathJax.startup.defaultReady();',
+                    '      MathJax.startup.promise.then(function() {',
+                    '        window.dispatchEvent(new Event("resize"));',
+                    '      });',
+                    '    }',
+                    '  }',
+                    '};'
+                ].join('\n');
+                iframeDoc.head.appendChild(configScript);
+
+                // Charger le script MathJax avec un chemin absolu
+                const mathScript = iframeDoc.createElement('script');
+                mathScript.type = 'text/javascript';
+                mathScript.src = window.location.origin + '/' + LIB_PATHS.MATHJAX;
+                mathScript.async = true;
+                iframeDoc.head.appendChild(mathScript);
+
+                debugLog('H5P', 'MathJax injecté dans la preview iframe: ' + mathScript.src);
+            } catch (e) {
+                debugLog('H5P', 'MathJax preview: ' + e.message);
+            }
+        };
+
+        // Plusieurs tentatives — le contenu H5P charge de façon asynchrone
+        setTimeout(tryRender, 1000);
+        setTimeout(tryRender, 3000);
+        setTimeout(tryRender, 6000);
+    }
+
+    /**
      * S'assure que la bibliothèque H5PStandalone est chargée.
      * Utilise une promesse partagée pour éviter les appels concurrents.
      */
@@ -421,6 +576,81 @@ export class H5PManager {
         });
 
         return H5PManager._loadingPromise;
+    }
+
+    /**
+     * Parcourt récursivement un objet JSON et remplace les chemins d'images
+     * (propriété `path` commençant par `images/`) par des data URLs extraites du ZIP.
+     *
+     * Grâce au patch de frame.bundle.js, H5P.getPath reconnaît les data: URLs
+     * comme absolues et les retourne telles quelles → les <img> chargent directement.
+     *
+     * @param {Object} obj - Objet JSON (content.json parsé) à modifier en place
+     */
+    async _embedImagesAsDataUrls(obj) {
+        if (!obj || typeof obj !== 'object' || !this.currentZip) return;
+
+        const mimeTypes = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', gif: 'image/gif', webp: 'image/webp', svg: 'image/svg+xml' };
+
+        // Collecter toutes les promesses pour traitement parallèle
+        const promises = [];
+
+        const walk = (node) => {
+            if (!node || typeof node !== 'object') return;
+
+            // Si l'objet a un champ `path` qui ressemble à un chemin d'image
+            if (typeof node.path === 'string' && node.path.match(/^images\/.+\.(jpe?g|png|gif|webp|svg)$/i)) {
+                const imagePath = node.path;
+                const zipPath = 'content/' + imagePath;
+                const file = this.currentZip.file(zipPath);
+                if (file) {
+                    promises.push(
+                        file.async('base64').then(base64 => {
+                            const ext = imagePath.split('.').pop().toLowerCase();
+                            const mime = mimeTypes[ext] || 'image/jpeg';
+                            node.path = `data:${mime};base64,${base64}`;
+                            debugLog('h5p-manager', `Image embarquée: ${zipPath}`);
+                        }).catch(e => {
+                            console.warn(`[h5p-manager] Erreur lecture image ${zipPath}:`, e);
+                        })
+                    );
+                }
+            }
+
+            // Valeurs string qui pointent vers une image locale (ex: Timeline asset.media)
+            for (const key of Object.keys(node)) {
+                const val = node[key];
+                if (typeof val === 'string' && val.match(/^images\/.+\.(jpe?g|png|gif|webp|svg)$/i)) {
+                    const zipPath = 'content/' + val;
+                    const file = this.currentZip.file(zipPath);
+                    if (file) {
+                        promises.push(
+                            file.async('base64').then(base64 => {
+                                const ext = val.split('.').pop().toLowerCase();
+                                const mime = mimeTypes[ext] || 'image/jpeg';
+                                node[key] = `data:${mime};base64,${base64}`;
+                                debugLog('h5p-manager', `Image string embarquée: ${zipPath}`);
+                            }).catch(e => {
+                                console.warn(`[h5p-manager] Erreur lecture image string ${zipPath}:`, e);
+                            })
+                        );
+                    }
+                }
+            }
+
+            // Parcourir récursivement
+            for (const key of Object.keys(node)) {
+                const val = node[key];
+                if (Array.isArray(val)) {
+                    val.forEach(item => walk(item));
+                } else if (val && typeof val === 'object') {
+                    walk(val);
+                }
+            }
+        };
+
+        walk(obj);
+        await Promise.all(promises);
     }
 }
 

@@ -4,7 +4,7 @@
  */
 
 import { translations } from './core/translation.js';
-import { debugLog } from './core/utils.js';
+import { debugLog, markdownToHtml } from './core/utils.js';
 import { mathRenderer } from './renderers/math-renderer.js';
 import { sanitizeSync } from './export/sanitizer.js';
 
@@ -19,12 +19,8 @@ const tr = (key, fallback) => (translations && translations[key]) || fallback;
  */
 function formatTextSafe(text) {
     if (!text) return '';
-    // 1. Sanitize d'abord pour supprimer le HTML malveillant
-    const sanitized = sanitizeSync(text, 'EDUCATIONAL');
-    // 2. Puis convertir le Markdown en HTML
-    return sanitized
-        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-        .replace(/\*(.*?)\*/g, '<i>$1</i>');
+    // Sanitize d'abord, puis convertir le Markdown en protégeant le LaTeX
+    return markdownToHtml(sanitizeSync(text, 'EDUCATIONAL'));
 }
 
 /**
@@ -604,12 +600,7 @@ export function renderGlossary(container, data) {
     // Simple parser for bold (**text**) and italic (*text*) with XSS protection
     function parseFormatting(text) {
         if (!text) return '';
-        let html = text;
-        // Bold: **text** -> <strong>text</strong>
-        html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        // Italic: *text* -> <em>text</em>
-        html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        return sanitizeSync(html, 'EDUCATIONAL');
+        return sanitizeSync(markdownToHtml(text), 'EDUCATIONAL');
     }
 
     function render() {
@@ -773,14 +764,8 @@ export function renderQcmElea(container, data) {
 
 
 
-        // Helper simple de formatage Markdown avec protection XSS
-        const formatText = (text) => {
-            if (!text) return '';
-            let formatted = text
-                .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-                .replace(/\*(.*?)\*/g, '<i>$1</i>');
-            return sanitizeSync(formatted, 'EDUCATIONAL');
-        };
+        // Helper simple de formatage Markdown avec protection XSS et LaTeX
+        const formatText = (text) => !text ? '' : sanitizeSync(markdownToHtml(text), 'EDUCATIONAL');
 
         // Header logic moved up
 
@@ -978,17 +963,11 @@ export function renderEleaTest(container, data) {
     let currentQuestionIndex = 0;
     // Stockage des réponses utilisateur : { [questionIndex]: answerValue }
     const userAnswers = {};
-    const feedbackState = {}; // { [questionIndex]: { isCorrect: bool, message: string, show: bool } }
+    const feedbackState = {}; // { [questionIndex]: { isCorrect: bool, message: string, show: bool, hintShown: bool } }
+    const hintState = {}; // { [questionIndex]: nextHintIndex } — indice du prochain hint à afficher
 
     // --- Helper functions (must be defined before render()) ---
-    const formatMarkdown = (text) => {
-        if (!text) return '';
-        const formatted = text
-            .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-            .replace(/\*(.*?)\*/g, '<i>$1</i>')
-            .replace(/\n/g, '<br>');
-        return sanitizeSync(formatted, 'EDUCATIONAL');
-    };
+    const formatMarkdown = (text) => !text ? '' : sanitizeSync(markdownToHtml(text, { newlineToBr: true }), 'EDUCATIONAL');
 
     function escapeHtml(text) {
         if (!text) return '';
@@ -1072,16 +1051,37 @@ export function renderEleaTest(container, data) {
         // Zone de feedback (après validation)
         const fState = feedbackState[currentQuestionIndex];
         if (fState && fState.show) {
-            const feedbackDiv = document.createElement('div');
-            feedbackDiv.className = `elea-feedback ${fState.isCorrect ? 'correct' : 'incorrect'}`;
-            feedbackDiv.innerHTML = `
-                <div class="elea-feedback-icon"><i class="fas ${fState.isCorrect ? 'fa-check-circle' : 'fa-times-circle'}"></i></div>
-                <div class="elea-feedback-content">
-                    <div class="elea-feedback-title">${fState.isCorrect ? tr('simulator_correct', 'Correct !') : tr('simulator_incorrect', 'Incorrect')}</div>
-                    <div class="elea-feedback-text">${formatMarkdown(fState.message)}</div>
-                </div>
-            `;
-            card.appendChild(feedbackDiv);
+            // Cas hint : on montre l'indice au lieu du feedback final
+            if (fState.hintShown) {
+                const hintDiv = document.createElement('div');
+                hintDiv.className = 'elea-feedback hint';
+                hintDiv.innerHTML = `
+                    <div class="elea-feedback-icon"><i class="fas fa-lightbulb"></i></div>
+                    <div class="elea-feedback-content">
+                        <div class="elea-feedback-title">${tr('simulator_hint', 'Indice')}</div>
+                        <div class="elea-feedback-text">${formatMarkdown(fState.message)}</div>
+                    </div>
+                `;
+                card.appendChild(hintDiv);
+            } else {
+                // Feedback final (correct/incorrect/partiel)
+                const feedbackClass = fState.isCorrect ? 'correct' : (fState.isPartial ? 'partial' : 'incorrect');
+                const feedbackIcon = fState.isCorrect ? 'fa-check-circle' : (fState.isPartial ? 'fa-adjust' : 'fa-times-circle');
+                const feedbackTitle = fState.isCorrect
+                    ? tr('simulator_correct', 'Correct !')
+                    : (fState.isPartial ? tr('simulator_partial', 'Partiellement correct') : tr('simulator_incorrect', 'Incorrect'));
+
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.className = `elea-feedback ${feedbackClass}`;
+                feedbackDiv.innerHTML = `
+                    <div class="elea-feedback-icon"><i class="fas ${feedbackIcon}"></i></div>
+                    <div class="elea-feedback-content">
+                        <div class="elea-feedback-title">${feedbackTitle}</div>
+                        <div class="elea-feedback-text">${formatMarkdown(fState.message)}</div>
+                    </div>
+                `;
+                card.appendChild(feedbackDiv);
+            }
         }
 
         root.appendChild(card);
@@ -1095,8 +1095,16 @@ export function renderEleaTest(container, data) {
         actionBtn.className = 'elea-btn primary';
 
         if (fState && fState.show) {
-            // Si feedback affiché => bouton Suivant (ou Terminer)
-            if (currentQuestionIndex < questions.length - 1) {
+            if (fState.hintShown) {
+                // Hint affiché => bouton Réessayer
+                actionBtn.textContent = tr('simulator_retry', 'Réessayer');
+                actionBtn.onclick = () => {
+                    // Réinitialiser le feedback pour permettre une nouvelle tentative
+                    delete feedbackState[currentQuestionIndex];
+                    render();
+                };
+            } else if (currentQuestionIndex < questions.length - 1) {
+                // Feedback final affiché => bouton Suivant
                 actionBtn.textContent = tr('simulator_next_question', 'Question Suivante');
                 actionBtn.onclick = handleNext;
             } else {
@@ -1372,27 +1380,30 @@ export function renderEleaTest(container, data) {
     // --- Logic Handlers ---
 
     function handleCheck(type, content, idx) {
-        if (feedbackState[idx]?.show) return; // Already checked
+        if (feedbackState[idx]?.show) return; // Déjà vérifié
 
         let isCorrect = false;
+        let isPartial = false;
         let message = content.feedback || '';
 
-        // Verification logic (Simplified for simulation)
+        // Logique de vérification (simplifiée pour la simulation)
         switch (type) {
             case 'multichoice':
                 const uAns = userAnswers[idx];
                 const answers = content.answers;
                 if (content.single !== 'false' && content.single !== false) {
-                    // Single
+                    // Réponse unique
                     if (uAns !== undefined && answers[uAns]) {
                         if (answers[uAns].fraction > 0) isCorrect = true;
                         if (answers[uAns].feedback) message += "<br><br>" + answers[uAns].feedback;
                     }
                 } else {
-                    // Multiple
+                    // Réponses multiples — vérifier partiel
                     const selected = uAns || [];
                     const allCorrect = answers.every((a, i) => (a.fraction > 0) === selected.includes(i));
+                    const someCorrect = selected.some(i => answers[i]?.fraction > 0);
                     isCorrect = allCorrect;
+                    isPartial = !allCorrect && someCorrect;
                 }
                 break;
             case 'truefalse':
@@ -1409,7 +1420,7 @@ export function renderEleaTest(container, data) {
                 }
                 break;
             case 'shortanswer':
-                // Case insensitive match with any correct answer
+                // Case insensitive match
                 const val = (userAnswers[idx] || '').trim().toLowerCase();
                 const match = content.answers.find(a => a.text.trim().toLowerCase() === val && a.fraction > 0);
                 if (match) {
@@ -1420,14 +1431,16 @@ export function renderEleaTest(container, data) {
             case 'matching':
                 const subquestions = content.subquestions;
                 const matches = userAnswers[idx] || {};
-                isCorrect = subquestions.every((sq, i) => matches[i] === sq.answer);
+                const matchCount = subquestions.filter((sq, i) => matches[i] === sq.answer).length;
+                isCorrect = matchCount === subquestions.length;
+                isPartial = !isCorrect && matchCount > 0;
                 break;
             case 'cloze':
-                // Real validation for CLOZE: check if all user answers match at least one correct option (=...)
+                // Validation cloze : chaque trou est vérifié individuellement
                 const text = content.questiontext;
                 const parts = text.split(/(\{\d+:[^}]+\})/);
                 const clozeAnswers = userAnswers[idx] || {};
-                let allCorrect = true;
+                let clozeCorrectCount = 0;
                 let gapsFound = 0;
 
                 parts.forEach((part, partIdx) => {
@@ -1441,29 +1454,54 @@ export function renderEleaTest(container, data) {
                             const answersPart = inner.substring(secondColon + 1);
                             const options = answersPart.split('~');
 
-                            // Correct answers are those starting with '='
                             const correctChoices = options
                                 .filter(opt => opt.startsWith('='))
                                 .map(opt => {
-                                    // Remove leading '=' and any feedback after '#'
                                     let clean = opt.substring(1).split('#')[0].trim();
-                                    // Handle cases like =Benito Mussolini/Mussolini (Moodle supports / for multiple correct short answers)
                                     return clean.split('/').map(sub => sub.toLowerCase().trim());
                                 })
                                 .flat();
 
                             const userAns = (clozeAnswers[partIdx] || '').trim().toLowerCase();
-                            if (!correctChoices.includes(userAns)) {
-                                allCorrect = false;
+                            if (correctChoices.includes(userAns)) {
+                                clozeCorrectCount++;
                             }
                         }
                     }
                 });
-                isCorrect = gapsFound > 0 ? allCorrect : false;
+                isCorrect = gapsFound > 0 && clozeCorrectCount === gapsFound;
+                isPartial = !isCorrect && clozeCorrectCount > 0;
                 break;
         }
 
-        feedbackState[idx] = { show: true, isCorrect, message };
+        // Gestion des hints : si incorrect et qu'il reste des hints, montrer un hint
+        const hints = Array.isArray(content.hints) ? content.hints : [];
+        const nextHint = hintState[idx] || 0;
+
+        if (!isCorrect && nextHint < hints.length) {
+            // Afficher le hint au lieu du feedback final
+            feedbackState[idx] = { show: true, isCorrect: false, message: hints[nextHint], hintShown: true };
+            hintState[idx] = nextHint + 1;
+            render();
+            return;
+        }
+
+        // Feedbacks combinés (multichoice et matching)
+        if (content.correctfeedback || content.partiallycorrectfeedback || content.incorrectfeedback) {
+            let combinedMsg = '';
+            if (isCorrect && content.correctfeedback) {
+                combinedMsg = content.correctfeedback;
+            } else if (isPartial && content.partiallycorrectfeedback) {
+                combinedMsg = content.partiallycorrectfeedback;
+            } else if (!isCorrect && content.incorrectfeedback) {
+                combinedMsg = content.incorrectfeedback;
+            }
+            if (combinedMsg) {
+                message = combinedMsg + (message ? '<br><br>' + message : '');
+            }
+        }
+
+        feedbackState[idx] = { show: true, isCorrect, isPartial, message, hintShown: false };
         render();
     }
 
@@ -1502,6 +1540,7 @@ export function renderEleaTest(container, data) {
             currentQuestionIndex = 0;
             for (let k in userAnswers) delete userAnswers[k];
             for (let k in feedbackState) delete feedbackState[k];
+            for (let k in hintState) delete hintState[k];
             render();
         };
 
@@ -1547,15 +1586,8 @@ export function renderPage(container, data, previewHtml) {
     // --- State ---
     const blocks = data.blocks || [];
 
-    // Helper to format markdown-like text with XSS protection
-    const formatText = (text) => {
-        if (!text) return '';
-        const formatted = text
-            .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-            .replace(/\*(.*?)\*/g, '<i>$1</i>')
-            .replace(/\n/g, '<br>');
-        return sanitizeSync(formatted, 'EDUCATIONAL');
-    };
+    // Helper to format markdown-like text with XSS protection et LaTeX
+    const formatText = (text) => !text ? '' : sanitizeSync(markdownToHtml(text, { newlineToBr: true }), 'EDUCATIONAL');
 
     function render() {
         container.innerHTML = '';

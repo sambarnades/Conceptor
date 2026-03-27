@@ -8,6 +8,7 @@
 import { t } from '../core/translation.js';
 import { debugLog } from '../core/utils.js';
 import { getNestedValue, setNestedValue } from './json-utils.js';
+import { normalizeFractions } from '../moodle/moodle-formats.js';
 
 // =======================================================================
 // SIGNATURES DE DETECTION
@@ -165,7 +166,13 @@ const contentSignatures = {
         Array.isArray(data.criteria) &&
         data.criteria.length > 0 &&
         data.criteria[0].hasOwnProperty('description') &&
-        Array.isArray(data.criteria[0].levels)
+        Array.isArray(data.criteria[0].levels),
+
+    'CoursePresentation': (data) =>
+        Array.isArray(data.slides) &&
+        data.slides.length > 0 &&
+        data.slides[0].hasOwnProperty('type') &&
+        typeof data.slides[0].type === 'string'
 };
 
 // Mapping titleKey -> moduleKey
@@ -224,12 +231,157 @@ const titleKeyToModuleKey = {
     'elea_page': 'elea_page',
     'elea_millionnaire': 'elea_millionnaire',
     'elea_devoir_name': 'elea_devoir',
-    'elea_devoir': 'elea_devoir'
+    'elea_devoir': 'elea_devoir',
+    'h5p_course_presentation_name': 'CoursePresentation',
+    'h5p_coursepresentation': 'CoursePresentation'
 };
 
 // =======================================================================
 // SCHEMAS DE CHAMPS
 // =======================================================================
+
+/**
+ * Sous-schemas exercice partages entre CoursePresentation et ses dynamicObject.
+ * Identiques aux schemas des activites standalone — aucune restructuration.
+ */
+const CP_EXERCISE_SCHEMAS = {
+    'H5P.MultiChoice 1.16': {
+        question: { type: 'textarea', label: 'editor_question_text', large: true, required: true },
+        answers: {
+            type: 'array', itemLabel: 'editor_answer', addLabel: 'editor_add_answer',
+            minItems: 2, nested: true, itemsExpanded: true,
+            itemSchema: {
+                text: { type: 'text', label: 'editor_answer_text', required: true },
+                correct: { type: 'checkbox', label: 'editor_correct_answer_label', inline: true },
+                tipsAndFeedback: {
+                    type: 'object', collapsible: true, collapsibleLabel: 'editor_tips_feedback',
+                    schema: {
+                        tip: { type: 'textarea', label: 'editor_tip' },
+                        chosenFeedback: { type: 'textarea', label: 'editor_chosen_feedback' },
+                        notChosenFeedback: { type: 'textarea', label: 'editor_not_chosen_feedback' }
+                    }
+                }
+            }
+        },
+        behaviour: {
+            type: 'object', label: 'editor_options', collapsible: true,
+            schema: { singleAnswer: { type: 'checkbox', label: 'editor_single_answer', hint: 'editor_single_answer_hint' } }
+        },
+        overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
+    },
+    'H5P.TrueFalse 1.8': {
+        question: { type: 'textarea', label: 'editor_question_text', large: true, required: true },
+        correct: {
+            type: 'select', label: 'editor_correct_answer_select',
+            options: [{ value: 'true', label: 'editor_true' }, { value: 'false', label: 'editor_false' }]
+        },
+        feedbackOnCorrect: { type: 'textarea', label: 'editor_feedback_correct' },
+        feedbackOnWrong: { type: 'textarea', label: 'editor_feedback_wrong' }
+    },
+    'H5P.Blanks 1.14': {
+        taskDescription: { type: 'textarea', label: 'editor_task_description', required: true },
+        questions: {
+            type: 'array', itemLabel: 'editor_cloze_sentence', addLabel: 'editor_add_sentence',
+            nested: true, itemsExpanded: true,
+            itemSchema: { _value: { type: 'textarea', label: 'editor_sentence_text', required: true, hint: 'editor_blanks_hint', isArrayValue: true } }
+        },
+        overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
+    },
+    'H5P.DragText 1.10': {
+        taskDescription: { type: 'textarea', label: 'editor_task_description', required: true },
+        textField: { type: 'textarea', label: 'editor_text_with_blanks', required: true, large: true, hint: 'editor_drag_words_hint' },
+        overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
+    },
+    'H5P.MarkTheWords 1.11': {
+        taskDescription: { type: 'textarea', label: 'editor_task_description', required: true },
+        textField: { type: 'textarea', label: 'editor_text_with_marks', required: true, large: true, hint: 'editor_mark_words_hint' },
+        overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
+    },
+    'H5P.DragQuestion 1.14': {
+        title: { type: 'textarea', label: 'editor_task_description', required: true },
+        layoutSettings: {
+            type: 'fieldGroup',
+            inline: true,
+            fields: {
+                canvasWidth: { type: 'number', label: 'editor_canvas_width', min: 400, max: 1200, default: 800, hint: 'editor_canvas_width_hint' },
+                elementPosition: {
+                    type: 'select',
+                    label: 'editor_element_position',
+                    options: [
+                        { value: 'down', label: 'editor_element_position_down' },
+                        { value: 'center', label: 'editor_element_position_center' },
+                        { value: 'up', label: 'editor_element_position_up' }
+                    ]
+                }
+            }
+        },
+        dropZones: {
+            type: 'array', itemLabel: 'editor_zone', addLabel: 'editor_add_zone',
+            minItems: 2, maxItems: 10, itemsExpanded: true,
+            itemSchema: { label: { type: 'text', label: 'editor_zone_label', required: true } }
+        },
+        elements: {
+            type: 'array', itemLabel: 'editor_element', addLabel: 'editor_add_element',
+            minItems: 2, itemsExpanded: true,
+            itemSchema: {
+                text: { type: 'text', label: 'editor_element_text', required: true },
+                image: {
+                    type: 'image', label: 'editor_image', hint: 'editor_image_element_hint',
+                    collapsible: true, collapsibleLabel: 'editor_image', altTextField: 'imageAltText'
+                },
+                zoneIndices: {
+                    type: 'multiCheckbox', label: 'editor_target_zones', required: true,
+                    optionsFrom: 'dropZones', optionsLabelField: 'label', optionsValueType: 'index',
+                    hint: 'editor_target_zones_hint'
+                }
+            }
+        },
+        overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
+    },
+    'H5P.SingleChoiceSet 1.11': {
+        choices: {
+            type: 'array', itemLabel: 'editor_question', addLabel: 'editor_add_question',
+            minItems: 1, itemsExpanded: false,
+            itemSchema: {
+                question: { type: 'textarea', label: 'editor_question_text', required: true },
+                answers: { type: 'stringArray', label: 'editor_answers', hint: 'editor_answers_first_correct_hint' }
+            }
+        },
+        overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
+    },
+    'H5P.Summary 1.10': {
+        intro: { type: 'textarea', label: 'editor_intro' },
+        summaries: {
+            type: 'array', itemLabel: 'editor_summary_item', addLabel: 'editor_add_summary_item',
+            minItems: 1,
+            itemSchema: {
+                summary: {
+                    type: 'array', itemLabel: 'editor_statement', addLabel: 'editor_add_statement',
+                    nested: true, itemsExpanded: true,
+                    itemSchema: { _value: { type: 'text', label: 'editor_statement_text', required: true, isArrayValue: true } }
+                },
+                tip: { type: 'textarea', label: 'editor_tip', collapsible: true, collapsibleLabel: 'editor_tip_optional' }
+            }
+        },
+        overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
+    },
+    'H5P.Dialogcards 1.9': {
+        title: { type: 'text', label: 'editor_title' },
+        description: { type: 'textarea', label: 'editor_description' },
+        dialogs: {
+            type: 'array', itemLabel: 'editor_card', addLabel: 'editor_add_card',
+            minItems: 1, itemsExpanded: false,
+            itemSchema: {
+                text: { type: 'textarea', label: 'editor_card_front', required: true },
+                answer: { type: 'textarea', label: 'editor_card_back', required: true },
+                tips: {
+                    type: 'object', collapsible: true, collapsibleLabel: 'editor_tips_optional',
+                    schema: { front: { type: 'text', label: 'editor_tip_front' }, back: { type: 'text', label: 'editor_tip_back' } }
+                }
+            }
+        }
+    }
+};
 
 /**
  * Schemas de champs pour chaque type de module
@@ -263,12 +415,36 @@ const fieldSchemas = {
                         itemSchema: {
                             text: { type: 'text', label: 'editor_card_front', required: true, placeholder: 'editor_card_front_placeholder' },
                             answer: { type: 'text', label: 'editor_card_back', required: true, placeholder: 'editor_card_back_placeholder' },
+                            image: {
+                                type: 'image',
+                                label: 'editor_image',
+                                hint: 'editor_image_card_hint',
+                                collapsible: true,
+                                collapsibleLabel: 'editor_image',
+                                altTextField: 'imageAltText'
+                            },
                             tip: {
                                 type: 'textarea',
                                 label: 'editor_card_tip',
                                 collapsible: true,
                                 collapsibleLabel: 'editor_tip_optional'
                             }
+                        }
+                    }
+                }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    behaviour: {
+                        type: 'object',
+                        schema: {
+                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            randomCards: { type: 'checkbox', label: 'editor_random_cards', default: false, hint: 'editor_random_cards_hint' },
+                            caseSensitive: { type: 'checkbox', label: 'editor_case_sensitive', default: false }
                         }
                     }
                 }
@@ -284,7 +460,8 @@ const fieldSchemas = {
                 label: 'editor_section_question',
                 icon: 'fa-question-circle',
                 fields: {
-                    question: { type: 'textarea', label: 'editor_question_text', required: true, large: true }
+                    question: { type: 'textarea', label: 'editor_question_text', required: true, large: true },
+                    mediaImage: { type: 'image', label: 'editor_image_context', hint: 'editor_image_context_hint', collapsible: true, collapsibleLabel: 'editor_image_context', altTextField: 'mediaImageAlt' }
                 }
             },
             {
@@ -298,7 +475,7 @@ const fieldSchemas = {
                         itemLabel: 'editor_answer',
                         addLabel: 'editor_add_answer',
                         minItems: 2,
-                        itemsExpanded: false,
+                        itemsExpanded: true,
                         itemSchema: {
                             text: { type: 'text', label: 'editor_answer_text', required: true },
                             correct: { type: 'checkbox', label: 'editor_is_correct', inline: true },
@@ -323,6 +500,28 @@ const fieldSchemas = {
                 fields: {
                     overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
                 }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    behaviour: {
+                        type: 'object',
+                        schema: {
+                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
+                            randomAnswers: { type: 'checkbox', label: 'editor_random_answers', default: true, hint: 'editor_random_answers_hint' },
+                            singlePoint: { type: 'checkbox', label: 'editor_single_point', default: false, hint: 'editor_single_point_hint' },
+                            showScorePoints: { type: 'checkbox', label: 'editor_show_score_points', default: true },
+                            autoCheck: { type: 'checkbox', label: 'editor_auto_check', default: false, hint: 'editor_auto_check_hint' },
+                            passPercentage: { type: 'number', label: 'editor_pass_percentage', default: 50, min: 0, max: 100, hint: 'editor_pass_percentage_hint' },
+                            confirmCheckDialog: { type: 'checkbox', label: 'editor_confirm_check_dialog', default: false, hint: 'editor_confirm_check_dialog_hint' },
+                            confirmRetryDialog: { type: 'checkbox', label: 'editor_confirm_retry_dialog', default: false, hint: 'editor_confirm_retry_dialog_hint' }
+                        }
+                    }
+                }
             }
         ]
     },
@@ -335,7 +534,8 @@ const fieldSchemas = {
                 label: 'editor_section_question',
                 icon: 'fa-question-circle',
                 fields: {
-                    question: { type: 'textarea', label: 'editor_question_text', required: true, large: true }
+                    question: { type: 'textarea', label: 'editor_question_text', required: true, large: true },
+                    mediaImage: { type: 'image', label: 'editor_image_context', hint: 'editor_image_context_hint', collapsible: true, collapsibleLabel: 'editor_image_context', altTextField: 'mediaImageAlt' }
                 }
             },
             {
@@ -362,6 +562,24 @@ const fieldSchemas = {
                     feedbackOnCorrect: { type: 'textarea', label: 'editor_feedback_correct' },
                     feedbackOnWrong: { type: 'textarea', label: 'editor_feedback_wrong' }
                 }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    behaviour: {
+                        type: 'object',
+                        schema: {
+                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
+                            autoCheck: { type: 'checkbox', label: 'editor_auto_check', default: false, hint: 'editor_auto_check_hint' },
+                            confirmCheckDialog: { type: 'checkbox', label: 'editor_confirm_check_dialog', default: false, hint: 'editor_confirm_check_dialog_hint' },
+                            confirmRetryDialog: { type: 'checkbox', label: 'editor_confirm_retry_dialog', default: false, hint: 'editor_confirm_retry_dialog_hint' }
+                        }
+                    }
+                }
             }
         ]
     },
@@ -374,7 +592,8 @@ const fieldSchemas = {
                 label: 'editor_section_general',
                 icon: 'fa-info-circle',
                 fields: {
-                    taskDescription: { type: 'textarea', label: 'editor_task_description', required: true }
+                    taskDescription: { type: 'textarea', label: 'editor_task_description', required: true },
+                    mediaImage: { type: 'image', label: 'editor_image_context', hint: 'editor_image_context_hint', collapsible: true, collapsibleLabel: 'editor_image_context', altTextField: 'mediaImageAlt' }
                 }
             },
             {
@@ -408,6 +627,27 @@ const fieldSchemas = {
                 fields: {
                     overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
                 }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    behaviour: {
+                        type: 'object',
+                        schema: {
+                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
+                            caseSensitive: { type: 'checkbox', label: 'editor_case_sensitive', default: false },
+                            acceptSpellingErrors: { type: 'checkbox', label: 'editor_accept_spelling_errors', default: false, hint: 'editor_accept_spelling_errors_hint' },
+                            autoCheck: { type: 'checkbox', label: 'editor_auto_check', default: true, hint: 'editor_auto_check_hint' },
+                            separateLines: { type: 'checkbox', label: 'editor_separate_lines', default: false, hint: 'editor_separate_lines_hint' },
+                            confirmCheckDialog: { type: 'checkbox', label: 'editor_confirm_check_dialog', default: false, hint: 'editor_confirm_check_dialog_hint' },
+                            confirmRetryDialog: { type: 'checkbox', label: 'editor_confirm_retry_dialog', default: false, hint: 'editor_confirm_retry_dialog_hint' }
+                        }
+                    }
+                }
             }
         ]
     },
@@ -439,6 +679,14 @@ const fieldSchemas = {
                         itemSchema: {
                             text: { type: 'textarea', label: 'editor_card_front', required: true },
                             answer: { type: 'textarea', label: 'editor_card_back', required: true },
+                            image: {
+                                type: 'image',
+                                label: 'editor_image',
+                                hint: 'editor_image_card_hint',
+                                collapsible: true,
+                                collapsibleLabel: 'editor_image',
+                                altTextField: 'imageAltText'
+                            },
                             tips: {
                                 type: 'object',
                                 collapsible: true,
@@ -448,6 +696,31 @@ const fieldSchemas = {
                                     back: { type: 'text', label: 'editor_tip_back' }
                                 }
                             }
+                        }
+                    }
+                }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    mode: {
+                        type: 'select',
+                        label: 'editor_dialog_mode',
+                        default: 'normal',
+                        hint: 'editor_dialog_mode_hint',
+                        options: [
+                            { value: 'normal', label: 'editor_dialog_mode_normal' },
+                            { value: 'repetition', label: 'editor_dialog_mode_repetition' }
+                        ]
+                    },
+                    behaviour: {
+                        type: 'object',
+                        schema: {
+                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            randomCards: { type: 'checkbox', label: 'editor_random_cards', default: false, hint: 'editor_random_cards_hint' }
                         }
                     }
                 }
@@ -466,12 +739,24 @@ const fieldSchemas = {
                     'timeline.headline': { type: 'text', label: 'editor_title', required: true },
                     'timeline.text': { type: 'textarea', label: 'editor_description' },
                     'timeline.type': { type: 'text', label: 'editor_timeline_type', hidden: true },
-                    'timeline.asset': {
-                        type: 'object', collapsible: true, collapsibleLabel: 'editor_media_optional',
-                        schema: {
-                            media: { type: 'text', label: 'editor_media_url' },
-                            caption: { type: 'text', label: 'editor_caption' },
-                            credit: { type: 'text', label: 'editor_credit' }
+                    _timelineMedia: {
+                        type: 'fieldGroup', collapsible: true, collapsibleLabel: 'editor_media_optional',
+                        fields: {
+                            'timeline.mediaType': {
+                                type: 'toggle', default: 'url',
+                                options: [
+                                    { value: 'url', label: 'editor_url' },
+                                    { value: 'image', label: 'editor_image' }
+                                ]
+                            },
+                            'timeline.asset.media': { type: 'text', label: 'editor_media_url', showWhen: { field: 'timeline.mediaType', value: 'url' } },
+                            'timeline.asset.caption': { type: 'text', label: 'editor_caption', showWhen: { field: 'timeline.mediaType', value: 'url' } },
+                            'timeline.asset.credit': { type: 'text', label: 'editor_credit', showWhen: { field: 'timeline.mediaType', value: 'url' } },
+                            'timeline.coverImage': {
+                                type: 'image', label: 'editor_image_timeline', hint: 'editor_image_timeline_hint',
+                                collapsible: false, altTextField: 'timeline.coverImageAlt',
+                                showWhen: { field: 'timeline.mediaType', value: 'image' }
+                            }
                         }
                     }
                 }
@@ -494,12 +779,24 @@ const fieldSchemas = {
                             headline: { type: 'text', label: 'editor_event_title', required: true },
                             text: { type: 'textarea', label: 'editor_event_description' },
                             tag: { type: 'text', label: 'editor_event_tag' },
-                            asset: {
-                                type: 'object', collapsible: true, collapsibleLabel: 'editor_media_optional',
-                                schema: {
-                                    media: { type: 'text', label: 'editor_media_url' },
-                                    caption: { type: 'text', label: 'editor_caption' },
-                                    credit: { type: 'text', label: 'editor_credit' }
+                            _media: {
+                                type: 'fieldGroup', collapsibleLabel: 'editor_media_optional',
+                                fields: {
+                                    mediaType: {
+                                        type: 'toggle', default: 'url',
+                                        options: [
+                                            { value: 'url', label: 'editor_url' },
+                                            { value: 'image', label: 'editor_image' }
+                                        ]
+                                    },
+                                    'asset.media': { type: 'text', label: 'editor_media_url', showWhen: { field: 'mediaType', value: 'url' } },
+                                    'asset.caption': { type: 'text', label: 'editor_caption', showWhen: { field: 'mediaType', value: 'url' } },
+                                    'asset.credit': { type: 'text', label: 'editor_credit', showWhen: { field: 'mediaType', value: 'url' } },
+                                    eventImage: {
+                                        type: 'image', label: 'editor_image_timeline', hint: 'editor_image_timeline_hint',
+                                        collapsible: false, altTextField: 'eventImageAlt',
+                                        showWhen: { field: 'mediaType', value: 'image' }
+                                    }
                                 }
                             }
                         }
@@ -527,6 +824,15 @@ const fieldSchemas = {
                         }
                     }
                 }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    height: { type: 'number', label: 'editor_timeline_height', default: 600, min: 300, max: 1200, hint: 'editor_timeline_height_hint' }
+                }
             }
         ]
     },
@@ -544,6 +850,15 @@ const fieldSchemas = {
                 }
             },
             {
+                id: 'background',
+                label: 'editor_image_background',
+                icon: 'fa-image',
+                startCollapsed: true,
+                fields: {
+                    backgroundImage: { type: 'image', label: 'editor_image_background', hint: 'editor_image_crossword_bg_hint', altTextField: 'backgroundImageAlt' }
+                }
+            },
+            {
                 id: 'words',
                 label: 'editor_section_words',
                 icon: 'fa-th',
@@ -558,7 +873,7 @@ const fieldSchemas = {
                         itemSchema: {
                             answer: { type: 'text', label: 'editor_answer', required: true, hint: 'editor_crossword_answer_hint' },
                             clue: { type: 'text', label: 'editor_clue', required: true },
-                            'extraClue.params.text': { type: 'textarea', label: 'editor_extra_clue' }
+                            'extraClue.params.text': { type: 'text', label: 'editor_extra_clue', collapsible: true, collapsibleLabel: 'editor_extra_clue_optional' }
                         }
                     }
                 }
@@ -569,6 +884,117 @@ const fieldSchemas = {
                 icon: 'fa-comment-dots',
                 fields: {
                     overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
+                }
+            },
+            {
+                id: 'theme',
+                label: 'editor_section_theme',
+                icon: 'fa-palette',
+                startCollapsed: true,
+                fields: {
+                    'theme._preset': {
+                        type: 'select',
+                        label: 'editor_crossword_theme_preset',
+                        default: 'default',
+                        options: [
+                            { value: 'default', label: 'editor_crossword_theme_default' },
+                            { value: 'elea', label: 'editor_page_theme_elea' },
+                            { value: 'dsfr', label: 'editor_page_theme_dsfr' },
+                            { value: 'accessible', label: 'editor_page_theme_accessible' },
+                            { value: 'dynamique', label: 'editor_page_theme_dynamique' },
+                            { value: 'nature', label: 'editor_crossword_theme_nature' }
+                        ],
+                        presets: {
+                            'default': {
+                                'theme.backgroundColor': '#173354',
+                                'theme.gridColor': '#000000',
+                                'theme.cellBackgroundColor': '#ffffff',
+                                'theme.cellColor': '#000000',
+                                'theme.clueIdColor': '#606060',
+                                'theme.cellBackgroundColorHighlight': '#3e8de8',
+                                'theme.cellColorHighlight': '#ffffff',
+                                'theme.clueIdColorHighlight': '#e0e0e0'
+                            },
+                            'elea': {
+                                'theme.backgroundColor': '#4a148c',
+                                'theme.gridColor': '#7b1fa2',
+                                'theme.cellBackgroundColor': '#f3e5f5',
+                                'theme.cellColor': '#4a148c',
+                                'theme.clueIdColor': '#9c27b0',
+                                'theme.cellBackgroundColorHighlight': '#ff6f00',
+                                'theme.cellColorHighlight': '#ffffff',
+                                'theme.clueIdColorHighlight': '#ffe0b2'
+                            },
+                            'dsfr': {
+                                'theme.backgroundColor': '#000091',
+                                'theme.gridColor': '#000091',
+                                'theme.cellBackgroundColor': '#f5f5fe',
+                                'theme.cellColor': '#161616',
+                                'theme.clueIdColor': '#666666',
+                                'theme.cellBackgroundColorHighlight': '#000091',
+                                'theme.cellColorHighlight': '#ffffff',
+                                'theme.clueIdColorHighlight': '#cacafb'
+                            },
+                            'accessible': {
+                                'theme.backgroundColor': '#1a1a1a',
+                                'theme.gridColor': '#333333',
+                                'theme.cellBackgroundColor': '#ffffff',
+                                'theme.cellColor': '#1a1a1a',
+                                'theme.clueIdColor': '#555555',
+                                'theme.cellBackgroundColorHighlight': '#ffd700',
+                                'theme.cellColorHighlight': '#1a1a1a',
+                                'theme.clueIdColorHighlight': '#1a1a1a'
+                            },
+                            'dynamique': {
+                                'theme.backgroundColor': '#0d47a1',
+                                'theme.gridColor': '#1565c0',
+                                'theme.cellBackgroundColor': '#e3f2fd',
+                                'theme.cellColor': '#0d47a1',
+                                'theme.clueIdColor': '#42a5f5',
+                                'theme.cellBackgroundColorHighlight': '#00c853',
+                                'theme.cellColorHighlight': '#ffffff',
+                                'theme.clueIdColorHighlight': '#b9f6ca'
+                            },
+                            'nature': {
+                                'theme.backgroundColor': '#1b5e20',
+                                'theme.gridColor': '#2e7d32',
+                                'theme.cellBackgroundColor': '#f1f8e9',
+                                'theme.cellColor': '#1b5e20',
+                                'theme.clueIdColor': '#66bb6a',
+                                'theme.cellBackgroundColorHighlight': '#ff8f00',
+                                'theme.cellColorHighlight': '#ffffff',
+                                'theme.clueIdColorHighlight': '#fff8e1'
+                            }
+                        }
+                    },
+                    'theme.backgroundColor': { type: 'color', label: 'editor_crossword_bg_color', default: '#173354' },
+                    'theme.gridColor': { type: 'color', label: 'editor_crossword_grid_color', default: '#000000' },
+                    'theme.cellBackgroundColor': { type: 'color', label: 'editor_crossword_cell_bg', default: '#ffffff' },
+                    'theme.cellColor': { type: 'color', label: 'editor_crossword_cell_color', default: '#000000' },
+                    'theme.clueIdColor': { type: 'color', label: 'editor_crossword_clue_id_color', default: '#606060' },
+                    'theme.cellBackgroundColorHighlight': { type: 'color', label: 'editor_crossword_highlight_bg', default: '#3e8de8' },
+                    'theme.cellColorHighlight': { type: 'color', label: 'editor_crossword_highlight_color', default: '#ffffff' },
+                    'theme.clueIdColorHighlight': { type: 'color', label: 'editor_crossword_highlight_clue_color', default: '#e0e0e0' }
+                }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    behaviour: {
+                        type: 'object',
+                        schema: {
+                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
+                            enableInstantFeedback: { type: 'checkbox', label: 'editor_instant_feedback', default: false, hint: 'editor_instant_feedback_hint' },
+                            scoreWords: { type: 'checkbox', label: 'editor_score_words', default: true, hint: 'editor_score_words_hint' },
+                            applyPenalties: { type: 'checkbox', label: 'editor_apply_penalties', default: false, hint: 'editor_apply_penalties_hint' },
+                            keepCorrectAnswers: { type: 'checkbox', label: 'editor_keep_correct_answers', default: false, hint: 'editor_keep_correct_answers_hint' },
+                            poolSize: { type: 'number', label: 'editor_pool_size', min: 0, hint: 'editor_pool_size_hint' }
+                        }
+                    }
                 }
             }
         ]
@@ -583,7 +1009,8 @@ const fieldSchemas = {
                 label: 'editor_section_general',
                 icon: 'fa-info-circle',
                 fields: {
-                    taskDescription: { type: 'textarea', label: 'editor_task_description', required: true, large: true }
+                    taskDescription: { type: 'textarea', label: 'editor_task_description', required: true, large: true },
+                    mediaImage: { type: 'image', label: 'editor_image_context', hint: 'editor_image_context_hint', collapsible: true, collapsibleLabel: 'editor_image_context', altTextField: 'mediaImageAlt' }
                 }
             },
             {
@@ -594,14 +1021,16 @@ const fieldSchemas = {
                 fields: {
                     keywords: {
                         type: 'array',
+                        nested: true,
+                        compact: true,
                         itemLabel: 'editor_keyword',
                         addLabel: 'editor_add_keyword',
                         minItems: 1,
-                        itemsExpanded: false,
+                        itemsExpanded: true,
                         itemSchema: {
-                            keyword: { type: 'text', label: 'editor_keyword', required: true },
-                            'options.points': { type: 'number', label: 'editor_weight', hint: 'editor_weight_hint' },
-                            'options.caseSensitive': { type: 'checkbox', label: 'editor_case_sensitive' }
+                            keyword: { type: 'text', label: 'editor_keyword', required: true, row: 'main' },
+                            'options.points': { type: 'number', label: 'editor_weight', row: 'main' },
+                            'options.caseSensitive': { type: 'checkbox', label: 'editor_case_sensitive', row: 'main' }
                         }
                     }
                 }
@@ -612,6 +1041,38 @@ const fieldSchemas = {
                 icon: 'fa-comment-dots',
                 fields: {
                     overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
+                }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    behaviour: {
+                        type: 'object',
+                        schema: {
+                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            minimumLength: { type: 'number', label: 'editor_minimum_words', default: 10, min: 0, hint: 'editor_minimum_words_hint' },
+                            maximumLength: { type: 'number', label: 'editor_maximum_words', default: 10000, min: 0, hint: 'editor_maximum_words_hint' },
+                            overrideCaseSensitive: {
+                                type: 'select', label: 'editor_case_sensitive_scoring', default: 'off',
+                                hint: 'editor_case_sensitive_scoring_hint',
+                                options: [
+                                    { value: 'off', label: 'editor_false' },
+                                    { value: 'on', label: 'editor_true' }
+                                ]
+                            },
+                            overrideForgiveMistakes: {
+                                type: 'select', label: 'editor_forgive_mistakes', default: 'on',
+                                hint: 'editor_forgive_mistakes_hint',
+                                options: [
+                                    { value: 'on', label: 'editor_true' },
+                                    { value: 'off', label: 'editor_false' }
+                                ]
+                            }
+                        }
+                    }
                 }
             }
         ]
@@ -650,10 +1111,10 @@ const fieldSchemas = {
                         minItems: 1,
                         itemsExpanded: false,
                         itemSchema: {
-                            text: { type: 'text', label: 'editor_chart_label', required: true },
-                            value: { type: 'number', label: 'editor_chart_value', required: true },
-                            color: { type: 'color', label: 'editor_chart_color' },
-                            fontColor: { type: 'color', label: 'editor_chart_font_color' }
+                            text: { type: 'text', label: 'editor_chart_label', required: true, row: 'main' },
+                            value: { type: 'number', label: 'editor_chart_value', required: true, row: 'main' },
+                            color: { type: 'color', label: 'editor_chart_color', row: 'colors' },
+                            fontColor: { type: 'color', label: 'editor_chart_font_color', row: 'colors' }
                         }
                     }
                 }
@@ -669,7 +1130,8 @@ const fieldSchemas = {
                 label: 'editor_section_general',
                 icon: 'fa-info-circle',
                 fields: {
-                    taskDescription: { type: 'textarea', label: 'editor_task_description', required: true }
+                    taskDescription: { type: 'textarea', label: 'editor_task_description', required: true },
+                    mediaImage: { type: 'image', label: 'editor_image_context', hint: 'editor_image_context_hint', collapsible: true, collapsibleLabel: 'editor_image_context', altTextField: 'mediaImageAlt' }
                 }
             },
             {
@@ -692,6 +1154,22 @@ const fieldSchemas = {
                 icon: 'fa-comment-dots',
                 fields: {
                     overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
+                }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    behaviour: {
+                        type: 'object',
+                        schema: {
+                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
+                            instantFeedback: { type: 'checkbox', label: 'editor_instant_feedback', default: false, hint: 'editor_instant_feedback_hint' }
+                        }
+                    }
                 }
             }
         ]
@@ -722,6 +1200,15 @@ const fieldSchemas = {
                             }
                         }
                     }
+                }
+            },
+            {
+                id: 'background',
+                label: 'editor_image_background',
+                icon: 'fa-image',
+                startCollapsed: true,
+                fields: {
+                    backgroundImage: { type: 'image', label: 'editor_image_background', hint: 'editor_image_background_hint' }
                 }
             },
             {
@@ -757,6 +1244,14 @@ const fieldSchemas = {
                         itemsExpanded: false,
                         itemSchema: {
                             text: { type: 'text', label: 'editor_element_text', required: true },
+                            image: {
+                                type: 'image',
+                                label: 'editor_image',
+                                hint: 'editor_image_element_hint',
+                                collapsible: true,
+                                collapsibleLabel: 'editor_image',
+                                altTextField: 'imageAltText'
+                            },
                             zoneIndices: {
                                 type: 'multiCheckbox',
                                 label: 'editor_target_zones',
@@ -776,6 +1271,23 @@ const fieldSchemas = {
                 icon: 'fa-comment-dots',
                 fields: {
                     overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
+                }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    behaviour: {
+                        type: 'object',
+                        schema: {
+                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
+                            applyPenalties: { type: 'checkbox', label: 'editor_apply_penalties', default: true, hint: 'editor_apply_penalties_hint' },
+                            showScorePoints: { type: 'checkbox', label: 'editor_show_score_points', default: true }
+                        }
+                    }
                 }
             }
         ]
@@ -803,6 +1315,24 @@ const fieldSchemas = {
                         }
                     }
                 }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    hTag: {
+                        type: 'select',
+                        label: 'editor_glossary_htag',
+                        default: 'h2',
+                        options: [
+                            { value: 'h2', label: 'editor_glossary_htag_h2' },
+                            { value: 'h3', label: 'editor_glossary_htag_h3' },
+                            { value: 'h4', label: 'editor_glossary_htag_h4' }
+                        ]
+                    }
+                }
             }
         ],
         // Indique que ce type nécessite une normalisation
@@ -820,8 +1350,16 @@ const fieldSchemas = {
                 icon: 'fa-info-circle',
                 fields: {
                     title: { type: 'text', label: 'editor_title', required: true },
-                    progressType: { type: 'text', label: 'editor_progress_type', hidden: true },
-                    passPercentage: { type: 'number', label: 'editor_pass_percentage', hidden: true }
+                    progressType: {
+                        type: 'select', label: 'editor_progress_type', default: 'dots',
+                        hint: 'editor_progress_type_hint',
+                        options: [
+                            { value: 'dots', label: 'editor_progress_type_dots' },
+                            { value: 'textual', label: 'editor_progress_type_textual' }
+                        ]
+                    },
+                    passPercentage: { type: 'number', label: 'editor_pass_percentage', default: 50, min: 0, max: 100, hint: 'editor_pass_percentage_hint' },
+                    randomQuestions: { type: 'checkbox', label: 'editor_randomize_questions', default: false, hint: 'editor_randomize_questions_hint' }
                 }
             },
             {
@@ -868,7 +1406,7 @@ const fieldSchemas = {
                                             addLabel: 'editor_add_answer',
                                             minItems: 2,
                                             nested: true,
-                                            itemsExpanded: false,
+                                            itemsExpanded: true,
                                             itemSchema: {
                                                 text: { type: 'text', label: 'editor_answer_text', required: true },
                                                 correct: { type: 'checkbox', label: 'editor_correct_answer_label', inline: true },
@@ -912,7 +1450,7 @@ const fieldSchemas = {
                                             itemLabel: 'editor_cloze_sentence',
                                             addLabel: 'editor_add_sentence',
                                             nested: true,
-                                            itemsExpanded: false,
+                                            itemsExpanded: true,
                                             itemSchema: {
                                                 _value: { type: 'textarea', label: 'editor_sentence_text', required: true, hint: 'editor_blanks_hint', isArrayValue: true }
                                             }
@@ -942,7 +1480,7 @@ const fieldSchemas = {
                                             itemLabel: 'editor_keyword',
                                             addLabel: 'editor_add_keyword',
                                             nested: true,
-                                            itemsExpanded: false,
+                                            itemsExpanded: true,
                                             itemContentType: 'essay-keyword',
                                             itemSchema: {
                                                 keyword: { type: 'text', label: 'editor_keyword_expected', required: true },
@@ -985,7 +1523,7 @@ const fieldSchemas = {
                                             addLabel: 'editor_add_zone',
                                             minItems: 2,
                                             maxItems: 10,
-                                            itemsExpanded: false,
+                                            itemsExpanded: true,
                                             itemSchema: {
                                                 label: { type: 'text', label: 'editor_zone_label', required: true }
                                             }
@@ -995,7 +1533,7 @@ const fieldSchemas = {
                                             itemLabel: 'editor_element',
                                             addLabel: 'editor_add_element',
                                             minItems: 2,
-                                            itemsExpanded: false,
+                                            itemsExpanded: true,
                                             itemSchema: {
                                                 text: { type: 'text', label: 'editor_element_text', required: true },
                                                 zoneIndices: {
@@ -1036,7 +1574,8 @@ const fieldSchemas = {
                 label: 'editor_section_general',
                 icon: 'fa-info-circle',
                 fields: {
-                    taskDescription: { type: 'textarea', label: 'editor_task_description', required: true }
+                    taskDescription: { type: 'textarea', label: 'editor_task_description', required: true },
+                    mediaImage: { type: 'image', label: 'editor_image_context', hint: 'editor_image_context_hint', collapsible: true, collapsibleLabel: 'editor_image_context', altTextField: 'mediaImageAlt' }
                 }
             },
             {
@@ -1059,6 +1598,25 @@ const fieldSchemas = {
                 icon: 'fa-comment-dots',
                 fields: {
                     overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
+                }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    behaviour: {
+                        type: 'object',
+                        schema: {
+                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
+                            autoCheck: { type: 'checkbox', label: 'editor_auto_check', default: false, hint: 'editor_auto_check_hint' },
+                            showScorePoints: { type: 'checkbox', label: 'editor_show_score_points', default: true },
+                            confirmCheckDialog: { type: 'checkbox', label: 'editor_confirm_check_dialog', default: false, hint: 'editor_confirm_check_dialog_hint' },
+                            confirmRetryDialog: { type: 'checkbox', label: 'editor_confirm_retry_dialog', default: false, hint: 'editor_confirm_retry_dialog_hint' }
+                        }
+                    }
                 }
             }
         ]
@@ -1107,6 +1665,30 @@ const fieldSchemas = {
                 fields: {
                     overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
                 }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    behaviour: {
+                        type: 'object',
+                        schema: {
+                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
+                            scoringMode: {
+                                type: 'select', label: 'editor_scoring_mode', default: 'transitions',
+                                hint: 'editor_scoring_mode_hint',
+                                options: [
+                                    { value: 'transitions', label: 'editor_scoring_mode_transitions' },
+                                    { value: 'positions', label: 'editor_scoring_mode_positions' }
+                                ]
+                            },
+                            applyPenalties: { type: 'checkbox', label: 'editor_apply_penalties', default: true, hint: 'editor_apply_penalties_hint' }
+                        }
+                    }
+                }
             }
         ]
     },
@@ -1120,7 +1702,38 @@ const fieldSchemas = {
                 icon: 'fa-info-circle',
                 fields: {
                     taskDescription: { type: 'textarea', label: 'editor_task_description' },
-                    wordList: { type: 'text', label: 'editor_word_list', required: true, hint: 'editor_word_list_hint' }
+                    wordList: { type: 'tagList', label: 'editor_word_list', required: true, hint: 'editor_word_list_hint' }
+                }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    behaviour: {
+                        type: 'object',
+                        schema: {
+                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            enableShowSolution: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
+                            showVocabulary: { type: 'checkbox', label: 'editor_show_vocabulary', default: true, hint: 'editor_show_vocabulary_hint' },
+                            orientations: {
+                                type: 'object',
+                                label: 'editor_section_orientations',
+                                collapsible: true,
+                                schema: {
+                                    horizontal: { type: 'checkbox', label: 'editor_orientation_horizontal', default: true },
+                                    horizontalBack: { type: 'checkbox', label: 'editor_orientation_horizontal_back', default: true },
+                                    vertical: { type: 'checkbox', label: 'editor_orientation_vertical', default: true },
+                                    verticalUp: { type: 'checkbox', label: 'editor_orientation_vertical_up', default: true },
+                                    diagonal: { type: 'checkbox', label: 'editor_orientation_diagonal', default: true },
+                                    diagonalBack: { type: 'checkbox', label: 'editor_orientation_diagonal_back', default: true },
+                                    diagonalUp: { type: 'checkbox', label: 'editor_orientation_diagonal_up', default: true },
+                                    diagonalUpBack: { type: 'checkbox', label: 'editor_orientation_diagonal_up_back', default: true }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         ]
@@ -1184,6 +1797,22 @@ const fieldSchemas = {
                         label: 'editor_overall_feedback'
                     }
                 }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    behaviour: {
+                        type: 'object',
+                        schema: {
+                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
+                            passPercentage: { type: 'number', label: 'editor_pass_percentage', default: 50, min: 0, max: 100, hint: 'editor_pass_percentage_hint' }
+                        }
+                    }
+                }
             }
         ]
     },
@@ -1220,6 +1849,24 @@ const fieldSchemas = {
                 icon: 'fa-comment-dots',
                 fields: {
                     overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
+                }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    behaviour: {
+                        type: 'object',
+                        schema: {
+                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
+                            soundEffectsEnabled: { type: 'checkbox', label: 'editor_sound_effects', default: true, hint: 'editor_sound_effects_hint' },
+                            autoContinue: { type: 'checkbox', label: 'editor_auto_continue', default: true, hint: 'editor_auto_continue_hint' },
+                            passPercentage: { type: 'number', label: 'editor_pass_percentage', default: 100, min: 0, max: 100, hint: 'editor_pass_percentage_hint' }
+                        }
+                    }
                 }
             }
         ]
@@ -1388,7 +2035,27 @@ const fieldSchemas = {
                 icon: 'fa-info-circle',
                 fields: {
                     bank_name: { type: 'text', label: 'editor_bank_name', required: true },
-                    bank_description: { type: 'textarea', label: 'editor_bank_description' }
+                    bank_description: { type: 'textarea', label: 'editor_bank_description' },
+                    options: {
+                        type: 'object', collapsible: true, collapsibleLabel: 'editor_test_options',
+                        schema: {
+                            answernumbering: {
+                                type: 'select', label: 'editor_test_answernumbering',
+                                default: 'none',
+                                options: [
+                                    { value: 'none', label: 'editor_test_numbering_none' },
+                                    { value: 'abc', label: 'editor_test_numbering_abc' },
+                                    { value: '123', label: 'editor_test_numbering_123' },
+                                    { value: 'ABCD', label: 'editor_test_numbering_ABCD' },
+                                    { value: 'iii', label: 'editor_test_numbering_iii' }
+                                ]
+                            },
+                            showstandardinstruction: {
+                                type: 'checkbox', label: 'editor_test_showstandardinstruction',
+                                default: true, valueType: 'number'
+                            }
+                        }
+                    }
                 }
             },
             {
@@ -1402,6 +2069,7 @@ const fieldSchemas = {
                         itemLabel: 'editor_question',
                         addLabel: 'editor_add_question',
                         minItems: 1,
+                        dynamicTitleField: 'type',
                         itemSchema: {
                             type: {
                                 type: 'select',
@@ -1422,9 +2090,8 @@ const fieldSchemas = {
                                 selector: 'type',
                                 schemas: {
                                     multichoice: {
-                                        name: { type: 'text', label: 'editor_question_name', required: true },
+                                        name: { type: 'text', label: 'editor_question_name', collapsible: true, collapsibleLabel: 'editor_question_name' },
                                         questiontext: { type: 'textarea', label: 'editor_question_text', required: true, large: true },
-                                        feedback: { type: 'textarea', label: 'editor_question_feedback' },
                                         single: {
                                             type: 'select', label: 'editor_test_selection_mode',
                                             options: [
@@ -1433,72 +2100,127 @@ const fieldSchemas = {
                                             ]
                                         },
                                         answers: {
-                                            type: 'array', itemLabel: 'editor_answer', addLabel: 'editor_add_answer', nested: true, itemsExpanded: false,
+                                            type: 'array', itemLabel: 'editor_answer', addLabel: 'editor_add_answer', nested: true, compact: true, itemsExpanded: true,
+                                            hint: 'editor_moodle_fraction_hint',
+                                            validateSum: { field: 'fraction', target: 100, label: 'editor_fraction_sum_error' },
                                             itemSchema: {
-                                                text: { type: 'text', label: 'editor_answer_text', required: true },
-                                                fraction: { type: 'number', label: 'editor_answer_fraction', hint: 'editor_score_hint' },
-                                                feedback: { type: 'textarea', label: 'editor_feedback_if_chosen' }
+                                                text: { type: 'text', label: 'editor_answer_text', required: true, row: 'main' },
+                                                fraction: { row: 'main',
+                                                    type: 'select', label: 'editor_answer_fraction',
+                                                    options: [
+                                                        { value: 0, label: '0%' },
+                                                        { value: 5, label: '5%' },
+                                                        { value: 10, label: '10%' },
+                                                        { value: 11.11111, label: '11.11%' },
+                                                        { value: 12.5, label: '12.5%' },
+                                                        { value: 14.28571, label: '14.29%' },
+                                                        { value: 16.66667, label: '16.67%' },
+                                                        { value: 20, label: '20%' },
+                                                        { value: 25, label: '25%' },
+                                                        { value: 33.33333, label: '33.33%' },
+                                                        { value: 50, label: '50%' },
+                                                        { value: 60, label: '60%' },
+                                                        { value: 66.66667, label: '66.67%' },
+                                                        { value: 75, label: '75%' },
+                                                        { value: 80, label: '80%' },
+                                                        { value: 83.33333, label: '83.33%' },
+                                                        { value: 90, label: '90%' },
+                                                        { value: 100, label: '100%' }
+                                                    ]
+                                                },
+                                                feedback: { type: 'textarea', label: 'editor_feedback_if_chosen', collapsible: true, collapsibleLabel: 'editor_feedback' }
                                             }
+                                        },
+                                        feedback: { type: 'textarea', label: 'editor_question_feedback', collapsible: true, collapsibleLabel: 'editor_question_feedback' },
+                                        correctfeedback: { type: 'textarea', label: 'editor_test_correctfeedback', collapsible: true, collapsibleLabel: 'editor_test_correctfeedback' },
+                                        partiallycorrectfeedback: { type: 'textarea', label: 'editor_test_partiallycorrectfeedback', collapsible: true, collapsibleLabel: 'editor_test_partiallycorrectfeedback' },
+                                        incorrectfeedback: { type: 'textarea', label: 'editor_test_incorrectfeedback', collapsible: true, collapsibleLabel: 'editor_test_incorrectfeedback' },
+                                        hints: {
+                                            type: 'array', itemLabel: 'editor_test_hint', addLabel: 'editor_test_add_hint', nested: true, itemsExpanded: false, maxItems: 3,
+                                            itemSchema: { _value: { type: 'textarea', label: 'editor_test_hint_text', isArrayValue: true } }
                                         }
                                     },
                                     matching: {
-                                        name: { type: 'text', label: 'editor_question_name', required: true },
+                                        name: { type: 'text', label: 'editor_question_name', collapsible: true, collapsibleLabel: 'editor_question_name' },
                                         questiontext: { type: 'textarea', label: 'editor_question_text', required: true, large: true },
-                                        feedback: { type: 'textarea', label: 'editor_question_feedback' },
                                         subquestions: {
-                                            type: 'array', itemLabel: 'editor_pair', addLabel: 'editor_add_pair', nested: true, itemsExpanded: false,
+                                            type: 'array', itemLabel: 'editor_pair', addLabel: 'editor_add_pair', nested: true, compact: true, itemsExpanded: true,
                                             itemSchema: {
-                                                text: { type: 'text', label: 'editor_left_element', required: true },
-                                                answer: { type: 'text', label: 'editor_right_element', required: true }
+                                                text: { type: 'text', label: 'editor_left_element', required: true, row: 'main' },
+                                                answer: { type: 'text', label: 'editor_right_element', required: true, row: 'main' }
                                             }
+                                        },
+                                        feedback: { type: 'textarea', label: 'editor_question_feedback', collapsible: true, collapsibleLabel: 'editor_question_feedback' },
+                                        correctfeedback: { type: 'textarea', label: 'editor_test_correctfeedback', collapsible: true, collapsibleLabel: 'editor_test_correctfeedback' },
+                                        partiallycorrectfeedback: { type: 'textarea', label: 'editor_test_partiallycorrectfeedback', collapsible: true, collapsibleLabel: 'editor_test_partiallycorrectfeedback' },
+                                        incorrectfeedback: { type: 'textarea', label: 'editor_test_incorrectfeedback', collapsible: true, collapsibleLabel: 'editor_test_incorrectfeedback' },
+                                        hints: {
+                                            type: 'array', itemLabel: 'editor_test_hint', addLabel: 'editor_test_add_hint', nested: true, itemsExpanded: false, maxItems: 3,
+                                            itemSchema: { _value: { type: 'textarea', label: 'editor_test_hint_text', isArrayValue: true } }
                                         }
                                     },
                                     truefalse: {
-                                        name: { type: 'text', label: 'editor_question_name', required: true },
+                                        name: { type: 'text', label: 'editor_question_name', collapsible: true, collapsibleLabel: 'editor_question_name' },
                                         questiontext: { type: 'textarea', label: 'editor_question_text', required: true, large: true },
-                                        feedback: { type: 'textarea', label: 'editor_question_feedback' },
                                         answer: {
-                                            type: 'object', collapsible: true, collapsibleLabel: 'editor_test_answer_settings',
+                                            type: 'object', noHeader: true,
                                             schema: {
                                                 value: {
                                                     type: 'select', label: 'editor_correct_answer_select',
                                                     options: [{ value: true, label: 'editor_true' }, { value: false, label: 'editor_false' }]
                                                 },
-                                                feedback_true: { type: 'textarea', label: 'editor_feedback_if_true' },
-                                                feedback_false: { type: 'textarea', label: 'editor_feedback_if_false' }
+                                                feedback_true: { type: 'textarea', label: 'editor_feedback_if_true', collapsible: true, collapsibleLabel: 'editor_feedback_if_true' },
+                                                feedback_false: { type: 'textarea', label: 'editor_feedback_if_false', collapsible: true, collapsibleLabel: 'editor_feedback_if_false' }
                                             }
+                                        },
+                                        feedback: { type: 'textarea', label: 'editor_question_feedback', collapsible: true, collapsibleLabel: 'editor_question_feedback' },
+                                        hints: {
+                                            type: 'array', itemLabel: 'editor_test_hint', addLabel: 'editor_test_add_hint', nested: true, itemsExpanded: false, maxItems: 3,
+                                            itemSchema: { _value: { type: 'textarea', label: 'editor_test_hint_text', isArrayValue: true } }
                                         }
                                     },
                                     numerical: {
-                                        name: { type: 'text', label: 'editor_question_name', required: true },
+                                        name: { type: 'text', label: 'editor_question_name', collapsible: true, collapsibleLabel: 'editor_question_name' },
                                         questiontext: { type: 'textarea', label: 'editor_question_text', required: true, large: true },
-                                        feedback: { type: 'textarea', label: 'editor_question_feedback' },
                                         answer: {
-                                            type: 'object', collapsible: false,
+                                            type: 'object', collapsible: false, noHeader: true,
                                             schema: {
-                                                number: { type: 'number', label: 'editor_numerical_value', required: true },
-                                                tolerance: { type: 'number', label: 'editor_numerical_tolerance' },
+                                                number: { type: 'number', label: 'editor_numerical_value', required: true, row: 'answer' },
+                                                tolerance: { type: 'number', label: 'editor_numerical_tolerance', row: 'answer' },
                                                 feedback: { type: 'textarea', label: 'editor_feedback' }
                                             }
+                                        },
+                                        feedback: { type: 'textarea', label: 'editor_question_feedback', collapsible: true, collapsibleLabel: 'editor_question_feedback' },
+                                        hints: {
+                                            type: 'array', itemLabel: 'editor_test_hint', addLabel: 'editor_test_add_hint', nested: true, itemsExpanded: false, maxItems: 3,
+                                            itemSchema: { _value: { type: 'textarea', label: 'editor_test_hint_text', isArrayValue: true } }
                                         }
                                     },
                                     shortanswer: {
-                                        name: { type: 'text', label: 'editor_question_name', required: true },
+                                        name: { type: 'text', label: 'editor_question_name', collapsible: true, collapsibleLabel: 'editor_question_name' },
                                         questiontext: { type: 'textarea', label: 'editor_question_text', required: true, large: true },
-                                        feedback: { type: 'textarea', label: 'editor_question_feedback' },
                                         answers: {
-                                            type: 'array', itemLabel: 'editor_test_accepted_answer', addLabel: 'editor_add_answer', nested: true, itemsExpanded: false,
+                                            type: 'array', itemLabel: 'editor_test_accepted_answer', addLabel: 'editor_add_answer', nested: true, compact: true, itemsExpanded: true,
                                             itemSchema: {
-                                                text: { type: 'text', label: 'editor_correct_answer', required: true },
-                                                fraction: { type: 'number', label: 'editor_answer_fraction', hint: 'editor_score_hint_100' },
-                                                feedback: { type: 'textarea', label: 'editor_feedback' }
+                                                text: { type: 'text', label: 'editor_correct_answer', required: true, row: 'main' },
+                                                fraction: { type: 'number', label: 'editor_answer_fraction', hint: 'editor_score_hint_100', row: 'main' },
+                                                feedback: { type: 'textarea', label: 'editor_feedback', collapsible: true, collapsibleLabel: 'editor_feedback' }
                                             }
+                                        },
+                                        feedback: { type: 'textarea', label: 'editor_question_feedback', collapsible: true, collapsibleLabel: 'editor_question_feedback' },
+                                        hints: {
+                                            type: 'array', itemLabel: 'editor_test_hint', addLabel: 'editor_test_add_hint', nested: true, itemsExpanded: false, maxItems: 3,
+                                            itemSchema: { _value: { type: 'textarea', label: 'editor_test_hint_text', isArrayValue: true } }
                                         }
                                     },
                                     cloze: {
-                                        name: { type: 'text', label: 'editor_question_name', required: true },
-                                        questiontext: { type: 'textarea', label: 'editor_test_type_cloze', required: true, large: true, hint: 'editor_cloze_format_hint' },
-                                        feedback: { type: 'textarea', label: 'editor_question_feedback' }
+                                        name: { type: 'text', label: 'editor_question_name', collapsible: true, collapsibleLabel: 'editor_question_name' },
+                                        questiontext: { type: 'cloze', label: 'editor_test_type_cloze', required: true, hint: 'editor_cloze_format_hint' },
+                                        feedback: { type: 'textarea', label: 'editor_question_feedback', collapsible: true, collapsibleLabel: 'editor_question_feedback' },
+                                        hints: {
+                                            type: 'array', itemLabel: 'editor_test_hint', addLabel: 'editor_test_add_hint', nested: true, itemsExpanded: false, maxItems: 3,
+                                            itemSchema: { _value: { type: 'textarea', label: 'editor_test_hint_text', isArrayValue: true } }
+                                        }
                                     }
                                 }
                             }
@@ -1608,6 +2330,166 @@ const fieldSchemas = {
                 }
             }
         ]
+    },
+
+    // ===================================================================
+    // COURSE PRESENTATION — schema plat avec showWhen conditionnel
+    // Pas de dynamicObject imbrique : exercise utilise _exerciseLibrary
+    // comme selecteur frere (extrait par normalizeDataForEditor)
+    // ===================================================================
+    'CoursePresentation': {
+        sections: [
+            // --- Diapositives (en premier, c'est le contenu principal) ---
+            {
+                id: 'slides',
+                label: 'editor_cp_section_slides',
+                icon: 'fa-layer-group',
+                countField: 'slides',
+                fields: {
+                    slides: {
+                        type: 'array',
+                        itemLabel: 'editor_cp_slide',
+                        addLabel: 'editor_cp_add_slide',
+                        dynamicTitleField: 'type',
+                        minItems: 2,
+                        itemSchema: {
+                            // === Champs communs ===
+                            type: {
+                                type: 'select',
+                                label: 'editor_cp_slide_type',
+                                required: true,
+                                options: [
+                                    { value: 'title', label: 'editor_cp_type_title' },
+                                    { value: 'content', label: 'editor_cp_type_content' },
+                                    { value: 'content-with-table', label: 'editor_cp_type_content_table' },
+                                    { value: 'quiz', label: 'editor_cp_type_quiz' },
+                                    { value: 'content-quiz', label: 'editor_cp_type_content_quiz' },
+                                    { value: 'summary', label: 'editor_cp_type_summary' }
+                                ]
+                            },
+                            // === Disposition (visible uniquement pour les types à 2 zones) ===
+                            layout: {
+                                type: 'select',
+                                label: 'editor_cp_layout',
+                                showWhen: { field: 'type', values: ['content-with-table', 'content-quiz'] },
+                                options: [
+                                    { value: 'vertical', label: 'editor_cp_layout_vertical' },
+                                    { value: 'horizontal', label: 'editor_cp_layout_horizontal' }
+                                ],
+                                default: 'vertical'
+                            },
+
+                            title: { type: 'text', label: 'editor_title', required: true },
+
+                            // === Champ titre uniquement ===
+                            subtitle: {
+                                type: 'text', label: 'editor_cp_subtitle',
+                                showWhen: { field: 'type', value: 'title' }
+                            },
+
+                            // === Champ texte (content, content-with-table, content-quiz) ===
+                            text: {
+                                type: 'textarea', label: 'editor_cp_content', large: true,
+                                showWhen: { field: 'type', values: ['content', 'content-with-table', 'content-quiz'] }
+                            },
+
+                            // === Tableau (content-with-table uniquement) ===
+                            tableStyle: {
+                                type: 'select', label: 'editor_cp_table_style',
+                                showWhen: { field: 'type', value: 'content-with-table' },
+                                options: [
+                                    { value: 'default', label: 'editor_cp_table_default' },
+                                    { value: 'striped', label: 'editor_cp_table_striped' },
+                                    { value: 'bordered', label: 'editor_cp_table_bordered' },
+                                    { value: 'dark-header', label: 'editor_cp_table_dark_header' },
+                                    { value: 'minimal', label: 'editor_cp_table_minimal' },
+                                    { value: 'dsfr', label: 'editor_cp_table_dsfr' }
+                                ]
+                            },
+                            table: {
+                                type: 'object', label: 'editor_cp_table', noHeader: true,
+                                showWhen: { field: 'type', value: 'content-with-table' },
+                                schema: {
+                                    headers: {
+                                        type: 'array', itemLabel: 'editor_cp_table_header', addLabel: 'editor_cp_add_header',
+                                        minItems: 1, itemsExpanded: false,
+                                        itemSchema: { _value: { type: 'text', label: 'editor_cp_table_header', required: true, isArrayValue: true } }
+                                    },
+                                    rows: {
+                                        type: 'array', itemLabel: 'editor_cp_table_row', addLabel: 'editor_cp_add_row',
+                                        minItems: 1, itemsExpanded: false,
+                                        itemSchema: { _value: { type: 'stringArray', label: 'editor_cp_table_cells', isArrayValue: true } }
+                                    }
+                                }
+                            },
+
+                            // === Exercice (quiz, content-quiz, summary) ===
+                            _exerciseLibrary: {
+                                type: 'select', label: 'editor_cp_exercise_type',
+                                showWhen: { field: 'type', values: ['quiz', 'content-quiz', 'summary'] },
+                                options: [
+                                    { value: 'H5P.MultiChoice 1.16', label: 'editor_cp_ex_multichoice' },
+                                    { value: 'H5P.TrueFalse 1.8', label: 'editor_cp_ex_truefalse' },
+                                    { value: 'H5P.Blanks 1.14', label: 'editor_cp_ex_blanks' },
+                                    { value: 'H5P.DragText 1.10', label: 'editor_cp_ex_dragtext' },
+                                    { value: 'H5P.MarkTheWords 1.11', label: 'editor_cp_ex_markwords' },
+                                    { value: 'H5P.SingleChoiceSet 1.11', label: 'editor_cp_ex_singlechoice' },
+                                    { value: 'H5P.Summary 1.10', label: 'editor_cp_ex_summary' },
+                                    { value: 'H5P.DragQuestion 1.14', label: 'editor_cp_ex_dragquestion' },
+                                    { value: 'H5P.Dialogcards 1.9', label: 'editor_cp_ex_dialogcards' }
+                                ]
+                            },
+                            exercise: {
+                                type: 'dynamicObject', label: 'editor_cp_exercise',
+                                showWhen: { field: 'type', values: ['quiz', 'content-quiz', 'summary'] },
+                                selector: '_exerciseLibrary',
+                                schemas: CP_EXERCISE_SCHEMAS
+                            },
+
+                            // === Couleur de fond ===
+                            backgroundColor: { type: 'color', label: 'editor_cp_slide_color' },
+
+                            // === Image du slide (collapsible : image + position + alt) ===
+                            slideImage: {
+                                type: 'image',
+                                label: 'editor_image_slide',
+                                hint: 'editor_image_slide_hint',
+                                collapsible: true,
+                                collapsibleLabel: 'editor_image_slide',
+                                altTextField: 'slideImageAlt',
+                                selectField: {
+                                    name: 'slideImagePosition',
+                                    label: 'editor_image_position',
+                                    default: 'left',
+                                    options: [
+                                        { value: 'left', label: 'editor_image_position_left' },
+                                        { value: 'right', label: 'editor_image_position_right' },
+                                        { value: 'top', label: 'editor_image_position_top' },
+                                        { value: 'bottom', label: 'editor_image_position_bottom' }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            // --- Options globales (en bas, paramètres avancés) ---
+            {
+                id: 'options',
+                label: 'editor_cp_options',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                compact: true,
+                fields: {
+                    globalBackgroundColor: { type: 'color', label: 'editor_cp_global_bg' },
+                    keywordListEnabled: { type: 'checkbox', label: 'editor_cp_keywords', default: true, inline: true },
+                    hideSummarySlide: { type: 'checkbox', label: 'editor_cp_hide_summary', inline: true },
+                    enablePrintButton: { type: 'checkbox', label: 'editor_cp_print', inline: true },
+                    enableRetry: { type: 'checkbox', label: 'editor_cp_retry', default: true, inline: true },
+                    enableSolutionsButton: { type: 'checkbox', label: 'editor_cp_solutions', default: true, inline: true }
+                }
+            }
+        ]
     }
 };
 
@@ -1637,7 +2519,8 @@ const moduleTranslationKeys = {
     'elea_glossaire': 'elea_glossaire_xml_name',
     'elea_page': 'elea_page_name',
     'elea_millionnaire': 'elea_millionnaire_name',
-    'elea_devoir': 'elea_devoir_name'
+    'elea_devoir': 'elea_devoir_name',
+    'CoursePresentation': 'h5p_course_presentation_name'
 };
 
 /**
@@ -1817,6 +2700,13 @@ export function normalizeDataForEditor(data, moduleKey) {
             }
             return data;
 
+        case 'FindTheWords':
+            // wordList est une chaine "MOT1,MOT2" → convertir en tableau pour stringArray
+            if (typeof data.wordList === 'string') {
+                data.wordList = data.wordList.split(',').map(w => w.trim()).filter(w => w.length > 0);
+            }
+            return data;
+
         case 'QuizSet':
             // Normaliser les keywords Essay pour l'éditeur :
             // - "word" → "keyword" (harmonisation avec Essay autonome)
@@ -1892,6 +2782,65 @@ export function normalizeDataForEditor(data, moduleKey) {
             return data;
         }
 
+        case 'CoursePresentation': {
+            if (data.slides && Array.isArray(data.slides)) {
+                data.slides.forEach(slide => {
+                    // Initialiser layout pour les types à 2 zones (sinon le select est vide)
+                    const t = slide.type;
+                    if ((t === 'content-with-table' || t === 'content-quiz') && !slide.layout) {
+                        slide.layout = 'vertical';
+                    }
+
+                    // Extraire exercise.library → _exerciseLibrary pour le selecteur de l'editeur
+                    if (slide.exercise && slide.exercise.library) {
+                        slide._exerciseLibrary = slide.exercise.library;
+                        delete slide.exercise.library;
+                    }
+
+                    // DragQuestion : correctElements → zoneIndices
+                    if (slide.exercise && slide._exerciseLibrary &&
+                        slide._exerciseLibrary.startsWith('H5P.DragQuestion')) {
+                        const dropZones = slide.exercise.dropZones || [];
+                        const elements = slide.exercise.elements || [];
+                        elements.forEach(el => { el.zoneIndices = []; });
+                        dropZones.forEach((zone, zoneIdx) => {
+                            if (Array.isArray(zone.correctElements)) {
+                                zone.correctElements.forEach(elemIdx => {
+                                    const idx = typeof elemIdx === 'string' ? parseInt(elemIdx, 10) : elemIdx;
+                                    if (idx >= 0 && idx < elements.length && !elements[idx].zoneIndices.includes(zoneIdx)) {
+                                        elements[idx].zoneIndices.push(zoneIdx);
+                                    }
+                                });
+                            }
+                        });
+                        dropZones.forEach(zone => { delete zone.correctElements; });
+                    }
+                });
+            }
+            return data;
+        }
+
+        case 'elea_test':
+            // Injecter le champ "single" manquant et normaliser les fractions multichoice
+            // pour que l'éditeur affiche les bonnes valeurs dans les selects
+            if (data.questions && Array.isArray(data.questions)) {
+                data.questions.forEach(q => {
+                    if (q.type === 'multichoice' && q.content) {
+                        // Normaliser les fractions aux valeurs Moodle valides
+                        if (Array.isArray(q.content.answers)) {
+                            q.content.answers = normalizeFractions(q.content.answers);
+                        }
+                        // Injecter single si manquant (auto-détection à partir des fractions)
+                        if (q.content.single === undefined) {
+                            const answers = Array.isArray(q.content.answers) ? q.content.answers : [];
+                            const correctCount = answers.filter(a => Number(a.fraction) > 0).length;
+                            q.content.single = correctCount > 1 ? 'false' : 'true';
+                        }
+                    }
+                });
+            }
+            return data;
+
         default:
             return data;
     }
@@ -1911,7 +2860,19 @@ export function denormalizeDataForSave(data, moduleKey) {
         case 'Glossary':
             if (data.items && Array.isArray(data.items)) {
                 debugLog('content-detector', '[Content Detector] Denormalizing Glossary to array');
-                return data.items;
+                // Conserver hTag s'il est défini (pour le processeur)
+                const glossaryResult = data.items;
+                if (data.hTag) {
+                    glossaryResult.hTag = data.hTag;
+                }
+                return glossaryResult;
+            }
+            return data;
+
+        case 'FindTheWords':
+            // wordList tableau → chaine separee par des virgules
+            if (Array.isArray(data.wordList)) {
+                data.wordList = data.wordList.join(',');
             }
             return data;
 
@@ -1973,6 +2934,65 @@ export function denormalizeDataForSave(data, moduleKey) {
             // Retourner directement — le nettoyage récursif du default est incompatible avec
             // les sous-types QuizSet : il supprime correctElements (reconstruit par la dénormalisation),
             // canvasWidth/elementPosition (plats mais dans un fieldGroup dans le schéma), etc.
+            return data;
+        }
+
+        case 'SingleChoiceSet':
+        case 'Summary':
+            // Ces types ont des champs techniques (behaviour, l10n, a11y, etc.)
+            // qui ne sont pas dans le schéma éditeur — retourner tel quel
+            // pour éviter que cleanDataBasedOnSchema ne les supprime.
+            return data;
+
+        case 'CoursePresentation': {
+            if (data.slides && Array.isArray(data.slides)) {
+                data.slides.forEach(slide => {
+                    // Reinjecter _exerciseLibrary → exercise.library
+                    if (slide._exerciseLibrary) {
+                        if (!slide.exercise) slide.exercise = {};
+                        slide.exercise.library = slide._exerciseLibrary;
+                        delete slide._exerciseLibrary;
+                    }
+
+                    // DragQuestion : zoneIndices → correctElements
+                    if (slide.exercise && slide.exercise.library &&
+                        slide.exercise.library.startsWith('H5P.DragQuestion')) {
+                        const dropZones = slide.exercise.dropZones || [];
+                        const elements = slide.exercise.elements || [];
+                        dropZones.forEach(zone => { zone.correctElements = []; });
+                        elements.forEach((el, elemIdx) => {
+                            const zIndices = Array.isArray(el.zoneIndices) ? el.zoneIndices : [];
+                            zIndices.forEach(zIdx => {
+                                const idx = typeof zIdx === 'string' ? parseInt(zIdx, 10) : zIdx;
+                                if (idx >= 0 && idx < dropZones.length && !dropZones[idx].correctElements.includes(elemIdx)) {
+                                    dropZones[idx].correctElements.push(elemIdx);
+                                }
+                            });
+                        });
+                        elements.forEach(el => { delete el.zoneIndices; });
+                    }
+
+                    // Nettoyer les champs vides selon le type de slide
+                    const t = slide.type;
+                    if (t !== 'content' && t !== 'content-with-table' && t !== 'content-quiz') {
+                        delete slide.text;
+                    }
+                    if (t !== 'content-with-table') {
+                        delete slide.table;
+                        delete slide.tableStyle;
+                    }
+                    if (t !== 'title') {
+                        delete slide.subtitle;
+                    }
+                    if (t !== 'quiz' && t !== 'content-quiz' && t !== 'summary') {
+                        delete slide.exercise;
+                    }
+                    // Nettoyer le layout pour les types à zone unique
+                    if (t !== 'content-with-table' && t !== 'content-quiz') {
+                        delete slide.layout;
+                    }
+                });
+            }
             return data;
         }
 
@@ -2117,7 +3137,13 @@ function cleanDataBasedOnSchema(data, schemaDef) {
             // fieldGroup est purement visuel — les sous-champs sont au top level des données
             // (pas imbriqués dans un objet portant le nom du fieldGroup)
             for (const [subKey, subConfig] of Object.entries(config.fields)) {
-                if (data.hasOwnProperty(subKey)) {
+                if (subKey.includes('.')) {
+                    // Clé en notation pointée (ex: asset.media) → accès imbriqué
+                    const subValue = getNestedValue(data, subKey);
+                    if (subValue !== undefined) {
+                        setNestedValue(cleaned, subKey, subValue);
+                    }
+                } else if (data.hasOwnProperty(subKey)) {
                     cleaned[subKey] = data[subKey];
                 }
             }

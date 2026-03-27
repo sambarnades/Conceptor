@@ -477,6 +477,17 @@ function simulateAddElement(obj, moduleKey) {
             return { added: true, arrayKey: 'questions', originalCount, newCount: obj.questions.length };
         }
 
+        case 'CoursePresentation': {
+            if (!Array.isArray(obj.slides)) return null;
+            const originalCount = obj.slides.length;
+            obj.slides.push({
+                type: 'content',
+                title: `Slide ${ADDED_ELEMENT_MARKER}`,
+                text: `Contenu du slide ajoute ${ADDED_ELEMENT_MARKER}`
+            });
+            return { added: true, arrayKey: 'slides', originalCount, newCount: obj.slides.length };
+        }
+
         // === Types sans tableau : modifications structurelles sur champs texte ===
 
         case 'TrueFalse': {
@@ -565,6 +576,7 @@ function simulateDeleteElement(obj, moduleKey) {
         'FillInTheBlanks': 'questions',
         'Summary': 'summaries',
         'SingleChoiceSet': 'choices',
+        'CoursePresentation': 'slides',
         // Moodle
         'elea_devoir': 'criteria',
         'elea_appariement': 'pairs',
@@ -644,6 +656,130 @@ function verifyH5PStructure(content, moduleKey) {
         }
     }
 
+    // CoursePresentation : verifier la structure des slides
+    if (moduleKey === 'CoursePresentation') {
+        if (!content.presentation || !Array.isArray(content.presentation.slides) || content.presentation.slides.length === 0) {
+            issues.push('presentation.slides manquants ou vides');
+        } else {
+            content.presentation.slides.forEach((slide, i) => {
+                if (!Array.isArray(slide.elements)) issues.push(`slide[${i}].elements manquant`);
+                if (!Array.isArray(slide.keywords)) issues.push(`slide[${i}].keywords manquant`);
+            });
+        }
+        if (!content.l10n) issues.push('l10n manquant');
+    }
+
+    // Timeline : verifier la structure
+    if (moduleKey === 'Timeline') {
+        if (!content.timeline || !Array.isArray(content.timeline.date) || content.timeline.date.length === 0) {
+            issues.push('timeline.date manquant ou vide');
+        }
+    }
+
+    // Flashcards : verifier les cartes
+    if (moduleKey === 'Flashcards') {
+        if (!Array.isArray(content.cards) || content.cards.length === 0) {
+            issues.push('cards manquant ou vide');
+        }
+    }
+
+    // Crossword : verifier les mots
+    if (moduleKey === 'Crossword') {
+        if (!Array.isArray(content.words) || content.words.length === 0) {
+            issues.push('words manquant ou vide');
+        }
+    }
+
+    // Chart : verifier les donnees
+    if (moduleKey === 'Chart') {
+        if (!Array.isArray(content.listOfTypes) || content.listOfTypes.length === 0) {
+            issues.push('listOfTypes manquant ou vide');
+        }
+    }
+
+    // DialogCards : verifier les paires
+    if (moduleKey === 'DialogCards') {
+        if (!Array.isArray(content.dialogs) || content.dialogs.length === 0) {
+            issues.push('dialogs manquant ou vide');
+        }
+    }
+
+    // DragAndDrop : verifier les elements et zones
+    if (moduleKey === 'DragAndDrop') {
+        const task = content.question?.task;
+        if (!task || !Array.isArray(task.elements) || task.elements.length === 0) {
+            issues.push('question.task.elements manquant ou vide');
+        }
+        if (!task || !Array.isArray(task.dropZones) || task.dropZones.length === 0) {
+            issues.push('question.task.dropZones manquant ou vide');
+        }
+    }
+
+    // Glossary : verifier les panels (processeur retourne { panels: [...], hTag })
+    if (moduleKey === 'Glossary') {
+        const panels = Array.isArray(content) ? content : content.panels;
+        if (!Array.isArray(panels) || panels.length === 0) {
+            issues.push('panels manquant ou vide');
+        }
+    }
+
+    // Essay : verifier taskDescription
+    if (moduleKey === 'Essay') {
+        if (!content.taskDescription) issues.push('taskDescription manquant');
+    }
+
+    // DragTheWords / MarkTheWords : verifier textField
+    if (moduleKey === 'DragTheWords' || moduleKey === 'MarkTheWords') {
+        if (!content.textField || typeof content.textField !== 'string') {
+            issues.push('textField manquant ou invalide');
+        }
+    }
+
+    // FillInTheBlanks : verifier questions
+    if (moduleKey === 'FillInTheBlanks') {
+        if (!Array.isArray(content.questions) || content.questions.length === 0) {
+            issues.push('questions manquant ou vide');
+        }
+    }
+
+    // FindTheWords : verifier taskDescription et wordList
+    if (moduleKey === 'FindTheWords') {
+        if (!content.taskDescription) issues.push('taskDescription manquant');
+    }
+
+    // SortParagraphs : verifier paragraphs (processeur retourne { paragraphs: [...] })
+    if (moduleKey === 'SortParagraphs') {
+        if (!Array.isArray(content.paragraphs) || content.paragraphs.length === 0) {
+            issues.push('paragraphs manquant ou vide');
+        }
+    }
+
+    // SingleChoiceSet : verifier choices
+    if (moduleKey === 'SingleChoiceSet') {
+        if (!Array.isArray(content.choices) || content.choices.length === 0) {
+            issues.push('choices manquant ou vide');
+        }
+    }
+
+    // Summary : verifier summaries
+    if (moduleKey === 'Summary') {
+        if (!Array.isArray(content.summaries) || content.summaries.length === 0) {
+            issues.push('summaries manquant ou vide');
+        }
+    }
+
+    // MultipleChoice : verifier answers
+    if (moduleKey === 'MultipleChoice') {
+        if (!Array.isArray(content.answers) || content.answers.length === 0) {
+            issues.push('answers manquant ou vide');
+        }
+    }
+
+    // TrueFalse : verifier question
+    if (moduleKey === 'TrueFalse') {
+        if (!content.question) issues.push('question manquant');
+    }
+
     // Types avec behaviour
     const typesWithBehaviour = ['MultipleChoice', 'TrueFalse', 'FillInTheBlanks',
         'DragTheWords', 'MarkTheWords', 'Essay', 'Summary', 'FindTheWords',
@@ -712,6 +848,21 @@ function buildMoodleData(moduleKey, healedObj) {
                 CRITERIA: healedObj.criteria || []
             };
         }
+        case 'elea_glossaire':
+            return {
+                ...base,
+                GLOSSARY_NAME: escapeXml(healedObj.name || title),
+                ENTRIES: (healedObj.entries || []).map(e => ({
+                    concept: escapeXml(e.concept || ''),
+                    definition: escapeXml(e.definition || '')
+                }))
+            };
+        case 'elea_test':
+            return {
+                ...base,
+                ACTIVITY_INTRO_HTML: escapeXml('<p>Test</p>'),
+                QUESTIONS_JSON: escapeXml(JSON.stringify(healedObj.questions || []))
+            };
         default:
             return base;
     }
@@ -787,6 +938,7 @@ const testCases = [
     { file: 'quiz_qcm_3.json', titleKey: 'h5p_quiz_set_qcm_name', expectedModule: 'QuizSet', source: 'h5p' },
     { file: 'quiz_qcm_4.json', titleKey: 'h5p_quiz_set_qcm_name', expectedModule: 'QuizSet', source: 'h5p' },
     { file: 'quiz_qcm_5.json', titleKey: 'h5p_quiz_set_qcm_name', expectedModule: 'QuizSet', source: 'h5p' },
+    { file: 'quiz_qcm_formules_test.json', titleKey: 'h5p_quiz_set_qcm_name', expectedModule: 'QuizSet', source: 'h5p' },
     { file: 'quiz_vraifaux_1.json', titleKey: 'h5p_quiz_set_vf_name', expectedModule: 'QuizSet', source: 'h5p' },
     { file: 'quiz_vraifaux_2.json', titleKey: 'h5p_quiz_set_vf_name', expectedModule: 'QuizSet', source: 'h5p' },
     { file: 'single_choice_set_1.json', titleKey: 'h5p_single_choice_set_name', expectedModule: 'SingleChoiceSet', source: 'h5p' },
@@ -801,6 +953,11 @@ const testCases = [
     { file: 'true_false_1.json', titleKey: 'h5p_true_false_name', expectedModule: 'TrueFalse', source: 'h5p' },
     { file: 'true_false_2.json', titleKey: 'h5p_true_false_name', expectedModule: 'TrueFalse', source: 'h5p' },
     { file: 'true_false_3.json', titleKey: 'h5p_true_false_name', expectedModule: 'TrueFalse', source: 'h5p' },
+    { file: 'course_presentation_1.json', titleKey: 'h5p_course_presentation_name', expectedModule: 'CoursePresentation', source: 'h5p' },
+    { file: 'course_presentation_2.json', titleKey: 'h5p_course_presentation_name', expectedModule: 'CoursePresentation', source: 'h5p' },
+    { file: 'course_presentation_3.json', titleKey: 'h5p_course_presentation_name', expectedModule: 'CoursePresentation', source: 'h5p' },
+    { file: 'course_presentation_4.json', titleKey: 'h5p_course_presentation_name', expectedModule: 'CoursePresentation', source: 'h5p' },
+    { file: 'course_presentation_5.json', titleKey: 'h5p_course_presentation_name', expectedModule: 'CoursePresentation', source: 'h5p' },
 
     // === Moodle/Elea (avec MBZ) ===
     { file: 'appariement_1.json', titleKey: 'elea_appariement_name', expectedModule: 'elea_appariement', source: 'moodle', moodleActivityKey: 'Appariement' },
@@ -813,6 +970,9 @@ const testCases = [
     { file: 'page_2.json', titleKey: 'elea_page_name', expectedModule: 'elea_page', source: 'moodle', moodleActivityKey: 'Page' },
     { file: 'page_3.json', titleKey: 'elea_page_name', expectedModule: 'elea_page', source: 'moodle', moodleActivityKey: 'Page' },
     { file: 'devoir_1.json', titleKey: 'elea_devoir_name', expectedModule: 'elea_devoir', source: 'moodle', moodleActivityKey: 'Devoir' },
+    { file: 'devoir_2.json', titleKey: 'elea_devoir_name', expectedModule: 'elea_devoir', source: 'moodle', moodleActivityKey: 'Devoir' },
+    { file: 'devoir_3.json', titleKey: 'elea_devoir_name', expectedModule: 'elea_devoir', source: 'moodle', moodleActivityKey: 'Devoir' },
+    { file: 'devoir_4.json', titleKey: 'elea_devoir_name', expectedModule: 'elea_devoir', source: 'moodle', moodleActivityKey: 'Devoir' },
     { file: 'devoir_5.json', titleKey: 'elea_devoir_name', expectedModule: 'elea_devoir', source: 'moodle', moodleActivityKey: 'Devoir' },
     { file: 'devoir_6.json', titleKey: 'elea_devoir_name', expectedModule: 'elea_devoir', source: 'moodle', moodleActivityKey: 'Devoir' },
 
@@ -821,7 +981,9 @@ const testCases = [
     { file: 'glossaire_xml_2.json', titleKey: 'elea_glossaire_xml_name', expectedModule: 'elea_glossaire', source: 'moodle_xml' },
     { file: 'test_1.json', titleKey: 'elea_test_xml_name', expectedModule: 'elea_test', source: 'moodle_xml' },
     { file: 'test_2.json', titleKey: 'elea_test_xml_name', expectedModule: 'elea_test', source: 'moodle_xml' },
-    { file: 'test_3.json', titleKey: 'elea_test_xml_name', expectedModule: 'elea_test', source: 'moodle_xml' }
+    { file: 'test_3.json', titleKey: 'elea_test_xml_name', expectedModule: 'elea_test', source: 'moodle_xml' },
+    { file: 'test_4.json', titleKey: 'elea_test_xml_name', expectedModule: 'elea_test', source: 'moodle_xml' },
+    { file: 'test_5.json', titleKey: 'elea_test_xml_name', expectedModule: 'elea_test', source: 'moodle_xml' }
 ];
 
 // Etat partage entre les etapes pour chaque fichier
@@ -1288,6 +1450,27 @@ async function runStep3_ContentGeneration() {
                         const giftContent = generateMoodleGift(state.healedObj);
                         assert(xmlContent.length > 0, `[3c.XMLGen] ${tc.file} : XML test genere (${xmlContent.length} car.)`);
                         assert(giftContent.length > 0, `[3d.GIFTGen] ${tc.file} : GIFT genere (${giftContent.length} car.)`);
+
+                        // Verifier hints et feedbacks combines dans le XML (test_1.json en contient)
+                        if (tc.file === 'test_1.json') {
+                            assert(
+                                xmlContent.includes('<hint'),
+                                `[3e.Hints] ${tc.file} : XML contient des balises hint`
+                            );
+                            assert(
+                                xmlContent.includes('<correctfeedback'),
+                                `[3f.CombFeed] ${tc.file} : XML contient correctfeedback`
+                            );
+                            assert(
+                                xmlContent.includes('<incorrectfeedback'),
+                                `[3g.CombFeed] ${tc.file} : XML contient incorrectfeedback`
+                            );
+                            assert(
+                                xmlContent.includes('<shownumcorrect'),
+                                `[3h.ShowNum] ${tc.file} : XML contient shownumcorrect`
+                            );
+                        }
+
                         generatedFiles.set(`v1_generation_initiale/${tc.file.replace('.json', '.xml')}`, new Blob([xmlContent], { type: 'text/xml' }));
                         generatedFiles.set(`v1_generation_initiale/${tc.file.replace('.json', '.gift.txt')}`, new Blob([giftContent], { type: 'text/plain' }));
                     }
@@ -1327,15 +1510,8 @@ async function runStep5_EditorNormalize() {
                 `[5a.Normalize] ${tc.file} : normalisation reussie`
             );
 
-            // Verification des textes preserves (sauf Glossary qui change de structure)
-            if (tc.expectedModule !== 'Glossary') {
-                const check = allTextValuesPreserved(state.healedObj, normalized);
-                assert(
-                    check.ok,
-                    `[5b.Textes] ${tc.file} : textes preserves apres normalisation${check.ok ? '' : ' (' + check.missing.length + ' manquants)'}`,
-                    !check.ok ? { moduleKey: tc.expectedModule, missingValues: check.missing.slice(0, 5) } : null
-                );
-            } else {
+            // Verification des textes preserves (sauf types qui changent de structure)
+            if (tc.expectedModule === 'Glossary') {
                 // Glossary : verifier la transformation tableau → {items: [...]}
                 const originalData = state.healedObj;
                 if (Array.isArray(originalData)) {
@@ -1344,6 +1520,41 @@ async function runStep5_EditorNormalize() {
                         `[5b.Glossary] ${tc.file} : tableau → {items: [...]}`
                     );
                 }
+            } else if (tc.expectedModule === 'FindTheWords') {
+                // FindTheWords : verifier la transformation wordList string → tableau
+                const origWl = state.healedObj.wordList;
+                const normWl = normalized.wordList;
+                assert(
+                    Array.isArray(normWl),
+                    `[5b.FindTheWords] ${tc.file} : wordList convertie en tableau`
+                );
+                if (typeof origWl === 'string' && Array.isArray(normWl)) {
+                    const origWords = origWl.split(',').map(w => w.trim()).filter(w => w.length > 0);
+                    assert(
+                        normWl.length === origWords.length,
+                        `[5b.FindTheWords] ${tc.file} : nombre de mots preserve (${normWl.length}/${origWords.length})`,
+                        normWl.length !== origWords.length ? { original: origWords, normalized: normWl } : null
+                    );
+                    // Chaque mot doit etre present
+                    const missing = origWords.filter(w => !normWl.includes(w));
+                    assert(
+                        missing.length === 0,
+                        `[5b.FindTheWords] ${tc.file} : tous les mots preserves${missing.length > 0 ? ' (manquants: ' + missing.join(', ') + ')' : ''}`,
+                        missing.length > 0 ? { missing, normalized: normWl } : null
+                    );
+                }
+                // Verifier que taskDescription est preservee
+                assert(
+                    normalized.taskDescription === state.healedObj.taskDescription,
+                    `[5b.FindTheWords] ${tc.file} : taskDescription preservee`
+                );
+            } else {
+                const check = allTextValuesPreserved(state.healedObj, normalized);
+                assert(
+                    check.ok,
+                    `[5b.Textes] ${tc.file} : textes preserves apres normalisation${check.ok ? '' : ' (' + check.missing.length + ' manquants)'}`,
+                    !check.ok ? { moduleKey: tc.expectedModule, missingValues: check.missing.slice(0, 5) } : null
+                );
             }
 
             // 5b2. Verification math : commandes double-echappees apres normalisation editeur
@@ -1903,15 +2114,33 @@ const MATH_TEST_CASES = [
         expectedPatterns: ['\\(\\sqrt{x}\\)'],
         // wordList ne doit contenir ni LaTeX ni symboles Unicode math
         wordListForbidden: ['\\(', '\\sqrt', '\u03C0', '\u221A'],
+        // Apres healing, la wordList doit rester une liste comma-separated avec les mots valides preserves
+        // 4 mots en entree, 2 invalides (LaTeX + Unicode math) → 2 mots valides attendus
+        wordListMinWords: 2,
         mathMode: 'wordlist',
         source: 'h5p'
     },
-    // --- H5P Crossword : answer sans math ni espaces ---
+    {
+        moduleKey: 'FindTheWords',
+        description: 'FindTheWords - integrite wordList : les virgules sont preservees apres healing',
+        rawJson: '{"taskDescription":"Retrouvez les mots","wordList":"CROISSANCE,EMPLOI,CONSOMMATION,URBANISATION,IMMIGRATION"}',
+        expectedPatterns: [],
+        wordListForbidden: [],
+        // 5 mots simples sans math → tous doivent etre preserves
+        wordListMinWords: 5,
+        wordListExactWords: ['CROISSANCE', 'EMPLOI', 'CONSOMMATION', 'URBANISATION', 'IMMIGRATION'],
+        mathMode: 'wordlist',
+        source: 'h5p'
+    },
+    // --- H5P Crossword : answer sans math ni espaces, clue en texte brut (plain) ---
     {
         moduleKey: 'Crossword',
-        description: 'Crossword - answer sans math/espaces, clue avec MathJax OK',
+        description: 'Crossword - answer sans math/espaces, clue en texte brut',
         rawJson: '{"title":"Test math","words":[{"answer":"Racine carrée","clue":"Notee \\\\(\\\\sqrt{x}\\\\)"},{"answer":"\\\\(\\\\pi\\\\)","clue":"Constante pi"},{"answer":"Cosinus","clue":"Rapport adjacent/hypotenuse"}],"taskDescription":"Retrouvez les termes"}',
-        expectedPatterns: ['\\(\\sqrt{x}\\)'],
+        // Les clues Crossword sont plain (semantics H5P: type text sans widget html)
+        // Le LaTeX dans les clues est converti en Unicode par le healer
+        // On vérifie le taskDescription (html+latex) qui reste intact
+        expectedPatterns: ['Retrouvez les termes'],
         // answers ne doivent contenir ni math ni espaces
         answerForbidden: { noMath: true, noSpaces: true },
         mathMode: 'answer-clean',
@@ -2036,6 +2265,47 @@ const MATH_TEST_CASES = [
         expectedPatterns: ['\\(\\sqrt{9}\\)', '\\(\\frac{1}{2}\\)', '\\(-3\\)', '\\(\\sqrt{4}=2\\)'],
         mathMode: 'mathjax',
         source: 'h5p'
+    },
+    // --- Test (elea_test) : banque de questions Moodle avec formules LaTeX ---
+    {
+        moduleKey: 'elea_test',
+        description: 'Test Moodle - formules sqrt et frac dans multichoice et numerical',
+        rawJson: '{"bank_name":"Math Test","bank_description":"Test","questions":[{"type":"multichoice","content":{"name":"Q1","questiontext":"Calculer \\\\(\\\\sqrt{16}\\\\)","feedback":"\\\\(\\\\sqrt{16}=4\\\\)","answers":[{"text":"4","fraction":100,"feedback":"Correct"},{"text":"8","fraction":0,"feedback":"Non"}]}},{"type":"numerical","content":{"name":"Q2","questiontext":"Calculer \\\\(\\\\frac{1}{2}+\\\\frac{1}{3}\\\\)","feedback":"\\\\(\\\\frac{5}{6}\\\\)","answer":{"number":0.83,"tolerance":0.01,"feedback":"Correct"}}}]}',
+        expectedPatterns: ['\\(\\sqrt{16}\\)', '\\(\\frac{1}{2}+\\frac{1}{3}\\)', '\\(\\frac{5}{6}\\)'],
+        mathMode: 'mathjax',
+        source: 'moodle'
+    },
+    {
+        moduleKey: 'elea_test',
+        description: 'Test Moodle - delimiteurs $ convertis en \\\\(...\\\\)',
+        rawJson: '{"bank_name":"Test $","bank_description":"Test","questions":[{"type":"truefalse","content":{"name":"Q1","questiontext":"$\\\\sqrt{4}=2$","feedback":"Vrai","answer":{"value":true,"feedback_true":"Oui","feedback_false":"Non"}}}]}',
+        expectedPatterns: ['\\(\\sqrt{4}=2\\)'],
+        mathMode: 'mathjax',
+        source: 'moodle'
+    },
+    {
+        moduleKey: 'elea_test',
+        description: 'Test Moodle - LaTeX nu sans delimiteurs auto-enveloppe',
+        rawJson: '{"bank_name":"Test nu","bank_description":"Test","questions":[{"type":"shortanswer","content":{"name":"Q1","questiontext":"Calculer \\\\sqrt{9}","feedback":"Resultat","answers":[{"text":"3","fraction":100,"feedback":"OK"}]}}]}',
+        expectedPatterns: ['\\('],
+        mathMode: 'mathjax',
+        source: 'moodle'
+    },
+    {
+        moduleKey: 'elea_test',
+        description: 'Test Moodle - \\\\begin{equation} converti en \\\\[...\\\\]',
+        rawJson: '{"bank_name":"Test env","bank_description":"Test","questions":[{"type":"multichoice","content":{"name":"Q1","questiontext":"Calculer \\\\begin{equation}\\\\sqrt{144}\\\\end{equation}","feedback":"Resultat","answers":[{"text":"12","fraction":100,"feedback":"OK"},{"text":"72","fraction":0,"feedback":"Non"}]}}]}',
+        expectedPatterns: ['\\[\\sqrt{144}\\]'],
+        mathMode: 'mathjax',
+        source: 'moodle'
+    },
+    {
+        moduleKey: 'elea_test',
+        description: 'Test Moodle - formules dans matching et cloze',
+        rawJson: '{"bank_name":"Test mix","bank_description":"Test","questions":[{"type":"matching","content":{"name":"Q1","questiontext":"Associer les formules","feedback":"OK","subquestions":[{"text":"\\\\(\\\\pi\\\\)","answer":"3.14"},{"text":"\\\\(\\\\sqrt{2}\\\\)","answer":"1.41"}]}},{"type":"cloze","content":{"name":"Q2","questiontext":"La racine de 9 est {1:SHORTANSWER:=3} et \\\\(\\\\pi \\\\approx\\\\) {1:NUMERICAL:=3.14:0.01}","feedback":"OK"}}]}',
+        expectedPatterns: ['\\(\\pi\\)', '\\(\\sqrt{2}\\)', '\\(\\pi \\approx\\)'],
+        mathMode: 'mathjax',
+        source: 'moodle'
     }
 ];
 
@@ -2167,7 +2437,7 @@ function healLatexForMoodle(data) {
 const UNICODE_MATH_TYPES = new Set(['DragTheWords', 'MarkTheWords']);
 // FindTheWords : taskDescription supporte MathJax (H5P.MathDisplay), mais wordList ne doit contenir ni LaTeX ni Unicode math
 const WORDLIST_NO_MATH_TYPES = new Set(['FindTheWords']);
-// Crossword : clue/taskDescription supportent MathJax (H5P.MathDisplay), mais answer = grille de lettres → ni math ni espaces
+// Crossword : taskDescription supporte MathJax, clue = texte brut (plain), answer = grille de lettres → ni math ni espaces
 const ANSWER_NO_MATH_NO_SPACE_TYPES = new Set(['Crossword']);
 // Chart : pas de MathDisplay, les champs text ne doivent contenir que du texte brut + Unicode, pas de LaTeX
 const TEXT_NO_LATEX_TYPES = new Set(['Chart']);
@@ -2240,6 +2510,15 @@ async function runStep4_MathEncoding() {
             assert(dblIssues4c.length === 0, `[4c.HealFields] ${tc.description} : pas de double-echappement apres healActivitySpecificFields${dblIssues4c.length > 0 ? ' - ' + dblIssues4c.join('; ') : ''}`,
                 dblIssues4c.length > 0 ? { issues: dblIssues4c, mathStrings: collectMathStrings(healed) } : null);
 
+            // 4c2. FindTheWords : verifier que les virgules sont preservees dans wordList apres healing
+            if (tc.wordListMinWords && healed.wordList) {
+                const wl4c = typeof healed.wordList === 'string' ? healed.wordList : '';
+                const words4c = wl4c.split(',').map(w => w.trim()).filter(w => w.length > 0);
+                assert(words4c.length >= tc.wordListMinWords,
+                    `[4c2.WordListIntegrity] ${tc.description} : wordList apres healing contient ${words4c.length} mot(s), attendu >= ${tc.wordListMinWords}`,
+                    { wordList: wl4c, wordCount: words4c.length, expected: tc.wordListMinWords });
+            }
+
             // 4d. healStructureForActivity
             healed = healStructureForActivity(healed, tc.moduleKey);
 
@@ -2279,6 +2558,23 @@ async function runStep4_MathEncoding() {
                 }
                 assert(wlIssues.length === 0, `[4f2.WordList] ${tc.description} : wordList sans LaTeX/Unicode math${wlIssues.length > 0 ? ' - ' + wlIssues.join('; ') : ''}`,
                     wlIssues.length > 0 ? { wordList: wl, issues: wlIssues } : null);
+            }
+
+            // 4f2b. Verification integrite wordList : les virgules sont preservees, les mots ne sont pas concatenes
+            if (tc.wordListMinWords && finalContent.wordList) {
+                const wl = finalContent.wordList;
+                const words = wl.split(',').map(w => w.trim()).filter(w => w.length > 0);
+                assert(words.length >= tc.wordListMinWords,
+                    `[4f2b.WordListIntegrity] ${tc.description} : wordList contient ${words.length} mot(s), attendu >= ${tc.wordListMinWords}`,
+                    { wordList: wl, wordCount: words.length, expected: tc.wordListMinWords });
+
+                // Verification exacte des mots si definie
+                if (tc.wordListExactWords) {
+                    const missing = tc.wordListExactWords.filter(w => !words.includes(w));
+                    assert(missing.length === 0,
+                        `[4f2b.WordListExact] ${tc.description} : tous les mots attendus sont presents${missing.length > 0 ? ' - manquants: ' + missing.join(', ') : ''}`,
+                        missing.length > 0 ? { wordList: wl, words, missing } : null);
+                }
             }
 
             // 4f3. Verification answers pour Crossword : ni math ni espaces

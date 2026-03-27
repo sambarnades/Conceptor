@@ -9,7 +9,7 @@
  * @exports {Object} default.process - Transformation principale
  */
 import { translations } from '../../core/translation.js';
-import { generateUUID } from '../../core/utils.js';
+import { formatTextToHtml, generateUUID } from '../../core/utils.js';
 
 
 export default {
@@ -17,6 +17,10 @@ export default {
         return {
             choices: (Array.isArray(jsonObj.choices) ? jsonObj.choices : []).map(choice => ({
                 ...choice,
+                question: formatTextToHtml(choice.question || ''),
+                answers: (Array.isArray(choice.answers) ? choice.answers : []).map(a =>
+                    typeof a === 'string' ? formatTextToHtml(a) : a
+                ),
                 subContentId: generateUUID()
             })),
             overallFeedback: jsonObj.overallFeedback || [{ "from": 0, "to": 100, "feedback": "You got :numcorrect of :maxscore correct" }],
@@ -27,7 +31,8 @@ export default {
                 enableRetry: true,
                 enableSolutionsButton: true,
                 passPercentage: 100,
-                autoContinue: true
+                autoContinue: true,
+                ...(jsonObj.behaviour || {})
             },
             l10n: {
                 showSolutionButtonLabel: translations.h5p_show_solution || "Afficher la solution",

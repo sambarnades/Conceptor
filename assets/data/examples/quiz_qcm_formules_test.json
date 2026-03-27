@@ -1,0 +1,265 @@
+{
+  "title": "Test d'export — Toutes les formules mathématiques",
+  "questions": [
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Catégorie 1 : Fractions" },
+      "params": {
+        "question": "Laquelle de ces égalités est correcte ? (test des fractions simples, composées et imbriquées : \\( \\frac{a}{b} \\), \\( \\frac{a+b}{c} \\), \\( \\frac{a}{b+c} \\), \\( \\frac{\\frac{a}{b}}{c} = \\frac{a}{bc} \\))",
+        "answers": [
+          { "text": "\\( \\frac{1}{2} + \\frac{1}{3} = \\frac{2}{5} \\)", "correct": false },
+          { "text": "\\( \\frac{1}{2} + \\frac{1}{3} = \\frac{5}{6} \\)", "correct": true },
+          { "text": "\\( \\frac{\\frac{1}{2}}{3} = \\frac{3}{2} \\)", "correct": false },
+          { "text": "\\( \\frac{a+b}{c} = \\frac{a}{c} - \\frac{b}{c} \\)", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 50, "feedback": "Revoyez les règles d'addition de fractions : \\( \\frac{1}{2} + \\frac{1}{3} = \\frac{3}{6} + \\frac{2}{6} = \\frac{5}{6} \\)." },
+          { "from": 51, "to": 100, "feedback": "Correct ! Et rappel : \\( \\frac{\\frac{a}{b}}{c} = \\frac{a}{bc} \\)." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Catégorie 2 : Racines (carrée, cubique, n-ième)" },
+      "params": {
+        "question": "Parmi ces expressions, lesquelles sont correctes ? (test : \\( \\sqrt{x} \\), \\( \\sqrt[3]{x} \\), \\( \\sqrt[n]{x} \\), \\( \\sqrt{a^2+b^2} \\), \\( \\sqrt{\\frac{a}{b}} \\))",
+        "answers": [
+          { "text": "\\( \\sqrt{a^2 + b^2} = a + b \\)", "correct": false },
+          { "text": "\\( \\sqrt{\\frac{1}{4}} = \\frac{1}{2} \\)", "correct": true },
+          { "text": "\\( \\sqrt[3]{-8} = -2 \\)", "correct": true },
+          { "text": "\\( \\sqrt[n]{x} = x^n \\)", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": false },
+        "overallFeedback": [
+          { "from": 0, "to": 50, "feedback": "Rappel : \\( \\sqrt{\\frac{a}{b}} = \\frac{\\sqrt{a}}{\\sqrt{b}} \\) et \\( \\sqrt[n]{x} = x^{\\frac{1}{n}} \\)." },
+          { "from": 51, "to": 100, "feedback": "Bien joué ! La racine carrée d'une fraction : \\( \\sqrt{\\frac{a}{b}} = \\frac{\\sqrt{a}}{\\sqrt{b}} \\)." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Catégorie 3 : Puissances, exposants, indices, logarithmes" },
+      "params": {
+        "question": "Quelle est la valeur de \\( \\log_{2}(8) \\) ? (test des puissances \\( x^{2} \\), \\( x^{n}_{m} \\), \\( a \\times 10^{n} \\), \\( e^{x} \\), \\( \\log_{a}(x) \\), \\( \\ln(x) \\))",
+        "answers": [
+          { "text": "\\( \\log_{2}(8) = 2 \\)", "correct": false },
+          { "text": "\\( \\log_{2}(8) = 3 \\)", "correct": true },
+          { "text": "\\( \\log_{2}(8) = 4 \\)", "correct": false },
+          { "text": "\\( \\log_{2}(8) = \\ln(8) \\)", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 50, "feedback": "Rappel : \\( \\log_{a}(x) = n \\Leftrightarrow a^n = x \\). Ici \\( 2^3 = 8 \\) donc \\( \\log_{2}(8) = 3 \\). Notation scientifique : \\( 3{,}14 \\times 10^{3} \\)." },
+          { "from": 51, "to": 100, "feedback": "Exact ! Et \\( \\ln(x) = \\log_{e}(x) \\). On a aussi \\( e^{\\ln(x)} = x \\) pour \\( x > 0 \\)." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Catégorie 4 : Lettres grecques minuscules" },
+      "params": {
+        "question": "En trigonométrie, pour un triangle rectangle, l'identité \\( \\sin^2(\\alpha) + \\cos^2(\\alpha) = 1 \\) est-elle vraie pour tout angle \\( \\alpha \\) ? (test : \\( \\alpha \\), \\( \\beta \\), \\( \\gamma \\), \\( \\delta \\), \\( \\epsilon \\), \\( \\eta \\), \\( \\theta \\), \\( \\lambda \\), \\( \\mu \\), \\( \\nu \\), \\( \\xi \\), \\( \\pi \\), \\( \\rho \\), \\( \\sigma \\), \\( \\tau \\), \\( \\phi \\), \\( \\chi \\), \\( \\psi \\), \\( \\omega \\))",
+        "answers": [
+          { "text": "Oui, c'est l'identité fondamentale de la trigonométrie.", "correct": true },
+          { "text": "Non, cela n'est vrai que pour \\( \\theta = \\frac{\\pi}{4} \\).", "correct": false },
+          { "text": "Non, il faut plutôt \\( \\sin(\\alpha) + \\cos(\\alpha) = 1 \\).", "correct": false },
+          { "text": "Oui, mais uniquement si \\( 0 \\leq \\alpha \\leq \\frac{\\pi}{2} \\).", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 50, "feedback": "L'identité \\( \\sin^2(\\alpha) + \\cos^2(\\alpha) = 1 \\) est vraie pour tout \\( \\alpha \\in \\mathbb{R} \\). Pensez aussi à \\( \\tan(\\theta) = \\frac{\\sin(\\theta)}{\\cos(\\theta)} \\)." },
+          { "from": 51, "to": 100, "feedback": "Parfait ! Cette identité est valide pour tout \\( \\alpha \\in \\mathbb{R} \\), pas seulement sur \\( [0, \\frac{\\pi}{2}] \\)." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Catégorie 4 : Lettres grecques majuscules" },
+      "params": {
+        "question": "Que représente \\( \\Delta x \\) dans le contexte des suites et des dérivées ? (test : \\( \\Delta \\), \\( \\Gamma \\), \\( \\Theta \\), \\( \\Lambda \\), \\( \\Sigma \\), \\( \\Phi \\), \\( \\Psi \\), \\( \\Omega \\), \\( \\Pi \\))",
+        "answers": [
+          { "text": "La somme de tous les termes.", "correct": false },
+          { "text": "Une variation ou différence : \\( \\Delta x = x_2 - x_1 \\).", "correct": true },
+          { "text": "Le produit \\( \\Pi_{i=1}^{n} x_i \\).", "correct": false },
+          { "text": "La matrice \\( \\Omega \\) associée au système.", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 50, "feedback": "\\( \\Delta \\) symbolise une variation. Attention : \\( \\Sigma \\) est la somme, \\( \\Pi \\) est le produit." },
+          { "from": 51, "to": 100, "feedback": "Correct ! \\( \\Delta x \\) représente une variation finie, contrairement à \\( dx \\) (différentielle infinitésimale)." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Catégorie 5 : Intégrale (cas signalé)" },
+      "params": {
+        "question": "Quelle est la valeur de \\( \\int_{0}^{1} x^2 \\, dx \\) ? (test de l'intégrale \\( \\int_{a}^{b} \\))",
+        "answers": [
+          { "text": "\\( \\int_{0}^{1} x^2 \\, dx = \\frac{1}{2} \\)", "correct": false },
+          { "text": "\\( \\int_{0}^{1} x^2 \\, dx = \\frac{1}{3} \\)", "correct": true },
+          { "text": "\\( \\int_{0}^{1} x^2 \\, dx = 1 \\)", "correct": false },
+          { "text": "\\( \\int_{0}^{1} x^2 \\, dx = \\frac{2}{3} \\)", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 50, "feedback": "Rappel : \\( \\int_{a}^{b} x^n \\, dx = \\left[ \\frac{x^{n+1}}{n+1} \\right]_{a}^{b} \\). Donc \\( \\int_{0}^{1} x^2 \\, dx = \\left[ \\frac{x^3}{3} \\right]_{0}^{1} = \\frac{1}{3} \\)." },
+          { "from": 51, "to": 100, "feedback": "Bien ! \\( \\int_{0}^{1} x^2 \\, dx = \\frac{1}{3} \\) car la primitive de \\( x^2 \\) est \\( \\frac{x^3}{3} \\)." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Catégorie 5 : Somme et produit" },
+      "params": {
+        "question": "Quelle est la valeur de \\( \\sum_{i=1}^{4} i \\) ? (test : \\( \\sum_{i=1}^{n} \\), \\( \\prod_{i=1}^{n} \\))",
+        "answers": [
+          { "text": "\\( \\sum_{i=1}^{4} i = 8 \\)", "correct": false },
+          { "text": "\\( \\sum_{i=1}^{4} i = 10 \\)", "correct": true },
+          { "text": "\\( \\sum_{i=1}^{4} i = 12 \\)", "correct": false },
+          { "text": "\\( \\prod_{i=1}^{4} i = 10 \\)", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 50, "feedback": "\\( \\sum_{i=1}^{4} i = 1 + 2 + 3 + 4 = 10 \\). Et \\( \\prod_{i=1}^{4} i = 1 \\times 2 \\times 3 \\times 4 = 24 = 4! \\)." },
+          { "from": 51, "to": 100, "feedback": "Exact ! Formule générale : \\( \\sum_{i=1}^{n} i = \\frac{n(n+1)}{2} \\)." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Catégorie 5 : Limite, dérivée partielle, nabla" },
+      "params": {
+        "question": "Quelle est la valeur de \\( \\lim_{x \\to 0} \\frac{\\sin(x)}{x} \\) ? (test : \\( \\lim_{x \\to a} \\), \\( \\partial \\), \\( \\nabla \\))",
+        "answers": [
+          { "text": "\\( \\lim_{x \\to 0} \\frac{\\sin(x)}{x} = 0 \\)", "correct": false },
+          { "text": "\\( \\lim_{x \\to 0} \\frac{\\sin(x)}{x} = 1 \\)", "correct": true },
+          { "text": "\\( \\lim_{x \\to 0} \\frac{\\sin(x)}{x} = +\\infty \\)", "correct": false },
+          { "text": "Cette limite n'existe pas.", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 50, "feedback": "C'est une limite fondamentale. En analyse vectorielle, \\( \\nabla f \\) est le gradient de \\( f \\), et \\( \\frac{\\partial f}{\\partial x} \\) est la dérivée partielle par rapport à \\( x \\)." },
+          { "from": 51, "to": 100, "feedback": "Exact ! Cette limite fondamentale sert à démontrer que \\( (\\sin x)' = \\cos x \\)." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Catégorie 5 : Opérateurs de comparaison et infini" },
+      "params": {
+        "question": "Parmi ces affirmations, lesquelles sont vraies ? (test : \\( \\times \\), \\( \\div \\), \\( \\pm \\), \\( \\leq \\), \\( \\geq \\), \\( \\neq \\), \\( \\approx \\), \\( \\equiv \\), \\( \\infty \\))",
+        "answers": [
+          { "text": "\\( \\pi \\approx 3{,}14159 \\)", "correct": true },
+          { "text": "\\( 2 \\times 3 \\neq 6 \\)", "correct": false },
+          { "text": "\\( -1 \\leq 0 \\leq 1 \\)", "correct": true },
+          { "text": "\\( +\\infty \\geq -\\infty \\) n'a pas de sens en mathématiques réelles.", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": false },
+        "overallFeedback": [
+          { "from": 0, "to": 50, "feedback": "Rappels : \\( \\approx \\) signifie «&nbsp;approximativement égal&nbsp;», \\( \\equiv \\) signifie «&nbsp;identiquement égal&nbsp;» ou congruence. \\( \\pm \\sqrt{\\Delta} \\) donne les deux racines." },
+          { "from": 51, "to": 100, "feedback": "Bien ! En mathématiques réelles, \\( +\\infty > -\\infty \\) est une convention valide dans la droite réelle achevée \\( \\overline{\\mathbb{R}} \\)." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Catégorie 5 : Flèches et logique" },
+      "params": {
+        "question": "Quelle flèche traduit «&nbsp;si et seulement si&nbsp;» (équivalence logique) ? (test : \\( \\rightarrow \\), \\( \\leftarrow \\), \\( \\Rightarrow \\), \\( \\Leftrightarrow \\), \\( \\mapsto \\))",
+        "answers": [
+          { "text": "\\( \\rightarrow \\)", "correct": false },
+          { "text": "\\( \\Rightarrow \\)", "correct": false },
+          { "text": "\\( \\Leftrightarrow \\)", "correct": true },
+          { "text": "\\( \\mapsto \\)", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 50, "feedback": "\\( \\Rightarrow \\) = implication, \\( \\Leftrightarrow \\) = équivalence («&nbsp;si et seulement si&nbsp;»). \\( \\mapsto \\) note la correspondance d'une fonction : \\( x \\mapsto x^2 \\)." },
+          { "from": 51, "to": 100, "feedback": "Exact ! \\( P \\Leftrightarrow Q \\) signifie \\( P \\Rightarrow Q \\) et \\( Q \\Rightarrow P \\)." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Catégorie 5 : Ensembles et quantificateurs" },
+      "params": {
+        "question": "Parmi ces propositions, laquelle est vraie ? (test : \\( \\in \\), \\( \\notin \\), \\( \\subset \\), \\( \\cup \\), \\( \\cap \\), \\( \\emptyset \\), \\( \\forall \\), \\( \\exists \\))",
+        "answers": [
+          { "text": "\\( \\forall x \\in \\mathbb{R}, x^2 \\geq 0 \\)", "correct": true },
+          { "text": "\\( \\emptyset \\notin \\mathcal{P}(E) \\) pour tout ensemble \\( E \\)", "correct": false },
+          { "text": "\\( A \\cap B \\subset A \\cup B \\) est faux en général.", "correct": false },
+          { "text": "\\( \\exists x \\in \\mathbb{R}, x^2 = -1 \\)", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 50, "feedback": "Rappels : \\( A \\cup B \\) = union, \\( A \\cap B \\) = intersection. \\( \\emptyset \\subset E \\) pour tout ensemble \\( E \\). \\( \\exists x \\in \\mathbb{C}, x^2 = -1 \\) est vrai (\\( i \\)), mais pas dans \\( \\mathbb{R} \\)." },
+          { "from": 51, "to": 100, "feedback": "Correct ! \\( \\forall x \\in \\mathbb{R}, x^2 \\geq 0 \\) est une propriété fondamentale des réels." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Catégorie 6 : Vecteurs, barres, chapeaux, parenthèses" },
+      "params": {
+        "question": "Comment note-t-on la norme du vecteur \\( \\vec{u} \\) ? (test : \\( \\vec{u} \\), \\( \\overline{AB} \\), \\( \\hat{x} \\), \\( \\left( \\right) \\), \\( \\left[ \\right] \\), \\( \\left\\{ \\right\\} \\))",
+        "answers": [
+          { "text": "\\( \\overline{u} \\)", "correct": false },
+          { "text": "\\( \\hat{u} \\)", "correct": false },
+          { "text": "\\( \\left\\| \\vec{u} \\right\\| \\)", "correct": true },
+          { "text": "\\( \\left[ \\vec{u} \\right] \\)", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 50, "feedback": "La norme s'écrit \\( \\left\\| \\vec{u} \\right\\| \\). Note : \\( \\overline{AB} \\) désigne la longueur du segment, \\( \\hat{x} \\) est l'estimateur en statistiques." },
+          { "from": 51, "to": 100, "feedback": "Exact ! Et le produit scalaire : \\( \\vec{u} \\cdot \\vec{v} = \\left\\| \\vec{u} \\right\\| \\times \\left\\| \\vec{v} \\right\\| \\times \\cos(\\theta) \\)." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Catégorie 6 : Matrice et système par cas" },
+      "params": {
+        "question": "Quel est le déterminant de la matrice \\( \\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix} \\) ? (test des matrices et systèmes : \\( \\begin{cases} a & \\text{si } x > 0 \\\\ b & \\text{sinon} \\end{cases} \\))",
+        "answers": [
+          { "text": "\\( a + d \\)", "correct": false },
+          { "text": "\\( ad + bc \\)", "correct": false },
+          { "text": "\\( ad - bc \\)", "correct": true },
+          { "text": "\\( a \\times b \\times c \\times d \\)", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 50, "feedback": "\\( \\det\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix} = ad - bc \\). Pour un système : \\( \\begin{cases} 2x + y = 5 \\\\ x - y = 1 \\end{cases} \\) se résout par substitution ou par Cramer." },
+          { "from": 51, "to": 100, "feedback": "Bien ! \\( \\det(M) = ad - bc \\). Si \\( \\det(M) \\neq 0 \\), la matrice est inversible." }
+        ]
+      }
+    },
+    {
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": { "title": "Catégorie 6 : Coefficient binomial et ensembles de nombres" },
+      "params": {
+        "question": "Dans quel ensemble de nombres se trouve \\( \\sqrt{2} \\) ? (test : \\( \\binom{n}{k} \\), \\( \\mathbb{N} \\), \\( \\mathbb{Z} \\), \\( \\mathbb{Q} \\), \\( \\mathbb{R} \\), \\( \\mathbb{C} \\))",
+        "answers": [
+          { "text": "\\( \\sqrt{2} \\in \\mathbb{N} \\)", "correct": false },
+          { "text": "\\( \\sqrt{2} \\in \\mathbb{Q} \\)", "correct": false },
+          { "text": "\\( \\sqrt{2} \\in \\mathbb{R} \\setminus \\mathbb{Q} \\) (irrationnel)", "correct": true },
+          { "text": "\\( \\sqrt{2} \\in \\mathbb{C} \\setminus \\mathbb{R} \\)", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 50, "feedback": "Inclusions : \\( \\mathbb{N} \\subset \\mathbb{Z} \\subset \\mathbb{Q} \\subset \\mathbb{R} \\subset \\mathbb{C} \\). \\( \\sqrt{2} \\) est irrationnel (démontré par l'absurde). Rappel : \\( \\binom{n}{k} = \\frac{n!}{k!(n-k)!} \\)." },
+          { "from": 51, "to": 100, "feedback": "Exact ! \\( \\sqrt{2} \\in \\mathbb{R} \\) mais \\( \\sqrt{2} \\notin \\mathbb{Q} \\). Tout réel est aussi un complexe : \\( \\mathbb{R} \\subset \\mathbb{C} \\)." }
+        ]
+      }
+    }
+  ],
+  "overallFeedback": [
+    { "from": 0, "to": 20, "feedback": "Score très faible. Ce quiz couvre toutes les formules mathématiques disponibles dans l'éditeur d'équations de Caramel : fractions \\( \\frac{a}{b} \\), racines \\( \\sqrt{x} \\), puissances \\( x^n \\), lettres grecques \\( \\alpha, \\pi, \\Sigma \\), opérateurs \\( \\int_{a}^{b}, \\sum_{i=1}^{n}, \\lim_{x \\to a} \\), et structures \\( \\vec{u}, \\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix} \\)." },
+    { "from": 21, "to": 40, "feedback": "Score insuffisant. Revoyez notamment les intégrales \\( \\int_{a}^{b} f(x)\\,dx \\), les sommes \\( \\sum_{i=1}^{n} i = \\frac{n(n+1)}{2} \\) et les ensembles \\( \\mathbb{N} \\subset \\mathbb{Z} \\subset \\mathbb{Q} \\subset \\mathbb{R} \\subset \\mathbb{C} \\)." },
+    { "from": 41, "to": 60, "feedback": "Score moyen. Continuez à travailler les quantificateurs (\\( \\forall, \\exists \\)), les opérateurs d'ensembles (\\( \\cup, \\cap, \\subset \\)) et les flèches logiques (\\( \\Rightarrow, \\Leftrightarrow \\))." },
+    { "from": 61, "to": 80, "feedback": "Bon score ! Vous maîtrisez bien les formules mathématiques. Perfectionnez encore les matrices \\( \\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix} \\) et les coefficients binomiaux \\( \\binom{n}{k} \\)." },
+    { "from": 81, "to": 95, "feedback": "Très bon résultat ! Vous êtes à l'aise avec toute la palette de formules : des fractions imbriquées \\( \\frac{\\frac{a}{b}}{c} \\) aux dérivées partielles \\( \\frac{\\partial f}{\\partial x} \\)." },
+    { "from": 96, "to": 100, "feedback": "Score parfait ! Félicitations — vous maîtrisez toutes les formules mathématiques testées dans ce quiz." }
+  ]
+}

@@ -8,6 +8,7 @@
         "name": "Q1 - Définition",
         "questiontext": "Quelle est la définition correcte d'une fonction inverse ?",
         "feedback": "Bravo ! La fonction inverse est bien celle qui associe à chaque nombre non nul son inverse multiplicatif.",
+        "single": "true",
         "answers": [
           {
             "text": "C'est la fonction f(x) = 1/x pour x ≠ 0.",
@@ -118,6 +119,7 @@
         "name": "Q7 - Sens de variation",
         "questiontext": "Sur l'intervalle ]0 ; +∞[, la fonction inverse est :",
         "feedback": "Très bien ! Elle est décroissante sur cet intervalle.",
+        "single": "true",
         "answers": [
           {
             "text": "Décroissante",
@@ -184,6 +186,45 @@
             "text": "y = 0",
             "fraction": 50,
             "feedback": "C'est l'asymptote horizontale, pas verticale."
+          }
+        ]
+      }
+    },
+    {
+      "type": "multichoice",
+      "content": {
+        "name": "Q11 - Propriétés de la fonction inverse",
+        "questiontext": "Parmi les propriétés suivantes, lesquelles sont vraies pour la fonction inverse f(x) = 1/x ?",
+        "feedback": "La fonction inverse est impaire (symétrie par rapport à l'origine), strictement décroissante sur chaque intervalle de son domaine, et n'a pas de maximum global.",
+        "single": "false",
+        "correctfeedback": "Bravo, toutes les propriétés correctes sont identifiées !",
+        "partiallycorrectfeedback": "Certaines propriétés sont correctes, vérifiez les autres.",
+        "incorrectfeedback": "Aucune bonne réponse sélectionnée, revoyez les propriétés de la fonction inverse.",
+        "answers": [
+          {
+            "text": "Elle est impaire",
+            "fraction": 33.33333,
+            "feedback": "Oui, f(-x) = -f(x) pour tout x ≠ 0."
+          },
+          {
+            "text": "Elle est strictement décroissante sur ]0 ; +∞[",
+            "fraction": 33.33333,
+            "feedback": "Oui, si 0 < a < b alors 1/a > 1/b."
+          },
+          {
+            "text": "Elle n'admet pas de maximum global",
+            "fraction": 33.33334,
+            "feedback": "Exact, la fonction tend vers +∞ quand x tend vers 0⁺."
+          },
+          {
+            "text": "Elle est définie en x = 0",
+            "fraction": 0,
+            "feedback": "Non, la division par zéro est impossible."
+          },
+          {
+            "text": "Elle est croissante sur ℝ*",
+            "fraction": 0,
+            "feedback": "Non, elle est décroissante sur chaque intervalle de son domaine."
           }
         ]
       }

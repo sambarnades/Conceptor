@@ -778,6 +778,46 @@ function getTypeSpecificErrors(data, schema) {
         }
     }
 
+    // --- CoursePresentation ---
+    if (moduleKey === 'CoursePresentation') {
+        if (!Array.isArray(data.slides) || data.slides.length < 2) {
+            errors.push({
+                path: 'slides',
+                field: t('editor_cp_section_slides') || 'Slides',
+                message: t('validation_cp_min_slides') || ''
+            });
+        } else {
+            data.slides.forEach((slide, i) => {
+                if (!slide.type || slide.type.trim() === '') {
+                    errors.push({
+                        path: `slides.${i}.type`,
+                        field: `${t('editor_cp_slide') || 'Slide'} ${i + 1}`,
+                        message: t('validation_cp_no_type') || ''
+                    });
+                }
+                if (!slide.title || slide.title.trim() === '') {
+                    errors.push({
+                        path: `slides.${i}.title`,
+                        field: `${t('editor_cp_slide') || 'Slide'} ${i + 1}`,
+                        message: t('validation_cp_no_title') || ''
+                    });
+                }
+                // Exercice obligatoire pour les slides quiz/content-quiz/summary
+                // Note: après normalisation, exercise.library est déplacé vers _exerciseLibrary
+                if (['quiz', 'content-quiz', 'summary'].includes(slide.type)) {
+                    const hasExerciseLib = slide._exerciseLibrary || (slide.exercise && slide.exercise.library);
+                    if (!slide.exercise || !hasExerciseLib) {
+                        errors.push({
+                            path: `slides.${i}.exercise`,
+                            field: `${t('editor_cp_slide') || 'Slide'} ${i + 1}`,
+                            message: t('validation_cp_no_exercise') || ''
+                        });
+                    }
+                }
+            });
+        }
+    }
+
     // =================================================================
     // VALIDATIONS TRANSVERSALES (existantes, conservées)
     // =================================================================

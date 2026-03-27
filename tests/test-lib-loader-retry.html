@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <title>Tests lib-loader retry Caramel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; padding: 24px; color: #1a1a2e; }
+        h1 { font-size: 1.5rem; margin-bottom: 8px; }
+        .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+        .global-summary { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .global-summary__card { padding: 14px 24px; border-radius: 10px; font-weight: 700; font-size: 1.3rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-width: 120px; text-align: center; }
+        .global-summary__card small { display: block; font-size: 0.7rem; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+        .card--pass { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; }
+        .card--fail { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: #721c24; }
+        .card--total { background: linear-gradient(135deg, #d1ecf1, #bee5eb); color: #0c5460; }
+        .info-box { background: #fff; padding: 14px 18px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); font-size: 0.82rem; line-height: 1.6; color: #444; }
+        .info-box summary { cursor: pointer; font-weight: 600; color: #1a1a2e; font-size: 0.9rem; }
+        .info-box ol { margin: 8px 0 0 22px; }
+        .info-box code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 0.8rem; }
+        .results { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
+        .result { display: flex; align-items: flex-start; gap: 10px; padding: 7px 14px; border-bottom: 1px solid #f5f5f5; font-size: 0.82rem; }
+        .result:last-child { border-bottom: none; }
+        .result__badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-weight: 700; font-size: 0.7rem; min-width: 38px; text-align: center; flex-shrink: 0; }
+        .result__badge--pass { background: #d4edda; color: #155724; }
+        .result__badge--fail { background: #f8d7da; color: #721c24; }
+        .result__step { font-size: 0.65rem; color: #888; min-width: 120px; flex-shrink: 0; padding-top: 3px; }
+        .result--fail { background: #fff5f5; }
+        .diagnostic { margin-top: 6px; padding: 10px; background: #1e1e2e; color: #cdd6f4; border-radius: 6px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.72rem; line-height: 1.5; }
+        .diagnostic summary { color: #cba6f7; font-weight: 600; cursor: pointer; margin-bottom: 6px; }
+        .diagnostic .diag-label { color: #89b4fa; font-weight: 600; }
+        .loading { text-align: center; padding: 60px; color: #666; }
+        .loading__spinner { display: inline-block; width: 36px; height: 36px; border: 3px solid #ddd; border-top-color: #1a1a2e; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <h1>Tests lib-loader retry</h1>
+    <p class="subtitle">Verifie le mecanisme de retry apres echec de chargement des bibliotheques</p>
+
+    <details class="info-box">
+        <summary>Contexte du bug corrige</summary>
+        <p style="margin-top:8px;"><strong>Probleme :</strong> Si le preloading d'une bibliotheque echouait (reseau instable), la promesse rejetee restait en cache dans <code>loadPromises</code>. Tous les appels suivants reutilisaient cette promesse rejetee, causant l'erreur "Une erreur est survenue lors du traitement" jusqu'au rechargement de la page.</p>
+        <ol>
+            <li><strong>loadScript</strong> : marque les scripts avec <code>data-loaded</code> (true/false), retire et recree les scripts echoues</li>
+            <li><strong>load*Libs</strong> : ajout d'un <code>.catch()</code> qui supprime la promesse du cache (<code>delete loadPromises.xxx</code>)</li>
+            <li><strong>Idempotence</strong> : tous les loaders fonctionnent correctement en appels multiples</li>
+        </ol>
+    </details>
+
+    <div id="output">
+        <div class="loading"><div class="loading__spinner"></div><p style="margin-top:14px">Execution des tests en cours...</p></div>
+    </div>
+
+    <script type="module">
+        import { runAllTests } from './tests/test-lib-loader-retry.js';
+        const output = document.getElementById('output');
+        const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+        try {
+            const { passCount, failCount, results, STEP_NAMES } = await runAllTests();
+            const totalCount = passCount + failCount;
+            let html = `<div class="global-summary">
+                <div class="global-summary__card card--pass">${passCount}<small>PASS</small></div>
+                <div class="global-summary__card card--fail">${failCount}<small>FAIL</small></div>
+                <div class="global-summary__card card--total">${totalCount}<small>assertions</small></div>
+            </div>`;
+
+            html += `<div class="results">`;
+            for (const r of results) {
+                const isFail = r.status === 'FAIL';
+                html += `<div class="result ${isFail ? 'result--fail' : ''}" data-status="${r.status}">
+                    <span class="result__badge result__badge--${r.status.toLowerCase()}">${r.status}</span>
+                    <span class="result__step">${esc(r.stepName)}</span>
+                    <span class="result__msg">${esc(r.message)}`;
+                if (r.diagnostic) {
+                    html += `<div class="diagnostic"><details><summary>Diagnostic</summary>`;
+                    for (const [k, v] of Object.entries(r.diagnostic)) {
+                        html += `<span class="diag-label">${esc(k)}:</span> ${Array.isArray(v) ? esc(v.join(', ')) : esc(String(v))}<br>`;
+                    }
+                    html += `</details></div>`;
+                }
+                html += `</span></div>`;
+            }
+            html += `</div>`;
+            output.innerHTML = html;
+        } catch (e) {
+            output.innerHTML = `<div style="background:#f8d7da;color:#721c24;padding:20px;border-radius:10px;">
+                <strong>Erreur fatale :</strong> ${esc(e.message)}<br>
+                <pre style="margin-top:8px;font-size:0.8rem;">${esc(e.stack)}</pre>
+            </div>`;
+        }
+    </script>
+</body>
+</html>

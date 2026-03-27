@@ -1767,7 +1767,7 @@ export function initPreviewModal() {
                 if (moduleKey === 'Crossword') {
                     try {
                         const { captureCrosswordGrid } = await import('../renderers/crossword-grid-capture.js');
-                        const grids = await captureCrosswordGrid(modal, jsonDataToExport.words);
+                        const grids = await captureCrosswordGrid(modal, jsonDataToExport.words, jsonDataToExport.theme);
                         if (grids) {
                             if (grids.emptyGrid) {
                                 jsonDataToExport = { ...jsonDataToExport, _gridImage: grids.emptyGrid };
@@ -2518,14 +2518,13 @@ async function regenerateMoodleTestXMLFile(editedData) {
 async function regenerateMBZFile(notification, editedData, moduleKey) {
     try {
         // Import dynamique pour éviter la dépendance circulaire
-        const [{ createMbz }, MoodleProcessors, { escapeXml }, { normalizeDoubleEscapedLatex, repairBrokenLatexEscapes, autoWrapLatex, convertLatexDelimitersDeep }] = await Promise.all([
+        const [{ createMbz, healLatexForTest }, MoodleProcessors, { escapeXml }] = await Promise.all([
             import('../moodle/moodle-creator.js'),
             import('../moodle/processors/index.js'),
-            import('../moodle/moodle-formats.js'),
-            import('../h5p/json-healer.js')
+            import('../moodle/moodle-formats.js')
         ]);
-        // Pipeline LaTeX complet pour Moodle : normalize → repair → convert $→\( → auto-wrap nu
-        const healLatex = (data) => autoWrapLatex(convertLatexDelimitersDeep(repairBrokenLatexEscapes(normalizeDoubleEscapedLatex(data))));
+        // Pipeline LaTeX complet pour Moodle (identique à moodle-creator.js)
+        const healLatex = healLatexForTest;
 
         // Mapper le titleKey vers le type de processeur Moodle
         const titleKeyToMoodleType = {
@@ -2802,7 +2801,27 @@ async function regenerateH5PFile(originalBlob, editedData, moduleKey, titleKey) 
             unixPermissions: 0o100644
         });
 
-        // 3. Génération du Zip avec client-zip (identique à h5p-creator.js)
+        // 3. Images utilisateur depuis le registre (si présentes)
+        try {
+            const { getAllImages, hasImages, clearAllImages } = await import('../h5p/image-manager.js');
+            if (hasImages()) {
+                const imageFiles = getAllImages();
+                for (const [path, blob] of imageFiles) {
+                    const arrayBuffer = await blob.arrayBuffer();
+                    files.push({
+                        name: `content/${path}`,
+                        input: new Uint8Array(arrayBuffer),
+                        unixPermissions: 0o100644
+                    });
+                }
+                debugLog('notifications', `[Regenerate H5P] ${imageFiles.size} image(s) ajoutée(s) au ZIP`);
+                // Ne PAS clearAllImages() ici — l'utilisateur pourrait re-éditer
+            }
+        } catch (imgErr) {
+            console.warn('[Regenerate H5P] Image injection skipped:', imgErr);
+        }
+
+        // 4. Génération du Zip avec client-zip (identique à h5p-creator.js)
         const zipBlob = await downloadZip(files).blob();
 
         debugLog('notifications', '[Regenerate H5P] New blob size:', zipBlob.size);

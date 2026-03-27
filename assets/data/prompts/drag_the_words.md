@@ -11,7 +11,7 @@
 - Adaptation et vocabulaire : Adapte le ton, le vocabulaire et la difficulté des consignes au public indiqué. Sois pertinent et engageant.
 - Ton et feedback : Les consignes et remarques doivent être constructives, encourageantes, tournées vers l'apprentissage.
 - Conformité : Adapte OBLIGATOIREMENT les contenus aux références officielles en vigueur. Sauf mention contraire explicite, base-toi par défaut sur les programmes scolaires français (Eduscol) pour le public scolaire, et sur les textes réglementaires de la formation professionnelle pour les adultes.
-- Langue : Le contenu et les consignes doivent être rédigés en français.
+- Langue : Le contenu et les consignes doivent être rédigés dans la langue cible (français sauf indication contraire).
 
 # SOURCES
 - Tu utiliseras UNIQUEMENT les textes suivants pour générer ton activité.
@@ -26,6 +26,7 @@ L'objet doit contenir :
 - \`textField\` : Le texte à compléter. Chaque phrase doit se terminer par un saut de ligne \`\\n\`.
   - **Format** : \`*mot*\` pour un élément glissable.
 - \`overallFeedback\` : tableau de 4 objets pour le score final (0-25, 26-50, 51-75, 76-100).
+- **LaTeX :** Le composant DragTheWords ne supporte PAS le LaTeX dans les mots déplaçables (marqués par \`*mot*\`). Le LaTeX sera automatiquement converti en caractères Unicode dans les marqueurs. Tu peux néanmoins utiliser LaTeX \`\\\\( ... \\\\)\` dans la consigne (\`taskDescription\`).
 
 # EXEMPLE DE RENDU
 ```json

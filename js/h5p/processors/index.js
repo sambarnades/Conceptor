@@ -118,6 +118,7 @@ const processorMetadata = {
             { machineName: 'H5P.DragNResize', majorVersion: 1, minorVersion: 2 },
             { machineName: 'jQuery.ui', majorVersion: 1, minorVersion: 10 },
             { machineName: 'H5P.AdvancedText', majorVersion: 1, minorVersion: 1 },
+            { machineName: 'H5P.Image', majorVersion: 1, minorVersion: 1 },
             { machineName: 'Drop', majorVersion: 1, minorVersion: 0 },
             { machineName: 'H5P.MathDisplay', majorVersion: 1, minorVersion: 0 }
         ]
@@ -206,6 +207,45 @@ const processorMetadata = {
         version: { major: 1, minor: 2 },
         extraDependencies: []
     },
+    'CoursePresentation': {
+        machineName: 'H5P.CoursePresentation',
+        version: { major: 1, minor: 26 },
+        extraDependencies: [
+            // Core
+            { machineName: 'FontAwesome', majorVersion: 4, minorVersion: 5 },
+            { machineName: 'H5P.JoubelUI', majorVersion: 1, minorVersion: 3 },
+            { machineName: 'H5P.FontIcons', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'H5P.Transition', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'H5P.Question', majorVersion: 1, minorVersion: 5 },
+            { machineName: 'H5P.MathDisplay', majorVersion: 1, minorVersion: 0 },
+            // Sous-types contenu
+            { machineName: 'H5P.AdvancedText', majorVersion: 1, minorVersion: 1 },
+            { machineName: 'H5P.Image', majorVersion: 1, minorVersion: 1 },
+            { machineName: 'H5P.Table', majorVersion: 1, minorVersion: 2 },
+            { machineName: 'H5P.ExportableTextArea', majorVersion: 1, minorVersion: 3 },
+            // Sous-types exercices
+            { machineName: 'H5P.MultiChoice', majorVersion: 1, minorVersion: 16 },
+            { machineName: 'H5P.TrueFalse', majorVersion: 1, minorVersion: 8 },
+            { machineName: 'H5P.Blanks', majorVersion: 1, minorVersion: 14 },
+            { machineName: 'H5P.DragText', majorVersion: 1, minorVersion: 10 },
+            { machineName: 'H5P.SingleChoiceSet', majorVersion: 1, minorVersion: 11 },
+            { machineName: 'H5P.MarkTheWords', majorVersion: 1, minorVersion: 11 },
+            { machineName: 'H5P.Summary', majorVersion: 1, minorVersion: 10 },
+            { machineName: 'H5P.DragQuestion', majorVersion: 1, minorVersion: 14 },
+            { machineName: 'H5P.Dialogcards', majorVersion: 1, minorVersion: 9 },
+            // Dépendances des sous-types
+            { machineName: 'H5P.TextUtilities', majorVersion: 1, minorVersion: 3 },
+            { machineName: 'jQuery.ui', majorVersion: 1, minorVersion: 10 },
+            { machineName: 'H5P.Audio', majorVersion: 1, minorVersion: 5 },
+            // Sous-dépendances dynamiques (non déclarées dans library.json, chargées au runtime)
+            { machineName: 'H5P.DragNDrop', majorVersion: 1, minorVersion: 1 },
+            { machineName: 'H5P.DragNBar', majorVersion: 1, minorVersion: 5 },
+            { machineName: 'H5P.DragNResize', majorVersion: 1, minorVersion: 2 },
+            { machineName: 'Drop', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'Tether', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'H5P.Accordion', majorVersion: 1, minorVersion: 0 },
+        ]
+    },
     'MarkTheWords': {
         machineName: 'H5P.MarkTheWords',
         version: { major: 1, minor: 11 },
@@ -261,7 +301,8 @@ const processorLoaders = {
     'ComplexFillTheBlanks': () => import('./ComplexFillTheBlanks.js'),
     'Chart': () => import('./Chart.js'),
     'MarkTheWords': () => import('./MarkTheWords.js'),
-    'QuizSet': () => import('./QuizSet.js')
+    'QuizSet': () => import('./QuizSet.js'),
+    'CoursePresentation': () => import('./CoursePresentation.js')
 };
 
 // QuizSetQCM et QuizSetVF utilisent le même processeur que QuizSet
@@ -309,7 +350,8 @@ const libraryToKey = {
     'H5P.AdvancedBlanks': 'ComplexFillTheBlanks',
     'H5P.Chart': 'Chart',
     'H5P.MarkTheWords': 'MarkTheWords',
-    'H5P.QuestionSet': 'QuizSet'
+    'H5P.QuestionSet': 'QuizSet',
+    'H5P.CoursePresentation': 'CoursePresentation'
 };
 
 /**

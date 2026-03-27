@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caramel — Contraintes de champs par activité</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-hover: #334155;
+            --border: #475569;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-dim: #0ea5e9;
+
+            /* Couleurs par type de rendu */
+            --html-latex: #22c55e;
+            --html-latex-bg: rgba(34, 197, 94, 0.12);
+            --html: #3b82f6;
+            --html-bg: rgba(59, 130, 246, 0.12);
+            --unicode: #f59e0b;
+            --unicode-bg: rgba(245, 158, 11, 0.12);
+            --unicode-markers: #a855f7;
+            --unicode-markers-bg: rgba(168, 85, 247, 0.12);
+            --plain: #6b7280;
+            --plain-bg: rgba(107, 114, 128, 0.12);
+            --plain-letters: #ef4444;
+            --plain-letters-bg: rgba(239, 68, 68, 0.12);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        header {
+            max-width: 1400px;
+            margin: 0 auto 2rem;
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Stats bar */
+        .stats {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            max-width: 1400px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem 1.25rem;
+            min-width: 140px;
+        }
+
+        .stat-card .label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-card .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        select, input[type="text"] {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            padding: 0.4rem 0.75rem;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--accent);
+        }
+
+        input[type="text"] {
+            width: 200px;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            max-width: 1400px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        /* Table */
+        .table-wrap {
+            max-width: 1400px;
+            margin: 0 auto;
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        thead th {
+            background: var(--surface);
+            padding: 0.65rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
+            border-bottom: 2px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        thead th:hover {
+            color: var(--text);
+        }
+
+        thead th .sort-arrow {
+            margin-left: 0.25rem;
+            opacity: 0.4;
+        }
+
+        thead th.sorted .sort-arrow {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(71, 85, 105, 0.4);
+            transition: background 0.15s;
+        }
+
+        tbody tr:hover {
+            background: var(--surface-hover);
+        }
+
+        tbody td {
+            padding: 0.5rem 1rem;
+            vertical-align: middle;
+        }
+
+        /* Activity group header */
+        tr.activity-header td {
+            background: var(--surface);
+            font-weight: 700;
+            padding: 0.6rem 1rem;
+            border-top: 2px solid var(--border);
+            color: var(--accent);
+        }
+
+        /* Render type badge */
+        .badge {
+            display: inline-block;
+            padding: 0.15rem 0.55rem;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge.html-latex   { background: var(--html-latex-bg);       color: var(--html-latex); }
+        .badge.html         { background: var(--html-bg);             color: var(--html); }
+        .badge.unicode       { background: var(--unicode-bg);         color: var(--unicode); }
+        .badge.unicode-markers { background: var(--unicode-markers-bg); color: var(--unicode-markers); }
+        .badge.plain         { background: var(--plain-bg);           color: var(--plain); }
+        .badge.plain-letters { background: var(--plain-letters-bg);   color: var(--plain-letters); }
+
+        /* Platform badge */
+        .platform {
+            display: inline-block;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .platform.h5p    { background: rgba(56, 189, 248, 0.15); color: var(--accent); }
+        .platform.moodle { background: rgba(251, 146, 60, 0.15); color: #fb923c; }
+
+        /* Container icon */
+        .container-icon {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-left: 0.3rem;
+        }
+
+        /* LaTeX/HTML support icons */
+        .support-yes { color: var(--html-latex); }
+        .support-no  { color: var(--plain); }
+
+        /* Field path code */
+        .field-path {
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.8rem;
+            color: #e0e7ff;
+        }
+
+        .field-path .array-marker {
+            color: var(--unicode);
+        }
+
+        /* Converter name */
+        .converter {
+            font-family: monospace;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .converter.none {
+            color: rgba(148, 163, 184, 0.4);
+        }
+
+        /* No results */
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        footer {
+            max-width: 1400px;
+            margin: 2rem auto 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        footer a { color: var(--accent); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Contraintes de champs par activité</h1>
+    <p>Dashboard interactif — Caramel v5.0.2 &middot; Généré depuis <code>js/h5p/field-constraints.js</code></p>
+</header>
+
+<div class="stats" id="stats"></div>
+
+<div class="filters">
+    <div class="filter-group">
+        <label for="filterPlatform">Plateforme</label>
+        <select id="filterPlatform">
+            <option value="all">Toutes</option>
+            <option value="H5P">H5P</option>
+            <option value="Moodle">Moodle</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <label for="filterRender">Type de rendu</label>
+        <select id="filterRender">
+            <option value="all">Tous</option>
+            <option value="html+latex">html+latex</option>
+            <option value="html">html</option>
+            <option value="unicode">unicode</option>
+            <option value="unicode+markers">unicode+markers</option>
+            <option value="plain">plain</option>
+            <option value="plain+letters">plain+letters</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <label for="filterActivity">Activité</label>
+        <select id="filterActivity">
+            <option value="all">Toutes</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <label for="filterSearch">Recherche</label>
+        <input type="text" id="filterSearch" placeholder="Champ, activité...">
+    </div>
+</div>
+
+<div class="legend" id="legend"></div>
+
+<div class="table-wrap">
+    <table>
+        <thead>
+            <tr>
+                <th data-sort="activity">Activité <span class="sort-arrow">&#9650;</span></th>
+                <th data-sort="platform">Plateforme <span class="sort-arrow">&#9650;</span></th>
+                <th data-sort="field">Champ JSON <span class="sort-arrow">&#9650;</span></th>
+                <th data-sort="render">Type de rendu <span class="sort-arrow">&#9650;</span></th>
+                <th>LaTeX</th>
+                <th>HTML</th>
+                <th data-sort="converter">Convertisseur <span class="sort-arrow">&#9650;</span></th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+</div>
+
+<footer>
+    Caramel — <a href="../docs/PRD_FIELD_CONSTRAINTS_LATEX.md">PRD Contraintes de champs</a> &middot;
+    Source : <code>js/h5p/field-constraints.js</code>
+</footer>
+
+<script type="module">
+// ============================================================
+// Chargement des données depuis field-constraints.js
+// ============================================================
+
+// Import direct du module ES6
+import { FIELD_CONSTRAINTS, RENDER_TYPES } from '../js/h5p/field-constraints.js';
+
+// Construire la liste plate des lignes du tableau
+const rows = [];
+for (const [moduleKey, config] of Object.entries(FIELD_CONSTRAINTS)) {
+    for (const [fieldPath, fieldConfig] of Object.entries(config.fields)) {
+        const renderType = RENDER_TYPES[fieldConfig.render] || {};
+        rows.push({
+            activity: moduleKey,
+            machineName: config.machineName,
+            platform: config.platform,
+            container: !!config.container,
+            field: fieldPath,
+            render: fieldConfig.render,
+            supportsLatex: renderType.supportsLatex || false,
+            supportsHtml: renderType.supportsHtml || false,
+            converter: renderType.converter || null,
+            markerType: fieldConfig.markerType || null
+        });
+    }
+}
+
+// ============================================================
+// Stats
+// ============================================================
+const totalActivities = Object.keys(FIELD_CONSTRAINTS).length;
+const totalFields = rows.length;
+const h5pCount = new Set(rows.filter(r => r.platform === 'H5P').map(r => r.activity)).size;
+const moodleCount = new Set(rows.filter(r => r.platform === 'Moodle').map(r => r.activity)).size;
+
+const renderCounts = {};
+for (const r of rows) {
+    renderCounts[r.render] = (renderCounts[r.render] || 0) + 1;
+}
+
+document.getElementById('stats').innerHTML = `
+    <div class="stat-card"><div class="label">Activités</div><div class="value">${totalActivities}</div></div>
+    <div class="stat-card"><div class="label">Champs</div><div class="value">${totalFields}</div></div>
+    <div class="stat-card"><div class="label">H5P</div><div class="value">${h5pCount}</div></div>
+    <div class="stat-card"><div class="label">Moodle</div><div class="value">${moodleCount}</div></div>
+    <div class="stat-card"><div class="label">Types de rendu</div><div class="value">${Object.keys(RENDER_TYPES).length}</div></div>
+`;
+
+// ============================================================
+// Legend
+// ============================================================
+const legendData = [
+    { render: 'html+latex', label: 'html+latex — HTML + MathJax' },
+    { render: 'html', label: 'html — HTML sans math' },
+    { render: 'unicode', label: 'unicode — LaTeX → Unicode' },
+    { render: 'unicode+markers', label: 'unicode+markers — Marqueurs *mot*' },
+    { render: 'plain', label: 'plain — Texte brut' },
+    { render: 'plain+letters', label: 'plain+letters — Lettres uniquement' }
+];
+
+document.getElementById('legend').innerHTML = legendData.map(d =>
+    `<div class="legend-item"><div class="legend-dot" style="background: var(--${d.render.replace(/\+/g, '-')})"></div>${d.label}</div>`
+).join('');
+
+// ============================================================
+// Populate activity filter
+// ============================================================
+const activitySelect = document.getElementById('filterActivity');
+const activities = [...new Set(rows.map(r => r.activity))].sort();
+for (const a of activities) {
+    const opt = document.createElement('option');
+    opt.value = a;
+    opt.textContent = a;
+    activitySelect.appendChild(opt);
+}
+
+// ============================================================
+// Rendering
+// ============================================================
+function badgeClass(render) {
+    return render.replace(/\+/g, '-');
+}
+
+function formatFieldPath(path) {
+    return path.replace(/\[\]/g, '<span class="array-marker">[]</span>');
+}
+
+function renderTable(filteredRows) {
+    const tbody = document.getElementById('tableBody');
+
+    if (filteredRows.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="no-results">Aucun résultat pour ces filtres.</td></tr>';
+        return;
+    }
+
+    let html = '';
+    let lastActivity = null;
+
+    for (const r of filteredRows) {
+        if (r.activity !== lastActivity) {
+            lastActivity = r.activity;
+            const containerTag = r.container ? ' <span class="container-icon" title="Conteneur">[conteneur]</span>' : '';
+            html += `<tr class="activity-header"><td colspan="7">${r.activity}${containerTag} <span style="font-weight:400;color:var(--text-muted);font-size:0.78rem">— ${r.machineName}</span></td></tr>`;
+        }
+
+        html += `<tr>
+            <td>${r.activity}</td>
+            <td><span class="platform ${r.platform.toLowerCase()}">${r.platform}</span></td>
+            <td class="field-path">${formatFieldPath(r.field)}</td>
+            <td><span class="badge ${badgeClass(r.render)}">${r.render}</span></td>
+            <td class="${r.supportsLatex ? 'support-yes' : 'support-no'}">${r.supportsLatex ? '&#10003;' : '&#10007;'}</td>
+            <td class="${r.supportsHtml ? 'support-yes' : 'support-no'}">${r.supportsHtml ? '&#10003;' : '&#10007;'}</td>
+            <td><span class="converter ${r.converter ? '' : 'none'}">${r.converter || '—'}</span></td>
+        </tr>`;
+    }
+
+    tbody.innerHTML = html;
+}
+
+// ============================================================
+// Filtering
+// ============================================================
+function getFilteredRows() {
+    const platform = document.getElementById('filterPlatform').value;
+    const render = document.getElementById('filterRender').value;
+    const activity = document.getElementById('filterActivity').value;
+    const search = document.getElementById('filterSearch').value.toLowerCase().trim();
+
+    return rows.filter(r => {
+        if (platform !== 'all' && r.platform !== platform) return false;
+        if (render !== 'all' && r.render !== render) return false;
+        if (activity !== 'all' && r.activity !== activity) return false;
+        if (search) {
+            const haystack = `${r.activity} ${r.field} ${r.machineName} ${r.render} ${r.converter || ''}`.toLowerCase();
+            if (!haystack.includes(search)) return false;
+        }
+        return true;
+    });
+}
+
+// ============================================================
+// Sorting
+// ============================================================
+let sortCol = 'activity';
+let sortAsc = true;
+
+function sortRows(filtered) {
+    const key = sortCol;
+    return [...filtered].sort((a, b) => {
+        let va = a[key] || '';
+        let vb = b[key] || '';
+        if (typeof va === 'string') va = va.toLowerCase();
+        if (typeof vb === 'string') vb = vb.toLowerCase();
+        if (va < vb) return sortAsc ? -1 : 1;
+        if (va > vb) return sortAsc ? 1 : -1;
+        // Secondary sort by field within same activity
+        if (key !== 'field') {
+            if (a.field < b.field) return -1;
+            if (a.field > b.field) return 1;
+        }
+        return 0;
+    });
+}
+
+function refresh() {
+    const filtered = getFilteredRows();
+    const sorted = sortRows(filtered);
+    renderTable(sorted);
+}
+
+// Event listeners
+for (const el of document.querySelectorAll('#filterPlatform, #filterRender, #filterActivity')) {
+    el.addEventListener('change', refresh);
+}
+
+document.getElementById('filterSearch').addEventListener('input', refresh);
+
+// Sort headers
+for (const th of document.querySelectorAll('thead th[data-sort]')) {
+    th.addEventListener('click', () => {
+        const col = th.dataset.sort;
+        if (sortCol === col) {
+            sortAsc = !sortAsc;
+        } else {
+            sortCol = col;
+            sortAsc = true;
+        }
+        // Update UI
+        for (const h of document.querySelectorAll('thead th')) {
+            h.classList.remove('sorted');
+            const arrow = h.querySelector('.sort-arrow');
+            if (arrow) arrow.innerHTML = '&#9650;';
+        }
+        th.classList.add('sorted');
+        const arrow = th.querySelector('.sort-arrow');
+        if (arrow) arrow.innerHTML = sortAsc ? '&#9650;' : '&#9660;';
+        refresh();
+    });
+}
+
+// Initial render
+refresh();
+</script>
+
+</body>
+</html>

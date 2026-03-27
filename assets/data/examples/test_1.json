@@ -8,6 +8,7 @@
                 "name": "Q1 - Alliance PGM",
                 "questiontext": "L'Italie a combattu aux côtés de l'Allemagne et de l'Autriche-Hongrie dès le déclenchement de la Première Guerre mondiale en 1914.",
                 "feedback": "L'Italie était initialement membre de la Triple Alliance, mais elle est restée neutre en 1914 avant de rejoindre l'Entente (France, Royaume-Uni, Russie) en 1915.",
+                "hints": ["Pensez à la position initiale de l'Italie dans les alliances européennes.", "L'Italie a changé de camp en cours de conflit."],
                 "answer": {
                     "value": false,
                     "feedback_true": "C'est incorrect.",
@@ -29,6 +30,9 @@
                 "name": "Q3 - Accords du Latran",
                 "questiontext": "Que prévoient les accords du Latran signés en 1929 entre Mussolini et le Vatican ?",
                 "feedback": "Ces accords mettent fin à la 'Question romaine' en créant l'État de la Cité du Vatican.",
+                "correctfeedback": "Bravo, c'est la bonne réponse !",
+                "incorrectfeedback": "Ce n'est pas cela. Les accords du Latran concernent les relations entre l'Italie et le Saint-Siège.",
+                "hints": ["Ces accords règlent un conflit entre l'État italien et une institution religieuse."],
                 "answers": [
                     {
                         "text": "La réconciliation entre l'État italien et l'Église catholique",
@@ -59,6 +63,10 @@
                 "name": "Q4 - Figures historiques",
                 "questiontext": "Associez chaque personnalité italienne du 20ème siècle à son rôle ou à son courant politique.",
                 "feedback": "Ces acteurs ont façonné l'histoire complexe de l'Italie contemporaine.",
+                "correctfeedback": "Parfait, toutes les associations sont correctes !",
+                "partiallycorrectfeedback": "Certaines associations sont correctes, vérifiez les autres.",
+                "incorrectfeedback": "Aucune association correcte. Revoyez les personnalités de l'Italie du 20ème siècle.",
+                "hints": ["Gramsci est associé au communisme, De Gasperi à la démocratie chrétienne."],
                 "subquestions": [
                     {
                         "text": "Victor-Emmanuel III",

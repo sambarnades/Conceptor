@@ -36,6 +36,9 @@ const STACK_VERTICAL_SHIFT_PCT = -10;
 
 const ELEMENT_WIDTH_PX = 150;
 const ELEMENT_HEIGHT_PX = 38;
+// Hauteur spécifique pour les étiquettes contenant une image (~3× le texte)
+// Largeur identique à ELEMENT_WIDTH_PX pour garder l'alignement en rangée
+const IMAGE_ELEMENT_HEIGHT_PX = 110;
 const ELEMENT_GAP_PX = 15;           // espacement horizontal entre étiquettes
 const ELEMENT_ROW_GAP_PX = 15;       // espacement vertical entre lignes d'étiquettes
 const ELEMENT_BOTTOM_MARGIN_PX = 12;  // marge depuis le bas du canvas
@@ -56,6 +59,9 @@ const ZONE_LABEL_OFFSET_PX = 10;     // décalage haut pour compenser le débord
 // ============================================================================
 
 const round2 = (n) => Math.round(n * 100) / 100;
+
+/** Vérifie si un élément possède une image uploadée */
+const hasElementImage = (el) => el && el.image && el.image.path;
 
 // ============================================================================
 // GRILLE ADAPTATIVE POUR LES ZONES
@@ -104,12 +110,31 @@ function computeElementRowInfo(elementCount, canvasW) {
 
 /**
  * Calcule la hauteur totale occupée par les étiquettes en pixels.
+ * Tient compte des éléments image (plus hauts) pour chaque rangée.
+ * @param {number} rowCount - Nombre de rangées
+ * @param {Array} elements - Tableau des éléments (pour détecter les images)
+ * @param {number} perRow - Nombre d'éléments par rangée
+ * @returns {{ totalHeight: number, rowHeights: number[] }}
  */
-function computeElementAreaHeight(rowCount) {
-    if (rowCount === 0) return 0;
-    return rowCount * ELEMENT_HEIGHT_PX
+function computeElementAreaHeight(rowCount, elements = [], perRow = 1) {
+    if (rowCount === 0) return { totalHeight: 0, rowHeights: [] };
+
+    const rowHeights = [];
+    for (let r = 0; r < rowCount; r++) {
+        const start = r * perRow;
+        const end = Math.min(start + perRow, elements.length);
+        let hasImage = false;
+        for (let i = start; i < end; i++) {
+            if (hasElementImage(elements[i])) { hasImage = true; break; }
+        }
+        rowHeights.push(hasImage ? IMAGE_ELEMENT_HEIGHT_PX : ELEMENT_HEIGHT_PX);
+    }
+
+    const totalHeight = rowHeights.reduce((s, h) => s + h, 0)
         + (rowCount - 1) * ELEMENT_ROW_GAP_PX
         + ELEMENT_BOTTOM_MARGIN_PX;
+
+    return { totalHeight, rowHeights };
 }
 
 /**
@@ -128,11 +153,13 @@ function computeZoneAreaHeight(zoneCount) {
 
 /**
  * Calcule la hauteur optimale du canvas et les hauteurs de chaque section.
+ * @param {Array} elements - Tableau des éléments (pour détecter les images)
  * @param {'up'|'down'|'center'} elemPosition - Position des étiquettes
  */
-function computeLayout(elementCount, zoneCount, canvasW, elemPosition = 'down') {
-    const { perRow, rowCount } = computeElementRowInfo(elementCount, canvasW);
+function computeLayout(elements, zoneCount, canvasW, elemPosition = 'down') {
+    const { perRow, rowCount } = computeElementRowInfo(elements.length, canvasW);
     const zoneAreaH = computeZoneAreaHeight(zoneCount);
+    const { totalHeight: elemTotalH, rowHeights } = computeElementAreaHeight(rowCount, elements, perRow);
 
     if (elemPosition === 'center') {
         // En mode center, les étiquettes flottent par-dessus les zones
@@ -143,28 +170,28 @@ function computeLayout(elementCount, zoneCount, canvasW, elemPosition = 'down') 
             zoneAreaH: totalH,
             elemAreaH: 0,
             elemPerRow: perRow,
-            elemRowCount: rowCount
+            elemRowCount: rowCount,
+            elemRowHeights: rowHeights
         };
     }
-
-    const elemAreaH = computeElementAreaHeight(rowCount);
 
     // Hauteur totale = marges + zones + séparation + étiquettes
     const totalH = Math.max(
         DEFAULT_CANVAS_HEIGHT_MIN,
-        zoneAreaH + ZONE_ELEMENTS_GAP_PX + elemAreaH
+        zoneAreaH + ZONE_ELEMENTS_GAP_PX + elemTotalH
     );
 
     // Si la hauteur est plus grande que le minimum, redistribuer l'espace excédentaire aux zones
-    const extraH = totalH - (zoneAreaH + ZONE_ELEMENTS_GAP_PX + elemAreaH);
+    const extraH = totalH - (zoneAreaH + ZONE_ELEMENTS_GAP_PX + elemTotalH);
     const adjustedZoneAreaH = zoneAreaH + Math.max(0, extraH);
 
     return {
         canvasH: totalH,
         zoneAreaH: adjustedZoneAreaH,
-        elemAreaH,
+        elemAreaH: elemTotalH,
         elemPerRow: perRow,
-        elemRowCount: rowCount
+        elemRowCount: rowCount,
+        elemRowHeights: rowHeights
     };
 }
 
@@ -219,61 +246,76 @@ function computeZonePositions(zoneCount, zoneAreaH, canvasW, canvasH, yOffsetPx 
 
 /**
  * Positionne les étiquettes dans le canvas.
+ * Gère les hauteurs hétérogènes (texte vs image) grâce à rowHeights.
+ * @param {Array} elements - Tableau des éléments (pour détecter les images)
+ * @param {number} perRow - Nombre d'éléments par rangée
+ * @param {number} canvasW - Largeur du canvas en pixels
+ * @param {number} canvasH - Hauteur du canvas en pixels
  * @param {'up'|'down'|'center'} position - 'down' = en bas, 'up' = en haut, 'center' = empilées au centre
+ * @param {number[]} rowHeights - Hauteur en pixels de chaque rangée
  * @returns {Array<{x, y, width, height}>} positions en % du canvas
  */
-function computeElementPositions(elementCount, perRow, canvasW, canvasH, position = 'down') {
-    if (elementCount === 0) return [];
+function computeElementPositions(elements, perRow, canvasW, canvasH, position = 'down', rowHeights = []) {
+    if (elements.length === 0) return [];
 
     const elemWPct = (ELEMENT_WIDTH_PX / canvasW) * 100;
-    const elemHPct = (ELEMENT_HEIGHT_PX / canvasH) * 100;
 
     // Mode center : toutes les étiquettes empilées au centre avec léger décalage
     if (position === 'center') {
+        const defaultHPct = (ELEMENT_HEIGHT_PX / canvasH) * 100;
         const centerX = (100 - elemWPct) / 2;
-        const centerY = (100 - elemHPct) / 2 + STACK_VERTICAL_SHIFT_PCT;
+        const centerY = (100 - defaultHPct) / 2 + STACK_VERTICAL_SHIFT_PCT;
         const positions = [];
-        for (let i = 0; i < elementCount; i++) {
+        for (let i = 0; i < elements.length; i++) {
+            const thisHPx = hasElementImage(elements[i]) ? IMAGE_ELEMENT_HEIGHT_PX : ELEMENT_HEIGHT_PX;
             positions.push({
                 x: round2(centerX + i * STACK_OFFSET_PCT),
                 y: round2(centerY + i * STACK_OFFSET_PCT),
                 width: round2(elemWPct),
-                height: round2(elemHPct)
+                height: round2((thisHPx / canvasH) * 100)
             });
         }
         return positions;
     }
 
     const gapWPct = (ELEMENT_GAP_PX / canvasW) * 100;
-    const gapHPct = (ELEMENT_ROW_GAP_PX / canvasH) * 100;
     const marginPct = (ELEMENT_BOTTOM_MARGIN_PX / canvasH) * 100;
 
-    const rowCount = Math.ceil(elementCount / perRow);
+    const rowCount = Math.ceil(elements.length / perRow);
     const positions = [];
     let idx = 0;
 
     for (let row = 0; row < rowCount; row++) {
-        const elemsThisRow = Math.min(perRow, elementCount - idx);
+        const elemsThisRow = Math.min(perRow, elements.length - idx);
         // Centrer horizontalement
         const rowWidthPct = elemsThisRow * elemWPct + (elemsThisRow - 1) * gapWPct;
         const startXPct = (100 - rowWidthPct) / 2;
 
         let yPct;
         if (position === 'up') {
-            // Depuis le haut du canvas
-            yPct = marginPct + row * (elemHPct + gapHPct);
+            // Depuis le haut : cumuler les hauteurs des rangées précédentes
+            let aboveH = 0;
+            for (let r = 0; r < row; r++) {
+                aboveH += (rowHeights[r] || ELEMENT_HEIGHT_PX) + ELEMENT_ROW_GAP_PX;
+            }
+            yPct = marginPct + (aboveH / canvasH) * 100;
         } else {
-            // Depuis le bas du canvas
-            const rowFromBottom = rowCount - 1 - row;
-            yPct = 100 - marginPct - elemHPct - rowFromBottom * (elemHPct + gapHPct);
+            // Depuis le bas : cumuler les hauteurs des rangées en dessous
+            let belowH = 0;
+            for (let r = row + 1; r < rowCount; r++) {
+                belowH += (rowHeights[r] || ELEMENT_HEIGHT_PX) + ELEMENT_ROW_GAP_PX;
+            }
+            const rowHPct = ((rowHeights[row] || ELEMENT_HEIGHT_PX) / canvasH) * 100;
+            yPct = 100 - marginPct - rowHPct - (belowH / canvasH) * 100;
         }
 
         for (let col = 0; col < elemsThisRow; col++) {
+            const thisHPx = hasElementImage(elements[idx]) ? IMAGE_ELEMENT_HEIGHT_PX : ELEMENT_HEIGHT_PX;
             positions.push({
                 x: round2(startXPct + col * (elemWPct + gapWPct)),
                 y: round2(yPct),
                 width: round2(elemWPct),
-                height: round2(elemHPct)
+                height: round2((thisHPx / canvasH) * 100)
             });
             idx++;
         }
@@ -298,8 +340,8 @@ export default {
         // Position des étiquettes : 'up' = en haut, 'down' = en bas (défaut)
         const elemPosition = jsonObj.elementPosition || DEFAULT_ELEMENT_POSITION;
 
-        // Layout optimisé (hauteur calculée automatiquement)
-        const layout = computeLayout(elements.length, zoneCount, canvasW, elemPosition);
+        // Layout optimisé (hauteur calculée automatiquement, tient compte des images)
+        const layout = computeLayout(elements, zoneCount, canvasW, elemPosition);
 
         // En mode 'up', ajouter une marge supplémentaire sous les étiquettes
         const upExtraGapPx = elemPosition === 'up' ? 10 : 0;
@@ -315,9 +357,9 @@ export default {
             zoneCount, layout.zoneAreaH, canvasW, canvasH, zoneOffsetPx
         );
 
-        // Positions des étiquettes
+        // Positions des étiquettes (hauteurs adaptées texte/image)
         const elemPositions = computeElementPositions(
-            elements.length, layout.elemPerRow, canvasW, canvasH, elemPosition
+            elements, layout.elemPerRow, canvasW, canvasH, elemPosition, layout.elemRowHeights
         );
 
         // Toutes les zones (chaque élément peut être glissé dans n'importe quelle zone)
@@ -326,23 +368,46 @@ export default {
         // Construction des éléments H5P (draggables)
         const h5pElements = elements.map((el, i) => {
             const pos = elemPositions[i] || { x: 0, y: 90, width: 10, height: 5 };
-            return {
-                type: {
-                    library: "H5P.AdvancedText 1.1",
-                    params: {
-                        text: `<p>${formatTextToHtml(el.text || "")}</p>`
+
+            // Si l'élément a une image, créer un H5P.Image 1.1 au lieu de AdvancedText
+            const isImage = hasElementImage(el);
+            const elementType = isImage ? {
+                library: "H5P.Image 1.1",
+                params: {
+                    file: {
+                        path: el.image.path,
+                        mime: el.image.mime || "image/jpeg",
+                        width: el.image.width || 0,
+                        height: el.image.height || 0
                     },
-                    subContentId: generateUUID(),
-                    metadata: {
-                        contentType: "Text",
-                        license: "U",
-                        title: "Untitled Text"
-                    }
+                    alt: el.imageAltText || el.text || "",
+                    decorative: false
                 },
+                subContentId: generateUUID(),
+                metadata: {
+                    contentType: "Image",
+                    license: "U",
+                    title: "Untitled Image"
+                }
+            } : {
+                library: "H5P.AdvancedText 1.1",
+                params: {
+                    text: `<p>${formatTextToHtml(el.text || "")}</p>`
+                },
+                subContentId: generateUUID(),
+                metadata: {
+                    contentType: "Text",
+                    license: "U",
+                    title: "Untitled Text"
+                }
+            };
+
+            return {
+                type: elementType,
                 x: pos.x,
                 y: pos.y,
                 width: round2(ELEMENT_WIDTH_PX / 16),
-                height: round2(ELEMENT_HEIGHT_PX / 16),
+                height: round2((isImage ? IMAGE_ELEMENT_HEIGHT_PX : ELEMENT_HEIGHT_PX) / 16),
                 dropZones: allZoneIndices,
                 backgroundOpacity: 100,
                 multiple: false
@@ -395,7 +460,17 @@ export default {
                     size: {
                         width: canvasW,
                         height: canvasH
-                    }
+                    },
+                    // Image d'arrière-plan optionnelle
+                    ...(jsonObj.backgroundImage && jsonObj.backgroundImage.path ? {
+                        background: {
+                            path: jsonObj.backgroundImage.path,
+                            mime: jsonObj.backgroundImage.mime || "image/jpeg",
+                            copyright: { license: "U" },
+                            width: jsonObj.backgroundImage.width || canvasW,
+                            height: jsonObj.backgroundImage.height || canvasH
+                        }
+                    } : {})
                 },
                 task: {
                     elements: h5pElements,
@@ -413,7 +488,8 @@ export default {
                 autoAlignSpacing: 2,
                 enableFullScreen: true,
                 showScorePoints: true,
-                showTitle: true
+                showTitle: true,
+                ...(jsonObj.behaviour || {})
             },
             localize: {
                 fullscreen: translations.h5p_fullscreen || "Plein écran",
@@ -436,13 +512,18 @@ export default {
     },
 
     /**
-     * Transformation pour intégration comme sous-question dans un QuizSet.
-     * Applique le processeur principal (layout, positions, traductions) sur question.params.
+     * Transformation pour intégration comme sous-question dans un QuizSet ou CoursePresentation.
+     * Force la position 'center' par défaut pour les conteneurs contraints (CP, QuizSet)
+     * car 'down' place les étiquettes en bas du canvas, hors zone visible dans un conteneur réduit.
      * @param {Object} question - L'objet question contenant { library, params, metadata, subContentId }
      * @returns {Object} La question modifiée avec params transformés en structure H5P complète
      */
     transformForQuizSet(question) {
         question.params = this.process(question.params);
+        // Désactiver le plein écran en contexte imbriqué (CP/QuizSet gèrent leur propre plein écran)
+        if (question.params.behaviour) {
+            question.params.behaviour.enableFullScreen = false;
+        }
         return question;
     }
 };

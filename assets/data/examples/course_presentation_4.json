@@ -1,0 +1,232 @@
+{
+  "title": "La Révolution française (1789-1799)",
+  "globalBackgroundColor": "#f0f4f8",
+  "slides": [
+    {
+      "type": "title",
+      "title": "La Révolution française",
+      "subtitle": "De la prise de la Bastille à la fin du Directoire (1789-1799)"
+    },
+    {
+      "type": "content",
+      "title": "Les causes de la Révolution",
+      "text": "La Révolution française naît d'une **triple crise** :\n\n- **Crise financière** : l'État est lourdement endetté après la guerre d'indépendance américaine.\n- **Crise sociale** : le Tiers-État supporte l'essentiel des impôts tandis que la noblesse et le clergé bénéficient de privilèges fiscaux.\n- **Crise politique** : les philosophes des Lumières (Voltaire, Rousseau, Montesquieu) remettent en cause la monarchie absolue et défendent les libertés individuelles.\n\nLe roi **Louis XVI** convoque les **États généraux** en mai 1789 pour résoudre la crise financière."
+    },
+    {
+      "type": "content-with-table",
+      "title": "Chronologie des événements majeurs",
+      "text": "Voici les dates clés de la Révolution française :",
+      "table": {
+        "headers": ["Date", "Événement", "Conséquence"],
+        "rows": [
+          ["14 juillet 1789", "Prise de la Bastille", "Symbole de la chute de l'absolutisme"],
+          ["4 août 1789", "Abolition des privilèges", "Fin de l'Ancien Régime féodal"],
+          ["26 août 1789", "Déclaration des droits de l'homme", "Fondement des libertés modernes"],
+          ["21 septembre 1792", "Proclamation de la République", "Fin de la monarchie"],
+          ["21 janvier 1793", "Exécution de Louis XVI", "Rupture définitive avec la royauté"],
+          ["27 juillet 1794", "Chute de Robespierre", "Fin de la Terreur"]
+        ]
+      }
+    },
+    {
+      "type": "quiz",
+      "title": "QCM — Les causes de la Révolution",
+      "exercise": {
+        "library": "H5P.MultiChoice 1.16",
+        "question": "Quelle est la principale cause financière de la Révolution française ?",
+        "answers": [
+          { "text": "L'endettement de l'État après la guerre d'indépendance américaine", "correct": true, "tipsAndFeedback": { "chosenFeedback": "Exact ! Le soutien à la guerre d'Amérique a considérablement alourdi la dette." } },
+          { "text": "Les dépenses liées à la construction de Versailles", "correct": false, "tipsAndFeedback": { "chosenFeedback": "Versailles a été construit sous Louis XIV, un siècle plus tôt." } },
+          { "text": "Les invasions étrangères répétées", "correct": false, "tipsAndFeedback": { "chosenFeedback": "Les guerres de coalition sont postérieures au début de la Révolution." } },
+          { "text": "La famine causée par une éruption volcanique", "correct": false, "tipsAndFeedback": { "chosenFeedback": "L'éruption du Laki (1783) a aggravé la crise mais n'est pas la cause principale." } }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Revoyez les causes économiques de la Révolution." },
+          { "from": 26, "to": 50, "feedback": "Vous confondez certaines périodes historiques." },
+          { "from": 51, "to": 75, "feedback": "Bonne intuition !" },
+          { "from": 76, "to": 100, "feedback": "Parfait ! Vous maîtrisez les causes de la Révolution." }
+        ]
+      }
+    },
+    {
+      "type": "content-quiz",
+      "title": "Vrai ou Faux — La monarchie",
+      "text": "La monarchie constitutionnelle est un régime dans lequel le roi **partage le pouvoir** avec une assemblée élue. En France, elle a existé de **1791 à 1792**, avant d'être remplacée par la République.",
+      "exercise": {
+        "library": "H5P.TrueFalse 1.8",
+        "question": "Louis XVI a accepté volontairement la Constitution de 1791.",
+        "correct": "false",
+        "feedbackOnCorrect": "Bravo ! Louis XVI a été contraint d'accepter la Constitution après la fuite de Varennes.",
+        "feedbackOnWrong": "Non, Louis XVI a tenté de fuir (fuite de Varennes, juin 1791) et n'a accepté la Constitution que sous la pression."
+      }
+    },
+    {
+      "type": "quiz",
+      "title": "Texte à trous — La DDHC",
+      "exercise": {
+        "library": "H5P.Blanks 1.14",
+        "taskDescription": "Complétez les articles de la Déclaration des droits de l'homme et du citoyen (1789).",
+        "questions": [
+          "Les hommes naissent et demeurent *libres* et égaux en droits.",
+          "Le but de toute association politique est la conservation des droits naturels et *imprescriptibles* de l'homme.",
+          "Le principe de toute souveraineté réside essentiellement dans la *nation*.",
+          "La *liberté* consiste à pouvoir faire tout ce qui ne nuit pas à autrui."
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Relisez attentivement la DDHC." },
+          { "from": 26, "to": 50, "feedback": "Certains termes vous échappent encore." },
+          { "from": 51, "to": 75, "feedback": "Bonne connaissance du texte !" },
+          { "from": 76, "to": 100, "feedback": "Excellent ! Vous connaissez parfaitement la DDHC." }
+        ]
+      }
+    },
+    {
+      "type": "quiz",
+      "title": "Glisser les mots — Les acteurs",
+      "exercise": {
+        "library": "H5P.DragText 1.10",
+        "taskDescription": "Glissez les mots au bon endroit pour compléter le texte sur les acteurs de la Révolution.",
+        "textField": "*Robespierre* est le principal leader de la Terreur.\n*Danton* est connu pour son éloquence et a fondé le Club des Cordeliers.\n*Marat* était un journaliste radical assassiné par Charlotte Corday.\nLe général *Bonaparte* a mis fin au Directoire par le coup d'État du 18 brumaire.",
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Revoyez les personnages clés de la Révolution." },
+          { "from": 26, "to": 50, "feedback": "Quelques confusions subsistent." },
+          { "from": 51, "to": 75, "feedback": "Bien, vous connaissez la plupart des acteurs !" },
+          { "from": 76, "to": 100, "feedback": "Parfait ! Vous maîtrisez les figures révolutionnaires." }
+        ]
+      }
+    },
+    {
+      "type": "content-quiz",
+      "title": "Marquer les mots — Valeurs républicaines",
+      "text": "La devise de la République française, **Liberté, Égalité, Fraternité**, trouve ses racines dans la Révolution. Ces trois valeurs sont inscrites dans la Déclaration des droits de l'homme et du citoyen.",
+      "exercise": {
+        "library": "H5P.MarkTheWords 1.11",
+        "taskDescription": "Cliquez sur les mots qui représentent des valeurs issues de la Révolution française.",
+        "textField": "La République repose sur la *liberté* d'expression, l'*égalité* devant la loi, la *fraternité* entre citoyens, la *souveraineté* du peuple et la *laïcité* de l'État.",
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Revoyez les valeurs fondamentales de la République." },
+          { "from": 26, "to": 50, "feedback": "Vous en avez trouvé quelques-unes." },
+          { "from": 51, "to": 75, "feedback": "Bien joué !" },
+          { "from": 76, "to": 100, "feedback": "Excellent ! Toutes les valeurs sont identifiées." }
+        ]
+      }
+    },
+    {
+      "type": "quiz",
+      "title": "Choix unique — Les symboles",
+      "exercise": {
+        "library": "H5P.SingleChoiceSet 1.11",
+        "choices": [
+          {
+            "question": "Quel bonnet est devenu un symbole de la Révolution ?",
+            "answers": ["Le bonnet phrygien", "Le béret basque", "Le bicorne", "La toque"]
+          },
+          {
+            "question": "Quel chant révolutionnaire est devenu l'hymne national français ?",
+            "answers": ["La Marseillaise", "Le Chant du départ", "La Carmagnole", "Ça ira"]
+          },
+          {
+            "question": "Quel emblème de la royauté a été remplacé par le coq gaulois ?",
+            "answers": ["La fleur de lys", "L'aigle impérial", "Le lion", "La croix"]
+          }
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Les symboles républicains vous sont peu familiers." },
+          { "from": 26, "to": 50, "feedback": "Vous en connaissez certains." },
+          { "from": 51, "to": 75, "feedback": "Bonne culture sur les symboles !" },
+          { "from": 76, "to": 100, "feedback": "Parfait ! Vous connaissez tous les symboles." }
+        ]
+      }
+    },
+    {
+      "type": "quiz",
+      "title": "Glisser-déposer — Périodes et régimes",
+      "exercise": {
+        "library": "H5P.DragQuestion 1.14",
+        "title": "Associez chaque période à son régime politique en glissant les étiquettes dans les bonnes zones.",
+        "dropZones": [
+          { "label": "Monarchie absolue" },
+          { "label": "Monarchie constitutionnelle" },
+          { "label": "Première République" },
+          { "label": "Consulat / Empire" }
+        ],
+        "elements": [
+          { "text": "Avant 1789", "zoneIndices": [0] },
+          { "text": "1791-1792", "zoneIndices": [1] },
+          { "text": "1792-1799", "zoneIndices": [2] },
+          { "text": "1799-1804", "zoneIndices": [3] },
+          { "text": "Règne de Louis XVI (début)", "zoneIndices": [0] },
+          { "text": "Convention et Directoire", "zoneIndices": [2] }
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Revoyez la chronologie des régimes politiques." },
+          { "from": 26, "to": 50, "feedback": "Quelques erreurs dans les associations." },
+          { "from": 51, "to": 75, "feedback": "Bonne maîtrise de la chronologie !" },
+          { "from": 76, "to": 100, "feedback": "Parfait ! Vous connaissez parfaitement l'enchaînement des régimes." }
+        ]
+      }
+    },
+    {
+      "type": "content-quiz",
+      "title": "Cartes de dialogue — Personnages",
+      "text": "Découvrez les figures majeures de la Révolution française en retournant les cartes ci-dessous.",
+      "exercise": {
+        "library": "H5P.Dialogcards 1.9",
+        "title": "Personnages de la Révolution",
+        "description": "Retournez chaque carte pour découvrir le rôle de chaque personnage.",
+        "dialogs": [
+          { "text": "Maximilien de Robespierre", "answer": "Avocat d'Arras, leader des Montagnards et principal artisan de la Terreur (1793-1794). Surnommé « l'Incorruptible », il est guillotiné le 28 juillet 1794." },
+          { "text": "Georges Danton", "answer": "Avocat et tribun, fondateur du Club des Cordeliers. Ministre de la Justice en 1792, il prône la clémence face à la Terreur. Guillotiné en avril 1794." },
+          { "text": "Marie-Antoinette", "answer": "Reine de France, épouse de Louis XVI. D'origine autrichienne, elle est impopulaire et surnommée « Madame Déficit ». Guillotinée le 16 octobre 1793." },
+          { "text": "Olympe de Gouges", "answer": "Femme de lettres et pionnière du féminisme. Autrice de la Déclaration des droits de la femme et de la citoyenne (1791). Guillotinée en 1793." },
+          { "text": "Napoléon Bonaparte", "answer": "Général corse qui met fin à la Révolution par le coup d'État du 18 brumaire an VIII (9 novembre 1799). Devient Premier Consul puis Empereur." }
+        ]
+      }
+    },
+    {
+      "type": "summary",
+      "title": "Synthèse — La Révolution française",
+      "exercise": {
+        "library": "H5P.Summary 1.10",
+        "intro": "Sélectionnez l'affirmation correcte dans chaque groupe pour construire le résumé du cours.",
+        "summaries": [
+          {
+            "summary": [
+              "La Révolution française commence en 1789 avec la prise de la Bastille",
+              "La Révolution française commence en 1792 avec la proclamation de la République",
+              "La Révolution française commence en 1799 avec le coup d'État de Bonaparte"
+            ]
+          },
+          {
+            "summary": [
+              "La Déclaration des droits de l'homme affirme la liberté et l'égalité de tous",
+              "La Déclaration des droits de l'homme ne concerne que les nobles",
+              "La Déclaration des droits de l'homme a été rédigée par Napoléon"
+            ]
+          },
+          {
+            "summary": [
+              "La Terreur est une période de répression menée par Robespierre en 1793-1794",
+              "La Terreur est une période de prospérité économique",
+              "La Terreur désigne les guerres napoléoniennes"
+            ]
+          },
+          {
+            "summary": [
+              "La Révolution prend fin avec le coup d'État de Napoléon Bonaparte en 1799",
+              "La Révolution prend fin avec l'exécution de Louis XVI en 1793",
+              "La Révolution prend fin avec la prise de la Bastille en 1789"
+            ]
+          }
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Revoyez l'ensemble du cours sur la Révolution." },
+          { "from": 26, "to": 50, "feedback": "Quelques notions restent floues." },
+          { "from": 51, "to": 75, "feedback": "Bonne compréhension d'ensemble !" },
+          { "from": 76, "to": 100, "feedback": "Excellent ! Vous maîtrisez parfaitement la Révolution française." }
+        ]
+      }
+    }
+  ]
+}

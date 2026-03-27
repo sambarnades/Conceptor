@@ -20,7 +20,8 @@ export default {
                 scoreWords: true,
                 applyPenalties: false,
                 enableRetry: true,
-                enableSolutionsButton: true
+                enableSolutionsButton: true,
+                ...(jsonObj.behaviour || {})
             },
             l10n: {
                 across: translations.h5p_crossword_across || "Horizontal",
@@ -31,6 +32,28 @@ export default {
                 extraClue: translations.h5p_crossword_extra_clue || "Indice supplémentaire",
                 closeWindow: translations.h5p_close || "Fermer",
                 submitAnswer: translations.h5p_submit_answer || "Valider"
+            },
+            // Thème visuel optionnel (couleurs de la grille + image d'arrière-plan)
+            theme: {
+                backgroundColor: '#173354',
+                gridColor: '#000000',
+                cellBackgroundColor: '#ffffff',
+                cellColor: '#000000',
+                clueIdColor: '#606060',
+                cellBackgroundColorHighlight: '#3e8de8',
+                cellColorHighlight: '#ffffff',
+                clueIdColorHighlight: '#e0e0e0',
+                ...((() => { const { _preset, ...rest } = (jsonObj.theme || {}); return rest; })()),
+                // Image d'arrière-plan optionnelle
+                ...(jsonObj.backgroundImage && jsonObj.backgroundImage.path ? {
+                    backgroundImage: {
+                        path: jsonObj.backgroundImage.path,
+                        mime: jsonObj.backgroundImage.mime || "image/jpeg",
+                        copyright: { license: "U" },
+                        width: jsonObj.backgroundImage.width || 0,
+                        height: jsonObj.backgroundImage.height || 0
+                    }
+                } : {})
             },
             // Traiter les extraClues pour ajouter les métadonnées nécessaires
             words: (Array.isArray(jsonObj.words) ? jsonObj.words : []).map(word => {

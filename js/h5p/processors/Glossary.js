@@ -50,9 +50,14 @@ export default {
             };
         });
 
+        // hTag peut venir de l'éditeur (attaché au tableau par denormalize)
+        const hTag = (jsonObj && !Array.isArray(jsonObj) ? jsonObj.hTag : null)
+            || (Array.isArray(jsonObj) ? jsonObj.hTag : null)
+            || "h2";
+
         return {
             panels: transformedPanels,
-            hTag: "h2"
+            hTag
         };
     }
 };

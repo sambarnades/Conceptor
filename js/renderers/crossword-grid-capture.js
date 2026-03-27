@@ -8,13 +8,41 @@ const BORDER_WIDTH = 1;
 const OUTER_BORDER_WIDTH = 2;
 const CLUE_FONT_SIZE = 11;
 const LETTER_FONT_SIZE = 22;
-const EMPTY_CELL_COLOR = '#173354';
-const ACTIVE_CELL_COLOR = '#ffffff';
-const SOLUTION_CELL_COLOR = '#f0f7ff';
-const BORDER_COLOR = '#b0b0b0';
-const OUTER_BORDER_COLOR = '#1d1d1f';
-const CLUE_NUMBER_COLOR = '#555555';
-const LETTER_COLOR = '#1d1d1f';
+
+// Couleurs par defaut
+const DEFAULT_COLORS = {
+    EMPTY_CELL_COLOR: '#173354',
+    ACTIVE_CELL_COLOR: '#ffffff',
+    SOLUTION_CELL_COLOR: '#f0f7ff',
+    BORDER_COLOR: '#b0b0b0',
+    OUTER_BORDER_COLOR: '#1d1d1f',
+    CLUE_NUMBER_COLOR: '#555555',
+    LETTER_COLOR: '#1d1d1f'
+};
+
+function buildColors(theme) {
+    if (!theme) return DEFAULT_COLORS;
+    return {
+        EMPTY_CELL_COLOR: theme.backgroundColor || DEFAULT_COLORS.EMPTY_CELL_COLOR,
+        ACTIVE_CELL_COLOR: theme.cellBackgroundColor || DEFAULT_COLORS.ACTIVE_CELL_COLOR,
+        SOLUTION_CELL_COLOR: theme.cellBackgroundColor ? lightenColor(theme.cellBackgroundColor, 0.05) : DEFAULT_COLORS.SOLUTION_CELL_COLOR,
+        BORDER_COLOR: theme.gridColor || DEFAULT_COLORS.BORDER_COLOR,
+        OUTER_BORDER_COLOR: theme.gridColor || DEFAULT_COLORS.OUTER_BORDER_COLOR,
+        CLUE_NUMBER_COLOR: theme.clueIdColor || DEFAULT_COLORS.CLUE_NUMBER_COLOR,
+        LETTER_COLOR: theme.cellColor || DEFAULT_COLORS.LETTER_COLOR
+    };
+}
+
+function lightenColor(hex, amount) {
+    const num = parseInt(hex.replace('#', ''), 16);
+    const r = Math.min(255, ((num >> 16) & 0xff) + Math.round(255 * amount));
+    const g = Math.min(255, ((num >> 8) & 0xff) + Math.round(255 * amount));
+    const b = Math.min(255, (num & 0xff) + Math.round(255 * amount));
+    return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+// Variable de module pour stocker le theme actuel (injecte par captureCrosswordGrid)
+let _currentColors = DEFAULT_COLORS;
 
 /**
  * Capture la grille de mots croisés (vide et corrigée) depuis le H5P dans la modale.
@@ -22,8 +50,9 @@ const LETTER_COLOR = '#1d1d1f';
  * @param {Array} [words] - Tableau des mots du JSON (avec answer, clue) pour la grille corrigée
  * @returns {Promise<{emptyGrid: Object|null, solutionGrid: Object|null}>}
  */
-export async function captureCrosswordGrid(modal, words) {
+export async function captureCrosswordGrid(modal, words, theme) {
     const result = { emptyGrid: null, solutionGrid: null };
+    _currentColors = buildColors(theme);
 
     try {
         // 1. Trouver l'iframe H5P
@@ -267,6 +296,7 @@ async function renderAndExport(gridModel, solutionLetters) {
  * Dessine la grille sur un canvas offscreen.
  */
 function renderGridToCanvas(gridModel, solutionLetters) {
+    const C = _currentColors;
     const { rows, cols, cells } = gridModel;
     const isSolution = !!solutionLetters;
 
@@ -290,35 +320,30 @@ function renderGridToCanvas(gridModel, solutionLetters) {
             const y = padding + r * CELL_SIZE;
 
             if (cell.empty) {
-                ctx.fillStyle = EMPTY_CELL_COLOR;
+                ctx.fillStyle = C.EMPTY_CELL_COLOR;
                 ctx.fillRect(x, y, CELL_SIZE, CELL_SIZE);
-                // Bordure sur les cases vides pour l'effet grille
-                ctx.strokeStyle = OUTER_BORDER_COLOR;
+                ctx.strokeStyle = C.OUTER_BORDER_COLOR;
                 ctx.lineWidth = BORDER_WIDTH;
                 ctx.strokeRect(x + 0.5, y + 0.5, CELL_SIZE - 1, CELL_SIZE - 1);
             } else {
-                // Fond de cellule (bleuté pour la correction, blanc pour l'énoncé)
                 const letter = solutionLetters?.[r]?.[c];
-                ctx.fillStyle = (isSolution && letter) ? SOLUTION_CELL_COLOR : ACTIVE_CELL_COLOR;
+                ctx.fillStyle = (isSolution && letter) ? C.SOLUTION_CELL_COLOR : C.ACTIVE_CELL_COLOR;
                 ctx.fillRect(x, y, CELL_SIZE, CELL_SIZE);
 
-                // Bordure
-                ctx.strokeStyle = BORDER_COLOR;
+                ctx.strokeStyle = C.BORDER_COLOR;
                 ctx.lineWidth = BORDER_WIDTH;
                 ctx.strokeRect(x + 0.5, y + 0.5, CELL_SIZE - 1, CELL_SIZE - 1);
 
-                // Numéro d'indice
                 if (cell.clueId) {
-                    ctx.fillStyle = CLUE_NUMBER_COLOR;
+                    ctx.fillStyle = C.CLUE_NUMBER_COLOR;
                     ctx.font = `bold ${CLUE_FONT_SIZE}px -apple-system, "Segoe UI", Arial, sans-serif`;
                     ctx.textAlign = 'left';
                     ctx.textBaseline = 'top';
                     ctx.fillText(cell.clueId, x + 3, y + 2);
                 }
 
-                // Lettre de la solution
                 if (letter) {
-                    ctx.fillStyle = LETTER_COLOR;
+                    ctx.fillStyle = C.LETTER_COLOR;
                     ctx.font = `bold ${LETTER_FONT_SIZE}px -apple-system, "Segoe UI", Arial, sans-serif`;
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
@@ -329,7 +354,7 @@ function renderGridToCanvas(gridModel, solutionLetters) {
     }
 
     // Bordure extérieure
-    ctx.strokeStyle = OUTER_BORDER_COLOR;
+    ctx.strokeStyle = C.OUTER_BORDER_COLOR;
     ctx.lineWidth = OUTER_BORDER_WIDTH;
     ctx.strokeRect(padding / 2, padding / 2, cols * CELL_SIZE + padding, rows * CELL_SIZE + padding);
 

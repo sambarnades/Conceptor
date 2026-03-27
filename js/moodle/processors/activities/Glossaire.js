@@ -229,6 +229,7 @@ export function buildFiles(data, options = {}) {
     files[`${activityDir}/inforef.xml`] = GLOSSARY_INFOREF_XML;
     files[`${activityDir}/roles.xml`] = TEMPLATES.ACTIVITY_ROLES_XML;
     files[`${activityDir}/grade_history.xml`] = TEMPLATES.ACTIVITY_GRADE_HISTORY_XML;
+    files[`${activityDir}/calendar.xml`] = TEMPLATES.ACTIVITY_CALENDAR_XML;
 
     return files;
 }

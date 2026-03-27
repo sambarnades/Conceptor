@@ -10,6 +10,7 @@
  */
 import { translations } from '../../core/translation.js';
 import { formatTextToHtml } from '../../core/utils.js';
+import { buildMediaStructure } from '../image-manager.js';
 
 
 export default {
@@ -17,6 +18,7 @@ export default {
         return {
             ...jsonObj, // Conserve la question, les réponses et le overallFeedback
             question: formatTextToHtml(jsonObj.question),
+            media: buildMediaStructure(jsonObj.mediaImage, jsonObj.mediaImageAlt),
             answers: (Array.isArray(jsonObj.answers) ? jsonObj.answers : []).map(answer => ({
                 ...answer,
                 text: formatTextToHtml(answer.text)
@@ -39,7 +41,8 @@ export default {
                 confirmRetryDialog: false,
                 autoCheck: false,
                 passPercentage: 50,
-                showScorePoints: true
+                showScorePoints: true,
+                ...(jsonObj.behaviour || {})
             },
             confirmCheck: {
                 header: translations.h5p_finish_header || "Terminer ?",

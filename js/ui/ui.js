@@ -43,6 +43,7 @@ export function generateTiles() {
 
         const tile = document.createElement('div');
         tile.className = 'h5p-tile';
+        tile.setAttribute('role', 'listitem');
         tile.dataset.module = key;
 
         // Attributs pour le filtrage par type d'activité
@@ -980,51 +981,15 @@ function updateGenerationButton(moduleKey, module) {
         const toggleBtn = document.getElementById(`more-actions-toggle-${moduleKey}`);
         const menu = document.getElementById(`more-actions-menu-${moduleKey}`);
 
-        // Action principale : Générer XML
+        // Action principale : Générer XML (délégué à moodle-creator pour bénéficier du healing LaTeX)
         mainBtn.addEventListener('click', async () => {
             const jsonInput = document.getElementById('xmlEleaMoodleInput').value;
             if (!jsonInput) {
                 showNotification(translations.error_paste_json_content || 'Veuillez coller le contenu JSON généré.', 'error');
                 return;
             }
-            try {
-                const cleanedJson = cleanJsonInput(jsonInput);
-                const data = JSON.parse(cleanedJson);
-                const { generateMoodleXml } = await import('../moodle/moodle-formats.js');
-                const xmlContent = generateMoodleXml(data);
-                const now = new Date();
-                const dateString = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}-${String(now.getHours()).padStart(2, '0')}-${String(now.getMinutes()).padStart(2, '0')}`;
-                const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
-                const fileName = `banque-de-questions_caramel_${dateString}_${lang}.xml`;
-                const xmlBlob = new Blob([xmlContent], { type: 'text/xml' });
-
-                // Ajouter à la liste des notifications (silent pour la modale de résultat)
-                const notificationId = addNotification({
-                    type: 'xml',
-                    title: translations.elea_test_xml_name || 'Banque de questions (XML)',
-                    titleKey: 'elea_test_xml_name',
-                    moduleKey: 'test_elea',
-                    fileName: fileName,
-                    blob: xmlBlob,
-                    status: 'success',
-                    jsonData: data,
-                    originalJsonData: structuredClone(data),
-                    silent: true
-                });
-                document.dispatchEvent(new CustomEvent('generation:complete', {
-                    detail: { notificationId, blob: xmlBlob, fileName, titleKey: 'elea_test_xml_name', moduleKey: 'test_elea' }
-                }));
-            } catch (error) {
-                console.error("Erreur lors de la génération du XML Moodle:", error);
-                const xmlBlob = new Blob([''], { type: 'text/plain' });
-                addNotification({
-                    type: 'xml',
-                    title: translations.elea_test_xml_name || 'Banque de questions (XML)',
-                    blob: xmlBlob,
-                    status: 'error',
-                    errorMessage: error.message
-                });
-            }
+            const { handleTestXmlCreation } = await import('../moodle/moodle-creator.js');
+            handleTestXmlCreation(jsonInput);
         });
 
         // Menu déroulant
@@ -1053,7 +1018,10 @@ function updateGenerationButton(moduleKey, module) {
 
                 try {
                     const cleanedJson = cleanJsonInput(jsonInput);
-                    const data = JSON.parse(cleanedJson);
+                    let data = JSON.parse(cleanedJson);
+                    // Pipeline LaTeX : même healing que pour la génération XML principale
+                    const { healLatexForTest } = await import('../moodle/moodle-creator.js');
+                    data = healLatexForTest(data);
                     const now = new Date();
                     const dateString = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}-${String(now.getHours()).padStart(2, '0')}-${String(now.getMinutes()).padStart(2, '0')}`;
                     const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
@@ -2033,7 +2001,7 @@ async function _captureGridInBackground(moduleKey, jsonData) {
     if (moduleKey === 'Crossword' && jsonData?.words?.length > 0) {
         try {
             const { generateCrosswordGridImages } = await import('../renderers/crossword-grid-generator.js');
-            return await generateCrosswordGridImages(jsonData.words);
+            return await generateCrosswordGridImages(jsonData.words, jsonData.theme);
         } catch (err) {
             console.warn('[GridCapture] Génération de grille Crossword échouée, export sans image:', err);
         }

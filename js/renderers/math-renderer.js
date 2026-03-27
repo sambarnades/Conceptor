@@ -4,6 +4,7 @@
  */
 
 import { loadMathJax } from '../core/lib-loader.js';
+import { markdownToHtml } from '../core/utils.js';
 
 /**
  * Classe singleton pour gérer le rendu mathématique avec MathJax.
@@ -95,10 +96,8 @@ class MathRenderer {
     async formatTextWithMath(text, targetElement = null) {
         if (!text) return '';
 
-        // Formatage Markdown basique
-        let formatted = text
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\*(.*?)\*/g, '<em>$1</em>');
+        // Convertir le Markdown en HTML en protégeant le LaTeX
+        let formatted = markdownToHtml(text);
 
         // Prétraiter le texte pour LaTeX si nécessaire
         formatted = this.preprocessText(formatted);

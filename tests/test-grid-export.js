@@ -287,8 +287,8 @@ async function runStep3_PreviewModalCodeCheck() {
 
     // 3e. Capture Crossword avec les mots
     assert(
-        notifSource.includes('captureCrosswordGrid(modal, jsonDataToExport.words)'),
-        '[3e] captureCrosswordGrid recoit modal et jsonDataToExport.words'
+        notifSource.includes('captureCrosswordGrid(modal, jsonDataToExport.words, jsonDataToExport.theme)'),
+        '[3e] captureCrosswordGrid recoit modal, words et theme'
     );
 
     // 3f. Capture FindTheWords

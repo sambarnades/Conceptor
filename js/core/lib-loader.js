@@ -12,16 +12,16 @@
 export const LIB_PATHS = {
     // OCR / Extraction de texte
     PDF_JS: 'js/vendor/pdf-js/5.5.207/pdf.min.mjs',
-    PDF_JS_WORKER: 'js/vendor/pdf-js/5.5.207/pdf.worker.min.mjs',
+    PDF_JS_WORKER: 'js/vendor/pdf-js/5.5.207/pdf.worker.compat.mjs',
     TESSERACT: 'js/vendor/tesseract/7.0.0/tesseract.min.js',
-    MAMMOTH: 'js/vendor/mammoth/1.11.0/mammoth.browser.min.js',
+    MAMMOTH: 'js/vendor/mammoth/1.12.0/mammoth.browser.min.js',
     JSZIP: 'js/vendor/jszip/3.10.1/jszip.min.js',
 
     // H5P
     CLIENT_ZIP: 'js/vendor/client-zip/2.5.0/index.js',
-    H5P_STANDALONE: 'js/vendor/h5p-standalone/3.8.0/main.bundle.js',
-    H5P_FRAME_JS: 'js/vendor/h5p-standalone/3.8.0/frame.bundle.js',
-    H5P_FRAME_CSS: 'js/vendor/h5p-standalone/3.8.0/styles/h5p.css',
+    H5P_STANDALONE: 'js/vendor/h5p-standalone/3.8.2/main.bundle.js',
+    H5P_FRAME_JS: 'js/vendor/h5p-standalone/3.8.2/frame.bundle.js',
+    H5P_FRAME_CSS: 'js/vendor/h5p-standalone/3.8.2/styles/h5p.css',
     H5P_LIBRARIES: 'js/vendor/h5p-libs',
 
     // Moodle
@@ -32,12 +32,12 @@ export const LIB_PATHS = {
     MATHJAX: 'js/vendor/mathjax/3.2.2/tex-svg.js',
 
     // Document export
-    JSPDF: 'js/vendor/jspdf/4.2.0/jspdf.umd.min.js',
+    JSPDF: 'js/vendor/jspdf/4.2.1/jspdf.umd.min.js',
     JSPDF_AUTOTABLE: 'js/vendor/jspdf-autotable/5.0.7/jspdf.plugin.autotable.min.js',
     DOCX: 'js/vendor/docx/8.5.0/index.umd.js',
 
     // Security
-    DOMPURIFY: 'js/vendor/dompurify/3.3.1/purify.min.js',
+    DOMPURIFY: 'js/vendor/dompurify/3.3.3/purify.min.js',
 
     // Fonts (Liberation Sans - drop-in replacement for Arial, SIL OFL license)
     FONT_LIBERATION_SANS_REGULAR: 'js/vendor/fonts/LiberationSans-Regular.ttf',
@@ -45,6 +45,50 @@ export const LIB_PATHS = {
     FONT_LIBERATION_SANS_ITALIC: 'js/vendor/fonts/LiberationSans-Italic.ttf',
     FONT_LIBERATION_SANS_BOLDITALIC: 'js/vendor/fonts/LiberationSans-BoldItalic.ttf'
 };
+
+// ============================================================================
+// POLYFILLS POUR COMPATIBILITÉ SAFARI
+// Promise.withResolvers() — absent sur Safari < 17.4
+// structuredClone() — absent sur Safari < 15.4
+// ReadableStream async iteration — absent sur Safari < 17.6
+// Tous utilisés par PDF.js 5.x (getTextContent, streamTextContent, etc.)
+// ============================================================================
+
+if (typeof Promise.withResolvers === 'undefined') {
+    Promise.withResolvers = function () {
+        let resolve, reject;
+        const promise = new Promise(function (res, rej) {
+            resolve = res;
+            reject = rej;
+        });
+        return { promise, resolve, reject };
+    };
+}
+
+if (typeof globalThis.structuredClone === 'undefined') {
+    globalThis.structuredClone = function (value) {
+        return JSON.parse(JSON.stringify(value));
+    };
+}
+
+// ReadableStream[Symbol.asyncIterator] — utilisé par PDF.js 5.x dans
+// getTextContent() qui fait `for await (const t of stream)`.
+// Absent sur Safari < 17.6, provoque "undefined is not a function".
+if (typeof ReadableStream !== 'undefined' &&
+    !ReadableStream.prototype[Symbol.asyncIterator]) {
+    ReadableStream.prototype[Symbol.asyncIterator] = async function* () {
+        const reader = this.getReader();
+        try {
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) return;
+                yield value;
+            }
+        } finally {
+            reader.releaseLock();
+        }
+    };
+}
 
 // ============================================================================
 // ÉTAT ET GESTION DU CHARGEMENT
@@ -78,17 +122,37 @@ const loadPromises = {};
 function loadScript(src) {
     return new Promise((resolve, reject) => {
         // Vérifier si le script est déjà chargé
-        if (document.querySelector(`script[src="${src}"]`)) {
-            resolve();
-            return;
+        const existing = document.querySelector(`script[src="${src}"]`);
+        if (existing) {
+            // Ne résoudre que si le script a bien été exécuté (pas un échec précédent)
+            if (existing.dataset.loaded === 'true') {
+                resolve();
+                return;
+            } else if (existing.dataset.loaded === 'false') {
+                // Script échoué précédemment : le retirer et réessayer
+                existing.remove();
+            } else {
+                // Script en cours de chargement
+                resolve();
+                return;
+            }
         }
 
-        const script = document.createElement('script');
-        script.src = src;
-        script.async = true;
-        script.onload = resolve;
-        script.onerror = () => reject(new Error(`Échec du chargement: ${src}`));
-        document.body.appendChild(script);
+        // Charger (ou recharger) le script
+        if (!document.querySelector(`script[src="${src}"]`)) {
+            const script = document.createElement('script');
+            script.src = src;
+            script.async = true;
+            script.onload = () => {
+                script.dataset.loaded = 'true';
+                resolve();
+            };
+            script.onerror = () => {
+                script.dataset.loaded = 'false';
+                reject(new Error(`Échec du chargement: ${src}`));
+            };
+            document.body.appendChild(script);
+        }
     });
 }
 
@@ -147,7 +211,11 @@ export async function loadOcrLibs() {
             }
 
             await Promise.all(promises);
-        })();
+        })().catch((error) => {
+            // Nettoyer le cache pour permettre une nouvelle tentative
+            delete loadPromises.ocr;
+            throw error;
+        });
     }
 
     return loadPromises.ocr;
@@ -171,7 +239,10 @@ export async function loadClientZip() {
             _downloadZip = mod.downloadZip;
             loadState.clientZip = true;
             return _downloadZip;
-        })();
+        })().catch((error) => {
+            delete loadPromises.clientZip;
+            throw error;
+        });
     }
 
     return loadPromises.clientZip;
@@ -204,7 +275,10 @@ export async function loadH5pLibs() {
             }
 
             await Promise.all(promises);
-        })();
+        })().catch((error) => {
+            delete loadPromises.h5p;
+            throw error;
+        });
     }
 
     return loadPromises.h5p;
@@ -238,7 +312,10 @@ export async function loadMoodleLibs() {
             }
 
             await Promise.all(promises);
-        })();
+        })().catch((error) => {
+            delete loadPromises.moodle;
+            throw error;
+        });
     }
 
     return loadPromises.moodle;
@@ -267,6 +344,7 @@ export async function loadMathJax() {
                     svg: {
                         fontCache: 'global'
                     },
+
                     startup: {
                         ready: () => {
                             MathJax.startup.defaultReady();
@@ -277,7 +355,10 @@ export async function loadMathJax() {
                 await loadScript(LIB_PATHS.MATHJAX);
                 loadState.mathjax = true;
             }
-        })();
+        })().catch((error) => {
+            delete loadPromises.mathjax;
+            throw error;
+        });
     }
 
     return loadPromises.mathjax;
@@ -295,6 +376,9 @@ export async function loadJSZip() {
     if (!loadPromises.jszip) {
         loadPromises.jszip = loadScript(LIB_PATHS.JSZIP).then(() => {
             loadState.jszip = true;
+        }).catch((error) => {
+            delete loadPromises.jszip;
+            throw error;
         });
     }
 
@@ -314,6 +398,9 @@ export async function loadDOMPurify() {
     if (!loadPromises.dompurify) {
         loadPromises.dompurify = loadScript(LIB_PATHS.DOMPURIFY).then(() => {
             loadState.dompurify = true;
+        }).catch((error) => {
+            delete loadPromises.dompurify;
+            throw error;
         });
     }
 
@@ -354,7 +441,10 @@ export async function loadPDFFonts(doc) {
             // Stocker les données pour réutilisation dans d'autres instances jsPDF
             window._liberationSansFonts = results;
             loadState.fonts = true;
-        })();
+        })().catch((error) => {
+            delete loadPromises.fonts;
+            throw error;
+        });
     }
 
     await loadPromises.fonts;
@@ -440,7 +530,10 @@ export async function loadDocumentExportLibs() {
             }
 
             await Promise.all(promises);
-        })();
+        })().catch((error) => {
+            delete loadPromises.documentExport;
+            throw error;
+        });
     }
 
     return loadPromises.documentExport;

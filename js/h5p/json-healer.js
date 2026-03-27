@@ -6,6 +6,7 @@
  */
 
 import { generateUUID, debugLog } from '../core/utils.js';
+import { registerConverters, getConstraints, getConverter, applyToPath } from './field-constraints.js';
 
 // =======================================================================
 // CONSTANTES PARTAGÉES
@@ -18,7 +19,8 @@ const H5P_LIB_VERSIONS = {
     'H5P.Blanks': '1.14',
     'H5P.DragText': '1.10',
     'H5P.MarkTheWords': '1.11',
-    'H5P.Essay': '1.5'
+    'H5P.Essay': '1.5',
+    'H5P.CoursePresentation': '1.26'
 };
 
 /** Palette de couleurs par défaut pour Chart */
@@ -30,7 +32,7 @@ const H5P_MODULE_KEYS = new Set([
     'Glossary', 'Crossword', 'Essay', 'Summary', 'DragTheWords',
     'DragAndDrop', 'FillInTheBlanks', 'MarkTheWords', 'TrueFalse',
     'MultipleChoice', 'FindTheWords', 'SortParagraphs', 'SingleChoiceSet',
-    'DialogCards', 'ComplexFillTheBlanks', 'Chart'
+    'DialogCards', 'ComplexFillTheBlanks', 'Chart', 'CoursePresentation'
 ]);
 
 export function healJsonString(jsonStr) {
@@ -155,12 +157,62 @@ export function autoWrapLatex(item) {
             .replace(/\\operatorname/g, '\\text')
             .replace(/\\Arg/g, '\\text{Arg}');
 
-        // Liste non exhaustive de commandes LaTeX communes
+        // Liste des commandes LaTeX communes déclenchant l'auto-wrapping \( \)
         const latexCommands = [
-            'sqrt', 'geq', 'leq', 'ge', 'le', 'pi', 'times', 'alpha', 'beta', 'mathbb',
-            'in', 'infin', 'infty', 'frac', 'sum', 'int', 'vec', 'hat', 'cdot', 'rightarrow',
-            'theta', 'lambda', 'sigma', 'omega', 'delta', 'Delta', 'nabla', 'partial',
-            'text', 'operatorname', 'setminus', 'overline', 'bar', 'cup', 'cap', 'Arg', 'arg'
+            // Structures et opérations de base
+            'sqrt', 'frac', 'mathbb', 'text', 'operatorname', 'overline', 'bar',
+            'vec', 'hat', 'tilde',
+            // Opérateurs arithmétiques et logiques
+            'times', 'div', 'cdot', 'pm', 'mp', 'circ',
+            // Relations
+            'geq', 'leq', 'ge', 'le', 'neq', 'approx', 'equiv', 'sim', 'simeq',
+            'propto', 'll', 'gg', 'perp', 'parallel',
+            'leqslant', 'geqslant', 'nleq', 'ngeq',
+            'prec', 'succ', 'preceq', 'succeq', 'cong',
+            'mid', 'nmid',
+            // Fonctions trigonométriques
+            'sin', 'cos', 'tan', 'cot', 'sec', 'csc',
+            'arcsin', 'arccos', 'arctan',
+            'sinh', 'cosh', 'tanh',
+            // Fonctions analytiques
+            'ln', 'log', 'exp', 'lim', 'sup', 'inf', 'max', 'min',
+            // Lettres grecques (minuscules courantes)
+            'alpha', 'beta', 'gamma', 'delta', 'epsilon', 'varepsilon',
+            'theta', 'lambda', 'mu', 'nu', 'xi', 'pi', 'rho',
+            'sigma', 'tau', 'phi', 'varphi', 'chi', 'psi', 'omega',
+            'eta', 'zeta', 'kappa', 'iota', 'upsilon',
+            // Lettres grecques (majuscules)
+            'Gamma', 'Delta', 'Theta', 'Lambda', 'Xi', 'Pi',
+            'Sigma', 'Phi', 'Psi', 'Omega',
+            // Ensembles et logique
+            'in', 'notin', 'subset', 'subseteq', 'supset', 'supseteq',
+            'nsubseteq', 'complement',
+            'cup', 'cap', 'setminus', 'emptyset', 'varnothing',
+            'forall', 'exists', 'nexists', 'neg', 'lnot', 'land', 'lor', 'wedge', 'vee',
+            // Analyse et calcul
+            'infin', 'infty', 'nabla', 'partial', 'sum', 'prod',
+            'int', 'iint', 'iiint', 'oint',
+            // Combinatoire
+            'binom',
+            // Flèches
+            'rightarrow', 'leftarrow', 'Rightarrow', 'Leftarrow',
+            'leftrightarrow', 'Leftrightarrow', 'mapsto', 'to',
+            'implies', 'iff', 'gets',
+            'longmapsto', 'Longrightarrow', 'Longleftrightarrow',
+            'hookrightarrow', 'uparrow', 'downarrow', 'nearrow', 'searrow',
+            // Délimiteurs
+            'lfloor', 'rfloor', 'lceil', 'rceil', 'langle', 'rangle',
+            'lVert', 'rVert', 'Vert',
+            // Points de suspension
+            'ldots', 'cdots', 'vdots', 'ddots', 'dots',
+            // Divers
+            'Arg', 'arg', 'oplus', 'otimes', 'odot',
+            'star', 'bullet', 'ast', 'dagger', 'ddagger',
+            'angle', 'triangle', 'square', 'aleph', 'hbar', 'ell',
+            'Re', 'Im', 'wp', 'prime', 'checkmark', 'complement',
+            'ni', 'digamma',
+            // Fonctions supplémentaires
+            'card', 'sgn', 'Pr', 'lcm', 'hom'
         ];
 
         const commandRegex = new RegExp(`\\\\(${latexCommands.join('|')})(?![a-zA-Z])`, 'g');
@@ -575,6 +627,18 @@ export function healJsonObject(obj, moduleKey) {
     // 1g. Réparation des délimiteurs mixtes (\( ... $ → \( ... \))
     healed = fixMixedDelimitersDeep(healed);
 
+    // 1h. Normalisation \binom{n}{k} → {n \choose k}
+    // \binom nécessite AMSmath, non chargé par H5P.MathDisplay (MathJax 2.x).
+    // {n \choose k} est un primitif TeX natif : rendu identique, aucune dépendance.
+    healed = normalizeBinomDeep(healed);
+
+    // 1i. Normalisation \mathcal{P} → 𝒫, \mathscr → idem, \mathfrak{R} → ℜ
+    // Ces commandes nécessitent des polices spéciales non chargées par MathJax 2.x (H5P).
+    // On les remplace par les caractères Unicode calligraphiques/fraktur équivalents.
+    // Le parser LaTeX supporte les surrogate pairs (codePointAt), donc les exports
+    // DOCX/ODT/PDF reçoivent le caractère Unicode et le rendent correctement.
+    healed = normalizeFontCommandsDeep(healed);
+
     // 2. Réparation QuizSet (Structure aplatie -> Params)
     if ((moduleKey === 'QuizSet' || moduleKey === 'QuizSetQCM' || moduleKey === 'QuizSetVF') && Array.isArray(healed.questions)) {
         healed.questions = healed.questions.map(q => {
@@ -908,6 +972,110 @@ export function healStructureForActivity(data, moduleKey) {
         // avant stockage) pour ne s'exécuter qu'à la création initiale IA.
     }
 
+    // --- CoursePresentation ---
+    if (moduleKey === 'CoursePresentation') {
+        // Assurer que slides est un tableau
+        if (!Array.isArray(healed.slides)) {
+            if (healed.slide || healed.content) {
+                healed.slides = Array.isArray(healed.slide || healed.content)
+                    ? (healed.slide || healed.content)
+                    : [healed.slide || healed.content];
+                delete healed.slide;
+                delete healed.content;
+            } else {
+                healed.slides = [];
+            }
+        }
+
+        // Valider chaque slide
+        healed.slides = healed.slides.map((slide, i) => {
+            // Assurer un type de slide valide
+            if (!slide.type) {
+                if (i === 0) slide.type = 'title';
+                else if (slide.exercise) slide.type = 'quiz';
+                else slide.type = 'content';
+            }
+
+            // Préserver la library d'exercice telle quelle (le processeur accepte les deux formats)
+            // Ne PAS simplifier ici : l'éditeur et l'export document ont besoin du format complet
+
+            return slide;
+        });
+
+        // Assurer un titre global
+        if (!healed.title) {
+            const firstSlide = healed.slides[0];
+            healed.title = firstSlide?.title || 'Présentation';
+        }
+    }
+
+    // --- DialogCards ---
+    if (moduleKey === 'DialogCards') {
+        if (!Array.isArray(healed.dialogs)) healed.dialogs = [];
+        healed.dialogs = healed.dialogs.map(d => {
+            if (!d || typeof d !== 'object') return { text: '', answer: '', tips: { front: '', back: '' } };
+            if (!d.tips || typeof d.tips !== 'object') d.tips = { front: '', back: '' };
+            if (!d.tips.front) d.tips.front = '';
+            if (!d.tips.back) d.tips.back = '';
+            return d;
+        });
+    }
+
+    // --- Essay ---
+    if (moduleKey === 'Essay') {
+        if (!Array.isArray(healed.keywords)) healed.keywords = [];
+        healed.keywords = healed.keywords.map(kw => {
+            // Accepter les chaînes simples ou les objets avec word/keyword
+            if (typeof kw === 'string') return { keyword: kw };
+            if (kw && !kw.keyword && kw.word) {
+                kw.keyword = kw.word;
+                delete kw.word;
+            }
+            return kw;
+        });
+        if (!healed.solution) healed.solution = { introduction: '', sample: '' };
+    }
+
+    // --- SingleChoiceSet ---
+    if (moduleKey === 'SingleChoiceSet') {
+        if (!Array.isArray(healed.choices)) healed.choices = [];
+        healed.choices = healed.choices.map(c => {
+            if (!c.subContentId) c.subContentId = generateUUID();
+            if (!Array.isArray(c.answers) && typeof c.answers === 'string') {
+                c.answers = [c.answers];
+            }
+            return c;
+        });
+    }
+
+    // --- SortParagraphs ---
+    if (moduleKey === 'SortParagraphs') {
+        if (!Array.isArray(healed.paragraphs)) {
+            // Accepter aussi sentences (nom alternatif courant)
+            if (Array.isArray(healed.sentences)) {
+                healed.paragraphs = healed.sentences;
+                delete healed.sentences;
+            } else {
+                healed.paragraphs = [];
+            }
+        }
+    }
+
+    // --- Summary ---
+    if (moduleKey === 'Summary') {
+        if (!Array.isArray(healed.summaries)) healed.summaries = [];
+        healed.summaries = healed.summaries.map(s => {
+            if (!s || typeof s !== 'object') return { summary: [], tip: '' };
+            if (!s.tip) s.tip = '';
+            if (!s.subContentId) s.subContentId = generateUUID();
+            // summary doit être un tableau de chaînes
+            if (!Array.isArray(s.summary) && typeof s.summary === 'string') {
+                s.summary = [s.summary];
+            }
+            return s;
+        });
+    }
+
     // --- FindTheWords ---
     if (moduleKey === 'FindTheWords') {
         if (Array.isArray(healed.wordList)) {
@@ -934,7 +1102,11 @@ export function healStructureForActivity(data, moduleKey) {
             if (cleanWords.length < beforeCount) {
                 debugLog('json-healer', `[JSON Healer] FindTheWords : ${beforeCount - cleanWords.length} mot(s) supprimé(s) de la wordList (formules math)`);
             }
-            healed.wordList = cleanWords.join(',');
+            // Nettoyer chaque mot : ne garder que les lettres (la grille ne supporte que ca)
+            const finalWords = cleanWords
+                .map(w => w.replace(/[^a-zA-ZÀ-ÿ]/g, ''))
+                .filter(w => w.length > 0);
+            healed.wordList = finalWords.join(',');
         }
     }
 
@@ -1063,160 +1235,397 @@ function _convertLatexField(text) {
 // Nettoyage spécifique par type d'activité (textField, marqueurs, LaTeX)
 // =======================================================================
 
+// =======================================================================
+// Tables Unicode pour latexToUnicode (source unique, partagée avec document-formatter.js)
+// =======================================================================
+
+const SUPERSCRIPT_MAP = {
+    '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
+    '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹',
+    '+': '⁺', '-': '⁻', '=': '⁼', '(': '⁽', ')': '⁾',
+    'n': 'ⁿ', 'i': 'ⁱ', 'a': 'ᵃ', 'b': 'ᵇ', 'c': 'ᶜ',
+    'd': 'ᵈ', 'e': 'ᵉ', 'f': 'ᶠ', 'g': 'ᵍ', 'h': 'ʰ',
+    'j': 'ʲ', 'k': 'ᵏ', 'l': 'ˡ', 'm': 'ᵐ', 'o': 'ᵒ',
+    'p': 'ᵖ', 'r': 'ʳ', 's': 'ˢ', 't': 'ᵗ', 'u': 'ᵘ',
+    'v': 'ᵛ', 'w': 'ʷ', 'x': 'ˣ', 'y': 'ʸ', 'z': 'ᶻ'
+};
+
+const SUBSCRIPT_MAP = {
+    '0': '₀', '1': '₁', '2': '₂', '3': '₃', '4': '₄',
+    '5': '₅', '6': '₆', '7': '₇', '8': '₈', '9': '₉',
+    '+': '₊', '-': '₋', '=': '₌', '(': '₍', ')': '₎',
+    'a': 'ₐ', 'e': 'ₑ', 'h': 'ₕ', 'i': 'ᵢ', 'j': 'ⱼ',
+    'k': 'ₖ', 'l': 'ₗ', 'm': 'ₘ', 'n': 'ₙ', 'o': 'ₒ',
+    'p': 'ₚ', 'r': 'ᵣ', 's': 'ₛ', 't': 'ₜ', 'u': 'ᵤ',
+    'v': 'ᵥ', 'x': 'ₓ'
+};
+
+const GREEK_MAP = {
+    'alpha': 'α', 'beta': 'β', 'gamma': 'γ', 'delta': 'δ',
+    'epsilon': 'ε', 'varepsilon': 'ε', 'zeta': 'ζ', 'eta': 'η',
+    'theta': 'θ', 'vartheta': 'ϑ', 'iota': 'ι', 'kappa': 'κ',
+    'lambda': 'λ', 'mu': 'μ', 'nu': 'ν', 'xi': 'ξ',
+    'pi': 'π', 'varpi': 'ϖ', 'rho': 'ρ', 'varrho': 'ϱ',
+    'sigma': 'σ', 'varsigma': 'ς', 'tau': 'τ', 'upsilon': 'υ',
+    'phi': 'φ', 'varphi': 'ϕ', 'chi': 'χ', 'psi': 'ψ', 'omega': 'ω',
+    'Gamma': 'Γ', 'Delta': 'Δ', 'Theta': 'Θ', 'Lambda': 'Λ',
+    'Xi': 'Ξ', 'Pi': 'Π', 'Sigma': 'Σ', 'Upsilon': 'Υ',
+    'Phi': 'Φ', 'Psi': 'Ψ', 'Omega': 'Ω',
+    'digamma': 'ϝ'
+};
+
+const OPERATOR_MAP = {
+    'times': '×', 'div': '÷', 'cdot': '·', 'pm': '±', 'mp': '∓',
+    'leq': '≤', 'le': '≤', 'geq': '≥', 'ge': '≥',
+    'neq': '≠', 'ne': '≠', 'approx': '≈', 'equiv': '≡',
+    'sim': '∼', 'simeq': '≃', 'propto': '∝', 'll': '≪', 'gg': '≫',
+    'infty': '∞', 'infinity': '∞', 'partial': '∂', 'nabla': '∇',
+    'sum': '∑', 'prod': '∏', 'int': '∫', 'iint': '∬', 'iiint': '∭',
+    'oint': '∮', 'cup': '∪', 'cap': '∩',
+    'subset': '⊂', 'supset': '⊃', 'subseteq': '⊆', 'supseteq': '⊇',
+    'in': '∈', 'notin': '∉', 'ni': '∋',
+    'emptyset': '∅', 'varnothing': '∅',
+    'forall': '∀', 'exists': '∃', 'nexists': '∄',
+    'neg': '¬', 'lnot': '¬', 'land': '∧', 'lor': '∨',
+    'wedge': '∧', 'vee': '∨',
+    'rightarrow': '→', 'to': '→', 'leftarrow': '←', 'gets': '←',
+    'Rightarrow': '⇒', 'Leftarrow': '⇐',
+    'leftrightarrow': '↔', 'Leftrightarrow': '⇔',
+    'mapsto': '↦', 'implies': '⇒', 'iff': '⇔',
+    'longmapsto': '⟼', 'Longrightarrow': '⟹', 'Longleftrightarrow': '⟺',
+    'hookrightarrow': '↪', 'uparrow': '↑', 'downarrow': '↓',
+    'nearrow': '↗', 'searrow': '↘',
+    'ldots': '…', 'cdots': '⋯', 'vdots': '⋮', 'ddots': '⋱', 'dots': '…',
+    'langle': '⟨', 'rangle': '⟩',
+    'lfloor': '⌊', 'rfloor': '⌋', 'lceil': '⌈', 'rceil': '⌉',
+    'circ': '∘', 'star': '⋆', 'bullet': '•',
+    'oplus': '⊕', 'otimes': '⊗', 'odot': '⊙',
+    'perp': '⊥', 'parallel': '∥', 'angle': '∠',
+    'triangle': '△', 'square': '□', 'setminus': '∖',
+    'aleph': 'ℵ', 'hbar': 'ℏ', 'ell': 'ℓ',
+    'Re': 'ℜ', 'Im': 'ℑ',
+    // Variantes de comparaison (fréquentes en maths françaises)
+    'leqslant': '⩽', 'geqslant': '⩾', 'nleq': '≰', 'ngeq': '≱',
+    'prec': '≺', 'succ': '≻', 'preceq': '⪯', 'succeq': '⪰',
+    'cong': '≅',
+    // Arithmétique et divisibilité
+    'mid': '∣', 'nmid': '∤', 'nsubseteq': '⊈',
+    'complement': '∁', 'wp': '℘',
+    // Symboles divers
+    'prime': '′', 'ast': '∗',
+    'lVert': '‖', 'rVert': '‖', 'Vert': '‖',
+    'checkmark': '✓', 'dagger': '†', 'ddagger': '‡'
+};
+
+const MATHBB_MAP = {
+    'R': 'ℝ', 'N': 'ℕ', 'Z': 'ℤ', 'Q': 'ℚ', 'C': 'ℂ',
+    'P': 'ℙ', 'H': 'ℍ', 'F': 'ⅎ',
+    'D': '𝔻', 'K': '𝕂', 'E': '𝔼', '1': '𝟙'
+};
+
+/** Noms de fonctions mathématiques : le backslash est supprimé, le nom reste lisible */
+const FUNCTION_NAMES = [
+    'sin', 'cos', 'tan', 'cot', 'sec', 'csc',
+    'arcsin', 'arccos', 'arctan', 'sinh', 'cosh', 'tanh',
+    'log', 'ln', 'exp', 'lim', 'sup', 'inf', 'max', 'min',
+    'det', 'dim', 'ker', 'deg', 'gcd', 'arg', 'mod',
+    'card', 'sgn', 'Pr', 'lcm', 'hom'
+];
+
+function toSuperscript(str) {
+    return str.split('').map(c => SUPERSCRIPT_MAP[c] || c).join('');
+}
+
+function toSubscript(str) {
+    return str.split('').map(c => SUBSCRIPT_MAP[c] || c).join('');
+}
+
 /**
- * Conversion LaTeX → Unicode pour les activités H5P qui ne supportent pas MathJax
- * (DragTheWords, MarkTheWords). Également utilisé par les processeurs H5P.
- * @param {string} text
+ * Extrait le contenu entre accolades équilibrées à partir de la position donnée.
+ * Gère correctement les structures imbriquées : \sqrt{\frac{a}{b}}
+ * @param {string} s - La chaîne complète
+ * @param {number} startIdx - Position de l'accolade ouvrante {
+ * @returns {{content: string, end: number}|null} - Contenu et position après }
+ */
+function extractBraceContent(s, startIdx) {
+    if (s[startIdx] !== '{') return null;
+    let depth = 1, i = startIdx + 1;
+    while (i < s.length && depth > 0) {
+        if (s[i] === '{') depth++;
+        else if (s[i] === '}') depth--;
+        i++;
+    }
+    return depth === 0 ? { content: s.substring(startIdx + 1, i - 1), end: i } : null;
+}
+
+/**
+ * Remplace toutes les occurrences de \cmd{contenu} avec accolades équilibrées.
+ * @param {string} s - La chaîne à transformer
+ * @param {string} cmd - Le nom de la commande (sans backslash)
+ * @param {function(string): string} fn - Fonction de remplacement (reçoit le contenu)
  * @returns {string}
  */
+function replaceBalanced(s, cmd, fn) {
+    const prefix = '\\' + cmd + '{';
+    let idx;
+    while ((idx = s.indexOf(prefix)) !== -1) {
+        const match = extractBraceContent(s, idx + prefix.length - 1);
+        if (!match) break;
+        const replacement = fn(match.content);
+        s = s.substring(0, idx) + replacement + s.substring(match.end);
+    }
+    return s;
+}
+
+/**
+ * Remplace toutes les occurrences de \cmd{arg1}{arg2} avec accolades équilibrées.
+ * @param {string} s - La chaîne à transformer
+ * @param {string} cmd - Le nom de la commande (sans backslash)
+ * @param {function(string, string): string} fn - Fonction (reçoit les deux arguments)
+ * @returns {string}
+ */
+function replaceBalanced2(s, cmd, fn) {
+    const prefix = '\\' + cmd + '{';
+    let idx;
+    while ((idx = s.indexOf(prefix)) !== -1) {
+        const arg1 = extractBraceContent(s, idx + prefix.length - 1);
+        if (!arg1) break;
+        const arg2 = extractBraceContent(s, arg1.end);
+        if (!arg2) break;
+        const replacement = fn(arg1.content, arg2.content);
+        s = s.substring(0, idx) + replacement + s.substring(arg2.end);
+    }
+    return s;
+}
+
+/**
+ * Convertit \binom{n}{k} → {n \choose k} dans toutes les chaînes d'un objet.
+ * {n \choose k} est un primitif TeX natif, fonctionnel dans MathJax 2.x sans AMSmath,
+ * contrairement à \binom qui nécessite le paquet AMSmath (non chargé par H5P.MathDisplay).
+ * @param {*} item - Valeur quelconque (string, array, object)
+ * @returns {*} La valeur transformée
+ */
+function normalizeBinomDeep(item) {
+    if (typeof item === 'string') {
+        return replaceBalanced2(item, 'binom', (n, k) => '{' + n + ' \\choose ' + k + '}');
+    }
+    if (Array.isArray(item)) return item.map(normalizeBinomDeep);
+    if (item && typeof item === 'object') {
+        const out = {};
+        for (const [k, v] of Object.entries(item)) out[k] = normalizeBinomDeep(v);
+        return out;
+    }
+    return item;
+}
+
+/** Mapping \mathcal → Unicode Mathematical Script (A-Z) */
+const MATHCAL_MAP = {
+    A: '𝒜', B: 'ℬ', C: '𝒞', D: '𝒟', E: 'ℰ', F: 'ℱ', G: '𝒢', H: 'ℋ', I: 'ℐ',
+    J: '𝒥', K: '𝒦', L: 'ℒ', M: 'ℳ', N: '𝒩', O: '𝒪', P: '𝒫', Q: '𝒬', R: 'ℛ',
+    S: '𝒮', T: '𝒯', U: '𝒰', V: '𝒱', W: '𝒲', X: '𝒳', Y: '𝒴', Z: '𝒵'
+};
+/** Mapping \mathfrak → Unicode Mathematical Fraktur (A-Z) */
+const MATHFRAK_MAP = {
+    A: '𝔄', B: '𝔅', C: 'ℭ', D: '𝔇', E: '𝔈', F: '𝔉', G: '𝔊', H: 'ℌ', I: 'ℑ',
+    J: '𝔍', K: '𝔎', L: '𝔏', M: '𝔐', N: '𝔑', O: '𝔒', P: '𝔓', Q: '𝔔', R: 'ℜ',
+    S: '𝔖', T: '𝔗', U: '𝔘', V: '𝔙', W: '𝔚', X: '𝔛', Y: '𝔜', Z: 'ℨ'
+};
+
+/**
+ * Normalisation récursive \mathcal{X} → 𝒳, \mathfrak{R} → ℜ dans tout un objet.
+ * Unique pipeline pour H5P + DOCX + ODT + PDF (le parser LaTeX supporte les surrogate pairs).
+ */
+function normalizeFontCommandsDeep(item) {
+    if (typeof item === 'string') {
+        let s = item;
+        s = replaceBalanced(s, 'mathcal', c => c.split('').map(ch => MATHCAL_MAP[ch] || ch).join(''));
+        s = replaceBalanced(s, 'mathscr', c => c.split('').map(ch => MATHCAL_MAP[ch] || ch).join(''));
+        s = replaceBalanced(s, 'mathfrak', c => c.split('').map(ch => MATHFRAK_MAP[ch] || ch).join(''));
+        return s;
+    }
+    if (Array.isArray(item)) return item.map(normalizeFontCommandsDeep);
+    if (item && typeof item === 'object') {
+        const out = {};
+        for (const [k, v] of Object.entries(item)) out[k] = normalizeFontCommandsDeep(v);
+        return out;
+    }
+    return item;
+}
+
+/**
+ * Conversion LaTeX → Unicode pour les contextes sans MathJax.
+ * Utilisé par : DragTheWords, MarkTheWords, Moodle shortanswer/matching,
+ * et l'export document (DOCX/ODT/PDF).
+ * Version récursive : gère les structures imbriquées (\frac{\sqrt{x}}{2}).
+ * @param {string} text - Expression LaTeX (avec ou sans délimiteurs \( \))
+ * @returns {string} - Texte Unicode équivalent
+ */
 export function latexToUnicode(text) {
-    return text
-        // --- Structures ---
-        .replace(/\\sqrt\{([^}]+)\}/g, (_, p1) => `√(${p1})`)
-        .replace(/\\sqrt(?!\{)/g, '√')
-        .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, '$1/$2')
-        .replace(/\\mathbb\{R\}/g, 'ℝ').replace(/\\mathbb\{N\}/g, 'ℕ')
-        .replace(/\\mathbb\{Z\}/g, 'ℤ').replace(/\\mathbb\{Q\}/g, 'ℚ')
-        .replace(/\\mathbb\{C\}/g, 'ℂ')
-        .replace(/\\overline\{([^}]+)\}/g, '$1\u0305')
-        .replace(/\\vec\{([^}]+)\}/g, '$1\u20D7')
-        .replace(/\\hat\{([^}]+)\}/g, '$1\u0302')
-        .replace(/\\bar\{([^}]+)\}/g, '$1\u0305')
-        .replace(/\\tilde\{([^}]+)\}/g, '$1\u0303')
-        // --- Exposants ---
-        .replace(/\^\{-1\}/g, '⁻¹').replace(/\^{-1}(?!\d)/g, '⁻¹')
-        .replace(/\^\{0\}/g, '⁰').replace(/\^0(?!\d)/g, '⁰')
-        .replace(/\^\{1\}/g, '¹').replace(/\^1(?!\d)/g, '¹')
-        .replace(/\^\{2\}/g, '²').replace(/\^2(?!\d)/g, '²')
-        .replace(/\^\{3\}/g, '³').replace(/\^3(?!\d)/g, '³')
-        .replace(/\^\{n\}/g, 'ⁿ').replace(/\^n(?![a-zA-Z])/g, 'ⁿ')
-        // --- Indices ---
-        .replace(/\_\{0\}/g, '₀').replace(/\_\{1\}/g, '₁').replace(/\_\{2\}/g, '₂')
-        .replace(/\_\{3\}/g, '₃').replace(/\_\{n\}/g, 'ₙ').replace(/\_\{i\}/g, 'ᵢ')
-        // --- Opérateurs de base ---
-        .replace(/\\times(?![a-zA-Z])/g, '×')
-        .replace(/\\div(?![a-zA-Z])/g, '÷')
-        .replace(/\\cdot(?![a-zA-Z])/g, '·')
-        .replace(/\\circ(?![a-zA-Z])/g, '∘')
-        .replace(/\\pm(?![a-zA-Z])/g, '±')
-        .replace(/\\mp(?![a-zA-Z])/g, '∓')
-        // --- Relations ---
-        .replace(/\\neq(?![a-zA-Z])/g, '≠')
-        .replace(/\\leq(?![a-zA-Z])/g, '≤')
-        .replace(/\\le(?![a-zA-Z])/g, '≤')
-        .replace(/\\geq(?![a-zA-Z])/g, '≥')
-        .replace(/\\ge(?![a-zA-Z])/g, '≥')
-        .replace(/\\approx(?![a-zA-Z])/g, '≈')
-        .replace(/\\equiv(?![a-zA-Z])/g, '≡')
-        .replace(/\\sim(?![a-zA-Z])/g, '∼')
-        .replace(/\\simeq(?![a-zA-Z])/g, '≃')
-        .replace(/\\propto(?![a-zA-Z])/g, '∝')
-        .replace(/\\ll(?![a-zA-Z])/g, '≪')
-        .replace(/\\gg(?![a-zA-Z])/g, '≫')
-        .replace(/\\perp(?![a-zA-Z])/g, '⊥')
-        .replace(/\\parallel(?![a-zA-Z])/g, '∥')
-        // --- Flèches (longues AVANT courtes pour éviter les conflits) ---
-        .replace(/\\longmapsto(?![a-zA-Z])/g, '⟼')
-        .replace(/\\Longrightarrow(?![a-zA-Z])/g, '⟹')
-        .replace(/\\Longleftrightarrow(?![a-zA-Z])/g, '⟺')
-        .replace(/\\hookrightarrow(?![a-zA-Z])/g, '↪')
-        .replace(/\\mapsto(?![a-zA-Z])/g, '↦')
-        .replace(/\\leftrightarrow(?![a-zA-Z])/g, '↔')
-        .replace(/\\Leftrightarrow(?![a-zA-Z])/g, '⇔')
-        .replace(/\\leftarrow(?![a-zA-Z])/g, '←')
-        .replace(/\\Leftarrow(?![a-zA-Z])/g, '⇐')
-        .replace(/\\rightarrow(?![a-zA-Z])/g, '→')
-        .replace(/\\Rightarrow(?![a-zA-Z])/g, '⇒')
-        .replace(/\\uparrow(?![a-zA-Z])/g, '↑')
-        .replace(/\\downarrow(?![a-zA-Z])/g, '↓')
-        .replace(/\\nearrow(?![a-zA-Z])/g, '↗')
-        .replace(/\\searrow(?![a-zA-Z])/g, '↘')
-        .replace(/\\implies(?![a-zA-Z])/g, '⇒')
-        .replace(/\\iff(?![a-zA-Z])/g, '⇔')
-        .replace(/\\to(?![a-zA-Z])/g, '→')
-        .replace(/\\gets(?![a-zA-Z])/g, '←')
-        // --- Ensembles et logique ---
-        .replace(/\\in(?![a-zA-Z])/g, '∈')
-        .replace(/\\notin(?![a-zA-Z])/g, '∉')
-        .replace(/\\subset(?![a-zA-Z])/g, '⊂')
-        .replace(/\\subseteq(?![a-zA-Z])/g, '⊆')
-        .replace(/\\supset(?![a-zA-Z])/g, '⊃')
-        .replace(/\\supseteq(?![a-zA-Z])/g, '⊇')
-        .replace(/\\cup(?![a-zA-Z])/g, '∪')
-        .replace(/\\cap(?![a-zA-Z])/g, '∩')
-        .replace(/\\setminus(?![a-zA-Z])/g, '∖')
-        .replace(/\\emptyset(?![a-zA-Z])/g, '∅')
-        .replace(/\\varnothing(?![a-zA-Z])/g, '∅')
-        .replace(/\\forall(?![a-zA-Z])/g, '∀')
-        .replace(/\\exists(?![a-zA-Z])/g, '∃')
-        .replace(/\\neg(?![a-zA-Z])/g, '¬')
-        .replace(/\\lnot(?![a-zA-Z])/g, '¬')
-        .replace(/\\land(?![a-zA-Z])/g, '∧')
-        .replace(/\\wedge(?![a-zA-Z])/g, '∧')
-        .replace(/\\lor(?![a-zA-Z])/g, '∨')
-        .replace(/\\vee(?![a-zA-Z])/g, '∨')
-        // --- Analyse et calcul ---
-        .replace(/\\infty(?![a-zA-Z])/g, '∞')
-        .replace(/\\nabla(?![a-zA-Z])/g, '∇')
-        .replace(/\\partial(?![a-zA-Z])/g, '∂')
-        .replace(/\\sum(?![a-zA-Z])/g, '∑')
-        .replace(/\\prod(?![a-zA-Z])/g, '∏')
-        .replace(/\\int(?![a-zA-Z])/g, '∫')
-        .replace(/\\oplus(?![a-zA-Z])/g, '⊕')
-        .replace(/\\otimes(?![a-zA-Z])/g, '⊗')
-        // --- Points de suspension ---
-        .replace(/\\ldots(?![a-zA-Z])/g, '…')
-        .replace(/\\cdots(?![a-zA-Z])/g, '⋯')
-        .replace(/\\dots(?![a-zA-Z])/g, '…')
-        // --- Délimiteurs ---
-        .replace(/\\lfloor(?![a-zA-Z])/g, '⌊')
-        .replace(/\\rfloor(?![a-zA-Z])/g, '⌋')
-        .replace(/\\lceil(?![a-zA-Z])/g, '⌈')
-        .replace(/\\rceil(?![a-zA-Z])/g, '⌉')
-        .replace(/\\langle(?![a-zA-Z])/g, '⟨')
-        .replace(/\\rangle(?![a-zA-Z])/g, '⟩')
-        // --- Lettres grecques minuscules ---
-        .replace(/\\alpha(?![a-zA-Z])/g, 'α')
-        .replace(/\\beta(?![a-zA-Z])/g, 'β')
-        .replace(/\\gamma(?![a-zA-Z])/g, 'γ')
-        .replace(/\\delta(?![a-zA-Z])/g, 'δ')
-        .replace(/\\varepsilon(?![a-zA-Z])/g, 'ε')
-        .replace(/\\epsilon(?![a-zA-Z])/g, 'ε')
-        .replace(/\\zeta(?![a-zA-Z])/g, 'ζ')
-        .replace(/\\eta(?![a-zA-Z])/g, 'η')
-        .replace(/\\theta(?![a-zA-Z])/g, 'θ')
-        .replace(/\\iota(?![a-zA-Z])/g, 'ι')
-        .replace(/\\kappa(?![a-zA-Z])/g, 'κ')
-        .replace(/\\lambda(?![a-zA-Z])/g, 'λ')
-        .replace(/\\mu(?![a-zA-Z])/g, 'μ')
-        .replace(/\\nu(?![a-zA-Z])/g, 'ν')
-        .replace(/\\xi(?![a-zA-Z])/g, 'ξ')
-        .replace(/\\pi(?![a-zA-Z])/g, 'π')
-        .replace(/\\rho(?![a-zA-Z])/g, 'ρ')
-        .replace(/\\sigma(?![a-zA-Z])/g, 'σ')
-        .replace(/\\tau(?![a-zA-Z])/g, 'τ')
-        .replace(/\\upsilon(?![a-zA-Z])/g, 'υ')
-        .replace(/\\varphi(?![a-zA-Z])/g, 'φ')
-        .replace(/\\phi(?![a-zA-Z])/g, 'φ')
-        .replace(/\\chi(?![a-zA-Z])/g, 'χ')
-        .replace(/\\psi(?![a-zA-Z])/g, 'ψ')
-        .replace(/\\omega(?![a-zA-Z])/g, 'ω')
-        // --- Lettres grecques majuscules ---
-        .replace(/\\Gamma(?![a-zA-Z])/g, 'Γ')
-        .replace(/\\Delta(?![a-zA-Z])/g, 'Δ')
-        .replace(/\\Theta(?![a-zA-Z])/g, 'Θ')
-        .replace(/\\Lambda(?![a-zA-Z])/g, 'Λ')
-        .replace(/\\Xi(?![a-zA-Z])/g, 'Ξ')
-        .replace(/\\Pi(?![a-zA-Z])/g, 'Π')
-        .replace(/\\Sigma(?![a-zA-Z])/g, 'Σ')
-        .replace(/\\Phi(?![a-zA-Z])/g, 'Φ')
-        .replace(/\\Psi(?![a-zA-Z])/g, 'Ψ')
-        .replace(/\\Omega(?![a-zA-Z])/g, 'Ω')
-        // --- Nettoyage structural (en dernier) ---
-        .replace(/\\left/g, '').replace(/\\right/g, '')
-        .replace(/\\text\{([^}]+)\}/g, '$1')
-        .replace(/\\mathrm\{([^}]+)\}/g, '$1')
-        .replace(/\\\(|\\\)/g, '');
+    let s = text.trim();
+
+    // \mathbb{X} → ℝ, ℕ, ℤ, etc.
+    s = replaceBalanced(s, 'mathbb', c => MATHBB_MAP[c] || c);
+
+    // \text{...}, \mathrm{...}, variantes → texte brut
+    for (const cmd of ['text', 'mathrm', 'textrm', 'textit', 'textbf', 'mathit', 'mathbf']) {
+        s = replaceBalanced(s, cmd, c => c);
+    }
+
+    // \binom{n}{k} → C(n,k) — saisi directement avant normalisation du healer
+    s = replaceBalanced2(s, 'binom', (n, k) => 'C(' + latexToUnicode(n) + ',' + latexToUnicode(k) + ')');
+
+    // {n \choose k} → C(n,k) — forme produite par normalizeBinomDeep, ou saisie directement
+    // Nécessite le matching d'accolades équilibrées (ex: {\frac{a}{b} \choose k})
+    {
+        let i = 0;
+        let result = '';
+        while (i < s.length) {
+            if (s[i] === '{') {
+                const brace = extractBraceContent(s, i);
+                if (brace && brace.content.includes('\\choose')) {
+                    const ci = brace.content.indexOf('\\choose');
+                    const n = brace.content.substring(0, ci).trim();
+                    const k = brace.content.substring(ci + 7).trim();
+                    result += 'C(' + latexToUnicode(n) + ',' + latexToUnicode(k) + ')';
+                    i = brace.end;
+                    continue;
+                }
+            }
+            result += s[i];
+            i++;
+        }
+        s = result;
+    }
+
+    // \sqrt[n]{...} → ⁿ√(...) — traité avant \sqrt{} simple
+    {
+        let match;
+        while ((match = /\\sqrt\[([^\]]+)\]\{/.exec(s)) !== null) {
+            const n = match[1];
+            const braceStart = match.index + match[0].length - 1; // position du {
+            const brace = extractBraceContent(s, braceStart);
+            if (!brace) break;
+            const replacement = toSuperscript(n) + '√(' + latexToUnicode(brace.content) + ')';
+            s = s.substring(0, match.index) + replacement + s.substring(brace.end);
+        }
+    }
+    // \sqrt{...} → √(...) — accolades équilibrées (gère \sqrt{\frac{a}{b}})
+    s = replaceBalanced(s, 'sqrt', content => '√(' + latexToUnicode(content) + ')');
+    s = s.replace(/\\sqrt(?!\{|\[)/g, '√');
+
+    // \frac, \dfrac, \tfrac → a/b ou (a)/(b) si complexe — accolades équilibrées
+    const FRACTION_MAP = {
+        '1/2': '½', '1/3': '⅓', '2/3': '⅔', '1/4': '¼', '3/4': '¾',
+        '1/5': '⅕', '2/5': '⅖', '3/5': '⅗', '4/5': '⅘',
+        '1/6': '⅙', '5/6': '⅚', '1/7': '⅐', '1/8': '⅛',
+        '3/8': '⅜', '5/8': '⅝', '7/8': '⅞', '1/9': '⅑', '1/10': '⅒'
+    };
+    const processFrac = (num, den) => {
+        const n = latexToUnicode(num);
+        const d = latexToUnicode(den);
+        if (n.length <= 2 && d.length <= 2) {
+            const key = n + '/' + d;
+            if (FRACTION_MAP[key]) return FRACTION_MAP[key];
+        }
+        // Pas de parens si : 1 seul caractère, alphanum simple, ou déjà entre parenthèses
+        const isWrapped = (s) => /^[a-zA-Z0-9]$/.test(s) || (s.startsWith('(') && s.endsWith(')'))
+            || (s.startsWith('√(') && s.endsWith(')'));
+        const needParensNum = n.length > 1 && !isWrapped(n);
+        const needParensDen = d.length > 1 && !isWrapped(d);
+        return (needParensNum ? '(' + n + ')' : n) + '/' + (needParensDen ? '(' + d + ')' : d);
+    };
+    s = replaceBalanced2(s, 'frac', processFrac);
+    s = replaceBalanced2(s, 'dfrac', processFrac);
+    s = replaceBalanced2(s, 'tfrac', processFrac);
+
+    // \mathcal{X} → texte brut (pas de police calligraphique en Unicode standard)
+    s = replaceBalanced(s, 'mathcal', c => c);
+    s = replaceBalanced(s, 'mathscr', c => c);
+    s = replaceBalanced(s, 'mathfrak', c => c);
+
+    // Matrices : \begin{pmatrix} a & b \\ c & d \end{pmatrix} → (a, b; c, d)
+    s = s.replace(/\\begin\{(pmatrix|bmatrix|Bmatrix|vmatrix|Vmatrix|matrix)\}([\s\S]*?)\\end\{\1\}/g, (_, variant, body) => {
+        const open = { pmatrix: '(', bmatrix: '[', Bmatrix: '{', vmatrix: '|', Vmatrix: '‖', matrix: '' }[variant] || '(';
+        const close = { pmatrix: ')', bmatrix: ']', Bmatrix: '}', vmatrix: '|', Vmatrix: '‖', matrix: '' }[variant] || ')';
+        const rows = body.split(/\\\\\s*/).map(row =>
+            row.split('&').map(cell => latexToUnicode(cell.trim())).join(', ')
+        ).filter(r => r.trim());
+        return open + rows.join('; ') + close;
+    });
+
+    // Systèmes par cas : \begin{cases} a & \text{si} \\ b & \text{sinon} \end{cases} → {a si; b sinon}
+    s = s.replace(/\\begin\{cases\}([\s\S]*?)\\end\{cases\}/g, (_, body) => {
+        const rows = body.split(/\\\\\s*/).map(row =>
+            row.split('&').map(cell => latexToUnicode(cell.trim())).join(' ')
+        ).filter(r => r.trim());
+        return '{' + rows.join('; ') + '}';
+    });
+
+    // Diacritiques — accolades équilibrées
+    s = replaceBalanced(s, 'overline', c => latexToUnicode(c).split('').map(ch => ch + '\u0304').join(''));
+    s = replaceBalanced(s, 'bar', c => latexToUnicode(c).split('').map(ch => ch + '\u0304').join(''));
+    s = replaceBalanced(s, 'vec', c => latexToUnicode(c) + '\u20D7');
+    s = replaceBalanced(s, 'hat', c => latexToUnicode(c) + '\u0302');
+    s = replaceBalanced(s, 'tilde', c => latexToUnicode(c) + '\u0303');
+
+    // Lettres grecques et opérateurs (via tables)
+    s = s.replace(/\\([a-zA-Z]+)/g, (match, cmd) => {
+        if (GREEK_MAP[cmd]) return GREEK_MAP[cmd];
+        if (OPERATOR_MAP[cmd]) return OPERATOR_MAP[cmd];
+        return match; // Garde tel quel si non reconnu, sera nettoyé plus bas
+    });
+
+    // Exposants : ^{...} ou ^x — accolades équilibrées
+    while (s.includes('^{')) {
+        const idx = s.indexOf('^{');
+        const match = extractBraceContent(s, idx + 1);
+        if (!match) break;
+        s = s.substring(0, idx) + toSuperscript(latexToUnicode(match.content)) + s.substring(match.end);
+    }
+    s = s.replace(/\^([a-zA-Z0-9+\-])/g, (_, c) => toSuperscript(c));
+
+    // Indices : _{...} ou _x — accolades équilibrées
+    while (s.includes('_{')) {
+        const idx = s.indexOf('_{');
+        const match = extractBraceContent(s, idx + 1);
+        if (!match) break;
+        s = s.substring(0, idx) + toSubscript(latexToUnicode(match.content)) + s.substring(match.end);
+    }
+    s = s.replace(/_([a-zA-Z0-9])/g, (_, c) => toSubscript(c));
+
+    // Noms de fonctions : \sin, \cos, \log, etc.
+    for (const fn of FUNCTION_NAMES) {
+        s = s.replace(new RegExp('\\\\' + fn + '(?![a-zA-Z])', 'g'), fn);
+    }
+
+    // \left, \right, \big → juste les délimiteurs
+    s = s.replace(/\\left\s*/g, '');
+    s = s.replace(/\\right\s*/g, '');
+    s = s.replace(/\\big[glr]?\s*/gi, '');
+
+    // Accolades LaTeX restantes
+    s = s.replace(/\{/g, '');
+    s = s.replace(/\}/g, '');
+
+    // Commandes d'espacement LaTeX
+    s = s.replace(/\\[,;:!]\s*/g, ' ');
+    s = s.replace(/\\quad\s*/g, '  ');
+    s = s.replace(/\\qquad\s*/g, '    ');
+    s = s.replace(/\\ /g, ' ');
+
+    // Commandes de taille → ignorer
+    s = s.replace(/\\(?:displaystyle|textstyle|scriptstyle|scriptscriptstyle|tiny|small|normalsize|large|Large|LARGE|huge|Huge)\s*/g, '');
+
+    // Délimiteurs \( \) \[ \] restants → supprimer
+    s = s.replace(/\\\(|\\\)|\\\[|\\\]/g, '');
+
+    // Commandes restantes non reconnues → supprimer le backslash
+    s = s.replace(/\\([a-zA-Z]+)/g, '$1');
+
+    // Nettoyage final
+    s = s.replace(/\s{2,}/g, ' ').trim();
+
+    return s;
 }
 
 /**
@@ -1330,7 +1739,33 @@ export function healActivitySpecificFields(obj, moduleKey) {
 
     let healed = structuredClone(obj);
 
-    // Standalone MarkTheWords
+    // --- 1. Conversions automatiques via FIELD_CONSTRAINTS ---
+    // Applique les conversions unicode, plain, plain+letters sur les champs déclarés
+    const constraints = getConstraints(moduleKey);
+    if (constraints && constraints.fields) {
+        for (const [fieldPath, config] of Object.entries(constraints.fields)) {
+            const renderType = config.render;
+            // Les types html+latex et html ne nécessitent pas de conversion
+            if (renderType === 'html+latex' || renderType === 'html') continue;
+            // Les types unicode+markers sont gérés manuellement ci-dessous (fonctions spécialisées)
+            if (renderType === 'unicode+markers') continue;
+
+            const converter = getConverter(renderType);
+            if (converter) {
+                applyToPath(healed, fieldPath, (text) => {
+                    const converted = converter(text);
+                    if (converted !== text) {
+                        debugLog('json-healer', `[JSON Healer] ${moduleKey}.${fieldPath} : "${text}" → "${converted}" (${renderType})`);
+                    }
+                    return converted;
+                });
+            }
+        }
+    }
+
+    // --- 2. Conversions unicode+markers (fonctions spécialisées par type de marqueur) ---
+
+    // MarkTheWords : *mot* marqueurs avec conversion LaTeX→Unicode
     if (moduleKey === 'MarkTheWords') {
         if (healed.textField) {
             healed.textField = cleanMarkTheWordsText(healed.textField);
@@ -1338,7 +1773,7 @@ export function healActivitySpecificFields(obj, moduleKey) {
         return healed;
     }
 
-    // Standalone DragTheWords
+    // DragTheWords : *mot* marqueurs avec conversion LaTeX→Unicode
     if (moduleKey === 'DragTheWords') {
         if (healed.textField) {
             healed.textField = cleanDragTextText(healed.textField);
@@ -1346,7 +1781,7 @@ export function healActivitySpecificFields(obj, moduleKey) {
         return healed;
     }
 
-    // Standalone FillInTheBlanks
+    // FillInTheBlanks : *réponse* marqueurs dans les questions
     if (moduleKey === 'FillInTheBlanks') {
         if (Array.isArray(healed.questions)) {
             healed.questions = healed.questions.map(q => typeof q === 'string' ? cleanBlanksText(q) : q);
@@ -1354,25 +1789,39 @@ export function healActivitySpecificFields(obj, moduleKey) {
         return healed;
     }
 
-    // Chart : pas de MathDisplay, convertir le LaTeX en Unicode dans les champs text
-    if (moduleKey === 'Chart') {
-        if (Array.isArray(healed.listOfTypes)) {
-            healed.listOfTypes = healed.listOfTypes.map(item => {
-                if (item.text && typeof item.text === 'string') {
-                    // Convertir les blocs \(...\) en Unicode
-                    let cleaned = item.text.replace(/\\\(([\s\S]*?)\\\)/g, (match, inner) => {
-                        return latexToUnicode(inner).trim();
-                    });
-                    // Convertir les commandes LaTeX restantes (sans délimiteurs)
-                    if (/\\[a-zA-Z]/.test(cleaned)) {
-                        cleaned = latexToUnicode(cleaned);
-                    }
-                    if (cleaned !== item.text) {
-                        debugLog('json-healer', `[JSON Healer] Chart text : "${item.text}" → "${cleaned}" (LaTeX → Unicode)`);
-                    }
-                    item.text = cleaned;
+    // --- 3. Conteneurs : nettoyage récursif des exercices enfants ---
+
+    // CoursePresentation : nettoyer les textes HTML dans chaque slide + exercices enfants
+    if (moduleKey === 'CoursePresentation') {
+        if (Array.isArray(healed.slides)) {
+            healed.slides.forEach(slide => {
+                // Nettoyer les textes de contenu (le processeur fera le formatTextToHtml ensuite)
+                if (slide.text && typeof slide.text === 'string') {
+                    slide.text = slide.text.trim();
                 }
-                return item;
+                if (slide.title && typeof slide.title === 'string') {
+                    slide.title = slide.title.trim();
+                }
+                // Nettoyer les exercices intégrés
+                if (slide.exercise) {
+                    if (slide.exercise.question && typeof slide.exercise.question === 'string') {
+                        slide.exercise.question = slide.exercise.question.trim();
+                    }
+                    // Blanks : nettoyer les questions
+                    if (slide.exercise.library === 'blanks' && Array.isArray(slide.exercise.questions)) {
+                        slide.exercise.questions = slide.exercise.questions.map(
+                            q => typeof q === 'string' ? cleanBlanksText(q) : q
+                        );
+                    }
+                    // DragText : nettoyer le textField
+                    if (slide.exercise.library === 'dragtext' && slide.exercise.textField) {
+                        slide.exercise.textField = cleanDragTextText(slide.exercise.textField);
+                    }
+                    // MarkTheWords : nettoyer le textField
+                    if (slide.exercise.library === 'markthewords' && slide.exercise.textField) {
+                        slide.exercise.textField = cleanMarkTheWordsText(slide.exercise.textField);
+                    }
+                }
             });
         }
         return healed;
@@ -1407,3 +1856,61 @@ export function healActivitySpecificFields(obj, moduleKey) {
 
     return healed;
 }
+
+
+// =======================================================================
+// CONVERTERS — Fonctions de conversion enregistrées dans field-constraints.js
+// =======================================================================
+
+/**
+ * Convertisseur 'stripAll' : supprime tout formatage (Markdown, HTML, LaTeX).
+ * Utilisé pour les champs plain (ex: Essay keywords, FindTheWords taskDescription).
+ */
+function stripAll(text) {
+    if (!text || typeof text !== 'string') return text;
+    let cleaned = text;
+    // Convertir les blocs \(...\) en Unicode avant de supprimer
+    cleaned = cleaned.replace(/\\\(([\s\S]*?)\\\)/g, (_, inner) => latexToUnicode(inner).trim());
+    // Supprimer les commandes LaTeX restantes
+    if (/\\[a-zA-Z]/.test(cleaned)) {
+        cleaned = latexToUnicode(cleaned);
+    }
+    // Supprimer le Markdown gras/italique
+    cleaned = cleaned.replace(/\*\*(.*?)\*\*/g, '$1');
+    cleaned = cleaned.replace(/\*(.*?)\*/g, '$1');
+    // Supprimer les balises HTML
+    cleaned = cleaned.replace(/<[^>]*>/g, '');
+    // Décoder les entités HTML courantes
+    cleaned = cleaned.replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    return cleaned.trim();
+}
+
+/**
+ * Convertisseur 'toLettersOnly' : ne garde que les lettres alphabétiques.
+ * Utilisé pour les champs de grille (Crossword answers, FindTheWords wordList).
+ * Note : les cas principaux sont déjà gérés par healStructureForActivity()
+ * (conversion lettres grecques → noms, filtrage). Ce convertisseur est un filet de sécurité.
+ */
+function toLettersOnly(text) {
+    if (!text || typeof text !== 'string') return text;
+    let cleaned = text;
+    // Convertir les blocs \(...\) en Unicode d'abord
+    cleaned = cleaned.replace(/\\\(([\s\S]*?)\\\)/g, (_, inner) => latexToUnicode(inner).trim());
+    // Supprimer les commandes LaTeX restantes
+    if (/\\[a-zA-Z]/.test(cleaned)) {
+        cleaned = latexToUnicode(cleaned);
+    }
+    // Ne garder que les lettres (y compris accentuées)
+    cleaned = cleaned.replace(/[^a-zA-ZÀ-ÿ]/g, '');
+    return cleaned;
+}
+
+// Enregistrer les convertisseurs dans field-constraints.js
+registerConverters({
+    latexToUnicode: _convertLatexField,
+    cleanMarkerText: null, // Dispatché par markerType dans healActivitySpecificFields
+    stripAll,
+    toLettersOnly
+});

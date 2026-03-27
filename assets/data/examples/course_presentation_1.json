@@ -1,0 +1,87 @@
+{
+  "title": "La Révolution française",
+  "slides": [
+    {
+      "type": "title",
+      "title": "La Révolution française",
+      "subtitle": "De 1789 à 1799 : bouleversements politiques et sociaux"
+    },
+    {
+      "type": "content",
+      "title": "Les causes de la Révolution",
+      "text": "La France de la fin du XVIIIe siècle traverse une **crise profonde** :\n- Crise financière : l'État est endetté après les guerres\n- Crise sociale : inégalités entre les trois ordres (clergé, noblesse, tiers état)\n- Crise politique : la monarchie absolue est de plus en plus contestée\n\nLe *tiers état*, qui représente 98 % de la population, supporte l'essentiel des impôts."
+    },
+    {
+      "type": "content-with-table",
+      "title": "Chronologie des événements",
+      "text": "Les grandes dates de la Révolution française :",
+      "table": {
+        "headers": ["Date", "Événement", "Conséquence"],
+        "rows": [
+          ["5 mai 1789", "Ouverture des États généraux", "Début du processus révolutionnaire"],
+          ["14 juillet 1789", "Prise de la Bastille", "Symbole de la chute de l'absolutisme"],
+          ["26 août 1789", "Déclaration des droits de l'homme", "Fondement des droits civiques"],
+          ["21 septembre 1792", "Proclamation de la République", "Fin de la monarchie"]
+        ]
+      }
+    },
+    {
+      "type": "quiz",
+      "title": "Vérification des connaissances",
+      "exercise": {
+        "library": "H5P.MultiChoice 1.16",
+        "question": "Quelle date marque la prise de la Bastille ?",
+        "answers": [
+          { "text": "14 juillet 1789", "correct": true, "tipsAndFeedback": { "chosenFeedback": "Exact ! C'est devenu la fête nationale française." } },
+          { "text": "26 août 1789", "correct": false, "tipsAndFeedback": { "chosenFeedback": "Non, c'est la date de la Déclaration des droits de l'homme." } },
+          { "text": "5 mai 1789", "correct": false },
+          { "text": "21 septembre 1792", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Revoyez les grandes dates de la Révolution." },
+          { "from": 26, "to": 50, "feedback": "C'est un début, continuez !" },
+          { "from": 51, "to": 75, "feedback": "Bon travail !" },
+          { "from": 76, "to": 100, "feedback": "Excellent !" }
+        ]
+      }
+    },
+    {
+      "type": "summary",
+      "title": "Synthèse",
+      "exercise": {
+        "library": "H5P.Summary 1.10",
+        "intro": "Choisissez les affirmations correctes pour chaque groupe.",
+        "summaries": [
+          {
+            "summary": [
+              "La Bastille a été prise le 14 juillet 1789",
+              "La Bastille a été prise le 26 août 1789",
+              "La Bastille a été prise le 5 mai 1789"
+            ]
+          },
+          {
+            "summary": [
+              "La Déclaration des droits de l'homme date de 1789",
+              "La Déclaration des droits de l'homme date de 1791",
+              "La Déclaration des droits de l'homme date de 1792"
+            ]
+          },
+          {
+            "summary": [
+              "La République est proclamée le 21 septembre 1792",
+              "La République est proclamée le 14 juillet 1789",
+              "La République est proclamée le 5 mai 1789"
+            ]
+          }
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Revoyez les points clés du cours." },
+          { "from": 26, "to": 50, "feedback": "C'est un bon début." },
+          { "from": 51, "to": 75, "feedback": "Bonne maîtrise du sujet." },
+          { "from": 76, "to": 100, "feedback": "Parfait ! Vous maîtrisez la Révolution française." }
+        ]
+      }
+    }
+  ]
+}

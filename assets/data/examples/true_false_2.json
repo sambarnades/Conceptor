@@ -1,6 +1,6 @@
 {
-  "question": "La fraction \\\( \\frac{3}{4} \\\) est une fraction décimale.",
+  "question": "La fraction \\( \\frac{3}{4} \\) est une fraction décimale.",
   "correct": "true",
-  "feedbackOnCorrect": "Exact ! La fraction \\\( \\frac{3}{4} \\\) est bien une fraction décimale car son dénominateur est une puissance de 10.",
-  "feedbackOnWrong": "Faux. Une fraction décimale a un dénominateur qui est une puissance de 10, comme 10, 100, 1000, etc. \\\( \\frac{3}{4} \\\) peut être convertie en fraction décimale (0,75), mais elle n'en est pas une à l'origine."
+  "feedbackOnCorrect": "Exact ! La fraction \\( \\frac{3}{4} \\) est bien une fraction décimale car son dénominateur est une puissance de 10.",
+  "feedbackOnWrong": "Faux. Une fraction décimale a un dénominateur qui est une puissance de 10, comme 10, 100, 1000, etc. \\( \\frac{3}{4} \\) peut être convertie en fraction décimale (0,75), mais elle n'en est pas une à l'origine."
 }

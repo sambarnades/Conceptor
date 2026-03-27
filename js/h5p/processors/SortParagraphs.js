@@ -9,7 +9,7 @@
  * @exports {Object} default.process - Transformation principale
  */
 import { translations } from '../../core/translation.js';
-import { formatTextToHtml } from '../../core/utils.js';
+import { formatTextToHtml, markdownToHtml } from '../../core/utils.js';
 
 
 /**
@@ -20,14 +20,8 @@ import { formatTextToHtml } from '../../core/utils.js';
  */
 function formatParagraphText(text) {
     if (!text) return '<p></p>';
-    // Nettoyer les \n parasites en début/fin (artefacts LLM)
-    let formatted = text.trim();
-    // Convertir markdown en HTML
-    formatted = formatted
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*([^*]+)\*/g, '<em>$1</em>');
-    // Convertir les retours à la ligne internes en <br>
-    formatted = formatted.replace(/\n/g, '<br>');
+    // Convertir markdown en HTML en protégeant le LaTeX, avec \n → <br>
+    const formatted = markdownToHtml(text.trim(), { newlineToBr: true });
     // Envelopper dans <p> comme attendu par H5P.SortParagraphs
     return `<p>${formatted}</p>`;
 }
@@ -45,7 +39,8 @@ export default {
                 duplicatesInterchangeable: true,
                 enableRetry: true,
                 enableSolutionsButton: true,
-                addButtonsForMovement: true
+                addButtonsForMovement: true,
+                ...(jsonObj.behaviour || {})
             },
             l10n: {
                 checkAnswer: translations.h5p_check_answer || "Vérifier",

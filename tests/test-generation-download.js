@@ -235,6 +235,7 @@ const testCases = [
     { file: 'quiz_qcm_3.json', titleKey: 'h5p_quiz_set_qcm_name', expectedModule: 'QuizSet', source: 'h5p' },
     { file: 'quiz_qcm_4.json', titleKey: 'h5p_quiz_set_qcm_name', expectedModule: 'QuizSet', source: 'h5p' },
     { file: 'quiz_qcm_5.json', titleKey: 'h5p_quiz_set_qcm_name', expectedModule: 'QuizSet', source: 'h5p' },
+    { file: 'quiz_qcm_formules_test.json', titleKey: 'h5p_quiz_set_qcm_name', expectedModule: 'QuizSet', source: 'h5p' },
     { file: 'quiz_vraifaux_1.json', titleKey: 'h5p_quiz_set_vf_name', expectedModule: 'QuizSet', source: 'h5p' },
     { file: 'quiz_vraifaux_2.json', titleKey: 'h5p_quiz_set_vf_name', expectedModule: 'QuizSet', source: 'h5p' },
     { file: 'single_choice_set_1.json', titleKey: 'h5p_single_choice_set_name', expectedModule: 'SingleChoiceSet', source: 'h5p' },
@@ -269,7 +270,8 @@ const testCases = [
     { file: 'glossaire_xml_2.json', titleKey: 'elea_glossaire_xml_name', expectedModule: 'elea_glossaire', source: 'moodle_xml' },
     { file: 'test_1.json', titleKey: 'elea_test_xml_name', expectedModule: 'elea_test', source: 'moodle_xml' },
     { file: 'test_2.json', titleKey: 'elea_test_xml_name', expectedModule: 'elea_test', source: 'moodle_xml' },
-    { file: 'test_3.json', titleKey: 'elea_test_xml_name', expectedModule: 'elea_test', source: 'moodle_xml' }
+    { file: 'test_3.json', titleKey: 'elea_test_xml_name', expectedModule: 'elea_test', source: 'moodle_xml' },
+    { file: 'test_4.json', titleKey: 'elea_test_xml_name', expectedModule: 'elea_test', source: 'moodle_xml' }
 ];
 
 // Etat partage entre les etapes pour chaque fichier
@@ -736,6 +738,42 @@ async function runStep5_MoodleXML() {
                     xmlContent && (xmlContent.includes('<?xml') || xmlContent.includes('<quiz')),
                     `[5a2.XML] ${tc.file} : contient en-tete XML ou balise quiz`
                 );
+
+                // Verifier hints et feedbacks combines pour test_1.json
+                if (tc.file === 'test_1.json') {
+                    assert(
+                        xmlContent.includes('<hint'),
+                        `[5a3.Hints] ${tc.file} : XML contient des balises hint`
+                    );
+                    assert(
+                        xmlContent.includes('<correctfeedback'),
+                        `[5a4.CombFeed] ${tc.file} : XML contient correctfeedback`
+                    );
+                    assert(
+                        xmlContent.includes('<partiallycorrectfeedback'),
+                        `[5a5.CombFeed] ${tc.file} : XML contient partiallycorrectfeedback`
+                    );
+                    assert(
+                        xmlContent.includes('<incorrectfeedback'),
+                        `[5a6.CombFeed] ${tc.file} : XML contient incorrectfeedback`
+                    );
+                    assert(
+                        xmlContent.includes('<shownumcorrect'),
+                        `[5a7.ShowNum] ${tc.file} : XML contient shownumcorrect`
+                    );
+                }
+
+                // Verifier answernumbering et showstandardinstruction (valeurs par defaut)
+                if (xmlContent.includes('<question type="multichoice">')) {
+                    assert(
+                        xmlContent.includes('<answernumbering>'),
+                        `[5a8.Numbering] ${tc.file} : XML contient answernumbering`
+                    );
+                    assert(
+                        xmlContent.includes('<showstandardinstruction>'),
+                        `[5a9.StdInstr] ${tc.file} : XML contient showstandardinstruction`
+                    );
+                }
 
                 // Test GIFT
                 const giftContent = generateMoodleGift(jsonObj);

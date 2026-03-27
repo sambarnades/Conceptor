@@ -1,0 +1,41 @@
+{
+    "bank_name": "Test Cloze avec Hints",
+    "bank_description": "Banque de test pour vérifier le support des hints sur les questions cloze dans Moodle.",
+    "questions": [
+        {
+            "type": "cloze",
+            "content": {
+                "name": "Q1 - Capitales européennes",
+                "questiontext": "La capitale de la France est {1:SHORTANSWER:=Paris}. La capitale de l'Allemagne est {1:SHORTANSWER:=Berlin}. La capitale de l'Italie est {1:MULTICHOICE:=Rome~Milan~Naples~Turin}.",
+                "feedback": "Paris, Berlin et Rome sont les trois capitales les plus peuplées de leurs pays respectifs.",
+                "hints": ["Pensez aux plus grandes villes de chaque pays.", "La capitale française est traversée par la Seine."]
+            }
+        },
+        {
+            "type": "cloze",
+            "content": {
+                "name": "Q2 - Mathématiques de base",
+                "questiontext": "Le résultat de 7 × 8 est {1:NUMERICAL:=56:0}. La racine carrée de 144 est {1:NUMERICAL:=12:0}. Le nombre π arrondi au dixième vaut {1:NUMERICAL:=3.1:0.05}.",
+                "feedback": "Ce sont des résultats classiques de calcul mental.",
+                "hints": ["Pensez à la table de multiplication de 7."]
+            }
+        },
+        {
+            "type": "cloze",
+            "content": {
+                "name": "Q3 - Conjugaison",
+                "questiontext": "Au présent de l'indicatif, le verbe 'être' se conjugue : je {1:SHORTANSWER:=suis}, tu {1:SHORTANSWER:=es}, il {1:MULTICHOICE:=est~es~êtes~sommes}.",
+                "feedback": "Le verbe 'être' est un verbe irrégulier du 3ème groupe.",
+                "hints": ["C'est le verbe le plus utilisé en français.", "Je suis, tu es, il..."]
+            }
+        },
+        {
+            "type": "cloze",
+            "content": {
+                "name": "Q4 - Sans hints (contrôle)",
+                "questiontext": "L'eau bout à {1:NUMERICAL:=100:0} degrés Celsius au niveau de la mer.",
+                "feedback": "C'est une propriété physique fondamentale de l'eau pure à pression atmosphérique standard."
+            }
+        }
+    ]
+}

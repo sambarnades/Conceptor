@@ -452,6 +452,45 @@ async function runStep6_DefinitionCoverage() {
         );
     }
 
+    // 6f. Cles hints/feedbacks combines (editeur + simulateur)
+    const hintsFeedbackKeys = [
+        'editor_test_correctfeedback',
+        'editor_test_partiallycorrectfeedback',
+        'editor_test_incorrectfeedback',
+        'editor_test_hint',
+        'editor_test_add_hint',
+        'editor_test_hint_text',
+        'simulator_hint',
+        'simulator_retry',
+        'simulator_partial',
+        'editor_test_options',
+        'editor_test_answernumbering',
+        'editor_test_numbering_none',
+        'editor_test_numbering_abc',
+        'editor_test_numbering_123',
+        'editor_test_numbering_ABCD',
+        'editor_test_numbering_iii',
+        'editor_test_showstandardinstruction'
+    ];
+    for (const hfKey of hintsFeedbackKeys) {
+        assert(
+            frKeySet.has(hfKey),
+            `[6f.HintsFeedback] Cle "${hfKey}" presente en francais`
+        );
+    }
+
+    // Verifier la presence de ces cles dans TOUTES les langues chargees
+    for (const lang of Object.keys(loadedLocales)) {
+        if (lang === 'fr') continue;
+        const langData = loadedLocales[lang];
+        for (const hfKey of hintsFeedbackKeys) {
+            assert(
+                hfKey in langData,
+                `[6f.HintsFeedback] Cle "${hfKey}" presente en ${lang}`
+            );
+        }
+    }
+
     console.groupEnd();
 }
 

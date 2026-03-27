@@ -255,35 +255,51 @@ export const formatTextToHtml = (text) => {
     // Les majuscules après \n indiquent un début de phrase → c'est un saut de ligne (ex: \nRéflexion)
     const withNewlines = sanitized.replace(/\\n(?![a-z])/g, '\n');
 
-    // Vérifie si le texte contient du markdown (prioritaire sur le HTML existant)
-    const hasMarkdown = /\*\*.*?\*\*|\*[^*]+\*/.test(withNewlines);
-
     // Vérifie si le texte contient déjà des balises HTML de structure (<p>, <div>, etc.)
     const hasStructuralHtml = /<(p|div|br|ul|ol|li)[\s>]/i.test(withNewlines);
 
-    let html;
-
-    // ÉTAPE 2 : Appliquer le formatage Markdown si présent (même avec du HTML existant)
-    let formatted = withNewlines
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Gras
-        .replace(/\*([^*]+)\*/g, '<em>$1</em>'); // Italique
+    // ÉTAPE 2 : Convertir le Markdown en HTML en protégeant le LaTeX
+    let html = markdownToHtml(withNewlines);
 
     // Envelopper en paragraphes SEULEMENT si :
     // - Le texte contient des retours à la ligne
     // - ET le texte n'a pas déjà de structure HTML (comme <p>)
-    if (formatted.includes('\n') && !hasStructuralHtml) {
-        html = formatted
+    if (html.includes('\n') && !hasStructuralHtml) {
+        html = html
             .split('\n')
             .map(line => line.trim())
             .filter(line => line.length > 0)
             .map(line => `<p>${line}</p>`)
             .join('');
-    } else {
-        html = formatted;
     }
 
     return html;
 };
+
+/**
+ * Convertit les marqueurs Markdown (**gras**, *italique*) en HTML
+ * en protégeant les blocs LaTeX \(...\) et \[...\].
+ * Évite que les * dans les formules (ex: \mathbb{R}^*) soient
+ * interprétés comme du gras/italique markdown.
+ *
+ * @param {string} text - Texte avec éventuellement du markdown et du LaTeX
+ * @param {Object} [options] - Options de formatage
+ * @param {boolean} [options.newlineToBr=false] - Convertir \n en <br> (protégé du LaTeX)
+ * @returns {string} - Texte avec markdown converti en HTML, LaTeX intact
+ */
+export function markdownToHtml(text, { newlineToBr = false } = {}) {
+    if (!text) return '';
+    const latexPlaceholders = [];
+    let result = text.replace(/\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]/g, (m) => {
+        latexPlaceholders.push(m);
+        return `\x00LATEX${latexPlaceholders.length - 1}\x00`;
+    });
+    result = result
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    if (newlineToBr) result = result.replace(/\n/g, '<br>');
+    return result.replace(/\x00LATEX(\d+)\x00/g, (_, i) => latexPlaceholders[parseInt(i)]);
+}
 
 
 // =======================================================================

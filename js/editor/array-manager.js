@@ -1,6 +1,50 @@
 import { t } from '../core/translation.js';
-import { fieldRenderers, escapeHtml, generateId } from './field-renderers.js';
+import { fieldRenderers, escapeHtml, generateId, renderTextField } from './field-renderers.js';
 import { getNestedValue, setNestedValue } from './json-utils.js';
+
+/**
+ * Résout le renderer via getRendererForField (exposé par editor-core.js).
+ * Permet aux champs textarea/text d'être routés vers le richtext editor.
+ */
+function _resolveRenderer(fieldConfig, fieldPath) {
+    const richtext = window._jsonEditorRichtext;
+    if (richtext && richtext.getRendererForField) {
+        return richtext.getRendererForField(fieldConfig, fieldPath);
+    }
+    return {
+        renderer: fieldRenderers[fieldConfig.type] || fieldRenderers['text'],
+        config: fieldConfig
+    };
+}
+
+/**
+ * Regroupe les champs consecutifs ayant le meme data-row-group dans un wrapper flex.
+ */
+function groupRowFields(container) {
+    const children = Array.from(container.children);
+    let i = 0;
+    while (i < children.length) {
+        const el = children[i];
+        const rowGroup = el.dataset.rowGroup;
+        if (rowGroup) {
+            const group = [el];
+            let j = i + 1;
+            while (j < children.length && children[j].dataset.rowGroup === rowGroup) {
+                group.push(children[j]);
+                j++;
+            }
+            if (group.length > 1) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'json-editor__field-row';
+                container.insertBefore(wrapper, group[0]);
+                group.forEach(field => wrapper.appendChild(field));
+            }
+            i = j;
+        } else {
+            i++;
+        }
+    }
+}
 
 /**
  * Traduit un label
@@ -387,6 +431,9 @@ export class ArrayManager {
             const addBtn = this.renderAddButton();
             this.container.appendChild(addBtn);
         }
+
+        // Validation initiale de la somme
+        this.validateSum();
     }
 
     /**
@@ -397,6 +444,11 @@ export class ArrayManager {
         element.className = 'json-editor__array-item';
         element.dataset.index = index;
         element.draggable = false;
+
+        // Mode compact : pas de header, champs inline avec actions minimales
+        if (this.config.compact) {
+            return this.renderCompactItem(element, item, index);
+        }
 
         // Header avec numero et actions
         const header = document.createElement('div');
@@ -438,7 +490,7 @@ export class ArrayManager {
                     const fieldSchema = this.config.itemSchema && this.config.itemSchema[this.config.dynamicTitleField];
                     if (fieldSchema && fieldSchema.options) {
                         const option = fieldSchema.options.find(o => o.value === fieldValue);
-                        dynamicTitle = option ? option.label : fieldValue;
+                        dynamicTitle = option ? (translateLabel(option.label) || option.label) : fieldValue;
                     } else {
                         dynamicTitle = fieldValue;
                     }
@@ -517,9 +569,9 @@ export class ArrayManager {
             if (valueField) {
                 // Tableau de valeurs simples (ex: questions[] de strings)
                 const [fieldKey, fieldConfig] = valueField;
-                const renderer = fieldRenderers[fieldConfig.type] || fieldRenderers['text'];
+                const { renderer, config: resolvedConfig } = _resolveRenderer(fieldConfig, `${this.path}.${index}`);
                 const fieldElement = renderer(
-                    fieldConfig,
+                    resolvedConfig,
                     item, // La valeur est l'item lui-meme
                     (path, value) => this.handleItemChange(index, null, value),
                     `${this.path}.${index}`
@@ -528,14 +580,112 @@ export class ArrayManager {
             } else {
                 // Tableau d'objets
                 for (const [fieldKey, fieldConfig] of Object.entries(this.config.itemSchema)) {
-                    // Champs cachés : préservés dans les données mais non affichés
+                        // Champs cachés : préservés dans les données mais non affichés
                     if (fieldConfig.hidden) continue;
+
+                    // Visibilité conditionnelle (showWhen) — on rend le champ mais on le masque si condition non remplie
+                    let showWhenHidden = false;
+                    if (fieldConfig.showWhen && item) {
+                        const sw = fieldConfig.showWhen;
+                        let refValue = item[sw.field];
+                        // Si la valeur n'est pas définie, utiliser le default du champ référencé
+                        if (refValue === undefined && this.config.itemSchema[sw.field] && this.config.itemSchema[sw.field].default !== undefined) {
+                            refValue = this.config.itemSchema[sw.field].default;
+                        }
+                        const matches = sw.values
+                            ? sw.values.includes(refValue)
+                            : refValue === sw.value;
+                        if (!matches) showWhenHidden = true;
+                    }
 
                     const fieldValue = item ? getNestedValue(item, fieldKey) : undefined;
                     const fieldPath = `${this.path}.${index}.${fieldKey}`;
 
+                    // Groupe de champs pliable (wrapper visuel, pas de namespace)
+                    if (fieldConfig.type === 'fieldGroup') {
+                        const groupWrapper = document.createElement('div');
+                        groupWrapper.className = 'json-editor__field json-editor__field--fieldgroup';
+
+                        const groupLabel = translateLabel(fieldConfig.collapsibleLabel || fieldConfig.label || '');
+                        groupWrapper.innerHTML = `
+                            <div class="json-editor__array-item-subsection">
+                                <div class="json-editor__array-item-subsection-header">
+                                    <i class="fas fa-chevron-right"></i>
+                                    <span>${escapeHtml(groupLabel)}</span>
+                                </div>
+                                <div class="json-editor__array-item-subsection-content" style="display: none;"></div>
+                            </div>
+                        `;
+
+                        const groupHeader = groupWrapper.querySelector('.json-editor__array-item-subsection-header');
+                        const groupContent = groupWrapper.querySelector('.json-editor__array-item-subsection-content');
+                        const subsection = groupWrapper.querySelector('.json-editor__array-item-subsection');
+
+                        groupHeader.addEventListener('click', () => {
+                            const expanded = subsection.classList.toggle('json-editor__array-item-subsection--expanded');
+                            groupContent.style.display = expanded ? '' : 'none';
+                            groupHeader.querySelector('i').className = expanded
+                                ? 'fas fa-chevron-down' : 'fas fa-chevron-right';
+                        });
+
+                        // Rendre les sous-champs (chemins au niveau item, pas namespaces)
+                        if (fieldConfig.fields) {
+                            for (const [subKey, subConfig] of Object.entries(fieldConfig.fields)) {
+                                if (subConfig.hidden) continue;
+
+                                const subValue = item ? getNestedValue(item, subKey) : undefined;
+                                const subPath = `${this.path}.${index}.${subKey}`;
+
+                                const { renderer: subRenderer, config: subResolved } = _resolveRenderer(subConfig, subPath);
+                                const subField = subRenderer(subResolved, subValue, (p, v) => this.handleFieldChange(p, v), subPath);
+                                groupContent.appendChild(subField);
+
+                                // showWhen sur les sous-champs du groupe
+                                if (subConfig.showWhen) {
+                                    const sw = subConfig.showWhen;
+                                    let refValue = item ? item[sw.field] : undefined;
+                                    if (refValue === undefined && fieldConfig.fields[sw.field] && fieldConfig.fields[sw.field].default !== undefined) {
+                                        refValue = fieldConfig.fields[sw.field].default;
+                                    }
+                                    const matches = sw.values ? sw.values.includes(refValue) : refValue === sw.value;
+                                    if (!matches) subField.style.display = 'none';
+
+                                    subField.dataset.showWhenField = sw.field;
+                                    subField.dataset.showWhenValue = sw.value || '';
+                                    if (sw.values) subField.dataset.showWhenValues = JSON.stringify(sw.values);
+                                }
+                            }
+
+                            // Listeners showWhen dans le groupe
+                            const showWhenFields = new Set();
+                            for (const [, subConfig] of Object.entries(fieldConfig.fields)) {
+                                if (subConfig.showWhen) showWhenFields.add(subConfig.showWhen.field);
+                            }
+                            for (const selectorField of showWhenFields) {
+                                const selectorPath = `${this.path}.${index}.${selectorField}`;
+                                const selectorInput = groupContent.querySelector(`[data-path="${selectorPath}"]`);
+                                if (!selectorInput) continue;
+
+                                selectorInput.addEventListener('change', () => {
+                                    const newValue = selectorInput.value;
+                                    if (this.items[index]) this.items[index][selectorField] = newValue;
+
+                                    const conditionalFields = groupContent.querySelectorAll(`[data-show-when-field="${selectorField}"]`);
+                                    for (const el of conditionalFields) {
+                                        const matchValue = el.dataset.showWhenValue;
+                                        const matchValues = el.dataset.showWhenValues ? JSON.parse(el.dataset.showWhenValues) : null;
+                                        const matches = matchValues ? matchValues.includes(newValue) : newValue === matchValue;
+                                        el.style.display = matches ? '' : 'none';
+                                    }
+
+                                    this.notifyChange();
+                                });
+                            }
+                        }
+
+                        content.appendChild(groupWrapper);
+                    } else if (fieldConfig.type === 'array' && fieldConfig.nested) {
                     // Gerer les tableaux imbriques (nested: true)
-                    if (fieldConfig.type === 'array' && fieldConfig.nested) {
                         const nestedContainer = document.createElement('div');
                         nestedContainer.className = 'json-editor__field json-editor__field--array-nested';
 
@@ -631,19 +781,46 @@ export class ArrayManager {
                         );
                         content.appendChild(fieldElement);
                     } else {
-                        // Champ normal
-                        const renderer = fieldRenderers[fieldConfig.type] || fieldRenderers['text'];
+                        // Champ normal — résoudre via richtext si applicable
+                        const { renderer, config: resolvedConfig } = _resolveRenderer(fieldConfig, fieldPath);
                         const fieldElement = renderer(
-                            fieldConfig,
+                            resolvedConfig,
                             fieldValue,
                             (path, value) => this.handleFieldChange(path, value),
                             fieldPath
                         );
                         content.appendChild(fieldElement);
                     }
+
+                    // Masquer les champs conditionnels (showWhen) sans les détruire
+                    if (showWhenHidden && content.lastElementChild) {
+                        const el = content.lastElementChild;
+                        el.style.display = 'none';
+                        el.dataset.showWhenField = fieldConfig.showWhen.field;
+                        el.dataset.showWhenValue = fieldConfig.showWhen.value || '';
+                        if (fieldConfig.showWhen.values) {
+                            el.dataset.showWhenValues = JSON.stringify(fieldConfig.showWhen.values);
+                        }
+                    } else if (fieldConfig.showWhen && content.lastElementChild) {
+                        // Champ visible mais conditionnel — marquer pour le toggle
+                        const el = content.lastElementChild;
+                        el.dataset.showWhenField = fieldConfig.showWhen.field;
+                        el.dataset.showWhenValue = fieldConfig.showWhen.value || '';
+                        if (fieldConfig.showWhen.values) {
+                            el.dataset.showWhenValues = JSON.stringify(fieldConfig.showWhen.values);
+                        }
+                    }
+
+                    // Marquer le groupe row pour regroupement cote a cote
+                    if (fieldConfig.row && content.lastElementChild) {
+                        content.lastElementChild.dataset.rowGroup = fieldConfig.row;
+                    }
                 }
             }
         }
+
+        // Grouper les champs avec le meme row en lignes cote a cote
+        groupRowFields(content);
 
         element.appendChild(content);
 
@@ -658,7 +835,130 @@ export class ArrayManager {
         // Event listeners pour les actions
         this.attachItemListeners(element, index);
 
+        // Listeners showWhen : reconstruire l'item quand le champ référencé change
+        if (this.config.itemSchema) {
+            this.setupShowWhenListeners(element, index, content);
+        }
+
         return element;
+    }
+
+    /**
+     * Rend un item en mode compact : une seule bande avec numero + champs + supprimer.
+     * Pas de header, pas de toggle, pas de titre dynamique.
+     */
+    renderCompactItem(element, item, index) {
+        element.classList.add('json-editor__array-item--compact');
+        const isFixedLength = this.config.fixedLength === true;
+
+        // Conteneur inline : numero + champs + actions
+        const row = document.createElement('div');
+        row.className = 'json-editor__compact-row';
+
+        // Numero
+        const num = document.createElement('span');
+        num.className = 'json-editor__array-item-number';
+        num.textContent = index + 1;
+        row.appendChild(num);
+
+        // Champs
+        const fieldsContainer = document.createElement('div');
+        fieldsContainer.className = 'json-editor__compact-fields';
+
+        if (this.config.itemSchema) {
+            const valueField = Object.entries(this.config.itemSchema).find(([, v]) => v.isArrayValue);
+            if (valueField) {
+                const [, fieldConfig] = valueField;
+                const itemPath = `${this.path}.${index}`;
+                const { renderer, config: resolvedConfig } = _resolveRenderer(fieldConfig, itemPath);
+                fieldsContainer.appendChild(renderer(
+                    resolvedConfig, item,
+                    (path, value) => this.handleItemChange(index, null, value),
+                    itemPath
+                ));
+            } else {
+                for (const [fieldKey, fieldConfig] of Object.entries(this.config.itemSchema)) {
+                    if (fieldConfig.hidden) continue;
+                    const fieldValue = item ? getNestedValue(item, fieldKey) : undefined;
+                    const fieldPath = `${this.path}.${index}.${fieldKey}`;
+
+                    let fieldElement;
+                    if (fieldConfig.optionsFrom && (fieldConfig.type === 'select' || fieldConfig.type === 'multiCheckbox')) {
+                        const dynamicOptions = this.getDynamicSelectOptions(fieldConfig.optionsFrom, fieldConfig.optionsLabelField || 'label');
+                        const augmentedConfig = { ...fieldConfig, options: dynamicOptions };
+                        fieldElement = fieldRenderers[fieldConfig.type](augmentedConfig, fieldValue !== undefined ? fieldValue : '0', (p, v) => this.handleFieldChange(p, v), fieldPath);
+                    } else {
+                        const { renderer, config: resolvedConfig } = _resolveRenderer(fieldConfig, fieldPath);
+                        fieldElement = renderer(resolvedConfig, fieldValue, (p, v) => this.handleFieldChange(p, v), fieldPath);
+                    }
+
+                    if (fieldConfig.row && fieldElement) {
+                        fieldElement.dataset.rowGroup = fieldConfig.row;
+                    }
+                    fieldsContainer.appendChild(fieldElement);
+                }
+                groupRowFields(fieldsContainer);
+            }
+        }
+
+        row.appendChild(fieldsContainer);
+
+        // Bouton supprimer (sauf fixedLength)
+        if (!isFixedLength) {
+            const delBtn = document.createElement('button');
+            delBtn.type = 'button';
+            delBtn.className = 'json-editor__compact-delete';
+            delBtn.title = translateLabel('editor_delete') || 'Supprimer';
+            delBtn.innerHTML = '<i class="fas fa-times"></i>';
+            delBtn.addEventListener('click', () => this.removeItem(index));
+            row.appendChild(delBtn);
+        }
+
+        element.appendChild(row);
+        return element;
+    }
+
+    /**
+     * Configure les listeners pour afficher/masquer les champs conditionnels (showWhen)
+     * quand le champ sélecteur change de valeur. Pas de reconstruction DOM.
+     */
+    setupShowWhenListeners(element, index, content) {
+        // Trouver tous les champs showWhen.field uniques
+        const showWhenFields = new Set();
+        for (const [, fieldConfig] of Object.entries(this.config.itemSchema)) {
+            if (fieldConfig.showWhen) {
+                showWhenFields.add(fieldConfig.showWhen.field);
+            }
+        }
+        if (showWhenFields.size === 0) return;
+
+        const itemPath = `${this.path}.${index}`;
+        for (const selectorField of showWhenFields) {
+            const selectorPath = `${itemPath}.${selectorField}`;
+            const selectorInput = content.querySelector(`[data-path="${selectorPath}"]`);
+            if (!selectorInput) continue;
+
+            selectorInput.addEventListener('change', () => {
+                // Mettre à jour la valeur dans le modèle
+                const newValue = selectorInput.value;
+                if (this.items[index]) {
+                    this.items[index][selectorField] = newValue;
+                }
+
+                // Afficher/masquer les champs conditionnels sans reconstruire le DOM
+                const conditionalFields = content.querySelectorAll(`[data-show-when-field="${selectorField}"]`);
+                for (const el of conditionalFields) {
+                    const matchValue = el.dataset.showWhenValue;
+                    const matchValues = el.dataset.showWhenValues ? JSON.parse(el.dataset.showWhenValues) : null;
+                    const matches = matchValues
+                        ? matchValues.includes(newValue)
+                        : newValue === matchValue;
+                    el.style.display = matches ? '' : 'none';
+                }
+
+                this.notifyChange();
+            });
+        }
     }
 
     /**
@@ -922,6 +1222,9 @@ export class ArrayManager {
         if (this.onChange) {
             this.onChange(path, value);
         }
+
+        // Re-valider la somme a chaque changement de champ
+        this.validateSum();
     }
 
     /**
@@ -942,12 +1245,34 @@ export class ArrayManager {
     }
 
     /**
-     * Construit les options dynamiques pour un select optionsFrom
+     * Construit les options dynamiques pour un select optionsFrom.
+     * Résout d'abord relativement au parent de l'array courante,
+     * puis au global (fallback pour les activités standalone).
      */
     getDynamicSelectOptions(optionsFrom, labelField) {
         const editorData = window._jsonEditorData;
         if (!editorData) return [];
-        const sourceArray = editorData[optionsFrom];
+
+        let sourceArray;
+
+        // 1. Résolution relative : remonter au parent de l'array et chercher le champ frère
+        // Ex: path = "slides.9.exercise.elements" → parent = "slides.9.exercise" → chercher "dropZones"
+        if (this.path && this.path.includes('.')) {
+            const parentPath = this.path.substring(0, this.path.lastIndexOf('.'));
+            const { getNestedValue } = window._jsonEditorUtils || {};
+            if (getNestedValue) {
+                const parentObj = getNestedValue(editorData, parentPath);
+                if (parentObj && Array.isArray(parentObj[optionsFrom])) {
+                    sourceArray = parentObj[optionsFrom];
+                }
+            }
+        }
+
+        // 2. Fallback : résolution globale (activité standalone)
+        if (!sourceArray) {
+            sourceArray = editorData[optionsFrom];
+        }
+
         if (!Array.isArray(sourceArray)) return [];
         return sourceArray.map((item, index) => ({
             value: String(index),
@@ -961,6 +1286,48 @@ export class ArrayManager {
     notifyChange() {
         if (this.onChange) {
             this.onChange(this.path, this.items);
+        }
+        // Validation de la somme si configuree
+        this.validateSum();
+    }
+
+    /**
+     * Verifie la somme d'un champ numerique sur tous les items (ex: fraction = 100%).
+     * Colore les selects en rouge si la somme est incorrecte.
+     */
+    validateSum() {
+        const vs = this.config.validateSum;
+        if (!vs || !vs.field) return;
+
+        const sum = this.items.reduce((acc, item) => {
+            const val = getNestedValue(item, vs.field);
+            return acc + (parseFloat(val) || 0);
+        }, 0);
+
+        // Arrondir pour eviter les erreurs de virgule flottante
+        const rounded = Math.round(sum * 100) / 100;
+        const isValid = rounded === vs.target;
+
+        // Trouver tous les selects du champ dans le container
+        const selects = this.container.querySelectorAll(`select[data-path$=".${vs.field}"]`);
+        selects.forEach(select => {
+            select.classList.toggle('json-editor__select--error', !isValid);
+        });
+
+        // Afficher/masquer le message d'erreur
+        let errorEl = this.container.querySelector('.json-editor__sum-error');
+        if (!isValid) {
+            const msg = (translateLabel(vs.label) || 'Sum must equal {target}%')
+                .replace('{0}', rounded)
+                .replace('{target}', vs.target);
+            if (!errorEl) {
+                errorEl = document.createElement('div');
+                errorEl.className = 'json-editor__sum-error';
+                this.container.appendChild(errorEl);
+            }
+            errorEl.textContent = msg;
+        } else if (errorEl) {
+            errorEl.remove();
         }
     }
 

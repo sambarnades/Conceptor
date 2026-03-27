@@ -7,6 +7,7 @@
 
 import { translations, t, currentLang } from '../core/translation.js';
 import { h5pDateToLocale } from '../core/utils.js';
+import { latexToUnicode } from '../h5p/json-healer.js';
 // chart-renderer.js chargé à la demande dans formatChart() pour éviter
 // de payer le coût de parsing au premier import de document-formatter.js
 
@@ -15,9 +16,12 @@ import { h5pDateToLocale } from '../core/utils.js';
  * Formatte un contenu JSON selon son type pour l'export document
  * @param {string} moduleKey - La clé du module (ex: 'QuizSet', 'Flashcards', etc.)
  * @param {Object} jsonData - Les données JSON du contenu
+ * @param {Object} [options={}] - Options de formatage
+ * @param {boolean} [options.keepLatex=false] - Si true, conserve le LaTeX \(...\) au lieu de convertir en Unicode
+ *   (pour les exports DOCX/ODT qui gèrent les formules nativement)
  * @returns {Object} - Le contenu formaté avec sections et éléments structurés
  */
-export async function formatContentForDocument(moduleKey, jsonData) {
+export async function formatContentForDocument(moduleKey, jsonData, options = {}) {
     const formatters = {
         'QuizSet': formatQuizSet,
         'QuizSetQCM': formatQuizSet,
@@ -39,24 +43,45 @@ export async function formatContentForDocument(moduleKey, jsonData) {
         'SortParagraphs': formatSortParagraphs,
         'FindTheWords': formatFindTheWords,
         'Essay': formatEssay,
-        // Modules Éléa
+        // Modules Éléa (clés courtes)
         'QCM': formatQCM,
         'test_elea': formatMoodleXml,
         'Appariement': formatAppariement,
         'Millionnaire': formatMillionnaire,
         'glossaireXml': formatGlossaireXml,
         'Page': formatPage,
-        'Devoir': formatDevoir
+        'Devoir': formatDevoir,
+        // Modules Éléa (clés longues — utilisées par l'éditeur)
+        'elea_qcm': formatQCM,
+        'elea_test': formatMoodleXml,
+        'elea_appariement': formatAppariement,
+        'elea_millionnaire': formatMillionnaire,
+        'elea_glossaire': formatGlossaireXml,
+        'elea_page': formatPage,
+        'elea_devoir': formatDevoir,
+        'CoursePresentation': formatCoursePresentation
     };
 
     const formatter = formatters[moduleKey];
     if (!formatter) {
-        return postProcessLatex(formatGeneric(moduleKey, jsonData));
+        const genericResult = formatGeneric(moduleKey, jsonData);
+        return options.keepLatex ? genericResult : postProcessLatex(genericResult);
     }
 
     // formatChart est async (chargement paresseux de chart-renderer.js)
     const result = await formatter(jsonData);
-    return postProcessLatex(result);
+    return options.keepLatex ? result : postProcessLatex(result);
+}
+
+/**
+ * Extrait l'URL d'une image media (mediaImage ou backgroundImage) depuis les données.
+ * Retourne le dataURL si disponible, sinon le path relatif.
+ * @param {Object|undefined} imageField - Le champ image (ex: data.mediaImage)
+ * @returns {string|null} - URL utilisable pour l'export, ou null
+ */
+function getMediaImageUrl(imageField) {
+    if (!imageField) return null;
+    return imageField.dataURL || imageField.path || null;
 }
 
 /**
@@ -81,7 +106,7 @@ function formatQuizSet(data) {
     if (data.description) {
         sections.push({
             type: 'paragraph',
-            text: data.description,
+            text: cleanHtml(data.description),
             style: 'description'
         });
     }
@@ -108,7 +133,7 @@ function formatQuizSet(data) {
             if (question.metadata && question.metadata.title) {
                 sections.push({
                     type: 'paragraph',
-                    text: question.metadata.title,
+                    text: cleanHtml(question.metadata.title),
                     style: 'subtitle'
                 });
             }
@@ -548,7 +573,7 @@ function formatEssayCorrection(params, sections) {
         params.keywords.forEach(kw => {
             sections.push({
                 type: 'bulletPoint',
-                text: kw.keyword || kw.word || kw.text || (typeof kw === 'string' ? kw : ''),
+                text: cleanHtml(kw.keyword || kw.word || kw.text || (typeof kw === 'string' ? kw : '')),
                 style: 'correctAnswer'
             });
         });
@@ -686,17 +711,25 @@ function formatFlashcards(data) {
             const leftCard = pageCards[leftIndex] || null;
             const rightCard = pageCards[rightIndex] || null;
 
+            // Extraire l'image d'une carte (data URL ou chemin)
+            const getCardImage = (card) => {
+                if (!card || !card.image || !card.image.path) return null;
+                return card.image.path; // data URL ou chemin relatif
+            };
+
             // Recto : ordre normal [gauche, droite]
             rectoRows.push({
                 left: leftCard ? {
                     text: cleanHtml(leftCard.text),
                     hint: leftCard.tip ? cleanHtml(leftCard.tip) : null,
-                    cardNumber: pageIndex * CARDS_PER_PAGE + leftIndex + 1
+                    cardNumber: pageIndex * CARDS_PER_PAGE + leftIndex + 1,
+                    imageUrl: getCardImage(leftCard)
                 } : null,
                 right: rightCard ? {
                     text: cleanHtml(rightCard.text),
                     hint: rightCard.tip ? cleanHtml(rightCard.tip) : null,
-                    cardNumber: pageIndex * CARDS_PER_PAGE + rightIndex + 1
+                    cardNumber: pageIndex * CARDS_PER_PAGE + rightIndex + 1,
+                    imageUrl: getCardImage(rightCard)
                 } : null
             });
 
@@ -705,12 +738,14 @@ function formatFlashcards(data) {
                 left: rightCard ? {
                     text: cleanHtml(rightCard.answer),
                     hint: null, // Flashcards n'ont pas d'indice verso
-                    cardNumber: pageIndex * CARDS_PER_PAGE + rightIndex + 1
+                    cardNumber: pageIndex * CARDS_PER_PAGE + rightIndex + 1,
+                    imageUrl: getCardImage(rightCard)
                 } : null,
                 right: leftCard ? {
                     text: cleanHtml(leftCard.answer),
                     hint: null,
-                    cardNumber: pageIndex * CARDS_PER_PAGE + leftIndex + 1
+                    cardNumber: pageIndex * CARDS_PER_PAGE + leftIndex + 1,
+                    imageUrl: getCardImage(leftCard)
                 } : null
             });
         }
@@ -866,10 +901,17 @@ function formatTimeline(data) {
         });
     }
 
-    // Gestion de l'image principale (Asset)
-    if (timeline.asset) {
-        const mediaUrl = timeline.asset.media || timeline.asset.path; // Supporte media ou path
-
+    // Gestion de l'image principale : image uploadée (coverImage) OU URL (asset.media)
+    const coverImageUrl = getMediaImageUrl(timeline.coverImage);
+    if (coverImageUrl) {
+        sections.push({
+            type: 'image',
+            url: coverImageUrl,
+            caption: timeline.coverImageAlt || '',
+            alt: timeline.coverImageAlt || ''
+        });
+    } else if (timeline.asset) {
+        const mediaUrl = timeline.asset.media || timeline.asset.path;
         if (mediaUrl) {
             sections.push({
                 type: 'image',
@@ -878,17 +920,14 @@ function formatTimeline(data) {
                 alt: timeline.asset.credit || ''
             });
         }
-    } else {
-        // Fallback: check if 'media' exists at root level (some H5P formats)
-        if (timeline.media && (timeline.media.path || timeline.media.url)) {
-            const mediaUrl = timeline.media.path || timeline.media.url;
-            sections.push({
-                type: 'image',
-                url: mediaUrl,
-                caption: timeline.media.caption || '',
-                alt: timeline.media.credit || ''
-            });
-        }
+    } else if (timeline.media && (timeline.media.path || timeline.media.url)) {
+        const mediaUrl = timeline.media.path || timeline.media.url;
+        sections.push({
+            type: 'image',
+            url: mediaUrl,
+            caption: timeline.media.caption || '',
+            alt: timeline.media.credit || ''
+        });
     }
 
     sections.push({ type: 'separator' });
@@ -908,7 +947,16 @@ function formatTimeline(data) {
                 text: `${h5pDateToLocale(event.startDate, currentLang)} - ${cleanHtml(event.headline)}`
             });
 
-            if (event.asset && event.asset.media) {
+            // Image uploadée (eventImage) OU URL (asset.media)
+            const eventImageUrl = getMediaImageUrl(event.eventImage);
+            if (eventImageUrl) {
+                sections.push({
+                    type: 'image',
+                    url: eventImageUrl,
+                    caption: event.eventImageAlt || '',
+                    alt: event.eventImageAlt || ''
+                });
+            } else if (event.asset && event.asset.media) {
                 sections.push({
                     type: 'image',
                     url: event.asset.media,
@@ -986,6 +1034,12 @@ function formatDragTheWords(data) {
             text: cleanHtml(data.taskDescription),
             style: 'description'
         });
+    }
+
+    // Image de contexte (après la description, avant le texte)
+    const dtwImageUrl = getMediaImageUrl(data.mediaImage);
+    if (dtwImageUrl) {
+        sections.push({ type: 'image', url: dtwImageUrl });
     }
 
     if (data.textField) {
@@ -1149,7 +1203,11 @@ function formatDragAndDrop(data) {
 
         // Mélanger les étiquettes et les numéroter
         const shuffled = elements
-            .map((el, i) => ({ text: cleanHtml(el.text || ''), originalIndex: i }))
+            .map((el, i) => ({
+                text: cleanHtml(el.text || ''),
+                imageUrl: getMediaImageUrl(el.image),
+                originalIndex: i
+            }))
             .sort(() => Math.random() - 0.5);
 
         // IMPORTANT : 3 colonnes fixes pour alignement avec la grille de travail
@@ -1159,7 +1217,16 @@ function formatDragAndDrop(data) {
             const row = [];
             for (let j = 0; j < LABELS_PER_ROW; j++) {
                 if (i + j < shuffled.length) {
-                    row.push(`${i + j + 1}. ${shuffled[i + j].text}`);
+                    const item = shuffled[i + j];
+                    if (item.imageUrl) {
+                        // Étiquette image : objet avec URL pour rendu inline dans la cellule
+                        row.push({
+                            text: `${i + j + 1}. ${item.text || '[Image]'}`,
+                            imageUrl: item.imageUrl
+                        });
+                    } else {
+                        row.push(`${i + j + 1}. ${item.text}`);
+                    }
                 } else {
                     // Cellule vide pour maintenir les dimensions uniformes
                     row.push('');
@@ -1200,11 +1267,19 @@ function formatDragAndDrop(data) {
             text: t('doc_fmt_dnd_completed_grid') || 'Grille complétée'
         });
 
-        // Construire un mapping zone → étiquettes correctes
+        // Construire un mapping zone → étiquettes correctes (avec image si applicable)
         const zoneCorrectLabels = dropZones.map(zone => {
             const correctIndices = Array.isArray(zone.correctElements) ? zone.correctElements : [];
             return correctIndices
-                .map(idx => elements[idx] ? cleanHtml(elements[idx].text || '') : '')
+                .map(idx => {
+                    if (!elements[idx]) return '';
+                    const imageUrl = getMediaImageUrl(elements[idx].image);
+                    const text = cleanHtml(elements[idx].text || '') || '[Image]';
+                    if (imageUrl) {
+                        return { text, imageUrl };
+                    }
+                    return text;
+                })
                 .filter(t => t);
         });
 
@@ -1251,7 +1326,10 @@ function formatDragAndDrop(data) {
         const recapRows = dropZones.map(zone => {
             const correctIndices = Array.isArray(zone.correctElements) ? zone.correctElements : [];
             const labels = correctIndices
-                .map(idx => elements[idx] ? cleanHtml(elements[idx].text || '') : '')
+                .map(idx => {
+                    if (!elements[idx]) return '';
+                    return cleanHtml(elements[idx].text || '');
+                })
                 .filter(t => t);
             return [
                 cleanHtml(zone.label || ''),
@@ -1293,6 +1371,12 @@ function formatFillInTheBlanks(data) {
             text: cleanHtml(data.taskDescription),
             style: 'description'
         });
+    }
+
+    // Image de contexte (après la description, avant le texte à trous)
+    const fibImageUrl = getMediaImageUrl(data.mediaImage);
+    if (fibImageUrl) {
+        sections.push({ type: 'image', url: fibImageUrl });
     }
 
     if (data.questions && Array.isArray(data.questions)) {
@@ -1380,6 +1464,12 @@ function formatMarkTheWords(data) {
             text: cleanHtml(data.taskDescription),
             style: 'description'
         });
+    }
+
+    // Image de contexte (après la description, avant le texte)
+    const mtwImageUrl = getMediaImageUrl(data.mediaImage);
+    if (mtwImageUrl) {
+        sections.push({ type: 'image', url: mtwImageUrl });
     }
 
     if (data.textField) {
@@ -1665,6 +1755,12 @@ function formatMultipleChoice(data) {
         });
     }
 
+    // Image de contexte (après l'énoncé, avant les réponses)
+    const mcImageUrl = getMediaImageUrl(data.mediaImage);
+    if (mcImageUrl) {
+        sections.push({ type: 'image', url: mcImageUrl });
+    }
+
     if (data.answers && Array.isArray(data.answers)) {
         sections.push({
             type: 'header',
@@ -1842,6 +1938,12 @@ function formatTrueFalse(data) {
         });
     }
 
+    // Image de contexte (après l'énoncé, avant les propositions)
+    const tfImageUrl = getMediaImageUrl(data.mediaImage);
+    if (tfImageUrl) {
+        sections.push({ type: 'image', url: tfImageUrl });
+    }
+
     const trueLabel = (data.l10n && data.l10n.trueText) ? cleanHtml(data.l10n.trueText) : (t('doc_fmt_true') || 'Vrai');
     const falseLabel = (data.l10n && data.l10n.falseText) ? cleanHtml(data.l10n.falseText) : (t('doc_fmt_false') || 'Faux');
 
@@ -1926,17 +2028,25 @@ function formatDialogCards(data) {
             const leftDialog = pageDialogs[leftIndex] || null;
             const rightDialog = pageDialogs[rightIndex] || null;
 
+            // Extraire l'image d'un dialogue (data URL ou chemin)
+            const getDialogImage = (dialog) => {
+                if (!dialog || !dialog.image || !dialog.image.path) return null;
+                return dialog.image.path;
+            };
+
             // Recto : ordre normal [gauche, droite]
             rectoRows.push({
                 left: leftDialog ? {
                     text: cleanHtml(leftDialog.text),
                     hint: leftDialog.tips?.front ? cleanHtml(leftDialog.tips.front) : null,
-                    cardNumber: pageIndex * CARDS_PER_PAGE + leftIndex + 1
+                    cardNumber: pageIndex * CARDS_PER_PAGE + leftIndex + 1,
+                    imageUrl: getDialogImage(leftDialog)
                 } : null,
                 right: rightDialog ? {
                     text: cleanHtml(rightDialog.text),
                     hint: rightDialog.tips?.front ? cleanHtml(rightDialog.tips.front) : null,
-                    cardNumber: pageIndex * CARDS_PER_PAGE + rightIndex + 1
+                    cardNumber: pageIndex * CARDS_PER_PAGE + rightIndex + 1,
+                    imageUrl: getDialogImage(rightDialog)
                 } : null
             });
 
@@ -1945,12 +2055,14 @@ function formatDialogCards(data) {
                 left: rightDialog ? {
                     text: cleanHtml(rightDialog.answer),
                     hint: rightDialog.tips?.back ? cleanHtml(rightDialog.tips.back) : null,
-                    cardNumber: pageIndex * CARDS_PER_PAGE + rightIndex + 1
+                    cardNumber: pageIndex * CARDS_PER_PAGE + rightIndex + 1,
+                    imageUrl: getDialogImage(rightDialog)
                 } : null,
                 right: leftDialog ? {
                     text: cleanHtml(leftDialog.answer),
                     hint: leftDialog.tips?.back ? cleanHtml(leftDialog.tips.back) : null,
-                    cardNumber: pageIndex * CARDS_PER_PAGE + leftIndex + 1
+                    cardNumber: pageIndex * CARDS_PER_PAGE + leftIndex + 1,
+                    imageUrl: getDialogImage(leftDialog)
                 } : null
             });
         }
@@ -2188,6 +2300,12 @@ function formatEssay(data) {
         });
     }
 
+    // Image de contexte (après la consigne, avant l'espace de réponse)
+    const essayImageUrl = getMediaImageUrl(data.mediaImage);
+    if (essayImageUrl) {
+        sections.push({ type: 'image', url: essayImageUrl });
+    }
+
     // Espace pour la réponse de l'élève
     sections.push({
         type: 'header',
@@ -2227,7 +2345,7 @@ function formatEssay(data) {
         data.keywords.forEach(kw => {
             sections.push({
                 type: 'bulletPoint',
-                text: kw.keyword || kw.word || kw.text || (typeof kw === 'string' ? kw : ''),
+                text: cleanHtml(kw.keyword || kw.word || kw.text || (typeof kw === 'string' ? kw : '')),
                 style: 'correctAnswer'
             });
         });
@@ -2586,6 +2704,26 @@ function formatMoodleXml(data) {
                     type: 'paragraph',
                     text: processClozeForCorrection(cleanHtml(content.questiontext)),
                     style: 'correctAnswer'
+                });
+            }
+
+            // Feedbacks (correctfeedback, incorrectfeedback, feedback general)
+            const feedbackItems = [
+                { key: 'correctfeedback', label: t('doc_fmt_feedback_correct') || 'Feedback bonne reponse' },
+                { key: 'partiallycorrectfeedback', label: t('doc_fmt_feedback_partial') || 'Feedback reponse partielle' },
+                { key: 'incorrectfeedback', label: t('doc_fmt_feedback_incorrect') || 'Feedback mauvaise reponse' },
+                { key: 'feedback', label: t('doc_fmt_feedback_general') || 'Feedback general' }
+            ];
+            const hasFeedback = feedbackItems.some(f => content[f.key]);
+            if (hasFeedback) {
+                feedbackItems.forEach(f => {
+                    if (content[f.key]) {
+                        sections.push({
+                            type: 'paragraph',
+                            text: `*${f.label}* : ${cleanHtml(content[f.key])}`,
+                            style: 'tip'
+                        });
+                    }
                 });
             }
 
@@ -3156,6 +3294,271 @@ function getCalloutEmoji(type) {
 }
 
 /**
+ * Formatte une CoursePresentation H5P pour l'export document.
+ * Partie 1 : contenu des diapositives et énoncés des exercices.
+ * Partie 2 : correction des exercices.
+ */
+function formatCoursePresentation(data) {
+    const sections = [];
+    const title = data.title || t('doc_fmt_cp_title');
+
+    // ========================================
+    // PARTIE 1 : CONTENU ET ÉNONCÉS
+    // ========================================
+    sections.push({
+        type: 'header',
+        level: 1,
+        text: title
+    });
+
+    sections.push({
+        type: 'paragraph',
+        text: t('doc_fmt_cp_instructions'),
+        style: 'instructions'
+    });
+
+    sections.push({ type: 'separator' });
+
+    const slides = data.slides || [];
+    let exerciseIndex = 0;
+    const exercisesForCorrection = [];
+
+    slides.forEach((slide, i) => {
+        const slideType = slide.type || 'content';
+
+        // Titre de la diapositive
+        sections.push({
+            type: 'header',
+            level: 2,
+            text: `${t('doc_fmt_cp_slide')} ${i + 1}${slide.title ? ' — ' + cleanHtml(slide.title) : ''}`
+        });
+
+        // Sous-titre (slide titre)
+        if (slideType === 'title' && slide.subtitle) {
+            sections.push({
+                type: 'paragraph',
+                text: cleanHtml(slide.subtitle),
+                style: 'subtitle'
+            });
+        }
+
+        // Image du slide
+        const slideImageUrl = getMediaImageUrl(slide.slideImage);
+        if (slideImageUrl) {
+            sections.push({
+                type: 'image',
+                url: slideImageUrl,
+                caption: slide.slideImageAlt || '',
+                alt: slide.slideImageAlt || ''
+            });
+        }
+
+        // Contenu texte
+        if (slide.text) {
+            sections.push({
+                type: 'paragraph',
+                text: cleanHtml(slide.text),
+                style: 'content'
+            });
+        }
+
+        // Tableau
+        if (slide.table && slide.table.headers) {
+            sections.push({
+                type: 'table',
+                headers: slide.table.headers,
+                rows: (slide.table.rows || []).filter(row => Array.isArray(row))
+            });
+        }
+
+        // Exercice (quiz, content-quiz, summary)
+        if (slide.exercise && slide.exercise.library) {
+            exerciseIndex++;
+            const lib = slide.exercise.library;
+            const { library, ...params } = slide.exercise;
+
+            sections.push({
+                type: 'header',
+                level: 3,
+                text: `${t('doc_fmt_cp_exercise')} ${exerciseIndex}`
+            });
+
+            // Énoncé selon le type d'exercice
+            formatCPExerciseStatement(lib, params, sections);
+
+            // Stocker pour la correction
+            exercisesForCorrection.push({ index: exerciseIndex, library: lib, params });
+        }
+
+        sections.push({ type: 'separator' });
+    });
+
+    // ========================================
+    // PARTIE 2 : CORRECTION
+    // ========================================
+    if (exercisesForCorrection.length > 0) {
+        sections.push({ type: 'pageBreak' });
+
+        sections.push({
+            type: 'header',
+            level: 1,
+            text: t('doc_fmt_correction_title') || 'Correction'
+        });
+
+        sections.push({ type: 'separator' });
+
+        exercisesForCorrection.forEach(({ index, library, params }) => {
+            sections.push({
+                type: 'header',
+                level: 2,
+                text: `${t('doc_fmt_cp_exercise')} ${index}`
+            });
+
+            formatCPExerciseCorrection(library, params, sections);
+
+            sections.push({ type: 'separator' });
+        });
+    }
+
+    return { title, sections };
+}
+
+/**
+ * Formate l'énoncé d'un exercice CoursePresentation selon sa bibliothèque H5P.
+ * Réutilise les helpers existants pour les types QuizSet (MultiChoice, TrueFalse,
+ * Blanks, DragText, MarkTheWords, DragQuestion) et ajoute le support inline
+ * pour SingleChoiceSet, Summary et DialogCards.
+ */
+function formatCPExerciseStatement(library, params, sections) {
+    if (library.includes('MultiChoice')) {
+        if (params.question) {
+            sections.push({ type: 'paragraph', text: cleanHtml(params.question), style: 'question' });
+        }
+        formatMultiChoiceStatement(params, sections);
+    } else if (library.includes('TrueFalse')) {
+        if (params.question) {
+            sections.push({ type: 'paragraph', text: cleanHtml(params.question), style: 'question' });
+        }
+        formatTrueFalseStatement(params, sections);
+    } else if (library.includes('Blanks')) {
+        if (params.taskDescription) {
+            sections.push({ type: 'paragraph', text: cleanHtml(params.taskDescription), style: 'question' });
+        }
+        formatBlanksStatement(params, sections);
+    } else if (library.includes('DragText')) {
+        if (params.taskDescription) {
+            sections.push({ type: 'paragraph', text: cleanHtml(params.taskDescription), style: 'question' });
+        }
+        formatDragTextStatement(params, sections);
+    } else if (library.includes('MarkTheWords')) {
+        if (params.taskDescription) {
+            sections.push({ type: 'paragraph', text: cleanHtml(params.taskDescription), style: 'question' });
+        }
+        formatMarkWordsStatement(params, sections);
+    } else if (library.includes('SingleChoiceSet')) {
+        // Choix unique en série : afficher chaque sous-question
+        if (params.choices && Array.isArray(params.choices)) {
+            params.choices.forEach((choice, i) => {
+                sections.push({ type: 'paragraph', text: cleanHtml(choice.question), style: 'question' });
+                if (choice.answers && Array.isArray(choice.answers)) {
+                    choice.answers.forEach((answer, j) => {
+                        const letter = String.fromCharCode(65 + j);
+                        sections.push({ type: 'checkbox', text: `${letter}. ${cleanHtml(answer)}` });
+                    });
+                }
+            });
+        }
+    } else if (library.includes('DragQuestion')) {
+        if (params.title) {
+            sections.push({ type: 'paragraph', text: cleanHtml(params.title), style: 'question' });
+        }
+        formatDragQuestionStatement(params, sections);
+    } else if (library.includes('Summary')) {
+        if (params.intro) {
+            sections.push({ type: 'paragraph', text: cleanHtml(params.intro), style: 'question' });
+        }
+        // Afficher les groupes d'affirmations
+        if (params.summaries && Array.isArray(params.summaries)) {
+            params.summaries.forEach((group, i) => {
+                sections.push({ type: 'header', level: 3, text: `${t('doc_fmt_claim_index') || 'Groupe'} ${i + 1}` });
+                if (group.summary && Array.isArray(group.summary)) {
+                    group.summary.forEach((statement, j) => {
+                        const letter = String.fromCharCode(65 + j);
+                        sections.push({ type: 'checkbox', text: `${letter}. ${cleanHtml(statement)}` });
+                    });
+                }
+            });
+        }
+    } else if (library.includes('Dialogcards')) {
+        if (params.description) {
+            sections.push({ type: 'paragraph', text: cleanHtml(params.description), style: 'question' });
+        }
+        // Afficher les cartes en liste
+        if (params.dialogs && Array.isArray(params.dialogs)) {
+            const headers = [t('doc_fmt_cp_card_front'), t('doc_fmt_cp_card_back')];
+            const rows = [];
+            params.dialogs.forEach(dialog => {
+                rows.push([cleanHtml(dialog.text || ''), cleanHtml(dialog.answer || '')]);
+            });
+            sections.push({ type: 'table', headers, rows });
+        }
+    }
+}
+
+/**
+ * Formate la correction d'un exercice CoursePresentation selon sa bibliothèque H5P.
+ */
+function formatCPExerciseCorrection(library, params, sections) {
+    if (library.includes('MultiChoice')) {
+        formatMultiChoiceCorrection(params, sections);
+    } else if (library.includes('TrueFalse')) {
+        formatTrueFalseCorrection(params, sections);
+    } else if (library.includes('Blanks')) {
+        formatBlanksCorrection(params, sections);
+    } else if (library.includes('DragText')) {
+        formatDragTextCorrection(params, sections);
+    } else if (library.includes('MarkTheWords')) {
+        formatMarkWordsCorrection(params, sections);
+    } else if (library.includes('SingleChoiceSet')) {
+        // La première réponse est toujours la bonne
+        if (params.choices && Array.isArray(params.choices)) {
+            params.choices.forEach((choice, i) => {
+                sections.push({ type: 'paragraph', text: cleanHtml(choice.question), style: 'question' });
+                if (choice.answers && Array.isArray(choice.answers) && choice.answers.length > 0) {
+                    sections.push({
+                        type: 'paragraph',
+                        text: `${t('doc_fmt_correct_answer') || 'Bonne réponse'} : A. ${cleanHtml(choice.answers[0])}`,
+                        style: 'correctAnswer'
+                    });
+                }
+            });
+        }
+    } else if (library.includes('DragQuestion')) {
+        formatDragQuestionCorrection(params, sections);
+    } else if (library.includes('Summary')) {
+        // La première affirmation de chaque groupe est la correcte
+        if (params.summaries && Array.isArray(params.summaries)) {
+            params.summaries.forEach((group, i) => {
+                if (group.summary && Array.isArray(group.summary) && group.summary.length > 0) {
+                    sections.push({
+                        type: 'paragraph',
+                        text: `${t('doc_fmt_claim_index') || 'Groupe'} ${i + 1} : A. ${cleanHtml(group.summary[0])}`,
+                        style: 'correctAnswer'
+                    });
+                }
+            });
+        }
+    } else if (library.includes('Dialogcards')) {
+        // Pas de correction pour les cartes de dialogue (pas scoré)
+        sections.push({
+            type: 'paragraph',
+            text: t('doc_fmt_cp_dialogcards_no_correction'),
+            style: 'description'
+        });
+    }
+}
+
+/**
  * Formatte générique pour les types non supportés
  */
 function formatGeneric(moduleKey, data) {
@@ -3203,198 +3606,6 @@ function getQuestionType(library) {
 // Convertisseur LaTeX → Unicode pour les exports DOCX/ODT/PDF
 // Transforme les expressions \(...\) en caractères Unicode lisibles
 // ============================================================================
-
-const SUPERSCRIPT_MAP = {
-    '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
-    '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹',
-    '+': '⁺', '-': '⁻', '=': '⁼', '(': '⁽', ')': '⁾',
-    'n': 'ⁿ', 'i': 'ⁱ', 'a': 'ᵃ', 'b': 'ᵇ', 'c': 'ᶜ',
-    'd': 'ᵈ', 'e': 'ᵉ', 'f': 'ᶠ', 'g': 'ᵍ', 'h': 'ʰ',
-    'j': 'ʲ', 'k': 'ᵏ', 'l': 'ˡ', 'm': 'ᵐ', 'o': 'ᵒ',
-    'p': 'ᵖ', 'r': 'ʳ', 's': 'ˢ', 't': 'ᵗ', 'u': 'ᵘ',
-    'v': 'ᵛ', 'w': 'ʷ', 'x': 'ˣ', 'y': 'ʸ', 'z': 'ᶻ'
-};
-
-const SUBSCRIPT_MAP = {
-    '0': '₀', '1': '₁', '2': '₂', '3': '₃', '4': '₄',
-    '5': '₅', '6': '₆', '7': '₇', '8': '₈', '9': '₉',
-    '+': '₊', '-': '₋', '=': '₌', '(': '₍', ')': '₎',
-    'a': 'ₐ', 'e': 'ₑ', 'h': 'ₕ', 'i': 'ᵢ', 'j': 'ⱼ',
-    'k': 'ₖ', 'l': 'ₗ', 'm': 'ₘ', 'n': 'ₙ', 'o': 'ₒ',
-    'p': 'ₚ', 'r': 'ᵣ', 's': 'ₛ', 't': 'ₜ', 'u': 'ᵤ',
-    'v': 'ᵥ', 'x': 'ₓ'
-};
-
-const GREEK_MAP = {
-    'alpha': 'α', 'beta': 'β', 'gamma': 'γ', 'delta': 'δ',
-    'epsilon': 'ε', 'varepsilon': 'ε', 'zeta': 'ζ', 'eta': 'η',
-    'theta': 'θ', 'vartheta': 'ϑ', 'iota': 'ι', 'kappa': 'κ',
-    'lambda': 'λ', 'mu': 'μ', 'nu': 'ν', 'xi': 'ξ',
-    'pi': 'π', 'varpi': 'ϖ', 'rho': 'ρ', 'varrho': 'ϱ',
-    'sigma': 'σ', 'varsigma': 'ς', 'tau': 'τ', 'upsilon': 'υ',
-    'phi': 'φ', 'varphi': 'ϕ', 'chi': 'χ', 'psi': 'ψ', 'omega': 'ω',
-    'Gamma': 'Γ', 'Delta': 'Δ', 'Theta': 'Θ', 'Lambda': 'Λ',
-    'Xi': 'Ξ', 'Pi': 'Π', 'Sigma': 'Σ', 'Upsilon': 'Υ',
-    'Phi': 'Φ', 'Psi': 'Ψ', 'Omega': 'Ω'
-};
-
-const OPERATOR_MAP = {
-    'times': '×', 'div': '÷', 'cdot': '·', 'pm': '±', 'mp': '∓',
-    'leq': '≤', 'le': '≤', 'geq': '≥', 'ge': '≥',
-    'neq': '≠', 'ne': '≠', 'approx': '≈', 'equiv': '≡',
-    'sim': '∼', 'simeq': '≃', 'propto': '∝',
-    'infty': '∞', 'infinity': '∞', 'partial': '∂', 'nabla': '∇',
-    'sum': '∑', 'prod': '∏', 'int': '∫', 'iint': '∬', 'iiint': '∭',
-    'oint': '∮', 'cup': '∪', 'cap': '∩',
-    'subset': '⊂', 'supset': '⊃', 'subseteq': '⊆', 'supseteq': '⊇',
-    'in': '∈', 'notin': '∉', 'ni': '∋',
-    'emptyset': '∅', 'varnothing': '∅',
-    'forall': '∀', 'exists': '∃', 'nexists': '∄',
-    'neg': '¬', 'lnot': '¬', 'land': '∧', 'lor': '∨',
-    'wedge': '∧', 'vee': '∨',
-    'rightarrow': '→', 'to': '→', 'leftarrow': '←',
-    'Rightarrow': '⇒', 'Leftarrow': '⇐',
-    'leftrightarrow': '↔', 'Leftrightarrow': '⇔',
-    'mapsto': '↦', 'implies': '⇒', 'iff': '⇔',
-    'ldots': '…', 'cdots': '⋯', 'vdots': '⋮', 'ddots': '⋱', 'dots': '…',
-    'langle': '⟨', 'rangle': '⟩',
-    'lfloor': '⌊', 'rfloor': '⌋', 'lceil': '⌈', 'rceil': '⌉',
-    'circ': '∘', 'star': '⋆', 'bullet': '•',
-    'oplus': '⊕', 'otimes': '⊗', 'odot': '⊙',
-    'perp': '⊥', 'parallel': '∥', 'angle': '∠',
-    'triangle': '△', 'square': '□',
-    'aleph': 'ℵ', 'hbar': 'ℏ', 'ell': 'ℓ',
-    'Re': 'ℜ', 'Im': 'ℑ'
-};
-
-const MATHBB_MAP = {
-    'R': 'ℝ', 'N': 'ℕ', 'Z': 'ℤ', 'Q': 'ℚ', 'C': 'ℂ',
-    'P': 'ℙ', 'H': 'ℍ', 'F': 'ⅎ'
-};
-
-function toSuperscript(str) {
-    return str.split('').map(c => SUPERSCRIPT_MAP[c] || c).join('');
-}
-
-function toSubscript(str) {
-    return str.split('').map(c => SUBSCRIPT_MAP[c] || c).join('');
-}
-
-/**
- * Convertit une expression LaTeX en Unicode
- */
-function latexToUnicode(latex) {
-    let s = latex.trim();
-
-    // \mathbb{X} → ℝ, ℕ, ℤ, etc.
-    s = s.replace(/\\mathbb\{([A-Z])\}/g, (_, c) => MATHBB_MAP[c] || c);
-
-    // \text{...} et \mathrm{...} → texte brut
-    s = s.replace(/\\(?:text|mathrm|textrm|textit|textbf|mathit|mathbf)\{([^}]*)\}/g, '$1');
-
-    // \sqrt[n]{...} → ⁿ√(...)
-    s = s.replace(/\\sqrt\[([^\]]+)\]\{([^}]*)\}/g, (_, n, content) => {
-        return toSuperscript(n) + '√(' + latexToUnicode(content) + ')';
-    });
-
-    // \sqrt{...} → √(...)
-    s = s.replace(/\\sqrt\{([^}]*)\}/g, (_, content) => '√(' + latexToUnicode(content) + ')');
-
-    // \frac{a}{b} → a/b ou (a)/(b) si complexe
-    s = s.replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g, (_, num, den) => {
-        const n = latexToUnicode(num);
-        const d = latexToUnicode(den);
-        if (n.length <= 2 && d.length <= 2) {
-            // Essayer les fractions Unicode courantes
-            const fractionMap = {
-                '1/2': '½', '1/3': '⅓', '2/3': '⅔', '1/4': '¼', '3/4': '¾',
-                '1/5': '⅕', '2/5': '⅖', '3/5': '⅗', '4/5': '⅘',
-                '1/6': '⅙', '5/6': '⅚', '1/7': '⅐', '1/8': '⅛',
-                '3/8': '⅜', '5/8': '⅝', '7/8': '⅞', '1/9': '⅑', '1/10': '⅒'
-            };
-            const key = n + '/' + d;
-            if (fractionMap[key]) return fractionMap[key];
-        }
-        const needParensNum = n.length > 1 && !/^[a-zA-Z0-9]$/.test(n);
-        const needParensDen = d.length > 1 && !/^[a-zA-Z0-9]$/.test(d);
-        return (needParensNum ? '(' + n + ')' : n) + '/' + (needParensDen ? '(' + d + ')' : d);
-    });
-
-    // \dfrac, \tfrac → même traitement
-    s = s.replace(/\\[dt]frac\{([^}]*)\}\{([^}]*)\}/g, (_, num, den) => {
-        const n = latexToUnicode(num);
-        const d = latexToUnicode(den);
-        const needParensNum = n.length > 1;
-        const needParensDen = d.length > 1;
-        return (needParensNum ? '(' + n + ')' : n) + '/' + (needParensDen ? '(' + d + ')' : d);
-    });
-
-    // \overline{X} → X̄
-    s = s.replace(/\\overline\{([^}]*)\}/g, (_, content) => {
-        return latexToUnicode(content).split('').map(c => c + '\u0304').join('');
-    });
-
-    // \vec{v} → v⃗
-    s = s.replace(/\\vec\{([^}]*)\}/g, (_, content) => {
-        return latexToUnicode(content) + '\u20D7';
-    });
-
-    // \hat{x} → x̂
-    s = s.replace(/\\hat\{([^}]*)\}/g, (_, content) => {
-        return latexToUnicode(content) + '\u0302';
-    });
-
-    // Lettres grecques
-    s = s.replace(/\\([a-zA-Z]+)/g, (match, cmd) => {
-        if (GREEK_MAP[cmd]) return GREEK_MAP[cmd];
-        if (OPERATOR_MAP[cmd]) return OPERATOR_MAP[cmd];
-        return match; // Garde tel quel si non reconnu, sera nettoyé plus tard
-    });
-
-    // Exposants: ^{...} ou ^x
-    s = s.replace(/\^\{([^}]*)\}/g, (_, exp) => toSuperscript(latexToUnicode(exp)));
-    s = s.replace(/\^([a-zA-Z0-9+\-])/g, (_, c) => toSuperscript(c));
-
-    // Indices: _{...} ou _x
-    s = s.replace(/_\{([^}]*)\}/g, (_, sub) => toSubscript(latexToUnicode(sub)));
-    s = s.replace(/_([a-zA-Z0-9])/g, (_, c) => toSubscript(c));
-
-    // Noms de fonctions: \sin, \cos, \log, etc.
-    const funcNames = ['sin', 'cos', 'tan', 'cot', 'sec', 'csc',
-        'arcsin', 'arccos', 'arctan', 'sinh', 'cosh', 'tanh',
-        'log', 'ln', 'exp', 'lim', 'sup', 'inf', 'max', 'min',
-        'det', 'dim', 'ker', 'deg', 'gcd', 'arg', 'mod'];
-    for (const fn of funcNames) {
-        const regex = new RegExp('\\\\' + fn + '(?![a-zA-Z])', 'g');
-        s = s.replace(regex, fn);
-    }
-
-    // \left et \right → juste les délimiteurs
-    s = s.replace(/\\left\s*/g, '');
-    s = s.replace(/\\right\s*/g, '');
-    s = s.replace(/\\big[glr]?\s*/gi, '');
-
-    // Accolades LaTeX restantes
-    s = s.replace(/\{/g, '');
-    s = s.replace(/\}/g, '');
-
-    // Commandes d'espacement LaTeX
-    s = s.replace(/\\[,;:!]\s*/g, ' ');
-    s = s.replace(/\\quad\s*/g, '  ');
-    s = s.replace(/\\qquad\s*/g, '    ');
-    s = s.replace(/\\ /g, ' ');
-
-    // Commandes de taille → ignorer
-    s = s.replace(/\\(?:displaystyle|textstyle|scriptstyle|scriptscriptstyle|tiny|small|normalsize|large|Large|LARGE|huge|Huge)\s*/g, '');
-
-    // Commandes restantes non reconnues → supprimer le backslash
-    s = s.replace(/\\([a-zA-Z]+)/g, '$1');
-
-    // Nettoyage final
-    s = s.replace(/\s{2,}/g, ' ').trim();
-
-    return s;
-}
 
 /**
  * Trouve et convertit toutes les expressions LaTeX dans un texte.
@@ -3599,19 +3810,60 @@ function cleanHtml(html) {
 
     let text = html.toString();
 
-    // Remplace les balises HTML courantes par leur équivalent texte
+    // Protéger les blocs LaTeX \(...\) et \[...\] avant le remplacement des \n
+    // pour ne pas casser les commandes comme \neq, \nabla, \nu, etc.
+    const latexBlocks = [];
+    text = text.replace(/\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]/g, (match) => {
+        const idx = latexBlocks.length;
+        latexBlocks.push(match);
+        return `\x00LATEX${idx}\x00`;
+    });
+
+    // Convertir les \n littéraux échappés (venant du JSON) en vrais sauts de ligne
+    text = text.replace(/\\n/g, '\n');
+
+    // Remplace les balises de structure par leur équivalent texte
     text = text.replace(/<br\s*\/?>/gi, '\n');
     text = text.replace(/<\/p>/gi, '\n');
     text = text.replace(/<p[^>]*>/gi, '');
+
+    // Convertir gras/italique en Markdown
     text = text.replace(/<strong>(.*?)<\/strong>/gi, '**$1**');
     text = text.replace(/<b>(.*?)<\/b>/gi, '**$1**');
     text = text.replace(/<em>(.*?)<\/em>/gi, '*$1*');
     text = text.replace(/<i>(.*?)<\/i>/gi, '*$1*');
+
+    // Titres → texte brut
     text = text.replace(/<h[1-6][^>]*>(.*?)<\/h[1-6]>/gi, '$1');
-    text = text.replace(/<li>(.*?)<\/li>/gi, '- $1\n');
-    text = text.replace(/<\/?ul[^>]*>/gi, '\n');
-    text = text.replace(/<\/?ol[^>]*>/gi, '\n');
-    text = text.replace(/<[^>]+>/g, ''); // Supprime toutes les autres balises
+
+    // Listes → puces et numéros (préservés pour le formatage document)
+    // Listes non ordonnées
+    text = text.replace(/<ul[^>]*>([\s\S]*?)<\/ul>/gi, (match, content) => {
+        return '\n' + content.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, '• $1\n') + '\n';
+    });
+    // Listes ordonnées
+    text = text.replace(/<ol[^>]*>([\s\S]*?)<\/ol>/gi, (match, content) => {
+        let idx = 0;
+        return '\n' + content.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, (m, li) => {
+            idx++;
+            return `${idx}. ${li}\n`;
+        }) + '\n';
+    });
+    // Fallback pour les <li> restants (hors ul/ol)
+    text = text.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, '• $1\n');
+    text = text.replace(/<\/?[uo]l[^>]*>/gi, '\n');
+
+    // PRÉSERVER : couleur, liens, souligné, barré, sub, sup
+    // Ces tags sont gérés par parseMarkdownToTextRuns dans document-exporter.js
+    // (ne pas les supprimer ici)
+
+    // Supprimer les autres balises HTML (div, span sans style, etc.)
+    // Mais garder : <span style="color:...">, <a ...>, <u>, <s>, <sub>, <sup>
+    text = text.replace(/<(?!\/?(?:span|a|u|s|sub|sup)\b)[^>]+>/gi, '');
+
+    // Nettoyer les spans sans style (wrappers vides)
+    text = text.replace(/<span>([^<]*)<\/span>/gi, '$1');
+    text = text.replace(/<span\s+(?!style)[^>]*>([^<]*)<\/span>/gi, '$1');
 
     // Décode les entités HTML
     text = text.replace(/&nbsp;/g, ' ');
@@ -3634,6 +3886,9 @@ function cleanHtml(html) {
     text = text.replace(/ {2,}/g, ' ');
     text = text.replace(/\n\s*\n/g, '\n\n');
     text = text.trim();
+
+    // Restaurer les blocs LaTeX protégés
+    text = text.replace(/\x00LATEX(\d+)\x00/g, (_, idx) => latexBlocks[parseInt(idx)]);
 
     return text;
 }

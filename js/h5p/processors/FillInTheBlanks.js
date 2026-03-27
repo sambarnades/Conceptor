@@ -11,6 +11,7 @@
  */
 import { translations } from '../../core/translation.js';
 import { formatTextToHtml } from '../../core/utils.js';
+import { buildMediaStructure } from '../image-manager.js';
 
 export default {
     process: (jsonObj) => {
@@ -31,10 +32,13 @@ export default {
         }
 
         return {
+            media: buildMediaStructure(jsonObj.mediaImage, jsonObj.mediaImageAlt),
             text: formatTextToHtml(taskDesc),
             questions: (jsonObj.questions || []).map(q => {
-                // On garde les questions telles quelles, car Blanks supporte mal le wrapping auto dans certains cas
-                return q;
+                // H5P.Blanks attend des strings avec marqueurs *mot* — normalise si l'IA a généré des objets
+                if (typeof q === 'string') return q;
+                if (typeof q === 'object' && q !== null) return q.text || q.question || '';
+                return String(q);
             }),
             showSolutions: translations.h5p_show_solution || "Afficher les solutions",
             tryAgain: translations.h5p_try_again || "Recommencer",
@@ -60,7 +64,8 @@ export default {
                 confirmCheckDialog: false,
                 confirmRetryDialog: false,
                 acceptSpellingErrors: false,
-                enableCheckButton: true
+                enableCheckButton: true,
+                ...(jsonObj.behaviour || {})
             },
             confirmCheck: {
                 header: translations.h5p_finish_header || "Terminer ?",

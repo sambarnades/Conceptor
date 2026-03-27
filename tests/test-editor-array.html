@@ -111,7 +111,7 @@
 
     <details class="info-box">
         <summary>Ce que ces tests verifient</summary>
-        <p style="margin-top:8px;">Ces tests unitaires couvrent le correctif 5.0.2 pour <strong>toutes les activites</strong> (27 schemas) :</p>
+        <p style="margin-top:8px;">Ces tests unitaires couvrent l'editeur visuel JSON pour <strong>toutes les activites</strong> (27 schemas) :</p>
         <ol style="margin-top:8px;">
             <li><strong>setNestedValue</strong> &mdash; Protection contre les noeuds intermediaires primitifs (string, number, boolean, null).</li>
             <li><strong>getNestedValue</strong> &mdash; Lecture profonde, tableaux, cas limites.</li>
@@ -119,6 +119,11 @@
             <li><strong>createEmptyItem par activite</strong> &mdash; Pour chaque schema (H5P + Moodle), verifie que chaque champ array cree des items corrects.</li>
             <li><strong>feedbackEditors orphelins</strong> &mdash; Nettoyage apres suppression, purge selective, cas imbrique.</li>
             <li><strong>Scenarios complets</strong> &mdash; QuizSet, elea_test, Crossword, Timeline, Essay, Summary, elea_qcm, MultipleChoice.</li>
+            <li><strong>Rendu checkbox/select</strong> &mdash; Valeurs par defaut, persistance, valueType number.</li>
+            <li><strong>Schemas elea_test</strong> &mdash; Completude des 6 sous-types, feedback truefalse, feedbacks combines, hints, validateSum.</li>
+            <li><strong>Round-trip elea_test</strong> &mdash; Normalisation/denormalisation sans perte de texte ni de LaTeX (donnees synthetiques + 5 fichiers reels).</li>
+            <li><strong>Round-trip FindTheWords</strong> &mdash; Conversion wordList string ↔ tableau, trim, filtrage des vides.</li>
+            <li><strong>Proprietes de schema</strong> &mdash; compact, nested, collapsible, row, tagList, validateSum, isArrayValue, mediaImage dans general.</li>
         </ol>
     </details>
 

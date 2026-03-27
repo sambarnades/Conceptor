@@ -26,10 +26,14 @@ export default {
 
         // Valeurs par défaut
         content.progressType = content.progressType || "dots";
-        content.passPercentage = content.passPercentage || 50;
+        content.passPercentage = content.passPercentage ?? 50;
+        // randomQuestions : champ éditeur au niveau racine → injecter dans behaviour
+        const randomQuestions = content.randomQuestions ?? false;
+        delete content.randomQuestions;
         content.behaviour = {
             enableRetry: true,
             enableSolutionsButton: true,
+            randomQuestions,
             ...content.behaviour
         };
 
@@ -45,7 +49,7 @@ export default {
                 }
 
                 // Identification de la bibliothèque
-                const libName = q.library.split(' ')[0];
+                const libName = (q.library || '').split(' ')[0];
                 librariesSet.add(libName);
 
                 // Transformation via le processeur enfant (si disponible)

@@ -1,0 +1,226 @@
+{
+    "bank_name": "Terminale - Analyse, probabilités et algèbre (complet)",
+    "bank_description": "Banque d'évaluation exhaustive couvrant les six types de questions Moodle : QCM, vrai/faux, numérique, réponse courte, appariement et texte à trous, avec toutes les variantes de formatage (LaTeX, Unicode, texte brut).",
+    "questions": [
+        {
+            "type": "multichoice",
+            "content": {
+                "name": "Q1 - Continuité et TVI",
+                "questiontext": "Soit \\( f \\) une fonction continue sur \\( [a, b] \\). D'après le théorème des valeurs intermédiaires, si \\( f(a) < 0 \\) et \\( f(b) > 0 \\), que peut-on affirmer ?",
+                "feedback": "Le TVI garantit l'existence d'au moins un \\( c \\in ]a, b[ \\) tel que \\( f(c) = 0 \\). Il ne dit rien sur l'unicité.",
+                "answers": [
+                    {
+                        "text": "Il existe au moins un \\( c \\in ]a, b[ \\) tel que \\( f(c) = 0 \\)",
+                        "fraction": 100,
+                        "feedback": "Exact ! Le TVI assure l'existence d'une racine, sans garantir l'unicité."
+                    },
+                    {
+                        "text": "Il existe exactement un \\( c \\in ]a, b[ \\) tel que \\( f(c) = 0 \\)",
+                        "fraction": 0,
+                        "feedback": "Le TVI ne garantit pas l'unicité. Il faudrait en plus la stricte monotonie."
+                    },
+                    {
+                        "text": "\\( f \\) est dérivable sur \\( ]a, b[ \\)",
+                        "fraction": 0,
+                        "feedback": "La continuité n'implique pas la dérivabilité. Contre-exemple : \\( f(x) = |x| \\)."
+                    },
+                    {
+                        "text": "\\( f \\) n'admet aucun extremum sur \\( [a, b] \\)",
+                        "fraction": 0,
+                        "feedback": "Faux, une fonction continue sur un fermé borné admet toujours un maximum et un minimum (théorème des bornes atteintes)."
+                    }
+                ]
+            }
+        },
+        {
+            "type": "multichoice",
+            "content": {
+                "name": "Q2 - Primitive d'une fraction",
+                "questiontext": "Quelle est une primitive de \\( f(x) = \\frac{2x}{x^2 + 1} \\) sur \\( \\mathbb{R} \\) ?",
+                "feedback": "On reconnaît la forme \\( \\frac{u'}{u} \\) dont une primitive est \\( \\ln|u| \\). Ici \\( u = x^2 + 1 > 0 \\), donc la primitive est \\( \\ln(x^2 + 1) \\).",
+                "answers": [
+                    {
+                        "text": "\\( F(x) = \\ln(x^2 + 1) \\)",
+                        "fraction": 100,
+                        "feedback": "Bravo ! On vérifie : \\( F'(x) = \\frac{2x}{x^2 + 1} = f(x) \\)."
+                    },
+                    {
+                        "text": "\\( F(x) = \\frac{1}{x^2 + 1} \\)",
+                        "fraction": 0,
+                        "feedback": "Non, la dérivée de \\( \\frac{1}{x^2+1} \\) est \\( \\frac{-2x}{(x^2+1)^2} \\)."
+                    },
+                    {
+                        "text": "\\( F(x) = \\ln(2x) \\)",
+                        "fraction": 0,
+                        "feedback": "Non, \\( (\\ln(2x))' = \\frac{1}{x} \\neq f(x) \\)."
+                    },
+                    {
+                        "text": "\\( F(x) = x^2 \\ln(x) \\)",
+                        "fraction": 0,
+                        "feedback": "Non, cette expression n'a pas de lien avec \\( f \\)."
+                    }
+                ]
+            }
+        },
+        {
+            "type": "truefalse",
+            "content": {
+                "name": "Q3 - Exponentielle et logarithme",
+                "questiontext": "Pour tout \\( x > 0 \\), on a \\( e^{\\ln(x)} = x \\).",
+                "feedback": "L'exponentielle et le logarithme népérien sont des fonctions réciproques : \\( e^{\\ln(x)} = x \\) pour \\( x > 0 \\) et \\( \\ln(e^x) = x \\) pour tout \\( x \\in \\mathbb{R} \\).",
+                "answer": {
+                    "value": true,
+                    "feedback_true": "Exact ! C'est la définition même de la réciprocité entre \\( \\exp \\) et \\( \\ln \\).",
+                    "feedback_false": "C'est pourtant vrai. Par définition, \\( \\ln \\) est la fonction réciproque de \\( \\exp \\)."
+                }
+            }
+        },
+        {
+            "type": "truefalse",
+            "content": {
+                "name": "Q4 - Convergence de série",
+                "questiontext": "La série harmonique \\( \\sum_{n=1}^{+\\infty} \\frac{1}{n} \\) converge.",
+                "feedback": "La série harmonique diverge. On peut le démontrer par comparaison avec une série télescopique ou par le critère intégral avec \\( \\int_1^{+\\infty} \\frac{1}{x} \\, dx = +\\infty \\).",
+                "answer": {
+                    "value": false,
+                    "feedback_true": "Non, la série harmonique diverge. Même si \\( \\frac{1}{n} \\to 0 \\), cela ne suffit pas pour la convergence.",
+                    "feedback_false": "Correct ! La série harmonique est l'exemple classique d'une série dont le terme général tend vers 0 mais qui diverge."
+                }
+            }
+        },
+        {
+            "type": "numerical",
+            "content": {
+                "name": "Q5 - Intégrale définie",
+                "questiontext": "Calculez \\( \\int_0^{\\pi} \\sin(x) \\, dx \\). Donnez la valeur exacte.",
+                "feedback": "On a \\( \\int_0^{\\pi} \\sin(x) \\, dx = [-\\cos(x)]_0^{\\pi} = -\\cos(\\pi) + \\cos(0) = 1 + 1 = 2 \\).",
+                "answer": {
+                    "number": 2,
+                    "tolerance": 0,
+                    "feedback": "Parfait ! La primitive de \\( \\sin(x) \\) est \\( -\\cos(x) \\)."
+                }
+            }
+        },
+        {
+            "type": "numerical",
+            "content": {
+                "name": "Q6 - Probabilité conditionnelle",
+                "questiontext": "Dans une classe, 60 % des élèves pratiquent un sport et parmi ceux-ci, 25 % font de la natation. Quelle est la probabilité qu'un élève choisi au hasard pratique la natation ? Donnez le résultat sous forme décimale.",
+                "feedback": "On applique la formule \\( P(\\text{natation}) = P(\\text{sport}) \\times P(\\text{natation} | \\text{sport}) = 0.6 \\times 0.25 = 0.15 \\).",
+                "answer": {
+                    "number": 0.15,
+                    "tolerance": 0.01,
+                    "feedback": "Exact ! \\( P = 0.6 \\times 0.25 = 0.15 \\), soit 15 %."
+                }
+            }
+        },
+        {
+            "type": "shortanswer",
+            "content": {
+                "name": "Q7 - Résolution d'équation",
+                "questiontext": "Résolvez \\( e^{2x} = 7 \\). Exprimez \\( x \\) en fonction de \\( \\ln \\).",
+                "feedback": "On prend le logarithme népérien des deux membres : \\( 2x = \\ln(7) \\), donc \\( x = \\frac{\\ln(7)}{2} \\).",
+                "answers": [
+                    { "text": "ln(7)/2", "fraction": 100, "feedback": "Exact !" },
+                    { "text": "ln7/2", "fraction": 100, "feedback": "Exact !" },
+                    { "text": "(1/2)ln(7)", "fraction": 100, "feedback": "Exact !" },
+                    { "text": "0.5*ln(7)", "fraction": 100, "feedback": "Exact !" }
+                ]
+            }
+        },
+        {
+            "type": "shortanswer",
+            "content": {
+                "name": "Q8 - Limite classique",
+                "questiontext": "Quelle est la limite de \\( \\frac{\\sin(x)}{x} \\) quand \\( x \\to 0 \\) ?",
+                "feedback": "C'est une limite fondamentale de l'analyse : \\( \\lim_{x \\to 0} \\frac{\\sin(x)}{x} = 1 \\).",
+                "answers": [
+                    { "text": "1", "fraction": 100, "feedback": "Exact !" },
+                    { "text": "1.0", "fraction": 100, "feedback": "Exact !" }
+                ]
+            }
+        },
+        {
+            "type": "matching",
+            "content": {
+                "name": "Q9 - Lois de probabilité",
+                "questiontext": "Associez chaque loi de probabilité à son espérance.",
+                "feedback": "Ces formules d'espérance sont fondamentales en probabilités.",
+                "subquestions": [
+                    { "text": "Loi binomiale \\( \\mathcal{B}(n, p) \\)", "answer": "E(X) = np" },
+                    { "text": "Loi de Poisson \\( \\mathcal{P}(\\lambda) \\)", "answer": "E(X) = λ" },
+                    { "text": "Loi uniforme sur \\( [a, b] \\)", "answer": "E(X) = (a + b)/2" },
+                    { "text": "Loi exponentielle \\( \\mathcal{E}(\\lambda) \\)", "answer": "E(X) = 1/λ" }
+                ]
+            }
+        },
+        {
+            "type": "matching",
+            "content": {
+                "name": "Q10 - Primitives usuelles",
+                "questiontext": "Associez chaque fonction à une de ses primitives sur son ensemble de définition.",
+                "feedback": "Ces primitives font partie du tableau des primitives usuelles à connaître.",
+                "subquestions": [
+                    { "text": "\\( f(x) = \\cos(x) \\)", "answer": "F(x) = sin(x)" },
+                    { "text": "\\( f(x) = e^x \\)", "answer": "F(x) = eˣ" },
+                    { "text": "\\( f(x) = \\frac{1}{x} \\) pour \\( x > 0 \\)", "answer": "F(x) = ln(x)" },
+                    { "text": "\\( f(x) = \\frac{1}{\\sqrt{x}} \\) pour \\( x > 0 \\)", "answer": "F(x) = 2√x" }
+                ]
+            }
+        },
+        {
+            "type": "cloze",
+            "content": {
+                "name": "Q11 - Texte à trous (MULTICHOICE + NUMERICAL)",
+                "questiontext": "La dérivée de x³ est {1:MULTICHOICE:=3x²~x²~3x³~x³}. La valeur de cette dérivée en x = 2 est {1:NUMERICAL:=12:0}. Le signe de cette dérivée pour x > 0 est {1:MULTICHOICE:=positif~négatif~nul}.",
+                "feedback": "La dérivée de \\( x^3 \\) est \\( 3x^2 \\). En \\( x = 2 \\), on obtient \\( 3 \\times 4 = 12 \\). Pour \\( x > 0 \\), \\( 3x^2 > 0 \\)."
+            }
+        },
+        {
+            "type": "cloze",
+            "content": {
+                "name": "Q12 - Texte à trous (SHORTANSWER + NUMERICAL)",
+                "questiontext": "L'aire d'un disque de rayon r se calcule avec la formule A = {1:SHORTANSWER:=pi*r^2~pi*r²~πr²}. Pour un disque de rayon 3, l'aire vaut environ {1:NUMERICAL:=28.27:0.1} unités d'aire. Le périmètre de ce même disque vaut environ {1:NUMERICAL:=18.85:0.1}.",
+                "feedback": "L'aire d'un disque est \\( A = \\pi r^2 \\). Pour \\( r = 3 \\) : \\( A = 9\\pi \\approx 28{,}27 \\). Le périmètre est \\( P = 2\\pi r = 6\\pi \\approx 18{,}85 \\)."
+            }
+        },
+        {
+            "type": "cloze",
+            "content": {
+                "name": "Q13 - Texte à trous (trois types combinés)",
+                "questiontext": "Une suite géométrique de raison q = 2 et de premier terme u₀ = 5 a pour terme général u_n = {1:SHORTANSWER:=5*2^n~5×2^n}. Le 4ᵉ terme (u₃) vaut {1:NUMERICAL:=40:0}. Cette suite est {1:MULTICHOICE:=croissante~décroissante~constante~alternée} car q > 1 et u₀ > 0.",
+                "feedback": "Le terme général d'une suite géométrique est \\( u_n = u_0 \\times q^n \\). On a \\( u_3 = 5 \\times 2^3 = 40 \\). Comme \\( q = 2 > 1 \\) et \\( u_0 > 0 \\), la suite est croissante."
+            }
+        },
+        {
+            "type": "multichoice",
+            "content": {
+                "name": "Q14 - Dénombrement",
+                "questiontext": "De combien de façons peut-on choisir 3 élèves parmi 10 pour former un groupe de travail ?",
+                "feedback": "Il s'agit d'une combinaison (l'ordre ne compte pas) : \\( \\binom{10}{3} = \\frac{10!}{3! \\times 7!} = \\frac{10 \\times 9 \\times 8}{6} = 120 \\).",
+                "answers": [
+                    {
+                        "text": "120",
+                        "fraction": 100,
+                        "feedback": "Exact ! \\( \\binom{10}{3} = 120 \\)."
+                    },
+                    {
+                        "text": "720",
+                        "fraction": 0,
+                        "feedback": "Non, 720 correspond à un arrangement \\( A_{10}^3 \\) où l'ordre compte."
+                    },
+                    {
+                        "text": "30",
+                        "fraction": 0,
+                        "feedback": "Non, vous avez probablement calculé \\( 10 \\times 3 \\)."
+                    },
+                    {
+                        "text": "1000",
+                        "fraction": 0,
+                        "feedback": "Non, ce n'est pas \\( 10^3 \\). Il s'agit d'une combinaison, pas d'un tirage avec remise."
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -11,6 +11,7 @@
  */
 import { translations } from '../../core/translation.js';
 import { formatTextToHtml } from '../../core/utils.js';
+import { buildMediaStructure } from '../image-manager.js';
 
 export default {
     process: (jsonObj) => {
@@ -43,7 +44,8 @@ export default {
                 pointsHost: 1,
                 linebreakReplacement: " ",
                 overrideForgiveMistakes: "on",
-                overrideCaseSensitive: "off"
+                overrideCaseSensitive: "off",
+                ...(jsonObj.behaviour || {})
             },
             overallFeedback: jsonObj.overallFeedback || [{ from: 0, to: 100, feedback: "" }],
             checkAnswer: translations.h5p_check_answer || "Vérifier",
@@ -56,12 +58,10 @@ export default {
             messageSave: translations.h5p_essay_message_save || "enregistré",
             placeholderText: translations.h5p_essay_placeholder_text || "Commencez à rédiger ici...",
             solution: {
-                introduction: jsonObj.solution?.introduction || "",
-                sample: jsonObj.solution?.sample || (jsonObj.keywords ? `<div>${jsonObj.keywords.map(k => k.keyword || k).join(', ')}</div>` : "")
+                introduction: formatTextToHtml(jsonObj.solution?.introduction || ""),
+                sample: formatTextToHtml(jsonObj.solution?.sample || (jsonObj.keywords ? jsonObj.keywords.map(k => k.keyword || k).join(', ') : ""))
             },
-            media: {
-                disableImageZooming: false
-            },
+            media: buildMediaStructure(jsonObj.mediaImage, jsonObj.mediaImageAlt),
             ariaYourResult: translations.h5p_essay_aria_your_result || "Vous avez obtenu @score sur @total points",
             ariaNavigatedToSolution: translations.h5p_essay_aria_navigated_to_solution || "Navigation vers la solution.",
             submitAnswer: translations.h5p_submit_answer || "Submit",
@@ -159,8 +159,10 @@ export default {
             };
         }
 
-        // 7. Media par défaut
-        question.params.media = question.params.media || { disableImageZooming: false };
+        // 7. Media — construire la structure si mediaImage présent
+        if (!question.params.media || !question.params.media.type) {
+            question.params.media = buildMediaStructure(question.params.mediaImage, question.params.mediaImageAlt);
+        }
 
         return question;
     }

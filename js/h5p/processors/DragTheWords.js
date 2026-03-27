@@ -11,6 +11,7 @@
 import { translations } from '../../core/translation.js';
 import { formatTextToHtml } from '../../core/utils.js';
 import { latexToUnicode } from '../json-healer.js';
+import { buildMediaStructure } from '../image-manager.js';
 
 
 export default {
@@ -25,7 +26,8 @@ export default {
                 enableRetry: true,
                 enableSolutionsButton: true,
                 instantFeedback: false,
-                enableCheckButton: true
+                enableCheckButton: true,
+                ...(jsonObj.behaviour || {})
             },
             overallFeedback: jsonObj.overallFeedback || [{
                 from: 0,
@@ -45,9 +47,7 @@ export default {
             correctAnswer: "Correct answer:",
             feedbackHeader: "Feedback",
             scoreBarLabel: translations.h5p_score_bar_label || "Vous avez obtenu :num sur :total points",
-            media: {
-                disableImageZooming: false
-            },
+            media: buildMediaStructure(jsonObj.mediaImage, jsonObj.mediaImageAlt),
             submitAnswer: translations.h5p_submit_answer || "Valider",
             ariaDraggableIndex: "@index sur @count éléments.",
             a11yCheck: translations.h5p_a11y_check || "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",

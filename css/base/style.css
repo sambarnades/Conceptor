@@ -32,6 +32,42 @@
     display: none;
 }
 
+/* Accessible : caché visuellement, visible par les lecteurs d'écran */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Visible uniquement au focus clavier (skip link) */
+.sr-only-focusable:focus {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99999;
+    width: auto;
+    height: auto;
+    padding: 10px 24px;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    background: #007AFF;
+    color: #fff;
+    font-size: 0.95em;
+    font-weight: 600;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    text-decoration: none;
+}
+
 /* =======================================================================
    1. STYLES DE BASE ET RÉINITIALISATION
    ======================================================================= */
@@ -296,6 +332,8 @@ body {
 
 .prompt-generator {
     margin-top: 30px;
+    overflow: hidden;
+    border-top: none;
 }
 
 .info-card h2 {
@@ -321,8 +359,8 @@ body {
 .mode-tabs {
     display: flex;
     width: 100%;
-    background-color: #f9f9f9;
-    /* Fond très clair pour le bandeau */
+    background-color: #F5F5F7;
+    /* Même fond que la page — évite le liseré blanc entre le trait bleu et le fond */
     border-bottom: 1px solid #e5e5e5;
     /* Séparateur subtil */
     border-top-left-radius: 20px;
@@ -343,8 +381,8 @@ body {
     /* Couleur du texte inactif */
     text-align: center;
     transition: all 0.3s ease;
-    border-top: 3px solid #f9f9f9;
-    /* Liseret invisible par défaut (même couleur que le fond) */
+    border-top: 3px solid #F5F5F7;
+    /* Liseret invisible par défaut (même couleur que le fond page) */
 }
 
 .mode-tab:first-child {
@@ -356,19 +394,19 @@ body {
 }
 
 .mode-tab:hover {
-    background-color: #f0f0f0;
+    background-color: #EDEDF0;
     /* Léger feedback au survol */
-    border-top-color: #f0f0f0;
+    border-top-color: #EDEDF0;
     /* Liseret invisible au survol (même couleur que le fond au survol) */
 }
 
 .mode-tab.active {
-    color: #007AFF;
-    /* Texte bleu pour l'actif */
+    color: #0071EB;
+    /* Texte bleu pour l'actif — ratio 4.6:1 WCAG AA */
     font-weight: 600;
     background-color: #ffffff;
     /* Se fond avec le reste de la carte */
-    border-top: 3px solid #007AFF;
+    border-top: 3px solid #0071EB;
 }
 
 /* Champs communs (qui, quoi) - toujours visibles */
@@ -412,7 +450,16 @@ body {
 .prompt-generator input[type="number"]:focus {
     outline: none;
     border-color: #007AFF;
-    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.35);
+}
+
+/* Neutralise le fond bleu/jaune appliqué par le navigateur lors du remplissage automatique */
+.prompt-generator input:-webkit-autofill,
+.prompt-generator input:-webkit-autofill:hover,
+.prompt-generator input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px #fcfcfc inset;
+    -webkit-text-fill-color: #1d1d1f;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 .prompt-form-container {
@@ -485,14 +532,18 @@ body {
     cursor: pointer;
     transition: all 0.25s ease;
     flex-shrink: 0;
-    outline: none;
     line-height: 1.2;
+}
+
+.filter-chip:focus-visible {
+    outline: 2px solid #007AFF;
+    outline-offset: 2px;
 }
 
 /* --- Chips activité (gris/bleu) --- */
 .filter-chip--activity {
     background: #f5f5f7;
-    color: #8e8e93;
+    color: #58585b;
     border: 1px solid #e0e0e0;
 }
 
@@ -502,7 +553,7 @@ body {
 }
 
 .filter-chip--activity.active {
-    background: #007AFF;
+    background: #0055B3;
     color: white;
     border-color: transparent;
 }
@@ -510,12 +561,12 @@ body {
 /* --- Chip H5P (bleu) --- */
 .filter-chip--h5p {
     background: transparent;
-    border: 1.5px solid #0976E7;
-    color: #0976E7;
+    border: 1.5px solid #0862C4;
+    color: #0862C4;
 }
 
 .filter-chip--h5p:hover {
-    background: rgba(9, 118, 231, 0.08);
+    background: rgba(8, 98, 196, 0.08);
 }
 
 .filter-chip--h5p.active {
@@ -527,12 +578,12 @@ body {
 /* --- Chip Éléa (violet) --- */
 .filter-chip--elea {
     background: transparent;
-    border: 1.5px solid #B9459B;
-    color: #B9459B;
+    border: 1.5px solid #9E3884;
+    color: #9E3884;
 }
 
 .filter-chip--elea:hover {
-    background: rgba(185, 69, 155, 0.08);
+    background: rgba(158, 56, 132, 0.08);
 }
 
 .filter-chip--elea.active {
@@ -561,12 +612,12 @@ body {
 /* --- Chip Moodle (orange, pour les langues hors FR) --- */
 .filter-chip--moodle {
     background: transparent;
-    border: 1.5px solid #F98012;
-    color: #F98012;
+    border: 1.5px solid #8F4800;
+    color: #8F4800;
 }
 
 .filter-chip--moodle:hover {
-    background: rgba(249, 128, 18, 0.08);
+    background: rgba(143, 72, 0, 0.08);
 }
 
 .filter-chip--moodle.active {
@@ -659,7 +710,7 @@ body {
 
 .h5p-tile .tile-name-en {
     font-size: 0.85em;
-    color: #8e8e93;
+    color: #58585b;
 }
 
 /* =======================================================================
@@ -2781,8 +2832,8 @@ input[type="file"] {
 }
 
 #ocr-output:focus {
-    outline: none;
-    /* Supprime le cadre au focus */
+    outline: 2px solid #007AFF;
+    outline-offset: -2px;
 }
 
 #ocr-output:empty:before {
@@ -3238,6 +3289,16 @@ input[type="file"] {
     border: 1px solid #ff3b30;
 }
 
+.elea-feedback.hint {
+    background-color: #fff8e1;
+    border: 1px solid #f9a825;
+}
+
+.elea-feedback.partial {
+    background-color: #fff3e0;
+    border: 1px solid #ff9800;
+}
+
 .elea-feedback-icon {
     font-size: 1.5em;
 }
@@ -3248,6 +3309,14 @@ input[type="file"] {
 
 .elea-feedback.incorrect .elea-feedback-icon {
     color: #ff3b30;
+}
+
+.elea-feedback.hint .elea-feedback-icon {
+    color: #f9a825;
+}
+
+.elea-feedback.partial .elea-feedback-icon {
+    color: #ff9800;
 }
 
 .elea-feedback-content {

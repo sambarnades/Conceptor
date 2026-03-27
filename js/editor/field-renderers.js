@@ -9,6 +9,8 @@ import { t, currentLang } from '../core/translation.js';
 import { validateField } from './validators.js';
 import { h5pDateToLocale, localeDateToH5p, getTimelineDateFormat } from '../core/utils.js';
 import { showConfirm } from './array-manager.js';
+import { renderRichtextField } from './richtext-editor.js';
+import { renderClozeField } from './cloze-editor.js';
 
 // =======================================================================
 // UTILITAIRES
@@ -55,6 +57,7 @@ export const fieldRenderers = {
     'checkbox': renderCheckboxField,
     'select': renderSelectField,
     'multiCheckbox': renderMultiCheckboxField,
+    'image': renderImageField,
     'array': renderArrayField,
     'object': renderObjectField,
     'feedbackRanges': renderFeedbackRangesField,
@@ -63,7 +66,11 @@ export const fieldRenderers = {
     'pageBlockData': renderPageBlockDataField,
     'dynamicObject': renderDynamicObjectField,
     'timelineDate': renderTimelineDateField,
-    'rubricGrid': renderRubricGridField
+    'rubricGrid': renderRubricGridField,
+    'toggle': renderToggleField,
+    'tagList': renderTagListField,
+    'richtext': renderRichtextField,
+    'cloze': renderClozeField
 };
 
 /**
@@ -93,7 +100,7 @@ export function renderTextField(config, value, onChange, path) {
             data-path="${path}"
         >
         ${hint ? `<span class="json-editor__hint">${escapeHtml(hint)}</span>` : ''}
-        <span class="json-editor__error"></span>
+        <span class="json-editor__error" role="alert" aria-live="assertive"></span>
     `;
 
     const input = wrapper.querySelector('input');
@@ -161,7 +168,7 @@ function renderTimelineDateField(config, value, onChange, path) {
             data-path="${path}"
             data-timeline-date="true"
         >
-        <span class="json-editor__error"></span>
+        <span class="json-editor__error" role="alert" aria-live="assertive"></span>
     `;
 
     const input = wrapper.querySelector('input');
@@ -225,15 +232,16 @@ export function renderTextareaField(config, value, onChange, path) {
             data-path="${path}"
         >${escapeHtml(value || '')}</textarea>
         ${hint ? `<span class="json-editor__hint">${escapeHtml(hint)}</span>` : ''}
-        <span class="json-editor__error"></span>
+        <span class="json-editor__error" role="alert" aria-live="assertive"></span>
     `;
 
     const textarea = wrapper.querySelector('textarea');
     const errorSpan = wrapper.querySelector('.json-editor__error');
 
-    // Auto-resize — hauteur minimale réduite dans les sous-sections (indices et feedback)
+    // Auto-resize — hauteur minimale réduite dans les sous-sections et feedback ranges
     const isInSubsection = textarea.closest('.json-editor__array-item-subsection-content') !== null;
-    const minH = isInSubsection ? 30 : 60;
+    const isInFeedbackRange = textarea.closest('.json-editor__feedback-range-text') !== null;
+    const minH = (isInSubsection || isInFeedbackRange) ? 28 : 60;
     const autoResize = () => {
         textarea.style.height = 'auto';
         const newHeight = Math.max(textarea.scrollHeight, minH);
@@ -304,7 +312,7 @@ export function renderNumberField(config, value, onChange, path) {
             data-path="${path}"
         >
         ${hint ? `<span class="json-editor__hint">${escapeHtml(hint)}</span>` : ''}
-        <span class="json-editor__error"></span>
+        <span class="json-editor__error" role="alert" aria-live="assertive"></span>
     `;
 
     const input = wrapper.querySelector('input');
@@ -341,8 +349,14 @@ export function renderColorField(config, value, onChange, path) {
     const label = translateLabel(config.label);
     const hint = config.hint ? translateLabel(config.hint) : '';
 
-    // Valeur par défaut si non définie
-    const colorValue = value || '#ffffff';
+    // Valeur par défaut : utiliser config.default si défini, sinon #ffffff
+    const hasValue = value && value !== '';
+    const colorValue = hasValue ? value : (config.default || '#ffffff');
+
+    // Initialiser la valeur dans les données si elle n'existe pas et qu'un default est défini
+    if (!hasValue && config.default && onChange) {
+        onChange(path, config.default);
+    }
 
     wrapper.innerHTML = `
         <label class="json-editor__label ${config.required ? 'json-editor__label--required' : ''}" for="${id}">
@@ -366,7 +380,7 @@ export function renderColorField(config, value, onChange, path) {
             >
         </div>
         ${hint ? `<span class="json-editor__hint">${escapeHtml(hint)}</span>` : ''}
-        <span class="json-editor__error"></span>
+        <span class="json-editor__error" role="alert" aria-live="assertive"></span>
     `;
 
     const colorInput = wrapper.querySelector('input[type="color"]');
@@ -405,12 +419,20 @@ export function renderCheckboxField(config, value, onChange, path) {
 
     const label = translateLabel(config.label);
 
+    // Appliquer la valeur par defaut si la valeur est absente
+    let effectiveValue = value;
+    if ((effectiveValue === undefined || effectiveValue === null) && config.default !== undefined) {
+        effectiveValue = config.default;
+        // Persister la valeur par defaut dans les donnees
+        if (onChange) onChange(path, config.valueType === 'number' ? (config.default ? 1 : 0) : config.default);
+    }
+
     // Determiner si c'est coche
     let isChecked = false;
     if (config.valueType === 'number') {
-        isChecked = value === 1;
+        isChecked = effectiveValue === 1 || effectiveValue === true;
     } else {
-        isChecked = value === true || value === 'true';
+        isChecked = effectiveValue === true || effectiveValue === 'true';
     }
 
     wrapper.innerHTML = `
@@ -421,6 +443,7 @@ export function renderCheckboxField(config, value, onChange, path) {
                 class="json-editor__checkbox"
                 ${isChecked ? 'checked' : ''}
                 data-path="${path}"
+                ${config.valueType === 'number' ? 'data-value-type="number"' : ''}
             >
             <label class="json-editor__checkbox-label" for="${id}">
                 ${escapeHtml(label)}
@@ -456,11 +479,18 @@ export function renderSelectField(config, value, onChange, path) {
 
     const label = translateLabel(config.label);
 
+    // Appliquer la valeur par defaut si la valeur est absente
+    let effectiveValue = value;
+    if ((effectiveValue === undefined || effectiveValue === null) && config.default !== undefined) {
+        effectiveValue = config.default;
+        if (onChange) onChange(path, config.default);
+    }
+
     let optionsHtml = '';
     if (config.options) {
         for (const opt of config.options) {
             const optLabel = translateLabel(opt.label);
-            const selected = String(value) === String(opt.value) ? 'selected' : '';
+            const selected = String(effectiveValue) === String(opt.value) ? 'selected' : '';
             optionsHtml += `<option value="${escapeHtml(opt.value)}" ${selected}>${escapeHtml(optLabel)}</option>`;
         }
     }
@@ -479,7 +509,7 @@ export function renderSelectField(config, value, onChange, path) {
         >
             ${optionsHtml}
         </select>
-        <span class="json-editor__error"></span>
+        <span class="json-editor__error" role="alert" aria-live="assertive"></span>
     `;
 
     const select = wrapper.querySelector('select');
@@ -488,8 +518,95 @@ export function renderSelectField(config, value, onChange, path) {
         const newValue = e.target.value;
         if (onChange) {
             onChange(path, newValue);
+
+            // Support presets : applique les valeurs prédéfinies aux champs frères
+            if (config.presets && config.presets[newValue]) {
+                const preset = config.presets[newValue];
+                // Les clés du preset sont des chemins absolus (ex: "theme.backgroundColor")
+                for (const [targetPath, fieldValue] of Object.entries(preset)) {
+                    onChange(targetPath, fieldValue);
+                    // Mettre à jour les inputs visuels correspondants
+                    // Remonter au conteneur le plus large pour trouver les champs frères
+                    const container = wrapper.closest('.json-editor__detail') || wrapper.closest('.json-editor__section-content') || document;
+                    const input = container.querySelector(`[data-path="${targetPath}"]`);
+                    if (input) {
+                        input.value = fieldValue;
+                        // Pour les color inputs, synchroniser aussi le champ texte adjacent
+                        if (input.type === 'color') {
+                            const textSibling = input.parentElement?.querySelector('.json-editor__color-text');
+                            if (textSibling) textSibling.value = fieldValue;
+                        }
+                    }
+                }
+            }
         }
     });
+
+    return wrapper;
+}
+
+/**
+ * Rend un contrôle segmenté (toggle) avec des boutons visuels.
+ * Utilisé pour choisir entre deux modes (ex: URL / Image).
+ * Émet un événement 'change' compatible avec showWhen de array-manager.
+ */
+export function renderToggleField(config, value, onChange, path) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'json-editor__field json-editor__field--toggle';
+
+    const label = translateLabel(config.label);
+
+    // Input caché pour stocker la valeur et servir de cible data-path pour showWhen
+    const currentValue = value || config.default || (config.options && config.options[0] ? config.options[0].value : '');
+
+    let labelHtml = '';
+    if (label) {
+        labelHtml = `<label class="json-editor__label">${escapeHtml(label)}</label>`;
+    }
+
+    wrapper.innerHTML = `
+        ${labelHtml}
+        <input type="hidden" data-path="${path}" value="${escapeHtml(currentValue)}" />
+        <div class="json-editor__toggle"></div>
+    `;
+
+    const hiddenInput = wrapper.querySelector('input[type="hidden"]');
+    const toggleContainer = wrapper.querySelector('.json-editor__toggle');
+
+    // Icônes par défaut pour les options courantes
+    const iconMap = { 'url': 'fa-link', 'image': 'fa-image' };
+
+    for (const opt of (config.options || [])) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'json-editor__toggle-option';
+        if (opt.value === currentValue) {
+            btn.classList.add('json-editor__toggle-option--active');
+        }
+
+        const icon = opt.icon || iconMap[opt.value] || '';
+        const optLabel = translateLabel(opt.label);
+        btn.innerHTML = (icon ? `<i class="fas ${icon}"></i> ` : '') + escapeHtml(optLabel);
+        btn.dataset.value = opt.value;
+
+        btn.addEventListener('click', () => {
+            // Désactiver tous les boutons
+            toggleContainer.querySelectorAll('.json-editor__toggle-option').forEach(b =>
+                b.classList.remove('json-editor__toggle-option--active')
+            );
+            btn.classList.add('json-editor__toggle-option--active');
+
+            // Mettre à jour l'input caché et déclencher change pour showWhen
+            hiddenInput.value = opt.value;
+            hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+            if (onChange) {
+                onChange(path, opt.value);
+            }
+        });
+
+        toggleContainer.appendChild(btn);
+    }
 
     return wrapper;
 }
@@ -516,7 +633,7 @@ export function renderMultiCheckboxField(config, value, onChange, path) {
              ${config.optionsLabelField ? `data-options-label-field="${config.optionsLabelField}"` : ''}
         ></div>
         ${hint ? `<span class="json-editor__hint">${escapeHtml(hint)}</span>` : ''}
-        <span class="json-editor__error"></span>
+        <span class="json-editor__error" role="alert" aria-live="assertive"></span>
     `;
 
     const group = wrapper.querySelector('.json-editor__multi-checkbox-group');
@@ -558,6 +675,289 @@ function buildMultiCheckboxOptions(group, options, selectedIndices, onChange, pa
             onChange(path, checked);
         }
     });
+}
+
+/**
+ * Rend un champ image avec zone de drop, prévisualisation et bouton supprimer.
+ * @param {Object} config - Configuration du champ (label, hint)
+ * @param {Object|null} value - Valeur actuelle { path, mime, width, height, dataURL } ou null
+ * @param {Function} onChange - Callback (path, newValue)
+ * @param {string} path - Chemin dans le JSON (ex: "cards.0.image")
+ */
+export function renderImageField(config, value, onChange, path) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'json-editor__field json-editor__field--image';
+    wrapper.dataset.path = path;
+
+    const label = translateLabel(config.label) || 'Image';
+    const hint = config.hint ? translateLabel(config.hint) : '';
+    const altPlaceholder = translateLabel('editor_image_alt_placeholder') || 'Décrivez l\'image pour l\'accessibilité';
+
+    // Déterminer si une image est déjà présente
+    const hasImage = value && (value.dataURL || value.path);
+
+    // Mode collapsible : envelopper le contenu dans un accordéon plié par défaut
+    if (config.collapsible) {
+        const collapsibleLabel = translateLabel(config.collapsibleLabel || config.label);
+        const isExpanded = hasImage; // Déplier automatiquement si une image est déjà présente
+        wrapper.innerHTML = `
+            <div class="json-editor__array-item-subsection ${isExpanded ? 'json-editor__array-item-subsection--expanded' : ''}">
+                <div class="json-editor__array-item-subsection-header">
+                    <i class="fas fa-chevron-right"></i>
+                    <span>${escapeHtml(collapsibleLabel)}</span>
+                </div>
+                <div class="json-editor__array-item-subsection-content">
+                    <div class="json-editor__image-collapsible-inner"></div>
+                </div>
+            </div>
+        `;
+        const header = wrapper.querySelector('.json-editor__array-item-subsection-header');
+        const subsection = wrapper.querySelector('.json-editor__array-item-subsection');
+        header.addEventListener('click', () => {
+            subsection.classList.toggle('json-editor__array-item-subsection--expanded');
+        });
+
+        // Créer le contenu image dans le conteneur interne
+        const inner = wrapper.querySelector('.json-editor__image-collapsible-inner');
+        const imageContent = renderImageFieldContent(config, value, onChange, path, label, hint, altPlaceholder, hasImage);
+        inner.appendChild(imageContent);
+        return wrapper;
+    }
+
+    const imageContent = renderImageFieldContent(config, value, onChange, path, label, hint, altPlaceholder, hasImage);
+    wrapper.appendChild(imageContent);
+    return wrapper;
+}
+
+/**
+ * Rendu interne du contenu d'un champ image (dropzone, preview, événements).
+ * Factorisé pour être utilisé en mode normal et en mode collapsible.
+ */
+function renderImageFieldContent(config, value, onChange, path, label, hint, altPlaceholder, hasImage) {
+    const container = document.createElement('div');
+    container.innerHTML = `
+        <label class="json-editor__label">
+            <i class="fas fa-image"></i> ${escapeHtml(label)}
+        </label>
+        ${hint ? `<span class="json-editor__hint">${escapeHtml(hint)}</span>` : ''}
+
+        <div class="json-editor__image-dropzone" style="${hasImage ? 'display:none' : ''}">
+            <input type="file" accept="image/jpeg,image/png,image/gif,image/webp"
+                   class="json-editor__image-input" />
+            <div class="json-editor__image-dropzone-content">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>${translateLabel('editor_image_drop_text') || 'Glissez une image ici ou cliquez pour parcourir'}</p>
+                <span class="json-editor__image-hint">${translateLabel('editor_image_hint') || 'JPEG, PNG, WebP — max 5 Mo'}</span>
+            </div>
+        </div>
+
+        <div class="json-editor__image-preview" style="${hasImage ? '' : 'display:none'}">
+            <div class="json-editor__image-preview-container">
+                <img class="json-editor__image-preview-img"
+                     src="${hasImage && value.dataURL ? value.dataURL : ''}"
+                     alt="${escapeHtml(value?.alt || '')}" />
+                <button type="button" class="json-editor__image-remove-btn"
+                        title="${translateLabel('editor_image_remove') || 'Supprimer l\'image'}">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="json-editor__image-info">
+                <span class="json-editor__image-dimensions">${hasImage && value.width ? `${value.width} × ${value.height} px` : ''}</span>
+                <span class="json-editor__image-size"></span>
+            </div>
+        </div>
+    `;
+
+    const dropzone = container.querySelector('.json-editor__image-dropzone');
+    const fileInput = container.querySelector('.json-editor__image-input');
+    const preview = container.querySelector('.json-editor__image-preview');
+    const previewImg = container.querySelector('.json-editor__image-preview-img');
+    const removeBtn = container.querySelector('.json-editor__image-remove-btn');
+    const dimensionsSpan = container.querySelector('.json-editor__image-dimensions');
+    const sizeSpan = container.querySelector('.json-editor__image-size');
+
+    /**
+     * Traite un fichier image sélectionné ou déposé.
+     */
+    async function handleFile(file) {
+        if (!file) return;
+
+        try {
+            // Import dynamique de image-manager (évite le chargement au démarrage)
+            const { processImage, registerImage } = await import('../h5p/image-manager.js');
+
+            const entry = await processImage(file);
+            registerImage(path, entry);
+
+            // Afficher la prévisualisation
+            previewImg.src = entry.dataURL;
+            dimensionsSpan.textContent = `${entry.width} × ${entry.height} px`;
+            sizeSpan.textContent = `${Math.round(entry.compressedSize / 1024)} Ko`;
+
+            dropzone.style.display = 'none';
+            preview.style.display = '';
+
+            // Notifier le changement
+            onChange(path, {
+                path: entry.h5pPath,
+                mime: entry.mime,
+                width: entry.width,
+                height: entry.height,
+                dataURL: entry.dataURL
+            });
+
+        } catch (err) {
+            console.error('[ImageField] Erreur:', err);
+            let msg;
+            if (err.message === 'FORMAT_INVALID') {
+                msg = translateLabel('editor_image_error_format') || 'Format non supporté. Utilisez JPEG, PNG ou WebP.';
+            } else if (err.message === 'SIZE_EXCEEDED') {
+                msg = translateLabel('editor_image_error_size') || 'Image trop volumineuse (max 5 Mo).';
+            } else {
+                msg = translateLabel('editor_image_error_processing') || 'Erreur lors du traitement de l\'image.';
+            }
+            // Afficher l'erreur sous la zone de drop
+            showImageError(container, msg);
+        }
+    }
+
+    // Événement : clic sur input file
+    fileInput.addEventListener('change', (e) => {
+        handleFile(e.target.files[0]);
+        fileInput.value = ''; // Reset pour permettre de re-sélectionner le même fichier
+    });
+
+    // Événements : drag & drop
+    dropzone.addEventListener('dragenter', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('json-editor__image-dropzone--dragover');
+    });
+    dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('json-editor__image-dropzone--dragover');
+    });
+    dropzone.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('json-editor__image-dropzone--dragover');
+    });
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('json-editor__image-dropzone--dragover');
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+            handleFile(file);
+        }
+    });
+
+    // Événement : clic sur la zone de drop → ouvrir l'explorateur de fichiers
+    dropzone.addEventListener('click', (e) => {
+        if (e.target !== fileInput) {
+            fileInput.click();
+        }
+    });
+
+    // Champ texte alternatif intégré (si altTextField est défini dans la config)
+    let altInput = null;
+    let altPath = null;
+    if (config.altTextField) {
+        // Calculer le path du champ alt : même parent que l'image, nom différent
+        const pathParts = path.split('.');
+        pathParts[pathParts.length - 1] = config.altTextField;
+        altPath = pathParts.join('.');
+
+        const altWrapper = document.createElement('div');
+        altWrapper.className = 'json-editor__field json-editor__field--text json-editor__image-alt-field';
+        const altLabel = translateLabel('editor_image_alt') || 'Texte alternatif';
+        const altPlaceholderText = translateLabel('editor_image_alt_placeholder') || 'Décrivez l\'image pour l\'accessibilité';
+
+        altWrapper.innerHTML = `
+            <label class="json-editor__label">${escapeHtml(altLabel)}</label>
+            <input type="text" class="json-editor__input"
+                   placeholder="${escapeHtml(altPlaceholderText)}"
+                   value="" />
+        `;
+        altInput = altWrapper.querySelector('input');
+        altInput.addEventListener('input', () => {
+            onChange(altPath, altInput.value);
+        });
+        container.appendChild(altWrapper);
+    }
+
+    // Champ select intégré (si selectField est défini dans la config)
+    let selectInput = null;
+    let selectPath = null;
+    if (config.selectField) {
+        const sf = config.selectField;
+        const pathParts = path.split('.');
+        pathParts[pathParts.length - 1] = sf.name;
+        selectPath = pathParts.join('.');
+
+        const selectWrapper = document.createElement('div');
+        selectWrapper.className = 'json-editor__field json-editor__field--select json-editor__image-select-field';
+        const selectLabel = translateLabel(sf.label) || sf.name;
+
+        const optionsHtml = sf.options.map(opt => {
+            const optLabel = translateLabel(opt.label) || opt.value;
+            const selected = opt.value === (sf.default || '') ? ' selected' : '';
+            return `<option value="${escapeHtml(opt.value)}"${selected}>${escapeHtml(optLabel)}</option>`;
+        }).join('');
+
+        selectWrapper.innerHTML = `
+            <label class="json-editor__label">${escapeHtml(selectLabel)}</label>
+            <select class="json-editor__select">${optionsHtml}</select>
+        `;
+        selectInput = selectWrapper.querySelector('select');
+        selectInput.addEventListener('change', () => {
+            onChange(selectPath, selectInput.value);
+        });
+        container.appendChild(selectWrapper);
+    }
+
+    // Événement : supprimer l'image
+    removeBtn.addEventListener('click', async () => {
+        const { unregisterImage } = await import('../h5p/image-manager.js');
+        unregisterImage(path);
+
+        previewImg.src = '';
+        dimensionsSpan.textContent = '';
+        sizeSpan.textContent = '';
+
+        preview.style.display = 'none';
+        dropzone.style.display = '';
+
+        onChange(path, null);
+
+        // Vider aussi le champ alt text si présent
+        if (altInput) {
+            altInput.value = '';
+            onChange(altPath, '');
+        }
+
+        // Réinitialiser le select si présent
+        if (selectInput && config.selectField) {
+            selectInput.value = config.selectField.default || '';
+            onChange(selectPath, selectInput.value);
+        }
+    });
+
+    return container;
+}
+
+/**
+ * Affiche un message d'erreur temporaire sous la zone de drop.
+ */
+function showImageError(wrapper, message) {
+    // Supprimer l'erreur précédente si existante
+    const existing = wrapper.querySelector('.json-editor__image-error');
+    if (existing) existing.remove();
+
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'json-editor__image-error';
+    errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${escapeHtml(message)}`;
+    wrapper.appendChild(errorDiv);
+
+    // Supprimer après 5 secondes
+    setTimeout(() => errorDiv.remove(), 5000);
 }
 
 /**
@@ -610,13 +1010,24 @@ export function renderObjectField(config, value, onChange, path) {
             for (const [subKey, subConfig] of Object.entries(config.schema)) {
                 const subPath = `${path}.${subKey}`;
                 const subValue = objValue[subKey];
-                const renderer = fieldRenderers[subConfig.type] || renderTextField;
-                const subField = renderer(subConfig, subValue, onChange, subPath);
+                const { renderer, config: resolved } = _resolveRenderer(subConfig, subPath);
+                const subField = renderer(resolved, subValue, onChange, subPath);
                 content.appendChild(subField);
             }
         }
+    } else if (config.noHeader) {
+        // Version sans en-tête : sous-champs rendus directement, pas de div intermédiaire
+        if (config.schema) {
+            for (const [subKey, subConfig] of Object.entries(config.schema)) {
+                const subPath = `${path}.${subKey}`;
+                const subValue = objValue[subKey];
+                const { renderer, config: resolved } = _resolveRenderer(subConfig, subPath);
+                const subField = renderer(resolved, subValue, onChange, subPath);
+                wrapper.appendChild(subField);
+            }
+        }
     } else {
-        // Version non-pliable
+        // Version non-pliable avec titre
         wrapper.innerHTML = `
             <div class="json-editor__nested">
                 <div class="json-editor__nested-title">
@@ -633,8 +1044,8 @@ export function renderObjectField(config, value, onChange, path) {
             for (const [subKey, subConfig] of Object.entries(config.schema)) {
                 const subPath = `${path}.${subKey}`;
                 const subValue = objValue[subKey];
-                const renderer = fieldRenderers[subConfig.type] || renderTextField;
-                const subField = renderer(subConfig, subValue, onChange, subPath);
+                const { renderer, config: resolved } = _resolveRenderer(subConfig, subPath);
+                const subField = renderer(resolved, subValue, onChange, subPath);
                 content.appendChild(subField);
             }
         }
@@ -692,7 +1103,7 @@ export function renderStringArrayField(config, value, onChange, path) {
             rows="4"
         >${escapeHtml(textValue)}</textarea>
         ${hint ? `<span class="json-editor__hint">${escapeHtml(hint)}</span>` : ''}
-        <span class="json-editor__error"></span>
+        <span class="json-editor__error" role="alert" aria-live="assertive"></span>
     `;
 
     const textarea = wrapper.querySelector('textarea');
@@ -733,6 +1144,129 @@ export function renderStringArrayField(config, value, onChange, path) {
 // =======================================================================
 // SECTION PLIABLE
 // =======================================================================
+
+/**
+ * Rend un champ de type liste de tags (chips editables).
+ * Valeur : tableau de chaines. Chaque mot est affiche dans une pastille.
+ * Clic sur une pastille → edition en place. Bouton x → suppression. Champ + → ajout.
+ */
+export function renderTagListField(config, value, onChange, path) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'json-editor__field json-editor__field--tag-list';
+
+    const label = translateLabel(config.label);
+    const hint = config.hint ? translateLabel(config.hint) : '';
+    const items = Array.isArray(value) ? [...value] : (typeof value === 'string' && value ? value.split(',').map(s => s.trim()).filter(Boolean) : []);
+
+    wrapper.innerHTML = `
+        <label class="json-editor__label ${config.required ? 'json-editor__label--required' : ''}">
+            ${escapeHtml(label)}
+        </label>
+        <div class="json-editor__tag-container" data-path="${path}"></div>
+        ${hint ? `<span class="json-editor__hint">${escapeHtml(hint)}</span>` : ''}
+        <span class="json-editor__error" role="alert" aria-live="assertive"></span>
+    `;
+
+    const container = wrapper.querySelector('.json-editor__tag-container');
+
+    function notifyChange() {
+        const tags = Array.from(container.querySelectorAll('.json-editor__tag'))
+            .map(tag => tag.dataset.value)
+            .filter(v => v && v.trim());
+        if (onChange) onChange(path, tags);
+    }
+
+    function createTag(text) {
+        const tag = document.createElement('span');
+        tag.className = 'json-editor__tag';
+        tag.dataset.value = text;
+        tag.innerHTML = `
+            <span class="json-editor__tag-text">${escapeHtml(text)}</span>
+            <button type="button" class="json-editor__tag-remove" title="${translateLabel('editor_delete') || 'Supprimer'}">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+
+        // Clic sur le texte → edition en place
+        const textSpan = tag.querySelector('.json-editor__tag-text');
+        textSpan.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'json-editor__tag-edit';
+            input.value = tag.dataset.value;
+            input.size = Math.max(input.value.length, 3);
+
+            tag.replaceChild(input, textSpan);
+            input.focus();
+            input.select();
+
+            const finish = () => {
+                const newVal = input.value.trim();
+                if (newVal) {
+                    tag.dataset.value = newVal;
+                    const newSpan = document.createElement('span');
+                    newSpan.className = 'json-editor__tag-text';
+                    newSpan.textContent = newVal;
+                    tag.replaceChild(newSpan, input);
+                    // Re-attacher le listener
+                    newSpan.addEventListener('click', () => textSpan.click());
+                    notifyChange();
+                } else {
+                    tag.remove();
+                    notifyChange();
+                }
+            };
+
+            input.addEventListener('blur', finish);
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') { e.preventDefault(); finish(); }
+                if (e.key === 'Escape') { input.value = tag.dataset.value; finish(); }
+            });
+        });
+
+        // Bouton supprimer
+        tag.querySelector('.json-editor__tag-remove').addEventListener('click', () => {
+            tag.remove();
+            notifyChange();
+        });
+
+        return tag;
+    }
+
+    // Rendre les tags existants
+    items.forEach(text => {
+        container.appendChild(createTag(text));
+    });
+
+    // Champ d'ajout
+    const addInput = document.createElement('input');
+    addInput.type = 'text';
+    addInput.className = 'json-editor__tag-add';
+    addInput.placeholder = translateLabel('editor_tag_add_placeholder') || '+';
+    addInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ',') {
+            e.preventDefault();
+            const val = addInput.value.trim().replace(/,/g, '');
+            if (val) {
+                container.insertBefore(createTag(val), addInput);
+                addInput.value = '';
+                notifyChange();
+            }
+        }
+    });
+    // Ajout aussi au blur si du texte est present
+    addInput.addEventListener('blur', () => {
+        const val = addInput.value.trim().replace(/,/g, '');
+        if (val) {
+            container.insertBefore(createTag(val), addInput);
+            addInput.value = '';
+            notifyChange();
+        }
+    });
+    container.appendChild(addInput);
+
+    return wrapper;
+}
 
 /**
  * Rend une section pliable
@@ -1227,9 +1761,9 @@ export function renderPageBlockDataField(config, value, onChange, path, blockTyp
             const fieldElement = renderer(fieldConfig, fieldValue, onChange, fieldPath);
             wrapper.appendChild(fieldElement);
         } else {
-            // Champ simple
-            const renderer = fieldRenderers[fieldConfig.type] || renderTextField;
-            const fieldElement = renderer(fieldConfig, fieldValue, onChange, fieldPath);
+            // Champ simple — résoudre via richtext si applicable
+            const { renderer, config: resolvedConfig } = _resolveRenderer(fieldConfig, fieldPath);
+            const fieldElement = renderer(resolvedConfig, fieldValue, onChange, fieldPath);
             wrapper.appendChild(fieldElement);
         }
     }
@@ -1249,6 +1783,21 @@ export function getPageBlockSchema(blockType) {
  */
 export function getPageBlockTypes() {
     return Object.keys(pageBlockSchemas);
+}
+
+/**
+ * Résout le renderer pour un champ via getRendererForField (exposé par editor-core.js).
+ * Fallback sur le renderer par défaut si non disponible.
+ */
+function _resolveRenderer(fieldConfig, fieldPath) {
+    const richtext = window._jsonEditorRichtext;
+    if (richtext && richtext.getRendererForField) {
+        return richtext.getRendererForField(fieldConfig, fieldPath);
+    }
+    return {
+        renderer: fieldRenderers[fieldConfig.type] || renderTextField,
+        config: fieldConfig
+    };
 }
 
 /**
@@ -1361,16 +1910,43 @@ export function renderDynamicObjectField(config, value, onChange, path, selector
             for (const [subKey, subConfig] of Object.entries(fieldConfig.fields || {})) {
                 const subPath = `${path}.${subKey}`;
                 const subValue = dataValue[subKey];
-                const renderer = fieldRenderers[subConfig.type] || renderTextField;
-                const subElement = renderer(subConfig, subValue, onChange, subPath);
+                const { renderer: subRenderer, config: subResolved } = _resolveRenderer(subConfig, subPath);
+                const subElement = subRenderer(subResolved, subValue, onChange, subPath);
                 groupContainer.appendChild(subElement);
             }
             wrapper.appendChild(groupContainer);
         } else {
-            // Champ simple
-            const renderer = fieldRenderers[fieldConfig.type] || renderTextField;
-            const fieldElement = renderer(fieldConfig, fieldValue, onChange, fieldPath);
-            wrapper.appendChild(fieldElement);
+            // Champ simple — résoudre via getRendererForField si disponible
+            const { renderer, config: resolvedConfig } = _resolveRenderer(fieldConfig, fieldPath);
+            const rendered = renderer(resolvedConfig, fieldValue, onChange, fieldPath);
+
+            // Support collapsible pour les champs simples (text, textarea)
+            if (fieldConfig.collapsible && rendered) {
+                const cWrapper = document.createElement('div');
+                cWrapper.className = 'json-editor__field json-editor__field--collapsible-wrapper';
+                const cLabel = translateLabel(fieldConfig.collapsibleLabel || fieldConfig.label || '');
+                cWrapper.innerHTML = `
+                    <div class="json-editor__array-item-subsection">
+                        <div class="json-editor__array-item-subsection-header">
+                            <i class="fas fa-chevron-right"></i>
+                            <span>${escapeHtml(cLabel)}</span>
+                        </div>
+                        <div class="json-editor__array-item-subsection-content" style="display: none;"></div>
+                    </div>
+                `;
+                const cHeader = cWrapper.querySelector('.json-editor__array-item-subsection-header');
+                const cContent = cWrapper.querySelector('.json-editor__array-item-subsection-content');
+                const cSection = cWrapper.querySelector('.json-editor__array-item-subsection');
+                cHeader.addEventListener('click', () => {
+                    const expanded = cSection.classList.toggle('json-editor__array-item-subsection--expanded');
+                    cContent.style.display = expanded ? '' : 'none';
+                    cHeader.querySelector('i').className = expanded ? 'fas fa-chevron-down' : 'fas fa-chevron-right';
+                });
+                cContent.appendChild(rendered);
+                wrapper.appendChild(cWrapper);
+            } else {
+                wrapper.appendChild(rendered);
+            }
         }
     }
 

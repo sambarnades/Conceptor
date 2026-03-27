@@ -96,6 +96,7 @@ const ALL_H5P_FIXTURES = [
     { moduleKey: 'QuizSet',         fixture: 'quiz_mixte_1.json',         machineName: 'H5P.QuestionSet',     jsonInputId: 'quizSetJsonInput',         createBtnId: 'createQuizSetH5P' },
     { moduleKey: 'QuizSetQCM',      fixture: 'quiz_qcm_1.json',          machineName: 'H5P.QuestionSet',     jsonInputId: 'quizSetQcmJsonInput',      createBtnId: 'createQuizSetQcmH5P' },
     { moduleKey: 'QuizSetQCM',      fixture: 'quiz_qcm_5.json',          machineName: 'H5P.QuestionSet',     jsonInputId: 'quizSetQcmJsonInput',      createBtnId: 'createQuizSetQcmH5P' },
+    { moduleKey: 'QuizSetQCM',      fixture: 'quiz_qcm_formules_test.json', machineName: 'H5P.QuestionSet',  jsonInputId: 'quizSetQcmJsonInput',      createBtnId: 'createQuizSetQcmH5P' },
     { moduleKey: 'QuizSetVF',       fixture: 'quiz_vraifaux_1.json',      machineName: 'H5P.QuestionSet',     jsonInputId: 'quizSetVfJsonInput',       createBtnId: 'createQuizSetVfH5P' },
     { moduleKey: 'Glossary',        fixture: 'accordion_1.json',          machineName: 'H5P.Accordion',       jsonInputId: 'glossaryJsonInput',        createBtnId: 'createGlossaryH5P' },
     { moduleKey: 'Crossword',       fixture: 'crosswords_1.json',         machineName: 'H5P.Crossword',       jsonInputId: 'crosswordJsonInput',       createBtnId: 'createCrosswordH5P' },
@@ -113,7 +114,8 @@ const ALL_H5P_FIXTURES = [
     { moduleKey: 'SortParagraphs',  fixture: 'sort_the_paragraphs_1.json', machineName: 'H5P.SortParagraphs', jsonInputId: 'sortParagraphsJsonInput',  createBtnId: 'createSortParagraphsH5P' },
     { moduleKey: 'SingleChoiceSet', fixture: 'single_choice_set_1.json',  machineName: 'H5P.SingleChoiceSet', jsonInputId: 'singleChoiceSetJsonInput', createBtnId: 'createSingleChoiceSetH5P' },
     { moduleKey: 'DialogCards',     fixture: 'dialog_cards_1.json',       machineName: 'H5P.Dialogcards',     jsonInputId: 'dialogCardsJsonInput',     createBtnId: 'createDialogCardsH5P' },
-    { moduleKey: 'Chart',           fixture: 'charts_1.json',             machineName: 'H5P.Chart',           jsonInputId: 'chartJsonInput',           createBtnId: 'createChartH5P' }
+    { moduleKey: 'Chart',           fixture: 'charts_1.json',             machineName: 'H5P.Chart',           jsonInputId: 'chartJsonInput',           createBtnId: 'createChartH5P' },
+    { moduleKey: 'CoursePresentation', fixture: 'course_presentation_1.json', machineName: 'H5P.CoursePresentation', jsonInputId: 'coursePresentationJsonInput', createBtnId: 'createCoursePresentationH5P' }
 ];
 
 // =======================================================================
@@ -241,7 +243,8 @@ async function runStep2_UIPipelineAll(doc) {
             textarea.dispatchEvent(new Event('input', { bubbles: true }));
 
             // 3. Preparer l'ecoute de generation:complete AVANT le clic
-            const eventPromise = waitForEvent(doc, 'generation:complete', 20000);
+            const timeoutMs = moduleKey === 'CoursePresentation' ? 40000 : 20000;
+            const eventPromise = waitForEvent(doc, 'generation:complete', timeoutMs);
 
             // 4. Cliquer sur le bouton de creation
             const createBtn = doc.querySelector(`#${createBtnId}`);
@@ -256,7 +259,7 @@ async function runStep2_UIPipelineAll(doc) {
             const event = await eventPromise;
 
             if (!event) {
-                assert(false, `[2.${moduleKey}] Timeout generation:complete (20s)`);
+                assert(false, `[2.${moduleKey}] Timeout generation:complete (${timeoutMs / 1000}s)`);
                 failedModules.push(moduleKey);
                 // Tenter de fermer une eventuelle modale bloquante
                 await _tryCloseModal(doc);
@@ -322,12 +325,14 @@ async function runStep3_Notifications(doc) {
     console.group('Etape 3 : Notifications');
     _ctx = { step: 3, stepName: 'Notifications', file: '', module: '', source: '' };
 
-    await wait(300);
+    await wait(500);
 
     // Les notifications sont par module unique (pas par fixture) :
     // QuizSetQCM x2 et MarkTheWords x3 ne generent qu'une notification chacun.
+    // Le systeme de notifications a un plafond FIFO de 20 (MAX_NOTIFICATIONS).
     const uniqueModules = new Set(ALL_H5P_FIXTURES.map(e => e.moduleKey));
-    const expected = Math.min(shared.generated, uniqueModules.size);
+    const MAX_NOTIFICATIONS = 20;
+    const expected = Math.min(shared.generated, uniqueModules.size, MAX_NOTIFICATIONS);
     const notifList = doc.querySelector('.notification-list');
     assert(!!notifList, `[3a.List] .notification-list presente`);
 

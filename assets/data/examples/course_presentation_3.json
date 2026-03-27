@@ -1,0 +1,117 @@
+{
+  "title": "Rome : De la République à l'Empire et au-delà",
+  "slides": [
+    {
+      "type": "title",
+      "title": "Rome : De la République à l'Empire",
+      "subtitle": "Analyse historique de -100 à nos jours"
+    },
+    {
+      "type": "content",
+      "title": "La fin de la République et l'arrivée de l'Empire",
+      "text": "Au **Ier siècle av. J.-C.**, la République romaine traverse une crise majeure. Des guerres civiles opposent des généraux puissants comme **Jules César** et **Pompée**. Après l'assassinat de César en -44, l'histoire romaine bascule vers le système impérial. En -31, la victoire d'**Octave** (le futur Auguste) à Actium marqua la fin des guerres civiles et le début du **Principat**. Auguste restaure la paix et la stabilité, posant les bases de la *Pax Romana*."
+    },
+    {
+      "type": "quiz",
+      "title": "Vérification rapide : Le changement de régime",
+      "exercise": {
+        "library": "H5P.MultiChoice 1.16",
+        "question": "Quel événement marque symboliquement la fin de la République et le début de l'Empire sous Auguste ?",
+        "answers": [
+          { "text": "La bataille d'Actium (-31)", "correct": true, "tipsAndFeedback": { "chosenFeedback": "Exactement ! C'est la victoire décisive qui consolide le pouvoir d'Auguste." } },
+          { "text": "Le meurtre de César (-44)", "correct": false, "tipsAndFeedback": { "chosenFeedback": "Non, cet événement a déclenché la fin de la République, mais n'a pas encore instauré l'Empire." } },
+          { "text": "La construction du Colisée (72 apr. J.-C.)", "correct": false, "tipsAndFeedback": { "chosenFeedback": "Non, c'est bien trop tard, sous l'empereur Vespasien." } },
+          { "text": "L'invasion des Barbares (476)", "correct": false }
+        ],
+        "behaviour": { "singleAnswer": true },
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Il faut revoir la chronologie de la transition République-Empire." },
+          { "from": 26, "to": 50, "feedback": "Vous avez des notions, mais précisez les dates." },
+          { "from": 51, "to": 75, "feedback": "Bon travail sur la période augustéenne." },
+          { "from": 76, "to": 100, "feedback": "Excellent ! Vous maîtrisez les grands basculements." }
+        ]
+      }
+    },
+    {
+      "type": "content-with-table",
+      "title": "L'évolution de la période médiévale à aujourd'hui",
+      "text": "Après le règne de Trajan à la fin du IIe siècle, l'Empire commence à décliner. Il faut distinguer la chute de l'Empire d'Occident (476) et la survie de l'Empire d'Orient (Byzance) jusqu'en 1453. La ville de Rome change de visage, devenant le siège de la papauté. Au **XIXe siècle**, Rome retrouve son statut de capitale, cette fois-ci de l'**Italie unifiée** en 1870.",
+      "table": {
+        "headers": ["Période", "Statut de Rome", "Événement clé"],
+        "rows": [
+          ["-31 / 476", "Capitale de l'Empire", "Apogée sous la Pax Romana"],
+          ["476 / 1453", "Ville pontificale (Occident) / Capitale Byzantine (Orient)", "Chute de Rome d'Occident (476)"],
+          ["1453 / 1870", "Capitale de l'État pontifical", "Prise de Rome par le Risorgimento"],
+          ["Depuis 1870", "Capitale du Royaume d'Italie puis de la République italienne", "Incorporation de Rome à l'Italie"]
+        ]
+      }
+    },
+    {
+      "type": "quiz",
+      "title": "Exercice de chronologie : Glisser les mots",
+      "exercise": {
+        "library": "H5P.DragText 1.10",
+        "taskDescription": "Remettez les dates et événements dans l'ordre chronologique pour expliquer l'évolution de Rome.",
+        "textField": "*1453* : Chute de Constantinople, fin de l'Empire d'Orient.\n*476* : Déposition de Romulus Augustule, fin de l'Empire d'Occident.\n*1870* : Prise de Rome, unification italienne.\n*313* : Édit de Milan, tolérance du christianisme.\n*312* : Conversion de Constantin, bataille du pont Milvius.",
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "L'ordre est mélangé. Essayez de rappeler les grandes étapes : chute de l'Occident, christianisme, unification italienne." },
+          { "from": 26, "to": 50, "feedback": "Vous avez repéré certains événements, mais la séquence temporelle reste confuse." },
+          { "from": 51, "to": 75, "feedback": "Très bonne progression ! La chronologie est presque bonne." },
+          { "from": 76, "to": 100, "feedback": "Parfait ! Vous maîtrisez parfaitement l'évolution historique de Rome." }
+        ]
+      }
+    },
+    {
+      "type": "content-quiz",
+      "title": "Le christianisme et la transformation de la ville",
+      "text": "À partir du **IVe siècle**, le christianisme devient la religion dominante de l'Empire. Rome perd son rôle de capitale politique (déplacée à Ravenne, puis Constantinople) mais conserve son prestige spirituel. Elle devient la **Cité du Pape**. Au **XIXe siècle**, le processus de **Risorgimento** (mouvement d'unification italienne) conduit à l'annexion de Rome à l'Italie, marquant la fin de la puissance temporelle des Papes.",
+      "exercise": {
+        "library": "H5P.TrueFalse 1.8",
+        "question": "La fin de l'Empire romain d'Occident en 476 marque la fin immédiate de la ville de Rome en tant que centre de pouvoir ou de vie.",
+        "correct": "false",
+        "feedbackOnCorrect": "Bravo ! Vous savez qu'elle est fausse. La ville reste un centre vital, notamment religieux.",
+        "feedbackOnWrong": "Non, c'est incorrect. La ville continue de vivre, changeant de statut politique mais restant au cœur de la chrétienté."
+      }
+    },
+    {
+      "type": "quiz",
+      "title": "Sélection des idées clés",
+      "exercise": {
+        "library": "H5P.Summary 1.10",
+        "intro": "Choisissez l'affirmation correcte pour chaque groupe afin de résumer l'histoire de Rome de -100 à aujourd'hui.",
+        "summaries": [
+          {
+            "summary": [
+              "Rome passe de République à Empire avec Auguste en -27.",
+              "Rome reste une République jusqu'à Napoléon.",
+              "L'Empire romain s'effondre sans laisser de traces politiques."
+            ],
+            "tip": "Pensez à la figure d'Auguste qui inaugure une nouvelle ère."
+          },
+          {
+            "summary": [
+              "Au Moyen Âge, Rome est la capitale spirituelle du monde chrétien.",
+              "Au Moyen Âge, Rome est une simple ville de province sans importance.",
+              "La papauté disparaît totalement après 476."
+            ],
+            "tip": "La figure clé du Moyen Âge à Rome est le Pape."
+          },
+          {
+            "summary": [
+              "Rome devient capitale de l'Italie unifiée en 1870.",
+              "Rome est restée la capitale du monde entier jusqu'en 1900.",
+              "L'Italie unifiée a été créée en 1861 avec Rome comme capitale."
+            ],
+            "tip": "Attention : l'Italie est unie en 1861, mais Rome est annexée plus tard."
+          }
+        ],
+        "overallFeedback": [
+          { "from": 0, "to": 25, "feedback": "Il semble que vous ayez des lacunes sur la chronologie. Revoir le cours." },
+          { "from": 26, "to": 50, "feedback": "Vous avez fait quelques erreurs, mais vous avez compris les grands principes." },
+          { "from": 51, "to": 75, "feedback": "Bonne compréhension de l'évolution politique et religieuse de Rome." },
+          { "from": 76, "to": 100, "feedback": "Excellent résumé ! Vous avez parfaitement intégré les étapes clés." }
+        ]
+      }
+    }
+  ]
+}

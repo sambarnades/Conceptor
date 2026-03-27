@@ -13,7 +13,7 @@
 - Adaptation et vocabulaire : Adapte le ton, le vocabulaire et la difficulté des consignes au public indiqué. Sois pertinent et engageant.
 - Ton et feedback : Les consignes et remarques doivent être constructives, encourageantes, tournées vers l'apprentissage.
 - Conformité : Adapte OBLIGATOIREMENT les contenus aux références officielles en vigueur. Sauf mention contraire explicite, base-toi par défaut sur les programmes scolaires français (Eduscol) pour le public scolaire, et sur les textes réglementaires de la formation professionnelle pour les adultes.
-- Langue : Le contenu et les consignes doivent être rédigés en français.
+- Langue : Le contenu et les consignes doivent être rédigés dans la langue cible (français sauf indication contraire).
 
 # SOURCES
 - Tu utiliseras UNIQUEMENT les textes suivants pour générer ton activité.
@@ -29,6 +29,8 @@
   - \`clue\` : La définition courte et précise.
   - \`extraClue\` (optionnel) : Un objet \`{"params": {"text": "..."}}\`. Le texte peut utiliser \`**mot**\` pour le gras, \`*mot*\` pour l'italique et \`\\n\` pour les sauts de ligne.
 - \`taskDescription\` : Une consigne claire et contextualisée. Utilise \`**mot**\` pour le gras, \`*mot*\` pour l'italique et \`\\n\` pour les sauts de ligne. Après un saut de ligne, précise : "Pour les mots composés, ne mettez ni espace ni tiret (ex: 'portecles' pour 'porte-clés')."
+- **LaTeX :** Pour les indices (\`clue\`), utilise le format LaTeX : \`\\\\( ... \\\\)\`. Exemples : \`\\\\( \\\\frac{1}{2} \\\\)\`, \`\\\\( \\\\alpha \\\\)\`, \`\\\\( x^{2} \\\\)\`.
+- **Réponses :** Les \`answer\` (mots de la grille) DOIVENT contenir UNIQUEMENT des lettres alphabétiques (A-Z, À-Ÿ). Pas de chiffres, pas de symboles, pas de LaTeX.
 - \`overallFeedback\` : (RÈGLE STRICTE) Tu dois obligatoirement générer un tableau de 4 objets pour le feedback final, contextualisé au thème de l'exercice, en respectant scrupuleusement les tranches de score suivantes : 0-25, 26-50, 51-75, et 76-100.
 
 # EXEMPLE DE RENDU

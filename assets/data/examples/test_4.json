@@ -1,0 +1,206 @@
+{
+    "bank_name": "Mathématiques - Fonctions et calcul",
+    "bank_description": "Une évaluation sur les fonctions, le calcul algébrique et les propriétés mathématiques fondamentales, avec formules LaTeX.",
+    "questions": [
+        {
+            "type": "multichoice",
+            "content": {
+                "name": "Q1 - Dérivée d'un polynôme",
+                "questiontext": "Quelle est la dérivée de la fonction \\( f(x) = 3x^3 - 2x^2 + 5x - 1 \\) ?",
+                "feedback": "On applique la règle \\( (x^n)' = nx^{n-1} \\) à chaque terme.",
+                "answers": [
+                    {
+                        "text": "\\( f'(x) = 9x^2 - 4x + 5 \\)",
+                        "fraction": 100,
+                        "feedback": "Correct ! On dérive terme à terme : \\( 3 \\times 3x^2 = 9x^2 \\), \\( 2 \\times 2x = 4x \\), et la dérivée de \\( 5x \\) est \\( 5 \\)."
+                    },
+                    {
+                        "text": "\\( f'(x) = 9x^2 - 2x + 5 \\)",
+                        "fraction": 0,
+                        "feedback": "Attention, la dérivée de \\( -2x^2 \\) est \\( -4x \\), pas \\( -2x \\)."
+                    },
+                    {
+                        "text": "\\( f'(x) = 3x^2 - 4x + 5 \\)",
+                        "fraction": 0,
+                        "feedback": "Le coefficient de \\( x^3 \\) donne \\( 3 \\times 3 = 9 \\), pas \\( 3 \\)."
+                    },
+                    {
+                        "text": "\\( f'(x) = 9x^3 - 4x^2 + 5x \\)",
+                        "fraction": 0,
+                        "feedback": "La dérivation diminue le degré de chaque terme de 1."
+                    }
+                ]
+            }
+        },
+        {
+            "type": "numerical",
+            "content": {
+                "name": "Q2 - Calcul d'intégrale",
+                "questiontext": "Calculez \\( \\int_0^1 2x \\, dx \\). Donnez le résultat sous forme décimale.",
+                "feedback": "On a \\( \\int_0^1 2x \\, dx = \\left[ x^2 \\right]_0^1 = 1^2 - 0^2 = 1 \\).",
+                "answer": {
+                    "number": 1,
+                    "tolerance": 0,
+                    "feedback": "Exact ! La primitive de \\( 2x \\) est \\( x^2 \\)."
+                }
+            }
+        },
+        {
+            "type": "truefalse",
+            "content": {
+                "name": "Q3 - Identité remarquable",
+                "questiontext": "L'identité \\( (a + b)^2 = a^2 + 2ab + b^2 \\) est valable pour tout \\( a, b \\in \\mathbb{R} \\).",
+                "feedback": "C'est l'une des trois identités remarquables fondamentales, avec \\( (a - b)^2 \\) et \\( (a + b)(a - b) \\).",
+                "answer": {
+                    "value": true,
+                    "feedback_true": "Exact ! Cette identité se démontre en développant le produit \\( (a + b)(a + b) \\).",
+                    "feedback_false": "C'est pourtant vrai. Développez \\( (a + b)(a + b) \\) pour vérifier."
+                }
+            }
+        },
+        {
+            "type": "matching",
+            "content": {
+                "name": "Q4 - Fonctions et dérivées",
+                "questiontext": "Associez chaque fonction à sa dérivée.",
+                "feedback": "Ces dérivées font partie des formules de base à connaître.",
+                "subquestions": [
+                    {
+                        "text": "\\( f(x) = \\sin(x) \\)",
+                        "answer": "f'(x) = cos(x)"
+                    },
+                    {
+                        "text": "\\( f(x) = e^x \\)",
+                        "answer": "f'(x) = eˣ"
+                    },
+                    {
+                        "text": "\\( f(x) = \\ln(x) \\)",
+                        "answer": "f'(x) = 1/x"
+                    },
+                    {
+                        "text": "\\( f(x) = x^2 \\)",
+                        "answer": "f'(x) = 2x"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "shortanswer",
+            "content": {
+                "name": "Q5 - Théorème célèbre",
+                "questiontext": "Quel théorème affirme que dans un triangle rectangle, \\( a^2 + b^2 = c^2 \\) où \\( c \\) est l'hypoténuse ?",
+                "feedback": "Ce théorème est attribué au mathématicien grec du VIe siècle av. J.-C.",
+                "answers": [
+                    {
+                        "text": "Pythagore",
+                        "fraction": 100,
+                        "feedback": "Exact !"
+                    },
+                    {
+                        "text": "Théorème de Pythagore",
+                        "fraction": 100,
+                        "feedback": "Exact !"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "cloze",
+            "content": {
+                "name": "Q6 - Équation du second degré",
+                "questiontext": "Pour résoudre l'équation ax² + bx + c = 0, on calcule le discriminant {1:MULTICHOICE:=Δ = b² − 4ac~Δ = b² + 4ac~Δ = 2b − 4ac}. Si Δ > 0, l'équation admet {1:SHORTANSWER:=2} solutions réelles distinctes.",
+                "feedback": "La formule du discriminant et le nombre de solutions sont des résultats fondamentaux de l'algèbre."
+            }
+        },
+        {
+            "type": "multichoice",
+            "content": {
+                "name": "Q7 - Limite de suite",
+                "questiontext": "Quelle est la limite de la suite \\( u_n = \\frac{n^2 + 3n}{2n^2 - 1} \\) quand \\( n \\to +\\infty \\) ?",
+                "feedback": "On factorise par le terme de plus haut degré : \\( \\frac{n^2(1 + \\frac{3}{n})}{n^2(2 - \\frac{1}{n^2})} \\to \\frac{1}{2} \\).",
+                "answers": [
+                    {
+                        "text": "\\( \\frac{1}{2} \\)",
+                        "fraction": 100,
+                        "feedback": "Bravo ! On compare les termes dominants \\( n^2 \\) au numérateur et \\( 2n^2 \\) au dénominateur."
+                    },
+                    {
+                        "text": "\\( +\\infty \\)",
+                        "fraction": 0,
+                        "feedback": "Non, le numérateur et le dénominateur sont de même degré, la limite est le rapport des coefficients dominants."
+                    },
+                    {
+                        "text": "\\( 1 \\)",
+                        "fraction": 0,
+                        "feedback": "Attention au coefficient \\( 2 \\) devant \\( n^2 \\) au dénominateur."
+                    },
+                    {
+                        "text": "\\( 0 \\)",
+                        "fraction": 0,
+                        "feedback": "La limite serait \\( 0 \\) seulement si le degré du numérateur était inférieur à celui du dénominateur."
+                    }
+                ]
+            }
+        },
+        {
+            "type": "numerical",
+            "content": {
+                "name": "Q8 - Aire sous une courbe",
+                "questiontext": "Calculez l'aire sous la courbe de \\( f(x) = x^2 \\) entre \\( x = 0 \\) et \\( x = 3 \\). Donnez la valeur exacte.",
+                "feedback": "On calcule \\( \\int_0^3 x^2 \\, dx = \\left[ \\frac{x^3}{3} \\right]_0^3 = \\frac{27}{3} = 9 \\).",
+                "answer": {
+                    "number": 9,
+                    "tolerance": 0,
+                    "feedback": "Parfait ! La primitive de \\( x^2 \\) est \\( \\frac{x^3}{3} \\)."
+                }
+            }
+        },
+        {
+            "type": "truefalse",
+            "content": {
+                "name": "Q9 - Propriété de l'exponentielle",
+                "questiontext": "Pour tout \\( x \\in \\mathbb{R} \\), on a \\( e^{-x} = -e^x \\).",
+                "feedback": "La bonne relation est \\( e^{-x} = \\frac{1}{e^x} \\). L'exponentielle est toujours strictement positive.",
+                "answer": {
+                    "value": false,
+                    "feedback_true": "Non, \\( e^{-x} = \\frac{1}{e^x} > 0 \\) alors que \\( -e^x < 0 \\).",
+                    "feedback_false": "Correct ! \\( e^{-x} = \\frac{1}{e^x} \\), qui est toujours positif."
+                }
+            }
+        },
+        {
+            "type": "cloze",
+            "content": {
+                "name": "Q10 - Calculs numériques",
+                "questiontext": "Le double de 7 est {1:NUMERICAL:=14:0}. La moitié de 50 est {1:NUMERICAL:=25:0}. Le nombre π arrondi au centième vaut {1:NUMERICAL:=3.14:0.01}.",
+                "feedback": "Ce sont des calculs fondamentaux à maîtriser."
+            }
+        },
+        {
+            "type": "matching",
+            "content": {
+                "name": "Q11 - Formules remarquables",
+                "questiontext": "Associez chaque expression à sa forme développée ou simplifiée.",
+                "feedback": "Ces identités algébriques sont essentielles pour la factorisation et le développement.",
+                "subquestions": [
+                    {
+                        "text": "\\( (a - b)^2 \\)",
+                        "answer": "a² − 2ab + b²"
+                    },
+                    {
+                        "text": "\\( (a + b)(a - b) \\)",
+                        "answer": "a² − b²"
+                    },
+                    {
+                        "text": "\\( (a + b)^3 \\)",
+                        "answer": "a³ + 3a²b + 3ab² + b³"
+                    },
+                    {
+                        "text": "\\( \\sqrt{a \\times b} \\)",
+                        "answer": "√a × √b"
+                    }
+                ]
+            }
+        }
+    ]
+}

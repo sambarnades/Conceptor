@@ -19,16 +19,27 @@ export default {
         return {
             title: jsonObj.title || translations.h5p_flashcards_name,
             description: formatTextToHtml(jsonObj.description || translations.h5p_flashcards_description),
-            cards: jsonObj.cards ? jsonObj.cards.map(card => ({
+            cards: (Array.isArray(jsonObj.cards) ? jsonObj.cards : []).map(card => ({
                 text: formatTextToHtml(card.text || ""),
                 answer: formatTextToHtml(card.answer || ""),
-                tip: formatTextToHtml(card.tip || "")
-            })) : [],
+                tip: formatTextToHtml(card.tip || ""),
+                // Image optionnelle — structure attendue par H5P.Flashcards semantics
+                ...(card.image && card.image.path ? {
+                    image: {
+                        path: card.image.path,
+                        mime: card.image.mime || "image/jpeg",
+                        copyright: { license: "U" },
+                        width: card.image.width || 0,
+                        height: card.image.height || 0
+                    },
+                    imageAltText: card.imageAltText || ""
+                } : {})
+            })),
             progressText: translations.h5p_flashcards_progress_text || "Carte @card sur @total",
             next: translations.h5p_next || "Suivant",
             previous: translations.h5p_previous || "Précédent",
             checkAnswerText: translations.h5p_check_answer || "Vérifier",
-            enableRetry: true,
+            enableRetry: jsonObj.behaviour?.enableRetry ?? true,
             showSolutionsRequiresInput: true,
             defaultAnswerText: translations.h5p_flashcards_your_answer || "Votre réponse",
             correctAnswerText: translations.h5p_correct_text || "Correct !",
@@ -39,11 +50,11 @@ export default {
             showResults: translations.h5p_flashcards_show_results || "Montrer les résultats",
             answerShortText: translations.h5p_flashcards_answer_short || "R :",
             retry: translations.h5p_try_again || "Recommencer",
-            caseSensitive: false,
+            caseSensitive: jsonObj.behaviour?.caseSensitive ?? false,
             cardAnnouncement: translations.h5p_flashcards_card_announcement || "Réponse incorrecte. La réponse correcte était @answer",
             correctAnswerAnnouncement: translations.h5p_flashcards_correct_announcement || "@answer est correct.",
             pageAnnouncement: translations.h5p_flashcards_page_announcement || "Page @current sur @total",
-            randomCards: false,
+            randomCards: jsonObj.behaviour?.randomCards ?? false,
             language: h5pLang
         };
     }

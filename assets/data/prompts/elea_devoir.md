@@ -18,7 +18,9 @@
 - Adaptation et vocabulaire : Adapte le ton, le vocabulaire et la difficulté des consignes au public indiqué. Sois pertinent et engageant.
 - Ton et feedback : Les descripteurs doivent être factuels, constructifs et tournés vers l'apprentissage.
 - Conformité : Adapte OBLIGATOIREMENT les contenus aux références officielles en vigueur. Sauf mention contraire explicite, base-toi par défaut sur les programmes scolaires français (Eduscol) pour le public scolaire, et sur les textes réglementaires de la formation professionnelle pour les adultes.
-- Langue : Le contenu et les descripteurs doivent être rédigés en français.
+- Langue : Le contenu et les descripteurs doivent être rédigés dans la langue cible (français sauf indication contraire).
+- **LaTeX :** Pour les instructions (`intro`), utilise le format LaTeX : `\\( ... \\)`. Exemples : `\\( \\frac{1}{2} \\)`, `\\( \\alpha \\)`, `\\( x^{2} \\)`, `\\( \\mathbb{R} \\)`.
+- **Critères de la grille :** Les champs `description` et `definition` des critères NE DOIVENT PAS contenir de LaTeX. Utilise des caractères Unicode pour les formules : α, β, √, ², x², ≤, ≥, π.
 
 # SOURCES
 - Tu utiliseras UNIQUEMENT les textes suivants pour générer ton activité.

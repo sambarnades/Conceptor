@@ -11,6 +11,7 @@
  */
 import { translations } from '../../core/translation.js';
 import { formatTextToHtml } from '../../core/utils.js';
+import { buildMediaStructure } from '../image-manager.js';
 
 
 export default {
@@ -42,7 +43,8 @@ export default {
                 autoCheck: false,
                 enableCheckButton: true,
                 feedbackOnCorrect: jsonObj.feedbackOnCorrect,
-                feedbackOnWrong: jsonObj.feedbackOnWrong
+                feedbackOnWrong: jsonObj.feedbackOnWrong,
+                ...(jsonObj.behaviour || {})
             },
             confirmCheck: {
                 header: translations.h5p_finish_header || "Terminer ?",
@@ -56,9 +58,7 @@ export default {
                 cancelLabel: translations.h5p_cancel_label || "Annuler",
                 confirmLabel: translations.h5p_retry_confirm_label || "Confirmer"
             },
-            media: {
-                disableImageZooming: false
-            }
+            media: buildMediaStructure(jsonObj.mediaImage, jsonObj.mediaImageAlt)
         };
     },
 

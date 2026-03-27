@@ -12,7 +12,7 @@
 - Adaptation et vocabulaire : Adapte le ton, le vocabulaire et la difficulté des consignes au public indiqué. Sois pertinent et engageant.
 - Ton et feedback : Les consignes et remarques doivent être constructives, encourageantes, tournées vers l'apprentissage.
 - Conformité : Adapte OBLIGATOIREMENT les contenus aux références officielles en vigueur. Sauf mention contraire explicite, base-toi par défaut sur les programmes scolaires français (Eduscol) pour le public scolaire, et sur les textes réglementaires de la formation professionnelle pour les adultes.
-- Langue : Le contenu et les consignes doivent être rédigés en français.
+- Langue : Le contenu et les consignes doivent être rédigés dans la langue cible (français sauf indication contraire).
 
 # SOURCES
 - Tu utiliseras UNIQUEMENT les textes suivants pour générer ton activité.
@@ -24,7 +24,9 @@
 - Génère UNIQUEMENT un JSON complet et valide dans un bloc de code. Ta réponse DOIT commencer par \`{\` et finir par \`}\`. Aucun autre texte ou commentaire.
 - Le JSON généré doit être un TABLEAU avec autant d'objets que de termes mentionnés précédemment.
 - \`title\` : Le mot-clé, l'expression ou la question à définir.
-- \`text\` : La définition. Utilise \`**mot**\` pour le gras, \`*mot*\` pour l'italique et \`\\n\` pour les retours à la ligne. Pour les formules mathématiques, utilise le format LaTeX avec double échappement, par exemple : \`\\\\( (2^3)^2 \\\\)\`.
+- \`text\` : La définition. Utilise \`**mot**\` pour le gras, \`*mot*\` pour l'italique et \`\\n\` pour les retours à la ligne.
+- **LaTeX :** Pour les formules mathématiques, utilise EXCLUSIVEMENT le format LaTeX encapsulé par double échappement : \`\\\\( ... \\\\)\`. N'utilise JAMAIS le signe \`$\` seul. Exemples : \`\\\\( \\\\frac{1}{2} \\\\)\`, \`\\\\( \\\\sqrt{2} \\\\)\`, \`\\\\( \\\\alpha \\\\)\`, \`\\\\( x^{2} \\\\)\`, \`\\\\( \\\\mathbb{R} \\\\)\`, \`\\\\( \\\\sin(\\\\theta) \\\\)\`, \`\\\\( \\\\sum_{k=0}^{n} k \\\\)\`, \`\\\\( x \\\\geq 0 \\\\)\`, \`\\\\( \\\\forall x \\\\in \\\\mathbb{R} \\\\)\`.
+- **Titres :** Les \`title\` des panneaux NE DOIVENT PAS contenir de LaTeX ni de HTML. Texte brut uniquement (les formules seront converties en Unicode : α, β, √, ², etc.).
 
 # EXEMPLE DE RENDU
 ```json

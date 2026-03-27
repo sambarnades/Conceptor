@@ -1,0 +1,652 @@
+/*
+ * Rich Text Editor — Styles pour l'editeur WYSIWYG
+ *
+ * Suit le design system Apple-inspired de json-editor.css :
+ * - Couleur primaire : #007AFF
+ * - Border-radius : 6px
+ * - Focus : border-color #007AFF + box-shadow rgba(0,122,255,0.15)
+ * - Police : system-ui (monospace pour le mode source)
+ */
+
+/* =======================================================================
+   CONTENEUR
+   ======================================================================= */
+
+.json-editor__richtext-container {
+    border: 1px solid #d2d2d7;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #ffffff;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.json-editor__richtext-container--focused {
+    border-color: #007AFF;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+}
+
+.json-editor__richtext-container--error {
+    border-color: #FF3B30;
+}
+
+.json-editor__richtext-container--error.json-editor__richtext-container--focused {
+    box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.15);
+}
+
+/* =======================================================================
+   TOOLBAR
+   ======================================================================= */
+
+.json-editor__richtext-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 3px 6px;
+    background: #f5f5f7;
+    border-bottom: 1px solid #e5e5ea;
+    flex-wrap: wrap;
+    min-height: 32px;
+    position: relative;
+}
+
+.json-editor__richtext-toolbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    color: #1d1d1f;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 100ms ease, color 100ms ease;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.json-editor__richtext-toolbar-btn:hover {
+    background: #e8e8ed;
+}
+
+.json-editor__richtext-toolbar-btn--active {
+    background: #007AFF;
+    color: #ffffff;
+}
+
+.json-editor__richtext-toolbar-btn--active:hover {
+    background: #0066d6;
+}
+
+.json-editor__richtext-toolbar-separator {
+    width: 1px;
+    height: 18px;
+    background: #d2d2d7;
+    margin: 0 3px;
+    flex-shrink: 0;
+}
+
+/* =======================================================================
+   ZONE ÉDITABLE (WYSIWYG)
+   ======================================================================= */
+
+.json-editor__richtext-editable {
+    min-height: 36px;
+    padding: 6px 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #1d1d1f;
+    outline: none;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.json-editor__richtext-editable--hidden {
+    display: none;
+}
+
+/* Placeholder */
+.json-editor__richtext-editable:empty::before {
+    content: attr(data-placeholder);
+    color: #86868b;
+    font-style: italic;
+    pointer-events: none;
+}
+
+/* Contenu HTML dans l'éditeur */
+.json-editor__richtext-editable p {
+    margin: 0 0 0.3em 0;
+}
+
+.json-editor__richtext-editable p:last-child {
+    margin-bottom: 0;
+}
+
+.json-editor__richtext-editable ul,
+.json-editor__richtext-editable ol {
+    margin: 0.3em 0;
+    padding-left: 1.5em;
+}
+
+.json-editor__richtext-editable a {
+    color: #007AFF;
+    text-decoration: underline;
+}
+
+.json-editor__richtext-editable blockquote {
+    border-left: 3px solid #d2d2d7;
+    margin: 0.3em 0;
+    padding-left: 0.8em;
+    color: #6e6e73;
+}
+
+/* =======================================================================
+   ZONE SOURCE (CODE)
+   ======================================================================= */
+
+.json-editor__richtext-source {
+    width: 100%;
+    min-height: 80px;
+    margin: 0;
+    padding: 6px 10px;
+    font-family: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #1d1d1f;
+    background: #fafafa;
+    border: none;
+    border-top: 1px solid #e5e5ea;
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+    display: block;
+}
+
+.json-editor__richtext-source--hidden {
+    display: none;
+}
+
+/* =======================================================================
+   LATEX PROTÉGÉ
+   ======================================================================= */
+
+.json-editor__richtext-latex {
+    display: inline-block;
+    background: #f0f4ff;
+    border: 1px solid #c5d5f0;
+    border-radius: 3px;
+    padding: 0 4px;
+    margin: 0 1px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    font-size: 13px;
+    line-height: 1.4;
+    transition: background-color 100ms ease, border-color 100ms ease;
+}
+
+.json-editor__richtext-latex:hover {
+    background: #e0ebff;
+    border-color: #a0b8e0;
+}
+
+.json-editor__richtext-latex--display {
+    display: block;
+    text-align: center;
+    margin: 0.4em 0;
+    padding: 4px 8px;
+}
+
+/* Masquer le texte LaTeX brut quand MathJax a rendu */
+.json-editor__richtext-latex .MathJax {
+    font-size: inherit;
+}
+
+/* =======================================================================
+   MARQUEURS *mot*
+   ======================================================================= */
+
+.json-editor__richtext-marker {
+    background: #FFF3CD;
+    border-radius: 2px;
+    padding: 0 2px;
+    font-weight: 600;
+    color: #856404;
+    border-bottom: 2px solid #f0c040;
+}
+
+/* =======================================================================
+   COLOR PICKER
+   ======================================================================= */
+
+.json-editor__richtext-color-picker {
+    position: fixed;
+    z-index: 6500;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 8px;
+    background: #ffffff;
+    border: 1px solid #d2d2d7;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    min-width: 160px;
+}
+
+.json-editor__richtext-color-swatch {
+    width: 28px;
+    height: 28px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 100ms ease, transform 100ms ease;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.json-editor__richtext-color-swatch:hover {
+    border-color: #007AFF;
+    transform: scale(1.1);
+}
+
+.json-editor__richtext-color-swatch--default {
+    background: #f5f5f7;
+    color: #86868b;
+    font-size: 12px;
+}
+
+.json-editor__richtext-color-custom {
+    width: 100%;
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px solid #e5e5ea;
+}
+
+.json-editor__richtext-color-custom input[type="color"] {
+    width: 100%;
+    height: 28px;
+    border: 1px solid #d2d2d7;
+    border-radius: 4px;
+    padding: 2px;
+    cursor: pointer;
+    background: transparent;
+}
+
+/* =======================================================================
+   LINK MODAL
+   ======================================================================= */
+
+.json-editor__link-modal {
+    position: relative;
+    width: 380px;
+    max-width: 100%;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.24);
+    overflow: hidden;
+    animation: formula-panel-in 150ms ease-out;
+}
+
+.json-editor__link-modal-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.json-editor__link-modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.json-editor__link-modal-field label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #6e6e73;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.json-editor__formula-btn--remove {
+    background: #FF3B30;
+    color: #ffffff;
+    margin-right: auto;
+}
+
+.json-editor__formula-btn--remove:hover {
+    background: #d42e25;
+}
+
+.json-editor__richtext-link-btn--remove:hover {
+    background: #d42e25;
+}
+
+/* =======================================================================
+   FORMULA PANEL
+   ======================================================================= */
+
+/* Overlay sombre derrière la modale */
+.json-editor__formula-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 6500;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+/* Panel (modale centree) */
+.json-editor__formula-panel {
+    position: relative;
+    width: 520px;
+    max-width: calc(100vw - 48px);
+    max-height: calc(100vh - 80px);
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+    display: flex;
+    flex-direction: column;
+    animation: formula-panel-in 150ms ease-out;
+}
+
+@keyframes formula-panel-in {
+    from { opacity: 0; transform: scale(0.96) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* En-tete */
+.json-editor__formula-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: #f5f5f7;
+    border-bottom: 1px solid #e5e5ea;
+    border-radius: 14px 14px 0 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1d1d1f;
+    flex-shrink: 0;
+}
+
+.json-editor__formula-close {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: #86868b;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background-color 100ms ease;
+}
+
+.json-editor__formula-close:hover {
+    background: #e8e8ed;
+    color: #1d1d1f;
+}
+
+/* Onglets categories */
+.json-editor__formula-categories {
+    display: flex;
+    gap: 0;
+    padding: 0 12px;
+    background: #f5f5f7;
+    border-bottom: 1px solid #e5e5ea;
+    flex-shrink: 0;
+}
+
+.json-editor__formula-category {
+    padding: 8px 12px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: #6e6e73;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 100ms ease, border-color 100ms ease;
+}
+
+.json-editor__formula-category:hover {
+    color: #1d1d1f;
+}
+
+.json-editor__formula-category--active {
+    color: #007AFF;
+    border-bottom-color: #007AFF;
+}
+
+/* Grille de symboles — hauteur fixe pour eviter le redimensionnement entre onglets */
+.json-editor__formula-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    padding: 12px;
+    overflow-y: auto;
+    height: 190px;
+    align-content: start;
+}
+
+.json-editor__formula-grid-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    border: 1px solid #e5e5ea;
+    border-radius: 8px;
+    background: #fafafa;
+    cursor: pointer;
+    font-size: 14px;
+    color: #1d1d1f;
+    transition: background-color 100ms ease, border-color 100ms ease, transform 80ms ease;
+    padding: 4px 6px;
+}
+
+.json-editor__formula-grid-item:hover {
+    background: #e0ebff;
+    border-color: #007AFF;
+    transform: scale(1.04);
+}
+
+/* Zone de saisie LaTeX */
+.json-editor__formula-input-area {
+    padding: 10px 14px;
+    border-top: 1px solid #e5e5ea;
+    flex-shrink: 0;
+}
+
+.json-editor__formula-input-area label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: #6e6e73;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 5px;
+}
+
+.json-editor__formula-input {
+    width: 100%;
+    padding: 8px 10px;
+    font-family: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 14px;
+    border: 1px solid #d2d2d7;
+    border-radius: 6px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.json-editor__formula-input:focus {
+    border-color: #007AFF;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.12);
+}
+
+/* Zone de preview */
+.json-editor__formula-preview-area {
+    padding: 12px 14px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fafafa;
+    border-top: 1px solid #e5e5ea;
+    font-size: 18px;
+    color: #1d1d1f;
+    flex-shrink: 0;
+}
+
+.json-editor__formula-preview-area--empty {
+    color: #86868b;
+    font-size: 12px;
+    font-style: italic;
+}
+
+/* Boutons d'action */
+.json-editor__formula-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 10px 14px;
+    border-top: 1px solid #e5e5ea;
+    background: #f5f5f7;
+    border-radius: 0 0 14px 14px;
+    flex-shrink: 0;
+}
+
+.json-editor__formula-btn {
+    padding: 7px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 100ms ease;
+}
+
+.json-editor__formula-btn--cancel {
+    background: #e8e8ed;
+    color: #1d1d1f;
+}
+
+.json-editor__formula-btn--cancel:hover {
+    background: #d8d8dd;
+}
+
+.json-editor__formula-btn--insert {
+    background: #007AFF;
+    color: #ffffff;
+}
+
+.json-editor__formula-btn--insert:hover {
+    background: #0066d6;
+}
+
+/* =======================================================================
+   MODE COMPACT (inputs une ligne avec formatage)
+   ======================================================================= */
+
+/* Le conteneur compact ressemble à un input classique */
+.json-editor__richtext-container--compact {
+    border-radius: 6px;
+}
+
+/* L'éditable compact : une seule ligne, aspect input, pleine largeur */
+.json-editor__richtext-editable--compact {
+    min-height: auto;
+    padding: 6px 10px;
+    font-size: 13px;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+/* Toolbar compact : inline, légère, fond transparent */
+.json-editor__richtext-container--compact .json-editor__richtext-toolbar {
+    padding: 2px 4px;
+    min-height: 26px;
+    gap: 1px;
+    background: transparent;
+    border-bottom: 1px solid #ebebf0;
+}
+
+.json-editor__richtext-container--compact .json-editor__richtext-toolbar-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+}
+
+.json-editor__richtext-container--compact .json-editor__richtext-toolbar-separator {
+    height: 14px;
+    margin: 0 2px;
+}
+
+/* Source compact */
+.json-editor__richtext-container--compact .json-editor__richtext-source {
+    min-height: auto;
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+/* Le champ compact ne s'étire pas verticalement */
+.json-editor__field--richtext-compact {
+    flex: none;
+    min-width: 0;
+}
+
+/* =======================================================================
+   RESPONSIVE / SOUS-SECTIONS
+   ======================================================================= */
+
+/* Toolbar compacte dans les sous-sections d'items */
+.json-editor__array-item-subsection-content .json-editor__richtext-toolbar {
+    padding: 2px 4px;
+}
+
+.json-editor__array-item-subsection-content .json-editor__richtext-toolbar-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+}
+
+.json-editor__array-item-subsection-content .json-editor__richtext-editable {
+    min-height: 30px;
+    font-size: 12px;
+}
+
+/* Petit écran : toolbar wrap plus serrée */
+@media (max-width: 600px) {
+    .json-editor__richtext-toolbar {
+        gap: 1px;
+        padding: 2px 4px;
+    }
+
+    .json-editor__richtext-toolbar-btn {
+        width: 26px;
+        height: 26px;
+        font-size: 11px;
+    }
+
+    .json-editor__formula-panel {
+        width: 280px;
+    }
+
+    .json-editor__formula-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

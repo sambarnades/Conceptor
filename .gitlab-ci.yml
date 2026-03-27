@@ -1,10 +1,132 @@
+# =============================================================================
+# Caramel — Pipeline GitLab Pages
+#
+# Minifie le JS (ES6 modules), le CSS, les JSON, et le HTML avant déploiement.
+# Les fichiers vendor (h5p-libs, h5p-standalone, etc.) sont déjà optimisés
+# et ne sont PAS modifiés.
+#
+# Outils : terser (JS ES6), clean-css-cli (CSS), html-minifier-terser (HTML)
+# =============================================================================
+
 pages:
   stage: deploy
   environment: production
+  image: node:20-alpine
   script:
+    # ------------------------------------------------------------------
+    # 1. Installation des outils de minification
+    # ------------------------------------------------------------------
+    - npm install --no-save terser clean-css-cli html-minifier-terser
+
+    # ------------------------------------------------------------------
+    # 2. Copie du projet dans .public (on travaille sur la copie)
+    #    On exclut les dossiers inutiles en production.
+    # ------------------------------------------------------------------
+    - mkdir -p .public
     - |
-      mkdir .public
-      cp -r ./* .public
-      rm -rf public
-      mv .public public
+      cp -r assets css js index.html .public/
+      rm -rf .public/tests .public/docs .public/scripts
+
+    # ------------------------------------------------------------------
+    # 3. Minification JS — modules ES6 (~79 fichiers applicatifs)
+    #
+    #    - --module : préserve import/export, top-level await
+    #    - --compress : dead code elimination, constant folding
+    #    - --mangle : renomme les variables locales (pas les exports)
+    #    - On exclut js/vendor/ (libs déjà optimisées + h5p-libs intouchables)
+    #    - On exclut les .min.js (déjà minifiés)
+    # ------------------------------------------------------------------
+    - |
+      echo "=== Minification JS ==="
+      JS_COUNT=0
+      JS_FAIL=0
+      for f in $(find .public/js -name '*.js' -not -path '.public/js/vendor/*' -not -name '*.min.js'); do
+        if npx terser "$f" \
+          --module \
+          --compress 'passes=2,dead_code=true,drop_console=false' \
+          --mangle \
+          --output "$f" 2>/dev/null; then
+          JS_COUNT=$((JS_COUNT + 1))
+        else
+          echo "  WARN: echec minification $f (fichier original conserve)"
+          JS_FAIL=$((JS_FAIL + 1))
+        fi
+      done
+      echo "  JS: $JS_COUNT fichiers minifies, $JS_FAIL echecs"
+
+    # ------------------------------------------------------------------
+    # 4. Minification CSS (7 fichiers base + composants)
+    #
+    #    - On exclut css/vendor/ (FontAwesome, flag-icons déjà .min.css)
+    # ------------------------------------------------------------------
+    - |
+      echo "=== Minification CSS ==="
+      CSS_COUNT=0
+      for f in $(find .public/css -name '*.css' -not -path '.public/css/vendor/*' -not -name '*.min.css'); do
+        if npx cleancss --level 1 -o "$f" "$f" 2>/dev/null; then
+          CSS_COUNT=$((CSS_COUNT + 1))
+        else
+          echo "  WARN: echec minification $f"
+        fi
+      done
+      echo "  CSS: $CSS_COUNT fichiers minifies"
+
+    # ------------------------------------------------------------------
+    # 5. Compactage JSON — locales et exemples
+    #
+    #    Suppression des espaces et indentation (11 locales + exemples)
+    # ------------------------------------------------------------------
+    - |
+      echo "=== Compactage JSON ==="
+      JSON_COUNT=0
+      for dir in .public/js/locales .public/assets/data/examples; do
+        if [ -d "$dir" ]; then
+          for f in $(find "$dir" -name '*.json'); do
+            node -e "var f=require('fs'),p='$f';f.writeFileSync(p,JSON.stringify(JSON.parse(f.readFileSync(p,'utf8'))))" 2>/dev/null && JSON_COUNT=$((JSON_COUNT + 1))
+          done
+        fi
+      done
+      echo "  JSON: $JSON_COUNT fichiers compactes"
+
+    # ------------------------------------------------------------------
+    # 6. Minification HTML — index.html
+    #
+    #    Préserve les scripts inline (Matomo) et les attributs data-*
+    # ------------------------------------------------------------------
+    - |
+      echo "=== Minification HTML ==="
+      npx html-minifier-terser \
+        --collapse-whitespace \
+        --remove-comments \
+        --remove-empty-attributes \
+        --minify-css true \
+        --conservative-collapse \
+        --keep-closing-slash \
+        -o .public/index.html \
+        .public/index.html 2>/dev/null \
+        && echo "  HTML: index.html minifie" \
+        || echo "  WARN: echec minification HTML (original conserve)"
+
+    # ------------------------------------------------------------------
+    # 7. Rapport de tailles
+    # ------------------------------------------------------------------
+    - |
+      echo "=== Rapport final ==="
+      echo "  JS (hors vendor) :"
+      find .public/js -name '*.js' -not -path '.public/js/vendor/*' -exec cat {} + | wc -c | awk '{printf "    %d Ko\n", $1/1024}'
+      echo "  CSS (hors vendor) :"
+      find .public/css -name '*.css' -not -path '.public/css/vendor/*' -exec cat {} + | wc -c | awk '{printf "    %d Ko\n", $1/1024}'
+      echo "  Locales JSON :"
+      find .public/js/locales -name '*.json' -exec cat {} + | wc -c | awk '{printf "    %d Ko\n", $1/1024}'
+      echo "  Total deploye :"
+      du -sh .public/
+
+    # ------------------------------------------------------------------
+    # 8. Déplacement final pour GitLab Pages
+    # ------------------------------------------------------------------
+    - rm -rf public
+    - mv .public public
+
   artifacts:
+    paths:
+      - public

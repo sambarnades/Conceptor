@@ -33,6 +33,7 @@ const defaultTranslations = {
     h5p_dialog_cards_name: "Cartes de dialogue",
     h5p_complex_fill_the_blanks_name: "Texte à trous complexe",
     h5p_chart_name: "Diagramme",
+    h5p_course_presentation_name: "Présentation de cours",
     // Noms des modules Moodle/Éléa
     elea_test_xml_name: "Test",
     elea_test_gift_name: "Format GIFT",
@@ -187,8 +188,9 @@ export async function loadTranslations(lang) {
     currentLang = lang;
     hydrateLegalLLMLine();
 
-    // Mettre à jour l'attribut lang du <html>
+    // Mettre à jour l'attribut lang et la direction du texte
     document.documentElement.lang = lang;
+    document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
 
     // Appliquer les traductions + mettre à jour l'UI du sélecteur
     translatePage();

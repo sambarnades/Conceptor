@@ -7,12 +7,12 @@
  */
 
 import { translations, currentLang } from '../core/translation.js';
-import { cleanJsonInput, downloadFile, formatTextToHtml, escapeHtmlTags, DEBUG, classifyError, debugLog } from '../core/utils.js';
+import { cleanJsonInput, downloadFile, formatTextToHtml, markdownToHtml, escapeHtmlTags, DEBUG, classifyError, debugLog } from '../core/utils.js';
 import { addNotification } from '../ui/notifications.js';
 import { loadMoodleLibs } from '../core/lib-loader.js';
 import { escapeXml, generateMoodleXml, generateMoodleGift } from './moodle-formats.js';
 import * as MoodleProcessors from './processors/index.js';
-import { healStructureForActivity, normalizeDoubleEscapedLatex, repairBrokenLatexEscapes, autoWrapLatex, convertLatexDelimitersDeep, convertLatexEnvironmentsDeep } from '../h5p/json-healer.js';
+import { healStructureForActivity, normalizeDoubleEscapedLatex, repairBrokenLatexEscapes, autoWrapLatex, convertLatexDelimitersDeep, convertLatexEnvironmentsDeep, latexToUnicode } from '../h5p/json-healer.js';
 import { getTheme } from './page-themes.js';
 
 /**
@@ -24,6 +24,7 @@ import { getTheme } from './page-themes.js';
  * @param {any} data - Les données JSON (objet, tableau ou chaîne)
  * @returns {any} Les données avec le LaTeX normalisé
  */
+export { healLatexForMoodle as healLatexForTest, healClozeQuestiontext };
 function healLatexForMoodle(data) {
     let healed = normalizeDoubleEscapedLatex(data);
     healed = repairBrokenLatexEscapes(healed);
@@ -31,7 +32,130 @@ function healLatexForMoodle(data) {
     healed = convertLatexDelimitersDeep(healed);
     healed = autoWrapLatex(healed);
     healed = normalizeDoubleEscapedLatex(healed);
+    healed = healClozeSyntax(healed);
+    healed = healTestAnswerFields(healed);
     return healed;
+}
+
+/**
+ * Répare la syntaxe cloze invalide dans les questions de type Test.
+ * Opère sur les questions de type "cloze" dans le tableau `questions` :
+ * 1) {N:NUMERICAL:#=X:T} → {N:NUMERICAL:=X:T} (# invalide)
+ * 2) {N:NUMERICAL:=texte:T} → {N:SHORTANSWER:=texte} si la réponse n'est pas un nombre
+ * 3) Supprime les délimiteurs LaTeX \(...\) dans le questiontext des cloze
+ *    (conflit backslashes/accolades avec la syntaxe {1:TYPE:...})
+ * @param {any} data - Les données JSON de la banque de questions
+ * @returns {any} Les données avec la syntaxe cloze corrigée
+ */
+function healClozeSyntax(data) {
+    if (!data || typeof data !== 'object') return data;
+
+    // Parcourt le tableau de questions
+    if (Array.isArray(data.questions)) {
+        data.questions = data.questions.map(q => {
+            if (q.type === 'cloze' && q.content && typeof q.content.questiontext === 'string') {
+                q.content.questiontext = healClozeQuestiontext(q.content.questiontext);
+            }
+            return q;
+        });
+    }
+    return data;
+}
+
+/**
+ * Répare un questiontext de question cloze.
+ * @param {string} text - Le questiontext brut
+ * @returns {string} Le questiontext corrigé
+ */
+function healClozeQuestiontext(text) {
+    // 1) Supprime les délimiteurs LaTeX \(...\) en gardant le contenu intérieur
+    //    Gère aussi \\(...\\) (double-échappé dans JSON)
+    text = text.replace(/\\{1,2}\((.*?)\\{1,2}\)/g, '$1');
+
+    // 2) Corrige {N:NUMERICAL:#=val:tol} → {N:NUMERICAL:=val:tol}
+    text = text.replace(/\{(\d+):NUMERICAL:#=/g, '{$1:NUMERICAL:=');
+
+    // 3) Convertit {N:NUMERICAL:=texte:tol} → {N:SHORTANSWER:=texte}
+    //    quand la réponse n'est pas un nombre valide
+    text = text.replace(/\{(\d+):NUMERICAL:=([^}~]+)\}/g, (match, weight, inner) => {
+        // inner peut être "val:tol" ou "val"
+        const parts = inner.split(':');
+        const answer = parts[0].trim();
+        // Vérifie si c'est un nombre (entier, décimal, notation scientifique)
+        if (/^-?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/i.test(answer)) {
+            return match; // Valide, on ne touche pas
+        }
+        // Pas un nombre → convertit en SHORTANSWER (sans tolérance)
+        debugLog('healClozeSyntax', `NUMERICAL non numérique converti en SHORTANSWER: "${answer}"`);
+        return `{${weight}:SHORTANSWER:=${answer}}`;
+    });
+
+    return text;
+}
+
+/**
+ * Convertit le LaTeX (délimité ou nu) en texte brut/Unicode dans une chaîne.
+ * Utilisé pour les champs de réponse qui ne supportent pas MathJax.
+ * @param {string} text
+ * @returns {string}
+ */
+function stripLatexToPlainText(text) {
+    if (!text || typeof text !== 'string') return text;
+    // 1. Extraire le contenu des blocs \(...\) et convertir en Unicode
+    let cleaned = text.replace(/\\\(([\s\S]*?)\\\)/g, (_, inner) => latexToUnicode(inner).trim());
+    // 2. Convertir les commandes LaTeX restantes (sans délimiteurs) en Unicode
+    if (/\\[a-zA-Z]/.test(cleaned)) {
+        cleaned = latexToUnicode(cleaned);
+    }
+    return cleaned;
+}
+
+/**
+ * Nettoie les champs de réponse des questions Test qui ne doivent pas contenir de LaTeX.
+ * - shortanswer : les réponses (text) doivent être en texte brut (champ saisi par l'élève)
+ * - matching : les réponses (answer) doivent être en Unicode (menu déroulant, pas de MathJax)
+ * Opère uniquement sur les questions de type "shortanswer" et "matching" dans data.questions.
+ * @param {any} data - Les données JSON de la banque de questions
+ * @returns {any} Les données avec les réponses nettoyées
+ */
+function healTestAnswerFields(data) {
+    if (!data || typeof data !== 'object' || !Array.isArray(data.questions)) return data;
+
+    data.questions = data.questions.map(q => {
+        if (!q || !q.content) return q;
+
+        // shortanswer : convertir le LaTeX dans les réponses en texte brut
+        if (q.type === 'shortanswer' && Array.isArray(q.content.answers)) {
+            q.content.answers = q.content.answers.map(a => {
+                if (a.text && typeof a.text === 'string') {
+                    const cleaned = stripLatexToPlainText(a.text);
+                    if (cleaned !== a.text) {
+                        debugLog('healTestAnswerFields', `shortanswer: "${a.text}" → "${cleaned}"`);
+                        a.text = cleaned;
+                    }
+                }
+                return a;
+            });
+        }
+
+        // matching : convertir le LaTeX dans les champs answer en Unicode
+        if (q.type === 'matching' && Array.isArray(q.content.subquestions)) {
+            q.content.subquestions = q.content.subquestions.map(sq => {
+                if (sq.answer && typeof sq.answer === 'string') {
+                    const cleaned = stripLatexToPlainText(sq.answer);
+                    if (cleaned !== sq.answer) {
+                        debugLog('healTestAnswerFields', `matching answer: "${sq.answer}" → "${cleaned}"`);
+                        sq.answer = cleaned;
+                    }
+                }
+                return sq;
+            });
+        }
+
+        return q;
+    });
+
+    return data;
 }
 
 /**
@@ -579,13 +703,8 @@ export async function handleQCMCreation(jsonInput) {
         // Conserver l'original (Markdown) pour l'édition
         const originalJsonData = structuredClone(jsonData);
 
-        // Simple Markdown formatter to HTML
-        const formatMarkdown = (text) => {
-            if (!text) return '';
-            return text
-                .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-                .replace(/\*(.*?)\*/g, '<i>$1</i>');
-        };
+        // Simple Markdown formatter to HTML (avec protection LaTeX)
+        const formatMarkdown = (text) => markdownToHtml(text);
 
         // Ajout des balises <p> au contenu textuel si elles ne sont pas déjà présentes
         // ET conversion du Markdown en HTML
@@ -799,6 +918,69 @@ export function handleGlossaireXmlCreation(jsonInput) {
         addNotification({
             type: 'xml',
             title: translations.elea_glossaire_xml_name || 'Glossaire (XML)',
+            blob: new Blob([''], { type: 'text/plain' }),
+            status: 'error',
+            errorCategory: errorInfo.category,
+            userMessage: translations[errorInfo.userMessageKey] || errorInfo.userMessageKey,
+            technicalMessage: errorInfo.technicalMessage
+        });
+    }
+}
+
+/**
+ * Gère la création d'un fichier d'import Test (banque de questions) au format XML Moodle.
+ * Applique le pipeline de healing LaTeX avant la génération XML, comme pour les autres activités Moodle.
+ * @param {string} jsonInput - La chaîne JSON brute contenant la banque de questions.
+ */
+export function handleTestXmlCreation(jsonInput) {
+    try {
+        let jsonData = JSON.parse(cleanJsonInput(jsonInput));
+        const _debugRawJson = DEBUG ? structuredClone(jsonData) : null;
+        // Pipeline LaTeX : réparation des commandes cassées + auto-wrap + conversion délimiteurs
+        jsonData = healLatexForMoodle(jsonData);
+        const _debugHealedJson = DEBUG ? structuredClone(jsonData) : null;
+        const originalJsonData = structuredClone(jsonData);
+
+        const xmlContent = generateMoodleXml(jsonData);
+
+        const now = new Date();
+        const dateString = now.getFullYear() +
+            String(now.getMonth() + 1).padStart(2, '0') +
+            String(now.getDate()).padStart(2, '0') +
+            String(now.getHours()).padStart(2, '0') +
+            String(now.getMinutes()).padStart(2, '0');
+        const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
+        const fileName = `banque-de-questions-caramel-${dateString}-${lang}.xml`;
+        const xmlBlob = new Blob([xmlContent], { type: 'text/xml' });
+
+        // Ajouter à la liste des notifications (silent pour la modale de résultat)
+        const notifTest = {
+            type: 'xml',
+            title: translations.elea_test_xml_name || 'Banque de questions (XML)',
+            titleKey: 'elea_test_xml_name',
+            moduleKey: 'test_elea',
+            fileName: fileName,
+            blob: xmlBlob,
+            status: 'success',
+            jsonData: jsonData,
+            originalJsonData: originalJsonData,
+            silent: true
+        };
+        if (_debugRawJson) notifTest._debugRawJson = _debugRawJson;
+        if (_debugHealedJson) notifTest._debugHealedJson = _debugHealedJson;
+        const notificationId = addNotification(notifTest);
+        document.dispatchEvent(new CustomEvent('generation:complete', {
+            detail: { notificationId, blob: xmlBlob, fileName, titleKey: 'elea_test_xml_name', moduleKey: 'test_elea' }
+        }));
+
+    } catch (error) {
+        console.error("Erreur lors de la création du XML de la banque de questions:", error);
+
+        const errorInfo = classifyError(error);
+
+        addNotification({
+            type: 'xml',
+            title: translations.elea_test_xml_name || 'Banque de questions (XML)',
             blob: new Blob([''], { type: 'text/plain' }),
             status: 'error',
             errorCategory: errorInfo.category,

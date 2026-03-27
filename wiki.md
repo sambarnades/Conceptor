@@ -133,7 +133,7 @@ Une fois votre contexte pédagogique défini, cliquez sur l'activité qui corres
 
 | Onglet | Types d'activités |
 |--------|-------------------|
-| **📂 Tout** | Affiche les 30 activités en un seul écran |
+| **📂 Tout** | Affiche les 28 activités en un seul écran |
 | **🎯 Quiz & Tests** | Quiz mixte, Quiz QCM, Quiz Vrai/faux, Vrai/Faux (1 question), Choix multiples (1 seule question), Single Choice Set, Test, Millionnaire, Appariement, QCM |
 | **✏️ Manipulation de texte** | Textes à trous, Glisser les mots, Marquer les mots, Trier paragraphes |
 | **🧠 Mémorisation & Découverte** | Flashcards, Frises, Glossaires, Accordéons, Mots croisés, Mots mêlés |
@@ -184,6 +184,7 @@ Les fichiers **H5P** sont des modules interactifs universels, compatibles avec M
 | **Rédaction (Essay)** | Production écrite avec grille de mots-clés | Évaluation de rédaction semi-automatisée |
 | **Résumé** | Création de résumés interactifs | Synthèse de cours, révision |
 | **Graphiques (Chart)** | Diagrammes et graphiques visuels | Données statistiques, sciences |
+| **Course Presentation** ✨ | Présentation interactive multi-diapositives | Cours structuré, séquence pédagogique, diaporama interactif |
 
 </details>
 
@@ -297,17 +298,75 @@ Dans la fenêtre de visualisation, vous pouvez désormais **modifier le contenu 
 
 - **Questions et réponses** : Corrigez ou reformulez les questions générées par l'IA
 - **Termes et définitions** : Adaptez le glossaire à votre vocabulaire
-- **Images et références** : Ajoutez ou modifiez les ressources pédagogiques
 - **Niveaux de difficulté** : Réglez la progressivité du quiz à votre guise
 - **Mises à jour en temps réel** : Les modifications sont immédiatement appliquées au fichier téléchargeable
 
+#### 🔤 Éditeur de texte enrichi
+
+L'éditeur intègre une **barre d'outils contextuelle** qui apparaît automatiquement sur les champs compatibles :
+
+- **Mise en forme** : gras, italique, souligné, barré, exposant, indice
+- **Couleur** du texte
+- **Listes** à puces ou numérotées
+- **Liens** vers des sites web
+- **Bascule code source** : voir et modifier le texte brut à tout moment
+
+> 💡 Seuls les champs qui supportent le format HTML affichent la barre d'outils. Les champs courts (titres, réponses) ont une version compacte.
+
+#### √x Formules mathématiques
+
+Un **assistant de formules** permet d'insérer des expressions LaTeX dans vos questions et réponses :
+
+1. Cliquez sur le bouton **√x** dans la barre d'outils
+2. Choisissez parmi **6 catégories** de symboles (fractions, racines, puissances, lettres grecques, opérateurs, structures)
+3. L'**aperçu en temps réel** vous montre le rendu de la formule
+4. **Double-cliquez** sur une formule existante pour la modifier
+
+Les formules sont rendues correctement dans Éléa/Magistère (MathJax) et exportées comme **vraies formules éditables** dans Word (OMML) et LibreOffice (MathML). En PDF, elles sont converties en caractères Unicode lisibles.
+
+#### ✨ Marqueurs pour mots à trouver
+
+Pour les activités **Glisser les mots**, **Marquer les mots** et **Texte à trous** (H5P), un mode spécial surligne les mots marqués en jaune. Sélectionnez un mot et cliquez **Marquer**, ou entourez-le d'**astérisques** (`*mot*`).
+
+#### 🧩 Éditeur Cloze (Texte à trous Éléa)
+
+Pour l'activité **Test** Éléa, un éditeur visuel dédié remplace la syntaxe Moodle brute par des **pastilles colorées** :
+
+- **Bleu** : Choix multiple (liste déroulante)
+- **Jaune** : Réponse courte (champ texte)
+- **Vert** : Valeur numérique (avec tolérance)
+
+Cliquez sur un bouton pour insérer un trou, **double-cliquez** sur une pastille pour la configurer. Le bouton `</>` bascule en mode code source.
+
 > 💡 **Avantage** : L'édition intégrée vous permet de **peaufiner** votre activité avant téléchargement, sans avoir besoin d'outils externes complexes !
+
+### 🖼️ Ajout d'images dans les activités
+
+Vous pouvez enrichir vos activités avec vos propres images, directement dans l'éditeur :
+
+- **Glissez-déposez** une image (JPEG, PNG, WebP) ou cliquez sur la zone d'upload
+- L'image est **redimensionnée automatiquement** pour ne pas alourdir le fichier
+- Un **texte alternatif** (accessibilité) peut être ajouté sous l'image
+- L'image apparaît immédiatement dans la **prévisualisation** de l'activité
+- Elle est également incluse dans les **exports DOCX, ODT et PDF**
+
+| Activité | Type d'image | Emplacement dans l'éditeur |
+|----------|-------------|---------------------------|
+| **Flashcards** | Image par carte | Section pliable « Image » sous chaque carte |
+| **DialogCards** | Image par carte | Section pliable « Image » sous chaque carte |
+| **Drag & Drop** | Arrière-plan + étiquettes | Section dédiée « Image d'arrière-plan » |
+| **Mots croisés** | Arrière-plan | Section dédiée « Image d'arrière-plan » |
+| **Course Presentation** | Image par diapositive | Section pliable avec choix de position (gauche, droite, haut, bas) |
+| **Timeline** | Couverture + par événement | Choix entre URL externe ou image uploadée (toggle) |
+| **QCM, Vrai/Faux, Rédaction, Texte à trous, Glisser les mots, Surligner les mots** | Image de contexte | Section dédiée « Image de contexte » au-dessus de la question |
+
+> 📝 **Bon à savoir** : Les images sont toujours **facultatives** — aucune activité ne nécessite d'image pour fonctionner. Tout le traitement se fait dans votre navigateur, aucune image n'est envoyée à un serveur.
 
 ### 📄 Exports bureautiques (DOCX, ODT, PDF)
 En plus du format interactif, Caramel permet d'exporter vos activités pour des supports papier ou des révisions hors-ligne.
 - **Universalité** : Disponible pour toutes les activités (Quiz, Textes à trous, Frises...).
 - **Adaptabilité** : Les exports sont formatés proprement pour être imprimés directement pour vos élèves.
-- **Formules mathématiques** : Les formules LaTeX sont converties en symboles Unicode pour un affichage optimal sur tous les supports.
+- **Formules mathématiques** : Les formules LaTeX sont exportées comme formules éditables dans **Word** (OMML) et **LibreOffice** (MathML) — double-clic pour modifier. En PDF, elles sont converties en symboles Unicode lisibles.
 
 ![Menu d'export bureautique](https://forge.apps.education.fr/caramel/bas/-/raw/main/assets/images/wiki/modale_menu_export.webp)
 
@@ -471,7 +530,7 @@ Les fichiers **XML** et **GIFT** contiennent des **questions pour la banque**. E
 - Sélectionnez vos questions Caramel
 
 **2. Créer un quiz**
-- Dans le test, utilisez **"Ajouter une questino"**
+- Dans le test, utilisez **"Ajouter une question"**
 - Choisissez la catégorie contenant vos questions Caramel
 - Configurez le nombre de questions à piocher
 
@@ -1013,6 +1072,7 @@ Caramel est distribué sous **licence GNU Affero General Public License v3.0 (AG
 🔗 [Consultez le Journal complet des modifications (CHANGELOG)](https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG)
 
 ### Dernières mises à jour :
+- **v5.1.0** : 🎉 **Activité Course Presentation**, **Images utilisateur dans 12 activités H5P**, **Éditeur Rich Text WYSIWYG**, **Assistant formules mathématiques**, **Éditeur Cloze visuel**, **Formules éditables dans les exports DOCX/ODT**, Réglages avancés H5P (16 activités), Thèmes visuels Crossword, Indices et feedbacks combinés pour l'activité Test.
 - **v5.0.2** : 🔧 Correctif export grilles mots croisés et mots mêlés (DOCX/ODT/PDF) depuis la modale de résultat. Nouveaux générateurs standalone de grilles (sans H5P). Attente du rendu H5P avant capture en prévisualisation.
 - **v5.0.0** : 🎉 **Modale post-génération**, **Éditeur intégré**, **Activité Drag & Drop**, **Activité Devoir**, **Téléchargement groupé**, Aide contextuelle à l'import, Auto-réparation JSON (JSON Healer), Restructuration complète du code.
 - **v4.1.0** : OCR Universel, Exports DOCX/ODT/PDF, Fenêtre de visualisation, Quizset, Optimisation performance (WebP).

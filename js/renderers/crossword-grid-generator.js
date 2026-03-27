@@ -15,13 +15,46 @@ const BORDER_WIDTH = 1;
 const OUTER_BORDER_WIDTH = 2;
 const CLUE_FONT_SIZE = 11;
 const LETTER_FONT_SIZE = 22;
-const EMPTY_CELL_COLOR = '#173354';
-const ACTIVE_CELL_COLOR = '#ffffff';
-const SOLUTION_CELL_COLOR = '#f0f7ff';
-const BORDER_COLOR = '#b0b0b0';
-const OUTER_BORDER_COLOR = '#1d1d1f';
-const CLUE_NUMBER_COLOR = '#555555';
-const LETTER_COLOR = '#1d1d1f';
+
+// Couleurs par defaut (utilisees si aucun theme n'est fourni)
+const DEFAULT_COLORS = {
+    EMPTY_CELL_COLOR: '#173354',
+    ACTIVE_CELL_COLOR: '#ffffff',
+    SOLUTION_CELL_COLOR: '#f0f7ff',
+    BORDER_COLOR: '#b0b0b0',
+    OUTER_BORDER_COLOR: '#1d1d1f',
+    CLUE_NUMBER_COLOR: '#555555',
+    LETTER_COLOR: '#1d1d1f'
+};
+
+/**
+ * Construit la palette de couleurs a partir d'un theme H5P Crossword optionnel.
+ * @param {Object} [theme] - Objet theme H5P (backgroundColor, cellColor, etc.)
+ * @returns {Object} Palette de couleurs pour le rendu
+ */
+function buildColors(theme) {
+    if (!theme) return DEFAULT_COLORS;
+    return {
+        EMPTY_CELL_COLOR: theme.backgroundColor || DEFAULT_COLORS.EMPTY_CELL_COLOR,
+        ACTIVE_CELL_COLOR: theme.cellBackgroundColor || DEFAULT_COLORS.ACTIVE_CELL_COLOR,
+        SOLUTION_CELL_COLOR: theme.cellBackgroundColor ? lightenColor(theme.cellBackgroundColor, 0.05) : DEFAULT_COLORS.SOLUTION_CELL_COLOR,
+        BORDER_COLOR: theme.gridColor || DEFAULT_COLORS.BORDER_COLOR,
+        OUTER_BORDER_COLOR: theme.gridColor || DEFAULT_COLORS.OUTER_BORDER_COLOR,
+        CLUE_NUMBER_COLOR: theme.clueIdColor || DEFAULT_COLORS.CLUE_NUMBER_COLOR,
+        LETTER_COLOR: theme.cellColor || DEFAULT_COLORS.LETTER_COLOR
+    };
+}
+
+/**
+ * Eclaircit legerement une couleur hex pour la grille solution.
+ */
+function lightenColor(hex, amount) {
+    const num = parseInt(hex.replace('#', ''), 16);
+    const r = Math.min(255, ((num >> 16) & 0xff) + Math.round(255 * amount));
+    const g = Math.min(255, ((num >> 8) & 0xff) + Math.round(255 * amount));
+    const b = Math.min(255, (num & 0xff) + Math.round(255 * amount));
+    return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
 
 // ===================== Algorithme de placement =====================
 
@@ -244,7 +277,8 @@ function buildGridModel(layoutResult) {
  * Dessine la grille sur un canvas offscreen.
  * Copie exacte de la fonction dans crossword-grid-capture.js pour un rendu identique.
  */
-function renderGridToCanvas(gridModel, solutionLetters) {
+function renderGridToCanvas(gridModel, solutionLetters, colors) {
+    const C = colors || DEFAULT_COLORS;
     const { rows, cols, cells } = gridModel;
     const isSolution = !!solutionLetters;
 
@@ -267,22 +301,22 @@ function renderGridToCanvas(gridModel, solutionLetters) {
             const y = padding + r * CELL_SIZE;
 
             if (cell.empty) {
-                ctx.fillStyle = EMPTY_CELL_COLOR;
+                ctx.fillStyle = C.EMPTY_CELL_COLOR;
                 ctx.fillRect(x, y, CELL_SIZE, CELL_SIZE);
-                ctx.strokeStyle = OUTER_BORDER_COLOR;
+                ctx.strokeStyle = C.OUTER_BORDER_COLOR;
                 ctx.lineWidth = BORDER_WIDTH;
                 ctx.strokeRect(x + 0.5, y + 0.5, CELL_SIZE - 1, CELL_SIZE - 1);
             } else {
                 const letter = solutionLetters?.[r]?.[c];
-                ctx.fillStyle = (isSolution && letter) ? SOLUTION_CELL_COLOR : ACTIVE_CELL_COLOR;
+                ctx.fillStyle = (isSolution && letter) ? C.SOLUTION_CELL_COLOR : C.ACTIVE_CELL_COLOR;
                 ctx.fillRect(x, y, CELL_SIZE, CELL_SIZE);
 
-                ctx.strokeStyle = BORDER_COLOR;
+                ctx.strokeStyle = C.BORDER_COLOR;
                 ctx.lineWidth = BORDER_WIDTH;
                 ctx.strokeRect(x + 0.5, y + 0.5, CELL_SIZE - 1, CELL_SIZE - 1);
 
                 if (cell.clueId) {
-                    ctx.fillStyle = CLUE_NUMBER_COLOR;
+                    ctx.fillStyle = C.CLUE_NUMBER_COLOR;
                     ctx.font = `bold ${CLUE_FONT_SIZE}px -apple-system, "Segoe UI", Arial, sans-serif`;
                     ctx.textAlign = 'left';
                     ctx.textBaseline = 'top';
@@ -290,7 +324,7 @@ function renderGridToCanvas(gridModel, solutionLetters) {
                 }
 
                 if (letter) {
-                    ctx.fillStyle = LETTER_COLOR;
+                    ctx.fillStyle = C.LETTER_COLOR;
                     ctx.font = `bold ${LETTER_FONT_SIZE}px -apple-system, "Segoe UI", Arial, sans-serif`;
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
@@ -300,7 +334,7 @@ function renderGridToCanvas(gridModel, solutionLetters) {
         }
     }
 
-    ctx.strokeStyle = OUTER_BORDER_COLOR;
+    ctx.strokeStyle = C.OUTER_BORDER_COLOR;
     ctx.lineWidth = OUTER_BORDER_WIDTH;
     ctx.strokeRect(padding / 2, padding / 2, cols * CELL_SIZE + padding, rows * CELL_SIZE + padding);
 
@@ -316,8 +350,8 @@ function canvasToBlob(canvas) {
     });
 }
 
-async function renderAndExport(gridModel, solutionLetters) {
-    const canvas = renderGridToCanvas(gridModel, solutionLetters);
+async function renderAndExport(gridModel, solutionLetters, colors) {
+    const canvas = renderGridToCanvas(gridModel, solutionLetters, colors);
     const dataURL = canvas.toDataURL('image/png');
     const blob = await canvasToBlob(canvas);
 
@@ -339,7 +373,7 @@ async function renderAndExport(gridModel, solutionLetters) {
  * @param {Array<{answer: string, clue: string}>} words - Tableau de mots avec reponse et indice
  * @returns {Promise<{emptyGrid: Object|null, solutionGrid: Object|null}>}
  */
-export async function generateCrosswordGridImages(words) {
+export async function generateCrosswordGridImages(words, theme) {
     const result = { emptyGrid: null, solutionGrid: null };
 
     try {
@@ -349,13 +383,14 @@ export async function generateCrosswordGridImages(words) {
             return result;
         }
 
+        const colors = buildColors(theme);
         const { gridModel, solutionLetters } = buildGridModel(layout);
 
         // Grille vide (sans lettres)
-        result.emptyGrid = await renderAndExport(gridModel, null);
+        result.emptyGrid = await renderAndExport(gridModel, null, colors);
 
         // Grille corrigee (avec lettres)
-        result.solutionGrid = await renderAndExport(gridModel, solutionLetters);
+        result.solutionGrid = await renderAndExport(gridModel, solutionLetters, colors);
 
     } catch (error) {
         console.error('[CrosswordGenerator] Erreur:', error);

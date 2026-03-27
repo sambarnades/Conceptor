@@ -1,9 +1,9 @@
 /**
  * Processeur H5P — Mots mêlés
  *
- * Supprime tout formatage HTML/Markdown de la consigne (FindTheWords
- * ne le supporte pas), conserve la liste de mots, configure les
- * orientations et l'alphabet de remplissage.
+ * Nettoie le formatage HTML/Markdown de la consigne tout en préservant
+ * les expressions LaTeX (MathJax via H5P.MathDisplay), conserve la
+ * liste de mots, configure les orientations et l'alphabet de remplissage.
  *
  * @module processors/FindTheWords
  * @exports {Object} default.process - Transformation principale
@@ -11,15 +11,22 @@
 import { translations } from '../../core/translation.js';
 
 /**
- * Nettoie le texte en supprimant tout formatage HTML/Markdown.
- * FindTheWords ne supporte pas le HTML dans taskDescription.
+ * Nettoie le texte en supprimant le formatage HTML/Markdown
+ * tout en préservant les expressions LaTeX \(...\).
+ * FindTheWords supporte MathJax dans taskDescription via H5P.MathDisplay.
  * @param {string} text - Texte avec potentiellement du HTML ou Markdown
- * @returns {string} - Texte brut sans formatage
+ * @returns {string} - Texte nettoyé avec LaTeX préservé
  */
 function stripFormatting(text) {
     if (!text) return '';
-    return text
-        // Supprimer le Markdown gras **text** et *text*
+    // Extraire et protéger les expressions LaTeX \(...\)
+    const latexPlaceholders = [];
+    let protected_ = text.replace(/\\\([\s\S]*?\\\)/g, (match) => {
+        latexPlaceholders.push(match);
+        return `%%LATEX_${latexPlaceholders.length - 1}%%`;
+    });
+    // Supprimer le Markdown gras **text** et *text*
+    protected_ = protected_
         .replace(/\*\*(.*?)\*\*/g, '$1')
         .replace(/\*(.*?)\*/g, '$1')
         // Supprimer les balises HTML
@@ -32,12 +39,15 @@ function stripFormatting(text) {
         .replace(/&quot;/g, '"')
         .replace(/&#39;/g, "'")
         .trim();
+    // Restaurer les expressions LaTeX
+    protected_ = protected_.replace(/%%LATEX_(\d+)%%/g, (_, i) => latexPlaceholders[i]);
+    return protected_;
 }
 
 export default {
     process: (jsonObj) => {
         return {
-            // FindTheWords ne supporte pas le HTML dans taskDescription
+            // Nettoyage HTML/Markdown avec préservation LaTeX (MathJax)
             taskDescription: stripFormatting(jsonObj.taskDescription || ""),
             wordList: jsonObj.wordList || "",
             behaviour: {
@@ -55,7 +65,8 @@ export default {
                 preferOverlap: true,
                 showVocabulary: true,
                 enableShowSolution: true,
-                enableRetry: true
+                enableRetry: true,
+                ...(jsonObj.behaviour || {})
             },
             l10n: {
                 check: translations.h5p_check_answer || "Vérifier",

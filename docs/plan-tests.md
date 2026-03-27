@@ -211,6 +211,7 @@ Benchmarks des operations critiques avec seuils genereux (2-3x le temps attendu)
    - `http://localhost:8000/tests/test-css.html` — Tests CSS & rendu visuel
    - `http://localhost:8000/tests/test-integration.html` — Tests integration pipeline (19 activites)
    - `http://localhost:8000/tests/test-document-export.html` — Tests export documents (25 types)
+   - `http://localhost:8000/tests/test-math-conversion.html` — Tests conversion formules maths (parser, MathML, StarMath, export DOCX/ODT)
    - `http://localhost:8000/tests/test-performance.html` — Tests performance (benchmarks)
 
 3. Les tests s'executent automatiquement a l'ouverture de la page.

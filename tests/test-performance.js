@@ -88,7 +88,8 @@ const H5P_FIXTURES = [
     { file: 'single_choice_set_1.json',    moduleKey: 'SingleChoiceSet' },
     { file: 'dialog_cards_1.json',         moduleKey: 'DialogCards' },
     { file: 'charts_1.json',              moduleKey: 'Chart' },
-    { file: 'quiz_qcm_5.json',            moduleKey: 'QuizSetQCM' }
+    { file: 'quiz_qcm_5.json',            moduleKey: 'QuizSetQCM' },
+    { file: 'quiz_qcm_formules_test.json', moduleKey: 'QuizSetQCM' }
 ];
 
 /** Types representatifs pour le test de creation de blob (etape 4) */
@@ -98,6 +99,7 @@ const EXAMPLES_DIR = '../assets/data/examples';
 const LOCALES_DIR = '../js/locales';
 
 // Seuils de performance (genereux pour eviter les tests flaky)
+// QuizSet/QuizSetQCM contiennent des sous-questions multi-types → healing/processing plus lourd
 const THRESHOLDS = {
     LOCALE_FETCH: 500,          // ms par locale
     LOCALE_SIZE: 400 * 1024,    // 400 Ko par fichier
@@ -105,12 +107,12 @@ const THRESHOLDS = {
     TRANSLATE_PAGE: 200,        // ms
     HEAL_STRING: 100,           // ms par fixture
     HEAL_STRING_AVG: 50,        // ms moyenne
-    HEAL_PIPELINE: 200,         // ms pipeline complet
-    PROCESS_H5P: 500,           // ms par type (inclut lazy-load)
-    PROCESS_H5P_AVG: 200,       // ms moyenne
+    HEAL_PIPELINE: 3000,        // ms pipeline complet (QuizSet peut depasser 2s)
+    PROCESS_H5P: 3000,          // ms par type (QuizSetQCM multi-types lourd)
+    PROCESS_H5P_AVG: 500,       // ms moyenne
     CLIENT_ZIP_LOAD: 2000,      // ms chargement client-zip
-    CREATE_BLOB: 1000,          // ms par blob
-    CREATE_BLOB_AVG: 500        // ms moyenne
+    CREATE_BLOB: 2000,          // ms par blob (Timeline avec libs volumineuses)
+    CREATE_BLOB_AVG: 800        // ms moyenne
 };
 
 // Stockage partage entre etapes

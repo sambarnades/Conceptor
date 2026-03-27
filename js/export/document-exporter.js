@@ -5,6 +5,10 @@
  */
 
 import { formatContentForDocument } from './document-formatter.js';
+import { textWithMathToDocxChildren } from './latex-to-omml.js';
+import { parseLatex, containsLatex, splitTextAndMath } from './latex-parser.js';
+import { latexToMathML } from './latex-to-mathml.js';
+import { getStarMath, getSymbolMlType, BLACKBOARD, ACCENTS as ACCENT_CATALOG } from './math-catalog.js';
 import { translations, currentLang, t } from '../core/translation.js';
 import { loadDocumentExportLibs, loadPDFFonts } from '../core/lib-loader.js';
 import {
@@ -42,7 +46,13 @@ const FLASHCARD_CONFIG = {
     // PDF (mm)
     pdfMargin: 12.7,
     pdfColumnWidth: 92,
-    pdfRowHeight: 55
+    pdfRowHeight: 55,
+
+    // Images dans les cellules (mm) — zone fixe pour alignement recto/verso
+    imageMaxWidth: 75,   // mm (dans cellule de 92mm, avec marges de 6mm + padding)
+    imageMaxHeight: 25,  // mm (dans cellule de 55mm, laisse place au texte)
+    imageMaxWidthTwips: 4252,   // 75mm * 56.7
+    imageMaxHeightTwips: 1418   // 25mm * 56.7
 };
 
 /** Correspondance langue Caramel → locale pour les exports documentaires */
@@ -78,37 +88,129 @@ async function loadLibraries() {
 async function prepareImages(formattedContent) {
     if (!formattedContent.sections) return;
 
-    const promises = formattedContent.sections
-        .filter(section => section.type === 'image' && section.url)
-        .map(async (section) => {
-            try {
-                // Si l'URL est déjà un dataURL, on crée aussi le blob (requis par DOCX/ODT)
-                if (section.url.startsWith('data:')) {
-                    const [dimensions, blob] = await Promise.all([
-                        loadImageDimensions(section.url),
-                        fetch(section.url).then(r => r.blob())
-                    ]);
-                    const mimeMatch = section.url.match(/^data:([^;]+);/);
-                    section.imageData = {
-                        dataURL: section.url,
-                        width: dimensions.width,
-                        height: dimensions.height,
-                        blob: blob,
-                        mimeType: mimeMatch ? mimeMatch[1] : 'image/png'
-                    };
-                    return;
-                }
+    const promises = [];
 
-                const result = await fetchImageAsDataURL(section.url);
-                section.imageData = result;
-            } catch (error) {
-                console.warn(`Impossible de charger l'image ${section.url}:`, error);
-                section.imageError = true;
-                section.errorText = t('doc_fmt_image_not_found') || '[Image non trouvée]';
-            }
+    // 1. Images autonomes (sections de type 'image')
+    formattedContent.sections
+        .filter(section => section.type === 'image' && section.url)
+        .forEach(section => {
+            promises.push(prepareImageData(section.url).then(result => {
+                if (result.error) {
+                    section.imageError = true;
+                    section.errorText = result.errorText;
+                } else {
+                    section.imageData = result;
+                }
+            }));
+        });
+
+    // 2. Images dans les cellules de flashcardTable
+    formattedContent.sections
+        .filter(section => section.type === 'flashcardTable' && section.rows)
+        .forEach(section => {
+            section.rows.forEach(row => {
+                [row.left, row.right].forEach(card => {
+                    if (card && card.imageUrl) {
+                        promises.push(prepareImageData(card.imageUrl).then(result => {
+                            if (result.error) {
+                                card.imageData = null;
+                            } else {
+                                card.imageData = result;
+                            }
+                        }));
+                    }
+                });
+            });
+        });
+
+    // 3. Images dans les cellules de tables génériques (ex: étiquettes D&D)
+    formattedContent.sections
+        .filter(section => section.type === 'table' && section.rows)
+        .forEach(section => {
+            section.rows.forEach(row => {
+                row.forEach(cell => {
+                    if (cell && typeof cell === 'object' && cell.imageUrl) {
+                        promises.push(prepareImageData(cell.imageUrl).then(result => {
+                            if (result.error) {
+                                cell.imageData = null;
+                            } else {
+                                cell.imageData = result;
+                            }
+                        }));
+                    }
+                });
+            });
         });
 
     await Promise.all(promises);
+}
+
+/**
+ * Prépare les données d'image (dataURL, blob, dimensions) depuis une URL ou un dataURL.
+ * Gère 3 cas : data URL (base64), chemin relatif (résolu depuis image-manager), URL HTTP.
+ * @param {string} url - URL de l'image, data URL, ou chemin relatif (ex: "images/image-xxx.jpg")
+ * @returns {Promise<Object>} - {dataURL, width, height, blob, mimeType} ou {error, errorText}
+ */
+async function prepareImageData(url) {
+    try {
+        // Cas 1 : data URL (déjà en base64)
+        if (url.startsWith('data:')) {
+            const [dimensions, blob] = await Promise.all([
+                loadImageDimensions(url),
+                fetch(url).then(r => r.blob())
+            ]);
+            const mimeMatch = url.match(/^data:([^;]+);/);
+            return {
+                dataURL: url,
+                width: dimensions.width,
+                height: dimensions.height,
+                blob: blob,
+                mimeType: mimeMatch ? mimeMatch[1] : 'image/png'
+            };
+        }
+
+        // Cas 2 : chemin relatif (ex: "images/image-xxx.jpg") → résoudre depuis image-manager
+        if (!url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('blob:')) {
+            try {
+                const { getAllImages: getRegistryImages } = await import('../h5p/image-manager.js');
+                const registry = getRegistryImages(); // Map<h5pPath, Blob>
+                const blob = registry.get(url);
+                if (blob) {
+                    const dataURL = await blobToDataURL(blob);
+                    const dimensions = await loadImageDimensions(dataURL);
+                    return {
+                        dataURL,
+                        width: dimensions.width,
+                        height: dimensions.height,
+                        blob,
+                        mimeType: blob.type || 'image/jpeg'
+                    };
+                }
+            } catch (e) {
+                console.warn(`[export] Image-manager non disponible pour ${url}:`, e);
+            }
+        }
+
+        // Cas 3 : URL HTTP classique
+        return await fetchImageAsDataURL(url);
+    } catch (error) {
+        console.warn(`Impossible de charger l'image ${url}:`, error);
+        return { error: true, errorText: t('doc_fmt_image_not_found') || '[Image non trouvée]' };
+    }
+}
+
+/**
+ * Convertit un Blob en data URL
+ * @param {Blob} blob
+ * @returns {Promise<string>}
+ */
+function blobToDataURL(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
 }
 
 /**
@@ -136,7 +238,8 @@ export async function exportToDOCX(moduleKey, jsonData) {
             throw new Error('La bibliothèque docx n\'a pas pu être chargée');
         }
 
-        const formattedContent = await formatContentForDocument(moduleKey, jsonData);
+        // keepLatex: true → le LaTeX \(...\) est conservé pour conversion OMML
+        const formattedContent = await formatContentForDocument(moduleKey, jsonData, { keepLatex: true });
         await prepareImages(formattedContent);
         const doc = createDOCXDocument(formattedContent);
 
@@ -188,7 +291,8 @@ export async function exportToODT(moduleKey, jsonData) {
     try {
         await loadLibraries();
 
-        const formattedContent = await formatContentForDocument(moduleKey, jsonData);
+        // keepLatex: true → le LaTeX \(...\) est conservé pour conversion MathML
+        const formattedContent = await formatContentForDocument(moduleKey, jsonData, { keepLatex: true });
         await prepareImages(formattedContent);
         const odtBlob = await createODTDocument(formattedContent);
 
@@ -256,9 +360,12 @@ function createDOCXDocument(formattedContent) {
             case 'header':
                 children.push(createDOCXHeader(section));
                 break;
-            case 'paragraph':
-                children.push(createDOCXParagraph(section));
+            case 'paragraph': {
+                const paras = createDOCXParagraphOrList(section);
+                if (Array.isArray(paras)) children.push(...paras);
+                else children.push(paras);
                 break;
+            }
             case 'bulletPoint':
                 children.push(createDOCXBulletPoint(section));
                 break;
@@ -326,6 +433,7 @@ function createDOCXDocument(formattedContent) {
                 document: {
                     run: {
                         font: "Arial",
+                        size: 24, // 12pt — appliqué aussi aux formules Math OMML
                         language: {
                             value: locale.bcp47,
                             eastAsia: locale.bcp47,
@@ -547,10 +655,97 @@ function createDOCXHeader(section) {
     };
 
     return new Paragraph({
-        children: parseMarkdownToTextRuns(section.text),
+        children: parseTextWithMath(section.text),
         heading: headingLevels[section.level] || HeadingLevel.HEADING_2,
         spacing: { before: 240, after: 120 }
     });
+}
+
+/**
+ * Crée un ou plusieurs paragraphes DOCX.
+ * Si le texte contient des listes (• ou 1. en début de ligne), les éclate
+ * en paragraphes DOCX natifs avec bullet/numbering.
+ */
+function createDOCXParagraphOrList(section) {
+    if (!section.text) return createDOCXParagraph(section);
+
+    const lines = section.text.split('\n');
+    const hasBullets = lines.some(l => /^\s*[•\-]\s/.test(l));
+    const hasNumbers = lines.some(l => /^\s*\d+\.\s/.test(l));
+
+    if (!hasBullets && !hasNumbers) return createDOCXParagraph(section);
+
+    const { Paragraph, TextRun } = window.docx;
+    const paragraphs = [];
+    const baseStyle = { size: 24 };
+
+    // Texte avant la liste
+    const beforeList = [];
+    const listItems = [];
+    const afterList = [];
+    let inList = false;
+    let pastList = false;
+
+    for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+
+        const bulletMatch = trimmed.match(/^[•\-]\s+(.*)/);
+        const numberMatch = trimmed.match(/^\d+\.\s+(.*)/);
+
+        if (bulletMatch || numberMatch) {
+            inList = true;
+            listItems.push({
+                text: bulletMatch ? bulletMatch[1] : numberMatch[1],
+                isNumbered: !!numberMatch
+            });
+        } else if (inList) {
+            pastList = true;
+            inList = false;
+            afterList.push(trimmed);
+        } else {
+            beforeList.push(trimmed);
+        }
+    }
+
+    // Paragraphe avant la liste
+    if (beforeList.length > 0) {
+        paragraphs.push(new Paragraph({
+            children: parseTextWithMath(beforeList.join(' '), baseStyle),
+            spacing: { before: 120, after: 60 }
+        }));
+    }
+
+    // Items de liste
+    listItems.forEach((item, idx) => {
+        if (item.isNumbered) {
+            // Liste numérotée : simulée avec un TextRun numéroté (pas de numbering natif simple)
+            paragraphs.push(new Paragraph({
+                children: [
+                    new TextRun({ text: `${idx + 1}. `, bold: true, ...baseStyle }),
+                    ...parseTextWithMath(item.text, baseStyle)
+                ],
+                indent: { left: 360 },
+                spacing: { before: 40, after: 40 }
+            }));
+        } else {
+            paragraphs.push(new Paragraph({
+                children: parseTextWithMath(item.text, baseStyle),
+                bullet: { level: 0 },
+                spacing: { before: 40, after: 40 }
+            }));
+        }
+    });
+
+    // Paragraphe après la liste
+    if (afterList.length > 0) {
+        paragraphs.push(new Paragraph({
+            children: parseTextWithMath(afterList.join(' '), baseStyle),
+            spacing: { before: 60, after: 120 }
+        }));
+    }
+
+    return paragraphs;
 }
 
 /**
@@ -584,7 +779,7 @@ function createDOCXParagraph(section) {
     const style = styles[section.style] || { size: 24 };
 
     return new Paragraph({
-        children: parseMarkdownToTextRuns(section.text, style),
+        children: parseTextWithMath(section.text, style),
         spacing: { before: 120, after: 120 }
     });
 }
@@ -603,7 +798,7 @@ function createDOCXBulletPoint(section) {
     const style = styles[section.style] || {};
 
     return new Paragraph({
-        children: parseMarkdownToTextRuns(section.text, { size: 24, ...style }),
+        children: parseTextWithMath(section.text, { size: 24, ...style }),
         bullet: { level: 0 },
         spacing: { before: 60, after: 60 }
     });
@@ -625,7 +820,7 @@ function createDOCXCheckbox(section) {
     return new Paragraph({
         children: [
             new TextRun({ text: "[  ] ", size: 24, ...style }),
-            ...parseMarkdownToTextRuns(section.text, { size: 24, ...style })
+            ...parseTextWithMath(section.text, { size: 24, ...style })
         ],
         spacing: { before: 60, after: 60 },
         indent: { left: 360 } // Un petit retrait pour aligner
@@ -769,20 +964,46 @@ function createDOCXFlashcardTable(section) {
 
 /**
  * Crée une cellule DOCX pour une carte
- * @param {Object|null} cardContent - Contenu de la carte {text, hint, cardNumber} ou null
+ * @param {Object|null} cardContent - Contenu de la carte {text, hint, cardNumber, imageData?} ou null
  * @returns {TableCell} - Cellule DOCX
  */
 function createDOCXFlashcardCell(cardContent) {
-    const { TableCell, Paragraph, TextRun, VerticalAlign,
+    const { TableCell, Paragraph, TextRun, ImageRun, VerticalAlign,
         AlignmentType, WidthType } = window.docx;
 
     const paragraphs = [];
 
     if (cardContent) {
+        // Image si présente (centrée, dimensions contraintes)
+        if (cardContent.imageData && cardContent.imageData.blob) {
+            const dims = calculateDimensions(
+                cardContent.imageData.width,
+                cardContent.imageData.height,
+                FLASHCARD_CONFIG.imageMaxHeight,
+                FLASHCARD_CONFIG.imageMaxWidth
+            );
+            const MM_TO_PX = 3.78;
+            paragraphs.push(
+                new Paragraph({
+                    children: [
+                        new ImageRun({
+                            data: cardContent.imageData.blob,
+                            transformation: {
+                                width: Math.round(dims.width * MM_TO_PX),
+                                height: Math.round(dims.height * MM_TO_PX)
+                            }
+                        })
+                    ],
+                    alignment: AlignmentType.CENTER,
+                    spacing: { after: 80 }
+                })
+            );
+        }
+
         // Texte principal (centré, 12pt)
         paragraphs.push(
             new Paragraph({
-                children: parseMarkdownToTextRuns(cardContent.text || '', { size: 24, font: "Arial" }),
+                children: parseTextWithMath(cardContent.text || '', { size: 24, font: "Arial" }),
                 alignment: AlignmentType.CENTER
             })
         );
@@ -791,7 +1012,7 @@ function createDOCXFlashcardCell(cardContent) {
         if (cardContent.hint) {
             paragraphs.push(
                 new Paragraph({
-                    children: parseMarkdownToTextRuns(cardContent.hint, { size: 20, italics: true, color: '666666', font: "Arial" }),
+                    children: parseTextWithMath(cardContent.hint, { size: 20, italics: true, color: '666666', font: "Arial" }),
                     alignment: AlignmentType.CENTER,
                     spacing: { before: 120 }
                 })
@@ -823,7 +1044,7 @@ function createDOCXFlashcardCell(cardContent) {
  * Styles supportés : workGrid, cutoutLabels, correctionGrid, recapTable
  */
 function createDOCXTable(section) {
-    const { Table, TableRow, TableCell, Paragraph, TextRun,
+    const { Table, TableRow, TableCell, Paragraph, TextRun, ImageRun,
         WidthType, VerticalAlign, HeightRule, BorderStyle,
         AlignmentType, ShadingType } = window.docx;
 
@@ -925,25 +1146,65 @@ function createDOCXTable(section) {
         }));
     }
 
+    // Constantes pour les images dans les cellules de table (étiquettes D&D)
+    const DND_LABEL_IMAGE_MAX_WIDTH = 40;  // mm
+    const DND_LABEL_IMAGE_MAX_HEIGHT = 20; // mm
+
     // Lignes de données
     rows.forEach(row => {
-        const dataCells = row.map((cellText, colIdx) => {
+        const dataCells = row.map((cellRaw, colIdx) => {
+            // Extraire texte et éventuelle image de la cellule
+            const isObjectCell = cellRaw && typeof cellRaw === 'object' && !Array.isArray(cellRaw);
+            const cellText = isObjectCell ? (cellRaw.text || '') : (cellRaw || '');
+            const cellImageData = isObjectCell ? cellRaw.imageData : null;
+
             const isBold = cfg.cellBold || (cfg.firstColBold && colIdx === 0);
             const color = cfg.cellBold ? cfg.cellColor : (colIdx === 0 && cfg.firstColBold ? '000000' : cfg.cellColor);
             const padding = cfg.cellPadding || 120;
 
-            const cellOpts = {
-                children: [
+            const paragraphs = [];
+
+            // Image inline si présente (centrée, au-dessus du texte)
+            if (cellImageData && cellImageData.blob) {
+                const dims = calculateDimensions(
+                    cellImageData.width,
+                    cellImageData.height,
+                    DND_LABEL_IMAGE_MAX_HEIGHT,
+                    DND_LABEL_IMAGE_MAX_WIDTH
+                );
+                const MM_TO_PX = 3.78;
+                paragraphs.push(
                     new Paragraph({
-                        children: cellText ? parseMarkdownToTextRuns(cellText, {
-                            size: 24,
-                            bold: isBold,
-                            color: color,
-                            font: "Arial"
-                        }) : [],
-                        alignment: cfg.cellAlign === 'center' ? AlignmentType.CENTER : AlignmentType.LEFT
+                        children: [
+                            new ImageRun({
+                                data: cellImageData.blob,
+                                transformation: {
+                                    width: Math.round(dims.width * MM_TO_PX),
+                                    height: Math.round(dims.height * MM_TO_PX)
+                                }
+                            })
+                        ],
+                        alignment: AlignmentType.CENTER,
+                        spacing: { after: 60 }
                     })
-                ],
+                );
+            }
+
+            // Texte de la cellule
+            paragraphs.push(
+                new Paragraph({
+                    children: cellText ? parseTextWithMath(cellText, {
+                        size: 24,
+                        bold: isBold,
+                        color: color,
+                        font: "Arial"
+                    }) : [],
+                    alignment: cfg.cellAlign === 'center' ? AlignmentType.CENTER : AlignmentType.LEFT
+                })
+            );
+
+            const cellOpts = {
+                children: paragraphs,
                 verticalAlign: VerticalAlign.CENTER,
                 margins: { top: 80, bottom: 80, left: padding, right: padding }
             };
@@ -1169,17 +1430,66 @@ function drawPDFRichText(doc, text, x, y, maxWidth, baseStyle, align = 'left', p
     }
 
     paragraphs.forEach((pText, pIndex) => {
-        // Parser les segments Markdown (***gras+vert***, **gras**, *italique*)
+        // Parser Markdown + HTML inline (couleur, souligné, barré, sub, sup, liens)
         const runs = [];
-        const regex = /(\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*)/g;
-        const parts = pText.split(regex);
+
+        // Extraire d'abord les tags HTML inline en placeholders
+        const htmlParts = [];
+        let cleanedPText = pText.replace(/<span[^>]*style="[^"]*color:\s*([^;"]+)[^"]*"[^>]*>(.*?)<\/span>/gi, (m, col, txt) => {
+            const idx = htmlParts.length;
+            htmlParts.push({ text: txt, color: col.trim() });
+            return `\x01HTML${idx}\x01`;
+        });
+        cleanedPText = cleanedPText.replace(/<a\s[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, (m, href, txt) => {
+            const idx = htmlParts.length;
+            htmlParts.push({ text: `${txt} (${href})`, underline: true, linkColor: true });
+            return `\x01HTML${idx}\x01`;
+        });
+        cleanedPText = cleanedPText.replace(/<u>(.*?)<\/u>/gi, (m, txt) => {
+            const idx = htmlParts.length;
+            htmlParts.push({ text: txt, underline: true });
+            return `\x01HTML${idx}\x01`;
+        });
+        cleanedPText = cleanedPText.replace(/<s>(.*?)<\/s>/gi, (m, txt) => {
+            const idx = htmlParts.length;
+            htmlParts.push({ text: txt, strike: true });
+            return `\x01HTML${idx}\x01`;
+        });
+        cleanedPText = cleanedPText.replace(/<sub>(.*?)<\/sub>/gi, (m, txt) => {
+            const idx = htmlParts.length;
+            htmlParts.push({ text: txt, sub: true });
+            return `\x01HTML${idx}\x01`;
+        });
+        cleanedPText = cleanedPText.replace(/<sup>(.*?)<\/sup>/gi, (m, txt) => {
+            const idx = htmlParts.length;
+            htmlParts.push({ text: txt, sup: true });
+            return `\x01HTML${idx}\x01`;
+        });
+        // Supprimer les tags HTML restants
+        cleanedPText = cleanedPText.replace(/<[^>]+>/g, '');
+
+        // Parser le Markdown (avec placeholders HTML intercalés)
+        const regex = /(\x01HTML\d+\x01|\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*[^*]+?\*)/g;
+        const parts = cleanedPText.split(regex);
 
         parts.forEach(part => {
+            if (!part) return;
+            // Placeholder HTML
+            const htmlMatch = part.match(/^\x01HTML(\d+)\x01$/);
+            if (htmlMatch) {
+                const hp = htmlParts[parseInt(htmlMatch[1])];
+                runs.push({
+                    text: hp.text, bold: false, italic: false, green: false,
+                    customColor: hp.color, underline: hp.underline, strike: hp.strike,
+                    sub: hp.sub, sup: hp.sup, linkColor: hp.linkColor
+                });
+                return;
+            }
             if (part.startsWith('***') && part.endsWith('***')) {
                 runs.push({ text: part.slice(3, -3), bold: true, italic: false, green: true });
             } else if (part.startsWith('**') && part.endsWith('**')) {
                 runs.push({ text: part.slice(2, -2), bold: true, italic: false, green: false });
-            } else if (part.startsWith('*') && part.endsWith('*')) {
+            } else if (part.startsWith('*') && part.endsWith('*') && part.length > 2) {
                 runs.push({ text: part.slice(1, -1), bold: false, italic: true, green: false });
             } else if (part) {
                 runs.push({ text: part, bold: false, italic: false, green: false });
@@ -1216,7 +1526,11 @@ function drawPDFRichText(doc, text, x, y, maxWidth, baseStyle, align = 'left', p
                 const widthToAdd = (currentLine.segments.length > 0 ? spaceWidth : 0) + wordWidth;
 
                 const lastSeg = currentLine.segments[currentLine.segments.length - 1];
-                if (lastSeg && lastSeg.bold === run.bold && lastSeg.italic === run.italic && lastSeg.green === run.green) {
+                const sameStyle = lastSeg && lastSeg.bold === run.bold && lastSeg.italic === run.italic
+                    && lastSeg.green === run.green && lastSeg.customColor === run.customColor
+                    && lastSeg.underline === run.underline && lastSeg.strike === run.strike
+                    && lastSeg.sub === run.sub && lastSeg.sup === run.sup;
+                if (sameStyle) {
                     lastSeg.text += textToAdd;
                     lastSeg.width += widthToAdd;
                 } else {
@@ -1228,7 +1542,13 @@ function drawPDFRichText(doc, text, x, y, maxWidth, baseStyle, align = 'left', p
                         width: prefixWidth + wordWidth,
                         bold: run.bold,
                         italic: run.italic,
-                        green: run.green
+                        green: run.green,
+                        customColor: run.customColor,
+                        underline: run.underline,
+                        strike: run.strike,
+                        sub: run.sub,
+                        sup: run.sup,
+                        linkColor: run.linkColor
                     });
                 }
                 currentLine.width += widthToAdd;
@@ -1251,16 +1571,46 @@ function drawPDFRichText(doc, text, x, y, maxWidth, baseStyle, align = 'left', p
 
             let currentX = startX;
             line.segments.forEach(seg => {
+                // Taille réduite pour sub/sup
+                const segFontSize = (seg.sub || seg.sup) ? fontSize * 0.7 : fontSize;
+                doc.setFontSize(segFontSize);
+
                 const fontStyle = getFontStyle(seg);
                 doc.setFont(font, fontStyle);
-                // Appliquer la couleur verte si nécessaire
+
+                // Couleur
                 if (seg.green) {
-                    doc.setTextColor(0, 128, 0); // Vert
+                    doc.setTextColor(0, 128, 0);
+                } else if (seg.customColor) {
+                    const hex = cssColorToHex(seg.customColor);
+                    doc.setTextColor(parseInt(hex.substring(0, 2), 16), parseInt(hex.substring(2, 4), 16), parseInt(hex.substring(4, 6), 16));
+                } else if (seg.linkColor) {
+                    doc.setTextColor(0, 102, 204);
                 } else {
-                    doc.setTextColor(...color); // Couleur de base
+                    doc.setTextColor(...color);
                 }
-                doc.text(seg.text, currentX, currentY, { baseline: 'top' });
+
+                // Position verticale ajustée pour sub/sup
+                const segY = seg.sup ? currentY - 1.5 : seg.sub ? currentY + 2 : currentY;
+                doc.text(seg.text, currentX, segY, { baseline: 'top' });
+
+                // Souligné (trait sous le texte)
+                if (seg.underline) {
+                    const textWidth = doc.getTextWidth(seg.text);
+                    doc.setLineWidth(0.3);
+                    doc.line(currentX, segY + segFontSize * 0.42, currentX + textWidth, segY + segFontSize * 0.42);
+                }
+
+                // Barré (trait au milieu du texte)
+                if (seg.strike) {
+                    const textWidth = doc.getTextWidth(seg.text);
+                    doc.setLineWidth(0.3);
+                    doc.line(currentX, segY + segFontSize * 0.22, currentX + textWidth, segY + segFontSize * 0.22);
+                }
+
                 currentX += seg.width;
+                // Restaurer la taille de base
+                doc.setFontSize(fontSize);
             });
             currentY += lineHeight;
         });
@@ -1536,18 +1886,43 @@ function addPDFFlashcardTable(doc, section) {
                 const cellHeight = data.cell.height;
                 const padding = data.cell.padding('horizontal');
 
-                // 1. Dessiner le texte principal (Markdown)
+                let contentY = cellY + padding;
+
+                // 1. Image si présente (centrée horizontalement, en haut de la cellule)
+                if (cardContent.imageData && cardContent.imageData.dataURL) {
+                    const dims = calculateDimensions(
+                        cardContent.imageData.width,
+                        cardContent.imageData.height,
+                        FLASHCARD_CONFIG.imageMaxHeight,
+                        FLASHCARD_CONFIG.imageMaxWidth
+                    );
+                    const imgX = cellX + (cellWidth - dims.width) / 2;
+                    try {
+                        doc.addImage(
+                            cardContent.imageData.dataURL,
+                            cardContent.imageData.mimeType?.includes('png') ? 'PNG' : 'JPEG',
+                            imgX, contentY,
+                            dims.width, dims.height
+                        );
+                    } catch (e) {
+                        console.warn('[PDF] Erreur ajout image flashcard:', e);
+                    }
+                    // Décaler le texte sous la zone image fixe (toujours le même espace)
+                    contentY += FLASHCARD_CONFIG.imageMaxHeight + 2;
+                }
+
+                // 2. Dessiner le texte principal (Markdown)
                 if (cardContent.text) {
                     const style = { fontSize: 11, font: PDF_FONT, fontStyle: 'normal', color: [0, 0, 0] };
-                    // Centrage vertical approximatif (on descend de 1/3 de la cellule)
-                    const textY = cellY + (cellHeight / 3);
+                    const textY = cardContent.imageData
+                        ? contentY + 3
+                        : cellY + (cellHeight / 3);
                     drawPDFRichText(doc, cardContent.text, cellX + padding, textY, cellWidth - 2 * padding, style, 'center');
                 }
 
-                // 2. Dessiner l'indice si présent (Markdown, gris, italique)
+                // 3. Dessiner l'indice si présent (Markdown, gris, italique)
                 if (cardContent.hint) {
                     const hintStyle = { fontSize: 9, font: PDF_FONT, fontStyle: 'italic', color: [102, 102, 102] };
-                    // Positionner l'indice en bas de la cellule
                     const hintY = cellY + cellHeight - 12;
                     drawPDFRichText(doc, cardContent.hint, cellX + padding, hintY, cellWidth - 2 * padding, hintStyle, 'center');
                 }
@@ -1616,10 +1991,22 @@ function addPDFTable(doc, section, y, margin, maxWidth, pageHeight, bottomMargin
 
     const headRow = headers.length > 0 ? [headers] : [];
 
-    // Nettoyer le Markdown **gras** dans les cellules (non supporté par AutoTable)
-    const cleanRows = rows.map(row => row.map(cell =>
-        typeof cell === 'string' ? cell.replace(/\*\*(.*?)\*\*/g, '$1') : cell
-    ));
+    // Constantes pour les images dans les cellules de table (étiquettes D&D)
+    const DND_LABEL_IMG_MAX_W = 25; // mm
+    const DND_LABEL_IMG_MAX_H = 15; // mm
+
+    // Extraire les positions des cellules image pour didDrawCell
+    const cellImageMap = new Map(); // "row-col" → imageData
+    const cleanRows = rows.map((row, rIdx) => row.map((cell, cIdx) => {
+        if (cell && typeof cell === 'object' && !Array.isArray(cell)) {
+            if (cell.imageData && cell.imageData.dataURL) {
+                cellImageMap.set(`${rIdx}-${cIdx}`, cell.imageData);
+            }
+            const text = cell.text || '';
+            return text.replace(/\*\*(.*?)\*\*/g, '$1');
+        }
+        return typeof cell === 'string' ? cell.replace(/\*\*(.*?)\*\*/g, '$1') : (cell || '');
+    }));
 
     const autoTableOpts = {
         startY: y,
@@ -1662,8 +2049,31 @@ function addPDFTable(doc, section, y, margin, maxWidth, pageHeight, bottomMargin
             if (cfg.firstColBold && data.column.index === 0 && data.section === 'body') {
                 data.cell.styles.fontStyle = 'bold';
             }
+            // Augmenter la hauteur des cellules contenant une image
+            if (data.section === 'body' && cellImageMap.has(`${data.row.index}-${data.column.index}`)) {
+                data.cell.styles.minCellHeight = DND_LABEL_IMG_MAX_H + 10; // image + marge texte
+            }
         },
         didDrawCell: function(data) {
+            // Dessiner l'image inline dans la cellule (étiquettes D&D)
+            if (data.section === 'body') {
+                const imgData = cellImageMap.get(`${data.row.index}-${data.column.index}`);
+                if (imgData && imgData.dataURL) {
+                    const cell = data.cell;
+                    const dims = calculateDimensions(
+                        imgData.width, imgData.height,
+                        DND_LABEL_IMG_MAX_H, DND_LABEL_IMG_MAX_W
+                    );
+                    // Centrer l'image horizontalement dans la cellule
+                    const imgX = cell.x + (cell.width - dims.width) / 2;
+                    const imgY = cell.y + 2; // marge haut
+                    try {
+                        doc.addImage(imgData.dataURL, 'JPEG', imgX, imgY, dims.width, dims.height);
+                    } catch (e) {
+                        // Fallback silencieux si l'image ne peut pas être ajoutée
+                    }
+                }
+            }
             // Pour cutoutLabels : dessiner les bordures en pointillé
             if (cfg.dashed && data.section === 'body') {
                 const cell = data.cell;
@@ -1730,6 +2140,9 @@ async function createODTDocument(formattedContent) {
         return createODTFlashcardDocument(formattedContent);
     }
 
+    // Réinitialiser le collecteur d'objets Math pour ce document
+    _resetOdtMathCtx();
+
     const zip = new window.JSZip();
 
     // 1. mimetype (doit être le premier fichier et non compressé)
@@ -1750,8 +2163,26 @@ async function createODTDocument(formattedContent) {
         tableStylesXml = getODTTableAutoStyles();
     }
 
+    // Pré-scanner les couleurs utilisées dans le contenu pour créer des styles automatiques ODT
+    const usedColors = new Set();
+    formattedContent.sections.forEach(s => {
+        if (!s.text) return;
+        const colorRe = /<span[^>]*style="[^"]*color:\s*([^;"]+)/gi;
+        let m;
+        while ((m = colorRe.exec(s.text)) !== null) {
+            usedColors.add(cssColorToHex(m[1].trim()));
+        }
+    });
+    let colorStylesXml = '';
+    usedColors.forEach(hex => {
+        colorStylesXml += `\n    <style:style style:name="Color_${hex}" style:family="text"><style:text-properties fo:color="#${hex}"/></style:style>`;
+    });
+
     let contentXml = `<?xml version="1.0" encoding="UTF-8"?>
-<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" office:version="1.2">${tableStylesXml}
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:math="http://www.w3.org/1998/Math/MathML" office:version="1.2">
+  <office:automatic-styles>${tableStylesXml}${colorStylesXml}
+    <style:style style:name="fr_math" style:family="graphic" style:parent-style-name="Formula"><style:graphic-properties style:vertical-pos="middle" style:vertical-rel="text" draw:ole-draw-aspect="1"/></style:style>
+  </office:automatic-styles>
   <office:body>
     <office:text>
       <text:p text:style-name="Title">${escapeXml(t('doc_fmt_header_title'))}</text:p>
@@ -1764,18 +2195,53 @@ async function createODTDocument(formattedContent) {
         switch (section.type) {
             case 'header':
                 const level = section.level || 1;
-                contentXml += `      <text:h text:outline-level="${level}" text:style-name="Heading_${level}">${parseMarkdownForODT(section.text)}</text:h>\n`;
+                contentXml += `      <text:h text:outline-level="${level}" text:style-name="Heading_${level}">${parseODTWithMath(section.text)}</text:h>\n`;
                 break;
-            case 'paragraph':
-                contentXml += `      <text:p text:style-name="P_${section.style || 'default'}">${parseMarkdownForODT(section.text)}</text:p>\n`;
+            case 'paragraph': {
+                const pStyle = `P_${section.style || 'default'}`;
+                // Détecter les listes dans le texte (• item ou 1. item)
+                const pLines = (section.text || '').split('\n').filter(l => l.trim());
+                const hasList = pLines.some(l => /^\s*[•\-]\s/.test(l) || /^\s*\d+\.\s/.test(l));
+                if (hasList) {
+                    const before = [], listItems = [], after = [];
+                    let inList = false;
+                    let isNumbered = false;
+                    for (const line of pLines) {
+                        const bulletMatch = line.trim().match(/^[•\-]\s+(.*)/);
+                        const numMatch = line.trim().match(/^\d+\.\s+(.*)/);
+                        if (bulletMatch || numMatch) {
+                            inList = true;
+                            if (numMatch) isNumbered = true;
+                            listItems.push(bulletMatch ? bulletMatch[1] : numMatch[1]);
+                        } else if (inList) {
+                            after.push(line.trim());
+                        } else {
+                            before.push(line.trim());
+                        }
+                    }
+                    if (before.length) contentXml += `      <text:p text:style-name="${pStyle}">${parseODTWithMath(before.join(' '))}</text:p>\n`;
+                    if (listItems.length) {
+                        // L1 = puces, L2 = numérotée
+                        const listStyle = isNumbered ? 'L2' : 'L1';
+                        contentXml += `      <text:list text:style-name="${listStyle}">\n`;
+                        for (const item of listItems) {
+                            contentXml += `        <text:list-item><text:p text:style-name="P_bullet_default">${parseODTWithMath(item)}</text:p></text:list-item>\n`;
+                        }
+                        contentXml += `      </text:list>\n`;
+                    }
+                    if (after.length) contentXml += `      <text:p text:style-name="${pStyle}">${parseODTWithMath(after.join(' '))}</text:p>\n`;
+                } else {
+                    contentXml += `      <text:p text:style-name="${pStyle}">${parseODTWithMath(section.text)}</text:p>\n`;
+                }
                 break;
+            }
             case 'bulletPoint':
                 const bullStyle = section.style ? `P_bullet_${section.style}` : 'P_bullet_default';
-                contentXml += `      <text:list text:style-name="L1"><text:list-item><text:p text:style-name="${bullStyle}">${parseMarkdownForODT(section.text)}</text:p></text:list-item></text:list>\n`;
+                contentXml += `      <text:list text:style-name="L1"><text:list-item><text:p text:style-name="${bullStyle}">${parseODTWithMath(section.text)}</text:p></text:list-item></text:list>\n`;
                 break;
             case 'checkbox':
                 const checkStyle = section.style ? `P_checkbox_${section.style}` : 'P_checkbox';
-                contentXml += `      <text:p text:style-name="${checkStyle}">[  ] ${parseMarkdownForODT(section.text)}</text:p>\n`;
+                contentXml += `      <text:p text:style-name="${checkStyle}">[  ] ${parseODTWithMath(section.text)}</text:p>\n`;
                 break;
             case 'separator':
                 contentXml += `      <text:p text:style-name="Separator"/>\n`;
@@ -1803,9 +2269,13 @@ async function createODTDocument(formattedContent) {
                     }
                 }
                 break;
-            case 'table':
-                contentXml += generateODTTable(section, ++imageCounter);
+            case 'table': {
+                const tableResult = generateODTTable(section, ++imageCounter, zip, imageCounter, manifestXml);
+                contentXml += tableResult.xml;
+                imageCounter = tableResult.imageCounter;
+                manifestXml = tableResult.manifestXml;
                 break;
+            }
         }
     });
 
@@ -1813,7 +2283,11 @@ async function createODTDocument(formattedContent) {
   </office:body>
 </office:document-content>`;
 
-    manifestXml += `</manifest:manifest>`;
+    // Injecter les objets Math (Object N/content.xml) dans le ZIP
+    const mathManifestEntries = _injectMathObjectsIntoZip(zip);
+    manifestXml += mathManifestEntries;
+
+    manifestXml += `\n</manifest:manifest>`;
     zip.file('META-INF/manifest.xml', manifestXml);
     zip.file('content.xml', contentXml);
 
@@ -2012,6 +2486,15 @@ async function createODTDocument(formattedContent) {
       </text:list-level-style-bullet>
     </text:list-style>
 
+    <!-- Liste numérotée -->
+    <text:list-style style:name="L2">
+      <text:list-level-style-number text:level="1" style:num-format="1" style:num-suffix=". " text:start-value="1">
+        <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+          <style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="1.27cm" fo:text-indent="-0.635cm" fo:margin-left="1.27cm"/>
+        </style:list-level-properties>
+      </text:list-level-style-number>
+    </text:list-style>
+
     <!-- Styles de texte inline -->
     <style:style style:name="Bold" style:family="text">
       <style:text-properties fo:font-weight="bold"/>
@@ -2021,6 +2504,18 @@ async function createODTDocument(formattedContent) {
     </style:style>
     <style:style style:name="BoldGreen" style:family="text">
       <style:text-properties fo:font-weight="bold" fo:color="#008000"/>
+    </style:style>
+    <style:style style:name="Underline" style:family="text">
+      <style:text-properties style:text-underline-style="solid" style:text-underline-width="auto" style:text-underline-color="font-color"/>
+    </style:style>
+    <style:style style:name="Strikethrough" style:family="text">
+      <style:text-properties style:text-line-through-style="solid"/>
+    </style:style>
+    <style:style style:name="Sub" style:family="text">
+      <style:text-properties style:text-position="sub 70%"/>
+    </style:style>
+    <style:style style:name="Sup" style:family="text">
+      <style:text-properties style:text-position="super 70%"/>
     </style:style>
   </office:styles>
   <office:automatic-styles>
@@ -2169,11 +2664,15 @@ function getODTTableAutoStyles() {
  * @param {number} tableId - Identifiant unique pour le nom du tableau
  * @returns {string} XML du tableau
  */
-function generateODTTable(section, tableId) {
+function generateODTTable(section, tableId, zip, imageCounter, manifestXml) {
     const headers = section.headers || [];
     const rows = section.rows || [];
     const style = section.style || 'default';
     const colCount = headers.length || (rows[0] ? rows[0].length : 2);
+
+    // Constantes pour les images dans les cellules (étiquettes D&D)
+    const DND_LABEL_IMG_MAX_W = 40; // mm
+    const DND_LABEL_IMG_MAX_H = 20; // mm
 
     // Préfixes de style selon le type
     const styleMap = {
@@ -2215,18 +2714,42 @@ function generateODTTable(section, tableId) {
         const rowStyle = sm.row ? ` table:style-name="${sm.row}"` : '';
         xml += `        <table:table-row${rowStyle}>\n`;
         for (let i = 0; i < colCount; i++) {
-            const cellText = (row[i] !== undefined && row[i] !== null) ? row[i] : '';
+            const cellRaw = (row[i] !== undefined && row[i] !== null) ? row[i] : '';
+            const isObjectCell = cellRaw && typeof cellRaw === 'object' && !Array.isArray(cellRaw);
+            const cellText = isObjectCell ? (cellRaw.text || '') : cellRaw;
+            const cellImageData = isObjectCell ? cellRaw.imageData : null;
+
             const textStyle = (sm.firstColText && i === 0) ? sm.firstColText : sm.cellText;
             const cellStyle = (sm.firstColCell && i === 0) ? sm.firstColCell : sm.cell;
             xml += `          <table:table-cell table:style-name="${cellStyle}">\n`;
-            xml += `            <text:p text:style-name="${textStyle}">${parseMarkdownForODT(cellText)}</text:p>\n`;
+
+            // Image inline si présente
+            if (cellImageData && cellImageData.blob && zip) {
+                imageCounter++;
+                const ext = cellImageData.mimeType?.split('/')[1] || 'jpg';
+                const imageName = `Pictures/table${tableId}_cell${imageCounter}.${ext}`;
+                zip.file(imageName, cellImageData.blob);
+                manifestXml += `  <manifest:file-entry manifest:full-path="${imageName}" manifest:media-type="${cellImageData.mimeType}"/>\n`;
+
+                const dims = calculateDimensions(
+                    cellImageData.width, cellImageData.height,
+                    DND_LABEL_IMG_MAX_H, DND_LABEL_IMG_MAX_W
+                );
+                xml += `            <text:p text:style-name="${textStyle}">
+              <draw:frame draw:name="TableImg${imageCounter}" text:anchor-type="as-char" svg:width="${dims.width.toFixed(1)}mm" svg:height="${dims.height.toFixed(1)}mm" draw:z-index="0">
+                <draw:image xlink:href="${imageName}" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>
+              </draw:frame>
+            </text:p>\n`;
+            }
+
+            xml += `            <text:p text:style-name="${textStyle}">${parseODTWithMath(cellText)}</text:p>\n`;
             xml += `          </table:table-cell>\n`;
         }
         xml += `        </table:table-row>\n`;
     });
 
     xml += `      </table:table>\n`;
-    return xml;
+    return { xml, imageCounter, manifestXml };
 }
 
 /**
@@ -2251,19 +2774,17 @@ function escapeXml(unsafe) {
  * Configuration : marges 1,27 cm, tableaux 2x4 pour impression recto-verso
  */
 async function createODTFlashcardDocument(formattedContent) {
+    // Réinitialiser le collecteur d'objets Math
+    _resetOdtMathCtx();
+
     const zip = new window.JSZip();
 
     // 1. mimetype
     zip.file('mimetype', 'application/vnd.oasis.opendocument.text', { compression: 'STORE' });
 
-    // 2. META-INF/manifest.xml
-    const manifestXml = `<?xml version="1.0" encoding="UTF-8"?>
-<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.2">
-  <manifest:file-entry manifest:full-path="/" manifest:version="1.2" manifest:media-type="application/vnd.oasis.opendocument.text"/>
-  <manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>
-  <manifest:file-entry manifest:full-path="styles.xml" manifest:media-type="text/xml"/>
-</manifest:manifest>`;
-    zip.file('META-INF/manifest.xml', manifestXml);
+    // Compteur d'images et entrées manifest additionnelles
+    let imageCounter = 0;
+    let manifestImageEntries = '';
 
     // 3. content.xml avec tableaux de cartes
     let contentXml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -2273,8 +2794,13 @@ async function createODTFlashcardDocument(formattedContent) {
     xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
     xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
     xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+    xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+    xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:math="http://www.w3.org/1998/Math/MathML"
     office:version="1.2">
   <office:automatic-styles>
+    <style:style style:name="fr_math" style:family="graphic" style:parent-style-name="Formula"><style:graphic-properties style:vertical-pos="middle" style:vertical-rel="text" draw:ole-draw-aspect="1"/></style:style>
     <!-- En-tête : titre centré 18pt gras bleu (identique au Heading1 DOCX) -->
     <style:style style:name="Title" style:family="paragraph">
       <style:paragraph-properties fo:text-align="center" fo:margin-top="0cm" fo:margin-bottom="0.35cm"/>
@@ -2294,6 +2820,18 @@ async function createODTFlashcardDocument(formattedContent) {
     </style:style>
     <style:style style:name="BoldGreen" style:family="text">
       <style:text-properties fo:font-weight="bold" fo:color="#008000"/>
+    </style:style>
+    <style:style style:name="Underline" style:family="text">
+      <style:text-properties style:text-underline-style="solid" style:text-underline-width="auto" style:text-underline-color="font-color"/>
+    </style:style>
+    <style:style style:name="Strikethrough" style:family="text">
+      <style:text-properties style:text-line-through-style="solid"/>
+    </style:style>
+    <style:style style:name="Sub" style:family="text">
+      <style:text-properties style:text-position="sub 70%"/>
+    </style:style>
+    <style:style style:name="Sup" style:family="text">
+      <style:text-properties style:text-position="super 70%"/>
     </style:style>
     <style:style style:name="FlashcardTable" style:family="table">
       <style:table-properties style:width="18.46cm" table:align="center"/>
@@ -2343,7 +2881,10 @@ async function createODTFlashcardDocument(formattedContent) {
             contentXml += `      <text:p text:style-name="Title">${escapeXml(t('doc_fmt_header_title'))}</text:p>
       <text:p text:style-name="Date">${escapeXml(t('doc_fmt_generation_date') + new Date().toLocaleDateString(currentLang || 'fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }))}</text:p>\n`;
 
-            contentXml += generateODTFlashcardTable(section, tableCounter);
+            contentXml += generateODTFlashcardTable(section, tableCounter, zip, imageCounter, manifestImageEntries, (newCounter, newEntries) => {
+                imageCounter = newCounter;
+                manifestImageEntries = newEntries;
+            });
         }
     });
 
@@ -2351,6 +2892,19 @@ async function createODTFlashcardDocument(formattedContent) {
   </office:body>
 </office:document-content>`;
     zip.file('content.xml', contentXml);
+
+    // Injecter les objets Math dans le ZIP
+    const mathManifestEntries = _injectMathObjectsIntoZip(zip);
+
+    // 2. META-INF/manifest.xml (avec entrées d'images + math dynamiques)
+    const manifestXml = `<?xml version="1.0" encoding="UTF-8"?>
+<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.2">
+  <manifest:file-entry manifest:full-path="/" manifest:version="1.2" manifest:media-type="application/vnd.oasis.opendocument.text"/>
+  <manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>
+  <manifest:file-entry manifest:full-path="styles.xml" manifest:media-type="text/xml"/>
+${manifestImageEntries}${mathManifestEntries}
+</manifest:manifest>`;
+    zip.file('META-INF/manifest.xml', manifestXml);
 
     // 4. styles.xml avec configuration de page
     const stylesXml = generateODTFlashcardStyles();
@@ -2361,43 +2915,96 @@ async function createODTFlashcardDocument(formattedContent) {
 
 /**
  * Génère le XML d'un tableau de cartes pour ODT
+ * @param {Object} section - Section flashcardTable
+ * @param {number} tableId - Identifiant du tableau
+ * @param {JSZip} zip - Archive ZIP pour ajouter les images
+ * @param {number} imageCounter - Compteur d'images courant
+ * @param {string} manifestEntries - Entrées manifest accumulées
+ * @param {Function} updateCounters - Callback pour mettre à jour compteur et manifest
  */
-function generateODTFlashcardTable(section, tableId) {
+function generateODTFlashcardTable(section, tableId, zip, imageCounter, manifestEntries, updateCounters) {
     let xml = `      <table:table table:name="FlashcardTable${tableId}" table:style-name="FlashcardTable">
         <table:table-column table:style-name="FlashcardColumn" table:number-columns-repeated="2"/>
 `;
 
     section.rows.forEach(row => {
+        const leftResult = formatODTCellContent(row.left, zip, imageCounter, manifestEntries);
+        imageCounter = leftResult.imageCounter;
+        manifestEntries = leftResult.manifestEntries;
+
+        const rightResult = formatODTCellContent(row.right, zip, imageCounter, manifestEntries);
+        imageCounter = rightResult.imageCounter;
+        manifestEntries = rightResult.manifestEntries;
+
         xml += `        <table:table-row table:style-name="FlashcardRow">
           <table:table-cell table:style-name="FlashcardCell">
-${formatODTCellContent(row.left)}
+${leftResult.xml}
           </table:table-cell>
           <table:table-cell table:style-name="FlashcardCell">
-${formatODTCellContent(row.right)}
+${rightResult.xml}
           </table:table-cell>
         </table:table-row>
 `;
     });
 
     xml += `      </table:table>\n`;
+
+    // Mettre à jour les compteurs dans le parent
+    updateCounters(imageCounter, manifestEntries);
+
     return xml;
 }
 
 /**
- * Formate le contenu d'une cellule pour ODT
+ * Formate le contenu d'une cellule pour ODT (avec support d'images)
+ * @param {Object|null} cardContent - Contenu de la carte
+ * @param {JSZip} zip - Archive ZIP
+ * @param {number} imageCounter - Compteur d'images
+ * @param {string} manifestEntries - Entrées manifest
+ * @returns {{xml: string, imageCounter: number, manifestEntries: string}}
  */
-function formatODTCellContent(cardContent) {
+function formatODTCellContent(cardContent, zip, imageCounter, manifestEntries) {
     if (!cardContent) {
-        return '            <text:p text:style-name="CellContent"></text:p>';
+        return {
+            xml: '            <text:p text:style-name="CellContent"></text:p>',
+            imageCounter,
+            manifestEntries
+        };
     }
 
-    let xml = `            <text:p text:style-name="CellContent">${parseMarkdownForODT(cardContent.text || '')}</text:p>`;
+    let xml = '';
 
+    // Image si présente
+    if (cardContent.imageData && cardContent.imageData.blob) {
+        imageCounter++;
+        const ext = cardContent.imageData.mimeType?.split('/')[1] || 'jpg';
+        const imageName = `Pictures/flashcard${imageCounter}.${ext}`;
+        zip.file(imageName, cardContent.imageData.blob);
+        manifestEntries += `  <manifest:file-entry manifest:full-path="${imageName}" manifest:media-type="${cardContent.imageData.mimeType}"/>\n`;
+
+        const dims = calculateDimensions(
+            cardContent.imageData.width,
+            cardContent.imageData.height,
+            FLASHCARD_CONFIG.imageMaxHeight,
+            FLASHCARD_CONFIG.imageMaxWidth
+        );
+
+        xml += `            <text:p text:style-name="CellContent">
+              <draw:frame draw:name="FlashImg${imageCounter}" text:anchor-type="as-char" svg:width="${dims.width.toFixed(1)}mm" svg:height="${dims.height.toFixed(1)}mm" draw:z-index="0">
+                <draw:image xlink:href="${imageName}" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>
+              </draw:frame>
+            </text:p>\n`;
+    }
+
+    // Texte principal
+    xml += `            <text:p text:style-name="CellContent">${parseODTWithMath(cardContent.text || '')}</text:p>`;
+
+    // Indice
     if (cardContent.hint) {
-        xml += `\n            <text:p text:style-name="CellHint">${parseMarkdownForODT(cardContent.hint)}</text:p>`;
+        xml += `\n            <text:p text:style-name="CellHint">${parseODTWithMath(cardContent.hint)}</text:p>`;
     }
 
-    return xml;
+    return { xml, imageCounter, manifestEntries };
 }
 
 /**
@@ -2458,9 +3065,19 @@ function sanitizeForPDFFont(formattedContent) {
     if (!formattedContent) return;
 
     // Caractères absents de Liberation Sans → équivalents lisibles
+    // (vérifié via fontTools sur LiberationSans-Regular.ttf)
     const map = {
         // Double-struck (Letterlike Symbols U+2100-214F)
         'ℝ': 'R', 'ℕ': 'N', 'ℤ': 'Z', 'ℚ': 'Q', 'ℂ': 'C', 'ℙ': 'P', 'ℍ': 'H', 'ⅎ': 'F',
+        // Symboles math absents de Liberation Sans — fallbacks ASCII universels
+        // (vérifiés via fontTools sur LiberationSans-Regular.ttf)
+        '∀': 'forall ', '∃': 'exists ', '∄': '!exists ',
+        '∅': '{}', '∇': 'nabla ',
+        '∈': ' in ', '∉': ' notin ',
+        '∪': ' U ', '⊂': ' c ', '⊃': ' ) ',
+        '⊆': ' c= ', '⊇': ' )= ',
+        '∧': ' /\\ ', '∨': ' \\/ ',
+        '↦': ' |-> ', '⇒': ' => ', '≅': ' ~= ',
         // Exposants lettres (Phonetic Extensions U+1D00-1DBF)
         'ᵃ': '^a', 'ᵇ': '^b', 'ᶜ': '^c', 'ᵈ': '^d', 'ᵉ': '^e', 'ᶠ': '^f', 'ᵍ': '^g',
         'ᵏ': '^k', 'ᵐ': '^m', 'ᵒ': '^o', 'ᵖ': '^p', 'ᵗ': '^t', 'ᵘ': '^u', 'ᵛ': '^v', 'ᶻ': '^z',
@@ -2522,46 +3139,156 @@ function downloadBlob(blob, fileName) {
 }
 
 /**
+ * Convertit une couleur CSS (rgb, hex, nommée) en hex 6 digits pour docx.js
+ * @param {string} color — ex: "rgb(39, 174, 96)", "#27ae60", "red"
+ * @returns {string} — ex: "27ae60"
+ */
+function cssColorToHex(color) {
+    if (!color) return '000000';
+    const trimmed = color.trim();
+
+    // Déjà en hex
+    if (/^#?[0-9a-fA-F]{6}$/.test(trimmed)) return trimmed.replace('#', '');
+    if (/^#?[0-9a-fA-F]{3}$/.test(trimmed)) {
+        const short = trimmed.replace('#', '');
+        return short[0] + short[0] + short[1] + short[1] + short[2] + short[2];
+    }
+
+    // rgb(r, g, b)
+    const rgbMatch = trimmed.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/i);
+    if (rgbMatch) {
+        const r = parseInt(rgbMatch[1]).toString(16).padStart(2, '0');
+        const g = parseInt(rgbMatch[2]).toString(16).padStart(2, '0');
+        const b = parseInt(rgbMatch[3]).toString(16).padStart(2, '0');
+        return r + g + b;
+    }
+
+    // Couleurs CSS nommées (les plus courantes)
+    const named = {
+        'red': 'ff0000', 'blue': '0000ff', 'green': '008000', 'black': '000000',
+        'white': 'ffffff', 'orange': 'ffa500', 'purple': '800080', 'yellow': 'ffff00',
+        'gray': '808080', 'grey': '808080', 'pink': 'ffc0cb', 'brown': 'a52a2a'
+    };
+    return named[trimmed.toLowerCase()] || '000000';
+}
+
+/**
  * Parse Markdown (**gras**, *italique*, ***gras+vert***) et retourne des TextRuns pour docx.js
  */
 function parseMarkdownToTextRuns(text, baseStyle = {}) {
-    const { TextRun } = window.docx;
+    const { TextRun, ExternalHyperlink } = window.docx;
     const runs = [];
+    if (!text) return runs;
 
-    // Regex pour détecter ***...***, **...** ou *...* (dans cet ordre de priorité)
-    const regex = /(\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*)/g;
-    const parts = text.split(regex);
+    // Regex pour Markdown et HTML inline supportés
+    // Ordre de priorité : HTML tags d'abord, puis Markdown
+    const regex = /(___LINK_\d+___|\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*[^*]+?\*|<u>.*?<\/u>|<s>.*?<\/s>|<sub>.*?<\/sub>|<sup>.*?<\/sup>|<span[^>]*style="[^"]*color[^"]*"[^>]*>.*?<\/span>)/gs;
+
+    // Extraire les liens avant le split (car ils contiennent des < > qui perturbent)
+    const links = [];
+    let processedText = text.replace(/<a\s[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, (match, href, linkText) => {
+        const idx = links.length;
+        links.push({ href, text: linkText });
+        return `___LINK_${idx}___`;
+    });
+
+    const parts = processedText.split(regex);
 
     parts.forEach(part => {
+        if (!part) return;
+
+        // Placeholder de lien
+        const linkMatch = part.match(/^___LINK_(\d+)___$/);
+        if (linkMatch) {
+            const link = links[parseInt(linkMatch[1])];
+            if (link && ExternalHyperlink) {
+                runs.push(new ExternalHyperlink({
+                    children: [new TextRun({
+                        text: link.text,
+                        color: '0066CC',
+                        underline: { type: 'single' },
+                        ...baseStyle
+                    })],
+                    link: link.href
+                }));
+            } else if (link) {
+                runs.push(new TextRun({ text: `${link.text} (${link.href})`, color: '0066CC', ...baseStyle }));
+            }
+            return;
+        }
+
+        // <span style="color: ...">texte</span>
+        const colorMatch = part.match(/^<span[^>]*style="[^"]*color:\s*([^;"]+)[^"]*"[^>]*>(.*?)<\/span>$/s);
+        if (colorMatch) {
+            const color = cssColorToHex(colorMatch[1]);
+            runs.push(new TextRun({ text: colorMatch[2], color, ...baseStyle }));
+            return;
+        }
+
+        // <u>souligné</u>
+        const uMatch = part.match(/^<u>(.*?)<\/u>$/s);
+        if (uMatch) {
+            runs.push(new TextRun({ text: uMatch[1], underline: { type: 'single' }, ...baseStyle }));
+            return;
+        }
+
+        // <s>barré</s>
+        const sMatch = part.match(/^<s>(.*?)<\/s>$/s);
+        if (sMatch) {
+            runs.push(new TextRun({ text: sMatch[1], strike: true, ...baseStyle }));
+            return;
+        }
+
+        // <sub>indice</sub>
+        const subMatch = part.match(/^<sub>(.*?)<\/sub>$/s);
+        if (subMatch) {
+            runs.push(new TextRun({ text: subMatch[1], subScript: true, ...baseStyle }));
+            return;
+        }
+
+        // <sup>exposant</sup>
+        const supMatch = part.match(/^<sup>(.*?)<\/sup>$/s);
+        if (supMatch) {
+            runs.push(new TextRun({ text: supMatch[1], superScript: true, ...baseStyle }));
+            return;
+        }
+
+        // ***gras+vert***
         if (part.startsWith('***') && part.endsWith('***')) {
-            // Triple astérisque = gras + vert
-            runs.push(new TextRun({
-                text: part.slice(3, -3),
-                bold: true,
-                color: '008000',
-                ...baseStyle
-            }));
-        } else if (part.startsWith('**') && part.endsWith('**')) {
-            runs.push(new TextRun({
-                text: part.slice(2, -2),
-                bold: true,
-                ...baseStyle
-            }));
-        } else if (part.startsWith('*') && part.endsWith('*')) {
-            runs.push(new TextRun({
-                text: part.slice(1, -1),
-                italics: true,
-                ...baseStyle
-            }));
-        } else if (part) {
-            runs.push(new TextRun({
-                text: part,
-                ...baseStyle
-            }));
+            runs.push(new TextRun({ text: part.slice(3, -3), bold: true, color: '008000', ...baseStyle }));
+        }
+        // **gras**
+        else if (part.startsWith('**') && part.endsWith('**')) {
+            runs.push(new TextRun({ text: part.slice(2, -2), bold: true, ...baseStyle }));
+        }
+        // *italique*
+        else if (part.startsWith('*') && part.endsWith('*') && part.length > 2) {
+            runs.push(new TextRun({ text: part.slice(1, -1), italics: true, ...baseStyle }));
+        }
+        // Texte normal
+        else {
+            runs.push(new TextRun({ text: part, ...baseStyle }));
         }
     });
 
     return runs;
+}
+
+/**
+ * Parse un texte pouvant contenir des formules LaTeX \(...\) et du Markdown.
+ * Les formules sont converties en objets Math OMML (docx.js), le reste en TextRuns.
+ * Remplacement direct de parseMarkdownToTextRuns pour les exports DOCX.
+ *
+ * @param {string} text — Texte avec éventuel LaTeX et Markdown
+ * @param {Object} [baseStyle={}] — Style de base pour les TextRun
+ * @returns {Array} Tableau mixte de TextRun et Math, utilisable comme children d'un Paragraph
+ */
+function parseTextWithMath(text, baseStyle = {}) {
+    if (!text) return [];
+    if (!containsLatex(text)) {
+        return parseMarkdownToTextRuns(text, baseStyle);
+    }
+    return textWithMathToDocxChildren(text, baseStyle, parseMarkdownToTextRuns);
 }
 
 /**
@@ -2570,20 +3297,433 @@ function parseMarkdownToTextRuns(text, baseStyle = {}) {
 function parseMarkdownForODT(text) {
     if (!text) return '';
 
-    let xml = escapeXml(text);
+    // Extraire les liens et tags HTML avant l'échappement XML
+    const links = [];
+    let processed = text.replace(/<a\s[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, (m, href, t) => {
+        const idx = links.length;
+        links.push({ href, text: t });
+        return `___ODTLINK_${idx}___`;
+    });
 
-    // Retours à la ligne → espace (identique au comportement DOCX où \n
-    // dans <w:t> est traité comme du whitespace par Word)
+    const htmlTags = [];
+    // Préserver couleur, souligné, barré, sub, sup
+    processed = processed.replace(/<span[^>]*style="[^"]*color:\s*([^;"]+)[^"]*"[^>]*>(.*?)<\/span>/gi, (m, color, t) => {
+        const idx = htmlTags.length;
+        htmlTags.push({ type: 'color', color: color.trim(), text: t });
+        return `___ODTTAG_${idx}___`;
+    });
+    processed = processed.replace(/<u>(.*?)<\/u>/gi, (m, t) => {
+        const idx = htmlTags.length;
+        htmlTags.push({ type: 'underline', text: t });
+        return `___ODTTAG_${idx}___`;
+    });
+    processed = processed.replace(/<s>(.*?)<\/s>/gi, (m, t) => {
+        const idx = htmlTags.length;
+        htmlTags.push({ type: 'strike', text: t });
+        return `___ODTTAG_${idx}___`;
+    });
+    processed = processed.replace(/<sub>(.*?)<\/sub>/gi, (m, t) => {
+        const idx = htmlTags.length;
+        htmlTags.push({ type: 'sub', text: t });
+        return `___ODTTAG_${idx}___`;
+    });
+    processed = processed.replace(/<sup>(.*?)<\/sup>/gi, (m, t) => {
+        const idx = htmlTags.length;
+        htmlTags.push({ type: 'sup', text: t });
+        return `___ODTTAG_${idx}___`;
+    });
+
+    let xml = escapeXml(processed);
+
+    // Retours à la ligne → espace
     xml = xml.replace(/\n/g, ' ');
 
-    // Remplacement ***...**** -> <text:span text:style-name="BoldGreen">...</text:span> (DOIT être fait en premier)
+    // Markdown → ODT styles
     xml = xml.replace(/\*\*\*(.*?)\*\*\*/g, '<text:span text:style-name="BoldGreen">$1</text:span>');
-
-    // Remplacement **...** -> <text:span text:style-name="Bold">...</text:span>
     xml = xml.replace(/\*\*(.*?)\*\*/g, '<text:span text:style-name="Bold">$1</text:span>');
-
-    // Remplacement *...* -> <text:span text:style-name="Italic">$1</text:span>
     xml = xml.replace(/\*(.*?)\*/g, '<text:span text:style-name="Italic">$1</text:span>');
 
+    // Restaurer les liens
+    xml = xml.replace(/___ODTLINK_(\d+)___/g, (m, idx) => {
+        const link = links[parseInt(idx)];
+        return `<text:a xlink:type="simple" xlink:href="${escapeXml(link.href)}">${escapeXml(link.text)}</text:a>`;
+    });
+
+    // Restaurer les tags HTML en styles ODT
+    xml = xml.replace(/___ODTTAG_(\d+)___/g, (m, idx) => {
+        const tag = htmlTags[parseInt(idx)];
+        switch (tag.type) {
+            case 'color': {
+                const hex = cssColorToHex(tag.color);
+                return `<text:span text:style-name="Color_${hex}">${escapeXml(tag.text)}</text:span>`;
+            }
+            case 'underline':
+                return `<text:span text:style-name="Underline">${escapeXml(tag.text)}</text:span>`;
+            case 'strike':
+                return `<text:span text:style-name="Strikethrough">${escapeXml(tag.text)}</text:span>`;
+            case 'sub':
+                return `<text:span text:style-name="Sub">${escapeXml(tag.text)}</text:span>`;
+            case 'sup':
+                return `<text:span text:style-name="Sup">${escapeXml(tag.text)}</text:span>`;
+            default:
+                return escapeXml(tag.text);
+        }
+    });
+
     return xml;
+}
+
+/**
+ * Contexte partagé pour la collecte des objets Math ODT.
+ * Chaque formule crée un Object N/ dans le ZIP, référencé via xlink:href.
+ * Réinitialisé au début de chaque export ODT.
+ */
+const _odtMathCtx = {
+    counter: 0,
+    objects: []  // { id, mathml, latex }
+};
+
+/**
+ * Estime les dimensions d'une formule LaTeX pour le draw:frame ODT (en cm).
+ * Basé sur l'analyse des tailles réelles calculées par LibreOffice :
+ *   - \(x\) → 0.235 × 0.471 cm
+ *   - \(\sqrt{x^2}=x\) → 1.219 × 0.572 cm
+ *   - \(f(x)=\sqrt{x}\) → 1.639 × 0.540 cm
+ * Heuristique : largeur proportionnelle au nombre de caractères « visuels »,
+ * hauteur augmentée pour les structures verticales (frac, sqrt, sum...).
+ */
+function _estimateFormulaDimensions(latex) {
+    if (!latex) return { w: '0.5', h: '0.45' };
+
+    // Compter la complexité horizontale (nombre de caractères rendus)
+    let stripped = latex
+        .replace(/\\(frac|dfrac|sqrt|sum|prod|int|binom|left|right|begin|end|text|mathrm|mathbb|overline|vec|hat)\b/g, '')
+        .replace(/\\[a-zA-Z]+/g, 'X')   // chaque commande → 1 caractère
+        .replace(/[{}\\]/g, '')          // retirer accolades et backslashes
+        .replace(/\s+/g, '');            // retirer espaces
+    const charCount = Math.max(stripped.length, 1);
+
+    // Détecter les structures qui influencent les dimensions
+    const hasFrac = /\\frac|\\dfrac|\\binom/.test(latex);
+    const hasSqrt = /\\sqrt/.test(latex);
+    const sqrtCount = (latex.match(/\\sqrt/g) || []).length;
+    const hasSum = /\\sum|\\prod|\\int/.test(latex);
+    const hasSup = /\^/.test(latex) || /\\hat|\\vec|\\overline/.test(latex);
+
+    // Largeur : ~0.25cm par caractère + bonus pour les symboles structurels
+    let wVal = charCount * 0.25;
+    wVal += sqrtCount * 0.25;   // le radical prend de la place
+    if (hasSum) wVal += 0.3;    // le gros symbole somme/intégrale
+    const w = Math.max(0.25, wVal).toFixed(3);
+
+    // Hauteur : base 0.47cm, +0.12 pour exposants/racines, +0.25 pour fractions
+    let h = 0.47;
+    if (hasSup || hasSqrt) h += 0.10;
+    if (hasFrac) h += 0.25;
+    if (hasSum) h += 0.15;
+    h = h.toFixed(3);
+
+    return { w, h };
+}
+
+/** Réinitialise le collecteur pour un nouvel export */
+function _resetOdtMathCtx() {
+    _odtMathCtx.counter = 0;
+    _odtMathCtx.objects = [];
+}
+
+/**
+ * Parse un texte ODT avec gestion des formules LaTeX → objets Math LibreOffice.
+ * Les formules sont stockées comme des objets séparés (Object N/)
+ * référencés via xlink:href, éditables dans LibreOffice Math.
+ *
+ * @param {string} text — Texte avec éventuel LaTeX et Markdown
+ * @returns {string} XML ODT avec références aux objets Math
+ */
+function parseODTWithMath(text) {
+    if (!text || !containsLatex(text)) {
+        return parseMarkdownForODT(text);
+    }
+
+    const segments = splitTextAndMath(text);
+    let result = '';
+
+    for (const seg of segments) {
+        if (seg.type === 'math') {
+            _odtMathCtx.counter++;
+            const objId = _odtMathCtx.counter;
+            const mathml = latexToMathML(seg.value);
+
+            // Stocker l'objet pour l'ajout au ZIP plus tard
+            _odtMathCtx.objects.push({ id: objId, mathml, latex: seg.value });
+
+            // Estimer la taille de la formule pour le draw:frame
+            const dims = _estimateFormulaDimensions(seg.value);
+
+            // Référence à l'objet dans le flux XML
+            result += `<draw:frame draw:style-name="fr_math" draw:name="Object${objId}" ` +
+                      `text:anchor-type="as-char" svg:width="${dims.w}cm" svg:height="${dims.h}cm" draw:z-index="${objId - 1}">` +
+                      `<draw:object xlink:href="./Object ${objId}" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>` +
+                      `</draw:frame>`;
+        } else {
+            result += parseMarkdownForODT(seg.value);
+        }
+    }
+
+    return result;
+}
+
+/**
+ * Injecte les objets Math collectés dans le ZIP ODT et met à jour le manifest.
+ * Appelé après la génération du content.xml.
+ *
+ * @param {JSZip} zip — L'archive ZIP en construction
+ * @returns {string} XML manifest supplémentaire pour les objets Math
+ */
+function _injectMathObjectsIntoZip(zip) {
+    let manifestEntries = '';
+
+    for (const obj of _odtMathCtx.objects) {
+        const objPath = `Object ${obj.id}`;
+
+        // content.xml de l'objet Math (format LibreOffice Math)
+        const objContent = `<?xml version="1.0" encoding="UTF-8"?>
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <semantics>
+    ${obj.mathml.replace(/<math[^>]*>/, '').replace(/<\/math>/, '')}
+    <annotation encoding="StarMath 5.0">${_latexToStarMath(obj.latex)}</annotation>
+  </semantics>
+</math>`;
+
+        zip.file(`${objPath}/content.xml`, objContent);
+
+        // Entrées manifest pour l'objet
+        manifestEntries += `\n  <manifest:file-entry manifest:full-path="${objPath}/" manifest:version="1.2" manifest:media-type="application/vnd.oasis.opendocument.formula"/>`;
+        manifestEntries += `\n  <manifest:file-entry manifest:full-path="${objPath}/content.xml" manifest:media-type="text/xml"/>`;
+    }
+
+    return manifestEntries;
+}
+
+/**
+ * Conversion LaTeX → StarMath (annotation pour LibreOffice Math).
+ * Utilise getStarMath() du catalogue centralisé (math-catalog.js).
+ * Référence : https://wiki.documentfoundation.org/Documentation/OOoAuthors_User_Manual/Writer_Guide/Formula_commands_reference
+ */
+/**
+ * Convertit du LaTeX en StarMath 5.0 via le parser AST partagé.
+ * Utilise le même arbre syntaxique que les convertisseurs OMML et MathML,
+ * ce qui garantit la cohérence et gère les structures imbriquées.
+ * @param {string} latex — Expression LaTeX
+ * @returns {string} Expression StarMath 5.0 (XML-safe)
+ */
+export function _latexToStarMath(latex) {
+    if (!latex) return '';
+    try {
+        const ast = parseLatex(latex);
+        const sm = _smNodes(ast);
+        let result = sm.replace(/\s{2,}/g, ' ').trim();
+        // Un opérateur binaire isolé (ex: \times seul) nécessite des opérandes
+        // vides pour que StarMath l'accepte : {} times {}
+        if (ast.length === 1 && ast[0].type === 'symbol') {
+            const mlType = getSymbolMlType(ast[0].name);
+            if (mlType === 'mo') {
+                result = `{} ${result} {}`;
+            }
+        }
+        return escapeXml(result);
+    } catch (e) {
+        // Fallback : retourner le LaTeX brut nettoyé
+        return escapeXml(latex.replace(/\\/g, '').trim());
+    }
+}
+
+/** Rend un tableau de nœuds AST en StarMath */
+function _smNodes(nodes) {
+    if (!nodes || nodes.length === 0) return '';
+    return nodes.map(n => _smNode(n)).join(' ');
+}
+
+/** Rend un nœud AST unique en StarMath */
+function _smNode(node) {
+    if (!node) return '';
+    switch (node.type) {
+        case 'text':
+            // Commande inconnue → tenter le catalogue
+            if (node.value?.startsWith('\\')) {
+                const cmd = node.value.substring(1);
+                const sm = getStarMath(cmd);
+                return sm || cmd;
+            }
+            return node.value || '';
+
+        case 'number':
+            return node.value || '';
+
+        case 'operator':
+            return node.value || '';
+
+        case 'symbol': {
+            const sm = getStarMath(node.name);
+            return sm || node.name;
+        }
+
+        case 'frac':
+            return `{${_smNodes(node.num)}} over {${_smNodes(node.den)}}`;
+
+        case 'sqrt':
+            if (node.index) {
+                return `nroot {${_smNodes(node.index)}} {${_smNodes(node.body)}}`;
+            }
+            return `sqrt {${_smNodes(node.body)}}`;
+
+        case 'sup':
+            return `{${_smNodes(node.base)}} ^ {${_smNodes(node.sup)}}`;
+
+        case 'sub':
+            return `{${_smNodes(node.base)}} _ {${_smNodes(node.sub)}}`;
+
+        case 'subsup':
+            return `{${_smNodes(node.base)}} _ {${_smNodes(node.sub)}} ^ {${_smNodes(node.sup)}}`;
+
+        case 'nary': {
+            const op = getStarMath(node.op) || node.op;
+            let result = op;
+            // Intégrales : limites en indice/exposant (_/^)
+            // Sommes, produits, etc. : limites au-dessus/en-dessous (from/to)
+            const isIntegral = ['int', 'iint', 'iiint', 'oint'].includes(node.op);
+            if (isIntegral) {
+                if (node.sub) result += ` _ {${_smNodes(node.sub)}}`;
+                if (node.sup) result += ` ^ {${_smNodes(node.sup)}}`;
+            } else {
+                if (node.sub) result += ` from {${_smNodes(node.sub)}}`;
+                if (node.sup) result += ` to {${_smNodes(node.sup)}}`;
+            }
+            // Corps vide {} obligatoire pour que StarMath accepte l'opérateur (tests 12b)
+            result += '{}';
+            return result;
+        }
+
+        case 'func': {
+            const name = node.name || '';
+            let result = name;
+            // lim, limsup, liminf, min, max, sup, inf → « from » (indice sous le nom)
+            // log, sin, cos, etc. → « _ » (vrai indice en bas à droite)
+            const usesFrom = ['lim', 'limsup', 'liminf', 'min', 'max', 'sup', 'inf'].includes(name);
+            if (node.sub) {
+                result += usesFrom ? ` from {${_smNodes(node.sub)}}` : ` _ {${_smNodes(node.sub)}}`;
+                result += '{}'; // Corps vide obligatoire (tests 12b)
+            }
+            return result;
+        }
+
+        case 'accent': {
+            const sm = ACCENT_CATALOG[node.name]?.sm || node.name;
+            return `${sm} {${_smNodes(node.body)}}`;
+        }
+
+        case 'font': {
+            const text = _smNodesToText(node.body);
+            if (node.name === 'mathbb') {
+                // Utiliser les caractères Unicode directement (ℝ, ℕ, etc.)
+                let result = '';
+                for (const ch of text) result += BLACKBOARD[ch] || ch;
+                return result;
+            }
+            // mathcal, mathfrak, mathscr → pas de support StarMath, texte brut
+            return text;
+        }
+
+        case 'textContent':
+            return `"${node.value || ''}"`;
+
+        case 'binom':
+            return `left ( binom {${_smNodes(node.top)}} {${_smNodes(node.bottom)}} right )`;
+
+        case 'delimited': {
+            const bodyStr = _smNodes(node.body);
+            if (!bodyStr.trim()) {
+                // Délimiteurs vides → afficher les caractères comme texte littéral
+                const openChar = node.open || '';
+                const closeChar = node.close || '';
+                return `"${openChar}${closeChar}"`;
+            }
+            const open = _smDelimiter(node.open, 'left');
+            const close = _smDelimiter(node.close, 'right');
+            return `${open} ${bodyStr} ${close}`;
+        }
+
+        case 'matrix': {
+            const rows = node.rows.map(row =>
+                row.map(cell => _smNodes(cell)).join(' # ')
+            ).join(' ## ');
+            const delims = _smMatrixDelimiters(node.variant);
+            return `${delims.open} matrix { ${rows} } ${delims.close}`;
+        }
+
+        case 'cases': {
+            const rows = node.rows.map(row => {
+                let line = _smNodes(row.value);
+                if (row.condition?.length > 0) line += ' # ' + _smNodes(row.condition);
+                return line;
+            }).join(' ## ');
+            return `left lbrace matrix { ${rows} } right none`;
+        }
+
+        case 'aligned': {
+            const lines = node.lines.map(line => _smNodes(line)).join(' ## ');
+            return `matrix { ${lines} }`;
+        }
+
+        case 'group':
+            return _smNodes(node.children);
+
+        case 'space':
+            return '`';
+
+        case 'newline':
+            return '##';
+
+        case 'align':
+            return '#';
+
+        default:
+            return node.value || '';
+    }
+}
+
+/** Extrait le texte brut des nœuds (pour mathbb) */
+function _smNodesToText(nodes) {
+    return nodes.map(n => n.value || '').join('');
+}
+
+/** Mappe un délimiteur LaTeX vers StarMath */
+function _smDelimiter(ch, side) {
+    if (!ch || ch === '.') return `${side} none`;
+    const map = {
+        '(': '(', ')': ')',
+        '[': '[', ']': ']',
+        '{': 'lbrace', '}': 'rbrace',
+        '|': 'lline',
+        '\u2016': 'ldline', // ‖
+        '\u27E8': 'langle', '\u27E9': 'rangle'
+    };
+    // Pour le côté droit, utiliser les variantes r*
+    let sm = map[ch];
+    if (sm && side === 'right') {
+        sm = sm.replace(/^l/, 'r');
+    }
+    return `${side} ${sm || ch}`;
+}
+
+/** Délimiteurs de matrice selon le variant */
+function _smMatrixDelimiters(variant) {
+    switch (variant) {
+        case 'pmatrix': return { open: 'left (', close: 'right )' };
+        case 'bmatrix': return { open: 'left [', close: 'right ]' };
+        case 'Bmatrix': return { open: 'left lbrace', close: 'right rbrace' };
+        case 'vmatrix': return { open: 'left lline', close: 'right rline' };
+        case 'Vmatrix': return { open: 'left ldline', close: 'right rdline' };
+        default: return { open: 'left (', close: 'right )' };
+    }
 }

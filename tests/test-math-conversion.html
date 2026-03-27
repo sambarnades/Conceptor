@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <title>Tests Conversion Formules Math - Caramel</title>
+    <script src="js/vendor/mathjax/3.2.2/tex-svg.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; padding: 24px; color: #1a1a2e; }
+        h1 { font-size: 1.5rem; margin-bottom: 8px; }
+        .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+        .global-summary { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .global-summary__card { padding: 14px 24px; border-radius: 10px; font-weight: 700; font-size: 1.3rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-width: 120px; text-align: center; }
+        .global-summary__card small { display: block; font-size: 0.7rem; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+        .card--pass { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; }
+        .card--fail { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: #721c24; }
+        .card--total { background: linear-gradient(135deg, #d1ecf1, #bee5eb); color: #0c5460; }
+        .tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 2px solid #ddd; padding-bottom: 0; }
+        .tab { padding: 10px 20px; cursor: pointer; border-radius: 8px 8px 0 0; font-weight: 600; font-size: 0.85rem; background: #e9ecef; color: #666; border: 1px solid transparent; border-bottom: none; position: relative; top: 2px; }
+        .tab:hover { background: #f8f9fa; color: #333; }
+        .tab--active { background: #fff; color: #1a1a2e; border-color: #ddd; border-bottom: 2px solid #fff; }
+        .tab-panel { display: none; }
+        .tab-panel--active { display: block; }
+        .results { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; margin-bottom: 20px; }
+        .result { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid #f5f5f5; font-size: 0.82rem; }
+        .result:last-child { border-bottom: none; }
+        .result__badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-weight: 700; font-size: 0.7rem; min-width: 38px; text-align: center; flex-shrink: 0; }
+        .result__badge--pass { background: #d4edda; color: #155724; }
+        .result__badge--fail { background: #f8d7da; color: #721c24; }
+        .result--fail { background: #fff5f5; }
+        .result__category { font-size: 0.65rem; color: #888; min-width: 80px; flex-shrink: 0; text-transform: uppercase; }
+        .result__latex { font-family: 'SF Mono', monospace; color: #555; min-width: 200px; font-size: 0.75rem; }
+        .result__detail { color: #333; flex: 1; }
+        .result__preview { min-width: 80px; text-align: center; }
+        .diagnostic { margin-top: 6px; padding: 8px; background: #1e1e2e; color: #cdd6f4; border-radius: 6px; font-family: monospace; font-size: 0.72rem; line-height: 1.4; max-height: 150px; overflow-y: auto; }
+        .section-header { background: #1a1a2e; color: #fff; padding: 10px 14px; font-weight: 700; font-size: 0.85rem; }
+        .filter-bar { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+        .filter-btn { padding: 5px 12px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; font-size: 0.8rem; }
+        .filter-btn:hover { background: #f0f0f0; }
+        .filter-btn--active { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
+        .loading { text-align: center; padding: 60px; color: #666; }
+        .catalog-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px; }
+        .catalog-table th { background: #1a1a2e; color: #fff; padding: 10px 14px; text-align: left; font-size: 0.78rem; }
+        .catalog-table td { padding: 8px 14px; border-bottom: 1px solid #f0f0f0; font-size: 0.82rem; font-family: monospace; }
+        .catalog-table tr:hover { background: #f8f9fa; }
+    </style>
+</head>
+<body>
+    <h1>Tests Conversion Formules Math</h1>
+    <p class="subtitle">Parser LaTeX, MathML, Unicode — Catalogue de formules</p>
+
+    <div class="global-summary" id="summary"></div>
+
+    <div class="tabs" id="tabs">
+        <div class="tab tab--active" data-tab="parser">Parser LaTeX</div>
+        <div class="tab" data-tab="mathml">MathML</div>
+        <div class="tab" data-tab="unicode">Unicode (regression)</div>
+        <div class="tab" data-tab="healer">Healer binom</div>
+        <div class="tab" data-tab="starmath-ast">StarMath AST</div>
+        <div class="tab" data-tab="mixed">Texte mixte</div>
+        <div class="tab" data-tab="catalog">Catalogue</div>
+    </div>
+
+    <div id="panel-parser" class="tab-panel tab-panel--active">
+        <div class="filter-bar" id="filter-parser"></div>
+        <div class="results" id="results-parser"><div class="loading">Chargement...</div></div>
+    </div>
+    <div id="panel-mathml" class="tab-panel">
+        <div class="results" id="results-mathml"><div class="loading">Chargement...</div></div>
+    </div>
+    <div id="panel-unicode" class="tab-panel">
+        <div class="results" id="results-unicode"><div class="loading">Chargement...</div></div>
+    </div>
+    <div id="panel-healer" class="tab-panel">
+        <div class="results" id="results-healer"><div class="loading">Chargement...</div></div>
+    </div>
+    <div id="panel-starmath-ast" class="tab-panel">
+        <div class="results" id="results-starmath-ast"><div class="loading">Chargement...</div></div>
+    </div>
+    <div id="panel-mixed" class="tab-panel">
+        <div class="results" id="results-mixed"><div class="loading">Chargement...</div></div>
+    </div>
+    <div id="panel-catalog" class="tab-panel">
+        <div id="results-catalog"><div class="loading">Chargement...</div></div>
+    </div>
+
+    <script type="module">
+        import { parseLatex, containsLatex, splitTextAndMath } from '../js/export/latex-parser.js';
+        import { latexToMathML } from '../js/export/latex-to-mathml.js';
+        import { latexToUnicode, healJsonObject } from '../js/h5p/json-healer.js';
+        import { GREEK, OPERATORS, NARY_OPS, ACCENTS, BLACKBOARD, ALL_SYMBOLS, getStarMath } from '../js/export/math-catalog.js';
+        import { _latexToStarMath } from '../js/export/document-exporter.js';
+
+        // ================================================================
+        // FRAMEWORK DE TEST
+        // ================================================================
+
+        const results = { pass: 0, fail: 0, tests: [] };
+
+        function assert(label, condition, detail = '', category = '') {
+            const passed = !!condition;
+            if (passed) results.pass++; else results.fail++;
+            results.tests.push({ label, passed, detail, category });
+        }
+
+        function assertAST(latex, expectedType, description, category = 'parser') {
+            try {
+                const ast = parseLatex(latex);
+                const ok = ast.length > 0 && ast.some(n => n.type === expectedType);
+                assert(
+                    `${description}: ${latex}`,
+                    ok,
+                    ok ? `Type trouvé: ${expectedType}` : `Attendu: ${expectedType}, reçu: ${JSON.stringify(ast.map(n=>n.type))}`,
+                    category
+                );
+            } catch (e) {
+                assert(`${description}: ${latex}`, false, `Erreur: ${e.message}`, category);
+            }
+        }
+
+        function assertMathML(latex, expectedFragment, description) {
+            try {
+                const ml = latexToMathML(latex);
+                const ok = ml.includes(expectedFragment);
+                assert(
+                    `MathML — ${description}: ${latex}`,
+                    ok,
+                    ok ? `Contient: ${expectedFragment}` : `Attendu "${expectedFragment}" dans: ${ml.substring(0, 200)}`,
+                    'mathml'
+                );
+            } catch (e) {
+                assert(`MathML — ${description}: ${latex}`, false, `Erreur: ${e.message}`, 'mathml');
+            }
+        }
+
+        function assertUnicode(latex, expected, description) {
+            try {
+                const result = latexToUnicode(latex);
+                const ok = result.trim() === expected.trim();
+                assert(
+                    `Unicode — ${description}`,
+                    ok,
+                    ok ? `OK: "${result}"` : `Attendu: "${expected}", reçu: "${result}"`,
+                    'unicode'
+                );
+            } catch (e) {
+                assert(`Unicode — ${description}`, false, `Erreur: ${e.message}`, 'unicode');
+            }
+        }
+
+        // ================================================================
+        // TESTS DU PARSER
+        // ================================================================
+
+        // --- Texte simple ---
+        assertAST('x', 'text', 'Caractère simple', 'fractions');
+        assertAST('123', 'number', 'Nombre', 'fractions');
+
+        // --- Fractions ---
+        assertAST('\\frac{a}{b}', 'frac', 'Fraction simple', 'fractions');
+        assertAST('\\frac{1}{2}', 'frac', 'Fraction 1/2', 'fractions');
+        assertAST('\\frac{\\frac{a}{b}}{c}', 'frac', 'Fraction imbriquée', 'fractions');
+        assertAST('\\dfrac{a}{b}', 'frac', 'Display fraction', 'fractions');
+
+        // --- Racines ---
+        assertAST('\\sqrt{x}', 'sqrt', 'Racine carrée', 'racines');
+        assertAST('\\sqrt[3]{x}', 'sqrt', 'Racine cubique', 'racines');
+        assertAST('\\sqrt{\\frac{a}{b}}', 'sqrt', 'Racine imbriquée', 'racines');
+
+        // --- Puissances et indices ---
+        assertAST('x^{2}', 'sup', 'Exposant', 'scripts');
+        assertAST('x_{n}', 'sub', 'Indice', 'scripts');
+        assertAST('x^{n}_{m}', 'subsup', 'Exposant+indice', 'scripts');
+        assertAST('x^2', 'sup', 'Exposant sans accolades', 'scripts');
+
+        // --- Symboles grecs ---
+        assertAST('\\alpha', 'symbol', 'Alpha', 'grec');
+        assertAST('\\pi', 'symbol', 'Pi', 'grec');
+        assertAST('\\Delta', 'symbol', 'Delta majuscule', 'grec');
+        assertAST('\\Omega', 'symbol', 'Omega majuscule', 'grec');
+
+        // --- Opérateurs ---
+        assertAST('\\times', 'symbol', 'Multiplication', 'operateurs');
+        assertAST('\\leq', 'symbol', 'Inférieur ou égal', 'operateurs');
+        assertAST('\\infty', 'symbol', 'Infini', 'operateurs');
+        assertAST('\\rightarrow', 'symbol', 'Flèche droite', 'operateurs');
+
+        // --- N-aire ---
+        assertAST('\\sum_{i=1}^{n}', 'nary', 'Somme avec limites', 'naire');
+        assertAST('\\int_{a}^{b}', 'nary', 'Intégrale', 'naire');
+        assertAST('\\prod_{i=1}^{n}', 'nary', 'Produit', 'naire');
+
+        // Vérifier que les limites sont attachées
+        (() => {
+            const ast = parseLatex('\\sum_{i=1}^{n}');
+            const nary = ast.find(n => n.type === 'nary');
+            assert('N-aire: limites attachées', nary && nary.sub && nary.sup,
+                nary ? `sub: ${!!nary.sub}, sup: ${!!nary.sup}` : 'Pas de nœud nary', 'naire');
+        })();
+
+        // --- Fonctions ---
+        assertAST('\\sin', 'func', 'Sinus', 'fonctions');
+        assertAST('\\log', 'func', 'Logarithme', 'fonctions');
+        assertAST('\\lim_{x \\to 0}', 'func', 'Limite avec indice', 'fonctions');
+
+        // --- Accents ---
+        assertAST('\\vec{u}', 'accent', 'Vecteur', 'accents');
+        assertAST('\\hat{x}', 'accent', 'Chapeau', 'accents');
+        assertAST('\\overline{AB}', 'accent', 'Barre', 'accents');
+
+        // --- Polices ---
+        assertAST('\\mathbb{R}', 'font', 'Blackboard bold', 'polices');
+        assertAST('\\text{si}', 'textContent', 'Texte', 'polices');
+        assertAST('\\mathrm{kg}', 'textContent', 'Texte romain', 'polices');
+
+        // --- Délimiteurs ---
+        (() => {
+            const ast = parseLatex('\\left( a+b \\right)');
+            const delim = ast.find(n => n.type === 'delimited');
+            assert('Délimiteurs: parenthèses', delim && delim.open === '(' && delim.close === ')',
+                delim ? `open="${delim.open}", close="${delim.close}"` : 'Pas de nœud delimited', 'delimiteurs');
+        })();
+
+        assertAST('\\left[ x \\right]', 'delimited', 'Crochets', 'delimiteurs');
+        assertAST('\\left\\{ x \\right\\}', 'delimited', 'Accolades', 'delimiteurs');
+
+        // --- Matrices ---
+        (() => {
+            const ast = parseLatex('\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}');
+            const matrix = ast.find(n => n.type === 'matrix');
+            assert('Matrice: structure', matrix && matrix.rows.length === 2,
+                matrix ? `${matrix.rows.length} lignes` : 'Pas de matrice', 'structures');
+            assert('Matrice: colonnes', matrix && matrix.rows[0] && matrix.rows[0].length === 2,
+                matrix && matrix.rows[0] ? `${matrix.rows[0].length} colonnes` : 'Pas de colonnes', 'structures');
+        })();
+
+        // --- Cases ---
+        (() => {
+            const ast = parseLatex('\\begin{cases} a & \\text{si } x > 0 \\\\ b & \\text{sinon} \\end{cases}');
+            const cases = ast.find(n => n.type === 'cases');
+            assert('Cases: structure', cases && cases.rows.length === 2,
+                cases ? `${cases.rows.length} cas` : 'Pas de cases', 'structures');
+        })();
+
+        // --- Binômes ---
+        assertAST('\\binom{n}{k}', 'binom', 'Binôme', 'structures');
+
+        // --- Espaces ---
+        assertAST('a \\quad b', 'space', 'Quad space', 'espaces');
+
+        // --- Formules complexes (imbrications) ---
+        (() => {
+            const ast = parseLatex('\\frac{x^{2}+1}{\\sqrt{n}}');
+            const frac = ast.find(n => n.type === 'frac');
+            assert('Imbrication: frac avec sup dans num', frac && frac.num.length > 0,
+                frac ? `num: ${frac.num.length} nœuds` : 'Pas de fraction', 'imbrications');
+            const hasSqrt = frac && frac.den.some(n => n.type === 'sqrt');
+            assert('Imbrication: sqrt dans den', hasSqrt, '', 'imbrications');
+        })();
+
+        (() => {
+            const ast = parseLatex('e^{i\\pi} + 1 = 0');
+            assert('Euler: parse OK', ast.length > 0, `${ast.length} nœuds`, 'imbrications');
+        })();
+
+        (() => {
+            const ast = parseLatex('\\sum_{n=0}^{\\infty} \\frac{x^n}{n!}');
+            const nary = ast.find(n => n.type === 'nary');
+            assert('Série: n-aire avec frac', nary && ast.some(n => n.type === 'frac'),
+                '', 'imbrications');
+        })();
+
+        // --- containsLatex ---
+        assert('containsLatex: détecte \\(...\\)', containsLatex('La valeur \\(x^2\\) est...'), '', 'utils');
+        assert('containsLatex: détecte \\[...\\]', containsLatex('\\[\\frac{1}{2}\\]'), '', 'utils');
+        assert('containsLatex: texte sans LaTeX', !containsLatex('Pas de formule ici'), '', 'utils');
+
+        // --- splitTextAndMath ---
+        (() => {
+            const segs = splitTextAndMath('Avant \\(x^2\\) après');
+            assert('splitTextAndMath: 3 segments', segs.length === 3, `${segs.length} segments`, 'utils');
+            assert('splitTextAndMath: type math', segs[1] && segs[1].type === 'math', '', 'utils');
+        })();
+
+        // --- Délimiteurs MathJax retirés ---
+        (() => {
+            const ast1 = parseLatex('\\(x^2\\)');
+            const ast2 = parseLatex('x^2');
+            assert('Délimiteurs \\(\\) retirés', ast1.length === ast2.length,
+                `avec: ${ast1.length}, sans: ${ast2.length}`, 'utils');
+        })();
+
+        // ================================================================
+        // TESTS MATHML
+        // ================================================================
+
+        assertMathML('\\frac{a}{b}', '<mfrac>', 'Fraction → mfrac');
+        assertMathML('\\frac{a}{b}', '</mfrac>', 'Fraction fermante');
+        assertMathML('\\sqrt{x}', '<msqrt>', 'Racine → msqrt');
+        assertMathML('\\sqrt[3]{x}', '<mroot>', 'Racine n-ième → mroot');
+        assertMathML('x^{2}', '<msup>', 'Exposant → msup');
+        assertMathML('x_{n}', '<msub>', 'Indice → msub');
+        assertMathML('x_{n}^{m}', '<msubsup>', 'Sub+sup → msubsup');
+        assertMathML('\\alpha', '<mi>\u03B1</mi>', 'Alpha → Unicode');
+        assertMathML('\\times', '>\u00D7</mo>', 'Times → Unicode');
+        assertMathML('\\sum_{i=1}^{n}', '<munderover>', 'Somme → munderover');
+        assertMathML('\\int_{a}^{b}', '<msubsup>', 'Intégrale → msubsup (limites en indice/exposant)');
+        assertMathML('\\vec{u}', '<mover', 'Vecteur → mover');
+        assertMathML('\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}', '<mtable>', 'Matrice → mtable');
+        assertMathML('\\begin{cases} a \\\\ b \\end{cases}', '<mtable', 'Cases → mtable');
+        assertMathML('\\binom{n}{k}', 'linethickness="0"', 'Binôme → frac sans barre');
+        assertMathML('\\left( x \\right)', 'stretchy="true"', 'Délimiteurs stretchy');
+        assertMathML('\\mathbb{R}', '\u211D', 'Blackboard R → Unicode');
+        assertMathML('\\text{si}', '<mtext>si</mtext>', 'Texte → mtext');
+        assertMathML('\\sin', 'mathvariant="normal"', 'Fonction en romain');
+
+        // MathML — formules imbriquées
+        assertMathML('\\frac{\\sqrt{x}}{y^{2}}', '<mfrac>', 'Imbrication: frac(sqrt, sup)');
+        assertMathML('\\frac{\\sqrt{x}}{y^{2}}', '<msqrt>', 'Imbrication: sqrt dans num');
+        assertMathML('\\frac{\\sqrt{x}}{y^{2}}', '<msup>', 'Imbrication: sup dans den');
+
+        // MathML — namespace
+        assertMathML('x', 'xmlns="http://www.w3.org/1998/Math/MathML"', 'Namespace MathML');
+
+        // ================================================================
+        // TESTS UNICODE (régression avec latexToUnicode existant)
+        // ================================================================
+
+        assertUnicode('\\frac{1}{2}', '\u00BD', 'Fraction 1/2');
+        assertUnicode('\\frac{a}{b}', 'a/b', 'Fraction a/b');
+        assertUnicode('\\sqrt{x}', '\u221A(x)', 'Racine carrée');
+        assertUnicode('\\alpha', '\u03B1', 'Alpha');
+        assertUnicode('\\times', '\u00D7', 'Multiplication');
+        assertUnicode('\\leq', '\u2264', 'Inférieur ou égal');
+        assertUnicode('\\pi', '\u03C0', 'Pi');
+        assertUnicode('\\infty', '\u221E', 'Infini');
+        assertUnicode('x^{2}', 'x\u00B2', 'Exposant 2');
+        assertUnicode('\\mathbb{R}', '\u211D', 'Ensemble R');
+        assertUnicode('\\vec{u}', 'u\u20D7', 'Vecteur u');
+
+        // --- Binôme : \binom direct (toujours converti) ---
+        assertUnicode('\\binom{n}{k}', 'C(n,k)', '\\binom{n}{k} → C(n,k)');
+        assertUnicode('\\binom{5}{2}', 'C(5,2)', '\\binom{5}{2} → C(5,2)');
+
+        // --- Binôme : {n \choose k} après normalisation healer ---
+        assertUnicode('{n \\choose k}', 'C(n,k)', '{n \\choose k} → C(n,k)');
+        assertUnicode('{5 \\choose 2}', 'C(5,2)', '{5 \\choose 2} → C(5,2)');
+
+        // --- Binôme imbriqué ---
+        (() => {
+            const result = latexToUnicode('{\\frac{n}{2} \\choose k}');
+            assert('Unicode binom imbriqué : commence par C(', result.startsWith('C('), result, 'unicode');
+            assert('Unicode binom imbriqué : se termine par )', result.endsWith(')'), result, 'unicode');
+        })();
+
+        // --- healJsonObject : \binom → {n \choose k} ---
+        (() => {
+            const input = {
+                title: 'Test',
+                questions: [{
+                    library: 'H5P.MultiChoice 1.16',
+                    metadata: { title: 'Q' },
+                    params: {
+                        question: '\\(\\binom{n}{k}\\)',
+                        answers: [{ text: '\\(\\binom{a}{b}\\)', correct: true }]
+                    }
+                }]
+            };
+            const healed = healJsonObject(input, 'QuizSetQCM');
+            const str = JSON.stringify(healed);
+            assert('Healer binom : \\binom absent', !str.includes('\\binom'), str.substring(0, 200), 'healer');
+            assert('Healer binom : \\choose présent', str.includes('\\choose'), str.substring(0, 200), 'healer');
+            assert('Healer binom : forme exacte', healed.questions[0].params.question.includes('{n \\choose k}'),
+                healed.questions[0].params.question, 'healer');
+        })();
+
+        // --- Binom imbriqué : \binom{\frac{n}{2}}{k} ---
+        (() => {
+            const healed = healJsonObject({ q: '\\(\\binom{\\frac{n}{2}}{k}\\)' }, 'QuizSetQCM');
+            assert('Healer binom imbriqué : forme correcte',
+                healed.q.includes('{\\frac{n}{2} \\choose k}'), healed.q, 'healer');
+            assert('Healer binom imbriqué : \\binom absent', !healed.q.includes('\\binom'), healed.q, 'healer');
+        })();
+
+        // --- Occurrences multiples ---
+        (() => {
+            const healed = healJsonObject({ q: '\\(\\binom{a}{b} + \\binom{c}{d}\\)' }, 'QuizSetQCM');
+            const count = (healed.q.match(/\\choose/g) || []).length;
+            assert(`Healer binom multiple : ${count}/2 \\choose`, count === 2, healed.q, 'healer');
+        })();
+
+        // --- Régression : autres formules inchangées par le healer ---
+        (() => {
+            const input = {
+                q1: '\\(\\frac{a}{b}\\)',
+                q2: '\\(\\sqrt{x}\\)',
+                q3: '\\(\\int_{a}^{b} x\\,dx\\)',
+                q4: '\\(\\sum_{i=1}^{n} i\\)',
+                q5: '\\(\\mathbb{R}\\)'
+            };
+            const healed = healJsonObject(input, 'QuizSetQCM');
+            assert('Régression healer : \\frac', healed.q1 === input.q1, healed.q1, 'healer');
+            assert('Régression healer : \\sqrt', healed.q2 === input.q2, healed.q2, 'healer');
+            assert('Régression healer : \\int', healed.q3 === input.q3, healed.q3, 'healer');
+            assert('Régression healer : \\sum', healed.q4 === input.q4, healed.q4, 'healer');
+            assert('Régression healer : \\mathbb', healed.q5 === input.q5, healed.q5, 'healer');
+        })();
+
+        // ================================================================
+        // TESTS STARMATH AST (export ODT)
+        // ================================================================
+
+        function smAssert(latex, expected, description) {
+            try {
+                const sm = _latexToStarMath(latex);
+                const ok = sm.includes(expected);
+                assert(`SM — ${description}`, ok,
+                    ok ? `OK: "${sm}"` : `Attendu "${expected}" dans: "${sm}"`, 'starmath-ast');
+            } catch (e) {
+                assert(`SM — ${description}`, false, `Erreur: ${e.message}`, 'starmath-ast');
+            }
+        }
+
+        function smNotAssert(latex, forbidden, description) {
+            try {
+                const sm = _latexToStarMath(latex);
+                const ok = !sm.includes(forbidden);
+                assert(`SM — ${description}`, ok,
+                    ok ? `OK (absent)` : `"${forbidden}" trouvé dans: "${sm}"`, 'starmath-ast');
+            } catch (e) {
+                assert(`SM — ${description}`, false, `Erreur: ${e.message}`, 'starmath-ast');
+            }
+        }
+
+        // Structures de base
+        smAssert('\\frac{a}{b}', 'over', 'Fraction');
+        smAssert('\\sqrt{x}', 'sqrt', 'Racine');
+        smAssert('\\sqrt[3]{x}', 'nroot', 'Racine n-ième');
+        smAssert('x^{2}', '^ {2}', 'Exposant');
+        smAssert('x_{n}', '_ {n}', 'Indice');
+
+        // N-aires
+        smAssert('\\sum_{i=1}^{n}', 'sum', 'Somme');
+        smAssert('\\sum_{i=1}^{n}', 'from', 'Somme — from');
+        smAssert('\\int_{a}^{b}', 'int', 'Intégrale');
+
+        // Symboles (bugs corrigés)
+        smAssert('\\times', 'times', 'Multiplication');
+        smAssert('\\alpha', '%alpha', 'Alpha');
+        smAssert('\\infty', 'infinity', 'Infini');
+        smAssert('\\rightarrow', 'rightarrow', 'Flèche droite');
+        smAssert('\\Rightarrow', 'drarrow', 'Double flèche');
+        smNotAssert('\\rightarrow', 'right arrow', '\\rightarrow ≠ right + arrow');
+        smNotAssert('\\leftarrow', 'left arrow', '\\leftarrow ≠ left + arrow');
+
+        // Polices (bug corrigé)
+        smAssert('\\mathbb{R}', '\u211D', 'ℝ Unicode');
+        smNotAssert('\\mathbb{R}', 'doublestroke', 'Pas doublestroke');
+
+        // Structures (bugs corrigés)
+        smAssert('\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}', 'matrix', 'Matrice');
+        smNotAssert('\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}', 'begin', 'Matrice ≠ begin');
+        smAssert('\\begin{cases} a & \\text{si} \\\\ b & \\text{sinon} \\end{cases}', 'lbrace', 'Cases');
+        smNotAssert('\\begin{cases} a & \\text{si} \\\\ b & \\text{sinon} \\end{cases}', 'begin', 'Cases ≠ begin');
+
+        // Binôme
+        smAssert('\\binom{n}{k}', 'binom', 'Binôme');
+
+        // Délimiteurs
+        smAssert('\\left\\| x \\right\\|', 'ldline', 'Double barre');
+
+        // Espace (bug corrigé)
+        smAssert('x \\, y', '`', 'Espace fin');
+
+        // ================================================================
+        // TESTS TEXTE MIXTE
+        // ================================================================
+
+        (() => {
+            const segs = splitTextAndMath('La solution est \\(\\frac{1}{2}\\) euros.');
+            assert('Mixte: découpe correcte', segs.length === 3 && segs[1].type === 'math',
+                `${segs.length} segments, type[1]=${segs[1]?.type}`, 'mixed');
+            assert('Mixte: texte avant', segs[0].value === 'La solution est ',
+                `"${segs[0].value}"`, 'mixed');
+            assert('Mixte: formule extraite', segs[1].value === '\\frac{1}{2}',
+                `"${segs[1].value}"`, 'mixed');
+            assert('Mixte: texte après', segs[2].value === ' euros.',
+                `"${segs[2].value}"`, 'mixed');
+        })();
+
+        (() => {
+            const segs = splitTextAndMath('\\(x\\) et \\(y\\)');
+            assert('Mixte: deux formules', segs.length === 3,
+                `${segs.length} segments`, 'mixed');
+        })();
+
+        (() => {
+            const segs = splitTextAndMath('Pas de formule');
+            assert('Mixte: texte seul', segs.length === 1 && segs[0].type === 'text',
+                '', 'mixed');
+        })();
+
+        // ================================================================
+        // AFFICHAGE DES RÉSULTATS
+        // ================================================================
+
+        // Résumé global
+        document.getElementById('summary').innerHTML = `
+            <div class="global-summary__card card--total">${results.pass + results.fail}<small>Total</small></div>
+            <div class="global-summary__card card--pass">${results.pass}<small>Passés</small></div>
+            <div class="global-summary__card card--fail">${results.fail}<small>Échoués</small></div>
+        `;
+
+        // Fonction d'affichage d'un résultat
+        function renderResult(test) {
+            const cls = test.passed ? '' : ' result--fail';
+            const badge = test.passed
+                ? '<span class="result__badge result__badge--pass">PASS</span>'
+                : '<span class="result__badge result__badge--fail">FAIL</span>';
+            return `<div class="result${cls}">
+                ${badge}
+                <span class="result__category">${test.category}</span>
+                <span class="result__detail">${test.label}</span>
+                ${!test.passed && test.detail ? `<div class="diagnostic">${test.detail}</div>` : ''}
+            </div>`;
+        }
+
+        // Parser
+        const parserTests = results.tests.filter(t =>
+            ['fractions','racines','scripts','grec','operateurs','naire','fonctions',
+             'accents','polices','delimiteurs','structures','espaces','imbrications','utils'].includes(t.category)
+        );
+        document.getElementById('results-parser').innerHTML =
+            parserTests.map(renderResult).join('') || '<div class="loading">Aucun test</div>';
+
+        // Filtres parser
+        const categories = [...new Set(parserTests.map(t => t.category))];
+        const filterBar = document.getElementById('filter-parser');
+        filterBar.innerHTML = `<button class="filter-btn filter-btn--active" data-cat="all">Tous</button>` +
+            categories.map(c => `<button class="filter-btn" data-cat="${c}">${c}</button>`).join('');
+        filterBar.addEventListener('click', e => {
+            const btn = e.target.closest('.filter-btn');
+            if (!btn) return;
+            filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('filter-btn--active'));
+            btn.classList.add('filter-btn--active');
+            const cat = btn.dataset.cat;
+            document.querySelectorAll('#results-parser .result').forEach((el, i) => {
+                const test = parserTests[i];
+                el.style.display = (cat === 'all' || test.category === cat) ? '' : 'none';
+            });
+        });
+
+        // MathML
+        document.getElementById('results-mathml').innerHTML =
+            results.tests.filter(t => t.category === 'mathml').map(renderResult).join('');
+
+        // Unicode
+        document.getElementById('results-unicode').innerHTML =
+            results.tests.filter(t => t.category === 'unicode').map(renderResult).join('');
+
+        // Healer binom
+        document.getElementById('results-healer').innerHTML =
+            results.tests.filter(t => t.category === 'healer').map(renderResult).join('') ||
+            '<div class="loading">Aucun test healer</div>';
+
+        // StarMath AST
+        document.getElementById('results-starmath-ast').innerHTML =
+            results.tests.filter(t => t.category === 'starmath-ast').map(renderResult).join('') ||
+            '<div class="loading">Aucun test StarMath AST</div>';
+
+        // Mixed
+        document.getElementById('results-mixed').innerHTML =
+            results.tests.filter(t => t.category === 'mixed').map(renderResult).join('');
+
+        // Catalogue — tableau de toutes les correspondances (LaTeX → Unicode → MathML → StarMath)
+        // Utilise getStarMath() du catalogue centralisé (math-catalog.js)
+        (() => {
+            let html = '<table class="catalog-table"><thead><tr>' +
+                '<th>Commande LaTeX</th><th>Catégorie</th><th>Unicode</th><th>MathML</th><th>StarMath (LO)</th><th>Rendu</th>' +
+                '</tr></thead><tbody>';
+
+            function row(name, category, info, isAccent = false) {
+                const charDisplay = isAccent
+                    ? `U+${info.ommlChar.codePointAt(0).toString(16).toUpperCase()}`
+                    : `${info.char} (U+${info.char.codePointAt(0).toString(16).toUpperCase()})`;
+                const mlType = isAccent ? 'mover' : info.mlType;
+                const sm = getStarMath(name) || info.sm || '—';
+                const latexCmd = isAccent ? `\\${name}{x}` : `\\${name}`;
+                const preview = isAccent ? `\\(\\${name}{x}\\)` : `\\(\\${name}\\)`;
+                return `<tr><td>${latexCmd}</td><td>${category}</td><td>${charDisplay}</td>` +
+                    `<td>${mlType}</td><td style="color:#0066cc">${sm}</td><td class="preview">${preview}</td></tr>`;
+            }
+
+            for (const [name, info] of Object.entries(GREEK)) html += row(name, 'Grec', info);
+            for (const [name, info] of Object.entries(OPERATORS)) html += row(name, 'Opérateur', info);
+            for (const [name, info] of Object.entries(NARY_OPS)) html += row(name, 'N-aire', info);
+            for (const [name, info] of Object.entries(ACCENTS)) html += row(name, 'Accent', info, true);
+
+            for (const [ch, unicode] of Object.entries(BLACKBOARD)) {
+                const sm = 'doublestroke ' + ch;
+                html += `<tr><td>\\mathbb{${ch}}</td><td>Ensemble</td><td>${unicode} (U+${unicode.codePointAt(0).toString(16).toUpperCase()})</td>` +
+                    `<td>mi</td><td style="color:#0066cc">${sm}</td><td class="preview">\\(\\mathbb{${ch}}\\)</td></tr>`;
+            }
+
+            html += '</tbody></table>';
+            document.getElementById('results-catalog').innerHTML = html;
+
+            // Rendre MathJax dans le catalogue
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetPromise([document.getElementById('results-catalog')]);
+            } else {
+                // Attendre que MathJax soit chargé
+                const check = setInterval(() => {
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        clearInterval(check);
+                        window.MathJax.typesetPromise([document.getElementById('results-catalog')]);
+                    }
+                }, 500);
+            }
+        })();
+
+        // Onglets
+        document.getElementById('tabs').addEventListener('click', e => {
+            const tab = e.target.closest('.tab');
+            if (!tab) return;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('tab--active'));
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('tab-panel--active'));
+            tab.classList.add('tab--active');
+            document.getElementById(`panel-${tab.dataset.tab}`).classList.add('tab-panel--active');
+        });
+
+        console.log(`[TEST] Math Conversion: ${results.pass}/${results.pass + results.fail} tests passés`);
+    </script>
+</body>
+</html>

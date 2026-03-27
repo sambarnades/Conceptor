@@ -325,6 +325,20 @@ export const h5pModules = {
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
         formats: ["H5P", "DOCX", "ODT", "PDF"]
+    },
+    CoursePresentation: {
+        name: "h5p_course_presentation_name",
+        englishName: "CoursePresentation",
+        machineName: "H5P.CoursePresentation",
+        description: "h5p_course_presentation_description",
+        image: "assets/images/activities/course_presentation_icon-colors_0.webp",
+        promptId: "coursePresentationResultat",
+        jsonInputId: "coursePresentationJsonInput",
+        createBtnId: "createCoursePresentationH5P",
+        categories: ["text", "quiz", "h5p"],
+        hidden: false,
+        platforms: ["Éléa", "Magistère", "Moodle"],
+        formats: ["H5P", "DOCX", "ODT", "PDF"]
     }
 };
 
@@ -443,6 +457,7 @@ export const customOrder = [
     'QuizSetQCM',
     'QuizSetVF',
     'QuizSet',
+    'CoursePresentation',
     'Flashcards',
     'Crossword',
     'Timeline',

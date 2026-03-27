@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <title>Tests compatibilite Safari — Caramel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; padding: 24px; color: #1a1a2e; }
+        h1 { font-size: 1.5rem; margin-bottom: 8px; }
+        .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+        .global-summary { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .global-summary__card { padding: 14px 24px; border-radius: 10px; font-weight: 700; font-size: 1.3rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-width: 120px; text-align: center; }
+        .global-summary__card small { display: block; font-size: 0.7rem; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+        .card--pass { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; }
+        .card--fail { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: #721c24; }
+        .card--total { background: linear-gradient(135deg, #d1ecf1, #bee5eb); color: #0c5460; }
+        .card--browser { background: linear-gradient(135deg, #fff3cd, #ffeeba); color: #856404; }
+        .info-box { background: #fff; padding: 14px 18px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); font-size: 0.82rem; line-height: 1.6; color: #444; }
+        .info-box summary { cursor: pointer; font-weight: 600; color: #1a1a2e; font-size: 0.9rem; }
+        .info-box ol { margin: 8px 0 0 22px; }
+        .info-box code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 0.8rem; }
+        .step-bar { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+        .step-card { flex: 1; min-width: 130px; padding: 10px 14px; border-radius: 8px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.06); text-align: center; }
+        .step-card__name { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 4px; }
+        .step-card__count { font-size: 1.1rem; font-weight: 700; }
+        .step-card--ok { border-left: 3px solid #28a745; }
+        .step-card--ko { border-left: 3px solid #dc3545; }
+        .has-tooltip { position: relative; cursor: help; }
+        .has-tooltip .tooltip-icon { display: inline-block; width: 15px; height: 15px; line-height: 15px; text-align: center; border-radius: 50%; background: rgba(255,255,255,0.25); font-size: 0.6rem; font-weight: 700; margin-left: 4px; vertical-align: middle; }
+        .has-tooltip .tooltip-text { visibility: hidden; opacity: 0; position: absolute; z-index: 100; left: 50%; transform: translateX(-50%); bottom: calc(100% + 8px); width: 320px; background: #1e1e2e; color: #cdd6f4; padding: 12px 14px; border-radius: 8px; font-size: 0.75rem; line-height: 1.5; font-weight: 400; text-transform: none; letter-spacing: normal; text-align: left; box-shadow: 0 4px 16px rgba(0,0,0,0.3); transition: opacity 0.2s, visibility 0.2s; pointer-events: none; white-space: pre-line; }
+        .has-tooltip .tooltip-text::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: #1e1e2e; }
+        .has-tooltip:hover .tooltip-text { visibility: visible; opacity: 1; }
+        .filter-bar { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+        .filter-bar__label { font-size: 0.75rem; color: #888; font-weight: 600; text-transform: uppercase; margin-right: 4px; }
+        .filter-btn { padding: 5px 12px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; font-size: 0.8rem; transition: all 0.15s; }
+        .filter-btn:hover { background: #f0f0f0; }
+        .filter-btn--active { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
+        .results { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
+        .result { display: flex; align-items: flex-start; gap: 10px; padding: 7px 14px; border-bottom: 1px solid #f5f5f5; font-size: 0.82rem; }
+        .result:last-child { border-bottom: none; }
+        .result__badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-weight: 700; font-size: 0.7rem; min-width: 38px; text-align: center; flex-shrink: 0; }
+        .result__badge--pass { background: #d4edda; color: #155724; }
+        .result__badge--fail { background: #f8d7da; color: #721c24; }
+        .result__step { font-size: 0.65rem; color: #888; min-width: 130px; flex-shrink: 0; padding-top: 3px; }
+        .result--fail { background: #fff5f5; }
+        .diagnostic { margin-top: 6px; padding: 10px; background: #1e1e2e; color: #cdd6f4; border-radius: 6px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.72rem; line-height: 1.5; overflow-x: auto; }
+        .diagnostic summary { color: #cba6f7; font-weight: 600; cursor: pointer; margin-bottom: 6px; }
+        .diagnostic .diag-label { color: #89b4fa; font-weight: 600; }
+        .diagnostic pre { white-space: pre-wrap; word-break: break-word; max-height: 250px; overflow-y: auto; background: #11111b; padding: 8px; border-radius: 4px; margin-top: 4px; }
+        .tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 2px solid #ddd; padding-bottom: 0; }
+        .tab { padding: 10px 20px; cursor: pointer; border-radius: 8px 8px 0 0; font-weight: 600; font-size: 0.85rem; background: #e9ecef; color: #666; border: 1px solid transparent; border-bottom: none; position: relative; top: 2px; }
+        .tab:hover { background: #f8f9fa; color: #333; }
+        .tab--active { background: #fff; color: #1a1a2e; border-color: #ddd; border-bottom: 2px solid #fff; }
+        .tab--ai { display: flex; align-items: center; gap: 6px; }
+        .tab--ai .ai-badge { display: inline-block; padding: 1px 6px; border-radius: 8px; font-size: 0.65rem; font-weight: 700; }
+        .tab--ai .ai-badge--ok { background: #d4edda; color: #155724; }
+        .tab--ai .ai-badge--ko { background: #f8d7da; color: #721c24; }
+        .tab-panel { display: none; }
+        .tab-panel--active { display: block; }
+        .ai-prompt-section { background: #fff; border-radius: 10px; padding: 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+        .ai-prompt-section summary { cursor: pointer; font-weight: 700; font-size: 1rem; color: #1a1a2e; display: flex; align-items: center; gap: 8px; }
+        .ai-prompt-section summary .ai-icon { font-size: 1.2rem; }
+        .ai-prompt-box { margin-top: 12px; background: #1e1e2e; color: #cdd6f4; padding: 16px; border-radius: 8px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.75rem; line-height: 1.6; white-space: pre-wrap; word-break: break-word; max-height: 600px; overflow-y: auto; position: relative; }
+        .ai-prompt-copy { position: sticky; top: 0; float: right; background: #89b4fa; color: #1e1e2e; border: none; border-radius: 6px; padding: 6px 14px; cursor: pointer; font-weight: 700; font-size: 0.75rem; z-index: 1; }
+        .ai-prompt-copy:hover { background: #74c7ec; }
+        .ai-prompt-none { color: #28a745; font-weight: 600; padding: 20px; text-align: center; font-size: 0.95rem; }
+        .loading { text-align: center; padding: 60px; color: #666; }
+        .loading__spinner { display: inline-block; width: 36px; height: 36px; border: 3px solid #ddd; border-top-color: #1a1a2e; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <h1>Tests compatibilite Safari</h1>
+    <p class="subtitle">Polyfills Promise.withResolvers &amp; structuredClone &rarr; PDF.js getTextContent()</p>
+
+    <details class="info-box">
+        <summary>Pourquoi ces tests ?</summary>
+        <p style="margin-top:8px;"><strong>Probleme :</strong> PDF.js 5.x utilise <code>Promise.withResolvers()</code> (26 occurrences) et <code>structuredClone()</code>, des API absentes sur Safari &lt; 17.4 et Safari &lt; 15.4 respectivement. Cela provoque une erreur <code>TypeError: undefined is not a function</code> lors de l'import PDF.</p>
+        <p style="margin-top:8px;"><strong>Solution :</strong> Des polyfills sont injectes dans <code>lib-loader.js</code> (thread principal) et dans <code>pdf.worker.compat.mjs</code> (worker). Ces tests verifient leur bon fonctionnement et la capacite de PDF.js a extraire du texte.</p>
+        <ol>
+            <li><strong>Presence</strong> : verifie que les polyfills sont definis et que le worker compat existe</li>
+            <li><strong>Promise.withResolvers</strong> : resolution, rejet, instances independantes</li>
+            <li><strong>structuredClone</strong> : deep copy, types primitifs, objets imbriques</li>
+            <li><strong>PDF.js getTextContent</strong> : chargement PDF.js et extraction de texte reelle</li>
+        </ol>
+    </details>
+
+    <div id="output">
+        <div class="loading"><div class="loading__spinner"></div><p style="margin-top:14px">Execution des tests en cours...</p></div>
+    </div>
+
+    <script type="module">
+        import { runAllTests, STEP_DESCRIPTIONS } from './tests/test-safari-compat.js';
+        const output = document.getElementById('output');
+        const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+        // Detecter le navigateur pour affichage
+        function detectBrowser() {
+            const ua = navigator.userAgent;
+            if (ua.includes('Safari') && !ua.includes('Chrome') && !ua.includes('Chromium')) {
+                const match = ua.match(/Version\/(\d+\.\d+)/);
+                return `Safari ${match ? match[1] : '(version inconnue)'}`;
+            }
+            if (ua.includes('Chrome')) {
+                const match = ua.match(/Chrome\/(\d+)/);
+                return `Chrome ${match ? match[1] : ''}`;
+            }
+            if (ua.includes('Firefox')) {
+                const match = ua.match(/Firefox\/(\d+)/);
+                return `Firefox ${match ? match[1] : ''}`;
+            }
+            return navigator.userAgent.substring(0, 40);
+        }
+
+        function checkNativeSupport() {
+            const native = [];
+            const polyfilled = [];
+            // On ne peut pas facilement distinguer natif/polyfill a posteriori,
+            // mais on peut verifier si l'API etait native via toString
+            const pwr = Promise.withResolvers.toString();
+            if (pwr.includes('native code') || pwr.includes('[native')) {
+                native.push('Promise.withResolvers');
+            } else {
+                polyfilled.push('Promise.withResolvers');
+            }
+            const sc = globalThis.structuredClone.toString();
+            if (sc.includes('native code') || sc.includes('[native')) {
+                native.push('structuredClone');
+            } else {
+                polyfilled.push('structuredClone');
+            }
+            return { native, polyfilled };
+        }
+
+        function buildAIPromptSection(results, STEP_NAMES) {
+            const failures = results.filter(r => r.status === 'FAIL');
+            if (failures.length === 0) return `<div class="ai-prompt-section"><div class="ai-prompt-none">Aucune erreur ! Tous les tests de compatibilite Safari passent.</div></div>`;
+            const byStep = new Map();
+            for (const f of failures) { const s = f.step || 0; if (!byStep.has(s)) byStep.set(s, []); byStep.get(s).push(f); }
+            let prompt = `Je travaille sur Caramel, une application web de generation d'activites pedagogiques.\nLes tests de compatibilite Safari (4 etapes) montrent ${failures.length} echec(s) sur ${results.length} assertions.\n\nFichiers concernes :\n- js/core/lib-loader.js (polyfills Promise.withResolvers, structuredClone)\n- js/vendor/pdfjs/ (pdf.worker.compat.mjs)\n\n=== ERREURS ===\n\n`;
+            for (const [step, sf] of byStep) {
+                prompt += `--- Etape ${step} : ${STEP_NAMES[step] || '?'} ---\n`;
+                for (const f of sf) {
+                    prompt += `  - ${f.message}\n`;
+                    if (f.diagnostic) { for (const [k, v] of Object.entries(f.diagnostic)) prompt += `    ${k}: ${Array.isArray(v) ? v.join(', ') : v}\n`; }
+                }
+                prompt += '\n';
+            }
+            prompt += `=== CE QUE JE TE DEMANDE ===\nAnalyse ces echecs. Pour chaque correction, indique le fichier, la cause racine, et le code corrige.\n`;
+            return `<div class="ai-prompt-section"><details open><summary><span class="ai-icon">&#129302;</span> Prompt pour corriger (${failures.length} echec(s))</summary><div class="ai-prompt-box"><button class="ai-prompt-copy">Copier le prompt</button>${esc(prompt)}</div></details></div>`;
+        }
+
+        try {
+            const { passCount, failCount, results, STEP_NAMES } = await runAllTests();
+            const totalCount = passCount + failCount;
+            const browser = detectBrowser();
+            const { native, polyfilled } = checkNativeSupport();
+
+            let html = '';
+
+            // Resume global
+            html += `<div class="global-summary">
+                <div class="global-summary__card card--pass">${passCount}<small>PASS</small></div>
+                <div class="global-summary__card card--fail">${failCount}<small>FAIL</small></div>
+                <div class="global-summary__card card--total">${totalCount}<small>assertions</small></div>
+                <div class="global-summary__card card--browser">${esc(browser)}<small>${native.length > 0 ? 'Natif: ' + native.join(', ') : ''}${polyfilled.length > 0 ? (native.length > 0 ? ' | ' : '') + 'Polyfill: ' + polyfilled.join(', ') : ''}</small></div>
+            </div>`;
+
+            // Barre des etapes
+            const stepCount = STEP_NAMES.length - 1;
+            html += `<div class="step-bar">`;
+            for (let s = 1; s <= stepCount; s++) {
+                const sr = results.filter(r => r.step === s);
+                const sp = sr.filter(r => r.status === 'PASS').length;
+                const sf = sr.filter(r => r.status === 'FAIL').length;
+                const tt = STEP_DESCRIPTIONS[s] || '';
+                html += `<div class="step-card ${sf > 0 ? 'step-card--ko' : 'step-card--ok'} has-tooltip">
+                    <div class="step-card__name">${esc(STEP_NAMES[s])}<span class="tooltip-icon">?</span><span class="tooltip-text">${esc(tt)}</span></div>
+                    <div class="step-card__count">${sp}${sf > 0 ? ` <span style="color:#dc3545;font-size:0.8em">/ ${sf} fail</span>` : ''}</div>
+                </div>`;
+            }
+            html += `</div>`;
+
+            // Onglets
+            const aiBadgeCls = failCount > 0 ? 'ai-badge--ko' : 'ai-badge--ok';
+            const aiBadgeText = failCount > 0 ? `${failCount} echec(s)` : '0 erreur';
+            html += `<div class="tabs"><div class="tab tab--active" data-tab="results">Resultats</div><div class="tab tab--ai" data-tab="ai-prompt">Prompt IA <span class="ai-badge ${aiBadgeCls}">${aiBadgeText}</span></div></div>`;
+
+            // Panel Resultats
+            html += `<div class="tab-panel tab-panel--active" id="panel-results">`;
+            html += `<div class="filter-bar">
+                <span class="filter-bar__label">Filtrer :</span>
+                <button class="filter-btn filter-btn--active" data-filter="all">Tout (${totalCount})</button>
+                <button class="filter-btn" data-filter="FAIL">Echecs (${failCount})</button>`;
+            for (let s = 1; s <= stepCount; s++) {
+                const c = results.filter(r => r.step === s).length;
+                html += `<button class="filter-btn" data-filter="step-${s}">${STEP_NAMES[s]} (${c})</button>`;
+            }
+            html += `</div>`;
+
+            html += `<div class="results" id="results-list">`;
+            for (const r of results) {
+                const isFail = r.status === 'FAIL';
+                html += `<div class="result ${isFail ? 'result--fail' : ''}" data-status="${r.status}" data-step="${r.step}">
+                    <span class="result__badge result__badge--${r.status.toLowerCase()}">${r.status}</span>
+                    <span class="result__step">${esc(r.stepName)}</span>
+                    <span class="result__msg">${esc(r.message)}`;
+                if (r.diagnostic) {
+                    html += `<div class="diagnostic"><details><summary>Diagnostic</summary>`;
+                    for (const [k, v] of Object.entries(r.diagnostic)) {
+                        html += `<span class="diag-label">${esc(k)}:</span> ${Array.isArray(v) ? `<pre>${esc(v.join('\n'))}</pre>` : `${esc(String(v))}<br>`}`;
+                    }
+                    html += `</details></div>`;
+                }
+                html += `</span></div>`;
+            }
+            html += `</div></div>`;
+
+            // Panel Prompt IA
+            html += `<div class="tab-panel" id="panel-ai-prompt">${buildAIPromptSection(results, STEP_NAMES)}</div>`;
+
+            output.innerHTML = html;
+
+            // Events onglets
+            document.querySelectorAll('.tab').forEach(tab => { tab.addEventListener('click', () => { document.querySelectorAll('.tab').forEach(t => t.classList.remove('tab--active')); document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('tab-panel--active')); tab.classList.add('tab--active'); document.getElementById('panel-' + tab.dataset.tab)?.classList.add('tab-panel--active'); }); });
+
+            // Event copier prompt
+            const aiBtn = output.querySelector('.ai-prompt-copy'); if (aiBtn) { aiBtn.addEventListener('click', () => { const box = aiBtn.closest('.ai-prompt-box'); navigator.clipboard.writeText(box.textContent.replace('Copier le prompt', '').trim()).then(() => { aiBtn.textContent = 'Copie !'; setTimeout(() => aiBtn.textContent = 'Copier le prompt', 1500); }); }); }
+
+            // Events filtres
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('filter-btn--active'));
+                    btn.classList.add('filter-btn--active');
+                    const f = btn.dataset.filter;
+                    document.querySelectorAll('#results-list .result').forEach(el => {
+                        if (f === 'all') el.style.display = '';
+                        else if (f === 'FAIL') el.style.display = el.dataset.status === 'FAIL' ? '' : 'none';
+                        else if (f.startsWith('step-')) el.style.display = el.dataset.step === f.replace('step-', '') ? '' : 'none';
+                    });
+                });
+            });
+
+        } catch (e) {
+            output.innerHTML = `<div style="background:#f8d7da;color:#721c24;padding:20px;border-radius:10px;">
+                <strong>Erreur fatale :</strong> ${esc(e.message)}<br>
+                <pre style="margin-top:8px;font-size:0.8rem;">${esc(e.stack)}</pre>
+            </div>`;
+        }
+    </script>
+</body>
+</html>

@@ -11,7 +11,7 @@
 - Adaptation et vocabulaire : Adapte le ton, le vocabulaire et la difficulté des consignes au public indiqué. Sois pertinent et engageant.
 - Ton et feedback : Les consignes et remarques doivent être constructives, encourageantes, tournées vers l'apprentissage.
 - Conformité : Adapte OBLIGATOIREMENT les contenus aux références officielles en vigueur. Sauf mention contraire explicite, base-toi par défaut sur les programmes scolaires français (Eduscol) pour le public scolaire, et sur les textes réglementaires de la formation professionnelle pour les adultes.
-- Langue : Le contenu et les consignes doivent être rédigés en français.
+- Langue : Le contenu et les consignes doivent être rédigés dans la langue cible (français sauf indication contraire).
 
 # SOURCES
 - Tu utiliseras UNIQUEMENT les textes suivants pour générer ton activité.
@@ -26,7 +26,7 @@
   - \`concept\` : Le mot ou l'expression à définir.
   - \`definition\` : La définition claire et concise. Utilise **mot** pour mettre en gras, *mot* pour mettre en italique et \`\\n\` pour les sauts de ligne, uniquement lorsque c'est pertinent pédagogiquement.
   - \`aliases\` (optionnel) : Un tableau de chaînes de caractères pour les synonymes ou termes alternatifs. N'ajoute cette clé que si des alias pertinents existent.
-  - Pour les formules mathématiques, utilise le format LaTeX avec double échappement, par exemple : \`\\\\( (2^3)^2 \\\\)\`.
+- **Formules mathématiques :** Les champs \`concept\` et \`definition\` du glossaire sont du texte brut (pas de HTML ni de LaTeX). Utilise des caractères Unicode pour les formules : α, β, √, ², x², ≤, ≥, π, ℝ, ℕ, ∈, ∞.
 
 # EXEMPLE DE RENDU
 ```json

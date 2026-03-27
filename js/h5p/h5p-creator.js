@@ -16,6 +16,7 @@ import { detectMathInContent, debugLog, DEBUG, classifyError } from '../core/uti
 import * as JSONHealer from './json-healer.js';
 import { loadClientZip } from '../core/lib-loader.js';
 import * as perf from '../core/perf-tracker.js';
+import { getAllImages, hasImages, clearAllImages } from './image-manager.js';
 
 let downloadZip;
 
@@ -179,7 +180,10 @@ export async function handleH5PCreation(moduleKey, jsonInput) {
             ...dynamicDependencies // Ex: Dépendances des enfants du QuizSet
         ];
 
-        // 4. Packaging et téléchargement
+        // 4. Récupérer les images du registre (si présentes)
+        const imageFiles = hasImages() ? getAllImages() : null;
+
+        // 5. Packaging et téléchargement
         packageAndDownloadH5P(
             module.englishName || moduleKey,
             metadata.machineName,
@@ -189,7 +193,8 @@ export async function handleH5PCreation(moduleKey, jsonInput) {
             module.name, // Clé de traduction pour le titre
             moduleKey, // Clé du module pour l'export de documents
             originalJson, // JSON original Markdown (pour édition)
-            { _debugRawJson, _debugHealedJson } // Debug data (null si DEBUG désactivé)
+            { _debugRawJson, _debugHealedJson }, // Debug data (null si DEBUG désactivé)
+            imageFiles // Images utilisateur (Map h5pPath → Blob, ou null)
         );
 
     } catch (error) {
@@ -211,8 +216,9 @@ export async function handleH5PCreation(moduleKey, jsonInput) {
  * @param {string} [titleKey] - Clé de traduction pour le titre (optionnel).
  * @param {string} [moduleKey] - Clé du module pour l'export de documents (optionnel).
  * @param {Object} [originalJson] - JSON original en Markdown (pour édition, optionnel).
+ * @param {Map<string, Blob>} [imageFiles] - Images utilisateur (h5pPath → Blob, optionnel).
  */
-async function packageAndDownloadH5P(filenameBase, mainLibraryName, contentJson, options, dependencies, titleKey, moduleKey, originalJson, debugData = {}) {
+async function packageAndDownloadH5P(filenameBase, mainLibraryName, contentJson, options, dependencies, titleKey, moduleKey, originalJson, debugData = {}, imageFiles = null) {
     // Chargement lazy de client-zip (à la demande, au lieu d'une IIFE au top-level)
     if (!downloadZip) {
         try {
@@ -239,7 +245,8 @@ async function packageAndDownloadH5P(filenameBase, mainLibraryName, contentJson,
         perf.markStart('packaging', 'createH5PBlob (ZIP)');
         const zipBlob = await createH5PBlob(contentJson, mainLibraryName, dependencies, {
             title: options.title || contentJson.title,
-            lang: currentLang
+            lang: currentLang,
+            imageFiles: imageFiles
         });
         // Recréer le blob avec le MIME type correct pour forcer Safari/iPad à respecter l'extension .h5p
         const h5pBlob = new Blob([zipBlob], { type: 'application/octet-stream' });
@@ -276,7 +283,12 @@ async function packageAndDownloadH5P(filenameBase, mainLibraryName, contentJson,
         if (debugData._debugHealedJson) notification._debugHealedJson = debugData._debugHealedJson;
         const notificationId = addNotification(notification);
 
-        // 6. Dispatcher l'événement pour la modale de résultat
+        // 6. Libérer la mémoire des images après packaging réussi
+        if (imageFiles) {
+            clearAllImages();
+        }
+
+        // 7. Dispatcher l'événement pour la modale de résultat
         document.dispatchEvent(new CustomEvent('generation:complete', {
             detail: { notificationId, blob: h5pBlob, fileName, titleKey, moduleKey }
         }));
@@ -311,13 +323,15 @@ export function stripMarkdownAndHtml(text) {
 }
 
 /**
+/**
  * Crée un Blob H5P (.h5p) à partir du contenu et des métadonnées.
  * Utilise client-zip avec le même format que packageAndDownloadH5P.
  * Réutilisable par les tests et la régénération après édition.
  * @param {Object} contentJson - Le contenu JSON final de l'activité.
  * @param {string} mainLibraryName - Nom technique (ex: 'H5P.Timeline').
  * @param {Array} dependencies - Liste des dépendances [{machineName, majorVersion, minorVersion}].
- * @param {Object} [options] - Options : title, lang.
+ * @param {Object} [options] - Options : title, lang, imageFiles.
+ * @param {Map<string, Blob>} [options.imageFiles] - Images (h5pPath → Blob, optionnel).
  * @returns {Promise<Blob>} Le blob ZIP brut (tel que produit par client-zip).
  */
 export async function createH5PBlob(contentJson, mainLibraryName, dependencies, options = {}) {
@@ -335,10 +349,36 @@ export async function createH5PBlob(contentJson, mainLibraryName, dependencies, 
         unixPermissions: 0o100644
     });
 
-    // 2. h5p.json — dédoublonnage + filtrage MathDisplay
+    // 2. Images utilisateur (si présentes) — dans content/images/
+    const imageFiles = options.imageFiles;
+    if (imageFiles && imageFiles.size > 0) {
+        for (const [path, blob] of imageFiles) {
+            const arrayBuffer = await blob.arrayBuffer();
+            files.push({
+                name: `content/${path}`,
+                input: new Uint8Array(arrayBuffer),
+                unixPermissions: 0o100644
+            });
+        }
+        debugLog('H5P', `${imageFiles.size} image(s) ajoutée(s) au ZIP`);
+    }
+
+    // 3. h5p.json — dédoublonnage + filtrage MathDisplay + ajout H5P.Image si images
     let uniqueDependencies = Array.from(new Map(dependencies.map(d => [d.machineName, d])).values());
     if (!hasMathFormulas) {
         uniqueDependencies = uniqueDependencies.filter(d => d.machineName !== 'H5P.MathDisplay');
+    }
+
+    // Ajouter H5P.Image 1.1 si des images sont présentes et pas déjà dans les dépendances
+    if (imageFiles && imageFiles.size > 0) {
+        const hasImageDep = uniqueDependencies.some(d => d.machineName === 'H5P.Image');
+        if (!hasImageDep) {
+            uniqueDependencies.push({
+                machineName: 'H5P.Image',
+                majorVersion: 1,
+                minorVersion: 1
+            });
+        }
     }
 
     const title = options.title || contentJson.title || "Activity";
@@ -361,7 +401,7 @@ export async function createH5PBlob(contentJson, mainLibraryName, dependencies, 
         unixPermissions: 0o100644
     });
 
-    // 3. ZIP avec client-zip (retourne le blob brut, sans re-wrapping MIME)
+    // 4. ZIP avec client-zip (retourne le blob brut, sans re-wrapping MIME)
     return await dlZip(files).blob();
 }
 
