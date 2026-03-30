@@ -72,6 +72,7 @@ export function populateModelSelector(moduleKey, models, onSelectCallback, selec
     modelsToShow.forEach(model => {
         const listItem = document.createElement('li');
         listItem.setAttribute('role', 'menuitem');
+        listItem.setAttribute('tabindex', '0');
         listItem.dataset.modelId = model.id;
 
         const sizeTag = model.sizeTag;
@@ -108,13 +109,26 @@ export function populateModelSelector(moduleKey, models, onSelectCallback, selec
         if (model.id === selectedModel) {
             listItem.classList.add('selected');
         }
-        listItem.addEventListener('click', () => {
-            onSelectCallback(model.id); // Le callback gère maintenant la fermeture
-
-            // Mettre à jour la classe 'selected'
+        const selectModel = () => {
+            onSelectCallback(model.id);
             const allItems = dropdown.querySelectorAll('li');
             allItems.forEach(item => item.classList.remove('selected'));
             listItem.classList.add('selected');
+        };
+        listItem.addEventListener('click', selectModel);
+        listItem.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                selectModel();
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                const next = listItem.nextElementSibling;
+                if (next) next.focus();
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                const prev = listItem.previousElementSibling;
+                if (prev) prev.focus();
+            }
         });
         dropdown.appendChild(listItem);
     });

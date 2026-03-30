@@ -4,6 +4,30 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 
 ---
 
+## [5.1.1] - 30-03-2026
+
+### Améliorations
+
+- **Logo Tchap mis à jour** : Remplacement du logo Tchap (ancien format WebP) par le nouveau logo officiel au format SVG dans le header de l'application.
+- **Harmonisation des icônes du header** : Les 4 icônes du header (Tchap, Tutoriel, Langue, Notifications) ont désormais une hauteur d'icône uniforme (24px desktop, 16px mobile) pour un alignement visuel cohérent.
+- **Accessibilité clavier des tuiles d'activités** : Les tuiles de la grille d'activités sont désormais focusables via Tab et activables via Entrée ou Espace. Un contour bleu `:focus-visible` indique la tuile sélectionnée.
+- **Accessibilité des modales — focus trap et navigation clavier** : Toutes les modales de l'application (résultat de génération, prévisualisation, aide/tutoriel, mentions légales, confirmation, sidebar d'activité) implémentent désormais un système d'accessibilité unifié (`setupModalAccessibility`) :
+  - **Focus trap** : la touche Tab reste piégée à l'intérieur de la modale ouverte, y compris pour les éléments masqués dans un conteneur replié (`overflow: hidden; max-height: 0`)
+  - **Focus initial** : le focus est placé automatiquement sur le premier élément interactif à l'ouverture
+  - **Fermeture Escape** : toutes les modales se ferment via la touche Échap
+  - **Restauration du focus** : le focus revient sur l'élément déclencheur à la fermeture
+  - **`aria-labelledby`** ajouté sur les modales Aide, Mentions légales et Confirmation
+  - **`role="dialog"` et `aria-modal="true"`** ajoutés sur la sidebar d'activité
+- **Accessibilité du toggle Simple/Guidé** : Le slider de bascule de mode affiche désormais un contour bleu `:focus-visible` lors de la navigation clavier.
+- **Navigation clavier du sélecteur de modèle IA** : Les items du dropdown de sélection de modèle LLM sont désormais focusables (`tabindex="0"`) et navigables au clavier (Flèche haut/bas pour se déplacer, Entrée/Espace pour sélectionner). À l'ouverture du dropdown, le focus est placé sur le modèle actuellement sélectionné. Style `:focus-visible` ajouté sur les items. Fonctionne pour les deux dropdowns (mode Simple et mode Guidé).
+- **Indicateurs de focus dans le tutoriel** : Les liens de navigation et les sections dépliables (`<summary>`) du tutoriel affichent désormais un contour bleu `:focus-visible` lors de la navigation clavier.
+- **SEO — Meta description** : Ajout d'une balise `<meta name="description">` décrivant Caramel pour les moteurs de recherche. Aucun cookie, aucun tracking, aucun impact utilisateur.
+- **SEO — Liens crawlables** : Les 11 sélecteurs de langue et le lien Mentions légales du footer utilisent désormais des `<button>` au lieu de `<a href="#">`, éliminant les liens non crawlables signalés par Lighthouse. CSS et JS adaptés en conséquence.
+- **Performance — Dimensions explicites sur les images** : Ajout des attributs `width` et `height` sur les 3 images statiques (logo header, icône Tchap, logo modale de résultat) pour réduire le Cumulative Layout Shift (CLS).
+- **Performance — `font-display: swap` sur FontAwesome** : Les 10 déclarations `@font-face` de FontAwesome passent de `font-display: block` (3s de texte invisible) à `font-display: swap` (texte visible immédiatement avec police de substitution). Améliore le Largest Contentful Paint et le Time to Interactive.
+
+---
+
 ## [5.1.0] - 27-03-2026
 
 ### Nouveautés

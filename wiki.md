@@ -1072,7 +1072,8 @@ Caramel est distribué sous **licence GNU Affero General Public License v3.0 (AG
 🔗 [Consultez le Journal complet des modifications (CHANGELOG)](https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG)
 
 ### Dernières mises à jour :
-- **v5.1.0** : 🎉 **Activité Course Presentation**, **Images utilisateur dans 12 activités H5P**, **Éditeur Rich Text WYSIWYG**, **Assistant formules mathématiques**, **Éditeur Cloze visuel**, **Formules éditables dans les exports DOCX/ODT**, Réglages avancés H5P (16 activités), Thèmes visuels Crossword, Indices et feedbacks combinés pour l'activité Test.
+- **v5.1.1** : 🔧 Accessibilité clavier complète (tuiles, modales, sélecteur LLM, toggle), focus trap et Escape sur toutes les modales, `font-display: swap` FontAwesome, dimensions images explicites, SEO (meta description, liens crawlables), logo Tchap SVG.
+- **v5.1.0** : 🎉 **Activité Course Presentation**, **Images utilisateur dans 12 activités H5P**, **Éditeur Rich Text WYSIWYG**, **Assistant formules mathématiques**, **Éditeur Cloze visuel**, **Formules éditables dans les exports DOCX/ODT**, Réglages avancés H5P (16 activités), Thèmes visuels Crossword, Indices et feedbacks combinés pour l'activité Test, Accessibilité RGAA Lighthouse 100/100.
 - **v5.0.2** : 🔧 Correctif export grilles mots croisés et mots mêlés (DOCX/ODT/PDF) depuis la modale de résultat. Nouveaux générateurs standalone de grilles (sans H5P). Attente du rendu H5P avant capture en prévisualisation.
 - **v5.0.0** : 🎉 **Modale post-génération**, **Éditeur intégré**, **Activité Drag & Drop**, **Activité Devoir**, **Téléchargement groupé**, Aide contextuelle à l'import, Auto-réparation JSON (JSON Healer), Restructuration complète du code.
 - **v4.1.0** : OCR Universel, Exports DOCX/ODT/PDF, Fenêtre de visualisation, Quizset, Optimisation performance (WebP).

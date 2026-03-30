@@ -6,7 +6,7 @@
 import { translations } from '../core/translation.js';
 import { loadJSZip, loadClientZip } from '../core/lib-loader.js';
 import { allModules, formatHelpKeys, xmlHelpByActivity } from '../core/definitions.js';
-import { downloadFile, debugLog } from '../core/utils.js';
+import { downloadFile, debugLog, setupModalAccessibility } from '../core/utils.js';
 
 // ============= IMPORTS DYNAMIQUES (chargés à la demande) =============
 // Les modules lourds ci-dessous sont chargés via import() dynamique au moment
@@ -957,7 +957,6 @@ export function initToastNotifications() {
 // ============= PREVIEW MODAL FUNCTIONALITY =============
 
 let currentPreviewModal = null;
-let previousFocusElement = null;
 let focusTrapCleanup = null;
 /** @type {boolean} - Indique si le mode édition est actif */
 let isEditModeActive = false;
@@ -1023,9 +1022,6 @@ async function openPreviewModal(notificationId) {
         console.error('Invalid blob for notification:', notificationId);
         return;
     }
-
-    // Stocker l'élément actuellement focusé pour restauration
-    previousFocusElement = document.activeElement;
 
     // Mettre à jour le titre et l'icône (avec échappement XSS)
     const titleElement = modal.querySelector('.preview-modal__title');
@@ -1181,14 +1177,11 @@ async function openPreviewModal(notificationId) {
     // Rendre le contenu (H5P ou placeholder — chargement dynamique des renderers)
     await renderPreview(notification, modal);
 
-    // Implémenter le focus trap
-    focusTrapCleanup = trapFocus(modal);
-
-    // Focuser le premier élément interactif (bouton close)
-    const closeBtn = modal.querySelector('.preview-modal__close');
-    if (closeBtn) {
-        closeBtn.focus();
-    }
+    // Accessibilité : focus trap + restauration du focus (Escape géré globalement dans initPreviewModal)
+    focusTrapCleanup = setupModalAccessibility(modal, {
+        onClose: closePreviewModal,
+        focusSelector: '.preview-modal__close'
+    });
 }
 
 /**
@@ -1391,38 +1384,6 @@ function cleanupPreview() {
 }
 
 /**
- * Implémente le focus trap dans la modale.
- * @param {HTMLElement} element - L'élément modal dans lequel piéger le focus
- * @private
- */
-function trapFocus(element) {
-    const focusableElements = element.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-
-    const handleTabKey = (e) => {
-        if (e.key === 'Tab') {
-            if (e.shiftKey && document.activeElement === firstElement) {
-                e.preventDefault();
-                lastElement.focus();
-            } else if (!e.shiftKey && document.activeElement === lastElement) {
-                e.preventDefault();
-                firstElement.focus();
-            }
-        }
-    };
-
-    element.addEventListener('keydown', handleTabKey);
-
-    // Retourner une fonction de cleanup pour retirer le listener
-    return () => {
-        element.removeEventListener('keydown', handleTabKey);
-    };
-}
-
-/**
  * Retourne uniquement les notifications navigables (activités générées avec succès).
  * Exclut les alertes et les notifications sans contenu (blob/json).
  * Centralise la logique de filtrage pour garantir la cohérence partout.
@@ -1584,17 +1545,11 @@ async function closePreviewModal() {
         overlay.classList.remove('closing');
         currentPreviewModal = null;
 
-        // Nettoyer le focus trap
+        // Nettoyer le focus trap et restaurer le focus
         if (focusTrapCleanup) {
             focusTrapCleanup();
             focusTrapCleanup = null;
         }
-
-        // Restaurer le focus sur l'élément précédent
-        if (previousFocusElement && typeof previousFocusElement.focus === 'function') {
-            previousFocusElement.focus();
-        }
-        previousFocusElement = null;
 
         // Nettoyage complet des ressources
         cleanupPreview();
@@ -1615,13 +1570,14 @@ function showThreeButtonConfirm(options) {
     overlay.className = 'confirm-modal-overlay';
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-labelledby', 'confirm-modal-title');
 
     const modal = document.createElement('div');
     modal.className = 'confirm-modal';
 
     modal.innerHTML = `
         <div class="confirm-modal__header">
-            <h3>${options.title}</h3>
+            <h3 id="confirm-modal-title">${options.title}</h3>
         </div>
         <div class="confirm-modal__body">
             <p>${options.message}</p>
@@ -1638,21 +1594,33 @@ function showThreeButtonConfirm(options) {
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
 
+    // Fonction de fermeture centralisée
+    let a11yCleanup = null;
+    const closeConfirm = (action) => {
+        if (a11yCleanup) { a11yCleanup(); a11yCleanup = null; }
+        overlay.remove();
+        if (action) action();
+    };
+
     // Event listeners
     modal.querySelectorAll('.confirm-modal__btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const index = btn.dataset.index;
-            const action = options.buttons[index].action;
-            overlay.remove();
-            if (action) action();
+            closeConfirm(options.buttons[index].action);
         });
     });
 
     // Fermer si clic sur l'overlay (équivalent à Cancel)
     overlay.addEventListener('click', (e) => {
         if (e.target === overlay) {
-            overlay.remove();
+            closeConfirm(null);
         }
+    });
+
+    // Accessibilité : focus trap + Escape + restauration du focus
+    a11yCleanup = setupModalAccessibility(overlay, {
+        onClose: () => closeConfirm(null),
+        focusSelector: '.confirm-modal__btn'
     });
 }
 
@@ -1703,12 +1671,7 @@ export function initPreviewModal() {
         }
     });
 
-    // Touche Escape pour fermer
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && currentPreviewModal !== null) {
-            closePreviewModal();
-        }
-    });
+    // Escape géré par setupModalAccessibility dans openPreviewModal()
 
     // Bouton télécharger (Délégation d'événement sur la modale pour supporter le remplacement du footer)
     if (!modal._downloadListenerAttached) {

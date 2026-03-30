@@ -224,6 +224,17 @@
     background-color: #dcdce1;
 }
 
+.help-nav-link:focus-visible {
+    outline: 2px solid #007AFF;
+    outline-offset: 2px;
+}
+
+.help-modal-body summary:focus-visible {
+    outline: 2px solid #007AFF;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
 @media (max-width: 600px) {
     .help-modal-content {
         padding: 20px;

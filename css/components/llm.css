@@ -119,8 +119,10 @@
     border-bottom: none;
 }
 
-.model-selector-dropdown li:hover {
+.model-selector-dropdown li:hover,
+.model-selector-dropdown li:focus-visible {
     background-color: #ddd;
+    outline: none;
 }
 
 .model-selector-dropdown li.selected {

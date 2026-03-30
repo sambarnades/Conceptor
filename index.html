@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caramel</title>
+    <meta name="description" content="Caramel — Créez des activités pédagogiques interactives (H5P, Éléa, Magistère, Moodle) avec l'IA, directement dans votre navigateur. Open source, sans compte, sans données envoyées.">
     <!-- Vendor CSS (external libraries) -->
     <link rel="stylesheet" href="css/vendor/all.min.css">
     <link rel="stylesheet" href="css/vendor/flag-icons.min.css">
@@ -44,7 +45,7 @@
     <a href="#main-content" class="sr-only sr-only-focusable" data-key="skip_to_content">Aller au contenu principal</a>
     <header class="app-bar">
         <div class="header-left">
-            <a href="./"><img src="assets/images/branding/logo_caramel.webp" alt="Logo Caramel" class="logo"></a>
+            <a href="./"><img src="assets/images/branding/logo_caramel.webp" alt="Logo Caramel" class="logo" width="50" height="50"></a>
             <div class="title-container">
                 <h1>Caramel</h1>
                 <p class="subtitle" data-key="subtitle">Création Assistée de Ressources et d'Activités Magistère et Éléa
@@ -54,7 +55,7 @@
         <div class="header-right">
             <a href="https://edurl.fr/caramel-tchap" target="_blank" class="help-btn" id="tchap-button"
                 aria-label="Tchap">
-                <img src="assets/images/branding/tchap.webp" alt="Tchap" class="tchap-icon">
+                <img src="assets/images/branding/tchap.svg" alt="Tchap" class="tchap-icon" width="20" height="20">
                 <span>Tchap</span>
             </a>
             <button class="help-btn" id="help-button" aria-label="Aide">
@@ -67,17 +68,17 @@
                     <span data-key="language">Langue</span>
                 </button>
                 <ul class="language-dropdown">
-                    <li><a href="#" data-lang="fr"><span class="fi fi-fr"></span>Français</a></li>
-                    <li><a href="#" data-lang="en"><span class="fi fi-gb"></span>English</a></li>
-                    <li><a href="#" data-lang="es"><span class="fi fi-es"></span>Español</a></li>
-                    <li><a href="#" data-lang="de"><span class="fi fi-de"></span>Deutsch</a></li>
-                    <li><a href="#" data-lang="it"><span class="fi fi-it"></span>Italiano</a></li>
-                    <li><a href="#" data-lang="nl"><span class="fi fi-nl"></span>Nederlands</a></li>
-                    <li><a href="#" data-lang="pt"><span class="fi fi-pt"></span>Português</a></li>
-                    <li><a href="#" data-lang="ar"><span class="fi fi-sa"></span>عربي</a></li>
-                    <li><a href="#" data-lang="zh"><span class="fi fi-cn"></span>中文</a></li>
-                    <li><a href="#" data-lang="jp"><span class="fi fi-jp"></span>日本語</a></li>
-                    <li><a href="#" data-lang="el"><span class="fi fi-gr"></span>ελληνικά</a></li>
+                    <li><button type="button" data-lang="fr"><span class="fi fi-fr"></span>Français</button></li>
+                    <li><button type="button" data-lang="en"><span class="fi fi-gb"></span>English</button></li>
+                    <li><button type="button" data-lang="es"><span class="fi fi-es"></span>Español</button></li>
+                    <li><button type="button" data-lang="de"><span class="fi fi-de"></span>Deutsch</button></li>
+                    <li><button type="button" data-lang="it"><span class="fi fi-it"></span>Italiano</button></li>
+                    <li><button type="button" data-lang="nl"><span class="fi fi-nl"></span>Nederlands</button></li>
+                    <li><button type="button" data-lang="pt"><span class="fi fi-pt"></span>Português</button></li>
+                    <li><button type="button" data-lang="ar"><span class="fi fi-sa"></span>عربي</button></li>
+                    <li><button type="button" data-lang="zh"><span class="fi fi-cn"></span>中文</button></li>
+                    <li><button type="button" data-lang="jp"><span class="fi fi-jp"></span>日本語</button></li>
+                    <li><button type="button" data-lang="el"><span class="fi fi-gr"></span>ελληνικά</button></li>
                 </ul>
             </div>
             <div class="notification-center">
@@ -217,7 +218,7 @@
     <!-- ====================================================================== -->
 
     <div id="sidebar-overlay"></div>
-    <div id="module-sidebar" class="sidebar">
+    <div id="module-sidebar" class="sidebar" role="dialog" aria-modal="true" aria-label="Configuration de l'activité">
         <!-- Le contenu du module sera injecté ici par le JS -->
     </div>
 
@@ -235,7 +236,7 @@
     <div id="generation-result-modal" class="generation-result-modal hidden" role="dialog" aria-modal="true" aria-labelledby="generation-result-title">
         <div class="generation-result-modal__card">
             <div class="generation-result-modal__header">
-                <img src="assets/images/branding/logo_caramel.webp" alt="Caramel" class="generation-result-modal__logo">
+                <img src="assets/images/branding/logo_caramel.webp" alt="Caramel" class="generation-result-modal__logo" width="52" height="52">
                 <h2 id="generation-result-title" class="generation-result-modal__title" data-key="caramel_success_title">Votre sucrerie est prête !</h2>
             </div>
             <div class="generation-result-modal__activity">
@@ -268,7 +269,7 @@
 
     <footer class="footer">
         <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank"><i
-                class="fas fa-info-circle"></i> Caramel v5.1.0</a>
+                class="fas fa-info-circle"></i> Caramel v5.1.1</a>
         <a href="mailto:gauthier.remande@ac-nantes.fr"><i class="fas fa-envelope"></i> Gauthier REMANDE</a>
         <a href="mailto:emmanuel.gaunard@ac-grenoble.fr"><i class="fas fa-envelope"></i> Emmanuel GAUNARD</a>
         <a href="https://forge.apps.education.fr/caramel/caramel"><i class="fas fa-code-branch"></i> Forge</a>
@@ -276,16 +277,16 @@
                 data-key="ticket">Ticket</span></a>
         <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE"><i class="fas fa-scroll"></i>
             <span data-key="license_info">GNU GPL v3.0 ou ultérieure</span></a>
-        <a href="#" id="legal-mentions-link"><i class="fas fa-gavel"></i> <span data-key="legal_mentions">Mentions
-                légales</span></a>
+        <button type="button" id="legal-mentions-link"><i class="fas fa-gavel"></i> <span data-key="legal_mentions">Mentions
+                légales</span></button>
     </footer>
 
     <!-- ================= Mentions légales ==================== -->
 
-    <div id="legal-mentions-modal" class="modal" role="dialog" aria-modal="true">
+    <div id="legal-mentions-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="legal-modal-title">
         <div class="modal-content">
             <div class="legal-modal-header">
-                <h2><i class="fas fa-gavel"></i> <span data-translate="legal_title"></span></h2>
+                <h2 id="legal-modal-title"><i class="fas fa-gavel"></i> <span data-translate="legal_title"></span></h2>
                 <span class="legal-close-modal-btn" id="close-legal-modal">&times;</span>
             </div>
             <div id="legal-mentions-content" class="legal-mentions-content"></div>

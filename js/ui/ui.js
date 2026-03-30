@@ -7,7 +7,7 @@
 import { allModules, customOrder, h5pModules, moodleModules } from '../core/definitions.js';
 import { translations, translatePage, currentLang } from '../core/translation.js';
 import { generatePrompts } from '../services/prompt-generator.js';
-import { cleanJsonInput, showNotification, copyToClipboard, downloadFile, setupToolbarListeners, getCaramelVersionFromFooter, syncPanelHeights, DEBUG, debugLog } from '../core/utils.js';
+import { cleanJsonInput, showNotification, copyToClipboard, downloadFile, setupToolbarListeners, getCaramelVersionFromFooter, syncPanelHeights, DEBUG, debugLog, setupModalAccessibility } from '../core/utils.js';
 import { populateModelSelector, AVAILABLE_MODELS, DEFAULT_MODEL, ACTIVITY_MODEL_OVERRIDES, generateH5PWithLLM } from '../services/llm.js';
 import { addNotification, getNotificationById, getLastDebugNotification, showToastForNotification, revealNotification } from './notifications.js';
 
@@ -78,7 +78,14 @@ export function generateTiles() {
             label.innerHTML = '<span>Éléa</span>';
             tile.appendChild(label);
         }
+        tile.setAttribute('tabindex', '0');
         tile.addEventListener('click', () => toggleActivityContent(key, tile));
+        tile.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleActivityContent(key, tile);
+            }
+        });
         grid.appendChild(tile);
     };
 
@@ -296,6 +303,7 @@ export function setupFilters() {
  */
 export let activeTile = null;
 let closeSidebarTimer = null;
+let _sidebarA11yCleanup = null;
 const sidebar = document.getElementById('module-sidebar');
 const sidebarOverlay = document.getElementById('sidebar-overlay');
 
@@ -339,6 +347,12 @@ function closeSidebar() {
     if (activeTile) {
         const moduleKey = activeTile.dataset.module;
         saveModalDataToSession(moduleKey);
+    }
+
+    // Accessibilité : nettoyer le focus trap et restaurer le focus
+    if (_sidebarA11yCleanup) {
+        _sidebarA11yCleanup();
+        _sidebarA11yCleanup = null;
     }
 
     sidebar.classList.remove('open');
@@ -569,6 +583,12 @@ export function toggleActivityContent(moduleKey, tileElement) {
     sidebar.classList.add('open');
     sidebarOverlay.classList.add('open');
     translatePage(sidebar);
+
+    // Accessibilité : focus trap + Escape + restauration du focus
+    _sidebarA11yCleanup = setupModalAccessibility(sidebar, {
+        onClose: closeSidebar,
+        focusSelector: '.close-btn'
+    });
 
     // Synchroniser les hauteurs des sections après le rendu
     requestAnimationFrame(() => syncPanelHeights(sidebar));
@@ -1368,6 +1388,10 @@ function attachContextualBottomButton(moduleKey, module, buttonGroup) {
             const isShown = modelDropdown.classList.toggle('show');
             modelSelectorBtn.setAttribute('aria-expanded', isShown);
             sidebar.classList.toggle('menu-open', isShown);
+            if (isShown) {
+                const target = modelDropdown.querySelector('li.selected') || modelDropdown.querySelector('li');
+                if (target) target.focus();
+            }
         });
 
         document.addEventListener('click', (e) => {
@@ -1660,6 +1684,9 @@ function attachLLMLogic(moduleKey, container) {
             if (isCurrentlyShown) {
                 adjustDropdownToViewport();
                 addDropdownHandlers();
+                // Focus sur l'item sélectionné ou le premier item
+                const target = modelDropdown.querySelector('li.selected') || modelDropdown.querySelector('li');
+                if (target) target.focus();
             } else {
                 removeDropdownHandlers();
                 resetDropdownSizing();
@@ -1891,6 +1918,8 @@ function stopCaramelAnimation() {
 let generationResultData = null;
 /** Promesse de capture de grille (Crossword/FindTheWords), résolue quand les images sont prêtes */
 let _gridCapturePromise = null;
+/** Cleanup de l'accessibilité modale (focus trap + restauration) */
+let _generationModalA11yCleanup = null;
 
 /**
  * Affiche la modale de résultat après la génération d'une activité.
@@ -1991,6 +2020,12 @@ function showGenerationResult(e) {
     setTimeout(() => {
         modal.classList.remove('entering');
     }, 300);
+
+    // Accessibilité : focus trap + Escape + restauration du focus
+    _generationModalA11yCleanup = setupModalAccessibility(modal, {
+        onClose: () => closeGenerationResultModal(true),
+        focusSelector: '[data-action="download"]'
+    });
 }
 
 /**
@@ -2031,6 +2066,12 @@ function closeGenerationResultModal(showToast = false) {
     modal.classList.add('hidden');
     generationResultData = null;
     _gridCapturePromise = null;
+
+    // Accessibilité : nettoyer le focus trap et restaurer le focus
+    if (_generationModalA11yCleanup) {
+        _generationModalA11yCleanup();
+        _generationModalA11yCleanup = null;
+    }
 
     // Révéler la notification dans le badge (incrémente le compteur)
     revealNotification();
@@ -2158,15 +2199,7 @@ export function initGenerationResultModal() {
         }
     });
 
-    // Escape = "Continuer"
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && generationResultData) {
-            const modal = document.getElementById('generation-result-modal');
-            if (modal && !modal.classList.contains('hidden')) {
-                closeGenerationResultModal(true);
-            }
-        }
-    });
+    // Escape géré par setupModalAccessibility dans showGenerationResult()
 }
 
 

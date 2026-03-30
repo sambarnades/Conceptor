@@ -186,36 +186,41 @@ body {
     border-radius: 8px;
 }
 
-.language-dropdown li a {
+.language-dropdown li button {
     color: black;
     padding: 12px 16px;
-    text-decoration: none;
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
     display: flex;
     align-items: center;
     gap: 10px;
     position: relative;
 }
 
-.language-dropdown li a .flag-icon {
+.language-dropdown li button .flag-icon {
     font-size: 1.2em;
     /* Ajustement de la taille pour les icônes SVG */
     width: 1.33333333em;
     line-height: 1em;
 }
 
-.language-dropdown li a.active {
+.language-dropdown li button.active {
     font-weight: bold;
     color: #007AFF;
 }
 
-.language-dropdown li a.active::after {
+.language-dropdown li button.active::after {
     content: '✔';
     position: absolute;
     right: 15px;
     color: #007AFF;
 }
 
-.language-dropdown li a:hover {
+.language-dropdown li button:hover {
     background-color: #f1f1f1;
 }
 
@@ -690,6 +695,11 @@ body {
     border-color: rgba(0, 122, 255, 0.3);
 }
 
+.h5p-tile:focus-visible {
+    outline: 2px solid #007AFF;
+    outline-offset: 2px;
+}
+
 .h5p-tile img {
     max-width: 60px;
     height: 60px;
@@ -1139,7 +1149,8 @@ textarea::placeholder {
     box-sizing: border-box;
 }
 
-.footer a {
+.footer a,
+.footer button {
     color: #555;
     text-decoration: none;
     transition: color 0.3s;
@@ -1147,9 +1158,15 @@ textarea::placeholder {
     align-items: center;
     gap: 8px;
     /* Espace entre l'icône et le texte */
+    background: none;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
 }
 
-.footer a:hover {
+.footer a:hover,
+.footer button:hover {
     color: #007AFF;
     text-decoration: none;
 }
@@ -1267,7 +1284,7 @@ textarea::placeholder {
 
     /* Garder l'icône Tchap compacte mais visible */
     .tchap-icon {
-        width: 32px;
+        width: 16px;
         height: 16px;
     }
 }
@@ -1435,6 +1452,17 @@ textarea::placeholder {
 .notification-btn .fas {
     font-size: 20px;
     line-height: 1;
+}
+
+/* Hauteur d'icône uniforme pour aligner les 4 boutons du header */
+.help-btn .fas,
+.help-btn .tchap-icon,
+.language-btn .fi,
+.notification-btn .fas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
 }
 
 .language-btn span,
@@ -2086,6 +2114,11 @@ textarea::placeholder {
     bottom: 0.25rem;
     background-color: white;
     transition: .4s;
+}
+
+input:focus-visible+.slider {
+    outline: 2px solid #007AFF;
+    outline-offset: 2px;
 }
 
 input:checked+.slider {
@@ -3564,7 +3597,7 @@ input[type="file"] {
 }
 
 .tchap-icon {
-    width: 40px;
+    width: 20px;
     height: 20px;
     object-fit: contain;
 }

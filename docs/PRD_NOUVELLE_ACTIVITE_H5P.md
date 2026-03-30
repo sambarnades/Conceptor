@@ -1,6 +1,6 @@
 # PRD — Ajout d'une nouvelle activité H5P dans Caramel
 
-> **Version** : 1.1.0 — **Date** : 2026-03-11
+> **Version** : 1.2.0 — **Date** : 2026-03-30
 > **Objectif** : Ce document est le **modèle exhaustif** de tout ce qu'il faut faire pour intégrer une nouvelle activité H5P (ou Moodle) dans Caramel. Chaque étape indique le fichier à modifier, la localisation exacte (section/map/objet), un exemple concret et les critères de validation.
 
 ---
@@ -22,11 +22,16 @@
 13. [Phase 12 — Documentation & Wiki](#13-phase-12--documentation--wiki)
 14. [Phase 13 — Intégration QuizSet (optionnel)](#14-phase-13--intégration-quizset-optionnel)
 15. [Phase 13b — Activité conteneur avec exercices filles](#14b-phase-13b--activité-conteneur-avec-exercices-filles)
-16. [Phase 14 — Cas spéciaux](#15-phase-14--cas-spéciaux)
-16. [Checklist de validation finale](#16-checklist-de-validation-finale)
-17. [Annexe A — Squelette de processeur](#annexe-a--squelette-de-processeur)
-18. [Annexe B — Patron de clés de traduction](#annexe-b--patron-de-clés-de-traduction)
-19. [Annexe C — Fichiers modifiés (récapitulatif)](#annexe-c--fichiers-modifiés-récapitulatif)
+16. [Phase 14 — Contraintes de champs et healing ciblé](#15-phase-14--contraintes-de-champs-et-healing-ciblé)
+17. [Phase 15 — Support d'images utilisateur (optionnel)](#16-phase-15--support-dimages-utilisateur-optionnel)
+18. [Phase 16 — Réglages avancés H5P (behaviour)](#17-phase-16--réglages-avancés-h5p-behaviour)
+19. [Phase 17 — Accessibilité (RGAA / Lighthouse)](#18-phase-17--accessibilité-rgaa--lighthouse)
+20. [Phase 18 — Cas spéciaux](#19-phase-18--cas-spéciaux)
+21. [Checklist de validation finale](#20-checklist-de-validation-finale)
+22. [Annexe A — Squelette de processeur](#annexe-a--squelette-de-processeur)
+23. [Annexe B — Patron de clés de traduction](#annexe-b--patron-de-clés-de-traduction)
+24. [Annexe C — Fichiers modifiés (récapitulatif)](#annexe-c--fichiers-modifiés-récapitulatif)
+25. [Annexe D — Tableau des types de rendu par champ](#annexe-d--tableau-des-types-de-rendu-par-champ)
 
 ---
 
@@ -1300,7 +1305,264 @@ _scheduleResize(container) {
 
 ---
 
-## 15. Phase 14 — Cas spéciaux
+## 15. Phase 14 — Contraintes de champs et healing ciblé
+
+> **Introduit en v5.1.0** — Le système `field-constraints.js` est la source de vérité unique pour le comportement de chaque champ texte de chaque activité H5P.
+
+### 15.1. Registre des contraintes
+
+**Fichier** : `js/h5p/field-constraints.js`
+
+Pour chaque champ textuel de l'activité, déclarer son **type de rendu** :
+
+```javascript
+'NomActivite': {
+    'taskDescription': 'html+latex',    // HTML complet + formules LaTeX MathJax
+    'elements[].text': 'html+latex',    // Champ dans un tableau
+    'elements[].answer': 'plain',       // Texte brut uniquement
+    'title': 'plain',                   // Pas de HTML ni LaTeX
+}
+```
+
+### 15.2. Types de rendu disponibles
+
+| Type | Description | Exemples d'usage | Healer | Éditeur |
+|------|------------|------------------|--------|---------|
+| `html+latex` | HTML complet + formules `\(...\)` MathJax | Questions, consignes, feedbacks | Préserve LaTeX, répare `$...$` → `\(...\)` | Rich Text WYSIWYG + bouton formule |
+| `html` | HTML sans support LaTeX | Certains feedbacks simples | Supprime les délimiteurs LaTeX | Rich Text WYSIWYG sans bouton formule |
+| `unicode` | Caractères Unicode uniquement (½, √, π) | Labels Chart, réponses Millionnaire | Convertit LaTeX → Unicode | Input texte simple |
+| `unicode+markers` | Unicode + marqueurs H5P `*...*` | DragTheWords, MarkTheWords, FillInTheBlanks | Préserve marqueurs, convertit LaTeX → Unicode | Éditeur de marqueurs visuel |
+| `plain` | Texte brut, aucun formatage | Titres, métadonnées | Supprime tout HTML et LaTeX | Input texte simple |
+| `plain+letters` | Lettres uniquement (A-Z) | Réponses Crossword | Supprime tout sauf lettres | Input texte simple |
+
+### 15.3. Comment déterminer le type de rendu
+
+1. Ouvrir le `semantics.json` de la librairie H5P officielle
+2. Pour chaque champ textuel, vérifier :
+   - `"type": "text"` avec `"widget": "html"` → `html+latex` ou `html`
+   - `"type": "text"` sans widget → `plain` ou `unicode`
+   - Champs avec marqueurs spéciaux (`*...*`) → `unicode+markers`
+3. Vérifier si le player H5P charge `H5P.MathDisplay` (dans `library.json` → `preloadedDependencies`) :
+   - Oui → les champs `html` supportent LaTeX → `html+latex`
+   - Non → `html` uniquement
+4. Tester dans le player H5P officiel : coller du HTML dans le champ, vérifier s'il est rendu
+
+### 15.4. Impact sur le pipeline
+
+Les contraintes de `field-constraints.js` sont utilisées par **3 composants** :
+
+| Composant | Utilisation |
+|-----------|------------|
+| **json-healer.js** | Healing ciblé par champ : préserve le LaTeX dans les champs `html+latex`, le convertit en Unicode dans `unicode`, le supprime dans `plain` |
+| **Processeurs** | `formatTextToHtml()` pour `html+latex`/`html`, texte brut pour `plain`/`unicode` |
+| **Éditeur** | Rich Text WYSIWYG pour `html+latex`/`html`, éditeur de marqueurs pour `unicode+markers`, input simple pour `plain`/`unicode` |
+| **Prompts IA** | Les clés `prompt_*_structure_json` dans les locales indiquent le format mathématique adapté au type de rendu |
+
+### 15.5. Dashboard de vérification
+
+**Fichier** : `tests/field-constraints-dashboard.html`
+
+Ouvrir dans le navigateur pour visualiser toutes les contraintes de toutes les activités avec filtrage interactif. Vérifier que la nouvelle activité apparaît correctement.
+
+### 15.6. Validation Phase 14
+
+- [ ] Chaque champ textuel de l'activité a une entrée dans `field-constraints.js`
+- [ ] Le type de rendu correspond au `semantics.json` officiel
+- [ ] Le healer applique le bon traitement selon la contrainte (tester avec du LaTeX)
+- [ ] L'éditeur affiche le bon type de champ (WYSIWYG vs input vs marqueurs)
+- [ ] Le dashboard affiche l'activité avec les bonnes contraintes
+
+---
+
+## 16. Phase 15 — Support d'images utilisateur (optionnel)
+
+> **Introduit en v5.1.0** — Si l'activité supporte des images dans son `semantics.json`.
+
+### 16.1. Déterminer le type d'image
+
+| Type | Description | Exemples |
+|------|------------|----------|
+| **Per-item** | Image par élément du tableau | Flashcards (`cards[].image`), DialogCards (`dialogs[].image`) |
+| **Background** | Image de fond unique | Crossword (`backgroundImage`), DragAndDrop (`backgroundImage`) |
+| **Media context** | Image au-dessus de la question | MultipleChoice, TrueFalse, Essay (`mediaImage`) |
+| **Slide** | Image par diapositive avec position | CoursePresentation (`slideImage` + sélecteur position) |
+
+### 16.2. Schéma éditeur — champ `image`
+
+**Fichier** : `js/editor/content-detector.js`
+
+Ajouter le champ image dans le schéma de l'activité :
+
+```javascript
+// Per-item : dans l'itemSchema du tableau
+{ key: 'image', label: t('editor_label_image'), type: 'image', collapsible: true }
+
+// Media context : dans la section « Informations générales »
+{ key: 'mediaImage', label: t('editor_label_image'), type: 'image', collapsible: true }
+
+// Background : champ simple
+{ key: 'backgroundImage', label: t('editor_label_background'), type: 'image' }
+```
+
+### 16.3. Processeur — intégration des images
+
+**Fichier** : `js/h5p/processors/NomActivite.js`
+
+Utiliser `buildMediaStructure()` pour les images de contexte, ou la structure directe pour les images per-item :
+
+```javascript
+import { buildMediaStructure } from '../../h5p/image-manager.js';
+
+// Media context (au-dessus de la question)
+const media = buildMediaStructure(jsonObj, 'NomActivite');
+
+// Per-item : vérifier la présence dans le registre image-manager
+// Les images sont injectées automatiquement dans le ZIP par h5p-creator.js
+```
+
+### 16.4. Export document — images
+
+**Fichier** : `js/export/document-formatter.js`
+
+Utiliser `getMediaImageUrl()` pour extraire l'URL de l'image et l'inclure dans les sections :
+
+```javascript
+import { getMediaImageUrl } from '../h5p/image-manager.js';
+
+const imageUrl = getMediaImageUrl(data, 'NomActivite');
+if (imageUrl) {
+    sections.push({ type: 'image', url: imageUrl, width: 150, height: 100 });
+}
+```
+
+### 16.5. Validation Phase 15
+
+- [ ] L'éditeur affiche le widget image (drag & drop, preview, alt text)
+- [ ] L'image est visible dans la prévisualisation H5P
+- [ ] L'image est incluse dans le fichier .h5p téléchargé
+- [ ] L'image apparaît dans les exports DOCX/ODT/PDF
+- [ ] Le cycle ajout/suppression/re-ajout fonctionne sans fuite mémoire
+
+---
+
+## 17. Phase 16 — Réglages avancés H5P (behaviour)
+
+> **Introduit en v5.1.0** — Section « Réglages » repliée par défaut dans l'éditeur, exposant les paramètres `behaviour` du player H5P.
+
+### 17.1. Identifier les réglages pertinents
+
+1. Ouvrir le `semantics.json` de la librairie H5P officielle
+2. Chercher le groupe `"name": "behaviour"` → lister tous les champs
+3. Filtrer : ne garder que les réglages utiles pour l'enseignant (exclure les champs purement techniques)
+
+### 17.2. Schéma éditeur — section Réglages
+
+**Fichier** : `js/editor/content-detector.js`
+
+Ajouter une section en fin de schéma :
+
+```javascript
+{
+    title: t('editor_section_settings'),
+    collapsed: true,   // Repliée par défaut
+    fields: [
+        { key: 'behaviour.enableRetry', label: t('editor_label_enable_retry'), type: 'boolean', default: true },
+        { key: 'behaviour.enableSolutionsButton', label: t('editor_label_show_solution'), type: 'boolean', default: true },
+        { key: 'behaviour.passPercentage', label: t('editor_label_pass_percentage'), type: 'number', default: 100 },
+        // ... autres réglages
+    ]
+}
+```
+
+### 17.3. Processeur — merge behaviour
+
+**Fichier** : `js/h5p/processors/NomActivite.js`
+
+Le processeur doit merger les réglages depuis l'input JSON (modifié par l'éditeur) avec les valeurs par défaut :
+
+```javascript
+const behaviour = {
+    enableRetry: true,
+    enableSolutionsButton: true,
+    // ... valeurs par défaut du semantics.json officiel
+    ...(jsonObj.behaviour || {})   // ← Overrides depuis l'éditeur
+};
+```
+
+> **Rétrocompatibilité** : Si `jsonObj.behaviour` est absent (génération rapide sans éditeur), les valeurs par défaut s'appliquent. Aucune régression possible.
+
+### 17.4. Traductions
+
+Ajouter les clés `editor_label_*` dans les 11 langues pour chaque réglage exposé. Les clés communes (`editor_label_enable_retry`, `editor_label_show_solution`, etc.) existent déjà — les réutiliser.
+
+### 17.5. Validation Phase 16
+
+- [ ] La section « Réglages » apparaît repliée par défaut dans l'éditeur
+- [ ] Les valeurs par défaut correspondent au `semantics.json` officiel
+- [ ] Modifier un réglage dans l'éditeur → le H5P téléchargé reflète le changement
+- [ ] Sans éditeur (génération rapide) → les valeurs par défaut sont appliquées
+- [ ] `test-behaviour-settings.js` passe pour le nouveau type
+
+---
+
+## 18. Phase 17 — Accessibilité (RGAA / Lighthouse)
+
+> **Introduit en v5.1.0/v5.1.1** — Le site maintient un score Lighthouse Accessibilité de 100/100.
+
+### 18.1. Règles à respecter pour toute nouvelle activité
+
+| Composant | Règle | Vérification |
+|-----------|-------|-------------|
+| **Tuile** | Focusable via Tab (`tabindex="0"` ajouté automatiquement par `generateTiles()`) | La tuile reçoit le focus clavier et s'active via Entrée/Espace |
+| **Sidebar** | Focus trap actif (`setupModalAccessibility` dans `toggleActivityContent()`) | Tab ne sort pas de la sidebar ; Escape la ferme |
+| **Éditeur** | Labels sur tous les champs (`<label>` ou `aria-label`) | Aucun champ sans label dans l'audit Lighthouse |
+| **Éditeur** | Erreurs de validation annoncées (`aria-live="assertive"`) | Un lecteur d'écran annonce les erreurs |
+| **Images** | `alt` text sur toutes les images, `role="presentation"` sur les décoratives | Pas d'image sans attribut `alt` |
+| **Contrastes** | Textes WCAG AA (ratio ≥ 4.5:1 pour le texte, ≥ 3:1 pour le grand texte) | Vérifier avec l'outil Lighthouse ou axe DevTools |
+| **Focus visible** | `:focus-visible` sur tous les éléments interactifs | Naviguer au clavier → chaque élément a un indicateur de focus bleu |
+
+### 18.2. Modales spécifiques à l'activité
+
+Si l'activité ajoute une modale (confirmation, configuration, etc.), elle **doit** utiliser `setupModalAccessibility()` :
+
+```javascript
+import { setupModalAccessibility } from '../core/utils.js';
+
+// À l'ouverture
+const cleanup = setupModalAccessibility(modalElement, {
+    onClose: () => closeModal(),
+    focusSelector: '.first-interactive-element'
+});
+
+// À la fermeture
+cleanup();
+```
+
+Cela garantit automatiquement :
+- Focus trap (Tab piégé dans la modale)
+- Fermeture via Escape
+- Focus initial sur le premier élément interactif
+- Restauration du focus sur l'élément déclencheur
+
+### 18.3. Éléments interactifs dans les dropdowns
+
+Si l'activité ajoute un dropdown (sélecteur, menu) :
+- Les items doivent avoir `tabindex="0"` et `role="menuitem"`
+- Navigation par flèches haut/bas + sélection par Entrée/Espace
+- Style `:focus-visible` sur chaque item
+- Focus automatique sur l'item sélectionné à l'ouverture
+
+### 18.4. Validation Phase 17
+
+- [ ] Lighthouse Accessibilité reste à **100/100** après ajout de l'activité
+- [ ] Navigation complète au clavier : tuile → sidebar → champs → génération → résultat → fermeture
+- [ ] Aucun élément interactif sans `:focus-visible`
+- [ ] Aucune image sans `alt`
+- [ ] Aucun champ de formulaire sans label
+
+---
+
+## 19. Phase 18 — Cas spéciaux
 
 ### 15.1. Renderers spécialisés
 
@@ -1391,7 +1653,7 @@ Si l'activité a des contraintes spéciales avec le LaTeX (comme Crossword qui c
 
 ---
 
-## 16. Checklist de validation finale
+## 20. Checklist de validation finale
 
 ### Fonctionnel
 
@@ -1407,6 +1669,21 @@ Si l'activité a des contraintes spéciales avec le LaTeX (comme Crossword qui c
 - [ ] **Export PDF** — Document lisible et bien formaté
 - [ ] **Aide `?`** — L'aide contextuelle s'affiche avec les bons champs
 - [ ] **Multi-langue** — Tout fonctionne dans les 11 langues
+
+### Contraintes et images (v5.1.0+)
+
+- [ ] **field-constraints.js** — Chaque champ textuel a une contrainte de rendu déclarée
+- [ ] **Healer ciblé** — Le healing respecte les contraintes (LaTeX préservé/converti/supprimé selon le type)
+- [ ] **Images** — (si applicable) Upload, preview H5P, packaging ZIP et exports document fonctionnent
+- [ ] **Réglages behaviour** — (si applicable) Section repliable dans l'éditeur, merge dans le processeur
+
+### Accessibilité (v5.1.1+)
+
+- [ ] **Lighthouse 100/100** — Aucune régression accessibilité
+- [ ] **Clavier** — Navigation complète sans souris (tuile → sidebar → éditeur → résultat)
+- [ ] **Focus visible** — Contour bleu sur chaque élément interactif au clavier
+- [ ] **Focus trap** — Tab piégé dans les modales/sidebar, Escape pour fermer
+- [ ] **Labels** — Tous les champs de formulaire ont un label accessible
 
 ### Technique
 
@@ -1556,7 +1833,43 @@ TOTAL ESTIMÉ : ~22-25 clés par activité × 11 langues = ~250 insertions
 | 25 | `wiki.md` | Ajouter section | 12 |
 | 26 | `README.md` | Mettre à jour liste | 12 |
 
-**Total : ~27 fichiers modifiés/créés minimum** (dont 11 fichiers de traduction).
+| 27 | `js/h5p/field-constraints.js` | Déclarer les contraintes de rendu par champ | 14 |
+| 28 | `js/h5p/image-manager.js` | (optionnel) Registre des images | 15 |
+
+**Total : ~29 fichiers modifiés/créés minimum** (dont 11 fichiers de traduction).
+
+---
+
+## Annexe D — Tableau des types de rendu par champ
+
+Ce tableau montre la correspondance entre le `semantics.json` H5P officiel et le type de rendu dans `field-constraints.js` :
+
+| semantics.json H5P | widget | MathDisplay ? | → Type `field-constraints.js` | Éditeur Caramel | Healer |
+|---------------------|--------|:------------:|-------------------------------|-----------------|--------|
+| `type: "text"` + `widget: "html"` | html | Oui | `html+latex` | Rich Text WYSIWYG + formule | Préserve LaTeX, répare `$` → `\(` |
+| `type: "text"` + `widget: "html"` | html | Non | `html` | Rich Text WYSIWYG | Supprime délimiteurs LaTeX |
+| `type: "text"` (sans widget) | — | — | `plain` | Input texte | Supprime tout HTML/LaTeX |
+| `type: "text"` (réponse saisie élève) | — | — | `unicode` | Input texte | Convertit LaTeX → Unicode (½, √, π) |
+| `type: "text"` + marqueurs `*...*` | — | — | `unicode+markers` | Éditeur marqueurs visuel | Préserve marqueurs, LaTeX → Unicode |
+| `type: "text"` (lettres uniquement) | — | — | `plain+letters` | Input texte | Supprime tout sauf [A-Z] |
+
+### Exemples concrets par activité existante
+
+| Activité | Champ | Type | Justification |
+|----------|-------|------|---------------|
+| MultipleChoice | `question` | `html+latex` | Widget html dans semantics, MathDisplay actif |
+| MultipleChoice | `answers[].text` | `html+latex` | Widget html, formules dans les réponses |
+| Crossword | `words[].clue` | `plain` | `type: text` sans widget html dans semantics |
+| Crossword | `words[].answer` | `plain+letters` | Lettres uniquement pour la grille |
+| DragTheWords | `textField` | `unicode+markers` | Marqueurs `*mot*` + pas de widget html |
+| Chart | `chartType` | `plain` | Valeur technique |
+| Chart | `listOfTypes[].text` | `unicode` | Labels affichés, pas de HTML |
+| FindTheWords | `taskDescription` | `html+latex` | Widget html, MathDisplay actif |
+| FindTheWords | `wordList` | `plain` | Liste de mots séparés par virgules |
+| Essay | `taskDescription` | `html+latex` | Widget html, MathDisplay actif |
+| Essay | `keywords[].keyword` | `plain` | Mots-clés texte brut |
+
+> **Règle** : En cas de doute sur le type, utiliser `plain` (le plus restrictif). Il est toujours possible de relâcher vers `html+latex` par la suite, mais l'inverse risque de casser du contenu existant.
 
 ---
 

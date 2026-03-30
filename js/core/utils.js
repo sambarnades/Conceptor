@@ -100,6 +100,7 @@ export async function showHelpModal() {
     modal.className = 'help-modal';
     modal.setAttribute('role', 'dialog');
     modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'help-modal-title');
 
     const modalContent = document.createElement('div');
     modalContent.className = 'help-modal-content';
@@ -107,7 +108,7 @@ export async function showHelpModal() {
     const modalHeader = document.createElement('div');
     modalHeader.className = 'help-modal-header';
     modalHeader.innerHTML = `
-            <h2>${translations.help_modal_title || 'Guide'}</h2>
+            <h2 id="help-modal-title">${translations.help_modal_title || 'Guide'}</h2>
             <span class="help-close-modal-btn" id="close-help-modal">&times;</span>
         `;
 
@@ -138,14 +139,19 @@ export async function showHelpModal() {
     // Afficher la modale
     modal.style.display = 'block';
 
-
-    // Les animations de section ont été supprimées pour améliorer les performances.
-
     // Gérer la fermeture
+    let a11yCleanup = null;
     const closeModal = () => {
+        if (a11yCleanup) { a11yCleanup(); a11yCleanup = null; }
         modal.style.display = 'none';
-        modal.remove(); // Nettoyer le DOM
+        modal.remove();
     };
+
+    // Accessibilité : focus trap + Escape + restauration du focus
+    a11yCleanup = setupModalAccessibility(modal, {
+        onClose: closeModal,
+        focusSelector: '#close-help-modal'
+    });
 
     document.getElementById('close-help-modal').addEventListener('click', closeModal);
     window.addEventListener('click', (event) => {
@@ -347,9 +353,14 @@ export function setupEventListeners() {
 
     const legalMentionsLink = document.getElementById('legal-mentions-link');
     const legalMentionsModal = document.getElementById('legal-mentions-modal');
-    const closeModalBtn = document.querySelector('.close-modal-btn');
     const legalMentionsContent = document.getElementById('legal-mentions-content');
     const closeLegalBtn = document.getElementById('close-legal-modal');
+    let legalA11yCleanup = null;
+
+    const closeLegalModal = () => {
+        if (legalA11yCleanup) { legalA11yCleanup(); legalA11yCleanup = null; }
+        legalMentionsModal.style.display = 'none';
+    };
 
     if (legalMentionsLink) {
         legalMentionsLink.addEventListener('click', async (e) => {
@@ -363,6 +374,12 @@ export function setupEventListeners() {
                 legalMentionsContent.innerHTML = html;
                 translatePage(legalMentionsModal);
                 legalMentionsModal.style.display = 'block';
+
+                // Accessibilité : focus trap + Escape + restauration du focus
+                legalA11yCleanup = setupModalAccessibility(legalMentionsModal, {
+                    onClose: closeLegalModal,
+                    focusSelector: '#close-legal-modal'
+                });
             } catch (error) {
                 console.error('Failed to fetch legal mentions:', error);
                 showNotification(translations.error_loading_legal || 'Impossible de charger les mentions légales.', 'error');
@@ -371,38 +388,14 @@ export function setupEventListeners() {
     }
 
     if (closeLegalBtn && legalMentionsModal) {
-        closeLegalBtn.addEventListener('click', () => {
-            legalMentionsModal.style.display = 'none';
-        });
+        closeLegalBtn.addEventListener('click', closeLegalModal);
     }
 
     window.addEventListener('click', (e) => {
         if (e.target === legalMentionsModal) {
-            legalMentionsModal.style.display = 'none';
+            closeLegalModal();
         }
     });
-
-    // Harmoniser la fermeture au clavier (Echap) pour Aide et Mentions légales
-    if (!window._caramelEscHandlerAttached) {
-        window._caramelEscHandlerAttached = true;
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' || e.key === 'Esc') {
-                // Priorité à la modale Aide (dynamique)
-                const helpModal = document.getElementById('help-modal');
-                if (helpModal) {
-                    // showHelpModal supprime la modale au close; on réplique ici
-                    helpModal.remove();
-                    return;
-                }
-
-                // Puis la modale Mentions légales (statique)
-                const legalModal = document.getElementById('legal-mentions-modal');
-                if (legalModal && legalModal.style.display === 'block') {
-                    legalModal.style.display = 'none';
-                }
-            }
-        });
-    }
 }
 
 export function setupToolbarListeners(container) {
@@ -791,4 +784,89 @@ export function detectMathInContent(content) {
         // En cas d'erreur, on garde MathDisplay par sécurité (comportement actuel)
         return true;
     }
+}
+
+// =======================================================================
+// Accessibilité modale — focus trap, Escape, restauration du focus
+// =======================================================================
+
+/**
+ * Active l'accessibilité clavier sur un élément modal :
+ * - Piège le focus (Tab/Shift+Tab) à l'intérieur
+ * - Ferme via Escape
+ * - Restaure le focus sur l'élément déclencheur à la fermeture
+ *
+ * @param {HTMLElement} modal - L'élément modal (doit être visible dans le DOM)
+ * @param {Object} options
+ * @param {Function} options.onClose - Fonction appelée pour fermer la modale
+ * @param {string} [options.focusSelector] - Sélecteur du premier élément à focuser (défaut : premier élément focusable)
+ * @returns {Function} cleanup — à appeler lors de la fermeture pour retirer les listeners et restaurer le focus
+ */
+export function setupModalAccessibility(modal, { onClose, focusSelector } = {}) {
+    const previousFocus = document.activeElement;
+
+    const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    // Vérifie qu'un élément est réellement visible (pas dans un conteneur overflow:hidden avec taille nulle)
+    const isVisible = (el) => {
+        if (!el.offsetParent && getComputedStyle(el).position !== 'fixed') return false;
+        let node = el;
+        while (node && node !== modal) {
+            const style = getComputedStyle(node);
+            if (style.display === 'none' || style.visibility === 'hidden') return false;
+            if ((style.overflow === 'hidden' || style.overflow === 'clip') &&
+                node.offsetHeight === 0) return false;
+            node = node.parentElement;
+        }
+        return true;
+    };
+
+    // Focus initial — délai pour laisser les transitions CSS (display:none → flex) s'appliquer
+    setTimeout(() => {
+        const target = focusSelector ? modal.querySelector(focusSelector) : modal.querySelector(FOCUSABLE);
+        if (target) target.focus();
+    }, 50);
+
+    // Listener sur document pour intercepter Tab même si le focus est hors de la modale
+    const handleKeydown = (e) => {
+        // Fermeture via Escape
+        if (e.key === 'Escape' && onClose) {
+            e.stopPropagation();
+            onClose();
+            return;
+        }
+
+        // Focus trap via Tab
+        if (e.key === 'Tab') {
+            const focusable = [...modal.querySelectorAll(FOCUSABLE)].filter(isVisible);
+            if (focusable.length === 0) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+
+            // Si le focus est hors de la modale, le ramener dedans
+            if (!modal.contains(document.activeElement)) {
+                e.preventDefault();
+                first.focus();
+                return;
+            }
+
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        }
+    };
+
+    document.addEventListener('keydown', handleKeydown);
+
+    // Retourne la fonction de cleanup
+    return () => {
+        document.removeEventListener('keydown', handleKeydown);
+        if (previousFocus && typeof previousFocus.focus === 'function') {
+            previousFocus.focus();
+        }
+    };
 }

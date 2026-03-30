@@ -1,12 +1,12 @@
 installation:
-  version: 6.0.3
-  installDate: 2026-02-27T09:15:16.244Z
-  lastUpdated: 2026-02-27T09:15:16.244Z
+  version: 6.2.2
+  installDate: 2026-03-30T10:40:42.310Z
+  lastUpdated: 2026-03-30T10:40:42.310Z
 modules:
   - name: core
-    version: 6.0.3
-    installDate: 2026-02-27T09:15:16.244Z
-    lastUpdated: 2026-02-27T09:15:16.244Z
+    version: 6.2.2
+    installDate: 2026-03-30T10:40:42.310Z
+    lastUpdated: 2026-03-30T10:40:42.310Z
     source: built-in
     npmPackage: null
     repoUrl: null

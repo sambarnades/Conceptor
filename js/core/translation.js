@@ -210,7 +210,7 @@ function updateLanguageSelector() {
     mainFlagIcon.className = `fi fi-${languageConfig[currentLang].code}`;
   }
 
-  document.querySelectorAll('.language-dropdown a').forEach(link => {
+  document.querySelectorAll('.language-dropdown [data-lang]').forEach(link => {
     const lang = link.getAttribute('data-lang');
     if (lang === currentLang) {
       link.classList.add('active');
@@ -292,10 +292,9 @@ export function initLanguageSwitcher() {
 
     if (languageDropdown) {
         languageDropdown.addEventListener('click', async (e) => {
-            const link = e.target.closest('a');
+            const link = e.target.closest('[data-lang]');
             if (!link) return;
 
-            e.preventDefault();
             const lang = link.getAttribute('data-lang');
             if (!lang || lang === currentLang) {
                 languageSwitcher?.classList.remove('open');

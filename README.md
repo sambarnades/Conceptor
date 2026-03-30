@@ -2,7 +2,7 @@
 
 **Création Assistée de Ressources et d'Activités Magistère et Éléa**
 
-[![Version](https://img.shields.io/badge/version-5.1.0-blue.svg)](https://caramel.forge.apps.education.fr/)
+[![Version](https://img.shields.io/badge/version-5.1.1-blue.svg)](https://caramel.forge.apps.education.fr/)
 [![Licence](https://img.shields.io/badge/licence-GNU%20AGPLv3-green.svg)](LICENSE)
 [![Plateforme](https://img.shields.io/badge/plateforme-Web-orange.svg)](https://caramel.forge.apps.education.fr/)
 
@@ -11,6 +11,7 @@
 ## 📋 Table des matières
 
 - [À propos](#-à-propos)
+- [Nouveautés de la version 5.1.1](#nouveautés-de-la-version-511)
 - [Nouveautés de la version 5.1.0](#nouveautés-de-la-version-510)
 - [Fonctionnalités principales](#-fonctionnalités-principales)
 - [Types d'activités supportées](#-types-dactivités-supportées)
@@ -78,10 +79,43 @@
 - **Rendu MathJax dans la preview** : Les formules LaTeX sont rendues correctement dans la prévisualisation H5P intégrée.
 - **Exports enrichis** : Support complet du texte enrichi (couleur, liens, souligné, barré, exposant, indice, listes) dans les exports DOCX, ODT et PDF. Les formules mathématiques LaTeX sont exportées comme formules éditables (OMML dans Word, MathML dans LibreOffice) au lieu de simples caractères Unicode.
 
+### Activité Test enrichie
+
+- **Indices progressifs** : 1 à 2 indices par question (tous types y compris Texte à trous), affichés de manière interactive dans le simulateur.
+- **Feedbacks combinés** : Messages globaux selon le résultat (correct, partiellement correct, incorrect) pour les QCM et Appariement.
+- **Options QCM** : Numérotation des choix (aucune, a.b.c., 1.2.3., A.B.C., i.ii.iii.) et affichage des instructions standard, configurables dans l'éditeur.
+
+### Réglages avancés H5P
+
+- **16 activités configurables** : Nouvelle section « Réglages » repliée par défaut dans l'éditeur, exposant les paramètres comportementaux (`behaviour`) pour MultipleChoice, TrueFalse, FillInTheBlanks, Flashcards, QuizSet, Crossword, FindTheWords, DragTheWords, DragAndDrop, MarkTheWords, DialogCards, Essay, SortParagraphs, SingleChoiceSet, Summary, Glossary et Timeline. Les valeurs par défaut sont conservées pour la génération rapide.
+- **Thème visuel pour les Mots croisés** : 6 palettes prédéfinies (Par défaut, Éléa, DSFR, Accessible, Dynamique, Nature) qui pré-remplissent les 8 couleurs de la grille. Les exports DOCX/ODT/PDF utilisent les couleurs du thème choisi.
+
+### Accessibilité
+
+- **Score Lighthouse Accessibilité 100/100** : Lien d'évitement, labels accessibles, `aria-required`, focus visible, contrastes WCAG AA, `aria-live` sur les messages d'erreur, support RTL pour l'arabe.
+
 ### Correctifs
 
 - **Export Moodle (Devoir, Glossaire, Page)** : Correction de l'import MBZ dans Moodle grâce à l'ajout du fichier `calendar.xml` manquant.
 - **Prompts IA — Langue cible adaptable** : Les prompts permettent désormais aux enseignants de langues de générer du contenu directement dans la langue enseignée en le précisant dans leur description.
+- **Chargement des bibliothèques — retry après échec réseau** : Les bibliothèques OCR et autres se rechargent automatiquement après un échec réseau, sans nécessiter un rechargement de page.
+
+## Nouveautés de la version 5.1.1
+
+### Accessibilité clavier
+
+- **Tuiles d'activités** : Navigables via Tab, activables via Entrée/Espace, contour bleu `:focus-visible`.
+- **Modales** : Toutes les modales (résultat, prévisualisation, aide, mentions légales, confirmation, sidebar) implémentent un focus trap clavier, fermeture Escape et restauration du focus à la fermeture.
+- **Toggle Simple/Guidé** : Indicateur `:focus-visible` sur le slider.
+- **Sélecteur de modèle IA** : Navigation au clavier (flèches haut/bas, Entrée/Espace) dans le dropdown de sélection de modèle.
+- **Tutoriel** : Indicateurs `:focus-visible` sur les liens de navigation et sections dépliables.
+
+### Performances et SEO
+
+- **`font-display: swap`** sur FontAwesome : texte visible immédiatement au lieu de 3 secondes d'attente.
+- **Dimensions explicites** sur les images statiques pour réduire le Cumulative Layout Shift.
+- **Meta description** SEO ajoutée (aucun cookie ni tracking).
+- **Liens crawlables** : Les sélecteurs de langue et le lien Mentions légales utilisent des `<button>` sémantiques au lieu de `<a href="#">`.
 
 ### Rappel des nouveautés de la version 5.0
 
@@ -139,7 +173,7 @@
 
 ### Sécurité accrue
 
-- **DOMPurify intégré** : Assainissement du JSON généré pour prévenir toute injection
+- **DOMPurify 3.3.3 intégré** : Assainissement du JSON généré pour prévenir toute injection
 - **Validation complète des entrées** : Escaping des contenus XML/HTML, traitement sécurisé des URLs
 - **Mise à jour des dépendances** : Montée de version généralisée (dont pdf.js) vers versions sécurisées
 
