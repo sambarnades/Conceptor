@@ -28,6 +28,20 @@ pages:
       rm -rf .public/tests .public/docs .public/scripts
 
     # ------------------------------------------------------------------
+    # 2b. Injection de l'URL webhook via variable CI/CD (si définie)
+    #     Remplace l'URL en dur dans la copie .public/ uniquement.
+    #     En local ou sans variable, l'URL par défaut du code source est conservée.
+    # ------------------------------------------------------------------
+    - |
+      if [ -n "$PUBLIC_N8N_WEBHOOK_URL" ]; then
+        echo "=== Injection URL webhook ==="
+        sed -i "s|https://n8n.incubateur.education.gouv.fr/webhook/llm-prod|${PUBLIC_N8N_WEBHOOK_URL}|g" .public/js/services/llm.js
+        echo "  URL remplacée par la variable CI/CD"
+      else
+        echo "=== Variable PUBLIC_N8N_WEBHOOK_URL non définie, URL par défaut conservée ==="
+      fi
+
+    # ------------------------------------------------------------------
     # 3. Minification JS — modules ES6 (~79 fichiers applicatifs)
     #
     #    - --module : préserve import/export, top-level await
