@@ -247,10 +247,12 @@ Used by: `json-healer.js` (field-aware healing), processors (field-specific tran
 | Model ID | Display Name | Size |
 |----------|-------------|------|
 | `mistral-small-3.2-24b` | Mistral-Small-3.2 | small (default) |
-| `qwen-3-30b` | Qwen 3 30B | large |
+| `qwen-3.5-35b-instruct` | Qwen 3.5 | large |
 | `gpt-oss-120b` | GPT-OSS | xl |
 | `llama-3.3-70b` | LLaMa-3.3 | large |
 | `llama-3.1-8b` | LLaMa-3.1-8B | small |
+| `gemma-4-31b` | Gemma 4 | large |
+| `mistral-medium-250523` | Mistral Medium | large |
 
 **Activity-specific overrides:** QuizSetQCM, QuizSetVF, QuizSet, Page, test_elea → `gpt-oss-120b`
 
@@ -260,7 +262,7 @@ Centralized in `LIB_PATHS`, versioned paths, lazy-loaded via `initSmartPreloadin
 
 | Library | Version | Purpose |
 |---------|---------|---------|
-| pdf.js | 5.4.624 | PDF text extraction (OCR) |
+| pdf.js | 5.6.205 | PDF text extraction (OCR) |
 | Tesseract.js | 7.0.0 | Image OCR |
 | Mammoth | 1.11.0 | DOCX text extraction |
 | JSZip | 3.10.1 | ZIP creation for .h5p |

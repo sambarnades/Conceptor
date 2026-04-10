@@ -137,7 +137,7 @@ Une fois votre contexte pédagogique défini, cliquez sur l'activité qui corres
 | **🎯 Quiz & Tests** | Quiz mixte, Quiz QCM, Quiz Vrai/faux, Vrai/Faux (1 question), Choix multiples (1 seule question), Single Choice Set, Test, Millionnaire, Appariement, QCM |
 | **✏️ Manipulation de texte** | Textes à trous, Glisser les mots, Marquer les mots, Trier paragraphes |
 | **🧠 Mémorisation & Découverte** | Flashcards, Frises, Glossaires, Accordéons, Mots croisés, Mots mêlés |
-| **🎓 Éléa** | Pages, QCM, Appariement, Millionnaire, Glossaire, Banque de questions, Devoir |
+| **🎓 Éléa** | Pages, Livre, QCM, Appariement, Millionnaire, Glossaire, Banque de questions, Devoir |
 | **🔷 H5P** | Toutes les activités H5P uniquement |
 
 <details>
@@ -196,6 +196,7 @@ Les activités **Éléa/Moodle** sont des modules natifs optimisés pour les pla
 | Activité | Format | Description |
 |----------|--------|-------------|
 | **Page** | `.mbz` ou `.html` | Page de cours riche avec 18 types de blocs (texte, image, vidéo, citation...) |
+| **Livre** ✨ | `.mbz` | Cours pédagogique **multi-chapitres** réutilisant les 18 blocs de Page, avec table des matières automatique, sous-chapitres optionnels et numérotation décimale |
 | **Test / Banque** | `.xml` ou `.gift` | Questions pour banque Moodle (format universel) |
 | **QCM (activité)** | `.mbz` | Quiz complet prêt à restaurer |
 | **Appariement** | `.mbz` | Associer des paires (questions ↔ réponses) |
@@ -485,6 +486,7 @@ Les fichiers **`.mbz`** sont des sauvegardes Moodle complètes contenant une act
 - 🔗 **Appariement** : Exercice d'association de paires
 - 🎮 **Millionnaire** : Jeu pédagogique "Qui veut gagner des millions"
 - 📄 **Page** : Page de cours avec mise en forme riche
+- 📖 **Livre** : Cours multi-chapitres avec table des matières
 - 📚 **Glossaire** : Dictionnaire collaboratif de termes
 - 📋 **Devoir** : Création d'un devoir avec grille d'évaluation critériée et niveaux de réussite
 
@@ -1072,6 +1074,8 @@ Caramel est distribué sous **licence GNU Affero General Public License v3.0 (AG
 🔗 [Consultez le Journal complet des modifications (CHANGELOG)](https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG)
 
 ### Dernières mises à jour :
+- **v5.2.0** : 🎉 **Nouvelle activité Livre (Moodle/Éléa)** : cours multi-chapitres réutilisant les 18 blocs de Page avec table des matières, sous-chapitres optionnels et numérotation décimale. Indentation visuelle dynamique des sous-chapitres dans l'éditeur. Correctif transversal du bug de traduction des prompts au changement de langue (sessionStorage).
+- **v5.1.2** : 🔧 Correctif éditeur Timeline : retour au mode URL uniquement pour les images (le format H5P ne prend pas en charge les images uploadées).
 - **v5.1.1** : 🔧 Accessibilité clavier complète (tuiles, modales, sélecteur LLM, toggle), focus trap et Escape sur toutes les modales, `font-display: swap` FontAwesome, dimensions images explicites, SEO (meta description, liens crawlables), logo Tchap SVG.
 - **v5.1.0** : 🎉 **Activité Course Presentation**, **Images utilisateur dans 12 activités H5P**, **Éditeur Rich Text WYSIWYG**, **Assistant formules mathématiques**, **Éditeur Cloze visuel**, **Formules éditables dans les exports DOCX/ODT**, Réglages avancés H5P (16 activités), Thèmes visuels Crossword, Indices et feedbacks combinés pour l'activité Test, Accessibilité RGAA Lighthouse 100/100.
 - **v5.0.2** : 🔧 Correctif export grilles mots croisés et mots mêlés (DOCX/ODT/PDF) depuis la modale de résultat. Nouveaux générateurs standalone de grilles (sans H5P). Attente du rendu H5P avant capture en prévisualisation.

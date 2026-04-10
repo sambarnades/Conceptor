@@ -12,6 +12,7 @@
 import * as Appariement from './activities/Appariement.js';
 import * as QCM from './activities/QCM.js';
 import * as Page from './activities/Page.js';
+import * as Livre from './activities/Livre.js';
 import * as Millionnaire from './activities/Millionnaire.js';
 import * as Test from './activities/Test.js';
 import * as Glossaire from './activities/Glossaire.js';
@@ -29,6 +30,7 @@ const processors = {
     'Appariement': Appariement,
     'QCM': QCM,
     'Page': Page,
+    'Livre': Livre,
     'Millionnaire': Millionnaire,
     'Test': Test,
     'Glossaire': Glossaire,

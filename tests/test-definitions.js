@@ -169,6 +169,7 @@ async function runStep3_MoodleProcessors() {
         'Appariement': 'Appariement',
         'QCM': 'QCM',
         'Page': 'Page',
+        'Livre': 'Livre',
         'Devoir': 'Devoir',
         'gift': null // pas de processeur MBZ, utilise moodle-formats.js
     };
@@ -236,6 +237,7 @@ async function runStep4_PromptFiles() {
         'Appariement': 'elea_appariement.md',
         'QCM': 'elea_qcm.md',
         'Page': 'elea_pages.md',
+        'Livre': 'elea_livre.md',
         'Devoir': 'elea_devoir.md',
         'gift': 'elea_test.md'
     };
@@ -296,6 +298,7 @@ async function runStep5_ExampleFiles() {
         'Appariement': 'appariement',
         'QCM': 'qcm',
         'Page': 'page',
+        'Livre': 'livre',
         'Devoir': 'devoir',
         'gift': null // pas de fichier d'exemple propre
     };

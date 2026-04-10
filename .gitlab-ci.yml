@@ -28,21 +28,28 @@ pages:
       rm -rf .public/tests .public/docs .public/scripts
 
     # ------------------------------------------------------------------
-    # 2b. Injection de l'URL webhook via variable CI/CD (si définie)
-    #     Remplace l'URL en dur dans la copie .public/ uniquement.
-    #     En local ou sans variable, l'URL par défaut du code source est conservée.
+    # 3. Injection des URLs n8n
+    #
+    #    Les URLs sont hardcodées dans llm.js pour le dev local.
+    #    Le CI/CD les écrase ici avec les variables définies une fois
+    #    dans GitLab → Settings → CI/CD → Variables :
+    #      LLM_SUBMIT_URL  (ex: https://…/submit-dev2)
+    #      LLM_RESULT_URL  (ex: https://…/result-dev2)
     # ------------------------------------------------------------------
     - |
-      if [ -n "$PUBLIC_N8N_WEBHOOK_URL" ]; then
-        echo "=== Injection URL webhook ==="
-        sed -i "s|https://n8n.incubateur.education.gouv.fr/webhook/llm-prod|${PUBLIC_N8N_WEBHOOK_URL}|g" .public/js/services/llm.js
-        echo "  URL remplacée par la variable CI/CD"
-      else
-        echo "=== Variable PUBLIC_N8N_WEBHOOK_URL non définie, URL par défaut conservée ==="
+      echo "=== Injection URLs n8n ==="
+      if [ -z "$LLM_SUBMIT_URL" ] || [ -z "$LLM_RESULT_URL" ]; then
+        echo "  ERREUR: LLM_SUBMIT_URL et/ou LLM_RESULT_URL non definies dans les variables CI/CD !"
+        echo "  → GitLab > Settings > CI/CD > Variables"
+        exit 1
       fi
+      sed -i "s|const LLM_SUBMIT_URL = \".*\"|const LLM_SUBMIT_URL = \"${LLM_SUBMIT_URL}\"|g" .public/js/services/llm.js
+      sed -i "s|const LLM_RESULT_URL = \".*\"|const LLM_RESULT_URL = \"${LLM_RESULT_URL}\"|g" .public/js/services/llm.js
+      echo "  LLM_SUBMIT_URL : ${LLM_SUBMIT_URL}"
+      echo "  LLM_RESULT_URL : ${LLM_RESULT_URL}"
 
     # ------------------------------------------------------------------
-    # 3. Minification JS — modules ES6 (~79 fichiers applicatifs)
+    # 4. Minification JS — modules ES6 (~79 fichiers applicatifs)
     #
     #    - --module : préserve import/export, top-level await
     #    - --compress : dead code elimination, constant folding
@@ -69,7 +76,7 @@ pages:
       echo "  JS: $JS_COUNT fichiers minifies, $JS_FAIL echecs"
 
     # ------------------------------------------------------------------
-    # 4. Minification CSS (7 fichiers base + composants)
+    # 5. Minification CSS (7 fichiers base + composants)
     #
     #    - On exclut css/vendor/ (FontAwesome, flag-icons déjà .min.css)
     # ------------------------------------------------------------------
@@ -86,7 +93,7 @@ pages:
       echo "  CSS: $CSS_COUNT fichiers minifies"
 
     # ------------------------------------------------------------------
-    # 5. Compactage JSON — locales et exemples
+    # 6. Compactage JSON — locales et exemples
     #
     #    Suppression des espaces et indentation (11 locales + exemples)
     # ------------------------------------------------------------------
@@ -103,7 +110,7 @@ pages:
       echo "  JSON: $JSON_COUNT fichiers compactes"
 
     # ------------------------------------------------------------------
-    # 6. Minification HTML — index.html
+    # 7. Minification HTML — index.html
     #
     #    Préserve les scripts inline (Matomo) et les attributs data-*
     # ------------------------------------------------------------------
@@ -122,7 +129,7 @@ pages:
         || echo "  WARN: echec minification HTML (original conserve)"
 
     # ------------------------------------------------------------------
-    # 7. Rapport de tailles
+    # 8. Rapport de tailles
     # ------------------------------------------------------------------
     - |
       echo "=== Rapport final ==="
@@ -136,7 +143,7 @@ pages:
       du -sh .public/
 
     # ------------------------------------------------------------------
-    # 8. Déplacement final pour GitLab Pages
+    # 9. Déplacement final pour GitLab Pages
     # ------------------------------------------------------------------
     - rm -rf public
     - mv .public public

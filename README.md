@@ -2,7 +2,7 @@
 
 **Création Assistée de Ressources et d'Activités Magistère et Éléa**
 
-[![Version](https://img.shields.io/badge/version-5.1.1-blue.svg)](https://caramel.forge.apps.education.fr/)
+[![Version](https://img.shields.io/badge/version-5.2.0-blue.svg)](https://caramel.forge.apps.education.fr/)
 [![Licence](https://img.shields.io/badge/licence-GNU%20AGPLv3-green.svg)](LICENSE)
 [![Plateforme](https://img.shields.io/badge/plateforme-Web-orange.svg)](https://caramel.forge.apps.education.fr/)
 
@@ -11,8 +11,11 @@
 ## 📋 Table des matières
 
 - [À propos](#-à-propos)
+- [Nouveautés de la version 5.2.0](#nouveautés-de-la-version-520)
+- [Correctifs de la version 5.1.2](#correctifs-de-la-version-512)
 - [Nouveautés de la version 5.1.1](#nouveautés-de-la-version-511)
 - [Nouveautés de la version 5.1.0](#nouveautés-de-la-version-510)
+- [Rappel des nouveautés de la version 5.0](#rappel-des-nouveautés-de-la-version-50)
 - [Fonctionnalités principales](#-fonctionnalités-principales)
 - [Types d'activités supportées](#-types-dactivités-supportées)
 - [Accès et utilisation](#-accès-et-utilisation)
@@ -49,6 +52,56 @@
 - ✅ **Multi-plateforme** : compatible Moodle, Éléa, Magistère
 - ✅ **Multilingue** : interface disponible en 11 langues
 - ✅ **IA souveraine** : modèles hébergés sur infrastructure française (ilaaS)
+
+---
+
+## Nouveautés de la version 5.2.0
+
+### Nouvelle activité Livre (Moodle/Éléa)
+
+- **Activité Livre multi-chapitres** : Création de cours pédagogiques structurés en plusieurs chapitres, parfaits pour des leçons longues, des dossiers thématiques ou des cours complets.
+  - **4 à 6 chapitres** générés par défaut, avec sous-chapitres optionnels
+  - Réutilise les **18 blocs visuels** de l'activité Page (bandeau d'ouverture, encadrés, tableaux, paragraphes, FAQ, sitographie, etc.)
+  - **Thème visuel global** appliqué à tous les chapitres pour une cohérence d'ensemble (4 thèmes : elea, dsfr, accessible, dynamique)
+  - **Numérotation décimale automatique** (1., 1.1, 2., 2.1) dans la table des matières
+  - **3 réglages d'affichage** dans l'éditeur : numérotation, navigation, titres personnalisés
+  - **Simulateur de prévisualisation fidèle** à l'affichage Moodle/Éléa avec table des matières latérale
+  - **Aide à 3 niveaux** : description sidebar, mention dans le tutoriel, popover d'aide éditeur dédié
+  - **Export DOCX/ODT/PDF** avec hiérarchie chapitres/sous-chapitres
+  - Disponible dans **les 11 langues** de Caramel
+
+### Améliorations de l'éditeur
+
+- **Indentation visuelle des sous-chapitres** : Dans la liste des chapitres de l'éditeur, les sous-chapitres se décalent vers la droite avec un préfixe lettré (A., B., C.) qui se met à jour dynamiquement au clic sur la case « Sous-chapitre ». Pattern réutilisable pour toute future activité hiérarchique.
+
+### Correctifs
+
+- **Bug de traduction des prompts au changement de langue** (transversal) : Corrigé un bug qui faisait que le prompt d'une activité restait dans la langue précédente après changement de langue. La cause était dans le mécanisme `sessionStorage` qui restaurait l'ancien prompt par-dessus la nouvelle traduction. Désormais la langue est stockée avec le prompt et la restauration est ignorée si la langue a changé. **Bénéfice : ce correctif s'applique à toutes les activités**, pas seulement à Livre.
+
+---
+
+## Correctifs de la version 5.1.2
+
+- **Éditeur Timeline** : L'ajout d'images dans l'éditeur visuel de l'activité Timeline revient au fonctionnement par URL uniquement. Le format H5P Timeline ne prend pas en charge les images uploadées comme fichiers embarqués — seules les URLs externes sont valides pour la couverture et les événements.
+
+---
+
+## Nouveautés de la version 5.1.1
+
+### Accessibilité clavier
+
+- **Tuiles d'activités** : Navigables via Tab, activables via Entrée/Espace, contour bleu `:focus-visible`.
+- **Modales** : Toutes les modales (résultat, prévisualisation, aide, mentions légales, confirmation, sidebar) implémentent un focus trap clavier, fermeture Escape et restauration du focus à la fermeture.
+- **Toggle Simple/Guidé** : Indicateur `:focus-visible` sur le slider.
+- **Sélecteur de modèle IA** : Navigation au clavier (flèches haut/bas, Entrée/Espace) dans le dropdown de sélection de modèle.
+- **Tutoriel** : Indicateurs `:focus-visible` sur les liens de navigation et sections dépliables.
+
+### Performances et SEO
+
+- **`font-display: swap`** sur FontAwesome : texte visible immédiatement au lieu de 3 secondes d'attente.
+- **Dimensions explicites** sur les images statiques pour réduire le Cumulative Layout Shift.
+- **Meta description** SEO ajoutée (aucun cookie ni tracking).
+- **Liens crawlables** : Les sélecteurs de langue et le lien Mentions légales utilisent des `<button>` sémantiques au lieu de `<a href="#">`.
 
 ---
 
@@ -100,24 +153,9 @@
 - **Prompts IA — Langue cible adaptable** : Les prompts permettent désormais aux enseignants de langues de générer du contenu directement dans la langue enseignée en le précisant dans leur description.
 - **Chargement des bibliothèques — retry après échec réseau** : Les bibliothèques OCR et autres se rechargent automatiquement après un échec réseau, sans nécessiter un rechargement de page.
 
-## Nouveautés de la version 5.1.1
+---
 
-### Accessibilité clavier
-
-- **Tuiles d'activités** : Navigables via Tab, activables via Entrée/Espace, contour bleu `:focus-visible`.
-- **Modales** : Toutes les modales (résultat, prévisualisation, aide, mentions légales, confirmation, sidebar) implémentent un focus trap clavier, fermeture Escape et restauration du focus à la fermeture.
-- **Toggle Simple/Guidé** : Indicateur `:focus-visible` sur le slider.
-- **Sélecteur de modèle IA** : Navigation au clavier (flèches haut/bas, Entrée/Espace) dans le dropdown de sélection de modèle.
-- **Tutoriel** : Indicateurs `:focus-visible` sur les liens de navigation et sections dépliables.
-
-### Performances et SEO
-
-- **`font-display: swap`** sur FontAwesome : texte visible immédiatement au lieu de 3 secondes d'attente.
-- **Dimensions explicites** sur les images statiques pour réduire le Cumulative Layout Shift.
-- **Meta description** SEO ajoutée (aucun cookie ni tracking).
-- **Liens crawlables** : Les sélecteurs de langue et le lien Mentions légales utilisent des `<button>` sémantiques au lieu de `<a href="#">`.
-
-### Rappel des nouveautés de la version 5.0
+## Rappel des nouveautés de la version 5.0
 
 - **Éditeur d'activités intégré** : Modification complète du contenu JSON directement dans la modale de visualisation, avec mises à jour en temps réel sur tous les formats d'export. L'édition fine-tuned permet de corriger ou adapter le contenu généré avant téléchargement.
 - **Drag and Drop H5P** : Nouvelle activité permettant de créer des exercices de glisser-déposer d'étiquettes dans des zones dédiées. Trois dispositions proposées (haut, bas, centre) et nombre d'étiquettes configurable directement dans le prompt en Mode guidé.
@@ -249,6 +287,7 @@
 
 #### 📖 Contenus riches
 - **Page Éléa** : pages HTML avec 18 types de blocs (texte, image, vidéo, citation, FAQ, mythes/réalités, etc.), avec choix de thème visuel (Éléa, DSFR, Accessibilité, Couleurs vives)
+- **Livre Éléa** : cours pédagogiques **multi-chapitres** réutilisant les 18 mêmes blocs que Page, avec table des matières automatique, sous-chapitres optionnels et numérotation décimale (1., 1.1, 2., etc.). Idéal pour structurer un cours complet ou un dossier thématique.
 - **Glossaire XML** : dictionnaires de termes importables
 
 ---
@@ -384,29 +423,32 @@ Interface complète avec paramètres détaillés :
 - OCR et extraction PDF réalisés localement (Tesseract.js, PDF.js)
 - Pas de stockage persistant (ni localStorage, ni cookies)
 
-#### Intégration IA sécurisée
+#### Intégration IA sécurisée — Architecture asynchrone (polling)
 
 ```
-┌─────────────┐      HTTPS      ┌──────────────┐     HTTPS     ┌─────────┐
-│   Caramel   │ ────────────────>│ n8n Workflow │ ────────────>│  ilaaS  │
-│  (Browser)  │  POST /webhook   │ (Incubateur) │  POST model  │ (GPU FR)│
-└─────────────┘                  └──────────────┘               └─────────┘
-      │                                  │                           │
-      │ 1. Génération prompt             │                           │
-      │ 2. Sélection modèle              │                           │
-      │ 3. POST { prompt, model }        │                           │
-      │                                  │ 4. Transmission sécurisée │
-      │                                  │ 5. Exécution GPU          │
-      │                                  │ 6. Réponse JSON           │
-      │ 7. Parsing et affichage          │                           │
-      │ 8. Création fichier local        │                           │
-      └──────────────────────────────────────────────────────────────┘
+┌─────────────┐  POST /submit   ┌──────────────┐                  ┌──────────┐
+│   Caramel   │ ──────────────> │  1. Submit   │                  │          │
+│  (Browser)  │ <── {taskId} ── │  (~100ms)    │ ─── fire & ───>  │          │
+│             │                 └──────────────┘     forget        │          │
+│             │                                                     │ 2.Worker │
+│             │  GET /result    ┌──────────────┐                   │ (10-180s)│
+│             │ ──────────────> │  3. Result   │ <── SELECT ────── │          │
+│             │ <── {status} ── │  (~50ms)     │     Postgres      │  ilaaS   │
+│             │    (polling     └──────────────┘                   │  (GPU FR)│
+│             │     toutes                                          │          │
+│             │     les 3s)     ┌──────────────┐                   └──────────┘
+│             │                 │  4. Cleanup  │ <── cron/1min
+└─────────────┘                 │  (purge DB)  │
+                                └──────────────┘
 ```
 
 **Points clés** :
-- Proxy n8n : `https://n8n.incubateur.education.gouv.fr/webhook/llm`
+- Le slot n8n est libéré en **~100ms** — plus aucun risque de saturation par des exécutions zombie
+- La fermeture d'onglet ou une erreur réseau côté client est **sans impact** sur le serveur
+- Proxy n8n (Scalingo) : `https://n8n-caramel.osc-fr1.scalingo.io`
 - Clés API gérées côté serveur (non exposées en frontend)
-- Réponses JSON flexibles (support multiples formats de réponse)
+- File de tâches Postgres avec statuts : `pending` → `running` → `done` / `error`
+- Cascade de fallback automatique sur 3 modèles LLM (timeout 59s par tentative)
 - Infrastructure ilaaS : data centers ESR français labellisés
 
 ---
@@ -645,6 +687,7 @@ caramel/
 │   │       │   ├── Appariement.js     # Appariement (matching)
 │   │       │   ├── Millionnaire.js    # Qui veut gagner des millions
 │   │       │   ├── Page.js            # Page Éléa HTML (4 thèmes)
+│   │       │   ├── Livre.js           # Livre Éléa multi-chapitres (module book)
 │   │       │   ├── Devoir.js          # Devoir avec grille critériée
 │   │       │   └── Glossaire.js       # Glossaire XML
 │   │       └── shared/                # Utilitaires partagés
@@ -801,7 +844,7 @@ caramel/
 **Services (Métier)**
 | Module | Localisation | Rôle |
 |--------|--------------|------|
-| llm.js | `js/services/` | Communication n8n → ilaaS, gestion 6 modèles IA |
+| llm.js | `js/services/` | Client polling asynchrone : POST /submit → GET /result (3s) → fallback x3 modèles |
 | ocr.js | `js/services/` | OCR universel (PDF, DOCX, PPTX, ODT, PNG, JPG) |
 | prompt-generator.js | `js/services/` | Génération de prompts optimisés par type |
 
@@ -816,7 +859,7 @@ caramel/
 | field-constraints.js | `js/h5p/` | Contraintes de rendu par champ/activité (27 activités, 99 champs, 6 types) |
 | moodle-creator.js | `js/moodle/` | Packaging MBZ (TAR+GZIP, substitutions XML) |
 | moodle-formats.js | `js/moodle/` | Génération XML/GIFT |
-| moodle-processors/* | `js/moodle/processors/` | 8 processeurs (QCM, Appariement, Page, Devoir, etc.) |
+| moodle-processors/* | `js/moodle/processors/` | 9 processeurs (QCM, Appariement, Page, Livre, Devoir, etc.) |
 
 **Interface & Export**
 | Module | Localisation | Rôle |

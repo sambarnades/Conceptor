@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <title>Tests Editeur - Mutations (add/remove/duplicate/move)</title>
+    <link rel="stylesheet" href="css/components/json-editor.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; padding: 24px; color: #1a1a2e; }
+        h1 { font-size: 1.5rem; margin-bottom: 8px; }
+        .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+
+        .global-summary { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .global-summary__card {
+            padding: 14px 24px; border-radius: 10px; font-weight: 700; font-size: 1.3rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-width: 120px; text-align: center;
+        }
+        .global-summary__card small { display: block; font-size: 0.7rem; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+        .card--pass { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; }
+        .card--fail { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: #721c24; }
+        .card--total { background: linear-gradient(135deg, #d1ecf1, #bee5eb); color: #0c5460; }
+
+        .info-box {
+            background: #fff; padding: 14px 18px; border-radius: 10px; margin-bottom: 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06); font-size: 0.82rem; line-height: 1.6; color: #444;
+        }
+        .info-box summary { cursor: pointer; font-weight: 600; color: #1a1a2e; font-size: 0.9rem; }
+        .info-box code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 0.8rem; }
+
+        .summary-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px; }
+        .summary-table th { background: #1a1a2e; color: #fff; padding: 10px 14px; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .summary-table td { padding: 8px 14px; border-bottom: 1px solid #f0f0f0; font-size: 0.82rem; }
+        .summary-table tr:last-child td { border-bottom: none; }
+        .cell--pass { color: #155724; font-weight: 600; }
+        .cell--fail { color: #721c24; font-weight: 700; background: #fff5f5; }
+
+        .results { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
+        .result {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 7px 14px; border-bottom: 1px solid #f5f5f5; font-size: 0.82rem;
+        }
+        .result:last-child { border-bottom: none; }
+        .result__badge {
+            display: inline-block; padding: 2px 7px; border-radius: 4px;
+            font-weight: 700; font-size: 0.7rem; min-width: 38px; text-align: center; flex-shrink: 0;
+        }
+        .result__badge--pass { background: #d4edda; color: #155724; }
+        .result__badge--fail { background: #f8d7da; color: #721c24; }
+        .result__group { font-size: 0.65rem; color: #888; min-width: 200px; flex-shrink: 0; padding-top: 3px; }
+        .result--fail { background: #fff5f5; }
+
+        /* Cacher l'editeur reel pendant les tests */
+        #test-editor-container { position: absolute; left: -9999px; width: 1200px; height: 800px; }
+
+        .loading { text-align: center; padding: 60px; color: #666; }
+        .loading__spinner { display: inline-block; width: 36px; height: 36px; border: 3px solid #ddd; border-top-color: #1a1a2e; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <h1>Tests Editeur - Mutations (add / remove / duplicate / move)</h1>
+    <p class="subtitle">Verifie que les mutations sur la nav primaire ne corrompent pas les items voisins ni le suivi de selection.</p>
+
+    <details class="info-box">
+        <summary>Ce que ces tests verifient</summary>
+        <p style="margin-top:8px;">
+            Bug historique : <code>navigateTo()</code> rappelait <code>collectCurrentViewData()</code>
+            apres une mutation structurelle (splice). Le DOM contenait encore des
+            <code>&lt;input data-path="cards.N.*"&gt;</code> obsoletes, donc la collecte ecrasait
+            l'item voisin avec les valeurs de l'item supprime / deplace.
+        </p>
+        <ul style="margin-top:8px;padding-left:20px;">
+            <li><strong>Suppression</strong> : l'item suivant doit conserver son contenu original.</li>
+            <li><strong>Ajout</strong> : insertion en fin, navigation sur le nouvel item, voisins intacts.</li>
+            <li><strong>Duplication</strong> : copie de l'item courant, voisins intacts, navigation sur la copie.</li>
+            <li><strong>Deplacement</strong> : suivi par identite de l'item affiche, meme s'il n'est pas le deplace.</li>
+            <li><strong>Sequence combinee</strong> : add + remove + move sans corruption.</li>
+        </ul>
+    </details>
+
+    <div id="output">
+        <div class="loading">
+            <div class="loading__spinner"></div>
+            <p style="margin-top:14px">Execution des tests en cours...</p>
+        </div>
+    </div>
+
+    <script type="module">
+        // Mock minimal de translation pour eviter le fetch des locales
+        import { runAllTests } from './tests/test-editor-mutations.js';
+
+        const output = document.getElementById('output');
+        const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+        try {
+            const { passCount, failCount, results } = await runAllTests();
+            const totalCount = passCount + failCount;
+
+            let html = `<div class="global-summary">
+                <div class="global-summary__card card--pass">${passCount}<small>PASS</small></div>
+                <div class="global-summary__card card--fail">${failCount}<small>FAIL</small></div>
+                <div class="global-summary__card card--total">${totalCount}<small>assertions</small></div>
+            </div>`;
+
+            // Synthese par groupe
+            const groupMap = new Map();
+            for (const r of results) {
+                if (!groupMap.has(r.group)) groupMap.set(r.group, { pass: 0, fail: 0 });
+                const g = groupMap.get(r.group);
+                if (r.status === 'PASS') g.pass++; else g.fail++;
+            }
+
+            html += `<table class="summary-table">
+                <thead><tr><th>Groupe</th><th>Pass</th><th>Fail</th><th>Total</th></tr></thead><tbody>`;
+            for (const [grp, info] of groupMap) {
+                const total = info.pass + info.fail;
+                const cls = info.fail > 0 ? 'cell--fail' : 'cell--pass';
+                html += `<tr>
+                    <td><strong>${esc(grp)}</strong></td>
+                    <td class="cell--pass">${info.pass}</td>
+                    <td class="${info.fail > 0 ? 'cell--fail' : ''}">${info.fail}</td>
+                    <td class="${cls}"><strong>${info.pass}/${total}</strong></td>
+                </tr>`;
+            }
+            html += `</tbody></table>`;
+
+            // Detail
+            html += `<div class="results">`;
+            for (const r of results) {
+                const badgeClass = r.status === 'PASS' ? 'pass' : 'fail';
+                const rowClass = r.status === 'FAIL' ? ' result--fail' : '';
+                html += `<div class="result${rowClass}">
+                    <span class="result__badge result__badge--${badgeClass}">${r.status}</span>
+                    <span class="result__group">${esc(r.group)}</span>
+                    <span>${esc(r.message)}</span>
+                </div>`;
+            }
+            html += `</div>`;
+
+            output.innerHTML = html;
+        } catch (e) {
+            output.innerHTML = `<div style="color:red;padding:24px;background:#fff;border-radius:10px;">
+                <h2>Erreur fatale</h2>
+                <pre style="margin-top:12px;white-space:pre-wrap;">${esc(e.message)}\n${esc(e.stack || '')}</pre>
+            </div>`;
+        }
+    </script>
+</body>
+</html>

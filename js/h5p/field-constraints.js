@@ -329,6 +329,31 @@ export const FIELD_CONSTRAINTS = {
         }
     },
 
+    'Livre': {
+        platform: 'Moodle',
+        machineName: 'book',
+        fields: {
+            'title':                                            { render: 'plain' },
+            'intro':                                            { render: 'html+latex' },
+            'chapters[].title':                                 { render: 'plain' },
+            'chapters[].blocks[].data':                         { render: 'html+latex' },
+            'chapters[].blocks[].data.text':                    { render: 'html+latex' },
+            'chapters[].blocks[].data.content':                 { render: 'html+latex' },
+            'chapters[].blocks[].data.label':                   { render: 'html+latex' },
+            'chapters[].blocks[].data.caption':                 { render: 'html+latex' },
+            'chapters[].blocks[].data.cards[].text':            { render: 'html+latex' },
+            'chapters[].blocks[].data.callouts[].text':         { render: 'html+latex' },
+            'chapters[].blocks[].data.stats[].label':           { render: 'html+latex' },
+            'chapters[].blocks[].data.sections[].text':         { render: 'html+latex' },
+            'chapters[].blocks[].data.questions[].q':           { render: 'html+latex' },
+            'chapters[].blocks[].data.questions[].a':           { render: 'html+latex' },
+            'chapters[].blocks[].data.items[].myth':            { render: 'html+latex' },
+            'chapters[].blocks[].data.items[].reality':         { render: 'html+latex' },
+            'chapters[].blocks[].data.quote_langue_initiale':   { render: 'html+latex' },
+            'chapters[].blocks[].data.quote_langue_arrivee':    { render: 'html+latex' }
+        }
+    },
+
     'Millionnaire': {
         platform: 'Moodle',
         machineName: 'millionairev2',
@@ -432,6 +457,31 @@ export const FIELD_CONSTRAINTS = {
             'blocks[].data.items[].reality': { render: 'html+latex' },
             'blocks[].data.quote_langue_initiale': { render: 'html+latex' },
             'blocks[].data.quote_langue_arrivee':  { render: 'html+latex' }
+        }
+    },
+
+    'elea_livre': {
+        platform: 'Moodle',
+        machineName: 'book',
+        fields: {
+            'title':                                            { render: 'plain' },
+            'intro':                                            { render: 'html+latex' },
+            'chapters[].title':                                 { render: 'plain' },
+            'chapters[].blocks[].data':                         { render: 'html+latex' },
+            'chapters[].blocks[].data.text':                    { render: 'html+latex' },
+            'chapters[].blocks[].data.content':                 { render: 'html+latex' },
+            'chapters[].blocks[].data.label':                   { render: 'html+latex' },
+            'chapters[].blocks[].data.caption':                 { render: 'html+latex' },
+            'chapters[].blocks[].data.cards[].text':            { render: 'html+latex' },
+            'chapters[].blocks[].data.callouts[].text':         { render: 'html+latex' },
+            'chapters[].blocks[].data.stats[].label':           { render: 'html+latex' },
+            'chapters[].blocks[].data.sections[].text':         { render: 'html+latex' },
+            'chapters[].blocks[].data.questions[].q':           { render: 'html+latex' },
+            'chapters[].blocks[].data.questions[].a':           { render: 'html+latex' },
+            'chapters[].blocks[].data.items[].myth':            { render: 'html+latex' },
+            'chapters[].blocks[].data.items[].reality':         { render: 'html+latex' },
+            'chapters[].blocks[].data.quote_langue_initiale':   { render: 'html+latex' },
+            'chapters[].blocks[].data.quote_langue_arrivee':    { render: 'html+latex' }
         }
     },
 

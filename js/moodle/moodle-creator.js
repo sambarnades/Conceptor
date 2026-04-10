@@ -432,6 +432,465 @@ export async function generateHtmlFromBlocks(jsonData) {
 }
 
 /**
+ * Compose le bloc XML <chapter>...</chapter> pour un livre Moodle.
+ * Pour chaque chapitre, appelle generateHtmlFromBlocks() avec le thème global du livre,
+ * puis encapsule le HTML résultant dans la structure XML <chapter>.
+ *
+ * @param {Array<{title, subchapter, blocks}>} chapters - Tableau des chapitres
+ * @param {string} theme - Identifiant du thème Page (elea, dsfr, accessible, dynamique)
+ * @returns {Promise<string>} Bloc XML prêt à être injecté dans book.xml (placeholder CHAPTERS_XML)
+ */
+export async function buildChaptersXml(chapters, theme) {
+    const timestamp = Math.floor(Date.now() / 1000);
+    const xmlParts = [];
+
+    for (let i = 0; i < chapters.length; i++) {
+        const chapter = chapters[i];
+
+        // Rendu HTML du chapitre via la même fonction que Page (réutilisation atomique)
+        const chapterJsonData = {
+            title: chapter.title,
+            blocks: chapter.blocks || [],
+            theme: theme
+        };
+        debugLog('moodle-creator', `Livre - rendu chapitre ${i + 1}: "${chapter.title}" (${(chapter.blocks || []).length} blocs)`);
+        const chapterHtml = await generateHtmlFromBlocks(chapterJsonData);
+
+        // ID séquentiel pour le chapitre (interne au livre)
+        const chapterId = 100 + i;
+        const pagenum = i + 1;
+        const subchapter = chapter.subchapter ? 1 : 0;
+
+        xmlParts.push(`      <chapter id="${chapterId}">
+        <pagenum>${pagenum}</pagenum>
+        <subchapter>${subchapter}</subchapter>
+        <title>${escapeXml(chapter.title || `Chapitre ${pagenum}`)}</title>
+        <content>${escapeXml(chapterHtml)}</content>
+        <contentformat>1</contentformat>
+        <hidden>0</hidden>
+        <timemodified>${timestamp}</timemodified>
+        <importsrc></importsrc>
+      </chapter>`);
+    }
+
+    return xmlParts.join('\n');
+}
+
+/**
+ * Calcule deux jeux de prefixes pour chaque chapitre selon le mode `numbering` Moodle book :
+ *   0 = aucun prefix nulle part
+ *   1 = numérotation décimale "1.", "1.1." (titre h2 + table des matières)
+ *   2 = puces "•" devant chaque entrée de la table des matières (pas dans le titre h2)
+ *   3 = tirets "—" devant chaque entrée de la table des matières (pas dans le titre h2)
+ *
+ * Retourne `{ titlePrefixes, tocPrefixes }` — deux tableaux alignés sur l'index des chapitres.
+ * Le titre h2 du chapitre n'affiche un préfixe qu'en mode décimal, conformément au book Moodle.
+ *
+ * @param {Array<{subchapter}>} chapters
+ * @param {number} numbering
+ * @returns {{titlePrefixes: string[], tocPrefixes: string[]}}
+ */
+function computeChapterPrefixes(chapters, numbering) {
+    const titlePrefixes = [];
+    const tocPrefixes = [];
+    let chCount = 0;
+    let subCount = 0;
+    for (const ch of chapters) {
+        if (ch.subchapter) {
+            subCount++;
+        } else {
+            chCount++;
+            subCount = 0;
+        }
+        let titlePrefix = '';
+        let tocPrefix = '';
+        switch (numbering) {
+            case 1: // Numérotation décimale : visible partout
+                titlePrefix = ch.subchapter ? `${chCount}.${subCount}. ` : `${chCount}. `;
+                tocPrefix = titlePrefix;
+                break;
+            case 2: // Puces : marqueur visible dans la TOC pour TOUS les chapitres
+                tocPrefix = '• ';
+                break;
+            case 3: // Tirets : marqueur visible dans la TOC pour TOUS les chapitres
+                tocPrefix = '— ';
+                break;
+            default: // 0 : aucun prefix
+                break;
+        }
+        titlePrefixes.push(titlePrefix);
+        tocPrefixes.push(tocPrefix);
+    }
+    return { titlePrefixes, tocPrefixes };
+}
+
+/**
+ * Compose un HTML de prévisualisation pour un Livre multi-chapitres.
+ * Produit un simulateur fidèle à l'affichage Moodle/Éléa :
+ *  - Titre du livre + intro en haut
+ *  - Un seul chapitre affiché à la fois (le 1er par défaut)
+ *  - Table des matières à droite avec numérotation et indentation des sous-chapitres
+ *  - Navigation CSS pure (radio buttons cachés + labels) — fonctionne sans JS
+ *
+ * @param {Object} jsonData - JSON complet du livre (avec title, intro, chapters, theme, numbering)
+ * @returns {Promise<string>} HTML autonome pour la preview
+ */
+export async function buildLivrePreviewHtml(jsonData) {
+    const chapters = jsonData.chapters || [];
+    const theme = jsonData.theme || 'elea';
+    const numbering = jsonData.numbering ?? 1;
+    // Note : Éléa n'expose que la table des matières comme mode de navigation
+    // (pas de boutons flèches ni liens texte). Le navstyle est forcé à 0 côté
+    // export Moodle (placeholder NAVSTYLE) et la preview ne rend que la TOC.
+    const tocLabel = (translations && translations.livre_toc_label) || 'Table des matières';
+
+    // Identifiant unique pour ce simulateur (évite collisions si plusieurs previews ouvertes)
+    const simId = 'livre-sim-' + Math.random().toString(36).substring(2, 10);
+
+    // Calcul des prefixes selon le mode numbering (deux jeux : titre h2 et TOC)
+    const { titlePrefixes, tocPrefixes } = computeChapterPrefixes(chapters, numbering);
+
+    // Rendu HTML de chaque chapitre (réutilisation de generateHtmlFromBlocks)
+    const chapterContents = [];
+    for (let i = 0; i < chapters.length; i++) {
+        const ch = chapters[i];
+        const html = await generateHtmlFromBlocks({
+            title: ch.title,
+            blocks: ch.blocks || [],
+            theme: theme
+        });
+        chapterContents.push(html);
+    }
+
+    // Construction des inputs radio (un par chapitre, premier coché)
+    const radios = chapters.map((_, i) =>
+        `<input type="radio" name="${simId}-nav" id="${simId}-ch-${i}"${i === 0 ? ' checked' : ''}>`
+    ).join('\n        ');
+
+    // Construction des sections de chapitres (navigation toujours via TOC seule)
+    const chapterSections = chapters.map((ch, i) => `
+        <article class="livre-sim__chapter" data-ch="${i}">
+            <h2 class="livre-sim__chapter-title">${escapeHtmlTags(titlePrefixes[i] + (ch.title || `Chapitre ${i + 1}`))}</h2>
+            <div class="livre-sim__chapter-body">${chapterContents[i]}</div>
+        </article>`).join('');
+
+    // Construction de la table des matières (HTML valide : <ol> imbriqué dans le <li> parent)
+    // On regroupe d'abord les sous-chapitres consécutifs sous leur chapitre parent.
+    const tocTree = [];
+    chapters.forEach((ch, i) => {
+        const labelText = escapeHtmlTags(tocPrefixes[i] + (ch.title || `Chapitre ${i + 1}`));
+        const node = { i, labelText, subchapter: !!ch.subchapter, children: [] };
+        if (ch.subchapter && tocTree.length > 0) {
+            // Rattacher au dernier chapitre normal (mère)
+            tocTree[tocTree.length - 1].children.push(node);
+        } else {
+            tocTree.push(node);
+        }
+    });
+
+    const renderTocNode = (node) => {
+        const childrenHtml = node.children.length
+            ? `<ol class="livre-sim__toc-sublist">${node.children.map(renderTocNode).join('')}</ol>`
+            : '';
+        const cls = node.subchapter ? 'livre-sim__toc-item livre-sim__toc-item--sub' : 'livre-sim__toc-item';
+        return `<li class="${cls}"><label for="${simId}-ch-${node.i}">${node.labelText}</label>${childrenHtml}</li>`;
+    };
+    const tocItems = tocTree.map(renderTocNode);
+
+    // Génération des règles CSS pour afficher le bon chapitre selon le radio coché
+    const visibilityRules = chapters.map((_, i) => `
+        #${simId}-ch-${i}:checked ~ .livre-sim__layout .livre-sim__chapter[data-ch="${i}"] { display: block; }
+        #${simId}-ch-${i}:checked ~ .livre-sim__layout .livre-sim__toc label[for="${simId}-ch-${i}"] { background:#eaf3ff; color:#0050b3; font-weight:600; border-left-color:#1677ff; }
+    `).join('');
+
+    return `<div class="livre-sim" id="${simId}">
+    <style>
+        #${simId}.livre-sim {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            color: #1f2937;
+            background: #fff;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+        #${simId} input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
+        #${simId} .livre-sim__layout {
+            display: grid;
+            gap: 2rem;
+            padding: 2rem 2.5rem 2.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        /* TOC sidebar à droite (2 colonnes) */
+        #${simId} .livre-sim__layout {
+            grid-template-columns: minmax(0, 1fr) 300px;
+        }
+        #${simId} .livre-sim__main { min-width: 0; text-align: left; }
+        #${simId} .livre-sim__title {
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0 0 0.75rem 0;
+            line-height: 1.25;
+            text-align: left;
+        }
+        #${simId} .livre-sim__intro {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.55;
+            margin: 0 0 1.25rem 0;
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+        #${simId} .livre-sim__chapter { display: none; text-align: left; }
+        #${simId} .livre-sim__chapter-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin: 1.25rem 0 1rem;
+            text-align: left;
+        }
+        #${simId} .livre-sim__chapter-body {
+            color: #1f2937;
+            line-height: 1.65;
+            text-align: left;
+        }
+        #${simId} .livre-sim__chapter-body > div[role="document"] {
+            background: transparent !important;
+            padding: 0 !important;
+            text-align: left !important;
+        }
+
+        /* === Table des matières (colonne droite) === */
+        #${simId} .livre-sim__toc {
+            background: #fafaf7;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 1.25rem 1.4rem;
+            font-size: 0.88rem;
+            align-self: start;
+            position: sticky;
+            /* top doit être aligné sur padding-top du .livre-sim__layout (2rem)
+               pour éviter le « rebond » au moment où le sticky s'active. */
+            top: 2rem;
+            max-height: calc(100vh - 4rem);
+            overflow-y: auto;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            text-align: left;
+        }
+        #${simId} .livre-sim__toc-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #4b5563;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin: 0 0 1rem 0;
+            padding-bottom: 0.6rem;
+            border-bottom: 2px solid #e5e7eb;
+            text-align: left;
+        }
+        #${simId} .livre-sim__toc ol {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+        #${simId} .livre-sim__toc-sublist {
+            padding-left: 1.1rem !important;
+            margin: 0.25rem 0 0.35rem 0.4rem !important;
+            border-left: 2px solid #c7d2fe;
+        }
+        #${simId} .livre-sim__toc li {
+            margin: 0.2rem 0;
+            text-align: left;
+        }
+        #${simId} .livre-sim__toc-item--sub > label {
+            font-size: 0.9em;
+            color: #6366f1;
+            padding-left: 0.5rem;
+        }
+        #${simId} .livre-sim__toc-item--sub > label:hover {
+            color: #4338ca;
+        }
+        #${simId} .livre-sim__toc label {
+            display: block;
+            cursor: pointer;
+            color: #4338ca;
+            font-weight: 500;
+            padding: 0.4rem 0.6rem;
+            border-radius: 5px;
+            border-left: 3px solid transparent;
+            line-height: 1.4;
+            transition: background 0.15s, color 0.15s, border-color 0.15s;
+            text-align: left;
+        }
+        #${simId} .livre-sim__toc label:hover {
+            background: #f3f0ff;
+            color: #1e3a8a;
+        }
+        ${visibilityRules}
+
+        /* === Bouton plein écran sticky en haut à droite === */
+        #${simId} .livre-sim__fs-anchor {
+            position: sticky;
+            top: 0;
+            float: right;
+            width: 0;
+            height: 0;
+            z-index: 50;
+        }
+        #${simId} .livre-sim__fs-anchor > * {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+        }
+
+        @media (max-width: 800px) {
+            #${simId} .livre-sim__layout {
+                grid-template-columns: 1fr;
+                padding: 1.25rem;
+            }
+            #${simId} .livre-sim__toc {
+                position: static;
+                max-height: none;
+            }
+        }
+    </style>
+    ${radios}
+    <div class="livre-sim__layout">
+        <main class="livre-sim__main">
+            <h1 class="livre-sim__title">${escapeHtmlTags(jsonData.title || '')}</h1>
+            ${jsonData.intro ? `<div class="livre-sim__intro">${jsonData.intro}</div>` : ''}
+            ${chapterSections}
+        </main>
+        <aside class="livre-sim__toc" aria-label="${escapeHtmlTags(tocLabel)}">
+            <h3 class="livre-sim__toc-title">${escapeHtmlTags(tocLabel)}</h3>
+            <ol>${tocItems.join('')}</ol>
+        </aside>
+    </div>
+</div>`;
+}
+
+/**
+ * Gère la création d'une activité "Livre" Moodle (module book) au format .mbz.
+ * Un livre est une activité Page multi-chapitres : chaque chapitre est rendu
+ * via generateHtmlFromBlocks() avec le thème global du livre.
+ *
+ * @param {string} jsonInput - La chaîne JSON brute contenant titre, intro, chapters[]
+ * @param {string} exportType - 'mbz' (seul format supporté pour Livre)
+ */
+export async function handleLivreCreation(jsonInput, exportType = 'mbz') {
+    try {
+        let jsonData = JSON.parse(cleanJsonInput(jsonInput));
+        const _debugRawJsonLivre = DEBUG ? structuredClone(jsonData) : null;
+        jsonData = healStructureForActivity(jsonData, 'Livre');
+        // Pipeline LaTeX : réparation des commandes cassées + auto-wrap + conversion délimiteurs
+        jsonData = healLatexForMoodle(jsonData);
+        const _debugHealedJsonLivre = DEBUG ? structuredClone(jsonData) : null;
+        const originalJsonDataLivre = structuredClone(jsonData);
+
+        if (!jsonData.title || !Array.isArray(jsonData.chapters) || jsonData.chapters.length === 0) {
+            console.error("Erreur de validation : Le JSON Livre doit contenir un 'title' et un tableau 'chapters' non vide.");
+            throw new Error("Le JSON Livre doit contenir un 'title' et un tableau 'chapters' non vide.");
+        }
+
+        const theme = jsonData.theme || 'elea';
+
+        // Composition du bloc XML <chapter>...</chapter> pour le book.xml
+        const chaptersXml = await buildChaptersXml(jsonData.chapters, theme);
+
+        // Composition du HTML de prévisualisation (simulateur fidèle à Éléa avec TOC)
+        const previewHtml = await buildLivrePreviewHtml(jsonData);
+
+        const now = new Date();
+        const dateString = now.getFullYear() +
+            String(now.getMonth() + 1).padStart(2, '0') +
+            String(now.getDate()).padStart(2, '0') +
+            String(now.getHours()).padStart(2, '0') +
+            String(now.getMinutes()).padStart(2, '0');
+
+        const activityTitle = jsonData.title;
+        const timestamp = Math.floor(Date.now() / 1000);
+        const courseId = 1000 + Math.floor(Math.random() * 9000);
+        const moduleId = 10000 + Math.floor(Math.random() * 90000);
+        const sectionId = 1000 + Math.floor(Math.random() * 9000);
+        const activityId = 100 + Math.floor(Math.random() * 900);
+        const courseContextId = 10000 + Math.floor(Math.random() * 90000);
+        const activityContextId = courseContextId + 2;
+
+        const data = {
+            'ACTIVITY_TITLE': escapeXml(activityTitle),
+            'BOOK_NAME': escapeXml(activityTitle),
+            'INTRO': escapeXml(formatTextToHtml(jsonData.intro || '')),
+            'NUMBERING': String(jsonData.numbering ?? 1),
+            // Toujours 0 (table des matières) : Éléa n'expose pas les autres
+            // modes de navigation à l'utilisateur final.
+            'NAVSTYLE': '0',
+            // Toujours 0 : Caramel laisse Moodle gérer l'affichage automatique du titre
+            // de chapitre. L'option n'est plus exposée dans l'éditeur.
+            'CUSTOMTITLES': '0',
+            'CHAPTERS_XML': chaptersXml,
+            'COURSE_FULLNAME': escapeXml(activityTitle),
+            'COURSE_SHORTNAME': `livre-${Math.random().toString(36).substring(2, 15)}`,
+            'COURSE_ID': courseId,
+            'MODULE_ID': moduleId,
+            'SECTION_ID': sectionId,
+            'ACTIVITY_ID': activityId,
+            'COURSE_CONTEXTID': courseContextId,
+            'ACTIVITY_CONTEXTID': activityContextId,
+            'TIMESTAMP': timestamp,
+            'BACKUP_DATE': timestamp
+        };
+
+        // Génération des fichiers via le processeur Livre
+        let files = MoodleProcessors.getActivityFiles('Livre', data);
+        files['moodle_backup.log'] = translations.millionnaire_backup_log || 'Backup created automatically by Caramel\n';
+
+        const gzData = await createMbz(files);
+
+        const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
+        const fileName = `livre-caramel-${dateString}-${lang}.mbz`;
+        const mbzBlob = new Blob([gzData], { type: 'application/octet-stream' });
+
+        const notifLivre = {
+            type: 'mbz',
+            title: translations.elea_livre_name || 'Livre Éléa',
+            titleKey: 'elea_livre_name',
+            moduleKey: 'Livre',
+            fileName: fileName,
+            blob: mbzBlob,
+            status: 'success',
+            jsonData: jsonData,
+            originalJsonData: originalJsonDataLivre,
+            previewHtml: previewHtml,
+            silent: true
+        };
+        if (_debugRawJsonLivre) notifLivre._debugRawJson = _debugRawJsonLivre;
+        if (_debugHealedJsonLivre) notifLivre._debugHealedJson = _debugHealedJsonLivre;
+        const notificationId = addNotification(notifLivre);
+        document.dispatchEvent(new CustomEvent('generation:complete', {
+            detail: { notificationId, blob: mbzBlob, fileName, titleKey: 'elea_livre_name', moduleKey: 'Livre' }
+        }));
+    } catch (error) {
+        console.error("Erreur lors de la création du livre :", error);
+
+        const errorInfo = classifyError(error);
+
+        addNotification({
+            type: 'mbz',
+            title: translations.elea_livre_name || 'Livre Éléa',
+            blob: new Blob([''], { type: 'text/plain' }),
+            status: 'error',
+            errorCategory: errorInfo.category,
+            userMessage: translations[errorInfo.userMessageKey] || errorInfo.userMessageKey,
+            technicalMessage: errorInfo.technicalMessage
+        });
+    }
+}
+
+/**
  * Gère la création d'une activité "Qui veut gagner des millions" au format .mbz.
  * @param {string} jsonInput - La chaîne JSON brute contenant le titre et les questions.
  */

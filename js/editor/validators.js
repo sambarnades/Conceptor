@@ -778,6 +778,66 @@ function getTypeSpecificErrors(data, schema) {
         }
     }
 
+    // --- Livre (Moodle book, multi-chapitres) ---
+    if (moduleKey === 'Livre' || moduleKey === 'elea_livre') {
+        if (!data.title || (typeof data.title === 'string' && data.title.trim() === '')) {
+            errors.push({
+                path: 'title',
+                field: t('editor_title') || 'Titre',
+                message: t('validation_livre_no_title') || 'Le livre doit avoir un titre'
+            });
+        }
+        if (!Array.isArray(data.chapters) || data.chapters.length === 0) {
+            errors.push({
+                path: 'chapters',
+                field: t('editor_livre_chapters') || 'Chapitres',
+                message: t('validation_livre_no_chapters') || 'Le livre doit contenir au moins un chapitre'
+            });
+        } else {
+            // Le premier chapitre ne peut pas être un sous-chapitre
+            if (data.chapters[0].subchapter) {
+                errors.push({
+                    path: 'chapters.0.subchapter',
+                    field: `${t('editor_livre_chapter') || 'Chapitre'} 1`,
+                    message: t('validation_livre_first_subchapter') || 'Le premier chapitre ne peut pas être un sous-chapitre'
+                });
+            }
+            // Validation séquence : sous-chapitre orphelin
+            // Un sous-chapitre est valide tant qu'il existe au moins un chapitre normal avant lui
+            // (plusieurs sous-chapitres consécutifs peuvent partager le même parent).
+            let hasParentBefore = false;
+            data.chapters.forEach((ch, i) => {
+                if (ch.subchapter && !hasParentBefore) {
+                    errors.push({
+                        path: `chapters.${i}.subchapter`,
+                        field: `${t('editor_livre_chapter') || 'Chapitre'} ${i + 1}`,
+                        message: t('validation_livre_orphan_subchapter') || 'Un sous-chapitre doit suivre un chapitre normal'
+                    });
+                }
+                if (!ch.subchapter) hasParentBefore = true;
+                if (!ch.title || (typeof ch.title === 'string' && ch.title.trim() === '')) {
+                    errors.push({
+                        path: `chapters.${i}.title`,
+                        field: `${t('editor_livre_chapter') || 'Chapitre'} ${i + 1}`,
+                        message: t('validation_livre_chapter_no_title') || `Le chapitre ${i + 1} n'a pas de titre`
+                    });
+                }
+                // Chaque bloc doit avoir un type
+                if (Array.isArray(ch.blocks)) {
+                    ch.blocks.forEach((block, j) => {
+                        if (!block.type || block.type.trim() === '') {
+                            errors.push({
+                                path: `chapters.${i}.blocks.${j}.type`,
+                                field: `${t('editor_block') || 'Bloc'} ${j + 1}`,
+                                message: t('validation_block_no_type') || `Le bloc ${j + 1} n'a pas de type`
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    }
+
     // --- CoursePresentation ---
     if (moduleKey === 'CoursePresentation') {
         if (!Array.isArray(data.slides) || data.slides.length < 2) {

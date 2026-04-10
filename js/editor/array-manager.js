@@ -434,6 +434,89 @@ export class ArrayManager {
 
         // Validation initiale de la somme
         this.validateSum();
+
+        // === Cas spécial Livre : gestion du checkbox "subchapter" via event delegation ===
+        // Cette logique s'applique à tout array dont l'itemSchema contient un champ 'subchapter'
+        // de type checkbox (actuellement uniquement Livre, mais réutilisable).
+        if (this.config.itemSchema && this.config.itemSchema.subchapter
+            && this.config.itemSchema.subchapter.type === 'checkbox') {
+            this.setupSubchapterBehavior();
+        }
+    }
+
+    /**
+     * Configure le comportement spécial du checkbox "subchapter" (Livre) :
+     *  1. Le 1er chapitre ne peut JAMAIS être un sous-chapitre → checkbox désactivé visuellement
+     *  2. Toggle dynamique de la classe CSS --subchapter sur l'item parent au clic
+     *
+     * Utilise event delegation sur this.container pour fonctionner même si le DOM
+     * est régénéré, et un MutationObserver pour rappliquer la désactivation du 1er chapitre
+     * après tout re-render partiel.
+     */
+    setupSubchapterBehavior() {
+        // Éviter d'attacher plusieurs listeners en cas de re-render
+        if (this._subchapterDelegationAttached) {
+            this.refreshFirstChapterLock();
+            return;
+        }
+        this._subchapterDelegationAttached = true;
+
+        // Event delegation : capture tout change sur les checkbox subchapter du container
+        this.container.addEventListener('change', (e) => {
+            const target = e.target;
+            if (target.tagName !== 'INPUT' || target.type !== 'checkbox') return;
+            const dataPath = target.dataset.path || '';
+            if (!dataPath.endsWith('.subchapter')) return;
+
+            // Trouver l'item array parent direct (pas un bloc imbriqué)
+            const item = target.closest('.json-editor__array-item');
+            if (!item) return;
+            // Vérifier que l'item est bien un enfant direct de this.container (pas un bloc nested)
+            if (item.parentElement !== this.container) return;
+
+            // Si c'est le premier item, refuser le toggle
+            if (item.dataset.index === '0') {
+                e.preventDefault();
+                target.checked = false;
+                return;
+            }
+
+            // Toggle la classe CSS pour l'indentation et le préfixe lettré
+            item.classList.toggle('json-editor__array-item--subchapter', target.checked);
+        });
+
+        // Verrouiller le checkbox du premier chapitre
+        this.refreshFirstChapterLock();
+    }
+
+    /**
+     * Désactive visuellement le checkbox subchapter du premier chapitre.
+     * Appelée à chaque render pour maintenir le verrouillage.
+     */
+    refreshFirstChapterLock() {
+        const firstItem = this.container.querySelector(':scope > .json-editor__array-item[data-index="0"]');
+        if (!firstItem) return;
+        const checkbox = firstItem.querySelector('input[type="checkbox"][data-path$=".subchapter"]');
+        if (!checkbox) return;
+
+        // S'assurer que la valeur reste false
+        checkbox.checked = false;
+        checkbox.disabled = true;
+        if (this.items[0]) {
+            this.items[0].subchapter = false;
+        }
+
+        // Style visuel pour indiquer que c'est verrouillé
+        const wrapper = checkbox.closest('.json-editor__field--checkbox');
+        if (wrapper) {
+            wrapper.style.opacity = '0.45';
+            wrapper.style.pointerEvents = 'none';
+            wrapper.title = translateLabel('editor_livre_subchapter_locked')
+                || 'Le premier chapitre ne peut pas être un sous-chapitre';
+        }
+
+        // S'assurer que la classe --subchapter n'est pas appliquée au 1er item
+        firstItem.classList.remove('json-editor__array-item--subchapter');
     }
 
     /**
@@ -529,6 +612,10 @@ export class ArrayManager {
                 element.classList.add(`json-editor__array-item--lib-${lib}`);
             } else if (item.type) {
                 element.classList.add(`json-editor__array-item--type-${item.type}`);
+            }
+            // Cas spécial : sous-chapitre (Livre) — indentation et préfixe lettré via CSS
+            if (item.subchapter === true || item.subchapter === 1) {
+                element.classList.add('json-editor__array-item--subchapter');
             }
         }
 
@@ -838,6 +925,15 @@ export class ArrayManager {
         // Listeners showWhen : reconstruire l'item quand le champ référencé change
         if (this.config.itemSchema) {
             this.setupShowWhenListeners(element, index, content);
+        }
+
+        // === Cas spécial Livre : initialisation de la classe --subchapter à l'état actuel ===
+        // (le toggle dynamique est géré par event delegation dans render())
+        if (this.config.itemSchema && this.config.itemSchema.subchapter
+            && this.config.itemSchema.subchapter.type === 'checkbox'
+            && item && (item.subchapter === true || item.subchapter === 1)
+            && index !== 0) {
+            element.classList.add('json-editor__array-item--subchapter');
         }
 
         return element;

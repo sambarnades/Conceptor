@@ -531,14 +531,14 @@ async function runStep4_H5PProcessorsWithImages() {
         assert(false, `[4c3.Crossword] Exception : ${e.message}`);
     }
 
-    // --- 4c4. Timeline avec image d'événement ---
+    // --- 4c4. Timeline event : upload ignoré, URL originale préservée ---
     try {
         _ctx = { step: 4, stepName: 'H5P+Image', file: 'timeline_1.json', module: 'Timeline', source: 'h5p' };
 
         const rawText = await fetchFixture('timeline_1.json');
         const jsonObj = healFixture(rawText, 'Timeline');
 
-        // Injecter une image sur le premier événement
+        // Timeline n'accepte que des URLs externes : eventImage est ignoré par le processeur
         const firstDate = jsonObj.timeline.date[0];
         firstDate.mediaType = 'image';
         firstDate.eventImage = {
@@ -553,21 +553,21 @@ async function runStep4_H5PProcessorsWithImages() {
         const content = processed.content || processed;
         const processedDate = content.timeline.date[0];
 
-        assertEqual(processedDate.asset.media, pngEntry.h5pPath, `[4c4.Path] asset.media contient le chemin image`);
-        assert(processedDate.eventImage === undefined, `[4c4.Clean] eventImage nettoyé du H5P`);
-        assert(processedDate.mediaType === undefined, `[4c4.CleanType] mediaType nettoyé du H5P`);
+        assert(processedDate.asset !== undefined, `[4c4.Asset] asset existe sur l'événement`);
+        assert(processedDate.asset.media !== pngEntry.h5pPath, `[4c4.NoConvert] eventImage uploadée non convertie en asset.media (Timeline URL-only)`);
+        assert(processedDate.asset.media.startsWith('https://'), `[4c4.URLPreserved] URL originale de l'événement préservée`);
     } catch (e) {
         assert(false, `[4c4.Timeline] Exception : ${e.message}`);
     }
 
-    // --- 4c5. Timeline image de couverture (section generale) ---
+    // --- 4c5. Timeline couverture : upload ignoré, URL originale préservée ---
     try {
         _ctx = { step: 4, stepName: 'H5P+Image', file: 'timeline_1.json', module: 'Timeline', source: 'h5p' };
 
         const rawText = await fetchFixture('timeline_1.json');
         const jsonObj = healFixture(rawText, 'Timeline');
 
-        // Injecter une image de couverture
+        // Timeline n'accepte que des URLs externes : coverImage est ignoré par le processeur
         jsonObj.timeline.coverImage = {
             path: webpEntry.h5pPath,
             mime: 'image/jpeg',
@@ -580,10 +580,9 @@ async function runStep4_H5PProcessorsWithImages() {
         const processed = await processH5PContent('Timeline', structuredClone(jsonObj));
         const content = processed.content || processed;
 
-        assertEqual(content.timeline.asset.media, webpEntry.h5pPath, `[4c5.CoverPath] asset.media contient le chemin image`);
-        assert(content.timeline.coverImage === undefined, `[4c5.Clean] coverImage nettoyé du H5P`);
-        assert(content.timeline.coverImageAlt === undefined, `[4c5.CleanAlt] coverImageAlt nettoyé du H5P`);
-        assert(content.timeline.mediaType === undefined, `[4c5.CleanType] mediaType nettoyé du H5P`);
+        assert(content.timeline.asset !== undefined, `[4c5.Asset] asset de couverture existe`);
+        assert(content.timeline.asset.media !== webpEntry.h5pPath, `[4c5.NoConvert] coverImage uploadée non convertie en asset.media (Timeline URL-only)`);
+        assert(content.timeline.asset.media.startsWith('https://'), `[4c5.URLPreserved] URL originale de couverture préservée`);
     } catch (e) {
         assert(false, `[4c5.TimelineCover] Exception : ${e.message}`);
     }
@@ -615,14 +614,14 @@ async function runStep4_H5PProcessorsWithImages() {
         assert(false, `[4c6.TimelineNoImage] Exception : ${e.message}`);
     }
 
-    // --- 4c7. Timeline event image remplace l'URL existante ---
+    // --- 4c7. Timeline event : URL existante préservée malgré eventImage injecté ---
     try {
         _ctx = { step: 4, stepName: 'H5P+Image', file: 'timeline_1.json', module: 'Timeline', source: 'h5p' };
 
         const rawText = await fetchFixture('timeline_1.json');
         const jsonObj = healFixture(rawText, 'Timeline');
 
-        // L'evenement 0 a deja une URL dans asset.media — l'image fichier doit la remplacer
+        // L'evenement 0 a deja une URL dans asset.media — le processeur URL-only doit la conserver
         const dateWithUrl = jsonObj.timeline.date[0];
         const originalUrl = dateWithUrl.asset ? dateWithUrl.asset.media : '';
         dateWithUrl.mediaType = 'image';
@@ -638,12 +637,13 @@ async function runStep4_H5PProcessorsWithImages() {
         const content = processed.content || processed;
         const processedDate = content.timeline.date[0];
 
-        assertEqual(processedDate.asset.media, pngEntry.h5pPath, `[4c7.Replaced] image remplace URL (${originalUrl ? 'avait URL' : 'sans URL'})`);
+        assert(processedDate.asset.media !== pngEntry.h5pPath, `[4c7.Preserved] URL non remplacée par l'upload (${originalUrl ? 'avait URL' : 'sans URL'})`);
+        assert(processedDate.asset.media === originalUrl, `[4c7.OrigURL] URL originale conservée telle quelle`);
 
-        // Les autres evenements gardent leurs URLs
+        // Les autres evenements n'ont pas de champs eventImage (non injectes)
         if (content.timeline.date.length > 1) {
             const otherDate = content.timeline.date[1];
-            assert(otherDate.eventImage === undefined, `[4c7.OtherClean] autres evenements nettoyes`);
+            assert(otherDate.eventImage === undefined, `[4c7.OtherClean] autres evenements sans eventImage residuel`);
         }
     } catch (e) {
         assert(false, `[4c7.TimelineReplace] Exception : ${e.message}`);
@@ -1107,7 +1107,7 @@ async function runStep5_H5PPackagingWithImages() {
         clearAllImages();
     }
 
-    // --- 5f. Timeline avec event image → image dans le ZIP ---
+    // --- 5f. Timeline URL-only : asset.media conserve l'URL d'origine dans le ZIP ---
     try {
         _ctx = { step: 5, stepName: 'H5P+ZIP', file: 'timeline_1.json', module: 'Timeline', source: 'h5p' };
 
@@ -1115,16 +1115,9 @@ async function runStep5_H5PPackagingWithImages() {
         const jsonObj = healFixture(rawText, 'Timeline');
 
         clearAllImages();
-        registerImage('timeline.date.0.eventImage', pngEntry);
 
-        jsonObj.timeline.date[0].mediaType = 'image';
-        jsonObj.timeline.date[0].eventImage = {
-            path: pngEntry.h5pPath,
-            mime: 'image/jpeg',
-            width: pngEntry.width,
-            height: pngEntry.height
-        };
-        jsonObj.timeline.date[0].eventImageAlt = 'Event image ZIP';
+        // Timeline n'accepte que des URLs externes : pas d'upload, asset.media reste l'URL de la fixture
+        const originalAssetMedia = jsonObj.timeline.date[0].asset ? jsonObj.timeline.date[0].asset.media : '';
 
         const processed = await processH5PContent('Timeline', structuredClone(jsonObj));
         const contentJson = processed.content || processed;
@@ -1139,21 +1132,18 @@ async function runStep5_H5PPackagingWithImages() {
 
         const imageFiles = getAllImages();
         const h5pBlob = await createH5PBlob(contentJson, metadata.machineName, dependencies, {
-            title: 'Test Timeline avec event image',
+            title: 'Test Timeline URL-only',
             lang: 'fr',
             imageFiles
         });
 
         const zip = await JSZip.loadAsync(h5pBlob);
-        const imagePath = `content/${pngEntry.h5pPath}`;
-        const imageFile = zip.file(imagePath);
-        assert(imageFile !== null, `[5f.ImageFile] ${imagePath} present dans le ZIP (Timeline event)`);
 
-        // Verifier asset.media dans content.json
+        // Verifier que asset.media dans content.json conserve l'URL d'origine
         const contentFile = zip.file('content/content.json');
         if (contentFile) {
             const parsed = JSON.parse(await contentFile.async('text'));
-            assertEqual(parsed.timeline.date[0].asset.media, pngEntry.h5pPath, `[5f.Media] asset.media pointe vers l'image`);
+            assertEqual(parsed.timeline.date[0].asset.media, originalAssetMedia, `[5f.Media] asset.media = URL originale (pas de conversion upload)`);
         }
 
         clearAllImages();
@@ -1444,23 +1434,16 @@ async function runStep6_DocumentExportWithImages() {
         assert(false, `[6i.TimelineEvent] Exception : ${e.message}`);
     }
 
-    // --- 6j. Timeline avec coverImage uploadée → image dans l'export ---
+    // --- 6j. Timeline couverture URL → image dans l'export ---
     try {
         _ctx = { step: 6, stepName: 'DocExport+Image', file: 'timeline_1.json', module: 'Timeline', source: 'export' };
 
         const rawText = await fetchFixture('timeline_1.json');
         const jsonObj = healFixture(rawText, 'Timeline');
 
-        // Injecter une image de couverture
-        jsonObj.timeline.mediaType = 'image';
-        jsonObj.timeline.coverImage = {
-            path: webpEntry.h5pPath,
-            dataURL: webpEntry.dataURL,
-            mime: 'image/jpeg',
-            width: webpEntry.width,
-            height: webpEntry.height
-        };
-        jsonObj.timeline.coverImageAlt = 'Couverture export';
+        // Timeline URL-only : la couverture est définie par asset.media (URL externe)
+        const testCoverUrl = 'https://example.com/test-cover-timeline.jpg';
+        jsonObj.timeline.asset = { media: testCoverUrl, caption: 'Test couverture', credit: '' };
 
         const formatted = await formatContentForDocument('Timeline', jsonObj);
         const imageSections = formatted.sections.filter(s => s.type === 'image');
@@ -1469,10 +1452,7 @@ async function runStep6_DocumentExportWithImages() {
         assert(imageSections.length >= 1, `[6j.HasCover] image de couverture dans l'export`);
         if (imageSections.length > 0) {
             const coverSection = imageSections[0];
-            assert(
-                coverSection.url === webpEntry.h5pPath || coverSection.url === webpEntry.dataURL,
-                `[6j.CoverURL] 1ere image = couverture uploadee`
-            );
+            assertEqual(coverSection.url, testCoverUrl, `[6j.CoverURL] 1ere image = URL de couverture (Timeline URL-only)`);
         }
     } catch (e) {
         assert(false, `[6j.TimelineCover] Exception : ${e.message}`);

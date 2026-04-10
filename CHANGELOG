@@ -4,6 +4,88 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 
 ---
 
+## [5.2.0] - 10-04-2026
+
+### Nouveautés
+
+- **Activité Livre (Moodle/Éléa)** : Nouvelle activité Moodle (module `book`) permettant de créer des cours pédagogiques **multi-chapitres** avec une mise en forme avancée. Chaque chapitre est conçu comme une mini-Page composée des **18 mêmes blocs visuels** que l'activité Page (bandeau d'ouverture, encadrés, tableaux, paragraphes, FAQ, sitographie, etc.) et tous les chapitres partagent le **même thème visuel global** (elea, dsfr, accessible, dynamique) pour une cohérence d'ensemble.
+  - **4 à 6 chapitres** générés par défaut, avec **sous-chapitres optionnels** (à utiliser avec parcimonie)
+  - **Numérotation décimale automatique** (1., 1.1, 2., 2.1) dans la table des matières et dans les exports document
+  - **3 réglages d'affichage** exposés dans l'éditeur : style de numérotation (4 modes), style de navigation (3 modes), titres personnalisés
+  - **Modèle IA** : `gpt-oss-120b` (cohérent avec Page)
+  - **Simulateur de prévisualisation fidèle à Éléa** : layout 2 colonnes avec table des matières latérale, navigation entre chapitres CSS pure (sans JavaScript), bouton plein écran sticky en haut à droite
+  - **Aide à 3 niveaux** complète : description sidebar, mention dans le tutoriel global, popover éditeur dédié (`elea_livre.html`) qui réutilise les descriptions des 18 blocs Page sans duplication
+  - **Export DOCX/ODT/PDF** avec hiérarchie chapitres/sous-chapitres (H2/H3) et numérotation automatique
+  - **Field-constraints complètes** pour le rendu HTML+LaTeX dans tous les champs de blocs
+  - **Healing automatique** : injection des défauts d'affichage, correction de la séquence de chapitres (premier chapitre forcé en chapitre normal, sous-chapitres orphelins corrigés)
+  - **Traduit dans les 11 langues** (FR, EN, ES, DE, IT, NL, PT, AR, ZH, JP, EL)
+
+### Améliorations de l'éditeur visuel JSON
+
+- **Indentation visuelle des sous-chapitres dans la liste de l'éditeur** : Quand un chapitre est marqué comme sous-chapitre via la case à cocher, il se décale vers la droite avec un préfixe lettré (A., B., C., ...) qui se réinitialise à chaque chapitre normal. Cette indentation se met à jour **dynamiquement** lors du clic sans nécessiter un re-render complet de l'éditeur. Pattern réutilisable pour toute future activité hiérarchique (compteurs CSS).
+
+### Correctifs
+
+- **Corruption d'items voisins dans l'éditeur visuel JSON lors d'une suppression / déplacement** : Dans l'éditeur visuel (toutes activités à array primaire : QCM, Quiz mixte, Flashcards, DialogCards, Crossword, Timeline, Glossaire, Page, Livre, etc.), supprimer ou déplacer un item via la nav de gauche pouvait écraser silencieusement le contenu de l'item voisin avec celui de l'item supprimé/déplacé. Exemple concret : en édition d'un Quiz mixte sur la question 2, cliquer « Supprimer » → la nouvelle question 2 (ex-question 3) apparaissait dans la nav avec son bon titre, mais son énoncé, ses réponses et son feedback étaient remplacés par ceux de l'ex-question 2. **Cause** : `navigateTo()` rappelait `collectCurrentViewData()` après la mutation structurelle. Comme le DOM contenait encore les `<input data-path="questions.N.*">` de l'item supprimé (avant le re-render), `collectInputValues()` réécrivait ces valeurs dans `editorData.questions[N]` qui pointait désormais sur un item différent suite au splice. **Correction** : ajout d'un flag `skipCollect` à `navigateTo()`, utilisé par `handleArrayRemove`, `handleArrayDuplicate` et `handleArrayMove` (qui collectent déjà les données *avant* de muter la structure). Bénéfice transversal : ce fix corrige le bug pour **toutes les activités** de l'éditeur visuel.
+- **Suivi de sélection cassé dans l'éditeur lors d'un drag & drop d'un item non affiché** : Dans `handleArrayMove`, déplacer un item *autre* que celui actuellement édité provoquait deux problèmes : (1) l'item affiché restait coincé sur son ancien index numérique, donc l'éditeur basculait sur un voisin si l'index courant avait glissé, et (2) la même corruption par chemins obsolètes que ci-dessus écrasait les voisins. **Correction** : capture de l'item affiché *par référence* avant le splice, puis recalcul de son nouvel index via `indexOf()` après le déplacement. La sélection suit désormais l'item affiché par identité, jamais par index.
+
+### Tests
+
+- **Nouvelle suite `test-editor-mutations`** : Tests unitaires couvrant ajout / suppression / duplication / déplacement d'items dans la nav primaire de l'éditeur visuel. Monte un vrai éditeur Flashcards avec 5 cartes étiquetées (`CARD-1` → `CARD-5`) et déclenche les mutations directement via un nouvel export `__testing` de `editor-core.js`. Auto-confirme les modales de suppression via un `MutationObserver` qui clique le bouton `--danger` dès qu'il apparaît. 5 groupes : `handleArrayRemove` (item courant, dernier item, item antérieur), `handleArrayAdd`, `handleArrayDuplicate`, `handleArrayMove` (item affiché vs autre item, suivi par identité), et une séquence combinée add → remove → move. Les assertions ciblent précisément les corruptions de voisins et les régressions de suivi de sélection. Inscrit dans `test-all.html` sous l'id `editor-mutations`.
+
+- **Export DOCX/ODT/PDF incomplet pour 5 blocs Page (et donc Livre)** : Plusieurs blocs des activités **Page** et **Livre** étaient partiellement ou totalement absents des exports document. Seul leur titre apparaissait, le contenu était silencieusement perdu. Causes : deux blocs lisaient un schéma de données obsolète (champs renommés depuis), trois autres n'étaient pas du tout gérés et tombaient dans le cas par défaut qui n'extrait que `title`/`text`. **Correction** :
+  - `#09_figures_comparison` : lit désormais `data.left`/`data.right` (avec `img_src`, `img_alt`, `caption`) et `data.text` au lieu d'un `data.images[]` inexistant — les deux figures et le texte descriptif sont restitués.
+  - `#16_method_image_desc` : lit désormais `data.steps[]` (rendus en liste à puces), `data.img_src`, `data.img_alt` et `data.caption` au lieu d'un `data.image{}` et `data.description` inexistants — les étapes de la méthode et l'image illustrative sont restituées.
+  - `#07_glossary_chips` (nouveau) : titre + liste des chips jointes par séparateur `·`.
+  - `#14_faq_block` (nouveau) : titre + chaque question en sous-titre h3 + réponse en paragraphe.
+  - `#15_myths_realities` (nouveau) : titre + chaque item en deux puces « Mythe : … » / « Réalité : … » (libellés traduits dans les 11 langues).
+- **Thème Éléa non traduit dans le sélecteur de thème (Page et Livre)** : Le libellé du thème « Éléa (violet/bleu/orange) » dans l'éditeur visuel des activités **Page** et **Livre** restait en français quelle que soit la langue choisie, alors que les 3 autres thèmes (DSFR, Accessible, Couleurs dynamiques) étaient correctement traduits. La clé `editor_page_theme_elea` contenait la même chaîne française dans les 11 fichiers de langue. **Correction** : la mention « violet/bleu/orange » est désormais traduite dans chacune des 11 langues (purple/blue/orange en anglais, Violett/Blau/Orange en allemand, viola/blu/arancione en italien, 紫/青/オレンジ en japonais, etc.).
+- **Bug de traduction des prompts au changement de langue** (transversal) : Quand l'utilisateur ouvrait une activité, fermait la sidebar, changeait de langue et rouvrait l'activité, le prompt restait dans la langue précédente au lieu de passer à la nouvelle langue. Cause : le mécanisme `restoreModalDataFromSession` restaurait le prompt sauvegardé en sessionStorage (dans l'ancienne langue) **par-dessus** la nouvelle traduction fraîchement régénérée par `generatePrompts()`. **Correction** : la langue est désormais stockée avec le prompt en sessionStorage. Si la langue a changé depuis la sauvegarde, la restauration est ignorée et la sauvegarde obsolète est nettoyée. Les modifications manuelles de l'utilisateur dans la même langue restent préservées. Bénéfice transversal : ce fix corrige le bug pour **toutes les activités**, pas seulement Livre.
+
+### Correctifs d'interface
+
+- **Footer responsive** : Le footer avait une hauteur fixe de 60px en `position: absolute`. Sur les écrans intermédiaires (tablettes étroites), les liens passaient à la ligne mais le footer restait à 60px et chevauchait le contenu. **Correction** : passage à un layout flexbox colonne sur le `body` (`display: flex; flex-direction: column`) avec `flex: 1` sur le contenu principal — le footer est désormais dans le flux normal avec `min-height: 60px` et s'étend librement si ses items se répartissent sur plusieurs lignes.
+- **Footer smartphone** : Sur mobile (≤ 768px), le footer affiche désormais **deux lignes compactes** : les liens secondaires (Forge, Ticket, Licence, Mentions légales) réduits à leur icône, accompagnés de « Caramel v5.2.0 » en ligne 1, puis « Gauthier REMANDE » et « Emmanuel GAUNARD » avec icône enveloppe en ligne 2, séparés par un fin trait de séparation.
+
+### Infrastructure et performances
+
+- **Mise à jour PDF.js 5.4.624 → 5.6.205** : Mise à jour de la bibliothèque d'extraction de texte PDF. Le wrapper de compatibilité Safari (`pdf.worker.compat.mjs`) est conservé sans modification — les polyfills `Promise.withResolvers` et `structuredClone` restent nécessaires pour Safari < 17.4.
+
+- **Refonte complète de l'architecture n8n** : Le workflow de génération IA a été entièrement refondu pour résoudre l'accumulation de **zombies d'exécution** (executions bloquées indéfiniment en attente d'une réponse client qui n'arrive jamais — onglet fermé, erreur réseau, abandon). L'ancienne architecture reposait sur un nœud `Wait` (resume:webhook) qui maintenait un slot n8n occupé pendant toute la durée de l'inférence (30 à 180 secondes). À partir d'un seuil d'environ 4 zombies, la file d'attente était saturée et toutes les générations échouaient.
+
+  **Nouvelle architecture asynchrone en 4 workflows distincts :**
+
+  - **Submit** (`POST /webhook/caramel/llm/submit-dev2`) : reçoit la requête Caramel, insère une tâche dans Postgres avec le statut `pending`, répond en **~100ms** avec un `taskId`, puis déclenche le Worker en fire-and-forget. Le slot n8n est libéré quasi immédiatement.
+  - **Worker** (`POST /webhook/caramel/llm/worker-dev2`) : répond `202 Accepted` instantanément et continue le traitement en arrière-plan. Exécute l'appel LLM iLaaS (timeout 59s, 3 modèles en cascade avec fallback automatique), met à jour le statut Postgres (`running` → `done` ou `error`) et exporte les statistiques vers Grist.
+  - **Result** (`GET /webhook/caramel/llm/result-dev2?taskId=xxx`) : répond en **~50ms** aux polls du client. Retourne toujours HTTP 200 avec un champ `status` : `processing`, `done`, `error`, ou `not_found`.
+  - **Cleanup** (cron toutes les minutes) : purge la table Postgres — tâches terminées supprimées **30 secondes** après complétion, tâches orphelines supprimées après **3 minutes**.
+
+  **Côté client (`js/services/llm.js`)** : la fonction `generateH5PWithLLM` adopte le **pattern polling** — délai initial de 5s, puis appels GET toutes les 3s pendant 5 minutes max. L'abandon du client (fermeture d'onglet, navigation) n'a plus aucun impact sur le serveur.
+
+  **Infrastructure Postgres** : table `public.caramel_llm_tasks` sur la base Scalingo partagée avec n8n, avec 3 index (statut, created_at, completed_at). Les workflows utilisent des requêtes paramétrées (`$1, $2...` via `queryReplacement`) pour éviter toute injection SQL depuis le contenu des prompts.
+
+  **Injection CI/CD** : les URLs des webhooks Submit et Result sont injectées dans `llm.js` à la minification via deux variables GitLab (`LLM_SUBMIT_URL`, `LLM_RESULT_URL`). Les URLs dev2 restent hardcodées pour le développement local.
+
+- **Synchronisation du catalogue de modèles avec iLaaS** : Mise à jour de la liste `AVAILABLE_MODELS` dans `llm.js` à partir du suivi automatisé Grist (workflow n8n Scalingo qui surveille quotidiennement les modèles exposés par iLaaS). Remplacement de `qwen-3-30b` par `qwen-3.5-35b-instruct` (le nouveau modèle Qwen exposé par iLaaS, l'ancien id continue de fonctionner via fallback côté serveur), et ajout de deux nouveaux modèles : `gemma-4-31b` (Google, 31 Mrd paramètres) et `mistral-medium-250523` (Mistral AI, ~70 Mrd paramètres). Le sélecteur principal continue d'afficher uniquement les 3 modèles `featured` (Mistral-Small-3.2, Qwen 3.5, GPT-OSS) en mode normal.
+
+- **Mode `?debug` : sélecteur de modèle LLM exhaustif** : En mode `?debug`, le dropdown de sélection du modèle IA affiche désormais **tous** les modèles déclarés dans `AVAILABLE_MODELS` (et plus seulement les 3 `featured`), pour faciliter le test des nouveaux modèles iLaaS sans avoir à modifier le code. Les modèles sans `sizeTag` (Llama-3.3, Llama-3.1, Gemma 4, Mistral Medium) bénéficient d'un **résumé auto-généré** via la nouvelle clé i18n `llm_default_summary` (template `Modèle {name} de {company}, {params} milliards de paramètres.`), traduite dans les 11 langues. Hors mode debug, le comportement est inchangé (3 modèles featured).
+
+### Documentation et architecture
+
+- **PRD exhaustif `docs/PRD_NOUVELLE_ACTIVITE_LIVRE.md`** (~1500 lignes) : Document de référence exécutable pour intégrer une nouvelle activité Moodle dans Caramel. Couvre les 16 phases d'intégration, les pièges et apprentissages issus de l'implémentation Livre (9 pièges documentés dont les types de champs disponibles, le routage par `titleKey`, les compteurs CSS, le sessionStorage et la langue, etc.). Sert de modèle pour les futures activités Moodle.
+- **Helper `formatPageBlocks` partagé** : Le formatage des blocs Page pour les exports DOCX/ODT/PDF a été extrait en helper réutilisable, partagé entre `formatPage` et `formatLivre`. Zéro duplication de code.
+- **Réutilisation maximale** : `generateHtmlFromBlocks` (1 appel par chapitre), `pageBlockSchemas` (18 schémas indexés par type), `pageBlockData` field type, et toutes les clés de traduction `eh_elea_page_block_*` sont réutilisées tels quels par Livre.
+
+---
+
+## [5.1.2] - 06-04-2026
+
+### Correctifs
+
+- **Éditeur Timeline** : L'ajout d'images dans l'éditeur visuel de l'activité Timeline revient au fonctionnement par URL uniquement. Le format H5P Timeline ne prend pas en charge les images uploadées comme fichiers embarqués — seules les URLs externes sont valides pour la couverture et les événements.
+
+---
+
 ## [5.1.1] - 30-03-2026
 
 ### Améliorations

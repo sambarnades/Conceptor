@@ -428,6 +428,19 @@ export const moodleModules = {
         platforms: ["Éléa", "Magistère", "Moodle"],
         formats: ["MBZ", "HTML", "DOCX", "ODT", "PDF"]
     },
+    Livre: {
+        name: "elea_livre_name",
+        subtitleKey: "elea_livre_subtitle",
+        description: "elea_livre_description",
+        image: "assets/images/activities/livre.webp",
+        promptId: "livreResultat",
+        jsonInputId: "livreJsonInput",
+        createBtnId: "createLivreMBZ",
+        categories: ["elea"],
+        hidden: false,
+        platforms: ["Éléa", "Magistère", "Moodle"],
+        formats: ["MBZ", "DOCX", "ODT", "PDF"]
+    },
     Devoir: {
         name: "elea_devoir_name",
         subtitleKey: "elea_devoir_subtitle",
@@ -476,6 +489,7 @@ export const customOrder = [
     'MultipleChoice',
     'TrueFalse',
     'Page',
+    'Livre',
     'Devoir',
     'test_elea',
     'QCM',

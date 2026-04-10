@@ -23,20 +23,6 @@ export default {
         // height peut venir de l'éditeur au niveau racine (pas dans timeline)
         timelineData.timeline.height = timelineData.timeline.height || jsonObj.height || 600;
 
-        // Image de couverture uploadée → remplace l'URL dans asset.media
-        if (timelineData.timeline.coverImage && timelineData.timeline.coverImage.path) {
-            if (!timelineData.timeline.asset) timelineData.timeline.asset = {};
-            timelineData.timeline.asset.media = timelineData.timeline.coverImage.path;
-            if (timelineData.timeline.coverImageAlt) {
-                timelineData.timeline.asset.caption = timelineData.timeline.asset.caption || timelineData.timeline.coverImageAlt;
-            }
-        }
-
-        // Nettoyage des champs éditeur au niveau principal
-        delete timelineData.timeline.coverImage;
-        delete timelineData.timeline.coverImageAlt;
-        delete timelineData.timeline.mediaType;
-
         // Formater le texte principal
         if (timelineData.timeline.text) {
             timelineData.timeline.text = formatTextToHtml(timelineData.timeline.text);
@@ -51,19 +37,6 @@ export default {
                 if (!d.asset) {
                     d.asset = {};
                 }
-
-                // Image fichier uploadée → remplace l'URL dans asset.media
-                if (d.eventImage && d.eventImage.path) {
-                    d.asset.media = d.eventImage.path;
-                    if (d.eventImageAlt) {
-                        d.asset.caption = d.asset.caption || d.eventImageAlt;
-                    }
-                }
-
-                // Nettoyage des champs éditeur (ne pas inclure dans le H5P)
-                delete d.eventImage;
-                delete d.eventImageAlt;
-                delete d.mediaType;
             });
         }
 

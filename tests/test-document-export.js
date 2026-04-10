@@ -102,6 +102,8 @@ const ALL_FIXTURES = [
     { moduleKey: 'Appariement',     fixture: 'appariement_1.json' },
     { moduleKey: 'QCM',             fixture: 'qcm_1.json' },
     { moduleKey: 'Page',            fixture: 'page_1.json' },
+    { moduleKey: 'Livre',           fixture: 'livre_1.json' },
+    { moduleKey: 'Livre',           fixture: 'livre_2.json' },
     { moduleKey: 'Devoir',          fixture: 'devoir_1.json' }
 ];
 

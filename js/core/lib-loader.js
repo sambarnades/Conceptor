@@ -11,8 +11,8 @@
 
 export const LIB_PATHS = {
     // OCR / Extraction de texte
-    PDF_JS: 'js/vendor/pdf-js/5.5.207/pdf.min.mjs',
-    PDF_JS_WORKER: 'js/vendor/pdf-js/5.5.207/pdf.worker.compat.mjs',
+    PDF_JS: 'js/vendor/pdf-js/5.6.205/pdf.min.mjs',
+    PDF_JS_WORKER: 'js/vendor/pdf-js/5.6.205/pdf.worker.compat.mjs',
     TESSERACT: 'js/vendor/tesseract/7.0.0/tesseract.min.js',
     MAMMOTH: 'js/vendor/mammoth/1.12.0/mammoth.browser.min.js',
     JSZIP: 'js/vendor/jszip/3.10.1/jszip.min.js',

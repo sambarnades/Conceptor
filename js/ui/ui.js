@@ -290,6 +290,7 @@ export function setupFilters() {
     window.addEventListener('caramel:language-changed', updateMagistereChipVisibility);
 
 
+
     // Vérification initiale de l'état des tuiles
     updateTilesState();
 }
@@ -330,9 +331,12 @@ function saveModalDataToSession(moduleKey) {
                       : module.jsonInputId;
 
     // Sauvegarder le prompt (peut avoir été modifié manuellement par l'utilisateur)
+    // On stocke aussi la langue courante pour ne pas restaurer un prompt obsolète
+    // après changement de langue (sinon écrase la nouvelle traduction).
     const promptTextarea = document.getElementById(promptId);
     if (promptTextarea?.value.trim()) {
         sessionStorage.setItem(`${STORAGE_PREFIX}prompt_${moduleKey}`, promptTextarea.value);
+        sessionStorage.setItem(`${STORAGE_PREFIX}prompt_lang_${moduleKey}`, currentLang);
     }
 
     // Sauvegarder le JSON (contenu généré par LLM)
@@ -828,11 +832,11 @@ export function toggleActivityContent(moduleKey, tileElement) {
             });
         }
 
-        if (['test_elea', 'glossaireXml', 'Millionnaire', 'Appariement', 'QCM', 'Devoir', 'Page'].includes(moduleKey)) {
+        if (['test_elea', 'glossaireXml', 'Millionnaire', 'Appariement', 'QCM', 'Devoir', 'Page', 'Livre'].includes(moduleKey)) {
             attachLLMLogic(moduleKey, sidebar);
         }
 
-        const promptIdForCopy = module.promptId || (moduleKey === 'gift' ? 'giftResultat' : (moduleKey === 'test_elea' ? 'test_eleaResultat' : (moduleKey === 'glossaireXml' ? 'glossaireXmlResultat' : (moduleKey === 'Page' ? 'pageResultat' : null))));
+        const promptIdForCopy = module.promptId || (moduleKey === 'gift' ? 'giftResultat' : (moduleKey === 'test_elea' ? 'test_eleaResultat' : (moduleKey === 'glossaireXml' ? 'glossaireXmlResultat' : (moduleKey === 'Page' ? 'pageResultat' : (moduleKey === 'Livre' ? 'livreResultat' : null)))));
         if (promptIdForCopy) {
             sidebar.querySelectorAll('.go-duck').forEach(btn => btn.addEventListener('click', function () {
                 copyToClipboard(promptIdForCopy, this);
@@ -845,7 +849,7 @@ export function toggleActivityContent(moduleKey, tileElement) {
         }
     }
 
-    const promptId = module.promptId || (moduleKey === 'test_elea' ? 'test_eleaResultat' : (moduleKey === 'glossaireXml' ? 'glossaireXmlResultat' : (moduleKey === 'Page' ? 'pageResultat' : null)));
+    const promptId = module.promptId || (moduleKey === 'test_elea' ? 'test_eleaResultat' : (moduleKey === 'glossaireXml' ? 'glossaireXmlResultat' : (moduleKey === 'Page' ? 'pageResultat' : (moduleKey === 'Livre' ? 'livreResultat' : null))));
     if (promptId) {
         const generatedPrompt = document.getElementById(`hidden-${promptId}`)?.value;
         if (generatedPrompt) {
@@ -875,16 +879,22 @@ export function toggleActivityContent(moduleKey, tileElement) {
 function restoreModalDataFromSession(moduleKey, promptId, jsonInputId) {
     if (!moduleKey) return;
 
-    // Restaurer le prompt sauvegardé (peut avoir été modifié manuellement)
+    // Restaurer le prompt sauvegardé UNIQUEMENT si la langue n'a pas changé depuis la sauvegarde.
+    // Sinon on conserve le prompt fraîchement régénéré dans la nouvelle langue par generatePrompts().
     const savedPrompt = sessionStorage.getItem(`${STORAGE_PREFIX}prompt_${moduleKey}`);
-    if (savedPrompt && promptId) {
+    const savedLang = sessionStorage.getItem(`${STORAGE_PREFIX}prompt_lang_${moduleKey}`);
+    if (savedPrompt && promptId && savedLang === currentLang) {
         const promptTextarea = document.getElementById(promptId);
         if (promptTextarea) {
             promptTextarea.value = savedPrompt;
         }
+    } else if (savedPrompt && savedLang && savedLang !== currentLang) {
+        // La langue a changé : nettoyer la sauvegarde obsolète pour éviter de re-écraser plus tard
+        sessionStorage.removeItem(`${STORAGE_PREFIX}prompt_${moduleKey}`);
+        sessionStorage.removeItem(`${STORAGE_PREFIX}prompt_lang_${moduleKey}`);
     }
 
-    // Restaurer le JSON sauvegardé (contenu généré par LLM)
+    // Restaurer le JSON sauvegardé (contenu généré par LLM, indépendant de la langue d'UI)
     const savedJson = sessionStorage.getItem(`${STORAGE_PREFIX}json_${moduleKey}`);
     if (savedJson && jsonInputId) {
         const jsonTextarea = document.getElementById(jsonInputId);
@@ -1172,6 +1182,77 @@ function updateGenerationButton(moduleKey, module) {
             } else {
                 const { handlePageCreation } = await import('../moodle/moodle-creator.js');
                 handlePageCreation(jsonInput, exportType);
+            }
+        }
+    } else if (moduleKey === 'Livre') {
+        const createBtnId = 'createLivreMBZ';
+        const createBtnText = translations.generate_mbz_livre || "Générer l'activité Livre (mbz)";
+
+        buttonGroup.innerHTML = `
+                <div class="ctx-state-package">
+                    <div class="main-action-button">
+                        <button id="${createBtnId}" class="action-btn primary-btn">${createBtnText}</button>
+                    </div>
+                    <div class="more-actions-button">
+                        <button class="action-btn primary-btn dropdown-toggle" id="more-actions-toggle-${moduleKey}">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <ul class="dropdown-menu" id="more-actions-menu-${moduleKey}">
+                            <li><a href="#" data-export-type="docx" data-key="export_docx">${translations.export_docx || 'Format DOCX'}</a></li>
+                            <li><a href="#" data-export-type="odt" data-key="export_odt">${translations.export_odt || 'Format ODT'}</a></li>
+                            <li><a href="#" data-export-type="pdf" data-key="export_pdf">${translations.export_pdf || 'Format PDF'}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+        const mainBtn = document.getElementById(createBtnId);
+        const toggleBtn = document.getElementById(`more-actions-toggle-${moduleKey}`);
+        const menu = document.getElementById(`more-actions-menu-${moduleKey}`);
+
+        mainBtn.addEventListener('click', () => handleLivreExport('mbz'));
+
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menu.classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!buttonGroup.contains(e.target)) {
+                menu.classList.remove('show');
+            }
+        });
+
+        menu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const exportType = link.dataset.exportType;
+                handleLivreExport(exportType);
+                menu.classList.remove('show');
+            });
+        });
+
+        async function handleLivreExport(exportType) {
+            const jsonInput = document.getElementById('livreJsonInput').value;
+            if (!jsonInput) {
+                showNotification(translations.error_paste_json_content || 'Veuillez coller le contenu JSON généré.', 'error');
+                return;
+            }
+            if (['docx', 'odt', 'pdf'].includes(exportType)) {
+                try {
+                    const cleanedJson = cleanJsonInput(jsonInput);
+                    const data = JSON.parse(cleanedJson);
+                    const { exportToDOCX, exportToPDF, exportToODT } = await import('../export/document-exporter.js');
+                    if (exportType === 'docx') await exportToDOCX('Livre', data);
+                    else if (exportType === 'odt') await exportToODT('Livre', data);
+                    else if (exportType === 'pdf') await exportToPDF('Livre', data);
+                } catch (error) {
+                    console.error(`Erreur lors de l'export ${exportType.toUpperCase()}:`, error);
+                    showNotification(translations.export_error || "Erreur lors de l'export", 'error');
+                }
+            } else {
+                const { handleLivreCreation } = await import('../moodle/moodle-creator.js');
+                handleLivreCreation(jsonInput, exportType);
             }
         }
     } else {

@@ -4,7 +4,7 @@
  * et la communication avec l'API du LLM via un serveur proxy (n8n).
  */
 
-import { debugLog } from '../core/utils.js';
+import { debugLog, DEBUG } from '../core/utils.js';
 
 // La clé API n'est pas stockée ici pour des raisons de sécurité.
 // Elle est gérée côté serveur par le proxy n8n.
@@ -16,10 +16,12 @@ import { debugLog } from '../core/utils.js';
 
 export const AVAILABLE_MODELS = [
     { id: 'mistral-small-3.2-24b', displayName: 'Mistral-Small-3.2', param: '24', owned_by: 'Mistral AI', type: 'text-generation', featured: true, order: 1, sizeTag: 'small' },
-    { id: 'qwen-3-30b', displayName: 'Qwen 3 30B', param: '30', owned_by: 'Qwen', type: 'text-generation', featured: true, order: 2, sizeTag: 'large' },
+    { id: 'qwen-3.5-35b-instruct', displayName: 'Qwen 3.5', param: '35', owned_by: 'Qwen', type: 'text-generation', featured: true, order: 2, sizeTag: 'large' },
     { id: 'gpt-oss-120b', displayName: 'GPT-OSS', param: '120', owned_by: 'OpenAI', type: 'text-generation', featured: true, order: 3, sizeTag: 'xl' },
-    { id: 'llama-3.3-70b', displayName: 'LLaMa-3.3', param: '70', owned_by: 'RedHatAI', type: 'text-generation'},
-    { id: 'llama-3.1-8b', displayName: 'LLaMa-3.1-8B', param: '8', owned_by: 'Neural Magic', type: 'text-generation' }
+    { id: 'llama-3.3-70b', displayName: 'LLaMa-3.3', param: '70', owned_by: 'RedHatAI', type: 'text-generation' },
+    { id: 'llama-3.1-8b', displayName: 'LLaMa-3.1-8B', param: '8', owned_by: 'Neural Magic', type: 'text-generation' },
+    { id: 'gemma-4-31b', displayName: 'Gemma 4', param: '31', owned_by: 'Google', type: 'text-generation' },
+    { id: 'mistral-medium-250523', displayName: 'Mistral Medium', param: '~70', owned_by: 'Mistral AI', type: 'text-generation' }
 ];
 
 /**
@@ -39,6 +41,7 @@ export const ACTIVITY_MODEL_OVERRIDES = {
     'QuizSetVF': 'gpt-oss-120b',    // Idem pour les Vrai/Faux
     'QuizSet': 'gpt-oss-120b',    // Idem pour les Quiz génériques
     'Page': 'gpt-oss-120b',       // Idem pour Page
+    'Livre': 'gpt-oss-120b',      // Idem pour Livre (Page multi-chapitres)
     'test_elea': 'gpt-oss-120b', // Idem pour Test (XML)
     'CoursePresentation': 'gpt-oss-120b' // Structure complexe avec slides et sous-exercices
 };
@@ -60,14 +63,15 @@ export function populateModelSelector(moduleKey, models, onSelectCallback, selec
 
     const textModels = models.filter(model => model.type === 'text-generation' || model.type === 'image-text-to-text');
     const featuredModels = textModels.filter(model => model.featured);
-    const modelsToShow = (featuredModels.length > 0)
-        ? featuredModels.slice().sort((a, b) => {
-            const ao = (typeof a.order === 'number') ? a.order : Number.POSITIVE_INFINITY;
-            const bo = (typeof b.order === 'number') ? b.order : Number.POSITIVE_INFINITY;
-            if (ao !== bo) return ao - bo;
-            return String(a.id).localeCompare(String(b.id));
-        })
-        : textModels;
+    // En mode ?debug, on affiche tous les modèles (utile pour tester les nouveaux modèles ilaaS).
+    // Sinon, on n'affiche que les modèles "featured" (3 par défaut).
+    const baseModels = (DEBUG || featuredModels.length === 0) ? textModels : featuredModels;
+    const modelsToShow = baseModels.slice().sort((a, b) => {
+        const ao = (typeof a.order === 'number') ? a.order : Number.POSITIVE_INFINITY;
+        const bo = (typeof b.order === 'number') ? b.order : Number.POSITIVE_INFINITY;
+        if (ao !== bo) return ao - bo;
+        return String(a.id).localeCompare(String(b.id));
+    });
 
     modelsToShow.forEach(model => {
         const listItem = document.createElement('li');
@@ -80,7 +84,14 @@ export function populateModelSelector(moduleKey, models, onSelectCallback, selec
         const summaryKey = sizeTag ? `llm_${sizeTag}_summary` : `${model.id.replace('-', '_')}_summary`;
         const technicalKey = sizeTag ? `llm_${sizeTag}_technical` : `${model.id.replace('-', '_')}_technical`;
 
-        const summary = translations[summaryKey] || '';
+        // Fallback : si aucun résumé spécifique n'est défini (modèle sans sizeTag, ex. modèles
+        // affichés uniquement en mode ?debug), on génère un résumé par défaut depuis les
+        // métadonnées du modèle via la clé i18n llm_default_summary.
+        const summary = translations[summaryKey]
+            || (translations.llm_default_summary || '')
+                .replace('{name}', model.displayName || model.id)
+                .replace('{company}', model.owned_by || '')
+                .replace('{params}', model.param || '?');
         const modelSource = model.owned_by || translations[technicalKey] || '';
 
         const parameterUnit = translations.llm_model_parameters_unit || '';
@@ -205,27 +216,46 @@ function extractJsonContent(content) {
     return content.trim();
 }
 
+// =======================================================================
+// Endpoints n8n (architecture polling Postgres v5.2)
+// =======================================================================
+// Submit  : POST → {taskId, status: 'pending'}, retour quasi instantané (~100ms)
+// Result  : GET ?taskId=xxx → {status: 'processing'|'done'|'error'|'not_found', ...}
+//
+// Le client soumet une fois, puis poll Result toutes les ~3 secondes
+// jusqu'à recevoir status='done' (ou 'error').
+// =======================================================================
+const LLM_SUBMIT_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel/llm/submit";
+const LLM_RESULT_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel/llm/result";
+
+// Délai avant le premier poll : la plupart des LLM mettent au moins 5s à répondre,
+// inutile de poller plus tôt et de gaspiller des requêtes.
+const POLL_INITIAL_DELAY_MS = 5000;
+// Intervalle entre 2 polls successifs.
+const POLL_INTERVAL_MS = 3000;
+// Timeout global de sécurité : si on n'a toujours rien après 5 minutes, on abandonne.
+const POLL_TIMEOUT_MS = 300000;
+
 /**
- * Envoie un prompt à l'API du LLM via le proxy n8n et retourne le contenu généré.
- * Utilise un pattern asynchrone avec Wait node : soumission → réponse immédiate
- * avec resumeUrl → requête différée unique pour récupérer le résultat.
+ * Envoie un prompt au LLM via le proxy n8n (architecture async polling).
+ *
+ * Pipeline :
+ *   1. POST /webhook/caramel/llm/submit → reçoit {taskId} en ~100ms
+ *   2. GET  /webhook/caramel/llm/result?taskId=xxx en boucle toutes les 3s
+ *   3. Quand status='done' → retourne le content nettoyé
+ *      Quand status='error' → throw avec le message d'erreur
+ *      Quand status='not_found' → throw (tâche expirée côté serveur)
  *
  * @param {string} prompt - Le prompt à envoyer au modèle d'IA.
  * @param {string} model - L'ID du modèle d'IA à utiliser.
  * @param {Object} [activityMeta] - Métadonnées de l'activité (moduleKey, category, etc.)
  * @returns {Promise<string>} Le contenu textuel généré par l'IA, nettoyé des blocs de code.
- * @throws {Error} Si la réponse du proxy n'est pas valide ou si une erreur réseau survient.
+ * @throws {Error} Si la soumission échoue, si le LLM échoue, ou si le timeout est atteint.
  */
 export async function generateH5PWithLLM(prompt, model, activityMeta) {
     debugLog('LLM', `Appel au proxy n8n avec le modèle ${model}`);
 
-    const proxyUrl = "https://n8n.incubateur.education.gouv.fr/webhook/llm-prod";
-
-    const requestBody = {
-        prompt: prompt,
-        model: model
-    };
-
+    const requestBody = { prompt, model };
     if (activityMeta) {
         requestBody.activity = activityMeta;
     }
@@ -234,9 +264,9 @@ export async function generateH5PWithLLM(prompt, model, activityMeta) {
     try { perfMod = await import('../core/perf-tracker.js'); } catch { perfMod = null; }
 
     try {
-        // === Étape 1 : Soumission de la requête ===
+        // === Étape 1 : Soumission ===
         if (perfMod) perfMod.markStart('llm', 'Soumission requête n8n');
-        const submitResponse = await fetch(proxyUrl, {
+        const submitResponse = await fetch(LLM_SUBMIT_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody)
@@ -244,69 +274,80 @@ export async function generateH5PWithLLM(prompt, model, activityMeta) {
 
         if (!submitResponse.ok) {
             const errorBody = await submitResponse.text();
-            throw new Error(`Erreur du proxy n8n : ${submitResponse.status} ${submitResponse.statusText} - ${errorBody}`);
+            throw new Error(`Erreur du proxy n8n (submit) : ${submitResponse.status} ${submitResponse.statusText} - ${errorBody}`);
         }
 
         const submitData = await submitResponse.json();
-
-        // Vérifier qu'on a bien un taskId et une resumeUrl (pattern Wait node)
-        if (!submitData.taskId || !submitData.resumeUrl) {
-            // Fallback : réponse directe (ancien comportement)
-            console.warn('Réponse sans taskId/resumeUrl, traitement en mode direct.');
-            const content = submitData.content || JSON.stringify(submitData);
-            return extractJsonContent(content);
+        if (!submitData.taskId) {
+            throw new Error('Réponse submit invalide : taskId manquant.');
         }
 
-        const { taskId, resumeUrl } = submitData;
+        const { taskId } = submitData;
         if (perfMod) perfMod.markEnd('llm', 'Soumission requête n8n', { taskId });
-        debugLog('LLM', `Tâche soumise. TaskId: ${taskId}. Récupération via resumeUrl...`);
+        debugLog('LLM', `Tâche soumise. TaskId: ${taskId}. Démarrage du polling...`);
 
-        // === Étape 2 : Requête unique vers resumeUrl ===
-        // Court délai pour laisser le workflow n8n atteindre le nœud Wait
-        // avant d'appeler resumeUrl (évite le 404 "no waiting webhook")
-        await new Promise(resolve => setTimeout(resolve, 500));
-
-        // Le Wait node de n8n bloque jusqu'à ce que le LLM ait terminé,
-        // puis renvoie le résultat final directement.
-        const RESUME_TIMEOUT_MS = 300000; // 5 minutes max
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), RESUME_TIMEOUT_MS);
+        // === Étape 2 : Polling ===
+        if (perfMod) perfMod.markStart('llm', 'Polling LLM result');
         const startTime = Date.now();
 
-        try {
-            if (perfMod) perfMod.markStart('llm', 'Attente réponse LLM (resumeUrl)');
-            const resultResponse = await fetch(resumeUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                signal: controller.signal
-            });
+        // Délai initial : on laisse au Worker le temps de démarrer le LLM
+        // (la plupart des appels mettent au moins 5s à répondre)
+        await new Promise(resolve => setTimeout(resolve, POLL_INITIAL_DELAY_MS));
 
-            clearTimeout(timeoutId);
-
-            if (!resultResponse.ok) {
-                const errorBody = await resultResponse.text();
-                throw new Error(`Erreur lors de la récupération du résultat : ${resultResponse.status} ${resultResponse.statusText} - ${errorBody}`);
+        let pollCount = 0;
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+            // Sécurité : timeout global
+            if (Date.now() - startTime > POLL_TIMEOUT_MS) {
+                throw new Error('Délai dépassé : la génération a pris trop de temps (5 minutes). Veuillez réessayer.');
             }
 
-            const resultData = await resultResponse.json();
-            const llmDurationS = Math.round((Date.now() - startTime) / 1000);
-            if (perfMod) perfMod.markEnd('llm', 'Attente réponse LLM (resumeUrl)', {
-                durationSeconds: llmDurationS,
-                contentLength: resultData.content ? resultData.content.length : 0
-            });
-            debugLog('LLM', `Résultat reçu après ${llmDurationS}s.`);
-
-            if (resultData.status === 'error') {
-                throw new Error(resultData.message || 'Erreur lors de la génération par l\'IA.');
+            pollCount++;
+            const pollUrl = `${LLM_RESULT_URL}?taskId=${encodeURIComponent(taskId)}`;
+            let pollResponse;
+            try {
+                pollResponse = await fetch(pollUrl, { method: 'GET' });
+            } catch (networkError) {
+                // Erreur réseau transitoire : on attend et on retente
+                console.warn(`[LLM] Erreur réseau au poll #${pollCount}, retry dans ${POLL_INTERVAL_MS}ms`, networkError);
+                await new Promise(resolve => setTimeout(resolve, POLL_INTERVAL_MS));
+                continue;
             }
 
-            return extractJsonContent(resultData.content);
-        } catch (fetchError) {
-            clearTimeout(timeoutId);
-            if (fetchError.name === 'AbortError') {
-                throw new Error('Délai dépassé : la génération a pris trop de temps (5 minutes). Veuillez réessayer avec un modèle plus rapide.');
+            if (!pollResponse.ok) {
+                throw new Error(`Erreur du proxy n8n (poll) : ${pollResponse.status} ${pollResponse.statusText}`);
             }
-            throw fetchError;
+
+            const pollData = await pollResponse.json();
+
+            if (pollData.status === 'processing') {
+                // Encore en cours, on attend et on retente
+                await new Promise(resolve => setTimeout(resolve, POLL_INTERVAL_MS));
+                continue;
+            }
+
+            if (pollData.status === 'done') {
+                const llmDurationS = Math.round((Date.now() - startTime) / 1000);
+                if (perfMod) perfMod.markEnd('llm', 'Polling LLM result', {
+                    durationSeconds: llmDurationS,
+                    contentLength: pollData.content ? pollData.content.length : 0,
+                    pollCount: pollCount,
+                    fallbackLevel: pollData.fallback_level || 0
+                });
+                debugLog('LLM', `Résultat reçu après ${llmDurationS}s et ${pollCount} polls (modèle final : ${pollData.model}).`);
+                return extractJsonContent(pollData.content);
+            }
+
+            if (pollData.status === 'error') {
+                throw new Error(pollData.message || 'Erreur lors de la génération par l\'IA.');
+            }
+
+            if (pollData.status === 'not_found') {
+                throw new Error('Tâche introuvable côté serveur : elle a peut-être expiré. Veuillez réessayer.');
+            }
+
+            // Status inattendu (ne devrait jamais arriver)
+            throw new Error(`Status inattendu reçu du proxy n8n : ${pollData.status}`);
         }
 
     } catch (error) {

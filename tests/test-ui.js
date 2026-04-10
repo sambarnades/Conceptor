@@ -308,7 +308,9 @@ async function runStep5_LanguageSwitcher(doc) {
         );
 
         // Selectionner l'anglais
-        const enLink = doc.querySelector('.language-dropdown a[data-lang="en"]');
+        // Note : le markup utilise des <button data-lang="..."> (et non des <a>),
+        // d'où le sélecteur générique [data-lang] qui couvre les deux cas.
+        const enLink = doc.querySelector('.language-dropdown [data-lang="en"]');
         if (enLink) {
             enLink.click();
             // Attendre le chargement asynchrone des traductions
@@ -328,7 +330,7 @@ async function runStep5_LanguageSwitcher(doc) {
 
             // Revenir au francais
             langBtn.click();
-            const frLink = doc.querySelector('.language-dropdown a[data-lang="fr"]');
+            const frLink = doc.querySelector('.language-dropdown [data-lang="fr"]');
             if (frLink) {
                 frLink.click();
                 await wait(2000);

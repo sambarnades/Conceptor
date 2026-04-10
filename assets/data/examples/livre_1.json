@@ -1,0 +1,138 @@
+{
+  "title": "Les états de la matière",
+  "intro": "Découvrez en quatre chapitres comment la matière s'organise autour de nous, des trois états classiques aux changements d'état observables au quotidien.",
+  "chapters": [
+    {
+      "title": "Introduction : qu'est-ce que la matière ?",
+      "subchapter": false,
+      "blocks": [
+        {
+          "type": "#01_hero_header",
+          "data": {
+            "title": "Les états de la matière",
+            "subtitle": "Sciences physiques — Cycle 4"
+          }
+        },
+        {
+          "type": "#04_callout_set",
+          "data": {
+            "title": "Objectifs du livre",
+            "callouts": [
+              { "type": "objectif", "text": "Identifier les trois états classiques de la matière." },
+              { "type": "savoir", "text": "Comprendre les changements d'état réversibles." },
+              { "type": "alerte", "text": "Ne pas confondre température et chaleur." }
+            ]
+          }
+        },
+        {
+          "type": "#11_definition_box",
+          "data": {
+            "title": "Définition — Matière",
+            "text": "La matière désigne tout ce qui possède une masse et occupe un volume dans l'espace. Elle est constituée de particules (atomes et molécules)."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Les trois états classiques",
+      "subchapter": false,
+      "blocks": [
+        {
+          "type": "#10_table_comparison",
+          "data": {
+            "title": "Comparaison des trois états",
+            "headers": ["État", "Forme", "Volume", "Compressibilité"],
+            "rows": [
+              ["Solide", "Propre", "Propre", "Non"],
+              ["Liquide", "Du récipient", "Propre", "Non"],
+              ["Gaz", "Du récipient", "Du récipient", "Oui"]
+            ]
+          }
+        },
+        {
+          "type": "#12_context_paragraphs",
+          "data": {
+            "title": "Une question d'organisation des particules",
+            "paragraphs": [
+              "Dans un solide, les particules sont fortement liées et organisées de manière régulière. Elles vibrent légèrement mais ne se déplacent pas.",
+              "Dans un liquide, les particules sont en contact mais glissent les unes sur les autres, ce qui permet au liquide de prendre la forme de son contenant.",
+              "Dans un gaz, les particules sont très éloignées et se déplacent librement à grande vitesse, ce qui explique que le gaz remplit tout l'espace disponible."
+            ]
+          }
+        },
+        {
+          "type": "#06_lexique_table",
+          "data": {
+            "title": "Vocabulaire à connaître",
+            "headers": ["Terme", "Définition"],
+            "rows": [
+              ["Particule", "Plus petit constituant de la matière (atome, molécule, ion)."],
+              ["Volume", "Espace occupé par un corps, exprimé en mètres cubes."],
+              ["Compressibilité", "Capacité d'un corps à voir son volume diminuer sous l'effet d'une pression."]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Les changements d'état",
+      "subchapter": false,
+      "blocks": [
+        {
+          "type": "#03_histo_reperes",
+          "data": {
+            "title": "Trois changements emblématiques",
+            "cards": [
+              { "title": "Fusion", "text": "Passage de l'état solide à l'état liquide (ex : la glace qui fond)." },
+              { "title": "Vaporisation", "text": "Passage de l'état liquide à l'état gazeux (ex : l'eau qui bout)." },
+              { "title": "Condensation", "text": "Passage de l'état gazeux à l'état liquide (ex : la buée sur une vitre froide)." }
+            ]
+          }
+        },
+        {
+          "type": "#04_callout_set",
+          "data": {
+            "title": "À retenir",
+            "callouts": [
+              { "type": "savoir", "text": "Tous les changements d'état sont réversibles : on peut toujours revenir à l'état initial." },
+              { "type": "objectif", "text": "Apprendre les six noms des changements d'état (fusion, solidification, vaporisation, liquéfaction, sublimation, condensation solide)." }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Synthèse et ressources",
+      "subchapter": false,
+      "blocks": [
+        {
+          "type": "#14_faq_block",
+          "data": {
+            "title": "Questions fréquentes",
+            "questions": [
+              { "q": "Pourquoi un glaçon flotte-t-il ?", "a": "Parce que la glace est moins dense que l'eau liquide : c'est une particularité rare car la plupart des solides coulent dans leur propre liquide." },
+              { "q": "Existe-t-il d'autres états de la matière ?", "a": "Oui, on parle aussi de l'état plasma (étoiles, néons), des cristaux liquides, et de phases exotiques étudiées en physique." }
+            ]
+          }
+        },
+        {
+          "type": "#07_glossary_chips",
+          "data": {
+            "title": "Notions complémentaires",
+            "chips": ["plasma", "densité", "ébullition", "solidification", "viscosité"]
+          }
+        },
+        {
+          "type": "#18_sito_graphy",
+          "data": {
+            "title": "Pour aller plus loin",
+            "links": [
+              { "href": "https://www.lumni.fr/", "text": "Lumni — Sciences physiques" },
+              { "href": "https://www.maxicours.com/", "text": "Maxicours — Cycle 4" }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

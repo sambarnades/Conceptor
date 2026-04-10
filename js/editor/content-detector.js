@@ -155,6 +155,12 @@ const contentSignatures = {
         data.blocks.length > 0 &&
         data.blocks[0].hasOwnProperty('type'),
 
+    'elea_livre': (data) =>
+        Array.isArray(data.chapters) &&
+        data.chapters.length > 0 &&
+        data.chapters[0].hasOwnProperty('blocks') &&
+        Array.isArray(data.chapters[0].blocks),
+
     'elea_millionnaire': (data) =>
         Array.isArray(data.questions) &&
         data.questions.length > 0 &&
@@ -224,11 +230,13 @@ const titleKeyToModuleKey = {
     'elea_glossaire_xml_name': 'elea_glossaire',
     'elea_millionnaire_name': 'elea_millionnaire',
     'elea_page_name': 'elea_page',
+    'elea_livre_name': 'elea_livre',
     'elea_qcm': 'elea_qcm',
     'elea_test': 'elea_test',
     'elea_appariement': 'elea_appariement',
     'elea_glossaire': 'elea_glossaire',
     'elea_page': 'elea_page',
+    'elea_livre': 'elea_livre',
     'elea_millionnaire': 'elea_millionnaire',
     'elea_devoir_name': 'elea_devoir',
     'elea_devoir': 'elea_devoir',
@@ -742,21 +750,11 @@ const fieldSchemas = {
                     _timelineMedia: {
                         type: 'fieldGroup', collapsible: true, collapsibleLabel: 'editor_media_optional',
                         fields: {
-                            'timeline.mediaType': {
-                                type: 'toggle', default: 'url',
-                                options: [
-                                    { value: 'url', label: 'editor_url' },
-                                    { value: 'image', label: 'editor_image' }
-                                ]
-                            },
-                            'timeline.asset.media': { type: 'text', label: 'editor_media_url', showWhen: { field: 'timeline.mediaType', value: 'url' } },
-                            'timeline.asset.caption': { type: 'text', label: 'editor_caption', showWhen: { field: 'timeline.mediaType', value: 'url' } },
-                            'timeline.asset.credit': { type: 'text', label: 'editor_credit', showWhen: { field: 'timeline.mediaType', value: 'url' } },
-                            'timeline.coverImage': {
-                                type: 'image', label: 'editor_image_timeline', hint: 'editor_image_timeline_hint',
-                                collapsible: false, altTextField: 'timeline.coverImageAlt',
-                                showWhen: { field: 'timeline.mediaType', value: 'image' }
-                            }
+                            // H5P Timeline n'accepte que des URLs externes (YouTube, Vimeo, Flickr, Wikipedia, etc.)
+                            // Pas d'upload de fichier image supporté nativement par la lib H5P.Timeline
+                            'timeline.asset.media': { type: 'text', label: 'editor_media_url' },
+                            'timeline.asset.caption': { type: 'text', label: 'editor_caption' },
+                            'timeline.asset.credit': { type: 'text', label: 'editor_credit' }
                         }
                     }
                 }
@@ -782,21 +780,10 @@ const fieldSchemas = {
                             _media: {
                                 type: 'fieldGroup', collapsibleLabel: 'editor_media_optional',
                                 fields: {
-                                    mediaType: {
-                                        type: 'toggle', default: 'url',
-                                        options: [
-                                            { value: 'url', label: 'editor_url' },
-                                            { value: 'image', label: 'editor_image' }
-                                        ]
-                                    },
-                                    'asset.media': { type: 'text', label: 'editor_media_url', showWhen: { field: 'mediaType', value: 'url' } },
-                                    'asset.caption': { type: 'text', label: 'editor_caption', showWhen: { field: 'mediaType', value: 'url' } },
-                                    'asset.credit': { type: 'text', label: 'editor_credit', showWhen: { field: 'mediaType', value: 'url' } },
-                                    eventImage: {
-                                        type: 'image', label: 'editor_image_timeline', hint: 'editor_image_timeline_hint',
-                                        collapsible: false, altTextField: 'eventImageAlt',
-                                        showWhen: { field: 'mediaType', value: 'image' }
-                                    }
+                                    // H5P Timeline n'accepte que des URLs externes (YouTube, Vimeo, Flickr, Wikipedia, etc.)
+                                    'asset.media': { type: 'text', label: 'editor_media_url' },
+                                    'asset.caption': { type: 'text', label: 'editor_caption' },
+                                    'asset.credit': { type: 'text', label: 'editor_credit' }
                                 }
                             }
                         }
@@ -2304,6 +2291,114 @@ const fieldSchemas = {
         ]
     },
 
+    // === MOODLE LIVRE (Activité Page multi-chapitres - module book) ===
+    // Réutilise les 18 blocs Page via le pageBlockData field type.
+    // Structure imbriquée : chapters[].blocks[].data
+    'elea_livre': {
+        sections: [
+            {
+                id: 'general',
+                label: 'editor_section_general',
+                icon: 'fa-info-circle',
+                fields: {
+                    title: { type: 'text', label: 'editor_title', required: true },
+                    intro: {
+                        type: 'textarea',
+                        label: 'editor_livre_intro',
+                        hint: 'editor_livre_intro_hint'
+                    },
+                    theme: {
+                        type: 'select',
+                        label: 'editor_page_theme',
+                        options: [
+                            { value: 'elea', labelKey: 'editor_page_theme_elea' },
+                            { value: 'dsfr', labelKey: 'editor_page_theme_dsfr' },
+                            { value: 'accessible', labelKey: 'editor_page_theme_accessible' },
+                            { value: 'dynamique', labelKey: 'editor_page_theme_dynamique' }
+                        ]
+                    },
+                    numbering: {
+                        type: 'select',
+                        label: 'editor_livre_numbering',
+                        hint: 'editor_livre_numbering_hint',
+                        options: [
+                            { value: 0, labelKey: 'editor_livre_numbering_none' },
+                            { value: 1, labelKey: 'editor_livre_numbering_decimal' },
+                            { value: 2, labelKey: 'editor_livre_numbering_bullets' },
+                            { value: 3, labelKey: 'editor_livre_numbering_dashes' }
+                        ]
+                    }
+                }
+            },
+            {
+                id: 'chapters',
+                label: 'editor_livre_chapters',
+                icon: 'fa-book-open',
+                countField: 'chapters',
+                fields: {
+                    chapters: {
+                        type: 'array',
+                        itemLabel: 'editor_livre_chapter',
+                        addLabel: 'editor_livre_add_chapter',
+                        dynamicTitleField: 'title',
+                        minItems: 1,
+                        itemSchema: {
+                            title: {
+                                type: 'text',
+                                label: 'editor_livre_chapter_title',
+                                required: true
+                            },
+                            subchapter: {
+                                type: 'checkbox',
+                                label: 'editor_livre_subchapter',
+                                hint: 'editor_livre_subchapter_hint'
+                            },
+                            blocks: {
+                                type: 'array',
+                                itemLabel: 'editor_block',
+                                addLabel: 'editor_add_block',
+                                dynamicTitleField: 'type',
+                                minItems: 0,
+                                itemSchema: {
+                                    type: {
+                                        type: 'select',
+                                        label: 'editor_block_type',
+                                        required: true,
+                                        options: [
+                                            { value: '#01_hero_header', labelKey: 'editor_block_label_01_hero_header' },
+                                            { value: '#02_nav_summary', labelKey: 'editor_block_label_02_nav_summary' },
+                                            { value: '#03_histo_reperes', labelKey: 'editor_block_label_03_histo_reperes' },
+                                            { value: '#04_callout_set', labelKey: 'editor_block_label_04_callout_set' },
+                                            { value: '#05_stats_cards', labelKey: 'editor_block_label_05_stats_cards' },
+                                            { value: '#06_lexique_table', labelKey: 'editor_block_label_06_lexique_table' },
+                                            { value: '#07_glossary_chips', labelKey: 'editor_block_label_07_glossary_chips' },
+                                            { value: '#08_monuments_grid', labelKey: 'editor_block_label_08_monuments_grid' },
+                                            { value: '#09_figures_comparison', labelKey: 'editor_block_label_09_figures_comparison' },
+                                            { value: '#10_table_comparison', labelKey: 'editor_block_label_10_table_comparison' },
+                                            { value: '#11_definition_box', labelKey: 'editor_block_label_11_definition_box' },
+                                            { value: '#12_context_paragraphs', labelKey: 'editor_block_label_12_context_paragraphs' },
+                                            { value: '#13_monument_sheet_long', labelKey: 'editor_block_label_13_monument_sheet_long' },
+                                            { value: '#14_faq_block', labelKey: 'editor_block_label_14_faq_block' },
+                                            { value: '#15_myths_realities', labelKey: 'editor_block_label_15_myths_realities' },
+                                            { value: '#16_method_image_desc', labelKey: 'editor_block_label_16_method_image_desc' },
+                                            { value: '#17_quote_bilingual', labelKey: 'editor_block_label_17_quote_bilingual' },
+                                            { value: '#18_sito_graphy', labelKey: 'editor_block_label_18_sito_graphy' },
+                                        ]
+                                    },
+                                    data: {
+                                        type: 'pageBlockData',
+                                        label: 'editor_block_content',
+                                        required: true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+
     // === MOODLE DEVOIR (Grille d'évaluation) ===
     'elea_devoir': {
         sections: [
@@ -2518,6 +2613,7 @@ const moduleTranslationKeys = {
     'elea_appariement': 'elea_appariement_name',
     'elea_glossaire': 'elea_glossaire_xml_name',
     'elea_page': 'elea_page_name',
+    'elea_livre': 'elea_livre_name',
     'elea_millionnaire': 'elea_millionnaire_name',
     'elea_devoir': 'elea_devoir_name',
     'CoursePresentation': 'h5p_course_presentation_name'

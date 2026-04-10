@@ -50,6 +50,7 @@ export async function formatContentForDocument(moduleKey, jsonData, options = {}
         'Millionnaire': formatMillionnaire,
         'glossaireXml': formatGlossaireXml,
         'Page': formatPage,
+        'Livre': formatLivre,
         'Devoir': formatDevoir,
         // Modules Éléa (clés longues — utilisées par l'éditeur)
         'elea_qcm': formatQCM,
@@ -58,6 +59,7 @@ export async function formatContentForDocument(moduleKey, jsonData, options = {}
         'elea_millionnaire': formatMillionnaire,
         'elea_glossaire': formatGlossaireXml,
         'elea_page': formatPage,
+        'elea_livre': formatLivre,
         'elea_devoir': formatDevoir,
         'CoursePresentation': formatCoursePresentation
     };
@@ -901,16 +903,8 @@ function formatTimeline(data) {
         });
     }
 
-    // Gestion de l'image principale : image uploadée (coverImage) OU URL (asset.media)
-    const coverImageUrl = getMediaImageUrl(timeline.coverImage);
-    if (coverImageUrl) {
-        sections.push({
-            type: 'image',
-            url: coverImageUrl,
-            caption: timeline.coverImageAlt || '',
-            alt: timeline.coverImageAlt || ''
-        });
-    } else if (timeline.asset) {
+    // H5P Timeline n'accepte que des URLs externes dans asset.media (pas d'upload de fichier)
+    if (timeline.asset) {
         const mediaUrl = timeline.asset.media || timeline.asset.path;
         if (mediaUrl) {
             sections.push({
@@ -3003,7 +2997,23 @@ function formatPage(data) {
     sections.push({ type: 'separator' });
 
     if (data.blocks && Array.isArray(data.blocks)) {
-        data.blocks.forEach((block, index) => {
+        formatPageBlocks(data.blocks, sections);
+    }
+
+    return { title, sections };
+}
+
+/**
+ * Formate une liste de blocs Page en sections de document.
+ * Helper extrait pour permettre la réutilisation par formatPage() ET formatLivre()
+ * (chaque chapitre du livre passe par cette fonction).
+ *
+ * @param {Array} blocks - Tableau des blocs à formater
+ * @param {Array} sections - Tableau des sections de document (modifié in-place)
+ */
+function formatPageBlocks(blocks, sections) {
+    if (!Array.isArray(blocks)) return;
+    blocks.forEach((block, index) => {
             // Traiter selon le type de bloc
             switch (block.type) {
                 case '#01_hero_header':
@@ -3131,26 +3141,7 @@ function formatPage(data) {
                     break;
 
                 case '#09_figures_comparison':
-                    if (block.data && block.data.images && Array.isArray(block.data.images)) {
-                        if (block.data.title) {
-                            sections.push({
-                                type: 'header',
-                                level: 2,
-                                text: cleanHtml(block.data.title)
-                            });
-                        }
-                        block.data.images.forEach(img => {
-                            sections.push({
-                                type: 'image',
-                                url: img.src,
-                                alt: cleanHtml(img.alt || ''),
-                                caption: cleanHtml(img.caption || '')
-                            });
-                        });
-                    }
-                    break;
-
-                case '#16_method_image_desc':
+                    // Schéma réel : { title, left:{img_src,img_alt,caption}, right:{...}, text }
                     if (block.data) {
                         if (block.data.title) {
                             sections.push({
@@ -3159,18 +3150,136 @@ function formatPage(data) {
                                 text: cleanHtml(block.data.title)
                             });
                         }
-                        if (block.data.image) {
-                            sections.push({
-                                type: 'image',
-                                url: block.data.image.src,
-                                alt: cleanHtml(block.data.image.alt || ''),
-                                caption: cleanHtml(block.data.image.caption || '')
-                            });
-                        }
-                        if (block.data.description) {
+                        ['left', 'right'].forEach(side => {
+                            const fig = block.data[side];
+                            if (fig && fig.img_src) {
+                                sections.push({
+                                    type: 'image',
+                                    url: fig.img_src,
+                                    alt: cleanHtml(fig.img_alt || ''),
+                                    caption: cleanHtml(fig.caption || '')
+                                });
+                            } else if (fig && fig.caption) {
+                                // Fallback : pas d'image mais une légende → on garde le texte
+                                sections.push({
+                                    type: 'paragraph',
+                                    text: cleanHtml(fig.caption)
+                                });
+                            }
+                        });
+                        if (block.data.text) {
                             sections.push({
                                 type: 'paragraph',
-                                text: cleanHtml(block.data.description)
+                                text: cleanHtml(block.data.text)
+                            });
+                        }
+                    }
+                    break;
+
+                case '#16_method_image_desc':
+                    // Schéma réel : { title, steps:[...], img_src, img_alt, caption }
+                    if (block.data) {
+                        if (block.data.title) {
+                            sections.push({
+                                type: 'header',
+                                level: 2,
+                                text: cleanHtml(block.data.title)
+                            });
+                        }
+                        if (Array.isArray(block.data.steps)) {
+                            block.data.steps.forEach(step => {
+                                sections.push({
+                                    type: 'bulletPoint',
+                                    text: cleanHtml(step)
+                                });
+                            });
+                        }
+                        if (block.data.img_src) {
+                            sections.push({
+                                type: 'image',
+                                url: block.data.img_src,
+                                alt: cleanHtml(block.data.img_alt || ''),
+                                caption: cleanHtml(block.data.caption || '')
+                            });
+                        }
+                    }
+                    break;
+
+                case '#07_glossary_chips':
+                    // Schéma réel : { title, chips:[string,...] }
+                    if (block.data) {
+                        if (block.data.title) {
+                            sections.push({
+                                type: 'header',
+                                level: 2,
+                                text: cleanHtml(block.data.title)
+                            });
+                        }
+                        if (Array.isArray(block.data.chips) && block.data.chips.length > 0) {
+                            sections.push({
+                                type: 'paragraph',
+                                text: block.data.chips.map(chip => cleanHtml(chip)).join(' · ')
+                            });
+                        }
+                    }
+                    break;
+
+                case '#14_faq_block':
+                    // Schéma réel : { title, questions:[{q,a},...] }
+                    if (block.data) {
+                        if (block.data.title) {
+                            sections.push({
+                                type: 'header',
+                                level: 2,
+                                text: cleanHtml(block.data.title)
+                            });
+                        }
+                        if (Array.isArray(block.data.questions)) {
+                            block.data.questions.forEach(qa => {
+                                if (qa.q) {
+                                    sections.push({
+                                        type: 'header',
+                                        level: 3,
+                                        text: cleanHtml(qa.q)
+                                    });
+                                }
+                                if (qa.a) {
+                                    sections.push({
+                                        type: 'paragraph',
+                                        text: cleanHtml(qa.a)
+                                    });
+                                }
+                            });
+                        }
+                    }
+                    break;
+
+                case '#15_myths_realities':
+                    // Schéma réel : { title, items:[{myth,reality},...] }
+                    if (block.data) {
+                        if (block.data.title) {
+                            sections.push({
+                                type: 'header',
+                                level: 2,
+                                text: cleanHtml(block.data.title)
+                            });
+                        }
+                        if (Array.isArray(block.data.items)) {
+                            const mythLabel = t('simulator_page_myths') || 'Mythe';
+                            const realityLabel = t('simulator_page_realities') || 'Réalité';
+                            block.data.items.forEach(item => {
+                                if (item.myth) {
+                                    sections.push({
+                                        type: 'bulletPoint',
+                                        text: `${mythLabel} : ${cleanHtml(item.myth)}`
+                                    });
+                                }
+                                if (item.reality) {
+                                    sections.push({
+                                        type: 'bulletPoint',
+                                        text: `${realityLabel} : ${cleanHtml(item.reality)}`
+                                    });
+                                }
                             });
                         }
                     }
@@ -3256,7 +3365,70 @@ function formatPage(data) {
 
             sections.push({ type: 'separator' });
         });
+}
+
+/**
+ * Formate une activité Livre (Moodle book multi-chapitres) en sections de document.
+ * Itère sur les chapitres et invoque formatPageBlocks() pour chacun, en respectant
+ * la hiérarchie chapitre/sous-chapitre et la numérotation décimale.
+ */
+function formatLivre(data) {
+    const sections = [];
+    const title = data.title || t('doc_fmt_livre_title') || 'Livre';
+    const numbering = data.numbering ?? 1;
+
+    // En-tête principal du livre
+    sections.push({
+        type: 'header',
+        level: 1,
+        text: title
+    });
+
+    // Intro
+    if (data.intro) {
+        sections.push({
+            type: 'paragraph',
+            text: cleanHtml(data.intro),
+            style: 'description'
+        });
     }
+
+    sections.push({ type: 'separator' });
+
+    let chapterCounter = 0;
+    let subchapterCounter = 0;
+
+    (data.chapters || []).forEach((chapter, idx) => {
+        // Calcul de la numérotation à afficher
+        let prefix = '';
+        if (chapter.subchapter) {
+            subchapterCounter++;
+            if (numbering === 1) {
+                prefix = `${chapterCounter}.${subchapterCounter} `;
+            }
+        } else {
+            chapterCounter++;
+            subchapterCounter = 0;
+            if (numbering === 1) {
+                prefix = `${chapterCounter}. `;
+            }
+        }
+
+        // Saut de page entre chapitres principaux (pas pour les sous-chapitres)
+        if (idx > 0 && !chapter.subchapter) {
+            sections.push({ type: 'pageBreak' });
+        }
+
+        // Titre du chapitre (h2 pour chapitre, h3 pour sous-chapitre)
+        sections.push({
+            type: 'header',
+            level: chapter.subchapter ? 3 : 2,
+            text: prefix + cleanHtml(chapter.title || `Chapitre ${chapterCounter}`)
+        });
+
+        // Réutilisation de la logique de formatage des blocs Page
+        formatPageBlocks(chapter.blocks || [], sections);
+    });
 
     return { title, sections };
 }

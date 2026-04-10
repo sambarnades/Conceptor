@@ -1314,6 +1314,10 @@ async function renderPreview(notification, modal) {
             // Rendu du simulateur Page Éléa
             debugLog('notifications', "renderPreview: Rendering Elea Page");
             simulators.renderPage(previewContainer, notification.jsonData, notification.previewHtml);
+        } else if (notification.titleKey === 'elea_livre_name') {
+            // Rendu du simulateur Livre Éléa (multi-chapitres avec TOC)
+            debugLog('notifications', "renderPreview: Rendering Elea Livre");
+            simulators.renderLivre(previewContainer, notification.jsonData, notification.previewHtml);
         } else if (notification.titleKey === 'elea_devoir_name') {
             // Rendu du simulateur Devoir (grille d'évaluation)
             debugLog('notifications', "renderPreview: Rendering Devoir");
@@ -2304,8 +2308,8 @@ async function handleEditorSave(result, notification, previewContainer, editBtn)
             notification.originalJsonData = result.data;
             notification.jsonData = result.data;
 
-            // Pour les Pages : mettre à jour le previewHtml régénéré (mode Fidelity)
-            if (notification.titleKey === 'elea_page_name' && newPreviewHtml) {
+            // Pour les Pages et Livres : mettre à jour le previewHtml régénéré (mode Fidelity)
+            if ((notification.titleKey === 'elea_page_name' || notification.titleKey === 'elea_livre_name') && newPreviewHtml) {
                 notification.previewHtml = newPreviewHtml;
             }
 
@@ -2492,6 +2496,7 @@ async function regenerateMBZFile(notification, editedData, moduleKey) {
         // Mapper le titleKey vers le type de processeur Moodle
         const titleKeyToMoodleType = {
             'elea_page_name': 'Page',
+            'elea_livre_name': 'Livre',
             'elea_millionnaire_name': 'Millionnaire',
             'elea_appariement_name': 'Appariement',
             'elea_qcm_name': 'QCM',
@@ -2636,6 +2641,41 @@ async function regenerateMBZFile(notification, editedData, moduleKey) {
                 break;
             }
 
+            case 'Livre': {
+                // Pipeline LaTeX complet pour MathJax Moodle
+                editedData = healLatex(editedData);
+                // Healing Livre : injecte les défauts numbering/customtitles + valide la séquence des chapitres
+                const { healStructureForActivity } = await import('../h5p/json-healer.js');
+                editedData = healStructureForActivity(editedData, 'Livre');
+
+                // Composition du bloc XML <chapter>...</chapter> et du HTML de prévisualisation
+                let chaptersXml = '';
+                let previewHtml = null;
+                try {
+                    const { buildChaptersXml, buildLivrePreviewHtml } = await import('../moodle/moodle-creator.js');
+                    const theme = editedData.theme || 'elea';
+                    chaptersXml = await buildChaptersXml(editedData.chapters || [], theme);
+                    previewHtml = await buildLivrePreviewHtml(editedData);
+                } catch (e) {
+                    console.warn('[Regenerate MBZ] buildChaptersXml/buildLivrePreviewHtml not available:', e);
+                }
+
+                // Import des utilitaires de formatage (intro)
+                const { formatTextToHtml } = await import('../core/utils.js');
+
+                activitySpecificData.BOOK_NAME = escapeXml(editedData.title || notification.title || 'Livre');
+                activitySpecificData.INTRO = escapeXml(formatTextToHtml(editedData.intro || ''));
+                activitySpecificData.NUMBERING = String(editedData.numbering ?? 1);
+                // navstyle forcé à 0 (table des matières) — Éléa n'expose pas les autres modes
+                activitySpecificData.NAVSTYLE = '0';
+                // Toujours 0 : option Moodle interne, non exposée à l'utilisateur
+                activitySpecificData.CUSTOMTITLES = '0';
+                activitySpecificData.CHAPTERS_XML = chaptersXml;
+                // Stocker le HTML de preview pour le retourner plus tard (mode Fidelity)
+                activitySpecificData._generatedPreviewHtml = previewHtml;
+                break;
+            }
+
             case 'Devoir': {
                 // Transformation identique à handleDevoirCreation (moodle-creator.js)
                 // Intro HTML depuis la description
@@ -2673,8 +2713,8 @@ async function regenerateMBZFile(notification, editedData, moduleKey) {
 
         debugLog('notifications', '[Regenerate MBZ] Successfully regenerated:', moodleType, 'Size:', mbzBlob.size);
 
-        // Pour les Pages, retourner aussi le previewHtml pour le mode Fidelity
-        if (moodleType === 'Page' && activitySpecificData._generatedPreviewHtml) {
+        // Pour les Pages et Livres, retourner aussi le previewHtml pour le mode Fidelity
+        if ((moodleType === 'Page' || moodleType === 'Livre') && activitySpecificData._generatedPreviewHtml) {
             return { blob: mbzBlob, previewHtml: activitySpecificData._generatedPreviewHtml };
         }
         return mbzBlob;

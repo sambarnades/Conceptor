@@ -1172,6 +1172,83 @@ export function healStructureForActivity(data, moduleKey) {
         }
     }
 
+    // --- Livre (Moodle, module book) ---
+    if (moduleKey === 'Livre') {
+        // 1. Defaults pour les réglages d'affichage (jamais générés par l'IA)
+        // NB : les <select> de l'éditeur renvoient toujours des strings — on coerce
+        // d'abord en Number avant de valider, sinon l'éditeur perd le choix utilisateur.
+        const coerceInt = (v) => {
+            if (typeof v === 'number') return v;
+            if (typeof v === 'string' && v.trim() !== '' && !Number.isNaN(Number(v))) return Number(v);
+            return NaN;
+        };
+        const numberingNum = coerceInt(healed.numbering);
+        if (![0, 1, 2, 3].includes(numberingNum)) {
+            healed.numbering = 1;     // Numérotation décimale par défaut
+        } else {
+            healed.numbering = numberingNum;
+        }
+        // navstyle : option non exposée à l'utilisateur (Éléa ne supporte que la TOC).
+        // Toujours forcée à 0 ; on nettoie la clé si elle a été renvoyée par l'IA ou un ancien JSON.
+        if ('navstyle' in healed) delete healed.navstyle;
+        // customtitles : option Moodle interne, non exposée à l'utilisateur.
+        // Toujours forcée à 0 côté processeur ; on nettoie la clé si l'IA l'a renvoyée.
+        if ('customtitles' in healed) delete healed.customtitles;
+
+        // 2. Default theme (parmi les 4 thèmes Page disponibles)
+        if (typeof healed.theme !== 'string' || !['elea', 'dsfr', 'accessible', 'dynamique'].includes(healed.theme)) {
+            healed.theme = 'elea';
+        }
+
+        // 3. Default intro (chaîne vide acceptée, mais jamais undefined)
+        if (typeof healed.intro !== 'string') {
+            healed.intro = '';
+        }
+
+        // 4. Validation et correction de la séquence des chapitres
+        if (Array.isArray(healed.chapters) && healed.chapters.length > 0) {
+            // Le premier chapitre ne peut JAMAIS être un sous-chapitre
+            healed.chapters[0].subchapter = false;
+
+            // Chaque sous-chapitre doit être précédé d'au moins un chapitre normal
+            let lastWasNormal = true;
+            healed.chapters.forEach((ch, idx) => {
+                if (idx === 0) {
+                    lastWasNormal = true;
+                    return;
+                }
+                if (ch.subchapter && !lastWasNormal) {
+                    // Sous-chapitre orphelin → forcer en chapitre normal
+                    ch.subchapter = false;
+                }
+                lastWasNormal = !ch.subchapter;
+            });
+
+            // 5. Chaque chapitre doit avoir un tableau blocks (au moins vide)
+            //    et chaque bloc doit avoir un objet data (mêmes règles que Page)
+            healed.chapters.forEach(ch => {
+                if (!Array.isArray(ch.blocks)) ch.blocks = [];
+                ch.blocks = ch.blocks.map(b => {
+                    if (!b.data) b.data = {};
+                    return b;
+                });
+                // Title fallback
+                if (typeof ch.title !== 'string' || !ch.title.trim()) {
+                    ch.title = 'Chapitre sans titre';
+                }
+                // Subchapter doit être un booléen
+                ch.subchapter = !!ch.subchapter;
+            });
+        } else {
+            // Cas dégénéré : aucun chapitre → créer un chapitre vide pour éviter le crash
+            healed.chapters = [{
+                title: healed.title || 'Chapitre 1',
+                subchapter: false,
+                blocks: []
+            }];
+        }
+    }
+
     // --- Devoir (Moodle) ---
     if (moduleKey === 'Devoir') {
         if (Array.isArray(healed.criteria)) {

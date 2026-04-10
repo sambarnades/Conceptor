@@ -545,6 +545,20 @@ function renderNavItemList(container, sectionId, arrayField) {
     const itemLabel = translateLabel(arrayField.config.itemLabel) || translateLabel('editor_element') || 'Element';
     const isFixedLength = arrayField.config.fixedLength === true;
 
+    // Détection du mode "chapitre/sous-chapitre" (Livre) : itemSchema avec un champ subchapter checkbox.
+    // Le 1er item ne peut jamais être un sous-chapitre (forçage automatique).
+    const hasSubchapterMode = !!(arrayField.config.itemSchema
+        && arrayField.config.itemSchema.subchapter
+        && arrayField.config.itemSchema.subchapter.type === 'checkbox');
+    if (hasSubchapterMode && items.length > 0 && items[0] && (items[0].subchapter === true || items[0].subchapter === 1)) {
+        items[0].subchapter = false;
+    }
+
+    // Compteurs pour la numérotation hiérarchique des chapitres / sous-chapitres
+    let chapterCounter = 0;
+    let subchapterCounter = 0;
+    let lastParentNumber = 0;
+
     items.forEach((item, index) => {
         const btn = document.createElement('button');
         btn.type = 'button';
@@ -556,11 +570,38 @@ function renderNavItemList(container, sectionId, arrayField) {
         const displayText = summary ? _smartTruncate(summary, 50) : `${itemLabel} ${index + 1}`;
         const status = getItemStatus(item, arrayField.config);
 
+        // Calcul du label affiché dans la pastille de gauche
+        // - Mode subchapter : 1, 2, 3 pour les chapitres ; A, B, C... pour les sous-chapitres (reset à chaque parent)
+        // - Mode normal : index + 1
+        let numberLabel = String(index + 1);
+        if (hasSubchapterMode) {
+            const isSub = item && (item.subchapter === true || item.subchapter === 1);
+            if (isSub) {
+                subchapterCounter++;
+                // A, B, ..., Z, AA, AB, ...
+                let n = subchapterCounter;
+                let letters = '';
+                while (n > 0) {
+                    const rem = (n - 1) % 26;
+                    letters = String.fromCharCode(65 + rem) + letters;
+                    n = Math.floor((n - 1) / 26);
+                }
+                // Format hiérarchique : "1.A", "1.B", "2.A"... pour bien montrer le rattachement
+                numberLabel = lastParentNumber > 0 ? `${lastParentNumber}.${letters}` : letters;
+                btn.classList.add('json-editor__nav-subitem--subchapter');
+            } else {
+                chapterCounter++;
+                subchapterCounter = 0;
+                lastParentNumber = chapterCounter;
+                numberLabel = String(chapterCounter);
+            }
+        }
+
         btn.innerHTML = `
             <span class="json-editor__nav-subitem-drag" title="${translateLabel('editor_drag') || 'Deplacer'}">
                 <i class="fas fa-grip-vertical"></i>
             </span>
-            <span class="json-editor__nav-subitem-number">${index + 1}</span>
+            <span class="json-editor__nav-subitem-number">${escapeHtml(numberLabel)}</span>
             <span class="json-editor__nav-subitem-text">${escapeHtml(displayText)}</span>
             <i class="fas ${getStatusIcon(status)} json-editor__nav-subitem-status ${getStatusClass(status)}"></i>
         `;
@@ -730,9 +771,18 @@ function isMobileLayout() {
 /**
  * Navigue vers une section / un item
  */
-function navigateTo(sectionId, itemIndex = null) {
+function navigateTo(sectionId, itemIndex = null, options = {}) {
     // Collecter les donnees de la vue actuelle avant de basculer
-    collectCurrentViewData();
+    // (sauf si l'appelant a deja collecte ET mute la structure : dans ce cas
+    // les data-path du DOM pointent vers des indices obsoletes et re-collecter
+    // ecraserait les items voisins avec les valeurs de l'item supprime/deplace).
+    if (!options.skipCollect) {
+        collectCurrentViewData();
+    } else {
+        // On vide quand meme les managers car le DOM va etre re-rendu
+        arrayManagers.clear();
+        feedbackEditors.clear();
+    }
 
     navState.sectionId = sectionId;
     navState.itemIndex = itemIndex;
@@ -923,6 +973,90 @@ function renderItemDetail(section, arrayField) {
 
     // Initialiser les champs speciaux imbriques
     initializeDetailSpecialFields(content);
+
+    // Cas spécial Livre : gestion du checkbox "subchapter"
+    if (arrayField.config.itemSchema
+        && arrayField.config.itemSchema.subchapter
+        && arrayField.config.itemSchema.subchapter.type === 'checkbox') {
+        const subchapterInput = content.querySelector(`input[type="checkbox"][data-path="${arrayField.path}.${index}.subchapter"]`);
+        if (subchapterInput) {
+            const wrapper = subchapterInput.closest('.json-editor__field--checkbox') || subchapterInput.closest('.json-editor__field');
+
+            // 1) Verrouillage du 1er chapitre (jamais sous-chapitre)
+            if (index === 0) {
+                subchapterInput.checked = false;
+                subchapterInput.disabled = true;
+                if (wrapper) {
+                    wrapper.style.opacity = '0.45';
+                    wrapper.style.pointerEvents = 'none';
+                    wrapper.title = translateLabel('editor_livre_subchapter_locked')
+                        || 'Le premier chapitre ne peut pas être un sous-chapitre';
+                }
+                if (items[0] && (items[0].subchapter === true || items[0].subchapter === 1)) {
+                    items[0].subchapter = false;
+                }
+            }
+
+            // 2) Indicateur de rattachement au chapitre parent (mère)
+            //    Affiché dès que le sous-chapitre est coché. Calcul du parent = chapitre normal
+            //    le plus proche en remontant dans la liste.
+            if (index > 0 && wrapper) {
+                const parentInfo = document.createElement('div');
+                parentInfo.className = 'json-editor__subchapter-parent-info';
+
+                const refreshParentInfo = () => {
+                    const isSub = items[index] && (items[index].subchapter === true || items[index].subchapter === 1);
+                    if (!isSub) {
+                        parentInfo.style.display = 'none';
+                        parentInfo.innerHTML = '';
+                        return;
+                    }
+                    // Trouver le parent : chapitre normal le plus proche en amont
+                    let parentIdx = -1;
+                    for (let i = index - 1; i >= 0; i--) {
+                        const it = items[i];
+                        if (it && !(it.subchapter === true || it.subchapter === 1)) {
+                            parentIdx = i;
+                            break;
+                        }
+                    }
+                    if (parentIdx === -1) {
+                        // Aucun parent trouvé : situation anormale (devrait être empêchée par le verrouillage du 1er)
+                        parentInfo.style.display = '';
+                        parentInfo.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${escapeHtml(
+                            translateLabel('editor_livre_subchapter_no_parent')
+                            || 'Aucun chapitre parent disponible : ce sous-chapitre doit suivre un chapitre normal.'
+                        )}`;
+                        return;
+                    }
+                    // Calculer le numéro du parent (en ignorant les sous-chapitres précédents)
+                    let parentNumber = 0;
+                    for (let i = 0; i <= parentIdx; i++) {
+                        const it = items[i];
+                        if (it && !(it.subchapter === true || it.subchapter === 1)) {
+                            parentNumber++;
+                        }
+                    }
+                    const parentTitle = (items[parentIdx] && items[parentIdx].title) || '';
+                    const labelTpl = translateLabel('editor_livre_subchapter_parent')
+                        || 'Rattaché au chapitre {n} : {title}';
+                    const text = labelTpl
+                        .replace('{n}', String(parentNumber))
+                        .replace('{title}', parentTitle || (translateLabel('editor_livre_chapter') || 'Chapitre'));
+                    parentInfo.style.display = '';
+                    parentInfo.innerHTML = `<i class="fas fa-link"></i> ${escapeHtml(text)}`;
+                };
+
+                refreshParentInfo();
+                wrapper.appendChild(parentInfo);
+
+                // Mettre à jour à chaque toggle de la case
+                subchapterInput.addEventListener('change', () => {
+                    requestAnimationFrame(refreshParentInfo);
+                });
+            }
+        }
+    }
 
     // Focus sur le premier champ
     requestAnimationFrame(() => {
@@ -1484,7 +1618,9 @@ async function handleArrayRemove(sectionId, arrayField, index) {
 
     refreshNavItemList(sectionId);
     const newIndex = items.length > 0 ? Math.min(index, items.length - 1) : null;
-    navigateTo(sectionId, newIndex);
+    // skipCollect : on vient de muter la structure, les data-path du DOM
+    // sont obsoletes (l'index courant pointe sur un autre item).
+    navigateTo(sectionId, newIndex, { skipCollect: true });
     notifyParentChange(arrayField.path, items);
 }
 
@@ -1510,7 +1646,7 @@ async function handleArrayDuplicate(sectionId, arrayField, index) {
     setNestedValue(editorData, arrayField.path, items);
 
     refreshNavItemList(sectionId);
-    navigateTo(sectionId, index + 1);
+    navigateTo(sectionId, index + 1, { skipCollect: true });
     notifyParentChange(arrayField.path, items);
 }
 
@@ -1525,15 +1661,31 @@ function handleArrayMove(sectionId, arrayPath, fromIndex, toIndex) {
     if (fromIndex < 0 || fromIndex >= items.length) return;
     if (toIndex < 0 || toIndex >= items.length) return;
 
+    // Capturer l'identite (par reference) de l'item actuellement affiche
+    // pour le retrouver apres le splice, meme s'il a glisse d'index par effet de bord.
+    const displayedItem = navState.itemIndex !== null ? items[navState.itemIndex] : null;
+
     const item = items.splice(fromIndex, 1)[0];
     items.splice(toIndex, 0, item);
+
+    // Cas spécial Livre : si le 1er chapitre devient un sous-chapitre suite au déplacement,
+    // on le force automatiquement à chapitre normal (un livre commence toujours par un chapitre).
+    if (items.length > 0 && items[0] && (items[0].subchapter === true || items[0].subchapter === 1)) {
+        items[0].subchapter = false;
+    }
+
     setNestedValue(editorData, arrayPath, items);
 
     refreshNavItemList(sectionId);
 
-    // Suivre l'element deplace
-    const newSelectedIndex = navState.itemIndex === fromIndex ? toIndex : navState.itemIndex;
-    navigateTo(sectionId, newSelectedIndex);
+    // Suivre l'element affiche par identite (gere le cas ou il a glisse sans etre lui-meme deplace)
+    let newSelectedIndex = navState.itemIndex;
+    if (displayedItem !== null) {
+        const idx = items.indexOf(displayedItem);
+        if (idx >= 0) newSelectedIndex = idx;
+    }
+    // skipCollect : la structure vient d'etre mutee, les data-path du DOM sont obsoletes.
+    navigateTo(sectionId, newSelectedIndex, { skipCollect: true });
     notifyParentChange(arrayPath, items);
 }
 
@@ -1593,6 +1745,44 @@ function handleFieldChange(path, value) {
     if (dropZonesMatch) {
         const fullSourcePath = dropZonesMatch[1] ? dropZonesMatch[1] + dropZonesMatch[2] : dropZonesMatch[2];
         refreshDynamicSelects('dropZones', fullSourcePath);
+    }
+
+    // Cas spécial Livre : toggle de sous-chapitre → re-render du menu de gauche
+    // pour mettre à jour la numérotation chiffres/lettres et l'indentation visuelle.
+    const subchapterMatch = path.match(/^([^.]+)\.(\d+)\.subchapter$/);
+    if (subchapterMatch) {
+        const arrayPath = subchapterMatch[1];
+        const itemIdx = parseInt(subchapterMatch[2], 10);
+        // Le 1er chapitre ne peut jamais être un sous-chapitre : forçage automatique.
+        if (itemIdx === 0 && (value === true || value === 1)) {
+            setNestedValue(editorData, path, false);
+        }
+        // Trouver la section qui contient cette array et rafraîchir sa nav
+        if (editorSchema && Array.isArray(editorSchema.sections)) {
+            for (const section of editorSchema.sections) {
+                const af = findPrimaryArrayField(section);
+                if (af && af.path === arrayPath) {
+                    refreshNavItemList(section.id);
+                    break;
+                }
+            }
+        }
+    } else if (Array.isArray(value) && editorSchema && Array.isArray(editorSchema.sections)) {
+        // Si une array primaire entière est mise à jour (ex: réordonnancement depuis le détail),
+        // rafraîchir la nav correspondante pour resynchroniser numérotation et sous-chapitres.
+        for (const section of editorSchema.sections) {
+            const af = findPrimaryArrayField(section);
+            if (af && af.path === path) {
+                // Cas Livre : forcer le 1er item à ne jamais être un sous-chapitre
+                if (af.config.itemSchema && af.config.itemSchema.subchapter
+                    && af.config.itemSchema.subchapter.type === 'checkbox'
+                    && value.length > 0 && value[0] && (value[0].subchapter === true || value[0].subchapter === 1)) {
+                    value[0].subchapter = false;
+                }
+                refreshNavItemList(section.id);
+                break;
+            }
+        }
     }
 
     // Notifier le parent
@@ -1807,3 +1997,18 @@ export function destroyEditorCore() {
     window._jsonEditorData = null;
     window._jsonEditorUtils = null;
 }
+
+// =======================================================================
+// EXPORTS POUR TESTS UNITAIRES
+// =======================================================================
+// Permet aux tests de declencher les mutations sans passer par les modales
+// de confirmation et le drag&drop. Ne pas utiliser en production.
+export const __testing = {
+    handleArrayAdd,
+    handleArrayRemove,
+    handleArrayMove,
+    handleArrayDuplicate,
+    navigateTo,
+    getNavState: () => ({ ...navState }),
+    findPrimaryArrayField
+};

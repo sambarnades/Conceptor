@@ -1,0 +1,158 @@
+{
+  "title": "Introduction aux fonctions affines",
+  "intro": "Ce livre en cinq chapitres propose une découverte progressive des fonctions affines, depuis la définition rigoureuse jusqu'aux applications pratiques en physique et en économie.",
+  "chapters": [
+    {
+      "title": "Définition et notation",
+      "subchapter": false,
+      "blocks": [
+        {
+          "type": "#01_hero_header",
+          "data": {
+            "title": "Les fonctions affines",
+            "subtitle": "Mathématiques — Classe de Seconde"
+          }
+        },
+        {
+          "type": "#11_definition_box",
+          "data": {
+            "title": "Définition",
+            "text": "Une fonction affine est une fonction \\( f \\) définie sur \\( \\mathbb{R} \\) par \\( f(x) = ax + b \\), où \\( a \\) et \\( b \\) sont deux nombres réels donnés. Le nombre \\( a \\) est appelé le coefficient directeur et \\( b \\) l'ordonnée à l'origine."
+          }
+        },
+        {
+          "type": "#12_context_paragraphs",
+          "data": {
+            "title": "Pourquoi les appeler 'affines' ?",
+            "paragraphs": [
+              "Le terme « affine » vient du latin *affinis* signifiant « voisin de ». Les fonctions affines sont en effet très proches des fonctions linéaires : ce sont des fonctions linéaires auxquelles on a ajouté une constante.",
+              "Lorsque \\( b = 0 \\), la fonction \\( f(x) = ax \\) est dite linéaire. C'est un cas particulier de fonction affine."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Représentation graphique",
+      "subchapter": false,
+      "blocks": [
+        {
+          "type": "#04_callout_set",
+          "data": {
+            "title": "À retenir",
+            "callouts": [
+              { "type": "savoir", "text": "La représentation graphique d'une fonction affine \\( f(x) = ax + b \\) est une droite." },
+              { "type": "objectif", "text": "Savoir tracer la droite à partir de \\( a \\) et \\( b \\)." }
+            ]
+          }
+        },
+        {
+          "type": "#10_table_comparison",
+          "data": {
+            "title": "Lecture graphique",
+            "headers": ["Paramètre", "Signification graphique"],
+            "rows": [
+              ["\\( a > 0 \\)", "La droite est croissante"],
+              ["\\( a < 0 \\)", "La droite est décroissante"],
+              ["\\( a = 0 \\)", "La droite est horizontale (fonction constante)"],
+              ["\\( b \\)", "Ordonnée du point d'intersection avec l'axe \\( (Oy) \\)"]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Cas particulier : la fonction linéaire",
+      "subchapter": true,
+      "blocks": [
+        {
+          "type": "#11_definition_box",
+          "data": {
+            "title": "Définition",
+            "text": "Une fonction linéaire est une fonction affine particulière de la forme \\( f(x) = ax \\), c'est-à-dire avec \\( b = 0 \\). Sa représentation graphique est une droite passant par l'origine du repère."
+          }
+        },
+        {
+          "type": "#12_context_paragraphs",
+          "data": {
+            "title": "Lien avec la proportionnalité",
+            "paragraphs": [
+              "Une fonction linéaire \\( f(x) = ax \\) modélise une situation de proportionnalité : si \\( x \\) double, alors \\( f(x) \\) double également. Le coefficient \\( a \\) est le coefficient de proportionnalité.",
+              "Par exemple, si 1 kg de pommes coûte 2,50 €, alors le prix \\( P \\) en fonction de la masse \\( m \\) est donné par la fonction linéaire \\( P(m) = 2{,}5 \\times m \\)."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Calculer une image et un antécédent",
+      "subchapter": false,
+      "blocks": [
+        {
+          "type": "#12_context_paragraphs",
+          "data": {
+            "title": "Calculer une image",
+            "paragraphs": [
+              "Calculer l'image d'un nombre \\( x \\) par une fonction \\( f \\) consiste à remplacer \\( x \\) par sa valeur dans l'expression de \\( f \\) et à effectuer le calcul.",
+              "Exemple : pour \\( f(x) = 3x - 2 \\), l'image de 4 est \\( f(4) = 3 \\times 4 - 2 = 10 \\)."
+            ]
+          }
+        },
+        {
+          "type": "#11_definition_box",
+          "data": {
+            "title": "Antécédent",
+            "text": "Un antécédent du nombre \\( y \\) par la fonction \\( f \\) est un nombre \\( x \\) tel que \\( f(x) = y \\). Pour trouver l'antécédent, on résout l'équation \\( ax + b = y \\)."
+          }
+        },
+        {
+          "type": "#15_myths_realities",
+          "data": {
+            "title": "Confusions fréquentes",
+            "items": [
+              { "myth": "Une fonction n'a qu'un seul antécédent pour chaque image.", "reality": "Une image peut avoir un, plusieurs ou aucun antécédent selon la fonction. Pour une fonction affine non constante, il y en a exactement un." },
+              { "myth": "Image et antécédent, c'est la même chose.", "reality": "L'image est ce qu'on calcule à partir de \\( x \\), tandis que l'antécédent est ce qu'on cherche à partir de \\( y \\)." }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Applications et synthèse",
+      "subchapter": false,
+      "blocks": [
+        {
+          "type": "#05_stats_cards",
+          "data": {
+            "title": "Quelques chiffres",
+            "stats": [
+              { "value": "\\( ax + b \\)", "label": "Forme générale d'une fonction affine" },
+              { "value": "1", "label": "Antécédent unique pour chaque image (si \\( a \\neq 0 \\))" },
+              { "value": "2", "label": "Points suffisent pour tracer la droite" }
+            ]
+          }
+        },
+        {
+          "type": "#14_faq_block",
+          "data": {
+            "title": "Questions fréquentes",
+            "questions": [
+              { "q": "Comment reconnaître une fonction affine ?", "a": "Si l'expression peut s'écrire sous la forme \\( ax + b \\) avec \\( a \\) et \\( b \\) constants, alors c'est une fonction affine." },
+              { "q": "À quoi servent les fonctions affines dans la vie courante ?", "a": "Elles modélisent les situations de proportionnalité avec un coût fixe (abonnement, location, frais de port)." }
+            ]
+          }
+        },
+        {
+          "type": "#18_sito_graphy",
+          "data": {
+            "title": "Pour aller plus loin",
+            "links": [
+              { "href": "https://www.lumni.fr/", "text": "Lumni — Mathématiques Seconde" },
+              { "href": "https://www.geogebra.org/", "text": "GeoGebra — Tracer des fonctions" }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

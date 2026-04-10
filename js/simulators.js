@@ -1919,6 +1919,51 @@ export function renderPage(container, data, previewHtml) {
 }
 
 /**
+ * Rendu du simulateur pour l'activité Livre (Moodle book multi-chapitres).
+ * Injecte le HTML du simulateur Livre déjà composé par moodle-creator.js
+ * (avec layout 2 colonnes, table des matières et navigation CSS pure).
+ *
+ * @param {HTMLElement} container - Le conteneur DOM où injecter le simulateur.
+ * @param {Object} data - Le JSON du livre (title, intro, chapters[], theme, numbering).
+ * @param {string} previewHtml - HTML du simulateur précomposé par buildLivrePreviewHtml().
+ */
+export function renderLivre(container, data, previewHtml) {
+    if (!container || !data) return;
+
+    if (!previewHtml) {
+        // Fallback minimal si le HTML n'a pas été pré-généré
+        container.innerHTML = '<p style="text-align:center;padding:2rem;color:#888;">Aperçu non disponible</p>';
+        return;
+    }
+
+    container.innerHTML = '';
+    const wrapper = document.createElement('div');
+    wrapper.className = 'elea-livre-fidelity-wrapper';
+    wrapper.style.cssText = 'position: relative; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#111827; background:#ffffff; border-radius:14px; max-width:1180px; margin:0 auto; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); text-align: left;';
+
+    // Bouton plein écran sticky en haut à droite — reste figé même au scroll vertical.
+    // Pattern "sticky float zero-size" : un wrapper de hauteur 0 floaté à droite,
+    // avec position: sticky pour rester collé au top du container scrollable parent.
+    const fsStickyAnchor = document.createElement('div');
+    fsStickyAnchor.style.cssText = 'position: sticky; top: 0; float: right; width: 0; height: 0; z-index: 50;';
+    const fsBtnContainer = document.createElement('div');
+    fsBtnContainer.style.cssText = 'position: absolute; top: 14px; right: 14px;';
+    fsBtnContainer.appendChild(createFullscreenButton(true));
+    fsStickyAnchor.appendChild(fsBtnContainer);
+    wrapper.appendChild(fsStickyAnchor);
+
+    // Contenu du simulateur (HTML précomposé par buildLivrePreviewHtml)
+    const contentDiv = document.createElement('div');
+    contentDiv.innerHTML = previewHtml;
+    wrapper.appendChild(contentDiv);
+
+    container.appendChild(wrapper);
+
+    // Rendu mathématique pour les formules LaTeX dans les blocs
+    mathRenderer.renderMath(wrapper);
+}
+
+/**
  * Rendu du simulateur pour l'activité Devoir (grille d'évaluation critériée).
  * Affiche un tableau de rubrique avec les critères en lignes et les niveaux en colonnes.
  * @param {HTMLElement} container - Le conteneur DOM où injecter le simulateur.

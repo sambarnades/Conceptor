@@ -42,6 +42,7 @@ const defaultTranslations = {
     elea_qcm_name: "QCM",
     elea_glossaire_xml_name: "Glossaire",
     elea_page_name: "Page",
+    elea_livre_name: "Livre",
     elea_devoir_name: "Devoir",
     // Sous-titres des modules Moodle/Éléa
     elea_test_xml_subtitle: "(Banque de questions)",
@@ -50,6 +51,7 @@ const defaultTranslations = {
     elea_qcm_subtitle: "(Activité pour Éléa)",
     elea_glossaire_xml_subtitle: "(Articles en XML)",
     elea_page_subtitle: "(Page de cours)",
+    elea_livre_subtitle: "(Cours multi-chapitres)",
     elea_devoir_subtitle: "(Grille d'évaluation)",
     // Onglets
     tab_all: "Tout",
