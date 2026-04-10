@@ -1,0 +1,38 @@
+{
+  "title": "Quiz — Les écritures anciennes : cunéiforme 𒀀 et hiéroglyphes 𓀀",
+  "questions": [
+    {
+      "text": "Quel système d'écriture utilise des signes comme 𒀀, 𒐕 et 𒈗, gravés sur des tablettes d'argile ?",
+      "answers": [
+        { "text": "Le cunéiforme mésopotamien", "iscorrect": 1 },
+        { "text": "Les hiéroglyphes égyptiens", "iscorrect": 0 },
+        { "text": "L'alphabet phénicien", "iscorrect": 0 }
+      ]
+    },
+    {
+      "text": "Le hiéroglyphe 𓀀 (homme assis) est un déterminatif. Cela signifie qu'il :",
+      "answers": [
+        { "text": "Indique la catégorie sémantique du mot sans être prononcé", "iscorrect": 1 },
+        { "text": "Représente un son spécifique de la langue égyptienne", "iscorrect": 0 },
+        { "text": "Sert à séparer les mots entre eux", "iscorrect": 0 },
+        { "text": "N'est utilisé que pour les textes religieux", "iscorrect": 0 }
+      ]
+    },
+    {
+      "text": "Le signe cunéiforme 𒐕 vaut 5 dans le système sumérien. Ce système est en base :",
+      "answers": [
+        { "text": "60 (sexagésimale)", "iscorrect": 1 },
+        { "text": "10 (décimale)", "iscorrect": 0 },
+        { "text": "12 (duodécimale)", "iscorrect": 0 }
+      ]
+    },
+    {
+      "text": "Le hiéroglyphe 𓏺 (trait vertical) représente le chiffre 1. Le système égyptien est :",
+      "answers": [
+        { "text": "Un système additif en base 10", "iscorrect": 1 },
+        { "text": "Un système positionnel en base 60", "iscorrect": 0 },
+        { "text": "Un système soustractif comme les chiffres romains", "iscorrect": 0 }
+      ]
+    }
+  ]
+}

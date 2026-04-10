@@ -1,0 +1,32 @@
+{
+  "name": "Glossaire des écritures anciennes",
+  "entries": [
+    {
+      "concept": "Cunéiforme 𒀀",
+      "definition": "Système d'écriture inventé en **Mésopotamie** vers 3400 av. J.-C. Le nom vient du latin *cuneus* (coin), en référence à la forme des marques imprimées dans l'argile. Exemple : 𒀀 signifie « eau ».",
+      "aliases": ["Écriture en coins", "Sumérien"]
+    },
+    {
+      "concept": "Hiéroglyphe 𓀀",
+      "definition": "Écriture sacrée de l'**Égypte ancienne**, utilisant des signes figuratifs. Le signe 𓀀 représente un homme assis et sert de *déterminatif* pour les noms de personnes.",
+      "aliases": ["Écriture sacrée"]
+    },
+    {
+      "concept": "Logogramme",
+      "definition": "Signe qui représente directement un **mot** ou un concept. Exemple : le hiéroglyphe 𓇳 représente directement le soleil et le dieu *Rê*."
+    },
+    {
+      "concept": "Phonogramme",
+      "definition": "Signe qui représente un **son** plutôt qu'un concept. Exemple : le hiéroglyphe 𓂋 (bouche) note le son « r » en égyptien ancien."
+    },
+    {
+      "concept": "Base sexagésimale",
+      "definition": "Système de numération en **base 60** utilisé par les Sumériens. Le signe 𒐕 y représente le chiffre 5. Ce système est à l'origine de nos 60 minutes et 360 degrés."
+    },
+    {
+      "concept": "Tablette d'argile",
+      "definition": "Support d'écriture principal en Mésopotamie. On y gravait les signes cunéiformes (𒀀, 𒁀, 𒂗) à l'aide d'un **calame** (roseau taillé en biseau).",
+      "aliases": ["Tablette cunéiforme"]
+    }
+  ]
+}

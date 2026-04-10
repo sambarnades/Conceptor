@@ -1,0 +1,87 @@
+{
+  "title": "L'histoire des écritures anciennes : du cunéiforme aux hiéroglyphes",
+  "intro": "Ce livre explore les premières formes d'écriture inventées par l'humanité, des tablettes sumériennes aux papyrus égyptiens. Découvrez comment les symboles 𒀀 et 𓀀 ont révolutionné la communication humaine.",
+  "chapters": [
+    {
+      "title": "Le cunéiforme mésopotamien : 𒀀 𒐕 𒁀",
+      "subchapter": false,
+      "blocks": [
+        {
+          "type": "#01_hero_header",
+          "data": {
+            "title": "L'écriture cunéiforme",
+            "subtitle": "Mésopotamie — vers 3400 av. J.-C."
+          }
+        },
+        {
+          "type": "#11_definition_box",
+          "data": {
+            "title": "Définition — Cunéiforme",
+            "text": "Le cunéiforme (du latin cuneus « coin ») est un système d'écriture sur tablettes d'argile. Le signe 𒀀 (a) représente l'eau, 𒐕 (5) est un chiffre, et 𒁀 (ba) une syllabe courante."
+          }
+        },
+        {
+          "type": "#10_table_comparison",
+          "data": {
+            "title": "Exemples de signes cunéiformes",
+            "headers": ["Signe", "Translittération", "Signification"],
+            "rows": [
+              ["𒀀", "a", "Eau"],
+              ["𒐕", "5", "Chiffre cinq"],
+              ["𒁀", "ba", "Syllabe BA"],
+              ["𒂗", "en", "Seigneur"],
+              ["𒈗", "lugal", "Roi"]
+            ]
+          }
+        },
+        {
+          "type": "#12_context_paragraphs",
+          "data": {
+            "title": "La naissance de l'écriture",
+            "paragraphs": [
+              "L'écriture cunéiforme est née en Mésopotamie vers 3400 av. J.-C. Les premiers signes comme 𒀀 étaient des pictogrammes représentant des objets concrets.",
+              "Progressivement, le système s'est complexifié : 𒈗 (lugal, « roi ») combinait plusieurs signes pour former un concept abstrait de pouvoir."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "title": "Les hiéroglyphes égyptiens : 𓀀 𓏺 𓂋",
+      "subchapter": false,
+      "blocks": [
+        {
+          "type": "#11_definition_box",
+          "data": {
+            "title": "Définition — Hiéroglyphe",
+            "text": "Du grec hieros (« sacré ») et glyphein (« graver »). Les hiéroglyphes comme 𓀀 (homme assis) et 𓏺 (chiffre un) servaient à la fois de logogrammes et de phonogrammes."
+          }
+        },
+        {
+          "type": "#10_table_comparison",
+          "data": {
+            "title": "Exemples de hiéroglyphes",
+            "headers": ["Signe", "Nom", "Fonction"],
+            "rows": [
+              ["𓀀", "Homme assis", "Déterminatif pour les personnes"],
+              ["𓏺", "Trait vertical", "Chiffre 1 ou marqueur d'unité"],
+              ["𓂋", "Bouche", "Phonogramme pour le son « r »"],
+              ["𓇳", "Soleil", "Idéogramme pour Rê, le dieu soleil"],
+              ["𓈖", "Vagues d'eau", "Phonogramme pour le son « n »"]
+            ]
+          }
+        },
+        {
+          "type": "#04_callout_set",
+          "data": {
+            "title": "Points clés",
+            "callouts": [
+              { "type": "savoir", "text": "Le signe 𓀀 est un déterminatif : il ne se prononce pas mais indique la catégorie sémantique du mot." },
+              { "type": "objectif", "text": "Comprendre la différence entre logogramme (𓇳 = soleil) et phonogramme (𓂋 = son « r »)." }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

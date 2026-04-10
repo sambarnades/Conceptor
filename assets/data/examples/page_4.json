@@ -1,0 +1,46 @@
+{
+  "title": "Les systèmes de numération antiques : 𒐕 𓏺 et au-delà",
+  "intro": "Cette page présente les différents systèmes de numération inventés par les civilisations anciennes, du cunéiforme sumérien aux hiéroglyphes égyptiens.",
+  "blocks": [
+    {
+      "type": "#01_hero_header",
+      "data": {
+        "title": "Compter avant les chiffres arabes",
+        "subtitle": "Mathématiques — Cycle 4"
+      }
+    },
+    {
+      "type": "#10_table_comparison",
+      "data": {
+        "title": "Symboles numériques à travers les civilisations",
+        "headers": ["Civilisation", "Symbole", "Valeur", "Base"],
+        "rows": [
+          ["Sumériens", "𒐕", "5", "Base 60 (sexagésimale)"],
+          ["Égyptiens", "𓏺", "1", "Base 10 (décimale)"],
+          ["Sumériens", "𒐐", "10", "Base 60"],
+          ["Égyptiens", "𓎆", "10", "Base 10"]
+        ]
+      }
+    },
+    {
+      "type": "#12_context_paragraphs",
+      "data": {
+        "title": "Du concret à l'abstrait",
+        "paragraphs": [
+          "Les Sumériens utilisaient le signe 𒐕 pour représenter le chiffre 5. Leur système en base 60 est à l'origine de nos 60 minutes et 360 degrés.",
+          "Les Égyptiens préféraient un système additif : 𓏺 valait 1, et on répétait le signe pour obtenir des valeurs plus grandes. Le signe 𓎆 (os de talon) valait 10."
+        ]
+      }
+    },
+    {
+      "type": "#04_callout_set",
+      "data": {
+        "title": "Le saviez-vous ?",
+        "callouts": [
+          { "type": "savoir", "text": "Le zéro n'existait pas dans ces systèmes ! Les Babyloniens ont finalement introduit un signe de séparation, mais le concept de « rien » comme nombre viendra bien plus tard." },
+          { "type": "alerte", "text": "Attention : le symbole 𒐕 (5 sumérien) ne doit pas être confondu avec le chiffre 5 arabe — ce sont deux systèmes totalement indépendants." }
+        ]
+      }
+    }
+  ]
+}

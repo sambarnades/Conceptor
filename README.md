@@ -2,7 +2,7 @@
 
 **Création Assistée de Ressources et d'Activités Magistère et Éléa**
 
-[![Version](https://img.shields.io/badge/version-5.2.0-blue.svg)](https://caramel.forge.apps.education.fr/)
+[![Version](https://img.shields.io/badge/version-5.2.1-blue.svg)](https://caramel.forge.apps.education.fr/)
 [![Licence](https://img.shields.io/badge/licence-GNU%20AGPLv3-green.svg)](LICENSE)
 [![Plateforme](https://img.shields.io/badge/plateforme-Web-orange.svg)](https://caramel.forge.apps.education.fr/)
 
@@ -11,6 +11,7 @@
 ## 📋 Table des matières
 
 - [À propos](#-à-propos)
+- [Correctifs de la version 5.2.1](#correctifs-de-la-version-521)
 - [Nouveautés de la version 5.2.0](#nouveautés-de-la-version-520)
 - [Correctifs de la version 5.1.2](#correctifs-de-la-version-512)
 - [Nouveautés de la version 5.1.1](#nouveautés-de-la-version-511)
@@ -40,7 +41,7 @@
 
 1. **Saisie du contexte pédagogique** : discipline, niveau, thème, nombre d'items
 2. **Génération automatique de prompts IA** optimisés pour chaque type d'activité
-3. **Appel à l'IA** via l'infrastructure souveraine ilaaS (Enseignement supérieur français)
+3. **Appel à l'IA** via l'infrastructure souveraine ILaaS (Enseignement supérieur français)
 4. **Conversion instantanée** en fichiers `.h5p` (H5P) ou `.mbz` (Moodle/Éléa)
 5. **Téléchargement direct** prêt à importer dans Moodle/Éléa/Magistère
 
@@ -51,7 +52,18 @@
 - ✅ **Sans collecte de données** : respect total de la vie privée (RGPD)
 - ✅ **Multi-plateforme** : compatible Moodle, Éléa, Magistère
 - ✅ **Multilingue** : interface disponible en 11 langues
-- ✅ **IA souveraine** : modèles hébergés sur infrastructure française (ilaaS)
+- ✅ **IA souveraine** : modèles hébergés sur infrastructure française (ILaaS)
+
+---
+
+## Correctifs de la version 5.2.1
+
+> **10 avril 2026** — Correctif critique et transparence sur la protection des données.
+
+- **Correctif import Livre sur Éléa** : Les activités Livre contenant des caractères Unicode exotiques (cunéiformes, hiéroglyphes, emojis) provoquaient une erreur `xml_parsing_error` à l'import. La fonction d'échappement XML générait des surrogates UTF-16 invalides. Corrigé via `codePointAt()` et le flag Unicode sur la regex.
+- **Protection des données dans l'aide** : Nouvelle section « Vos données sont protégées de bout en bout » dans la philosophie du tutoriel (11 langues), détaillant l'extraction locale des documents, le transit via les serveurs universitaires du projet [ILaaS](https://www.ilaas.fr/), et la responsabilité en cas de copier-coller vers une IA externe.
+- **Lien ILaaS** : URL [https://www.ilaas.fr/](https://www.ilaas.fr/) ajoutée dans le tutoriel et les mentions légales.
+- **Suite de tests `test-moodle-unicode`** : 95 assertions, 8 exemples JSON dédiés (un par activité Moodle).
 
 ---
 
@@ -222,7 +234,7 @@
 ### Génération assistée par IA
 
 - **Prompts pré-configurés** : modèles optimisés pour chaque type d'activité
-- **5 modèles IA** disponibles via ilaaS (Mistral, Llama, GPT-OSS, Qwen)
+- **5 modèles IA** disponibles via ILaaS (Mistral, Llama, GPT-OSS, Qwen)
 - **RAG (Retrieval-Augmented Generation)** : enrichissement via upload de documents
 - **OCR universel** : extraction de texte depuis PDF, DOCX, PPTX, ODT, ODP, PNG, JPG et JPEG (Tesseract.js + reconnaissance native)
 - **Limite de contexte** : jusqu'à 120 000 caractères pour le RAG
@@ -360,7 +372,7 @@ Interface complète avec paramètres détaillés :
                      │
                      ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  4. Appel API via n8n → ilaaS                               │
+│  4. Appel API via n8n → ILaaS                               │
 │     - Requête POST chiffrée                                 │
 │     - Parsing JSON de la réponse                            │
 └────────────────────┬────────────────────────────────────────┘
@@ -433,7 +445,7 @@ Interface complète avec paramètres détaillés :
 │             │                                                     │ 2.Worker │
 │             │  GET /result    ┌──────────────┐                   │ (10-180s)│
 │             │ ──────────────> │  3. Result   │ <── SELECT ────── │          │
-│             │ <── {status} ── │  (~50ms)     │     Postgres      │  ilaaS   │
+│             │ <── {status} ── │  (~50ms)     │     Postgres      │  ILaaS   │
 │             │    (polling     └──────────────┘                   │  (GPU FR)│
 │             │     toutes                                          │          │
 │             │     les 3s)     ┌──────────────┐                   └──────────┘
@@ -449,13 +461,13 @@ Interface complète avec paramètres détaillés :
 - Clés API gérées côté serveur (non exposées en frontend)
 - File de tâches Postgres avec statuts : `pending` → `running` → `done` / `error`
 - Cascade de fallback automatique sur 3 modèles LLM (timeout 59s par tentative)
-- Infrastructure ilaaS : data centers ESR français labellisés
+- Infrastructure ILaaS : data centers ESR français labellisés
 
 ---
 
 ## 🤖 Modèles d'IA disponibles
 
-Caramel utilise l'infrastructure **[ilaaS](https://ilaas.fr/)** (Infrastructure de LLMs as a Service) via l'Incubateur du Ministère de l'Éducation nationale.
+Caramel utilise l'infrastructure **[ILaaS](https://ILaaS.fr/)** (Infrastructure de LLMs as a Service) via l'Incubateur du Ministère de l'Éducation nationale.
 
 ### Modèles proposés (5 au total)
 
@@ -472,7 +484,7 @@ Caramel utilise l'infrastructure **[ilaaS](https://ilaas.fr/)** (Infrastructure 
 - **Hébergement** : data centers labellisés de l'Enseignement supérieur et de la recherche (ESR)
 - **Souveraineté** : infrastructure 100% française (pas d'IA grand public US/CN)
 - **Confidentialité** : requêtes traitées uniquement pour exécution, pas de réentraînement
-- **Journalisation** : selon politique de confidentialité ilaaS (consulter leurs CGU)
+- **Journalisation** : selon politique de confidentialité ILaaS (consulter leurs CGU)
 
 ---
 
@@ -530,7 +542,7 @@ Interface disponible en **11 langues** :
 
 ### Traitement des données IA
 
-- **Requêtes IA** : transmises via workflow n8n chiffré → ilaaS
+- **Requêtes IA** : transmises via workflow n8n chiffré → ILaaS
 - **Utilisation** : uniquement pour exécution de la requête courante
 - **Stockage** : pas de conservation de prompts/réponses par Caramel
 - **Serveurs** : infrastructure ESR française (pas d'envoi vers IA commerciales)
@@ -567,7 +579,7 @@ python3 -m http.server 8000
 ### Configuration
 
 Aucune configuration requise ! L'application est pré-configurée pour utiliser :
-- L'API n8n de l'Incubateur (proxy ilaaS)
+- L'API n8n de l'Incubateur (proxy ILaaS)
 - Les modèles IA par défaut
 - Les traductions embarquées
 
@@ -992,6 +1004,6 @@ Académie de Grenoble
 
 - **Ministère de l'Éducation nationale** : hébergement Forge des Communs Numériques Éducatifs
 - **Incubateur** : infrastructure n8n pour proxy IA sécurisé
-- **ilaaS** : mise à disposition de modèles IA souverains
+- **ILaaS** : mise à disposition de modèles IA souverains
 - **Communauté H5P** : ressources et templates de référence
 - **Contributeurs open source** : développeurs des bibliothèques utilisées

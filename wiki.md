@@ -12,6 +12,11 @@
 > - **Pendant** : Une fois le contenu généré, **vous** pouvez le modifier et l'ajuster directement
 > - **Après** : Même après téléchargement, **vous** restez libre de modifier le fichier à tout moment
 >
+> 🔒 **Vos données sont protégées de bout en bout :**
+> - **Vos documents restent sur votre ordinateur** : l'extraction de texte (PDF, images) se fait dans votre navigateur, rien n'est envoyé à un serveur.
+> - **Les IA intégrées sont hébergées en France** : vos requêtes transitent par des serveurs universitaires mutualisés (projet [ILaaS](https://www.ilaas.fr/)) qui ne collectent ni ne revendent vos données.
+> - **Seul le copier-coller vers une IA externe vous engage** : si vous utilisez un service tiers, la protection dépend de ses conditions.
+>
 > 🎯 **L'IA propose, l'enseignant dispose !**
 
 ---
@@ -384,7 +389,7 @@ Lorsque vous générez **plusieurs activités**, un bouton **"Tout télécharger
 
 ## 🤖 Modèles d'IA disponibles
 
-Caramel utilise l'infrastructure **ilaaS** (Intelligence artificielle souveraine française).
+Caramel utilise l'infrastructure **ILaaS** (Intelligence artificielle souveraine française).
 
 | Modèle | Paramètres | Vitesse | Qualité | Usage recommandé |
 |--------|------------|---------|---------|------------------|
@@ -959,7 +964,7 @@ Caramel respecte votre vie privée :
 - Le document RAG (si utilisé)
 - Le modèle IA sélectionné
 
-**Pas de stockage** : Les prompts ne sont pas conservés par ilaaS.
+**Pas de stockage** : Les prompts ne sont pas conservés par ILaaS.
 
 ---
 
@@ -1074,6 +1079,7 @@ Caramel est distribué sous **licence GNU Affero General Public License v3.0 (AG
 🔗 [Consultez le Journal complet des modifications (CHANGELOG)](https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG)
 
 ### Dernières mises à jour :
+- **v5.2.1** : 🔧 **Correctif import Livre sur Éléa** (erreur XML avec caractères Unicode exotiques). Ajout de la section « Protection des données » dans le tutoriel (11 langues) avec lien vers le projet [ILaaS](https://www.ilaas.fr/).
 - **v5.2.0** : 🎉 **Nouvelle activité Livre (Moodle/Éléa)** : cours multi-chapitres réutilisant les 18 blocs de Page avec table des matières, sous-chapitres optionnels et numérotation décimale. Indentation visuelle dynamique des sous-chapitres dans l'éditeur. Correctif transversal du bug de traduction des prompts au changement de langue (sessionStorage).
 - **v5.1.2** : 🔧 Correctif éditeur Timeline : retour au mode URL uniquement pour les images (le format H5P ne prend pas en charge les images uploadées).
 - **v5.1.1** : 🔧 Accessibilité clavier complète (tuiles, modales, sélecteur LLM, toggle), focus trap et Escape sur toutes les modales, `font-display: swap` FontAwesome, dimensions images explicites, SEO (meta description, liens crawlables), logo Tchap SVG.

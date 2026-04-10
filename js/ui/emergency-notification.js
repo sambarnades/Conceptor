@@ -149,7 +149,7 @@ function parseYamlPayload(yaml) {
             continue;
         }
 
-        // Niveau 2 — identifiant de template (ex: « ilaas_hs: »)
+        // Niveau 2 — identifiant de template (ex: « ILaaS_hs: »)
         if (indent === 2 && line.endsWith(':') && !line.includes(': ')) {
             currentTemplateId = line.slice(0, -1).trim();
             templates[currentTemplateId] = { textes: {}, couleur: null };

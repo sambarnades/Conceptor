@@ -9,8 +9,11 @@ export function escapeXml(str) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;')
-        .replace(/[^\x20-\x7E]/g, function (ch) {
-            return '&#' + ch.charCodeAt(0) + ';';
+        .replace(/[^\x20-\x7E]/gu, function (ch) {
+            const cp = ch.codePointAt(0);
+            // Filtrer les code points invalides en XML (surrogates, non-caractères)
+            if ((cp >= 0xD800 && cp <= 0xDFFF) || cp === 0xFFFE || cp === 0xFFFF) return '';
+            return '&#' + cp + ';';
         });
 }
 

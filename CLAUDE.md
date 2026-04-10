@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Key characteristics:**
 - Pure frontend JavaScript (ES6 modules), no build system, no npm
-- AI integration via n8n proxy to ilaaS (French sovereign AI infrastructure)
+- AI integration via n8n proxy to ILaaS (French sovereign AI infrastructure)
 - Static file serving only — works with `python -m http.server`
 - 11-language internationalization support
 - All file packaging (ZIP, TAR, GZIP) happens client-side

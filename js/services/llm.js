@@ -63,7 +63,7 @@ export function populateModelSelector(moduleKey, models, onSelectCallback, selec
 
     const textModels = models.filter(model => model.type === 'text-generation' || model.type === 'image-text-to-text');
     const featuredModels = textModels.filter(model => model.featured);
-    // En mode ?debug, on affiche tous les modèles (utile pour tester les nouveaux modèles ilaaS).
+    // En mode ?debug, on affiche tous les modèles (utile pour tester les nouveaux modèles ILaaS).
     // Sinon, on n'affiche que les modèles "featured" (3 par défaut).
     const baseModels = (DEBUG || featuredModels.length === 0) ? textModels : featuredModels;
     const modelsToShow = baseModels.slice().sort((a, b) => {

@@ -1,0 +1,30 @@
+{
+    "title": "Les symboles des écritures anciennes",
+    "intro": "Associe chaque signe d'écriture ancienne à sa signification. Ces symboles cunéiformes et hiéroglyphiques sont parmi les plus anciens de l'humanité.",
+    "pairs": [
+        {
+            "question": "𒀀 (cunéiforme)",
+            "answer": "Eau — idéogramme sumérien translittéré « a »."
+        },
+        {
+            "question": "𓀀 (hiéroglyphe)",
+            "answer": "Homme assis — déterminatif égyptien pour les noms de personnes."
+        },
+        {
+            "question": "𒐕 (cunéiforme)",
+            "answer": "Chiffre 5 — signe numérique du système sexagésimal sumérien."
+        },
+        {
+            "question": "𓏺 (hiéroglyphe)",
+            "answer": "Chiffre 1 — trait vertical utilisé dans la numération égyptienne."
+        },
+        {
+            "question": "𓂋 (hiéroglyphe)",
+            "answer": "Bouche — phonogramme égyptien pour le son « r »."
+        },
+        {
+            "question": "𒈗 (cunéiforme)",
+            "answer": "Roi — idéogramme sumérien translittéré « lugal »."
+        }
+    ]
+}

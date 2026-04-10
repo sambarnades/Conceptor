@@ -1,0 +1,31 @@
+{
+  "title": "Analyse comparée des écritures anciennes : 𒀀 cunéiforme et 𓀀 hiéroglyphes",
+  "description": "Rédigez une analyse comparée des systèmes d'écriture cunéiforme (𒀀, 𒐕, 𒈗) et hiéroglyphique (𓀀, 𓏺, 𓂋). Vous étudierez leurs ressemblances et différences.",
+  "rubricName": "Grille d'évaluation — Écritures anciennes",
+  "criteria": [
+    {
+      "description": "Connaissance des signes (𒀀, 𓀀, 𒐕, 𓏺)",
+      "levels": [
+        { "score": 0, "definition": "L'élève ne reconnaît aucun signe ancien (𒀀, 𓀀) et ne distingue pas les deux systèmes." },
+        { "score": 1, "definition": "L'élève identifie quelques signes (ex. 𒀀 = eau, 𓏺 = 1) mais confond les deux écritures." },
+        { "score": 2, "definition": "L'élève identifie correctement les signes cunéiformes (𒀀, 𒐕, 𒈗) et hiéroglyphiques (𓀀, 𓏺, 𓂋) et les attribue au bon système." }
+      ]
+    },
+    {
+      "description": "Qualité de la comparaison",
+      "levels": [
+        { "score": 0, "definition": "Aucune comparaison ou simple juxtaposition sans analyse." },
+        { "score": 1, "definition": "Comparaison partielle avec quelques points communs ou différences identifiés." },
+        { "score": 2, "definition": "Comparaison structurée montrant les ressemblances (pictogrammes → abstraction) et les différences (support, base numérique, fonction des signes)." }
+      ]
+    },
+    {
+      "description": "Clarté de l'expression",
+      "levels": [
+        { "score": 0, "definition": "Texte confus ou incompréhensible." },
+        { "score": 1, "definition": "Texte compréhensible mais avec des maladresses." },
+        { "score": 2, "definition": "Texte clair, bien organisé et correctement rédigé." }
+      ]
+    }
+  ]
+}

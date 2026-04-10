@@ -6,7 +6,7 @@
 
 ---
 
-## Les modèles d'IA disponibles (via iLaaS)
+## Les modèles d'IA disponibles (via ILaaS)
 
 | Modèle | Vitesse tokens/s | Temps pour 1000 tokens | Qualité | Usage Caramel |
 |--------|------------------|------------------------|---------|---------------|
@@ -77,7 +77,7 @@ Le client reçoit cette réponse **tout de suite** (en ~50ms) avec une URL pour 
 - N8n met le workflow en pause
 - Attend que le client revienne via le lien `resumeUrl`
 
-### 🟣 **Étape 5 : Appel à l'IA (iLaaS)**
+### 🟣 **Étape 5 : Appel à l'IA (ILaaS)**
 
 **Nœud "Requête vers LLM" :**
 ```

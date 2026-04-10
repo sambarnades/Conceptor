@@ -1,0 +1,59 @@
+{
+    "title": "Les écritures anciennes : 𒀀 et 𓀀",
+    "questions": [
+        {
+            "question": "Que représente le signe cunéiforme 𒀀 en sumérien ?",
+            "goodanswer": "L'eau (translittéré « a »)",
+            "badanswer": [
+                "Le feu (translittéré « izi »)",
+                "La terre (translittéré « ki »)",
+                "Le ciel (translittéré « an »)"
+            ]
+        },
+        {
+            "question": "Dans l'écriture égyptienne, à quoi sert le hiéroglyphe 𓀀 (homme assis) ?",
+            "goodanswer": "C'est un déterminatif pour les noms de personnes",
+            "badanswer": [
+                "C'est le chiffre 1",
+                "C'est le phonogramme du son « a »",
+                "C'est le symbole du pharaon"
+            ]
+        },
+        {
+            "question": "Le signe cunéiforme 𒐕 représente le chiffre 5. Dans quelle base les Sumériens comptaient-ils ?",
+            "goodanswer": "Base 60 (sexagésimale)",
+            "badanswer": [
+                "Base 10 (décimale)",
+                "Base 2 (binaire)",
+                "Base 20 (vigésimale)"
+            ]
+        },
+        {
+            "question": "Quel hiéroglyphe 𓂋 représente le son « r » en égyptien ancien ?",
+            "goodanswer": "La bouche",
+            "badanswer": [
+                "L'œil",
+                "La main",
+                "Le pied"
+            ]
+        },
+        {
+            "question": "Quelle valeur numérique le hiéroglyphe 𓏺 (trait vertical) a-t-il dans le système égyptien ?",
+            "goodanswer": "1",
+            "badanswer": [
+                "10",
+                "100",
+                "0"
+            ]
+        },
+        {
+            "question": "Que signifie le signe cunéiforme 𒈗 (LUGAL) ?",
+            "goodanswer": "Roi",
+            "badanswer": [
+                "Prêtre",
+                "Soldat",
+                "Esclave"
+            ]
+        }
+    ]
+}

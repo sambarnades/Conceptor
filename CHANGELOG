@@ -4,7 +4,24 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 
 ---
 
-## [5.2.0] - 10-04-2026
+## [5.2.1] - 10-04-2026
+
+### Correctifs
+
+- **Erreur XML à l'import des activités Livre sur Éléa** (`error/xml_parsing_error`) : Lorsque l'IA générait du contenu contenant des caractères Unicode au-delà de U+FFFF (cunéiformes 𒀀, hiéroglyphes 𓏺, emojis…), la fonction `escapeXml()` produisait des références numériques de surrogates UTF-16 (`&#55308;&#57338;`) au lieu des vrais code points (`&#78842;`). Ces surrogates sont interdits en XML, provoquant le rejet à l'import par Moodle. **Correction** : remplacement de `charCodeAt()` par `codePointAt()` et ajout du flag Unicode (`/u`) sur la regex dans `moodle-formats.js`. Impacte potentiellement les 7 activités Moodle (Livre, Page, Glossaire, Test, QCM, Appariement, Millionnaire, Devoir).
+
+### Améliorations
+
+- **Protection des données dans le tutoriel** : Ajout d'une section « Vos données sont protégées de bout en bout » dans la partie « Notre philosophie » de l'aide en ligne, expliquant les 3 niveaux de protection : extraction locale des documents (navigateur), IA hébergées sur serveurs universitaires français (projet [ILaaS](https://www.ilaas.fr/)), et responsabilité de l'utilisateur en cas de copier-coller vers une IA externe. Traduit dans les 11 langues.
+- **Lien vers ILaaS** : Ajout de l'URL [https://www.ilaas.fr/](https://www.ilaas.fr/) dans le tutoriel et dans les mentions légales pour transparence sur l'infrastructure IA utilisée.
+
+### Tests
+
+- **Nouvelle suite `test-moodle-unicode`** : 95 assertions couvrant l'encodage XML de caractères cunéiformes, hiéroglyphes, emojis et texte mixte. Teste `escapeXml()` directement et le pipeline `generateMoodleXml()` complet. Vérifie l'absence de surrogates et la bonne formation XML (DOMParser). 8 exemples JSON dédiés (un par type d'activité Moodle). Inscrit dans `test-all.html`.
+
+---
+
+## [5.2.0] - 07-04-2026
 
 ### Nouveautés
 
@@ -56,7 +73,7 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
   **Nouvelle architecture asynchrone en 4 workflows distincts :**
 
   - **Submit** (`POST /webhook/caramel/llm/submit-dev2`) : reçoit la requête Caramel, insère une tâche dans Postgres avec le statut `pending`, répond en **~100ms** avec un `taskId`, puis déclenche le Worker en fire-and-forget. Le slot n8n est libéré quasi immédiatement.
-  - **Worker** (`POST /webhook/caramel/llm/worker-dev2`) : répond `202 Accepted` instantanément et continue le traitement en arrière-plan. Exécute l'appel LLM iLaaS (timeout 59s, 3 modèles en cascade avec fallback automatique), met à jour le statut Postgres (`running` → `done` ou `error`) et exporte les statistiques vers Grist.
+  - **Worker** (`POST /webhook/caramel/llm/worker-dev2`) : répond `202 Accepted` instantanément et continue le traitement en arrière-plan. Exécute l'appel LLM ILaaS (timeout 59s, 3 modèles en cascade avec fallback automatique), met à jour le statut Postgres (`running` → `done` ou `error`) et exporte les statistiques vers Grist.
   - **Result** (`GET /webhook/caramel/llm/result-dev2?taskId=xxx`) : répond en **~50ms** aux polls du client. Retourne toujours HTTP 200 avec un champ `status` : `processing`, `done`, `error`, ou `not_found`.
   - **Cleanup** (cron toutes les minutes) : purge la table Postgres — tâches terminées supprimées **30 secondes** après complétion, tâches orphelines supprimées après **3 minutes**.
 
@@ -66,9 +83,9 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 
   **Injection CI/CD** : les URLs des webhooks Submit et Result sont injectées dans `llm.js` à la minification via deux variables GitLab (`LLM_SUBMIT_URL`, `LLM_RESULT_URL`). Les URLs dev2 restent hardcodées pour le développement local.
 
-- **Synchronisation du catalogue de modèles avec iLaaS** : Mise à jour de la liste `AVAILABLE_MODELS` dans `llm.js` à partir du suivi automatisé Grist (workflow n8n Scalingo qui surveille quotidiennement les modèles exposés par iLaaS). Remplacement de `qwen-3-30b` par `qwen-3.5-35b-instruct` (le nouveau modèle Qwen exposé par iLaaS, l'ancien id continue de fonctionner via fallback côté serveur), et ajout de deux nouveaux modèles : `gemma-4-31b` (Google, 31 Mrd paramètres) et `mistral-medium-250523` (Mistral AI, ~70 Mrd paramètres). Le sélecteur principal continue d'afficher uniquement les 3 modèles `featured` (Mistral-Small-3.2, Qwen 3.5, GPT-OSS) en mode normal.
+- **Synchronisation du catalogue de modèles avec ILaaS** : Mise à jour de la liste `AVAILABLE_MODELS` dans `llm.js` à partir du suivi automatisé Grist (workflow n8n Scalingo qui surveille quotidiennement les modèles exposés par ILaaS). Remplacement de `qwen-3-30b` par `qwen-3.5-35b-instruct` (le nouveau modèle Qwen exposé par ILaaS, l'ancien id continue de fonctionner via fallback côté serveur), et ajout de deux nouveaux modèles : `gemma-4-31b` (Google, 31 Mrd paramètres) et `mistral-medium-250523` (Mistral AI, ~70 Mrd paramètres). Le sélecteur principal continue d'afficher uniquement les 3 modèles `featured` (Mistral-Small-3.2, Qwen 3.5, GPT-OSS) en mode normal.
 
-- **Mode `?debug` : sélecteur de modèle LLM exhaustif** : En mode `?debug`, le dropdown de sélection du modèle IA affiche désormais **tous** les modèles déclarés dans `AVAILABLE_MODELS` (et plus seulement les 3 `featured`), pour faciliter le test des nouveaux modèles iLaaS sans avoir à modifier le code. Les modèles sans `sizeTag` (Llama-3.3, Llama-3.1, Gemma 4, Mistral Medium) bénéficient d'un **résumé auto-généré** via la nouvelle clé i18n `llm_default_summary` (template `Modèle {name} de {company}, {params} milliards de paramètres.`), traduite dans les 11 langues. Hors mode debug, le comportement est inchangé (3 modèles featured).
+- **Mode `?debug` : sélecteur de modèle LLM exhaustif** : En mode `?debug`, le dropdown de sélection du modèle IA affiche désormais **tous** les modèles déclarés dans `AVAILABLE_MODELS` (et plus seulement les 3 `featured`), pour faciliter le test des nouveaux modèles ILaaS sans avoir à modifier le code. Les modèles sans `sizeTag` (Llama-3.3, Llama-3.1, Gemma 4, Mistral Medium) bénéficient d'un **résumé auto-généré** via la nouvelle clé i18n `llm_default_summary` (template `Modèle {name} de {company}, {params} milliards de paramètres.`), traduite dans les 11 langues. Hors mode debug, le comportement est inchangé (3 modèles featured).
 
 ### Documentation et architecture
 
@@ -484,7 +501,7 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 ## [3.3.6] - 18-11-2025
 
 ### ✨ Améliorations
-- **RGPD et Mentions légales** : Actualisation pour préciser l'absence de `localStorage`, adapter le traitement des données au contexte ILAAS et confirmer la génération hybride H5P/Éléa.
+- **RGPD et Mentions légales** : Actualisation pour préciser l'absence de `localStorage`, adapter le traitement des données au contexte ILaaS et confirmer la génération hybride H5P/Éléa.
 
 ---
 
@@ -498,7 +515,7 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 ## [3.3.4] - 13-11-2025
 
 ### ✨ Améliorations
-- **Infrastructure IA** : Adaptation du code suite au renommage des services vers **ilaaS**.
+- **Infrastructure IA** : Adaptation du code suite au renommage des services vers **ILaaS**.
 - **Ergonomie des modales** :
   - Ajout d'une croix de fermeture sur les mentions légales.
   - Amélioration de l'affichage responsive.
@@ -522,8 +539,8 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 
 ## [3.2] - 05-11-2025
 
-### 🚀 Nouveauté majeure : Migration vers **ilaaS**
-- **Fin d’« Albert »** : Caramel utilise désormais le projet **ilaaS** (Inférence GPU universitaire).
+### 🚀 Nouveauté majeure : Migration vers **ILaaS**
+- **Fin d’« Albert »** : Caramel utilise désormais le projet **ILaaS** (Inférence GPU universitaire).
 - **Modèles disponibles** :
   - `Mistral-Small 3.2`
   - `Llama-3.3`

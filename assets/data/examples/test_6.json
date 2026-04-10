@@ -1,0 +1,75 @@
+{
+    "bank_name": "Les écritures anciennes — Quiz Unicode",
+    "bank_description": "Évaluation sur les systèmes d'écriture antiques, contenant des caractères cunéiformes et hiéroglyphiques.",
+    "questions": [
+        {
+            "type": "truefalse",
+            "content": {
+                "name": "Q1 - Cunéiforme 𒀀",
+                "questiontext": "Le signe cunéiforme 𒀀 représente le concept d'eau en sumérien.",
+                "feedback": "Le signe 𒀀 (translittéré « a ») est effectivement l'idéogramme sumérien pour l'eau.",
+                "answer": {
+                    "value": true,
+                    "feedback_true": "Correct ! 𒀀 est bien le signe de l'eau.",
+                    "feedback_false": "C'est pourtant vrai : 𒀀 signifie « eau » en sumérien."
+                }
+            }
+        },
+        {
+            "type": "multichoice",
+            "content": {
+                "name": "Q2 - Hiéroglyphe 𓀀",
+                "questiontext": "Quel rôle joue le hiéroglyphe 𓀀 (homme assis) dans l'écriture égyptienne ?",
+                "feedback": "Le signe 𓀀 est un déterminatif : il ne se prononce pas mais indique la catégorie du mot.",
+                "answers": [
+                    {
+                        "text": "C'est un déterminatif qui indique que le mot désigne une personne.",
+                        "fraction": 100,
+                        "feedback": "Exact ! 𓀀 classe le mot dans la catégorie des personnes."
+                    },
+                    {
+                        "text": "C'est un phonogramme qui note le son « a ».",
+                        "fraction": 0,
+                        "feedback": "Non, le phonogramme pour « a » est un autre signe (le vautour 𓄿)."
+                    },
+                    {
+                        "text": "C'est un chiffre qui représente le nombre 1.",
+                        "fraction": 0,
+                        "feedback": "Non, le chiffre 1 est noté 𓏺 (trait vertical)."
+                    }
+                ]
+            }
+        },
+        {
+            "type": "multichoice",
+            "content": {
+                "name": "Q3 - Systèmes de numération",
+                "questiontext": "Quelles affirmations sur les systèmes de numération antiques sont correctes ?",
+                "feedback": "Les Sumériens utilisaient la base 60 (𒐕 = 5) et les Égyptiens la base 10 (𓏺 = 1).",
+                "single": "false",
+                "answers": [
+                    {
+                        "text": "Le signe 𒐕 représente le chiffre 5 en cunéiforme sumérien.",
+                        "fraction": 50,
+                        "feedback": "Correct !"
+                    },
+                    {
+                        "text": "Le signe 𓏺 représente le chiffre 1 en hiéroglyphes égyptiens.",
+                        "fraction": 50,
+                        "feedback": "Correct !"
+                    },
+                    {
+                        "text": "Les Sumériens utilisaient un système décimal comme le nôtre.",
+                        "fraction": 0,
+                        "feedback": "Non, ils utilisaient un système sexagésimal (base 60)."
+                    },
+                    {
+                        "text": "Les Égyptiens n'avaient pas de système de numération écrit.",
+                        "fraction": 0,
+                        "feedback": "Faux, ils avaient un système additif bien développé."
+                    }
+                ]
+            }
+        }
+    ]
+}

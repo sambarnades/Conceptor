@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <title>Test Moodle Unicode — Encodage XML</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; padding: 24px; color: #1a1a2e; }
+        h1 { font-size: 1.5rem; margin-bottom: 8px; }
+        .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+        .summary { display: flex; gap: 12px; margin-bottom: 20px; }
+        .summary__card {
+            padding: 14px 24px; border-radius: 10px; font-weight: 700; font-size: 1.3rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-width: 120px; text-align: center;
+        }
+        .summary__card small { display: block; font-size: 0.7rem; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+        .card--pass { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; }
+        .card--fail { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: #721c24; }
+        .card--total { background: linear-gradient(135deg, #d1ecf1, #bee5eb); color: #0c5460; }
+        .result { padding: 10px 16px; margin: 4px 0; border-radius: 8px; font-size: 0.85rem; }
+        .result--pass { background: #d4edda; color: #155724; }
+        .result--fail { background: #f8d7da; color: #721c24; }
+        .section { background: #fff; border-radius: 10px; padding: 18px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+        .section h2 { font-size: 1.1rem; margin-bottom: 12px; border-bottom: 2px solid #e9ecef; padding-bottom: 8px; }
+        .diagnostic { margin-top: 6px; padding: 8px; background: #1e1e2e; color: #cdd6f4; border-radius: 6px; font-family: monospace; font-size: 0.75rem; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Test Moodle Unicode &mdash; Encodage XML</h1>
+    <p class="subtitle">Verifie que escapeXml() encode correctement les caracteres Unicode &gt; U+FFFF (cuneiforme &#x12000;, hieroglyphes &#x13000;, emojis) sans generer de surrogates UTF-16 invalides en XML. Couvre les 7 types d'activites Moodle.</p>
+    <div class="summary" id="summary"></div>
+    <div id="results"></div>
+    <script type="module" src="tests/test-moodle-unicode.js"></script>
+</body>
+</html>
