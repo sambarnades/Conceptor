@@ -28,6 +28,7 @@
 - [Installation locale](#-installation-locale)
 - [Structure du projet](#-structure-du-projet)
 - [Contribution](#-contribution)
+- [Utilisation de l'IA dans le développement](#-utilisation-de-lia-dans-le-développement)
 - [Licence](#-licence)
 - [Contact et support](#-contact-et-support)
 
@@ -931,6 +932,42 @@ python3 -m http.server 8000
 - **CSS** : BEM-like pour nommage, variables CSS pour thèmes
 - **Traductions** : toujours ajouter clés dans les 11 fichiers de langue
 - **Commits** : messages en français, explicites (ex : "Correctif modal responsive")
+
+---
+
+## 🧠 Utilisation de l'IA dans le développement
+
+### Philosophie
+
+Caramel est un projet conçu et piloté par deux enseignants — Gauthier REMANDE et Emmanuel GAUNARD — qui ne sont pas développeurs professionnels mais avec des bases de programmation initiales. L'intelligence artificielle a été utilisée tout au long du projet comme un **allié de conception** : pour trouver des conseils, organiser les idées, structurer la pensée, explorer des pistes techniques et produire du code. Chaque décision d'architecture, chaque choix fonctionnel et chaque validation finale restent sous la responsabilité des deux auteurs.
+
+### Outils IA utilisés
+
+Nous avons mobilisé plusieurs IA en exploitant les forces de chacune et leur disponibilité à un instant donné :
+
+| Outil | Usage principal |
+|-------|----------------|
+| **Claude Code** (Anthropic) | Développement au quotidien : écriture et refactorisation du code, création des processeurs H5P/Moodle, système d'export documentaire, éditeur visuel, tests. Outil principal depuis la v5.0. |
+| **ChatGPT / Codex** (OpenAI) | Prototypage initial, exploration de concepts, résolution de problèmes ponctuels, rédaction de prompts IA pour les activités pédagogiques. |
+| **Gemini via Antigravity** (Google) | Recherche documentaire, vérification de spécifications (formats H5P, XML Moodle), exploration d'alternatives techniques. |
+
+### Comment l'IA intervient concrètement
+
+- **Architecture et structuration** : L'organisation modulaire du projet (core, services, ui, h5p, moodle, export, editor, renderers) a été pensée avec l'aide de l'IA pour garantir la maintenabilité d'une base de code qui dépasse aujourd'hui les 80 fichiers JavaScript.
+- **Écriture du code** : La grande majorité du code a été écrite avec assistance IA — des processeurs H5P (21 types) aux exports documentaires (pipeline LaTeX→OMML/MathML), en passant par le système d'internationalisation (11 langues, ~2 000 clés). Les auteurs décrivent le besoin fonctionnel, l'IA propose une implémentation, les auteurs valident, testent et itèrent.
+- **Réparation et robustesse** : Le module `json-healer.js`, qui corrige automatiquement les sorties malformées de l'IA générative, a lui-même été développé avec l'aide de l'IA — une forme de méta-utilisation où l'IA aide à compenser les limites de l'IA.
+- **Tests** : Les 12 suites de tests (~2 500 assertions) ont été co-écrites avec l'IA pour couvrir le pipeline de bout en bout.
+- **Documentation** : Les guides techniques (`docs/`), les prompts pédagogiques (`assets/data/prompts/`) et ce README ont été rédigés avec assistance IA.
+
+### Ce que l'IA ne fait pas
+
+- **Décisions pédagogiques** : Le choix des types d'activités, la structure des prompts pédagogiques et les attentes en termes de qualité de contenu sont entièrement définis par les auteurs, enseignants de terrain.
+- **Validation fonctionnelle** : Chaque fonctionnalité est testée manuellement dans un navigateur, importée dans Éléa/Moodle et vérifiée par les auteurs avant publication.
+- **Conception UX** : L'expérience utilisateur (parcours de génération, design glassmorphism, modes simple/guidé) est le fruit de la réflexion des auteurs et des retours de la communauté enseignante.
+
+### Transparence
+
+Le code source est intégralement disponible sur cette Forge. L'historique Git reflète le processus de développement itératif, avec des commits en français décrivant chaque évolution. Nous assumons pleinement l'utilisation de l'IA comme outil de productivité, au même titre qu'un IDE ou une documentation en ligne : c'est un moyen, pas une fin. La valeur du projet réside dans la vision pédagogique, les choix de conception et la qualité du résultat final — pas dans la manière dont les lignes de code ont été produites.
 
 ---
 
