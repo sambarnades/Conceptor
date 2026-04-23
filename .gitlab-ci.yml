@@ -83,14 +83,18 @@ pages:
     - |
       echo "=== Minification CSS ==="
       CSS_COUNT=0
+      CSS_FAIL=0
       for f in $(find .public/css -name '*.css' -not -path '.public/css/vendor/*' -not -name '*.min.css'); do
-        if npx cleancss --level 1 -o "$f" "$f" 2>/dev/null; then
+        if npx clean-css-cli --level 1 -o "$f.min" "$f" && [ -s "$f.min" ]; then
+          mv "$f.min" "$f"
           CSS_COUNT=$((CSS_COUNT + 1))
         else
-          echo "  WARN: echec minification $f"
+          rm -f "$f.min"
+          echo "  WARN: echec minification $f (fichier original conserve)"
+          CSS_FAIL=$((CSS_FAIL + 1))
         fi
       done
-      echo "  CSS: $CSS_COUNT fichiers minifies"
+      echo "  CSS: $CSS_COUNT fichiers minifies, $CSS_FAIL echecs"
 
     # ------------------------------------------------------------------
     # 6. Compactage JSON — locales et exemples
