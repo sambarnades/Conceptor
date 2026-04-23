@@ -247,7 +247,7 @@ Used by: `json-healer.js` (field-aware healing), processors (field-specific tran
 | Model ID | Display Name | Size |
 |----------|-------------|------|
 | `mistral-small-3.2-24b` | Mistral-Small-3.2 | small (default) |
-| `qwen-3.5-35b-instruct` | Qwen 3.5 | large |
+| `qwen-3.6-35b-instruct` | Qwen 3.6 | large |
 | `gpt-oss-120b` | GPT-OSS | xl |
 | `llama-3.3-70b` | LLaMa-3.3 | large |
 | `llama-3.1-8b` | LLaMa-3.1-8B | small |
@@ -274,7 +274,7 @@ Centralized in `LIB_PATHS`, versioned paths, lazy-loaded via `initSmartPreloadin
 | jsPDF | 4.2.0 | PDF export |
 | jsPDF-AutoTable | 5.0.7 | PDF tables |
 | docx | 8.5.0 | DOCX export |
-| DOMPurify | 3.3.3 | HTML sanitization |
+| DOMPurify | 3.4.1 | HTML sanitization |
 | Liberation Sans | — | Font for PDF/ODT exports |
 
 ### Patch h5p-standalone (frame.bundle.js)

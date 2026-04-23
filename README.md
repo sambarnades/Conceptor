@@ -2,7 +2,7 @@
 
 **Création Assistée de Ressources et d'Activités Magistère et Éléa**
 
-[![Version](https://img.shields.io/badge/version-5.2.1-blue.svg)](https://caramel.forge.apps.education.fr/)
+[![Version](https://img.shields.io/badge/version-5.2.2-blue.svg)](https://caramel.forge.apps.education.fr/)
 [![Licence](https://img.shields.io/badge/licence-GNU%20AGPLv3-green.svg)](LICENSE)
 [![Plateforme](https://img.shields.io/badge/plateforme-Web-orange.svg)](https://caramel.forge.apps.education.fr/)
 
@@ -11,6 +11,7 @@
 ## 📋 Table des matières
 
 - [À propos](#-à-propos)
+- [Nouveautés de la version 5.2.2](#nouveautés-de-la-version-522)
 - [Correctifs de la version 5.2.1](#correctifs-de-la-version-521)
 - [Nouveautés de la version 5.2.0](#nouveautés-de-la-version-520)
 - [Correctifs de la version 5.1.2](#correctifs-de-la-version-512)
@@ -54,6 +55,15 @@
 - ✅ **Multi-plateforme** : compatible Moodle, Éléa, Magistère
 - ✅ **Multilingue** : interface disponible en 11 langues
 - ✅ **IA souveraine** : modèles hébergés sur infrastructure française (ILaaS)
+
+---
+
+## Nouveautés de la version 5.2.2
+
+> **23 avril 2026** — Nouveau modèle LLM Qwen 3.6 et mise à jour de sécurité DOMPurify.
+
+- **Nouveau modèle Qwen 3.6 (35B)** : Remplace Qwen 3.5 dans la liste des modèles disponibles. Beaucoup plus rapide sur les générations longues (Timeline, Course Presentation, Livre) tout en conservant la qualité de sortie. Mis en avant (`featured: true`) comme modèle large par défaut aux côtés de Mistral-Small-3.2 et GPT-OSS.
+- **DOMPurify 3.4.1** : Montée de version de la bibliothèque de sanitisation HTML (depuis 3.3.3). Correctifs de sécurité amont chez Cure53, API inchangée pour Caramel. Non-régression vérifiée par comparaison automatisée des sorties sur 33 cas (vecteurs XSS, 3 profils EDUCATIONAL/STRICT/RICH_HTML, contenus pédagogiques LaTeX/Unicode/RTL) : 33/33 identiques entre 3.3.3 et 3.4.1.
 
 ---
 
@@ -224,7 +234,7 @@
 
 ### Sécurité accrue
 
-- **DOMPurify 3.3.3 intégré** : Assainissement du JSON généré pour prévenir toute injection
+- **DOMPurify 3.4.1 intégré** : Assainissement du JSON généré pour prévenir toute injection
 - **Validation complète des entrées** : Escaping des contenus XML/HTML, traitement sécurisé des URLs
 - **Mise à jour des dépendances** : Montée de version généralisée (dont pdf.js) vers versions sécurisées
 
@@ -475,7 +485,7 @@ Caramel utilise l'infrastructure **[ILaaS](https://ILaaS.fr/)** (Infrastructure 
 | Modèle | Paramètres | Featured | Organisation |
 |--------|------------|----------|--------------|
 | **Mistral Small 3.2** | 24B | ⭐ | Mistral AI |
-| **Qwen 3** | 30B | ⭐ | Qwen |
+| **Qwen 3.6** | 35B | ⭐ | Qwen |
 | **GPT-OSS** | 120B | ⭐ | OpenAI |
 | **Llama 3.3** | 70B | | RedHat AI |
 | **Llama 3.1** | 8B | | Neural Magic |

@@ -4,6 +4,18 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 
 ---
 
+## [5.2.2] - 23-04-2026
+
+### Nouveautés
+
+- **Nouveau modèle Qwen 3.6 (35B)** : Remplace Qwen 3.5 dans la liste des modèles disponibles via ILaaS. Beaucoup plus rapide sur les générations longues (Timeline, Course Presentation, Livre) tout en conservant l'excellente qualité de sortie. Mis en avant (`featured: true`) comme modèle large par défaut aux côtés de Mistral-Small-3.2 et GPT-OSS.
+
+### Sécurité
+
+- **DOMPurify 3.4.1** : Montée de version de la bibliothèque de sanitisation HTML (depuis 3.3.3) intégrant les correctifs de sécurité amont publiés par Cure53. L'API utilisée dans Caramel (`DOMPurify.sanitize(dirty, config)`) est inchangée. **Non-régression vérifiée par comparaison automatisée des sorties 3.3.3 vs 3.4.1** sur 33 cas (8 vecteurs XSS, 3 profils EDUCATIONAL / STRICT / RICH_HTML, contenus pédagogiques LaTeX / Unicode / RTL / caractères chinois) : **33/33 sorties strictement identiques**. Performance ≈ identique (-3 % sur 100 sanitisations de contenu long).
+
+---
+
 ## [5.2.1] - 10-04-2026
 
 ### Correctifs

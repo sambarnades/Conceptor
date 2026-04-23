@@ -16,7 +16,7 @@ import { debugLog, DEBUG } from '../core/utils.js';
 
 export const AVAILABLE_MODELS = [
     { id: 'mistral-small-3.2-24b', displayName: 'Mistral-Small-3.2', param: '24', owned_by: 'Mistral AI', type: 'text-generation', featured: true, order: 1, sizeTag: 'small' },
-    { id: 'qwen-3.5-35b-instruct', displayName: 'Qwen 3.5', param: '35', owned_by: 'Qwen', type: 'text-generation', featured: true, order: 2, sizeTag: 'large' },
+    { id: 'qwen-3.6-35b-instruct', displayName: 'Qwen 3.6', param: '35', owned_by: 'Qwen', type: 'text-generation', featured: true, order: 2, sizeTag: 'large' },
     { id: 'gpt-oss-120b', displayName: 'GPT-OSS', param: '120', owned_by: 'OpenAI', type: 'text-generation', featured: true, order: 3, sizeTag: 'xl' },
     { id: 'llama-3.3-70b', displayName: 'LLaMa-3.3', param: '70', owned_by: 'RedHatAI', type: 'text-generation' },
     { id: 'llama-3.1-8b', displayName: 'LLaMa-3.1-8B', param: '8', owned_by: 'Neural Magic', type: 'text-generation' },

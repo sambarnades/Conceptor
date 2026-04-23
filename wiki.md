@@ -394,7 +394,7 @@ Caramel utilise l'infrastructure **ILaaS** (Intelligence artificielle souveraine
 | Modèle | Paramètres | Vitesse | Qualité | Usage recommandé |
 |--------|------------|---------|---------|------------------|
 | **Mistral Small 3.2** | 24B | ⚡ 83 tokens/s | ⭐⭐⭐ Bonne | Génération rapide et efficace, consommation d'énergie modérée |
-| **Qwen-3-30b** | 30B | ⚡⚡⚡ 155 tokens/s | ⭐⭐⭐⭐ Excellente | Contenus complexes nécessitant précision, plus grande consommation d'énergie |
+| **Qwen 3.6** | 35B | ⚡⚡⚡ Très rapide | ⭐⭐⭐⭐ Excellente | Contenus complexes nécessitant précision, génération longue (Timeline, Livre, Course Presentation) |
 | **GPT-OSS** | 120B | ⚡⚡ 133 tokens/s | ⭐⭐⭐⭐⭐ Optimale | **Le plus performant** : rapide ET précis mais consomme bien plus d'énergie |
 
 > 💡 **Conseil** : **GPT-OSS** est le meilleur choix dans la plupart des cas : il combine vitesse (133 tokens/s) et "bonne" qualité mais il consomme plus d'énergie à la génération. **Mistral Small 3.2** nous semble être le modèle le plus adapté pour la plupart des situations.
@@ -1079,6 +1079,7 @@ Caramel est distribué sous **licence GNU Affero General Public License v3.0 (AG
 🔗 [Consultez le Journal complet des modifications (CHANGELOG)](https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG)
 
 ### Dernières mises à jour :
+- **v5.2.2** : 🚀 **Nouveau modèle Qwen 3.6 (35B)** — beaucoup plus rapide que Qwen 3.5 sur les générations longues, tout en conservant l'excellente qualité. 🔒 **DOMPurify 3.4.1** (mise à jour de sécurité de la bibliothèque de sanitisation HTML, aucune régression : comportement identique à la 3.3.3 sur 33 cas de test).
 - **v5.2.1** : 🔧 **Correctif import Livre sur Éléa** (erreur XML avec caractères Unicode exotiques). Ajout de la section « Protection des données » dans le tutoriel (11 langues) avec lien vers le projet [ILaaS](https://www.ilaas.fr/).
 - **v5.2.0** : 🎉 **Nouvelle activité Livre (Moodle/Éléa)** : cours multi-chapitres réutilisant les 18 blocs de Page avec table des matières, sous-chapitres optionnels et numérotation décimale. Indentation visuelle dynamique des sous-chapitres dans l'éditeur. Correctif transversal du bug de traduction des prompts au changement de langue (sessionStorage).
 - **v5.1.2** : 🔧 Correctif éditeur Timeline : retour au mode URL uniquement pour les images (le format H5P ne prend pas en charge les images uploadées).

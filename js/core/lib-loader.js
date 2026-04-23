@@ -37,7 +37,7 @@ export const LIB_PATHS = {
     DOCX: 'js/vendor/docx/8.5.0/index.umd.js',
 
     // Security
-    DOMPURIFY: 'js/vendor/dompurify/3.3.3/purify.min.js',
+    DOMPURIFY: 'js/vendor/dompurify/3.4.1/purify.min.js',
 
     // Fonts (Liberation Sans - drop-in replacement for Arial, SIL OFL license)
     FONT_LIBERATION_SANS_REGULAR: 'js/vendor/fonts/LiberationSans-Regular.ttf',
