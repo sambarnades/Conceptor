@@ -1,30 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
   <title>Sucrerie</title>
-  <!-- Logo officiel Sucrerie — fond rose poudré FIXE + boutique berry.
-       Carré à coins arrondis (rx=23.5 %) identique à favicon.svg de la Sucrerie. -->
+  <!-- Logo officiel Sucrerie — bicolore mauve clair, identique à favicon.svg du site.
+       Fond rose poudré FIXE (#fcc3ce). Auvent/couvercle mauve clair (#9a4f7e),
+       corps prune (#5d2a52). À garder synchronisé avec sucrerie/favicon.svg. -->
   <rect x="0" y="0" width="100" height="100" rx="23.5" ry="23.5" fill="#fcc3ce"/>
   <path d="M 18 37
-           A 8 8 0 0 0 34 37
-           A 8 8 0 0 0 50 37
-           A 8 8 0 0 0 66 37
-           A 8 8 0 0 0 82 37
+           A 8 10 0 0 0 34 37
+           A 8 10 0 0 0 50 37
+           A 8 10 0 0 0 66 37
+           A 8 10 0 0 0 82 37
            C 82 26, 78 16, 69 16
            L 31 16
            C 22 16, 18 26, 18 37 Z"
-        fill="#593c43" />
-  <path d="M 22.5 54
-           A 4 4 0 0 1 26.5 50
-           A 4 4 0 0 1 30.5 54
-           L 30.5 68
-           A 3 3 0 0 0 33.5 71
-           L 66.5 71
-           A 3 3 0 0 0 69.5 68
-           L 69.5 54
-           A 4 4 0 0 1 73.5 50
-           A 4 4 0 0 1 77.5 54
-           L 77.5 76
-           A 8 8 0 0 1 69.5 84
-           L 30.5 84
-           A 8 8 0 0 1 22.5 76 Z"
-        fill="#593c43" />
+        fill="#9a4f7e" />
+  <path d="M 21.5 55
+           A 5 5 0 0 1 26.5 50
+           A 5 5 0 0 1 31.5 55
+           L 31.5 67
+           A 3 3 0 0 0 34.5 70
+           L 65.5 70
+           A 3 3 0 0 0 68.5 67
+           L 68.5 55
+           A 5 5 0 0 1 73.5 50
+           A 5 5 0 0 1 78.5 55
+           C 80.5 64, 80.5 73, 72 84
+           L 28 84
+           C 19.5 73, 19.5 64, 21.5 55 Z"
+        fill="#5d2a52" />
 </svg>

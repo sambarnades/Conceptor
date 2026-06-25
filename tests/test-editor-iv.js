@@ -14,6 +14,7 @@ import { detectContentType, getSchemaForType } from '../js/editor/content-detect
 import { healStructureForActivity } from '../js/h5p/json-healer.js';
 import InteractiveVideoProcessor from '../js/h5p/processors/InteractiveVideo.js';
 import { isYouTubeSource, ytVideoId, createVideoPlayer } from '../js/ui/sync-video-player.js';
+import { clearGeneratedJson, videoLinkChanged } from '../js/ui/ui.js';
 
 let passCount = 0;
 let failCount = 0;
@@ -205,6 +206,62 @@ export async function runAllTests() {
         assert(['getCurrentTime', 'getDuration', 'seekTo', 'destroy'].every(m => typeof player[m] === 'function'), 'API exposée : getCurrentTime/getDuration/seekTo/destroy');
         player.destroy();
         assert(true, 'destroy() sans exception');
+    }
+
+    // -------------------------------------------------------------------
+    // Changement de lien vidéo = changement de contexte : le JSON déjà généré (pour la vidéo
+    // précédente) doit être effacé, afin que la bascule en mode guidé reparte d'une base propre.
+    // On teste l'unité réellement câblée par runDetection : clearGeneratedJson() — qui vide le
+    // textarea, supprime la sauvegarde sessionStorage, et rafraîchit le bouton contextuel.
+    group('Détection changement de lien (videoLinkChanged)');
+    const A = 'https://www.youtube.com/watch?v=AAAAAAAAAAA';
+    const B = 'https://www.youtube.com/watch?v=BBBBBBBBBBB';
+    // Premier lien (référence vide) → on ne « change » rien, le JSON éventuel n'est pas touché.
+    assert(videoLinkChanged('', A) === false, 'Premier lien (ancien vide) → pas un changement');
+    assert(videoLinkChanged(undefined, A) === false, 'Référence undefined → pas un changement');
+    // Re-coller le même lien (même après effacement du champ) → pas d'invalidation du travail.
+    assert(videoLinkChanged(A, A) === false, 'Même lien recollé → pas un changement');
+    // Lien réellement différent → invalidation (cœur du scénario : transcription différente).
+    assert(videoLinkChanged(A, B) === true, 'Lien différent → changement détecté');
+    assert(videoLinkChanged(A, '') === false, 'Nouveau lien vide → pas un changement (champ effacé, en attente)');
+
+    if (typeof document !== 'undefined') {
+        group('Invalidation JSON au changement de lien vidéo');
+        const moduleKey = 'InteractiveVideo';
+        const storageKey = `caramel_json_${moduleKey}`;
+
+        // DOM minimal : un textarea JSON + le groupe de boutons avec son hook _ctxUpdate.
+        const jsonTextarea = document.createElement('textarea');
+        jsonTextarea.id = 'test-iv-json-input';
+        document.body.appendChild(jsonTextarea);
+        const buttonGroup = document.createElement('div');
+        buttonGroup.id = `generation-button-group-${moduleKey}`;
+        document.body.appendChild(buttonGroup);
+        let ctxUpdateCalls = 0;
+        buttonGroup._ctxUpdate = () => { ctxUpdateCalls++; };
+
+        // Un JSON a été généré pour la vidéo précédente (textarea + sessionStorage).
+        const ancienJson = '{"title":"Activité vidéo A","interactions":[]}';
+        jsonTextarea.value = ancienJson;
+        sessionStorage.setItem(storageKey, ancienJson);
+
+        // Nouveau lien collé → runDetection appelle clearGeneratedJson(moduleKey, module).
+        clearGeneratedJson(moduleKey, { jsonInputId: 'test-iv-json-input' });
+
+        assert(jsonTextarea.value === '', 'Textarea JSON vidé (l\'ancien contenu ne reste pas affiché)');
+        assert(sessionStorage.getItem(storageKey) === null, 'Sauvegarde sessionStorage du JSON supprimée');
+        assert(ctxUpdateCalls === 1, 'Bouton contextuel rafraîchi (_ctxUpdate appelé une fois)');
+
+        // Robustesse : module inconnu / sans jsonInputId → pas d'exception, pas de clear parasite.
+        sessionStorage.setItem(storageKey, ancienJson);
+        let threw = false;
+        try { clearGeneratedJson('', null); clearGeneratedJson(moduleKey, {}); } catch { threw = true; }
+        assert(!threw, 'Appels dégénérés (clé vide / module sans jsonInputId) sans exception');
+
+        // Nettoyage du DOM et du sessionStorage de test.
+        sessionStorage.removeItem(storageKey);
+        jsonTextarea.remove();
+        buttonGroup.remove();
     }
 
     return { passCount, failCount, results };

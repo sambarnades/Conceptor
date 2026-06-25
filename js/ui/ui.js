@@ -355,6 +355,28 @@ function saveModalDataToSession(moduleKey) {
 }
 
 /**
+ * Efface le JSON généré (textarea visible + sauvegarde sessionStorage) pour un module
+ * et rafraîchit l'état du bouton contextuel. Utilisé quand le contexte change et que
+ * l'ancien JSON n'est plus pertinent (changement Qui/Quoi, changement de prompt, ou
+ * changement de lien vidéo pour la Vidéo interactive).
+ * @param {string} moduleKey - La clé identifiant le module.
+ * @param {object} [module] - Le module (pour résoudre jsonInputId) ; résolu si omis.
+ */
+export function clearGeneratedJson(moduleKey, module) {
+    if (!moduleKey) return;
+    const mod = module || h5pModules[moduleKey] || moodleModules[moduleKey];
+    if (!mod) return;
+    const jsonInputId = (moduleKey === 'test_elea') ? 'xmlEleaMoodleInput'
+                      : (moduleKey === 'glossaireXml') ? 'glossaireXmlJsonInput'
+                      : mod.jsonInputId;
+    const jsonTextarea = jsonInputId && document.getElementById(jsonInputId);
+    if (jsonTextarea) jsonTextarea.value = '';
+    sessionStorage.removeItem(`${STORAGE_PREFIX}json_${moduleKey}`);
+    const buttonGroup = document.getElementById(`generation-button-group-${moduleKey}`);
+    if (buttonGroup?._ctxUpdate) buttonGroup._ctxUpdate();
+}
+
+/**
  * Enregistre un listener de clic global (document) lié au contenu courant de la sidebar.
  * Le handler est mémorisé sur la sidebar (même principe que sidebar._resizeHandler)
  * pour être retiré à la fermeture / au re-render, évitant l'accumulation de listeners
@@ -436,6 +458,24 @@ if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
 // ============= VIDÉO INTERACTIVE : détection URL + verrouillage génération =============
 // État de détection par module (videoSource + transcript), persistant le temps de la session UI.
 const videoStates = new Map();
+
+// Dernier lien vidéo détecté avec succès par module — référence du contexte sur lequel le prompt
+// (et donc le JSON éventuellement généré) a été construit. Contrairement à `videoStates`, cette
+// map N'EST PAS purgée quand on efface le champ URL (lockGate), afin de pouvoir comparer l'ancien
+// lien au nouveau même après un effacement intermédiaire. Persistant le temps de la session UI.
+const promptVideoUrl = new Map();
+
+/**
+ * Indique si le lien vidéo a changé entre deux détections (donc transcription/contexte différents).
+ * Vrai uniquement si les deux liens sont renseignés et distincts — un premier lien (ancien vide)
+ * ne « change » rien, et re-coller le même lien ne doit pas invalider le travail.
+ * @param {string} prevUrl - Lien de la détection précédente (peut être vide).
+ * @param {string} newUrl - Nouveau lien détecté.
+ * @returns {boolean}
+ */
+export function videoLinkChanged(prevUrl, newUrl) {
+    return !!prevUrl && !!newUrl && prevUrl !== newUrl;
+}
 
 /** Échappe le HTML pour le contenu statique des popovers vidéo. */
 function escVid(s) {
@@ -1083,6 +1123,17 @@ function initVideoUrlSection(moduleKey, module) {
             }
             videoStates.set(moduleKey, { url, detect, transcript: null });
 
+            // Changement de lien vidéo = changement de contexte : un JSON généré pour la vidéo
+            // précédente ne correspond plus (transcription différente). On l'efface (textarea +
+            // sessionStorage) pour que la bascule en mode guidé reparte d'une base propre — y
+            // compris si l'utilisateur a effacé le champ entre-temps (d'où la référence persistante
+            // promptVideoUrl, non purgée par lockGate, plutôt que videoStates). Le prompt de gauche
+            // est de toute façon reconstruit par applyTranscript ci-dessous.
+            if (videoLinkChanged(promptVideoUrl.get(moduleKey), url)) {
+                clearGeneratedJson(moduleKey, module);
+            }
+            promptVideoUrl.set(moduleKey, url);
+
             // Durée connue → estimation d'attente affichée dans le voile, selon le schéma suivi
             // (sous-titres ≈ instantané, voie Albert ≈ 3 s + 0,5 s/min, repli YouTube audio plus lent).
             etaLabel = fmtEta(estimateTranscriptionSeconds(detect));
@@ -1166,6 +1217,7 @@ function initVideoUrlSection(moduleKey, module) {
             || (cached.transcript.untimed && cached.transcript.text));
     if (cached && cached.url && cachedUsable) {
         if (!input.value) input.value = cached.url;
+        promptVideoUrl.set(moduleKey, cached.url); // référence du contexte restauré (cohérence comparaison)
         injectVideoTranscriptIntoPrompt(module, transcriptToSegments(cached.transcript, cached.detect), cached.detect && cached.detect.duration);
         setState('ready');
         setMsg(null);
