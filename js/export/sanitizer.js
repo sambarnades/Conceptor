@@ -126,10 +126,15 @@ export function sanitizeSync(dirty, profileName = 'EDUCATIONAL') {
     if (!dirty) return '';
 
     if (!isLoaded || !purifier) {
-        // Fallback : filtrage HTML basique sans DOMPurify
-        // On garde les balises sûres du profil EDUCATIONAL pour ne pas casser le contenu
-        console.warn('[Sanitizer] DOMPurify non chargé, utilisation du fallback basique');
-        return basicHtmlFallback(dirty, profileName);
+        // Déclencher immédiatement le chargement de DOMPurify (non bloquant)
+        // pour réduire la fenêtre pendant laquelle le fallback est utilisé
+        preloadSanitizer();
+        // Fallback FAIL-CLOSED : sans DOMPurify, on échappe TOUT le HTML.
+        // Un filtrage regex serait contournable (ex: <img src=x onerror=alert(1)>
+        // avec handler non quoté) — on préfère perdre la mise en forme que laisser
+        // passer un vecteur XSS.
+        console.warn('[Sanitizer] DOMPurify non chargé, échappement complet du HTML (fail-closed)');
+        return escapeAllHtml(dirty);
     }
 
     const profile = PROFILES[profileName] || PROFILES.EDUCATIONAL;
@@ -137,32 +142,18 @@ export function sanitizeSync(dirty, profileName = 'EDUCATIONAL') {
 }
 
 /**
- * Fallback de filtrage HTML basique quand DOMPurify n'est pas chargé
- * Garde les balises sûres, supprime les dangereuses
+ * Échappe tous les caractères HTML significatifs (fallback fail-closed
+ * quand DOMPurify n'est pas encore chargé)
  * @param {string} str
- * @param {string} profileName
  * @returns {string}
  */
-function basicHtmlFallback(str, profileName = 'EDUCATIONAL') {
-    const profile = PROFILES[profileName] || PROFILES.EDUCATIONAL;
-    const allowedTags = profile.ALLOWED_TAGS || [];
-
-    // Supprimer les scripts et les event handlers
-    let result = str
-        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-        .replace(/\s*on\w+\s*=\s*["'][^"']*["']/gi, '')
-        .replace(/javascript:/gi, '');
-
-    // Supprimer les balises non autorisées (mais garder leur contenu)
-    const tagPattern = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
-    result = result.replace(tagPattern, (match, tagName) => {
-        if (allowedTags.includes(tagName.toLowerCase())) {
-            return match;
-        }
-        return ''; // Supprimer la balise non autorisée
-    });
-
-    return result;
+function escapeAllHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
 }
 
 /**

@@ -1,0 +1,330 @@
+{
+  "title": "Maîtriser les Figures de Style en Poésie",
+  "cover": {
+    "description": "Guide interactif pour décrypter et utiliser les figures de style essentielles pour le brevet."
+  },
+  "chapters": [
+    {
+      "title": "Introduction aux Figures de Style",
+      "content": [
+        {
+          "type": "text",
+          "text": "Bonjour ! Dans ce livre, nous allons explorer l'outil principal des poètes : **l'image poétique**. \n\nUne figure de style est une **valeur ajoutée** au sens littéral d'un mot. C'est le langage qui permet de rendre le texte vivant, sensible et mémorable. Sans figures de style, la poésie serait aussi ennuyeuse qu'un texte de loi. Avec elles, elle devient une expérience sensorielle.\n\nNous nous concentrerons sur les cinq figures majeures que vous devez connaître pour le **brevet des collèges** : la **comparaison**, la **métaphore**, la ** personnification**, **l'hyperbole** et **l'énumération**."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Summary 1.10",
+          "intro": "Qu'est-ce qu'une figure de style ? Cochez la bonne définition.",
+          "summaries": [
+            {
+              "summary": [
+                "Une figure de style est un art de décorer le texte avec des mots inutiles",
+                "Une figure de style est un art de parler qui enrichit le sens littéral",
+                "Une figure de style est la ponctuation d'un vers"
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "C'est bien la peine de relire la définition !"
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Il y a des confusions, relisez le texte attentivement."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "C'est presque ça, mais attention aux détails."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Parfait, vous avez bien compris le concept !"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "La Métaphore et l'Image",
+      "content": [
+        {
+          "type": "text",
+          "text": "La métaphore est la figure reine de la poésie. Elle consiste à **remplacer** un terme par un autre, sans utiliser de mot outillé. Le sens propre disparait pour laisser place au sens figuré.\n\nPrenons cet exemple : dans le vers *\"Ce soir, tombe le froid\"*, l'hiver est évoqué par le mot **\"froid\"**. Le terme **\"hiver\"** est remplacé par le terme **\"froid\"** pour suggérer la sensation. Le sens du mot \"froid\" change et se rapproche de celui du mot \"hiver\".\n\nContrairement à la comparaison, il n'y a pas de *comme* ou de *tel que*. C'est plus direct, c'est un choc visuel et auditif immédiat."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.MarkTheWords 1.11",
+          "taskDescription": "Surlignez l'unique mot qui crée la métaphore dans le texte suivant.",
+          "textField": "Ce matin le *soleil* s'est réveillé tard.",
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Le soleil n'est pas réveillé en tant qu'astre, c'est une image."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Le soleil n'est pas réveillé en tant qu'astre, c'est une image."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bravo, vous avez identifié le mot métaphorique."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent, c'est bien la seule métaphore de ce texte."
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.TrueFalse 1.8",
+          "question": "La métaphore utilise obligatoirement un mot-outi comme 'comme' ou 'tel que'.",
+          "correct": "false",
+          "feedbackOnCorrect": "Excellent, la métaphore est une identification directe.",
+          "feedbackOnWrong": "Attention, c'est la comparaison qui utilise les mots-outis ! La métaphore, elle, supprime le terme de référence."
+        }
+      ]
+    },
+    {
+      "title": "Les Figures Sonores",
+      "content": [
+        {
+          "type": "text",
+          "text": "La poésie s'écoute autant qu'elle ne se lit. Pour créer des effets musicaux, le poète utilise des **figures sonores** :\n\n1. **L'allitération** : c'est la répétition de la même **consonne**. Exemple : *\"Le vent venait, vain, venimeux\"*. Ici, on répète les lettres V.\n2. **L'assonance** : c'est la répétition de la même **voyelle**. Exemple : *\"Il pleure dans mon cœur comme il pleut sur la ville\"* (Victor Hugo). Ici, on insiste sur le son \"eu\".\n\nCes effets sonores permettent de donner du rythme au texte et d'ancrer les mots dans la mémoire du lecteur. Ils permettent aussi de renforcer l'émotion (un son dur pour exprimer la colère, un son doux pour la tendresse)."
+        },
+        {
+          "type": "table",
+          "tableStyle": "striped",
+          "table": {
+            "headers": [
+              "Type",
+              "Définition",
+              "Exemple"
+            ],
+            "rows": [
+              [
+                "Allitération",
+                "Répétition de consonnes",
+                "Fier comme un **g**rand **g**entilhomme"
+              ],
+              [
+                "Assonance",
+                "Répétition de voyelles",
+                "L'eau du bain est douce"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Blanks 1.14",
+          "taskDescription": "Complétez les phrases pour identifier la figure sonore.",
+          "questions": [
+            "La répétition d'un même son voyelle s'appelle une *assonance*.",
+            "Le mot 'glouglou' est un exemple typique de *onomatopée*."
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Il y a des confusions entre les différents sons."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Continuez à travailler les définitions."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Presque tout y est, relisez attentivement."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Parfait ! Vous maîtrisez parfaitement les sons en poésie."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Figures d'Insistance",
+      "content": [
+        {
+          "type": "text",
+          "text": "Parfois, le poète veut insister, donner de l'ampleur à une émotion. Il utilise alors des figures d'insistance ou de cumul :\n\n- **L'énumération** : C'est une série de mots ou de groupes de mots. Le nombre de mots est illimité. Exemple : \"Au bord du lac...\" (Gautier énumère les poissons).\n- **L'hyperbole** : C'est l'expression d'une vérité poussée à l'extrême. C'est un excès de langage pour exprimer un sentiment. Exemple : \"J'ai des millions de choses à te raconter !\". Ce n'est pas vrai, mais cela exprime l'urgence.\n- **L'antithèse** : Elle juxtapose deux mots ou deux idées contradictoires au sein du vers (ex : *Je meurs de froid* au milieu de l'été)."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.MultiChoice 1.16",
+          "question": "Quelles sont les trois figures d'insistance ou d'antithèse ? (Plusieurs réponses)",
+          "answers": [
+            {
+              "text": "L'hyperbole",
+              "correct": true
+            },
+            {
+              "text": "L'antithèse",
+              "correct": true
+            },
+            {
+              "text": "L'énumération",
+              "correct": true
+            },
+            {
+              "text": "L'assonance",
+              "correct": false,
+              "tipsAndFeedback": {
+                "tip": "L'assonance est une figure de style sonore."
+              }
+            }
+          ],
+          "behaviour": {
+            "singleAnswer": false
+          },
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Il faut mieux différencier les figures de sens des figures sonores."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "C'est un début, continuez !"
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Un peu mieux, mais il reste une notion à clarifier."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent, vous avez bien distingué les catégories !"
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.DragText 1.10",
+          "taskDescription": "Glissez les mots dans la phrase pour identifier les figures : l'énumération et l'antithèse.",
+          "textField": "Il y a une *antithèse* dans le vers 'Je meurs de froid'. Il y a une *énumération* si le texte liste les poissons.",
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Attention à bien repérer les opposés et les listes."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Relisez les définitions : l'antithèse oppose, l'énumération liste."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "C'est pas mal, mais les définitions sont mélangées."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Parfait, vous savez maintenant où trouver ces figures !"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Synthèse et Quiz",
+      "content": [
+        {
+          "type": "text",
+          "text": "Pour finir, récapitulons ! Pour réussir votre analyse de poème au brevet, vous devez être capable de **nommer** la figure, de **la citer** dans le texte et d'**analyser** son effet. \n\nVous êtes prêt ? Testons votre culture générale en littérature !"
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Summary 1.10",
+          "intro": "Pour bien réussir l'analyse, cochez les bonnes étapes.",
+          "summaries": [
+            {
+              "summary": [
+                "Citer l'extrait",
+                "Inventer un sens",
+                "Annoncer le nom de la figure"
+              ],
+              "tip": "L'invention est interdite !"
+            },
+            {
+              "summary": [
+                "Analyser l'effet",
+                "Écrire 5 pages de résumé",
+                "Ignorer les sons"
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Vous n'avez pas compris les étapes de l'analyse !"
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Il y a des erreurs dans le raisonnement."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Presque, il faut éviter les erreurs de méthode."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Méthodologie parfaite pour l'examen !"
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.DragText 1.10",
+          "taskDescription": "Associez l'expression à la figure de style correspondante.",
+          "textField": "Il est *féroce* comme un lion / C'est un *lion* / C'est *féroce*. (Les mots : *féroce*, *lion*, *comme*), l'*animal*, la *personne*.",
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Il faut replacer chaque mot dans sa bonne définition."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Ce n'est pas bon, vous mélangez les termes."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Presque, relisez bien les définitions des figures."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Bravo, vous maîtrisez parfaitement ce tableau !"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -11,9 +11,13 @@
 
 export const LIB_PATHS = {
     // OCR / Extraction de texte
-    PDF_JS: 'js/vendor/pdf-js/5.6.205/pdf.min.mjs',
-    PDF_JS_WORKER: 'js/vendor/pdf-js/5.6.205/pdf.worker.compat.mjs',
+    PDF_JS: 'js/vendor/pdf-js/6.0.227/pdf.min.mjs',
+    PDF_JS_WORKER: 'js/vendor/pdf-js/6.0.227/pdf.worker.compat.mjs',
     TESSERACT: 'js/vendor/tesseract/7.0.0/tesseract.min.js',
+    // Fichiers Tesseract auto-hébergés (sinon téléchargés depuis cdn.jsdelivr.net au runtime, sans SRI)
+    TESSERACT_WORKER: 'js/vendor/tesseract/7.0.0/worker.min.js',
+    TESSERACT_CORE: 'js/vendor/tesseract/7.0.0/core',   // répertoire : le worker y choisit la variante *-lstm.wasm.js
+    TESSERACT_LANG: 'js/vendor/tesseract/7.0.0/lang',   // répertoire : contient <lang>.traineddata.gz
     MAMMOTH: 'js/vendor/mammoth/1.12.0/mammoth.browser.min.js',
     JSZIP: 'js/vendor/jszip/3.10.1/jszip.min.js',
 
@@ -25,7 +29,7 @@ export const LIB_PATHS = {
     H5P_LIBRARIES: 'js/vendor/h5p-libs',
 
     // Moodle
-    FFLATE: 'js/vendor/fflate/0.8.2/index.js',
+    FFLATE: 'js/vendor/fflate/0.8.3/index.js',
     TAR_JS: 'js/vendor/tar-js/0.3.0/tar.bundle.js',
 
     // Math rendering
@@ -33,11 +37,17 @@ export const LIB_PATHS = {
 
     // Document export
     JSPDF: 'js/vendor/jspdf/4.2.1/jspdf.umd.min.js',
-    JSPDF_AUTOTABLE: 'js/vendor/jspdf-autotable/5.0.7/jspdf.plugin.autotable.min.js',
+    JSPDF_AUTOTABLE: 'js/vendor/jspdf-autotable/5.0.8/jspdf.plugin.autotable.min.js',
     DOCX: 'js/vendor/docx/8.5.0/index.umd.js',
 
     // Security
-    DOMPURIFY: 'js/vendor/dompurify/3.4.1/purify.min.js',
+    DOMPURIFY: 'js/vendor/dompurify/3.4.11/purify.min.js',
+
+    // QR code (génération du QR de la vidéo source dans les exports documentaires)
+    QRCODE: 'js/vendor/qrcode/1.4.4/qrcode.js',
+
+    // Caramelia (chatbot flottant)
+    CARAMELIA: 'js/caramelia/index.js',
 
     // Fonts (Liberation Sans - drop-in replacement for Arial, SIL OFL license)
     FONT_LIBERATION_SANS_REGULAR: 'js/vendor/fonts/LiberationSans-Regular.ttf',
@@ -68,6 +78,55 @@ if (typeof Promise.withResolvers === 'undefined') {
 if (typeof globalThis.structuredClone === 'undefined') {
     globalThis.structuredClone = function (value) {
         return JSON.parse(JSON.stringify(value));
+    };
+}
+
+// Uint8Array hex / base64 (proposition TC39 « Uint8Array to/from base64 and hex »).
+// Utilisés par PDF.js 5.x : .toBase64() pour embarquer les polices au rendu,
+// Uint8Array.fromBase64() pour les signatures. Le worker utilise en plus .toHex()
+// pour le fingerprint du document (cf. pdf.worker.compat.mjs).
+// Absents sur Chrome < 140, Safari < 18.2, Firefox < 133 → « toHex is not a function »
+// et la transcription PDF échoue entièrement. Polyfills additifs, sans régression.
+if (typeof Uint8Array.prototype.toHex === 'undefined') {
+    Uint8Array.prototype.toHex = function () {
+        let s = '';
+        for (let i = 0; i < this.length; i++) {
+            s += this[i].toString(16).padStart(2, '0');
+        }
+        return s;
+    };
+}
+
+if (typeof Uint8Array.fromHex === 'undefined') {
+    Uint8Array.fromHex = function (hex) {
+        const len = hex.length >> 1;
+        const out = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+            out[i] = parseInt(hex.substr(i * 2, 2), 16);
+        }
+        return out;
+    };
+}
+
+if (typeof Uint8Array.prototype.toBase64 === 'undefined') {
+    Uint8Array.prototype.toBase64 = function () {
+        let bin = '';
+        const chunk = 0x8000;
+        for (let i = 0; i < this.length; i += chunk) {
+            bin += String.fromCharCode.apply(null, this.subarray(i, i + chunk));
+        }
+        return btoa(bin);
+    };
+}
+
+if (typeof Uint8Array.fromBase64 === 'undefined') {
+    Uint8Array.fromBase64 = function (b64) {
+        const bin = atob(b64);
+        const out = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) {
+            out[i] = bin.charCodeAt(i);
+        }
+        return out;
     };
 }
 
@@ -108,7 +167,9 @@ const loadState = {
     jspdf: false,
     docx: false,
     dompurify: false,
-    fonts: false
+    qrcode: false,
+    fonts: false,
+    caramelia: false
 };
 
 // Promesses de chargement pour éviter les chargements multiples
@@ -466,6 +527,50 @@ export function isDOMPurifyLoaded() {
 }
 
 /**
+ * Charge la bibliothèque QR code (~57KB, MIT) — expose le global `window.qrcode`
+ * (factory `qrcode(typeNumber, ecLevel)`). Utilisé par l'export documentaire de la
+ * Vidéo interactive pour générer le QR de la vidéo source.
+ */
+export async function loadQRCode() {
+    if (loadState.qrcode || window.qrcode) {
+        loadState.qrcode = true;
+        return;
+    }
+
+    if (!loadPromises.qrcode) {
+        loadPromises.qrcode = loadScript(LIB_PATHS.QRCODE).then(() => {
+            loadState.qrcode = true;
+        }).catch((error) => {
+            delete loadPromises.qrcode;
+            throw error;
+        });
+    }
+
+    return loadPromises.qrcode;
+}
+
+/**
+ * Charge le module Caramelia (chatbot flottant)
+ * Module ES, chargé via import() dynamique pour ne pas bloquer le rendu initial.
+ */
+export async function loadCaramelia() {
+    if (loadState.caramelia) {
+        return;
+    }
+
+    if (!loadPromises.caramelia) {
+        loadPromises.caramelia = import('../../' + LIB_PATHS.CARAMELIA)
+            .then(() => { loadState.caramelia = true; })
+            .catch((error) => {
+                delete loadPromises.caramelia;
+                throw error;
+            });
+    }
+
+    return loadPromises.caramelia;
+}
+
+/**
  * Précharge les bibliothèques OCR via <link rel="preload"> sans les exécuter
  * Cela permet au navigateur de télécharger les fichiers en arrière-plan
  * pour qu'ils soient en cache quand l'utilisateur uploade un fichier
@@ -479,13 +584,22 @@ export function preloadOcrLibsHints() {
     ];
 
     preloadPaths.forEach(({ path, as }) => {
+        // Les .mjs sont des modules ES (chargés via import()) : préchargés avec
+        // rel="modulepreload" pour que le mode credentials corresponde au fetch
+        // du module. Avec rel="preload" as="script" le navigateur jette le
+        // preload (« credentials mode does not match ») et re-télécharge le module.
+        const isModule = path.endsWith('.mjs');
+        const rel = isModule ? 'modulepreload' : 'preload';
+
         // Éviter les doublons
-        if (document.querySelector(`link[rel="preload"][href="${path}"]`)) {
+        if (document.querySelector(`link[rel="${rel}"][href="${path}"]`)) {
             return;
         }
         const link = document.createElement('link');
-        link.rel = 'preload';
-        link.as = as;
+        link.rel = rel;
+        if (!isModule) {
+            link.as = as;
+        }
         link.href = path;
         document.head.appendChild(link);
     });
@@ -589,6 +703,10 @@ export function initSmartPreloading() {
             setTimeout(() => loadFn().catch(() => { }), 100);
         }
     };
+
+    // Chatbot Caramelia : chargement immédiat en idle, sans attendre le timer d'inactivité
+    // (doit être disponible dès le démarrage indépendamment de l'interaction utilisateur)
+    idleLoad(loadCaramelia);
 
     // Déclencheur 1: Premier caractère tapé dans les champs principaux
     // -> Précharge uniquement les libs légères (H5P, Moodle)

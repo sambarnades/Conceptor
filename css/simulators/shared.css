@@ -1,0 +1,149 @@
+/* =======================================================================
+   Simulateurs — Styles partagés
+   ======================================================================= */
+
+/* Boutons Éléa (utilisés par elea-test, page, devoir) */
+.elea-btn {
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    font-size: 0.95em;
+    transition: background-color 0.2s;
+}
+
+.elea-btn.primary {
+    background-color: #007AFF;
+    color: white;
+}
+
+.elea-btn.primary:hover {
+    background-color: #0062cc;
+}
+
+.elea-btn.secondary {
+    background-color: #e5e5ea;
+    color: #1d1d1f;
+}
+
+.elea-btn.secondary:hover {
+    background-color: #d1d1d6;
+}
+
+/* Actions (utilisé par elea-test) */
+.elea-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* Warning (partagé) */
+.simulator-warning {
+    margin-top: 30px;
+    padding: 10px;
+    background: #e7f1ff;
+    border-left: 4px solid #0d6efd;
+    color: #084298;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 4px;
+}
+/* Conteneur de montage des simulateurs en preview (éditeur / modale de lecture). */
+.sim-mount { width: 100%; }
+/* =======================================================================
+   Plein écran autonome des simulateurs : fond clair + scroll, pour TOUS les
+   contextes (embed, reader, preview éditeur) où le conteneur de rendu
+   (data-sim-root) n'a pas de règle :fullscreen dédiée — sinon le navigateur
+   applique son fond noir par défaut. (Caramel .preview-modal__preview a déjà
+   ses propres règles plus spécifiques, qui priment.)
+   ======================================================================= */
+[data-sim-root]:fullscreen {
+    background: #fff;
+    overflow: auto;
+    padding: 16px;
+    box-sizing: border-box;
+}
+/* =======================================================================
+   Bandeau de prévisualisation reproduit COMME sur Caramel
+   (.preview-modal__warning) : blanc, texte gris italique, séparateur subtil.
+   Embarque le bouton « Aperçu élève (lien partagé) » pour les simulateurs
+   scorables (modale de lecture + preview éditeur Sucrerie).
+   ======================================================================= */
+.sim-preview-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 0.75rem 1.25rem;
+    background: #ffffff;
+    color: #6e6e73;
+    font-size: 13px;
+    font-style: italic;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 0 0 12px 12px;
+}
+.sim-preview-banner__text { flex: 1; }
+.sim-preview-banner__action {
+    flex: 0 0 auto;
+    font: inherit;
+    font-style: normal;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 8px;
+    border: 1px solid #c7c7cc;
+    background: #fff;
+    color: #1d1d1f;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.sim-preview-banner__action:hover,
+.sim-preview-banner__action[aria-pressed="true"] {
+    background: #1d1d1f;
+    color: #fff;
+    border-color: #1d1d1f;
+}
+/* Page 0 (accueil, mode prof) : quand le bandeau de prévisualisation suit
+   directement la carte d'intro, les deux forment UNE SEULE carte — la carte perd
+   ses coins bas, le bandeau se colle (sa border-top devient la couture) et reprend
+   l'ombre. Le bandeau opaque masque l'ombre basse de la carte → pas de double
+   couture. Inerte côté Caramel : son intro n'est pas dans un .sim-mount et il n'a
+   pas de .sim-preview-banner (il a son propre .preview-modal__warning). */
+.sim-mount:has(+ .sim-preview-banner) .elea-test-intro {
+    border-radius: 12px 12px 0 0;
+}
+.sim-mount:has(.elea-test-intro) + .sim-preview-banner {
+    margin-top: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+/* Pages-questions : même motif « une seule carte + pied » que la page 0, pour un
+   visuel uniforme — le bandeau se colle au bas de la carte question
+   (.elea-test-card), accordé à son rayon (10px) et son ombre. */
+.sim-mount:has(+ .sim-preview-banner) .elea-test-card {
+    border-radius: 10px 10px 0 0;
+    margin-bottom: 0;
+}
+.sim-mount:has(.elea-test-card) + .sim-preview-banner {
+    margin-top: 0;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+/* Harmonie : « pied collé » homogène pour tous les AUTRES simulateurs (QCM,
+   Millionnaire, appariement, glossaire, devoir, page, livre). La racine (carte
+   blanche unique, ou wrapper Éléa pour page/livre) perd ses coins bas — haut
+   normalisé à 8px — et le bandeau se colle avec le même rayon → un seul bloc
+   « carte + pied », comme le Test. `:not(:has(.elea-test-simulator))` exclut le
+   Test (qui a ses propres rayons 12/10px). Inerte côté Caramel (pas de .sim-mount). */
+.sim-mount:has(+ .sim-preview-banner):not(:has(.elea-test-simulator)) > :last-child {
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 0;
+}
+.sim-mount:not(:has(.elea-test-simulator)) + .sim-preview-banner {
+    margin-top: 0;
+    border-radius: 0 0 8px 8px;
+}

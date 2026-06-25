@@ -20,8 +20,16 @@ import { formatTextToHtml, markdownToHtml } from '../../core/utils.js';
  */
 function formatParagraphText(text) {
     if (!text) return '<p></p>';
+    const trimmed = text.trim();
+    // Idempotence : si le texte est DÉJÀ enveloppé dans un unique <p>…</p>
+    // (cas d'une ré-ingestion d'un contenu déjà traité), ne pas redoubler la
+    // balise — sinon `<p>…</p>` → `<p><p>…</p></p>` à chaque passe. `markdownToHtml`
+    // ne produit jamais de <p> en tête, donc un <p> initial ⇒ contenu déjà formaté.
+    if (/^<p[\s>][\s\S]*<\/p>$/i.test(trimmed) && (trimmed.match(/<p[\s>]/gi) || []).length === 1) {
+        return trimmed;
+    }
     // Convertir markdown en HTML en protégeant le LaTeX, avec \n → <br>
-    const formatted = markdownToHtml(text.trim(), { newlineToBr: true });
+    const formatted = markdownToHtml(trimmed, { newlineToBr: true });
     // Envelopper dans <p> comme attendu par H5P.SortParagraphs
     return `<p>${formatted}</p>`;
 }

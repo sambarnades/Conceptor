@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caramel</title>
     <meta name="description" content="Caramel — Créez des activités pédagogiques interactives (H5P, Éléa, Magistère, Moodle) avec l'IA, directement dans votre navigateur. Open source, sans compte, sans données envoyées.">
+ 
     <!-- Vendor CSS (external libraries) -->
     <link rel="stylesheet" href="css/vendor/all.min.css">
     <link rel="stylesheet" href="css/vendor/flag-icons.min.css">
@@ -21,6 +22,21 @@
     <link rel="stylesheet" href="css/components/llm.css">
     <link rel="stylesheet" href="css/components/modale-aide.css">
     <link rel="stylesheet" href="css/components/mentions-legales.css">
+
+    <link rel="stylesheet" href="js/sucrerie-bridge/styles.css" data-sucrerie-bridge>
+ 
+    <!-- Simulateurs (modules individuels) -->
+    <link rel="stylesheet" href="css/simulators/shared.css">
+    <link rel="stylesheet" href="css/simulators/elea-test.css">
+    <link rel="stylesheet" href="css/simulators/millionnaire.css">
+    <link rel="stylesheet" href="css/simulators/appariement.css">
+    <link rel="stylesheet" href="css/simulators/glossaire.css">
+    <link rel="stylesheet" href="css/simulators/qcm.css">
+    <link rel="stylesheet" href="css/simulators/page.css">
+    <link rel="stylesheet" href="css/simulators/devoir.css">
+    <link rel="stylesheet" href="css/components/caramelia.css">
+
+    <!-- Logo Caramel -->
     <link rel="icon" href="assets/images/branding/logo_caramel.ico" type="image/x-icon">
 
     <!-- Début Matomo Code -->
@@ -123,23 +139,92 @@
                 <!-- Champs communs aux deux modes -->
                 <div class="common-fields">
                     <label for="qui" class="sr-only" data-key="who_are_you">Qui êtes-vous ?</label>
-                    <input id="qui" type="text" placeholder="Qui êtes-vous ? (ex: Enseignant, formateur...)"
-                        data-key="who_are_you" aria-required="true" />
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-user" aria-hidden="true"></i>
+                        <input id="qui" type="text" placeholder="Qui êtes-vous ? (ex: Enseignant de 3e, formateur...)"
+                            data-key="who_are_you" aria-required="true" />
+                        <div class="caramelia-recording" hidden aria-hidden="true">
+                            <span class="caramelia-recording__time">00:00</span>
+                            <canvas class="caramelia-recording__waves"></canvas>
+                        </div>
+                        <button type="button" class="caramelia-mic-btn pg-mic-btn" aria-pressed="false"
+                            aria-label="Dicter le contenu de ce champ" title="Dicter le contenu de ce champ">
+                            <i class="fas fa-microphone" aria-hidden="true"></i>
+                        </button>
+                        <!-- Boutons d'arrêt « façon ChatGPT » — affichés UNIQUEMENT pendant
+                             l'enregistrement, à la place du micro (via CSS sur la classe
+                             caramelia-input-slot--recording du wrapper). -->
+                        <button type="button" class="pg-mic-cancel-btn"
+                            aria-label="Annuler la dictée" title="Annuler la dictée">
+                            <i class="fas fa-times" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="pg-mic-confirm-btn"
+                            aria-label="Valider la dictée" title="Valider la dictée">
+                            <i class="fas fa-check" aria-hidden="true"></i>
+                        </button>
+                    </div>
                     <label for="quoi" class="sr-only" data-key="what_to_address">Que souhaitez-vous aborder ?</label>
-                    <input id="quoi" type="text"
-                        placeholder="Que souhaitez-vous aborder ? (ex: La révolution française...)"
-                        data-key="what_to_address" aria-required="true" />
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-lightbulb" aria-hidden="true"></i>
+                        <input id="quoi" type="text"
+                            placeholder="Que souhaitez-vous aborder ? (ex: La révolution française en 3e...)"
+                            data-key="what_to_address" aria-required="true" />
+                        <div class="caramelia-recording" hidden aria-hidden="true">
+                            <span class="caramelia-recording__time">00:00</span>
+                            <canvas class="caramelia-recording__waves"></canvas>
+                        </div>
+                        <button type="button" class="caramelia-mic-btn pg-mic-btn" aria-pressed="false"
+                            aria-label="Dicter le contenu de ce champ" title="Dicter le contenu de ce champ">
+                            <i class="fas fa-microphone" aria-hidden="true"></i>
+                        </button>
+                        <!-- Boutons d'arrêt « façon ChatGPT » — affichés UNIQUEMENT pendant
+                             l'enregistrement, à la place du micro (via CSS sur la classe
+                             caramelia-input-slot--recording du wrapper). -->
+                        <button type="button" class="pg-mic-cancel-btn"
+                            aria-label="Annuler la dictée" title="Annuler la dictée">
+                            <i class="fas fa-times" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="pg-mic-confirm-btn"
+                            aria-label="Valider la dictée" title="Valider la dictée">
+                            <i class="fas fa-check" aria-hidden="true"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Champs supplémentaires du mode avancé -->
                 <div id="advanced-fields" class="advanced-fields">
                     <label for="niveau" class="sr-only" data-key="level">Niveau</label>
-                    <input id="niveau" type="text" placeholder="Niveau (ex : Seconde en bac professionnel)"
-                        data-key="level" />
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+                        <input id="niveau" type="text" placeholder="Niveau (ex : Seconde en bac professionnel)"
+                            data-key="level" />
+                        <div class="caramelia-recording" hidden aria-hidden="true">
+                            <span class="caramelia-recording__time">00:00</span>
+                            <canvas class="caramelia-recording__waves"></canvas>
+                        </div>
+                        <button type="button" class="caramelia-mic-btn pg-mic-btn" aria-pressed="false"
+                            aria-label="Dicter le contenu de ce champ" title="Dicter le contenu de ce champ">
+                            <i class="fas fa-microphone" aria-hidden="true"></i>
+                        </button>
+                        <!-- Boutons d'arrêt « façon ChatGPT » — affichés UNIQUEMENT pendant
+                             l'enregistrement, à la place du micro (via CSS sur la classe
+                             caramelia-input-slot--recording du wrapper). -->
+                        <button type="button" class="pg-mic-cancel-btn"
+                            aria-label="Annuler la dictée" title="Annuler la dictée">
+                            <i class="fas fa-times" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="pg-mic-confirm-btn"
+                            aria-label="Valider la dictée" title="Valider la dictée">
+                            <i class="fas fa-check" aria-hidden="true"></i>
+                        </button>
+                    </div>
                     <label for="nombreQuestions" class="sr-only" data-key="number_of_elements">Nombre de questions</label>
-                    <input id="nombreQuestions" min="1" type="number"
-                        placeholder="Nombre de questions/éléments dans le module (ex : 5)"
-                        data-key="number_of_elements" />
+                    <div class="input-icon-wrapper">
+                        <i class="fas fa-hashtag" aria-hidden="true"></i>
+                        <input id="nombreQuestions" min="1" type="number"
+                            placeholder="Nombre de questions/éléments dans le module (ex : 5)"
+                            data-key="number_of_elements" />
+                    </div>
                     <div id="rag-section-container">
                         <div class="rag-section-header">
                             <h3 class="rag-title" data-key="rag_title"></h3>
@@ -168,14 +253,33 @@
                                     <div class="drag-drop-content">
                                         <i class="fas fa-cloud-upload-alt"></i>
                                         <p><span data-key="drag_drop_text">Glissez-déposez un fichier ici (PDF, DOCX,
-                                                PPTX, ODT, ODP, PNG, JPEG)</span> <br><span data-key="or_text">ou</span>
+                                                PPTX, ODT, ODP, PNG, JPEG, MP3, M4A, WAV)</span> <br><span data-key="or_text">ou</span>
                                             <label for="pdfUpload" class="file-upload-label"
                                                 data-key="upload_pdf_btn">choisissez un fichier</label>
                                         </p>
                                         <input type="file" id="pdfUpload"
-                                            accept="application/pdf,.docx,.pptx,.odt,.odp,image/png,image/jpeg,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.presentation">
-                                        <div id="ocr-status"></div>
+                                            accept="application/pdf,.docx,.pptx,.odt,.odp,image/png,image/jpeg,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.oasis.opendocument.text,application/vnd.oasis.opendocument.presentation,audio/mpeg,audio/mp4,audio/x-m4a,audio/aac,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/flac,.mp3,.m4a,.aac,.wav,.ogg,.opus,.flac,video/mp4,video/quicktime,video/webm,.mp4,.m4v,.mov,.webm">
+                                        <div class="drag-drop-status" aria-live="polite">
+                                            <div id="ocr-status"></div>
+                                        </div>
                                     </div>
+                                    <div class="url-import-divider" role="separator">
+                                        <span data-key="url_import_or">ou un lien web</span>
+                                    </div>
+                                    <div class="url-import-row">
+                                        <i class="fas fa-link url-import-icon" aria-hidden="true"></i>
+                                        <input type="url" id="urlImport" class="url-import-input"
+                                            placeholder="https://… (lien d'une page web)"
+                                            data-key-placeholder="url_import_placeholder"
+                                            data-key-aria="url_import_aria"
+                                            aria-label="Adresse d'une page web à importer"
+                                            autocomplete="off" spellcheck="false" inputmode="url" />
+                                        <button type="button" id="urlImportBtn" class="url-import-btn">
+                                            <i class="fas fa-plus" aria-hidden="true"></i>
+                                            <span data-key="url_import_btn">Ajouter</span>
+                                        </button>
+                                    </div>
+                                    <p class="url-import-hint" data-key="url_import_hint">Certaines pages peuvent prendre jusqu'à 30 s.</p>
                                 </div>
                             </div>
                             <p class="rag-tags-tuto" data-key="rag_tags_tuto"></p>
@@ -232,6 +336,12 @@
             <div id="bubbles-container"></div>
         </div>
         <div id="recipe-steps"></div>
+        <div id="caramel-batch-gauge" hidden role="progressbar" aria-valuemin="0" aria-valuemax="100">
+            <div class="caramel-gauge__track">
+                <div class="caramel-gauge__fill"></div>
+            </div>
+            <div class="caramel-gauge__label"></div>
+        </div>
     </div>
     <div id="generation-result-modal" class="generation-result-modal hidden" role="dialog" aria-modal="true" aria-labelledby="generation-result-title">
         <div class="generation-result-modal__card">
@@ -268,7 +378,7 @@
     <!-- ================= Footer ==================== -->
 
     <footer class="footer">
-        <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank" class="footer-version"><i class="fas fa-info-circle"></i> <span>Caramel v5.2.2</span></a>
+        <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank" class="footer-version"><i class="fas fa-info-circle"></i> <span>Caramel v6.0.0</span></a>
         <a href="mailto:gauthier.remande@ac-nantes.fr" class="footer-author"><i class="fas fa-envelope"></i> <span>Gauthier REMANDE</span></a>
         <a href="mailto:emmanuel.gaunard@ac-grenoble.fr" class="footer-author"><i class="fas fa-envelope"></i> <span>Emmanuel GAUNARD</span></a>
         <a href="https://forge.apps.education.fr/caramel/caramel"><i class="fas fa-code-branch"></i> <span>Forge</span></a>
@@ -338,6 +448,23 @@
                             <i class="fas fa-download"></i>
                         </button>
                     </div>
+                    <!-- Bouton « Vers la Sucrerie » : présent en statique pour charger
+                         en même temps que le reste de la modale. Le module
+                         js/sucrerie-bridge/ui/button.js met à jour le libellé, l'icône
+                         et l'aria-label selon la langue et l'état « déjà partagé »,
+                         et attache le handler de clic. Pour le masquer en production,
+                         ajouter l'attribut `hidden` (ou `style="display:none"`) sur ce
+                         <button> — aucune modification JS nécessaire. -->
+                    <!-- TEMP (désactivation Sucrerie) : `hidden` masque le bouton.
+                         Pour réactiver : retirer l'attribut `hidden` ci-dessous. -->
+                    <button type="button"
+                            class="sucrerie-bridge__btn action-btn"
+                            data-sucrerie-bridge-btn
+                            hidden
+                            aria-label="Partager cette activité dans La Sucrerie">
+                        <i class="fas fa-share-from-square" aria-hidden="true"></i>
+                        <span class="sucrerie-bridge__btn-label-long">Vers la Sucrerie</span>
+                    </button>
                 </div>
 
                 <div class="preview-modal__footer-right">

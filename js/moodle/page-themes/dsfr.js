@@ -14,6 +14,10 @@
  * @module page-themes/dsfr
  */
 
+// Validation de schéma des URLs interpolées en href (anti `javascript:`) —
+// en complément de l'échappement HTML (ctx.escapeHtmlTags), pas à sa place.
+import { sanitizeUrl } from '../../core/utils.js';
+
 // =========================================================================
 // Palette DSFR — valeurs hexadécimales en dur
 // =========================================================================
@@ -78,18 +82,31 @@ function _safeTag(html) {
 
 /**
  * #01 — En-tête héro avec fond Bleu France uni et filet blanc.
- * Utilise un div[role="heading"][aria-level="1"] au lieu de <h1> pour
- * la compatibilité Éléa. Le titre est injecté en textContent (pas innerHTML).
+ * Titre du héros : balise native de niveau ctx.heroLevel en contexte standalone
+ * (preview modale, .html autonome), ou bandeau décoratif en export Éléa/Moodle
+ * (ctx.heroLevel = null) car la plateforme pose déjà le <h1> de l'activité.
+ * Titre injecté en textContent (pas innerHTML) pour résister au nettoyage Éléa.
  */
 function renderHeroHeader(data, ctx) {
     const header = document.createElement('header');
     header.setAttribute('style', 'margin:0 0 20px 0; background:#000091 !important; color:#ffffff !important; -webkit-text-fill-color:#ffffff !important; padding:24px;');
 
-    // Titre principal — texte brut (textContent) pour résister au nettoyage Éléa
+    // Titre principal du héros. En contexte standalone (preview modale, fichier
+    // .html autonome), on émet une balise de titre native de niveau ctx.heroLevel.
+    // En export Éléa/Moodle, ctx.heroLevel est null : la plateforme pose déjà le
+    // <h1> de l'activité au-dessus du contenu → bandeau décoratif (pas de doublon
+    // de niveau-1, RGAA 9.1). textContent (pas innerHTML) pour résister au
+    // nettoyage Éléa, et balise native préférée à role="heading" (ARIA12).
     const headerTitle = (ctx.jsonData && ctx.jsonData.title) ? ctx.jsonData.title : data.title;
-    const heading = document.createElement('div');
-    heading.setAttribute('role', 'heading');
-    heading.setAttribute('aria-level', '1');
+    let heading;
+    if (ctx.heroLevel) {
+        heading = document.createElement('h' + ctx.heroLevel);
+    } else {
+        heading = document.createElement('div');
+    }
+    // Hook stable pour la rétro-ingénierie HTML→blocs (parser Sucrerie) : permet
+    // de retrouver le titre du héros quelle que soit la balise (h1 ou div décoratif).
+    heading.className = 'caramel-hero-title';
     heading.setAttribute('style', 'margin:0 0 10px 0; font-size:1.8rem; font-weight:700; color:#ffffff !important; -webkit-text-fill-color:#ffffff !important;');
     heading.textContent = headerTitle || '';
     header.appendChild(heading);
@@ -137,7 +154,7 @@ function renderNavSummary(data, ctx) {
 
     data.links.forEach(link => {
         const li = document.createElement('li');
-        li.innerHTML = `<a href="${ctx.escapeHtmlTags(link.href)}" style="display:inline-block; padding:6px 12px; color:#000091; text-decoration:underline; font-weight:600;">${ctx.formatTextToHtml(link.text)}</a>`;
+        li.innerHTML = `<a href="${ctx.escapeHtmlTags(sanitizeUrl(link.href))}" style="display:inline-block; padding:6px 12px; color:#000091; text-decoration:underline; font-weight:600;">${ctx.formatTextToHtml(link.text)}</a>`;
         ul.appendChild(li);
     });
 
@@ -152,7 +169,7 @@ function renderHistoReperes(data, ctx) {
     const section = document.createElement('section');
     section.setAttribute('style', `margin:0 0 20px 0; padding:16px; box-shadow:${BOX_SHADOW};`);
 
-    const h2 = document.createElement('h2');
+    const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.35rem; border-bottom:2px solid ${HEADING_PRIMARY}; padding-bottom:8px;`);
     h2.innerHTML = ctx.formatTextToHtml(data.title);
     section.appendChild(h2);
@@ -164,7 +181,7 @@ function renderHistoReperes(data, ctx) {
         const cv = CARD_VARIANTS[cardIdx % CARD_VARIANTS.length];
         const cardDiv = document.createElement('div');
         cardDiv.setAttribute('style', `background:${cv.bg}; border-left:4px solid ${cv.heading}; padding:12px;`);
-        cardDiv.innerHTML = `<h3 style="margin:0 0 6px 0; font-size:1.05rem; color:${cv.heading};">${ctx.formatTextToHtml(card.title)}</h3><p style="margin:0;">${ctx.formatTextToHtml(card.text)}</p>`;
+        cardDiv.innerHTML = `<${ctx.headingTag(1)} style="margin:0 0 6px 0; font-size:1.05rem; color:${cv.heading};">${ctx.formatTextToHtml(card.title)}</${ctx.headingTag(1)}><p style="margin:0;">${ctx.formatTextToHtml(card.text)}</p>`;
         grid.appendChild(cardDiv);
     });
 
@@ -180,7 +197,7 @@ function renderCalloutSet(data, ctx) {
     const section = document.createElement('section');
     section.setAttribute('style', `margin:0 0 20px 0; padding:16px; box-shadow:${BOX_SHADOW};`);
 
-    const h2 = document.createElement('h2');
+    const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.35rem; border-bottom:2px solid ${HEADING_PRIMARY}; padding-bottom:8px;`);
     h2.innerHTML = ctx.formatTextToHtml(data.title);
     section.appendChild(h2);
@@ -191,9 +208,12 @@ function renderCalloutSet(data, ctx) {
     data.callouts.forEach(callout => {
         const cs = CALLOUT[callout.type] || CALLOUT.objectif;
         const div = document.createElement('div');
-        const roleAttr = callout.type === 'alerte' ? ' role="alert"' : '';
         div.setAttribute('style', `border-left:4px solid ${cs.borderColor}; background:${cs.bg}; padding:12px 16px;`);
         if (callout.type === 'alerte') div.setAttribute('role', 'alert');
+        // Marqueur sémantique pour la rétro-ingénierie : en thème dsfr,
+        // objectif et savoir partagent la palette (bleu France) — la couleur
+        // seule ne suffit pas à les distinguer.
+        if (callout.type) div.setAttribute('data-callout-type', callout.type);
         div.innerHTML = `<p style="margin:0;">${ctx.formatTextToHtml(callout.text)}</p>`;
         grid.appendChild(div);
     });
@@ -209,7 +229,7 @@ function renderStatsCards(data, ctx) {
     const section = document.createElement('section');
     section.setAttribute('style', `margin:0 0 20px 0; padding:16px; box-shadow:${BOX_SHADOW};`);
 
-    const h2 = document.createElement('h2');
+    const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.35rem; border-bottom:2px solid ${HEADING_PRIMARY}; padding-bottom:8px;`);
     h2.innerHTML = ctx.formatTextToHtml(data.title);
     section.appendChild(h2);
@@ -236,7 +256,7 @@ function renderTable(data, ctx) {
     const section = document.createElement('section');
     section.setAttribute('style', `margin:0 0 20px 0; padding:16px; box-shadow:${BOX_SHADOW};`);
 
-    const h2 = document.createElement('h2');
+    const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.35rem; border-bottom:2px solid ${HEADING_PRIMARY}; padding-bottom:8px;`);
     h2.innerHTML = ctx.formatTextToHtml(data.title);
     section.appendChild(h2);
@@ -290,7 +310,7 @@ function renderGlossaryChips(data, ctx) {
     const section = document.createElement('section');
     section.setAttribute('style', `margin:0 0 20px 0; padding:16px; box-shadow:${BOX_SHADOW};`);
 
-    const h2 = document.createElement('h2');
+    const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.35rem; border-bottom:2px solid ${HEADING_PRIMARY}; padding-bottom:8px;`);
     h2.innerHTML = ctx.formatTextToHtml(data.title);
     section.appendChild(h2);
@@ -315,7 +335,7 @@ function renderMonumentsGrid(data, ctx) {
     const section = document.createElement('section');
     section.setAttribute('style', `margin:0 0 20px 0; padding:16px; box-shadow:${BOX_SHADOW};`);
 
-    const h2 = document.createElement('h2');
+    const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.35rem; border-bottom:2px solid ${HEADING_PRIMARY}; padding-bottom:8px;`);
     h2.innerHTML = ctx.formatTextToHtml(data.title);
     section.appendChild(h2);
@@ -332,7 +352,7 @@ function renderMonumentsGrid(data, ctx) {
                 <figcaption style="padding:8px; font-size:0.9rem; color:${TEXT_CAPTION};">${ctx.formatTextToHtml(card.caption)}</figcaption>
             </figure>
             <div style="padding:12px;">
-                <h3 style="margin:0 0 6px 0; color:${HEADING_PRIMARY}; font-size:1.05rem;">${ctx.formatTextToHtml(card.title)}</h3>
+                <${ctx.headingTag(1)} style="margin:0 0 6px 0; color:${HEADING_PRIMARY}; font-size:1.05rem;">${ctx.formatTextToHtml(card.title)}</${ctx.headingTag(1)}>
                 <p style="margin:0;">${ctx.formatTextToHtml(card.text)}</p>
             </div>
         `;
@@ -352,7 +372,7 @@ function renderFiguresComparison(data, ctx) {
 
     // Titre optionnel
     if (data.title) {
-        const h2 = document.createElement('h2');
+        const h2 = document.createElement(ctx.headingTag(0));
         h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.35rem; border-bottom:2px solid ${HEADING_PRIMARY}; padding-bottom:8px;`);
         h2.innerHTML = ctx.formatTextToHtml(data.title);
         section.appendChild(h2);
@@ -399,7 +419,7 @@ function renderDefinitionBox(data, ctx) {
     const section = document.createElement('section');
     section.setAttribute('style', `margin:0 0 20px 0; background:${BG_LIGHT}; border-left:4px solid ${HEADING_PRIMARY}; padding:14px;`);
 
-    const h2 = document.createElement('h2');
+    const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.35rem;`);
     h2.innerHTML = ctx.formatTextToHtml(data.title);
     section.appendChild(h2);
@@ -421,7 +441,7 @@ function renderContextParagraphs(data, ctx) {
     const section = document.createElement('section');
     section.setAttribute('style', `margin:0 0 20px 0; padding:14px; box-shadow:${BOX_SHADOW};`);
 
-    const h2 = document.createElement('h2');
+    const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.35rem; border-bottom:2px solid ${HEADING_PRIMARY}; padding-bottom:6px;`);
     h2.innerHTML = ctx.formatTextToHtml(data.title);
     section.appendChild(h2);
@@ -449,7 +469,7 @@ function renderMonumentSheetLong(data, ctx) {
     const wrapper = document.createElement('div');
     wrapper.setAttribute('style', 'padding:14px;');
 
-    const h2 = document.createElement('h2');
+    const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.35rem;`);
     h2.innerHTML = ctx.formatTextToHtml(data.title);
     wrapper.appendChild(h2);
@@ -478,7 +498,7 @@ function renderMonumentSheetLong(data, ctx) {
         // Chaque section
         data.sections.forEach((section, idx) => {
             if (section.subtitle) {
-                const h3 = document.createElement('h3');
+                const h3 = document.createElement(ctx.headingTag(1));
                 h3.setAttribute('style', `margin:${idx > 0 ? '12px' : '0'} 0 6px 0; color:${HEADING_PRIMARY}; font-size:1.05rem;`);
                 h3.innerHTML = ctx.formatTextToHtml(section.subtitle);
                 wrapper.appendChild(h3);
@@ -505,13 +525,13 @@ function renderFaqBlock(data, ctx) {
     const section = document.createElement('section');
     section.setAttribute('style', `margin:0 0 20px 0; background:${BG_GRAY}; padding:14px; box-shadow:${BOX_SHADOW};`);
 
-    const h2 = document.createElement('h2');
+    const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.35rem;`);
     h2.innerHTML = ctx.formatTextToHtml(data.title);
     section.appendChild(h2);
 
     data.questions.forEach(q => {
-        const h3 = document.createElement('h3');
+        const h3 = document.createElement(ctx.headingTag(1));
         h3.setAttribute('style', `margin:0 0 6px 0; color:${HEADING_PRIMARY}; font-size:1.05rem;`);
         h3.innerHTML = ctx.formatTextToHtml(q.q);
         section.appendChild(h3);
@@ -537,7 +557,7 @@ function renderMythsRealities(data, ctx) {
 
     // Titre principal du bloc (optionnel, couvre les 2 colonnes)
     if (data.title && String(data.title).trim()) {
-        const titleH2 = document.createElement('h2');
+        const titleH2 = document.createElement(ctx.headingTag(0));
         titleH2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.35rem; grid-column:1 / -1;`);
         titleH2.innerHTML = ctx.formatTextToHtml(data.title);
         section.appendChild(titleH2);
@@ -546,7 +566,7 @@ function renderMythsRealities(data, ctx) {
     // Colonne Mythes
     const mythsDiv = document.createElement('div');
     mythsDiv.setAttribute('style', `background:${MYTHS.bg}; border-left:4px solid ${MYTHS.heading}; padding:12px;`);
-    const mythsH2 = document.createElement('h2');
+    const mythsH2 = document.createElement(ctx.headingTag(1));
     mythsH2.setAttribute('style', `margin:0 0 8px 0; color:${MYTHS.heading}; font-size:1.15rem;`);
     mythsH2.innerHTML = ctx.formatTextToHtml(data.mythsTitle || ctx.t('simulator_page_myths', 'Mythes'));
     mythsDiv.appendChild(mythsH2);
@@ -557,7 +577,7 @@ function renderMythsRealities(data, ctx) {
     // Colonne Réalités
     const realitiesDiv = document.createElement('div');
     realitiesDiv.setAttribute('style', `background:${REALITIES.bg}; border-left:4px solid ${REALITIES.heading}; padding:12px;`);
-    const realitiesH2 = document.createElement('h2');
+    const realitiesH2 = document.createElement(ctx.headingTag(1));
     realitiesH2.setAttribute('style', `margin:0 0 8px 0; color:${REALITIES.heading}; font-size:1.15rem;`);
     realitiesH2.innerHTML = ctx.formatTextToHtml(data.realitiesTitle || ctx.t('simulator_page_realities', 'Réalités'));
     realitiesDiv.appendChild(realitiesH2);
@@ -567,14 +587,17 @@ function renderMythsRealities(data, ctx) {
 
     // Remplir les listes
     if (data.items && Array.isArray(data.items)) {
-        data.items.forEach(item => {
+        data.items.forEach((item, idx) => {
             if (item.myth) {
                 const li = document.createElement('li');
+                // Index d'appariement pour la rétro-ingénierie.
+                li.setAttribute('data-pair-index', String(idx));
                 li.innerHTML = ctx.formatTextToHtml(item.myth);
                 mythsUl.appendChild(li);
             }
             if (item.reality) {
                 const li = document.createElement('li');
+                li.setAttribute('data-pair-index', String(idx));
                 li.innerHTML = ctx.formatTextToHtml(item.reality);
                 realitiesUl.appendChild(li);
             }
@@ -593,7 +616,7 @@ function renderMethodImageDesc(data, ctx) {
     const section = document.createElement('section');
     section.setAttribute('style', `margin:0 0 20px 0; background:${BG_GRAY}; padding:14px; box-shadow:${BOX_SHADOW};`);
 
-    const h2 = document.createElement('h2');
+    const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.35rem;`);
     h2.innerHTML = ctx.formatTextToHtml(data.title);
     section.appendChild(h2);
@@ -660,7 +683,7 @@ function renderSitoGraphy(data, ctx) {
     const section = document.createElement('section');
     section.setAttribute('style', `margin:0 0 20px 0; padding:14px; box-shadow:${BOX_SHADOW};`);
 
-    const h2 = document.createElement('h2');
+    const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.35rem; border-bottom:2px solid ${HEADING_PRIMARY}; padding-bottom:8px;`);
     h2.innerHTML = ctx.formatTextToHtml(data.title);
     section.appendChild(h2);
@@ -670,7 +693,7 @@ function renderSitoGraphy(data, ctx) {
 
     data.links.forEach(link => {
         const li = document.createElement('li');
-        li.innerHTML = `<a href="${ctx.escapeHtmlTags(link.href)}" style="color:${LINK_COLOR}; text-decoration:underline;">${ctx.formatTextToHtml(link.text)}</a>`;
+        li.innerHTML = `<a href="${ctx.escapeHtmlTags(sanitizeUrl(link.href))}" style="color:${LINK_COLOR}; text-decoration:underline;">${ctx.formatTextToHtml(link.text)}</a>`;
         ul.appendChild(li);
     });
 

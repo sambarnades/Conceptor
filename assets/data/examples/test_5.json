@@ -5,7 +5,7 @@
         {
             "type": "multichoice",
             "content": {
-                "name": "Q1 - Continuité et TVI",
+                "name": "Q01 - Continuité et TVI",
                 "questiontext": "Soit \\( f \\) une fonction continue sur \\( [a, b] \\). D'après le théorème des valeurs intermédiaires, si \\( f(a) < 0 \\) et \\( f(b) > 0 \\), que peut-on affirmer ?",
                 "feedback": "Le TVI garantit l'existence d'au moins un \\( c \\in ]a, b[ \\) tel que \\( f(c) = 0 \\). Il ne dit rien sur l'unicité.",
                 "answers": [
@@ -35,7 +35,7 @@
         {
             "type": "multichoice",
             "content": {
-                "name": "Q2 - Primitive d'une fraction",
+                "name": "Q02 - Primitive d'une fraction",
                 "questiontext": "Quelle est une primitive de \\( f(x) = \\frac{2x}{x^2 + 1} \\) sur \\( \\mathbb{R} \\) ?",
                 "feedback": "On reconnaît la forme \\( \\frac{u'}{u} \\) dont une primitive est \\( \\ln|u| \\). Ici \\( u = x^2 + 1 > 0 \\), donc la primitive est \\( \\ln(x^2 + 1) \\).",
                 "answers": [
@@ -65,7 +65,7 @@
         {
             "type": "truefalse",
             "content": {
-                "name": "Q3 - Exponentielle et logarithme",
+                "name": "Q03 - Exponentielle et logarithme",
                 "questiontext": "Pour tout \\( x > 0 \\), on a \\( e^{\\ln(x)} = x \\).",
                 "feedback": "L'exponentielle et le logarithme népérien sont des fonctions réciproques : \\( e^{\\ln(x)} = x \\) pour \\( x > 0 \\) et \\( \\ln(e^x) = x \\) pour tout \\( x \\in \\mathbb{R} \\).",
                 "answer": {
@@ -78,7 +78,7 @@
         {
             "type": "truefalse",
             "content": {
-                "name": "Q4 - Convergence de série",
+                "name": "Q04 - Convergence de série",
                 "questiontext": "La série harmonique \\( \\sum_{n=1}^{+\\infty} \\frac{1}{n} \\) converge.",
                 "feedback": "La série harmonique diverge. On peut le démontrer par comparaison avec une série télescopique ou par le critère intégral avec \\( \\int_1^{+\\infty} \\frac{1}{x} \\, dx = +\\infty \\).",
                 "answer": {
@@ -91,7 +91,7 @@
         {
             "type": "numerical",
             "content": {
-                "name": "Q5 - Intégrale définie",
+                "name": "Q05 - Intégrale définie",
                 "questiontext": "Calculez \\( \\int_0^{\\pi} \\sin(x) \\, dx \\). Donnez la valeur exacte.",
                 "feedback": "On a \\( \\int_0^{\\pi} \\sin(x) \\, dx = [-\\cos(x)]_0^{\\pi} = -\\cos(\\pi) + \\cos(0) = 1 + 1 = 2 \\).",
                 "answer": {
@@ -104,7 +104,7 @@
         {
             "type": "numerical",
             "content": {
-                "name": "Q6 - Probabilité conditionnelle",
+                "name": "Q06 - Probabilité conditionnelle",
                 "questiontext": "Dans une classe, 60 % des élèves pratiquent un sport et parmi ceux-ci, 25 % font de la natation. Quelle est la probabilité qu'un élève choisi au hasard pratique la natation ? Donnez le résultat sous forme décimale.",
                 "feedback": "On applique la formule \\( P(\\text{natation}) = P(\\text{sport}) \\times P(\\text{natation} | \\text{sport}) = 0.6 \\times 0.25 = 0.15 \\).",
                 "answer": {
@@ -117,7 +117,7 @@
         {
             "type": "shortanswer",
             "content": {
-                "name": "Q7 - Résolution d'équation",
+                "name": "Q07 - Résolution d'équation",
                 "questiontext": "Résolvez \\( e^{2x} = 7 \\). Exprimez \\( x \\) en fonction de \\( \\ln \\).",
                 "feedback": "On prend le logarithme népérien des deux membres : \\( 2x = \\ln(7) \\), donc \\( x = \\frac{\\ln(7)}{2} \\).",
                 "answers": [
@@ -131,7 +131,7 @@
         {
             "type": "shortanswer",
             "content": {
-                "name": "Q8 - Limite classique",
+                "name": "Q08 - Limite classique",
                 "questiontext": "Quelle est la limite de \\( \\frac{\\sin(x)}{x} \\) quand \\( x \\to 0 \\) ?",
                 "feedback": "C'est une limite fondamentale de l'analyse : \\( \\lim_{x \\to 0} \\frac{\\sin(x)}{x} = 1 \\).",
                 "answers": [
@@ -143,7 +143,7 @@
         {
             "type": "matching",
             "content": {
-                "name": "Q9 - Lois de probabilité",
+                "name": "Q09 - Lois de probabilité",
                 "questiontext": "Associez chaque loi de probabilité à son espérance.",
                 "feedback": "Ces formules d'espérance sont fondamentales en probabilités.",
                 "subquestions": [

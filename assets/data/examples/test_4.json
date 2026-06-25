@@ -5,7 +5,7 @@
         {
             "type": "multichoice",
             "content": {
-                "name": "Q1 - Dérivée d'un polynôme",
+                "name": "Q01 - Dérivée d'un polynôme",
                 "questiontext": "Quelle est la dérivée de la fonction \\( f(x) = 3x^3 - 2x^2 + 5x - 1 \\) ?",
                 "feedback": "On applique la règle \\( (x^n)' = nx^{n-1} \\) à chaque terme.",
                 "answers": [
@@ -35,7 +35,7 @@
         {
             "type": "numerical",
             "content": {
-                "name": "Q2 - Calcul d'intégrale",
+                "name": "Q02 - Calcul d'intégrale",
                 "questiontext": "Calculez \\( \\int_0^1 2x \\, dx \\). Donnez le résultat sous forme décimale.",
                 "feedback": "On a \\( \\int_0^1 2x \\, dx = \\left[ x^2 \\right]_0^1 = 1^2 - 0^2 = 1 \\).",
                 "answer": {
@@ -48,7 +48,7 @@
         {
             "type": "truefalse",
             "content": {
-                "name": "Q3 - Identité remarquable",
+                "name": "Q03 - Identité remarquable",
                 "questiontext": "L'identité \\( (a + b)^2 = a^2 + 2ab + b^2 \\) est valable pour tout \\( a, b \\in \\mathbb{R} \\).",
                 "feedback": "C'est l'une des trois identités remarquables fondamentales, avec \\( (a - b)^2 \\) et \\( (a + b)(a - b) \\).",
                 "answer": {
@@ -61,7 +61,7 @@
         {
             "type": "matching",
             "content": {
-                "name": "Q4 - Fonctions et dérivées",
+                "name": "Q04 - Fonctions et dérivées",
                 "questiontext": "Associez chaque fonction à sa dérivée.",
                 "feedback": "Ces dérivées font partie des formules de base à connaître.",
                 "subquestions": [
@@ -87,7 +87,7 @@
         {
             "type": "shortanswer",
             "content": {
-                "name": "Q5 - Théorème célèbre",
+                "name": "Q05 - Théorème célèbre",
                 "questiontext": "Quel théorème affirme que dans un triangle rectangle, \\( a^2 + b^2 = c^2 \\) où \\( c \\) est l'hypoténuse ?",
                 "feedback": "Ce théorème est attribué au mathématicien grec du VIe siècle av. J.-C.",
                 "answers": [
@@ -107,7 +107,7 @@
         {
             "type": "cloze",
             "content": {
-                "name": "Q6 - Équation du second degré",
+                "name": "Q06 - Équation du second degré",
                 "questiontext": "Pour résoudre l'équation ax² + bx + c = 0, on calcule le discriminant {1:MULTICHOICE:=Δ = b² − 4ac~Δ = b² + 4ac~Δ = 2b − 4ac}. Si Δ > 0, l'équation admet {1:SHORTANSWER:=2} solutions réelles distinctes.",
                 "feedback": "La formule du discriminant et le nombre de solutions sont des résultats fondamentaux de l'algèbre."
             }
@@ -115,7 +115,7 @@
         {
             "type": "multichoice",
             "content": {
-                "name": "Q7 - Limite de suite",
+                "name": "Q07 - Limite de suite",
                 "questiontext": "Quelle est la limite de la suite \\( u_n = \\frac{n^2 + 3n}{2n^2 - 1} \\) quand \\( n \\to +\\infty \\) ?",
                 "feedback": "On factorise par le terme de plus haut degré : \\( \\frac{n^2(1 + \\frac{3}{n})}{n^2(2 - \\frac{1}{n^2})} \\to \\frac{1}{2} \\).",
                 "answers": [
@@ -145,7 +145,7 @@
         {
             "type": "numerical",
             "content": {
-                "name": "Q8 - Aire sous une courbe",
+                "name": "Q08 - Aire sous une courbe",
                 "questiontext": "Calculez l'aire sous la courbe de \\( f(x) = x^2 \\) entre \\( x = 0 \\) et \\( x = 3 \\). Donnez la valeur exacte.",
                 "feedback": "On calcule \\( \\int_0^3 x^2 \\, dx = \\left[ \\frac{x^3}{3} \\right]_0^3 = \\frac{27}{3} = 9 \\).",
                 "answer": {
@@ -158,7 +158,7 @@
         {
             "type": "truefalse",
             "content": {
-                "name": "Q9 - Propriété de l'exponentielle",
+                "name": "Q09 - Propriété de l'exponentielle",
                 "questiontext": "Pour tout \\( x \\in \\mathbb{R} \\), on a \\( e^{-x} = -e^x \\).",
                 "feedback": "La bonne relation est \\( e^{-x} = \\frac{1}{e^x} \\). L'exponentielle est toujours strictement positive.",
                 "answer": {

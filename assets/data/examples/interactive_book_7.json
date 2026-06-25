@@ -1,0 +1,222 @@
+{
+  "title": "Comment les plantes se nourrissent-elles ?",
+  "cover": {
+    "description": "Explorez le mystère de la photosynthèse et comprenez comment les plantes transforment la lumière en énergie pour grandir."
+  },
+  "chapters": [
+    {
+      "title": "Observation : Le mystère de la croissance",
+      "content": [
+        {
+          "type": "text",
+          "text": "Tu as sûrement remarqué que les plantes peuvent pousser sans jamais manger de nourriture au sens humain du terme. Elles n'ouvrent pas la bouche ! Pourtant, une petite graine devient un grand arbre. D'où vient cette matière ?\n\nAu XVIIe siècle, un scientifique, **Jan Baptiste van Helmont**, a fait une expérience célèbre. Il a planté une branche de saule dans un pot avec de la terre séchée pesée 85 kg. Pendant cinq ans, il a seulement arrosé la plante avec de l'eau.\n\nÀ la fin, le saule pesait 82 kg ! Mais la terre du pot avait peu changé de poids."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.DragText 1.10",
+          "taskDescription": "Remets les mots dans l'ordre pour compléter la conclusion de l'expérience.",
+          "textField": "La plante a *gagné* beaucoup de *masse*.\nLa terre a *perdu* peu de *poids*.\nL'eau est donc un *ingrédient* important.",
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Attention, revois bien les poids avant et après l'expérience."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "C'est un bon début, mais il y a encore des erreurs."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bien joué, tu as compris l'essentiel du bilan de matière."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent ! Tu as parfaitement saisi les résultats de l'expérience."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Le rôle clé de la lumière",
+      "content": [
+        {
+          "type": "text",
+          "text": "Jan Baptiste s'était posé la bonne question : la matière vient-elle du sol ou de l'eau ? Il avait raison pour l'eau, mais il manquait une pièce du puzzle : **la lumière**.\n\nPlus tard, au XVIIIe siècle, un médecin anglais, **Ingenhousz**, a montré que la plante ne produit sa matière que si elle est éclairée. Sombre, elle ne fait que respirer (comme nous) et consomme de l'oxygène. Éclairée, elle fabrique de la nourriture et rejette de l'oxygène.\n\nCette transformation de la lumière en énergie s'appelle la **photosynthèse**."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.MultiChoice 1.16",
+          "question": "D'après les expériences, que faut-il absolument pour qu'une plante fabrique sa matière ?",
+          "answers": [
+            {
+              "text": "Uniquement de l'eau",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "L'eau est nécessaire, mais sans lumière, la plante ne peut pas fabriquer de sucre."
+              }
+            },
+            {
+              "text": "La lumière",
+              "correct": true,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Tout à fait ! La lumière est le moteur de la photosynthèse."
+              }
+            },
+            {
+              "text": "Du terreau riche",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Le sol fournit des sels minéraux, mais pas la matière principale (sucre)."
+              }
+            },
+            {
+              "text": "Le silence",
+              "correct": false
+            }
+          ],
+          "behaviour": {
+            "singleAnswer": true
+          },
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Il manque un élément essentiel découvert par Ingenhousz."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Pas tout à fait, pense à l'expérience de Van Helmont et à la lumière."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Très bien, tu as identifié l'élément déclencheur."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Parfait ! C'est bien la lumière qui permet la transformation."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Les ingrédients et les lieux",
+      "content": [
+        {
+          "type": "text",
+          "text": "Pour réaliser cette usine chimique qu'est la photosynthèse, la plante a besoin de trois choses qu'elle *capture* ou *puise* : \n1. La **lumière** du soleil.\n2. L'**eau** puisée dans le sol par les racines.\n3. Le **dioxyde de carbone** (CO2) prélevé dans l'air par les petites ouvertures sous les feuilles, appelées stomates.\n\nGrâce à ces ingrédients, la plante produit du **sucre** (glucose) pour se construire et se nourrir. En plus, elle rejette ce qui lui est inutile : de l'**oxygène** et de l'eau."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Blanks 1.14",
+          "taskDescription": "Complète le schéma de principe de la photosynthèse en utilisant les mots appropriés.",
+          "questions": [
+            "La plante absorbe le *dioxyde de carbone* par ses feuilles et l'*eau* par ses racines.",
+            "Sous l'action de la *lumière*, la plante fabrique du *sucre*.",
+            "Elle rejette alors de l'*oxygène* dans l'air."
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Vérifie bien d'où vient chaque élément (sol, air, soleil)."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Certaines entrées ou sorties sont incorrectes."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail, la logique de l'usine est respectée."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent ! Tu maîtrises les ingrédients et les produits de la photosynthèse."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Bilan et Révision",
+      "content": [
+        {
+          "type": "text",
+          "text": "Pour résumer : les plantes sont des êtres **autotrophes** (qui se fabriquent leur propre nourriture).\n\nLe lieu de cette fabrication est la **feuille**, grâce à la **chlorophylle** (le pigment vert qui capte l'énergie).\n\nC'est grâce à ce processus que l'oxygène que nous respirons est produit ! C'est un échange vital entre les plantes et les animaux."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Summary 1.10",
+          "intro": "Coches uniquement les affirmations correctes qui résument la photosynthèse.",
+          "summaries": [
+            {
+              "summary": [
+                "La plante a besoin de lumière.",
+                "La plante a besoin de chaleur.",
+                "La plante n'a pas besoin de lumière."
+              ],
+              "tip": "La lumière est le moteur de la réaction."
+            },
+            {
+              "summary": [
+                "La plante fabrique du sucre (matière organique).",
+                "La plante fabrique de la roche.",
+                "La plante dégrade son propre corps."
+              ],
+              "tip": "La photosynthèse sert à construire la plante."
+            },
+            {
+              "summary": [
+                "La plante libère de l'oxygène.",
+                "La plante libère du méthane.",
+                "La plante n'émet aucun gaz."
+              ],
+              "tip": "L'oxygène est un déchet de la photosynthèse."
+            },
+            {
+              "summary": [
+                "La matière carbonée (CO2) vient de l'air.",
+                "La matière carbonée vient du sol.",
+                "La matière carbonée vient de l'eau."
+              ],
+              "tip": "Les feuilles capturent le CO2 directement dans l'air."
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Il te manque plusieurs éléments essentiels dans ta compréhension."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Tu as de bonnes idées, mais attention aux détails comme l'origine du CO2."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Très bon bilan, tu retiens les points principaux."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Parfait ! Tu es devenu un expert en nutrition végétale."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

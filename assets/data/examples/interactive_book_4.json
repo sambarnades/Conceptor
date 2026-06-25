@@ -1,0 +1,380 @@
+{
+  "title": "Le langage du réel : grandeurs physiques et unités du Système International (SI)",
+  "cover": {
+    "description": "Explorez les grandeurs physiques et maîtrisez les unités du SI grâce à des activités interactives."
+  },
+  "baseColor": "#2a7d9b",
+  "showTableOfContents": true,
+  "displaySummary": true,
+  "chapters": [
+    {
+      "title": "Quelles sont les grandeurs physiques ?",
+      "content": [
+        {
+          "type": "text",
+          "text": "**Grandeur physique** : toute propriété mesurable d’un phénomène ou d’un corps (ex. la longueur, le temps, la masse). Chaque grandeur possède une **dimension** (L, M, T, …) qui décrit son type. Le **Système International (SI)** regroupe les unités normalisées pour exprimer ces grandeurs."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.TrueFalse 1.8",
+          "question": "Toutes les grandeurs physiques peuvent être exprimées à l'aide d'au moins une unité du SI.",
+          "correct": "true",
+          "feedbackOnCorrect": "Exact, le SI couvre toutes les grandeurs fondamentales.",
+          "feedbackOnWrong": "En fait, chaque grandeur fondamentale possède une unité définie dans le SI."
+        },
+        {
+          "type": "text",
+          "text": "Les **unités dérivées** s'obtiennent à partir des unités de base. Par exemple : le **newton (N)** pour la force, le **joule (J)** pour l'énergie ou le **watt (W)** pour la puissance."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Blanks 1.14",
+          "taskDescription": "Complétez les phrases suivantes.",
+          "questions": [
+            "Le symbole de la force est *N*.",
+            "Le moteur électrique a une puissance exprimée en *W*.",
+            "L'énergie se mesure en *J*."
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Reprenez les notions d'unités dérivées."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Bon effort, continuez à réviser."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Très bien, vous maîtrisez les symboles."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent, toutes les réponses sont correctes."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Les unités de base du SI",
+      "content": [
+        {
+          "type": "text",
+          "text": "Le SI comporte **sept unités de base** qui définissent les grandeurs fondamentales. Elles sont utilisées pour construire toutes les autres unités du système."
+        },
+        {
+          "type": "table",
+          "tableStyle": "default",
+          "table": {
+            "headers": [
+              "Grandeur",
+              "Unité",
+              "Symbole"
+            ],
+            "rows": [
+              [
+                "Longueur",
+                "mètre",
+                "m"
+              ],
+              [
+                "Masse",
+                "kilogramme",
+                "kg"
+              ],
+              [
+                "Temps",
+                "seconde",
+                "s"
+              ],
+              [
+                "Courant électrique",
+                "ampère",
+                "A"
+              ],
+              [
+                "Température thermodynamique",
+                "kelvin",
+                "K"
+              ],
+              [
+                "Quantité de substance",
+                "mole",
+                "mol"
+              ],
+              [
+                "Intensité lumineuse",
+                "candela",
+                "cd"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.DragText 1.10",
+          "taskDescription": "Glissez chaque symbole d'unité à sa bonne place dans les phrases suivantes.",
+          "textField": "1 km = 1000 *m*\n1 h = 3600 *s*\n1 L = 0,001 *m³*\n1 g = 0,001 *kg*",
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Revoyez les conversions entre préfixes et unités."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Pas mal, continuez à vous entraîner."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bonne maîtrise des symboles."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Parfait, toutes les réponses sont correctes."
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.MultiChoice 1.16",
+          "question": "Quelle unité SI correspond à la température ?",
+          "answers": [
+            {
+              "text": "kelvin",
+              "correct": true,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Exact, le symbole est K."
+              }
+            },
+            {
+              "text": "celsius",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Celsius n'est pas une unité du SI."
+              }
+            },
+            {
+              "text": "fahrenheit",
+              "correct": false
+            }
+          ],
+          "behaviour": {
+            "singleAnswer": true
+          },
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relisez le tableau des unités de base."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Vous progressez, continuez ainsi."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bonne réponse, vous avez bien compris."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent, vous maîtrisez les unités de base."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Préfixes et conversions d'unités",
+      "content": [
+        {
+          "type": "text",
+          "text": "Les **préfixes SI** permettent d'exprimer des valeurs très grandes ou très petites. Exemples : *kilo* (10³), *centi* (10⁻²), *milli* (10⁻³), *mega* (10⁶). On les combine avec les unités de base : 1 km = 10³ m, 1 cm = 10⁻² m, etc."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.DragQuestion 1.14",
+          "title": "Associez chaque préfixe à son facteur décimal.",
+          "dropZones": [
+            {
+              "label": "10³",
+              "correctElements": [
+                0
+              ]
+            },
+            {
+              "label": "10⁻²",
+              "correctElements": [
+                1
+              ]
+            },
+            {
+              "label": "10⁻³",
+              "correctElements": [
+                2
+              ]
+            },
+            {
+              "label": "10⁶",
+              "correctElements": [
+                3
+              ]
+            }
+          ],
+          "elements": [
+            {
+              "text": "kilo"
+            },
+            {
+              "text": "centi"
+            },
+            {
+              "text": "milli"
+            },
+            {
+              "text": "mega"
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Reprenez la table des préfixes."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Vous êtes sur la bonne voie."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail, les correspondances sont correctes."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent, vous avez tout compris."
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.MultiChoice 1.16",
+          "question": "Quelle est l’unité SI du champ électrique ?",
+          "answers": [
+            {
+              "text": "V/m",
+              "correct": true,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Exact, volt par mètre."
+              }
+            },
+            {
+              "text": "V·m⁻¹",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Close, mais la notation standard est V/m."
+              }
+            },
+            {
+              "text": "N·C⁻¹",
+              "correct": false
+            }
+          ],
+          "behaviour": {
+            "singleAnswer": true
+          },
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Revoyez les unités des grandeurs dérivées."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Vous êtes proche, continuez à vous entraîner."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bonne réponse, vous maîtrisez ce concept."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Parfait, vous connaissez les unités du champ électrique."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Synthèse",
+      "content": [
+        {
+          "type": "exercise",
+          "library": "H5P.Summary 1.10",
+          "intro": "Sélectionnez les affirmations correctes parmi chaque groupe.",
+          "summaries": [
+            {
+              "summary": [
+                "Le kilogramme est l’unité de masse du SI.",
+                "Le kilogramme est l’unité de longueur du SI.",
+                "Le kilogramme est l’unité de temps du SI."
+              ]
+            },
+            {
+              "summary": [
+                "Le préfixe méga représente un facteur de 10⁶.",
+                "Le préfixe méga représente un facteur de 10⁻⁶.",
+                "Le préfixe méga représente un facteur de 10³."
+              ]
+            },
+            {
+              "summary": [
+                "Le joule (J) est l’unité d’énergie.",
+                "Le joule (J) est l’unité de puissance.",
+                "Le joule (J) est l’unité de température."
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Revenez revoir les unités de base et dérivées."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Pas mal, continuez à vous entraîner."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail, vous avez compris l'essentiel."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent, vous maîtrisez les notions du SI."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

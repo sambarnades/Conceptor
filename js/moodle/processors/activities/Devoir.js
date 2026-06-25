@@ -7,6 +7,8 @@
 import { TEMPLATES } from '../shared/templates.js';
 import { buildMoodleBackup } from '../shared/moodle-backup.js';
 import { replacePlaceholders } from '../shared/placeholder.js';
+import { parseXml, tagText, escapeXml as xmlEscape, rewriteTag } from '../../mbz-utils.js';
+import { escapeXml as escapeXmlText } from '../../moodle-formats.js';
 
 /**
  * Métadonnées du module Devoir.
@@ -235,21 +237,6 @@ function buildGradingXml(criteria, data) {
 }
 
 /**
- * Échappe les caractères spéciaux XML dans du texte brut.
- * @param {string} text - Texte à échapper
- * @returns {string} Texte échappé pour XML
- */
-function escapeXmlText(text) {
-    if (!text) return '';
-    return String(text)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&apos;');
-}
-
-/**
  * Construit tous les fichiers pour une activité Devoir.
  * @param {Object} data - Les données avec les placeholders remplis + CRITERIA et RUBRIC_NAME
  * @param {Object} options - Options de génération
@@ -299,10 +286,111 @@ export function buildFiles(data, options = {}) {
     return files;
 }
 
+// =========================================================================
+// INVERSE : .mbz extrait → JSON éditeur
+// =========================================================================
+
+/**
+ * Lit l'archive d'un Devoir (assign) déjà extraite par `mbz-utils.extractMbz`
+ * et reconstruit le JSON éditeur. La grille d'évaluation (rubric) est dans un
+ * fichier séparé `grading.xml` du même dossier d'activité.
+ *
+ * @param {Object<string, Uint8Array>} files
+ * @param {string} activityDir - ex: 'activities/assign_25'
+ * @returns {{
+ *   title: string,
+ *   criteria: Array<{ description, levels: Array<{ score, definition }> }>,
+ *   _context: { moduleId, activityId, activityContextId }
+ * }}
+ */
+export function parseFiles(files, activityDir) {
+    const xmlPath  = `${activityDir}/assign.xml`;
+    const xmlBytes = files[xmlPath];
+    if (!xmlBytes) throw new Error(`devoir_missing_xml:${xmlPath}`);
+
+    const xml = new TextDecoder('utf-8').decode(xmlBytes);
+    const doc = parseXml(xml);
+
+    const activityNode = doc.querySelector('activity');
+    if (!doc.querySelector('activity > assign')) {
+        throw new Error('devoir_invalid_xml_no_root');
+    }
+
+    const title = tagText(doc, 'assign > name');
+
+    // grading.xml — peut être absent si pas de rubric
+    const criteria = [];
+    const gradingPath  = `${activityDir}/grading.xml`;
+    const gradingBytes = files[gradingPath];
+    if (gradingBytes) {
+        const gradingXml = new TextDecoder('utf-8').decode(gradingBytes);
+        const gdoc = parseXml(gradingXml);
+        for (const cr of gdoc.querySelectorAll('criterion')) {
+            const description = cr.querySelector('description')?.textContent ?? '';
+            const levels = Array.from(cr.querySelectorAll('level')).map(lv => ({
+                score:      parseFloat(lv.querySelector('score')?.textContent ?? '0'),
+                definition: lv.querySelector('definition')?.textContent ?? ''
+            }));
+            criteria.push({ description, levels });
+        }
+    }
+
+    return {
+        title,
+        criteria,
+        _context: {
+            moduleId:          activityNode?.getAttribute('moduleid')  ?? '',
+            activityId:        activityNode?.getAttribute('id')        ?? '',
+            activityContextId: activityNode?.getAttribute('contextid') ?? ''
+        }
+    };
+}
+
+/**
+ * Patch in-place : `name` dans assign.xml + reconstruction des `<criteria>`
+ * dans grading.xml (s'il existe).
+ */
+export function serializeFiles(data, files, activityDir) {
+    const xmlPath  = `${activityDir}/assign.xml`;
+    const xmlBytes = files[xmlPath];
+    if (!xmlBytes) throw new Error(`devoir_missing_xml:${xmlPath}`);
+
+    let xml = new TextDecoder('utf-8').decode(xmlBytes);
+    xml = rewriteTag(xml, 'name', xmlEscape(data.title || ''));
+    files[xmlPath] = window.fflate.strToU8(xml);
+
+    // grading.xml — reconstruire les criteria si présents
+    const gradingPath  = `${activityDir}/grading.xml`;
+    const gradingBytes = files[gradingPath];
+    if (gradingBytes && Array.isArray(data.criteria)) {
+        let gradingXml = new TextDecoder('utf-8').decode(gradingBytes);
+        const criteriaXml = data.criteria.map((c, i) => {
+            const levelsXml = (c.levels || []).map((lv, j) => `
+              <level id="${10000 + i * 10 + j}">
+                <score>${parseFloat(lv.score || 0).toFixed(5)}</score>
+                <definition>${xmlEscape(lv.definition || '')}</definition>
+                <definitionformat>0</definitionformat>
+              </level>`).join('');
+            return `
+          <criterion id="${1000 + i}">
+            <sortorder>${i + 1}</sortorder>
+            <description>${xmlEscape(c.description || '')}</description>
+            <descriptionformat>0</descriptionformat>
+            <levels>${levelsXml}
+            </levels>
+          </criterion>`;
+        }).join('');
+        gradingXml = rewriteTag(gradingXml, 'criteria', criteriaXml + '\n          ');
+        files[gradingPath] = window.fflate.strToU8(gradingXml);
+    }
+}
+
 /**
  * Export par défaut du processeur.
  */
 export default {
     metadata,
-    buildFiles
+    buildFiles,
+    parseFiles,
+    serializeFiles
 };

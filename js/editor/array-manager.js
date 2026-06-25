@@ -545,7 +545,7 @@ export class ArrayManager {
             <button type="button" class="json-editor__array-btn" data-action="toggle" title="${translateLabel('editor_toggle') || 'Afficher/Masquer'}">
                 <i class="fas fa-chevron-down"></i>
             </button>
-            <button type="button" class="json-editor__array-btn json-editor__array-btn--drag" title="${translateLabel('editor_drag') || 'Deplacer'}">
+            <button type="button" class="json-editor__array-btn json-editor__array-btn--drag" title="${translateLabel('editor_drag') || 'Deplacer'}" aria-label="${translateLabel('editor_drag') || 'Deplacer'}" aria-keyshortcuts="ArrowUp ArrowDown">
                 <i class="fas fa-grip-vertical"></i>
             </button>
         `;
@@ -1100,6 +1100,16 @@ export class ArrayManager {
         if (dragBtn) {
             dragBtn.addEventListener('mousedown', () => { element.draggable = true; });
             dragBtn.addEventListener('mouseup', () => { element.draggable = false; });
+            // A11Y-01 : réordonnancement au clavier (le drag souris seul était
+            // inaccessible). ↑/↓ déplacent l'élément ; le focus suit la poignée.
+            dragBtn.addEventListener('keydown', (e) => {
+                if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+                e.preventDefault();
+                const newIndex = index + (e.key === 'ArrowUp' ? -1 : 1);
+                if (newIndex < 0 || newIndex >= this.items.length) return;
+                this.moveItem(index, newIndex);
+                this.focusDragHandle(newIndex);
+            });
         }
         element.addEventListener('dragstart', (e) => this.handleDragStart(e, index));
         element.addEventListener('dragend', (e) => this.handleDragEnd(e));
@@ -1240,6 +1250,16 @@ export class ArrayManager {
 
         this.render();
         this.notifyChange();
+    }
+
+    /**
+     * A11Y-01 : redonne le focus à la poignée de tri de l'élément à `index`
+     * après un re-render (le réordonnancement clavier ne doit pas perdre le focus).
+     */
+    focusDragHandle(index) {
+        const handle = this.container.querySelector(
+            `:scope > [data-index="${index}"] .json-editor__array-btn--drag`);
+        if (handle) handle.focus();
     }
 
     /**

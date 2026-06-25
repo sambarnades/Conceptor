@@ -206,6 +206,8 @@ export class H5PManager {
             const h5pJsonStr = await this.currentZip.file("h5p.json").async("string");
             if (loadGen !== this._loadGeneration) return null;
             const h5pJson = JSON.parse(h5pJsonStr);
+            // Vidéo interactive : on réservera une boîte 16/9 pendant le chargement (cf. plus bas).
+            const isInteractiveVideo = h5pJson.mainLibrary === 'H5P.InteractiveVideo';
 
             // Extraction content/content.json
             if (!this.currentZip.file("content/content.json")) {
@@ -257,8 +259,39 @@ export class H5PManager {
             _cacheHits = 0;
             _cacheMisses = 0;
 
+            // Audit S11 : H5P.MathDisplay (embarqué dans les activités math) charge
+            // par défaut MathJax 2.7.5 depuis cdnjs.cloudflare.com. h5p-standalone
+            // fusionne un window.H5PIntegration préexistant dans son intégration :
+            // on pointe ici le renderer vers la copie locale MathJax 2.7.9
+            // (js/vendor/mathjax-2/) — PREVIEW UNIQUEMENT, le .h5p exporté garde le
+            // défaut de la lib côté Moodle/Éléa.
+            window.H5PIntegration = window.H5PIntegration || {};
+            window.H5PIntegration.libraryConfig = {
+                ...(window.H5PIntegration.libraryConfig || {}),
+                'H5P.MathDisplay': {
+                    renderer: {
+                        mathjax: {
+                            src: new URL('js/vendor/mathjax-2/2.7.9/MathJax.js', document.baseURI).href,
+                            config: {
+                                extensions: ['tex2jax.js'],
+                                showMathMenu: false,
+                                jax: ['input/TeX', 'output/HTML-CSS'],
+                                tex2jax: { ignoreClass: 'ckeditor' },
+                                messageStyle: 'none',
+                                // Forcer les polices TeX vendorées (pas de détection
+                                // STIX locale → pas de fichiers de fontes manquants)
+                                'HTML-CSS': { availableFonts: ['TeX'], webFont: 'TeX' }
+                            }
+                        }
+                    }
+                }
+            };
+
             if (perfMod) perfMod.markStart('render', 'H5PStandalone.H5P()');
             if (perfMod) perfMod.event('render', `mainLibrary: ${h5pJson.mainLibrary}, deps: ${h5pJson.preloadedDependencies?.length || 0}`);
+            // Vidéo interactive : réserver une boîte 16/9 AVANT le montage, pour que la vidéo
+            // apparaisse à la bonne hauteur dès l'affichage (et non « trop courte » jusqu'au resize).
+            if (isInteractiveVideo) container.classList.add('h5p-preview--iv-loading');
             const h5p = new window.H5PStandalone.H5P(container, options);
             await h5p.ready;
             if (perfMod) {
@@ -275,6 +308,9 @@ export class H5PManager {
             // après le chargement asynchrone de leurs dépendances (ex: DragQuestion
             // dépend de jQuery.ui qui peut ne pas être prêt au moment de l'init).
             this._scheduleResize(container);
+
+            // Vidéo interactive : relâcher la réserve 16/9 dès que h5p pose la vraie hauteur.
+            if (isInteractiveVideo) this._releaseIVReserveWhenSized(container);
 
             // Rendre les formules LaTeX via MathJax dans la preview
             // (H5P.MathDisplay charge MathJax dans le vrai player Éléa/Moodle,
@@ -428,6 +464,57 @@ export class H5PManager {
     }
 
     /**
+     * Relâche la réserve 16/9 d'une Vidéo interactive (classe `h5p-preview--iv-loading`) une fois que
+     * h5p-standalone a posé une hauteur de lecteur STABLE. À chaque `resize`, le frame bundle fait
+     * `iframe.style.height = "1px"` puis `= scrollHeight + "px"` ; le player IV pose souvent une ou
+     * plusieurs hauteurs INTERMÉDIAIRES (le temps que la vidéo charge ses métadonnées) avant la
+     * hauteur finale. Relâcher au 1ᵉʳ changement faisait « sauter » la boîte (bandeau court + blanc
+     * dessous, cf. capture auteur). On attend donc la STABILISATION : plus aucun changement de hauteur
+     * pendant ~900 ms → on relâche (à ce moment la réserve 16/9 et la hauteur réelle coïncident pour
+     * une vidéo 16/9 ⇒ transition invisible). Tant que ça bouge, le 16/9 reste affiché proprement.
+     * Garde-fou : relâchement au plus tard à 8 s, pour ne jamais figer une mauvaise hauteur.
+     * @param {HTMLElement} container - Le conteneur H5P
+     */
+    _releaseIVReserveWhenSized(container) {
+        const release = () => container.classList.remove('h5p-preview--iv-loading');
+        const iframe = container.querySelector('iframe');
+        // Une hauteur inline en px (> 1) signe que le resizer h5p a tourné.
+        const isSized = (el) => {
+            const h = el && el.style && el.style.height;
+            return !!h && h.endsWith('px') && parseFloat(h) > 1;
+        };
+        if (!iframe) { setTimeout(release, 1500); return; }
+
+        let released = false;
+        let settleTimer = null;
+        const finish = () => {
+            if (released) return;
+            released = true;
+            try { obs.disconnect(); } catch { /* déjà déconnecté */ }
+            clearTimeout(settleTimer);
+            clearTimeout(guard);
+            release();
+        };
+        // Débounce : (re)programme le relâchement 900 ms après le DERNIER changement de hauteur.
+        const scheduleSettle = () => {
+            if (!isSized(iframe)) return;
+            clearTimeout(settleTimer);
+            settleTimer = setTimeout(finish, 900);
+        };
+        const obs = new MutationObserver(scheduleSettle);
+        try {
+            obs.observe(iframe, { attributes: true, attributeFilter: ['style'] });
+        } catch {
+            // MutationObserver indisponible (très ancien navigateur) → repli temporisé.
+            setTimeout(release, 2500);
+            return;
+        }
+        scheduleSettle(); // au cas où la hauteur serait déjà posée
+        // Filet : relâcher quoi qu'il arrive (resize en boucle, iframe cross-origin…).
+        const guard = setTimeout(finish, 8000);
+    }
+
+    /**
      * Rend les formules LaTeX dans la preview H5P via MathJax.
      * H5P.MathDisplay gère cela dans le vrai player Éléa/Moodle,
      * mais h5p-standalone ne l'active pas.
@@ -483,10 +570,12 @@ export class H5PManager {
                 ].join('\n');
                 iframeDoc.head.appendChild(configScript);
 
-                // Charger le script MathJax avec un chemin absolu
+                // Charger le script MathJax avec une URL absolue résolue depuis la base
+                // du document (fonctionne aussi quand l'app est servie sous un sous-chemin,
+                // ex. GitLab Pages projet)
                 const mathScript = iframeDoc.createElement('script');
                 mathScript.type = 'text/javascript';
-                mathScript.src = window.location.origin + '/' + LIB_PATHS.MATHJAX;
+                mathScript.src = new URL(LIB_PATHS.MATHJAX, document.baseURI).href;
                 mathScript.async = true;
                 iframeDoc.head.appendChild(mathScript);
 

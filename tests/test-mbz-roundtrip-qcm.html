@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <title>Tests round-trip MBZ — QCM (simplequiz)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #f0f2f5; padding: 24px; color: #1a1a2e;
+        }
+        h1 { font-size: 1.5rem; margin-bottom: 4px; }
+        .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 16px; }
+
+        .summary {
+            display: flex; gap: 12px; margin-bottom: 16px;
+        }
+        .summary__card {
+            padding: 12px 22px; border-radius: 10px; font-weight: 700;
+            font-size: 1.3rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            min-width: 120px; text-align: center;
+        }
+        .summary__card small {
+            display: block; font-size: 0.7rem; font-weight: 400;
+            opacity: 0.8; margin-top: 2px;
+        }
+        .card--pass  { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; }
+        .card--fail  { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: #721c24; }
+        .card--total { background: linear-gradient(135deg, #d1ecf1, #bee5eb); color: #0c5460; }
+
+        #test-results {
+            background: #fff; border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden;
+        }
+        .step {
+            padding: 10px 16px; border-bottom: 1px solid #eee;
+            font-size: 0.88rem; line-height: 1.5;
+        }
+        .step:last-child { border-bottom: none; }
+        .step--pass { background: #fff; }
+        .step--fail { background: #fff5f5; }
+        .step__status {
+            display: inline-block; padding: 1px 8px; border-radius: 4px;
+            font-size: 0.72rem; font-weight: 700; margin-right: 8px;
+        }
+        .step__status--pass { background: #d4edda; color: #155724; }
+        .step__status--fail { background: #f8d7da; color: #721c24; }
+        .step__diagnostic {
+            display: block; font-size: 0.78rem; color: #666;
+            margin-top: 4px; margin-left: 56px; font-family: ui-monospace, monospace;
+        }
+        .step__group {
+            background: #f8f9fa; padding: 6px 16px;
+            font-size: 0.78rem; font-weight: 700;
+            color: #495057; text-transform: uppercase; letter-spacing: 0.04em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Round-trip MBZ — QCM (simplequiz)</h1>
+    <p class="subtitle">
+        Vérifie que <code>extractMbz → QCM.parseFiles → QCM.serializeFiles → buildMbz → extractMbz → parseFiles</code>
+        converge sur un .mbz QCM réel.
+    </p>
+
+    <div class="summary">
+        <div class="summary__card card--total" id="card-total">
+            <span id="count-total">…</span><small>Total</small>
+        </div>
+        <div class="summary__card card--pass" id="card-pass">
+            <span id="count-pass">…</span><small>OK</small>
+        </div>
+        <div class="summary__card card--fail" id="card-fail">
+            <span id="count-fail">…</span><small>KO</small>
+        </div>
+    </div>
+
+    <div id="test-results">Chargement…</div>
+
+    <script type="module" src="tests/test-mbz-roundtrip-qcm.js"></script>
+</body>
+</html>

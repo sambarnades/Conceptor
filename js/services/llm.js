@@ -5,6 +5,7 @@
  */
 
 import { debugLog, DEBUG } from '../core/utils.js';
+import { ENDPOINTS } from '../core/endpoints.js';
 
 // La clé API n'est pas stockée ici pour des raisons de sécurité.
 // Elle est gérée côté serveur par le proxy n8n.
@@ -15,20 +16,21 @@ import { debugLog, DEBUG } from '../core/utils.js';
  */
 
 export const AVAILABLE_MODELS = [
-    { id: 'mistral-small-3.2-24b', displayName: 'Mistral-Small-3.2', param: '24', owned_by: 'Mistral AI', type: 'text-generation', featured: true, order: 1, sizeTag: 'small' },
-    { id: 'qwen-3.6-35b-instruct', displayName: 'Qwen 3.6', param: '35', owned_by: 'Qwen', type: 'text-generation', featured: true, order: 2, sizeTag: 'large' },
+    { id: 'qwen-3.6-35b-instruct', displayName: 'Qwen 3.6', param: '35', owned_by: 'Qwen', type: 'text-generation', featured: true, order: 1, sizeTag: 'large' },
+    { id: 'mistral-small-4-119b', displayName: 'Mistral Small 4', param: '119', owned_by: 'Mistral AI', type: 'text-generation', featured: true, order: 2, sizeTag: 'xl' },
     { id: 'gpt-oss-120b', displayName: 'GPT-OSS', param: '120', owned_by: 'OpenAI', type: 'text-generation', featured: true, order: 3, sizeTag: 'xl' },
+    { id: 'mistral-small-3.2-24b', displayName: 'Mistral-Small-3.2', param: '24', owned_by: 'Mistral AI', type: 'text-generation', sizeTag: 'small' },
     { id: 'llama-3.3-70b', displayName: 'LLaMa-3.3', param: '70', owned_by: 'RedHatAI', type: 'text-generation' },
     { id: 'llama-3.1-8b', displayName: 'LLaMa-3.1-8B', param: '8', owned_by: 'Neural Magic', type: 'text-generation' },
     { id: 'gemma-4-31b', displayName: 'Gemma 4', param: '31', owned_by: 'Google', type: 'text-generation' },
-    { id: 'mistral-medium-250523', displayName: 'Mistral Medium', param: '~70', owned_by: 'Mistral AI', type: 'text-generation' }
+    { id: 'mistral-medium-latest', displayName: 'Mistral Medium', param: '~70', owned_by: 'Mistral AI', type: 'text-generation' }
 ];
 
 /**
  * @constant {string} DEFAULT_MODEL
  * Modèle LLM utilisé par défaut sur tout le site Caramel.
  */
-export const DEFAULT_MODEL = 'mistral-small-3.2-24b';
+export const DEFAULT_MODEL = 'mistral-small-4-119b';
 
 /**
  * @constant {Object} ACTIVITY_MODEL_OVERRIDES
@@ -37,13 +39,17 @@ export const DEFAULT_MODEL = 'mistral-small-3.2-24b';
  * Valeur : ID du modèle LLM à utiliser pour cette activité
  */
 export const ACTIVITY_MODEL_OVERRIDES = {
-    'QuizSetQCM': 'gpt-oss-120b',  // Plus rapide et plus fiable pour les QCM
-    'QuizSetVF': 'gpt-oss-120b',    // Idem pour les Vrai/Faux
-    'QuizSet': 'gpt-oss-120b',    // Idem pour les Quiz génériques
-    'Page': 'gpt-oss-120b',       // Idem pour Page
-    'Livre': 'gpt-oss-120b',      // Idem pour Livre (Page multi-chapitres)
-    'test_elea': 'gpt-oss-120b', // Idem pour Test (XML)
-    'CoursePresentation': 'gpt-oss-120b' // Structure complexe avec slides et sous-exercices
+    // Aucun override actif pour le moment : toutes les activités passent par DEFAULT_MODEL.
+    // Anciens overrides (à réactiver après benchmark de mistral-small-4-119b) :
+    // 'QuizSetQCM': 'gpt-oss-120b',        // Plus rapide et plus fiable pour les QCM
+    // 'QuizSetVF': 'gpt-oss-120b',         // Idem pour les Vrai/Faux
+    // 'QuizSet': 'gpt-oss-120b',           // Idem pour les Quiz génériques
+    // 'Page': 'gpt-oss-120b',              // Idem pour Page
+    // 'Livre': 'gpt-oss-120b',             // Idem pour Livre (Page multi-chapitres)
+    // 'test_elea': 'gpt-oss-120b',         // Idem pour Test (XML)
+    // 'CoursePresentation': 'gpt-oss-120b', // Structure complexe avec slides et sous-exercices
+    // 'InteractiveBook': 'gpt-oss-120b',   // Structure conteneur riche (chapitres + blocs) — réactiver après benchmark
+    // 'InteractiveVideo': 'gpt-oss-120b'   // Conteneur vidéo + interactions horodatées — réactiver après benchmark
 };
 
 // =======================================================================
@@ -81,8 +87,9 @@ export function populateModelSelector(moduleKey, models, onSelectCallback, selec
 
         const sizeTag = model.sizeTag;
 
-        const summaryKey = sizeTag ? `llm_${sizeTag}_summary` : `${model.id.replace('-', '_')}_summary`;
-        const technicalKey = sizeTag ? `llm_${sizeTag}_technical` : `${model.id.replace('-', '_')}_technical`;
+        // Remplacement global des tirets (replace('-', …) ne remplaçait que le premier)
+        const summaryKey = sizeTag ? `llm_${sizeTag}_summary` : `${model.id.replace(/-/g, '_')}_summary`;
+        const technicalKey = sizeTag ? `llm_${sizeTag}_technical` : `${model.id.replace(/-/g, '_')}_technical`;
 
         // Fallback : si aucun résumé spécifique n'est défini (modèle sans sizeTag, ex. modèles
         // affichés uniquement en mode ?debug), on génère un résumé par défaut depuis les
@@ -224,9 +231,11 @@ function extractJsonContent(content) {
 //
 // Le client soumet une fois, puis poll Result toutes les ~3 secondes
 // jusqu'à recevoir status='done' (ou 'error').
+//
+// URLs centralisées dans core/endpoints.js (réécrites en prod par la CI).
 // =======================================================================
-const LLM_SUBMIT_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel/llm/submit";
-const LLM_RESULT_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel/llm/result";
+const LLM_SUBMIT_URL = ENDPOINTS.llmSubmit;
+const LLM_RESULT_URL = ENDPOINTS.llmResult;
 
 // Délai avant le premier poll : la plupart des LLM mettent au moins 5s à répondre,
 // inutile de poller plus tôt et de gaspiller des requêtes.
@@ -237,28 +246,52 @@ const POLL_INTERVAL_MS = 3000;
 const POLL_TIMEOUT_MS = 300000;
 
 /**
- * Envoie un prompt au LLM via le proxy n8n (architecture async polling).
+ * Lit le contexte RAG programmes scolaires depuis le DOM : discipline (champ "qui"),
+ * sujet pédagogique (champ "quoi") et niveau saisis par l'enseignant. Le Worker n8n
+ * s'en sert pour une recherche RAG non-bloquante sur les programmes officiels
+ * (collection 56). Renvoie null si tout est vide (le Worker ignore alors le RAG).
+ * @returns {{sujet:string, discipline:string, niveau:string}|null}
+ */
+function readRagContextFromDom() {
+    const ragSujet = document.getElementById('quoi')?.value?.trim() || '';
+    const ragDiscipline = document.getElementById('qui')?.value?.trim() || '';
+    const ragNiveau = document.getElementById('niveau')?.value?.trim() || '';
+    if (ragSujet || ragDiscipline || ragNiveau) {
+        return { sujet: ragSujet, discipline: ragDiscipline, niveau: ragNiveau };
+    }
+    return null;
+}
+
+/**
+ * Primitive bas-niveau : envoie UN prompt au LLM via le proxy n8n (submit/poll) et
+ * renvoie le résultat BRUT enrichi (contenu nettoyé + métadonnées tokens/modèle).
+ * C'est la brique réutilisée à la fois par `generateH5PWithLLM` (1 prompt → 1 JSON)
+ * et par le moteur de génération par lots `services/llm-batch.js` (N appels).
  *
  * Pipeline :
- *   1. POST /webhook/caramel/llm/submit → reçoit {taskId} en ~100ms
- *   2. GET  /webhook/caramel/llm/result?taskId=xxx en boucle toutes les 3s
- *   3. Quand status='done' → retourne le content nettoyé
- *      Quand status='error' → throw avec le message d'erreur
- *      Quand status='not_found' → throw (tâche expirée côté serveur)
+ *   1. POST submit → {taskId} (~100ms)
+ *   2. GET result?taskId=xxx en boucle (POLL_INTERVAL_MS), timeout POLL_TIMEOUT_MS
+ *   3. done → résultat ; error/not_found → throw
  *
- * @param {string} prompt - Le prompt à envoyer au modèle d'IA.
- * @param {string} model - L'ID du modèle d'IA à utiliser.
- * @param {Object} [activityMeta] - Métadonnées de l'activité (moduleKey, category, etc.)
- * @returns {Promise<string>} Le contenu textuel généré par l'IA, nettoyé des blocs de code.
+ * @param {string} prompt - Le prompt à envoyer.
+ * @param {string} model - L'ID du modèle.
+ * @param {Object} [opts]
+ * @param {Object} [opts.activityMeta] - Métadonnées d'activité (Grist/stats côté Worker).
+ * @param {Object} [opts.rag] - Contexte RAG explicite ({sujet,discipline,niveau}) ou null.
+ * @param {string} [opts.stats] - 'skip' pour les sous-appels du découpage (le Worker
+ *        n'écrit alors PAS de ligne Grist → 1 seule ligne agrégée par génération).
+ * @returns {Promise<{content:string, rawContent:string, promptTokens:number, completionTokens:number, model:string, fallbackLevel:number, durationS:number}>}
  * @throws {Error} Si la soumission échoue, si le LLM échoue, ou si le timeout est atteint.
  */
-export async function generateH5PWithLLM(prompt, model, activityMeta) {
-    debugLog('LLM', `Appel au proxy n8n avec le modèle ${model}`);
+export async function generateRawWithLLM(prompt, model, { activityMeta = null, rag = null, stats = null } = {}) {
+    debugLog('LLM', `Appel au proxy n8n avec le modèle ${model}${stats ? ` (stats=${stats})` : ''}`);
 
     const requestBody = { prompt, model };
-    if (activityMeta) {
-        requestBody.activity = activityMeta;
-    }
+    if (activityMeta) requestBody.activity = activityMeta;
+    if (rag) requestBody.rag = rag;
+    // Sous-appel d'une génération par lots : on demande au Worker de NE PAS écrire
+    // dans Grist (la ligne agrégée unique est écrite en fin par le moteur de lots).
+    if (stats) requestBody.stats = stats;
 
     let perfMod;
     try { perfMod = await import('../core/perf-tracker.js'); } catch { perfMod = null; }
@@ -273,8 +306,12 @@ export async function generateH5PWithLLM(prompt, model, activityMeta) {
         });
 
         if (!submitResponse.ok) {
-            const errorBody = await submitResponse.text();
-            throw new Error(`Erreur du proxy n8n (submit) : ${submitResponse.status} ${submitResponse.statusText} - ${errorBody}`);
+            // Le corps brut de la réponse serveur ne doit pas remonter jusqu'à
+            // l'utilisateur : on le journalise en debug et on ne garde qu'un
+            // message court (status + statusText) dans l'erreur.
+            const errorBody = await submitResponse.text().catch(() => '');
+            debugLog('llm', `Corps de la réponse d'erreur n8n (submit) : ${errorBody}`);
+            throw new Error(`Erreur du proxy n8n (submit) : ${submitResponse.status} ${submitResponse.statusText}`);
         }
 
         const submitData = await submitResponse.json();
@@ -335,7 +372,15 @@ export async function generateH5PWithLLM(prompt, model, activityMeta) {
                     fallbackLevel: pollData.fallback_level || 0
                 });
                 debugLog('LLM', `Résultat reçu après ${llmDurationS}s et ${pollCount} polls (modèle final : ${pollData.model}).`);
-                return extractJsonContent(pollData.content);
+                return {
+                    content: extractJsonContent(pollData.content),
+                    rawContent: pollData.content || '',
+                    promptTokens: pollData.prompt_tokens || 0,
+                    completionTokens: pollData.completion_tokens || 0,
+                    model: pollData.model || model,
+                    fallbackLevel: pollData.fallback_level || 0,
+                    durationS: llmDurationS
+                };
             }
 
             if (pollData.status === 'error') {
@@ -354,4 +399,21 @@ export async function generateH5PWithLLM(prompt, model, activityMeta) {
         console.error("Erreur lors de l'appel au proxy n8n pour le LLM", error);
         throw error;
     }
+}
+
+/**
+ * Envoie un prompt au LLM via le proxy n8n et renvoie le contenu JSON nettoyé.
+ * Wrapper historique au-dessus de `generateRawWithLLM` : signature et comportement
+ * INCHANGÉS (lit le contexte RAG depuis le DOM, écrit 1 ligne Grist côté Worker).
+ *
+ * @param {string} prompt - Le prompt à envoyer au modèle d'IA.
+ * @param {string} model - L'ID du modèle d'IA à utiliser.
+ * @param {Object} [activityMeta] - Métadonnées de l'activité (moduleKey, category, etc.)
+ * @returns {Promise<string>} Le contenu textuel généré par l'IA, nettoyé des blocs de code.
+ * @throws {Error} Si la soumission échoue, si le LLM échoue, ou si le timeout est atteint.
+ */
+export async function generateH5PWithLLM(prompt, model, activityMeta) {
+    const rag = readRagContextFromDom();
+    const result = await generateRawWithLLM(prompt, model, { activityMeta, rag });
+    return result.content;
 }

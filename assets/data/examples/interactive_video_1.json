@@ -1,0 +1,55 @@
+{
+  "title": "La photosynthèse",
+  "interactions": [
+    {
+      "timestamp": 18,
+      "pause": true,
+      "type": "multichoice",
+      "question": "Que produit principalement la photosynthèse ?",
+      "answers": [
+        { "text": "Du dioxygène", "correct": true, "feedback": "Exact !" },
+        { "text": "Du dioxyde de carbone", "correct": false, "feedback": "C'est l'inverse : il est consommé." },
+        { "text": "De l'azote", "correct": false, "feedback": "Non, l'azote n'intervient pas ici." }
+      ],
+      "display": "button",
+      "placement": "top-right",
+      "label": "Question"
+    },
+    {
+      "timestamp": 72,
+      "pause": true,
+      "type": "truefalse",
+      "question": "La photosynthèse a lieu uniquement la nuit.",
+      "correct": false,
+      "feedbackOnCorrect": "Bravo !",
+      "feedbackOnWrong": "Elle a besoin de lumière : elle a surtout lieu le jour.",
+      "display": "poster",
+      "placement": "bottom"
+    },
+    {
+      "timestamp": 120,
+      "pause": true,
+      "type": "blanks",
+      "text": "La photosynthèse se déroule dans les *chloroplastes* des cellules végétales.",
+      "display": "button",
+      "placement": "custom",
+      "x": 60,
+      "y": 10,
+      "width": 35,
+      "height": 30,
+      "requireCompletion": true,
+      "wrongMessage": "Revois le passage précédent avant de continuer.",
+      "wrongSeekTo": 100
+    }
+  ],
+  "summary": {
+    "intro": "Choisis l'affirmation correcte :",
+    "statements": [
+      [
+        "La photosynthèse produit du dioxygène",
+        "La photosynthèse produit du méthane",
+        "La photosynthèse ne produit aucun gaz"
+      ]
+    ]
+  }
+}

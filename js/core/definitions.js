@@ -55,6 +55,11 @@ export const h5pModules = {
         promptId: "flashcardsResultat",
         jsonInputId: "flashcardsJsonInput",
         createBtnId: "createFlashcardsH5P",
+        // Génération par lots (services/llm-batch.js) : contenu = tableau additif `cards[]`.
+        // Calibration 2026-06-18 (mistral-small-4, fb=0) : items ultra-légers, N=40 ≈ 22 s — le
+        // mur des 59 s n'est jamais atteint sous le plafond de 40. threshold=40 (=maxItems) →
+        // mono-appel toujours dans la plage un-clic ; la voie reste prête si le modèle ralentit.
+        chunking: { path: "cards", itemName: "carte", carcasse: ["title", "description"], threshold: 40 },
         categories: ["memory", "h5p"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
@@ -69,6 +74,8 @@ export const h5pModules = {
         promptId: "quizSetResultat",
         jsonInputId: "quizSetJsonInput",
         createBtnId: "createQuizSetH5P",
+        // Génération par lots (services/llm-batch.js) : contenu = tableau additif `questions[]`.
+        chunking: { path: "questions", itemName: "question", carcasse: ["title", "overallFeedback"] },
         categories: ["quiz", "h5p"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
@@ -83,6 +90,8 @@ export const h5pModules = {
         promptId: "quizSetQcmResultat",
         jsonInputId: "quizSetQcmJsonInput",
         createBtnId: "createQuizSetQcmH5P",
+        // Génération par lots (services/llm-batch.js) : contenu = tableau additif `questions[]`.
+        chunking: { path: "questions", itemName: "question", carcasse: ["title", "overallFeedback"] },
         categories: ["quiz", "h5p"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
@@ -97,6 +106,8 @@ export const h5pModules = {
         promptId: "quizSetVfResultat",
         jsonInputId: "quizSetVfJsonInput",
         createBtnId: "createQuizSetVfH5P",
+        // Génération par lots (services/llm-batch.js) : contenu = tableau additif `questions[]`.
+        chunking: { path: "questions", itemName: "question", carcasse: ["title", "overallFeedback"] },
         categories: ["quiz", "h5p"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
@@ -125,6 +136,10 @@ export const h5pModules = {
         promptId: "crosswordResultat",
         jsonInputId: "crosswordJsonInput",
         createBtnId: "createCrosswordH5P",
+        // Lots (services/llm-batch.js) : tableau additif `words[]`. Calibration 2026-06-18
+        // (mistral-small-4, fb=0) : items légers, N=40 ≈ 16 s → dormant (threshold:40).
+        // La grille est (re)calculée côté client APRÈS fusion à partir de tous les mots.
+        chunking: { path: "words", itemName: "mot", carcasse: ["title", "taskDescription", "overallFeedback"], threshold: 40 },
         categories: ["memory", "h5p"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
@@ -153,6 +168,9 @@ export const h5pModules = {
         promptId: "summaryResultat",
         jsonInputId: "summaryJsonInput",
         createBtnId: "createSummaryH5P",
+        // Lots (services/llm-batch.js) : tableau additif `summaries[]`. Calibration 2026-06-18
+        // (mistral-small-4, fb=0) : items medium, N=40 ≈ 42 s (sous 50 s) → dormant (threshold:40).
+        chunking: { path: "summaries", itemName: "résumé", carcasse: ["intro", "overallFeedback"], threshold: 40 },
         categories: ["text", "h5p"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
@@ -195,6 +213,11 @@ export const h5pModules = {
         promptId: "blanksResultat",
         jsonInputId: "blanksJsonInput",
         createBtnId: "createBlanksH5P",
+        // Génération par lots (services/llm-batch.js) : contenu = tableau additif `questions[]`
+        // (chaînes « texte à trous »). Calibration 2026-06-18 (mistral-small-4, fb=0) : items
+        // légers, N=40 ≈ 14 s — mur des 59 s jamais atteint sous le plafond de 40. threshold=40
+        // (=maxItems) → mono-appel toujours dans la plage un-clic (voie prête si besoin).
+        chunking: { path: "questions", itemName: "texte à trous", carcasse: ["taskDescription", "overallFeedback"], threshold: 40 },
         categories: ["text", "h5p"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
@@ -265,6 +288,9 @@ export const h5pModules = {
         promptId: "sortParagraphsResultat",
         jsonInputId: "sortParagraphsJsonInput",
         createBtnId: "createSortParagraphsH5P",
+        // Lots (services/llm-batch.js) : tableau additif `paragraphs[]` (chaînes). Calibration
+        // 2026-06-18 (mistral-small-4, fb=0) : items légers, N=20 ≈ 8 s → dormant (threshold:40).
+        chunking: { path: "paragraphs", itemName: "paragraphe", carcasse: ["taskDescription", "overallFeedback"], threshold: 40 },
         categories: ["text", "h5p"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
@@ -279,6 +305,9 @@ export const h5pModules = {
         promptId: "singleChoiceSetResultat",
         jsonInputId: "singleChoiceSetJsonInput",
         createBtnId: "createSingleChoiceSetH5P",
+        // Lots (services/llm-batch.js) : tableau additif `choices[]`. Calibration 2026-06-18
+        // (mistral-small-4, fb=0) : items légers, N=20 ≈ 14 s → dormant (threshold:40).
+        chunking: { path: "choices", itemName: "question", carcasse: ["overallFeedback"], threshold: 40 },
         categories: ["quiz", "h5p"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
@@ -293,6 +322,9 @@ export const h5pModules = {
         promptId: "dialogCardsResultat",
         jsonInputId: "dialogCardsJsonInput",
         createBtnId: "createDialogCardsH5P",
+        // Lots (services/llm-batch.js) : tableau additif `dialogs[]`. Calibration 2026-06-18
+        // (mistral-small-4, fb=0) : items ultra-légers, N=40 ≈ 11 s → dormant (threshold:40).
+        chunking: { path: "dialogs", itemName: "carte", carcasse: ["title", "description"], threshold: 40 },
         categories: ["memory", "h5p"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
@@ -339,6 +371,36 @@ export const h5pModules = {
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
         formats: ["H5P", "DOCX", "ODT", "PDF"]
+    },
+    InteractiveBook: {
+        name: "h5p_interactive_book_name",
+        englishName: "InteractiveBook",
+        machineName: "H5P.InteractiveBook",
+        description: "h5p_interactive_book_description",
+        image: "assets/images/activities/interactive-book-icon.webp",
+        promptId: "interactiveBookResultat",
+        jsonInputId: "interactiveBookJsonInput",
+        createBtnId: "createInteractiveBookH5P",
+        categories: ["text", "quiz", "h5p"],
+        hidden: false,
+        platforms: ["Éléa", "Magistère", "Moodle"],
+        formats: ["H5P", "DOCX", "ODT", "PDF"]
+    },
+    InteractiveVideo: {
+        name: "h5p_interactive_video_name",
+        englishName: "InteractiveVideo",
+        machineName: "H5P.InteractiveVideo",
+        description: "h5p_interactive_video_description",
+        image: "assets/images/activities/interactive_video_icon-colors_0.webp",
+        promptId: "interactiveVideoResultat",
+        jsonInputId: "interactiveVideoJsonInput",
+        createBtnId: "createInteractiveVideoH5P",
+        categories: ["quiz", "h5p"],
+        hidden: false,
+        // Active le champ « URL vidéo » + badge d'état dans la sidebar (cf. ui.js).
+        requiresVideoUrl: true,
+        platforms: ["Éléa", "Magistère", "Moodle"],
+        formats: ["H5P", "DOCX", "ODT", "PDF"]
     }
 };
 
@@ -352,6 +414,15 @@ export const moodleModules = {
         subtitleKey: "elea_test_xml_subtitle",
         description: "elea_test_xml_description",
         image: "assets/images/activities/test.webp",
+        // Génération par lots (services/llm-batch.js) : contenu = tableau additif `questions[]`
+        // (objets {type, content}). Calibration 2026-06-18 (mistral-small-4) : items LOURDS —
+        // mono 12 ≈ 37 s, 15 ≈ 47 s, 20 ≈ 86 s (fb=1 → qwen). threshold=12 (mono ≤12 fiable,
+        // marge 22 s) ; batchSize=8 (lots de 7 ≈ 29–32 s, fb=0 systématique). e2e N=20 : 20/20,
+        // 0 doublon, 5 types, feedback/question 20/20. Feedback global = par question (pas de
+        // overallFeedback racine) → carcasse limitée à bank_name/bank_description.
+        // `renumber` : chaque lot redémarre à « Q01 » → on renumérote globalement `content.name`
+        // (Q01..QNN) après fusion, sinon doublons de noms et tri Éléa incohérent.
+        chunking: { path: "questions", itemName: "question", carcasse: ["bank_name", "bank_description"], threshold: 12, batchSize: 8, renumber: "content.name" },
         categories: ["quiz", "elea"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
@@ -362,6 +433,9 @@ export const moodleModules = {
         subtitleKey: "elea_glossaire_xml_subtitle",
         description: "elea_glossaire_xml_description",
         image: "assets/images/activities/glossaire.webp",
+        // Lots (services/llm-batch.js) : tableau additif `entries[]`. Calibration 2026-06-18
+        // (mistral-small-4, fb=0) : items légers, N=20 ≈ 16 s → dormant (threshold:40).
+        chunking: { path: "entries", itemName: "entrée", carcasse: ["name"], threshold: 40 },
         categories: ["memory", "elea"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
@@ -388,6 +462,9 @@ export const moodleModules = {
         promptId: "appariementResultat",
         jsonInputId: "appariementJsonInput",
         createBtnId: "createAppariementMBZ",
+        // Lots (services/llm-batch.js) : tableau additif `pairs[]`. Calibration 2026-06-18
+        // (mistral-small-4, fb=0) : items ultra-légers, N=40 ≈ 11 s → dormant (threshold:40).
+        chunking: { path: "pairs", itemName: "paire", carcasse: ["title", "intro"], threshold: 40 },
         categories: ["quiz", "elea"],
         hidden: false,
         platforms: ["Éléa"],
@@ -401,6 +478,10 @@ export const moodleModules = {
         promptId: "qcmResultat",
         jsonInputId: "qcmJsonInput",
         createBtnId: "createQCM_MBZ",
+        // Lots (services/llm-batch.js) : tableau additif `questions[]` (mono-type {text,answers}).
+        // Calibration 2026-06-18 (mistral-small-4, fb=0) : N≤30 = 35 s (OK), N=40 = 52 s (mur) →
+        // ACTIF threshold:30 / batchSize:20 (lots ≤30 s). Plus léger qu'Éléa-Test (un seul type).
+        chunking: { path: "questions", itemName: "question", carcasse: ["title"], threshold: 30, batchSize: 20 },
         categories: ["quiz", "elea"],
         hidden: false,
         platforms: ["Éléa"],
@@ -449,6 +530,11 @@ export const moodleModules = {
         promptId: "devoirResultat",
         jsonInputId: "devoirJsonInput",
         createBtnId: "createDevoirMBZ",
+        // Lots (services/llm-batch.js) : tableau additif `criteria[]` (critères de barème, items
+        // lourds : description + niveaux). Calibration 2026-06-18 (mistral-small-4, fb=0) : N=30 =
+        // 37 s (OK), N=35 = 55 s (mur) → ACTIF threshold:30 / batchSize:15. (Cardinalité réelle
+        // faible en pratique : le chunking ne s'active qu'au-delà de 30 critères.)
+        chunking: { path: "criteria", itemName: "critère", carcasse: ["title", "description", "rubricName"], threshold: 30, batchSize: 15 },
         categories: ["quiz", "elea"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
@@ -471,6 +557,8 @@ export const customOrder = [
     'QuizSetVF',
     'QuizSet',
     'CoursePresentation',
+    'InteractiveBook',
+    'InteractiveVideo',
     'Flashcards',
     'Crossword',
     'Timeline',

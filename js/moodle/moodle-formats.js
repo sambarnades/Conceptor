@@ -11,6 +11,9 @@ export function escapeXml(str) {
         .replace(/'/g, '&#39;')
         .replace(/[^\x20-\x7E]/gu, function (ch) {
             const cp = ch.codePointAt(0);
+            // Caractères de contrôle C0 (hors \t \n \r) : interdits en XML 1.0,
+            // même sous forme de référence numérique → on les supprime
+            if (cp < 0x20 && cp !== 0x09 && cp !== 0x0A && cp !== 0x0D) return '';
             // Filtrer les code points invalides en XML (surrogates, non-caractères)
             if ((cp >= 0xD800 && cp <= 0xDFFF) || cp === 0xFFFE || cp === 0xFFFF) return '';
             return '&#' + cp + ';';
@@ -19,10 +22,14 @@ export function escapeXml(str) {
 
 /**
  * Protège une chaîne pour insertion dans une section CDATA.
- * Remplace la séquence ]]> qui terminerait prématurément la section CDATA.
+ * Remplace la séquence ]]> qui terminerait prématurément la section CDATA
+ * et supprime les caractères de contrôle C0 (hors \t \n \r), interdits
+ * en XML 1.0 même dans une section CDATA.
  */
 function escapeCdata(str) {
-    return String(str).replace(/\]\]>/g, ']]]]><![CDATA[>');
+    return String(str)
+        .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '')
+        .replace(/\]\]>/g, ']]]]><![CDATA[>');
 }
 
 /**
@@ -69,18 +76,34 @@ function generateCombinedFeedbackXml(content) {
 }
 
 /**
- * Échappe les accolades dans le contenu utilisateur pour le format GIFT.
- * Seuls { et } sont réellement dangereux car ils délimitent les blocs de réponses.
- * Les autres caractères spéciaux (~, =, #) ne sont syntaxiques qu'en position
- * structurelle (début de ligne dans un bloc réponse), gérée par les templates.
- * On ne touche pas aux backslashes (LaTeX) ni aux : (HTML, LaTeX).
+ * Échappe les caractères spéciaux GIFT dans le contenu utilisateur.
+ * Le parseur GIFT de Moodle tokenise sur ~ = # { } partout dans un bloc
+ * {...} (pas seulement en début de ligne) : une réponse « 2 + 2 = 4 »
+ * serait coupée sans échappement. Le parseur dé-échappe \= \~ \# \{ \}
+ * à l'import, y compris dans le texte de question.
+ * On ne touche pas aux backslashes (LaTeX) ni aux : (HTML, LaTeX) —
+ * voir escapeGiftTitle pour les : des titres ::…::.
  * @param {string} str - La chaîne à échapper
- * @returns {string} La chaîne avec les accolades échappées
+ * @returns {string} La chaîne échappée
  */
 function escapeGift(str) {
     return String(str)
         .replace(/\{/g, '\\{')
-        .replace(/\}/g, '\\}');
+        .replace(/\}/g, '\\}')
+        .replace(/=/g, '\\=')
+        .replace(/~/g, '\\~')
+        .replace(/#/g, '\\#');
+}
+
+/**
+ * Échappe une chaîne destinée à un titre GIFT (::titre::).
+ * Le : y est significatif (délimiteur de titre) et doit donc être échappé,
+ * en plus des caractères gérés par escapeGift.
+ * @param {string} str - Le titre à échapper
+ * @returns {string} Le titre échappé
+ */
+function escapeGiftTitle(str) {
+    return escapeGift(str).replace(/:/g, '\\:');
 }
 
 /**
@@ -173,9 +196,31 @@ function generateMatchingQuestionXml(content) {
  * @see https://github.com/moodle/moodle/blob/main/question/type/multichoice/questiontype.php
  */
 export const VALID_MOODLE_FRACTIONS = [
-    100, 90, 83.33333, 80, 75, 66.66667, 60, 50,
-    33.33333, 25, 20, 16.66667, 14.28571, 12.5, 11.11111, 10, 5
+    100, 90, 83.33333, 80, 75, 70, 66.66667, 60, 50, 40,
+    33.33333, 30, 25, 20, 16.66667, 14.28571, 12.5, 11.11111, 10, 5
 ];
+
+/**
+ * Retourne la fraction Moodle valide la plus proche de x, signe préservé.
+ * Un pourcentage hors de la liste officielle (ex: -33.333333333333336)
+ * fait rejeter la question à l'import GIFT. 0 est aussi une fraction valide.
+ * @param {number} x - Pourcentage quelconque (positif ou négatif)
+ * @returns {number} Fraction Moodle valide la plus proche (même signe)
+ */
+function fractionMoodleValide(x) {
+    const n = Number(x) || 0;
+    const abs = Math.abs(n);
+    let best = 0;
+    let minDiff = abs; // distance à la fraction 0
+    for (const f of VALID_MOODLE_FRACTIONS) {
+        const diff = Math.abs(abs - f);
+        if (diff < minDiff) {
+            minDiff = diff;
+            best = f;
+        }
+    }
+    return n < 0 ? -best : best;
+}
 
 /**
  * Normalise les fractions d'un tableau de réponses multichoice pour respecter les contraintes Moodle :
@@ -512,7 +557,12 @@ function generateMultichoiceGift(content) {
         if (isSingle) {
             prefix = fraction === 100 ? '=' : '~';
         } else {
-            prefix = fraction > 0 ? `~%${fraction}%` : `~%-${100 / Math.max(normalizedAnswers.filter(a => Number(a.fraction) <= 0).length, 1)}%`;
+            // Les pourcentages GIFT doivent appartenir à la liste officielle Moodle
+            // (pas de -33.333333333333336 issu d'une division)
+            const nbMauvaises = Math.max(normalizedAnswers.filter(a => Number(a.fraction) <= 0).length, 1);
+            prefix = fraction > 0
+                ? `~%${fractionMoodleValide(fraction)}%`
+                : `~%${fractionMoodleValide(-(100 / nbMauvaises))}%`;
         }
         const feedback = ans.feedback ? `#<p>${escapeGift(ans.feedback)}</p>` : '';
         return `${prefix}<p>${escapeGift(ans.text || '')}</p>${feedback}`;
@@ -521,7 +571,7 @@ function generateMultichoiceGift(content) {
     const general_feedback = content.feedback ? `####<p>${escapeGift(content.feedback)}</p>` : '';
 
     return `// question: 0 name: ${escapeGift(content.name || '')}
-::${escapeGift(content.name || '')}::[html]<p>${escapeGift(content.questiontext || '')}</p>{
+::${escapeGiftTitle(content.name || '')}::[html]<p>${escapeGift(content.questiontext || '')}</p>{
 \t${answers_gift}
 \t${general_feedback}
 }\n\n`;
@@ -536,7 +586,7 @@ function generateMatchingGift(content) {
     const general_feedback = content.feedback ? `####<p>${escapeGift(content.feedback)}</p>` : '';
 
     return `// question: 0 name: ${escapeGift(content.name || '')}
-::${escapeGift(content.name || '')}::[html]<p>${escapeGift(content.questiontext || '')}</p>{
+::${escapeGiftTitle(content.name || '')}::[html]<p>${escapeGift(content.questiontext || '')}</p>{
 \t${subquestions_gift}
 \t${general_feedback}
 }\n\n`;
@@ -545,25 +595,38 @@ function generateMatchingGift(content) {
 function generateTrueFalseGift(content) {
     const answer = content.answer || {};
     const answerStr = answer.value ? 'TRUE' : 'FALSE';
-    const feedback_true = answer.feedback_true ? `#<p>${escapeGift(answer.feedback_true)}</p>` : '';
-    const feedback_false = answer.feedback_false ? `#<p>${escapeGift(answer.feedback_false)}</p>` : '';
+
+    // Syntaxe GIFT : {TRUE #feedback-si-mauvaise-réponse #feedback-si-bonne-réponse}
+    // feedback_true = feedback affiché si l'élève répond VRAI (resp. feedback_false / FAUX).
+    // L'ordre d'émission dépend donc de la bonne réponse.
+    const fbMauvaise = answer.value ? answer.feedback_false : answer.feedback_true;
+    const fbBonne = answer.value ? answer.feedback_true : answer.feedback_false;
+    let feedbacks = '';
+    if (fbMauvaise || fbBonne) {
+        feedbacks = `#${fbMauvaise ? `<p>${escapeGift(fbMauvaise)}</p>` : ''}`;
+        if (fbBonne) feedbacks += `#<p>${escapeGift(fbBonne)}</p>`;
+    }
+
     const general_feedback = content.feedback ? `####<p>${escapeGift(content.feedback)}</p>` : '';
 
     return `// question: 0 name: ${escapeGift(content.name || '')}
-::${escapeGift(content.name || '')}::[html]<p>${escapeGift(content.questiontext || '')}</p>{${answerStr}${feedback_true}${feedback_false}${general_feedback}}\n\n`;
+::${escapeGiftTitle(content.name || '')}::[html]<p>${escapeGift(content.questiontext || '')}</p>{${answerStr}${feedbacks}${general_feedback}}\n\n`;
 }
 
 function generateShortanswerGift(content) {
     const answers = Array.isArray(content.answers) ? content.answers : [];
     let answers_gift = answers.map(ans => {
         const feedback = ans.feedback ? `#<p>${escapeGift(ans.feedback)}</p>` : '';
-        return `=%${ans.fraction || 0}%${escapeGift(ans.text || '')}${feedback}`;
+        // Réponse unique : toujours 100% (une shortanswer sans réponse à 100%
+        // est rejetée à l'import) ; sinon fraction Moodle valide la plus proche
+        const fraction = answers.length === 1 ? 100 : fractionMoodleValide(ans.fraction || 0);
+        return `=%${fraction}%${escapeGift(ans.text || '')}${feedback}`;
     }).join('\n\t');
 
     const general_feedback = content.feedback ? `####<p>${escapeGift(content.feedback)}</p>` : '';
 
     return `// question: 0 name: ${escapeGift(content.name || '')}
-::${escapeGift(content.name || '')}::[html]<p>${escapeGift(content.questiontext || '')}</p>{
+::${escapeGiftTitle(content.name || '')}::[html]<p>${escapeGift(content.questiontext || '')}</p>{
 \t${answers_gift}
 \t${general_feedback}
 }\n\n`;
@@ -575,7 +638,7 @@ function generateNumericalGift(content) {
     const general_feedback = content.feedback ? `####<p>${escapeGift(content.feedback)}</p>` : '';
 
     return `// question: 0 name: ${escapeGift(content.name || '')}
-::${escapeGift(content.name || '')}::[html]<p>${escapeGift(content.questiontext || '')}</p>{#
+::${escapeGiftTitle(content.name || '')}::[html]<p>${escapeGift(content.questiontext || '')}</p>{#
 \t=%100%${answer.number || 0}:${answer.tolerance || 0}${feedback}
 \t${general_feedback}
 }\n\n`;

@@ -1,0 +1,77 @@
+{
+  "title": "Le système solaire",
+  "cover": {
+    "description": "Un voyage interactif à travers les huit planètes de notre système solaire."
+  },
+  "baseColor": "#1768c4",
+  "showTableOfContents": true,
+  "displaySummary": true,
+  "chapters": [
+    {
+      "title": "Introduction",
+      "content": [
+        { "type": "text", "text": "Le **système solaire** s'est formé il y a environ *4,6 milliards d'années*. Il comprend le Soleil et huit planètes." },
+        { "type": "table", "tableStyle": "default", "table": {
+            "headers": ["Planète", "Type", "Lunes"],
+            "rows": [["Mercure", "Tellurique", "0"], ["Terre", "Tellurique", "1"], ["Jupiter", "Gazeuse", "95"]] } },
+        { "type": "exercise", "library": "H5P.MultiChoice 1.16",
+          "question": "Combien de planètes compte le système solaire ?",
+          "answers": [
+            { "text": "Huit", "correct": true, "tipsAndFeedback": { "chosenFeedback": "Exact !" } },
+            { "text": "Neuf", "correct": false, "tipsAndFeedback": { "chosenFeedback": "Pluton est une planète naine depuis 2006." } },
+            { "text": "Sept", "correct": false }
+          ],
+          "behaviour": { "singleAnswer": true },
+          "overallFeedback": [
+            { "from": 0, "to": 25, "feedback": "Revoyez le chapitre d'introduction." },
+            { "from": 26, "to": 50, "feedback": "C'est un début, continuez !" },
+            { "from": 51, "to": 75, "feedback": "Bon travail !" },
+            { "from": 76, "to": 100, "feedback": "Excellent !" }
+          ] }
+      ]
+    },
+    {
+      "title": "Les planètes telluriques",
+      "content": [
+        { "type": "text", "text": "Les planètes **telluriques** (Mercure, Vénus, Terre, Mars) sont rocheuses et proches du Soleil." },
+        { "type": "exercise", "library": "H5P.Blanks 1.14",
+          "taskDescription": "Complétez la phrase.",
+          "questions": ["La planète la plus proche du Soleil est *Mercure*."],
+          "overallFeedback": [
+            { "from": 0, "to": 25, "feedback": "Relisez le paragraphe ci-dessus." },
+            { "from": 26, "to": 50, "feedback": "C'est un début." },
+            { "from": 51, "to": 75, "feedback": "Bon travail !" },
+            { "from": 76, "to": 100, "feedback": "Excellent !" }
+          ] },
+        { "type": "exercise", "library": "H5P.TrueFalse 1.8",
+          "question": "Mars est surnommée la planète rouge.",
+          "correct": "true",
+          "feedbackOnCorrect": "Bravo !",
+          "feedbackOnWrong": "Si, à cause de l'oxyde de fer à sa surface." }
+      ]
+    },
+    {
+      "title": "Synthèse",
+      "content": [
+        { "type": "exercise", "library": "H5P.Summary 1.10",
+          "intro": "Choisissez les affirmations correctes.",
+          "summaries": [
+            { "summary": [
+              "La Terre possède une lune",
+              "La Terre possède deux lunes",
+              "La Terre ne possède aucune lune" ] },
+            { "summary": [
+              "Jupiter est une planète gazeuse",
+              "Jupiter est une planète tellurique",
+              "Jupiter est une planète naine" ] }
+          ],
+          "overallFeedback": [
+            { "from": 0, "to": 25, "feedback": "Revoyez les points clés du livre." },
+            { "from": 26, "to": 50, "feedback": "C'est un bon début." },
+            { "from": 51, "to": 75, "feedback": "Bonne maîtrise du sujet." },
+            { "from": 76, "to": 100, "feedback": "Parfait !" }
+          ] }
+      ]
+    }
+  ]
+}

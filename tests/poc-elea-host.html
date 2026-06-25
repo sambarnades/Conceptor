@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POC — Caramel comme bloc d'Éléa (hôte de démonstration)</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Segoe UI', system-ui, sans-serif; background: #eef1f5; color: #1f2937; }
+
+        /* Barre « Moodle » factice */
+        .moodle-bar { background: #0f6cbf; color: #fff; padding: 10px 18px; display: flex; align-items: center; gap: 10px; }
+        .moodle-bar strong { font-size: 1.05rem; }
+        .moodle-bar .tag { font-size: 0.7rem; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 10px; }
+
+        /* Layout cours + bloc droit (comme une page Moodle) */
+        .layout { display: grid; grid-template-columns: 1fr 380px; gap: 18px; padding: 18px; align-items: start; max-width: 1280px; margin: 0 auto; }
+        @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
+        .course { background: #fff; border-radius: 10px; padding: 18px 22px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); min-height: 320px; }
+        .course h1 { font-size: 1.3rem; margin: 0 0 4px; }
+        .course .muted { color: #6b7280; font-size: 0.85rem; margin: 0 0 16px; }
+        .course-zone { border: 2px dashed #cbd5e1; border-radius: 10px; padding: 16px; min-height: 160px; }
+        .course-zone__empty { color: #9ca3af; text-align: center; padding: 30px 0; font-size: 0.9rem; }
+        .activity-card { display: flex; align-items: center; gap: 12px; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 10px 14px; margin-bottom: 10px; }
+        .activity-card .ic { width: 34px; height: 34px; border-radius: 8px; background: #0ea5e9; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .activity-card .meta { flex: 1; min-width: 0; }
+        .activity-card .meta b { display: block; font-size: 0.9rem; }
+        .activity-card .meta small { color: #6b7280; font-size: 0.75rem; }
+        .activity-card a { font-size: 0.78rem; color: #0369a1; text-decoration: none; font-weight: 600; }
+
+        /* Bloc droit = hôte Caramel */
+        .block { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; }
+        .block__head { background: #f8fafc; border-bottom: 1px solid #e5e7eb; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; }
+        .block__head b { font-size: 0.95rem; }
+        .status { font-size: 0.72rem; padding: 2px 8px; border-radius: 10px; font-weight: 700; }
+        .status--off { background: #fee2e2; color: #991b1b; }
+        .status--on { background: #dcfce7; color: #166534; }
+
+        .controls { padding: 12px 14px; display: grid; gap: 8px; border-bottom: 1px solid #eef2f7; }
+        .controls label { font-size: 0.72rem; font-weight: 600; color: #475569; text-transform: uppercase; letter-spacing: 0.03em; }
+        .controls input, .controls select { width: 100%; padding: 7px 9px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem; }
+        .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .btns { display: flex; gap: 8px; margin-top: 4px; }
+        .btn { flex: 1; padding: 9px; border: 0; border-radius: 7px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
+        .btn--init { background: #e2e8f0; color: #1f2937; }
+        .btn--gen { background: #0f6cbf; color: #fff; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .iframe-wrap { border-bottom: 1px solid #eef2f7; }
+        iframe.caramel { width: 100%; height: 520px; border: 0; display: block; }
+
+        .log { padding: 10px 14px; max-height: 200px; overflow-y: auto; font-family: 'Consolas', monospace; font-size: 0.72rem; background: #0f172a; color: #cbd5e1; }
+        .log__line { padding: 2px 0; white-space: pre-wrap; word-break: break-word; }
+        .log__t { color: #38bdf8; }
+        .log__in { color: #a3e635; }
+        .log__err { color: #f87171; }
+
+        .hint { font-size: 0.74rem; color: #64748b; padding: 8px 14px; border-top: 1px solid #eef2f7; }
+        .hint code { background: #f1f5f9; padding: 1px 4px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="moodle-bar">
+        <strong>Éléa</strong> <span class="tag">POC — hôte de démonstration</span>
+        <span style="margin-left:auto;font-size:0.8rem;opacity:0.85;">Cours : Mathématiques 6e</span>
+    </div>
+
+    <div class="layout">
+        <!-- Zone « cours » (gauche) : c'est ici que les activités générées sont « déposées » -->
+        <section class="course">
+            <h1>Séquence : Les fractions</h1>
+            <p class="muted">Zone de travail du cours. Les activités générées via le bloc Caramel (à droite) y atterrissent.</p>
+            <div class="course-zone" id="course-zone">
+                <div class="course-zone__empty" id="zone-empty">Aucune activité déposée pour l'instant.</div>
+            </div>
+        </section>
+
+        <!-- Bloc droit : hôte Caramel embarqué -->
+        <aside class="block">
+            <div class="block__head">
+                <b>🍬 Générateur Caramel</b>
+                <span class="status status--off" id="status">déconnecté</span>
+            </div>
+
+            <div class="controls">
+                <div>
+                    <label for="c-qui">Qui êtes-vous ?</label>
+                    <input id="c-qui" type="text" value="Enseignant de mathématiques">
+                </div>
+                <div>
+                    <label for="c-quoi">Que souhaitez-vous aborder ?</label>
+                    <input id="c-quoi" type="text" value="Additionner des fractions simples">
+                </div>
+                <div class="row2">
+                    <div>
+                        <label for="c-niveau">Niveau</label>
+                        <input id="c-niveau" type="text" value="6e">
+                    </div>
+                    <div>
+                        <label for="c-nb">Nombre</label>
+                        <input id="c-nb" type="number" min="1" value="5">
+                    </div>
+                </div>
+                <div class="row2">
+                    <div>
+                        <label for="c-activity">Activité</label>
+                        <select id="c-activity"></select>
+                    </div>
+                    <div>
+                        <label for="c-model">Modèle LLM</label>
+                        <select id="c-model"></select>
+                    </div>
+                </div>
+                <div class="btns">
+                    <button class="btn btn--init" id="btn-init" disabled>Pré-remplir</button>
+                    <button class="btn btn--gen" id="btn-gen" disabled>Générer en un clic</button>
+                </div>
+            </div>
+
+            <div class="iframe-wrap">
+                <iframe class="caramel" id="caramel" title="Caramel embarqué"></iframe>
+            </div>
+
+            <div class="log" id="log"></div>
+            <div class="hint">
+                Charge <code>../index.html?embed=block</code>. « Générer » déclenche une vraie génération
+                (appel LLM réseau) ; le fichier produit revient via <code>caramel:generated</code> et est
+                « déposé » dans le cours à gauche.
+            </div>
+        </aside>
+    </div>
+
+    <script type="module">
+        import { AVAILABLE_MODELS } from '../js/services/llm.js';
+        import { CONFIG } from '../js/caramelia/config.js';
+
+        const origin = location.origin;
+        const iframe = document.getElementById('caramel');
+        const statusEl = document.getElementById('status');
+        const logEl = document.getElementById('log');
+        const btnInit = document.getElementById('btn-init');
+        const btnGen = document.getElementById('btn-gen');
+        const zone = document.getElementById('course-zone');
+        const zoneEmpty = document.getElementById('zone-empty');
+        let ready = false;
+
+        // --- Remplir les selecteurs depuis les sources de vérité ---
+        const actSel = document.getElementById('c-activity');
+        for (const key of CONFIG.h5pKeys) {
+            const o = document.createElement('option');
+            o.value = key; o.textContent = key;
+            if (key === 'MultipleChoice') o.selected = true;
+            actSel.appendChild(o);
+        }
+        const modelSel = document.getElementById('c-model');
+        const defOpt = document.createElement('option');
+        defOpt.value = ''; defOpt.textContent = '(défaut)';
+        modelSel.appendChild(defOpt);
+        for (const m of AVAILABLE_MODELS.filter(m => m.featured)) {
+            const o = document.createElement('option');
+            o.value = m.id; o.textContent = m.displayName || m.id;
+            modelSel.appendChild(o);
+        }
+
+        // --- Journalisation ---
+        function log(dir, type, extra) {
+            const line = document.createElement('div');
+            line.className = 'log__line';
+            const cls = dir === '→' ? 'log__t' : (type === 'caramel:error' ? 'log__err' : 'log__in');
+            line.innerHTML = `<span class="${cls}">${dir} ${type}</span>${extra ? ' ' + extra : ''}`;
+            logEl.appendChild(line);
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function send(type, payload) {
+            iframe.contentWindow.postMessage({ target: 'caramel', type, payload }, origin);
+            log('→', type, payload ? `<span style="color:#94a3b8">${escapeHtml(JSON.stringify(payload))}</span>` : '');
+        }
+        function escapeHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+        function context() {
+            return {
+                qui: document.getElementById('c-qui').value,
+                quoi: document.getElementById('c-quoi').value,
+                niveau: document.getElementById('c-niveau').value,
+                nombreQuestions: Number(document.getElementById('c-nb').value) || undefined
+            };
+        }
+
+        // --- Réception des messages du bloc Caramel ---
+        window.addEventListener('message', (ev) => {
+            if (ev.origin !== origin) return;
+            const d = ev.data;
+            if (!d || d.source !== 'caramel') return;
+
+            switch (d.type) {
+                case 'caramel:ready':
+                    ready = true;
+                    statusEl.textContent = 'connecté';
+                    statusEl.className = 'status status--on';
+                    btnInit.disabled = false;
+                    btnGen.disabled = false;
+                    log('←', d.type, `v${d.payload?.version}`);
+                    break;
+                case 'caramel:init:ack':
+                    log('←', d.type, `<span style="color:#94a3b8">${escapeHtml(JSON.stringify(d.payload.applied))}</span>`);
+                    break;
+                case 'caramel:generating':
+                    btnGen.disabled = true;
+                    btnGen.textContent = 'Génération…';
+                    log('←', d.type, `${d.payload.moduleKey}${d.payload.model ? ' · ' + d.payload.model : ' · (modèle défaut)'}`);
+                    break;
+                case 'caramel:generated':
+                    btnGen.disabled = false;
+                    btnGen.textContent = 'Générer en un clic';
+                    log('←', d.type, `${d.payload.filename} · ${d.payload.size} o`);
+                    dropIntoCourse(d.payload);
+                    break;
+                case 'caramel:error':
+                    btnGen.disabled = false;
+                    btnGen.textContent = 'Générer en un clic';
+                    log('←', d.type, `<span class="log__err">${escapeHtml(d.payload.message || '')}</span>`);
+                    break;
+            }
+        });
+
+        // --- « Dépôt » de l'activité dans le cours (simulation d'injection Moodle) ---
+        function dropIntoCourse(payload) {
+            zoneEmpty?.remove();
+            const blob = new Blob([payload.bytes], { type: payload.mime || 'application/octet-stream' });
+            const url = URL.createObjectURL(blob);
+
+            const card = document.createElement('div');
+            card.className = 'activity-card';
+            const ext = (payload.filename || '').split('.').pop().toUpperCase();
+            card.innerHTML = `
+                <div class="ic">${escapeHtml(ext || 'H5P')}</div>
+                <div class="meta">
+                    <b>${escapeHtml(payload.moduleKey || 'Activité')}</b>
+                    <small>${escapeHtml(payload.filename || '')} — ${payload.size} o</small>
+                </div>
+                <a download="${escapeHtml(payload.filename || 'activite.h5p')}" href="${url}">Télécharger</a>
+            `;
+            zone.appendChild(card);
+            // NB : dans un vrai bloc Moodle, ces octets seraient envoyés à un web service
+            // (content bank / mod_hvp) au lieu d'un simple téléchargement. C'est le rôle de
+            // la Couche 2a (adaptateur Éléa) — cf. docs/specific-plans/PLAN_INTEGRATION_ELEA_BLOCK.md
+        }
+
+        // --- Boutons hôte ---
+        btnInit.addEventListener('click', () => {
+            if (!ready) return;
+            send('caramel:init', context());
+        });
+        btnGen.addEventListener('click', () => {
+            if (!ready) return;
+            const payload = { activity: actSel.value, ...context() };
+            const model = modelSel.value;
+            if (model) payload.model = model;
+            send('caramel:generate', payload);
+        });
+
+        // --- Démarrage : charger l'iframe ---
+        iframe.src = `../index.html?embed=block&origin=${encodeURIComponent(origin)}`;
+        log('→', 'chargement iframe', `<span style="color:#94a3b8">index.html?embed=block</span>`);
+    </script>
+</body>
+</html>

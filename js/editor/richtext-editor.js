@@ -56,19 +56,21 @@ export function resolveRenderTypeForField(moduleKey, fieldPath) {
         if (fieldDef) return fieldDef.render;
     }
 
-    // 2. Fallback pour les conteneurs (QuizSet, CoursePresentation)
-    //    Les sous-champs ont un chemin type: questions[].params.question
-    //    Le sous-chemin après .params. correspond aux contraintes du sous-module
-    const paramsIdx = normalized.indexOf('.params.');
-    if (paramsIdx !== -1) {
-        const subPath = normalized.substring(paramsIdx + '.params.'.length);
-        if (subPath) {
-            // Chercher dans tous les modules de FIELD_CONSTRAINTS
-            for (const [, constraint] of Object.entries(FIELD_CONSTRAINTS)) {
-                if (!constraint.fields) continue;
-                const subDef = constraint.fields[subPath];
-                if (subDef) return subDef.render;
-            }
+    // 2. Fallback pour les conteneurs :
+    //    - QuizSet : sous-champs en questions[].params.question
+    //    - CoursePresentation : slides[].exercise.question
+    //    - InteractiveBook : chapters[].content[].exercise.question
+    //    Le sous-chemin après le marqueur correspond aux contraintes du sous-module
+    for (const marker of ['.params.', '.exercise.']) {
+        const markerIdx = normalized.indexOf(marker);
+        if (markerIdx === -1) continue;
+        const subPath = normalized.substring(markerIdx + marker.length);
+        if (!subPath) continue;
+        // Chercher dans tous les modules de FIELD_CONSTRAINTS
+        for (const [, constraint] of Object.entries(FIELD_CONSTRAINTS)) {
+            if (!constraint.fields) continue;
+            const subDef = constraint.fields[subPath];
+            if (subDef) return subDef.render;
         }
     }
 
@@ -86,6 +88,23 @@ let toolbarInstance = null;
 let activeField = null;
 /** Délai avant détachement de la toolbar au blur */
 let blurTimeout = null;
+/** Garde d'installation du listener selectionchange global (un seul pour tous les champs) */
+let selectionChangeInstalled = false;
+
+/**
+ * Installe (une seule fois) le listener selectionchange qui met à jour les états
+ * actifs de la toolbar pour le champ actif. Remplace l'ancien pattern « un listener
+ * par champ jamais retiré » qui s'accumulait à chaque re-render de l'éditeur.
+ */
+function _ensureSelectionChangeListener() {
+    if (selectionChangeInstalled) return;
+    selectionChangeInstalled = true;
+    document.addEventListener('selectionchange', () => {
+        if (activeField && !activeField.isSourceMode) {
+            _updateActiveStates();
+        }
+    });
+}
 
 /**
  * Définition des boutons de la toolbar par groupe.
@@ -425,10 +444,94 @@ export function htmlToCleanOutput(innerHTML) {
     return html.trim();
 }
 
+// =======================================================================
+// SANITIZATION DU HTML AFFICHÉ (anti-XSS)
+// =======================================================================
+// La valeur d'un champ html/html+latex provient du LLM ou d'un JSON importé :
+// elle peut contenir du HTML hostile (ex: <img onerror=...>). Tout HTML injecté
+// dans la zone contenteditable passe par _sanitizeDisplayHtml (allowlist DOM,
+// déterministe, sans dépendance externe — fichier partagé avec Sucrerie).
+
+/** Balises autorisées dans la zone WYSIWYG (le reste est déballé en gardant le texte) */
+const DISPLAY_ALLOWED_TAGS = new Set([
+    'p', 'div', 'br', 'span', 'strong', 'b', 'em', 'i', 'u', 's', 'strike',
+    'sub', 'sup', 'a', 'ul', 'ol', 'li', 'code', 'pre', 'blockquote', 'hr',
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th', 'caption'
+]);
+
+/** Balises dont le contenu lui-même est dangereux : supprimées avec leurs enfants */
+const DISPLAY_DROPPED_TAGS = new Set([
+    'script', 'style', 'iframe', 'frame', 'object', 'embed', 'link', 'meta',
+    'base', 'form', 'input', 'textarea', 'button', 'select', 'svg', 'math',
+    'template', 'noscript', 'audio', 'video', 'source'
+]);
+
+/** Attributs autorisés (les handlers on*, src, etc. sont retirés) */
+const DISPLAY_ALLOWED_ATTRS = new Set([
+    'class', 'title', 'data-latex', 'contenteditable', 'href', 'target', 'rel', 'style'
+]);
+
+/** N'autorise que les href inertes : http(s), mailto, ancre, chemin relatif */
+function _sanitizeHrefValue(value) {
+    // Retirer contrôles et espaces avant le test de schéma (contre « java\tscript: »)
+    const trimmed = String(value).replace(/[\u0000-\u0020]+/g, '');
+    if (/^(https?:|mailto:)/i.test(trimmed)) return value;
+    if (/^[a-z][a-z0-9+.-]*:/i.test(trimmed)) return '#'; // tout autre schéma (javascript:, data:, etc.)
+    return value; // ancre ou chemin relatif
+}
+
+/**
+ * Sanitize du HTML destiné à innerHTML de la zone éditable.
+ * Allowlist de balises/attributs via un document inerte (DOMParser : les
+ * scripts ne s'exécutent pas et les handlers ne se déclenchent pas au parse).
+ * Préserve les spans LaTeX (class json-editor__richtext-latex, data-latex,
+ * contenteditable="false", title).
+ */
+function _sanitizeDisplayHtml(html) {
+    if (!html || !/[<]/.test(html)) return html;
+
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    for (const el of Array.from(doc.body.querySelectorAll('*'))) {
+        if (!el.isConnected) continue; // déjà retiré avec un ancêtre supprimé
+        const tag = el.tagName.toLowerCase();
+
+        if (DISPLAY_DROPPED_TAGS.has(tag)) {
+            el.remove();
+            continue;
+        }
+        if (!DISPLAY_ALLOWED_TAGS.has(tag)) {
+            // Balise inconnue : on la déballe en conservant son contenu
+            el.replaceWith(...el.childNodes);
+            continue;
+        }
+        for (const attr of Array.from(el.attributes)) {
+            const name = attr.name.toLowerCase();
+            if (!DISPLAY_ALLOWED_ATTRS.has(name)) {
+                el.removeAttribute(attr.name);
+                continue;
+            }
+            if (name === 'href') {
+                el.setAttribute('href', _sanitizeHrefValue(attr.value));
+            } else if (name === 'contenteditable' && attr.value !== 'false') {
+                // Seul contenteditable="false" (spans LaTeX) est légitime ici
+                el.removeAttribute(attr.name);
+            } else if (name === 'style' && !/^\s*color\s*:\s*[^;{}<>"']+;?\s*$/i.test(attr.value)) {
+                // Seule la couleur (collage Word/Docs) est conservée
+                el.removeAttribute(attr.name);
+            }
+        }
+        if (tag === 'a' && el.getAttribute('target') === '_blank') {
+            el.setAttribute('rel', 'noopener noreferrer');
+        }
+    }
+    return doc.body.innerHTML;
+}
+
 /**
  * Convertit du HTML source en HTML sûr pour contenteditable.
  * - Protège les formules LaTeX en spans non-éditables
- * - Échappe tout contenu suspect
+ * - Sanitize le HTML (allowlist) avant injection dans innerHTML
  * @param {object} [options] — { compact: true } pour forcer inline math (champs text)
  */
 export function sourceToDisplay(htmlString, renderType, options) {
@@ -453,7 +556,8 @@ export function sourceToDisplay(htmlString, renderType, options) {
         html = protectLatex(html);
     }
 
-    return html;
+    // Sanitization systématique : la valeur peut contenir du HTML hostile (LLM, import)
+    return _sanitizeDisplayHtml(html);
 }
 
 // =======================================================================
@@ -1286,13 +1390,9 @@ export function renderRichtextField(config, value, onChange, path) {
         }
     });
 
-    // Selection change → états actifs
-    const selChangeHandler = () => {
-        if (activeField === fieldState && !fieldState.isSourceMode) {
-            _updateActiveStates();
-        }
-    };
-    document.addEventListener('selectionchange', selChangeHandler);
+    // Selection change → états actifs (listener global unique partagé entre tous
+    // les champs : un listener par champ jamais retiré fuyait à chaque re-render)
+    _ensureSelectionChangeListener();
 
     // Source textarea → émettre les changements
     source.addEventListener('input', () => {
@@ -1351,7 +1451,8 @@ export function renderRichtextField(config, value, onChange, path) {
         }
 
         // Nettoyage basique du HTML collé (Word, Google Docs, etc.)
-        pastedHtml = _cleanPastedHtml(pastedHtml);
+        // puis sanitization allowlist (anti-XSS : le presse-papier est une source non fiable)
+        pastedHtml = _sanitizeDisplayHtml(_cleanPastedHtml(pastedHtml));
         document.execCommand('insertHTML', false, pastedHtml);
         _emitChange(fieldState);
     });

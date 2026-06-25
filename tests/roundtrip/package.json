@@ -1,0 +1,14 @@
+{
+  "name": "caramel-roundtrip-tests",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Harnais de test de fidélité des exports Caramel. ISOLÉ du produit — Playwright est un outil de dev uniquement. Le produit Caramel reste 100% no-build/no-npm. node_modules est git-ignoré.",
+  "scripts": {
+    "node-harness": "node harness.mjs",
+    "browser-harness": "node playwright-harness.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.48.0"
+  }
+}

@@ -6,6 +6,7 @@
 import { TEMPLATES } from '../shared/templates.js';
 import { buildMoodleBackup } from '../shared/moodle-backup.js';
 import { replacePlaceholders } from '../shared/placeholder.js';
+import { parseXml, tagText, escapeXml, rewriteTag } from '../../mbz-utils.js';
 
 /**
  * Métadonnées du module Appariement.
@@ -97,10 +98,72 @@ export function buildFiles(data, options = {}) {
     return files;
 }
 
+// =========================================================================
+// INVERSE : .mbz extrait → JSON éditeur
+// =========================================================================
+
+/**
+ * Lit l'archive d'un Appariement (epikmatch) déjà extraite par
+ * `mbz-utils.extractMbz` et reconstruit le JSON éditeur.
+ *
+ * @param {Object<string, Uint8Array>} files
+ * @param {string} activityDir - ex: 'activities/epikmatch_25'
+ * @returns {{ title: string, pairs: Array, _context: { moduleId, activityId, activityContextId } }}
+ */
+export function parseFiles(files, activityDir) {
+    const xmlPath  = `${activityDir}/epikmatch.xml`;
+    const xmlBytes = files[xmlPath];
+    if (!xmlBytes) throw new Error(`appariement_missing_xml:${xmlPath}`);
+
+    const xml = new TextDecoder('utf-8').decode(xmlBytes);
+    const doc = parseXml(xml);
+
+    const activityNode = doc.querySelector('activity');
+    if (!doc.querySelector('activity > epikmatch')) {
+        throw new Error('appariement_invalid_xml_no_root');
+    }
+
+    const title    = tagText(doc, 'epikmatch > name');
+    const pairsRaw = tagText(doc, 'epikmatch > associations');
+
+    let pairs = [];
+    if (pairsRaw && pairsRaw.trim()) {
+        try { pairs = JSON.parse(pairsRaw); }
+        catch (e) { throw new Error(`appariement_associations_json_invalid:${e.message}`); }
+    }
+
+    return {
+        title,
+        pairs,
+        _context: {
+            moduleId:          activityNode?.getAttribute('moduleid')  ?? '',
+            activityId:        activityNode?.getAttribute('id')        ?? '',
+            activityContextId: activityNode?.getAttribute('contextid') ?? ''
+        }
+    };
+}
+
+/**
+ * Patch in-place les balises éditables (`name`, `associations`).
+ */
+export function serializeFiles(data, files, activityDir) {
+    const xmlPath  = `${activityDir}/epikmatch.xml`;
+    const xmlBytes = files[xmlPath];
+    if (!xmlBytes) throw new Error(`appariement_missing_xml:${xmlPath}`);
+
+    let xml = new TextDecoder('utf-8').decode(xmlBytes);
+    xml = rewriteTag(xml, 'name',         escapeXml(data.title || ''));
+    xml = rewriteTag(xml, 'associations', escapeXml(JSON.stringify(data.pairs || [])));
+
+    files[xmlPath] = window.fflate.strToU8(xml);
+}
+
 /**
  * Export par défaut du processeur.
  */
 export default {
     metadata,
-    buildFiles
+    buildFiles,
+    parseFiles,
+    serializeFiles
 };

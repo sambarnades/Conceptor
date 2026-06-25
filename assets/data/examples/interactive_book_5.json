@@ -1,0 +1,231 @@
+{
+  "title": "Maîtriser la Proportionnalité",
+  "cover": {
+    "description": "Comprendre les liens entre les nombres, calculer des réductions et des vitesses."
+  },
+  "chapters": [
+    {
+      "title": "1. Les bases de la proportionnalité",
+      "content": [
+        {
+          "type": "text",
+          "text": "Une situation est **proportionnelle** lorsque les grandeurs évoluent ensemble de façon à les multiplier ou diviser par un même nombre constant, appelé **coefficient de proportionnalité**. Par exemple, si 3 kg de pommes coûtent 6 €, le prix est proportionnel à la masse. Le coefficient est $\\frac{6}{3} = 2$."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.MultiChoice 1.16",
+          "question": "Parmi ces situations, laquelle est un exemple de proportionnalité ?",
+          "answers": [
+            {
+              "text": "Le prix d'achat et la masse de pommes.",
+              "correct": true,
+              "tipsAndFeedback": {
+                "tip": "Réfléchis au rapport entre la masse et le prix.",
+                "chosenFeedback": "Exact ! Le prix augmente proportionnellement à la masse."
+              }
+            },
+            {
+              "text": "L'âge d'une personne et sa taille.",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Non. La taille stagne à l'âge adulte."
+              }
+            },
+            {
+              "text": "Le périmètre d'un carré et son aire.",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Non. Si on double le côté, le périmètre double mais l'aire quadruple."
+              }
+            }
+          ],
+          "behaviour": {
+            "singleAnswer": true
+          },
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Revoyez la définition du coefficient de proportionnalité."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "C'est un début, continuez !"
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail !"
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent !"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Pour vérifier la proportionnalité, on peut utiliser le **tableau de linéarité**. La règle d'or permet de trouver une valeur manquante : on multiplie en croix. $\\frac{a}{b} = \\frac{c}{x} \\Rightarrow x = \\frac{b \\times c}{a}$."
+        }
+      ]
+    },
+    {
+      "title": "2. Calculer les pourcentages",
+      "content": [
+        {
+          "type": "text",
+          "text": "Un pourcentage est une proportion exprimée sur 100. Pour calculer $x\\%$ d'un nombre, on multiplie ce nombre par $\\frac{x}{100}$. Par exemple, $20\\%$ de 150 € est $150 \\times \\frac{20}{100} = 30$ €."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Blanks 1.14",
+          "taskDescription": "Complétez les phrases suivantes pour calculer un pourcentage.",
+          "questions": [
+            "Pour calculer 15% de 200, on effectue 200 *multiplié par* 15 / 100.",
+            "10% d'un nombre correspond à *diviser* ce nombre par 10."
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Revoyez la méthode de calcul des pourcentages."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "C'est un début, continuez !"
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail !"
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent !"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "3. Taux d'évolution et coefficients",
+      "content": [
+        {
+          "type": "text",
+          "text": "Le **coefficient multiplicateur** est le facteur par lequel on multiplie une valeur initiale pour obtenir la valeur finale. Pour une augmentation de 20 %, le coefficient est $1 + \\frac{20}{100} = 1,2$. Pour une réduction de 20 %, il est $1 - 0,2 = 0,8$."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.SingleChoiceSet 1.11",
+          "choices": [
+            {
+              "question": "Quel est le coefficient pour une augmentation de 10% ?",
+              "answers": [
+                "1,1",
+                "0,1",
+                "10"
+              ]
+            },
+            {
+              "question": "Quel est le coefficient pour une réduction de 25% ?",
+              "answers": [
+                "0,75",
+                "0,25",
+                "1,25"
+              ]
+            },
+            {
+              "question": "Si le coefficient est 2, la valeur a-t-elle doublé ou triplé ?",
+              "answers": [
+                "Doublé",
+                "Triplé",
+                "Inchangé"
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Revoyez la relation entre pourcentage et coefficient."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "C'est un début, continuez !"
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail !"
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent !"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Synthèse",
+      "content": [
+        {
+          "type": "exercise",
+          "library": "H5P.Summary 1.10",
+          "intro": "Choisissez les affirmations correctes concernant la proportionnalité.",
+          "summaries": [
+            {
+              "summary": [
+                "Le coefficient de proportionnalité permet de passer d'une ligne à l'autre dans un tableau.",
+                "Le coefficient de proportionnalité change selon les valeurs.",
+                "Le coefficient de proportionnalité est constant."
+              ]
+            },
+            {
+              "summary": [
+                "Une réduction de 50% équivaut à diviser le prix par 2.",
+                "Une réduction de 50% équivaut à multiplier le prix par 0,5.",
+                "Une réduction de 50% équivaut à multiplier le prix par 2."
+              ]
+            },
+            {
+              "summary": [
+                "Le pourcentage d'évolution se calcule avec la formule : (Valeur finale - Valeur initiale) / Valeur initiale.",
+                "Le pourcentage d'évolution se calcule avec la formule : Valeur initiale / Valeur finale.",
+                "Le pourcentage d'évolution ne dépend pas de la valeur initiale."
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Revoyez les points clés du livre."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "C'est un début, continuez !"
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail !"
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent !"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -62,6 +62,10 @@ const SIZE_COMMANDS = new Set([
 // PARSER
 // ========================================================================
 
+// Profondeur de récursion maximale du parser (garde anti-DoS / stack overflow — S17).
+// Au-delà, le contenu restant est retourné comme nœud texte brut (pas d'exception).
+const PARSER_MAX_DEPTH = 100;
+
 class LaTeXParser {
     /**
      * @param {string} input — LaTeX brut (sans délimiteurs \( \) ou \[ \])
@@ -70,6 +74,7 @@ class LaTeXParser {
         this.input = input;
         this.pos = 0;
         this.len = input.length;
+        this.depth = 0; // profondeur de récursion courante (bornée par PARSER_MAX_DEPTH)
     }
 
     // ====================================================================
@@ -94,14 +99,78 @@ class LaTeXParser {
      * @returns {Array} Liste de nœuds
      */
     _parseExpression(stopFn) {
-        const nodes = [];
-        while (this.pos < this.len) {
-            // Sauter les espaces AVANT le test d'arrêt pour ne pas rater
-            // un \right ou \end précédé d'un espace
-            if (stopFn) this._skipSpaces();
-            if (stopFn && stopFn(this._peek())) break;
-            const node = this._parseAtomWithScripts();
-            if (node) nodes.push(node);
+        // Garde anti-récursion (S17) : au-delà de la profondeur max, arrêter proprement
+        // la descente en consommant le contenu restant comme texte brut (pas d'exception)
+        if (this.depth >= PARSER_MAX_DEPTH) {
+            let raw = '';
+            while (this.pos < this.len && !(stopFn && stopFn(this._peek()))) {
+                raw += this._consume();
+            }
+            return raw ? [{ type: 'text', value: raw }] : [];
+        }
+        this.depth++;
+        try {
+            const nodes = [];
+            while (this.pos < this.len) {
+                // Sauter les espaces AVANT le test d'arrêt pour ne pas rater
+                // un \right ou \end précédé d'un espace
+                if (stopFn) this._skipSpaces();
+                if (stopFn && stopFn(this._peek())) break;
+                const node = this._parseAtomWithScripts();
+                if (node) nodes.push(node);
+            }
+            return this._reattachClosingDelimiterScripts(nodes);
+        } finally {
+            this.depth--;
+        }
+    }
+
+    /**
+     * Ré-attache un exposant/indice porté par un délimiteur fermant SEUL
+     * (`)` ou `]`) au groupe délimité complet qui le précède.
+     *
+     * LaTeX lie `^`/`_` au seul atome précédent : `(x-3)^2` produit donc un
+     * script dont la base est la parenthèse fermante isolée. Word (OMML) le
+     * tolère, mais l'annotation StarMath de l'ODT devient `( x - 3 {)} ^ {2}`
+     * — parenthèse ouvrante jamais fermée → LibreOffice rend une parenthèse
+     * géante (formules « mal dimensionnées » en ODT et en PDF via Gotenberg).
+     *
+     * On reconstruit ici un nœud `delimited` équilibré `(x-3)` comme base du
+     * script, ce qui corrige d'un coup les trois cibles (OMML, MathML, StarMath)
+     * puisqu'elles partagent cet AST.
+     *
+     * @param {Array} nodes — Liste de nœuds (modifiée en place puis retournée)
+     * @returns {Array}
+     */
+    _reattachClosingDelimiterScripts(nodes) {
+        const CLOSERS = { ')': '(', ']': '[' };
+        for (let i = 0; i < nodes.length; i++) {
+            const n = nodes[i];
+            if (!n || (n.type !== 'sup' && n.type !== 'sub' && n.type !== 'subsup')) continue;
+            if (!Array.isArray(n.base) || n.base.length !== 1) continue;
+            const base = n.base[0];
+            if (!base || base.type !== 'operator' || !CLOSERS[base.value]) continue;
+
+            const closeCh = base.value;
+            const openCh = CLOSERS[closeCh];
+
+            // Remonter jusqu'à l'ouvrant correspondant (en gérant l'imbrication)
+            let depth = 0, openIdx = -1;
+            for (let j = i - 1; j >= 0; j--) {
+                const m = nodes[j];
+                if (!m || m.type !== 'operator') continue;
+                if (m.value === closeCh) depth++;
+                else if (m.value === openCh) {
+                    if (depth === 0) { openIdx = j; break; }
+                    depth--;
+                }
+            }
+            if (openIdx === -1) continue; // ouvrant absent → laisser tel quel
+
+            const inner = nodes.slice(openIdx + 1, i); // contenu entre ( et )
+            n.base = [{ type: 'delimited', open: openCh, close: closeCh, body: inner }];
+            nodes.splice(openIdx, i - openIdx); // retire l'ouvrant + le contenu ; le script reste
+            i = openIdx; // reprendre à la position du script ré-attaché
         }
         return nodes;
     }
@@ -540,7 +609,7 @@ class LaTeXParser {
         const flush = () => {
             // Parser la cellule accumulée
             if (currentCell.length > 0) {
-                currentRow.push(currentCell);
+                currentRow.push(this._reattachClosingDelimiterScripts(currentCell));
                 currentCell = [];
             }
         };
@@ -602,7 +671,10 @@ class LaTeXParser {
             // Vérifier \end{cases}
             if (this._peek() === '\\' && this._lookaheadEnd('cases')) {
                 if (currentValue.length > 0 || currentCondition.length > 0) {
-                    rows.push({ value: currentValue, condition: currentCondition });
+                    rows.push({
+                        value: this._reattachClosingDelimiterScripts(currentValue),
+                        condition: this._reattachClosingDelimiterScripts(currentCondition)
+                    });
                 }
                 this._consumeEnd('cases');
                 break;
@@ -621,7 +693,10 @@ class LaTeXParser {
             if (ch === '\\' && this.pos + 1 < this.len && this.input[this.pos + 1] === '\\') {
                 this._consume();
                 this._consume();
-                rows.push({ value: currentValue, condition: currentCondition });
+                rows.push({
+                    value: this._reattachClosingDelimiterScripts(currentValue),
+                    condition: this._reattachClosingDelimiterScripts(currentCondition)
+                });
                 currentValue = [];
                 currentCondition = [];
                 inCondition = false;
@@ -649,7 +724,7 @@ class LaTeXParser {
         while (this.pos < this.len) {
             this._skipSpaces();
             if (this._peek() === '\\' && this._lookaheadEnd(envName)) {
-                if (currentLine.length > 0) lines.push(currentLine);
+                if (currentLine.length > 0) lines.push(this._reattachClosingDelimiterScripts(currentLine));
                 this._consumeEnd(envName);
                 break;
             }
@@ -665,7 +740,7 @@ class LaTeXParser {
             if (ch === '\\' && this.pos + 1 < this.len && this.input[this.pos + 1] === '\\') {
                 this._consume();
                 this._consume();
-                if (currentLine.length > 0) lines.push(currentLine);
+                if (currentLine.length > 0) lines.push(this._reattachClosingDelimiterScripts(currentLine));
                 currentLine = [];
                 continue;
             }
@@ -690,8 +765,22 @@ class LaTeXParser {
     /** Parse un argument unique (caractère ou groupe) */
     _parseSingleArg() {
         if (this._peek() === '\\') {
-            const node = this._parseCommand();
-            return node ? [node] : [];
+            // Garde anti-récursion (S17) : les chaînes \frac\frac\frac… recursent ici
+            // sans passer par _parseExpression → consommer la commande comme texte brut
+            if (this.depth >= PARSER_MAX_DEPTH) {
+                let raw = this._consume(); // le '\'
+                while (this.pos < this.len && /[a-zA-Z]/.test(this._peek())) {
+                    raw += this._consume();
+                }
+                return [{ type: 'text', value: raw }];
+            }
+            this.depth++;
+            try {
+                const node = this._parseCommand();
+                return node ? [node] : [];
+            } finally {
+                this.depth--;
+            }
         }
         const ch = this._consume();
         return ch ? [{ type: 'text', value: ch }] : [];

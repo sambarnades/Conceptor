@@ -21,32 +21,59 @@ pages:
     # ------------------------------------------------------------------
     # 2. Copie du projet dans .public (on travaille sur la copie)
     #    On exclut les dossiers inutiles en production.
+    #
+    #    embed-editor.html (façade iframe pour Sucrerie S1/S2) a été
+    #    supprimé le 2026-05-07 — Sucrerie est passé à l'éditeur natif
+    #    inline (S3) et plus aucune app n'iframe Caramel.
     # ------------------------------------------------------------------
     - mkdir -p .public
     - |
       cp -r assets css js index.html .public/
+      cp _headers .public/ 2>/dev/null || true   # headers de sécurité Pages (audit S07)
       rm -rf .public/tests .public/docs .public/scripts
 
     # ------------------------------------------------------------------
     # 3. Injection des URLs n8n
     #
-    #    Les URLs sont hardcodées dans llm.js pour le dev local.
-    #    Le CI/CD les écrase ici avec les variables définies une fois
+    #    Les URLs sont centralisées dans js/core/endpoints.js (registre unique,
+    #    même esprit que LIB_PATHS) avec les valeurs dev pour le local. Le CI/CD
+    #    les écrase ici DANS CE SEUL FICHIER avec les variables définies une fois
     #    dans GitLab → Settings → CI/CD → Variables :
-    #      LLM_SUBMIT_URL  (ex: https://…/submit-dev2)
-    #      LLM_RESULT_URL  (ex: https://…/result-dev2)
+    #      LLM_SUBMIT_URL          (ex: https://…/caramel/llm/submit-prod)
+    #      LLM_RESULT_URL          (ex: https://…/caramel/llm/result-prod)
+    #      LLM_STATS_URL           (ex: https://…/caramel/llm/stats-prod) — ligne Grist agrégée (génération par lots)
+    #      CARAMELIA_WEBHOOK_URL   (ex: https://…/caramelia-prod)
+    #      CARAMELIA_AUDIO_URL     (ex: https://…/caramel-audio-prod)
+    #      PDF_CONVERT_URL         (ex: https://…/caramel-pdf-convert-prod)
+    #      CARAMEL_VIDEO_TRANSCRIPT_URL (ex: https://…/caramel-video-transcript-prod)
+    #      CARAMEL_FETCH_PAGE_URL       (ex: https://…/caramel-fetch-page-prod)
+    #
+    #    Les 8 sont OBLIGATOIRES : le build echoue (exit 1) si l'une manque.
     # ------------------------------------------------------------------
     - |
       echo "=== Injection URLs n8n ==="
-      if [ -z "$LLM_SUBMIT_URL" ] || [ -z "$LLM_RESULT_URL" ]; then
-        echo "  ERREUR: LLM_SUBMIT_URL et/ou LLM_RESULT_URL non definies dans les variables CI/CD !"
+      if [ -z "$LLM_SUBMIT_URL" ] || [ -z "$LLM_RESULT_URL" ] || [ -z "$LLM_STATS_URL" ] || [ -z "$CARAMELIA_WEBHOOK_URL" ] || [ -z "$CARAMELIA_AUDIO_URL" ] || [ -z "$PDF_CONVERT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_URL" ] || [ -z "$CARAMEL_FETCH_PAGE_URL" ]; then
+        echo "  ERREUR: une des 8 URLs n8n (LLM_SUBMIT_URL, LLM_RESULT_URL, LLM_STATS_URL, CARAMELIA_WEBHOOK_URL, CARAMELIA_AUDIO_URL, PDF_CONVERT_URL, CARAMEL_VIDEO_TRANSCRIPT_URL, CARAMEL_FETCH_PAGE_URL) n'est pas definie dans les variables CI/CD !"
         echo "  → GitLab > Settings > CI/CD > Variables"
         exit 1
       fi
-      sed -i "s|const LLM_SUBMIT_URL = \".*\"|const LLM_SUBMIT_URL = \"${LLM_SUBMIT_URL}\"|g" .public/js/services/llm.js
-      sed -i "s|const LLM_RESULT_URL = \".*\"|const LLM_RESULT_URL = \"${LLM_RESULT_URL}\"|g" .public/js/services/llm.js
-      echo "  LLM_SUBMIT_URL : ${LLM_SUBMIT_URL}"
-      echo "  LLM_RESULT_URL : ${LLM_RESULT_URL}"
+      ENDPOINTS_FILE=.public/js/core/endpoints.js
+      sed -i "s|const LLM_SUBMIT_URL = \".*\"|const LLM_SUBMIT_URL = \"${LLM_SUBMIT_URL}\"|g" "$ENDPOINTS_FILE"
+      sed -i "s|const LLM_RESULT_URL = \".*\"|const LLM_RESULT_URL = \"${LLM_RESULT_URL}\"|g" "$ENDPOINTS_FILE"
+      sed -i "s|const LLM_STATS_URL = \".*\"|const LLM_STATS_URL = \"${LLM_STATS_URL}\"|g" "$ENDPOINTS_FILE"
+      sed -i "s|const CARAMELIA_WEBHOOK_URL = \".*\"|const CARAMELIA_WEBHOOK_URL = \"${CARAMELIA_WEBHOOK_URL}\"|g" "$ENDPOINTS_FILE"
+      sed -i "s|const CARAMELIA_AUDIO_URL = \".*\"|const CARAMELIA_AUDIO_URL = \"${CARAMELIA_AUDIO_URL}\"|g" "$ENDPOINTS_FILE"
+      sed -i "s|const PDF_CONVERT_URL = \".*\"|const PDF_CONVERT_URL = \"${PDF_CONVERT_URL}\"|g" "$ENDPOINTS_FILE"
+      sed -i "s|const CARAMEL_VIDEO_TRANSCRIPT_URL = \".*\"|const CARAMEL_VIDEO_TRANSCRIPT_URL = \"${CARAMEL_VIDEO_TRANSCRIPT_URL}\"|g" "$ENDPOINTS_FILE"
+      sed -i "s|const CARAMEL_FETCH_PAGE_URL = \".*\"|const CARAMEL_FETCH_PAGE_URL = \"${CARAMEL_FETCH_PAGE_URL}\"|g" "$ENDPOINTS_FILE"
+      echo "  LLM_SUBMIT_URL        : ${LLM_SUBMIT_URL}"
+      echo "  LLM_RESULT_URL        : ${LLM_RESULT_URL}"
+      echo "  LLM_STATS_URL         : ${LLM_STATS_URL}"
+      echo "  CARAMELIA_WEBHOOK_URL : ${CARAMELIA_WEBHOOK_URL}"
+      echo "  CARAMELIA_AUDIO_URL   : ${CARAMELIA_AUDIO_URL}"
+      echo "  PDF_CONVERT_URL       : ${PDF_CONVERT_URL}"
+      echo "  CARAMEL_VIDEO_TRANSCRIPT_URL : ${CARAMEL_VIDEO_TRANSCRIPT_URL}"
+      echo "  CARAMEL_FETCH_PAGE_URL       : ${CARAMEL_FETCH_PAGE_URL}"
 
     # ------------------------------------------------------------------
     # 4. Minification JS — modules ES6 (~79 fichiers applicatifs)
@@ -85,7 +112,7 @@ pages:
       CSS_COUNT=0
       CSS_FAIL=0
       for f in $(find .public/css -name '*.css' -not -path '.public/css/vendor/*' -not -name '*.min.css'); do
-        if npx clean-css-cli --level 1 -o "$f.min" "$f" && [ -s "$f.min" ]; then
+        if npx clean-css-cli -O1 -o "$f.min" "$f" && [ -s "$f.min" ]; then
           mv "$f.min" "$f"
           CSS_COUNT=$((CSS_COUNT + 1))
         else
@@ -120,20 +147,41 @@ pages:
     # ------------------------------------------------------------------
     - |
       echo "=== Minification HTML ==="
-      npx html-minifier-terser \
-        --collapse-whitespace \
-        --remove-comments \
-        --remove-empty-attributes \
-        --minify-css true \
-        --conservative-collapse \
-        --keep-closing-slash \
-        -o .public/index.html \
-        .public/index.html 2>/dev/null \
-        && echo "  HTML: index.html minifie" \
-        || echo "  WARN: echec minification HTML (original conserve)"
+      HTML_OK=0
+      HTML_FAIL=0
+      for f in .public/index.html; do
+        [ -f "$f" ] || continue
+        if npx html-minifier-terser \
+            --collapse-whitespace \
+            --remove-comments \
+            --remove-empty-attributes \
+            --minify-css true \
+            --conservative-collapse \
+            --keep-closing-slash \
+            -o "$f" \
+            "$f" 2>/dev/null; then
+          HTML_OK=$((HTML_OK + 1))
+        else
+          HTML_FAIL=$((HTML_FAIL + 1))
+          echo "  WARN: echec minification $f (original conserve)"
+        fi
+      done
+      echo "  HTML: $HTML_OK fichiers minifies, $HTML_FAIL echecs"
 
     # ------------------------------------------------------------------
-    # 8. Rapport de tailles
+    # 8. Pré-compression Brotli + gzip (transport)
+    #
+    #    Génère une variante .br et .gz à côté de chaque fichier texte (après
+    #    minification, pour compresser la sortie finale). GitLab Pages sert
+    #    automatiquement la variante pré-compressée selon Accept-Encoding.
+    #    zlib natif de Node → aucune install supplémentaire.
+    # ------------------------------------------------------------------
+    - |
+      echo "=== Pré-compression Brotli + gzip ==="
+      node scripts/precompress.mjs .public
+
+    # ------------------------------------------------------------------
+    # 9. Rapport de tailles
     # ------------------------------------------------------------------
     - |
       echo "=== Rapport final ==="
@@ -147,7 +195,7 @@ pages:
       du -sh .public/
 
     # ------------------------------------------------------------------
-    # 9. Déplacement final pour GitLab Pages
+    # 10. Déplacement final pour GitLab Pages
     # ------------------------------------------------------------------
     - rm -rf public
     - mv .public public

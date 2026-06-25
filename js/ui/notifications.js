@@ -321,35 +321,67 @@ function updateDownloadAllVisibility() {
 }
 
 /**
+ * Empaquette une liste de notifications dans un ZIP et déclenche le téléchargement.
+ * Logique partagée entre le bouton "Tout télécharger" du dropdown et le bouton ZIP du chatbot.
+ * @param {Notification[]} successNotifs - notifications réussies (status='success', blob, fileName)
+ * @private
+ */
+async function packageNotificationsAsZip(successNotifs) {
+    if (!successNotifs.length) return;
+    const downloadZip = await loadClientZip();
+    const files = successNotifs.map(n => ({
+        name: n.fileName,
+        input: n.blob
+    }));
+    const zipBlob = await downloadZip(files).blob();
+    const now = new Date();
+    const dateStr = now.getFullYear() +
+        String(now.getMonth() + 1).padStart(2, '0') +
+        String(now.getDate()).padStart(2, '0') +
+        String(now.getHours()).padStart(2, '0') +
+        String(now.getMinutes()).padStart(2, '0');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(zipBlob);
+    a.download = `caramel-pack-${successNotifs.length}-${dateStr}.zip`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+}
+
+/**
  * Télécharge toutes les notifications réussies dans un ZIP.
  * @private
  */
 async function downloadAllNotifications() {
     const successNotifs = notifications.filter(n => n.status === 'success' && n.blob && n.fileName);
     if (successNotifs.length < 2) return;
-
     try {
-        const downloadZip = await loadClientZip();
-        const files = successNotifs.map(n => ({
-            name: n.fileName,
-            input: n.blob
-        }));
-        const zipBlob = await downloadZip(files).blob();
-        const now = new Date();
-        const dateStr = now.getFullYear() +
-            String(now.getMonth() + 1).padStart(2, '0') +
-            String(now.getDate()).padStart(2, '0') +
-            String(now.getHours()).padStart(2, '0') +
-            String(now.getMinutes()).padStart(2, '0');
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(zipBlob);
-        a.download = `caramel-pack-${successNotifs.length}-${dateStr}.zip`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(a.href);
+        await packageNotificationsAsZip(successNotifs);
     } catch (error) {
         console.error('Erreur lors du téléchargement groupé:', error);
+    }
+}
+
+/**
+ * Télécharge un sous-ensemble de notifications (par IDs) dans un ZIP.
+ * Utilisé par le chatbot Caramelia après une génération multi-activités.
+ * @param {string[]} ids - IDs des notifications à empaqueter
+ * @returns {Promise<number>} Nombre de fichiers réellement empaquetés (0 si rien à zipper)
+ */
+export async function downloadNotificationsAsZip(ids) {
+    if (!Array.isArray(ids) || !ids.length) return 0;
+    const idSet = new Set(ids);
+    const successNotifs = notifications.filter(n =>
+        idSet.has(n.id) && n.status === 'success' && n.blob && n.fileName
+    );
+    if (!successNotifs.length) return 0;
+    try {
+        await packageNotificationsAsZip(successNotifs);
+        return successNotifs.length;
+    } catch (error) {
+        console.error('Erreur lors du téléchargement groupé (chatbot):', error);
+        return 0;
     }
 }
 
@@ -1177,6 +1209,9 @@ async function openPreviewModal(notificationId) {
     // Rendre le contenu (H5P ou placeholder — chargement dynamique des renderers)
     await renderPreview(notification, modal);
 
+    // Point d'extension unique : pont vers La Sucrerie (kill switch dans son config.js).
+    mountSucrerieBridge(modal, notification);
+
     // Accessibilité : focus trap + restauration du focus (Escape géré globalement dans initPreviewModal)
     focusTrapCleanup = setupModalAccessibility(modal, {
         onClose: closePreviewModal,
@@ -1281,7 +1316,7 @@ async function renderPreview(notification, modal) {
         `;
 
         // Chargement dynamique des simulateurs Moodle
-        const simulators = await import('../simulators.js');
+        const simulators = await import('../simulators/index.js');
 
         // Si l'utilisateur a navigué pendant le chargement du module, abandonner
         if (currentRenderGen !== previewRenderGeneration) return;
@@ -1290,40 +1325,24 @@ async function renderPreview(notification, modal) {
         const simLoader = previewContainer.querySelector('.preview-modal__loader');
         if (simLoader) simLoader.remove();
 
-        if (notification.titleKey === 'elea_millionnaire_name') {
-            // Rendu du simulateur Millionnaire
-            debugLog('notifications', "renderPreview: Rendering Millionnaire");
-            simulators.renderMillionnaire(previewContainer, notification.jsonData);
-        } else if (notification.titleKey === 'elea_appariement_name') {
-            // Rendu du simulateur Appariement
-            debugLog('notifications', "renderPreview: Rendering Appariement");
-            simulators.renderMatching(previewContainer, notification.jsonData);
-        } else if (notification.titleKey === 'elea_glossaire_xml_name') {
-            // Rendu du simulateur Glossaire
-            debugLog('notifications', "renderPreview: Rendering Glossaire");
-            simulators.renderGlossary(previewContainer, notification.jsonData);
-        } else if (notification.titleKey === 'elea_qcm_name') {
-            // Rendu du simulateur QCM
-            debugLog('notifications', "renderPreview: Rendering QCM");
-            simulators.renderQcmElea(previewContainer, notification.jsonData);
-        } else if (notification.titleKey === 'elea_test_xml_name') {
-            // Rendu du simulateur Test Moodle/Éléa (anciennement Banque de questions)
-            debugLog('notifications', "renderPreview: Rendering Elea Test");
-            simulators.renderEleaTest(previewContainer, notification.jsonData);
-        } else if (notification.titleKey === 'elea_page_name') {
-            // Rendu du simulateur Page Éléa
-            debugLog('notifications', "renderPreview: Rendering Elea Page");
-            simulators.renderPage(previewContainer, notification.jsonData, notification.previewHtml);
-        } else if (notification.titleKey === 'elea_livre_name') {
-            // Rendu du simulateur Livre Éléa (multi-chapitres avec TOC)
-            debugLog('notifications', "renderPreview: Rendering Elea Livre");
-            simulators.renderLivre(previewContainer, notification.jsonData, notification.previewHtml);
-        } else if (notification.titleKey === 'elea_devoir_name') {
-            // Rendu du simulateur Devoir (grille d'évaluation)
-            debugLog('notifications', "renderPreview: Rendering Devoir");
-            simulators.renderDevoir(previewContainer, notification.jsonData);
-        } else {
-            // Fallback pour les autres types MBZ non gérés spécifiquement
+        debugLog('notifications', "renderPreview: dispatch simulator", { titleKey: notification.titleKey });
+
+        // Preview Caramel = CONSULTATION (mode prof) : le prof feuillette toutes
+        // les questions librement (flèches), révélation possible, pas de
+        // game-over. PAS de toggle « Mode prof/élève » ici : il serait confondu
+        // avec un réglage Éléa — le « mode élève » réel n'existe que sur le lien
+        // partagé Sucrerie (embed). On rend directement dans previewContainer
+        // (`.preview-modal__preview`) → le plein écran garde son style dédié.
+        const rendered = await simulators.renderSimulator(
+            notification.titleKey,
+            previewContainer,
+            notification.jsonData,
+            notification.previewHtml,
+            { mode: 'teacher' }
+        );
+
+        if (!rendered) {
+            // Fallback pour les types MBZ non gérés spécifiquement
             debugLog('notifications', "renderPreview: No matching titleKey, using placeholder. titleKey was:", notification.titleKey);
             modal.classList.remove('preview-modal--wide');
             previewContainer.classList.remove('preview-modal__preview--h5p');
@@ -1679,9 +1698,33 @@ export function initPreviewModal() {
 
     // Bouton télécharger (Délégation d'événement sur la modale pour supporter le remplacement du footer)
     if (!modal._downloadListenerAttached) {
+        // Bascule le bouton en état « chargement » : remplace l'icône fa-download par
+        // un cercle qui tourne (même gabarit → aucune déformation du bouton) et bloque
+        // les re-clics. Retourne une fonction de restauration de l'état initial.
+        const setDownloadBtnLoading = (btn) => {
+            const icon = btn.querySelector('i');
+            const prevIconClass = icon ? icon.className : null;
+            if (icon) {
+                icon.className = 'fas fa-circle-notch fa-spin';
+                icon.style.setProperty('--fa-animation-duration', '0.8s');
+            }
+            btn.classList.add('is-loading');
+            btn.setAttribute('aria-busy', 'true');
+            return () => {
+                if (icon && prevIconClass !== null) {
+                    icon.className = prevIconClass;
+                    icon.style.removeProperty('--fa-animation-duration');
+                }
+                btn.classList.remove('is-loading');
+                btn.removeAttribute('aria-busy');
+            };
+        };
+
         modal.addEventListener('click', async (e) => {
             const btn = e.target.closest('.preview-modal__download-btn');
             if (!btn) return;
+
+            if (btn.classList.contains('is-loading')) return; // export déjà en cours → éviter le double-clic
 
             if (!currentPreviewModal) return;
 
@@ -1742,6 +1785,12 @@ export function initPreviewModal() {
                             if (grids.solutionGrid) {
                                 jsonDataToExport = { ...jsonDataToExport, _solutionGridImage: grids.solutionGrid };
                             }
+                            if (grids.placements && grids.placements.length > 0) {
+                                jsonDataToExport = { ...jsonDataToExport, _cluePlacements: grids.placements };
+                            }
+                            if (grids.unplacedWords && grids.unplacedWords.length > 0) {
+                                jsonDataToExport = { ...jsonDataToExport, _unplacedWords: grids.unplacedWords };
+                            }
                         }
                     } catch (err) {
                         console.warn('Capture grille mots croisés échouée, export sans image:', err);
@@ -1766,9 +1815,16 @@ export function initPreviewModal() {
                 }
 
                 const { exportToDOCX, exportToPDF, exportToODT } = await import('../export/document-exporter.js');
-                if (format === 'DOCX') exportToDOCX(moduleKey, jsonDataToExport);
-                else if (format === 'PDF') exportToPDF(moduleKey, jsonDataToExport);
-                else exportToODT(moduleKey, jsonDataToExport);
+                // Spinner sur le bouton pendant la génération (surtout PDF, qui passe par
+                // Gotenberg) ; il s'arrête dès que le téléchargement se déclenche ou échoue.
+                const restoreDownloadBtn = setDownloadBtnLoading(btn);
+                try {
+                    if (format === 'DOCX') await exportToDOCX(moduleKey, jsonDataToExport);
+                    else if (format === 'PDF') await exportToPDF(moduleKey, jsonDataToExport);
+                    else await exportToODT(moduleKey, jsonDataToExport);
+                } finally {
+                    restoreDownloadBtn();
+                }
             }
             // Cas par défaut (MBZ, H5P, ou si jsonData/previewHtml manquant)
             else {
@@ -1965,49 +2021,12 @@ export function initPreviewModal() {
         await toggleEditMode(notification, modal);
     });
 
-    // Bouton Plein écran - Bascule entre mode normal et plein écran pour le contenu uniquement
-    modal.addEventListener('click', (e) => {
-        const fullscreenBtn = e.target.closest('.preview-modal__fullscreen-btn');
-        if (!fullscreenBtn) return;
-
-        const previewContainer = modal.querySelector('.preview-modal__preview');
-        if (!previewContainer) return;
-
-        if (document.fullscreenElement) {
-            // Sortir du mode plein écran
-            document.exitFullscreen().catch(err => {
-                console.error('Erreur lors de la sortie du mode plein écran:', err);
-            });
-        } else {
-            // Entrer en mode plein écran
-            previewContainer.requestFullscreen().catch(err => {
-                console.error('Erreur lors de l\'entrée en mode plein écran:', err);
-            });
-        }
-    });
-
-    // Mettre à jour l'icône du bouton plein écran selon l'état
-    document.addEventListener('fullscreenchange', () => {
-        const fullscreenBtns = modal.querySelectorAll('.preview-modal__fullscreen-btn');
-        fullscreenBtns.forEach(btn => {
-            const icon = btn.querySelector('i');
-            if (!icon) return;
-
-            if (document.fullscreenElement) {
-                // En mode plein écran - afficher l'icône "compress"
-                icon.classList.remove('fa-expand');
-                icon.classList.add('fa-compress');
-                btn.title = translations.exit_fullscreen || 'Quitter le plein écran';
-                btn.setAttribute('aria-label', translations.exit_fullscreen || 'Quitter le plein écran');
-            } else {
-                // Mode normal - afficher l'icône "expand"
-                icon.classList.remove('fa-compress');
-                icon.classList.add('fa-expand');
-                btn.title = translations.fullscreen || 'Plein écran';
-                btn.setAttribute('aria-label', translations.fullscreen || 'Plein écran');
-            }
-        });
-    });
+    // Bouton Plein écran : le bouton créé par `createFullscreenButton`
+    // (simulators/helpers.js) est désormais AUTONOME — il bascule lui-même le
+    // plein écran sur le conteneur de rendu (`data-sim-root`) et synchronise son
+    // icône via un écouteur `fullscreenchange` global. Plus de délégation ici
+    // (sinon double-toggle), et ça corrige le bouton mort hors modale (éditeur
+    // Sucrerie). Cf. helpers.js : createFullscreenButton / ensureFullscreenIconSync.
 }
 
 // Les variables isEditModeActive, savedPreviewContent, et savedFooterContent ont été déplacées plus haut
@@ -2157,6 +2176,28 @@ async function enterEditMode(notification, previewContainer, editBtn) {
 }
 
 /**
+ * (Re)monte le pont « Vers la Sucrerie » dans le footer de la modale.
+ *
+ * Le bouton est statique dans le footer, mais son handler de clic est attaché
+ * par `addEventListener` côté pont. Toute reconstruction du footer via
+ * `innerHTML` (entrée/sortie du mode édition) recrée un bouton « nu » sans
+ * listener : il faut donc re-monter le pont après chaque restauration du footer
+ * pour réattacher le handler. On joint au passage les champs Qui/Quoi du
+ * formulaire Caramel pour aider l'IA d'enrichissement à deviner système
+ * éducatif et discipline (ex. "Formateur en sciences cognitives" → formation).
+ */
+function mountSucrerieBridge(modal, notification) {
+    if (!modal || !notification) return;
+    const userIntent = {
+        qui:  document.getElementById('qui')?.value.trim() || '',
+        quoi: document.getElementById('quoi')?.value.trim() || ''
+    };
+    import('../sucrerie-bridge/index.js')
+        .then(m => m.mountSucrerieButton({ modal, notification, userIntent }))
+        .catch(() => {});
+}
+
+/**
  * Restaure le footer original
  */
 function restoreFooter(footer, editBtn) {
@@ -2167,6 +2208,13 @@ function restoreFooter(footer, editBtn) {
     if (editBtn) {
         editBtn.style.display = ENABLE_EDIT_BUTTON ? '' : 'none';
     }
+    // Le footer reconstruit ci-dessus a recréé le bouton « Vers la Sucrerie »
+    // sans son handler de clic → on re-monte le pont pour le réattacher. Sans
+    // ça, après une édition + enregistrement (ou annulation), le bouton de
+    // partage ne réagit plus au clic.
+    const modal = footer?.closest('.preview-modal');
+    const notification = currentPreviewModal ? getNotificationById(currentPreviewModal) : null;
+    if (modal && notification) mountSucrerieBridge(modal, notification);
 }
 
 /**
@@ -2720,7 +2768,10 @@ async function regenerateMBZFile(notification, editedData, moduleKey) {
         return mbzBlob;
     } catch (error) {
         console.error('[Regenerate MBZ] Error:', error);
-        return notification.blob; // Fallback : retourner le blob original
+        // Retourner null pour signaler l'échec : handleEditorSave lèvera alors
+        // l'erreur « Erreur lors de l'enregistrement ». Retourner le blob d'origine
+        // affichait un faux succès alors que les modifications étaient perdues.
+        return null;
     }
 }
 
@@ -2804,27 +2855,53 @@ async function regenerateH5PFile(originalBlob, editedData, moduleKey, titleKey) 
             unixPermissions: 0o100644
         });
 
-        // 3. Images utilisateur depuis le registre (si présentes)
+        // 3. Images utilisateur depuis le registre mémoire (si présentes).
+        // Préparées d'abord pour connaître les chemins qui écrasent les assets d'origine.
+        const registryEntries = [];
+        const registryPaths = new Set();
         try {
-            const { getAllImages, hasImages, clearAllImages } = await import('../h5p/image-manager.js');
+            const { getAllImages, hasImages } = await import('../h5p/image-manager.js');
             if (hasImages()) {
                 const imageFiles = getAllImages();
                 for (const [path, blob] of imageFiles) {
                     const arrayBuffer = await blob.arrayBuffer();
-                    files.push({
-                        name: `content/${path}`,
+                    const zipPath = `content/${path}`;
+                    registryPaths.add(zipPath);
+                    registryEntries.push({
+                        name: zipPath,
                         input: new Uint8Array(arrayBuffer),
                         unixPermissions: 0o100644
                     });
                 }
-                debugLog('notifications', `[Regenerate H5P] ${imageFiles.size} image(s) ajoutée(s) au ZIP`);
+                debugLog('notifications', `[Regenerate H5P] ${imageFiles.size} image(s) du registre ajoutée(s) au ZIP`);
                 // Ne PAS clearAllImages() ici — l'utilisateur pourrait re-éditer
             }
         } catch (imgErr) {
             console.warn('[Regenerate H5P] Image injection skipped:', imgErr);
         }
 
-        // 4. Génération du Zip avec client-zip (identique à h5p-creator.js)
+        // 4. Recopier depuis le ZIP d'origine TOUS les assets sous content/ (images, etc.).
+        // Le registre mémoire est vidé après le packaging initial (clearAllImages dans
+        // h5p-creator.js) : sans cette recopie, les images de la 1re génération
+        // disparaissent de l'archive régénérée alors que content.json les référence.
+        // Exclusions : content.json (remplacé en 1.) et les chemins écrasés par le registre.
+        for (const [entryName, entry] of Object.entries(zip.files)) {
+            if (entry.dir) continue;
+            if (!entryName.startsWith('content/') || entryName === 'content/content.json') continue;
+            if (registryPaths.has(entryName)) continue;
+            const assetData = await entry.async('uint8array');
+            files.push({
+                name: entryName,
+                input: assetData,
+                unixPermissions: 0o100644
+            });
+            debugLog('notifications', '[Regenerate H5P] Asset d\'origine recopié:', entryName);
+        }
+
+        // 5. Ajouter les images du registre (écrasent les chemins remplacés)
+        files.push(...registryEntries);
+
+        // 6. Génération du Zip avec client-zip (identique à h5p-creator.js)
         const zipBlob = await downloadZip(files).blob();
 
         debugLog('notifications', '[Regenerate H5P] New blob size:', zipBlob.size);

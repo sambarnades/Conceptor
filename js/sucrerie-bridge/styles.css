@@ -1,0 +1,1129 @@
+/*
+ * Styles du pont Sucrerie — chargés dynamiquement par index.js au premier mount.
+ *
+ * Palette reprise de la charte officielle Sucrerie (assets/css/themes/default.css) :
+ *   --color-primary             #7f535c   (Berry principal)
+ *   --color-primary-container   #fcc3ce   (rose poudré)
+ *   --color-secondary-container #ffd9df   (rose plus clair / plus pinky)
+ *   --color-on-primary-container #643c45  (texte sur fond rose)
+ *
+ * On utilise le couple secondary-container + on-primary-container pour avoir un
+ * rose franc (sans dérive rouge) et un texte berry profond bien lisible.
+ */
+
+:root {
+    --sucrerie-pink:        #ffd9df;  /* fond — rose plus pâle, clairement pinky */
+    --sucrerie-pink-hover:  #fcc3ce;  /* hover — rose poudré officiel, plus saturé */
+    --sucrerie-berry:       #643c45;  /* texte — berry profond, lisible */
+    --sucrerie-berry-soft:  rgba(100, 60, 69, 0.18); /* bordure discrète */
+}
+
+/* ===== Bouton "Vers la Sucrerie" =====
+ * Aligné en hauteur sur .preview-modal__edit-btn :
+ *   padding: 10px 18px ; border-radius: 8px ; font-weight: 500 ; font-size: 0.95em ;
+ *   display: inline-flex ; align-items: center ; gap: 8px ; border: 1px solid …
+ */
+.sucrerie-bridge__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: 1px solid var(--sucrerie-berry-soft);
+    background-color: var(--sucrerie-pink);
+    color: var(--sucrerie-berry);
+    font: inherit;
+    font-size: 0.95em;
+    font-weight: 500;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+}
+
+.sucrerie-bridge__btn:hover:not(:disabled) {
+    background-color: var(--sucrerie-pink-hover);
+    border-color: var(--sucrerie-berry);
+    transform: translateY(-1px); /* aligné sur le hover de .preview-modal__download-btn */
+}
+
+.sucrerie-bridge__btn:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+}
+
+.sucrerie-bridge__btn:focus-visible {
+    outline: 2px solid var(--sucrerie-berry);
+    outline-offset: 2px;
+}
+
+.sucrerie-bridge__btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.sucrerie-bridge__btn i {
+    font-size: 1em;
+}
+
+/* Sur écran étroit, masque le libellé et ne garde que l'icône (aria-label intact) */
+@media (max-width: 480px) {
+    .sucrerie-bridge__btn .sucrerie-bridge__btn-label-long {
+        display: none;
+    }
+}
+
+/* =====================================================================
+ *   PANNEAU SUCRERIE — surimpression sur la zone preview de la modale
+ * ===================================================================== */
+
+.sucrerie-bridge__panel {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    background: #ffffff;
+    border-radius: inherit;
+    overflow: hidden;
+}
+
+/* Bascule visible uniquement quand la modale est en mode Sucrerie */
+.preview-modal--sucrerie .sucrerie-bridge__panel {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Masque la preview originale + le footer original + la navigation prev/next
+   pendant le flow Sucrerie. Naviguer entre activités casserait le flow
+   (changement de notification.blob → perte du travail). Le X close reste
+   visible mais est intercepté par deposit-flow.js (confirmation si étape à risque). */
+.preview-modal--sucrerie .preview-modal__preview,
+.preview-modal--sucrerie .preview-modal__warning,
+.preview-modal--sucrerie .preview-modal__footer,
+.preview-modal--sucrerie .preview-modal__header-nav {
+    display: none !important;
+}
+
+/* La zone .preview-modal__content héberge le panneau en absolu — assurer le contexte */
+.preview-modal--sucrerie .preview-modal__content {
+    position: relative;
+    overflow: hidden;
+}
+
+/* ===== Étape (1 visible à la fois via [hidden]) ===== */
+.sucrerie-bridge__step {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+.sucrerie-bridge__step[hidden] { display: none; }
+
+.sucrerie-bridge__step-body {
+    flex: 1 1 auto;
+    padding: 18px 28px 10px;
+    overflow-y: auto;
+    color: var(--sucrerie-berry, #643c45);
+}
+
+/* Le corps du step "preview" empile beaucoup de blocs hétérogènes
+   (form-row, field, fieldset, legal…). Pour garantir un espacement
+   VRAIMENT uniforme entre eux on passe en flex column + gap, ce qui
+   évite tout aléa de margin-collapse (les flex containers ne collapsent
+   pas leurs marges de façon fiable selon le navigateur/le contexte). */
+.sucrerie-bridge__step-body--scroll {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.sucrerie-bridge__step-body--scroll > * {
+    margin: 0;
+}
+
+/* Header de l'étape preview : titre à gauche + badge re-vérif à droite */
+.sucrerie-bridge__step-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 0 12px;
+}
+
+.sucrerie-bridge__step-title {
+    margin: 0;
+    color: var(--sucrerie-berry, #643c45);
+    font-weight: 600;
+    font-size: 1.05em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Badge de re-vérification live (états : pending | ok | blocked) */
+.sucrerie-bridge__recheck-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.82em;
+    font-weight: 500;
+    line-height: 1.2;
+    border: 1px solid transparent;
+    transition: background-color 0.18s ease, color 0.18s ease;
+}
+.sucrerie-bridge__recheck-badge[hidden] { display: none; }
+.sucrerie-bridge__recheck-badge[data-state="pending"] {
+    background: rgba(100, 60, 69, 0.08);
+    color: var(--sucrerie-berry, #643c45);
+    border-color: rgba(100, 60, 69, 0.18);
+}
+.sucrerie-bridge__recheck-badge[data-state="ok"] {
+    background: #e6f4eb;
+    color: #1f6b3d;
+    border-color: rgba(31, 107, 61, 0.25);
+}
+.sucrerie-bridge__recheck-badge[data-state="blocked"] {
+    background: #ffe5e5;
+    color: #a83836;
+    border-color: rgba(168, 56, 54, 0.35);
+    cursor: help;
+}
+
+.sucrerie-bridge__step-body p {
+    margin: 0 0 12px;
+    line-height: 1.55;
+    color: #313332;
+    font-size: 0.95em;
+}
+
+/* ===== Champs de formulaire ===== */
+.sucrerie-bridge__field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 8px 0;
+    border: none;
+    padding: 0;
+}
+.sucrerie-bridge__field > span,
+.sucrerie-bridge__field > legend {
+    font-weight: 500;
+    font-size: 0.9em;
+    color: var(--sucrerie-berry, #643c45);
+    /* Évite le wrap qui crée des hauteurs différentes entre colonnes
+       (sinon "Langue de l'activité" passe sur 2 lignes en colonne étroite
+       alors que "Titre" reste sur 1 ligne, désalignant la rangée). */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.sucrerie-bridge__field input[type="email"],
+.sucrerie-bridge__field input[type="text"],
+.sucrerie-bridge__field textarea,
+.sucrerie-bridge__field select {
+    padding: 9px 12px;
+    border: 1px solid rgba(100, 60, 69, 0.22);
+    border-radius: 8px;
+    background: #fffafb;
+    font: inherit;
+    font-size: 0.95em;
+    color: #313332;
+    box-sizing: border-box;
+    /* Neutralise les marges héritées des règles globales Caramel (notamment
+       `textarea { margin-bottom: 20px }` dans css/base/style.css), qui
+       sinon gonflent le __field et créent un trou visuel sous la ligne. */
+    margin: 0;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+/* Hauteur explicite identique pour input simple-ligne et select — qu'aucun
+   décalage ne se produise entre "Titre de l'activité" et "Discipline".
+   42px (et non 36/38) pour donner un peu plus d'air aux champs et que les
+   <select> natifs Chrome/Firefox rendent sans tronquer en bas. Pour ajuster :
+   tous les éléments une-ligne (input + select + back-btn discipline + slot)
+   doivent rester sur la MÊME valeur, sinon décalage visuel. */
+.sucrerie-bridge__field input[type="email"],
+.sucrerie-bridge__field input[type="text"],
+.sucrerie-bridge__field select {
+    height: 42px;
+    line-height: 1.45;
+}
+.sucrerie-bridge__field input:focus,
+.sucrerie-bridge__field textarea:focus,
+.sucrerie-bridge__field select:focus {
+    outline: none;
+    border-color: var(--sucrerie-berry, #643c45);
+    box-shadow: 0 0 0 3px rgba(100, 60, 69, 0.15);
+}
+
+/* Textarea : Description / Objectifs sont normalement courts (2-3 lignes).
+   On force une hauteur compacte au repos avec résize vertical possible si
+   l'utilisateur a vraiment besoin de plus. Sans ces règles, certains browsers
+   gonflent le textarea à 5-6 lignes en ignorant rows="2".
+   Pour ajuster manuellement : min-height = hauteur au repos, max-height =
+   limite de résize. ~24px par ligne avec line-height: 1.4 et font 0.95em. */
+.sucrerie-bridge__field textarea {
+    padding: 9px 12px;
+    min-height: 118px;         /* ≈ 4 lignes au repos */
+    max-height: 200px;         /* ≈ 7 lignes max si l'utilisateur agrandit */
+    resize: vertical;
+    line-height: 1.45;
+}
+.sucrerie-bridge__hint {
+    color: #5e5f5f;
+    font-size: 0.85em;
+}
+/* Compteur « n / 30 » du Nom public : calé en haut à droite, SUR la ligne du
+   libellé (pas un bloc empilé sous le champ qui flotterait avant le hint). */
+.sucrerie-bridge__field--counter {
+    position: relative;
+}
+.sucrerie-bridge__field-counter {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 0.78em;
+    line-height: 1.2;
+    color: #8a8b8b;
+}
+/* Bloc prénom/nom masqué pour un compte existant (cf. setAuthorNamesHidden). */
+.sucrerie-bridge__author-names[hidden] {
+    display: none;
+}
+.sucrerie-bridge__error {
+    color: #a83836;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+
+/* Lien "Demander l'ajout du domaine X" affiché sous l'erreur quand le
+   domaine email n'est pas dans la liste autorisée. Renvoie sur la forge
+   GitLab avec issue pré-remplie. */
+.sucrerie-bridge__forge-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.85em;
+    font-weight: 500;
+    color: var(--sucrerie-berry, #643c45);
+    background: var(--sucrerie-pink, #ffd9df);
+    border: 1px solid rgba(100, 60, 69, 0.18);
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+.sucrerie-bridge__forge-link:hover {
+    background: var(--sucrerie-pink-hover, #fcc3ce);
+    text-decoration: none;
+}
+.sucrerie-bridge__forge-link i { font-size: 0.85em; opacity: 0.8; }
+.sucrerie-bridge__forge-link strong { font-weight: 600; }
+
+.sucrerie-bridge__form-row {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    /* La marge verticale est portée par le form-row lui-même (et non par les
+       __field internes), pour éviter une zone "fantôme" non collapsée à
+       l'intérieur du flex parent qui creuse un trou visuel sous la ligne. */
+    margin: 8px 0;
+}
+.sucrerie-bridge__form-row > .sucrerie-bridge__field {
+    flex: 1 1 220px;
+    min-width: 0;
+    margin: 0;
+}
+
+/* ===== Niveaux ===== */
+.sucrerie-bridge__levels {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Les zones [data-levels-fr] et [data-levels-univ] regroupent plusieurs cycles
+   chacun (cycle 1 à 4 + lycée pour FR ; BTS, BUT, CPGE, Licence, Master,
+   Doctorat, Écoles pour universitaire). On les arrange en grille 2 colonnes
+   pour économiser ~50% de hauteur — la modale est suffisamment large.
+   Le `:not([hidden])` est INDISPENSABLE car `display: grid` écrase la valeur
+   par défaut `display: none` de l'attribut `[hidden]`, ce qui rendait toutes
+   les zones simultanément visibles indépendamment du segment choisi. */
+[data-levels-fr]:not([hidden]),
+[data-levels-univ]:not([hidden]) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 18px;
+    row-gap: 2px;
+}
+
+.sucrerie-bridge__level-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 2px 0;
+    min-width: 0;          /* permet aux chips de wrap dans la cellule grid */
+}
+.sucrerie-bridge__level-group > strong {
+    min-width: 64px;
+    flex-shrink: 0;
+    font-weight: 600;
+    color: var(--sucrerie-berry, #643c45);
+    font-size: 0.83em;
+}
+.sucrerie-bridge__level {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: var(--sucrerie-pink, #ffd9df);
+    color: var(--sucrerie-berry, #643c45);
+    cursor: pointer;
+    font-size: 0.86em;
+}
+.sucrerie-bridge__level input { accent-color: var(--sucrerie-berry, #643c45); }
+
+/* ===== Tag-editor (champ "Tags") =====
+   Conteneur qui simule un input mais regroupe des chips supprimables + un
+   input "fluide" qui pousse à droite. On reproduit visuellement les mêmes
+   bordures / hauteur / focus-ring que les autres inputs du panneau pour
+   que la rangée "Discipline / Tags" reste alignée.
+   Pour ajuster :
+   - hauteur min : `min-height` doit valoir 42px (cohérent avec input/select)
+   - couleur chip : reprend `--sucrerie-pink` / `--sucrerie-berry` */
+.sucrerie-bridge__tag-editor {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 8px;
+    min-height: 42px;
+    border: 1px solid rgba(100, 60, 69, 0.22);
+    border-radius: 8px;
+    background: #fffafb;
+    cursor: text;
+    box-sizing: border-box;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.sucrerie-bridge__tag-editor:focus-within {
+    border-color: var(--sucrerie-berry, #643c45);
+    box-shadow: 0 0 0 3px rgba(100, 60, 69, 0.15);
+}
+.sucrerie-bridge__tag-editor__input {
+    /* Taille raisonnable : ~200px de base (suffisant pour saisir un tag),
+       autorisé à rétrécir si l'espace manque, ne grandit PAS pour ne pas
+       prendre toute la largeur disponible quand il n'y a que 2-3 chips. */
+    flex: 0 1 200px;
+    min-width: 140px;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 4px 2px;
+    font: inherit;
+    font-size: 0.95em;
+    color: #313332;
+}
+.sucrerie-bridge__tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    height: 28px;
+    padding: 0 4px 0 10px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: var(--sucrerie-pink, #ffd9df);
+    color: var(--sucrerie-berry, #643c45);
+    font-size: 0.86em;
+    line-height: 1;
+    max-width: 100%;
+    cursor: default;
+    transition: background-color 0.15s ease, border-color 0.15s ease,
+                box-shadow 0.15s ease, transform 0.15s ease;
+}
+.sucrerie-bridge__tag-chip:hover {
+    border-color: rgba(100, 60, 69, 0.35);
+    transform: translateY(-1px);
+}
+.sucrerie-bridge__tag-chip__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 16em;
+}
+/* Bulle en cours d'édition : toute la chip devient le champ ("le chip devient
+   éditable", pas "un input apparait par-dessus"). */
+.sucrerie-bridge__tag-chip.is-editing {
+    background: #fff;
+    border-color: var(--sucrerie-berry, #643c45);
+    box-shadow: 0 0 0 3px var(--sucrerie-pink, #ffd9df);
+    transform: none;
+    padding-right: 10px;
+    cursor: text;
+}
+.sucrerie-bridge__tag-chip.is-editing .sucrerie-bridge__tag-chip__remove {
+    display: none;
+}
+.sucrerie-bridge__tag-chip__edit {
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--sucrerie-berry, #643c45);
+    font: inherit;
+    font-size: 0.86em;
+    line-height: 1;
+    padding: 0;
+    margin: 0;
+    min-width: 2em;
+    max-width: 16em;
+}
+.sucrerie-bridge__tag-chip__remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex: none;
+    padding: 0;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--sucrerie-berry, #643c45);
+    cursor: pointer;
+    font-size: 0.8em;
+    opacity: 0.55;
+    transition: background-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+}
+.sucrerie-bridge__tag-chip:hover .sucrerie-bridge__tag-chip__remove {
+    opacity: 0.85;
+}
+.sucrerie-bridge__tag-chip__remove:hover,
+.sucrerie-bridge__tag-chip__remove:focus-visible {
+    background: var(--sucrerie-pink-hover, #fcc3ce);
+    opacity: 1;
+    outline: none;
+}
+
+/* Bloc "formation" : 3 chips difficulté + champ public cible en dessous */
+.sucrerie-bridge__formation-block { padding: 4px 0; }
+
+/* ===== Segmented control "système éducatif" ===== */
+.sucrerie-bridge__seg-field {
+    margin: 4px 0 8px;
+}
+.sucrerie-bridge__seg-field > legend {
+    margin-bottom: 4px;
+}
+.sucrerie-bridge__seg-group {
+    display: flex;
+    gap: 0;
+    border: 1px solid rgba(100, 60, 69, 0.22);
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fffafb;
+    width: fit-content;
+    max-width: 100%;
+    flex-wrap: wrap;
+}
+.sucrerie-bridge__seg {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    flex: 0 0 auto;
+}
+/* Si la rangée wrap, garde la séparation visuelle entre lignes */
+.sucrerie-bridge__seg-group .sucrerie-bridge__seg {
+    border-bottom: 1px solid transparent;
+}
+.sucrerie-bridge__seg + .sucrerie-bridge__seg {
+    border-left: 1px solid rgba(100, 60, 69, 0.18);
+}
+.sucrerie-bridge__seg input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+.sucrerie-bridge__seg > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    font-size: 0.86em;
+    color: var(--sucrerie-berry, #643c45);
+    transition: background-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+}
+.sucrerie-bridge__seg > span > i { font-size: 0.95em; opacity: 0.85; }
+.sucrerie-bridge__seg:hover > span {
+    background: rgba(100, 60, 69, 0.06);
+}
+.sucrerie-bridge__seg input:checked + span {
+    background: var(--sucrerie-berry, #643c45);
+    color: #fff7f7;
+}
+.sucrerie-bridge__seg input:focus-visible + span {
+    outline: 2px solid var(--sucrerie-berry, #643c45);
+    outline-offset: 2px;
+}
+
+/* ===== Actions (footer interne du panneau) ===== */
+.sucrerie-bridge__step-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    border-top: 1px solid rgba(100, 60, 69, 0.1);
+    background: #fdf6f7;
+}
+
+/* Le bouton "Annuler" / "Retour" (ghost) se cale à gauche, le bouton primaire
+   reste à droite. Si le step n'a qu'un bouton (success), pas d'effet. */
+.sucrerie-bridge__step-actions .sucrerie-bridge__btn-ghost {
+    margin-right: auto;
+}
+
+.sucrerie-bridge__btn-ghost,
+.sucrerie-bridge__btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 0.95em;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background-color 0.18s ease, transform 0.1s ease;
+}
+.sucrerie-bridge__btn-ghost {
+    background: transparent;
+    border-color: rgba(100, 60, 69, 0.3);
+    color: var(--sucrerie-berry, #643c45);
+}
+.sucrerie-bridge__btn-ghost:hover { background: rgba(100, 60, 69, 0.06); }
+
+.sucrerie-bridge__btn-primary {
+    background: var(--sucrerie-berry, #643c45);
+    color: #fff7f7;
+    border-color: var(--sucrerie-berry, #643c45);
+}
+.sucrerie-bridge__btn-primary:hover { background: #4e2932; }
+.sucrerie-bridge__btn-primary:active { transform: scale(0.98); }
+.sucrerie-bridge__btn-primary:disabled,
+.sucrerie-bridge__btn-ghost:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ===== Loading ===== */
+.sucrerie-bridge__loading {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 40px;
+    color: var(--sucrerie-berry, #643c45);
+    text-align: center;
+}
+.sucrerie-bridge__loading-title { font-weight: 600; font-size: 1.05em; margin: 0; }
+.sucrerie-bridge__loading small { color: #5e5f5f; }
+.sucrerie-bridge__spinner {
+    width: 44px;
+    height: 44px;
+    border: 4px solid var(--sucrerie-pink, #ffd9df);
+    border-top-color: var(--sucrerie-berry, #643c45);
+    border-radius: 50%;
+    animation: sucrerie-bridge-spin 0.9s linear infinite;
+}
+@keyframes sucrerie-bridge-spin { to { transform: rotate(360deg); } }
+
+/* ===== Welcome (étape email) — centré vertical + horizontal ===== */
+.sucrerie-bridge__welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px 36px;
+}
+.sucrerie-bridge__welcome-icon {
+    width: 72px;
+    height: 72px;
+    /* Carré à coins arrondis (23,5 %) — identique à la pastille du logo Sucrerie
+       (favicon.svg rx=23.5 / header .brand__pastille). Plus de cercle. */
+    border-radius: 23.5%;
+    background: var(--sucrerie-pink, #ffd9df);
+    color: var(--sucrerie-berry, #643c45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.9em;
+    margin-bottom: 18px;
+    box-shadow: 0 6px 18px rgba(100, 60, 69, 0.12);
+    overflow: hidden;
+}
+
+/* Logo boutique officiel (boutique.svg) — remplit la pastille ronde, fond rose
+   poudré intégré au SVG (figé, indépendant du thème). Remplace l'ancienne
+   icône Font Awesome fa-store. */
+.sucrerie-bridge__welcome-logo {
+    width: 100%;
+    height: 100%;
+    border-radius: 23.5%;
+    object-fit: cover;
+    display: block;
+}
+/* Zone de retour sous le champ email : hauteur RÉSERVÉE en permanence (le message
+   « non académique » + bouton « Demander un accès » s'y affichent sans décaler le
+   bloc centré — cf. panel.js setEmailError, toujours en layout). */
+.sucrerie-bridge__email-feedback {
+    /* Réserve assez pour message (2 lignes) + bouton → aucun rebond à l'apparition. */
+    min-height: 92px;
+    box-sizing: border-box;
+    text-align: center;        /* centre le texte rouge ET le bouton « Demander un accès » */
+}
+.sucrerie-bridge__welcome-title {
+    margin: 0 0 8px;
+    font-size: 1.4em;
+    font-weight: 600;
+    color: var(--sucrerie-berry, #643c45);
+}
+.sucrerie-bridge__welcome-subtitle {
+    margin: 0 0 20px;
+    color: #5e5f5f;
+    line-height: 1.55;
+    max-width: 520px;
+    font-size: 0.95em;
+}
+.sucrerie-bridge__welcome > .sucrerie-bridge__field {
+    width: 100%;
+    max-width: 480px;
+    text-align: center;        /* label « Votre adresse… » + hint + message centrés */
+}
+/* L'adresse saisie reste alignée à gauche (lecture naturelle d'un email). */
+.sucrerie-bridge__welcome > .sucrerie-bridge__field input {
+    text-align: left;
+}
+
+/* Lien discret vers le catalogue Sucrerie, au-dessus du champ email (zone intro) */
+.sucrerie-bridge__catalog-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    /* Centré entre le sous-titre (margin-bottom 20px) et le champ email
+       (margin-top 8px) : 20+8 au-dessus = 20+8 en-dessous = 28px de chaque côté. */
+    margin: 8px 0 20px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    color: var(--sucrerie-berry, #643c45);
+    text-decoration: none;
+    font-size: 0.88em;
+    /* Bordure sur les 4 côtés (transparente au repos) → au hover elle épouse les
+       coins arrondis, au lieu d'un soulignement plat qui jurait avec le radius. */
+    border: 1px solid transparent;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.sucrerie-bridge__catalog-link:hover {
+    background: rgba(100, 60, 69, 0.07);
+    border-color: rgba(100, 60, 69, 0.22);
+}
+.sucrerie-bridge__catalog-link i {
+    font-size: 0.85em;
+    opacity: 0.75;
+}
+
+/* ===== Discipline : toggle "Autre…" =====
+ * Le slot occupe une hauteur fixe (= hauteur du select) pour qu'aucun
+ * décalage ne se produise au passage select ↔ input "Suggérer une discipline".
+ * Les deux enfants se superposent dans la même boîte. */
+.sucrerie-bridge__discipline-slot {
+    position: relative;
+    min-height: 42px;
+}
+.sucrerie-bridge__discipline-slot > select {
+    width: 100%;
+}
+.sucrerie-bridge__discipline-other {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+/* Plus haute spécificité que `display: flex` ci-dessus pour que `hidden` agisse */
+.sucrerie-bridge__discipline-other[hidden] {
+    display: none !important;
+}
+.sucrerie-bridge__discipline-other input {
+    flex: 1;
+    min-width: 0;
+    height: 42px;
+    padding: 9px 12px;
+    border: 1px solid rgba(100, 60, 69, 0.22);
+    border-radius: 8px;
+    background: #fffafb;
+    font: inherit;
+    font-size: 0.95em;
+    box-sizing: border-box;
+}
+.sucrerie-bridge__discipline-back-btn {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    background: transparent;
+    border: 1px solid rgba(100, 60, 69, 0.22);
+    border-radius: 8px;
+    color: var(--sucrerie-berry, #643c45);
+    cursor: pointer;
+    line-height: 1;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.sucrerie-bridge__discipline-back-btn:hover {
+    background: rgba(100, 60, 69, 0.06);
+}
+
+/* ===== Section légale (auteur + checkbox) ===== */
+.sucrerie-bridge__legal {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: #fdf6f7;
+    border: 1px solid rgba(100, 60, 69, 0.12);
+    border-radius: 10px;
+}
+.sucrerie-bridge__legal > .sucrerie-bridge__hint {
+    margin: 4px 0 6px;
+}
+.sucrerie-bridge__legal-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.85em;
+    color: #313332;
+    line-height: 1.45;
+    margin-top: 6px;
+}
+.sucrerie-bridge__legal-label input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    margin-top: 1px;
+    flex-shrink: 0;
+    accent-color: var(--sucrerie-berry, #643c45);
+    cursor: pointer;
+}
+.sucrerie-bridge__legal-label strong { color: var(--sucrerie-berry, #643c45); }
+
+/* ===== Erreur publish (inline sur le step preview) ===== */
+.sucrerie-bridge__publish-error {
+    margin-top: 16px;
+    padding: 12px 14px;
+    background: #fff0f0;
+    border: 1px solid #f0c0c0;
+    border-left: 4px solid #a83836;
+    border-radius: 8px;
+    color: #6e0a12;
+    font-size: 0.92em;
+    line-height: 1.5;
+}
+.sucrerie-bridge__publish-error[hidden] { display: none; }
+.sucrerie-bridge__publish-error p { margin: 0 0 6px; }
+.sucrerie-bridge__publish-error p:last-child { margin-bottom: 0; }
+
+/* ===== Success ===== */
+.sucrerie-bridge__success {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 40px 36px;
+    text-align: center;
+}
+.sucrerie-bridge__success-icon {
+    font-size: 3em;
+    color: #2e7d4f;
+}
+/* État « en attente de confirmation e-mail » (double opt-in) : pas encore
+   publié → badge ENVELOPPE ambre « action requise », distinct de la coche verte
+   « publié ». Palette ambre alignée sur les états « à confirmer ». */
+.sucrerie-bridge__success--pending .sucrerie-bridge__success-icon {
+    color: #8a5500;
+    background-color: rgba(217, 137, 0, 0.12);
+    border: 1px solid rgba(217, 137, 0, 0.32);
+    border-radius: 50%;
+    width: 1.7em;
+    height: 1.7em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4em;
+}
+.sucrerie-bridge__success--pending h3 {
+    color: #8a5500;
+}
+.sucrerie-bridge__success-email-strong {
+    white-space: nowrap;
+    color: var(--sucrerie-berry, #643c45);
+}
+.sucrerie-bridge__success h3 {
+    margin: 0;
+    color: var(--sucrerie-berry, #643c45);
+    font-size: 1.3em;
+}
+.sucrerie-bridge__success p {
+    margin: 0;
+    max-width: 540px;
+    color: #313332;
+    line-height: 1.55;
+}
+.sucrerie-bridge__success-email {
+    color: #5e5f5f !important;
+    font-size: 0.9em;
+}
+.sucrerie-bridge__success-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    background: var(--sucrerie-pink, #ffd9df);
+    color: var(--sucrerie-berry, #643c45);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.18s ease;
+}
+.sucrerie-bridge__success-link:hover {
+    background: var(--sucrerie-pink-hover, #fcc3ce);
+}
+.sucrerie-bridge__success-link[hidden] { display: none; }
+
+/* ===== Rejected ===== */
+.sucrerie-bridge__rejected {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 40px;
+    text-align: center;
+    color: #313332;
+}
+.sucrerie-bridge__rejected i {
+    font-size: 2.4em;
+    color: #a83836;
+}
+.sucrerie-bridge__rejected h3 { margin: 0; color: #313332; }
+.sucrerie-bridge__rejected p { color: #5e5f5f; max-width: 480px; }
+
+/* =====================================================================
+ *   MODALE DE CONFIRMATION (remplace window.confirm pour les sorties à risque)
+ * ===================================================================== */
+
+.sucrerie-bridge__confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 14, 17, 0.55);
+    z-index: 10001;            /* au-dessus de la preview-modal Caramel */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: sucrerie-bridge-fade-in 0.18s ease;
+}
+
+.sucrerie-bridge__confirm-dialog {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 28px 28px 20px;
+    max-width: 460px;
+    width: 100%;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    animation: sucrerie-bridge-slide-up 0.22s ease;
+}
+
+.sucrerie-bridge__confirm-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6em;
+}
+.sucrerie-bridge__confirm-icon--warning {
+    background: #fff4e0;
+    color: #b56a18;
+}
+.sucrerie-bridge__confirm-icon--danger {
+    background: #ffe5e5;
+    color: #a83836;
+}
+
+.sucrerie-bridge__confirm-title {
+    margin: 0 0 8px;
+    font-size: 1.15em;
+    font-weight: 600;
+    color: var(--sucrerie-berry, #643c45);
+}
+
+.sucrerie-bridge__confirm-message {
+    margin: 0 0 22px;
+    color: #313332;
+    line-height: 1.55;
+    font-size: 0.95em;
+}
+
+.sucrerie-bridge__confirm-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.sucrerie-bridge__confirm-actions .sucrerie-bridge__btn-ghost,
+.sucrerie-bridge__confirm-actions .sucrerie-bridge__btn-primary {
+    margin: 0;
+    min-width: 140px;
+    justify-content: center;
+}
+
+@keyframes sucrerie-bridge-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@keyframes sucrerie-bridge-slide-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Combobox cherchable (discipline + langue) — même UX que le filtre Explorer
+   Sucrerie (recherche au-delà de 8 options + pôles en <optgroup>), porté en
+   autonome (ui/combobox.js). Le <select> natif reste masqué (repli sans JS).
+   Le déclencheur reprend l'aspect d'un <select> du pont (bordure/fond/42px).
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.sucrerie-bridge__combobox-native { display: none; }
+
+.sucrerie-bridge__combobox { position: relative; }
+.sucrerie-bridge__combobox--field { display: block; width: 100%; }
+
+.sucrerie-bridge__combobox-trigger {
+    width: 100%;
+    height: 42px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 36px 9px 12px;
+    border: 1px solid rgba(100, 60, 69, 0.22);
+    border-radius: 8px;
+    background-color: #fffafb;
+    font: inherit;
+    font-size: 0.95em;
+    color: #313332;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23643c45' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 11px;
+}
+.sucrerie-bridge__combobox-trigger:hover { border-color: rgba(100, 60, 69, 0.4); }
+.sucrerie-bridge__combobox-trigger:focus-visible {
+    outline: none;
+    border-color: var(--sucrerie-berry, #643c45);
+    box-shadow: 0 0 0 3px rgba(100, 60, 69, 0.15);
+}
+.sucrerie-bridge__combobox-trigger:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.sucrerie-bridge__combobox-trigger-label {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.sucrerie-bridge__combobox-trigger:not(.has-value) .sucrerie-bridge__combobox-trigger-label {
+    color: #8a7a7e;
+}
+
+.sucrerie-bridge__combobox-popup {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    z-index: 50;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+    background-color: #fffafb;
+    border: 1px solid rgba(100, 60, 69, 0.22);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(100, 60, 69, 0.18);
+}
+.sucrerie-bridge__combobox-popup[hidden] { display: none; }
+
+.sucrerie-bridge__combobox-search {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 12px;
+    border: 1px solid rgba(100, 60, 69, 0.22);
+    border-radius: 999px;
+    font: inherit;
+    font-size: 0.9em;
+    color: #313332;
+    background-color: #fff;
+}
+.sucrerie-bridge__combobox-search:focus-visible {
+    outline: none;
+    border-color: var(--sucrerie-berry, #643c45);
+    box-shadow: 0 0 0 3px rgba(100, 60, 69, 0.15);
+}
+
+.sucrerie-bridge__combobox-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 230px;
+    overflow-y: auto;
+}
+.sucrerie-bridge__combobox-list:focus-visible { outline: none; }
+
+.sucrerie-bridge__combobox-group {
+    padding: 6px 8px 3px;
+    font-size: 0.8em;
+    font-weight: 700;
+    color: var(--sucrerie-berry, #643c45);
+}
+
+.sucrerie-bridge__combobox-option {
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-size: 0.92em;
+    color: #313332;
+    cursor: pointer;
+}
+.sucrerie-bridge__combobox-option[aria-selected="true"] { font-weight: 600; }
+.sucrerie-bridge__combobox-option.is-active {
+    background-color: var(--sucrerie-pink, #ffd9df);
+    color: var(--sucrerie-berry, #643c45);
+}
+
+.sucrerie-bridge__combobox-no-result {
+    margin: 0;
+    padding: 8px 10px;
+    font-size: 0.9em;
+    color: #5e5f5f;
+}

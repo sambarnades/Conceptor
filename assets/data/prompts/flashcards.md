@@ -5,13 +5,20 @@
 
 # RÈGLES SPÉCIFIQUES POUR [H5P.Flashcards]
 - Nombre de cartes : Au minimum 5 cartes || [NOMBRE_ELEMENTS] cartes.
-- Association : Le recto et le verso doivent être reliés par un critère unique et stable (ex : définition -> terme, événement -> date, auteur -> œuvre). Utilise la même relation pour toutes les cartes et formule la consigne ainsi : « Associe chaque X à Y ».
+- Format question → réponse : Chaque carte est une question courte au recto et une réponse en UN SEUL mot ou un nombre au verso. L'élève tape sa réponse et elle est vérifiée à l'identique : la réponse doit donc être univoque (une seule réponse correcte possible). Évite les relations ambiguës où plusieurs réponses sont valides (ex : auteur -> œuvre, pays -> fleuve).
+- Consigne : Formule la consigne ainsi : « Réponds à chaque question. »
 
 # RÈGLES PÉDAGOGIQUES
-- Adaptation et vocabulaire : Adapte le ton, le vocabulaire et la difficulté des consignes au public indiqué. Sois pertinent et engageant.
-- Ton et feedback : Les consignes et remarques doivent être constructives, encourageantes, tournées vers l'apprentissage.
-- Conformité : Adapte OBLIGATOIREMENT les contenus aux références officielles en vigueur. Sauf mention contraire explicite, base-toi par défaut sur les programmes scolaires français (Eduscol) pour le public scolaire, et sur les textes réglementaires de la formation professionnelle pour les adultes.
-- Langue : Le contenu et les consignes doivent être rédigés dans la langue cible (français sauf indication contraire).
+- Adaptation : adapte le ton, le vocabulaire et la difficulté au public. Choisis le tutoiement (élèves) ou le vouvoiement (adultes/formation) et garde le même registre dans les consignes et les rétroactions.
+- Conformité : adapte les contenus aux références officielles (par défaut programmes Eduscol ; textes de la formation professionnelle pour les adultes).
+- Langue : rédige dans la langue cible (français sauf indication contraire).
+- Rétroactions (feedback formatif) — quand l’activité en comporte :
+  - Aide à progresser, jamais un simple verdict. Décris la notion, jamais l’élève : bannis « Faux/Non/À revoir », l’ironie, les comparaisons entre élèves et l’éloge de la personne.
+  - Mauvaise réponse : nomme l’erreur (confusion, fait, calcul, hors-contexte) puis rappelle l’idée juste. Bonne réponse : dis POURQUOI, pas seulement « Bravo ». Indice : une piste qui ne révèle pas la réponse.
+  - N’invente aucun fait ni source ; ne renvoie pas à un « document » ou une « page » : oriente vers la NOTION à revoir.
+  - Feedback global par tranche : il ignore quelle question a été ratée → ne révèle rien et gradue par maîtrise — 0-25 % rassure et reprends les bases ; 26-50 % cible ce qui résiste ; 51-75 % consolide les cas délicats ; 76-100 % valide et propose d’aller plus loin. Évite « Moyen./Bien. » ; tu peux inviter l’élève à repérer lui-même ce qui l’a fait hésiter.
+  - Lisibilité (CUA/FALC) : phrases courtes, mots connus.
+  - Texte brut : aucun Markdown (`**gras**`, `*italique*`) ni LaTeX dans les feedbacks et les indices — H5P ne les interprète pas et ils s’afficheraient littéralement.
 - **LaTeX :** Pour les formules mathématiques dans les champs `text` et `tip`, utilise le format LaTeX : `\\( ... \\)`. Exemples : `\\( \\frac{1}{2} \\)`, `\\( \\alpha \\)`, `\\( x^{2} \\)`, `\\( \\mathbb{R} \\)`.
 
 # SOURCES
@@ -26,30 +33,40 @@
   - \`title\` : Un titre pertinent pour l'activité.
   - \`description\` : Une consigne claire pour l'élève.
   - \`cards\` : Un tableau d'objets, où chaque objet représente une carte (flashcard) et contient :
-    - \`text\` : La question ou le terme à deviner (recto).
-    - \`answer\` : Réponse ou définition (verso). Règles de normalisation : un seul mot simple ou un nombre (pas de mots composés), minuscules (sauf noms propres), sans article ni ponctuation, nombres en chiffres.
+    - \`text\` : La question posée à l'élève (recto). Doit être courte et univoque.
+    - \`answer\` : La réponse attendue (verso), telle que l'élève doit la taper. Règles de normalisation : un seul mot simple ou un nombre (pas de mots composés), minuscules (sauf noms propres), sans article ni ponctuation, nombres en chiffres.
     - \`tip\` (optionnel) : Indice pour aider l'élève. Tu peux utiliser \`**mot**\` pour le gras et \`*mot*\` pour l'italique.
 
 # EXEMPLE DE RENDU
 ```json
 {
-  "title": "Capitales de l'Europe",
-  "description": "Associe chaque pays à sa capitale.",
+  "title": "Révisions de culture générale",
+  "description": "Réponds à chaque question.",
   "cards": [
     {
-      "text": "France",
-      "answer": "paris",
-      "tip": "C'est la ville de la **Tour Eiffel**."
-    },
-    {
-      "text": "Espagne",
+      "text": "Quelle est la capitale de l'Espagne ?",
       "answer": "madrid",
       "tip": "Située au centre de la péninsule *ibérique*."
     },
     {
-      "text": "Italie",
-      "answer": "rome",
-      "tip": "Surnommée la *Ville Éternelle*."
+      "text": "Combien font 7 × 8 ?",
+      "answer": "56",
+      "tip": "Table du **7**."
+    },
+    {
+      "text": "Que signifie « cat » en français ?",
+      "answer": "chat",
+      "tip": "Animal de compagnie *félin*."
+    },
+    {
+      "text": "En quelle année a eu lieu la prise de la Bastille ?",
+      "answer": "1789",
+      "tip": "Début de la **Révolution française**."
+    },
+    {
+      "text": "Quel est le symbole chimique du fer ?",
+      "answer": "Fe",
+      "tip": "Du latin *ferrum*."
     }
   ]
 }

@@ -141,8 +141,16 @@ export async function showHelpModal() {
 
     // Gérer la fermeture
     let a11yCleanup = null;
+    // Listener window nommé pour pouvoir le retirer à la fermeture
+    // (sinon il s'accumule à chaque ouverture de l'aide)
+    const handleWindowClick = (event) => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
     const closeModal = () => {
         if (a11yCleanup) { a11yCleanup(); a11yCleanup = null; }
+        window.removeEventListener('click', handleWindowClick);
         modal.style.display = 'none';
         modal.remove();
     };
@@ -154,11 +162,7 @@ export async function showHelpModal() {
     });
 
     document.getElementById('close-help-modal').addEventListener('click', closeModal);
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            closeModal();
-        }
-    });
+    window.addEventListener('click', handleWindowClick);
 
     // Logique de défilement automatique
     const navLinks = modal.querySelectorAll('.help-nav-link');
@@ -216,6 +220,9 @@ export function downloadFile(content, fileName, contentType) {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+    // Libérer l'object URL une fois le téléchargement déclenché (évite la fuite mémoire).
+    // Délai d'1s pour laisser au navigateur le temps d'initier le téléchargement (Safari).
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 
 export function showNotification(message, type = 'success') {
@@ -261,11 +268,19 @@ export const formatTextToHtml = (text) => {
     // Les majuscules après \n indiquent un début de phrase → c'est un saut de ligne (ex: \nRéflexion)
     const withNewlines = sanitized.replace(/\\n(?![a-z])/g, '\n');
 
+    // ÉTAPE 1bis : Convertir les tableaux Markdown (GFM) en <table> HTML, puis les mettre
+    // de côté via des placeholders pour que l'enveloppe en <p> ci-dessous ne les casse pas.
+    const tablePlaceholders = [];
+    const withoutTables = markdownTablesToHtml(withNewlines).replace(/<table[\s\S]*?<\/table>/g, (m) => {
+        tablePlaceholders.push(m);
+        return `\x00TABLE${tablePlaceholders.length - 1}\x00`;
+    });
+
     // Vérifie si le texte contient déjà des balises HTML de structure (<p>, <div>, etc.)
-    const hasStructuralHtml = /<(p|div|br|ul|ol|li)[\s>]/i.test(withNewlines);
+    const hasStructuralHtml = /<(p|div|br|ul|ol|li)[\s>]/i.test(withoutTables);
 
     // ÉTAPE 2 : Convertir le Markdown en HTML en protégeant le LaTeX
-    let html = markdownToHtml(withNewlines);
+    let html = markdownToHtml(withoutTables);
 
     // Envelopper en paragraphes SEULEMENT si :
     // - Le texte contient des retours à la ligne
@@ -278,6 +293,11 @@ export const formatTextToHtml = (text) => {
             .map(line => `<p>${line}</p>`)
             .join('');
     }
+
+    // Réinsérer les tableaux (en retirant l'éventuelle enveloppe <p> autour du placeholder)
+    html = html
+        .replace(/<p>\s*\x00TABLE(\d+)\x00\s*<\/p>/g, (_, i) => tablePlaceholders[parseInt(i, 10)])
+        .replace(/\x00TABLE(\d+)\x00/g, (_, i) => tablePlaceholders[parseInt(i, 10)]);
 
     return html;
 };
@@ -307,6 +327,65 @@ export function markdownToHtml(text, { newlineToBr = false } = {}) {
     return result.replace(/\x00LATEX(\d+)\x00/g, (_, i) => latexPlaceholders[parseInt(i)]);
 }
 
+/**
+ * Convertit les tableaux Markdown (GFM) en HTML, sur une seule ligne par tableau.
+ *
+ * Détecte un bloc tableau : une ligne d'en-tête contenant `|`, IMMÉDIATEMENT suivie
+ * d'une ligne de séparation faite uniquement de `|`, `:`, `-` et d'espaces (ex.
+ * `| :--- | :--- |`), puis de 0 ou plusieurs lignes de données contenant `|`.
+ * Le contenu de chaque cellule passe par markdownToHtml (gras/italique/LaTeX préservés).
+ * Les lignes hors tableau sont laissées intactes ; sans le moindre `|`, le texte est
+ * retourné tel quel. Sert de filet de sécurité quand l'IA produit un tableau Markdown
+ * dans un bloc texte au lieu d'un vrai bloc tableau (sinon les `|` s'affichent en brut).
+ *
+ * @param {string} text
+ * @returns {string}
+ */
+export function markdownTablesToHtml(text) {
+    if (!text || text.indexOf('|') === -1) return text;
+
+    // Ligne de séparation : que des `|`, `:`, `-`, espaces, avec au moins un `|` et un `-`
+    const isSeparator = (line) => {
+        const t = line.trim();
+        return t.includes('|') && t.includes('-') && /^[\s|:-]+$/.test(t);
+    };
+    const splitCells = (line) => {
+        let s = line.trim();
+        if (s.startsWith('|')) s = s.slice(1);
+        if (s.endsWith('|')) s = s.slice(0, -1);
+        return s.split('|').map(c => c.trim());
+    };
+
+    const lines = text.split('\n');
+    const out = [];
+    for (let i = 0; i < lines.length; i++) {
+        const header = lines[i];
+        const sep = lines[i + 1];
+        if (header.includes('|') && sep !== undefined && isSeparator(sep)) {
+            const headers = splitCells(header);
+            const rows = [];
+            let j = i + 2;
+            while (j < lines.length && lines[j].includes('|') && lines[j].trim() !== '') {
+                rows.push(splitCells(lines[j]));
+                j++;
+            }
+            const thCells = headers
+                .map(h => `<th style="border:1px solid #c5cdd6;padding:6px 10px;background:#eef2f7;text-align:left">${markdownToHtml(h)}</th>`)
+                .join('');
+            const bodyRows = rows
+                .map(r => '<tr>' + headers
+                    .map((_, k) => `<td style="border:1px solid #c5cdd6;padding:6px 10px">${markdownToHtml(r[k] || '')}</td>`)
+                    .join('') + '</tr>')
+                .join('');
+            out.push(`<table style="border-collapse:collapse;margin:0.6em 0;font-size:0.95em"><thead><tr>${thCells}</tr></thead><tbody>${bodyRows}</tbody></table>`);
+            i = j - 1; // sauter le bloc tableau consommé
+        } else {
+            out.push(header);
+        }
+    }
+    return out.join('\n');
+}
+
 
 // =======================================================================
 // 6.4. Fonctions d'échappement et UUID
@@ -318,6 +397,53 @@ export function escapeHtmlTags(str) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+}
+
+/**
+ * Sanitize une URL destinée à un attribut href/src.
+ *
+ * N'autorise que :
+ * - les schémas `http:` / `https:` et `mailto:`
+ * - les ancres (`#...`)
+ * - les chemins relatifs (sans schéma)
+ *
+ * Toute autre valeur (javascript:, data:, vbscript:, ftp:, schéma inconnu,
+ * ou entrée non-string) retourne `'#'` (lien neutre).
+ *
+ * L'entrée est trimée et les caractères de contrôle / espaces sont neutralisés
+ * AVANT le test de schéma : un `java\tscript:alert(1)` est donc bien rejeté
+ * (les navigateurs ignorent ces caractères dans les schémas).
+ *
+ * @param {string} url - URL potentiellement dangereuse
+ * @returns {string} URL sûre, ou '#' si rejetée
+ */
+export function sanitizeUrl(url) {
+    if (typeof url !== 'string') return '#';
+
+    const trimmed = url.trim();
+    if (trimmed === '') return '#';
+
+    // Neutraliser les caractères de contrôle et les espaces pour le test de schéma
+    // (les navigateurs les ignorent : `java\tscript:` est interprété comme `javascript:`)
+    const probe = trimmed.replace(/[\u0000-\u0020\u007F-\u009F\s]/g, '').toLowerCase();
+
+    // Ancres : toujours autorisées
+    if (probe.startsWith('#')) return trimmed;
+
+    // Détection d'un schéma explicite (ex: "https:", "javascript:", "data:")
+    const schemeMatch = probe.match(/^([a-z][a-z0-9+.\-]*):/);
+    if (!schemeMatch) {
+        // Pas de schéma → chemin relatif, autorisé
+        return trimmed;
+    }
+
+    const scheme = schemeMatch[1];
+    if (scheme === 'http' || scheme === 'https' || scheme === 'mailto') {
+        return trimmed;
+    }
+
+    // Schéma interdit ou inconnu → lien neutre
+    return '#';
 }
 
 export function generateUUID() {

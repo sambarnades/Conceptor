@@ -412,18 +412,17 @@ async function runStep4_PdfJsGetTextContent() {
         doc.text('Page 1 avec du contenu pedagogique.', 20, 40);
         const pdfBlob = doc.output('blob');
 
-        // Simuler le pipeline de ocr.js : URL.createObjectURL → getDocument → getTextContent
-        const url = URL.createObjectURL(pdfBlob);
-        const pdfDoc = await window.pdfjsLib.getDocument(url).promise;
+        // Simuler le pipeline de ocr.js : file.arrayBuffer() → getDocument({data}) → getTextContent
+        const arrayBuffer = await pdfBlob.arrayBuffer();
+        const pdfDoc = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         const page = await pdfDoc.getPage(1);
         const textContent = await page.getTextContent();
         const strings = textContent.items.map(item => item.str);
         const fullText = strings.join(' ');
-        URL.revokeObjectURL(url);
 
         assert(
             fullText.length > 10,
-            '[4j] Pipeline complet ocr.js (createObjectURL → getDocument → getTextContent) fonctionne',
+            '[4j] Pipeline complet ocr.js (arrayBuffer → getDocument → getTextContent) fonctionne',
             { longueurTexte: fullText.length, extrait: fullText.substring(0, 80) }
         );
     } catch (e) {

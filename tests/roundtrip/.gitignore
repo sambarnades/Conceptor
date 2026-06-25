@@ -1,0 +1,14 @@
+# Tooling de dev isolé — ne JAMAIS committer (le produit reste no-npm)
+node_modules/
+package-lock.json
+playwright-report/
+test-results/
+.playwright/
+
+# Artefacts de run (rapports horodatés, sorties locales)
+out/
+*.local.json
+report-*.json
+
+# Script éphémère généré par playwright-harness.mjs (baseline Node pour P2)
+_node-baseline.mjs

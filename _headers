@@ -1,0 +1,24 @@
+# Headers de sécurité GitLab Pages (audit 2026-06, S07).
+# Format Netlify-style supporté par GitLab Pages récent ; ignoré sinon (sans effet de bord).
+#
+# La CSP est volontairement en MODE REPORT-ONLY dans un premier temps :
+# elle ne bloque rien, elle journalise les violations en console. Parcours à
+# observer avant promotion en `Content-Security-Policy` (bloquante) :
+# génération H5P + Moodle, preview (iframe h5p-standalone : scripts inline),
+# éditeur, OCR, export DOCX/ODT/PDF (fetch d'images https externes ↔
+# connect-src à élargir ou fonctionnalité à arbitrer), Caramelia, simulateurs.
+#
+# Notes :
+# - script-src garde 'unsafe-inline' : le snippet Matomo inline d'index.html
+#   est mutualisé pour toute la forge et ne doit pas être modifié.
+# - 'wasm-unsafe-eval' : Tesseract (WASM) ; blob:/data: workers : pdf.js, tesseract.
+# - YouTube (Vidéo interactive, lecture par embed natif H5P) : www.youtube.com +
+#   www.youtube-nocookie.com en frame-src ; www.youtube.com + s.ytimg.com en script-src
+#   (la lib charge /iframe_api). Vignettes ytimg couvertes par img-src https:.
+# - frame-ancestors absent : non supporté en Report-Only par les navigateurs ;
+#   à décider à la promotion (mode embed = iframe par des tiers légitimes).
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://wa.phm.education.gouv.fr https://www.youtube.com https://s.ytimg.com blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://n8n-caramel.osc-fr1.scalingo.io https://n8n.incubateur.education.gouv.fr https://codimd.apps.education.fr https://wa.phm.education.gouv.fr data: blob:; worker-src 'self' blob:; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'

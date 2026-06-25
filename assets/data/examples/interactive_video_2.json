@@ -1,0 +1,125 @@
+{
+  "title": "Les nouvelles conditions d'accès à la classe exceptionnelle",
+  "interactions": [
+    {
+      "timestamp": 205,
+      "pause": true,
+      "type": "truefalse",
+      "question": "Les nouveaux décrets de 2023 ont supprimé l'échelon spécial dans la classe exceptionnelle.",
+      "correct": true,
+      "feedbackOnCorrect": "Exact ! L'échelon spécial a été remplacé par un cinquième échelon du grade de la classe exceptionnelle.",
+      "feedbackOnWrong": "Non, les décrets de 2023 ont bien supprimé l'échelon spécial, remplacé par un cinquième échelon."
+    },
+    {
+      "timestamp": 491,
+      "pause": true,
+      "type": "multichoice",
+      "question": "Quelle est la condition principale pour accéder à la classe exceptionnelle depuis les nouveaux décrets ?",
+      "answers": [
+        {
+          "text": "Avoir atteint le cinquième échelon de la hors-classe (quatrième pour les agrégés)",
+          "correct": true,
+          "feedback": "Bravo ! C'est la condition principale pour tous les corps, sauf les agrégés qui doivent atteindre le quatrième échelon."
+        },
+        {
+          "text": "Avoir six années d'ancienneté dans des conditions d'exercice spécifiques",
+          "correct": false,
+          "feedback": "Cette condition existait avant les nouveaux décrets, mais elle n'est plus requise désormais."
+        },
+        {
+          "text": "Avoir obtenu un avis très favorable de la rectrice",
+          "correct": false,
+          "feedback": "L'avis de la rectrice n'est plus nécessaire depuis les nouveaux décrets."
+        },
+        {
+          "text": "Avoir atteint le septième échelon de la hors-classe",
+          "correct": false,
+          "feedback": "Cette condition concernait l'ancien système des viviers, mais elle n'est plus en vigueur."
+        }
+      ]
+    },
+    {
+      "timestamp": 615,
+      "pause": true,
+      "type": "multichoice",
+      "question": "Quels sont les deux types d'avis que les évaluateurs (chef d'établissement et inspecteur) peuvent désormais attribuer ?",
+      "answers": [
+        {
+          "text": "Très favorable et favorable",
+          "correct": true,
+          "feedback": "Exact ! Les avis défavorables ne sont plus possibles dans ce contexte."
+        },
+        {
+          "text": "Très favorable, favorable et défavorable",
+          "correct": false,
+          "feedback": "Les avis défavorables ne sont plus attribués pour la classe exceptionnelle."
+        },
+        {
+          "text": "Favorable, défavorable et très défavorable",
+          "correct": false,
+          "feedback": "Ces types d'avis ne sont pas prévus pour la classe exceptionnelle."
+        },
+        {
+          "text": "Très favorable, favorable et neutre",
+          "correct": false,
+          "feedback": "L'avis 'neutre' n'existe pas dans le nouveau système."
+        }
+      ]
+    },
+    {
+      "timestamp": 1348,
+      "pause": true,
+      "type": "truefalse",
+      "question": "Un avis très favorable attribué cette année sera automatiquement reconduit les années suivantes, sauf en cas de dégradation justifiée.",
+      "correct": true,
+      "feedbackOnCorrect": "Exact ! L'avis très favorable est reconduit automatiquement d'une campagne à l'autre, sauf si une dégradation est justifiée.",
+      "feedbackOnWrong": "Non, l'avis très favorable est bien reconduit automatiquement, sauf en cas de dégradation justifiée."
+    },
+    {
+      "timestamp": 2247,
+      "pause": true,
+      "type": "blanks",
+      "text": "Pour classer les agents ayant un *double avis très favorable*, les critères de départage sont, dans l'ordre : l'ancienneté dans le corps, l'ancienneté dans le grade, l'échelon, puis l'ancienneté dans l'échelon."
+    }
+  ],
+  "summary": {
+    "intro": "Voici les idées clés à retenir sur les modifications des conditions d'accès à la classe exceptionnelle :",
+    "statements": [
+      [
+        "Les nouveaux décrets de 2023 ont supprimé l'échelon spécial et les deux viviers de promotion, simplifiant ainsi les conditions d'accès.",
+        "Les anciens décrets de 2023 ont maintenu l'échelon spécial et les deux viviers de promotion.",
+        "Les nouveaux décrets de 2023 ont supprimé l'échelon spécial mais ont conservé les deux viviers de promotion."
+      ],
+      [
+        "Pour accéder à la classe exceptionnelle, il faut désormais avoir atteint le cinquième échelon de la hors-classe (quatrième pour les agrégés).",
+        "Pour accéder à la classe exceptionnelle, il faut avoir six années d'ancienneté dans des conditions d'exercice spécifiques.",
+        "Pour accéder à la classe exceptionnelle, il faut avoir atteint le septième échelon de la hors-classe."
+      ],
+      [
+        "Les évaluateurs (chef d'établissement et inspecteur) attribuent désormais uniquement des avis 'très favorable' ou 'favorable'.",
+        "Les évaluateurs attribuent des avis 'très favorable', 'favorable' et 'défavorable'.",
+        "Les évaluateurs attribuent des avis 'très favorable', 'favorable', 'neutre' et 'défavorable'."
+      ],
+      [
+        "Un avis 'très favorable' est reconduit automatiquement d'une campagne à l'autre, sauf en cas de dégradation justifiée.",
+        "Un avis 'très favorable' doit être justifié à chaque campagne.",
+        "Un avis 'très favorable' n'est jamais reconduit automatiquement."
+      ],
+      [
+        "Les critères de départage pour classer les agents avec un double avis 'très favorable' sont : ancienneté dans le corps, ancienneté dans le grade, échelon, puis ancienneté dans l'échelon.",
+        "Les critères de départage sont : échelon, ancienneté dans l'échelon, ancienneté dans le grade, puis ancienneté dans le corps.",
+        "Les critères de départage sont : ancienneté dans le grade, échelon, ancienneté dans l'échelon, puis ancienneté dans le corps."
+      ],
+      [
+        "Les promotions sont attribuées en respectant un équilibre hommes-femmes et une représentation équilibrée entre les enseignants du second degré et ceux de l'enseignement supérieur.",
+        "Les promotions sont attribuées uniquement en fonction du classement des agents.",
+        "Les promotions sont attribuées en fonction de l'ancienneté dans le corps uniquement."
+      ]
+    ]
+  },
+  "videoSource": {
+    "type": "html5",
+    "url": "https://podeduc.apps.education.fr/media/videos/4ab156a586a5ba3c77854ae64d979eb092a735714cfd27fad91f015ba8c03aaf/41023/360p.mp4",
+    "mime": "video/mp4"
+  }
+}

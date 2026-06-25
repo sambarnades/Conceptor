@@ -5,7 +5,7 @@
     {
       "type": "multichoice",
       "content": {
-        "name": "Q1 - Domaine de la fonction racine",
+        "name": "Q01 - Domaine de la fonction racine",
         "questiontext": "Quelle est le domaine de définition de la fonction f(x)=√(2x-4) ?",
         "feedback": "Le radicand doit être positif ou nul : 2x-4 ≥ 0 → x ≥ 2.",
         "answers": [
@@ -19,7 +19,7 @@
     {
       "type": "numerical",
       "content": {
-        "name": "Q2 - Valeur de √25",
+        "name": "Q02 - Valeur de √25",
         "questiontext": "Quelle est la valeur exacte de √25 ?",
         "feedback": "La racine carrée positive de 25 vaut 5.",
         "answer": { "number": 5, "tolerance": 0, "feedback": "Bonne réponse !" }
@@ -28,7 +28,7 @@
     {
       "type": "truefalse",
       "content": {
-        "name": "Q3 - Racine carrée des nombres négatifs",
+        "name": "Q03 - Racine carrée des nombres négatifs",
         "questiontext": "Il existe une racine carrée réelle pour tout nombre réel négatif.",
         "feedback": "En classe terminale, on travaille uniquement avec la racine carrée réelle, qui n'est définie que pour les nombres ≥ 0.",
         "answer": { "value": false, "feedback_true": "Faux, le radicand doit être positif ou nul.", "feedback_false": "Exact, aucune racine carrée réelle n'existe pour un nombre négatif." }
@@ -37,7 +37,7 @@
     {
       "type": "shortanswer",
       "content": {
-        "name": "Q4 - Fonction inverse",
+        "name": "Q04 - Fonction inverse",
         "questiontext": "Donnez l'expression de la fonction inverse de f(x)=√(3x+6).",
         "feedback": "On résout y=√(3x+6) → y²=3x+6 → x=(y²‑6)/3, donc la fonction inverse est g(y)= (y²‑6)/3.",
         "answers": [
@@ -49,7 +49,7 @@
     {
       "type": "matching",
       "content": {
-        "name": "Q5 - Suites et leurs descriptions",
+        "name": "Q05 - Suites et leurs descriptions",
         "questiontext": "Faites correspondre chaque suite à sa description.",
         "feedback": "Très bien, vous avez identifié les types de suites.",
         "subquestions": [
@@ -62,7 +62,7 @@
     {
       "type": "cloze",
       "content": {
-        "name": "Q6 - Limite d'une suite rationnelle",
+        "name": "Q06 - Limite d'une suite rationnelle",
         "questiontext": "La suite a_n = (3n+2)/(2n-5) converge. Sa limite lorsque n → ∞ est {1:SHORTANSWER:=1.5}.",
         "feedback": "En divisant numérateur et dénominateur par n, on obtient 3/2 = 1,5."
       }
@@ -70,7 +70,7 @@
     {
       "type": "multichoice",
       "content": {
-        "name": "Q7 - Monotonie d'une suite quadratique",
+        "name": "Q07 - Monotonie d'une suite quadratique",
         "questiontext": "Quel est le comportement de la suite u_n = n^2 - 4n + 3 pour n ≥ 1 ?",
         "feedback": "Le discriminant vaut 4, le minimum de la parabole est atteint en n = 2, donc la suite décroît de n=1 à n=2 puis croît à partir de n=2.",
         "answers": [
@@ -84,7 +84,7 @@
     {
       "type": "numerical",
       "content": {
-        "name": "Q8 - Terme d'une suite récurrente",
+        "name": "Q08 - Terme d'une suite récurrente",
         "questiontext": "La suite (u_n) est définie par u_0 = 1 et u_{n+1}=2u_n+3. Quelle est la valeur de u_5 ?",
         "feedback": "En itérant : u_1=5, u_2=13, u_3=29, u_4=61, u_5=125.",
         "answer": { "number": 125, "tolerance": 0, "feedback": "Exact, u_5 = 125." }
@@ -93,7 +93,7 @@
     {
       "type": "truefalse",
       "content": {
-        "name": "Q9 - Convergence d'une suite alternée",
+        "name": "Q09 - Convergence d'une suite alternée",
         "questiontext": "La suite v_n = (-1)^n / n converge vers 0 quand n tend vers l'infini.",
         "feedback": "Le terme absolu |v_n|=1/n tend vers 0, donc la suite converge vers 0.",
         "answer": { "value": true, "feedback_true": "Exact, la suite converge vers 0.", "feedback_false": "Faux, la suite converge bien vers 0." }

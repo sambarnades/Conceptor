@@ -6,6 +6,7 @@
 import { TEMPLATES } from '../shared/templates.js';
 import { buildMoodleBackup } from '../shared/moodle-backup.js';
 import { replacePlaceholders } from '../shared/placeholder.js';
+import { parseXml, tagText, escapeXml, rewriteTag } from '../../mbz-utils.js';
 
 /**
  * Métadonnées du module QCM.
@@ -97,10 +98,89 @@ export function buildFiles(data, options = {}) {
     return files;
 }
 
+// =========================================================================
+// INVERSE : .mbz extrait → JSON éditeur
+// =========================================================================
+
+/**
+ * Lit l'archive d'un QCM (simplequiz) déjà extraite par `mbz-utils.extractMbz`
+ * et reconstruit le JSON tel que l'éditeur l'attend.
+ *
+ * Pendant inverse de `buildFiles`. Ne touche pas aux fichiers — uniquement
+ * de la lecture XML.
+ *
+ * @param {Object<string, Uint8Array>} files - Map issue de extractMbz
+ * @param {string} activityDir - ex: 'activities/simplequiz_25'
+ * @returns {{ title: string, questions: Array, _context: { moduleId, activityId, activityContextId } }}
+ * @throws {Error} qcm_missing_xml | qcm_invalid_xml | qcm_questions_json_invalid
+ */
+export function parseFiles(files, activityDir) {
+    const xmlPath  = `${activityDir}/simplequiz.xml`;
+    const xmlBytes = files[xmlPath];
+    if (!xmlBytes) throw new Error(`qcm_missing_xml:${xmlPath}`);
+
+    const xml = new TextDecoder('utf-8').decode(xmlBytes);
+    const doc = parseXml(xml);
+
+    const activityNode = doc.querySelector('activity');
+    if (!doc.querySelector('activity > simplequiz')) {
+        throw new Error('qcm_invalid_xml_no_simplequiz');
+    }
+
+    const title         = tagText(doc, 'simplequiz > name');
+    const questionsRaw  = tagText(doc, 'simplequiz > questions');
+
+    let questions = [];
+    if (questionsRaw && questionsRaw.trim()) {
+        try {
+            questions = JSON.parse(questionsRaw);
+        } catch (e) {
+            throw new Error(`qcm_questions_json_invalid:${e.message}`);
+        }
+    }
+
+    return {
+        title,
+        questions,
+        // Contexte technique nécessaire pour reconstruire un .mbz cohérent
+        // sans repasser par buildFiles (cf. serializeFiles).
+        _context: {
+            moduleId:          activityNode?.getAttribute('moduleid')  ?? '',
+            activityId:        activityNode?.getAttribute('id')        ?? '',
+            activityContextId: activityNode?.getAttribute('contextid') ?? ''
+        }
+    };
+}
+
+/**
+ * Patch in-place les fichiers extraits avec les données éditées.
+ * Approche minimale : on rewrite uniquement les balises éditables (`name`,
+ * `questions`) dans le XML existant — ne casse pas les autres champs (timecreated,
+ * grade, completionminattempts...) et ne nécessite pas de regénérer toute la
+ * famille de fichiers.
+ *
+ * @param {{ title: string, questions: Array }} data
+ * @param {Object<string, Uint8Array>} files - Map mutable, sera modifiée
+ * @param {string} activityDir
+ */
+export function serializeFiles(data, files, activityDir) {
+    const xmlPath  = `${activityDir}/simplequiz.xml`;
+    const xmlBytes = files[xmlPath];
+    if (!xmlBytes) throw new Error(`qcm_missing_xml:${xmlPath}`);
+
+    let xml = new TextDecoder('utf-8').decode(xmlBytes);
+    xml = rewriteTag(xml, 'name',      escapeXml(data.title || ''));
+    xml = rewriteTag(xml, 'questions', escapeXml(JSON.stringify(data.questions || [])));
+
+    files[xmlPath] = window.fflate.strToU8(xml);
+}
+
 /**
  * Export par défaut du processeur.
  */
 export default {
     metadata,
-    buildFiles
+    buildFiles,
+    parseFiles,
+    serializeFiles
 };

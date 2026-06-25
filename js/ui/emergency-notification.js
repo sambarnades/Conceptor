@@ -11,7 +11,7 @@ import { currentLang } from '../core/translation.js';
    ========================================================================= */
 const ENABLE_EMERGENCY_NOTIFICATIONS = true;     // Basculer sur false pour désactiver toute la mécanique.
 const POLLING_INTERVAL_MS = 60000;               // Fréquence de rafraîchissement (ex: 60 s).
-const REMOTE_NOTICE_URL = 'https://codimd.apps.education.fr/s/R4BvqeSBw/download';
+const REMOTE_NOTICE_URL = 'https://codimd.apps.education.fr/s/sZyn6OLeN/download';
 const REQUEST_TIMEOUT_MS = 8000;               // Evite les requêtes pendantes.
 
 /* Couleurs nommées utilisables dans le CodiMD (clé → code hex) */
@@ -272,8 +272,14 @@ function convertMarkdownToHtml(text) {
 
     // Échappe uniquement les caractères HTML dangereux qui ne font pas partie des balises créées
     html = html.replace(/&(?!amp;|lt;|gt;)/g, '&amp;')
-               .replace(/<(?!\/?(?:strong|em)>)/g, '&lt;')
-               .replace(/(?<!<\/?(?:strong|em))>/g, '&gt;');
+               .replace(/<(?!\/?(?:strong|em)>)/g, '&lt;');
+    // Échappe `>` sauf s'il termine une balise <strong>/<em>/</strong>/</em> créée ci-dessus.
+    // Équivalent du lookbehind /(?<!<\/?(?:strong|em))>/ — réécrit avec un callback
+    // car le lookbehind provoque une SyntaxError sur Safari < 16.4.
+    html = html.replace(/>/g, (match, offset, str) => {
+        const before = str.slice(Math.max(0, offset - 8), offset); // 8 = longueur de "</strong"
+        return /<\/?(?:strong|em)$/.test(before) ? '>' : '&gt;';
+    });
 
     return html;
 }

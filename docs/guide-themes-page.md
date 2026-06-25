@@ -154,7 +154,7 @@ Chaque bloc du JSON a un `type` (ex: `"#01_hero_header"`) et un objet `data` don
 
 | # | Type | `data` attendu | Description |
 |---|------|----------------|-------------|
-| 01 | `#01_hero_header` | `{ title, subtitle }` | En-tete hero avec titre principal. Le titre doit utiliser `div[role="heading"][aria-level="1"]` et `textContent` (pas `<h1>`, pas `innerHTML`). |
+| 01 | `#01_hero_header` | `{ title, subtitle }` | En-tete hero avec titre principal. Le titre utilise `ctx.heroLevel` (balise native `<h1>` en standalone, `<div>` decoratif en export Elea) et `textContent` (pas `innerHTML`). Voir [6.3](#63-niveaux-de-titre--ctxheadingtagdepth-et-ctxherolevel). |
 | 02 | `#02_nav_summary` | `{ links: [{ href, text }] }` | Sommaire de navigation. Doit utiliser `<nav role="navigation" aria-label="Sommaire">`. |
 | 03 | `#03_histo_reperes` | `{ title, cards: [{ title, text }] }` | Reperes historiques en grille de cartes. |
 | 04 | `#04_callout_set` | `{ title, callouts: [{ type, text }] }` | Ensemble de callouts. Types possibles : `objectif`, `savoir`, `alerte`. Le type `alerte` doit avoir `role="alert"`. |
@@ -281,21 +281,48 @@ config: {
 }
 ```
 
-### 6.3 `div[role="heading"][aria-level="1"]` au lieu de `<h1>`
+### 6.3 Niveaux de titre : `ctx.headingTag(depth)` et `ctx.heroLevel`
 
-Elea peut reecrire les balises `<h1>`. Pour le titre principal du hero header, utiliser un `<div>` avec les attributs ARIA :
+Accessibilite (RGAA 9.1) : la hierarchie des titres doit suivre la structure du
+contenu et **s'emboiter sous le `<h1>` que Moodle/Elea posent deja** (le nom de
+l'activite pour une Page, le titre de chapitre pour un Livre). On ne re-emet
+**jamais** de `<h1>` dans le contenu exporte.
+
+`generateHtmlFromBlocks()` injecte dans `ctx` deux helpers :
+
+- **`ctx.headingTag(depth)`** -> renvoie la balise de titre native (`'h2'`, `'h3'`...)
+  pour une profondeur relative. `depth = 0` = titre de bloc, `1` = sous-element
+  (carte, question FAQ, sous-section). Niveaux de base (clampes a `h6`) :
+  - **Page** : `2` (le contenu s'emboite sous le `<h1>` que Elea pose pour l'activite).
+  - **Livre, preview** : `3` (le simulateur pose `<h1>` livre puis `<h2>` chapitre).
+  - **Livre, export** : `4` (verifie sur Elea : Moodle rend `<h1>` chrome + `<h2>`
+    region = nom du livre, puis `<h3>` = titre de chapitre ; nos blocs s'emboitent dessous).
+- **`ctx.heroLevel`** -> niveau du titre du hero (`#01`). Vaut `1` en contexte
+  **standalone** (preview de la modale, fichier `.html` autonome) ; vaut `null`
+  en **export Elea/Moodle** -> le hero devient alors un bandeau **decoratif**
+  (pas de balise de titre) pour eviter le doublon de niveau-1.
 
 ```javascript
-// INCORRECT -- Elea peut reecrire <h1>
-const heading = document.createElement('h1');
-heading.textContent = title;
+// Titre de bloc (profondeur 0) -> balise native parametree
+const h2 = document.createElement(ctx.headingTag(0));   // 'h2' (Page) / 'h3' (Livre)
+// Sous-element (profondeur 1)
+const h3 = document.createElement(ctx.headingTag(1));   // 'h3' (Page) / 'h4' (Livre)
 
-// CORRECT -- div avec role ARIA
-const heading = document.createElement('div');
-heading.setAttribute('role', 'heading');
-heading.setAttribute('aria-level', '1');
-heading.textContent = title;
+// Hero (#01) : titre natif en standalone, bandeau decoratif en export
+let heading;
+if (ctx.heroLevel) {
+    heading = document.createElement('h' + ctx.heroLevel);   // <h1> en preview/.html
+} else {
+    heading = document.createElement('div');                 // bandeau decoratif (Elea pose le <h1>)
+}
+heading.textContent = title;   // textContent (pas innerHTML), cf. 6.4
 ```
+
+> Note historique : on utilisait auparavant `div[role="heading"][aria-level="1"]`
+> en dur, par crainte qu'Elea reecrive les `<h1>`. Verification faite (capture DOM
+> 2026-06), Elea **conserve** les `<h2>`-`<h6>` de contenu et pose lui-meme le
+> `<h1>` de l'activite. Les balises natives sont preferees a `role="heading"`
+> (regle 1 d'ARIA, technique W3C ARIA12).
 
 ### 6.4 `textContent` pour le titre hero
 
@@ -437,10 +464,13 @@ function renderHeroHeader(data, ctx) {
     // Fallback : utiliser le titre global si data.title est vide
     const headerTitle = (ctx.jsonData && ctx.jsonData.title) ? ctx.jsonData.title : data.title;
 
-    // div[role="heading"] au lieu de <h1> (contrainte Elea)
-    const heading = document.createElement('div');
-    heading.setAttribute('role', 'heading');
-    heading.setAttribute('aria-level', '1');
+    // Titre natif de niveau ctx.heroLevel en standalone, bandeau decoratif en export Elea
+    let heading;
+    if (ctx.heroLevel) {
+        heading = document.createElement('h' + ctx.heroLevel);
+    } else {
+        heading = document.createElement('div');
+    }
     heading.setAttribute('style',
         'margin:0 0 10px 0; font-size:1.8rem; font-weight:700; ' +
         'color:#ffffff !important; -webkit-text-fill-color:#ffffff !important;');
@@ -555,7 +585,7 @@ export default {
 ### Points cles de l'exemple
 
 1. **`_safeTag()`** est defini en haut du fichier et utilise dans tous les renderers qui appellent `formatTextToHtml()`
-2. **Le hero header** utilise `div[role="heading"][aria-level="1"]` avec `textContent`
+2. **Le hero header** utilise `ctx.heroLevel` (titre natif `<h1>` en standalone, `<div>` decoratif en export Elea) avec `textContent`, et les titres de blocs/sous-elements utilisent `ctx.headingTag(0)` / `ctx.headingTag(1)`
 3. **Les couleurs claires** sur fond fonce utilisent toujours `-webkit-text-fill-color` en plus de `color`
 4. **Tous les styles sont inline** -- aucune classe CSS n'est utilisee
 5. **`inheritedStyles`** reprend la police, l'interligne et la couleur de base du theme

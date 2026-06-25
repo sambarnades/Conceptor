@@ -6,9 +6,12 @@
 
 import { allModules, customOrder, h5pModules, moodleModules } from '../core/definitions.js';
 import { translations, translatePage, currentLang } from '../core/translation.js';
-import { generatePrompts } from '../services/prompt-generator.js';
+import { generatePrompts, buildVideoInteractivePrompt, setVideoTranscriptSources, getTranscriptAnchors } from '../services/prompt-generator.js';
+import { snapInteractions, capInteractions, maxQuestionsFor } from '../h5p/processors/interactive-video-snap.js';
+import { buildSyncedTranscriptEditor } from './transcript-sync-editor.js';
 import { cleanJsonInput, showNotification, copyToClipboard, downloadFile, setupToolbarListeners, getCaramelVersionFromFooter, syncPanelHeights, DEBUG, debugLog, setupModalAccessibility } from '../core/utils.js';
 import { populateModelSelector, AVAILABLE_MODELS, DEFAULT_MODEL, ACTIVITY_MODEL_OVERRIDES, generateH5PWithLLM } from '../services/llm.js';
+import { generateInBatches, shouldChunk, BATCH_CONFIG } from '../services/llm-batch.js';
 import { addNotification, getNotificationById, getLastDebugNotification, showToastForNotification, revealNotification } from './notifications.js';
 
 // ============= IMPORTS DYNAMIQUES (chargés à la demande) =============
@@ -179,6 +182,11 @@ export function setupFilters() {
             // Le contexte a changé : effacer les données sauvegardées (prompts et JSON)
             clearSessionData();
 
+            // Vidéo interactive : on NE réinitialise PAS le lien/transcription — la transcription
+            // ne dépend que de la vidéo, pas du contexte pédagogique (Qui/Quoi). On la conserve ;
+            // generatePrompts() ci-dessous reconstruit le prompt avec le nouveau contexte + la même
+            // transcription (cf. currentVideoSources dans prompt-generator).
+
             // Régénérer les prompts seulement si au moins un champ requis est rempli
             // (évite les erreurs quand l'utilisateur efface tous les champs)
             const qui = document.getElementById('qui')?.value.trim() || '';
@@ -346,6 +354,46 @@ function saveModalDataToSession(moduleKey) {
     }
 }
 
+/**
+ * Enregistre un listener de clic global (document) lié au contenu courant de la sidebar.
+ * Le handler est mémorisé sur la sidebar (même principe que sidebar._resizeHandler)
+ * pour être retiré à la fermeture / au re-render, évitant l'accumulation de listeners
+ * à chaque ouverture de sidebar.
+ * @param {Function} handler - Le handler à attacher sur document.
+ */
+function addSidebarDocumentClickListener(handler) {
+    document.addEventListener('click', handler);
+    if (!sidebar._docClickHandlers) sidebar._docClickHandlers = [];
+    sidebar._docClickHandlers.push(handler);
+}
+
+/**
+ * Retire les listeners globaux et observers liés au contenu courant de la sidebar.
+ * Appelé à la fermeture et avant chaque re-render (changement de tuile, refresh i18n).
+ */
+function cleanupSidebarListeners() {
+    // Listeners de clic globaux (fermeture des dropdowns au clic extérieur)
+    if (sidebar._docClickHandlers) {
+        sidebar._docClickHandlers.forEach(h => document.removeEventListener('click', h));
+        sidebar._docClickHandlers = null;
+    }
+    // Observer des changements de classe (placeholder mode guidé)
+    if (sidebar._placeholderObserver) {
+        sidebar._placeholderObserver.disconnect();
+        sidebar._placeholderObserver = null;
+    }
+    // Handler de resize (synchronisation des hauteurs de panneaux)
+    if (sidebar._resizeHandler) {
+        window.removeEventListener('resize', sidebar._resizeHandler);
+        sidebar._resizeHandler = null;
+    }
+    // Timer de debounce de l'URL vidéo (activité Vidéo interactive)
+    if (sidebar._videoDebounceTimer) {
+        clearTimeout(sidebar._videoDebounceTimer);
+        sidebar._videoDebounceTimer = null;
+    }
+}
+
 function closeSidebar() {
     // Sauvegarder les données avant fermeture
     if (activeTile) {
@@ -365,11 +413,8 @@ function closeSidebar() {
         activeTile.classList.remove('active');
         activeTile = null;
     }
-    // Supprimer le handler de resize
-    if (sidebar._resizeHandler) {
-        window.removeEventListener('resize', sidebar._resizeHandler);
-        sidebar._resizeHandler = null;
-    }
+    // Supprimer les listeners globaux (resize, clics document, observer)
+    cleanupSidebarListeners();
     // Vider le contenu pour éviter les conflits d'ID
     closeSidebarTimer = setTimeout(() => {
         sidebar.innerHTML = '';
@@ -388,6 +433,752 @@ if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
  * @param {string} moduleKey - La clé identifiant le module à afficher.
  * @param {HTMLElement} tileElement - L'élément de la tuile qui a été cliqué.
  */
+// ============= VIDÉO INTERACTIVE : détection URL + verrouillage génération =============
+// État de détection par module (videoSource + transcript), persistant le temps de la session UI.
+const videoStates = new Map();
+
+/** Échappe le HTML pour le contenu statique des popovers vidéo. */
+function escVid(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/**
+ * Ouvre un popover compact (fond assombri, carte blanche arrondie), au-dessus de la modale
+ * d'activité. Réutilisé par l'aide « ? » et par « Voir / coller la transcription ».
+ * Escape + piège de focus gérés en phase de CAPTURE pour ne PAS fermer la modale parente.
+ * @param {string} titleText - Titre affiché dans l'en-tête.
+ * @param {string} iconClass - Classe Font Awesome de l'icône de titre.
+ * @param {HTMLElement} bodyEl - Contenu du corps.
+ * @param {{wide?:boolean}} [opts] - wide : popover large (double panneau transcription).
+ * @returns {{close:Function, el:HTMLElement}}
+ */
+function openVideoPopover(titleText, iconClass, bodyEl, opts = {}) {
+    document.querySelectorAll('.video-popover, .video-popover__backdrop').forEach(n => n.remove());
+    const prevFocus = document.activeElement;
+
+    const backdrop = document.createElement('div');
+    backdrop.className = 'video-popover__backdrop';
+
+    const pop = document.createElement('div');
+    pop.className = 'video-popover' + (opts && opts.wide ? ' video-popover--wide' : '');
+    pop.setAttribute('role', 'dialog');
+    pop.setAttribute('aria-modal', 'true');
+
+    const header = document.createElement('div');
+    header.className = 'video-popover__header';
+    const title = document.createElement('span');
+    title.className = 'video-popover__title';
+    title.innerHTML = `<i class="${iconClass}" aria-hidden="true"></i>`;
+    title.append(document.createTextNode(' ' + titleText));
+    const closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.className = 'video-popover__close';
+    closeBtn.setAttribute('aria-label', translations.help_download_close || 'Fermer');
+    closeBtn.innerHTML = '<i class="fas fa-xmark" aria-hidden="true"></i>';
+    header.append(title, closeBtn);
+
+    const body = document.createElement('div');
+    body.className = 'video-popover__body';
+    body.appendChild(bodyEl);
+
+    pop.append(header, body);
+    document.body.append(backdrop, pop);
+
+    const FOCUSABLE = 'button:not([disabled]),[href],input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])';
+    const onKey = (e) => {
+        if (e.key === 'Escape') { e.stopPropagation(); e.preventDefault(); close(); return; }
+        if (e.key === 'Tab') {
+            const f = [...pop.querySelectorAll(FOCUSABLE)].filter(el => el.offsetParent !== null);
+            if (!f.length) return;
+            const first = f[0], last = f[f.length - 1];
+            if (!pop.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+            else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+            e.stopPropagation();
+        }
+    };
+    let closed = false;
+    function close() {
+        if (closed) return;
+        closed = true;
+        document.removeEventListener('keydown', onKey, true);
+        if (typeof opts.onClose === 'function') { try { opts.onClose(); } catch { /* nettoyage best-effort */ } }
+        pop.remove();
+        backdrop.remove();
+        if (prevFocus && typeof prevFocus.focus === 'function') prevFocus.focus();
+    }
+    closeBtn.addEventListener('click', close);
+    backdrop.addEventListener('click', close);
+    document.addEventListener('keydown', onKey, true);
+    setTimeout(() => { (pop.querySelector(FOCUSABLE) || closeBtn).focus(); }, 50);
+    return { close, el: pop };
+}
+
+/**
+ * Aligne le bord DROIT du bouton « ? » (barre lien vidéo) sur le bord GAUCHE du bouton
+ * « Générer en un clic » (en-tête). Les deux sont sur des rangées différentes et la largeur du
+ * bouton Générer varie selon la langue → alignement calculé à l'exécution (rejoué au resize).
+ * Sur petit écran (en-tête empilé), on neutralise l'alignement.
+ * @param {HTMLElement} root
+ */
+function alignVideoHelpButton(root) {
+    if (!root) return;
+    const row = root.querySelector('.video-url-section .video-url-row');
+    const helpBtn = root.querySelector('.video-url-section .video-help-btn');
+    const genGroup = root.querySelector('.top-controls-container .generation-button-group');
+    if (!row || !helpBtn || !genGroup) return;
+    row.style.marginRight = '0px'; // réinitialiser avant de mesurer la position naturelle
+    if (window.innerWidth <= 768) return; // en-tête empilé : pas d'alignement cross-rangée
+    const delta = helpBtn.getBoundingClientRect().right - genGroup.getBoundingClientRect().left;
+    if (delta > 1) row.style.marginRight = Math.round(delta) + 'px';
+}
+
+/**
+ * Indique si une vidéo lisible a été détectée pour ce module (verrou de génération).
+ * @param {string} moduleKey
+ * @returns {boolean}
+ */
+function isVideoReady(moduleKey) {
+    const st = videoStates.get(moduleKey);
+    return !!(st && st.detect && st.detect.playable);
+}
+
+/**
+ * Filet de sécurité (appelé quand la transcription automatique échoue à la génération) :
+ * passe le champ en état « manuel » (ambre + ⚠), affiche le lien « Coller la transcription »
+ * et ouvre directement le popover de collage. La fonction d'ouverture est exposée par
+ * initVideoUrlSection sur le nœud de section (`_openTranscript`).
+ * @param {string} moduleKey
+ */
+function revealVideoManual(moduleKey) {
+    const section = sidebar.querySelector(`#video-url-section-${moduleKey}`);
+    if (!section) return;
+    section.dataset.state = 'manual';
+    const statusEl = section.querySelector('.video-url-field__status');
+    if (statusEl) statusEl.innerHTML = '<i class="fas fa-circle-exclamation" aria-hidden="true"></i>';
+    const msg = section.querySelector('.video-url-msg');
+    if (msg) {
+        msg.hidden = false;
+        msg.innerHTML = '';
+        msg.appendChild(document.createTextNode(translations.video_manual_short || 'Transcription automatique indisponible.'));
+        if (typeof section._openTranscript === 'function') {
+            msg.appendChild(document.createTextNode(' · '));
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'video-url-msg__action';
+            b.textContent = translations.video_paste_cta || 'Coller la transcription';
+            b.addEventListener('click', () => section._openTranscript('paste'));
+            msg.appendChild(b);
+        }
+    }
+    const seeBtn = section.querySelector('.video-url-field__action');
+    if (seeBtn) seeBtn.hidden = true;
+    if (typeof section._openTranscript === 'function') section._openTranscript('paste');
+}
+
+/**
+ * Construit l'objet `segments` pour le prompt à partir d'une transcription normalisée :
+ * segments timés tels quels, ou — si la transcription n'est pas timée (texte brut collé) —
+ * un unique bloc couvrant toute la durée (l'IA répartira les questions).
+ * @param {Object} transcript - Transcription normalisée (cf. video-transcript.js).
+ * @param {Object} detect - Résultat de detectVideo() (pour la durée).
+ * @returns {Array<{start:number,end:number,text:string}>}
+ */
+function transcriptToSegments(transcript, detect) {
+    if (transcript && Array.isArray(transcript.segments) && transcript.segments.length) {
+        return transcript.segments;
+    }
+    if (transcript && transcript.text) {
+        return [{ start: 0, end: (detect && detect.duration) || 0, text: transcript.text }];
+    }
+    return [];
+}
+
+/**
+ * Nombre de questions demandé explicitement par l'utilisateur (champ « nombre » du mode Avancé),
+ * ou null en mode Simple / si vide. Sert à respecter le choix de l'enseignant face au plafond auto.
+ * @returns {number|null}
+ */
+function getRequestedQuestionCount() {
+    const simpleTab = document.querySelector('.mode-tab[data-mode="simple"]');
+    const isAdvanced = !(simpleTab && simpleTab.classList.contains('active'));
+    if (!isAdvanced) return null;
+    const n = parseInt(document.getElementById('nombreQuestions')?.value || '', 10);
+    return Number.isFinite(n) && n > 0 ? n : null;
+}
+
+/**
+ * Génère le JSON d'une activité « en un clic ». Décide de façon transparente entre :
+ *   - 1 seul appel LLM (comportement historique) si le nombre demandé ≤ seuil OU activité
+ *     non « list-shaped » (pas de `chunking` dans definitions.js) ;
+ *   - génération PAR LOTS (plan + remplissage + fusion, cf. services/llm-batch.js) au-delà,
+ *     pour contourner le mur des 59 s du proxy n8n sans répétition entre lots.
+ * Renvoie TOUJOURS un seul JSON (string) → le reste du flux (createBtn → healer → processor)
+ * est inchangé. La progression « lot k/N » est poussée dans l'overlay d'animation.
+ * @returns {Promise<string>}
+ */
+async function generateActivityContent(moduleKey, module, prompt, selectedModel, activityMeta) {
+    let requestedCount = getRequestedQuestionCount();
+    if (shouldChunk(module, requestedCount)) {
+        if (requestedCount > BATCH_CONFIG.maxItems) {
+            const tmpl = translations.batch_capped
+                || 'Génération limitée à {max} questions en un clic. Pour davantage, copiez le prompt vers une IA externe.';
+            showNotification(tmpl.replace('{max}', BATCH_CONFIG.maxItems), 'info');
+            requestedCount = BATCH_CONFIG.maxItems;
+        }
+        try {
+            return await generateInBatches({
+                moduleKey,
+                model: selectedModel,
+                activityMeta,
+                requestedCount,
+                onProgress: (p) => setBatchProgress(p)
+            });
+        } catch (e) {
+            // Détail technique réservé à la console (dev) ; l'utilisateur reçoit un message
+            // TRADUIT (aucun texte interne en français en dur affiché).
+            console.error('Échec de la génération par lots :', e);
+            throw new Error(translations.batch_failed
+                || 'le découpage en plusieurs lots n\'a pas abouti — réessaie dans un instant.');
+        }
+    }
+    return generateH5PWithLLM(prompt, selectedModel, activityMeta);
+}
+
+/**
+ * Normalise déterministiquement les interactions générées AVANT la création du .h5p (WYSIWYG :
+ * le JSON affiché = celui produit) :
+ *   1. Cale chaque `timestamp` sur l'horodatage RÉEL le plus proche (mêmes ancres `[mm:ss]` que
+ *      celles montrées au modèle) → neutralise les modèles qui CALCULENT un instant intermédiaire
+ *      (sinon pause en milieu de phrase) ; écarte les timestamps au-delà de la durée.
+ *   2. Plafonne le nombre de questions (nombre demandé en mode Avancé, sinon ~1 / 2,5 min) en
+ *      gardant un sous-ensemble réparti dans le temps → évite les vidéos longues sur-truffées.
+ * Injecte `parsed.maxQuestions` (le plafond effectif) pour que le backstop du processeur s'aligne.
+ * Mute `parsed` en place. Sans transcription timée exploitable, ne touche à rien.
+ * @param {Object} parsed - JSON intermédiaire parsé (champ `interactions`).
+ * @param {Object} transcript - Transcription normalisée (segments).
+ * @param {Object} detect - Résultat de detectVideo() (pour la durée d'un bloc non timé).
+ */
+function snapVideoTimestamps(parsed, transcript, detect) {
+    if (!parsed || !Array.isArray(parsed.interactions) || !parsed.interactions.length) return;
+    const segs = transcriptToSegments(transcript, detect);
+    if (!segs.length) return;
+    const anchors = getTranscriptAnchors(segs);
+    if (!anchors.length) return;
+    const maxDuration = (detect && Number(detect.duration) > 0) ? Number(detect.duration) : null;
+
+    const snap = snapInteractions(parsed.interactions, anchors, { maxDuration });
+    const effMax = getRequestedQuestionCount() || maxQuestionsFor(maxDuration);
+    const cap = capInteractions(snap.interactions, maxDuration, effMax);
+
+    parsed.interactions = cap.interactions;
+    parsed.maxQuestions = effMax; // borne haute → le processeur réapplique le MÊME plafond (idempotent)
+    debugLog('InteractiveVideo', 'Snap + plafond (ui)', { snap: snap.report, cap: cap.report });
+}
+
+/**
+ * Injecte la transcription dans le PROMPT de gauche (« Obtenir le prompt à copier ») :
+ * la transcription horodatée devient les SOURCES du prompt « Vidéo interactive », ce qui
+ * permet à l'IA de placer les questions juste avant la phrase qui lance une idée neuve.
+ * Écrit le textarea visible ET le textarea caché (réutilisés par « copier le prompt » et
+ * par generatePrompts si le contexte change ensuite).
+ * @param {Object} module
+ * @param {Array<{start:number,end:number,text:string}>} segments
+ * @param {number|null} duration
+ */
+function injectVideoTranscriptIntoPrompt(module, segments, duration) {
+    // Mémorise la transcription côté générateur : si l'utilisateur modifie qui/quoi ensuite,
+    // generatePrompts() la réinjectera automatiquement (pas de perte).
+    setVideoTranscriptSources(segments, duration);
+    const promptId = module.promptId;
+    if (!promptId) return;
+    const promptText = buildVideoInteractivePrompt(segments, duration);
+    const visible = document.getElementById(promptId);
+    if (visible) visible.value = promptText;
+    let hidden = document.getElementById(`hidden-${promptId}`);
+    if (!hidden) {
+        hidden = document.createElement('textarea');
+        hidden.id = `hidden-${promptId}`;
+        hidden.classList.add('hidden');
+        document.body.appendChild(hidden);
+    }
+    hidden.value = promptText;
+}
+
+/**
+ * Initialise la section « URL vidéo » (activités requiresVideoUrl uniquement).
+ * Logique : coller le lien lance AUTOMATIQUEMENT la détection + la récupération de la
+ * transcription (sous-titres si dispo, sinon transcription audio Albert), avec un indicateur
+ * qui tourne. Dès que la transcription est prête, elle est injectée dans le prompt de gauche
+ * et le groupe de boutons de génération passe au bleu (déverrouillé). Tant qu'elle ne l'est
+ * pas, tout le groupe reste grisé.
+ * @param {string} moduleKey
+ * @param {Object} module
+ */
+function initVideoUrlSection(moduleKey, module) {
+    if (!module || !module.requiresVideoUrl) return;
+    const section = sidebar.querySelector(`#video-url-section-${moduleKey}`);
+    const input = sidebar.querySelector(`#video-url-input-${moduleKey}`);
+    const statusEl = sidebar.querySelector(`#video-status-${moduleKey}`);
+    const msgEl = sidebar.querySelector(`#video-msg-${moduleKey}`);
+    const helpBtn = sidebar.querySelector(`#video-help-btn-${moduleKey}`);
+    const seeBtn = sidebar.querySelector(`#video-see-btn-${moduleKey}`);
+    const goBtn = sidebar.querySelector(`#video-go-btn-${moduleKey}`);
+    if (!section || !input) return;
+
+    // Jauge + voile « Transcription en cours » intégrés au champ du lien (cf. setProgress).
+    const progressFill = section.querySelector('.video-url-field__progress');
+    const overlayEl = section.querySelector('.video-url-field__overlay');
+    const overlayLabel = section.querySelector('.video-url-field__overlay-label');
+    const stopBtn = section.querySelector(`#video-stop-btn-${moduleKey}`);
+
+    // Estimation d'attente affichée à côté de « Transcription en cours… » (cf. setProgress).
+    // Renseignée une fois la vidéo détectée (durée connue) ; vidée à la fin/à l'arrêt.
+    let etaLabel = '';
+    // Met en forme une estimation (secondes) en libellé court : « ≈ 25 s » ou « ≈ 3 min ».
+    const fmtEta = (sec) => {
+        if (sec == null || !(sec > 0)) return '';
+        if (sec < 60) {
+            const n = Math.max(5, Math.round(sec / 5) * 5); // arrondi à 5 s (pas de fausse précision)
+            return (translations.video_eta_seconds || '≈ {n} s').replace('{n}', n);
+        }
+        return (translations.video_eta_minutes || '≈ {n} min').replace('{n}', Math.round(sec / 60));
+    };
+
+    const createBtn = sidebar.querySelector(`#${module.createBtnId}`);
+    const llmBtn = sidebar.querySelector(`#generate-llm-${moduleKey}`);
+    const modelBtn = sidebar.querySelector(`#model-selector-btn-${moduleKey}`);
+
+    // Groupes de boutons de génération. Le groupe LLM (génération IA) est strictement lié à la
+    // vidéo détectée ; le bouton de création (depuis un JSON collé) a un verrou plus souple.
+    const llmGroup = sidebar.querySelector('.top-controls-container .generation-button-group');
+    const createGroup = createBtn ? createBtn.closest('.generation-button-group') : null;
+    const jsonInputEl = sidebar.querySelector(`#${module.jsonInputId}`);
+
+    // Le JSON collé contient-il déjà une source vidéo exploitable ?
+    const pastedJsonHasVideo = () => {
+        if (!jsonInputEl) return false;
+        const v = cleanJsonInput(jsonInputEl.value || '');
+        if (!v) return false;
+        try {
+            const p = JSON.parse(v);
+            if (!p || typeof p !== 'object') return false;
+            const vs = p.videoSource;
+            return !!(vs && (typeof vs === 'string' ? vs.trim() : (vs.url && String(vs.url).trim())));
+        } catch { return false; }
+    };
+
+    // Verrou du bouton de création : actif si une vidéo est détectée OU si le JSON collé embarque
+    // déjà sa videoSource (collage manuel d'un JSON tout prêt, sans avoir saisi d'URL).
+    const refreshCreateGate = () => {
+        if (!createBtn) return;
+        const ok = isVideoReady(moduleKey) || pastedJsonHasVideo();
+        createBtn.disabled = !ok;
+        createBtn.classList.toggle('is-disabled-gate', !ok);
+        if (createGroup) createGroup.classList.toggle('gen-gated', !ok);
+    };
+
+    // Icône d'état affichée DANS le champ (à droite) selon l'état courant.
+    const STATUS_ICON = {
+        checking: '<span class="video-spinner" aria-hidden="true"></span>',
+        ready: '<i class="fas fa-circle-check" aria-hidden="true"></i>',
+        error: '<i class="fas fa-circle-exclamation" aria-hidden="true"></i>',
+        manual: '<i class="fas fa-circle-exclamation" aria-hidden="true"></i>',
+        empty: ''
+    };
+    // L'état vit dans le champ : la couleur du bord/fond (CSS via data-state) + l'icône.
+    const setState = (state) => {
+        section.dataset.state = state;
+        if (statusEl) statusEl.innerHTML = STATUS_ICON[state] || '';
+        refreshGo();
+    };
+    // Sous-ligne discrète : visible seulement quand il y a quelque chose à dire (attente, erreur,
+    // collage). Sur le chemin heureux (champ vert), elle reste masquée → le cadre ne grandit pas.
+    const setMsg = (text, actionLabel, onAction) => {
+        if (!msgEl) return;
+        msgEl.innerHTML = '';
+        if (!text) { msgEl.hidden = true; return; }
+        msgEl.hidden = false;
+        msgEl.appendChild(document.createTextNode(text));
+        if (actionLabel && onAction) {
+            msgEl.appendChild(document.createTextNode(' · '));
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'video-url-msg__action';
+            b.textContent = actionLabel;
+            b.addEventListener('click', onAction);
+            msgEl.appendChild(b);
+        }
+    };
+    const showSee = (show) => { if (seeBtn) seeBtn.hidden = !show; };
+    // Bouton « valider le lien » (flèche) DANS le champ : affordance visible du collage-auto/Entrée.
+    // N'apparaît qu'en état neutre AVEC un lien saisi (idle) — masqué pendant la transcription
+    // (le voile + bouton stop prennent sa place), une fois prêt (« Voir »), ou en erreur/manuel
+    // (la sous-ligne porte déjà « Réessayer » / « Coller la transcription »).
+    const refreshGo = () => {
+        if (!goBtn) return;
+        const hasText = !!(input.value || '').trim();
+        goBtn.hidden = !(hasText && section.dataset.state === 'empty');
+    };
+    // Jauge de progression DANS le champ du lien : la barre se remplit dans la div et un voile
+    // flou (backdrop-filter) recouvre l'URL avec « Transcription en cours… n/t ». Déterminée
+    // quand on connaît le nombre de lots (PodEduc : « 3/10 »), indéterminée sinon (bande qui glisse).
+    const setProgress = (current, total, label) => {
+        if (!overlayEl) return;
+        overlayEl.hidden = false;
+        const determinate = total > 1;
+        if (progressFill) {
+            progressFill.classList.toggle('video-url-field__progress--indet', !determinate);
+            progressFill.style.width = determinate ? Math.round((current / total) * 100) + '%' : '';
+        }
+        if (overlayLabel) {
+            const txt = determinate
+                ? (translations.video_progress_chunk || 'Transcription en cours… {n}/{t}').replace('{n}', current).replace('{t}', total)
+                : (label || translations.video_detecting || 'Transcription en cours…');
+            const full = etaLabel ? `${txt} · ${etaLabel}` : txt;
+            overlayLabel.innerHTML = `<span class="video-spinner" aria-hidden="true"></span><span>${escVid(full)}</span>`;
+        }
+    };
+    // Retire le voile + remet la jauge à zéro (transcription terminée, arrêtée ou en erreur).
+    const hideTranscribing = () => {
+        etaLabel = '';
+        if (overlayEl) overlayEl.hidden = true;
+        if (progressFill) {
+            progressFill.style.width = '';
+            progressFill.classList.remove('video-url-field__progress--indet');
+        }
+    };
+    // Verrou de génération IA (LLM) : strictement lié à la détection d'une vidéo lisible.
+    // Le bouton de création (createBtn) est géré à part par refreshCreateGate (verrou plus souple :
+    // il accepte aussi un JSON collé contenant déjà une videoSource).
+    const setGenEnabled = (enabled) => {
+        if (llmGroup) llmGroup.classList.toggle('gen-gated', !enabled);
+        [llmBtn, modelBtn].forEach(btn => {
+            if (!btn) return;
+            btn.disabled = !enabled;
+            btn.classList.toggle('is-disabled-gate', !enabled);
+        });
+        refreshCreateGate();
+    };
+
+    // Le collage/l'édition d'un JSON peut déverrouiller le bouton de création (videoSource incluse).
+    if (jsonInputEl) jsonInputEl.addEventListener('input', refreshCreateGate);
+
+    // Applique une transcription récupérée : prompt de gauche + champ vert + déverrouillage.
+    const applyTranscript = (transcript, detect) => {
+        const segs = transcriptToSegments(transcript, detect);
+        injectVideoTranscriptIntoPrompt(module, segs, detect && detect.duration);
+        hideTranscribing();
+        setState('ready');
+        setMsg(null);
+        showSee(true);
+        setGenEnabled(true);
+    };
+
+    // Verrouille tout (URL vide ou modifiée) et purge la transcription du prompt.
+    const lockGate = () => {
+        videoStates.delete(moduleKey);
+        setGenEnabled(false);
+        hideTranscribing();
+        setState('empty');
+        setMsg(null);
+        showSee(false);
+        setVideoTranscriptSources(null);
+    };
+
+    // --- Popover « ? » : quelles vidéos utiliser ---
+    const openHelpPopover = () => {
+        const body = document.createElement('div');
+        body.className = 'video-help-body';
+        const chip = (txt, cls) => `<span class="vplat-chip ${cls}">${escVid(txt)}</span>`;
+        body.innerHTML =
+            `<p class="video-help-body__intro">${escVid(translations.video_help_intro || 'Collez le lien d’une vidéo : Caramel détecte la vidéo, récupère la transcription, puis l’IA place les questions aux bons moments. Le champ passe au vert quand tout est prêt.')}</p>` +
+            `<ul class="video-help-body__platforms">` +
+            `<li><span class="vplat-name">${escVid(translations.video_help_peertube || 'Tubes (des Apps Education)')}</span>${chip(translations.video_help_status_ok || 'Pris en charge', 'vplat-chip--ok')}</li>` +
+            `<li><span class="vplat-name">${escVid(translations.video_help_podeduc || 'PodEduc (des Apps Education)')}</span>${chip(translations.video_help_status_ok || 'Pris en charge', 'vplat-chip--ok')}</li>` +
+            `<li><span class="vplat-name">${escVid(translations.video_help_youtube || 'YouTube (de Google)')}</span>${chip(translations.video_help_status_ok || 'Pris en charge', 'vplat-chip--ok')}</li>` +
+            `</ul>` +
+            `<p class="video-help-body__steps">${escVid(translations.video_help_steps || 'Pas de transcription automatique ? Ouvrez « Voir / coller » et collez un sous-titrage (WebVTT, SRT) ou le texte de la vidéo.')}</p>`;
+        openVideoPopover(translations.video_help_title || 'Quelles vidéos utiliser ?', 'fas fa-circle-question', body);
+    };
+
+    // Repère temporel relu par parsePastedTranscript. h:mm:ss au-delà d'une heure (sinon les minutes
+    // > 99 d'une vidéo longue ne seraient PAS re-parsées si l'utilisateur édite le texte).
+    const fmtTsLong = (sec) => {
+        sec = Math.max(0, Math.floor(Number(sec) || 0));
+        const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
+        return h > 0
+            ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+            : `${m}:${String(s).padStart(2, '0')}`;
+    };
+
+    // Applique le texte d'un champ : inchangé → on garde l'objet d'origine (fidélité des `end`) ;
+    // sinon on re-parse. `closeAfter` ferme le popover (et donc détruit le lecteur via onClose).
+    const commitTranscript = async (rawText, origPrefill, tr, closeAfter) => {
+        const rawT = (rawText || '').trim();
+        if (!rawT) { showNotification(translations.video_paste_empty || 'Collez d\'abord une transcription.', 'error'); return; }
+        const s = videoStates.get(moduleKey) || {};
+        if (tr && origPrefill != null && rawT === origPrefill.trim()) {
+            applyTranscript(tr, s.detect);
+        } else {
+            const { parsePastedTranscript } = await import('../services/video-transcript.js');
+            const parsed = parsePastedTranscript(rawT);
+            if (parsed.error) { showNotification(translations.video_paste_empty || 'Transcription vide ou illisible.', 'error'); return; }
+            s.transcript = parsed;
+            videoStates.set(moduleKey, s);
+            applyTranscript(parsed, s.detect);
+            showNotification(translations.video_paste_ok || 'Transcription enregistrée.', 'success');
+        }
+        if (typeof closeAfter === 'function') closeAfter();
+    };
+
+    // --- Popover « Voir / coller » ---
+    // Transcription TIMÉE + vidéo lisible → éditeur 2 panneaux : transcription (gauche, surlignage de
+    // la ligne courante + auto-défilement + édition live) | lecteur (droite). Sinon → champ unique.
+    const openTranscriptPopover = (/* mode */) => {
+        const st = videoStates.get(moduleKey) || {};
+        const tr = (st.transcript && !st.transcript.error) ? st.transcript : null;
+        const segs = (tr && Array.isArray(tr.segments)) ? tr.segments : [];
+        const videoSource = (st.detect && st.detect.videoSource && st.detect.videoSource.url) ? st.detect.videoSource : null;
+        // 2 panneaux dès qu'une vidéo est LISIBLE — même sans transcription auto : on lit la vidéo et
+        // on bâtit les passages à la main (bouton « ajouter une ligne »). Sinon → champ unique de collage.
+        const synced = !!videoSource;
+
+        // ===== Mode simple : champ unique éditable (pas de timing OU pas de vidéo lisible) =====
+        if (!synced) {
+            const prefill = segs.length
+                ? segs.map(s => `[${fmtTsLong(s.start)}] ${s.text}`).join('\n')
+                : (tr && tr.text ? tr.text : '');
+            const body = document.createElement('div');
+            body.className = 'video-transcript-body';
+            const info = document.createElement('p');
+            info.className = 'video-transcript-body__info';
+            if (tr) {
+                const base = segs.length
+                    ? (translations.video_transcript_segments || '{n} passages récupérés.').replace('{n}', segs.length)
+                    : (translations.video_transcript_plain || 'Transcription récupérée.');
+                info.textContent = base + ' ' + (translations.video_transcript_edit_hint || 'Vous pouvez corriger le texte avant de l’utiliser.');
+            } else {
+                info.classList.add('video-transcript-body__info--paste');
+                info.textContent = translations.video_paste_label || 'Transcription (WebVTT, SRT ou texte)';
+            }
+            const ta = document.createElement('textarea');
+            ta.className = 'video-paste-input video-transcript-edit';
+            ta.placeholder = translations.video_paste_placeholder || 'WEBVTT… ou collez le texte de la transcription';
+            ta.value = prefill;
+            const actions = document.createElement('div');
+            actions.className = 'video-transcript-actions';
+            const useBtn = document.createElement('button');
+            useBtn.type = 'button';
+            useBtn.className = 'action-btn primary-btn video-paste-btn';
+            useBtn.innerHTML = `<i class="fas fa-check" aria-hidden="true"></i> ${escVid(translations.video_paste_btn || 'Valider la transcription')}`;
+            actions.appendChild(useBtn);
+            body.append(info, ta, actions);
+            let ctrl;
+            useBtn.addEventListener('click', () => commitTranscript(ta.value, prefill, tr, () => ctrl && ctrl.close()));
+            ctrl = openVideoPopover(translations.video_transcript_title || 'Transcription', 'fas fa-closed-captioning', body, { wide: true });
+            setTimeout(() => ta.focus(), 60);
+            return;
+        }
+
+        // ===== Mode synchronisé : 2 panneaux (transcription éditable | lecteur) =====
+        const prefill = segs.length ? segs.map(s => `[${fmtTsLong(s.start)}] ${s.text}`).join('\n') : '';
+
+        const body = document.createElement('div');
+        body.className = 'video-transcript-body video-transcript-body--sync';
+        const info = document.createElement('p');
+        info.className = 'video-transcript-body__info';
+        if (segs.length) {
+            info.textContent = (translations.video_transcript_segments || '{n} passages récupérés.').replace('{n}', segs.length)
+                + ' ' + (translations.video_transcript_edit_hint || 'Vous pouvez corriger le texte avant de l’utiliser.');
+        } else {
+            info.classList.add('video-transcript-body__info--paste');
+            info.textContent = translations.video_transcript_build_hint || 'Aucune transcription automatique : lisez la vidéo et ajoutez les passages, ou collez la vôtre.';
+        }
+
+        // Astuce pédagogique : une transcription bien découpée dans le temps = des questions mieux placées.
+        const pedago = document.createElement('p');
+        pedago.className = 'video-transcript-body__pedago';
+        pedago.innerHTML = `<i class="fas fa-lightbulb" aria-hidden="true"></i> ${escVid(translations.video_transcript_pedago || 'Astuce : plus la transcription est découpée en passages courts et bien horodatés, plus l’IA place les questions au bon moment.')}`;
+
+        const widget = buildSyncedTranscriptEditor(segs, videoSource, {
+            labels: {
+                use: translations.video_paste_btn || 'Valider la transcription',
+                resume: translations.video_transcript_resume || 'Recaler sur la vidéo',
+                resumeTip: translations.video_transcript_resume_tip || 'Reprend le défilement automatique calé sur la lecture',
+                addLine: translations.video_transcript_add_line || 'Ajouter une ligne à cet instant',
+                placeholder: translations.video_paste_placeholder || 'WEBVTT… ou collez le texte de la transcription'
+            },
+            onUse: (text, edited) => commitTranscript(text, edited ? null : prefill, tr, () => ctrl && ctrl.close())
+        });
+        body.append(info, pedago, widget.element);
+
+        const ctrl = openVideoPopover(
+            translations.video_transcript_title || 'Transcription',
+            'fas fa-closed-captioning',
+            body,
+            { wide: true, onClose: () => widget.destroy() }
+        );
+        widget.activate(); // crée le lecteur (le conteneur est maintenant dans le DOM)
+    };
+    // Exposé pour revealVideoManual (filet de sécurité côté génération).
+    section._openTranscript = openTranscriptPopover;
+
+    // État initial : génération verrouillée tant qu'aucune transcription n'est prête.
+    const initialState = videoStates.get(moduleKey);
+    if (!initialState || !initialState.transcript || initialState.transcript.error) setGenEnabled(false);
+
+    let busy = false;
+    let currentAbort = null;   // AbortController du run en cours (annulation réseau)
+    let runToken = 0;          // jeton de run : un résultat dont le jeton a changé est ignoré
+
+    // Arrêt manuel de la transcription (bouton stop dans le champ). Invalide le run courant,
+    // coupe les requêtes réseau en vol (lots PodEduc restants), et remet le champ au neutre.
+    const cancelDetection = () => {
+        if (!busy) return;
+        runToken++;
+        if (currentAbort) { try { currentAbort.abort(); } catch { /* déjà abort */ } currentAbort = null; }
+        busy = false;
+        hideTranscribing();
+        setGenEnabled(false);
+        setState('empty');
+        setMsg(translations.video_transcription_cancelled || 'Transcription arrêtée.');
+        showSee(false);
+        videoStates.delete(moduleKey);
+        setVideoTranscriptSources(null);
+    };
+
+    const runDetection = async () => {
+        const url = (input.value || '').trim();
+        if (!url) { lockGate(); return; }
+        if (busy) return;
+        busy = true;
+        const myToken = ++runToken;
+        const ac = new AbortController();
+        currentAbort = ac;
+        etaLabel = ''; // pas d'estimation tant que la durée est inconnue (phase de détection)
+        setState('checking');
+        setProgress(0, 0, translations.video_detecting || 'Transcription en cours…'); // voile + jauge indéterminée
+        setMsg(null);
+        showSee(false);
+        setGenEnabled(false);
+        try {
+            const { detectVideo, fetchTranscript, estimateTranscriptionSeconds, detectPlatform } = await import('../services/video-transcript.js');
+            // YouTube : l'attente EST la détection (yt-dlp côté serveur) → on affiche l'estimation
+            // tout de suite (durée pas encore connue, mais l'attente y est quasi insensible : ~10 s).
+            if (detectPlatform(url) === 'youtube') {
+                etaLabel = fmtEta(estimateTranscriptionSeconds({ platform: 'youtube' }));
+                setProgress(0, 0, translations.video_detecting || 'Transcription en cours…');
+            }
+            const detect = await detectVideo(url);
+            if (myToken !== runToken) return; // arrêté pendant la détection → on ignore
+            if (!detect || !detect.supported || !detect.playable) {
+                hideTranscribing();
+                setState('error');
+                setMsg(translations.video_status_error || 'Vidéo non lisible ou plateforme non supportée (Tubes).', translations.video_retry || 'Réessayer', runDetection);
+                showSee(false);
+                videoStates.delete(moduleKey);
+                setVideoTranscriptSources(null);
+                return;
+            }
+            videoStates.set(moduleKey, { url, detect, transcript: null });
+
+            // Durée connue → estimation d'attente affichée dans le voile, selon le schéma suivi
+            // (sous-titres ≈ instantané, voie Albert ≈ 3 s + 0,5 s/min, repli YouTube audio plus lent).
+            etaLabel = fmtEta(estimateTranscriptionSeconds(detect));
+            setProgress(0, 0, translations.video_detecting || 'Transcription en cours…');
+
+            // Récupération de la transcription : sous-titres si dispo, sinon transcription audio
+            // (Albert) — le tout côté serveur (CORS résolu par le webhook n8n). La jauge suit la
+            // progression (lot par lot pour les vidéos PodEduc longues découpées).
+            const onProgress = (p) => {
+                if (myToken !== runToken || !p) return;
+                if (p.stage === 'plan') setProgress(0, 0, translations.video_progress_analyze || 'Analyse et découpage de la vidéo…');
+                else if (p.stage === 'transcribe') setProgress(p.current, p.total);
+            };
+            let transcript = null;
+            try { transcript = await fetchTranscript(url, detect, onProgress, ac.signal); } catch { transcript = { error: 'fetch_failed' }; }
+            if (myToken !== runToken) return; // arrêté pendant la transcription → on ignore le résultat
+
+            const usable = transcript && !transcript.error
+                && ((Array.isArray(transcript.segments) && transcript.segments.length > 0) || (transcript.untimed && transcript.text));
+
+            if (usable) {
+                const st = videoStates.get(moduleKey) || { url, detect };
+                st.transcript = transcript;
+                videoStates.set(moduleKey, st);
+                applyTranscript(transcript, detect);
+            } else {
+                // Transcription automatique indisponible → filet de sécurité : collage manuel (popover).
+                hideTranscribing();
+                setState('manual');
+                setMsg(translations.video_manual_short || 'Transcription automatique indisponible.', translations.video_paste_cta || 'Coller la transcription', () => openTranscriptPopover('paste'));
+                showSee(false);
+            }
+        } catch (e) {
+            if (myToken !== runToken) return; // arrêté : l'erreur du run abandonné est sans intérêt
+            debugLog('ui', 'détection vidéo échec', e);
+            hideTranscribing();
+            setState('error');
+            setMsg(translations.video_error_network || 'Erreur réseau pendant la détection. Vérifiez le lien et réessayez.', translations.video_retry || 'Réessayer', runDetection);
+            showSee(false);
+            videoStates.delete(moduleKey);
+            setVideoTranscriptSources(null);
+        } finally {
+            if (myToken === runToken) { busy = false; currentAbort = null; }
+        }
+    };
+
+    // Une URL « complète » (suffisante pour lancer la détection automatiquement) :
+    // PeerTube (/w/ ou /videos/watch/), PodEduc (host podeduc + /video/<slug>),
+    // ou YouTube (watch?v= / youtu.be / embed / shorts / live → id 11 car.).
+    const looksComplete = (u) =>
+        /^https?:\/\/[^\s]+\/(w|videos\/watch)\/[\w-]+/.test(u)
+        || (/podeduc\.apps\.education\.fr/i.test(u) && /\/video\/[\w-]+/.test(u))
+        || /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/)|youtu\.be\/)[\w-]{11}/i.test(u);
+
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); runDetection(); } });
+    // Coller / saisir un lien lance AUTOMATIQUEMENT la récupération (debounce) — pas d'attente.
+    input.addEventListener('input', () => {
+        refreshGo(); // affordance immédiate (avant le debounce), tant qu'on est en état neutre
+        clearTimeout(sidebar._videoDebounceTimer);
+        sidebar._videoDebounceTimer = setTimeout(() => {
+            const cur = (input.value || '').trim();
+            const st = videoStates.get(moduleKey);
+            if (!cur) { lockGate(); return; }
+            if (st && st.url === cur) return; // déjà traité
+            if (looksComplete(cur)) runDetection();
+            else lockGate();
+        }, 600);
+    });
+
+    if (helpBtn) helpBtn.addEventListener('click', openHelpPopover);
+    if (seeBtn) seeBtn.addEventListener('click', () => openTranscriptPopover('view'));
+    if (stopBtn) stopBtn.addEventListener('click', cancelDetection);
+    if (goBtn) goBtn.addEventListener('click', runDetection);
+
+    // Réouverture de la modale : NE PAS relancer la transcription (c'est lent et débile si elle
+    // a déjà été faite). Si une transcription est en cache pour cette URL → on RESTAURE l'état
+    // (lien + prompt + champ vert) sans rien relancer. Sinon, on remplit juste le lien.
+    const cached = videoStates.get(moduleKey);
+    const cachedUsable = cached && cached.transcript && !cached.transcript.error
+        && ((Array.isArray(cached.transcript.segments) && cached.transcript.segments.length > 0)
+            || (cached.transcript.untimed && cached.transcript.text));
+    if (cached && cached.url && cachedUsable) {
+        if (!input.value) input.value = cached.url;
+        injectVideoTranscriptIntoPrompt(module, transcriptToSegments(cached.transcript, cached.detect), cached.detect && cached.detect.duration);
+        setState('ready');
+        setMsg(null);
+        showSee(true);
+        setGenEnabled(true);
+    }
+    // NB : on ne restaure PLUS l'URL vidéo après un RECHARGEMENT de page (plus aucune relecture de
+    // sessionStorage). Un refresh complet doit repartir d'un champ vide — sinon la vidéo précédente
+    // « revenait » même en navigation privée (cf. demande auteur). L'URL ne vit donc qu'en mémoire
+    // (videoStates + valeur du champ), le temps de la session ; le champ est en autocomplete="off".
+}
+
+
 export function toggleActivityContent(moduleKey, tileElement) {
     generatePrompts();
     const isH5P = !!h5pModules[moduleKey];
@@ -405,6 +1196,17 @@ export function toggleActivityContent(moduleKey, tileElement) {
     if (activeTile === tileElement) {
         closeSidebar();
         return;
+    }
+
+    // Retirer les listeners globaux du contenu précédent avant le re-render
+    // (changement de tuile sans fermeture, ou refresh après changement de langue)
+    cleanupSidebarListeners();
+
+    // Nettoyer le focus trap précédent (sinon les listeners keydown s'accumulent
+    // à chaque changement de tuile / refresh) — un nouveau est installé plus bas
+    if (_sidebarA11yCleanup) {
+        _sidebarA11yCleanup();
+        _sidebarA11yCleanup = null;
     }
 
     if (activeTile) {
@@ -541,6 +1343,28 @@ export function toggleActivityContent(moduleKey, tileElement) {
         }
     }
 
+    // Activité « Vidéo interactive » : champ URL + bouton transcription + aide, sous la description.
+    // La génération reste verrouillée tant qu'aucune vidéo lisible n'est détectée (cf. initVideoUrlSection).
+    const videoUrlHtml = module.requiresVideoUrl ? `
+                    <div class="video-url-section" id="video-url-section-${moduleKey}" data-state="empty">
+                        <div class="video-url-row">
+                            <div class="video-url-field">
+                                <span class="video-url-field__progress" aria-hidden="true"></span>
+                                <i class="fas fa-link video-url-field__icon" aria-hidden="true"></i>
+                                <input type="url" id="video-url-input-${moduleKey}" class="video-url-input" placeholder="${translations.video_url_placeholder || 'https://tube-...apps.education.fr/w/...'}" autocomplete="off" spellcheck="false" aria-label="${translations.video_url_label || 'Lien de la vidéo'}" />
+                                <span class="video-url-field__status" id="video-status-${moduleKey}" aria-hidden="true"></span>
+                                <button type="button" id="video-go-btn-${moduleKey}" class="video-url-field__go" hidden aria-label="${translations.video_validate_url || 'Valider le lien'}" title="${translations.video_validate_url || 'Valider le lien'}"><i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+                                <button type="button" id="video-see-btn-${moduleKey}" class="video-url-field__action" hidden><i class="fas fa-eye" aria-hidden="true"></i> <span data-key="video_see_transcript">Voir</span></button>
+                                <div class="video-url-field__overlay" id="video-overlay-${moduleKey}" hidden>
+                                    <span class="video-url-field__overlay-label"></span>
+                                    <button type="button" id="video-stop-btn-${moduleKey}" class="video-url-field__stop" aria-label="${translations.video_stop_transcription || 'Arrêter la transcription'}" title="${translations.video_stop_transcription || 'Arrêter la transcription'}"><i class="fas fa-stop" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                            <button type="button" id="video-help-btn-${moduleKey}" class="video-help-btn" aria-label="${translations.video_help_btn || 'Aide'}" title="${translations.video_help_btn || 'Aide'}"><i class="fas fa-question" aria-hidden="true"></i></button>
+                        </div>
+                        <p class="video-url-msg" id="video-msg-${moduleKey}" role="status" aria-live="polite" hidden></p>
+                    </div>` : '';
+
     sidebar.innerHTML = `
             <div class="modal-header-group">
                 <div class="modal-header">
@@ -570,6 +1394,7 @@ export function toggleActivityContent(moduleKey, tileElement) {
                 <div class="tuto-controls-wrapper">
                     <div class="modal-tuto-content">
                         <p><span class="modal-description-label ${moduleLabelClass}">${moduleTypeLabel}</span> ${translations[module.description]}</p>
+                        ${videoUrlHtml}
                     </div>
                     <div class="mode-switch-container">
                         <span class="switch-label" data-key="simple_mode">Simple</span>
@@ -595,13 +1420,13 @@ export function toggleActivityContent(moduleKey, tileElement) {
     });
 
     // Synchroniser les hauteurs des sections après le rendu
-    requestAnimationFrame(() => syncPanelHeights(sidebar));
+    requestAnimationFrame(() => { syncPanelHeights(sidebar); alignVideoHelpButton(sidebar); });
 
     // Re-synchroniser lors du resize avec debounce
     let resizeTimeout;
     const handleResize = () => {
         clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => syncPanelHeights(sidebar), 100);
+        resizeTimeout = setTimeout(() => { syncPanelHeights(sidebar); alignVideoHelpButton(sidebar); }, 100);
     };
     window.addEventListener('resize', handleResize);
     // Stocker le handler pour le supprimer à la fermeture
@@ -865,6 +1690,9 @@ export function toggleActivityContent(moduleKey, tileElement) {
                       : (moduleKey === 'glossaireXml') ? 'glossaireXmlJsonInput'
                       : module.jsonInputId;
     restoreModalDataFromSession(moduleKey, promptId, jsonInputId);
+
+    // Activité « Vidéo interactive » : champ URL + détection + verrou de génération.
+    initVideoUrlSection(moduleKey, module);
 }
 
 /**
@@ -905,6 +1733,57 @@ function restoreModalDataFromSession(moduleKey, promptId, jsonInputId) {
 }
 
 /**
+ * Re-render la sidebar active EN PLACE (sans la fermer).
+ * Appelé après un changement de langue pour rafraîchir tout le contenu traduit
+ * de la sidebar (titres, boutons, placeholders, prompt régénéré).
+ * Préserve le JSON saisi (indépendant de la langue) et le mode Simple/Avancé.
+ * No-op si aucune sidebar n'est ouverte.
+ */
+export function refreshSidebar() {
+    if (!activeTile || !sidebar.classList.contains('open')) return;
+
+    const moduleKey = activeTile.dataset?.module;
+    if (!moduleKey) return;
+
+    const module = h5pModules[moduleKey] || moodleModules[moduleKey];
+    if (!module) return;
+
+    // Re-résoudre la tuile dans le DOM courant : generateTiles() (appelé au changement
+    // de langue avant ce refresh) recrée toutes les tuiles, l'ancienne référence
+    // activeTile pointe alors vers un nœud détaché.
+    const tile = document.querySelector(`.h5p-tile[data-module="${moduleKey}"]`) || activeTile;
+
+    // Mémoriser le mode courant (Simple/Avancé) avant le re-render
+    const wasAdvanced = sidebar.classList.contains('advanced-view');
+
+    // Sauvegarder UNIQUEMENT le JSON (indépendant de la langue d'UI) pour qu'il soit
+    // restauré par restoreModalDataFromSession(). Le prompt n'est volontairement PAS
+    // sauvegardé ici : la langue vient de changer, il sera régénéré par generatePrompts()
+    // dans la nouvelle langue (même convention que prompt_lang_ dans saveModalDataToSession).
+    const jsonInputId = (moduleKey === 'test_elea') ? 'xmlEleaMoodleInput'
+                      : (moduleKey === 'glossaireXml') ? 'glossaireXmlJsonInput'
+                      : module.jsonInputId;
+    const jsonTextarea = jsonInputId ? document.getElementById(jsonInputId) : null;
+    if (jsonTextarea?.value.trim()) {
+        sessionStorage.setItem(`${STORAGE_PREFIX}json_${moduleKey}`, jsonTextarea.value);
+    }
+
+    // Re-render en place : neutraliser le toggle « même tuile = fermeture »
+    // de toggleActivityContent (qui appellerait closeSidebar sinon).
+    activeTile = null;
+    toggleActivityContent(moduleKey, tile);
+
+    // Restaurer le mode Avancé en rejouant la logique du switch (classe + masquage bouton LLM)
+    if (wasAdvanced) {
+        const modeToggle = sidebar.querySelector('.mode-toggle-checkbox');
+        if (modeToggle && !modeToggle.checked) {
+            modeToggle.checked = true;
+            modeToggle.dispatchEvent(new Event('change'));
+        }
+    }
+}
+
+/**
  * Construit les items HTML du menu déroulant pour les formats d'export document.
  * Filtre les formats du module en excluant ceux déjà gérés (format principal, formats spéciaux).
  * @param {Array<string>} formats - Formats disponibles (ex: ["MBZ", "DOCX", "ODT", "PDF"])
@@ -938,7 +1817,7 @@ function setupDropdownWithDocExport(buttonGroup, moduleKey, jsonInputId) {
         menu.classList.toggle('show');
     });
 
-    document.addEventListener('click', (e) => {
+    addSidebarDocumentClickListener((e) => {
         if (!buttonGroup.contains(e.target)) {
             menu.classList.remove('show');
         }
@@ -1028,7 +1907,7 @@ function updateGenerationButton(moduleKey, module) {
             menu.classList.toggle('show');
         });
 
-        document.addEventListener('click', (e) => {
+        addSidebarDocumentClickListener((e) => {
             if (!buttonGroup.contains(e.target)) {
                 menu.classList.remove('show');
             }
@@ -1146,7 +2025,7 @@ function updateGenerationButton(moduleKey, module) {
             menu.classList.toggle('show');
         });
 
-        document.addEventListener('click', (e) => {
+        addSidebarDocumentClickListener((e) => {
             if (!buttonGroup.contains(e.target)) {
                 menu.classList.remove('show');
             }
@@ -1217,7 +2096,7 @@ function updateGenerationButton(moduleKey, module) {
             menu.classList.toggle('show');
         });
 
-        document.addEventListener('click', (e) => {
+        addSidebarDocumentClickListener((e) => {
             if (!buttonGroup.contains(e.target)) {
                 menu.classList.remove('show');
             }
@@ -1292,7 +2171,7 @@ function updateGenerationButton(moduleKey, module) {
                     menu.classList.toggle('show');
                 });
 
-                document.addEventListener('click', (e) => {
+                addSidebarDocumentClickListener((e) => {
                     if (!buttonGroup.contains(e.target)) {
                         menu.classList.remove('show');
                     }
@@ -1475,7 +2354,7 @@ function attachContextualBottomButton(moduleKey, module, buttonGroup) {
             }
         });
 
-        document.addEventListener('click', (e) => {
+        addSidebarDocumentClickListener((e) => {
             if (!modelSelectorBtn.contains(e.target) && !modelDropdown.contains(e.target)) {
                 if (modelDropdown.classList.contains('show')) {
                     closeCtxDropdown();
@@ -1531,7 +2410,7 @@ function attachContextualBottomButton(moduleKey, module, buttonGroup) {
                 const caramelVersion = getCaramelVersionFromFooter();
                 if (caramelVersion) activityMeta.caramelVersion = caramelVersion;
 
-                const content = await generateH5PWithLLM(prompt, selectedModel, activityMeta);
+                const content = await generateActivityContent(moduleKey, module, prompt, selectedModel, activityMeta);
                 if (content) {
                     if (jsonInputTarget) {
                         jsonInputTarget.value = content;
@@ -1611,12 +2490,14 @@ function attachContextualBottomButton(moduleKey, module, buttonGroup) {
                 : (jsonTextarea.getAttribute('data-default-placeholder') || '');
         }
         updatePlaceholder();
-        // Observer les changements de classe sur la sidebar pour basculer placeholder + texte bouton
+        // Observer les changements de classe sur la sidebar pour basculer placeholder + texte bouton.
+        // Stocké sur la sidebar pour être disconnect() à la fermeture (cleanupSidebarListeners).
         const placeholderObserver = new MutationObserver(() => {
             updatePlaceholder();
             updateCtxState();
         });
         placeholderObserver.observe(sidebar, { attributes: true, attributeFilter: ['class'] });
+        sidebar._placeholderObserver = placeholderObserver;
 
         jsonTextarea.addEventListener('input', () => {
             clearTimeout(ctxDebounceTimer);
@@ -1680,10 +2561,47 @@ function attachActivityEventListeners(moduleKey, container, tile) {
                 .catch(() => {});
 
             const rawJsonInput = container.querySelector(`#${module.jsonInputId}`).value;
-            const jsonInput = cleanJsonInput(rawJsonInput);
+            let jsonInput = cleanJsonInput(rawJsonInput);
             if (!jsonInput) {
                 showNotification(translations.error_paste_ia_content || 'Veuillez coller le contenu généré par l\'IA.', 'error');
                 return;
+            }
+            // Vidéo interactive (mode Guidé / collage manuel) : la source de lecture et la piste
+            // de sous-titres ne sont JAMAIS demandées à l'IA. Deux sources possibles, dans l'ordre :
+            //   1. le JSON collé contient DÉJÀ une videoSource → elle PRIME (on génère tel quel) ;
+            //   2. sinon, une URL saisie/détectée → Caramel injecte sa videoSource.
+            // On ne bloque que si AUCUNE des deux n'est disponible (sinon le .h5p n'aurait pas de vidéo).
+            if (module.requiresVideoUrl) {
+                let parsed = null;
+                try { parsed = JSON.parse(jsonInput); } catch { /* JSON invalide : le healer réparera en aval */ }
+                const jsonVideoUrl = (parsed && typeof parsed === 'object' && parsed.videoSource)
+                    ? (typeof parsed.videoSource === 'string' ? parsed.videoSource.trim() : ((parsed.videoSource.url || '').trim()))
+                    : '';
+                const st = videoStates.get(moduleKey);
+                const detectReady = isVideoReady(moduleKey) && st && st.detect;
+
+                if (!detectReady && !jsonVideoUrl) {
+                    showNotification(translations.video_need_url || 'Saisissez d\'abord une URL vidéo et récupérez la transcription, ou collez un JSON contenant une videoSource.', 'error');
+                    return;
+                }
+
+                // La videoSource du JSON collé PRIME : si le JSON embarque déjà sa propre vidéo
+                // (collage d'un JSON tout prêt), c'est elle qui est lue — pas l'URL restée dans le
+                // champ du haut. Sinon (cas normal : JSON issu de l'IA, sans vidéo), on injecte la
+                // source détectée depuis l'URL saisie + la piste de sous-titres récupérée.
+                if (!jsonVideoUrl && detectReady && parsed && typeof parsed === 'object') {
+                    // Caler les timestamps sur les horodatages RÉELS si une transcription est dispo
+                    // (cas « copier le prompt → coller la sortie d'un LLM externe »).
+                    snapVideoTimestamps(parsed, st.transcript, st.detect);
+                    parsed.videoSource = st.detect.videoSource;
+                    // Durée → borne haute des timestamps côté processeur (l'IA hallucine parfois au-delà).
+                    if (typeof st.detect.duration === 'number' && st.detect.duration > 0) parsed.duration = st.detect.duration;
+                    if (st.transcript && st.transcript.captionUrl) {
+                        parsed.transcript = { source: st.transcript.source, language: st.transcript.language || 'fr', captionUrl: st.transcript.captionUrl };
+                    }
+                    if (!parsed.title) parsed.title = st.detect.title || translations.h5p_interactive_video_name || 'Vidéo interactive';
+                    jsonInput = JSON.stringify(parsed);
+                }
             }
             const { handleH5PCreation } = await import('../h5p/h5p-creator.js');
             handleH5PCreation(moduleKey, jsonInput);
@@ -1775,7 +2693,7 @@ function attachLLMLogic(moduleKey, container) {
         });
 
         // Fermer le menu si on clique ailleurs
-        document.addEventListener('click', (e) => {
+        addSidebarDocumentClickListener((e) => {
             if (!modelSelectorBtn.contains(e.target) && !modelDropdown.contains(e.target)) {
                 if (modelDropdown.classList.contains('show')) {
                     closeDropdown();
@@ -1785,6 +2703,90 @@ function attachLLMLogic(moduleKey, container) {
     }
 
     llmBtn.addEventListener('click', async () => {
+        // Verrou + génération « Vidéo interactive » : transcription → IA → JSON intermédiaire.
+        if (module && module.requiresVideoUrl) {
+            const st = videoStates.get(moduleKey);
+            if (!st || !st.detect || !st.detect.playable) {
+                showNotification(translations.video_need_url || 'Saisissez d\'abord une URL vidéo et récupérez la transcription.', 'error');
+                return;
+            }
+            const jsonInputTarget = container.querySelector(`#${jsonInputId}`);
+            const usable = (t) => t && !t.error
+                && ((Array.isArray(t.segments) && t.segments.length > 0) || (t.untimed && t.text));
+
+            startCaramelAnimation();
+            try {
+                let transcript = st.transcript;
+                // Pas de transcription en cache → voie automatique (captions déjà tentées au detect ;
+                // ici surtout Albert pour PeerTube sans sous-titres).
+                if (!usable(transcript)) {
+                    const { fetchTranscript } = await import('../services/video-transcript.js');
+                    transcript = await fetchTranscript(st.url, st.detect);
+                    if (usable(transcript)) { st.transcript = transcript; videoStates.set(moduleKey, st); }
+                }
+                // Toujours rien → révéler le collage manuel (filet de sécurité) et s'arrêter.
+                if (!usable(transcript)) {
+                    stopCaramelAnimation();
+                    revealVideoManual(moduleKey);
+                    showNotification(translations.video_albert_failed || 'Transcription automatique indisponible. Collez la transcription ci-dessous, puis « Utiliser cette transcription ».', 'error');
+                    return;
+                }
+
+                // Segments pour le prompt (transcription non timée → 1 bloc couvrant la durée).
+                const segs = (transcript.segments && transcript.segments.length)
+                    ? transcript.segments
+                    : (transcript.text ? [{ start: 0, end: st.detect.duration || 0, text: transcript.text }] : []);
+                const prompt = buildVideoInteractivePrompt(segs, st.detect.duration);
+
+                if (jsonInputTarget) jsonInputTarget.value = '';
+                sessionStorage.removeItem(`${STORAGE_PREFIX}json_${moduleKey}`);
+                preloadForPostGeneration(moduleKey);
+
+                const activityMeta = {
+                    moduleKey, category: 'h5p',
+                    nameKey: module.name, englishName: module.englishName, machineName: module.machineName,
+                    displayName: (translations && translations[module.name]) || module.englishName || moduleKey
+                };
+                const cv = getCaramelVersionFromFooter();
+                if (cv) activityMeta.caramelVersion = cv;
+
+                const content = await generateH5PWithLLM(prompt, selectedModel, activityMeta);
+                if (content) {
+                    // Injecter la source de lecture + la piste de sous-titres (non demandées au LLM).
+                    let parsed = null;
+                    try { parsed = JSON.parse(content); } catch { parsed = null; }
+                    if (parsed && typeof parsed === 'object') {
+                        // Caler les timestamps sur les horodatages RÉELS (déterministe, tous modèles).
+                        snapVideoTimestamps(parsed, transcript, st.detect);
+                        parsed.videoSource = st.detect.videoSource;
+                        // Durée → borne haute des timestamps côté processeur (l'IA hallucine parfois au-delà).
+                        if (typeof st.detect.duration === 'number' && st.detect.duration > 0) parsed.duration = st.detect.duration;
+                        if (transcript.captionUrl) {
+                            parsed.transcript = { source: transcript.source, language: transcript.language || 'fr', captionUrl: transcript.captionUrl };
+                        }
+                        if (!parsed.title) parsed.title = st.detect.title || translations.h5p_interactive_video_name || 'Vidéo interactive';
+                        jsonInputTarget.value = JSON.stringify(parsed, null, 2);
+                    } else {
+                        jsonInputTarget.value = content;
+                    }
+                    const ivCreateBtn = document.getElementById(module.createBtnId);
+                    if (ivCreateBtn) ivCreateBtn.click();
+                    closeSidebar();
+                } else {
+                    jsonInputTarget.value = translations.generation_failed_empty;
+                    showNotification(translations.generation_failed_empty, 'error');
+                    stopCaramelAnimation();
+                }
+            } catch (error) {
+                console.error('Erreur génération vidéo interactive:', error);
+                const tmpl = translations.generation_failed_llm || 'La génération a échoué. Cause : {errorMessage}';
+                showNotification(tmpl.replace('{errorMessage}', error.message), 'error');
+                if (jsonInputTarget) jsonInputTarget.value = tmpl.replace('{errorMessage}', error.message);
+                stopCaramelAnimation();
+            }
+            return;
+        }
+
         const promptId = (moduleKey === 'test_elea') ? 'test_eleaResultat' : (moduleKey === 'glossaireXml') ? 'glossaireXmlResultat' : module.promptId;
         const promptTextarea = document.getElementById(promptId);
         const prompt = promptTextarea.value;
@@ -1837,7 +2839,7 @@ function attachLLMLogic(moduleKey, container) {
             if (caramelVersion) {
                 activityMeta.caramelVersion = caramelVersion;
             }
-            const content = await generateH5PWithLLM(prompt, selectedModel, activityMeta);
+            const content = await generateActivityContent(moduleKey, module, prompt, selectedModel, activityMeta);
             if (content) {
                 jsonInputTarget.value = content;
 
@@ -1943,7 +2945,7 @@ function preloadForPostGeneration(moduleKey) {
             .catch(() => {});
     }
     if (isMoodle || moduleKey === 'test_elea' || moduleKey === 'glossaireXml') {
-        import('../simulators.js').catch(() => {});
+        import('../simulators/index.js').catch(() => {});
     }
 }
 
@@ -1951,12 +2953,20 @@ function preloadForPostGeneration(moduleKey) {
 // 10. ANIMATION DE GÉNÉRATION "CARAMEL"
 // =======================================================================
 let recipeInterval;
+let currentRecipeStepKey = '';
+
+/** Affiche l'étape de recette courante (texte décoratif qui défile, indépendant de la jauge). */
+function renderRecipeStep() {
+    const recipeSteps = document.getElementById('recipe-steps');
+    if (!recipeSteps) return;
+    recipeSteps.textContent = translations[currentRecipeStepKey] || currentRecipeStepKey || '';
+}
 
 function startCaramelAnimation() {
     const overlay = document.getElementById('caramel-animation-overlay');
-    const recipeSteps = document.getElementById('recipe-steps');
     const marmiteContent = document.querySelector('.marmite-content');
     overlay.style.display = 'flex';
+    resetBatchGauge(); // masque + ré-amorce la jauge de lots (sans effet sur une génération mono-appel)
 
     const steps = [
         "caramel_animation_step_1",
@@ -1973,10 +2983,12 @@ function startCaramelAnimation() {
     ];
 
     let currentStep = 0;
-    recipeSteps.textContent = translations[steps[currentStep]] || steps[currentStep];
+    currentRecipeStepKey = steps[currentStep];
+    renderRecipeStep();
     recipeInterval = setInterval(() => {
         currentStep = (currentStep + 1) % steps.length;
-        recipeSteps.textContent = translations[steps[currentStep]] || steps[currentStep];
+        currentRecipeStepKey = steps[currentStep];
+        renderRecipeStep();
     }, 2000);
 
     // Reset animation
@@ -1989,7 +3001,55 @@ function startCaramelAnimation() {
 function stopCaramelAnimation() {
     const overlay = document.getElementById('caramel-animation-overlay');
     clearInterval(recipeInterval);
+    resetBatchGauge();
     if (overlay) overlay.style.display = 'none';
+}
+
+// Amorce de la jauge : on démarre à 10 % pour montrer d'emblée que « ça avance ».
+const BATCH_GAUGE_PRIMER = 0.10;
+
+/** Masque la jauge de lots et la remet à son amorce (génération mono-appel ou fin de génération). */
+function resetBatchGauge() {
+    const gauge = document.getElementById('caramel-batch-gauge');
+    if (!gauge) return;
+    gauge.hidden = true;
+    const fill = gauge.querySelector('.caramel-gauge__fill');
+    if (fill) fill.style.width = Math.round(BATCH_GAUGE_PRIMER * 100) + '%';
+    const label = gauge.querySelector('.caramel-gauge__label');
+    if (label) label.textContent = '';
+}
+
+/**
+ * Progression d'une génération PAR LOTS, affichée par une JAUGE stable sous le texte de
+ * recette (le défilé décoratif reste intact, la jauge ne rebondit pas). La barre se remplit
+ * selon la proportion de questions générées (amorcée à 10 % pour rassurer) ; label « Cuisson n/N ».
+ * Appelé par generateInBatches via onProgress.
+ * @param {{phase:'plan'|'fill', current:number, total:number, itemsDone?:number, itemsTotal?:number}} p
+ */
+function setBatchProgress(p) {
+    const gauge = document.getElementById('caramel-batch-gauge');
+    if (!gauge) return;
+    gauge.hidden = false;
+    const fill = gauge.querySelector('.caramel-gauge__fill');
+    const label = gauge.querySelector('.caramel-gauge__label');
+
+    let ratio, text;
+    if (p.phase === 'plan') {
+        ratio = BATCH_GAUGE_PRIMER;
+        text = translations.batch_progress_plan || 'Préchauffage…';
+    } else {
+        const done = (p.itemsTotal > 0)
+            ? (p.itemsDone / p.itemsTotal)
+            : (p.total > 0 ? p.current / p.total : 0);
+        ratio = BATCH_GAUGE_PRIMER + (1 - BATCH_GAUGE_PRIMER) * Math.max(0, Math.min(1, done));
+        const tmpl = translations.batch_progress_fill || 'Cuisson {n}/{t}';
+        text = tmpl.replace('{n}', p.current).replace('{t}', p.total);
+    }
+    const pct = Math.round(ratio * 100);
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.textContent = text;
+    gauge.setAttribute('aria-valuenow', String(pct));
+    if (text) gauge.setAttribute('aria-label', text);
 }
 
 // =======================================================================
@@ -2092,7 +3152,7 @@ function showGenerationResult(e) {
             _gridCapturePromise = _captureGridInBackground(moduleKey, jsonData);
         }
     } else {
-        import('../simulators.js').catch(() => {});
+        import('../simulators/index.js').catch(() => {});
     }
 
     // Afficher la modale avec animation
@@ -2169,6 +3229,14 @@ function closeGenerationResultModal(showToast = false) {
  * Initialise les événements de la modale de résultat.
  */
 export function initGenerationResultModal() {
+    // Écouter l'événement generation:error : arrêter l'animation "marmite" pour que
+    // l'utilisateur voie la notification d'erreur (sinon l'overlay tourne pour toujours
+    // en mode "Générer en un clic", le packaging étant fire & forget après le finally LLM).
+    // L'UI revient à son état normal sans afficher de modale de résultat.
+    document.addEventListener('generation:error', () => {
+        stopCaramelAnimation();
+    });
+
     const modal = document.getElementById('generation-result-modal');
     if (!modal) return;
 
@@ -2223,6 +3291,12 @@ export function initGenerationResultModal() {
                                 }
                                 if (grids.solutionGrid) {
                                     dataToExport = { ...dataToExport, _solutionGridImage: grids.solutionGrid };
+                                }
+                                if (grids.placements && grids.placements.length > 0) {
+                                    dataToExport = { ...dataToExport, _cluePlacements: grids.placements };
+                                }
+                                if (grids.unplacedWords && grids.unplacedWords.length > 0) {
+                                    dataToExport = { ...dataToExport, _unplacedWords: grids.unplacedWords };
                                 }
                             }
                         } catch (err) {

@@ -1,337 +1,123 @@
-# CLAUDE.md
+# CLAUDE.md — Caramel
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+> Guide compact. Les playbooks détaillés sont des **skills** dans `.claude/skills/` (chargés à la demande). Les références approfondies sont dans `docs/` (PRD, guides).
 
-## Project Overview
+## Identité
 
-**Caramel** is a 100% client-side web application (v5.1.0) for generating H5P and Moodle/Éléa educational activities using AI. Built for French teachers, it creates interactive content packages (.h5p, .mbz) directly in the browser without any server-side processing of pedagogical data.
+**Caramel** v6.0.0 — webapp 100% client-side qui génère des activités H5P (`.h5p`) et Moodle/Éléa (`.mbz`) via IA pour profs francophones. ES6 modules purs, **aucun build, aucun npm**, servi en statique. Proxy IA n8n (clés API côté serveur). 11 langues. Packaging ZIP/TAR/GZIP côté navigateur.
 
-**Key characteristics:**
-- Pure frontend JavaScript (ES6 modules), no build system, no npm
-- AI integration via n8n proxy to ILaaS (French sovereign AI infrastructure)
-- Static file serving only — works with `python -m http.server`
-- 11-language internationalization support
-- All file packaging (ZIP, TAR, GZIP) happens client-side
+Lancement local : `python3 -m http.server 8000` → `http://localhost:8000`. Mode debug : `?debug` dans l'URL.
 
-## Running Locally
+## Pipeline (mémoriser)
 
-```bash
-python3 -m http.server 8000
-# Access at http://localhost:8000
+```
+H5P :    definitions → prompt-generator → llm → json-healer → processors/*.js → h5p-creator → .h5p
+Moodle : definitions → prompt-generator → llm → moodle/processors/* → moodle-creator → .mbz
+Doc :   document-formatter (keepLatex) → document-exporter
+        ├─ DOCX : latex-parser → latex-to-omml → docx.js (math éditable Word)
+        ├─ ODT  : latex-parser → latex-to-mathml → MathML + StarMath (éditable LibreOffice)
+        └─ PDF  : latexToUnicode (pas de math natif)
 ```
 
-No npm install, no build step required. The app loads ES6 modules directly.
+`json-healer.js` est **obligatoire** entre LLM et processors — ne jamais bypasser.
 
-### Debug Mode
+## Carte des dossiers
 
-Append `?debug` to the URL to enable:
-- Detailed logs in console (`[DEBUG][module]` format via `debugLog()` in `utils.js`)
-- Raw JSON, healed JSON, and diff display in the generation modal
-- Editor state logging
-
-## Architecture
-
-### Entry Point & Initialization Order
-
-`js/main.js` — Initializes all modules on DOMContentLoaded in this sequence:
-
-1. `setupFilters()` — Filter controls
-2. `generateTiles()` — Activity grid (French defaults before full i18n load)
-3. `setupEventListeners()` — Global event handlers
-4. `initLanguageSwitcher()` — Language selector
-5. Notification system (center, dropdown, toasts, preview, emergency, result modal)
-6. `initOcr()` — Document text extraction
-7. `initCaramelAnimationEffects()` — Animations
-8. `initSmartPreloading()` — Lazy-load vendor libs during idle time
-9. `loadTranslations('fr')` — Full language file
-10. `initVersionChecker()` — Version check
-
-### Directory Structure
-
-**JavaScript Modules (`js/`):**
-- `core/` — Fundamental modules: `definitions.js` (activity registry), `lib-loader.js` (lazy loading), `perf-tracker.js` (pipeline performance tracking), `translation.js` (i18n), `utils.js` (debug, error classification, helpers)
-- `services/` — Business logic: `llm.js` (AI communication), `ocr.js` (text extraction), `prompt-generator.js` (prompt building)
-- `ui/` — User interface: `ui.js` (tiles, tabs, modals), `notifications.js` (toasts, history), `animations.js`, `version-checker.js`, `emergency-notification.js`
-- `h5p/` — H5P ecosystem: `h5p-creator.js` (ZIP packaging), `h5p-manager.js` (preview), `h5p-prefetch.js` (H5P library preloading), `json-healer.js` (AI output repair), `field-constraints.js` (per-field render type constraints for 27 activities), `image-manager.js` (image processing, resize, registry for 12 activities), `processors/` (21 type-specific processors)
-- `moodle/` — Moodle/Éléa ecosystem: `moodle-creator.js` (MBZ packaging), `moodle-formats.js` (XML/GIFT), `page-themes.js` (theme registry), `page-themes/` (4 visual themes), `processors/` (7 activity processors + shared utilities)
-- `renderers/` — Rendering: `chart-renderer.js`, `math-renderer.js`, `image-utils.js`, `crossword-grid-capture.js`, `crossword-grid-generator.js` (standalone grid), `find-the-words-grid-capture.js`, `find-the-words-grid-generator.js` (standalone grid)
-- `export/` — Document export: `document-exporter.js` (DOCX/ODT/PDF), `document-formatter.js` (content formatting), `sanitizer.js` (DOMPurify), `latex-parser.js` (LaTeX→AST), `math-catalog.js` (170+ symboles LaTeX/Unicode/MathML/StarMath), `latex-to-omml.js` (AST→OMML pour DOCX), `latex-to-mathml.js` (AST→MathML pour ODT)
-- `editor/` — Visual JSON editor (8 files, see JSON Editor System section)
-- `locales/` — 11 JSON language files (fr, en, es, de, it, nl, pt, ar, zh, jp, el)
-- `vendor/` — External libraries (versioned paths)
-
-**CSS (`css/`):**
-- `vendor/` — FontAwesome, flag-icons
-- `base/` — Global styles (style.css, custom.css)
-- `components/` — Modular components (json-editor, llm, modals)
-
-**Assets (`assets/`):**
-- `data/examples/` — Sample JSON outputs per activity
-- `data/prompts/` — Markdown prompt templates per activity
-- `images/` — Organized: activities/, branding/, tutorials/, wiki/
-- `flags/`, `fonts/`, `templates/`
-
-**Scripts (`scripts/`):**
-- `update-locale-latex.mjs` — Propagates LaTeX constraints into all 11 locale files (286 keys)
-- `verify-all-locales.mjs` — Verifies LaTeX/Unicode/plain constraints across all locales
-- `translate-course-presentation.mjs` — Translates Course Presentation prompts (Latin-script languages)
-- `translate-cp-{ar,zh,jp,el}.mjs` — Translates Course Presentation prompts (non-Latin scripts)
-
-## Core Systems
-
-### Activity Definitions (`core/definitions.js`)
-
-Central registry of all activities. Each entry has:
-
-```javascript
-{
-  name: "translation_key",              // Display name (i18n key)
-  englishName: "English name",
-  machineName: "H5P.TypeName",          // H5P/Moodle identifier
-  description: "desc_translation_key",
-  image: "assets/images/activities/...",
-  promptId: "resultId",                 // AI result container ID
-  jsonInputId: "inputId",              // Manual JSON editor input ID
-  createBtnId: "buttonId",
-  categories: ["quiz", "memory", ...],  // Filtering categories
-  platforms: ["Éléa", "Magistère", ...],
-  formats: ["H5P", "DOCX", "ODT", ...],
-  hidden: boolean                       // Optional
-}
+```
+js/core/         definitions.js (registre), translation.js (i18n), utils.js (debugLog, classifyError), lib-loader.js, perf-tracker.js
+js/services/     llm.js (n8n), ocr.js, prompt-generator.js
+js/ui/           ui.js, notifications.js, animations.js, version-checker.js, emergency-notification.js
+js/h5p/          h5p-creator.js, h5p-manager.js (preview), json-healer.js, field-constraints.js, image-manager.js, processors/*.js (21)
+js/moodle/       moodle-creator.js, moodle-formats.js, page-themes.js, page-themes/*, processors/activities/*.js (8), processors/shared/*
+js/renderers/    chart-renderer, math-renderer, image-utils, crossword-grid-*, find-the-words-grid-*
+js/export/       document-exporter, document-formatter, sanitizer, latex-parser, math-catalog (177 symboles), latex-to-omml, latex-to-mathml
+js/editor/       index, editor-core, content-detector, field-renderers, array-manager, validators, feedback-editor, json-utils, richtext-editor, formula-assistant
+js/caramelia/    chatbot flottant (13 modules) — voir ARCHITECTURE.md local
+js/locales/      11 JSON : fr, en, es, de, it, nl, pt, ar, zh, jp, el (~2034 clés/fichier)
+js/vendor/       libs externes versionnées (ne pas régénérer)
+assets/data/     prompts/ (templates IA), examples/ (échantillons JSON)
+docs/            PRD, guides, audits, plans (références approfondies)
+scripts/         outils Node (.mjs) : verify-all-locales, update-locale-latex, translate-cp-*
+tests/           tests HTML interactifs (field-constraints-dashboard, etc.)
 ```
 
-`customOrder` array controls tile display order. Two registries: `h5pModules` (21 types) and `moodleModules` (8 types).
+## Conventions strictes
 
-### Content Generation Pipeline
+- **Code & commits en français** (commentaires, messages de commit)
+- ES6 modules natifs, aucun transpileur, aucun bundler
+- CSS BEM-like, variables CSS pour le theming
+- Toute UI utilise `data-key` → clé i18n dans `js/locales/*.json`
+- `caramel_` préfixe pour `sessionStorage`
+- Tuiles : `data-activity-types`, `data-platforms`, `data-module` pour filtrage
+- Logs : `debugLog('module', ...)` (actif si `?debug`)
+- Erreurs : `classifyError(e)` → `{category, userMessageKey, technicalMessage}` (PARSE / NETWORK / VALIDATION / PACKAGING)
 
-**H5P Creation:**
-```
-definitions.js → prompt-generator.js → llm.js → json-healer.js → h5p-processors/*.js → h5p-creator.js → .h5p download
-                                                                                          ↑ image-manager.js (optional user images)
-```
+## Pièges critiques (lis avant d'agir)
 
-**Moodle Creation:**
-```
-definitions.js → prompt-generator.js → llm.js → moodle-processors/*.js → moodle-creator.js → .mbz download
-```
+1. **Patch h5p-standalone** : `js/vendor/h5p-standalone/3.8.2/frame.bundle.js` est patché — regex `/^([a-z0-9]+:\/\//i` → `/^([a-z0-9]+:\/\/|data:image\/)/i` pour reconnaître les `data:image/` URLs (restreint à `image/` par l'audit 2026-06 : un `data:text/html` ne doit pas être chargé). À réappliquer à chaque mise à jour. Sans ce patch, les images base64 cassent dans la preview.
+2. **`json-healer.js` obligatoire** : tourne entre LLM et processor, répare backslashes LaTeX, wrappe en `params`, corrige versions H5P, ajoute UUIDs manquants. Ne jamais court-circuiter.
+3. **`field-constraints.js`** : source unique de vérité pour les render types par champ (6 types : `html+latex`, `html`, `unicode`, `unicode+markers`, `plain`, `plain+letters`). Utilisé par healer, processors, éditeur, tests.
+4. **Modules Éléa** utilisent `elea_*` comme moduleKey — aliasés dans `field-constraints.js`.
+5. **Modèle LLM par défaut** : `mistral-small-4-119b` (Mistral Small 4). `ACTIVITY_MODEL_OVERRIDES` actuellement vide (anciennes surcharges QuizSetQCM/VF, QuizSet, Page, Livre, test_elea, CoursePresentation → `gpt-oss-120b` conservées en commentaire, à réactiver après benchmark de Mistral Small 4).
+6. **API keys jamais en frontend** : tout passe par `n8n.incubateur.education.gouv.fr/webhook/llmdev2`.
+7. **`js/editor/` est partagé avec Sucrerie** : 11 fichiers JS (tous sauf `index.js` ; inclut `interactive-video-panel.js`) + `css/components/{json-editor,richtext-editor,cloze-editor}.css` sont **byte-identiques** dans le dépôt Sucrerie (`sucrerie.forge.apps.education.fr/assets/js/editor/` et `assets/css/components/`). En plus : `js/ui/sync-video-player.js` est miroir byte-identique dans `assets/js/ui/` (dépendance du panneau Vidéo interactive). Caramel est la source de vérité, Sucrerie pull manuellement par `cp`. **Avant de modifier un de ces fichiers, vérifier que l'évolution n'introduit pas de dépendance Caramel-spécifique** (ex: import de `js/h5p/json-healer.js` qui n'existe pas côté Sucrerie). Si tu touches à `js/editor/`, à `js/ui/sync-video-player.js` ou aux 3 CSS, signale-le pour qu'on propage la modif côté Sucrerie. **Note** : le panneau Vidéo interactive n'est PAS purement `cp` — son CSS (`.iv-editor-*`) vit dans Caramel `css/base/style.css` mais côté Sucrerie dans `assets/css/components/editor-view.css` (bouton capture adapté aux tokens Sucrerie), et son câblage est dans le `index.js` divergent de chaque dépôt. Voir le helper de diagnostic : `node scripts/diff-editor-vs-caramel.mjs` côté Sucrerie.
+8. **La liste des modules H5P est la whitelist de dépôt de Sucrerie** : Sucrerie n'accepte au dépôt QUE les types H5P gérés par Caramel. Sa whitelist (`assets/js/h5p/supported-types.js`) est **dérivée** de son registre `assets/js/core/activity-types.js`, lui-même miroir des `h5pModules` de `js/core/definitions.js` (Caramel = source de vérité). **Si tu ajoutes / retires / masques un module H5P dans `definitions.js`, il faut re-synchroniser `activity-types.js` côté Sucrerie** (mettre à jour `CARAMEL_H5P`) — la whitelist de dépôt suivra automatiquement, et le test anti-dérive `tests/deposit/test-deposit-validation.js` côté Sucrerie échouera tant que ce n'est pas fait. (Cf. item 4 de `sucrerie/docs/PRD-AUDIT-2026-06.md`. Rappel : `H5P.AdvancedText` est volontairement masqué → exclu côté Sucrerie aussi.)
 
-**Document Export (DOCX/ODT/PDF) — Math Formula Pipeline:**
-```
-document-formatter.js (keepLatex:true) → document-exporter.js
-    ├─ DOCX: latex-parser.js → latex-to-omml.js → docx.js Math objects (editable in Word)
-    ├─ ODT:  latex-parser.js → latex-to-mathml.js → MathML objects + StarMath annotation (editable in LibreOffice)
-    └─ PDF:  postProcessLatex → latexToUnicode → Unicode text (no native math)
-```
+## Routeur de skills
 
-Shared modules: `latex-parser.js` (LaTeX→AST), `math-catalog.js` (177 symbols: Unicode + MathML type + StarMath).
+Pour toute tâche structurée, **invoque le skill correspondant** (il contient les étapes détaillées, les fichiers à toucher, les pièges, les critères de validation) :
 
-### H5P Processor System (`h5p/processors/`)
+| Tâche | Skill |
+|---|---|
+| Ajouter un nouveau type H5P | `caramel-add-h5p-activity` |
+| Ajouter un nouveau type Moodle/Éléa | `caramel-add-moodle-activity` |
+| Ajouter le support d'images à une activité H5P | `caramel-add-image-support` |
+| Modifier les contraintes de champ / render types | `caramel-edit-field-constraints` |
+| Ajouter / modifier / vérifier des traductions | `caramel-translations` |
+| Modifier ou debugger un processor H5P | `caramel-edit-h5p-processor` |
+| Étendre l'éditeur JSON visuel (champs, richtext, formula) | `caramel-edit-json-editor` |
+| Créer ou modifier un thème de Page Moodle | `caramel-page-theme` |
+| Debugger ou étendre le JSON healer | `caramel-json-healer` |
+| Créer / modifier un prompt LLM | `caramel-prompts` |
+| Toucher à l'export DOCX/ODT/PDF | `caramel-document-export` |
+| Modifier le chatbot Caramelia | `caramel-caramelia` |
+| Pipeline LaTeX/MathJax (math-catalog, OMML, MathML) | `caramel-latex-math` |
+| Génération par lots (quiz/activités à N éléments, mur des 59 s) | `caramel-batch-generation` |
+| Sortir une release / bump de version | `caramel-release` |
 
-`index.js` — Router with double mapping:
-- `processors`: moduleKey → processor module
-- `libraryToKey`: H5P machineName → moduleKey (reverse lookup for QuizSet recursion)
+## Index des PRD et guides (`docs/`)
 
-Each of the 21 processor files exports:
-- `machineName` — H5P library identifier (e.g., `"H5P.Timeline"`)
-- `version` — Processor version string
-- `extraDependencies` — Additional H5P libraries needed
-- `default.process(jsonObj, helpers)` — Main transformation function
-- `default.transformForQuizSet()` — Optional: specialized QuizSet sub-question handling
+- `PRD_NOUVELLE_ACTIVITE_H5P.md` — modèle exhaustif intégration H5P (18 phases)
+- `PRD_NOUVELLE_ACTIVITE_LIVRE.md` — modèle Moodle Livre
+- `PRD_IMAGES_H5P.md` — système d'images
+- `PRD_FIELD_CONSTRAINTS_LATEX.md` — render types par champ
+- `PRD_COURSE_PRESENTATION.md` — intégration Course Presentation
+- `PRD_INTERACTIVE_BOOK.md` — intégration Livre interactif (conteneur multi-chapitres, blocs Column)
+- `guide-generation-par-lots.md` — génération « plan + remplissage » (mur des 59 s, comment l'étendre)
+- `guide-processeurs.md`, `guide-editeur-json.md`, `guide-themes-page.md`, `guide-traduction.md`
+- `catalogue-champs-editeur.md` — types de champs disponibles dans l'éditeur
+- `cdc-editeur-cloze.md`, `audit-richtext-h5p.md`, `plan-tests.md`
+- `workflows/` (data-flow, workflow), `audits/`, `visuel/`, `specific-plans/`
 
-**H5P types:** Timeline, Flashcards, QuizSet (+ QuizSetQCM, QuizSetVF), Glossary, Crossword, Essay, Summary, DragTheWords, DragAndDrop, FillInTheBlanks, ComplexFillTheBlanks, MarkTheWords, TrueFalse, MultipleChoice, FindTheWords, SortParagraphs, SingleChoiceSet, DialogCards, Chart, CoursePresentation
+## Ajout d'activité — vue 30 secondes
 
-### Moodle Processor System (`moodle/processors/`)
+Pour ne pas oublier l'essentiel quand tu invoques pas le skill :
 
-`index.js` — API: `getActivityFiles(activityKey, data, options)` returns `{ filePath: fileContent }` with zero network calls.
+**H5P** : `definitions.js` (entrée + `customOrder`) → `processors/NewType.js` (`machineName`, `version`, `extraDependencies`, `default.process()`) → `processors/index.js` (double map) → prompt + exemple JSON → `h5p-libs/` → 11 locales → `field-constraints.js`.
 
-Uses placeholder system: `ACTIVITY_TITLE`, `COURSE_ID`, `MODULE_ID`, `TIMESTAMP`, etc. generated by `generateBaseData(title)`.
+**Moodle** : `definitions.js` → `processors/activities/NewType.js` (`getFiles(data)`, `metadata`) → `processors/index.js` → prompt + exemple → templates partagés si besoin → 11 locales.
 
-**Activity processors (7):** Appariement, QCM, Page, Millionnaire, Test, Glossaire, Devoir
-**Shared utilities:** `moodle-backup.js`, `placeholder.js`, `templates.js`
+## Modèles LLM disponibles (`services/llm.js`)
 
-### JSON Editor System (`editor/`)
+**Featured (3 visibles UI)** : `qwen-3.6-35b-instruct` (Qwen 3.6, order 1), `mistral-small-4-119b` (Mistral Small 4, order 2, **défaut**), `gpt-oss-120b` (GPT-OSS, order 3).
+**Cachés (visibles en `?debug`)** : `mistral-small-3.2-24b`, `llama-3.3-70b`, `llama-3.1-8b`, `gemma-4-31b`, `mistral-medium-250523`.
 
-Visual editor integrated into the generation modal. Allows modification of H5P and Moodle activity content before download.
+## RAG ILaaS (chatbot Caramelia)
 
-| File | Role |
-|------|------|
-| `index.js` | Orchestrator — lifecycle, modal integration, public API (`initJsonEditor`) |
-| `editor-core.js` | Core rendering — `renderEditor()`, state management |
-| `content-detector.js` | Content type detection — schema definitions, H5P/Moodle signatures (~86 KB) |
-| `field-renderers.js` | Field UI — input types, HTML generation (~51 KB) |
-| `array-manager.js` | Array fields — add/remove/reorder items (~49 KB) |
-| `validators.js` | Input validation — type-specific rules (~32 KB) |
-| `feedback-editor.js` | Feedback UI — FeedbackEditor class |
-| `json-utils.js` | Utilities — `getNestedValue()`, `setNestedValue()` |
-| `richtext-editor.js` | WYSIWYG editor — contenteditable, toolbar, LaTeX protection, Markdown conversion |
-| `formula-assistant.js` | Math formula modal — 6 categories, MathJax live preview |
+Collection `caramelia` (id 55) sur ILaaS, accédée via proxy n8n BYOK : `https://n8n-caramel.osc-fr1.scalingo.io/webhook/byok-ilaas-rag-*`. Endpoints : `models`, `collections-list/create/update/delete`, `list`, `delete`, `chunks`, `ingest`, `search`, `chat`, `completion` (tous POST). ~836 docs. Sources dans `rag/caramelia/sources/`, chunks à ingérer dans `rag/caramelia/chunks/<lang>/*.md` (11 langues). Nommage côté ILaaS : `<lang>__<chunk-code>` (double underscore). Chaque chunk a un frontmatter YAML (`referentiel, code, titre, lang, categorie, breadcrumb, version`) extrait dans `metadata` du chunk côté ILaaS. **REPLACE = DELETE + INGEST** (pas d'upsert). Ingestion : `node rag/ingest-caramelia.mjs [lang...]` mais **piège** : sa fonction skip ne pagine pas la liste (limit=100) → re-ingère tous les docs absents des 100 derniers. Pour un replace ciblé, faire DELETE + INGEST individuels via `fetch`/`curl` (cf. mémoire `reference_rag_ilaas_caramelia.md`).
 
-**Rich Text Editor** (`richtext-editor.js`): Lightweight WYSIWYG for `textarea` fields with `html+latex`, `html`, or `unicode+markers` render type. Features:
-- Contextual toolbar (bold, italic, underline, strikethrough, sup/sub, color, lists, link, math formula)
-- Source code toggle (`</>` button)
-- LaTeX protection: formulas wrapped in `<span contenteditable="false" data-latex="...">` for safe editing
-- Double-click on formula → opens formula assistant modal pre-filled
-- Markdown round-trip: displays `**bold**` as visual bold, reconverts on save
-- `field-constraints.js` is the single source of truth for which fields get richtext
-- Only `textarea` fields get richtext (not `text` inputs — too short for WYSIWYG)
-- Éléa modules use `elea_*` keys as moduleKey — aliased in field-constraints.js
+## Libs vendor (`core/lib-loader.js`)
 
-**CSS**: `css/components/richtext-editor.css` — Apple-inspired design matching `json-editor.css`
+pdf.js 6.0.227, Tesseract 7.0.0, Mammoth 1.12.0, JSZip 3.10.1, client-zip 2.5.0, h5p-standalone 3.8.2 (PATCHÉ), fflate 0.8.3, tar-js 0.3.0, MathJax 3.2.2, jsPDF 4.2.1, jsPDF-AutoTable 5.0.8, docx 8.5.0, DOMPurify 3.4.11.
 
-Global state in `editorState` object: `isActive`, `originalData`, `currentData`, `contentType`, `moduleKey`, `hasChanges`, `validationErrors`.
-
-### Image System (`h5p/image-manager.js`)
-
-Client-side image support for 12 H5P activities. All processing (resize, compress, register) happens in the browser via Canvas API.
-
-**Image-capable activities:**
-- **Per-item images:** Flashcards (`cards[].image`), DialogCards (`dialogs[].image`), DragAndDrop elements (`elements[].image`)
-- **Background images:** DragAndDrop (`backgroundImage`), Crossword (`backgroundImage`)
-- **Media context images:** MultipleChoice, TrueFalse, Essay, FillInTheBlanks, DragTheWords, MarkTheWords (`mediaImage` → `buildMediaStructure()`)
-- **Slide images:** CoursePresentation (`slideImage` with position selector: left/right/top/bottom, 24 layouts)
-- **Timeline:** Toggle URL/Image for cover (`coverImage`) and events (`eventImage`), converted to `asset.media` string by processor
-
-**Pipeline:** `renderImageField()` (editor) → `processImage()` (resize to 800×600, JPEG 0.85) → `registerImage()` (Map registry) → `createH5PBlob()` (inject into ZIP as `content/images/`) → `clearAllImages()` (cleanup)
-
-**Preview:** `_embedImagesAsDataUrls()` in `h5p-manager.js` converts `images/...` paths to `data:` URLs in content.json. Requires patched `frame.bundle.js` (see Patch section).
-
-**Export:** `document-formatter.js` uses `getMediaImageUrl()` to extract image URLs/dataURLs. `document-exporter.js` uses `prepareImageData()` to resolve 3 cases: data URL, relative path (from registry), HTTP URL.
-
-**Editor field types for images:**
-- `image` — Full upload widget with drag & drop, preview, alt text, optional `collapsible` and `selectField` modes
-- `toggle` — Segmented control (e.g., URL vs Image for Timeline), emits `change` event on hidden input for `showWhen` compatibility
-- `fieldGroup` — Visual-only collapsible wrapper in array items, groups sub-fields without path namespacing
-
-### Error Handling Patterns (`core/utils.js`)
-
-Four error categories via `classifyError(error)`:
-
-| Category | Trigger | User Message Key |
-|----------|---------|-----------------|
-| `PARSE_ERROR` | SyntaxError, JSON parsing failure | `error_parse` |
-| `NETWORK_ERROR` | Timeout, fetch failure, NetworkError | `error_network` |
-| `VALIDATION_ERROR` | Missing required fields, invalid structure | `error_validation` |
-| `PACKAGING_ERROR` | H5P/MBZ creation failure (default) | `error_packaging` |
-
-Returns `{ category, userMessageKey, technicalMessage }`. User messages are i18n keys resolved at display time.
-
-**JSON Healer** (`h5p/json-healer.js`): Auto-repairs AI output — fixes LaTeX backslashes, wraps in `params`, corrects H5P library versions, adds missing UUIDs. Runs between LLM response and processor.
-
-**Field Constraints** (`h5p/field-constraints.js`): Central registry of per-field rendering constraints for all 27 H5P activities (99 fields total). Six render types:
-- `html+latex` — Full HTML with MathJax LaTeX `\(...\)` (e.g., questions, taskDescription)
-- `html` — HTML without LaTeX support (e.g., some feedback fields)
-- `unicode` — Unicode math symbols only, no HTML/LaTeX (e.g., Chart labels, Millionnaire)
-- `unicode+markers` — Unicode with H5P-specific markers like `*...*` (e.g., DragTheWords, MarkTheWords)
-- `plain` — Plain text, no formatting (e.g., some metadata fields)
-- `plain+letters` — Letters-only plain text (e.g., crossword answers, FindTheWords wordList)
-
-Used by: `json-healer.js` (field-aware healing), processors (field-specific transforms), tests (validation), `tests/field-constraints-dashboard.html` (interactive visualization).
-
-### Internationalization System (`core/translation.js`)
-
-**How it works:**
-1. `defaultTranslations` object provides French defaults for instant tile rendering
-2. `loadTranslations(langCode)` fetches `js/locales/{lang}.json` via `fetch()`
-3. `translatePage()` applies translations to all DOM elements with `data-key` attributes
-4. `t(key)` function for programmatic translation lookup
-
-**Language files:** 11 JSON files in `js/locales/` — fr, en, es, de, it, nl, pt, ar, zh, jp, el. Each contains ~2034 keys organized in 170+ sections.
-
-**Translation keys convention:** `{scope}_{element}_{detail}` (e.g., `h5p_timeline_name`, `tab_quiz`, `error_parse`)
-
-### AI Integration (`services/llm.js`)
-
-**Endpoint:** `https://n8n.incubateur.education.gouv.fr/webhook/llmdev2` — n8n proxy, API keys server-side only.
-
-**Available models:**
-| Model ID | Display Name | Size |
-|----------|-------------|------|
-| `mistral-small-3.2-24b` | Mistral-Small-3.2 | small (default) |
-| `qwen-3.6-35b-instruct` | Qwen 3.6 | large |
-| `gpt-oss-120b` | GPT-OSS | xl |
-| `llama-3.3-70b` | LLaMa-3.3 | large |
-| `llama-3.1-8b` | LLaMa-3.1-8B | small |
-| `gemma-4-31b` | Gemma 4 | large |
-| `mistral-medium-250523` | Mistral Medium | large |
-
-**Activity-specific overrides:** QuizSetQCM, QuizSetVF, QuizSet, Page, test_elea → `gpt-oss-120b`
-
-### External Libraries (`core/lib-loader.js`)
-
-Centralized in `LIB_PATHS`, versioned paths, lazy-loaded via `initSmartPreloading()` during `requestIdleCallback`.
-
-| Library | Version | Purpose |
-|---------|---------|---------|
-| pdf.js | 5.6.205 | PDF text extraction (OCR) |
-| Tesseract.js | 7.0.0 | Image OCR |
-| Mammoth | 1.11.0 | DOCX text extraction |
-| JSZip | 3.10.1 | ZIP creation for .h5p |
-| client-zip | 2.5.0 | Streaming ZIP |
-| h5p-standalone | 3.8.2 | H5P preview player (**PATCHÉ** — voir ci-dessous) |
-| fflate | 0.8.2 | GZIP compression for .mbz |
-| tar-js | 0.3.0 | TAR archives for Moodle |
-| MathJax | 3.2.2 | Math rendering (LaTeX → SVG) |
-| jsPDF | 4.2.0 | PDF export |
-| jsPDF-AutoTable | 5.0.7 | PDF tables |
-| docx | 8.5.0 | DOCX export |
-| DOMPurify | 3.4.1 | HTML sanitization |
-| Liberation Sans | — | Font for PDF/ODT exports |
-
-### Patch h5p-standalone (frame.bundle.js)
-
-**⚠️ CRITIQUE — À réappliquer lors de toute mise à jour de h5p-standalone ⚠️**
-
-Le fichier `js/vendor/h5p-standalone/3.8.2/frame.bundle.js` a été patché pour que `H5P.getPath()` reconnaisse les `data:` URLs comme des URLs absolues. Sans ce patch, les images embarquées en base64 dans `content.json` sont préfixées par le chemin du contenu, ce qui casse leur affichage dans la preview.
-
-| Élément | Valeur |
-|---------|--------|
-| Regex originale | `/^[a-z0-9]+:\/\//i` |
-| Regex patchée | `/^([a-z0-9]+:\/\/|data:)/i` |
-| Fichier | `js/vendor/h5p-standalone/3.8.2/frame.bundle.js` |
-| Lié à | `js/h5p/h5p-manager.js` → `_embedImagesAsDataUrls()` |
-
-**Contexte :** L'iframe H5P charge les images via des balises `<img src="...">` qui font des requêtes HTTP directes, contournant l'intercepteur `fetch()` de Caramel. La solution : les chemins d'images dans `content.json` sont remplacés par des `data:` URLs au moment du fetch, et le patch permet à `H5P.getPath()` de les retourner telles quelles.
-
-## Adding a New H5P Activity Type
-
-1. Add entry to `h5pModules` in `definitions.js` with all required fields
-2. Create processor in `js/h5p/processors/NewType.js`:
-   - Export `machineName`, `version`, `extraDependencies`
-   - Export `default` object with `process(jsonObj, helpers)` method
-   - Optionally export `default.transformForQuizSet()` for QuizSet integration
-3. Register in `h5p/processors/index.js`: add to `processors` map and `libraryToKey` map
-4. Add prompt template in `assets/data/prompts/`
-5. Add sample JSON in `assets/data/examples/`
-6. Add H5P library files to `js/vendor/h5p-libs/`
-7. Add translations to all 11 JSON files in `js/locales/`
-
-## Adding a New Moodle Activity Type
-
-1. Add entry to `moodleModules` in `definitions.js`
-2. Create processor in `js/moodle/processors/activities/NewType.js`:
-   - Export `getFiles(data)` returning `{ filePath: fileContent }`
-   - Export `metadata` with `moduleName`, `moduleVersion`, `requiredPlaceholders`
-3. Register in `moodle/processors/index.js` processors map
-4. Add prompt template in `assets/data/prompts/`
-5. Add sample JSON in `assets/data/examples/`
-6. Add XML templates in shared templates if needed
-7. Add translations to all 11 language files
-
-## Conventions
-
-- **JavaScript**: ES6+ modules, no transpilation, no build step
-- **CSS**: BEM-like naming, CSS variables for theming
-- **Translations**: All UI text uses `data-key` attributes, keys in `js/locales/*.json`
-- **Comments**: All code comments in **French**
-- **Commits**: French commit messages
-- **File organization**: One processor file per H5P/Moodle activity type
-- **Session storage**: `caramel_` prefix for all sessionStorage keys
-- **Tile attributes**: `data-activity-types`, `data-platforms`, `data-module` for filtering
-
-## Important Notes
-
-- API keys are managed server-side by n8n proxy, never exposed in frontend
-- All file packaging (ZIP, TAR, GZIP) happens client-side using Web APIs
-- The `h5p-libs/` folder contains official H5P library structures that must match H5P semantics
-- `json-healer.js` runs automatically between LLM response and processor — never bypass it
-- The `?debug` URL parameter enables verbose logging across all modules
+Lazy-loadées via `initSmartPreloading()` pendant `requestIdleCallback`.

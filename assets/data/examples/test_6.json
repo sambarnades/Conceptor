@@ -5,7 +5,7 @@
         {
             "type": "truefalse",
             "content": {
-                "name": "Q1 - Cunéiforme 𒀀",
+                "name": "Q01 - Cunéiforme 𒀀",
                 "questiontext": "Le signe cunéiforme 𒀀 représente le concept d'eau en sumérien.",
                 "feedback": "Le signe 𒀀 (translittéré « a ») est effectivement l'idéogramme sumérien pour l'eau.",
                 "answer": {
@@ -18,7 +18,7 @@
         {
             "type": "multichoice",
             "content": {
-                "name": "Q2 - Hiéroglyphe 𓀀",
+                "name": "Q02 - Hiéroglyphe 𓀀",
                 "questiontext": "Quel rôle joue le hiéroglyphe 𓀀 (homme assis) dans l'écriture égyptienne ?",
                 "feedback": "Le signe 𓀀 est un déterminatif : il ne se prononce pas mais indique la catégorie du mot.",
                 "answers": [
@@ -43,7 +43,7 @@
         {
             "type": "multichoice",
             "content": {
-                "name": "Q3 - Systèmes de numération",
+                "name": "Q03 - Systèmes de numération",
                 "questiontext": "Quelles affirmations sur les systèmes de numération antiques sont correctes ?",
                 "feedback": "Les Sumériens utilisaient la base 60 (𒐕 = 5) et les Égyptiens la base 10 (𓏺 = 1).",
                 "single": "false",

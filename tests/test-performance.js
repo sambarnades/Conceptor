@@ -102,7 +102,7 @@ const LOCALES_DIR = '../js/locales';
 // QuizSet/QuizSetQCM contiennent des sous-questions multi-types → healing/processing plus lourd
 const THRESHOLDS = {
     LOCALE_FETCH: 500,          // ms par locale
-    LOCALE_SIZE: 450 * 1024,    // 450 Ko par fichier (le grec dépasse 400 Ko en UTF-8 depuis l'ajout de Livre v5.2.0)
+    LOCALE_SIZE: 512 * 1024,    // 512 Ko par fichier (le grec ~491 Ko en UTF-8 — 2 o/caractère — après accumulation des features v5.3.0 : vidéo interactive, audio, livre interactif, génération par lots, nouvelles activités ; 454 Ko à la vidéo interactive, 450 Ko depuis Livre v5.2.0. Garde anti-bloat : ~4 % de marge sur el.)
     TOTAL_LOCALES_SIZE: 4 * 1024 * 1024, // 4 Mo total
     TRANSLATE_PAGE: 200,        // ms
     HEAL_STRING: 100,           // ms par fixture

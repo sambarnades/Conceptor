@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <!--
+    browser-harness.html — Banc de fidélité d'export Caramel, PHASE 2 (vrai navigateur).
+
+    Objectif : exécuter le VRAI pipeline d'export Caramel dans un Chromium réel, là où le
+    harnais Node (tests/roundtrip/harness.mjs) ne peut pas aller :
+      1. DOMPurify RÉEL (Node l'avait stubé en identité)        → P2
+      2. Page & Livre Moodle (HTML via page-themes = vrai DOM)  → P1/P3/P4
+      3. Documents DOCX/ODT/PDF (FileReader/Image/Canvas)       → P5
+
+    Cette page N'EST PAS l'app complète : elle importe directement les modules ES de Caramel
+    par chemin ABSOLU (/js/...) et expose des fonctions d'export sur window.HARNESS.
+
+    PIÈGE chemins relatifs : core/lib-loader.js charge ses vendors via `script.src = 'js/vendor/...'`
+    (RELATIF) et core/translation.js fait `fetch('./js/locales/fr.json')`. Servie depuis
+    /tests/roundtrip/, ces chemins se résoudraient en /tests/roundtrip/js/... (FAUX).
+    → <base href="/"> force la résolution depuis la racine du dépôt. Les `import` ES (modules)
+      ne sont PAS affectés par <base> (ils résolvent contre l'URL du module), donc on garde
+      des specifiers absolus /js/... partout.
+
+    FIDÉLITÉ : on préCHARGE DOMPurify AVANT d'exposer __harnessReady. Un vrai utilisateur a
+    DOMPurify préchargé pendant l'idle (utils.js > requestIdleCallback(preloadSanitizer)).
+    Sans ce préchargement, sanitizeSync() partirait en fallback fail-closed (échappe TOUT le
+    HTML) → ce ne serait PAS l'export d'un vrai utilisateur. On reproduit donc l'état nominal.
+  -->
+  <base href="/">
+  <title>Caramel — Browser Export Harness (Phase 2)</title>
+</head>
+<body>
+  <!--
+    Quelques ancres DOM que certains modules interrogent à l'évaluation (translation.js :
+    .language-switcher / .language-dropdown / .language-btn ; getVersionFromFooter : footer).
+    On les fournit vides pour éviter les `null` bruyants (tolérés mais plus propre), et un
+    footer avec la version réelle pour que le cache-bust des locales soit cohérent.
+  -->
+  <div class="language-switcher" hidden>
+    <button class="language-btn"></button>
+    <div class="language-dropdown"></div>
+  </div>
+  <footer class="footer" hidden><a href="CHANGELOG.md">v5.3.0</a></footer>
+
+  <script type="module">
+    // ===================================================================
+    // Imports RÉELS du pipeline Caramel (chemins absolus, non affectés par <base>)
+    // ===================================================================
+    import * as healer from '/js/h5p/json-healer.js';
+    import { processH5PContent, getModuleMetadata } from '/js/h5p/processors/index.js';
+    import { createH5PBlob } from '/js/h5p/h5p-creator.js';
+    import { h5pModules } from '/js/core/definitions.js';
+    import { loadTranslations, translations, currentLang, t } from '/js/core/translation.js';
+    import * as sanitizer from '/js/export/sanitizer.js';
+    import { loadDOMPurify, isDOMPurifyLoaded } from '/js/core/lib-loader.js';
+    import * as moodleCreator from '/js/moodle/moodle-creator.js';
+    import * as docExporter from '/js/export/document-exporter.js';
+    import * as bridgeExtract from '/js/sucrerie-bridge/services/extract.js';
+    import * as blobBase64 from '/js/sucrerie-bridge/utils/blob-base64.js';
+    // PHASE 3 (parité export) : fonctions « binaire → modèle » de Sucrerie copiées
+    // VERBATIM (cf. en-tête de sucrerie-binary-to-model.mjs pour le pourquoi). Servies
+    // par localhost depuis /tests/roundtrip/ → import par chemin absolu.
+    import * as suBridge from '/tests/roundtrip/sucrerie-binary-to-model.mjs';
+    // ensureFflate côté navigateur (extractMbzModule de Sucrerie utilise window.fflate.gunzipSync).
+    import { loadMoodleLibs } from '/js/core/lib-loader.js';
+
+    const errors = [];
+    function recordErr(where, e) {
+      errors.push({ where, message: e && e.message ? e.message : String(e), stack: e && e.stack });
+    }
+    window.addEventListener('error', (ev) => recordErr('window.error', ev.error || ev.message));
+    window.addEventListener('unhandledrejection', (ev) => recordErr('unhandledrejection', ev.reason));
+
+    // ===================================================================
+    // Helpers
+    // ===================================================================
+    async function blobToBase64Direct(blob) {
+      // Encodage direct (indépendant du bridge) pour remonter les octets au runner Node.
+      const buf = new Uint8Array(await blob.arrayBuffer());
+      let binary = '';
+      const chunk = 0x8000;
+      for (let i = 0; i < buf.length; i += chunk) {
+        binary += String.fromCharCode.apply(null, buf.subarray(i, Math.min(i + chunk, buf.length)));
+      }
+      return btoa(binary);
+    }
+
+    // Capture d'un CustomEvent 'generation:complete' (les handlers Moodle ne RETOURNENT pas
+    // le blob, ils le dispatchent sur document). On installe un listener éphémère par appel.
+    function captureGenerationComplete(runFn) {
+      return new Promise(async (resolve, reject) => {
+        let done = false;
+        const onComplete = (ev) => {
+          if (done) return; done = true;
+          cleanup();
+          resolve(ev.detail);
+        };
+        const onError = (ev) => {
+          if (done) return; done = true;
+          cleanup();
+          reject(new Error('generation:error dispatched: ' + JSON.stringify(ev.detail || {})));
+        };
+        function cleanup() {
+          document.removeEventListener('generation:complete', onComplete);
+          document.removeEventListener('generation:error', onError);
+        }
+        document.addEventListener('generation:complete', onComplete);
+        document.addEventListener('generation:error', onError);
+        try {
+          await runFn();
+        } catch (e) {
+          if (!done) { done = true; cleanup(); reject(e); }
+        }
+        // Filet de sécurité : si aucun event au bout de 60s
+        setTimeout(() => { if (!done) { done = true; cleanup(); reject(new Error('timeout: aucun generation:complete')); } }, 60000);
+      });
+    }
+
+    // ===================================================================
+    // Réplication EXACTE de la logique de mélange de handleH5PCreation
+    // (DragAndDrop + QuizSet*) — appliquée APRÈS heal, AVANT process.
+    // On la copie verbatim pour que l'output soit identique à un export utilisateur.
+    // ===================================================================
+    function applyDragShuffle(jsonObj, moduleKey) {
+      if (moduleKey === 'DragAndDrop' && Array.isArray(jsonObj.elements) && jsonObj.elements.length > 1) {
+        const n = jsonObj.elements.length;
+        const indices = Array.from({ length: n }, (_, i) => i);
+        for (let i = n - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        const oldToNew = new Array(n);
+        indices.forEach((oldIdx, newIdx) => { oldToNew[oldIdx] = newIdx; });
+        jsonObj.elements = indices.map(oldIdx => jsonObj.elements[oldIdx]);
+        if (Array.isArray(jsonObj.dropZones)) {
+          jsonObj.dropZones = jsonObj.dropZones.map(zone => ({
+            ...zone,
+            correctElements: (zone.correctElements || []).map(idx => {
+              const i = typeof idx === 'string' ? parseInt(idx, 10) : idx;
+              return oldToNew[i];
+            }).filter(idx => idx !== undefined)
+          }));
+        }
+      }
+      if ((moduleKey === 'QuizSet' || moduleKey === 'QuizSetQCM' || moduleKey === 'QuizSetVF')
+          && Array.isArray(jsonObj.questions)) {
+        jsonObj.questions.forEach(q => {
+          if (q.library && q.library.startsWith('H5P.DragQuestion')
+              && q.params && Array.isArray(q.params.elements) && q.params.elements.length > 1) {
+            const n = q.params.elements.length;
+            const indices = Array.from({ length: n }, (_, i) => i);
+            for (let i = n - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [indices[i], indices[j]] = [indices[j], indices[i]];
+            }
+            const oldToNew = new Array(n);
+            indices.forEach((oldIdx, newIdx) => { oldToNew[oldIdx] = newIdx; });
+            q.params.elements = indices.map(oldIdx => q.params.elements[oldIdx]);
+            if (Array.isArray(q.params.dropZones)) {
+              q.params.dropZones = q.params.dropZones.map(zone => ({
+                ...zone,
+                correctElements: (zone.correctElements || []).map(idx => {
+                  const i = typeof idx === 'string' ? parseInt(idx, 10) : idx;
+                  return oldToNew[i];
+                }).filter(idx => idx !== undefined)
+              }));
+            }
+          }
+        });
+      }
+    }
+
+    // ===================================================================
+    // EXPORT H5P — réplique handleH5PCreation (heal complet → shuffle → process)
+    // puis appelle createH5PBlob DIRECTEMENT (pas de DOM title input / download).
+    // Retourne { base64, size }.
+    // ===================================================================
+    async function exportH5P(moduleKey, jsonObj) {
+      const module = h5pModules[moduleKey];
+      if (!module) throw new Error(`Module H5P inconnu: ${moduleKey}`);
+
+      // Heal complet (3 étapes, comme handleH5PCreation) — on part d'un clone.
+      let obj = healer.healJsonObject(structuredClone(jsonObj), moduleKey);
+      obj = healer.healActivitySpecificFields(obj, moduleKey);
+      obj = healer.healStructureForActivity(obj, moduleKey);
+
+      // Mélange aléatoire (DragAndDrop/QuizSet) — consomme Math.random comme l'app.
+      applyDragShuffle(obj, moduleKey);
+
+      const titleOverride = null; // pas d'input DOM #quoi dans le harness
+      let content = obj;
+      let dynamicDependencies = [];
+      const processingResult = await processH5PContent(moduleKey, obj);
+      if (processingResult) {
+        if (processingResult.content && processingResult.dependencies) {
+          content = processingResult.content;
+          dynamicDependencies = processingResult.dependencies;
+        } else {
+          content = processingResult;
+        }
+      }
+
+      const metadata = getModuleMetadata(moduleKey);
+      if (!metadata) throw new Error(`Métadonnées introuvables pour ${moduleKey}`);
+      const dependencies = [
+        ...metadata.extraDependencies,
+        { machineName: metadata.machineName, majorVersion: metadata.version.major, minorVersion: metadata.version.minor },
+        ...dynamicDependencies
+      ];
+
+      const options = { title: titleOverride || obj.title || translations[module.name], lang: currentLang };
+      if (moduleKey === 'Flashcards') options.description = content.description;
+
+      const blob = await createH5PBlob(content, metadata.machineName, dependencies, options);
+      return { base64: await blobToBase64Direct(blob), size: blob.size };
+    }
+
+    // ===================================================================
+    // EXPORT H5P avec SANITIZER IDENTITÉ (pour P2 — isolation de l'effet DOMPurify).
+    //   On remplace TEMPORAIREMENT window.DOMPurify.sanitize par l'identité EXACTE utilisée
+    //   par le harnais Node (bootstrap.installIdentitySanitizer : dirty==null?'':String(dirty)).
+    //   Le sanitizer.js a mis en cache `purifier = window.DOMPurify` (même référence d'objet),
+    //   donc patcher .sanitize change le comportement de sanitizeSync sans réinitialiser.
+    //   TOUT LE RESTE (traductions FR, graine RNG, pipeline) est IDENTIQUE à exportH5P → la
+    //   SEULE différence entre les deux exports est DOMPurify réel vs identité. Restauré en finally.
+    // ===================================================================
+    async function exportH5PIdentity(moduleKey, jsonObj) {
+      const dp = window.DOMPurify;
+      const realSanitize = dp ? dp.sanitize : null;
+      if (dp) dp.sanitize = (dirty) => (dirty == null ? '' : String(dirty));
+      try {
+        return await exportH5P(moduleKey, jsonObj);
+      } finally {
+        if (dp && realSanitize) dp.sanitize = realSanitize;
+      }
+    }
+
+    // ===================================================================
+    // EXPORT Moodle — appelle le VRAI handler ; capture le blob via generation:complete.
+    // Page/Livre passent exportType='mbz'. Retourne { base64, size, fileName }.
+    // ===================================================================
+    const MOODLE_DISPATCH = {
+      Page:         (s) => moodleCreator.handlePageCreation(s, 'mbz'),
+      Livre:        (s) => moodleCreator.handleLivreCreation(s, 'mbz'),
+      Millionnaire: (s) => moodleCreator.handleMillionnaireCreation(s),
+      Appariement:  (s) => moodleCreator.handleAppariementCreation(s),
+      QCM:          (s) => moodleCreator.handleQCMCreation(s),
+      Devoir:       (s) => moodleCreator.handleDevoirCreation(s),
+      glossaireXml: (s) => moodleCreator.handleGlossaireXmlCreation(s),
+      test_elea:    (s) => moodleCreator.handleTestXmlCreation(s)
+    };
+
+    async function exportMoodle(moduleKey, jsonStr) {
+      const dispatch = MOODLE_DISPATCH[moduleKey];
+      if (!dispatch) throw new Error(`Handler Moodle inconnu: ${moduleKey}`);
+      const detail = await captureGenerationComplete(() => dispatch(jsonStr));
+      if (!detail || !detail.blob) throw new Error('aucun blob dans generation:complete');
+      return {
+        base64: await blobToBase64Direct(detail.blob),
+        size: detail.blob.size,
+        fileName: detail.fileName || null
+      };
+    }
+
+    // ===================================================================
+    // EXPORT Document — DOCX / ODT / PDF.
+    //   buildDocxBlob/buildOdtBlob ne sont PAS exportés → on appelle exportToDOCX/ODT/PDF
+    //   (qui déclenchent un téléchargement) et on intercepte le blob en patchant
+    //   URL.createObjectURL (DOCX/ODT via downloadBlob ; PDF jsPDF via doc.save() qui
+    //   utilise lui aussi createObjectURL + ancre .download). Aucun fichier n'est écrit.
+    //   PDF : exportToPDF tente Gotenberg (réseau) → on bloque la requête côté Playwright,
+    //   donc échec rapide → fallback jsPDF. On RECORD le chemin via un flag.
+    // ===================================================================
+    let _capturedBlobs = [];
+    const _origCreateObjectURL = URL.createObjectURL.bind(URL);
+    function installBlobCapture() {
+      _capturedBlobs = [];
+      URL.createObjectURL = (obj) => {
+        if (obj instanceof Blob) _capturedBlobs.push(obj);
+        return _origCreateObjectURL(obj);
+      };
+    }
+    function uninstallBlobCapture() {
+      URL.createObjectURL = _origCreateObjectURL;
+    }
+
+    // Flag positionné par le runner via fetch interception : si une requête Gotenberg a
+    // été tentée. On le détecte ici indirectement : window.__gotenbergAttempted (posé par
+    // un patch fetch ci-dessous).
+    const _origFetch = window.fetch.bind(window);
+    let _lastGotenbergAttempt = false;
+    window.fetch = (url, opts) => {
+      const u = typeof url === 'string' ? url : (url && url.url) || '';
+      if (u.includes('caramel-pdf-convert') || u.includes('gotenberg')) {
+        _lastGotenbergAttempt = true;
+      }
+      return _origFetch(url, opts);
+    };
+
+    async function exportDocument(moduleKey, jsonObj, format) {
+      installBlobCapture();
+      _lastGotenbergAttempt = false;
+      let pdfPath = null;
+      try {
+        if (format === 'docx') {
+          await docExporter.exportToDOCX(moduleKey, jsonObj);
+        } else if (format === 'odt') {
+          await docExporter.exportToODT(moduleKey, jsonObj);
+        } else if (format === 'pdf') {
+          await docExporter.exportToPDF(moduleKey, jsonObj);
+          pdfPath = _lastGotenbergAttempt ? 'gotenberg-attempted' : 'jspdf-direct';
+          // Si Gotenberg a été tenté mais a échoué, le fallback jsPDF a tourné → chemin réel = jsPDF.
+          if (_lastGotenbergAttempt) pdfPath = 'jspdf-fallback';
+        } else {
+          throw new Error('format inconnu: ' + format);
+        }
+      } finally {
+        uninstallBlobCapture();
+      }
+      // Le dernier blob capturé est celui du téléchargement (DOCX/ODT/PDF). Pour PDF jsPDF,
+      // plusieurs createObjectURL peuvent survenir (fonts) → on prend le plus volumineux,
+      // qui est le document final.
+      if (!_capturedBlobs.length) throw new Error(`aucun blob capturé pour ${format}`);
+      let best = _capturedBlobs[0];
+      for (const b of _capturedBlobs) if (b.size > best.size) best = b;
+      return { base64: await blobToBase64Direct(best), size: best.size, pdfPath, blobCount: _capturedBlobs.length };
+    }
+
+    // ===================================================================
+    // ROUND-TRIP Sucrerie — pour P4. On exécute IN-BROWSER :
+    //   - bridge blobToBase64 (chemin de dépôt) ET extractMarkdownFromBlob.
+    //   On rend au runner : base64 du blob (via bridge), base64 (via direct, pour comparaison
+    //   verbatim), longueur markdown, activityType, et si le blob est intact après extract.
+    //   `inputBase64` : le blob original (re-construit côté browser depuis base64 pour fidélité
+    //   du chemin Blob réel).
+    // ===================================================================
+    async function roundtripSucrerie(inputBase64, format) {
+      const bin = atob(inputBase64);
+      const bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      const blob = new Blob([bytes], { type: 'application/octet-stream' });
+      const originalBytes = new Uint8Array(await blob.arrayBuffer());
+
+      // (a) chemin de dépôt : bridge blobToBase64
+      const bridgeB64 = await blobBase64.blobToBase64(blob);
+
+      // (b) extract markdown (lecture) — ne doit pas altérer le blob
+      const extract = await bridgeExtract.extractMarkdownFromBlob(blob, format, 'HarnessTest');
+      const afterBytes = new Uint8Array(await blob.arrayBuffer());
+      let blobUntouched = originalBytes.length === afterBytes.length;
+      if (blobUntouched) for (let i = 0; i < originalBytes.length; i++) if (originalBytes[i] !== afterBytes[i]) { blobUntouched = false; break; }
+
+      return {
+        bridgeBase64: bridgeB64,
+        markdownLen: extract && extract.markdown ? extract.markdown.length : 0,
+        activityType: extract ? extract.activityType : null,
+        blobUntouched
+      };
+    }
+
+    // ===================================================================
+    // PHASE 3 — PARITÉ D'EXPORT (Caramel source-input vs Sucrerie processed-input).
+    //
+    // Le moteur d'export est BYTE-IDENTIQUE entre les deux dépôts. La seule variable
+    // est l'INPUT donné au formatter. On expose ici de quoi mesurer cet écart, en
+    // gardant TOUT le reste constant (mêmes locales FR, même DOMPurify réel).
+    // ===================================================================
+
+    // --- Capture le blob produit par exportToDOCX/exportToODT via patch createObjectURL ---
+    //     (buildDocxBlob/buildOdtBlob ne sont pas exportés ; on intercepte le download).
+    //     Retourne { base64, size } du document. AUCUN fichier écrit.
+    async function captureDocBlob(format, runExport) {
+      const captured = [];
+      const orig = URL.createObjectURL;
+      URL.createObjectURL = (obj) => { if (obj instanceof Blob) captured.push(obj); return orig.call(URL, obj); };
+      try {
+        await runExport();
+      } finally {
+        URL.createObjectURL = orig;
+      }
+      if (!captured.length) throw new Error(`aucun blob ${format} capturé`);
+      let best = captured[0];
+      for (const b of captured) if (b.size > best.size) best = b;
+      return { base64: await blobToBase64Direct(best), size: best.size };
+    }
+
+    /**
+     * VOIE CARAMEL (A) — entrée SOURCE. Reproduit `jsonDataToExport = originalJsonData`
+     * de ui.js:3163 : la fixture (JSON source pré-processor) est passée DIRECTEMENT au
+     * formatter via exportToDOCX/ODT. Pour Crossword/FindTheWords, on enrichit avec les
+     * images de grille (mêmes générateurs byte-identiques que la capture live de l'UI),
+     * pour matcher exactement ce qu'un vrai export Caramel envoie au formatter.
+     */
+    async function exportSourceDoc(moduleKey, fixtureObj, format) {
+      let model = structuredClone(fixtureObj);
+      if (moduleKey === 'Crossword' || moduleKey === 'FindTheWords') {
+        model = await suBridge.enrichModelWithGrid(moduleKey, model);
+      }
+      return captureDocBlob(format, () =>
+        format === 'docx' ? docExporter.exportToDOCX(moduleKey, model)
+                          : docExporter.exportToODT(moduleKey, model));
+    }
+
+    /**
+     * PROXY « PROCESSED » (C1) — entrée post-processor SANS la normalisation Sucrerie.
+     * heal complet (comme exportH5P) → processH5PContent → on passe le content.json
+     * obtenu DIRECTEMENT au formatter. C'est le content.json brut tel que stocké dans
+     * le .h5p, mais sans `normalizeH5pModel` (qui n'existe que côté Sucrerie). Mesure
+     * l'effet du SEUL passage processor (restructuration <p>, remaps internes…).
+     */
+    async function exportProcessedDoc(moduleKey, fixtureObj, format) {
+      let obj = healer.healJsonObject(structuredClone(fixtureObj), moduleKey);
+      obj = healer.healActivitySpecificFields(obj, moduleKey);
+      obj = healer.healStructureForActivity(obj, moduleKey);
+      applyDragShuffle(obj, moduleKey);
+      let content = obj;
+      const pr = await processH5PContent(moduleKey, obj);
+      if (pr) content = (pr.content && pr.dependencies) ? pr.content : pr;
+      if (moduleKey === 'Crossword' || moduleKey === 'FindTheWords') {
+        content = await suBridge.enrichModelWithGrid(moduleKey, content);
+      }
+      return captureDocBlob(format, () =>
+        format === 'docx' ? docExporter.exportToDOCX(moduleKey, content)
+                          : docExporter.exportToODT(moduleKey, content));
+    }
+
+    /**
+     * VOIE SUCRERIE FIDÈLE (C2, H5P) — part du .h5p RÉEL produit par Caramel, en extrait
+     * `content/content.json` + le titre de `h5p.json` EXACTEMENT comme `exportH5pAs` de
+     * Sucrerie, puis applique `normalizeH5pModel` (+ enrichissement grille) VERBATIM, et
+     * passe le modèle au formatter byte-identique. C'est le vrai chemin binaire→modèle.
+     * @param {string} h5pBase64 - le .h5p (zip) produit par Caramel, en base64.
+     */
+    async function exportSucrerieH5pDoc(h5pBase64, format) {
+      const JSZip = window.JSZip || (await import('/js/core/lib-loader.js').then(m => m.loadJSZip()));
+      const zip = await JSZip.loadAsync(b64ToBytesLocal(h5pBase64));
+      const manifest = JSON.parse(await zip.files['h5p.json'].async('string'));
+      const content = JSON.parse(await zip.files['content/content.json'].async('string'));
+      const moduleKey = suBridge.h5pExportModuleKey(manifest.mainLibrary, content);
+      if (!moduleKey) throw new Error('type_h5p_non_exportable:' + manifest.mainLibrary);
+      const title = (manifest.title || '').trim();
+      let model = suBridge.normalizeH5pModel(moduleKey, content, title);
+      await suBridge.enrichModelWithGrid(moduleKey, model);
+      return {
+        moduleKey,
+        ...(await captureDocBlob(format, () =>
+          format === 'docx' ? docExporter.exportToDOCX(moduleKey, model)
+                            : docExporter.exportToODT(moduleKey, model)))
+      };
+    }
+
+    /**
+     * VOIE SUCRERIE FIDÈLE (C2, Moodle .mbz) — part du .mbz RÉEL produit par Caramel,
+     * extrait via le `extractMbz`/`readTar` de Sucrerie (copié verbatim) puis `parseActivity`
+     * (incl. parseHtmlIntoBlocks pour Page/Livre). Modèle → formatter byte-identique.
+     * @param {string} mbzBase64 - le .mbz produit par Caramel, en base64.
+     */
+    async function exportSucrerieMbzDoc(mbzBase64, format) {
+      await loadMoodleLibs(); // peuple window.fflate (gunzipSync) requis par extractMbzModule
+      const { moduleName, xml, files, activityDir } = await suBridge.extractMbzModule(b64ToBytesLocal(mbzBase64));
+      const moduleKey = suBridge.mbzExportModuleKey(moduleName);
+      if (!moduleKey) throw new Error('type_mbz_non_exportable:' + moduleName);
+      const model = suBridge.parseActivity(moduleName, xml, files, activityDir);
+      return {
+        moduleKey,
+        ...(await captureDocBlob(format, () =>
+          format === 'docx' ? docExporter.exportToDOCX(moduleKey, model)
+                            : docExporter.exportToODT(moduleKey, model)))
+      };
+    }
+
+    /**
+     * VOIE SUCRERIE FIDÈLE (C2, .xml standalone) — glossaire/quiz Caramel exportés en XML.
+     * @param {string} xmlBase64 - le .xml standalone produit par Caramel, en base64.
+     */
+    async function exportSucrerieXmlDoc(xmlBase64, format) {
+      const bytes = b64ToBytesLocal(xmlBase64);
+      const xmlText = new TextDecoder('utf-8').decode(bytes);
+      const { moduleName, data } = suBridge.parseStandaloneXml(xmlText);
+      const moduleKey = suBridge.mbzExportModuleKey(moduleName);
+      if (!moduleKey) throw new Error('type_xml_non_exportable:' + moduleName);
+      return {
+        moduleKey,
+        ...(await captureDocBlob(format, () =>
+          format === 'docx' ? docExporter.exportToDOCX(moduleKey, data)
+                            : docExporter.exportToODT(moduleKey, data)))
+      };
+    }
+
+    function b64ToBytesLocal(b64) {
+      const bin = atob(b64);
+      const u8 = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+      return u8;
+    }
+
+    // ===================================================================
+    // Init translations comme l'app, PUIS préchargement DOMPurify, PUIS ready.
+    // ===================================================================
+    async function boot() {
+      // 1. Traductions FR (exactement comme main.js : loadTranslations('fr')).
+      await loadTranslations('fr');
+
+      // 2. DOMPurify RÉEL préchargé (état nominal d'un vrai utilisateur).
+      //    On force le chargement via le chemin officiel du sanitizer puis on vérifie.
+      //    isSanitizerLoaded() est la source de vérité (c'est ce que sanitizeSync teste).
+      //    isDOMPurifyLoaded() renvoie un objet (truthy) et non un booléen strict → on ne
+      //    s'en sert que comme info secondaire.
+      await sanitizer.preloadSanitizer();
+      const domPurifyReady = sanitizer.isSanitizerLoaded() === true;
+
+      window.HARNESS = {
+        exportH5P,
+        exportH5PIdentity,
+        exportMoodle,
+        exportDocument,
+        roundtripSucrerie,
+        // PHASE 3 — parité d'export (source-input vs processed/Sucrerie-input)
+        exportSourceDoc,        // voie Caramel (A) : fixture → formatter
+        exportProcessedDoc,     // proxy C1 : heal+process content.json → formatter
+        exportSucrerieH5pDoc,   // voie Sucrerie fidèle (C2 H5P) : .h5p → normalizeH5pModel → formatter
+        exportSucrerieMbzDoc,   // voie Sucrerie fidèle (C2 .mbz) : extractMbz+parseActivity → formatter
+        exportSucrerieXmlDoc,   // voie Sucrerie fidèle (C2 .xml) : parseStandaloneXml → formatter
+        // Introspection / méta
+        meta: {
+          currentLang,
+          domPurifyReady,
+          dompurifyVersion: (window.DOMPurify && window.DOMPurify.version) || null,
+          translationsLoaded: typeof translations.app_title !== 'undefined' || Object.keys(translations).length > 50
+        },
+        getErrors: () => errors,
+        t
+      };
+      window.__harnessDomPurifyReady = domPurifyReady;
+      window.__harnessReady = true;
+    }
+
+    boot().catch((e) => {
+      recordErr('boot', e);
+      window.__harnessBootError = (e && e.message) || String(e);
+      window.__harnessReady = false;
+      // Expose quand même un HARNESS minimal pour diagnostiquer.
+      window.HARNESS = window.HARNESS || { getErrors: () => errors, bootError: (e && e.message) || String(e) };
+    });
+  </script>
+</body>
+</html>

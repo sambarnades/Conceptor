@@ -15,10 +15,16 @@
   - **Glisser-déposer** (\`H5P.DragQuestion\` 1.14) — entre 2 et 6 catégories (zones de dépôt) aux noms courts (1 à 3 mots) ; étiquettes courtes (1 à 4 mots), environ 2 fois plus nombreuses que les catégories, chaque étiquette dans une seule zone ; répartition plus ou moins équilibrée
 
 # RÈGLES PÉDAGOGIQUES
-- Adaptation et vocabulaire : Adapte le ton, le vocabulaire et la difficulté des consignes au public indiqué. Sois pertinent et engageant.
-- Ton et feedback : Les consignes et remarques doivent être constructives, encourageantes, tournées vers l'apprentissage.
-- Conformité : Adapte OBLIGATOIREMENT les contenus aux références officielles en vigueur. Sauf mention contraire explicite, base-toi par défaut sur les programmes scolaires français (Eduscol) pour le public scolaire, et sur les textes réglementaires de la formation professionnelle pour les adultes.
-- Langue : Le contenu et les consignes doivent être rédigés dans la langue cible (français sauf indication contraire).
+- Adaptation : adapte le ton, le vocabulaire et la difficulté au public. Choisis le tutoiement (élèves) ou le vouvoiement (adultes/formation) et garde le même registre dans les consignes et les rétroactions.
+- Conformité : adapte les contenus aux références officielles (par défaut programmes Eduscol ; textes de la formation professionnelle pour les adultes).
+- Langue : rédige dans la langue cible (français sauf indication contraire).
+- Rétroactions (feedback formatif) — quand l’activité en comporte :
+  - Aide à progresser, jamais un simple verdict. Décris la notion, jamais l’élève : bannis « Faux/Non/À revoir », l’ironie, les comparaisons entre élèves et l’éloge de la personne.
+  - Mauvaise réponse : nomme l’erreur (confusion, fait, calcul, hors-contexte) puis rappelle l’idée juste. Bonne réponse : dis POURQUOI, pas seulement « Bravo ». Indice : une piste qui ne révèle pas la réponse.
+  - N’invente aucun fait ni source ; ne renvoie pas à un « document » ou une « page » : oriente vers la NOTION à revoir.
+  - Feedback global par tranche : il ignore quelle question a été ratée → ne révèle rien et gradue par maîtrise — 0-25 % rassure et reprends les bases ; 26-50 % cible ce qui résiste ; 51-75 % consolide les cas délicats ; 76-100 % valide et propose d’aller plus loin. Évite « Moyen./Bien. » ; tu peux inviter l’élève à repérer lui-même ce qui l’a fait hésiter.
+  - Lisibilité (CUA/FALC) : phrases courtes, mots connus.
+  - Texte brut : aucun Markdown (`**gras**`, `*italique*`) ni LaTeX dans les feedbacks et les indices — H5P ne les interprète pas et ils s’afficheraient littéralement.
 
 # SOURCES
 - Tu utiliseras UNIQUEMENT les textes suivants pour générer ton activité.
@@ -56,88 +62,204 @@ N'ajoute pas \`tipsAndFeedback\` sur toutes les réponses. Cible uniquement les 
 - **Types d'exercices enfants :** Chaque question du QuizSet doit correspondre à l'un des types listés dans les RÈGLES SPÉCIFIQUES (QCM, Vrai/Faux, Mots à trous, Glisser les mots, Surligner les mots, Rédaction, Glisser-déposer). N'utilise aucun autre type de bibliothèque H5P.
 
 # EXEMPLE DE RENDU
+
 ```json
 {
   "title": "Culture Générale Scientifique",
   "questions": [
     {
       "library": "H5P.MultiChoice 1.16",
-      "metadata": { "title": "Astronomie - QCM" },
+      "metadata": {
+        "title": "Astronomie - QCM"
+      },
       "params": {
         "question": "Quelle planète est la plus proche du Soleil ?",
         "answers": [
-          { "text": "Mercure", "correct": true },
-          { "text": "Vénus", "correct": false, "tipsAndFeedback": { "tip": "Quelle planète voit-on souvent comme « étoile du berger » ?", "chosenFeedback": "Vénus est la deuxième planète, souvent confondue car c'est la plus proche de la Terre." } },
-          { "text": "Mars", "correct": false }
+          {
+            "text": "Vénus",
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "Range les planètes telluriques de la plus proche à la plus éloignée du Soleil.",
+              "chosenFeedback": "Confusion fréquente : Vénus est la 2e planète, la plus brillante du ciel, mais pas la plus proche du Soleil."
+            }
+          },
+          {
+            "text": "Mercure",
+            "correct": true,
+            "tipsAndFeedback": {
+              "chosenFeedback": "Exact : Mercure est la 1re planète, celle qui orbite au plus près du Soleil."
+            }
+          },
+          {
+            "text": "Mars",
+            "correct": false,
+            "tipsAndFeedback": {
+              "chosenFeedback": "Mars est la 4e planète, au-delà de la Terre : plus loin du Soleil, pas plus près."
+            }
+          }
         ],
-        "behaviour": { "singleAnswer": true },
+        "behaviour": {
+          "singleAnswer": true
+        },
         "overallFeedback": [
-          {"from": 0, "to": 25, "feedback": "Faux."},
-          {"from": 26, "to": 50, "feedback": "Moyen."},
-          {"from": 51, "to": 75, "feedback": "Bien."},
-          {"from": 76, "to": 100, "feedback": "Excellent."}
+          {
+            "from": 0,
+            "to": 25,
+            "feedback": "Pour t'y retrouver, mémorise l'ordre des planètes en partant du Soleil : Mercure vient en premier."
+          },
+          {
+            "from": 26,
+            "to": 50,
+            "feedback": "Tu approches : cherche la planète qui orbite au plus près du Soleil."
+          },
+          {
+            "from": 51,
+            "to": 75,
+            "feedback": "Presque : revérifie le tout premier rang à partir du Soleil."
+          },
+          {
+            "from": 76,
+            "to": 100,
+            "feedback": "C'est juste : Mercure est bien la planète la plus proche du Soleil."
+          }
         ]
       }
     },
     {
       "library": "H5P.TrueFalse 1.8",
-      "metadata": { "title": "Biologie - Vrai/Faux" },
+      "metadata": {
+        "title": "Biologie - Vrai/Faux"
+      },
       "params": {
         "question": "L'ADN est une double hélice.",
         "correct": "true",
-        "feedbackOnCorrect": "Bravo ! L'ADN a bien une structure en double hélice, découverte par Watson et Crick en 1953.",
-        "feedbackOnWrong": "En fait, l'ADN est bien une double hélice. C'est l'une des découvertes majeures de la biologie moléculaire."
+        "feedbackOnCorrect": "Bravo ! L'ADN a bien une structure en double hélice, décrite par Watson et Crick en 1953.",
+        "feedbackOnWrong": "En fait, l'ADN est bien une double hélice : c'est l'une des grandes découvertes de la biologie moléculaire."
       }
     },
     {
       "library": "H5P.Essay 1.5",
-      "metadata": { "title": "Cellule - Rédaction" },
+      "metadata": {
+        "title": "Cellule - Rédaction"
+      },
       "params": {
         "taskDescription": "Explique le rôle de la **membrane cellulaire** dans le fonctionnement d'une cellule.",
         "keywords": [
-          { "keyword": "membrane", "options": { "points": 1, "caseSensitive": false } },
-          { "keyword": "perméabilité", "options": { "points": 1, "caseSensitive": false } },
-          { "keyword": "échanges", "options": { "points": 1, "caseSensitive": false } }
+          {
+            "keyword": "membrane",
+            "options": {
+              "points": 1,
+              "caseSensitive": false
+            }
+          },
+          {
+            "keyword": "perméabilité",
+            "options": {
+              "points": 1,
+              "caseSensitive": false
+            }
+          },
+          {
+            "keyword": "échanges",
+            "options": {
+              "points": 1,
+              "caseSensitive": false
+            }
+          }
         ],
         "overallFeedback": [
-          {"from": 0, "to": 25, "feedback": "Réponse insuffisante."},
-          {"from": 26, "to": 50, "feedback": "Réponse partielle."},
-          {"from": 51, "to": 75, "feedback": "Bonne réponse."},
-          {"from": 76, "to": 100, "feedback": "Excellente réponse."}
+          {
+            "from": 0,
+            "to": 25,
+            "feedback": "Reprends le rôle de la membrane : pense à ce qu'elle laisse passer ou non."
+          },
+          {
+            "from": 26,
+            "to": 50,
+            "feedback": "Bon départ. Précise l'idée de perméabilité et le contrôle des échanges."
+          },
+          {
+            "from": 51,
+            "to": 75,
+            "feedback": "Tu tiens l'essentiel : relie membrane, perméabilité et échanges dans une même idée."
+          },
+          {
+            "from": 76,
+            "to": 100,
+            "feedback": "Très complet : tu expliques bien le rôle de la membrane dans les échanges de la cellule."
+          }
         ]
       }
     },
     {
       "library": "H5P.MarkTheWords 1.11",
-      "metadata": { "title": "Grammaire - Surligner" },
+      "metadata": {
+        "title": "Grammaire - Surligner"
+      },
       "params": {
         "taskDescription": "Surligne les **verbes au présent** dans le texte suivant.",
         "textField": "Le chat *mange* sa pâtée pendant que le chien *dort* dans son panier. Ils *semblent* heureux.",
         "overallFeedback": [
-          {"from": 0, "to": 25, "feedback": "Aucun verbe trouvé."},
-          {"from": 26, "to": 50, "feedback": "Travail moyen."},
-          {"from": 51, "to": 75, "feedback": "Bonne identification."},
-          {"from": 76, "to": 100, "feedback": "Excellent ! Tous les verbes sont là."}
+          {
+            "from": 0,
+            "to": 25,
+            "feedback": "Repère d'abord les mots qui expriment une action : ce sont les verbes."
+          },
+          {
+            "from": 26,
+            "to": 50,
+            "feedback": "Tu en as trouvé quelques-uns : vérifie chaque mot d'action de la phrase."
+          },
+          {
+            "from": 51,
+            "to": 75,
+            "feedback": "Bien : il te reste un ou deux verbes à repérer."
+          },
+          {
+            "from": 76,
+            "to": 100,
+            "feedback": "Parfait : tu as identifié tous les verbes au présent."
+          }
         ]
       }
     },
     {
       "library": "H5P.DragText 1.10",
-      "metadata": { "title": "Géographie - Glisser les mots" },
+      "metadata": {
+        "title": "Géographie - Glisser les mots"
+      },
       "params": {
         "taskDescription": "Complète les phrases avec les capitales correspondantes.",
         "textField": "La capitale de la France est *Paris*. Celle de l'Italie est *Rome*. Berlin est la capitale de l' *Allemagne*.",
         "overallFeedback": [
-          {"from": 0, "to": 25, "feedback": "Aucun mot bien placé."},
-          {"from": 26, "to": 50, "feedback": "Résultat moyen."},
-          {"from": 51, "to": 75, "feedback": "Bonne maîtrise."},
-          {"from": 76, "to": 100, "feedback": "Bravo ! Sans faute."}
+          {
+            "from": 0,
+            "to": 25,
+            "feedback": "Associe chaque pays à sa capitale en t'aidant de ce que tu connais déjà."
+          },
+          {
+            "from": 26,
+            "to": 50,
+            "feedback": "Bon début : revois les capitales que tu hésites à placer."
+          },
+          {
+            "from": 51,
+            "to": 75,
+            "feedback": "Presque : une ou deux capitales restent à ajuster."
+          },
+          {
+            "from": 76,
+            "to": 100,
+            "feedback": "Bravo : toutes les capitales sont bien placées."
+          }
         ]
       }
     },
     {
       "library": "H5P.Blanks 1.14",
-      "metadata": { "title": "Maths - Mots à trous" },
+      "metadata": {
+        "title": "Maths - Mots à trous"
+      },
       "params": {
         "taskDescription": "Complète les définitions mathématiques.",
         "questions": [
@@ -145,42 +267,112 @@ N'ajoute pas \`tipsAndFeedback\` sur toutes les réponses. Cible uniquement les 
           "Le résultat d'une addition s'appelle une *somme*."
         ],
         "overallFeedback": [
-          {"from": 0, "to": 25, "feedback": "Réponse incorrecte."},
-          {"from": 26, "to": 50, "feedback": "Assez bien."},
-          {"from": 51, "to": 75, "feedback": "Bonne compréhension."},
-          {"from": 76, "to": 100, "feedback": "Parfait !"}
+          {
+            "from": 0,
+            "to": 25,
+            "feedback": "Relis chaque définition : le mot manquant est le terme mathématique exact."
+          },
+          {
+            "from": 26,
+            "to": 50,
+            "feedback": "Bon départ : concentre-toi sur le vocabulaire précis (triangle, somme…)."
+          },
+          {
+            "from": 51,
+            "to": 75,
+            "feedback": "Bien : il te manque encore un terme à trouver."
+          },
+          {
+            "from": 76,
+            "to": 100,
+            "feedback": "Parfait : les définitions sont complètes et exactes."
+          }
         ]
       }
     },
     {
       "library": "H5P.DragQuestion 1.14",
-      "metadata": { "title": "Sciences - Glisser-déposer" },
+      "metadata": {
+        "title": "Sciences - Glisser-déposer"
+      },
       "params": {
-        "title": "Classe chaque animal dans la bonne catégorie",
+        "title": "Classe chaque animal dans la bonne catégorie.",
         "dropZones": [
-          { "label": "Mammifères", "correctElements": [0, 1] },
-          { "label": "Reptiles", "correctElements": [2, 3] }
+          {
+            "label": "Mammifères",
+            "correctElements": [
+              0,
+              1
+            ]
+          },
+          {
+            "label": "Reptiles",
+            "correctElements": [
+              2,
+              3
+            ]
+          }
         ],
         "elements": [
-          { "text": "Chat" },
-          { "text": "Chien" },
-          { "text": "Lézard" },
-          { "text": "Serpent" }
+          {
+            "text": "Chat"
+          },
+          {
+            "text": "Chien"
+          },
+          {
+            "text": "Lézard"
+          },
+          {
+            "text": "Serpent"
+          }
         ],
         "overallFeedback": [
-          {"from": 0, "to": 25, "feedback": "Classification à revoir."},
-          {"from": 26, "to": 50, "feedback": "C'est un début."},
-          {"from": 51, "to": 75, "feedback": "Bien classé."},
-          {"from": 76, "to": 100, "feedback": "Parfait !"}
+          {
+            "from": 0,
+            "to": 25,
+            "feedback": "Pense à ce qui distingue un mammifère d'un reptile pour les classer."
+          },
+          {
+            "from": 26,
+            "to": 50,
+            "feedback": "Bon début : revois les animaux que tu as hésité à placer."
+          },
+          {
+            "from": 51,
+            "to": 75,
+            "feedback": "Bien : un ou deux animaux sont encore mal classés."
+          },
+          {
+            "from": 76,
+            "to": 100,
+            "feedback": "Parfait : chaque animal est dans la bonne catégorie."
+          }
         ]
       }
     }
   ],
   "overallFeedback": [
-    {"from": 0, "to": 25, "feedback": "Résultat faible."},
-    {"from": 26, "to": 50, "feedback": "Résultat moyen."},
-    {"from": 51, "to": 75, "feedback": "Bon résultat."},
-    {"from": 76, "to": 100, "feedback": "Excellent résultat."}
+    {
+      "from": 0,
+      "to": 25,
+      "feedback": "Reprends les notions de base à ton rythme : relis le cours puis refais le quiz, tu vas progresser."
+    },
+    {
+      "from": 26,
+      "to": 50,
+      "feedback": "Tu installes ces notions. Cible ce qui te résiste et entraîne-toi encore un peu."
+    },
+    {
+      "from": 51,
+      "to": 75,
+      "feedback": "Plusieurs notions sont acquises. Repère les questions qui t'ont fait hésiter pour consolider."
+    },
+    {
+      "from": 76,
+      "to": 100,
+      "feedback": "Tu maîtrises bien l'ensemble. Continue à t'entraîner pour ancrer ces acquis."
+    }
   ]
 }
 ```

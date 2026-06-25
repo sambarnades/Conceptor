@@ -4,13 +4,21 @@
 - Ton public : [NIVEAU]
 
 # RÈGLES SPÉCIFIQUES POUR [H5P.MarkTheWords]
+
 - Nombre de mots : Paragraphe d'au minimum 50 mots avec au moins 5 mots à surligner || [NOMBRE_ELEMENTS] mots.
+- Rétroaction : seul le feedback global (`overallFeedback`) est possible (pas de message par mot) — gradue-le par niveau de maîtrise et renvoie à la notion (cf. RÈGLES PÉDAGOGIQUES).
 
 # RÈGLES PÉDAGOGIQUES
-- Adaptation et vocabulaire : Adapte le ton, le vocabulaire et la difficulté des consignes au public indiqué. Sois pertinent et engageant.
-- Ton et feedback : Les consignes et remarques doivent être constructives, encourageantes, tournées vers l'apprentissage.
-- Conformité : Adapte OBLIGATOIREMENT les contenus aux références officielles en vigueur. Sauf mention contraire explicite, base-toi par défaut sur les programmes scolaires français (Eduscol) pour le public scolaire, et sur les textes réglementaires de la formation professionnelle pour les adultes.
-- Langue : Le contenu et les consignes doivent être rédigés dans la langue cible (français sauf indication contraire).
+- Adaptation : adapte le ton, le vocabulaire et la difficulté au public. Choisis le tutoiement (élèves) ou le vouvoiement (adultes/formation) et garde le même registre dans les consignes et les rétroactions.
+- Conformité : adapte les contenus aux références officielles (par défaut programmes Eduscol ; textes de la formation professionnelle pour les adultes).
+- Langue : rédige dans la langue cible (français sauf indication contraire).
+- Rétroactions (feedback formatif) — quand l’activité en comporte :
+  - Aide à progresser, jamais un simple verdict. Décris la notion, jamais l’élève : bannis « Faux/Non/À revoir », l’ironie, les comparaisons entre élèves et l’éloge de la personne.
+  - Mauvaise réponse : nomme l’erreur (confusion, fait, calcul, hors-contexte) puis rappelle l’idée juste. Bonne réponse : dis POURQUOI, pas seulement « Bravo ». Indice : une piste qui ne révèle pas la réponse.
+  - N’invente aucun fait ni source ; ne renvoie pas à un « document » ou une « page » : oriente vers la NOTION à revoir.
+  - Feedback global par tranche : il ignore quelle question a été ratée → ne révèle rien et gradue par maîtrise — 0-25 % rassure et reprends les bases ; 26-50 % cible ce qui résiste ; 51-75 % consolide les cas délicats ; 76-100 % valide et propose d’aller plus loin. Évite « Moyen./Bien. » ; tu peux inviter l’élève à repérer lui-même ce qui l’a fait hésiter.
+  - Lisibilité (CUA/FALC) : phrases courtes, mots connus.
+  - Texte brut : aucun Markdown (`**gras**`, `*italique*`) ni LaTeX dans les feedbacks et les indices — H5P ne les interprète pas et ils s’afficheraient littéralement.
 - **LaTeX :** Le composant MarkTheWords ne supporte PAS le LaTeX dans le texte à marquer (`textField`). Le LaTeX sera automatiquement converti en caractères Unicode. Tu peux utiliser LaTeX `\\( ... \\)` dans la consigne (`taskDescription`). Exemples : `\\( \\frac{1}{2} \\)`, `\\( \\alpha \\)`, `\\( x^{2} \\)`.
 
 # SOURCES
@@ -31,15 +39,32 @@ L'objet doit contenir :
 - \`overallFeedback\` : (RÈGLE STRICTE) Tu dois obligatoirement générer un tableau de 4 objets pour le feedback final (0-25, 26-50, 51-75, 76-100).
 
 # EXEMPLE DE RENDU
+
 ```json
 {
   "taskDescription": "Cliquez sur les **noms propres** dans le texte suivant.",
   "textField": "*Paris* est la capitale de la *France*. C'est l' *Europe* qui nous intéresse.",
   "overallFeedback": [
-    {"from": 0, "to": 25, "feedback": "Des efforts sont nécessaires pour bien comprendre ces notions."},
-    {"from": 26, "to": 50, "feedback": "C'est un bon début, mais certains points restent à éclaircir."},
-    {"from": 51, "to": 75, "feedback": "Bon travail ! Tu as compris l'essentiel du sujet."},
-    {"from": 76, "to": 100, "feedback": "Excellent ! Tu as une parfaite maîtrise de cette leçon."}
+    {
+      "from": 0,
+      "to": 25,
+      "feedback": "Rappelle-toi qu'un nom propre désigne une personne ou un lieu précis et prend une majuscule."
+    },
+    {
+      "from": 26,
+      "to": 50,
+      "feedback": "Tu en as trouvé quelques-uns : vérifie chaque mot qui porte une majuscule."
+    },
+    {
+      "from": 51,
+      "to": 75,
+      "feedback": "Bien : il te reste un ou deux noms propres à repérer."
+    },
+    {
+      "from": 76,
+      "to": 100,
+      "feedback": "Parfait : tu as identifié tous les noms propres."
+    }
   ]
 }
 ```

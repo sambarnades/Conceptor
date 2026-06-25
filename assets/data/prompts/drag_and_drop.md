@@ -4,18 +4,26 @@
 - Ton public : [NIVEAU]
 
 # RÈGLES SPÉCIFIQUES POUR [H5P.DragQuestion]
+
 - Nombre d'étiquettes : Au minimum 4 étiquettes à classer, réparties de manière équilibrée entre les zones || Exactement [NOMBRE_ELEMENTS] étiquettes à classer.
 - Nombre de zones : Entre 2 et 6 zones de dépôt (catégories), adaptées au sujet.
 - Labels des zones : Les noms des zones doivent être courts et explicites (1 à 3 mots).
 - Texte des étiquettes : Chaque étiquette doit être concise (1 à 4 mots maximum).
 - Unicité : Chaque étiquette doit appartenir à exactement une seule zone correcte.
 - Équilibre : Répartis les étiquettes de façon relativement équilibrée entre les zones (pas de zone vide, pas de zone surchargée).
+- Rétroaction : seul le feedback global (`overallFeedback`) est possible (pas de message par étiquette) — gradue-le par niveau de maîtrise et renvoie à la notion (cf. RÈGLES PÉDAGOGIQUES).
 
 # RÈGLES PÉDAGOGIQUES
-- Adaptation et vocabulaire : Adapte le ton, le vocabulaire et la difficulté des consignes au public indiqué. Sois pertinent et engageant.
-- Ton et feedback : Les consignes et remarques doivent être constructives, encourageantes, tournées vers l'apprentissage.
-- Conformité : Adapte OBLIGATOIREMENT les contenus aux références officielles en vigueur. Sauf mention contraire explicite, base-toi par défaut sur les programmes scolaires français (Eduscol) pour le public scolaire, et sur les textes réglementaires de la formation professionnelle pour les adultes.
-- Langue : Le contenu et les consignes doivent être rédigés dans la langue cible (français sauf indication contraire).
+- Adaptation : adapte le ton, le vocabulaire et la difficulté au public. Choisis le tutoiement (élèves) ou le vouvoiement (adultes/formation) et garde le même registre dans les consignes et les rétroactions.
+- Conformité : adapte les contenus aux références officielles (par défaut programmes Eduscol ; textes de la formation professionnelle pour les adultes).
+- Langue : rédige dans la langue cible (français sauf indication contraire).
+- Rétroactions (feedback formatif) — quand l’activité en comporte :
+  - Aide à progresser, jamais un simple verdict. Décris la notion, jamais l’élève : bannis « Faux/Non/À revoir », l’ironie, les comparaisons entre élèves et l’éloge de la personne.
+  - Mauvaise réponse : nomme l’erreur (confusion, fait, calcul, hors-contexte) puis rappelle l’idée juste. Bonne réponse : dis POURQUOI, pas seulement « Bravo ». Indice : une piste qui ne révèle pas la réponse.
+  - N’invente aucun fait ni source ; ne renvoie pas à un « document » ou une « page » : oriente vers la NOTION à revoir.
+  - Feedback global par tranche : il ignore quelle question a été ratée → ne révèle rien et gradue par maîtrise — 0-25 % rassure et reprends les bases ; 26-50 % cible ce qui résiste ; 51-75 % consolide les cas délicats ; 76-100 % valide et propose d’aller plus loin. Évite « Moyen./Bien. » ; tu peux inviter l’élève à repérer lui-même ce qui l’a fait hésiter.
+  - Lisibilité (CUA/FALC) : phrases courtes, mots connus.
+  - Texte brut : aucun Markdown (`**gras**`, `*italique*`) ni LaTeX dans les feedbacks et les indices — H5P ne les interprète pas et ils s’afficheraient littéralement.
 
 # SOURCES
 - Tu utiliseras UNIQUEMENT les textes suivants pour générer ton activité.
@@ -36,29 +44,82 @@ L'objet doit contenir :
 - **LaTeX :** Pour les formules mathématiques, utilise EXCLUSIVEMENT le format LaTeX encapsulé par double échappement : `\\( ... \\)`. N'utilise JAMAIS le signe `$` seul. Exemples : `\\( \\frac{1}{2} \\)`, `\\( \\sqrt{2} \\)`, `\\( \\alpha \\)`, `\\( x^{2} \\)`, `\\( \\mathbb{R} \\)`, `\\( \\sin(\\theta) \\)`, `\\( \\sum_{k=0}^{n} k \\)`, `\\( x \\geq 0 \\)`, `\\( \\forall x \\in \\mathbb{R} \\)`.
 
 # EXEMPLE DE RENDU
+
 ```json
 {
   "title": "Classez chaque verbe dans le groupe correspondant",
   "dropZones": [
-    { "label": "1er groupe", "correctElements": [0, 1, 2] },
-    { "label": "2e groupe", "correctElements": [3, 4] },
-    { "label": "3e groupe", "correctElements": [5, 6, 7] }
+    {
+      "label": "1er groupe",
+      "correctElements": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "label": "2e groupe",
+      "correctElements": [
+        3,
+        4
+      ]
+    },
+    {
+      "label": "3e groupe",
+      "correctElements": [
+        5,
+        6,
+        7
+      ]
+    }
   ],
   "elements": [
-    { "text": "marcher" },
-    { "text": "parler" },
-    { "text": "chanter" },
-    { "text": "finir" },
-    { "text": "choisir" },
-    { "text": "aller" },
-    { "text": "être" },
-    { "text": "avoir" }
+    {
+      "text": "marcher"
+    },
+    {
+      "text": "parler"
+    },
+    {
+      "text": "chanter"
+    },
+    {
+      "text": "finir"
+    },
+    {
+      "text": "choisir"
+    },
+    {
+      "text": "aller"
+    },
+    {
+      "text": "être"
+    },
+    {
+      "text": "avoir"
+    }
   ],
   "overallFeedback": [
-    { "from": 0, "to": 25, "feedback": "La classification des verbes est à revoir." },
-    { "from": 26, "to": 50, "feedback": "C'est un bon début, continue !" },
-    { "from": 51, "to": 75, "feedback": "Bon travail, tu maîtrises les bases." },
-    { "from": 76, "to": 100, "feedback": "Excellent ! Tu maîtrises parfaitement la classification !" }
+    {
+      "from": 0,
+      "to": 25,
+      "feedback": "Reprends comment on reconnaît le groupe d'un verbe à sa terminaison à l'infinitif."
+    },
+    {
+      "from": 26,
+      "to": 50,
+      "feedback": "Bon début : revois les verbes que tu as hésité à classer."
+    },
+    {
+      "from": 51,
+      "to": 75,
+      "feedback": "Bien : un ou deux verbes sont encore mal classés."
+    },
+    {
+      "from": 76,
+      "to": 100,
+      "feedback": "Parfait : chaque verbe est dans le bon groupe."
+    }
   ]
 }
 ```

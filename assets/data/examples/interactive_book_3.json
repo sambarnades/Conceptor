@@ -1,0 +1,404 @@
+{
+  "title": "Les Trente Glorieuses : la France en mutation (1945-1975)",
+  "cover": {
+    "description": "Découvrez comment la France a connu une croissance exceptionnelle après la Seconde Guerre mondiale, transformant son économie, sa société et son territoire. Un voyage interactif à travers les défis et les réussites de cette période clé."
+  },
+  "chapters": [
+    {
+      "title": "Qu'est-ce que les Trente Glorieuses ?",
+      "content": [
+        {
+          "type": "text",
+          "text": "Les **Trente Glorieuses** désignent la période de **croissance économique exceptionnelle** que la France a connue entre **1945 et 1975**. Ce terme, popularisé par l'économiste Jean Fourastié, évoque **30 années de prospérité** sans précédent, marquées par une **forte augmentation de la production industrielle**, une **hausse du niveau de vie** et une **transformation profonde de la société française**."
+        },
+        {
+          "type": "text",
+          "text": "Cette période s'explique par plusieurs facteurs :\n- La **reconstruction** après la Seconde Guerre mondiale (plan Marshall, nationalisations)\n- L'**innovation technologique** et la modernisation des industries\n- L'**essor de la consommation de masse** (voitures, électroménager)\n- L'**augmentation des salaires** et la baisse du chômage\n- L'**intégration européenne** (CECA, puis CEE)"
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.MultiChoice 1.16",
+          "question": "Quel économiste a popularisé le terme 'Trente Glorieuses' ?",
+          "answers": [
+            {
+              "text": "Jean Fourastié",
+              "correct": true,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Exact ! Jean Fourastié a inventé cette expression en 1979."
+              }
+            },
+            {
+              "text": "François Mitterrand",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "François Mitterrand était un homme politique, pas un économiste."
+              }
+            },
+            {
+              "text": "Charles de Gaulle",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Charles de Gaulle était un homme d'État, pas un économiste."
+              }
+            },
+            {
+              "text": "Simone Veil",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Simone Veil était une femme politique, connue pour son engagement pour les droits des femmes."
+              }
+            }
+          ],
+          "behaviour": {
+            "singleAnswer": true
+          },
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relisez attentivement le premier paragraphe du chapitre."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Vous avez fait une erreur, mais c'est un bon début !"
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Presque ! Revoyez la partie sur les acteurs économiques."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Bravo, vous avez bien retenu ce concept clé !"
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.TrueFalse 1.8",
+          "question": "Les Trente Glorieuses ont duré exactement 30 ans.",
+          "correct": "false",
+          "feedbackOnCorrect": "Exact ! La période s'étend de 1945 à 1975, soit 30 ans, mais le terme 'Trente Glorieuses' a été inventé après cette période.",
+          "feedbackOnWrong": "Non, la période s'étend de 1945 à 1975, mais le terme a été créé après coup."
+        }
+      ]
+    },
+    {
+      "title": "Les transformations économiques",
+      "content": [
+        {
+          "type": "text",
+          "text": "Pendant les Trente Glorieuses, l'économie française connaît une **croissance annuelle moyenne de 5%** et le **PIB triple**. Plusieurs secteurs se développent particulièrement :"
+        },
+        {
+          "type": "table",
+          "tableStyle": "striped",
+          "table": {
+            "headers": [
+              "Secteur",
+              "Exemples de progrès",
+              "Impact sur la société"
+            ],
+            "rows": [
+              [
+                "Industrie",
+                "Automobile (Renault, Citroën), aéronautique (Airbus), électroménager",
+                "Création d'emplois, urbanisation accélérée"
+              ],
+              [
+                "Agriculture",
+                "Mécanisation, utilisation d'engrais, PAC (Politique Agricole Commune)",
+                "Baisse de la main-d'œuvre agricole, exode rural"
+              ],
+              [
+                "Services",
+                "Tourisme, commerce, banques",
+                "Développement des classes moyennes, consommation de masse"
+              ],
+              [
+                "Énergie",
+                "Électricité (EDF), pétrole, nucléaire (débuts)",
+                "Modernisation des infrastructures, dépendance énergétique"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "text",
+          "text": "Cette croissance s'accompagne d'une **hausse des salaires** (+50% entre 1950 et 1970) et d'une **baisse du chômage** (moins de 2% en 1960). Cependant, cette période voit aussi l'émergence de **nouveaux défis** : inflation, dépendance énergétique (choc pétrolier de 1973), et inégalités sociales persistantes."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Blanks 1.14",
+          "taskDescription": "Complétez les phrases avec les mots manquants.",
+          "questions": [
+            "Le secteur *automobile* a connu un essor majeur avec des entreprises comme Renault et Citroën.",
+            "La *PAC* (Politique Agricole Commune) a permis de moderniser l'agriculture européenne.",
+            "Le *choc pétrolier* de 1973 a marqué la fin des Trente Glorieuses."
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 30,
+              "feedback": "Relisez le tableau sur les transformations économiques."
+            },
+            {
+              "from": 31,
+              "to": 60,
+              "feedback": "Vous avez quelques erreurs, mais c'est encourageant !"
+            },
+            {
+              "from": 61,
+              "to": 80,
+              "feedback": "Presque parfait ! Revoyez les secteurs économiques."
+            },
+            {
+              "from": 81,
+              "to": 100,
+              "feedback": "Excellent travail ! Vous maîtrisez bien cette période."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Une société en mutation",
+      "content": [
+        {
+          "type": "text",
+          "text": "Les Trente Glorieuses transforment profondément la société française. Plusieurs évolutions majeures marquent cette période :"
+        },
+        {
+          "type": "text",
+          "text": "**1. L'urbanisation et les nouvelles formes d'habitat**\n- Développement des **banlieues** (grands ensembles comme Sarcelles)\n- Essor des **périurbains** (maisons individuelles)\n- Création des **ZUP** (Zones à Urbaniser en Priorité)"
+        },
+        {
+          "type": "text",
+          "text": "**2. L'éducation et la culture**\n- **Allongement de la scolarité obligatoire** (jusqu'à 16 ans en 1959)\n- Développement des **universités** (loi Faure de 1968)\n- **Médias de masse** : télévision (ORTF), presse magazine, cinéma"
+        },
+        {
+          "type": "text",
+          "text": "**3. Les modes de vie**\n- **Consommation de masse** : électroménager, voiture individuelle\n- **Loisirs** : tourisme, sports, cinéma\n- **Rôle des femmes** : entrée massive dans le monde du travail, mais inégalités persistantes"
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.SingleChoiceSet 1.11",
+          "choices": [
+            {
+              "question": "Quel événement marque l'allongement de la scolarité obligatoire en 1959 ?",
+              "answers": [
+                "La loi Berthoin",
+                "La loi Defferre",
+                "La loi Faure"
+              ]
+            },
+            {
+              "question": "Quel type d'habitat se développe massivement dans les années 1960 ?",
+              "answers": [
+                "Les grands ensembles",
+                "Les hôtels particuliers",
+                "Les maisons en pierre"
+              ]
+            },
+            {
+              "question": "Quel média se développe particulièrement pendant les Trente Glorieuses ?",
+              "answers": [
+                "La télévision",
+                "Le cinéma muet",
+                "La presse écrite manuscrite"
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 30,
+              "feedback": "Relisez les parties sur l'éducation et l'urbanisme."
+            },
+            {
+              "from": 31,
+              "to": 60,
+              "feedback": "Vous avez quelques erreurs, mais c'est un bon début !"
+            },
+            {
+              "from": 61,
+              "to": 80,
+              "feedback": "Presque ! Revoyez les transformations sociales."
+            },
+            {
+              "from": 81,
+              "to": 100,
+              "feedback": "Excellent ! Vous avez bien compris les mutations de la société."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Les défis et les limites",
+      "content": [
+        {
+          "type": "text",
+          "text": "Malgré sa prospérité, la période des Trente Glorieuses connaît aussi des **défis** et des **limites** :"
+        },
+        {
+          "type": "text",
+          "text": "**1. Les inégalités sociales**\n- **Travailleurs pauvres** : malgré la croissance, certains restent en marge\n- **Femmes** : inégalités salariales, double journée de travail\n- **Immigrés** : conditions de vie difficiles, discriminations"
+        },
+        {
+          "type": "text",
+          "text": "**2. Les problèmes environnementaux**\n- **Pollution industrielle** : développement sans contrôle\n- **Déforestation** : pression sur les espaces ruraux\n- **Dépendance énergétique** : choc pétrolier de 1973"
+        },
+        {
+          "type": "text",
+          "text": "**3. Les tensions politiques**\n- **Mai 68** : révolte étudiante et ouvrière\n- **Crise économique** : fin des Trente Glorieuses avec le choc pétrolier"
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.MarkTheWords 1.11",
+          "taskDescription": "Surlignez dans le texte les **trois défis majeurs** des Trente Glorieuses.",
+          "textField": "Malgré sa prospérité, la période des Trente Glorieuses connaît aussi des *inégalités sociales* et des *problèmes environnementaux*. Les *tensions politiques* comme Mai 68 et le choc pétrolier de 1973 marquent la fin de cette période.",
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 30,
+              "feedback": "Relisez attentivement la partie sur les défis et limites."
+            },
+            {
+              "from": 31,
+              "to": 60,
+              "feedback": "Vous avez identifié quelques mots, mais pas tous."
+            },
+            {
+              "from": 61,
+              "to": 80,
+              "feedback": "Presque ! Revoyez les trois défis principaux."
+            },
+            {
+              "from": 81,
+              "to": 100,
+              "feedback": "Parfait ! Vous avez bien repéré les enjeux de cette période."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Synthèse et bilan",
+      "content": [
+        {
+          "type": "text",
+          "text": "Les Trente Glorieuses ont profondément transformé la France. Voici les **points clés** à retenir :"
+        },
+        {
+          "type": "table",
+          "tableStyle": "bordered",
+          "table": {
+            "headers": [
+              "Aspect",
+              "Réalisations",
+              "Limites"
+            ],
+            "rows": [
+              [
+                "Économie",
+                "Croissance forte, plein emploi, consommation de masse",
+                "Dépendance énergétique, inflation, inégalités"
+              ],
+              [
+                "Société",
+                "Urbanisation, éducation, loisirs",
+                "Inégalités femmes/hommes, exclusion des immigrés"
+              ],
+              [
+                "Politique",
+                "Modernisation de l'État, Europe",
+                "Crises sociales (Mai 68), fin avec le choc pétrolier"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Summary 1.10",
+          "intro": "Parmi les affirmations suivantes, lesquelles sont correctes ?",
+          "summaries": [
+            {
+              "summary": [
+                "Les Trente Glorieuses correspondent à une période de croissance économique exceptionnelle en France.",
+                "Les Trente Glorieuses ont duré de 1945 à 1975.",
+                "Cette période a vu une baisse du niveau de vie des Français."
+              ]
+            },
+            {
+              "summary": [
+                "Le secteur automobile a connu un essor majeur pendant les Trente Glorieuses.",
+                "L'agriculture a été le secteur le plus dynamique.",
+                "Les services n'ont pas progressé pendant cette période."
+              ]
+            },
+            {
+              "summary": [
+                "Les Trente Glorieuses ont permis une meilleure éducation pour tous.",
+                "Les femmes ont obtenu l'égalité salariale dès 1945.",
+                "Les inégalités sociales ont disparu pendant cette période."
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 30,
+              "feedback": "Relisez les chapitres précédents pour revoir les concepts clés."
+            },
+            {
+              "from": 31,
+              "to": 60,
+              "feedback": "Vous avez quelques erreurs, mais c'est un bon début !"
+            },
+            {
+              "from": 61,
+              "to": 80,
+              "feedback": "Presque ! Revoyez les transformations économiques et sociales."
+            },
+            {
+              "from": 81,
+              "to": 100,
+              "feedback": "Excellent travail ! Vous avez bien compris cette période historique."
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Dialogcards 1.9",
+          "title": "Vocabulaire des Trente Glorieuses",
+          "description": "Associez chaque terme à sa définition.",
+          "dialogs": [
+            {
+              "text": "Trente Glorieuses",
+              "answer": "Période de croissance économique exceptionnelle en France (1945-1975)"
+            },
+            {
+              "text": "Plan Marshall",
+              "answer": "Aide économique américaine pour reconstruire l'Europe après 1945"
+            },
+            {
+              "text": "Mai 68",
+              "answer": "Mouvement de révolte étudiante et ouvrière en 1968"
+            },
+            {
+              "text": "ZUP",
+              "answer": "Zone à Urbaniser en Priorité, type d'habitat des années 1960"
+            },
+            {
+              "text": "Choc pétrolier",
+              "answer": "Crise économique liée à la hausse brutale du prix du pétrole en 1973"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

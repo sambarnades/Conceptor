@@ -1,0 +1,961 @@
+/* =========================================================================
+   Caramelia — Chatbot flottant indépendant pour Caramel
+   Widget d'aide et de proposition de génération d'activité
+   
+   Ce fichier est 100% autonome : aucune dépendance au code existant.
+   Pour désactiver : supprimer la ligne <link> et <script> dans index.html.
+   ========================================================================= */
+
+/* ---- Design Tokens ---- */
+:root {
+    --caramelia-primary: #D4A03C;
+    --caramelia-primary-dark: #B8872F;
+    --caramelia-primary-light: #F5E6C8;
+    --caramelia-accent: #E8B94A;
+    --caramelia-bg: #FEFCF7;
+    --caramelia-bg-glass: rgba(254, 252, 247, 0.92);
+    --caramelia-text: #2C1810;
+    --caramelia-text-secondary: #7A6652;
+    --caramelia-border: rgba(212, 160, 60, 0.2);
+    --caramelia-shadow: 0 8px 32px rgba(44, 24, 16, 0.12);
+    --caramelia-shadow-lg: 0 16px 48px rgba(44, 24, 16, 0.18);
+    --caramelia-radius: 20px;
+    --caramelia-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --caramelia-z: var(--z-fab);
+}
+
+/* ---- Désactivation sélection / drag par défaut sur le widget ----
+   La sélection bleue sur le logo et les avatars est inesthétique.
+   On désactive globalement et on réactive uniquement sur les zones textuelles. */
+.caramelia-fab,
+.caramelia-panel,
+.caramelia-header,
+.caramelia-footer,
+.caramelia-quick-replies,
+.caramelia-checklist {
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.caramelia-input,
+.caramelia-msg__bubble {
+    -webkit-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+.caramelia-fab img,
+.caramelia-msg__avatar,
+.caramelia-header__avatar {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    pointer-events: none;
+    -webkit-touch-callout: none;
+}
+
+/* ---- Bulle flottante (FAB) ---- */
+.caramelia-fab {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: var(--caramelia-z);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, var(--caramelia-primary), var(--caramelia-accent));
+    box-shadow: var(--caramelia-shadow),
+                0 0 0 0 rgba(212, 160, 60, 0.4);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow var(--caramelia-transition),
+                opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+.caramelia-fab:hover {
+    transform: scale(1.1);
+    box-shadow: var(--caramelia-shadow-lg),
+                0 0 0 8px rgba(212, 160, 60, 0.15);
+}
+
+.caramelia-fab:active {
+    transform: scale(0.95);
+}
+
+.caramelia-fab img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    pointer-events: none;
+    border-radius: 50%;
+}
+
+/* État ouvert : le FAB est absorbé par le panneau qui se déploie depuis sa position. */
+.caramelia-fab--open {
+    opacity: 0;
+    transform: scale(0.5);
+    pointer-events: none;
+    animation: none;
+}
+
+/* ---- Badge de notification ---- */
+.caramelia-fab__badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #E53935;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0);
+    transition: all var(--caramelia-transition);
+}
+
+.caramelia-fab__badge--visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ---- Panneau de chat ----
+   Ancré au coin inférieur droit (même position que le FAB) avec
+   transform-origin: 100% 100% → effet d'éclosion/absorption depuis la bulle. */
+.caramelia-panel {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: var(--caramelia-z);
+    width: 400px;
+    max-width: calc(100vw - 32px);
+    height: 560px;
+    max-height: calc(100vh - 48px);
+    border-radius: var(--caramelia-radius);
+    background: var(--caramelia-bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--caramelia-border);
+    box-shadow: var(--caramelia-shadow-lg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    opacity: 0;
+    transform-origin: 100% 100%;
+    transform: scale(0);
+    pointer-events: none;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                right 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                border-radius 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.caramelia-panel--open {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.caramelia-panel--expanded {
+    width: 80vw;
+    height: 80vh;
+    max-width: calc(100vw - 40px);
+    max-height: calc(100vh - 40px);
+    bottom: 10vh;
+    right: 10vw;
+    border-radius: 24px;
+}
+
+/* ---- Header ---- */
+.caramelia-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+    background: linear-gradient(135deg, var(--caramelia-primary), var(--caramelia-primary-dark));
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.caramelia-header__avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: contain;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.15);
+    padding: 3px;
+}
+
+.caramelia-header__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.caramelia-header__name {
+    font-size: 1.05em;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin: 0;
+}
+
+.caramelia-header__version {
+    font-size: 0.6em;
+    font-weight: 400;
+    opacity: 0.85;
+    margin-left: 5px;
+    vertical-align: middle;
+    letter-spacing: 0;
+}
+
+.caramelia-header__status {
+    font-size: 0.78em;
+    opacity: 0.95;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.caramelia-header__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #66BB6A;
+    display: inline-block;
+    animation: caramelia-blink 2s infinite;
+}
+
+@keyframes caramelia-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.caramelia-header__close,
+.caramelia-header__expand {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--caramelia-transition), transform var(--caramelia-transition);
+    flex-shrink: 0;
+}
+
+.caramelia-header__close:hover,
+.caramelia-header__expand:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.caramelia-header__expand {
+    font-size: 14px;
+    margin-right: 4px;
+}
+
+/* ---- Messages ---- */
+.caramelia-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scroll-behavior: smooth;
+}
+
+.caramelia-messages::-webkit-scrollbar {
+    width: 5px;
+}
+.caramelia-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+.caramelia-messages::-webkit-scrollbar-thumb {
+    background: rgba(212, 160, 60, 0.25);
+    border-radius: 4px;
+}
+
+/* Message bulle */
+.caramelia-msg {
+    display: flex;
+    gap: 10px;
+    max-width: 88%;
+    animation: caramelia-msgIn 0.35s ease-out;
+}
+
+.caramelia-msg--bot {
+    align-self: flex-start;
+}
+
+.caramelia-msg--user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.caramelia-msg__avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: contain;
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+.caramelia-msg--user .caramelia-msg__avatar {
+    display: none;
+}
+
+.caramelia-msg__bubble {
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 0.9em;
+    line-height: 1.55;
+    word-break: break-word;
+}
+
+.caramelia-msg--bot .caramelia-msg__bubble {
+    background: #fff;
+    color: var(--caramelia-text);
+    border: 1px solid var(--caramelia-border);
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.caramelia-msg--user .caramelia-msg__bubble {
+    background: linear-gradient(135deg, var(--caramelia-primary), var(--caramelia-accent));
+    color: #fff;
+    border-bottom-right-radius: 4px;
+}
+
+.caramelia-msg__bubble p {
+    margin: 0 0 0.4em;
+}
+.caramelia-msg__bubble p:last-child {
+    margin-bottom: 0;
+}
+.caramelia-msg__bubble strong {
+    font-weight: 700;
+}
+.caramelia-msg__bubble code {
+    background: rgba(0,0,0,0.06);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 0.88em;
+}
+/* Italique (Markdown _texte_ ou *texte*) : utilisé pour les exemples dans les bulles bot.
+   Couleur dorée pour signaler clairement un aparté/exemple sans confusion avec un lien. */
+.caramelia-msg--bot .caramelia-msg__bubble em {
+    color: var(--caramelia-primary-dark);
+    font-style: italic;
+    font-weight: 500;
+}
+.caramelia-msg__bubble ul,
+.caramelia-msg__bubble ol {
+    margin: 0.3em 0;
+    padding-left: 1.3em;
+}
+.caramelia-msg__bubble li {
+    margin-bottom: 0.2em;
+}
+
+@keyframes caramelia-msgIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---- Boutons d'action rapide (quick replies) ---- */
+.caramelia-quick-replies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.caramelia-quick-btn {
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1.5px solid var(--caramelia-primary);
+    background: var(--caramelia-primary-light);
+    color: var(--caramelia-primary-dark);
+    font-size: 0.82em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--caramelia-transition);
+    white-space: nowrap;
+}
+
+.caramelia-quick-btn:hover {
+    background: var(--caramelia-primary);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(212, 160, 60, 0.25);
+}
+
+.caramelia-quick-btn:active {
+    transform: translateY(0);
+}
+
+.caramelia-quick-btn i {
+    margin-right: 4px;
+}
+
+/* ---- Indicateur de frappe (typing) ---- */
+.caramelia-typing {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    align-self: flex-start;
+    max-width: 88%;
+    animation: caramelia-msgIn 0.3s ease-out;
+}
+
+.caramelia-typing__dots {
+    display: flex;
+    gap: 4px;
+    padding: 12px 16px;
+    background: #fff;
+    border: 1px solid var(--caramelia-border);
+    border-radius: 16px;
+    border-bottom-left-radius: 4px;
+}
+
+.caramelia-typing__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--caramelia-primary);
+    opacity: 0.6;
+    animation: caramelia-bounce 1.4s infinite ease-in-out;
+}
+
+.caramelia-typing__dot:nth-child(1) { animation-delay: 0s; }
+.caramelia-typing__dot:nth-child(2) { animation-delay: 0.16s; }
+.caramelia-typing__dot:nth-child(3) { animation-delay: 0.32s; }
+
+@keyframes caramelia-bounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.6; }
+    40% { transform: translateY(-5px); opacity: 1; }
+}
+
+/* ---- Zone d'input ---- */
+.caramelia-input-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    border-top: 1px solid var(--caramelia-border);
+    background: rgba(255, 255, 255, 0.6);
+    flex-shrink: 0;
+}
+
+/* ---- Barre de saisie unifiée (trombone + input + envoi dans une pill) ---- */
+.caramelia-input-bar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 4px 4px 6px;
+    background: #fff;
+    border: 1.5px solid var(--caramelia-border);
+    border-radius: 999px;
+    transition: border-color var(--caramelia-transition),
+                box-shadow var(--caramelia-transition);
+}
+.caramelia-input-bar:focus-within {
+    border-color: var(--caramelia-primary);
+    box-shadow: 0 0 0 3px rgba(212, 160, 60, 0.15);
+}
+
+.caramelia-input {
+    flex: 1;
+    min-width: 0; /* permet au flex de rétrécir l'input */
+    border: none;
+    background: transparent;
+    padding: 6px 8px;
+    font-size: 0.88em;
+    font-family: inherit;
+    color: var(--caramelia-text);
+    outline: none;
+}
+.caramelia-input::placeholder {
+    color: var(--caramelia-text-secondary);
+    opacity: 0.7;
+}
+
+/* Boutons trombone et envoi : ronds, intégrés dans la barre */
+.caramelia-attach-btn,
+.caramelia-send-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    padding: 0;
+    line-height: 1;
+    transition: transform var(--caramelia-transition),
+                background var(--caramelia-transition),
+                color var(--caramelia-transition),
+                box-shadow var(--caramelia-transition);
+}
+
+.caramelia-attach-btn {
+    background: transparent;
+    color: var(--caramelia-text-secondary);
+}
+.caramelia-attach-btn:hover {
+    background: var(--caramelia-primary-light);
+    color: var(--caramelia-primary-dark);
+    transform: scale(1.05);
+}
+.caramelia-attach-btn:active {
+    transform: scale(0.92);
+}
+
+.caramelia-send-btn {
+    background: linear-gradient(135deg, var(--caramelia-primary), var(--caramelia-accent));
+    color: #fff;
+}
+.caramelia-send-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 3px 12px rgba(212, 160, 60, 0.3);
+}
+.caramelia-send-btn:active {
+    transform: scale(0.95);
+}
+.caramelia-send-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ---- Bouton micro (saisie vocale) ----
+   Aligné visuellement sur le bouton trombone (même taille, même hover doux).
+   En enregistrement : passe en rouge avec une pulsation pour signaler l'état.
+   En transcription : spinner doré (réutilise le motif de typing dots). */
+.caramelia-mic-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    padding: 0;
+    line-height: 1;
+    background: transparent;
+    color: var(--caramelia-text-secondary);
+    transition: transform var(--caramelia-transition),
+                background var(--caramelia-transition),
+                color var(--caramelia-transition),
+                box-shadow var(--caramelia-transition);
+}
+.caramelia-mic-btn:hover {
+    background: var(--caramelia-primary-light);
+    color: var(--caramelia-primary-dark);
+    transform: scale(1.05);
+}
+.caramelia-mic-btn:active {
+    transform: scale(0.92);
+}
+.caramelia-mic-btn--recording {
+    background: #E74C3C;
+    color: #fff;
+    box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.5);
+    animation: caramelia-mic-pulse 1.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+.caramelia-mic-btn--recording:hover {
+    background: #D43E2E;
+    color: #fff;
+    transform: scale(1.05);
+}
+.caramelia-mic-btn--loading {
+    background: var(--caramelia-primary-light);
+    color: var(--caramelia-primary-dark);
+    cursor: wait;
+    pointer-events: none;
+    animation: caramelia-mic-spin 1s linear infinite;
+}
+@keyframes caramelia-mic-pulse {
+    0%   { box-shadow: 0 0 0 0   rgba(231, 76, 60, 0.55); }
+    70%  { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+    100% { box-shadow: 0 0 0 0   rgba(231, 76, 60, 0); }
+}
+@keyframes caramelia-mic-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ---- Bouton ✕ d'annulation de la dictée ----
+   Caché par défaut, révélé UNIQUEMENT quand le slot voisin est en état recording
+   (sélecteur sibling général `~`). Permet d'arrêter l'enregistrement sans
+   déclencher la transcription — utile si l'utilisateur change d'avis. Aligné
+   visuellement sur le micro (même taille, mêmes hovers doux), couleur neutre
+   pour ne pas concurrencer le rouge du micro qui reste l'action principale. */
+.caramelia-mic-cancel-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    padding: 0;
+    line-height: 1;
+    background: transparent;
+    color: var(--caramelia-text-secondary);
+    transition: transform var(--caramelia-transition),
+                background var(--caramelia-transition),
+                color var(--caramelia-transition);
+}
+.caramelia-input-slot--recording ~ .caramelia-mic-cancel-btn {
+    display: flex;
+}
+.caramelia-mic-cancel-btn:hover {
+    background: var(--caramelia-primary-light);
+    color: var(--caramelia-primary-dark);
+    transform: scale(1.05);
+}
+.caramelia-mic-cancel-btn:active {
+    transform: scale(0.92);
+}
+
+/* ---- Slot de saisie : conteneur qui héberge l'input ET l'overlay d'enregistrement ----
+   Le slot a une taille flex fixe (flex:1). Pendant l'enregistrement, on bascule
+   l'affichage entre <input> et .caramelia-recording sans toucher au layout
+   externe (les boutons trombone/micro/envoi ne bougent pas d'un pixel). */
+.caramelia-input-slot {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.caramelia-input-slot > .caramelia-input {
+    flex: 1;
+    min-width: 0;
+}
+.caramelia-input-slot--recording > .caramelia-input {
+    /* On masque visuellement sans display:none → garde la place réservée */
+    visibility: hidden;
+    pointer-events: none;
+}
+.caramelia-input-slot--recording > .caramelia-recording {
+    /* Recouvre exactement la place de l'input (même hauteur, même flex) */
+    position: absolute;
+    inset: 0;
+}
+
+/* ---- Overlay d'enregistrement : timer à gauche + onde animée à droite ----
+   Le timer est placé "juste à droite du trombone" (premier élément du slot,
+   qui suit le trombone). Le canvas occupe le reste. */
+.caramelia-recording {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+    padding: 0 8px;
+    /* Pas de fond, pas de bordure : on hérite visuellement du slot */
+}
+.caramelia-recording[hidden] { display: none; }
+
+.caramelia-recording__time {
+    font-size: 0.82em;
+    font-variant-numeric: tabular-nums;
+    color: var(--caramelia-primary-dark);
+    font-weight: 600;
+    min-width: 38px;
+    text-align: left;
+    flex-shrink: 0;
+}
+.caramelia-recording__waves {
+    flex: 1;
+    height: 22px;
+    display: block;
+    /* Le canvas est dimensionné en JS (DPR-aware) ; on laisse le layout CSS
+       gérer la place disponible. */
+}
+.caramelia-recording--warn .caramelia-recording__time {
+    color: #C0392B;
+    animation: caramelia-recording-warn-blink 1.2s ease-in-out infinite;
+}
+@keyframes caramelia-recording-warn-blink {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.55; }
+}
+
+/* ---- Drag & drop overlay ----
+   Le pseudo-element existe toujours mais reste invisible (opacity 0) tant que
+   la classe drag-over n'est pas active. Cela permet une transition smooth
+   et empêche tout reflow lors de l'apparition. pointer-events:none garantit
+   que l'overlay ne capture jamais les events drag (ils vont au panel/enfants). */
+.caramelia-panel::after {
+    content: "📎 PDF · DOCX · PPTX · ODT · ODP · PNG · JPEG";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 222, 173, 0.92);
+    color: #5b3a1a;
+    font-weight: 600;
+    font-size: 1em;
+    text-align: center;
+    padding: 20px;
+    border: 3px dashed #d99a45;
+    border-radius: var(--caramelia-radius);
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.12s ease;
+    z-index: 100;
+}
+.caramelia-panel--drag-over::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ---- Loader de génération ---- */
+.caramelia-gen-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: linear-gradient(135deg, rgba(212, 160, 60, 0.08), rgba(232, 185, 74, 0.08));
+    border: 1px solid var(--caramelia-border);
+    border-radius: 12px;
+    font-size: 0.82em;
+    color: var(--caramelia-primary-dark);
+    animation: caramelia-msgIn 0.3s ease-out;
+}
+
+.caramelia-gen-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--caramelia-border);
+    border-top-color: var(--caramelia-primary);
+    border-radius: 50%;
+    animation: caramelia-spin 0.8s linear infinite;
+}
+
+@keyframes caramelia-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ---- Checklist multi-select (génération multiple) ----
+   Wrapper avec dégradé bottom pour signaler visuellement le scroll quand la liste
+   dépasse 200px (sans ce signal, l'utilisateur ne sait pas qu'il y a des activités
+   cachées en dessous → coche partiel par méconnaissance). */
+.caramelia-checklist-wrap {
+    position: relative;
+    margin: 8px 0;
+}
+
+.caramelia-checklist-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    background: linear-gradient(to top, var(--caramelia-bg) 10%, rgba(254, 252, 247, 0));
+    pointer-events: none;
+    border-radius: 0 0 8px 8px;
+    opacity: 1;
+    transition: opacity 0.2s ease-out;
+}
+
+/* Quand la liste est entièrement visible (pas de scroll possible), on masque
+   le dégradé via la classe ajoutée en JS — évite un voile inutile. */
+.caramelia-checklist-wrap--no-scroll::after {
+    opacity: 0;
+}
+
+.caramelia-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.caramelia-checklist::-webkit-scrollbar { width: 6px; }
+.caramelia-checklist::-webkit-scrollbar-thumb {
+    background: rgba(212, 160, 60, 0.55);
+    border-radius: 4px;
+}
+.caramelia-checklist::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 160, 60, 0.8);
+}
+
+.caramelia-check-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.85em;
+    font-weight: 500;
+    color: var(--caramelia-text);
+    transition: background var(--caramelia-transition);
+    user-select: none;
+}
+
+.caramelia-check-item:hover {
+    background: var(--caramelia-primary-light);
+}
+
+.caramelia-check-item input[type="checkbox"] {
+    accent-color: var(--caramelia-primary);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.caramelia-check-item span {
+    flex: 1;
+    line-height: 1.3;
+}
+
+.caramelia-quick-btn--primary {
+    background: linear-gradient(135deg, var(--caramelia-primary), var(--caramelia-accent));
+    color: #fff !important;
+    border-color: var(--caramelia-primary-dark);
+    font-weight: 700;
+}
+
+.caramelia-quick-btn--primary:hover {
+    background: linear-gradient(135deg, var(--caramelia-primary-dark), var(--caramelia-primary));
+    box-shadow: 0 4px 14px rgba(212, 160, 60, 0.35);
+}
+
+/* ---- Focus rings (clavier) ----
+   Pas de :focus-visible jusqu'ici → les utilisateurs au clavier (Tab) n'avaient
+   aucun repère visuel sur les boutons interactifs. Outline doré uniforme aligné
+   sur la palette, offset 2px pour ne pas chevaucher les bordures arrondies. */
+.caramelia-quick-btn:focus-visible,
+.caramelia-attach-btn:focus-visible,
+.caramelia-mic-btn:focus-visible,
+.caramelia-mic-cancel-btn:focus-visible,
+.caramelia-send-btn:focus-visible,
+.caramelia-header__close:focus-visible,
+.caramelia-header__expand:focus-visible,
+.caramelia-fab:focus-visible {
+    outline: 3px solid var(--caramelia-primary);
+    outline-offset: 2px;
+}
+
+.caramelia-check-item:focus-within {
+    outline: 2px solid var(--caramelia-primary);
+    outline-offset: 1px;
+    background: var(--caramelia-primary-light);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 480px) {
+    .caramelia-panel {
+        /* env(safe-area-inset-*) protège du notch / home indicator iOS et Android.
+           Sans ça, le header pouvait être masqué sur iPhone et l'input cachée
+           sous la home bar. */
+        bottom: env(safe-area-inset-bottom, 0);
+        right: env(safe-area-inset-right, 0);
+        left: env(safe-area-inset-left, 0);
+        width: auto;
+        max-width: none;
+        height: calc(100vh - env(safe-area-inset-top, 0));
+        max-height: none;
+        border-radius: 0;
+        /* Sur mobile aussi, l'éclosion part du coin inférieur droit (où vit le FAB). */
+        transform-origin: 100% 100%;
+    }
+
+    /* Padding-top sur le header pour libérer la zone du notch */
+    .caramelia-header {
+        padding-top: max(16px, env(safe-area-inset-top, 0));
+    }
+
+    /* Le panneau est déjà en plein écran sur mobile → le bouton "agrandir" n'a
+       aucun sens et venait encombrer la zone de la croix (retour terrain). */
+    .caramelia-header__expand {
+        display: none;
+    }
+
+    /* Croix de fermeture : cible tactile confortable (≥ 44px recommandé) et
+       bien dégagée maintenant que le bouton agrandir est masqué. */
+    .caramelia-header__close {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+    }
+
+    /* Padding-bottom sur l'input pour ne pas être collée à la home bar
+       (et pour rester visible quand le clavier virtuel pousse la fenêtre). */
+    .caramelia-input-area {
+        padding-bottom: max(12px, env(safe-area-inset-bottom, 0));
+    }
+
+    .caramelia-fab {
+        bottom: max(16px, env(safe-area-inset-bottom, 16px));
+        right: max(16px, env(safe-area-inset-right, 16px));
+        width: 52px;
+        height: 52px;
+    }
+
+    .caramelia-fab img {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* ---- Prefers reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+    .caramelia-fab,
+    .caramelia-panel,
+    .caramelia-msg,
+    .caramelia-typing,
+    .caramelia-quick-btn,
+    .caramelia-mic-btn--recording,
+    .caramelia-mic-btn--loading,
+    .caramelia-recording--warn .caramelia-recording__time {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+    }
+}

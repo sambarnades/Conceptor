@@ -10,7 +10,13 @@
 
 // ===================== Constantes de rendu (identiques a crossword-grid-capture.js) =====================
 
+import { debugLog } from '../core/utils.js';
+
 const CELL_SIZE = 48;
+// Borne defensive : au-dela de 64x64, le canvas (64*48 = 3072 px de cote) devient
+// enorme et peut faire echouer toBlob / exploser la memoire. Une grille legitime
+// ne depasse jamais cette taille (nombre de mots limite par le prompt).
+const MAX_GRID_DIM = 64;
 const BORDER_WIDTH = 1;
 const OUTER_BORDER_WIDTH = 2;
 const CLUE_FONT_SIZE = 11;
@@ -86,7 +92,10 @@ function layoutWords(words) {
     })).filter(w => w.answer.length > 0)
       .sort((a, b) => b.answer.length - a.answer.length);
 
-    if (prepared.length === 0) return null;
+    // Mots ignores des le depart (reponse vide)
+    const unplaced = words.filter(w => normalizeAnswer(w.answer || '').length === 0);
+
+    if (prepared.length === 0) return { placements: [], unplaced };
 
     // Grille extensible : on stocke les placements et on calcule les bornes a la fin
     const placements = [];
@@ -140,11 +149,12 @@ function layoutWords(words) {
             for (let i = 0; i < word.answer.length; i++) {
                 setCell(bestPlacement.row + i * dr, bestPlacement.col + i * dc, word.answer[i]);
             }
+        } else {
+            unplaced.push(word.original);
         }
-        // Si pas de placement, on saute le mot (pas bloquant)
     }
 
-    if (placements.length === 0) return null;
+    if (placements.length === 0) return { placements: [], unplaced };
 
     // Calculer les bornes de la grille
     let minRow = Infinity, maxRow = -Infinity, minCol = Infinity, maxCol = -Infinity;
@@ -173,7 +183,7 @@ function layoutWords(words) {
         col: p.col - minCol
     }));
 
-    return { grid, placements: adjustedPlacements, rows, cols };
+    return { grid, placements: adjustedPlacements, rows, cols, unplaced };
 }
 
 /**
@@ -231,11 +241,9 @@ function buildGridModel(layoutResult) {
     const solutionLetters = [];
 
     // Attribuer les numeros d'indices dans l'ordre lecture (haut→bas, gauche→droite)
-    const clueStarts = [];
-    for (const p of placements) {
-        clueStarts.push({ row: p.row, col: p.col, direction: p.direction, word: p.word });
-    }
-    clueStarts.sort((a, b) => a.row !== b.row ? a.row - b.row : a.col - b.col);
+    const clueStarts = placements
+        .map(p => ({ row: p.row, col: p.col }))
+        .sort((a, b) => a.row !== b.row ? a.row - b.row : a.col - b.col);
 
     // Map (row,col) -> clueId (premiere occurrence)
     const clueIdMap = new Map();
@@ -265,9 +273,19 @@ function buildGridModel(layoutResult) {
         solutionLetters.push(lettersRow);
     }
 
+    // Enrichir chaque placement avec son clueId (pour l'export documents)
+    const annotatedPlacements = placements.map(p => ({
+        clueId: clueIdMap.get(`${p.row},${p.col}`) || null,
+        direction: p.direction,
+        row: p.row,
+        col: p.col,
+        word: p.word.original
+    }));
+
     return {
         gridModel: { rows, cols, cells },
-        solutionLetters
+        solutionLetters,
+        annotatedPlacements
     };
 }
 
@@ -279,8 +297,17 @@ function buildGridModel(layoutResult) {
  */
 function renderGridToCanvas(gridModel, solutionLetters, colors) {
     const C = colors || DEFAULT_COLORS;
-    const { rows, cols, cells } = gridModel;
+    const { cells } = gridModel;
+    let { rows, cols } = gridModel;
     const isSolution = !!solutionLetters;
+
+    // Clamp defensif des dimensions du canvas (voir MAX_GRID_DIM).
+    // L'appelant (generateCrosswordGridImages) tolere une grille tronquee.
+    if (rows > MAX_GRID_DIM || cols > MAX_GRID_DIM) {
+        debugLog('CrosswordGenerator', `Grille ${rows}x${cols} au-dela de ${MAX_GRID_DIM}x${MAX_GRID_DIM} : rendu tronque`);
+        rows = Math.min(rows, MAX_GRID_DIM);
+        cols = Math.min(cols, MAX_GRID_DIM);
+    }
 
     const padding = OUTER_BORDER_WIDTH;
     const width = cols * CELL_SIZE + padding * 2;
@@ -295,7 +322,7 @@ function renderGridToCanvas(gridModel, solutionLetters, colors) {
     ctx.fillRect(0, 0, width, height);
 
     for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < (cells[r]?.length || 0); c++) {
+        for (let c = 0; c < Math.min(cells[r]?.length || 0, cols); c++) {
             const cell = cells[r][c];
             const x = padding + c * CELL_SIZE;
             const y = padding + r * CELL_SIZE;
@@ -374,7 +401,7 @@ async function renderAndExport(gridModel, solutionLetters, colors) {
  * @returns {Promise<{emptyGrid: Object|null, solutionGrid: Object|null}>}
  */
 export async function generateCrosswordGridImages(words, theme) {
-    const result = { emptyGrid: null, solutionGrid: null };
+    const result = { emptyGrid: null, solutionGrid: null, placements: [], unplacedWords: [] };
 
     try {
         const layout = layoutWords(words);
@@ -383,8 +410,18 @@ export async function generateCrosswordGridImages(words, theme) {
             return result;
         }
 
+        if (layout.unplaced && layout.unplaced.length > 0) {
+            result.unplacedWords = layout.unplaced;
+        }
+
+        if (!layout.grid || layout.placements.length === 0) {
+            return result;
+        }
+
         const colors = buildColors(theme);
-        const { gridModel, solutionLetters } = buildGridModel(layout);
+        const { gridModel, solutionLetters, annotatedPlacements } = buildGridModel(layout);
+
+        result.placements = annotatedPlacements;
 
         // Grille vide (sans lettres)
         result.emptyGrid = await renderAndExport(gridModel, null, colors);

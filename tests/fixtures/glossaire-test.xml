@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GLOSSARY>
+  <INFO>
+    <NAME>Glossaire des Fonctions Racines Carr&#233;es et Inverses</NAME>
+    <INTRO><p dir="ltr" style="text-align: left;"></p></INTRO>
+    <INTROFORMAT>1</INTROFORMAT>
+    <ALLOWDUPLICATEDENTRIES>0</ALLOWDUPLICATEDENTRIES>
+    <DISPLAYFORMAT>dictionary</DISPLAYFORMAT>
+    <SHOWSPECIAL>1</SHOWSPECIAL>
+    <SHOWALPHABET>1</SHOWALPHABET>
+    <SHOWALL>1</SHOWALL>
+    <ALLOWCOMMENTS>0</ALLOWCOMMENTS>
+    <USEDYNALINK>0</USEDYNALINK>
+    <DEFAULTAPPROVAL>0</DEFAULTAPPROVAL>
+    <GLOBALGLOSSARY>0</GLOBALGLOSSARY>
+    <ENTBYPAGE>10</ENTBYPAGE>
+    <ENTRIES>
+      <ENTRY>
+        <CONCEPT>Fonction racine carr&#233;e</CONCEPT>
+        <DEFINITION>Fonction d&#233;finie sur l&#39;intervalle \([0; +\infty[\) qui &#224; tout nombre r&#233;el \(x\) associe son &lt;strong&gt;racine carr&#233;e&lt;/strong&gt; not&#233;e \(\sqrt{x}\). Elle est &lt;em&gt;croissante&lt;/em&gt; et &lt;em&gt;continue&lt;/em&gt; sur son ensemble de d&#233;finition.</DEFINITION>
+        <FORMAT>1</FORMAT>
+        <DEFINITIONTRUST>0</DEFINITIONTRUST>
+        <USEDYNALINK>1</USEDYNALINK>
+        <CASESENSITIVE>0</CASESENSITIVE>
+        <FULLMATCH>0</FULLMATCH>
+        <TEACHERENTRY>1</TEACHERENTRY>
+        <ALIASES><ALIAS><NAME>Fonction carr&#233;e inverse</NAME></ALIAS><ALIAS><NAME>Racine carr&#233;e</NAME></ALIAS></ALIASES>
+      </ENTRY>
+      <ENTRY>
+        <CONCEPT>Fonction inverse</CONCEPT>
+        <DEFINITION>Fonction d&#233;finie sur \(\mathbb{R}^* = \mathbb{R} \setminus \{0\}\) qui &#224; tout nombre r&#233;el non nul \(x\) associe son &lt;strong&gt;inverse&lt;/strong&gt; not&#233; \(\frac{1}{x}\). Elle est &lt;em&gt;d&#233;croissante&lt;/em&gt; sur chaque intervalle de son domaine.</DEFINITION>
+        <FORMAT>1</FORMAT>
+        <DEFINITIONTRUST>0</DEFINITIONTRUST>
+        <USEDYNALINK>1</USEDYNALINK>
+        <CASESENSITIVE>0</CASESENSITIVE>
+        <FULLMATCH>0</FULLMATCH>
+        <TEACHERENTRY>1</TEACHERENTRY>
+        <ALIASES><ALIAS><NAME>Fonction homographique simple</NAME></ALIAS><ALIAS><NAME>Inverse</NAME></ALIAS></ALIASES>
+      </ENTRY>
+      <ENTRY>
+        <CONCEPT>Ensemble de d&#233;finition</CONCEPT>
+        <DEFINITION>L&#39;ensemble des valeurs de \(x\) pour lesquelles une fonction est &lt;strong&gt;d&#233;finie&lt;/strong&gt;. Pour la fonction racine carr&#233;e, il s&#39;agit de \([0; +\infty[\), et pour la fonction inverse, de \(\mathbb{R}^*\).</DEFINITION>
+        <FORMAT>1</FORMAT>
+        <DEFINITIONTRUST>0</DEFINITIONTRUST>
+        <USEDYNALINK>1</USEDYNALINK>
+        <CASESENSITIVE>0</CASESENSITIVE>
+        <FULLMATCH>0</FULLMATCH>
+        <TEACHERENTRY>1</TEACHERENTRY>
+        <ALIASES><ALIAS><NAME>Domaine de d&#233;finition</NAME></ALIAS><ALIAS><NAME>Domaine</NAME></ALIAS></ALIASES>
+      </ENTRY>
+      <ENTRY>
+        <CONCEPT>Branches infinies</CONCEPT>
+        <DEFINITION>Comportement d&#39;une fonction lorsque \(x\) tend vers \(+\infty\) ou \(-\infty\). La fonction inverse pr&#233;sente une &lt;strong&gt;branche infinie&lt;/strong&gt; en \(0\) (asymptote verticale) et en \(\pm\infty\) (asymptote horizontale).</DEFINITION>
+        <FORMAT>1</FORMAT>
+        <DEFINITIONTRUST>0</DEFINITIONTRUST>
+        <USEDYNALINK>1</USEDYNALINK>
+        <CASESENSITIVE>0</CASESENSITIVE>
+        <FULLMATCH>0</FULLMATCH>
+        <TEACHERENTRY>1</TEACHERENTRY>
+        <ALIASES><ALIAS><NAME>Comportement asymptotique</NAME></ALIAS><ALIAS><NAME>Limites &#224; l&#39;infini</NAME></ALIAS></ALIASES>
+      </ENTRY>
+      <ENTRY>
+        <CONCEPT>Asymptote</CONCEPT>
+        <DEFINITION>Droite dont la distance &#224; la courbe de la fonction tend vers &lt;strong&gt;z&#233;ro&lt;/strong&gt; lorsque \(x\) tend vers une valeur donn&#233;e ou vers \(\pm\infty\). La fonction inverse admet une asymptote verticale en \(x = 0\) et une asymptote horizontale en \(y = 0\).</DEFINITION>
+        <FORMAT>1</FORMAT>
+        <DEFINITIONTRUST>0</DEFINITIONTRUST>
+        <USEDYNALINK>1</USEDYNALINK>
+        <CASESENSITIVE>0</CASESENSITIVE>
+        <FULLMATCH>0</FULLMATCH>
+        <TEACHERENTRY>1</TEACHERENTRY>
+        <ALIASES><ALIAS><NAME>Droite asymptote</NAME></ALIAS><ALIAS><NAME>Limite infinie</NAME></ALIAS></ALIASES>
+      </ENTRY>
+    </ENTRIES>
+  </INFO>
+</GLOSSARY>

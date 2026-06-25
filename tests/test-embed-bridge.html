@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tests pont embarqué (embed-bridge) — Caramel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; padding: 24px; color: #1a1a2e; }
+        h1 { font-size: 1.5rem; margin-bottom: 4px; }
+        .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+        .global-summary { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .card { padding: 14px 24px; border-radius: 10px; font-weight: 700; font-size: 1.3rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-width: 110px; text-align: center; }
+        .card small { display: block; font-size: 0.7rem; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+        .card--pass { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; }
+        .card--fail { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: #721c24; }
+        .results { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
+        .result { display: flex; align-items: flex-start; gap: 10px; padding: 8px 14px; border-bottom: 1px solid #f5f5f5; font-size: 0.85rem; }
+        .result:last-child { border-bottom: none; }
+        .result--fail { background: #fff5f5; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.7rem; min-width: 40px; text-align: center; flex-shrink: 0; }
+        .badge--pass { background: #d4edda; color: #155724; }
+        .badge--fail { background: #f8d7da; color: #721c24; }
+        .embed-frame { position: absolute; left: -9999px; width: 720px; height: 900px; border: 0; }
+        .note { font-size: 0.78rem; color: #888; margin-top: 16px; }
+    </style>
+</head>
+<body>
+    <h1>Tests pont embarqué (embed-bridge)</h1>
+    <p class="subtitle">Couche 1 — charge index.html en iframe avec <code>?embed</code>, vérifie le protocole postMessage</p>
+
+    <div id="output"><p style="padding:20px;color:#666;">Chargement de l'iframe et exécution des tests…</p></div>
+    <p class="note">L'iframe charge <code>../index.html?embed=block</code> (origine = cette page). Aucun appel réseau LLM : la génération est simulée par un événement <code>generation:complete</code> synthétique.</p>
+
+    <script>
+        const results = [];
+        const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        function assert(cond, message) {
+            results.push({ status: cond ? 'PASS' : 'FAIL', message });
+            if (!cond) console.error('FAIL:', message);
+        }
+        function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        /** Attend un message caramel:<type> de l'iframe, avec timeout. */
+        function waitForMessage(type, timeoutMs = 15000) {
+            return new Promise((resolve, reject) => {
+                const to = setTimeout(() => {
+                    window.removeEventListener('message', handler);
+                    reject(new Error(`timeout en attente de ${type}`));
+                }, timeoutMs);
+                function handler(ev) {
+                    const d = ev.data;
+                    if (d && d.source === 'caramel' && d.type === type) {
+                        clearTimeout(to);
+                        window.removeEventListener('message', handler);
+                        resolve(ev);
+                    }
+                }
+                window.addEventListener('message', handler);
+            });
+        }
+
+        function render() {
+            const pass = results.filter(r => r.status === 'PASS').length;
+            const fail = results.filter(r => r.status === 'FAIL').length;
+            let html = `<div class="global-summary">
+                <div class="card card--pass">${pass}<small>PASS</small></div>
+                <div class="card card--fail">${fail}<small>FAIL</small></div>
+            </div><div class="results">`;
+            for (const r of results) {
+                const cls = r.status === 'PASS' ? 'pass' : 'fail';
+                html += `<div class="result${r.status === 'FAIL' ? ' result--fail' : ''}">
+                    <span class="badge badge--${cls}">${r.status}</span>
+                    <span>${esc(r.message)}</span></div>`;
+            }
+            html += `</div>`;
+            document.getElementById('output').innerHTML = html;
+        }
+
+        (async function run() {
+            const origin = location.origin;
+            const iframe = document.createElement('iframe');
+            iframe.className = 'embed-frame';
+            iframe.src = `../index.html?embed=block&origin=${encodeURIComponent(origin)}`;
+            document.body.appendChild(iframe);
+
+            try {
+                // 1. caramel:ready émis au chargement.
+                const ready = await waitForMessage('caramel:ready');
+                assert(ready.data.payload && ready.data.payload.version >= 1, '[ready] caramel:ready reçu avec version');
+                assert(ready.origin === origin, `[ready] origine de l'émetteur = ${ready.origin}`);
+
+                const win = iframe.contentWindow;
+                const doc = iframe.contentDocument;
+
+                // 2. Classe d'embed appliquée + CSS injecté.
+                assert(doc.body.classList.contains('caramel-embed'), '[css] body.caramel-embed appliqué');
+                assert(!!doc.querySelector('link[href="css/embed.css"]'), '[css] css/embed.css injecté');
+
+                // 3. caramel:init → champs pré-remplis + accusé.
+                const ackP = waitForMessage('caramel:init:ack');
+                win.postMessage({
+                    type: 'caramel:init',
+                    payload: { qui: 'Prof de maths', quoi: 'Les fractions', niveau: '6e', nombreQuestions: 5 }
+                }, origin);
+                const ack = await ackP;
+                assert(Array.isArray(ack.data.payload.applied) && ack.data.payload.applied.includes('qui'),
+                    `[init] ack applied = ${JSON.stringify(ack.data.payload.applied)}`);
+
+                await wait(50); // laisser les events input/change se propager
+                assert(doc.getElementById('qui').value === 'Prof de maths', '[init] champ #qui pré-rempli');
+                assert(doc.getElementById('quoi').value === 'Les fractions', '[init] champ #quoi pré-rempli');
+                assert(doc.getElementById('niveau').value === '6e', '[init] champ #niveau pré-rempli');
+                assert(doc.getElementById('nombreQuestions').value === '5', '[init] champ #nombreQuestions pré-rempli');
+
+                // 4. Génération simulée → caramel:generated avec octets transférés.
+                const genP = waitForMessage('caramel:generated');
+                const fakeBytes = new win.Uint8Array([0x50, 0x4b, 3, 4, 10, 20, 30, 40]); // signature ZIP factice
+                const fakeBlob = new win.Blob([fakeBytes], { type: 'application/octet-stream' });
+                doc.dispatchEvent(new win.CustomEvent('generation:complete', {
+                    detail: { blob: fakeBlob, fileName: 'h5p-timeline-test.h5p', moduleKey: 'Timeline', titleKey: 'h5p_timeline_name' }
+                }));
+                const gen = await genP;
+                const p = gen.data.payload;
+                assert(p.filename === 'h5p-timeline-test.h5p', `[generated] filename = ${p.filename}`);
+                assert(p.moduleKey === 'Timeline', `[generated] moduleKey = ${p.moduleKey}`);
+                assert(p.mime === 'application/octet-stream', `[generated] mime = ${p.mime}`);
+                assert(p.size === 8, `[generated] size = ${p.size}`);
+                assert(p.bytes instanceof ArrayBuffer && p.bytes.byteLength === 8, `[generated] bytes = ArrayBuffer(${p.bytes && p.bytes.byteLength})`);
+                if (p.bytes instanceof ArrayBuffer) {
+                    const arr = new Uint8Array(p.bytes);
+                    assert(arr[0] === 0x50 && arr[1] === 0x4b, '[generated] octets intègres (signature PK)');
+                }
+
+                // 4b. caramel:generate avec activité inconnue → caramel:error (offline, sans réseau LLM).
+                //     Le happy-path déclencherait un vrai appel LLM : testé manuellement, pas ici.
+                const errP = waitForMessage('caramel:error', 4000);
+                win.postMessage({ type: 'caramel:generate', payload: { activity: 'ActiviteInexistante' } }, origin);
+                const err = await errP;
+                assert(/inconnue/i.test(err.data.payload.message), `[generate] activité inconnue → caramel:error ("${err.data.payload.message}")`);
+
+                // 5. Validation d'origine : un message d'une mauvaise origine est ignoré.
+                //    (on poste avec la bonne origine mais un type non-caramel → pas d'ack)
+                let spurious = false;
+                const guard = (ev) => { if (ev.data && ev.data.source === 'caramel' && ev.data.type === 'caramel:init:ack') spurious = true; };
+                window.addEventListener('message', guard);
+                win.postMessage({ type: 'autre:chose', payload: {} }, origin);
+                await wait(150);
+                window.removeEventListener('message', guard);
+                assert(!spurious, '[guard] message hors-protocole ignoré (pas d\'ack)');
+
+            } catch (e) {
+                assert(false, `[fatal] ${e.message}`);
+            } finally {
+                render();
+                iframe.remove();
+            }
+        })();
+    </script>
+</body>
+</html>

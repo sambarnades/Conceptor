@@ -112,7 +112,7 @@
 </head>
 <body>
     <h1>Caramel &mdash; Tous les tests</h1>
-    <p class="subtitle">Lance les 20 suites de tests sequentiellement et agrege les resultats</p>
+    <p class="subtitle">Lance les 21 suites de tests sequentiellement et agrege les resultats</p>
 
     <div id="output">
         <div class="loading">
@@ -144,13 +144,18 @@
             { id: 'grid-export', name: 'Export grilles', file: 'test-grid-export.js', needsIframe: false },
             { id: 'document-export', name: 'Export documents', file: 'test-document-export.js', needsIframe: false },
             { id: 'editor-cp', name: 'Editeur CoursePresentation', file: 'test-editor-cp.js', needsIframe: false },
+            { id: 'editor-ib', name: 'Editeur InteractiveBook', file: 'test-editor-ib.js', needsIframe: false },
+            { id: 'editor-iv', name: 'Vidéo interactive', file: 'test-editor-iv.js', needsIframe: false },
             { id: 'edit-export-flow', name: 'Pipeline complet', file: 'test-edit-export-flow.js', needsIframe: false },
             { id: 'generation-download', name: 'Generation & telechargement', file: 'test-generation-download.js', needsIframe: false },
+            { id: 'package-activity', name: 'Empaquetage sans effet de bord (packageActivity)', file: 'test-package-activity.js', needsIframe: false },
             { id: 'images', name: 'Images H5P', file: 'test-images.js', needsIframe: false },
             { id: 'behaviour-settings', name: 'Reglages avances (behaviour)', file: 'test-behaviour-settings.js', needsIframe: false },
             { id: 'richtext-editor', name: 'Editeur Rich Text (WYSIWYG)', file: 'test-richtext-editor.js', needsIframe: false },
             { id: 'math-conversion', name: 'Conversion formules math', file: 'test-math-conversion.js', needsIframe: false },
             { id: 'moodle-unicode', name: 'Moodle Unicode (escapeXml)', file: 'test-moodle-unicode.js', needsIframe: false },
+            { id: 'simulators', name: 'Simulateurs (refactorisation)', file: 'test-simulators.js', needsIframe: false },
+            { id: 'caramelia', name: 'Caramelia (chatbot)', file: 'test-caramelia.js', needsIframe: false },
             // --- Tests avec iframe (necessitent le DOM de index.html) ---
             { id: 'css', name: 'CSS & styles', file: 'test-css.js', needsIframe: true },
             { id: 'ui', name: 'Interface utilisateur', file: 'test-ui.js', needsIframe: true },

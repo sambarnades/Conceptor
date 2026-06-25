@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caramel — Suivi du service proxy (vidéo / transcription)</title>
+<style>
+    :root {
+        --bg: #0f172a;
+        --surface: #1e293b;
+        --surface-2: #273449;
+        --border: #475569;
+        --text: #e2e8f0;
+        --text-muted: #94a3b8;
+        --accent: #38bdf8;
+        --ok: #22c55e;
+        --ok-bg: rgba(34, 197, 94, 0.12);
+        --warn: #f59e0b;
+        --warn-bg: rgba(245, 158, 11, 0.12);
+        --err: #ef4444;
+        --err-bg: rgba(239, 68, 68, 0.12);
+        --idle: #64748b;
+    }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        line-height: 1.5;
+        padding: 24px;
+    }
+    h1 { font-size: 1.5rem; margin: 0 0 4px; }
+    h2 { font-size: 1.05rem; margin: 0; }
+    .sub { color: var(--text-muted); font-size: .9rem; margin: 0 0 20px; }
+    a { color: var(--accent); }
+
+    .toolbar {
+        display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 10px; padding: 12px 16px; margin-bottom: 20px;
+    }
+    .toolbar label { font-size: .85rem; color: var(--text-muted); display: flex; gap: 6px; align-items: center; }
+    button, select {
+        background: var(--surface-2); color: var(--text);
+        border: 1px solid var(--border); border-radius: 8px;
+        padding: 8px 14px; font-size: .9rem; cursor: pointer; font-family: inherit;
+    }
+    button:hover { border-color: var(--accent); }
+    button.primary { background: var(--accent); color: #00131f; border-color: var(--accent); font-weight: 600; }
+    button:disabled { opacity: .5; cursor: progress; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+
+    .card {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 12px; padding: 18px; position: relative; overflow: hidden;
+    }
+    .card.state-ok    { border-color: rgba(34,197,94,.4); }
+    .card.state-warn  { border-color: rgba(245,158,11,.4); }
+    .card.state-err   { border-color: rgba(239,68,68,.5); }
+    .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--idle); flex: none; box-shadow: 0 0 0 4px rgba(100,116,139,.15); }
+    .dot.ok   { background: var(--ok);   box-shadow: 0 0 0 4px var(--ok-bg); }
+    .dot.warn { background: var(--warn); box-shadow: 0 0 0 4px var(--warn-bg); }
+    .dot.err  { background: var(--err);  box-shadow: 0 0 0 4px var(--err-bg); }
+    .dot.pending { animation: pulse 1s ease-in-out infinite; }
+    @keyframes pulse { 50% { opacity: .35; } }
+    .badge { margin-left: auto; font-size: .72rem; padding: 3px 9px; border-radius: 999px; font-weight: 600; letter-spacing: .02em; }
+    .badge.ok   { background: var(--ok-bg);   color: var(--ok); }
+    .badge.warn { background: var(--warn-bg); color: var(--warn); }
+    .badge.err  { background: var(--err-bg);  color: var(--err); }
+    .badge.idle { background: rgba(100,116,139,.15); color: var(--text-muted); }
+
+    dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin: 0; font-size: .88rem; }
+    dt { color: var(--text-muted); }
+    dd { margin: 0; font-variant-numeric: tabular-nums; }
+    dd.mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .82rem; word-break: break-all; }
+
+    .history { display: flex; gap: 2px; margin-top: 14px; height: 22px; align-items: flex-end; }
+    .tick { flex: 1 1 0; min-width: 2px; border-radius: 1px; background: var(--idle); height: 60%; }
+    .tick.ok   { background: var(--ok);   height: 100%; }
+    .tick.warn { background: var(--warn); height: 80%; }
+    .tick.err  { background: var(--err);  height: 45%; }
+    .meta-line { display:flex; justify-content: space-between; font-size:.78rem; color: var(--text-muted); margin-top: 8px; }
+
+    details { margin-top: 12px; }
+    summary { cursor: pointer; font-size: .8rem; color: var(--text-muted); }
+    pre { background: #0b1220; border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-size: .78rem; overflow:auto; margin: 8px 0 0; }
+
+    .e2e { margin-top: 22px; }
+    .e2e-row { display:flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .e2e input { background: var(--surface-2); color: var(--text); border:1px solid var(--border); border-radius:8px; padding:8px 10px; font-family: inherit; }
+    .e2e input[type=text] { min-width: 320px; flex: 1; }
+    #e2eOut { margin-top: 12px; font-size: .88rem; }
+    .hint { font-size: .8rem; color: var(--text-muted); }
+    .footnote { margin-top: 28px; font-size: .8rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 14px; }
+    code { background: var(--surface-2); padding: 1px 5px; border-radius: 4px; font-size: .85em; }
+</style>
+</head>
+<body>
+    <h1>Suivi du service — proxy vidéo / transcription</h1>
+    <p class="sub">État de santé du <em>caramel-proxy</em> (Scaleway) et test bout-en-bout via le webhook n8n. Aucune clé / aucun jeton n'est stocké dans cette page : <code>/health</code> est public, et le test bout-en-bout passe par n8n qui détient le jeton côté serveur.</p>
+
+    <div class="toolbar">
+        <button id="refreshBtn" class="primary">↻ Rafraîchir maintenant</button>
+        <label><input type="checkbox" id="autoChk" checked> Auto-rafraîchir</label>
+        <label>toutes les
+            <select id="intervalSel">
+                <option value="15">15 s</option>
+                <option value="30">30 s</option>
+                <option value="60" selected>60 s</option>
+                <option value="300">5 min</option>
+            </select>
+        </label>
+        <span id="nextTick" class="hint" style="margin-left:auto"></span>
+    </div>
+
+    <div class="grid" id="cards"></div>
+
+    <div class="card e2e">
+        <h2>Test bout-en-bout — transcription YouTube (via n8n)</h2>
+        <p class="hint">Appelle le webhook <code>caramel-video-transcript-dev2</code> en mode détection (sans <code>audio</code>) avec une vidéo qui a des sous-titres. Vérifie toute la chaîne : navigateur → n8n → proxy → YouTube. Manuel : un appel consomme du temps serveur (et réveille le conteneur).</p>
+        <div class="e2e-row">
+            <input type="text" id="e2eUrl" value="https://www.youtube.com/watch?v=jNQXAC9IVRw" aria-label="URL YouTube">
+            <input type="text" id="e2eLang" value="en" size="4" aria-label="Langue">
+            <button id="e2eBtn">▶ Lancer le test</button>
+        </div>
+        <div id="e2eOut" class="hint">Pas encore lancé.</div>
+    </div>
+
+    <p class="footnote">
+        Le conteneur Scaleway est en <strong>scale-to-zero</strong> (min-scale 0) : la 1ʳᵉ requête après une période d'inactivité subit un démarrage à froid (latence élevée, normal). Rafraîchir souvent maintient le conteneur éveillé (coût). •
+        Endpoints modifiables en haut de la page (variable <code>ENVIRONMENTS</code> du script). •
+        Source du proxy : <a href="https://forge.apps.education.fr/caramel/yt-dlp" target="_blank" rel="noopener">forge / caramel / yt-dlp</a>.
+    </p>
+
+<script>
+// ── Configuration ────────────────────────────────────────────────────────────
+const PROXY_PROD    = "https://caramelproxyf27407f4-caramel-proxy.functions.fnc.fr-par.scw.cloud";
+const PROXY_STAGING = "https://caramelproxyf27407f4-caramel-proxy-staging.functions.fnc.fr-par.scw.cloud";
+const N8N_WEBHOOK   = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-video-transcript-dev2";
+
+const ENVIRONMENTS = [
+    { key: "prod",    label: "Production", base: PROXY_PROD },
+    { key: "staging", label: "Staging",   base: PROXY_STAGING },
+];
+
+const HEALTH_TIMEOUT_MS = 20000; // démarrage à froid possible
+const E2E_TIMEOUT_MS    = 90000; // proxy + youtube-transcript-api
+const MAX_HISTORY       = 40;
+
+// ── État ─────────────────────────────────────────────────────────────────────
+const state = {}; // key -> { history:[], okCount, total }
+ENVIRONMENTS.forEach(e => state[e.key] = { history: [], okCount: 0, total: 0 });
+
+// ── Construction des cartes ──────────────────────────────────────────────────
+const cardsEl = document.getElementById("cards");
+ENVIRONMENTS.forEach(env => {
+    const c = document.createElement("div");
+    c.className = "card";
+    c.id = "card-" + env.key;
+    c.innerHTML = `
+        <div class="card-head">
+            <span class="dot pending" id="dot-${env.key}"></span>
+            <h2>${env.label}</h2>
+            <span class="badge idle" id="badge-${env.key}">…</span>
+        </div>
+        <dl>
+            <dt>Statut</dt><dd id="f-status-${env.key}">—</dd>
+            <dt>Latence</dt><dd id="f-latency-${env.key}">—</dd>
+            <dt>Version</dt><dd id="f-version-${env.key}">—</dd>
+            <dt>Albert</dt><dd id="f-albert-${env.key}">—</dd>
+            <dt>RAG</dt><dd id="f-rag-${env.key}">—</dd>
+            <dt>Endpoint</dt><dd class="mono">${env.base}/health</dd>
+        </dl>
+        <div class="history" id="hist-${env.key}" title="Historique des vérifications de cette session"></div>
+        <div class="meta-line">
+            <span id="uptime-${env.key}">Disponibilité : —</span>
+            <span id="checked-${env.key}">—</span>
+        </div>
+        <details>
+            <summary>Réponse brute</summary>
+            <pre id="raw-${env.key}">—</pre>
+        </details>`;
+    cardsEl.appendChild(c);
+});
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+function $(id) { return document.getElementById(id); }
+
+async function fetchWithTimeout(url, opts, ms) {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), ms);
+    try { return await fetch(url, { ...opts, signal: ctrl.signal }); }
+    finally { clearTimeout(t); }
+}
+
+function setCard(env, level, fields) {
+    const dot = $("dot-" + env.key);
+    dot.className = "dot " + level;
+    const badge = $("badge-" + env.key);
+    const labels = { ok: "EN LIGNE", warn: "DÉGRADÉ", err: "INJOIGNABLE", pending: "…" };
+    badge.className = "badge " + (level === "pending" ? "idle" : level);
+    badge.textContent = labels[level] || level;
+    $("card-" + env.key).className = "card state-" + (level === "pending" ? "" : level);
+    for (const [k, v] of Object.entries(fields)) $(`f-${k}-${env.key}`).textContent = v;
+}
+
+function pushHistory(env, level) {
+    const s = state[env.key];
+    s.history.push(level);
+    if (s.history.length > MAX_HISTORY) s.history.shift();
+    s.total++;
+    if (level === "ok") s.okCount++;
+    const h = $("hist-" + env.key);
+    h.innerHTML = s.history.map(l => `<span class="tick ${l}"></span>`).join("");
+    const pct = s.total ? Math.round((s.okCount / s.total) * 100) : 0;
+    $("uptime-" + env.key).textContent = `Disponibilité session : ${pct}% (${s.okCount}/${s.total})`;
+    $("checked-" + env.key).textContent = "Vérifié à " + new Date().toLocaleTimeString("fr-FR");
+}
+
+// ── Vérification d'un environnement ──────────────────────────────────────────
+async function checkEnv(env) {
+    $("dot-" + env.key).classList.add("pending");
+    const t0 = performance.now();
+    try {
+        const res = await fetchWithTimeout(env.base + "/health", { cache: "no-store" }, HEALTH_TIMEOUT_MS);
+        const ms = Math.round(performance.now() - t0);
+        const data = await res.json().catch(() => ({}));
+        $("raw-" + env.key).textContent = JSON.stringify(data, null, 2);
+
+        if (!res.ok || data.status !== "ok") {
+            setCard(env, "err", {
+                status: `HTTP ${res.status}`, latency: ms + " ms",
+                version: data.proxy_version || "—", albert: "—", rag: "—",
+            });
+            pushHistory(env, "err");
+            return;
+        }
+        // En ligne. Dégradé si la clé Albert manque (transcription audio KO).
+        const albertOk = data.albert_api === "connected";
+        const level = albertOk ? "ok" : "warn";
+        const ragTxt = data.rag_status === "ready"
+            ? `prêt (${data.rag_chunks} chunks)`
+            : (data.rag_status || "indisponible");
+        setCard(env, level, {
+            status: albertOk ? "ok" : "ok (Albert absent)",
+            latency: ms + " ms" + (ms > 3000 ? " ⏱ démarrage à froid" : ""),
+            version: data.proxy_version || "—",
+            albert: data.albert_api === "connected" ? "✓ connecté" : "✗ " + (data.albert_api || "absent"),
+            rag: ragTxt,
+        });
+        pushHistory(env, level);
+    } catch (err) {
+        const ms = Math.round(performance.now() - t0);
+        const msg = err.name === "AbortError" ? `timeout (>${HEALTH_TIMEOUT_MS/1000}s)` : "réseau / CORS";
+        setCard(env, "err", { status: msg, latency: ms + " ms", version: "—", albert: "—", rag: "—" });
+        $("raw-" + env.key).textContent = String(err);
+        pushHistory(env, "err");
+    }
+}
+
+function checkAll() { ENVIRONMENTS.forEach(checkEnv); }
+
+// ── Test bout-en-bout via n8n ────────────────────────────────────────────────
+async function runE2E() {
+    const btn = $("e2eBtn"), out = $("e2eOut");
+    const url = $("e2eUrl").value.trim(), lang = $("e2eLang").value.trim() || "fr";
+    btn.disabled = true;
+    out.style.color = "var(--text-muted)";
+    out.textContent = "⏳ Appel du webhook n8n (détection sous-titres)… le proxy peut démarrer à froid.";
+    const t0 = performance.now();
+    try {
+        const res = await fetchWithTimeout(N8N_WEBHOOK, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ youtubeUrl: url, language: lang }),
+        }, E2E_TIMEOUT_MS);
+        const ms = Math.round(performance.now() - t0);
+        const data = await res.json().catch(() => null);
+        if (!res.ok || !data) {
+            out.style.color = "var(--err)";
+            out.textContent = `❌ HTTP ${res.status} en ${ms} ms — réponse illisible.`;
+            return;
+        }
+        const segs = Array.isArray(data.segments) ? data.segments.length : 0;
+        if (data.hasAutoSubs && segs > 0) {
+            out.style.color = "var(--ok)";
+            out.innerHTML = `✅ OK en <strong>${ms} ms</strong> — source <code>${data.source}</code>, `
+                + `<strong>${segs}</strong> segments, durée ${Math.round(data.duration || 0)} s, langue <code>${data.language}</code>.`;
+        } else if (data.canAudio) {
+            out.style.color = "var(--warn)";
+            out.innerHTML = `⚠️ Pas de sous-titres (${ms} ms) mais repli audio disponible (<code>canAudio:true</code>). `
+                + `Une vraie transcription se ferait via un 2ᵉ appel <code>audio:true</code> (lent).`;
+        } else {
+            out.style.color = "var(--warn)";
+            out.innerHTML = `⚠️ Réponse reçue en ${ms} ms mais ni sous-titres ni repli audio. `
+                + `<code>${data.error || "raison inconnue"}</code>`;
+        }
+    } catch (err) {
+        const ms = Math.round(performance.now() - t0);
+        out.style.color = "var(--err)";
+        out.textContent = err.name === "AbortError"
+            ? `❌ Timeout (>${E2E_TIMEOUT_MS/1000}s) après ${ms} ms.`
+            : `❌ Erreur réseau après ${ms} ms : ${err}`;
+    } finally {
+        btn.disabled = false;
+    }
+}
+
+// ── Boucle d'auto-rafraîchissement ───────────────────────────────────────────
+let timer = null, nextAt = 0, countdownTimer = null;
+function schedule() {
+    clearInterval(timer); clearInterval(countdownTimer); timer = null;
+    if (!$("autoChk").checked) { $("nextTick").textContent = "Auto-rafraîchissement en pause."; return; }
+    const sec = parseInt($("intervalSel").value, 10);
+    nextAt = Date.now() + sec * 1000;
+    timer = setInterval(() => { checkAll(); nextAt = Date.now() + sec * 1000; }, sec * 1000);
+    countdownTimer = setInterval(() => {
+        const left = Math.max(0, Math.round((nextAt - Date.now()) / 1000));
+        $("nextTick").textContent = `Prochaine vérif dans ${left} s`;
+    }, 250);
+}
+
+$("refreshBtn").addEventListener("click", () => { checkAll(); schedule(); });
+$("autoChk").addEventListener("change", schedule);
+$("intervalSel").addEventListener("change", schedule);
+$("e2eBtn").addEventListener("click", runE2E);
+
+// ── Démarrage ────────────────────────────────────────────────────────────────
+checkAll();
+schedule();
+</script>
+</body>
+</html>

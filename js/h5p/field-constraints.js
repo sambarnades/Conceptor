@@ -271,6 +271,41 @@ export const FIELD_CONSTRAINTS = {
         }
     },
 
+    'InteractiveBook': {
+        platform: 'H5P',
+        machineName: 'H5P.InteractiveBook',
+        container: true,
+        fields: {
+            'title':                                  { render: 'plain' },
+            'cover.description':                      { render: 'html+latex' },
+            'chapters[].title':                       { render: 'plain' },
+            'chapters[].content[].text':              { render: 'html+latex' },
+            'chapters[].content[].table.headers[]':   { render: 'html+latex' },
+            'chapters[].content[].table.rows[][]':    { render: 'html+latex' },
+            'chapters[].content[].alt':               { render: 'plain' }
+            // chapters[].content[] exercices → délégué au processeur enfant selon library
+        }
+    },
+
+    'InteractiveVideo': {
+        platform: 'H5P',
+        machineName: 'H5P.InteractiveVideo',
+        container: true,
+        // Contraintes sur le format intermédiaire « plat » (avant processeur).
+        fields: {
+            'title':                            { render: 'plain' },
+            'interactions[].question':          { render: 'html+latex' },
+            'interactions[].answers[].text':    { render: 'html+latex' },
+            'interactions[].answers[].feedback':{ render: 'html' },
+            'interactions[].feedbackOnCorrect': { render: 'html' },
+            'interactions[].feedbackOnWrong':   { render: 'html' },
+            'interactions[].text':              { render: 'html+latex' },
+            'interactions[].questions[]':       { render: 'html+latex' },
+            'summary.intro':                    { render: 'html+latex' },
+            'summary.statements[][]':           { render: 'html+latex' }
+        }
+    },
+
     'QuizSet': {
         platform: 'H5P',
         machineName: 'H5P.QuestionSet',
@@ -325,7 +360,25 @@ export const FIELD_CONSTRAINTS = {
             'blocks[].data.items[].myth':   { render: 'html+latex' },
             'blocks[].data.items[].reality': { render: 'html+latex' },
             'blocks[].data.quote_langue_initiale': { render: 'html+latex' },
-            'blocks[].data.quote_langue_arrivee':  { render: 'html+latex' }
+            'blocks[].data.quote_langue_arrivee':  { render: 'html+latex' },
+            // Champs courts (text) et listes (stringArray) qui peuvent contenir
+            // du LaTeX dans les blocs Page — sans ces entrées, l'éditeur
+            // visuel les affichait en input plain (formules en clair, pas de
+            // bouton formule). Le healer Caramel skip ces types via continue,
+            // donc no-op à la régénération .mbz.
+            'blocks[].data.title':                  { render: 'html+latex' },
+            'blocks[].data.subtitle':               { render: 'html+latex' },
+            'blocks[].data.cards[].title':          { render: 'html+latex' },
+            'blocks[].data.cards[].caption':        { render: 'html+latex' },
+            'blocks[].data.stats[].value':          { render: 'html+latex' },
+            'blocks[].data.headers[]':              { render: 'html+latex' },
+            'blocks[].data.rows[][]':               { render: 'html+latex' },
+            'blocks[].data.chips[]':                { render: 'html+latex' },
+            'blocks[].data.paragraphs[]':           { render: 'html+latex' },
+            'blocks[].data.steps[]':                { render: 'html+latex' },
+            'blocks[].data.sections[].subtitle':    { render: 'html+latex' },
+            'blocks[].data.left.caption':           { render: 'html+latex' },
+            'blocks[].data.right.caption':          { render: 'html+latex' }
         }
     },
 
@@ -350,13 +403,27 @@ export const FIELD_CONSTRAINTS = {
             'chapters[].blocks[].data.items[].myth':            { render: 'html+latex' },
             'chapters[].blocks[].data.items[].reality':         { render: 'html+latex' },
             'chapters[].blocks[].data.quote_langue_initiale':   { render: 'html+latex' },
-            'chapters[].blocks[].data.quote_langue_arrivee':    { render: 'html+latex' }
+            'chapters[].blocks[].data.quote_langue_arrivee':    { render: 'html+latex' },
+            // Mêmes ajouts que pour Page (cf. commentaire ci-dessus).
+            'chapters[].blocks[].data.title':                   { render: 'html+latex' },
+            'chapters[].blocks[].data.subtitle':                { render: 'html+latex' },
+            'chapters[].blocks[].data.cards[].title':           { render: 'html+latex' },
+            'chapters[].blocks[].data.cards[].caption':         { render: 'html+latex' },
+            'chapters[].blocks[].data.stats[].value':           { render: 'html+latex' },
+            'chapters[].blocks[].data.headers[]':               { render: 'html+latex' },
+            'chapters[].blocks[].data.rows[][]':                { render: 'html+latex' },
+            'chapters[].blocks[].data.chips[]':                 { render: 'html+latex' },
+            'chapters[].blocks[].data.paragraphs[]':            { render: 'html+latex' },
+            'chapters[].blocks[].data.steps[]':                 { render: 'html+latex' },
+            'chapters[].blocks[].data.sections[].subtitle':     { render: 'html+latex' },
+            'chapters[].blocks[].data.left.caption':            { render: 'html+latex' },
+            'chapters[].blocks[].data.right.caption':           { render: 'html+latex' }
         }
     },
 
     'Millionnaire': {
         platform: 'Moodle',
-        machineName: 'millionairev2',
+        machineName: 'millionnairev2',
         fields: {
             'questions[].question':         { render: 'plain' },
             'questions[].goodanswer':       { render: 'plain' },
@@ -456,7 +523,25 @@ export const FIELD_CONSTRAINTS = {
             'blocks[].data.items[].myth':   { render: 'html+latex' },
             'blocks[].data.items[].reality': { render: 'html+latex' },
             'blocks[].data.quote_langue_initiale': { render: 'html+latex' },
-            'blocks[].data.quote_langue_arrivee':  { render: 'html+latex' }
+            'blocks[].data.quote_langue_arrivee':  { render: 'html+latex' },
+            // Champs courts (text) et listes (stringArray) qui peuvent contenir
+            // du LaTeX dans les blocs Page — sans ces entrées, l'éditeur
+            // visuel les affichait en input plain (formules en clair, pas de
+            // bouton formule). Le healer Caramel skip ces types via continue,
+            // donc no-op à la régénération .mbz.
+            'blocks[].data.title':                  { render: 'html+latex' },
+            'blocks[].data.subtitle':               { render: 'html+latex' },
+            'blocks[].data.cards[].title':          { render: 'html+latex' },
+            'blocks[].data.cards[].caption':        { render: 'html+latex' },
+            'blocks[].data.stats[].value':          { render: 'html+latex' },
+            'blocks[].data.headers[]':              { render: 'html+latex' },
+            'blocks[].data.rows[][]':               { render: 'html+latex' },
+            'blocks[].data.chips[]':                { render: 'html+latex' },
+            'blocks[].data.paragraphs[]':           { render: 'html+latex' },
+            'blocks[].data.steps[]':                { render: 'html+latex' },
+            'blocks[].data.sections[].subtitle':    { render: 'html+latex' },
+            'blocks[].data.left.caption':           { render: 'html+latex' },
+            'blocks[].data.right.caption':          { render: 'html+latex' }
         }
     },
 
@@ -481,13 +566,27 @@ export const FIELD_CONSTRAINTS = {
             'chapters[].blocks[].data.items[].myth':            { render: 'html+latex' },
             'chapters[].blocks[].data.items[].reality':         { render: 'html+latex' },
             'chapters[].blocks[].data.quote_langue_initiale':   { render: 'html+latex' },
-            'chapters[].blocks[].data.quote_langue_arrivee':    { render: 'html+latex' }
+            'chapters[].blocks[].data.quote_langue_arrivee':    { render: 'html+latex' },
+            // Mêmes ajouts que pour Page (cf. commentaire ci-dessus).
+            'chapters[].blocks[].data.title':                   { render: 'html+latex' },
+            'chapters[].blocks[].data.subtitle':                { render: 'html+latex' },
+            'chapters[].blocks[].data.cards[].title':           { render: 'html+latex' },
+            'chapters[].blocks[].data.cards[].caption':         { render: 'html+latex' },
+            'chapters[].blocks[].data.stats[].value':           { render: 'html+latex' },
+            'chapters[].blocks[].data.headers[]':               { render: 'html+latex' },
+            'chapters[].blocks[].data.rows[][]':                { render: 'html+latex' },
+            'chapters[].blocks[].data.chips[]':                 { render: 'html+latex' },
+            'chapters[].blocks[].data.paragraphs[]':            { render: 'html+latex' },
+            'chapters[].blocks[].data.steps[]':                 { render: 'html+latex' },
+            'chapters[].blocks[].data.sections[].subtitle':     { render: 'html+latex' },
+            'chapters[].blocks[].data.left.caption':            { render: 'html+latex' },
+            'chapters[].blocks[].data.right.caption':           { render: 'html+latex' }
         }
     },
 
     'elea_millionnaire': {
         platform: 'Moodle',
-        machineName: 'millionairev2',
+        machineName: 'millionnairev2',
         fields: {
             'questions[].question':         { render: 'plain' },
             'questions[].goodanswer':       { render: 'plain' },

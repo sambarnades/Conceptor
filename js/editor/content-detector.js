@@ -178,7 +178,20 @@ const contentSignatures = {
         Array.isArray(data.slides) &&
         data.slides.length > 0 &&
         data.slides[0].hasOwnProperty('type') &&
-        typeof data.slides[0].type === 'string'
+        typeof data.slides[0].type === 'string',
+
+    // InteractiveBook : chapters[] avec content[] (le Livre Elea utilise chapters[].blocks → exclu)
+    'InteractiveBook': (data) =>
+        Array.isArray(data.chapters) &&
+        data.chapters.length > 0 &&
+        !data.chapters[0].hasOwnProperty('blocks') &&
+        (Array.isArray(data.chapters[0].content) || data.chapters[0].hasOwnProperty('title')),
+
+    // InteractiveVideo : interactions[] horodatées (+ videoSource éventuel)
+    'InteractiveVideo': (data) =>
+        Array.isArray(data.interactions) &&
+        ((data.videoSource && typeof data.videoSource === 'object') ||
+            (data.interactions.length > 0 && data.interactions[0] && data.interactions[0].hasOwnProperty('timestamp')))
 };
 
 // Mapping titleKey -> moduleKey
@@ -241,7 +254,11 @@ const titleKeyToModuleKey = {
     'elea_devoir_name': 'elea_devoir',
     'elea_devoir': 'elea_devoir',
     'h5p_course_presentation_name': 'CoursePresentation',
-    'h5p_coursepresentation': 'CoursePresentation'
+    'h5p_coursepresentation': 'CoursePresentation',
+    'h5p_interactive_book_name': 'InteractiveBook',
+    'h5p_interactivebook': 'InteractiveBook',
+    'h5p_interactive_video_name': 'InteractiveVideo',
+    'h5p_interactivevideo': 'InteractiveVideo'
 };
 
 // =======================================================================
@@ -2154,6 +2171,7 @@ const fieldSchemas = {
                                             schema: {
                                                 value: {
                                                     type: 'select', label: 'editor_correct_answer_select',
+                                                    valueType: 'boolean', default: true,
                                                     options: [{ value: true, label: 'editor_true' }, { value: false, label: 'editor_false' }]
                                                 },
                                                 feedback_true: { type: 'textarea', label: 'editor_feedback_if_true', collapsible: true, collapsibleLabel: 'editor_feedback_if_true' },
@@ -2585,6 +2603,298 @@ const fieldSchemas = {
                 }
             }
         ]
+    },
+
+    // ===================================================================
+    // INTERACTIVE BOOK — chapitres riches : 2 niveaux d'array imbriques
+    // chapters[] → content[] (blocs polymorphes via _blockType + showWhen).
+    // Le bloc exercice reutilise CP_EXERCISE_SCHEMAS avec _exerciseLibrary
+    // comme selecteur frere (extrait par normalizeDataForEditor).
+    // ===================================================================
+    'InteractiveBook': {
+        sections: [
+            // --- General : titre + couverture ---
+            {
+                id: 'general',
+                label: 'editor_section_general',
+                icon: 'fa-info-circle',
+                fields: {
+                    title: { type: 'text', label: 'editor_title', required: true },
+                    cover: {
+                        type: 'object', label: 'editor_ib_cover',
+                        collapsible: true, collapsibleLabel: 'editor_ib_cover',
+                        schema: {
+                            description: { type: 'textarea', label: 'editor_ib_cover_desc', hint: 'editor_ib_cover_hint' }
+                        }
+                    }
+                }
+            },
+            // --- Chapitres (contenu principal) ---
+            {
+                id: 'chapters',
+                label: 'editor_ib_section_chapters',
+                icon: 'fa-book-open',
+                countField: 'chapters',
+                fields: {
+                    chapters: {
+                        type: 'array',
+                        itemLabel: 'editor_ib_chapter',
+                        addLabel: 'editor_ib_add_chapter',
+                        dynamicTitleField: 'title',
+                        minItems: 2,
+                        itemSchema: {
+                            title: { type: 'text', label: 'editor_ib_chapter_title', required: true, hint: 'editor_ib_chapter_title_hint' },
+                            content: {
+                                type: 'array', nested: true,
+                                label: 'editor_ib_blocks',
+                                itemLabel: 'editor_ib_block',
+                                addLabel: 'editor_ib_add_block',
+                                dynamicTitleField: '_blockType',
+                                minItems: 1,
+                                itemSchema: {
+                                    // === Type de bloc (pilote l'affichage conditionnel) ===
+                                    _blockType: {
+                                        type: 'select', label: 'editor_ib_block_type', required: true,
+                                        options: [
+                                            { value: 'text', label: 'editor_ib_block_text' },
+                                            { value: 'table', label: 'editor_ib_block_table' },
+                                            { value: 'image', label: 'editor_ib_block_image' },
+                                            { value: 'exercise', label: 'editor_ib_block_exercise' }
+                                        ]
+                                    },
+
+                                    // === Bloc texte ===
+                                    text: {
+                                        type: 'textarea', label: 'editor_ib_text', large: true,
+                                        showWhen: { field: '_blockType', value: 'text' }
+                                    },
+
+                                    // === Bloc tableau (mêmes 6 styles que CoursePresentation) ===
+                                    tableStyle: {
+                                        type: 'select', label: 'editor_cp_table_style',
+                                        showWhen: { field: '_blockType', value: 'table' },
+                                        options: [
+                                            { value: 'default', label: 'editor_cp_table_default' },
+                                            { value: 'striped', label: 'editor_cp_table_striped' },
+                                            { value: 'bordered', label: 'editor_cp_table_bordered' },
+                                            { value: 'dark-header', label: 'editor_cp_table_dark_header' },
+                                            { value: 'minimal', label: 'editor_cp_table_minimal' },
+                                            { value: 'dsfr', label: 'editor_cp_table_dsfr' }
+                                        ]
+                                    },
+                                    table: {
+                                        type: 'object', label: 'editor_cp_table', noHeader: true,
+                                        showWhen: { field: '_blockType', value: 'table' },
+                                        schema: {
+                                            headers: {
+                                                type: 'array', itemLabel: 'editor_cp_table_header', addLabel: 'editor_cp_add_header',
+                                                minItems: 1, itemsExpanded: false,
+                                                itemSchema: { _value: { type: 'text', label: 'editor_cp_table_header', required: true, isArrayValue: true } }
+                                            },
+                                            rows: {
+                                                type: 'array', itemLabel: 'editor_cp_table_row', addLabel: 'editor_cp_add_row',
+                                                minItems: 1, itemsExpanded: false,
+                                                itemSchema: { _value: { type: 'stringArray', label: 'editor_cp_table_cells', isArrayValue: true } }
+                                            }
+                                        }
+                                    },
+
+                                    // === Bloc image ===
+                                    image: {
+                                        type: 'image', label: 'editor_image',
+                                        altTextField: 'alt',
+                                        showWhen: { field: '_blockType', value: 'image' }
+                                    },
+
+                                    // === Bloc exercice (9 types, schemas partages avec CP) ===
+                                    _exerciseLibrary: {
+                                        type: 'select', label: 'editor_cp_exercise_type',
+                                        showWhen: { field: '_blockType', value: 'exercise' },
+                                        options: [
+                                            { value: 'H5P.MultiChoice 1.16', label: 'editor_cp_ex_multichoice' },
+                                            { value: 'H5P.TrueFalse 1.8', label: 'editor_cp_ex_truefalse' },
+                                            { value: 'H5P.Blanks 1.14', label: 'editor_cp_ex_blanks' },
+                                            { value: 'H5P.DragText 1.10', label: 'editor_cp_ex_dragtext' },
+                                            { value: 'H5P.MarkTheWords 1.11', label: 'editor_cp_ex_markwords' },
+                                            { value: 'H5P.SingleChoiceSet 1.11', label: 'editor_cp_ex_singlechoice' },
+                                            { value: 'H5P.Summary 1.10', label: 'editor_cp_ex_summary' },
+                                            { value: 'H5P.DragQuestion 1.14', label: 'editor_cp_ex_dragquestion' },
+                                            { value: 'H5P.Dialogcards 1.9', label: 'editor_cp_ex_dialogcards' }
+                                        ]
+                                    },
+                                    exercise: {
+                                        type: 'dynamicObject', label: 'editor_cp_exercise',
+                                        showWhen: { field: '_blockType', value: 'exercise' },
+                                        selector: '_exerciseLibrary',
+                                        schemas: CP_EXERCISE_SCHEMAS
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            // --- Options globales du livre ---
+            {
+                id: 'options',
+                label: 'editor_ib_section_options',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                compact: true,
+                fields: {
+                    baseColor: { type: 'color', label: 'editor_ib_base_color' },
+                    showTableOfContents: { type: 'checkbox', label: 'editor_ib_toc', default: true, inline: true },
+                    displaySummary: { type: 'checkbox', label: 'editor_ib_summary', default: true, inline: true }
+                }
+            }
+        ]
+    },
+
+    // ===================================================================
+    // INTERACTIVE VIDEO — vidéo + interactions horodatées (timeline) + résumé
+    // Format intermédiaire « plat » (cf. processors/InteractiveVideo.js). Le panneau
+    // à player intégré (js/editor/interactive-video-panel.js) s'ajoute par-dessus.
+    // ===================================================================
+    'InteractiveVideo': {
+        sections: [
+            {
+                id: 'general',
+                label: 'editor_section_general',
+                icon: 'fa-info-circle',
+                fields: {
+                    title: { type: 'text', label: 'editor_title' },
+                    videoSource: {
+                        type: 'object', label: 'editor_iv_video', collapsible: true, collapsibleLabel: 'editor_iv_video',
+                        schema: {
+                            url: { type: 'text', label: 'editor_iv_video_url' },
+                            mime: { type: 'text', label: 'editor_iv_video_mime', default: 'video/mp4' }
+                        }
+                    }
+                }
+            },
+            {
+                id: 'interactions',
+                label: 'editor_iv_section_interactions',
+                icon: 'fa-circle-question',
+                countField: 'interactions',
+                fields: {
+                    interactions: {
+                        type: 'array',
+                        itemLabel: 'editor_iv_interaction',
+                        addLabel: 'editor_iv_add_interaction',
+                        dynamicTitleField: 'question',
+                        minItems: 0,
+                        itemSchema: {
+                            timestamp: { type: 'timestamp', label: 'editor_iv_timestamp', required: true },
+                            type: {
+                                type: 'select', label: 'editor_iv_type', required: true,
+                                options: [
+                                    { value: 'multichoice', label: 'editor_iv_type_multichoice' },
+                                    { value: 'truefalse', label: 'editor_iv_type_truefalse' },
+                                    { value: 'blanks', label: 'editor_iv_type_blanks' }
+                                ]
+                            },
+                            pause: { type: 'checkbox', label: 'editor_iv_pause', default: true, inline: true },
+                            question: {
+                                type: 'textarea', label: 'editor_iv_question',
+                                showWhen: { field: 'type', values: ['multichoice', 'truefalse'] }
+                            },
+                            answers: {
+                                type: 'array', label: 'editor_iv_answers', itemLabel: 'editor_iv_answer', addLabel: 'editor_iv_add_answer',
+                                showWhen: { field: 'type', value: 'multichoice' }, minItems: 2,
+                                itemSchema: {
+                                    text: { type: 'textarea', label: 'editor_iv_answer_text' },
+                                    correct: { type: 'checkbox', label: 'editor_iv_answer_correct', inline: true },
+                                    feedback: { type: 'text', label: 'editor_iv_answer_feedback' }
+                                }
+                            },
+                            correct: {
+                                // valueType:'boolean' → la collecte stocke un vrai booléen (un <select>
+                                // renvoie sinon la chaîne "false", piège *truthy* côté processeur).
+                                type: 'select', label: 'editor_iv_truefalse_correct', valueType: 'boolean', default: false,
+                                showWhen: { field: 'type', value: 'truefalse' },
+                                options: [
+                                    { value: true, label: 'editor_iv_true' },
+                                    { value: false, label: 'editor_iv_false' }
+                                ]
+                            },
+                            feedbackOnCorrect: { type: 'text', label: 'editor_iv_feedback_correct', showWhen: { field: 'type', value: 'truefalse' } },
+                            feedbackOnWrong: { type: 'text', label: 'editor_iv_feedback_wrong', showWhen: { field: 'type', value: 'truefalse' } },
+                            text: {
+                                type: 'textarea', label: 'editor_iv_blanks_text', hint: 'editor_iv_blanks_hint',
+                                showWhen: { field: 'type', value: 'blanks' }
+                            },
+                            // Apparence & placement de l'interaction sur la vidéo. Défauts sains
+                            // appliqués si non touché ; presets ou mode coordonnées au choix.
+                            // Les champs vivent à plat sur l'interaction (cf. processors/InteractiveVideo.js).
+                            appearance: {
+                                type: 'fieldGroup', label: 'editor_iv_group_appearance', collapsible: true,
+                                fields: {
+                                    display: {
+                                        type: 'select', label: 'editor_iv_display', default: 'button',
+                                        options: [
+                                            { value: 'button', label: 'editor_iv_display_button' },
+                                            { value: 'poster', label: 'editor_iv_display_poster' }
+                                        ]
+                                    },
+                                    placement: {
+                                        type: 'select', label: 'editor_iv_placement', default: 'center',
+                                        options: [
+                                            { value: 'center', label: 'editor_iv_placement_center' },
+                                            { value: 'top-left', label: 'editor_iv_placement_top_left' },
+                                            { value: 'top-right', label: 'editor_iv_placement_top_right' },
+                                            { value: 'bottom-left', label: 'editor_iv_placement_bottom_left' },
+                                            { value: 'bottom-right', label: 'editor_iv_placement_bottom_right' },
+                                            { value: 'bottom', label: 'editor_iv_placement_bottom' },
+                                            { value: 'full', label: 'editor_iv_placement_full' },
+                                            { value: 'custom', label: 'editor_iv_placement_custom' }
+                                        ]
+                                    },
+                                    x: { type: 'number', label: 'editor_iv_x', min: 0, max: 100, step: 1, inline: true, showWhen: { field: 'placement', value: 'custom' } },
+                                    y: { type: 'number', label: 'editor_iv_y', min: 0, max: 100, step: 1, inline: true, showWhen: { field: 'placement', value: 'custom' } },
+                                    width: { type: 'number', label: 'editor_iv_width', min: 0, max: 100, step: 1, inline: true, showWhen: { field: 'placement', value: 'custom' } },
+                                    height: { type: 'number', label: 'editor_iv_height', min: 0, max: 100, step: 1, inline: true, showWhen: { field: 'placement', value: 'custom' } },
+                                    label: { type: 'text', label: 'editor_iv_label', showWhen: { field: 'display', value: 'button' } },
+                                    visibleDuration: { type: 'number', label: 'editor_iv_visible_duration', min: 1, step: 1, default: 2, showWhen: { field: 'display', value: 'button' } },
+                                    buttonOnMobile: { type: 'checkbox', label: 'editor_iv_button_on_mobile', inline: true, showWhen: { field: 'display', value: 'button' } }
+                                }
+                            },
+                            // Adaptativité : réponse obligatoire + sauts vidéo conditionnels selon
+                            // bonne/mauvaise réponse (mappés vers adaptivity.{correct,wrong} par le processeur).
+                            adaptivity: {
+                                type: 'fieldGroup', label: 'editor_iv_group_adaptivity', collapsible: true,
+                                fields: {
+                                    requireCompletion: { type: 'checkbox', label: 'editor_iv_require_completion', inline: true },
+                                    correctMessage: { type: 'text', label: 'editor_iv_adapt_correct_message' },
+                                    correctSeekTo: { type: 'timestamp', label: 'editor_iv_adapt_correct_seek' },
+                                    correctAllowOptOut: { type: 'checkbox', label: 'editor_iv_adapt_correct_optout', inline: true },
+                                    wrongMessage: { type: 'text', label: 'editor_iv_adapt_wrong_message' },
+                                    wrongSeekTo: { type: 'timestamp', label: 'editor_iv_adapt_wrong_seek' },
+                                    wrongAllowOptOut: { type: 'checkbox', label: 'editor_iv_adapt_wrong_optout', inline: true }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                id: 'summary',
+                label: 'editor_iv_section_summary',
+                icon: 'fa-list-check',
+                fields: {
+                    summary: {
+                        type: 'object', label: 'editor_iv_summary', noHeader: true,
+                        schema: {
+                            intro: { type: 'text', label: 'editor_iv_summary_intro' },
+                            statements: {
+                                type: 'array', itemLabel: 'editor_iv_summary_group', addLabel: 'editor_iv_add_summary_group',
+                                itemSchema: { _value: { type: 'stringArray', label: 'editor_iv_summary_statements', hint: 'editor_iv_summary_statements_hint', isArrayValue: true } }
+                            }
+                        }
+                    }
+                }
+            }
+        ]
     }
 };
 
@@ -2616,7 +2926,9 @@ const moduleTranslationKeys = {
     'elea_livre': 'elea_livre_name',
     'elea_millionnaire': 'elea_millionnaire_name',
     'elea_devoir': 'elea_devoir_name',
-    'CoursePresentation': 'h5p_course_presentation_name'
+    'CoursePresentation': 'h5p_course_presentation_name',
+    'InteractiveBook': 'h5p_interactive_book_name',
+    'InteractiveVideo': 'h5p_interactive_video_name'
 };
 
 /**
@@ -2916,6 +3228,54 @@ export function normalizeDataForEditor(data, moduleKey) {
             return data;
         }
 
+        case 'InteractiveBook': {
+            if (data.chapters && Array.isArray(data.chapters)) {
+                data.chapters.forEach(ch => {
+                    if (!Array.isArray(ch.content)) return;
+                    ch.content = ch.content.map(b => {
+                        if (!b || typeof b !== 'object') return b;
+
+                        // Bloc exercice : extraire library → _exerciseLibrary et
+                        // envelopper les params dans `exercise` (pour le dynamicObject)
+                        if (b.type === 'exercise' || b.library) {
+                            const { type, library, ...params } = b;
+                            // DragQuestion : correctElements → zoneIndices
+                            if (library && library.startsWith('H5P.DragQuestion')) {
+                                const dropZones = params.dropZones || [];
+                                const elements = params.elements || [];
+                                elements.forEach(el => { el.zoneIndices = []; });
+                                dropZones.forEach((zone, zoneIdx) => {
+                                    if (Array.isArray(zone.correctElements)) {
+                                        zone.correctElements.forEach(elemIdx => {
+                                            const idx = typeof elemIdx === 'string' ? parseInt(elemIdx, 10) : elemIdx;
+                                            if (idx >= 0 && idx < elements.length && !elements[idx].zoneIndices.includes(zoneIdx)) {
+                                                elements[idx].zoneIndices.push(zoneIdx);
+                                            }
+                                        });
+                                    }
+                                });
+                                dropZones.forEach(zone => { delete zone.correctElements; });
+                            }
+                            return { _blockType: 'exercise', _exerciseLibrary: library || '', exercise: params };
+                        }
+
+                        // Blocs de contenu : inférer _blockType depuis type ou les données
+                        if (b.type === 'table' || b.table) {
+                            b._blockType = 'table';
+                            if (!b.tableStyle) b.tableStyle = 'default';
+                        } else if (b.type === 'image' || b.image) {
+                            b._blockType = 'image';
+                        } else {
+                            b._blockType = 'text';
+                        }
+                        delete b.type;
+                        return b;
+                    });
+                });
+            }
+            return data;
+        }
+
         case 'elea_test':
             // Injecter le champ "single" manquant et normaliser les fractions multichoice
             // pour que l'éditeur affiche les bonnes valeurs dans les selects
@@ -3092,6 +3452,62 @@ export function denormalizeDataForSave(data, moduleKey) {
             return data;
         }
 
+        case 'InteractiveBook': {
+            if (data.chapters && Array.isArray(data.chapters)) {
+                data.chapters.forEach(ch => {
+                    if (!Array.isArray(ch.content)) return;
+                    ch.content = ch.content.map(b => {
+                        if (!b || typeof b !== 'object') return b;
+                        const blockType = b._blockType || (b.library || b.exercise ? 'exercise' : (b.table ? 'table' : (b.image ? 'image' : 'text')));
+
+                        // Bloc exercice : réinjecter _exerciseLibrary → library et aplatir exercise
+                        if (blockType === 'exercise') {
+                            const params = { ...(b.exercise || {}) };
+                            const library = b._exerciseLibrary || params.library || b.library || '';
+                            delete params.library;
+                            // DragQuestion : zoneIndices → correctElements
+                            if (library.startsWith('H5P.DragQuestion')) {
+                                const dropZones = params.dropZones || [];
+                                const elements = params.elements || [];
+                                dropZones.forEach(zone => { zone.correctElements = []; });
+                                elements.forEach((el, elemIdx) => {
+                                    const zIndices = Array.isArray(el.zoneIndices) ? el.zoneIndices : [];
+                                    zIndices.forEach(zIdx => {
+                                        const idx = typeof zIdx === 'string' ? parseInt(zIdx, 10) : zIdx;
+                                        if (idx >= 0 && idx < dropZones.length && !dropZones[idx].correctElements.includes(elemIdx)) {
+                                            dropZones[idx].correctElements.push(elemIdx);
+                                        }
+                                    });
+                                });
+                                elements.forEach(el => { delete el.zoneIndices; });
+                            }
+                            return { type: 'exercise', library, ...params };
+                        }
+
+                        // Blocs de contenu : ne conserver que les champs du type
+                        if (blockType === 'table') {
+                            return {
+                                type: 'table',
+                                tableStyle: b.tableStyle || 'default',
+                                table: b.table || { headers: [], rows: [] }
+                            };
+                        }
+                        if (blockType === 'image') {
+                            const imageBlock = { type: 'image', alt: b.alt || '' };
+                            if (b.image) imageBlock.image = b.image;
+                            return imageBlock;
+                        }
+                        return { type: 'text', text: b.text || '' };
+                    });
+                });
+            }
+            // Couverture vide → la retirer (sinon le processeur afficherait une page blanche)
+            if (data.cover && !(data.cover.description || '').trim()) {
+                delete data.cover;
+            }
+            return data;
+        }
+
         default:
             // Pour tous les types, on applique un nettoyage récursif pour supprimer les champs orphelins (dus aux dynamicObject)
             const schema = getSchemaForType(moduleKey);
@@ -3108,6 +3524,8 @@ export function denormalizeDataForSave(data, moduleKey) {
  */
 function deepMerge(target, source) {
     for (const key of Object.keys(source)) {
+        // Garde anti prototype pollution : ne jamais fusionner ces cles
+        if (key === '__proto__' || key === 'constructor' || key === 'prototype') continue;
         if (
             source[key] && typeof source[key] === 'object' && !Array.isArray(source[key]) &&
             target[key] && typeof target[key] === 'object' && !Array.isArray(target[key])

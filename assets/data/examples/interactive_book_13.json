@@ -1,0 +1,354 @@
+{
+  "title": "L'offre, la demande et la formation des prix",
+  "cover": {
+    "description": "Découvrez comment les mécanismes de l'offre et de la demande façonnent les prix dans l'économie moderne, à travers des exemples concrets et des exercices interactifs."
+  },
+  "baseColor": "#1768c4",
+  "showTableOfContents": true,
+  "displaySummary": true,
+  "chapters": [
+    {
+      "title": "Qu'est-ce que l'offre et la demande ?",
+      "content": [
+        {
+          "type": "text",
+          "text": "Dans une économie de marché, les **prix** se forment grâce à l'interaction entre deux forces principales : **l'offre** et **la demande**. \n\n- **L'offre** représente la quantité de biens ou services que les producteurs sont prêts à vendre à un prix donné.\n- **La demande** désigne la quantité de biens ou services que les consommateurs souhaitent acheter à un prix donné.\n\nCes deux forces s'équilibrent sur un **marché** pour déterminer le **prix d'équilibre** et la **quantité échangée**."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.MultiChoice 1.16",
+          "question": "Parmi ces propositions, laquelle définit correctement l'offre ?",
+          "answers": [
+            {
+              "text": "Quantité de biens que les producteurs veulent vendre à un prix donné",
+              "correct": true,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Exact ! L'offre est bien la quantité proposée par les producteurs."
+              }
+            },
+            {
+              "text": "Quantité de biens que les consommateurs veulent acheter à un prix donné",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Non, c'est la définition de la demande."
+              }
+            },
+            {
+              "text": "Prix auquel les producteurs vendent leurs biens",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Non, l'offre ne se limite pas au prix de vente."
+              }
+            },
+            {
+              "text": "Quantité totale de biens disponibles dans l'économie",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Non, l'offre dépend du prix et des producteurs."
+              }
+            }
+          ],
+          "behaviour": {
+            "singleAnswer": true
+          },
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relisez attentivement la définition de l'offre dans le texte."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Presque ! Revoyez la différence entre offre et demande."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail, mais vérifiez encore une fois."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Parfait ! Vous maîtrisez les bases."
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.TrueFalse 1.8",
+          "question": "La demande est toujours égale à l'offre sur un marché.",
+          "correct": "false",
+          "feedbackOnCorrect": "Exact ! L'offre et la demande ne sont pas toujours égales, mais elles s'équilibrent pour former le prix d'équilibre.",
+          "feedbackOnWrong": "Non, l'offre et la demande ne sont pas toujours égales. Elles s'équilibrent pour déterminer le prix d'équilibre."
+        }
+      ]
+    },
+    {
+      "title": "Les courbes d'offre et de demande",
+      "content": [
+        {
+          "type": "text",
+          "text": "Pour visualiser l'offre et la demande, on utilise des **courbes** :\n\n- **Courbe de demande** : elle est généralement **décroissante** (quand le prix augmente, la quantité demandée diminue).\n- **Courbe d'offre** : elle est généralement **croissante** (quand le prix augmente, la quantité offerte augmente).\n\nLe point d'intersection des deux courbes donne le **prix d'équilibre** et la **quantité d'équilibre**."
+        },
+        {
+          "type": "table",
+          "tableStyle": "striped",
+          "table": {
+            "headers": [
+              "Prix (€)",
+              "Quantité demandée",
+              "Quantité offerte"
+            ],
+            "rows": [
+              [
+                "1",
+                "100",
+                "20"
+              ],
+              [
+                "2",
+                "80",
+                "40"
+              ],
+              [
+                "3",
+                "60",
+                "60"
+              ],
+              [
+                "4",
+                "40",
+                "80"
+              ],
+              [
+                "5",
+                "20",
+                "100"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Blanks 1.14",
+          "taskDescription": "Complétez les phrases avec les mots manquants.",
+          "questions": [
+            "La courbe de demande est généralement *décroissante* car plus le prix est élevé, moins les consommateurs achètent.",
+            "Le point où l'offre et la demande se croisent s'appelle le *prix d'équilibre*.",
+            "À l'équilibre, la quantité *demandée* est égale à la quantité *offerte*."
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relisez le texte sur les courbes d'offre et de demande."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Presque ! Vérifiez les définitions des courbes."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail, mais revoyez encore une fois."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent ! Vous avez tout compris."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Les facteurs influençant l'offre et la demande",
+      "content": [
+        {
+          "type": "text",
+          "text": "Plusieurs facteurs peuvent déplacer les courbes d'offre et de demande :\n\n**Facteurs influençant la demande** :\n- Le revenu des consommateurs\n- Les goûts et préférences\n- Le prix des biens substituables ou complémentaires\n- Les anticipations des consommateurs\n\n**Facteurs influençant l'offre** :\n- Le coût de production\n- La technologie\n- Le nombre de producteurs\n- Les anticipations des producteurs"
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.SingleChoiceSet 1.11",
+          "choices": [
+            {
+              "question": "Quel facteur peut augmenter la demande d'un produit ?",
+              "answers": [
+                "Une hausse des revenus des consommateurs",
+                "Une baisse des revenus des consommateurs",
+                "Une augmentation du prix des biens substituables"
+              ]
+            },
+            {
+              "question": "Quel facteur peut déplacer la courbe d'offre vers la droite ?",
+              "answers": [
+                "Une amélioration de la technologie de production",
+                "Une hausse des coûts de production",
+                "Une diminution du nombre de producteurs"
+              ]
+            },
+            {
+              "question": "Si le prix d'un bien complémentaire augmente, que se passe-t-il pour la demande de ce bien ?",
+              "answers": [
+                "La demande diminue",
+                "La demande augmente",
+                "La demande reste inchangée"
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relisez les facteurs influençant l'offre et la demande."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Presque ! Vérifiez les effets des différents facteurs."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail, mais revoyez encore une fois."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent ! Vous maîtrisez les facteurs d'influence."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Le prix d'équilibre et les déséquilibres",
+      "content": [
+        {
+          "type": "text",
+          "text": "Le **prix d'équilibre** est le prix où l'offre et la demande sont égales. \n\n- Si le prix est **supérieur** au prix d'équilibre, il y a un **excédent** (offre > demande).\n- Si le prix est **inférieur** au prix d'équilibre, il y a une **pénurie** (demande > offre).\n\nLes marchés tendent naturellement vers l'équilibre grâce aux ajustements de prix."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.DragQuestion 1.14",
+          "title": "Associez chaque situation à son terme économique.",
+          "dropZones": [
+            {
+              "label": "Prix trop élevé",
+              "correctElements": [
+                0
+              ]
+            },
+            {
+              "label": "Prix trop bas",
+              "correctElements": [
+                1
+              ]
+            },
+            {
+              "label": "Prix d'équilibre",
+              "correctElements": [
+                2
+              ]
+            }
+          ],
+          "elements": [
+            {
+              "text": "Excédent"
+            },
+            {
+              "text": "Pénurie"
+            },
+            {
+              "text": "Équilibre"
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relisez la partie sur les déséquilibres de marché."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Presque ! Vérifiez les définitions des situations de marché."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail, mais revoyez encore une fois."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Parfait ! Vous avez tout compris."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Synthèse : L'offre, la demande et les prix",
+      "content": [
+        {
+          "type": "text",
+          "text": "Pour résumer, la formation des prix repose sur l'interaction entre l'offre et la demande. Voici les points clés à retenir :\n\n1. **L'offre** et **la demande** déterminent les prix sur un marché.\n2. Les **courbes d'offre** (croissante) et de **demande** (décroissante) se croisent au **prix d'équilibre**.\n3. Plusieurs **facteurs** (revenus, coûts, technologie) déplacent ces courbes.\n4. Un **déséquilibre** (pénurie ou excédent) pousse le marché vers l'équilibre."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Summary 1.10",
+          "intro": "Parmi les affirmations suivantes, lesquelles sont correctes ?",
+          "summaries": [
+            {
+              "summary": [
+                "La courbe de demande est décroissante",
+                "La courbe de demande est croissante",
+                "La courbe de demande est horizontale"
+              ]
+            },
+            {
+              "summary": [
+                "Le prix d'équilibre est le prix où l'offre est supérieure à la demande",
+                "Le prix d'équilibre est le prix où l'offre est égale à la demande",
+                "Le prix d'équilibre est le prix où l'offre est inférieure à la demande"
+              ]
+            },
+            {
+              "summary": [
+                "Une hausse des coûts de production déplace la courbe d'offre vers la droite",
+                "Une hausse des coûts de production déplace la courbe d'offre vers la gauche",
+                "Une hausse des coûts de production n'a aucun effet sur l'offre"
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relisez attentivement le chapitre pour répondre correctement."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Presque ! Revoyez les définitions des courbes et du prix d'équilibre."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail, mais vérifiez encore une fois."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent ! Vous avez parfaitement compris les mécanismes de l'offre, de la demande et de la formation des prix."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

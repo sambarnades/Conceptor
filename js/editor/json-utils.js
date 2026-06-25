@@ -19,6 +19,9 @@ export function getNestedValue(obj, path) {
     return current;
 }
 
+/** Cles interdites dans un chemin (protection contre la pollution de prototype) */
+const FORBIDDEN_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
+
 /**
  * Definit une valeur imbriquee dans un objet a partir d'un chemin
  * @param {Object} obj - L'objet source
@@ -28,6 +31,8 @@ export function getNestedValue(obj, path) {
 export function setNestedValue(obj, path, value) {
     if (!path) return;
     const keys = path.split('.');
+    // Garde anti prototype pollution : on ignore tout chemin contenant une cle dangereuse
+    if (keys.some(k => FORBIDDEN_KEYS.has(k))) return;
     let current = obj;
     for (let i = 0; i < keys.length - 1; i++) {
         const key = keys[i];

@@ -246,6 +246,74 @@ const processorMetadata = {
             { machineName: 'H5P.Accordion', majorVersion: 1, minorVersion: 0 },
         ]
     },
+    'InteractiveBook': {
+        machineName: 'H5P.InteractiveBook',
+        version: { major: 1, minor: 11 },
+        extraDependencies: [
+            // Core
+            { machineName: 'FontAwesome', majorVersion: 4, minorVersion: 5 },
+            { machineName: 'H5P.JoubelUI', majorVersion: 1, minorVersion: 3 },
+            { machineName: 'H5P.FontIcons', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'H5P.Transition', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'H5P.Question', majorVersion: 1, minorVersion: 5 },
+            { machineName: 'H5P.MathDisplay', majorVersion: 1, minorVersion: 0 },
+            // Conteneur de chapitre
+            { machineName: 'H5P.Column', majorVersion: 1, minorVersion: 18 },
+            // Sous-types contenu
+            { machineName: 'H5P.AdvancedText', majorVersion: 1, minorVersion: 1 },
+            { machineName: 'H5P.Image', majorVersion: 1, minorVersion: 1 },
+            { machineName: 'H5P.Table', majorVersion: 1, minorVersion: 2 },
+            // Sous-types exercices (mêmes que CoursePresentation)
+            { machineName: 'H5P.MultiChoice', majorVersion: 1, minorVersion: 16 },
+            { machineName: 'H5P.TrueFalse', majorVersion: 1, minorVersion: 8 },
+            { machineName: 'H5P.Blanks', majorVersion: 1, minorVersion: 14 },
+            { machineName: 'H5P.DragText', majorVersion: 1, minorVersion: 10 },
+            { machineName: 'H5P.SingleChoiceSet', majorVersion: 1, minorVersion: 11 },
+            { machineName: 'H5P.MarkTheWords', majorVersion: 1, minorVersion: 11 },
+            { machineName: 'H5P.Summary', majorVersion: 1, minorVersion: 10 },
+            { machineName: 'H5P.DragQuestion', majorVersion: 1, minorVersion: 14 },
+            { machineName: 'H5P.Dialogcards', majorVersion: 1, minorVersion: 9 },
+            // Dépendances des sous-types
+            { machineName: 'H5P.TextUtilities', majorVersion: 1, minorVersion: 3 },
+            { machineName: 'jQuery.ui', majorVersion: 1, minorVersion: 10 },
+            { machineName: 'H5P.Audio', majorVersion: 1, minorVersion: 5 },
+            // Sous-dépendances dynamiques (non déclarées dans library.json, chargées au runtime)
+            { machineName: 'H5P.DragNDrop', majorVersion: 1, minorVersion: 1 },
+            { machineName: 'H5P.DragNBar', majorVersion: 1, minorVersion: 5 },
+            { machineName: 'H5P.DragNResize', majorVersion: 1, minorVersion: 2 },
+            { machineName: 'Drop', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'Tether', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'H5P.Accordion', majorVersion: 1, minorVersion: 0 },
+        ]
+    },
+    'InteractiveVideo': {
+        machineName: 'H5P.InteractiveVideo',
+        version: { major: 1, minor: 27 },
+        extraDependencies: [
+            // Core préloadé de H5P.InteractiveVideo (cf. library.json)
+            { machineName: 'FontAwesome', majorVersion: 4, minorVersion: 5 },
+            { machineName: 'jQuery.ui', majorVersion: 1, minorVersion: 10 },
+            { machineName: 'H5P.Video', majorVersion: 1, minorVersion: 6 },
+            { machineName: 'H5P.DragNBar', majorVersion: 1, minorVersion: 5 },
+            // Dépendances runtime de DragNBar
+            { machineName: 'H5P.DragNDrop', majorVersion: 1, minorVersion: 1 },
+            { machineName: 'H5P.DragNResize', majorVersion: 1, minorVersion: 2 },
+            { machineName: 'Drop', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'Tether', majorVersion: 1, minorVersion: 0 },
+            // UI / question communs
+            { machineName: 'H5P.JoubelUI', majorVersion: 1, minorVersion: 3 },
+            { machineName: 'H5P.FontIcons', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'H5P.Transition', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'H5P.Question', majorVersion: 1, minorVersion: 5 },
+            { machineName: 'H5P.MathDisplay', majorVersion: 1, minorVersion: 0 },
+            // Types d'interactions supportés (LOT 1+) + leurs utilitaires
+            { machineName: 'H5P.MultiChoice', majorVersion: 1, minorVersion: 16 },
+            { machineName: 'H5P.TrueFalse', majorVersion: 1, minorVersion: 8 },
+            { machineName: 'H5P.Blanks', majorVersion: 1, minorVersion: 14 },
+            { machineName: 'H5P.Summary', majorVersion: 1, minorVersion: 10 },
+            { machineName: 'H5P.TextUtilities', majorVersion: 1, minorVersion: 3 }
+        ]
+    },
     'MarkTheWords': {
         machineName: 'H5P.MarkTheWords',
         version: { major: 1, minor: 11 },
@@ -302,7 +370,9 @@ const processorLoaders = {
     'Chart': () => import('./Chart.js'),
     'MarkTheWords': () => import('./MarkTheWords.js'),
     'QuizSet': () => import('./QuizSet.js'),
-    'CoursePresentation': () => import('./CoursePresentation.js')
+    'CoursePresentation': () => import('./CoursePresentation.js'),
+    'InteractiveBook': () => import('./InteractiveBook.js'),
+    'InteractiveVideo': () => import('./InteractiveVideo.js')
 };
 
 // QuizSetQCM et QuizSetVF utilisent le même processeur que QuizSet
@@ -351,7 +421,9 @@ const libraryToKey = {
     'H5P.Chart': 'Chart',
     'H5P.MarkTheWords': 'MarkTheWords',
     'H5P.QuestionSet': 'QuizSet',
-    'H5P.CoursePresentation': 'CoursePresentation'
+    'H5P.CoursePresentation': 'CoursePresentation',
+    'H5P.InteractiveBook': 'InteractiveBook',
+    'H5P.InteractiveVideo': 'InteractiveVideo'
 };
 
 /**

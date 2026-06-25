@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <title>Tests packageActivity — Coeur d'empaquetage Caramel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; padding: 24px; color: #1a1a2e; }
+        h1 { font-size: 1.5rem; margin-bottom: 4px; }
+        .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+        .info-box { background: #fff; padding: 14px 18px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); font-size: 0.82rem; line-height: 1.6; color: #444; }
+        .info-box code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; }
+        .global-summary { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .global-summary__card { padding: 14px 24px; border-radius: 10px; font-weight: 700; font-size: 1.3rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-width: 110px; text-align: center; }
+        .global-summary__card small { display: block; font-size: 0.7rem; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+        .card--pass { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; }
+        .card--fail { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: #721c24; }
+        .card--total { background: linear-gradient(135deg, #d1ecf1, #bee5eb); color: #0c5460; }
+        .filter-bar { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+        .filter-btn { padding: 5px 12px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; font-size: 0.8rem; }
+        .filter-btn--active { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
+        .results { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
+        .result { display: flex; align-items: flex-start; gap: 10px; padding: 7px 14px; border-bottom: 1px solid #f5f5f5; font-size: 0.82rem; }
+        .result:last-child { border-bottom: none; }
+        .result--fail { background: #fff5f5; }
+        .result__badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-weight: 700; font-size: 0.7rem; min-width: 38px; text-align: center; flex-shrink: 0; }
+        .result__badge--pass { background: #d4edda; color: #155724; }
+        .result__badge--fail { background: #f8d7da; color: #721c24; }
+        .result__group { font-size: 0.65rem; color: #888; min-width: 78px; flex-shrink: 0; padding-top: 3px; }
+        .diagnostic { margin-top: 6px; padding: 8px; background: #1e1e2e; color: #cdd6f4; border-radius: 6px; font-family: 'Consolas', monospace; font-size: 0.72rem; white-space: pre-wrap; word-break: break-word; }
+        .loading { text-align: center; padding: 60px; color: #666; }
+        .loading__spinner { display: inline-block; width: 36px; height: 36px; border: 3px solid #ddd; border-top-color: #1a1a2e; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <h1>Tests packageActivity</h1>
+    <p class="subtitle">Couche 0 — coeur d'empaquetage sans effet de bord (JSON contenu &rarr; octets .h5p)</p>
+
+    <div class="info-box">
+        <strong>Ce que ça teste :</strong> <code>js/core/package-activity.js</code> empaquette chaque exemple H5P
+        de <code>assets/data/examples/</code> en <code>.h5p</code> valide, <em>sans</em> télécharger ni notifier.
+        Vérifie : forme du retour (bytes/blob/filename), cohérence <code>mainLibrary</code>, relecture ZIP
+        (content.json + h5p.json), absence d'effet de bord (pas de mutation d'entrée, pas de téléchargement),
+        garde-fous d'entrée et stub Moodle.
+    </div>
+
+    <div id="output">
+        <div class="loading">
+            <div class="loading__spinner"></div>
+            <p style="margin-top:14px">Exécution des tests…</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { runAllTests } from './tests/test-package-activity.js';
+
+        const output = document.getElementById('output');
+        const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        try {
+            const { passCount, failCount, results } = await runAllTests();
+            const total = passCount + failCount;
+
+            let html = `<div class="global-summary">
+                <div class="global-summary__card card--pass">${passCount}<small>PASS</small></div>
+                <div class="global-summary__card card--fail">${failCount}<small>FAIL</small></div>
+                <div class="global-summary__card card--total">${total}<small>assertions</small></div>
+            </div>`;
+
+            html += `<div class="filter-bar">
+                <button class="filter-btn filter-btn--active" data-filter="all">Tous</button>
+                <button class="filter-btn" data-filter="FAIL">Échecs</button>
+                <button class="filter-btn" data-filter="PASS">Succès</button>
+            </div>`;
+
+            html += `<div class="results">`;
+            for (const r of results) {
+                const badge = r.status === 'PASS' ? 'pass' : 'fail';
+                const rowClass = r.status === 'FAIL' ? ' result--fail' : '';
+                const diag = r.diagnostic ? `<div class="diagnostic">${esc(JSON.stringify(r.diagnostic, null, 2))}</div>` : '';
+                html += `<div class="result${rowClass}" data-status="${r.status}">
+                    <span class="result__badge result__badge--${badge}">${r.status}</span>
+                    <span class="result__group">${esc(r.group)}</span>
+                    <span class="result__msg">${esc(r.message)}${diag}</span>
+                </div>`;
+            }
+            html += `</div>`;
+
+            output.innerHTML = html;
+
+            output.querySelectorAll('[data-filter]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    output.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('filter-btn--active'));
+                    btn.classList.add('filter-btn--active');
+                    const f = btn.dataset.filter;
+                    output.querySelectorAll('.result').forEach(row => {
+                        row.style.display = (f === 'all' || row.dataset.status === f) ? '' : 'none';
+                    });
+                });
+            });
+        } catch (e) {
+            output.innerHTML = `<div style="color:red;padding:24px;background:#fff;border-radius:10px;">
+                <h2>Erreur fatale</h2>
+                <pre style="margin-top:12px;white-space:pre-wrap;">${esc(e.message)}\n${esc(e.stack)}</pre>
+            </div>`;
+        }
+    </script>
+</body>
+</html>

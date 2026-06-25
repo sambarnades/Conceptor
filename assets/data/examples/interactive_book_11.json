@@ -1,0 +1,261 @@
+{
+  "title": "La Ve République : Les Institutions",
+  "cover": {
+    "description": "Découvrez comment la France est gouvernée : Président, Parlement, Gouvernement et Justice."
+  },
+  "chapters": [
+    {
+      "title": "1. Les fondements de la Ve République",
+      "content": [
+        {
+          "type": "text",
+          "text": "La **Ve République** (Ve = cinquième) est le régime politique actuel de la France. Elle a été instaurée par la **Constitution du 4 octobre 1958**, rédigée sous l'impulsion du général **Charles de Gaulle** et du juriste Michel Debré. L'objectif était de renforcer le pouvoir exécutif pour mettre fin à l'instabilité des gouvernements de la IVe République.\n\nContrairement à la IVe République, qui privilégiait le pouvoir du Parlement (l'Assemblée), la Ve République est qualifiée de **république semi-présidentielle**. Cela signifie que le pouvoir est partagé entre le Président de la République (chef de l'État) et le Gouvernement (chef du gouvernement), tout en maintenant un Parlement pour voter les lois et contrôler l'action du gouvernement."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.TrueFalse 1.8",
+          "question": "La Ve République a été instaurée en 1946.",
+          "correct": "false",
+          "feedbackOnCorrect": "Exact, c'est en 1958 ! En 1946, c'était la IVe République.",
+          "feedbackOnWrong": "Non, la IVe République a commencé en 1946. La Ve est arrivée en 1958."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Blanks 1.14",
+          "taskDescription": "Complétez les phrases avec les mots manquants.",
+          "questions": [
+            "La Constitution de la Ve République a été adoptée par référendum en *1958*.",
+            "Le régime actuel est qualifié de *semi-présidentielle* car le pouvoir est partagé entre le Président et le Gouvernement."
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relisez bien les dates et les définitions."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Vous commencez à maîtriser les bases."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Très bon travail !"
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Parfait !"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "2. Le Président de la République",
+      "content": [
+        {
+          "type": "text",
+          "text": "Le **Président de la République** est le chef de l'État. Il est élu au **suffrage universel direct** (tous les citoyens votent) pour un mandat de **5 ans** (le *quinquennat*). Il est le garant de la Constitution et du respect des traités internationaux.\n\nSes pouvoirs sont importants : il nomme le **Premier ministre**, il est le chef des armées, il peut dissoudre l'Assemblée nationale, et il préside le Conseil des ministres. Depuis la révision constitutionnelle de 2008, il ne peut plus être réélu qu'une seule fois de suite."
+        },
+        {
+          "type": "table",
+          "tableStyle": "default",
+          "table": {
+            "headers": [
+              "Fonction",
+              "Détenteur actuel (2024)",
+              "Mode de désignation"
+            ],
+            "rows": [
+              [
+                "Président de la République",
+                "Emmanuel Macron",
+                "Élection au suffrage universel direct"
+              ],
+              [
+                "Premier ministre",
+                "Gabriel Attal (nommé par le Président)",
+                "Nomination par le Président de la République"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.MultiChoice 1.16",
+          "question": "Quel est le mandat actuel du Président de la République ?",
+          "answers": [
+            {
+              "text": "5 ans",
+              "correct": true,
+              "tipsAndFeedback": {
+                "chosenFeedback": "C'est exact, on appelle cela le quinquennat."
+              }
+            },
+            {
+              "text": "4 ans",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Non, c'est le mandat des députés."
+              }
+            },
+            {
+              "text": "7 ans",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "C'était le cas avant 2000, mais c'est maintenant 5 ans."
+              }
+            }
+          ],
+          "behaviour": {
+            "singleAnswer": true
+          },
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Attention à ne pas confondre avec le mandat des députés."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Bon effort, révisez les durées des mandats."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bien joué !"
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent !"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "3. Le Gouvernement et le Parlement",
+      "content": [
+        {
+          "type": "text",
+          "text": "Le **Gouvernement** est dirigé par le **Premier ministre**. Il détient le pouvoir exécutif (il dirige l'action du gouvernement et l'administration) et le pouvoir réglementaire (il prend des décrets). Le Premier ministre nomme les ministres.\n\nLe **Parlement** est l'instance qui détient le pouvoir législatif (il vote la loi). Il est bicaméral, c'est-à-dire qu'il est composé de deux chambres :\n\n1.  **L'Assemblée nationale** (577 députés) : élus au suffrage universel direct pour 5 ans.\n2.  **Le Sénat** (348 sénateurs) : élus par un collège de grands électeurs (élus locaux) pour 6 ans."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.SingleChoiceSet 1.11",
+          "choices": [
+            {
+              "question": "Qui dirige le Gouvernement ?",
+              "answers": [
+                "Le Premier ministre",
+                "Le Président de la République",
+                "Le Conseil constitutionnel"
+              ]
+            },
+            {
+              "question": "Combien de chambres compose le Parlement ?",
+              "answers": [
+                "Deux",
+                "Une",
+                "Trois"
+              ]
+            },
+            {
+              "question": "Qui élit les députés de l'Assemblée nationale ?",
+              "answers": [
+                "Les citoyens (suffrage universel direct)",
+                "Les sénateurs",
+                "Le Président"
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Il faut bien distinguer les rôles de chaque institution."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Continuez à réviser la structure du pouvoir."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Vous y arrivez bien !"
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Parfait !"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "4. Synthèse : Récapitulatif des institutions",
+      "content": [
+        {
+          "type": "text",
+          "text": "Pour réussir votre brevet, il est essentiel de bien distinguer les rôles. Voici un récapitulatif des institutions clés de la Ve République. Réalisez l'exercice ci-dessous pour valider vos connaissances."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Summary 1.10",
+          "intro": "Sélectionnez les affirmations correctes concernant les institutions de la Ve République.",
+          "summaries": [
+            {
+              "summary": [
+                "Le Président de la République est élu pour 5 ans",
+                "Le Président de la République est élu pour 7 ans",
+                "Le Président de la République est nommé par le Parlement"
+              ]
+            },
+            {
+              "summary": [
+                "L'Assemblée nationale est la chambre basse du Parlement",
+                "Le Sénat est la chambre basse du Parlement",
+                "L'Assemblée nationale est élue par les grands électeurs"
+              ]
+            },
+            {
+              "summary": [
+                "Le Conseil constitutionnel contrôle la constitutionnalité des lois",
+                "Le Conseil constitutionnel juge les délits pénaux",
+                "Le Conseil constitutionnel vote les lois"
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Il y a encore des confusions sur les rôles. Relisez les chapitres précédents."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Des progrès sont visibles, mais attention aux détails."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Très bonne compréhension du système !"
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent ! Vous maîtrisez parfaitement les institutions."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

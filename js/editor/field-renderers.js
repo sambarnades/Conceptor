@@ -70,7 +70,8 @@ export const fieldRenderers = {
     'toggle': renderToggleField,
     'tagList': renderTagListField,
     'richtext': renderRichtextField,
-    'cloze': renderClozeField
+    'cloze': renderClozeField,
+    'timestamp': renderTimestampField
 };
 
 /**
@@ -133,6 +134,74 @@ export function renderTextField(config, value, onChange, path) {
             errorSpan.textContent = validation.errors[0] || '';
         }
     }
+
+    return wrapper;
+}
+
+/**
+ * Rend un champ d'horodatage : saisie HH:MM:SS (ou MM:SS), stockage en SECONDES (number).
+ * Utilisé par la Vidéo interactive. Pur (aucune dépendance Caramel) — partagé avec Sucrerie.
+ */
+export function renderTimestampField(config, value, onChange, path) {
+    const id = generateId();
+    const wrapper = document.createElement('div');
+    wrapper.className = 'json-editor__field json-editor__field--timestamp';
+
+    const label = translateLabel(config.label);
+    const hint = config.hint ? translateLabel(config.hint) : '';
+
+    const toSeconds = (str) => {
+        const v = String(str || '').trim();
+        let m = v.match(/^(\d{1,2}):([0-5]?\d):([0-5]?\d)$/);
+        if (m) return (+m[1]) * 3600 + (+m[2]) * 60 + (+m[3]);
+        m = v.match(/^(\d{1,2}):([0-5]?\d)$/);
+        if (m) return (+m[1]) * 60 + (+m[2]);
+        return null;
+    };
+    // Tolérant : accepte un nombre de secondes OU une chaîne déjà au format "HH:MM:SS"/"MM:SS"
+    // (une collecte DOM peut re-fournir la chaîne affichée). Sans ce parse, `Number("00:01:12")`
+    // vaut NaN → l'horodatage retombait à "00:00:00" et la durée était perdue.
+    const toHms = (s) => {
+        if (typeof s === 'string' && s.includes(':')) { const p = toSeconds(s); s = (p == null ? 0 : p); }
+        s = Math.max(0, Math.floor(Number(s) || 0));
+        const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+        const p = (n) => String(n).padStart(2, '0');
+        return `${p(h)}:${p(m)}:${p(sec)}`;
+    };
+
+    wrapper.innerHTML = `
+        <label class="json-editor__label ${config.required ? 'json-editor__label--required' : ''}" for="${id}">
+            ${escapeHtml(label)}
+        </label>
+        <input
+            type="text"
+            id="${id}"
+            class="json-editor__input json-editor__input--timestamp"
+            value="${escapeHtml(toHms(value))}"
+            placeholder="HH:MM:SS"
+            inputmode="numeric"
+            data-path="${path}"
+            data-type="timestamp"
+        >
+        ${hint ? `<span class="json-editor__hint">${escapeHtml(hint)}</span>` : ''}
+        <span class="json-editor__error" role="alert" aria-live="assertive"></span>
+    `;
+
+    const input = wrapper.querySelector('input');
+    const errorSpan = wrapper.querySelector('.json-editor__error');
+
+    input.addEventListener('input', (e) => {
+        const raw = e.target.value;
+        const secs = toSeconds(raw);
+        if (secs === null && raw.trim() !== '') {
+            input.classList.add('json-editor__input--error');
+            errorSpan.textContent = t('editor_iv_timestamp_invalid') || 'Format attendu : HH:MM:SS';
+            return; // ne pas propager une valeur invalide
+        }
+        input.classList.remove('json-editor__input--error');
+        errorSpan.textContent = '';
+        if (onChange) onChange(path, secs === null ? 0 : secs);
+    });
 
     return wrapper;
 }
@@ -470,6 +539,22 @@ export function renderCheckboxField(config, value, onChange, path) {
 }
 
 /**
+ * Convertit la valeur brute d'un <select> (toujours une string) vers le type
+ * attendu par le modèle, selon config.valueType ('boolean' | 'number').
+ * Indispensable pour les selects dont les options sont des booléens/nombres
+ * (ex: Vrai/Faux), sinon le modèle stocke "true"/"false" et les comparaisons
+ * strictes (=== true) côté simulateur/processeur échouent.
+ */
+function coerceSelectValue(raw, valueType) {
+    if (valueType === 'boolean') return raw === true || raw === 'true';
+    if (valueType === 'number') {
+        const n = Number(raw);
+        return Number.isNaN(n) ? raw : n;
+    }
+    return raw;
+}
+
+/**
  * Rend une liste deroulante
  */
 export function renderSelectField(config, value, onChange, path) {
@@ -504,6 +589,7 @@ export function renderSelectField(config, value, onChange, path) {
             class="json-editor__select"
             ${config.required ? 'required' : ''}
             data-path="${path}"
+            ${config.valueType ? `data-value-type="${config.valueType}"` : ''}
             ${config.optionsFrom ? `data-options-from="${config.optionsFrom}"` : ''}
             ${config.optionsLabelField ? `data-options-label-field="${config.optionsLabelField}"` : ''}
         >
@@ -515,7 +601,7 @@ export function renderSelectField(config, value, onChange, path) {
     const select = wrapper.querySelector('select');
 
     select.addEventListener('change', (e) => {
-        const newValue = e.target.value;
+        const newValue = coerceSelectValue(e.target.value, config.valueType);
         if (onChange) {
             onChange(path, newValue);
 
@@ -1383,10 +1469,19 @@ export function renderEditorHeader(moduleName, moduleKey) {
     const header = document.createElement('div');
     header.className = 'json-editor__header';
 
+    // Traduit l'identifiant interne (ex: 'elea_millionnaire') vers son nom
+    // affichable (ex: 'Millionnaire') via la clé i18n `<moduleName>_name`.
+    // Les clés `elea_*_name` sont déjà présentes dans `js/locales/fr.json`.
+    // Fallback sur l'identifiant brut si la clé manque (utile pour repérer
+    // un nameKey absent du locale).
+    const nameKey = `${moduleName}_name`;
+    const translated = translateLabel(nameKey);
+    const displayName = (translated && translated !== nameKey) ? translated : moduleName;
+
     header.innerHTML = `
         <div class="json-editor__title">
             <i class="fas fa-edit json-editor__title-icon"></i>
-            ${translateLabel('editor_title_prefix') || 'Edition :'} ${escapeHtml(moduleName)}
+            ${translateLabel('editor_title_prefix') || 'Edition :'} ${escapeHtml(displayName)}
         </div>
     `;
 
@@ -2210,6 +2305,11 @@ function renderRubricGridField(config, value, onChange, path) {
             dragHandle.innerHTML = '<i class="fas fa-grip-vertical"></i>';
             dragHandle.title = translateLabel('editor_devoir_reorder_criterion');
             dragHandle.draggable = true;
+            // A11Y-02 : poignée de tri accessible au clavier (drag souris seul avant).
+            dragHandle.setAttribute('role', 'button');
+            dragHandle.setAttribute('tabindex', '0');
+            dragHandle.setAttribute('aria-label', translateLabel('editor_devoir_reorder_criterion'));
+            dragHandle.setAttribute('aria-keyshortcuts', 'ArrowUp ArrowDown');
             dragHandle.addEventListener('dragstart', (e) => {
                 e.dataTransfer.effectAllowed = 'move';
                 e.dataTransfer.setData('text/plain', String(i));
@@ -2220,6 +2320,18 @@ function renderRubricGridField(config, value, onChange, path) {
                 tbody.querySelectorAll('.json-editor__rubric-grid-row--drag-over').forEach(el =>
                     el.classList.remove('json-editor__rubric-grid-row--drag-over')
                 );
+            });
+            // A11Y-02 : ↑/↓ déplacent le critère ; le focus suit la poignée déplacée.
+            dragHandle.addEventListener('keydown', (e) => {
+                if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+                e.preventDefault();
+                const toIdx = i + (e.key === 'ArrowUp' ? -1 : 1);
+                if (toIdx < 0 || toIdx >= criteria.length) return;
+                const [moved] = criteria.splice(i, 1);
+                criteria.splice(toIdx, 0, moved);
+                emitChange();
+                const handles = wrapper.querySelectorAll('.json-editor__rubric-grid-drag-handle');
+                if (handles[toIdx]) handles[toIdx].focus();
             });
             actionsWrapper.appendChild(dragHandle);
 

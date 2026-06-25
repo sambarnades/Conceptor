@@ -1,0 +1,120 @@
+/**
+ * Styles du mode embarqué (`?embed=block`) — Couche 1 du plan d'intégration Éléa.
+ *
+ * Chargé UNIQUEMENT en mode embed (injecté par js/embed/embed-bridge.js), donc
+ * AUCUN impact hors iframe. Objectif : faire tenir le générateur Caramel dans un
+ * bloc étroit (≈ colonne de droite Moodle/Éléa, ~320–480px) en colonne unique.
+ *
+ * Première passe « compacte » réelle. À affiner visuellement dans un vrai
+ * contexte Moodle (largeurs de bloc, thème hôte). Les sélecteurs ciblent des
+ * classes stables de index.html / js/ui/ui.js.
+ */
+
+/* ── Chrome plein écran masqué : on ne garde que le générateur ───────────── */
+body.caramel-embed .app-bar,
+body.caramel-embed .footer {
+    display: none !important;
+}
+
+/* Le bloc hérite du fond de la page hôte. */
+body.caramel-embed {
+    background: transparent;
+}
+
+/* ── Conteneur : colonne unique, pleine largeur du bloc ──────────────────── */
+body.caramel-embed #main-content {
+    max-width: 100%;
+    margin: 0;
+    padding: 10px 12px 16px;
+}
+body.caramel-embed .prompt-generator {
+    margin-top: 0;
+}
+
+/* Onglets Rapide/Avancé plus compacts. */
+body.caramel-embed .mode-tabs {
+    margin-bottom: 10px;
+}
+body.caramel-embed .mode-tab {
+    padding: 6px 10px;
+    font-size: 0.82rem;
+}
+
+/* ── Champs : resserrés ──────────────────────────────────────────────────── */
+body.caramel-embed .common-fields,
+body.caramel-embed .advanced-fields {
+    gap: 8px;
+}
+body.caramel-embed .input-icon-wrapper input {
+    padding-top: 9px;
+    padding-bottom: 9px;
+    font-size: 0.9rem;
+}
+
+/* Le bouton « plein écran » du prompt n'a pas de sens dans une iframe étroite. */
+body.caramel-embed #ocr-fullscreen-btn {
+    display: none;
+}
+
+/* Zone de saisie/collage et zone de dépôt PDF : hauteurs réduites. */
+body.caramel-embed #ocr-output {
+    min-height: 80px;
+}
+body.caramel-embed .rag-top-row {
+    flex-direction: column;
+    gap: 8px;
+}
+body.caramel-embed .drag-drop-area {
+    min-height: 90px;
+    padding: 10px;
+}
+body.caramel-embed .drag-drop-content i {
+    font-size: 1.4rem;
+}
+
+/* ── Tuiles d'activité : liste compacte (icône à gauche, texte à droite) ──── */
+body.caramel-embed .activity-grid .grid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+}
+body.caramel-embed .h5p-tile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    min-height: 0;
+    text-align: left;
+}
+body.caramel-embed .h5p-tile img {
+    width: 34px;
+    height: 34px;
+    margin: 0;
+    flex-shrink: 0;
+}
+body.caramel-embed .h5p-tile .tile-text {
+    align-items: flex-start;
+    text-align: left;
+    gap: 0;
+}
+body.caramel-embed .h5p-tile .tile-name-fr {
+    font-size: 0.85rem;
+    line-height: 1.2;
+}
+/* Le sous-titre anglais est superflu dans un bloc étroit. */
+body.caramel-embed .h5p-tile .tile-name-en {
+    display: none;
+}
+/* Badge plateforme (H5P/Éléa) plus discret, calé à droite. */
+body.caramel-embed .h5p-tile .module-label {
+    margin-left: auto;
+    transform: scale(0.85);
+}
+
+/* Étroit (< 380px) : on réduit encore les marges latérales. */
+@media (max-width: 380px) {
+    body.caramel-embed #main-content {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+}

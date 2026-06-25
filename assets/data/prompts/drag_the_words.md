@@ -4,14 +4,22 @@
 - Ton public : [NIVEAU]
 
 # RÈGLES SPÉCIFIQUES POUR [H5P.DragText]
+
 - Nombre de mots : Paragraphe d'au minimum 50 mots avec au moins 5 mots à glisser || [NOMBRE_ELEMENTS] mots.
 - Unicité : Chaque mot à glisser doit être UNIQUE dans le texte (pas de doublons).
+- Rétroaction : seul le feedback global (`overallFeedback`) est possible (pas de message par mot) — gradue-le par niveau de maîtrise et renvoie à la notion (cf. RÈGLES PÉDAGOGIQUES).
 
 # RÈGLES PÉDAGOGIQUES
-- Adaptation et vocabulaire : Adapte le ton, le vocabulaire et la difficulté des consignes au public indiqué. Sois pertinent et engageant.
-- Ton et feedback : Les consignes et remarques doivent être constructives, encourageantes, tournées vers l'apprentissage.
-- Conformité : Adapte OBLIGATOIREMENT les contenus aux références officielles en vigueur. Sauf mention contraire explicite, base-toi par défaut sur les programmes scolaires français (Eduscol) pour le public scolaire, et sur les textes réglementaires de la formation professionnelle pour les adultes.
-- Langue : Le contenu et les consignes doivent être rédigés dans la langue cible (français sauf indication contraire).
+- Adaptation : adapte le ton, le vocabulaire et la difficulté au public. Choisis le tutoiement (élèves) ou le vouvoiement (adultes/formation) et garde le même registre dans les consignes et les rétroactions.
+- Conformité : adapte les contenus aux références officielles (par défaut programmes Eduscol ; textes de la formation professionnelle pour les adultes).
+- Langue : rédige dans la langue cible (français sauf indication contraire).
+- Rétroactions (feedback formatif) — quand l’activité en comporte :
+  - Aide à progresser, jamais un simple verdict. Décris la notion, jamais l’élève : bannis « Faux/Non/À revoir », l’ironie, les comparaisons entre élèves et l’éloge de la personne.
+  - Mauvaise réponse : nomme l’erreur (confusion, fait, calcul, hors-contexte) puis rappelle l’idée juste. Bonne réponse : dis POURQUOI, pas seulement « Bravo ». Indice : une piste qui ne révèle pas la réponse.
+  - N’invente aucun fait ni source ; ne renvoie pas à un « document » ou une « page » : oriente vers la NOTION à revoir.
+  - Feedback global par tranche : il ignore quelle question a été ratée → ne révèle rien et gradue par maîtrise — 0-25 % rassure et reprends les bases ; 26-50 % cible ce qui résiste ; 51-75 % consolide les cas délicats ; 76-100 % valide et propose d’aller plus loin. Évite « Moyen./Bien. » ; tu peux inviter l’élève à repérer lui-même ce qui l’a fait hésiter.
+  - Lisibilité (CUA/FALC) : phrases courtes, mots connus.
+  - Texte brut : aucun Markdown (`**gras**`, `*italique*`) ni LaTeX dans les feedbacks et les indices — H5P ne les interprète pas et ils s’afficheraient littéralement.
 
 # SOURCES
 - Tu utiliseras UNIQUEMENT les textes suivants pour générer ton activité.
@@ -29,15 +37,32 @@ L'objet doit contenir :
 - **LaTeX :** Le composant DragTheWords ne supporte PAS le LaTeX dans les mots déplaçables (marqués par \`*mot*\`). Le LaTeX sera automatiquement converti en caractères Unicode dans les marqueurs. Tu peux néanmoins utiliser LaTeX \`\\\\( ... \\\\)\` dans la consigne (\`taskDescription\`).
 
 # EXEMPLE DE RENDU
+
 ```json
 {
   "taskDescription": "Complète le texte en faisant glisser les mots.",
-  "textField": "Le *système solaire* est composé de *huit* planètes qui tournent autour du *Soleil*.\\nLa plus grande planète est *Jupiter*.",
+  "textField": "Le *système solaire* est composé de *huit* planètes qui tournent autour du *Soleil*.\nLa plus grande planète est *Jupiter*.",
   "overallFeedback": [
-    { "from": 0, "to": 25, "feedback": "Des efforts sont nécessaires." },
-    { "from": 26, "to": 50, "feedback": "C'est un bon début." },
-    { "from": 51, "to": 75, "feedback": "Bon travail !" },
-    { "from": 76, "to": 100, "feedback": "Excellent !" }
+    {
+      "from": 0,
+      "to": 25,
+      "feedback": "Relie chaque mot à sa place en t'aidant de ce que tu sais du système solaire."
+    },
+    {
+      "from": 26,
+      "to": 50,
+      "feedback": "Bon début : revois les mots que tu hésites à placer."
+    },
+    {
+      "from": 51,
+      "to": 75,
+      "feedback": "Presque : un ou deux mots restent à ajuster."
+    },
+    {
+      "from": 76,
+      "to": 100,
+      "feedback": "Bravo : tous les mots sont bien placés."
+    }
   ]
 }
 ```

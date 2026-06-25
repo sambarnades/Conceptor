@@ -12,6 +12,10 @@ import { registerConverters, getConstraints, getConverter, applyToPath } from '.
 // CONSTANTES PARTAGÉES
 // =======================================================================
 
+/** Plafonds anti-DoS pour les activités à grille (Crossword, FindTheWords) — S12 */
+const GRID_MAX_WORDS = 50;
+const GRID_MAX_ANSWER_LENGTH = 30;
+
 /** Map des versions de bibliothèques H5P (utilisée par healJsonObject et healStructureForActivity) */
 const H5P_LIB_VERSIONS = {
     'H5P.MultiChoice': '1.16',
@@ -20,7 +24,13 @@ const H5P_LIB_VERSIONS = {
     'H5P.DragText': '1.10',
     'H5P.MarkTheWords': '1.11',
     'H5P.Essay': '1.5',
-    'H5P.CoursePresentation': '1.26'
+    'H5P.SingleChoiceSet': '1.11',
+    'H5P.Summary': '1.10',
+    'H5P.DragQuestion': '1.14',
+    'H5P.Dialogcards': '1.9',
+    'H5P.CoursePresentation': '1.26',
+    'H5P.InteractiveBook': '1.11',
+    'H5P.InteractiveVideo': '1.27'
 };
 
 /** Palette de couleurs par défaut pour Chart */
@@ -32,7 +42,8 @@ const H5P_MODULE_KEYS = new Set([
     'Glossary', 'Crossword', 'Essay', 'Summary', 'DragTheWords',
     'DragAndDrop', 'FillInTheBlanks', 'MarkTheWords', 'TrueFalse',
     'MultipleChoice', 'FindTheWords', 'SortParagraphs', 'SingleChoiceSet',
-    'DialogCards', 'ComplexFillTheBlanks', 'Chart', 'CoursePresentation'
+    'DialogCards', 'ComplexFillTheBlanks', 'Chart', 'CoursePresentation',
+    'InteractiveBook', 'InteractiveVideo'
 ]);
 
 export function healJsonString(jsonStr) {
@@ -91,7 +102,12 @@ export function healJsonString(jsonStr) {
      * Heuristique : On double quand même si c'est suivi d'une autre lettre (ex: \times, \theta, \newline).
      * On ne double PAS si c'est \" , \\ , \/ ou \u (unicode).
      */
-    healed = healed.replace(/(?<!\\)\\(?![\\\/\"u])/g, (match, offset, s) => {
+    // NB : pas de lookbehind (?<!\\) ici — SyntaxError à la compilation sur Safari < 16.4.
+    // On teste le caractère précédent dans le callback (même technique que le second passage ci-dessous).
+    healed = healed.replace(/\\(?![\\\/\"u])/g, (match, offset, s) => {
+        // Équivalent de (?<!\\) : ne rien faire si le backslash est précédé d'un autre backslash
+        if (offset > 0 && s[offset - 1] === '\\') return match;
+
         const char = s[offset + 1];
         const next = s[offset + 2];
 
@@ -272,7 +288,21 @@ function convertLatexDelimiters(text) {
     // 1. $$...$$ → \[...\] (display math, avant inline pour éviter les conflits)
     let result = text.replace(/\$\$([\s\S]+?)\$\$/g, '\\[$1\\]');
     // 2. $...$ → \(...\) (inline math)
-    result = result.replace(/\$(.+?)\$/g, '\\($1\\)');
+    // Garde anti over-healing : « l'article coûte 5$ et le second 10$ » ne doit PAS être converti.
+    // Marqueurs monétaires : un chiffre immédiatement AVANT le $ ouvrant (« 5$ … » : ce $
+    // ferme un montant, il n'ouvre pas une formule), ou un espace collé au $ ouvrant/fermant
+    // (convention TeX : pas de blanc aux bords). Un contenu visiblement LaTeX (\ ^ _ { })
+    // est toujours converti. « $2+3$ » et « $5$ » restent donc convertis.
+    result = result.replace(/\$(.+?)\$/g, (match, inner, offset, str) => {
+        const looksLikeLatex = /[\\^_{}]/.test(inner);
+        const monetaryOpening = offset > 0 && /[0-9]/.test(str[offset - 1]);
+        const strictTex = !/^\s/.test(inner) && !/\s$/.test(inner);
+        if (looksLikeLatex || (!monetaryOpening && strictTex)) {
+            return '\\(' + inner + '\\)';
+        }
+        debugLog('json-healer', `[JSON Healer] $...$ conservé tel quel (texte monétaire probable) : "${match}"`);
+        return match;
+    });
     return result;
 }
 
@@ -882,7 +912,8 @@ export function healStructureForActivity(data, moduleKey) {
             });
 
             // 4. Filtrer les mots dont l'answer contient encore du LaTeX ou des symboles math non-alphabétiques
-            // Un answer valide = au moins 2 caractères alphabétiques, pas de \commande ni de délimiteurs \(...\)
+            // Un answer valide = au moins 2 caractères alphanumériques dont AU MOINS une lettre
+            // (H5P.Crossword accepte les chiffres : « H2O », « A4 » sont valides ; « 42 » est écarté)
             const beforeCount = healed.words.length;
             healed.words = healed.words.filter(word => {
                 const ans = word.answer || '';
@@ -890,17 +921,30 @@ export function healStructureForActivity(data, moduleKey) {
                 const hasLatex = /\\[a-zA-Z]/.test(ans) || ans.includes('\\(') || ans.includes('\\)');
                 // Détecter symboles Unicode math (pas les lettres grecques déjà converties)
                 const hasUnicodeMath = /[\u221A\u2200-\u22FF\u2190-\u21FF]/.test(ans);
-                // Vérifier que c'est un mot valide (au moins 2 lettres alphabétiques)
-                const isValidWord = /[a-zA-ZÀ-ÿ]{2,}/.test(ans);
+                // Mot valide = ≥ 2 caractères alphanumériques (accents inclus) et au moins une lettre
+                const alnumCount = (ans.match(/[a-zA-Z0-9À-ÿ]/g) || []).length;
+                const hasLetter = /[a-zA-ZÀ-ÿ]/.test(ans);
+                const isValidWord = alnumCount >= 2 && hasLetter;
 
                 if (hasLatex || hasUnicodeMath || !isValidWord) {
-                    debugLog('json-healer', `[JSON Healer] Crossword : suppression de l'entrée "${ans}" (formule math non convertible en mot)`);
+                    debugLog('json-healer', `[JSON Healer] Crossword : suppression de l'entrée "${ans}" (formule math ou réponse invalide)`);
+                    return false;
+                }
+                // Plafond anti-DoS (S12) : réponse trop longue → entrée écartée (pas tronquée)
+                if (ans.length > GRID_MAX_ANSWER_LENGTH) {
+                    debugLog('json-healer', `[JSON Healer] Crossword : suppression de l'entrée "${ans}" (réponse > ${GRID_MAX_ANSWER_LENGTH} caractères)`);
                     return false;
                 }
                 return true;
             });
             if (healed.words.length < beforeCount) {
-                debugLog('json-healer', `[JSON Healer] Crossword : ${beforeCount - healed.words.length} entrée(s) supprimée(s) (formules math)`);
+                debugLog('json-healer', `[JSON Healer] Crossword : ${beforeCount - healed.words.length} entrée(s) supprimée(s) (formules math, réponses invalides ou trop longues)`);
+            }
+            // Plafond anti-DoS (S12) : nombre de mots limité, excédent écarté
+            if (healed.words.length > GRID_MAX_WORDS) {
+                const discarded = healed.words.slice(GRID_MAX_WORDS);
+                healed.words = healed.words.slice(0, GRID_MAX_WORDS);
+                debugLog('json-healer', `[JSON Healer] Crossword : ${discarded.length} mot(s) excédentaire(s) écarté(s) (plafond ${GRID_MAX_WORDS}) : ${discarded.map(w => `"${w.answer}"`).join(', ')}`);
             }
         }
     }
@@ -1009,6 +1053,194 @@ export function healStructureForActivity(data, moduleKey) {
         }
     }
 
+    // --- InteractiveBook ---
+    if (moduleKey === 'InteractiveBook') {
+        // Assurer que chapters est un tableau (accepter chapter/pages/sections comme alias)
+        if (!Array.isArray(healed.chapters)) {
+            const src = healed.chapter || healed.pages || healed.sections;
+            if (src) {
+                healed.chapters = Array.isArray(src) ? src : [src];
+                delete healed.chapter;
+                delete healed.pages;
+                delete healed.sections;
+            } else {
+                healed.chapters = [];
+            }
+        }
+
+        // Normaliser la couverture : accepter une chaîne directe
+        if (typeof healed.cover === 'string') {
+            healed.cover = { description: healed.cover };
+        }
+
+        healed.chapters = healed.chapters.map((ch, i) => {
+            if (!ch || typeof ch !== 'object') ch = {};
+
+            // Titre obligatoire (affiché dans la table des matières)
+            if (!ch.title) ch.title = `Chapitre ${i + 1}`;
+
+            // Normaliser content[] : accepter blocks comme alias, ou des champs à plat
+            if (!Array.isArray(ch.content)) {
+                if (Array.isArray(ch.blocks)) {
+                    ch.content = ch.blocks;
+                    delete ch.blocks;
+                } else {
+                    const blocks = [];
+                    if (ch.text) blocks.push({ type: 'text', text: ch.text });
+                    if (ch.table) blocks.push({ type: 'table', table: ch.table, tableStyle: ch.tableStyle });
+                    if (ch.exercise) blocks.push({ type: 'exercise', ...ch.exercise });
+                    ch.content = blocks;
+                    delete ch.text;
+                    delete ch.table;
+                    delete ch.tableStyle;
+                    delete ch.exercise;
+                }
+            }
+
+            // Normaliser chaque bloc : inférer le type si absent, dénouer exercise imbriqué
+            ch.content = (ch.content || []).filter(b => b && typeof b === 'object').map(b => {
+                // Format éditeur (déjà normalisé par normalizeDataForEditor : marqueurs
+                // _blockType / _exerciseLibrary + wrapper `exercise`). On ne touche PAS :
+                // la dénormalisation post-validation reconstruit le format à plat, et
+                // aplatir ici détruirait _exerciseLibrary/_blockType (→ « type d'exercice
+                // requis » au save). Même philosophie que CoursePresentation ci-dessus.
+                if ('_blockType' in b || '_exerciseLibrary' in b) {
+                    return b;
+                }
+                // --- Format brut (sortie LLM) ---
+                // Bloc {type:'exercise', exercise:{...}} → aplatir l'exercice au niveau du bloc
+                if (b.exercise && typeof b.exercise === 'object' && !b.library
+                    && !b.text && !b.table && !b.image) {
+                    b = { type: 'exercise', ...b.exercise };
+                }
+                if (!b.type) {
+                    if (b.library) b.type = 'exercise';
+                    else if (b.table) b.type = 'table';
+                    else if (b.image) b.type = 'image';
+                    else b.type = 'text';
+                }
+                // Exercice : compléter la version de library manquante (l'éditeur exige le format complet)
+                if (b.type === 'exercise' && typeof b.library === 'string' && b.library.includes('.') && !b.library.includes(' ')) {
+                    const baseLib = b.library.trim();
+                    const known = Object.keys(H5P_LIB_VERSIONS).find(k => k.toLowerCase() === baseLib.toLowerCase());
+                    if (known) b.library = `${known} ${H5P_LIB_VERSIONS[known]}`;
+                }
+                return b;
+            });
+
+            return ch;
+        });
+
+        // Assurer un titre global
+        if (!healed.title) {
+            healed.title = healed.chapters[0]?.title || 'Livre interactif';
+        }
+    }
+
+    // --- InteractiveVideo ---
+    if (moduleKey === 'InteractiveVideo') {
+        // Coercition d'un timestamp (nombre, "HH:MM:SS", "MM:SS") en secondes.
+        const ivToSeconds = (t) => {
+            if (typeof t === 'number') return Math.max(0, t);
+            if (typeof t === 'string') {
+                const parts = t.trim().replace(',', '.').split(':').map(Number);
+                if (parts.some(n => Number.isNaN(n))) return 0;
+                if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+                if (parts.length === 2) return parts[0] * 60 + parts[1];
+                return parts[0] || 0;
+            }
+            return 0;
+        };
+
+        // interactions[] : accepter les alias interaction/questions/items
+        if (!Array.isArray(healed.interactions)) {
+            const src = healed.interaction || healed.items;
+            healed.interactions = Array.isArray(src) ? src : (src ? [src] : []);
+            delete healed.interaction;
+            delete healed.items;
+        }
+
+        const IV_TYPES = ['multichoice', 'truefalse', 'blanks'];
+        healed.interactions = healed.interactions
+            .filter(it => it && typeof it === 'object')
+            .map(it => {
+                // timestamp : accepter time/start/at comme alias, coercer en secondes
+                if (it.timestamp == null) it.timestamp = it.time ?? it.start ?? it.at ?? 0;
+                it.timestamp = ivToSeconds(it.timestamp);
+                delete it.time; delete it.start; delete it.at;
+                // pause par défaut (point d'arrêt pédagogique)
+                if (it.pause == null) it.pause = true;
+                // type : valider ou inférer
+                const t = String(it.type || '').toLowerCase();
+                if (IV_TYPES.includes(t)) {
+                    it.type = t;
+                } else if (Array.isArray(it.answers)) {
+                    it.type = 'multichoice';
+                } else if (typeof it.correct === 'boolean' || it.correct === 'true' || it.correct === 'false') {
+                    it.type = 'truefalse';
+                } else if (it.text || Array.isArray(it.questions)) {
+                    it.type = 'blanks';
+                } else {
+                    it.type = 'multichoice';
+                }
+                if (it.type === 'multichoice' && !Array.isArray(it.answers)) it.answers = [];
+                // Normaliser `correct` en booléen (l'éditeur stocke "true"/"false" en string).
+                if (it.type === 'truefalse') {
+                    it.correct = (it.correct === true || it.correct === 'true' || it.correct === 1
+                        || it.correct === '1' || it.correct === 'vrai');
+                }
+                // Apparence/placement (champs optionnels) : on borne uniquement les valeurs FOURNIES
+                // pour éviter un rendu cassé ; on n'impose pas de défaut (le processeur applique les
+                // défauts sains quand le champ est absent).
+                if (it.display != null) it.display = (it.display === 'poster' ? 'poster' : 'button');
+                if (it.placement != null
+                    && !['center', 'top-left', 'top-right', 'bottom-left', 'bottom-right', 'bottom', 'full', 'custom'].includes(it.placement)) {
+                    it.placement = 'center';
+                }
+                for (const k of ['x', 'y', 'width', 'height']) {
+                    if (it[k] != null && it[k] !== '') {
+                        const n = Number(it[k]);
+                        if (Number.isFinite(n)) it[k] = Math.min(100, Math.max(0, n));
+                        else delete it[k];
+                    }
+                }
+                if (it.visibleDuration != null && it.visibleDuration !== '') {
+                    const n = Number(it.visibleDuration);
+                    if (Number.isFinite(n) && n > 0) it.visibleDuration = n; else delete it.visibleDuration;
+                }
+                return it;
+            })
+            .sort((a, b) => a.timestamp - b.timestamp);
+
+        // summary : normaliser statements en tableau de tableaux non vides
+        if (healed.summary && typeof healed.summary === 'object') {
+            if (!Array.isArray(healed.summary.statements)) healed.summary.statements = [];
+            healed.summary.statements = healed.summary.statements
+                .map(g => Array.isArray(g) ? g : (typeof g === 'string' ? [g] : []))
+                .filter(g => g.length > 0);
+        }
+
+        // videoSource : accepter une URL en chaîne directe, et choisir le bon mime.
+        // YouTube → mime `video/YouTube` (handler natif H5P.VideoYouTube, lecture par embed, aucun
+        // téléchargement). Sans ce mime, le handler YouTube ne prend pas la main → vidéo non jouable.
+        const isYouTubeUrl = (s) => {
+            s = String(s || '');
+            return /youtu\.be\/[\w-]{11}/i.test(s)
+                || /youtube(?:-nocookie)?\.com\/(?:embed|shorts|live|v)\/[\w-]{11}/i.test(s)
+                || (/youtube(?:-nocookie)?\.com\/watch/i.test(s) && /[?&]v=[\w-]{11}/i.test(s));
+        };
+        if (typeof healed.videoSource === 'string') {
+            const u = healed.videoSource;
+            healed.videoSource = { type: 'html5', url: u, mime: isYouTubeUrl(u) ? 'video/YouTube' : 'video/mp4' };
+        } else if (healed.videoSource && typeof healed.videoSource === 'object' && healed.videoSource.url
+            && isYouTubeUrl(healed.videoSource.url) && healed.videoSource.mime !== 'video/YouTube') {
+            // Objet fourni avec une URL YouTube mais un mime mp4/absent → corriger.
+            healed.videoSource.mime = 'video/YouTube';
+        }
+
+        if (!healed.title) healed.title = 'Vidéo interactive';
+    }
+
     // --- DialogCards ---
     if (moduleKey === 'DialogCards') {
         if (!Array.isArray(healed.dialogs)) healed.dialogs = [];
@@ -1103,9 +1335,23 @@ export function healStructureForActivity(data, moduleKey) {
                 debugLog('json-healer', `[JSON Healer] FindTheWords : ${beforeCount - cleanWords.length} mot(s) supprimé(s) de la wordList (formules math)`);
             }
             // Nettoyer chaque mot : ne garder que les lettres (la grille ne supporte que ca)
-            const finalWords = cleanWords
+            let finalWords = cleanWords
                 .map(w => w.replace(/[^a-zA-ZÀ-ÿ]/g, ''))
                 .filter(w => w.length > 0);
+            // Plafond anti-DoS (S12) : mot trop long → écarté (pas tronqué)
+            finalWords = finalWords.filter(w => {
+                if (w.length > GRID_MAX_ANSWER_LENGTH) {
+                    debugLog('json-healer', `[JSON Healer] FindTheWords : suppression de "${w}" (mot > ${GRID_MAX_ANSWER_LENGTH} caractères)`);
+                    return false;
+                }
+                return true;
+            });
+            // Plafond anti-DoS (S12) : nombre de mots limité, excédent écarté
+            if (finalWords.length > GRID_MAX_WORDS) {
+                const discarded = finalWords.slice(GRID_MAX_WORDS);
+                finalWords = finalWords.slice(0, GRID_MAX_WORDS);
+                debugLog('json-healer', `[JSON Healer] FindTheWords : ${discarded.length} mot(s) excédentaire(s) écarté(s) (plafond ${GRID_MAX_WORDS}) : ${discarded.map(w => `"${w}"`).join(', ')}`);
+            }
             healed.wordList = finalWords.join(',');
         }
     }
@@ -1537,7 +1783,24 @@ function normalizeFontCommandsDeep(item) {
  * @param {string} text - Expression LaTeX (avec ou sans délimiteurs \( \))
  * @returns {string} - Texte Unicode équivalent
  */
+const LATEX_TO_UNICODE_MAX_DEPTH = 50;
+let _latexToUnicodeDepth = 0;
+
 export function latexToUnicode(text) {
+    // Garde anti-récursion (S17) : au-delà de la profondeur max, retourner l'entrée brute
+    if (_latexToUnicodeDepth >= LATEX_TO_UNICODE_MAX_DEPTH) {
+        debugLog('json-healer', '[JSON Healer] latexToUnicode : profondeur max atteinte, retour de l\'entrée brute');
+        return text;
+    }
+    _latexToUnicodeDepth++;
+    try {
+        return _latexToUnicodeImpl(text);
+    } finally {
+        _latexToUnicodeDepth--;
+    }
+}
+
+function _latexToUnicodeImpl(text) {
     let s = text.trim();
 
     // \mathbb{X} → ℝ, ℕ, ℤ, etc.
@@ -1904,6 +2167,51 @@ export function healActivitySpecificFields(obj, moduleKey) {
         return healed;
     }
 
+    // InteractiveBook : nettoyer les textes des blocs de chaque chapitre + exercices intégrés
+    if (moduleKey === 'InteractiveBook') {
+        if (healed.cover && typeof healed.cover.description === 'string') {
+            healed.cover.description = healed.cover.description.trim();
+        }
+        if (Array.isArray(healed.chapters)) {
+            healed.chapters.forEach(ch => {
+                if (ch.title && typeof ch.title === 'string') {
+                    ch.title = ch.title.trim();
+                }
+                (Array.isArray(ch.content) ? ch.content : []).forEach(b => {
+                    if (!b || typeof b !== 'object') return;
+                    // Blocs de contenu : trim simple (le processeur fera le formatTextToHtml ensuite)
+                    if (b.text && typeof b.text === 'string') {
+                        b.text = b.text.trim();
+                    }
+                    // Blocs exercice : nettoyage par type de library (format complet ou simplifié)
+                    if (b.type === 'exercise' || b.library) {
+                        const lib = (b.library || '').toLowerCase();
+                        if (b.question && typeof b.question === 'string') {
+                            b.question = b.question.trim();
+                        }
+                        if (lib.includes('blanks') && Array.isArray(b.questions)) {
+                            b.questions = b.questions.map(
+                                q => typeof q === 'string' ? cleanBlanksText(q) : q
+                            );
+                        }
+                        if (lib.includes('dragtext') && b.textField) {
+                            b.textField = cleanDragTextText(b.textField);
+                        }
+                        if (lib.includes('markthewords') && b.textField) {
+                            b.textField = cleanMarkTheWordsText(b.textField);
+                        }
+                        // TrueFalse : convertir le champ legacy "feedback"
+                        if (lib.includes('truefalse') && b.feedback && !b.feedbackOnCorrect && !b.feedbackOnWrong) {
+                            b.feedbackOnWrong = b.feedback;
+                            delete b.feedback;
+                        }
+                    }
+                });
+            });
+        }
+        return healed;
+    }
+
     // QuizSet variants : itérer les questions et nettoyer par type de library
     if ((moduleKey === 'QuizSet' || moduleKey === 'QuizSetQCM' || moduleKey === 'QuizSetVF')
         && Array.isArray(healed.questions)) {
@@ -1965,8 +2273,9 @@ function stripAll(text) {
 }
 
 /**
- * Convertisseur 'toLettersOnly' : ne garde que les lettres alphabétiques.
- * Utilisé pour les champs de grille (Crossword answers, FindTheWords wordList).
+ * Convertisseur 'toLettersOnly' : ne garde que les caractères alphanumériques.
+ * Utilisé pour les champs de grille (render 'plain+letters' : Crossword answers uniquement).
+ * H5P.Crossword accepte les chiffres dans les réponses (« H2O », « A4 ») — B12.
  * Note : les cas principaux sont déjà gérés par healStructureForActivity()
  * (conversion lettres grecques → noms, filtrage). Ce convertisseur est un filet de sécurité.
  */
@@ -1979,8 +2288,8 @@ function toLettersOnly(text) {
     if (/\\[a-zA-Z]/.test(cleaned)) {
         cleaned = latexToUnicode(cleaned);
     }
-    // Ne garder que les lettres (y compris accentuées)
-    cleaned = cleaned.replace(/[^a-zA-ZÀ-ÿ]/g, '');
+    // Ne garder que les lettres (y compris accentuées) et les chiffres
+    cleaned = cleaned.replace(/[^a-zA-Z0-9À-ÿ]/g, '');
     return cleaned;
 }
 

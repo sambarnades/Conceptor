@@ -1,0 +1,289 @@
+<!--
+Base de conhecimento de Caramelia (assistente pedagógica do Caramel).
+Este arquivo é DOCUMENTAÇÃO DE REFERÊNCIA, não um prompt de sistema.
+Nenhuma instrução destinada ao LLM deve ser adicionada aqui.
+
+REGRA DE EDIÇÃO: todos os rótulos mencionados abaixo (botões, abas,
+campos, seções) devem reproduzir EXATAMENTE o texto visível na
+interface do Caramel. Fonte única de verdade: js/locales/pt.json
++ index.html. Toda edição é feita via PR.
+-->
+---
+version: 1.2.0
+lang: pt
+audience: professores
+---
+
+# Tutorial Caramel
+
+O Caramel é uma ferramenta web de código aberto que ajuda professores a
+criar atividades pedagógicas interativas (H5P, Éléa, Magistère, Moodle)
+com a ajuda da IA. O site funciona 100 % no navegador:
+nenhum dado pedagógico é enviado a um servidor de terceiros.
+
+## Descrever sua necessidade (no topo da página)
+
+No topo da página, duas abas permitem escolher como descrever
+sua necessidade:
+
+- **Modo Rápido** — formulário mínimo, dois campos.
+- **Modo Avançado** — os mesmos campos mais opções adicionais,
+  inclusive a possibilidade de anexar documentos.
+
+### Modo Rápido
+
+Apenas dois campos:
+
+- **"Quem é você? (ex: Professor, formador...)"**
+- **"O que deseja abordar? (ex: A Revolução Francesa...)"**
+
+### Modo Avançado
+
+Os mesmos campos do Modo Rápido, mais:
+
+- **"Para qual nível (ex: Ensino Médio)"**
+- **"Número de questões/elementos no módulo (ex: 5)"** — conforme
+  a atividade, isso corresponde ao número de questões, datas em uma
+  linha do tempo, palavras em um glossário, etc.
+- Um campo livre para acrescentar **informações complementares**
+  (instruções específicas, restrições ou qualquer outro detalhe
+  relevante).
+
+### Anexar documentos (opcional) — apenas no Modo Avançado
+
+Esta seção, intitulada **"Anexar documentos (opcional)"**, só
+aparece quando a aba **Modo Avançado** está selecionada. Permite
+basear a geração em um conteúdo fornecido por você.
+
+Três possibilidades:
+
+- **Copiar e colar um texto** diretamente na área de entrada.
+- **Arrastar e soltar um documento** (ou clicar em
+  **"Escolher arquivo"**) em formato **PDF, DOCX, PPTX, ODT, ODP,
+  PNG, JPEG**. Também pode soltar um **ficheiro de áudio** (MP3, M4A, WAV…) ou um **vídeo** (MP4, MOV…): apenas a faixa de áudio é então transcrita automaticamente (pelo Albert, o serviço soberano da DINUM; ver confidencialidade abaixo). A área de soltar mostra **"Arraste e solte um
+  documento aqui (PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG)"** com o
+  separador **"ou"**.
+- **Importar uma página web**: colar o seu link (`https://…`) no
+  campo abaixo da zona de depósito, depois clicar em **"Adicionar"**.
+  O texto da página é recuperado automaticamente.
+
+A extração do texto dos **documentos e imagens** acontece
+**inteiramente local** no seu navegador (nenhum dado enviado).
+**Duas exceções transitam pelos nossos servidores (alojados em
+França):** a **transcrição de áudio** e a **importação de uma página
+web** (o link que você introduz é enviado para extrair o seu texto; os
+links para PDF, vídeos ou páginas pagas não são suportados).
+
+Se você deixar essa zona vazia, a IA se baseará apenas em seus
+conhecimentos gerais para gerar a atividade.
+
+## Escolher o tipo de atividade
+
+Uma vez feita a descrição, os blocos de atividades tornam-se
+clicáveis. Clique no que corresponde ao seu objetivo
+pedagógico. Os filtros acima dos blocos permitem restringir a
+exibição: **Tudo**, **Quiz e Testes**, **Manipulação de texto**,
+**Memorização e Descoberta**, bem como as plataformas **H5P**,
+**Éléa**, **Moodle**.
+
+### Atividades H5P
+
+Atividades em formato H5P. As marcadas com uma estrela (★) incluem
+feedback detalhado em 4 faixas de pontuação.
+
+- **Linha do tempo** — sequência interativa de eventos.
+- **Cartões de memória (Flashcards)** — frente e verso para memorização.
+- **Quiz de múltipla escolha (Question Set)** ★ — quiz com questões de múltipla escolha.
+- **Quiz Verdadeiro/Falso (Question Set)** ★ — quiz de verdadeiro ou falso.
+- **Quiz misto (Question Set)** ★ — questões variadas (múltipla escolha, arrastar e soltar…).
+- **Glossário** — sanfona expansível ou FAQ.
+- **Palavras cruzadas** ★ — grade gerada a partir de definições.
+- **Redação** ★ — tema de redação com correção por palavras-chave.
+- **Resumo** ★ — o aluno reconstitui um resumo escolhendo as frases corretas.
+- **Arrastar palavras** ★ — texto com palavras faltantes para arrastar.
+- **Arrastar e soltar** ★ — etiquetas para soltar em uma área.
+- **Preencher lacunas** ★ — o aluno digita as palavras faltantes.
+- **Destacar palavras** ★ — o aluno destaca certas palavras em um texto.
+- **Verdadeiro/Falso** — questões binárias simples.
+- **Múltipla escolha** ★ — questões com uma ou várias respostas corretas.
+- **Caça-palavras** — grade de letras com palavras a encontrar.
+- **Ordenar parágrafos** ★ — recolocar parágrafos na ordem correta.
+- **Série de escolha única** ★ — questões com apenas uma resposta correta.
+- **Cartões de diálogo** — cartões frente e verso com texto e áudio.
+- **Preencher lacunas complexo** ★ — feedbacks específicos por erro.
+- **Gráfico** — circular ou de barras para visualizar dados.
+- **Apresentação de curso** — slideshow interativo com exercícios integrados.
+- **Livro interativo** — livro com vários capítulos (textos, tabelas, imagens, exercícios) com índice e resumo.
+- **Vídeo interativo** — perguntas (escolha múltipla, verdadeiro/falso, preenchimento) em momentos-chave de um vídeo, com resumo final. Precisa de um URL de vídeo (Tubes da Apps Éducation, PodEduc ou YouTube); o Caramelia pede-o antes de gerar.
+
+### Atividades Éléa / Magistère
+
+- **Teste (XML / GIFT)** — banco de questões variadas (múltipla escolha, associação…)
+  para importar em um teste Éléa/Magistère.
+- **Múltipla escolha (QCM) (MBZ)** — atividade de múltipla escolha simples e rápida.
+- **Associação (MBZ)** — jogo de associação entre pares de elementos.
+- **Milionário (MBZ)** — quiz lúdico com dificuldade crescente.
+- **Glossário (XML)** — arquivo de importação para um glossário Éléa/Magistère.
+- **Página (MBZ / HTML)** — página de curso estruturada e formatada.
+- **Livro (MBZ)** — livro com vários capítulos e navegação.
+- **Tarefa (MBZ)** — tarefa com matriz de avaliação por critérios.
+
+## Gerar e refinar o conteúdo
+
+Após clicar em um bloco, abre-se uma janela. É aqui que
+você interage com a IA. No topo dessa janela, um interruptor
+**Simples / Guiado** permite escolher o modo de exibição.
+
+### Exibição Simples — botão "Gerar em um clique"
+
+O caminho rápido. Clique em **"Gerar em um clique"**: a IA produz
+o conteúdo e o coloca diretamente na área de resultado à direita.
+A pequena seta à direita do botão permite escolher entre diferentes
+modelos de IA (rápido, potente…).
+
+### Exibição Guiado — usar uma IA externa
+
+Para controle máximo. O prompt aparece à esquerda.
+
+1. Modifique o prompt se desejar.
+2. Clique em **"Copiar prompt"** e abra uma IA externa
+   em uma nova aba.
+3. Cole o prompt na IA, recupere a resposta e cole-a
+   na área de resultado à direita no Caramel.
+
+Dois ícones úteis, no topo da área do prompt: **"Tela cheia"** para
+mais conforto, e **"Bloquear"** (que se torna **"Desbloquear"**) para
+proteger o prompt.
+
+## Visualizar, editar e baixar
+
+Uma vez gerado o conteúdo, aparece a janela **"O seu doce está pronto!"**,
+com duas opções: **"Visualizar e editar"** ou **"Continuar"**
+(para gerar outra atividade).
+
+### Visualizar
+
+Um simulador integrado testa a atividade como um aluno (clicar,
+arrastar, escrever…). Para os conteúdos Éléa/Magistère, um simulador
+mostra a renderização real.
+
+### Editar (ícone de lápis, botão **"Editar"**)
+
+O editor visual adapta-se automaticamente ao tipo de atividade: lista
+dos elementos à esquerda, detalhes à direita.
+
+- **Barra rich-text** nos campos compatíveis: negrito, itálico,
+  sublinhado, riscado, sobrescrito, subscrito, cor, listas, link.
+- Botão `</>` para alternar para o **modo código-fonte**.
+- **Fórmulas matemáticas** via o botão **√x**: 6 categorias
+  (frações, raízes, potências, letras gregas, operadores,
+  estruturas), pré-visualização em tempo real, duplo clique para modificar.
+- **Palavras a encontrar** (Arrastar palavras, Destacar palavras,
+  Preencher lacunas): destaque amarelo automático, botões
+  Marcar / Remover, ou asteriscos `*palavra*`.
+- **Preencher lacunas (Cloze)** no Teste: três tipos de lacunas
+  (Múltipla escolha, Resposta curta, Valor numérico), exibidos
+  como pílulas coloridas (azul, amarelo, verde).
+- **Imagens**: arrastar e soltar, redimensionamento automático
+  (800×600), texto alternativo, formatos JPEG / PNG / WebP.
+
+### Baixar
+
+O botão **"Descarregar"** oferece duas famílias de formatos:
+
+- **Formatos interativos** (digitais, para Éléa/Magistère):
+  H5P, MBZ, XML.
+- **Formatos imprimíveis** (versões desplugadas): DOCX, ODT, PDF.
+
+## Integrar o arquivo gerado no Éléa
+
+> Observação: os rótulos de botões entre aspas abaixo são mantidos em
+> francês porque correspondem exatamente à interface do Éléa, utilizada
+> majoritariamente em contexto francófono.
+
+### Integrar um arquivo H5P
+
+- **Método rápido**: passar o curso para o modo de edição,
+  arrastar e soltar o arquivo `.h5p` diretamente, escolher
+  « Ajouter une activité H5P » e confirmar com **DÉPOSER**.
+- **Método recomendado**: « Ajouter une activité ou une ressource »
+  → « Contenu interactif (H5P) » → aba « Téléverser » →
+  selecionar o arquivo → **« Utiliser »** → salvar.
+
+### Integrar um arquivo MBZ
+
+1. Abrir o menu de edição à direita (clicar na seta para expandi-lo,
+   se necessário).
+2. Clicar em **« IMPORT/EXPORT »** → **« Importer un parcours »**.
+3. Arrastar e soltar o arquivo `.mbz` → **IMPORTER**.
+4. **CONTINUER**.
+
+### Integrar um XML (banco de questões Teste)
+
+1. Aba **« Plus »** → **« Banque de questions »**.
+2. Menu **« Questions »** → **« Importer »**.
+3. Marcar o formato (XML Magistère recomendado, ou GIFT).
+4. Arrastar e soltar o arquivo → **IMPORTATION** → **CONTINUER**.
+
+### Integrar um XML de Glossário
+
+1. Criar um Glossário vazio no curso.
+2. Clicar em **« IMPORTER DES ARTICLES »**.
+3. Arrastar e soltar o arquivo `.xml` → **ENVOYER** → **CONTINUER**.
+
+### Integrar um arquivo HTML em uma atividade Página
+
+1. Abrir o `.html` com um editor de texto, copiar todo o conteúdo.
+2. No Éléa, adicionar uma atividade **« Page »**.
+3. No editor: **Outils → Code source**.
+4. Colar o HTML → salvar.
+
+## Sobre o Caramel
+
+### Autores
+
+Se o usuário desejar entrar em contato com a equipe:
+
+- **Gauthier REMANDE** — Professor de ensino profissional, Letras-História — gauthier.remande@ac-nantes.fr
+- **Emmanuel GAUNARD** — Professor de matemática e encarregado de missão DRANE — Académie de Grenoble — emmanuel.gaunard@ac-grenoble.fr
+
+### Avisos legais
+
+#### Dados pessoais
+
+Nenhum dado pessoal é coletado ou armazenado. Nenhum cookie de rastreamento é utilizado.
+
+#### Modelos de Inteligência Artificial
+
+A aplicação Caramel apoia-se, exclusivamente durante a geração com um clique, em modelos de IA operados pela ILaaS, uma federação de infraestruturas de IA mutualizadas. As solicitações são encaminhadas através de um workflow n8n hospedado pelo Incubateur, e em seguida transmitidas à ILaaS para execução em servidores confiáveis hospedados em data centers certificados do Ensino Superior e da Pesquisa francesa (ESR). O Caramel não executa os modelos e não processa nem armazena dados em seu próprio nome; os dados são utilizados unicamente para executar a solicitação e não são enviados a IAs de uso geral. Os modelos atualmente disponíveis incluem Mistral-Small-3.2 (24 bilhões de parâmetros), Qwen 3.6 (35 bilhões de parâmetros) e GPT-OSS (120 bilhões de parâmetros). Eventuais práticas de hospedagem, registro e conservação efetuadas pela ILaaS estão sujeitas à sua própria política de privacidade e às suas condições de serviço, às quais convém referir-se.
+
+#### Tratamento das solicitações dos usuários via n8n e o Incubateur do Ministério da Educação Nacional
+
+Nosso site utiliza uma solução técnica desenvolvida com n8n, uma ferramenta de código aberto hospedada pelo Incubateur do Ministério da Educação Nacional francês. Através de um workflow automatizado, este serviço transforma as solicitações dos usuários em dados estruturados (formato JSON) para interagir com uma IA da DINUM, portanto soberana. Nenhuma informação sensível é exposta ou transmitida sem criptografia, garantindo assim a confidencialidade e a segurança das trocas.
+
+#### Acessibilidade
+
+A aplicação foi concebida para ser compatível com o uso em computador, incluindo os modos escuro/claro, a navegação por teclado e o alto contraste segundo os temas. Uma melhoria contínua da acessibilidade está em curso, em linha com as recomendações do RGAA.
+
+### Links úteis
+
+- **Licença**: GNU GPL v3.0 ou posterior — https://forge.apps.education.fr/caramel/caramel/-/blob/main/LICENSE
+- **Reportar um bug**: https://forge.apps.education.fr/caramel/caramel/-/issues
+- **Código-fonte**: https://forge.apps.education.fr/caramel/caramel
+- **Changelog**: https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG
+
+## Quadro de resposta de Caramelia
+
+- Caramelia sempre responde no idioma do usuário.
+- Respostas concisas, amigáveis, pedagógicas (1 a 3 parágrafos).
+- Emojis com parcimônia (1 ou 2 no máximo).
+- Quando cita um botão, uma aba, um campo ou uma seção do site,
+  Caramelia usa **exatamente** o rótulo visível na tela, conforme
+  listado acima (por exemplo **"Modo Avançado"**, **"Anexar
+  documentos (opcional)"**, **"Gerar em um clique"**). Não inventa
+  nomes de etapas ("etapa 1"…) nem termos técnicos internos
+  ("opção RAG"…) que não aparecem em lugar algum da interface.
+- Se o usuário quiser gerar uma atividade, Caramelia propõe o
+  tipo mais adequado, mas NUNCA gera o JSON de uma atividade.
+- Para qualquer pergunta de integração, Caramelia fornece as
+  etapas precisas acima.

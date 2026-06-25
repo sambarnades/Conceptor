@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <title>Tests e2e — Vidéo interactive</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background: #f0f2f5; padding: 24px; color: #1a1a2e; }
+        h1 { font-size: 1.4rem; margin-bottom: 4px; }
+        .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 18px; }
+        .summary { display: flex; gap: 12px; margin-bottom: 18px; }
+        .card { padding: 12px 22px; border-radius: 10px; font-weight: 700; font-size: 1.2rem; min-width: 100px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .card small { display: block; font-size: 0.65rem; font-weight: 400; opacity: 0.8; }
+        .pass { background: #d4edda; color: #155724; } .fail { background: #f8d7da; color: #721c24; } .total { background: #d1ecf1; color: #0c5460; }
+        .results { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
+        .row { display: flex; gap: 10px; padding: 7px 14px; border-bottom: 1px solid #f5f5f5; font-size: 0.82rem; align-items: flex-start; }
+        .row--fail { background: #fff5f5; }
+        .badge { padding: 2px 7px; border-radius: 4px; font-weight: 700; font-size: 0.7rem; min-width: 38px; text-align: center; }
+        .badge--pass { background: #d4edda; color: #155724; } .badge--fail { background: #f8d7da; color: #721c24; }
+        .grp { font-size: 0.65rem; color: #888; min-width: 130px; }
+    </style>
+</head>
+<body>
+    <h1>Tests e2e — Vidéo interactive</h1>
+    <p class="subtitle">Détection · schéma éditeur · showWhen · healer · processeur</p>
+    <div id="output"><p>Exécution…</p></div>
+    <script type="module">
+        import { runAllTests } from './tests/test-editor-iv.js';
+        const output = document.getElementById('output');
+        const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        try {
+            const { passCount, failCount, results } = await runAllTests();
+            let html = `<div class="summary">
+                <div class="card pass">${passCount}<small>PASS</small></div>
+                <div class="card fail">${failCount}<small>FAIL</small></div>
+                <div class="card total">${passCount + failCount}<small>ASSERTIONS</small></div></div>`;
+            html += '<div class="results">';
+            for (const r of results) {
+                html += `<div class="row${r.status === 'FAIL' ? ' row--fail' : ''}">
+                    <span class="badge badge--${r.status === 'PASS' ? 'pass' : 'fail'}">${r.status}</span>
+                    <span class="grp">${esc(r.group)}</span><span>${esc(r.message)}</span></div>`;
+            }
+            html += '</div>';
+            output.innerHTML = html;
+        } catch (e) {
+            output.innerHTML = `<div style="color:red;background:#fff;padding:20px;border-radius:10px;"><h2>Erreur fatale</h2><pre style="white-space:pre-wrap;">${esc(e.message)}\n${esc(e.stack)}</pre></div>`;
+        }
+    </script>
+</body>
+</html>

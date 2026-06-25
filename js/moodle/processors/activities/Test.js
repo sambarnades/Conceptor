@@ -7,6 +7,7 @@
 import { TEMPLATES } from '../shared/templates.js';
 import { buildMoodleBackup } from '../shared/moodle-backup.js';
 import { replacePlaceholders } from '../shared/placeholder.js';
+import { parseXml, tagText, escapeXml, rewriteTag, stripParagraphWrap, wrapP } from '../../mbz-utils.js';
 
 /**
  * Métadonnées du module Test/Quiz.
@@ -168,10 +169,375 @@ export function buildFiles(data, options = {}) {
     return files;
 }
 
+// =========================================================================
+// INVERSE : .mbz extrait → JSON éditeur
+// =========================================================================
+
+/**
+ * Parse une `<question>` Moodle vers la structure éditeur attendue.
+ * Supporte 6 types : multichoice, matching, truefalse, numerical, shortanswer, cloze.
+ */
+function parseQuestionContent(q, type) {
+    const txt  = (sel) => q.querySelector(sel)?.textContent ?? '';
+    const name = q.querySelector(':scope > name > text')?.textContent ?? '';
+    const questiontext = stripParagraphWrap(q.querySelector(':scope > questiontext > text')?.textContent ?? '');
+    const feedback     = stripParagraphWrap(q.querySelector(':scope > generalfeedback > text')?.textContent ?? '');
+    const hints        = Array.from(q.querySelectorAll(':scope > hint > text')).map(h => h.textContent ?? '');
+
+    switch (type) {
+        case 'multichoice': {
+            const single = (q.querySelector(':scope > single')?.textContent ?? 'true').trim();
+            const answers = Array.from(q.querySelectorAll(':scope > answer')).map(a => ({
+                text:     stripParagraphWrap(a.querySelector('text')?.textContent ?? ''),
+                fraction: parseFloat(a.getAttribute('fraction') || '0'),
+                feedback: stripParagraphWrap(a.querySelector('feedback > text')?.textContent ?? '')
+            }));
+            return {
+                name, questiontext, single, answers, feedback, hints,
+                correctfeedback:          stripParagraphWrap(q.querySelector(':scope > correctfeedback > text')?.textContent ?? ''),
+                partiallycorrectfeedback: stripParagraphWrap(q.querySelector(':scope > partiallycorrectfeedback > text')?.textContent ?? ''),
+                incorrectfeedback:        stripParagraphWrap(q.querySelector(':scope > incorrectfeedback > text')?.textContent ?? '')
+            };
+        }
+        case 'matching': {
+            const subquestions = Array.from(q.querySelectorAll(':scope > subquestion')).map(sq => ({
+                text:   stripParagraphWrap(sq.querySelector('text')?.textContent ?? ''),
+                answer: sq.querySelector('answer > text')?.textContent ?? ''
+            }));
+            return {
+                name, questiontext, subquestions, feedback, hints,
+                correctfeedback:          stripParagraphWrap(q.querySelector(':scope > correctfeedback > text')?.textContent ?? ''),
+                partiallycorrectfeedback: stripParagraphWrap(q.querySelector(':scope > partiallycorrectfeedback > text')?.textContent ?? ''),
+                incorrectfeedback:        stripParagraphWrap(q.querySelector(':scope > incorrectfeedback > text')?.textContent ?? '')
+            };
+        }
+        case 'truefalse': {
+            const answers = Array.from(q.querySelectorAll(':scope > answer'));
+            const trueAns  = answers.find(a => (a.querySelector('text')?.textContent ?? '').trim() === 'true');
+            const falseAns = answers.find(a => (a.querySelector('text')?.textContent ?? '').trim() === 'false');
+            return {
+                name, questiontext,
+                answer: {
+                    value:          parseFloat(trueAns?.getAttribute('fraction') || '0') > 0,
+                    feedback_true:  stripParagraphWrap(trueAns?.querySelector('feedback > text')?.textContent ?? ''),
+                    feedback_false: stripParagraphWrap(falseAns?.querySelector('feedback > text')?.textContent ?? '')
+                },
+                feedback, hints
+            };
+        }
+        case 'numerical': {
+            const a = q.querySelector(':scope > answer');
+            return {
+                name, questiontext,
+                answer: {
+                    number:    parseFloat(a?.querySelector('text')?.textContent ?? '0'),
+                    tolerance: parseFloat(a?.querySelector('tolerance')?.textContent ?? '0'),
+                    feedback:  stripParagraphWrap(a?.querySelector('feedback > text')?.textContent ?? '')
+                },
+                feedback, hints
+            };
+        }
+        case 'shortanswer': {
+            const answers = Array.from(q.querySelectorAll(':scope > answer')).map(a => ({
+                text:     a.querySelector('text')?.textContent ?? '',
+                fraction: parseFloat(a.getAttribute('fraction') || '0'),
+                feedback: stripParagraphWrap(a.querySelector('feedback > text')?.textContent ?? '')
+            }));
+            return {
+                name, questiontext, answers, feedback, hints,
+                usecase: parseInt(txt(':scope > usecase') || '0', 10)
+            };
+        }
+        case 'cloze': {
+            // questiontext garde les marqueurs Moodle {1:MULTICHOICE:=foo~bar} bruts
+            return { name, questiontext, feedback, hints };
+        }
+        default:
+            return null;
+    }
+}
+
+/**
+ * Lit l'archive d'un Test (quiz) déjà extraite par `mbz-utils.extractMbz`.
+ *
+ * Les questions vivent dans `questions.xml` à la racine du backup (pas dans
+ * le dossier d'activité). `quiz.xml` ne contient que la configuration et les
+ * références (`<question_instances>`).
+ *
+ * @param {Object<string, Uint8Array>} files
+ * @param {string} activityDir
+ * @returns {{
+ *   title: string,
+ *   bank_name: string,
+ *   bank_description: string,
+ *   options: Object,
+ *   questions: Array<{ type: string, content: Object }>,
+ *   _context: { moduleId, activityId, activityContextId }
+ * }}
+ */
+export function parseFiles(files, activityDir) {
+    const xmlPath  = `${activityDir}/quiz.xml`;
+    const xmlBytes = files[xmlPath];
+    if (!xmlBytes) throw new Error(`test_missing_xml:${xmlPath}`);
+
+    const xml = new TextDecoder('utf-8').decode(xmlBytes);
+    const doc = parseXml(xml);
+
+    const activityNode = doc.querySelector('activity');
+    if (!doc.querySelector('activity > quiz')) {
+        throw new Error('test_invalid_xml_no_root');
+    }
+
+    const title = tagText(doc, 'quiz > name');
+
+    // questions.xml — racine du MBZ
+    const qBytes = files['questions.xml'];
+    let bank_name = title, bank_description = '';
+    const questions = [];
+
+    if (qBytes) {
+        const qDoc = parseXml(new TextDecoder('utf-8').decode(qBytes));
+        for (const q of qDoc.querySelectorAll('question')) {
+            const type = q.getAttribute('type');
+            if (type === 'category') {
+                const cat = q.querySelector('category > text')?.textContent ?? '';
+                bank_name = cat.split('/').pop() || title;
+                bank_description = q.querySelector('info > text')?.textContent ?? '';
+                continue;
+            }
+            const content = parseQuestionContent(q, type);
+            if (content) questions.push({ type, content });
+        }
+    }
+
+    return {
+        title,
+        bank_name,
+        bank_description,
+        options: {},
+        questions,
+        _context: {
+            moduleId:          activityNode?.getAttribute('moduleid')  ?? '',
+            activityId:        activityNode?.getAttribute('id')        ?? '',
+            activityContextId: activityNode?.getAttribute('contextid') ?? ''
+        }
+    };
+}
+
+/**
+ * Sérialise une `<question>` complète selon son type.
+ */
+function buildQuestionXml(question) {
+    const c = question.content || {};
+    const name  = escapeXml(c.name || '');
+    const qtext = wrapP(c.questiontext || '');
+    const fb    = wrapP(c.feedback || '');
+    const hintsXml = (c.hints || []).map(h => `
+    <hint format="html"><text><![CDATA[${wrapP(typeof h === 'string' ? h : h._value || '')}]]></text></hint>`).join('');
+
+    switch (question.type) {
+        case 'multichoice': {
+            const single = String(c.single ?? 'true');
+            const answersXml = (c.answers || []).map(a => `
+    <answer fraction="${a.fraction || 0}" format="moodle_auto_format">
+      <text>${escapeXml(a.text || '')}</text>
+      <feedback format="html"><text><![CDATA[${wrapP(a.feedback || '')}]]></text></feedback>
+    </answer>`).join('');
+            const cf = `
+    <correctfeedback format="html"><text><![CDATA[${wrapP(c.correctfeedback || '')}]]></text></correctfeedback>
+    <partiallycorrectfeedback format="html"><text><![CDATA[${wrapP(c.partiallycorrectfeedback || '')}]]></text></partiallycorrectfeedback>
+    <incorrectfeedback format="html"><text><![CDATA[${wrapP(c.incorrectfeedback || '')}]]></text></incorrectfeedback>`;
+            return `
+  <question type="multichoice">
+    <name><text>${name}</text></name>
+    <questiontext format="html"><text><![CDATA[${qtext}]]></text></questiontext>
+    <generalfeedback format="html"><text><![CDATA[${fb}]]></text></generalfeedback>
+    <single>${single}</single>
+    <shuffleanswers>true</shuffleanswers>
+    <answernumbering>abc</answernumbering>${cf}${answersXml}${hintsXml}
+  </question>`;
+        }
+        case 'matching': {
+            const subsXml = (c.subquestions || []).map(sq => `
+    <subquestion format="html">
+      <text><![CDATA[${wrapP(sq.text || '')}]]></text>
+      <answer><text>${escapeXml(sq.answer || '')}</text></answer>
+    </subquestion>`).join('');
+            const cf = `
+    <correctfeedback format="html"><text><![CDATA[${wrapP(c.correctfeedback || '')}]]></text></correctfeedback>
+    <partiallycorrectfeedback format="html"><text><![CDATA[${wrapP(c.partiallycorrectfeedback || '')}]]></text></partiallycorrectfeedback>
+    <incorrectfeedback format="html"><text><![CDATA[${wrapP(c.incorrectfeedback || '')}]]></text></incorrectfeedback>`;
+            return `
+  <question type="matching">
+    <name><text>${name}</text></name>
+    <questiontext format="html"><text><![CDATA[${qtext}]]></text></questiontext>
+    <generalfeedback format="html"><text><![CDATA[${fb}]]></text></generalfeedback>
+    <shuffleanswers>true</shuffleanswers>${cf}${subsXml}${hintsXml}
+  </question>`;
+        }
+        case 'truefalse': {
+            const a  = c.answer || {};
+            // Robustesse : la chaîne "false" est truthy en JS, on normalise explicitement.
+            const isTrue = a.value === true || a.value === 'true';
+            const fT = isTrue ? 100 : 0, fF = isTrue ? 0 : 100;
+            return `
+  <question type="truefalse">
+    <name><text>${name}</text></name>
+    <questiontext format="html"><text><![CDATA[${qtext}]]></text></questiontext>
+    <generalfeedback format="html"><text><![CDATA[${fb}]]></text></generalfeedback>
+    <answer fraction="${fT}" format="moodle_auto_format">
+      <text>true</text>
+      <feedback format="html"><text><![CDATA[${wrapP(a.feedback_true || '')}]]></text></feedback>
+    </answer>
+    <answer fraction="${fF}" format="moodle_auto_format">
+      <text>false</text>
+      <feedback format="html"><text><![CDATA[${wrapP(a.feedback_false || '')}]]></text></feedback>
+    </answer>${hintsXml}
+  </question>`;
+        }
+        case 'numerical': {
+            const a = c.answer || {};
+            return `
+  <question type="numerical">
+    <name><text>${name}</text></name>
+    <questiontext format="html"><text><![CDATA[${qtext}]]></text></questiontext>
+    <generalfeedback format="html"><text><![CDATA[${fb}]]></text></generalfeedback>
+    <answer fraction="100" format="moodle_auto_format">
+      <text>${a.number || 0}</text>
+      <tolerance>${a.tolerance || 0}</tolerance>
+      <feedback format="html"><text><![CDATA[${wrapP(a.feedback || '')}]]></text></feedback>
+    </answer>${hintsXml}
+  </question>`;
+        }
+        case 'shortanswer': {
+            const answersXml = (c.answers || []).map(a => `
+    <answer fraction="${a.fraction || 0}" format="moodle_auto_format">
+      <text>${escapeXml(a.text || '')}</text>
+      <feedback format="html"><text><![CDATA[${wrapP(a.feedback || '')}]]></text></feedback>
+    </answer>`).join('');
+            return `
+  <question type="shortanswer">
+    <name><text>${name}</text></name>
+    <questiontext format="html"><text><![CDATA[${qtext}]]></text></questiontext>
+    <generalfeedback format="html"><text><![CDATA[${fb}]]></text></generalfeedback>
+    <usecase>${c.usecase || 0}</usecase>${answersXml}${hintsXml}
+  </question>`;
+        }
+        case 'cloze': {
+            return `
+  <question type="cloze">
+    <name><text>${name}</text></name>
+    <questiontext format="html"><text><![CDATA[${c.questiontext || ''}]]></text></questiontext>
+    <generalfeedback format="html"><text><![CDATA[${fb}]]></text></generalfeedback>${hintsXml}
+  </question>`;
+        }
+        default:
+            return '';
+    }
+}
+
+/**
+ * Construit l'XML complet `questions.xml` à partir d'une bank + questions.
+ */
+function buildQuestionsXml(data) {
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<quiz>`;
+    if (data.bank_name) {
+        xml += `
+  <question type="category">
+    <category><text>$course$/top/${escapeXml(data.bank_name)}</text></category>
+    <info format="moodle_auto_format"><text>${escapeXml(data.bank_description || '')}</text></info>
+    <idnumber></idnumber>
+  </question>`;
+    }
+    for (const q of (data.questions || [])) xml += buildQuestionXml(q);
+    return xml + '\n</quiz>';
+}
+
+/**
+ * Patch in-place : `name` dans quiz.xml + reconstruction complète de
+ * questions.xml (les `<question_instances>` Moodle internes sont conservés
+ * tels quels — round-trip OK pour les tests Caramel où ces IDs sont déjà
+ * présents dans le XML d'origine).
+ */
+export function serializeFiles(data, files, activityDir) {
+    const xmlPath  = `${activityDir}/quiz.xml`;
+    const xmlBytes = files[xmlPath];
+    if (!xmlBytes) throw new Error(`test_missing_xml:${xmlPath}`);
+
+    let xml = new TextDecoder('utf-8').decode(xmlBytes);
+    xml = rewriteTag(xml, 'name', escapeXml(data.title || data.bank_name || ''));
+    files[xmlPath] = window.fflate.strToU8(xml);
+
+    files['questions.xml'] = window.fflate.strToU8(buildQuestionsXml(data));
+}
+
+// =========================================================================
+// FORMAT STANDALONE — Moodle Question XML (root <quiz>, banque de questions)
+// =========================================================================
+//
+// Le format standalone exporté par Caramel pour une banque de questions est
+// quasi-identique au `questions.xml` interne d'un MBZ : même racine `<quiz>`,
+// mêmes éléments `<question type="...">`, même structure interne par type.
+// On peut donc réutiliser `parseQuestionContent` tel quel.
+
+/**
+ * Parse un XML "Banque de questions" standalone (<quiz>...) vers le JSON éditeur.
+ * Shape de sortie alignée avec `parseFiles` pour l'éditeur unifié.
+ *
+ * @param {string} xml
+ * @returns {{ title, bank_name, bank_description, options, questions }}
+ */
+export function parseStandaloneXml(xml) {
+    const doc = parseXml(xml);
+    const root = doc.documentElement;
+    if (!root || root.tagName !== 'quiz') {
+        throw new Error('test_standalone_invalid_root');
+    }
+
+    let bank_name = '', bank_description = '';
+    const questions = [];
+
+    for (const q of root.querySelectorAll(':scope > question')) {
+        const type = q.getAttribute('type');
+        if (type === 'category') {
+            const cat = q.querySelector('category > text')?.textContent ?? '';
+            // category ressemble à "$course$/top/Nom/Sous-catégorie" — on garde la dernière feuille
+            bank_name = cat.split('/').pop() || '';
+            bank_description = q.querySelector('info > text')?.textContent ?? '';
+            continue;
+        }
+        const content = parseQuestionContent(q, type);
+        if (content) questions.push({ type, content });
+    }
+
+    return {
+        title: bank_name,
+        bank_name,
+        bank_description,
+        options: {},
+        questions
+    };
+}
+
+/**
+ * Reconstruit l'XML standalone à partir du JSON éditeur.
+ * Réutilise `buildQuestionsXml` qui produit exactement le format attendu.
+ *
+ * @param {{ bank_name, bank_description, questions }} data
+ * @returns {string}
+ */
+export function serializeStandaloneXml(data) {
+    return buildQuestionsXml(data);
+}
+
 /**
  * Export par défaut du processeur.
  */
 export default {
     metadata,
-    buildFiles
+    buildFiles,
+    parseFiles,
+    serializeFiles,
+    parseStandaloneXml,
+    serializeStandaloneXml
 };

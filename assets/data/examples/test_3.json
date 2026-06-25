@@ -5,7 +5,7 @@
     {
       "type": "multichoice",
       "content": {
-        "name": "Q1 - Définition",
+        "name": "Q01 - Définition",
         "questiontext": "Quelle est la définition correcte d'une fonction inverse ?",
         "feedback": "Bravo ! La fonction inverse est bien celle qui associe à chaque nombre non nul son inverse multiplicatif.",
         "single": "true",
@@ -36,7 +36,7 @@
     {
       "type": "matching",
       "content": {
-        "name": "Q2 - Propriétés",
+        "name": "Q02 - Propriétés",
         "questiontext": "Associez chaque propriété à la fonction inverse f(x) = 1/x.",
         "feedback": "Bien joué ! Tu as bien identifié les caractéristiques de la fonction inverse.",
         "subquestions": [
@@ -62,7 +62,7 @@
     {
       "type": "numerical",
       "content": {
-        "name": "Q3 - Calcul",
+        "name": "Q03 - Calcul",
         "questiontext": "Quelle est l'image de 2 par la fonction inverse ? (Donne la réponse sous forme de fraction)",
         "feedback": "Très bien ! L'image de 2 est bien 1/2.",
         "answer": {
@@ -75,7 +75,7 @@
     {
       "type": "truefalse",
       "content": {
-        "name": "Q4 - Propriété",
+        "name": "Q04 - Propriété",
         "questiontext": "La fonction inverse est définie pour x = 0.",
         "feedback": "Attention, la fonction inverse n'est pas définie en 0 car la division par zéro est impossible.",
         "answer": {
@@ -88,7 +88,7 @@
     {
       "type": "shortanswer",
       "content": {
-        "name": "Q5 - Nom de la fonction",
+        "name": "Q05 - Nom de la fonction",
         "questiontext": "Quel est le nom de la fonction définie par f(x) = 1/x ?",
         "feedback": "C'est bien la fonction inverse ! Tu maîtrises le vocabulaire.",
         "answers": [
@@ -108,7 +108,7 @@
     {
       "type": "cloze",
       "content": {
-        "name": "Q6 - Courbe",
+        "name": "Q06 - Courbe",
         "questiontext": "La courbe de la fonction inverse est une {1:SHORTANSWER:=hyperbole} qui admet comme axes de symétrie les droites {1:SHORTANSWER:=y = x} et {1:SHORTANSWER:=y = -x}.",
         "feedback": "Excellent ! La courbe de la fonction inverse est une hyperbole équilatère."
       }
@@ -116,7 +116,7 @@
     {
       "type": "multichoice",
       "content": {
-        "name": "Q7 - Sens de variation",
+        "name": "Q07 - Sens de variation",
         "questiontext": "Sur l'intervalle ]0 ; +∞[, la fonction inverse est :",
         "feedback": "Très bien ! Elle est décroissante sur cet intervalle.",
         "single": "true",
@@ -147,7 +147,7 @@
     {
       "type": "numerical",
       "content": {
-        "name": "Q8 - Antécédent",
+        "name": "Q08 - Antécédent",
         "questiontext": "Quel est l'antécédent de 0.25 par la fonction inverse ?",
         "feedback": "Très bien ! L'antécédent est 4, car 1/4 = 0.25.",
         "answer": {
@@ -160,7 +160,7 @@
     {
       "type": "truefalse",
       "content": {
-        "name": "Q9 - Symétrie",
+        "name": "Q09 - Symétrie",
         "questiontext": "La courbe de la fonction inverse est symétrique par rapport à l'origine du repère.",
         "feedback": "Parfait ! C'est une fonction impaire, donc symétrique par rapport à l'origine.",
         "answer": {

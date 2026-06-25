@@ -192,10 +192,15 @@ function getItemSummary(item, config) {
     if (item.answer) return item.answer;
     if (item.clue) return item.clue;
 
-    // Premier champ non vide du schema
+    // Premier champ TEXTE non vide du schema. On ignore les champs non descriptifs
+    // (select/checkbox/number/timestamp…) : sinon un enum comme `type:'multichoice'` se
+    // retrouverait affiché comme titre de l'item dans le menu de navigation.
     if (config.itemSchema) {
-        for (const [key] of Object.entries(config.itemSchema)) {
+        const TEXT_TYPES = ['text', 'textarea', 'richtext'];
+        for (const [key, fieldSchema] of Object.entries(config.itemSchema)) {
             if (key.startsWith('_')) continue;
+            const ftype = fieldSchema && fieldSchema.type;
+            if (ftype && !TEXT_TYPES.includes(ftype)) continue;
             const val = item[key];
             if (val && typeof val === 'string' && val.trim()) return val;
         }
@@ -1919,6 +1924,23 @@ function collectInputValues() {
             value = input.value !== '' ? Number(input.value) : null;
         } else if (input.dataset.type === 'stringArray') {
             value = input.value.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+        } else if (input.dataset.type === 'timestamp') {
+            // Horodatage : l'input affiche "HH:MM:SS"/"MM:SS" mais le modèle stocke des SECONDES.
+            // Sans cette reconversion, la collecte écraserait la valeur numérique par la chaîne
+            // affichée → durée perdue (retombée à 0) au retour de l'éditeur. Cf. renderTimestampField.
+            const v = String(input.value || '').trim();
+            let secs = null;
+            let m = v.match(/^(\d{1,2}):([0-5]?\d):([0-5]?\d)$/);
+            if (m) secs = (+m[1]) * 3600 + (+m[2]) * 60 + (+m[3]);
+            else { m = v.match(/^(\d{1,2}):([0-5]?\d)$/); if (m) secs = (+m[1]) * 60 + (+m[2]); }
+            value = secs !== null ? secs : (v === '' ? 0 : (Number(v) || 0));
+        } else if (input.tagName === 'SELECT' && input.dataset.valueType === 'boolean') {
+            // Un <select> renvoie toujours une string : recoercer vers booléen
+            // quand le champ le déclare (ex: bonne réponse Vrai/Faux).
+            value = input.value === 'true';
+        } else if (input.tagName === 'SELECT' && input.dataset.valueType === 'number') {
+            const n = Number(input.value);
+            value = Number.isNaN(n) ? input.value : n;
         } else {
             value = input.value;
         }

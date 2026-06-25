@@ -61,7 +61,9 @@ export async function formatContentForDocument(moduleKey, jsonData, options = {}
         'elea_page': formatPage,
         'elea_livre': formatLivre,
         'elea_devoir': formatDevoir,
-        'CoursePresentation': formatCoursePresentation
+        'CoursePresentation': formatCoursePresentation,
+        'InteractiveBook': formatInteractiveBook,
+        'InteractiveVideo': formatVideoInteractive
     };
 
     const formatter = formatters[moduleKey];
@@ -224,6 +226,118 @@ function formatQuizSet(data) {
         title,
         sections
     };
+}
+
+/**
+ * Formate une Vidéo interactive (format intermédiaire plat).
+ * Énoncé (questions triées par timestamp « À mm:ss ») → saut de page → correction → résumé.
+ */
+function formatVideoInteractive(data) {
+    const sections = [];
+    const title = data.title || t('doc_fmt_video_title') || 'Vidéo interactive';
+    const mmss = (s) => {
+        s = Math.max(0, Math.floor(Number(s) || 0));
+        return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+    };
+    const atLabel = t('doc_fmt_video_at') || 'À';
+    const interactions = Array.isArray(data.interactions)
+        ? [...data.interactions].sort((a, b) => (Number(a.timestamp) || 0) - (Number(b.timestamp) || 0))
+        : [];
+
+    // PARTIE 1 — énoncé
+    sections.push({ type: 'header', level: 1, text: title });
+    // Lien de la vidéo : sans lui, les horodatages « À mm:ss » ne renvoient à aucune vidéo identifiable.
+    // Dérivé du format intermédiaire (videoSource, chaîne ou objet) OU du content.json natif
+    // (interactiveVideo.video.files[] — cas d'une vidéo interactive déposée et éditée côté Sucrerie).
+    const videoUrl = (typeof data.videoSource === 'string' ? data.videoSource : (data.videoSource && data.videoSource.url))
+        || (data.interactiveVideo && data.interactiveVideo.video && Array.isArray(data.interactiveVideo.video.files)
+            && data.interactiveVideo.video.files[0] && data.interactiveVideo.video.files[0].path)
+        || '';
+    // Instructions spécifiques vidéo (repli sur les instructions génériques).
+    sections.push({ type: 'paragraph', text: t('doc_fmt_video_instructions') || t('doc_fmt_instructions'), style: 'instructions' });
+    if (videoUrl) {
+        sections.push({ type: 'paragraph', text: `${t('doc_fmt_video_link') || 'Lien de la vidéo'} : ${videoUrl}`, style: 'instructions' });
+        // QR code de la vidéo source JUSTE SOUS LE LIEN : permet de scanner le papier pour ouvrir
+        // et lire la vidéo. Le PNG est généré au moment de prepareImages (section `qrText`).
+        sections.push({
+            type: 'image',
+            qrText: videoUrl,
+            imgSizeMm: 32,
+            caption: t('doc_fmt_video_qr_caption') || 'Scannez pour ouvrir la vidéo',
+            alt: 'QR code'
+        });
+    }
+    sections.push({ type: 'separator' });
+
+    interactions.forEach((it, index) => {
+        const type = String(it.type || 'multichoice').toLowerCase();
+        sections.push({ type: 'header', level: 2, text: `${atLabel} ${mmss(it.timestamp)} — ${t('doc_fmt_question_header')} ${index + 1}` });
+        if (type === 'blanks') {
+            const masked = String(it.text || '').replace(/\*([^*]+)\*/g, '______');
+            sections.push({ type: 'paragraph', text: cleanHtml(masked), style: 'question' });
+        } else {
+            if (it.question) sections.push({ type: 'paragraph', text: cleanHtml(it.question), style: 'question' });
+            sections.push({ type: 'paragraph', text: t('doc_fmt_proposed_answers') || 'Propositions :', style: 'answersTitle' });
+            if (type === 'multichoice' && Array.isArray(it.answers)) {
+                it.answers.forEach((a, i) => sections.push({ type: 'checkbox', text: `${String.fromCharCode(65 + i)}. ${cleanHtml(a.text)}` }));
+            } else if (type === 'truefalse') {
+                sections.push({ type: 'checkbox', text: `A. ${t('doc_fmt_true') || 'Vrai'}` });
+                sections.push({ type: 'checkbox', text: `B. ${t('doc_fmt_false') || 'Faux'}` });
+            }
+        }
+        sections.push({ type: 'separator' });
+    });
+
+    // SAUT DE PAGE + CORRECTION
+    sections.push({ type: 'pageBreak' });
+    sections.push({ type: 'header', level: 1, text: t('doc_fmt_correction_title') || 'Correction' });
+    sections.push({ type: 'separator' });
+
+    interactions.forEach((it, index) => {
+        const type = String(it.type || 'multichoice').toLowerCase();
+        sections.push({ type: 'header', level: 2, text: `${atLabel} ${mmss(it.timestamp)} — ${t('doc_fmt_question_header')} ${index + 1}` });
+        if (type === 'multichoice' && Array.isArray(it.answers)) {
+            const correct = it.answers.map((a, i) => ({ a, l: String.fromCharCode(65 + i) })).filter(x => x.a.correct);
+            if (correct.length) {
+                sections.push({ type: 'paragraph', text: `${t('doc_fmt_correct_answer') || 'Bonne(s) réponse(s)'} : ${correct.map(x => `${x.l}. ${cleanHtml(x.a.text)}`).join(', ')}`, style: 'correctAnswer' });
+            }
+            it.answers.forEach((a, i) => { if (a.feedback) sections.push({ type: 'paragraph', text: `${String.fromCharCode(65 + i)}. ${cleanHtml(a.feedback)}`, style: 'tip' }); });
+        } else if (type === 'truefalse') {
+            const isTrue = (it.correct === true || it.correct === 'true');
+            sections.push({ type: 'paragraph', text: `${t('doc_fmt_correct_answer') || 'Bonne réponse'} : ${isTrue ? (t('doc_fmt_true') || 'Vrai') : (t('doc_fmt_false') || 'Faux')}`, style: 'correctAnswer' });
+            if (it.feedbackOnCorrect) sections.push({ type: 'paragraph', text: cleanHtml(it.feedbackOnCorrect), style: 'tip' });
+            if (it.feedbackOnWrong) sections.push({ type: 'paragraph', text: cleanHtml(it.feedbackOnWrong), style: 'tip' });
+        } else if (type === 'blanks') {
+            const answers = [...String(it.text || '').matchAll(/\*([^*]+)\*/g)].map(m => m[1].split('/')[0].split(':')[0]);
+            if (answers.length) {
+                sections.push({ type: 'paragraph', text: `${t('doc_fmt_correct_answer') || 'Réponse(s)'} : ${answers.map(cleanHtml).join(', ')}`, style: 'correctAnswer' });
+            }
+        }
+        sections.push({ type: 'separator' });
+    });
+
+    // RÉSUMÉ FINAL
+    if (data.summary && Array.isArray(data.summary.statements) && data.summary.statements.length) {
+        sections.push({ type: 'pageBreak' });
+        sections.push({ type: 'header', level: 1, text: t('doc_fmt_video_summary') || 'Résumé' });
+        if (data.summary.intro) sections.push({ type: 'paragraph', text: cleanHtml(data.summary.intro), style: 'instructions' });
+        sections.push({ type: 'separator' });
+        data.summary.statements.forEach((group, gi) => {
+            if (!Array.isArray(group) || !group.length) return;
+            sections.push({ type: 'header', level: 2, text: `${t('doc_fmt_question_header')} ${gi + 1}` });
+            // Anti-divulgation : dans le player H5P les affirmations sont mélangées ; sur papier on
+            // dé-positionne de façon déterministe (rotation selon l'index du groupe) pour que la bonne
+            // affirmation (`group[0]`) ne soit pas systématiquement la 1ʳᵉ proposée. La correction
+            // ci-dessous l'identifie par son TEXTE → l'ordre d'affichage est sans incidence.
+            const off = group.length > 1 ? (gi + 1) % group.length : 0;
+            const shown = group.slice(off).concat(group.slice(0, off));
+            shown.forEach((s) => sections.push({ type: 'checkbox', text: cleanHtml(s) }));
+            sections.push({ type: 'paragraph', text: `${t('doc_fmt_correct_answer') || 'Bonne réponse'} : ${cleanHtml(group[0])}`, style: 'correctAnswer' });
+            sections.push({ type: 'separator' });
+        });
+    }
+
+    return { title, sections };
 }
 
 /**
@@ -777,10 +891,18 @@ function formatFlashcards(data) {
 /**
  * Formate des mots croisés
  * Structure pédagogique : énoncé (définitions) + saut de page + correction (réponses)
+ *
+ * Si `data._cluePlacements` est fourni (par crossword-grid-generator), les définitions
+ * sont groupées par direction (Horizontalement / Verticalement) et numérotées avec le
+ * clueId réel de la grille, ce qui garantit la cohérence entre l'image et la liste.
+ * Sinon, fallback sur l'ordre du tableau `data.words`.
  */
 function formatCrossword(data) {
     const sections = [];
     const title = data.title || t('doc_fmt_crossword_title');
+
+    const placements = Array.isArray(data._cluePlacements) ? data._cluePlacements : null;
+    const unplaced = Array.isArray(data._unplacedWords) ? data._unplacedWords : [];
 
     // ========================================
     // PARTIE 1 : ÉNONCÉ (définitions uniquement)
@@ -810,31 +932,16 @@ function formatCrossword(data) {
         });
     }
 
-    if (data.words && Array.isArray(data.words)) {
+    if (placements) {
+        appendCrosswordSection(sections, placements, unplaced, 'doc_fmt_definitions', 'Définitions', appendCrosswordClue);
+    } else if (data.words && Array.isArray(data.words)) {
+        // Fallback : pas de placements disponibles → liste à plat dans l'ordre du JSON
         sections.push({
             type: 'header',
             level: 2,
             text: t('doc_fmt_definitions') || 'Définitions'
         });
-
-        data.words.forEach((word, index) => {
-            // Indiquer le nombre de lettres comme indice
-            const letterCount = word.answer ? word.answer.length : '?';
-            sections.push({
-                type: 'paragraph',
-                text: `${index + 1}. ${cleanHtml(word.clue)} (${letterCount} ${t('doc_fmt_letters') || 'lettres'})`,
-                style: 'crosswordClue'
-            });
-
-            // Indice supplémentaire si présent
-            if (word.extraClue && word.extraClue.params && word.extraClue.params.text) {
-                sections.push({
-                    type: 'paragraph',
-                    text: `   ${t('doc_fmt_hint') || 'Indice'} : ${cleanHtml(word.extraClue.params.text)}`,
-                    style: 'tip'
-                });
-            }
-        });
+        data.words.forEach((word, index) => appendCrosswordClue(sections, String(index + 1), word));
     }
 
     // ========================================
@@ -862,23 +969,78 @@ function formatCrossword(data) {
         });
     }
 
-    if (data.words && Array.isArray(data.words)) {
+    if (placements) {
+        appendCrosswordSection(sections, placements, unplaced, 'doc_fmt_answers', 'Réponses', appendCrosswordAnswer);
+    } else if (data.words && Array.isArray(data.words)) {
         sections.push({
             type: 'header',
             level: 2,
             text: t('doc_fmt_answers') || 'Réponses'
         });
-
-        data.words.forEach((word, index) => {
-            sections.push({
-                type: 'paragraph',
-                text: `${index + 1}. ${word.answer}`,
-                style: 'correctAnswer'
-            });
-        });
+        data.words.forEach((word, index) => appendCrosswordAnswer(sections, String(index + 1), word));
     }
 
     return { title, sections };
+}
+
+/**
+ * Ajoute un paragraphe d'indice formaté pour un mot.
+ * On utilise « N — text » (en-dash) au lieu de « N. text » : Word et LibreOffice
+ * autoformatent agressivement le pattern « N. » en tête de paragraphe en liste
+ * numérotée auto-incrémentée, ce qui détruit nos vrais numéros de cases (chaque
+ * indice isolé par sa ligne « Indice » devient sa propre liste recommençant à 1).
+ * Aucun autoformat ne réagit à « N — ».
+ */
+function appendCrosswordClue(sections, label, word) {
+    const letterCount = word.answer ? word.answer.length : '?';
+    sections.push({
+        type: 'paragraph',
+        text: `${label} — ${cleanHtml(word.clue || '')} (${letterCount} ${t('doc_fmt_letters') || 'lettres'})`,
+        style: 'crosswordClue'
+    });
+    if (word.extraClue && word.extraClue.params && word.extraClue.params.text) {
+        sections.push({
+            type: 'paragraph',
+            text: `   ${t('doc_fmt_hint') || 'Indice'} : ${cleanHtml(word.extraClue.params.text)}`,
+            style: 'tip'
+        });
+    }
+}
+
+/**
+ * Ajoute un paragraphe de réponse formaté pour un mot (section correction).
+ * Même contrainte d'autoformat que les indices : on utilise « N — text » pour
+ * éviter la conversion en liste numérotée auto-incrémentée.
+ */
+function appendCrosswordAnswer(sections, label, word) {
+    sections.push({
+        type: 'paragraph',
+        text: `${label} — ${word.answer || ''}`,
+        style: 'correctAnswer'
+    });
+}
+
+/**
+ * Ajoute une section (Définitions ou Réponses) groupée par direction Horizontal/Vertical,
+ * triée par clueId, avec une rubrique « Mots non placés » si nécessaire.
+ * @param {Function} renderItem - (sections, label, word) → void
+ */
+function appendCrosswordSection(sections, placements, unplaced, headerKey, headerFallback, renderItem) {
+    const byNum = (a, b) => Number(a.clueId) - Number(b.clueId);
+    const across = placements.filter(p => p.direction === 'across').sort(byNum);
+    const down = placements.filter(p => p.direction === 'down').sort(byNum);
+
+    sections.push({ type: 'header', level: 2, text: t(headerKey) || headerFallback });
+
+    const subsection = (items, key, fallback, getLabel, getWord) => {
+        if (items.length === 0) return;
+        sections.push({ type: 'header', level: 3, text: t(key) || fallback });
+        items.forEach((item, idx) => renderItem(sections, getLabel(item, idx), getWord(item)));
+    };
+
+    subsection(across, 'h5p_crossword_across', 'Horizontal', p => p.clueId, p => p.word);
+    subsection(down, 'h5p_crossword_down', 'Vertical', p => p.clueId, p => p.word);
+    subsection(unplaced, 'doc_fmt_crossword_unplaced', 'Mots non placés sur la grille', (_w, idx) => String(idx + 1), w => w);
 }
 
 /**
@@ -3728,6 +3890,142 @@ function formatCPExerciseCorrection(library, params, sections) {
             style: 'description'
         });
     }
+}
+
+/**
+ * Formatte un InteractiveBook H5P pour l'export document.
+ * Partie 1 : contenu des chapitres (textes, tableaux) et énoncés des exercices.
+ * Partie 2 : correction des exercices, regroupée par chapitre.
+ * Réutilise les dispatchers d'exercices de CoursePresentation (mêmes 9 types).
+ */
+function formatInteractiveBook(data) {
+    const sections = [];
+    const title = data.title || t('doc_fmt_ib_title');
+
+    // ========================================
+    // PARTIE 1 : CONTENU ET ÉNONCÉS
+    // ========================================
+    sections.push({
+        type: 'header',
+        level: 1,
+        text: title
+    });
+
+    if (data.cover && data.cover.description) {
+        sections.push({
+            type: 'paragraph',
+            text: cleanHtml(data.cover.description),
+            style: 'subtitle'
+        });
+    }
+
+    sections.push({
+        type: 'paragraph',
+        text: t('doc_fmt_ib_instructions'),
+        style: 'instructions'
+    });
+
+    sections.push({ type: 'separator' });
+
+    const chapters = data.chapters || [];
+    let exerciseIndex = 0;
+    const exercisesForCorrection = [];
+
+    chapters.forEach((chapter, ci) => {
+        // Titre du chapitre
+        sections.push({
+            type: 'header',
+            level: 2,
+            text: `${t('doc_fmt_ib_chapter')} ${ci + 1}${chapter.title ? ' — ' + cleanHtml(chapter.title) : ''}`
+        });
+
+        (chapter.content || []).forEach(block => {
+            if (!block || typeof block !== 'object') return;
+            const blockType = block._blockType || block.type ||
+                (block.library ? 'exercise' : (block.table ? 'table' : (block.image ? 'image' : 'text')));
+
+            if (blockType === 'text' && block.text) {
+                sections.push({
+                    type: 'paragraph',
+                    text: cleanHtml(block.text),
+                    style: 'content'
+                });
+            } else if (blockType === 'table' && block.table && block.table.headers) {
+                sections.push({
+                    type: 'table',
+                    headers: block.table.headers,
+                    rows: (block.table.rows || []).filter(row => Array.isArray(row))
+                });
+            } else if (blockType === 'image') {
+                const imageUrl = getMediaImageUrl(block.image);
+                if (imageUrl) {
+                    sections.push({
+                        type: 'image',
+                        url: imageUrl,
+                        caption: block.alt || '',
+                        alt: block.alt || ''
+                    });
+                }
+            } else if (blockType === 'exercise') {
+                // Accepter le format healé (params à plat) et le format éditeur (exercise imbriqué)
+                const lib = block._exerciseLibrary || block.library;
+                if (!lib) return;
+                const { type, library, _blockType, _exerciseLibrary, exercise, ...flatParams } = block;
+                const params = (exercise && typeof exercise === 'object') ? exercise : flatParams;
+
+                exerciseIndex++;
+                sections.push({
+                    type: 'header',
+                    level: 3,
+                    text: `${t('doc_fmt_ib_exercise')} ${exerciseIndex}`
+                });
+
+                formatCPExerciseStatement(lib, params, sections);
+                exercisesForCorrection.push({ index: exerciseIndex, chapterIndex: ci, chapterTitle: chapter.title, library: lib, params });
+            }
+        });
+
+        sections.push({ type: 'separator' });
+    });
+
+    // ========================================
+    // PARTIE 2 : CORRECTION (groupée par chapitre)
+    // ========================================
+    if (exercisesForCorrection.length > 0) {
+        sections.push({ type: 'pageBreak' });
+
+        sections.push({
+            type: 'header',
+            level: 1,
+            text: t('doc_fmt_correction_title') || 'Correction'
+        });
+
+        sections.push({ type: 'separator' });
+
+        let lastChapterIndex = -1;
+        exercisesForCorrection.forEach(({ index, chapterIndex, chapterTitle, library, params }) => {
+            if (chapterIndex !== lastChapterIndex) {
+                lastChapterIndex = chapterIndex;
+                sections.push({
+                    type: 'header',
+                    level: 2,
+                    text: `${t('doc_fmt_ib_chapter')} ${chapterIndex + 1}${chapterTitle ? ' — ' + cleanHtml(chapterTitle) : ''}`
+                });
+            }
+
+            sections.push({
+                type: 'header',
+                level: 3,
+                text: `${t('doc_fmt_ib_exercise')} ${index}`
+            });
+
+            formatCPExerciseCorrection(library, params, sections);
+
+            sections.push({ type: 'separator' });
+        });
+    }
+
+    return { title, sections };
 }
 
 /**

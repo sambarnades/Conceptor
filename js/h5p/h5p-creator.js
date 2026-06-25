@@ -232,6 +232,10 @@ async function packageAndDownloadH5P(filenameBase, mainLibraryName, contentJson,
                 status: 'error',
                 errorMessage: 'Erreur de chargement du module de compression.'
             });
+            // Signaler la fin en erreur (arrête l'animation "marmite" côté UI)
+            document.dispatchEvent(new CustomEvent('generation:error', {
+                detail: { moduleKey }
+            }));
             return;
         }
     }
@@ -309,6 +313,11 @@ async function packageAndDownloadH5P(filenameBase, mainLibraryName, contentJson,
             userMessage: translations[errorInfo.userMessageKey] || errorInfo.userMessageKey,
             technicalMessage: errorInfo.technicalMessage
         });
+
+        // Signaler la fin en erreur (arrête l'animation "marmite" côté UI)
+        document.dispatchEvent(new CustomEvent('generation:error', {
+            detail: { moduleKey }
+        }));
     }
 }
 
@@ -425,4 +434,9 @@ function handleError(moduleKey, error) {
         userMessage: translations[errorInfo.userMessageKey] || errorInfo.userMessageKey,
         technicalMessage: errorInfo.technicalMessage
     });
+
+    // Signaler la fin en erreur (arrête l'animation "marmite" côté UI)
+    document.dispatchEvent(new CustomEvent('generation:error', {
+        detail: { moduleKey }
+    }));
 }

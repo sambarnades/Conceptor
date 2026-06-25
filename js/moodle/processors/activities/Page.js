@@ -6,6 +6,7 @@
 import { TEMPLATES } from '../shared/templates.js';
 import { buildCourseBackup } from '../shared/moodle-backup.js';
 import { replacePlaceholders } from '../shared/placeholder.js';
+import { parseXml, tagText, escapeXml, rewriteTag } from '../../mbz-utils.js';
 
 /**
  * Métadonnées du module Page.
@@ -226,10 +227,69 @@ export function buildFiles(data, options = {}) {
     return files;
 }
 
+// =========================================================================
+// INVERSE : .mbz extrait → JSON éditeur
+// =========================================================================
+
+/**
+ * Lit l'archive d'une Page (page) déjà extraite par `mbz-utils.extractMbz`.
+ * Le contenu Moodle est un HTML monolithique dans `<content>` — on le ré-encapsule
+ * dans un block `{type:'html', html}` pour cohérence avec la convention de
+ * l'éditeur (l'unification HTML→blocs typés viendra plus tard).
+ *
+ * @param {Object<string, Uint8Array>} files
+ * @param {string} activityDir
+ * @returns {{ title: string, blocks: Array<{type:'html', html:string}>, _context }}
+ */
+export function parseFiles(files, activityDir) {
+    const xmlPath  = `${activityDir}/page.xml`;
+    const xmlBytes = files[xmlPath];
+    if (!xmlBytes) throw new Error(`page_missing_xml:${xmlPath}`);
+
+    const xml = new TextDecoder('utf-8').decode(xmlBytes);
+    const doc = parseXml(xml);
+
+    const activityNode = doc.querySelector('activity');
+    if (!doc.querySelector('activity > page')) {
+        throw new Error('page_invalid_xml_no_root');
+    }
+
+    return {
+        title:  tagText(doc, 'page > name'),
+        blocks: [{ type: 'html', html: tagText(doc, 'page > content') }],
+        _context: {
+            moduleId:          activityNode?.getAttribute('moduleid')  ?? '',
+            activityId:        activityNode?.getAttribute('id')        ?? '',
+            activityContextId: activityNode?.getAttribute('contextid') ?? ''
+        }
+    };
+}
+
+/**
+ * Patch in-place : `name` + `content` (concatène les blocks HTML).
+ */
+export function serializeFiles(data, files, activityDir) {
+    const xmlPath  = `${activityDir}/page.xml`;
+    const xmlBytes = files[xmlPath];
+    if (!xmlBytes) throw new Error(`page_missing_xml:${xmlPath}`);
+
+    let xml = new TextDecoder('utf-8').decode(xmlBytes);
+    xml = rewriteTag(xml, 'name', escapeXml(data.title || ''));
+
+    const html = (data.blocks || [])
+        .map(b => b.type === 'html' ? (b.html || '') : '')
+        .join('\n');
+    xml = rewriteTag(xml, 'content', escapeXml(html));
+
+    files[xmlPath] = window.fflate.strToU8(xml);
+}
+
 /**
  * Export par défaut du processeur.
  */
 export default {
     metadata,
-    buildFiles
+    buildFiles,
+    parseFiles,
+    serializeFiles
 };

@@ -878,6 +878,56 @@ function getTypeSpecificErrors(data, schema) {
         }
     }
 
+    // --- InteractiveBook ---
+    if (moduleKey === 'InteractiveBook') {
+        if (!Array.isArray(data.chapters) || data.chapters.length < 2) {
+            errors.push({
+                path: 'chapters',
+                field: t('editor_ib_section_chapters') || 'Chapitres',
+                message: t('validation_ib_min_chapters') || ''
+            });
+        } else {
+            data.chapters.forEach((ch, i) => {
+                if (!ch.title || !ch.title.trim()) {
+                    errors.push({
+                        path: `chapters.${i}.title`,
+                        field: `${t('editor_ib_chapter') || 'Chapitre'} ${i + 1}`,
+                        message: t('validation_ib_no_chapter_title') || ''
+                    });
+                }
+                if (!Array.isArray(ch.content) || ch.content.length === 0) {
+                    errors.push({
+                        path: `chapters.${i}.content`,
+                        field: `${t('editor_ib_chapter') || 'Chapitre'} ${i + 1}`,
+                        message: t('validation_ib_empty_chapter') || ''
+                    });
+                }
+                // Bloc exercice sans type d'exercice choisi
+                // Note: après normalisation, library est déplacé vers _exerciseLibrary
+                (Array.isArray(ch.content) ? ch.content : []).forEach((b, j) => {
+                    if (!b || typeof b !== 'object') return;
+                    const blockType = b._blockType || b.type;
+                    if (blockType === 'exercise' && !(b._exerciseLibrary || b.library)) {
+                        errors.push({
+                            path: `chapters.${i}.content.${j}`,
+                            field: `${t('editor_ib_chapter') || 'Chapitre'} ${i + 1} — ${t('editor_ib_block') || 'Bloc'} ${j + 1}`,
+                            message: t('validation_ib_no_exercise_lib') || ''
+                        });
+                    }
+                    // Bloc image sans fichier : le processeur l'ignorerait silencieusement
+                    // (buildImageBlock exige image.path) → on le signale ici à l'utilisateur.
+                    if (blockType === 'image' && !(b.image && b.image.path)) {
+                        errors.push({
+                            path: `chapters.${i}.content.${j}`,
+                            field: `${t('editor_ib_chapter') || 'Chapitre'} ${i + 1} — ${t('editor_ib_block') || 'Bloc'} ${j + 1}`,
+                            message: t('validation_ib_image_no_file') || ''
+                        });
+                    }
+                });
+            });
+        }
+    }
+
     // =================================================================
     // VALIDATIONS TRANSVERSALES (existantes, conservées)
     // =================================================================

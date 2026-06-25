@@ -1,0 +1,154 @@
+{
+  "title": "Le théorème de Pythagore",
+  "cover": {
+    "description": "Un livre interactif pour découvrir, comprendre et appliquer le théorème de Pythagore."
+  },
+  "baseColor": "#5b2e90",
+  "showTableOfContents": true,
+  "displaySummary": true,
+  "chapters": [
+    {
+      "title": "Découverte du théorème",
+      "content": [
+        { "type": "text", "text": "Dans un triangle **rectangle**, le côté opposé à l'angle droit s'appelle l'**hypoténuse**. C'est toujours le côté le plus long du triangle." },
+        { "type": "text", "text": "Le théorème de Pythagore s'énonce ainsi : *si un triangle est rectangle, alors le carré de l'hypoténuse est égal à la somme des carrés des deux autres côtés* : \\\\( a^{2} + b^{2} = c^{2} \\\\)." },
+        { "type": "exercise", "library": "H5P.TrueFalse 1.8",
+          "question": "L'hypoténuse est toujours le côté le plus long d'un triangle rectangle.",
+          "correct": "true",
+          "feedbackOnCorrect": "Exact ! Elle est opposée à l'angle droit.",
+          "feedbackOnWrong": "Si : l'hypoténuse, opposée à l'angle droit, est toujours le plus long côté." },
+        { "type": "exercise", "library": "H5P.MultiChoice 1.16",
+          "question": "Dans un triangle ABC rectangle en A, quelle égalité est correcte ?",
+          "answers": [
+            { "text": "\\\\( BC^{2} = AB^{2} + AC^{2} \\\\)", "correct": true, "tipsAndFeedback": { "chosenFeedback": "Bravo ! BC est l'hypoténuse." } },
+            { "text": "\\\\( AB^{2} = BC^{2} + AC^{2} \\\\)", "correct": false, "tipsAndFeedback": { "chosenFeedback": "Non : AB n'est pas l'hypoténuse." } },
+            { "text": "\\\\( AC^{2} = AB^{2} + BC^{2} \\\\)", "correct": false }
+          ],
+          "behaviour": { "singleAnswer": true },
+          "overallFeedback": [
+            { "from": 0, "to": 25, "feedback": "Relisez l'énoncé du théorème." },
+            { "from": 26, "to": 50, "feedback": "C'est un début, continuez !" },
+            { "from": 51, "to": 75, "feedback": "Bon travail !" },
+            { "from": 76, "to": 100, "feedback": "Excellent !" }
+          ] }
+      ]
+    },
+    {
+      "title": "Triplets pythagoriciens",
+      "content": [
+        { "type": "text", "text": "Certains triangles rectangles ont des côtés de longueurs **entières** : on parle de *triplets pythagoriciens*." },
+        { "type": "table", "tableStyle": "dark-header", "table": {
+            "headers": ["Côté a", "Côté b", "Hypoténuse c", "Vérification"],
+            "rows": [
+              ["3", "4", "5", "9 + 16 = 25"],
+              ["5", "12", "13", "25 + 144 = 169"],
+              ["8", "15", "17", "64 + 225 = 289"]
+            ] } },
+        { "type": "exercise", "library": "H5P.Blanks 1.14",
+          "taskDescription": "Complétez avec les valeurs manquantes.",
+          "questions": [
+            "Dans le triplet (3, 4, 5), l'hypoténuse mesure *5* unités.",
+            "Si les côtés mesurent 5 et 12, alors l'hypoténuse mesure *13:Calculez 25 + 144* unités."
+          ],
+          "overallFeedback": [
+            { "from": 0, "to": 25, "feedback": "Aidez-vous du tableau ci-dessus." },
+            { "from": 26, "to": 50, "feedback": "C'est un début." },
+            { "from": 51, "to": 75, "feedback": "Bon travail !" },
+            { "from": 76, "to": 100, "feedback": "Excellent !" }
+          ] }
+      ]
+    },
+    {
+      "title": "Vocabulaire et réciproque",
+      "content": [
+        { "type": "text", "text": "La **réciproque** du théorème permet de prouver qu'un triangle est rectangle : si \\\\( a^{2} + b^{2} = c^{2} \\\\), alors le triangle est rectangle." },
+        { "type": "exercise", "library": "H5P.MarkTheWords 1.11",
+          "taskDescription": "Surlignez les deux mots associés au théorème de Pythagore.",
+          "textField": "Le théorème de Pythagore concerne le triangle *rectangle* et son *hypoténuse* ; il ne s'applique ni au triangle équilatéral ni au cercle.",
+          "overallFeedback": [
+            { "from": 0, "to": 25, "feedback": "Pensez à la nature du triangle et à son plus long côté." },
+            { "from": 26, "to": 50, "feedback": "C'est un début." },
+            { "from": 51, "to": 75, "feedback": "Bon travail !" },
+            { "from": 76, "to": 100, "feedback": "Excellent !" }
+          ] },
+        { "type": "exercise", "library": "H5P.DragText 1.10",
+          "taskDescription": "Replacez les mots manquants dans le texte.",
+          "textField": "Le côté opposé à l'angle droit est l'*hypoténuse*.\nLa *réciproque* du théorème sert à prouver qu'un triangle est rectangle.\nLe théorème s'applique uniquement aux triangles *rectangles*.",
+          "overallFeedback": [
+            { "from": 0, "to": 25, "feedback": "Relisez les chapitres précédents." },
+            { "from": 26, "to": 50, "feedback": "C'est un début." },
+            { "from": 51, "to": 75, "feedback": "Bon travail !" },
+            { "from": 76, "to": 100, "feedback": "Excellent !" }
+          ] },
+        { "type": "exercise", "library": "H5P.SingleChoiceSet 1.11",
+          "choices": [
+            { "question": "Comment s'appelle le côté opposé à l'angle droit ?",
+              "answers": ["L'hypoténuse", "La médiane", "La hauteur"] },
+            { "question": "À quoi sert la réciproque du théorème ?",
+              "answers": ["À prouver qu'un triangle est rectangle", "À calculer une longueur", "À mesurer un angle"] }
+          ],
+          "overallFeedback": [
+            { "from": 0, "to": 25, "feedback": "Revoyez le vocabulaire." },
+            { "from": 26, "to": 50, "feedback": "C'est un début." },
+            { "from": 51, "to": 75, "feedback": "Bon travail !" },
+            { "from": 76, "to": 100, "feedback": "Excellent !" }
+          ] }
+      ]
+    },
+    {
+      "title": "Classer les situations",
+      "content": [
+        { "type": "text", "text": "Le théorème et sa réciproque ne servent pas à la même chose : à vous de classer les situations." },
+        { "type": "exercise", "library": "H5P.DragQuestion 1.14",
+          "title": "Glissez chaque situation dans la bonne catégorie.",
+          "dropZones": [
+            { "label": "Théorème direct", "correctElements": [0, 2] },
+            { "label": "Réciproque", "correctElements": [1, 3] }
+          ],
+          "elements": [
+            { "text": "Calculer l'hypoténuse" },
+            { "text": "Prouver un angle droit" },
+            { "text": "Calculer un côté" },
+            { "text": "Vérifier un triangle rectangle" }
+          ],
+          "overallFeedback": [
+            { "from": 0, "to": 25, "feedback": "Relisez le chapitre sur la réciproque." },
+            { "from": 26, "to": 50, "feedback": "C'est un début." },
+            { "from": 51, "to": 75, "feedback": "Bon travail !" },
+            { "from": 76, "to": 100, "feedback": "Excellent !" }
+          ] }
+      ]
+    },
+    {
+      "title": "Synthèse",
+      "content": [
+        { "type": "exercise", "library": "H5P.Summary 1.10",
+          "intro": "Choisissez les affirmations correctes pour chaque groupe.",
+          "summaries": [
+            { "summary": [
+              "Le théorème de Pythagore s'applique aux triangles rectangles",
+              "Le théorème de Pythagore s'applique à tous les triangles",
+              "Le théorème de Pythagore s'applique aux quadrilatères" ] },
+            { "summary": [
+              "L'égalité du théorème est a² + b² = c²",
+              "L'égalité du théorème est a + b = c",
+              "L'égalité du théorème est a² − b² = c²" ] }
+          ],
+          "overallFeedback": [
+            { "from": 0, "to": 25, "feedback": "Revoyez les points clés du livre." },
+            { "from": 26, "to": 50, "feedback": "C'est un bon début." },
+            { "from": 51, "to": 75, "feedback": "Bonne maîtrise du sujet." },
+            { "from": 76, "to": 100, "feedback": "Parfait !" }
+          ] },
+        { "type": "exercise", "library": "H5P.Dialogcards 1.9",
+          "title": "Cartes de révision",
+          "description": "Révisez le vocabulaire du chapitre.",
+          "dialogs": [
+            { "text": "Hypoténuse", "answer": "Côté opposé à l'angle droit, le plus long du triangle rectangle." },
+            { "text": "Triplet pythagoricien", "answer": "Trois entiers (a, b, c) tels que a² + b² = c², comme (3, 4, 5)." },
+            { "text": "Réciproque", "answer": "Si a² + b² = c², alors le triangle est rectangle." }
+          ] }
+      ]
+    }
+  ]
+}

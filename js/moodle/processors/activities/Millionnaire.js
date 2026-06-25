@@ -6,6 +6,7 @@
 import { TEMPLATES } from '../shared/templates.js';
 import { buildSingleActivityBackup } from '../shared/moodle-backup.js';
 import { replacePlaceholders } from '../shared/placeholder.js';
+import { parseXml, tagText, escapeXml as xmlEscape, rewriteTag } from '../../mbz-utils.js';
 
 /**
  * Métadonnées du module Millionnaire.
@@ -143,10 +144,72 @@ export function buildFiles(data, options = {}) {
     return files;
 }
 
+// =========================================================================
+// INVERSE : .mbz extrait → JSON éditeur
+// =========================================================================
+
+/**
+ * Lit l'archive d'un Millionnaire (millionnairev2) déjà extraite par
+ * `mbz-utils.extractMbz` et reconstruit le JSON éditeur.
+ *
+ * @param {Object<string, Uint8Array>} files
+ * @param {string} activityDir - ex: 'activities/millionnairev2_25'
+ * @returns {{ title: string, questions: Array, _context: { moduleId, activityId, activityContextId } }}
+ */
+export function parseFiles(files, activityDir) {
+    const xmlPath  = `${activityDir}/millionnairev2.xml`;
+    const xmlBytes = files[xmlPath];
+    if (!xmlBytes) throw new Error(`millionnaire_missing_xml:${xmlPath}`);
+
+    const xml = new TextDecoder('utf-8').decode(xmlBytes);
+    const doc = parseXml(xml);
+
+    const activityNode = doc.querySelector('activity');
+    if (!doc.querySelector('activity > millionnairev2')) {
+        throw new Error('millionnaire_invalid_xml_no_root');
+    }
+
+    const title        = tagText(doc, 'millionnairev2 > name');
+    const questionsRaw = tagText(doc, 'millionnairev2 > questions');
+
+    let questions = [];
+    if (questionsRaw && questionsRaw.trim()) {
+        try { questions = JSON.parse(questionsRaw); }
+        catch (e) { throw new Error(`millionnaire_questions_json_invalid:${e.message}`); }
+    }
+
+    return {
+        title,
+        questions,
+        _context: {
+            moduleId:          activityNode?.getAttribute('moduleid')  ?? '',
+            activityId:        activityNode?.getAttribute('id')        ?? '',
+            activityContextId: activityNode?.getAttribute('contextid') ?? ''
+        }
+    };
+}
+
+/**
+ * Patch in-place les balises éditables (`name`, `questions`).
+ */
+export function serializeFiles(data, files, activityDir) {
+    const xmlPath  = `${activityDir}/millionnairev2.xml`;
+    const xmlBytes = files[xmlPath];
+    if (!xmlBytes) throw new Error(`millionnaire_missing_xml:${xmlPath}`);
+
+    let xml = new TextDecoder('utf-8').decode(xmlBytes);
+    xml = rewriteTag(xml, 'name',      xmlEscape(data.title || ''));
+    xml = rewriteTag(xml, 'questions', xmlEscape(JSON.stringify(data.questions || [])));
+
+    files[xmlPath] = window.fflate.strToU8(xml);
+}
+
 /**
  * Export par défaut du processeur.
  */
 export default {
     metadata,
-    buildFiles
+    buildFiles,
+    parseFiles,
+    serializeFiles
 };

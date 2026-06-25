@@ -6,6 +6,8 @@
 import { TEMPLATES } from '../shared/templates.js';
 import { buildCourseBackup } from '../shared/moodle-backup.js';
 import { replacePlaceholders } from '../shared/placeholder.js';
+import { parseXml, tagText, rewriteTag, escapeXml as xmlEscape } from '../../mbz-utils.js';
+import { escapeXml } from '../../moodle-formats.js';
 
 /**
  * Métadonnées du module Glossaire.
@@ -131,8 +133,8 @@ export function buildEntriesXml(entries) {
         const entryId = 1000 + index;
         return `      <entry id="${entryId}">
         <userid>0</userid>
-        <concept>${escapeXml(entry.concept)}</concept>
-        <definition>${escapeXml(entry.definition)}</definition>
+        <concept>${escapeXml(entry.concept || '')}</concept>
+        <definition>${escapeXml(entry.definition || '')}</definition>
         <definitionformat>1</definitionformat>
         <definitiontrust>0</definitiontrust>
         <attachment></attachment>
@@ -150,21 +152,6 @@ export function buildEntriesXml(entries) {
         </ratings>
       </entry>`;
     }).join('\n');
-}
-
-/**
- * Échappe les caractères spéciaux XML.
- * @param {string} str
- * @returns {string}
- */
-function escapeXml(str) {
-    if (!str) return '';
-    return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&apos;');
 }
 
 /**
@@ -234,11 +221,190 @@ export function buildFiles(data, options = {}) {
     return files;
 }
 
+// =========================================================================
+// INVERSE : .mbz extrait → JSON éditeur
+// =========================================================================
+
+/**
+ * Lit l'archive d'un Glossaire (glossary) déjà extraite par
+ * `mbz-utils.extractMbz` et reconstruit le JSON éditeur.
+ *
+ * @param {Object<string, Uint8Array>} files
+ * @param {string} activityDir - ex: 'activities/glossary_25'
+ * @returns {{ name: string, entries: Array<{concept, definition}>, _context: { moduleId, activityId, activityContextId } }}
+ *   `name` (et non `title` comme les autres processors) car c'est ce qu'attend
+ *   le schema `elea_glossaire` dans `editor/content-detector.js` (intouchable).
+ */
+export function parseFiles(files, activityDir) {
+    const xmlPath  = `${activityDir}/glossary.xml`;
+    const xmlBytes = files[xmlPath];
+    if (!xmlBytes) throw new Error(`glossaire_missing_xml:${xmlPath}`);
+
+    const xml = new TextDecoder('utf-8').decode(xmlBytes);
+    const doc = parseXml(xml);
+
+    const activityNode = doc.querySelector('activity');
+    if (!doc.querySelector('activity > glossary')) {
+        throw new Error('glossaire_invalid_xml_no_root');
+    }
+
+    const name = tagText(doc, 'glossary > name');
+
+    const entries = Array.from(doc.querySelectorAll('glossary > entries > entry')).map(e => ({
+        concept:    e.querySelector('concept')?.textContent ?? '',
+        definition: e.querySelector('definition')?.textContent ?? ''
+    }));
+
+    return {
+        name,
+        entries,
+        _context: {
+            moduleId:          activityNode?.getAttribute('moduleid')  ?? '',
+            activityId:        activityNode?.getAttribute('id')        ?? '',
+            activityContextId: activityNode?.getAttribute('contextid') ?? ''
+        }
+    };
+}
+
+/**
+ * Patch in-place : on régénère intégralement la liste `<entries>` (chaque
+ * `<entry>` est entièrement reconstruit) plus le `<name>`. Les autres
+ * options Moodle (allowduplicatedentries, displayformat, etc.) sont laissées
+ * telles quelles.
+ */
+export function serializeFiles(data, files, activityDir) {
+    const xmlPath  = `${activityDir}/glossary.xml`;
+    const xmlBytes = files[xmlPath];
+    if (!xmlBytes) throw new Error(`glossaire_missing_xml:${xmlPath}`);
+
+    let xml = new TextDecoder('utf-8').decode(xmlBytes);
+    xml = rewriteTag(xml, 'name', xmlEscape(data.name || ''));
+
+    const entriesXml = (data.entries || []).map((e, i) => `      <entry id="${1000 + i}">
+        <userid>0</userid>
+        <concept>${xmlEscape(e.concept || '')}</concept>
+        <definition>${xmlEscape(e.definition || '')}</definition>
+        <definitionformat>1</definitionformat>
+        <definitiontrust>0</definitiontrust>
+        <attachment></attachment>
+        <teacherentry>0</teacherentry>
+        <sourceglossaryid>0</sourceglossaryid>
+        <usedynalink>1</usedynalink>
+        <casesensitive>0</casesensitive>
+        <fullmatch>0</fullmatch>
+        <approved>1</approved>
+        <aliases></aliases>
+        <ratings></ratings>
+      </entry>`).join('\n');
+
+    xml = rewriteTag(xml, 'entries', '\n' + entriesXml + '\n    ');
+
+    files[xmlPath] = window.fflate.strToU8(xml);
+}
+
+// =========================================================================
+// FORMAT STANDALONE — Glossary XML import/export Moodle (root <GLOSSARY>)
+// =========================================================================
+//
+// Format complètement différent du `glossary.xml` interne au MBZ :
+//  - balises UPPERCASE (NAME, ENTRIES, ENTRY, CONCEPT, DEFINITION, ALIASES)
+//  - structure imbriquée <GLOSSARY><INFO>...<ENTRIES><ENTRY>...
+// C'est le format que Caramel exporte directement via "Banque de glossaires".
+
+/**
+ * Parse un XML Glossary standalone (<GLOSSARY>...) vers le JSON éditeur.
+ * Le shape de sortie est aligné avec `parseFiles` (champs name, entries)
+ * pour que l'éditeur traite les deux origines de manière uniforme.
+ *
+ * @param {string} xml - Contenu du fichier `.xml` standalone
+ * @returns {{ name: string, entries: Array<{ concept, definition, aliases }> }}
+ */
+export function parseStandaloneXml(xml) {
+    const doc = parseXml(xml);
+    const root = doc.documentElement;
+    if (!root || root.tagName !== 'GLOSSARY') {
+        throw new Error('glossaire_standalone_invalid_root');
+    }
+
+    const name = root.querySelector('INFO > NAME')?.textContent ?? '';
+
+    const entries = Array.from(root.querySelectorAll('INFO > ENTRIES > ENTRY')).map(e => ({
+        concept:    e.querySelector('CONCEPT')?.textContent ?? '',
+        definition: e.querySelector('DEFINITION')?.textContent ?? '',
+        // Les aliases sont propres au format standalone (absents du MBZ classique).
+        // Conservés pour ne pas perdre d'info au round-trip.
+        aliases: Array.from(e.querySelectorAll('ALIASES > ALIAS > NAME'))
+            .map(n => n.textContent ?? '')
+            .filter(s => s.length > 0)
+    }));
+
+    return { name, entries };
+}
+
+/**
+ * Reconstruit l'XML Glossary standalone à partir du JSON éditeur.
+ * Émet un format minimal mais valide (Moodle accepte l'absence de plusieurs
+ * options secondaires comme DISPLAYFORMAT, FULLMATCH, etc. — on les met
+ * avec des valeurs par défaut raisonnables).
+ *
+ * @param {{ name: string, entries: Array<{concept, definition, aliases?: string[]}> }} data
+ * @returns {string} XML standalone prêt à être téléchargé
+ */
+export function serializeStandaloneXml(data) {
+    const name = xmlEscape(data.name || '');
+
+    const entriesXml = (data.entries || []).map(e => {
+        const aliasesXml = (e.aliases || []).length === 0
+            ? '<ALIASES></ALIASES>'
+            : '<ALIASES>'
+                + e.aliases.map(a => `<ALIAS><NAME>${xmlEscape(a)}</NAME></ALIAS>`).join('')
+                + '</ALIASES>';
+
+        return `      <ENTRY>
+        <CONCEPT>${xmlEscape(e.concept || '')}</CONCEPT>
+        <DEFINITION>${xmlEscape(e.definition || '')}</DEFINITION>
+        <FORMAT>1</FORMAT>
+        <DEFINITIONTRUST>0</DEFINITIONTRUST>
+        <USEDYNALINK>1</USEDYNALINK>
+        <CASESENSITIVE>0</CASESENSITIVE>
+        <FULLMATCH>0</FULLMATCH>
+        <TEACHERENTRY>1</TEACHERENTRY>
+        ${aliasesXml}
+      </ENTRY>`;
+    }).join('\n');
+
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<GLOSSARY>
+  <INFO>
+    <NAME>${name}</NAME>
+    <INTRO><p dir="ltr" style="text-align: left;"></p></INTRO>
+    <INTROFORMAT>1</INTROFORMAT>
+    <ALLOWDUPLICATEDENTRIES>0</ALLOWDUPLICATEDENTRIES>
+    <DISPLAYFORMAT>dictionary</DISPLAYFORMAT>
+    <SHOWSPECIAL>1</SHOWSPECIAL>
+    <SHOWALPHABET>1</SHOWALPHABET>
+    <SHOWALL>1</SHOWALL>
+    <ALLOWCOMMENTS>0</ALLOWCOMMENTS>
+    <USEDYNALINK>0</USEDYNALINK>
+    <DEFAULTAPPROVAL>0</DEFAULTAPPROVAL>
+    <GLOBALGLOSSARY>0</GLOBALGLOSSARY>
+    <ENTBYPAGE>10</ENTBYPAGE>
+    <ENTRIES>
+${entriesXml}
+    </ENTRIES>
+  </INFO>
+</GLOSSARY>`;
+}
+
 /**
  * Export par défaut du processeur.
  */
 export default {
     metadata,
     buildFiles,
-    buildEntriesXml
+    buildEntriesXml,
+    parseFiles,
+    serializeFiles,
+    parseStandaloneXml,
+    serializeStandaloneXml
 };

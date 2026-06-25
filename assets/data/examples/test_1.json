@@ -5,7 +5,7 @@
         {
             "type": "truefalse",
             "content": {
-                "name": "Q1 - Alliance PGM",
+                "name": "Q01 - Alliance PGM",
                 "questiontext": "L'Italie a combattu aux côtés de l'Allemagne et de l'Autriche-Hongrie dès le déclenchement de la Première Guerre mondiale en 1914.",
                 "feedback": "L'Italie était initialement membre de la Triple Alliance, mais elle est restée neutre en 1914 avant de rejoindre l'Entente (France, Royaume-Uni, Russie) en 1915.",
                 "hints": ["Pensez à la position initiale de l'Italie dans les alliances européennes.", "L'Italie a changé de camp en cours de conflit."],
@@ -19,7 +19,7 @@
         {
             "type": "cloze",
             "content": {
-                "name": "Q2 - Prise du pouvoir",
+                "name": "Q02 - Prise du pouvoir",
                 "questiontext": " \nLe chef du Parti national fasciste, {1:SHORTANSWER:=Benito Mussolini}, accède au pouvoir après la {1:MULTICHOICE:=Marche sur Rome~Marche sur Milan~Marche sur Naples~Marche sur Turin} organisée en octobre {1:SHORTANSWER:=1922}.",
                 "feedback": "La Marche sur Rome a forcé le roi Victor-Emmanuel III à nommer Mussolini à la tête du gouvernement."
             }
@@ -27,7 +27,7 @@
         {
             "type": "multichoice",
             "content": {
-                "name": "Q3 - Accords du Latran",
+                "name": "Q03 - Accords du Latran",
                 "questiontext": "Que prévoient les accords du Latran signés en 1929 entre Mussolini et le Vatican ?",
                 "feedback": "Ces accords mettent fin à la 'Question romaine' en créant l'État de la Cité du Vatican.",
                 "correctfeedback": "Bravo, c'est la bonne réponse !",
@@ -60,7 +60,7 @@
         {
             "type": "matching",
             "content": {
-                "name": "Q4 - Figures historiques",
+                "name": "Q04 - Figures historiques",
                 "questiontext": "Associez chaque personnalité italienne du 20ème siècle à son rôle ou à son courant politique.",
                 "feedback": "Ces acteurs ont façonné l'histoire complexe de l'Italie contemporaine.",
                 "correctfeedback": "Parfait, toutes les associations sont correctes !",
@@ -90,7 +90,7 @@
         {
             "type": "numerical",
             "content": {
-                "name": "Q5 - Naissance République",
+                "name": "Q05 - Naissance République",
                 "questiontext": " \nEn quelle année l'Italie a-t-elle officiellement abandonné la monarchie pour devenir une République par référendum ?",
                 "feedback": "Le 2 juin 1946, les Italiens (et pour la première fois les Italiennes) votent pour la République.",
                 "answer": {
@@ -103,7 +103,7 @@
         {
             "type": "shortanswer",
             "content": {
-                "name": "Q6 - Titre Mussolini",
+                "name": "Q06 - Titre Mussolini",
                 "questiontext": "Quel titre, signifiant 'le chef' ou 'le guide', Mussolini portait-il durant sa dictature ?",
                 "feedback": "Ce terme est dérivé du mot latin 'dux'.",
                 "answers": [
@@ -123,7 +123,7 @@
         {
             "type": "truefalse",
             "content": {
-                "name": "Q7 - Construction européenne",
+                "name": "Q07 - Construction européenne",
                 "questiontext": "L'Italie est l'un des pays signataires du traité de Rome en 1957, fondant la CEE.",
                 "feedback": "L'Italie a été l'un des moteurs de l'intégration européenne d'après-guerre.",
                 "answer": {
@@ -136,7 +136,7 @@
         {
             "type": "multichoice",
             "content": {
-                "name": "Q8 - Boom économique",
+                "name": "Q08 - Boom économique",
                 "questiontext": "Comment appelle-t-on la période de croissance exceptionnelle que l'Italie traverse entre 1958 et 1963 ?",
                 "feedback": "Cette période a vu le pays se transformer de société rurale en puissance industrielle.",
                 "answers": [
@@ -166,7 +166,7 @@
         {
             "type": "cloze",
             "content": {
-                "name": "Q9 - Politique étrangère fasciste",
+                "name": "Q09 - Politique étrangère fasciste",
                 "questiontext": "L'Italie fasciste s'engage dans une politique impérialiste en envahissant l' {1:SHORTANSWER:=Éthiopie/Abyssinie} en 1935, puis renforce ses liens avec Hitler par le {1:MULTICHOICE:=Pacte d'Acier~Pacte de Varsovie~Pacte Atlantique~Pacte de Locarno} en 1939.",
                 "feedback": "L'invasion de l'Éthiopie a conduit à l'isolement diplomatique de l'Italie et à son rapprochement avec l'Allemagne."
             }

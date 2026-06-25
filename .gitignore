@@ -1,9 +1,12 @@
 nul
 .mcp.json
+.env
+*.env
 WORKFLOW_EXPLICATION.md
 STORIES_AUDIT.md
 workflow-surveillance-libs.json
 chatbot
 .DS_Store
-n8n-workflows/
+audit/
 assets/images/.DS_Store
+retag-disciplines.mjs

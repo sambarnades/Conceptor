@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <title>Tests e2e — Editeur InteractiveBook</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; padding: 24px; color: #1a1a2e; }
+        h1 { font-size: 1.5rem; margin-bottom: 8px; }
+        .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+
+        .global-summary {
+            display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+        }
+        .global-summary__card {
+            padding: 14px 24px; border-radius: 10px; font-weight: 700; font-size: 1.3rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-width: 120px; text-align: center;
+        }
+        .global-summary__card small { display: block; font-size: 0.7rem; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+        .card--pass { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; }
+        .card--fail { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: #721c24; }
+        .card--total { background: linear-gradient(135deg, #d1ecf1, #bee5eb); color: #0c5460; }
+
+        .info-box {
+            background: #fff; padding: 14px 18px; border-radius: 10px; margin-bottom: 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06); font-size: 0.82rem; line-height: 1.6; color: #444;
+        }
+        .info-box summary { cursor: pointer; font-weight: 600; color: #1a1a2e; font-size: 0.9rem; }
+        .info-box code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 0.8rem; }
+
+        /* === Tabs === */
+        .tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 2px solid #ddd; padding-bottom: 0; }
+        .tab {
+            padding: 10px 20px; cursor: pointer; border-radius: 8px 8px 0 0;
+            font-weight: 600; font-size: 0.85rem; background: #e9ecef; color: #666;
+            border: 1px solid transparent; border-bottom: none; position: relative; top: 2px;
+        }
+        .tab:hover { background: #f8f9fa; color: #333; }
+        .tab--active { background: #fff; color: #1a1a2e; border-color: #ddd; border-bottom: 2px solid #fff; }
+        .tab-panel { display: none; }
+        .tab-panel--active { display: block; }
+
+        /* === Filtres === */
+        .filter-bar { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+        .filter-bar__label { font-size: 0.75rem; color: #888; font-weight: 600; text-transform: uppercase; margin-right: 4px; }
+        .filter-btn {
+            padding: 5px 12px; border: 1px solid #ddd; border-radius: 6px;
+            background: #fff; cursor: pointer; font-size: 0.8rem; transition: all 0.15s;
+        }
+        .filter-btn:hover { background: #f0f0f0; }
+        .filter-btn--active { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
+
+        .results { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
+        .result {
+            display: flex; align-items: flex-start; gap: 10px;
+            padding: 7px 14px; border-bottom: 1px solid #f5f5f5; font-size: 0.82rem;
+        }
+        .result:last-child { border-bottom: none; }
+        .result__badge {
+            display: inline-block; padding: 2px 7px; border-radius: 4px;
+            font-weight: 700; font-size: 0.7rem; min-width: 38px; text-align: center; flex-shrink: 0;
+        }
+        .result__badge--pass { background: #d4edda; color: #155724; }
+        .result__badge--fail { background: #f8d7da; color: #721c24; }
+        .result__group { font-size: 0.65rem; color: #888; min-width: 200px; flex-shrink: 0; padding-top: 3px; }
+        .result--fail { background: #fff5f5; }
+
+        /* === Synthese par groupe === */
+        .summary-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px; }
+        .summary-table th { background: #1a1a2e; color: #fff; padding: 10px 14px; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .summary-table td { padding: 8px 14px; border-bottom: 1px solid #f0f0f0; font-size: 0.82rem; }
+        .summary-table tr:last-child td { border-bottom: none; }
+        .summary-table tr:hover { background: #f8f9fa; }
+        .cell--pass { color: #155724; font-weight: 600; }
+        .cell--fail { color: #721c24; font-weight: 700; background: #fff5f5; }
+
+        /* === Prompt IA === */
+        .ai-prompt-section {
+            margin-top: 24px; background: #fff; border-radius: 10px; padding: 18px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .ai-prompt-section summary {
+            cursor: pointer; font-weight: 700; font-size: 1rem; color: #1a1a2e;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .ai-prompt-section summary .ai-icon { font-size: 1.2rem; }
+        .ai-prompt-box {
+            margin-top: 12px; background: #1e1e2e; color: #cdd6f4; padding: 16px;
+            border-radius: 8px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 0.75rem; line-height: 1.6; white-space: pre-wrap; word-break: break-word;
+            max-height: 600px; overflow-y: auto; position: relative;
+        }
+        .ai-prompt-copy {
+            position: sticky; top: 0; float: right; background: #89b4fa; color: #1e1e2e;
+            border: none; border-radius: 6px; padding: 6px 14px; cursor: pointer;
+            font-weight: 700; font-size: 0.75rem; z-index: 1;
+        }
+        .ai-prompt-copy:hover { background: #74c7ec; }
+        .ai-prompt-none { color: #28a745; font-weight: 600; padding: 20px; text-align: center; font-size: 0.95rem; }
+
+        .loading { text-align: center; padding: 60px; color: #666; }
+        .loading__spinner { display: inline-block; width: 36px; height: 36px; border: 3px solid #ddd; border-top-color: #1a1a2e; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <h1>Tests e2e — Editeur InteractiveBook</h1>
+    <p class="subtitle">Schema, showWhen, normalisation, denormalisation, exercices, tables, couleurs, LaTeX</p>
+
+    <details class="info-box">
+        <summary>Ce que ces tests verifient</summary>
+        <p style="margin-top:8px;">Tests end-to-end pour l'editeur <strong>CoursePresentation</strong> :</p>
+        <ol style="margin-top:8px;">
+            <li><strong>Schema</strong> &mdash; Structure correcte, sections, champs, types.</li>
+            <li><strong>showWhen</strong> &mdash; Visibilite conditionnelle par type de slide (title, content, quiz, etc.).</li>
+            <li><strong>exerciseLibrary</strong> &mdash; 9 types d'exercices, dynamicObject, schemas CP_EXERCISE_SCHEMAS.</li>
+            <li><strong>Detection</strong> &mdash; detectContentType identifie CoursePresentation dans les 3 exemples.</li>
+            <li><strong>Normalisation</strong> &mdash; exercise.library → _exerciseLibrary, titres preserves.</li>
+            <li><strong>Structures</strong> &mdash; Chaque type de slide a les bons champs (tables, exercices, etc.).</li>
+            <li><strong>Aller-retour</strong> &mdash; normalize → denormalize preserve toutes les donnees.</li>
+            <li><strong>Modifications</strong> &mdash; Ajout de slides, changement de type, modification d'exercices.</li>
+            <li><strong>Couleurs</strong> &mdash; Champs <code>type: 'color'</code>, assignation et preservation.</li>
+            <li><strong>Tables</strong> &mdash; Headers, rows, styles (6 styles dont DSFR).</li>
+            <li><strong>LaTeX</strong> &mdash; Preservation des delimiteurs mathematiques.</li>
+            <li><strong>Robustesse</strong> &mdash; Slides vides, exercice manquant, library inconnue.</li>
+        </ol>
+    </details>
+
+    <div id="output">
+        <div class="loading">
+            <div class="loading__spinner"></div>
+            <p style="margin-top:14px">Execution des tests en cours...</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { runAllTests } from './tests/test-editor-ib.js';
+
+        const output = document.getElementById('output');
+        const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+        try {
+            const { passCount, failCount, results } = await runAllTests();
+            const totalCount = passCount + failCount;
+
+            // ================================================================
+            // 1. RESUME GLOBAL
+            // ================================================================
+            let html = `<div class="global-summary">
+                <div class="global-summary__card card--pass">${passCount}<small>PASS</small></div>
+                <div class="global-summary__card card--fail">${failCount}<small>FAIL</small></div>
+                <div class="global-summary__card card--total">${totalCount}<small>assertions</small></div>
+            </div>`;
+
+            // ================================================================
+            // 2. TABS
+            // ================================================================
+            html += `<div class="tabs">
+                <div class="tab tab--active" data-tab="by-group">Par groupe</div>
+                <div class="tab" data-tab="by-detail">Detail complet</div>
+                <div class="tab" data-tab="by-ai">Prompt IA</div>
+            </div>`;
+
+            // ================================================================
+            // TAB 1 : SYNTHESE PAR GROUPE
+            // ================================================================
+            const groupMap = new Map();
+            for (const r of results) {
+                if (!groupMap.has(r.group)) groupMap.set(r.group, { pass: 0, fail: 0, results: [] });
+                const g = groupMap.get(r.group);
+                if (r.status === 'PASS') g.pass++; else g.fail++;
+                g.results.push(r);
+            }
+
+            html += `<div class="tab-panel tab-panel--active" id="panel-by-group">`;
+            html += `<table class="summary-table">
+                <thead><tr><th>Groupe</th><th>Pass</th><th>Fail</th><th>Total</th></tr></thead><tbody>`;
+
+            for (const [grp, info] of groupMap) {
+                const total = info.pass + info.fail;
+                const cls = info.fail > 0 ? 'cell--fail' : 'cell--pass';
+                html += `<tr>
+                    <td><strong>${esc(grp)}</strong></td>
+                    <td class="cell--pass">${info.pass}</td>
+                    <td class="${info.fail > 0 ? 'cell--fail' : ''}">${info.fail}</td>
+                    <td class="${cls}"><strong>${info.pass}/${total}</strong></td>
+                </tr>`;
+            }
+            html += `</tbody></table></div>`;
+
+            // ================================================================
+            // TAB 2 : DETAIL COMPLET (avec filtres)
+            // ================================================================
+            html += `<div class="tab-panel" id="panel-by-detail">`;
+
+            html += `<div class="filter-bar">
+                <span class="filter-bar__label">Statut :</span>
+                <button class="filter-btn filter-btn--active" data-filter-status="all">Tous</button>
+                <button class="filter-btn" data-filter-status="FAIL">Echecs uniquement</button>
+                <button class="filter-btn" data-filter-status="PASS">Succes</button>
+            </div>`;
+
+            html += `<div class="results">`;
+            for (const r of results) {
+                const badgeClass = r.status === 'PASS' ? 'pass' : 'fail';
+                const rowClass = r.status === 'FAIL' ? ' result--fail' : '';
+                html += `<div class="result${rowClass}" data-status="${r.status}" data-group="${esc(r.group)}">
+                    <span class="result__badge result__badge--${badgeClass}">${r.status}</span>
+                    <span class="result__group">${esc(r.group)}</span>
+                    <span>${esc(r.message)}</span>
+                </div>`;
+            }
+            html += `</div></div>`;
+
+            // ================================================================
+            // TAB 3 : PROMPT IA
+            // ================================================================
+            html += `<div class="tab-panel" id="panel-by-ai">`;
+            const failures = results.filter(r => r.status === 'FAIL');
+
+            if (failures.length === 0) {
+                html += `<div class="ai-prompt-section">
+                    <div class="ai-prompt-none">Aucune erreur ! Tous les tests passent. Rien a corriger.</div>
+                </div>`;
+            } else {
+                const failByGroup = new Map();
+                for (const f of failures) {
+                    if (!failByGroup.has(f.group)) failByGroup.set(f.group, []);
+                    failByGroup.get(f.group).push(f);
+                }
+
+                let prompt = '';
+                prompt += `Je travaille sur Caramel, une application web qui genere des activites H5P.\n`;
+                prompt += `Les tests e2e de l'editeur CoursePresentation montrent ${failures.length} echecs sur ${totalCount} assertions.\n\n`;
+                prompt += `Fichiers sources concernes :\n`;
+                prompt += `- js/editor/content-detector.js (schemas, normalisation, denormalisation)\n`;
+                prompt += `- js/editor/array-manager.js (showWhen, rendu des items)\n`;
+                prompt += `- js/editor/field-renderers.js (color, select, dynamicObject)\n\n`;
+                prompt += `=== ECHECS PAR GROUPE ===\n\n`;
+
+                for (const [grp, grpFailures] of failByGroup) {
+                    prompt += `--- ${grp} : ${grpFailures.length} echec(s) ---\n`;
+                    for (const f of grpFailures) {
+                        prompt += `  - ${f.message}\n`;
+                    }
+                    prompt += `\n`;
+                }
+
+                prompt += `=== CE QUE JE TE DEMANDE ===\n\n`;
+                prompt += `Analyse ces echecs et propose des corrections dans les fichiers sources concernes.\n`;
+
+                html += `<div class="ai-prompt-section">
+                    <details open>
+                        <summary><span class="ai-icon">&#129302;</span> Prompt pour corriger les erreurs (${failures.length} echecs)</summary>
+                        <div class="ai-prompt-box"><button class="ai-prompt-copy">Copier le prompt</button>${esc(prompt)}</div>
+                    </details>
+                </div>`;
+            }
+
+            html += `</div>`;
+
+            output.innerHTML = html;
+
+            // ================================================================
+            // INTERACTIVITE
+            // ================================================================
+
+            // Tabs
+            output.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    output.querySelectorAll('.tab').forEach(t => t.classList.remove('tab--active'));
+                    output.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('tab-panel--active'));
+                    tab.classList.add('tab--active');
+                    const panel = output.querySelector(`#panel-${tab.dataset.tab}`);
+                    if (panel) panel.classList.add('tab-panel--active');
+                });
+            });
+
+            // Filtres statut
+            output.querySelectorAll('[data-filter-status]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    output.querySelectorAll('[data-filter-status]').forEach(b => b.classList.remove('filter-btn--active'));
+                    btn.classList.add('filter-btn--active');
+                    const filter = btn.dataset.filterStatus;
+                    output.querySelectorAll('.result').forEach(row => {
+                        row.style.display = (filter === 'all' || row.dataset.status === filter) ? '' : 'none';
+                    });
+                });
+            });
+
+            // Copier prompt IA
+            const aiCopyBtn = output.querySelector('.ai-prompt-copy');
+            if (aiCopyBtn) {
+                aiCopyBtn.addEventListener('click', () => {
+                    const box = output.querySelector('.ai-prompt-box');
+                    if (box) {
+                        const clone = box.cloneNode(true);
+                        clone.querySelector('button')?.remove();
+                        navigator.clipboard.writeText(clone.textContent).then(() => {
+                            aiCopyBtn.textContent = 'Copie !';
+                            setTimeout(() => aiCopyBtn.textContent = 'Copier le prompt', 1500);
+                        });
+                    }
+                });
+            }
+
+        } catch (e) {
+            output.innerHTML = `<div style="color:red;padding:24px;background:#fff;border-radius:10px;">
+                <h2>Erreur fatale</h2>
+                <pre style="margin-top:12px;white-space:pre-wrap;">${e.message}\n${e.stack}</pre>
+            </div>`;
+        }
+    </script>
+</body>
+</html>

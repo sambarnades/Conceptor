@@ -1,0 +1,209 @@
+{
+  "title": "Le Climat en Mutation",
+  "cover": {
+    "description": "Comprendre les mécanismes du changement climatique et ses impacts sur notre planète pour agir de manière responsable."
+  },
+  "chapters": [
+    {
+      "title": "1. L'effet de serre naturel",
+      "content": [
+        {
+          "type": "text",
+          "text": "Pour comprendre le changement climatique, il faut d'abord distinguer le **climat** de la **météo**. La météo décrit l'état de l'atmosphère à un instant T (soleil, pluie), tandis que le climat est la moyenne des conditions météorologiques sur une longue période (au moins 30 ans).\n\nNotre planète est protégée d'une couche de gaz appelée **gaz à effet de serre (GES)**. Sans cet **effet de serre naturel**, la Terre serait un globe de glace à -18°C. Grâce à lui, la température moyenne est d'environ 15°C, permettant la vie."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.TrueFalse 1.8",
+          "question": "L'effet de serre est un phénomène totalement naturel qui rend la vie possible sur Terre.",
+          "correct": "true",
+          "feedbackOnCorrect": "Exact ! Sans les gaz à effet de serre, la Terre serait trop froide.",
+          "feedbackOnWrong": "C'est faux. L'effet de serre est naturel et indispensable pour maintenir des températures habitables."
+        }
+      ]
+    },
+    {
+      "title": "2. Le réchauffement accéléré",
+      "content": [
+        {
+          "type": "text",
+          "text": "Depuis la Révolution industrielle (fin du 18e siècle), les activités humaines ont modifié l'équilibre. En brûlant des **énergies fossiles** (charbon, pétrole, gaz) et en détruisant les **forêts** (déforestation), nous rejetons d'énormes quantités de CO₂ dans l'atmosphère.\n\nCela renforce l'effet de serre : l'atmosphère retient trop de chaleur. C'est le **réchauffement climatique** actuel. La température moyenne mondiale a déjà augmenté d'environ 1,1°C à 1,2°C par rapport à l'ère préindustrielle."
+        },
+        {
+          "type": "table",
+          "tableStyle": "default",
+          "table": {
+            "headers": [
+              "Source de GES",
+              "Activité humaine associée",
+              "Impact principal"
+            ],
+            "rows": [
+              [
+                "Dioxyde de carbone (CO₂)",
+                "Transport, Industrie, Chauffage",
+                "Piège de chaleur dans l'atmosphère"
+              ],
+              [
+                "Méthane (CH₄)",
+                "Élevage, Décharges, Fuites de gaz",
+                "Puissant gaz à effet de serre"
+              ],
+              [
+                "Protoxyde d'azote (N₂O)",
+                "Agriculture intensive (engrais)",
+                "Pollution de l'air et des sols"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.DragText 1.10",
+          "taskDescription": "Glissez les mots manquants pour compléter le texte sur les causes du réchauffement.",
+          "textField": "La combustion des *énergies fossiles* et la *déforestation* sont les principales causes du réchauffement climatique actuel.",
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Revoyez les causes principales du réchauffement."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Bon début, mais il y a des erreurs."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Très bien ! Vous maîtrisez les causes."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent ! Réponse parfaite."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "3. Les conséquences visibles",
+      "content": [
+        {
+          "type": "text",
+          "text": "Les conséquences sont déjà observables partout dans le monde. On parle d'**impacts** environnementaux, sociaux et économiques.\n\nVoici les trois impacts majeurs que vous devez connaître en 5e :\n1. **La fonte des glaces** : Les glaciers de montagne et les calottes polaires fondent, ce qui fait monter le niveau des océans.\n2. **L'augmentation du niveau de la mer** : Elle menace les zones côtières et les îles (érosion, submersion).\n3. **Les événements extrêmes** : Les canicules, sécheresses et inondations deviennent plus fréquentes et plus intenses."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.MultiChoice 1.16",
+          "question": "Parmi les propositions suivantes, lesquelles sont des conséquences directes du changement climatique ?",
+          "answers": [
+            {
+              "text": "La fonte des glaciers et des calottes polaires.",
+              "correct": true
+            },
+            {
+              "text": "L'augmentation du niveau de la mer.",
+              "correct": true
+            },
+            {
+              "text": "La diminution de la biodiversité (disparition d'espèces).",
+              "correct": true
+            },
+            {
+              "text": "Une augmentation de la couche d'ozone protectrice.",
+              "correct": false,
+              "tipsAndFeedback": {
+                "tip": "Attention, la couche d'ozone et l'effet de serre sont deux phénomènes différents."
+              }
+            }
+          ],
+          "behaviour": {
+            "singleAnswer": false
+          },
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relisez la partie sur les impacts pour mieux comprendre."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Il manque quelques éléments clés."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Pas mal, mais attention aux confusions."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent ! Vous avez bien identifié les conséquences."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "4. Synthèse : Agir pour le climat",
+      "content": [
+        {
+          "type": "text",
+          "text": "Pour limiter le réchauffement, il faut agir sur deux fronts : l'**atténuation** et l'**adaptation**.\n\nL'**atténuation** consiste à réduire les émissions de gaz à effet de serre (ex : utiliser les transports en commun, économiser l'électricité, manger moins de viande). L'**adaptation** consiste à se préparer aux changements inévitables (ex : construire des digues, planter des arbres en ville pour rafraîchir l'air).\n\nChaque geste compte, des actions individuelles aux accords internationaux comme l'Accord de Paris."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Summary 1.10",
+          "intro": "Cliquez sur les affirmations correctes pour construire le bilan de ce chapitre.",
+          "summaries": [
+            {
+              "summary": [
+                "Le réchauffement climatique est d'origine humaine.",
+                "Le réchauffement climatique est un cycle naturel sans influence humaine.",
+                "Le réchauffement climatique est uniquement dû aux volcans."
+              ]
+            },
+            {
+              "summary": [
+                "L'augmentation du niveau de la mer menace les zones côtières.",
+                "Le niveau de la mer est en train de baisser rapidement.",
+                "Le niveau de la mer n'a aucune conséquence sur les villes."
+              ]
+            },
+            {
+              "summary": [
+                "Les gaz à effet de serre piègent la chaleur dans l'atmosphère.",
+                "Les gaz à effet de serre refroidissent la Terre.",
+                "Les gaz à effet de serre n'existent pas dans l'atmosphère."
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Il faut revoir les bases du chapitre."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Des confusions persistent sur les causes et effets."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail, vous commencez à y voir clair."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Parfait ! Vous maîtrisez les enjeux climatiques."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

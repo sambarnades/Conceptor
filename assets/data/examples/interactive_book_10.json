@@ -1,0 +1,273 @@
+{
+  "title": "Voyages et souvenirs : le present perfect",
+  "baseColor": "#2a5c8a",
+  "cover": {
+    "description": "Découvrez comment parler de vos voyages avec le present perfect ! Un livre interactif pour apprendre à raconter vos aventures passées et enrichir votre vocabulaire."
+  },
+  "chapters": [
+    {
+      "title": "Découvrir le present perfect",
+      "content": [
+        {
+          "type": "text",
+          "text": "**Le present perfect** est un temps très utile en anglais pour parler d'expériences passées **sans préciser quand** elles ont eu lieu. On l'utilise aussi pour dire qu'une action a commencé dans le passé et continue maintenant.\n\nLa structure est :\n- **Sujet + have/has + participe passé**\n\nExemples :\n- *I **have visited** Paris.* (J'ai visité Paris - expérience passée)\n- *She **has lived** here for 5 years.* (Elle vit ici depuis 5 ans - action qui continue)"
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.MultiChoice 1.16",
+          "question": "Quand utilise-t-on le present perfect ?",
+          "answers": [
+            {
+              "text": "Pour parler d'expériences passées sans préciser quand",
+              "correct": true,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Exactement ! C'est la principale utilisation."
+              }
+            },
+            {
+              "text": "Pour parler d'actions futures",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Non, le present perfect ne s'utilise pas pour le futur."
+              }
+            },
+            {
+              "text": "Pour décrire une action précise qui vient de se terminer",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Non, pour ça on utilise le prétérit simple."
+              }
+            },
+            {
+              "text": "Pour parler d'actions qui vont se passer demain",
+              "correct": false
+            }
+          ],
+          "behaviour": {
+            "singleAnswer": true
+          },
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relisez bien la partie sur les utilisations du present perfect."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Presque ! Revoyez les exemples donnés."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail, continuez comme ça !"
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Parfait ! Vous maîtrisez bien ce temps."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Vocabulaire : les moyens de transport",
+      "content": [
+        {
+          "type": "text",
+          "text": "Quand on parle de voyage, on utilise souvent des mots pour décrire **comment** on se déplace. Voici les principaux moyens de transport en anglais :\n\n| Français | Anglais |\n|----------|----------|\n| Avion | *plane* |\n| Train | *train* |\n| Bus | *bus* |\n| Voiture | *car* |\n| Vélo | *bike* |\n| Bateau | *boat* |"
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.MarkTheWords 1.11",
+          "taskDescription": "Surlignez tous les moyens de transport dans ce texte.",
+          "textField": "Pour aller à Londres, j'ai pris *l'avion*. Ensuite, j'ai voyagé en *train* jusqu'à Paris. Pour visiter la ville, j'ai loué une *voiture*. Le soir, j'ai fait une promenade à *vélo* sur les quais de la Seine.",
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relisez la liste des moyens de transport."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Presque ! Vérifiez chaque mot surligné."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail, continuez !"
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent ! Tous les mots sont correctement identifiés."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Construire des phrases avec le present perfect",
+      "content": [
+        {
+          "type": "text",
+          "text": "Pour raconter vos voyages, combinez le present perfect avec le vocabulaire des transports. Voici des exemples :\n\n- *I **have flown** to New York **by plane**.* (J'ai pris l'avion pour New York)\n- *She **has traveled** to Italy **by train**.* (Elle a voyagé en Italie en train)\n- *We **have driven** across France **by car**.* (Nous avons traversé la France en voiture)\n\n**Astuce** : Après *by*, on utilise toujours le nom du moyen de transport sans article (*by plane*, *by car*)."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Blanks 1.14",
+          "taskDescription": "Complétez les phrases avec la bonne forme du present perfect et le moyen de transport.",
+          "questions": [
+            "They *have traveled* to Spain *by train*.",
+            "I *have flown* to Tokyo *by plane*.",
+            "She *has driven* to the mountains *by car*."
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relisez la structure du present perfect et la liste des transports."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Presque ! Vérifiez chaque trou."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail, continuez !"
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Parfait ! Toutes les phrases sont correctes."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Exprimer la durée avec for et since",
+      "content": [
+        {
+          "type": "text",
+          "text": "Pour parler de la durée d'un voyage ou d'un séjour, on utilise :\n\n- **for** + durée (*for two weeks*, *for three months*) → pour une période\n- **since** + point dans le temps (*since 2020*, *since last summer*) → pour un moment précis\n\nExemples :\n- *I **have stayed** in Rome **for two weeks**.* (Je suis resté à Rome pendant deux semaines)\n- *She **has lived** here **since 2019**.* (Elle vit ici depuis 2019)"
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.SingleChoiceSet 1.11",
+          "choices": [
+            {
+              "question": "Quelle phrase est correcte ?",
+              "answers": [
+                "*I have visited* London *for* three days.",
+                "I have visited London since three days."
+              ]
+            },
+            {
+              "question": "Quelle phrase est correcte ?",
+              "answers": [
+                "*She has traveled* to Japan *since* last year.",
+                "She has traveled to Japan for last year."
+              ]
+            },
+            {
+              "question": "Quelle phrase est correcte ?",
+              "answers": [
+                "*We have stayed* in Paris *for* a week.",
+                "We have stayed in Paris since a week."
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relisez bien l'utilisation de for et since."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Presque ! Faites attention à la préposition."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail, continuez !"
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent ! Vous maîtrisez parfaitement for et since."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Synthèse : raconter un voyage",
+      "content": [
+        {
+          "type": "text",
+          "text": "Maintenant, vous savez raconter un voyage en utilisant :\n1. Le **present perfect** pour parler de vos expériences\n2. Le vocabulaire des **moyens de transport**\n3. **For** et **since** pour exprimer la durée\n\nVoici un exemple complet :\n*I **have traveled** to Greece *by plane* *for* two weeks. I **have visited** many islands *since* last summer.*"
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Summary 1.10",
+          "intro": "Choisissez les affirmations correctes pour décrire un voyage.",
+          "summaries": [
+            {
+              "summary": [
+                "*I have been* to Berlin *by train*.",
+                "I have been to Berlin by train.",
+                "I been to Berlin by train."
+              ],
+              "tip": "N'oubliez pas l'auxiliaire have/has !"
+            },
+            {
+              "summary": [
+                "*She has stayed* in New York *for* three months.",
+                "She has stayed in New York since three months.",
+                "She stayed in New York for three months."
+              ],
+              "tip": "For s'utilise pour une durée, since pour un point dans le temps."
+            },
+            {
+              "summary": [
+                "*We have flown* to Australia *by plane*.",
+                "We have flew to Australia by plane.",
+                "We flown to Australia by plane."
+              ],
+              "tip": "Le participe passé de fly est flown."
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relisez bien tous les points de la leçon."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Presque ! Vérifiez chaque phrase."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail, continuez !"
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent ! Vous êtes prêt à raconter vos voyages en anglais."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

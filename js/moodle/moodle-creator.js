@@ -249,7 +249,10 @@ export async function handlePageCreation(jsonInput, exportType) {
 
         if (exportType === 'html') {
             const fileName = `page-elea-${dateString}.html`;
-            const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+            // Fichier .html autonome : aucun chrome Moodle/Éléa au-dessus du
+            // contenu → le héros porte le <h1> de la page (accessibilité).
+            const standaloneHtml = await generateHtmlFromBlocks(jsonData, { heroLevel: 1 });
+            const htmlBlob = new Blob([standaloneHtml], { type: 'text/html' });
 
             // Ajouter à la liste des notifications (silent pour la modale de résultat)
             const notificationId = addNotification({
@@ -303,6 +306,11 @@ export async function handlePageCreation(jsonInput, exportType) {
             const fileName = `page-caramel-${dateString}-${lang}.mbz`;
             const mbzBlob = new Blob([gzData], { type: 'application/octet-stream' });
 
+            // Preview de la modale : pas de chrome Éléa autour → le héros porte
+            // le <h1>. (Le contenu du .mbz, lui, reste sans niveau-1 : Éléa pose
+            // déjà le <h1> de l'activité au-dessus — voir generateHtmlFromBlocks.)
+            const previewHtmlPage = await generateHtmlFromBlocks(jsonData, { heroLevel: 1 });
+
             // Ajouter à la liste des notifications (silent pour la modale de résultat)
             const notifPage = {
                 type: 'mbz',
@@ -314,7 +322,7 @@ export async function handlePageCreation(jsonInput, exportType) {
                 status: 'success',
                 jsonData: jsonData,
                 originalJsonData: originalJsonDataPage,
-                previewHtml: htmlContent,
+                previewHtml: previewHtmlPage,
                 silent: true
             };
             if (_debugRawJsonPage) notifPage._debugRawJson = _debugRawJsonPage;
@@ -340,12 +348,30 @@ export async function handlePageCreation(jsonInput, exportType) {
             userMessage: translations[errorInfo.userMessageKey] || errorInfo.userMessageKey,
             technicalMessage: errorInfo.technicalMessage
         });
+
+        // Signaler la fin en erreur (arrête l'animation "marmite" côté UI)
+        document.dispatchEvent(new CustomEvent('generation:error', {
+            detail: { moduleKey: 'Page' }
+        }));
     }
 }
 
-export async function generateHtmlFromBlocks(jsonData) {
+export async function generateHtmlFromBlocks(jsonData, opts = {}) {
     debugLog('moodle-creator', "Début de generateHtmlFromBlocks.");
     const theme = getTheme(jsonData.theme);
+
+    // Niveaux de titre (accessibilité RGAA 9.1) : la hiérarchie doit suivre la
+    // structure du contenu et s'emboîter sous le <h1> que Moodle/Éléa posent déjà
+    // (nom de l'activité pour une Page, titre de chapitre pour un Livre).
+    //   headingBase = niveau des titres de blocs (2 par défaut → h2 sous le h1 Éléa)
+    //   +1 / +2     = sous-éléments / sous-sous-éléments (h3, h4… clampés à h6)
+    //   heroLevel   = niveau du titre du héros (#01) en contexte standalone
+    //                 (preview modale, fichier .html autonome). null = bandeau
+    //                 décoratif : Éléa/Moodle fournissent déjà le <h1> de
+    //                 l'activité, on évite ainsi le doublon de niveau-1.
+    const headingBase = opts.headingBase || 2;
+    const heroLevel = (opts.heroLevel === undefined) ? null : opts.heroLevel;
+    const headingTag = (depth = 0) => 'h' + Math.min(6, Math.max(1, headingBase + depth));
 
     // 1. Créer le wrapper document
     const finalHtmlContainer = document.createElement('div');
@@ -358,9 +384,17 @@ export async function generateHtmlFromBlocks(jsonData) {
     // 2. Préparer le contexte partagé pour les renderers du thème
     // Fonction de traduction pour les éléments structurels des thèmes
     const t = (key, fallback) => (translations && translations[key]) || fallback;
-    const ctx = { formatTextToHtml, escapeHtmlTags, jsonData, t };
+    const ctx = { formatTextToHtml, escapeHtmlTags, jsonData, t, headingTag, heroLevel };
 
-    // 3. Rendre chaque bloc via le thème
+    // 3. Marqueur de thème en tête de content (rétro-ingénierie Sucrerie).
+    // Le wrapper <div role="document"> n'est PAS sérialisé (innerHTML seulement)
+    // et son `style` portait la signature CSS du thème : on l'expose explicitement
+    // via un commentaire HTML, ignoré par Moodle/Éléa.
+    finalHtmlContainer.appendChild(
+        document.createComment(' caramel-page-theme:' + (theme.id || '') + ' ')
+    );
+
+    // 4. Rendre chaque bloc via le thème
     (jsonData.blocks || []).forEach((block, index) => {
         debugLog('moodle-creator', `Traitement du bloc ${index + 1}: type = ${block.type}`);
         const render = theme.renderers[block.type];
@@ -368,6 +402,22 @@ export async function generateHtmlFromBlocks(jsonData) {
             try {
                 const element = render(block.data, ctx);
                 if (element) {
+                    // Marqueur de type pour permettre la rétro-ingénierie côté
+                    // Sucrerie (parser HTML → blocs typés). Moodle ignore les
+                    // commentaires HTML — non destructif, non visible côté élève.
+                    finalHtmlContainer.appendChild(document.createComment(' caramel-block:' + block.type + ' '));
+                    // Cas particulier : le hero header écrase data.title par le titre
+                    // racine de l'activité (jsonData.title) pour l'affichage. On
+                    // préserve le data.title original via un attribut data-* afin
+                    // que la rétro-ingénierie puisse le restituer.
+                    if (
+                        block.type === '#01_hero_header'
+                        && block.data
+                        && typeof block.data.title === 'string'
+                        && block.data.title !== (jsonData.title || '')
+                    ) {
+                        element.setAttribute('data-block-title', block.data.title);
+                    }
                     finalHtmlContainer.appendChild(element);
                 }
             } catch (e) {
@@ -386,7 +436,7 @@ export async function generateHtmlFromBlocks(jsonData) {
             const links = Array.from(navEl.querySelectorAll('a[href^="#"]'))
                 .map(a => ({ id: (a.getAttribute('href') || '').replace(/^#/, '').trim(), text: (a.textContent || '').trim() }))
                 .filter(x => x.id);
-            const allH2 = Array.from(finalHtmlContainer.querySelectorAll('h2'));
+            const allH2 = Array.from(finalHtmlContainer.querySelectorAll(headingTag(0)));
             const titledAfter = allH2
                 .filter(h2 => (navEl.compareDocumentPosition(h2) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0)
                 .map(h2 => ({ h2, container: h2.parentElement }));
@@ -454,7 +504,12 @@ export async function buildChaptersXml(chapters, theme) {
             theme: theme
         };
         debugLog('moodle-creator', `Livre - rendu chapitre ${i + 1}: "${chapter.title}" (${(chapter.blocks || []).length} blocs)`);
-        const chapterHtml = await generateHtmlFromBlocks(chapterJsonData);
+        // Chaque chapitre est une page Moodle book autonome. Moodle rend au-dessus
+        // du contenu (vérifié sur Éléa, mod_book-chapter) : <h1> (chrome) + <h2>
+        // (région) = nom du livre, puis <h3> = titre du chapitre. Notre contenu est
+        // enfant de ce <h3> → blocs en h4 (headingBase 4), sous-éléments en h5.
+        // Héros décoratif (le titre de chapitre est déjà posé par Moodle).
+        const chapterHtml = await generateHtmlFromBlocks(chapterJsonData, { headingBase: 4 });
 
         // ID séquentiel pour le chapitre (interne au livre)
         const chapterId = 100 + i;
@@ -554,27 +609,47 @@ export async function buildLivrePreviewHtml(jsonData) {
     const chapterContents = [];
     for (let i = 0; i < chapters.length; i++) {
         const ch = chapters[i];
+        // Preview fidèle au book Moodle : titre du livre = <h1>, titre de chapitre
+        // = <h2> (livre-sim__chapter-title), blocs du chapitre en h3 (headingBase
+        // 3). L'imbrication des sous-chapitres est navigationnelle (TOC indentée +
+        // numérotation), pas un saut de niveau de titre.
         const html = await generateHtmlFromBlocks({
             title: ch.title,
             blocks: ch.blocks || [],
             theme: theme
-        });
+        }, { headingBase: 3 });
         chapterContents.push(html);
     }
 
-    // Construction des inputs radio (un par chapitre, premier coché)
-    const radios = chapters.map((_, i) =>
-        `<input type="radio" name="${simId}-nav" id="${simId}-ch-${i}"${i === 0 ? ' checked' : ''}>`
-    ).join('\n        ');
+    // Styles inline par élément : pas de bloc <style> (il serait supprimé par la
+    // sanitisation RICH_HTML au point d'injection, cf. livre.js) ni de radios CSS.
+    // La bascule entre chapitres est pilotée en JS par livre.js (contexte de confiance).
+    const S = {
+        wrapper: "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; color:#1f2937; background:#fff; text-align:left;",
+        layout: 'display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:2rem; padding:2rem 2.5rem 2.5rem; max-width:1100px; margin:0 auto; text-align:left;',
+        main: 'min-width:0; text-align:left;',
+        title: 'font-size:1.85rem; font-weight:700; color:#1f2937; margin:0 0 0.75rem 0; line-height:1.25; text-align:left;',
+        intro: 'color:#6b7280; font-size:0.95rem; line-height:1.55; margin:0 0 1.25rem 0; padding-bottom:1.25rem; border-bottom:1px solid #e5e7eb; text-align:left;',
+        chapTitle: 'font-size:1.5rem; font-weight:700; color:#1e3a8a; margin:1.25rem 0 1rem; text-align:left;',
+        chapBody: 'color:#1f2937; line-height:1.65; text-align:left;',
+        toc: 'background:#fafaf7; border:1px solid #e5e7eb; border-radius:10px; padding:1.25rem 1.4rem; font-size:0.88rem; align-self:start; position:sticky; top:2rem; max-height:calc(100vh - 4rem); overflow-y:auto; box-shadow:0 1px 3px rgba(0,0,0,0.04); text-align:left;',
+        tocTitle: 'font-size:0.75rem; font-weight:700; color:#4b5563; text-transform:uppercase; letter-spacing:0.06em; margin:0 0 1rem 0; padding-bottom:0.6rem; border-bottom:2px solid #e5e7eb; text-align:left;',
+        ol: 'list-style:none; padding:0; margin:0; text-align:left;',
+        sublist: 'list-style:none; padding-left:1.1rem; margin:0.25rem 0 0.35rem 0.4rem; border-left:2px solid #c7d2fe;',
+        li: 'margin:0.2rem 0; text-align:left;',
+        link: 'display:block; cursor:pointer; color:#4338ca; font-weight:500; padding:0.4rem 0.6rem; border-radius:5px; border-left:3px solid transparent; line-height:1.4; text-align:left;',
+        linkSub: 'display:block; cursor:pointer; color:#6366f1; font-weight:500; font-size:0.9em; padding:0.4rem 0.6rem 0.4rem 0.5rem; border-radius:5px; border-left:3px solid transparent; line-height:1.4; text-align:left;'
+    };
 
-    // Construction des sections de chapitres (navigation toujours via TOC seule)
+    // Sections de chapitres : le 1er visible, les autres masqués (display inline).
+    // livre.js bascule l'affichage au clic dans la table des matières.
     const chapterSections = chapters.map((ch, i) => `
-        <article class="livre-sim__chapter" data-ch="${i}">
-            <h2 class="livre-sim__chapter-title">${escapeHtmlTags(titlePrefixes[i] + (ch.title || `Chapitre ${i + 1}`))}</h2>
-            <div class="livre-sim__chapter-body">${chapterContents[i]}</div>
+        <article class="livre-sim__chapter" data-ch="${i}" style="${i === 0 ? '' : 'display:none; '}text-align:left;">
+            <h2 class="livre-sim__chapter-title" style="${S.chapTitle}">${escapeHtmlTags(titlePrefixes[i] + (ch.title || `Chapitre ${i + 1}`))}</h2>
+            <div class="livre-sim__chapter-body" style="${S.chapBody}">${chapterContents[i]}</div>
         </article>`).join('');
 
-    // Construction de la table des matières (HTML valide : <ol> imbriqué dans le <li> parent)
+    // Table des matières (HTML valide : <ol> imbriqué dans le <li> parent).
     // On regroupe d'abord les sous-chapitres consécutifs sous leur chapitre parent.
     const tocTree = [];
     chapters.forEach((ch, i) => {
@@ -590,184 +665,26 @@ export async function buildLivrePreviewHtml(jsonData) {
 
     const renderTocNode = (node) => {
         const childrenHtml = node.children.length
-            ? `<ol class="livre-sim__toc-sublist">${node.children.map(renderTocNode).join('')}</ol>`
+            ? `<ol class="livre-sim__toc-sublist" style="${S.sublist}">${node.children.map(renderTocNode).join('')}</ol>`
             : '';
         const cls = node.subchapter ? 'livre-sim__toc-item livre-sim__toc-item--sub' : 'livre-sim__toc-item';
-        return `<li class="${cls}"><label for="${simId}-ch-${node.i}">${node.labelText}</label>${childrenHtml}</li>`;
+        // Lien cliquable = <span> (les <button>/<label> seraient retirés par RICH_HTML) ;
+        // livre.js lui ajoute role=button, tabindex et les handlers après injection.
+        return `<li class="${cls}" style="${S.li}"><span class="livre-sim__toc-link" data-ch-target="${node.i}" style="${node.subchapter ? S.linkSub : S.link}">${node.labelText}</span>${childrenHtml}</li>`;
     };
     const tocItems = tocTree.map(renderTocNode);
 
-    // Génération des règles CSS pour afficher le bon chapitre selon le radio coché
-    const visibilityRules = chapters.map((_, i) => `
-        #${simId}-ch-${i}:checked ~ .livre-sim__layout .livre-sim__chapter[data-ch="${i}"] { display: block; }
-        #${simId}-ch-${i}:checked ~ .livre-sim__layout .livre-sim__toc label[for="${simId}-ch-${i}"] { background:#eaf3ff; color:#0050b3; font-weight:600; border-left-color:#1677ff; }
-    `).join('');
-
-    return `<div class="livre-sim" id="${simId}">
-    <style>
-        #${simId}.livre-sim {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            color: #1f2937;
-            background: #fff;
-            padding: 0;
-            margin: 0;
-            text-align: left;
-        }
-        #${simId} input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
-        #${simId} .livre-sim__layout {
-            display: grid;
-            gap: 2rem;
-            padding: 2rem 2.5rem 2.5rem;
-            max-width: 1100px;
-            margin: 0 auto;
-            text-align: left;
-        }
-        /* TOC sidebar à droite (2 colonnes) */
-        #${simId} .livre-sim__layout {
-            grid-template-columns: minmax(0, 1fr) 300px;
-        }
-        #${simId} .livre-sim__main { min-width: 0; text-align: left; }
-        #${simId} .livre-sim__title {
-            font-size: 1.85rem;
-            font-weight: 700;
-            color: #1f2937;
-            margin: 0 0 0.75rem 0;
-            line-height: 1.25;
-            text-align: left;
-        }
-        #${simId} .livre-sim__intro {
-            color: #6b7280;
-            font-size: 0.95rem;
-            line-height: 1.55;
-            margin: 0 0 1.25rem 0;
-            padding-bottom: 1.25rem;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: left;
-        }
-        #${simId} .livre-sim__chapter { display: none; text-align: left; }
-        #${simId} .livre-sim__chapter-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1e3a8a;
-            margin: 1.25rem 0 1rem;
-            text-align: left;
-        }
-        #${simId} .livre-sim__chapter-body {
-            color: #1f2937;
-            line-height: 1.65;
-            text-align: left;
-        }
-        #${simId} .livre-sim__chapter-body > div[role="document"] {
-            background: transparent !important;
-            padding: 0 !important;
-            text-align: left !important;
-        }
-
-        /* === Table des matières (colonne droite) === */
-        #${simId} .livre-sim__toc {
-            background: #fafaf7;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 1.25rem 1.4rem;
-            font-size: 0.88rem;
-            align-self: start;
-            position: sticky;
-            /* top doit être aligné sur padding-top du .livre-sim__layout (2rem)
-               pour éviter le « rebond » au moment où le sticky s'active. */
-            top: 2rem;
-            max-height: calc(100vh - 4rem);
-            overflow-y: auto;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-            text-align: left;
-        }
-        #${simId} .livre-sim__toc-title {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #4b5563;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin: 0 0 1rem 0;
-            padding-bottom: 0.6rem;
-            border-bottom: 2px solid #e5e7eb;
-            text-align: left;
-        }
-        #${simId} .livre-sim__toc ol {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            text-align: left;
-        }
-        #${simId} .livre-sim__toc-sublist {
-            padding-left: 1.1rem !important;
-            margin: 0.25rem 0 0.35rem 0.4rem !important;
-            border-left: 2px solid #c7d2fe;
-        }
-        #${simId} .livre-sim__toc li {
-            margin: 0.2rem 0;
-            text-align: left;
-        }
-        #${simId} .livre-sim__toc-item--sub > label {
-            font-size: 0.9em;
-            color: #6366f1;
-            padding-left: 0.5rem;
-        }
-        #${simId} .livre-sim__toc-item--sub > label:hover {
-            color: #4338ca;
-        }
-        #${simId} .livre-sim__toc label {
-            display: block;
-            cursor: pointer;
-            color: #4338ca;
-            font-weight: 500;
-            padding: 0.4rem 0.6rem;
-            border-radius: 5px;
-            border-left: 3px solid transparent;
-            line-height: 1.4;
-            transition: background 0.15s, color 0.15s, border-color 0.15s;
-            text-align: left;
-        }
-        #${simId} .livre-sim__toc label:hover {
-            background: #f3f0ff;
-            color: #1e3a8a;
-        }
-        ${visibilityRules}
-
-        /* === Bouton plein écran sticky en haut à droite === */
-        #${simId} .livre-sim__fs-anchor {
-            position: sticky;
-            top: 0;
-            float: right;
-            width: 0;
-            height: 0;
-            z-index: 50;
-        }
-        #${simId} .livre-sim__fs-anchor > * {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-        }
-
-        @media (max-width: 800px) {
-            #${simId} .livre-sim__layout {
-                grid-template-columns: 1fr;
-                padding: 1.25rem;
-            }
-            #${simId} .livre-sim__toc {
-                position: static;
-                max-height: none;
-            }
-        }
-    </style>
-    ${radios}
-    <div class="livre-sim__layout">
-        <main class="livre-sim__main">
-            <h1 class="livre-sim__title">${escapeHtmlTags(jsonData.title || '')}</h1>
-            ${jsonData.intro ? `<div class="livre-sim__intro">${jsonData.intro}</div>` : ''}
+    // Pas de bloc <style> (supprimé par RICH_HTML) : styles inline + nav JS (livre.js).
+    return `<div class="livre-sim" id="${simId}" style="${S.wrapper}">
+    <div class="livre-sim__layout" style="${S.layout}">
+        <div class="livre-sim__main" style="${S.main}">
+            <h1 class="livre-sim__title" style="${S.title}">${escapeHtmlTags(jsonData.title || '')}</h1>
+            ${jsonData.intro ? `<div class="livre-sim__intro" style="${S.intro}">${jsonData.intro}</div>` : ''}
             ${chapterSections}
-        </main>
-        <aside class="livre-sim__toc" aria-label="${escapeHtmlTags(tocLabel)}">
-            <h3 class="livre-sim__toc-title">${escapeHtmlTags(tocLabel)}</h3>
-            <ol>${tocItems.join('')}</ol>
+        </div>
+        <aside class="livre-sim__toc" style="${S.toc}" aria-label="${escapeHtmlTags(tocLabel)}">
+            <h3 class="livre-sim__toc-title" style="${S.tocTitle}">${escapeHtmlTags(tocLabel)}</h3>
+            <ol class="livre-sim__toc-root" style="${S.ol}">${tocItems.join('')}</ol>
         </aside>
     </div>
 </div>`;
@@ -887,6 +804,11 @@ export async function handleLivreCreation(jsonInput, exportType = 'mbz') {
             userMessage: translations[errorInfo.userMessageKey] || errorInfo.userMessageKey,
             technicalMessage: errorInfo.technicalMessage
         });
+
+        // Signaler la fin en erreur (arrête l'animation "marmite" côté UI)
+        document.dispatchEvent(new CustomEvent('generation:error', {
+            detail: { moduleKey: 'Livre' }
+        }));
     }
 }
 
@@ -990,6 +912,11 @@ export async function handleMillionnaireCreation(jsonInput) {
             userMessage: translations[errorInfo.userMessageKey] || errorInfo.userMessageKey,
             technicalMessage: errorInfo.technicalMessage
         });
+
+        // Signaler la fin en erreur (arrête l'animation "marmite" côté UI)
+        document.dispatchEvent(new CustomEvent('generation:error', {
+            detail: { moduleKey: 'Millionnaire' }
+        }));
     }
 }
 
@@ -1135,6 +1062,11 @@ export async function handleAppariementCreation(jsonInput) {
             userMessage: translations[errorInfo.userMessageKey] || errorInfo.userMessageKey,
             technicalMessage: errorInfo.technicalMessage
         });
+
+        // Signaler la fin en erreur (arrête l'animation "marmite" côté UI)
+        document.dispatchEvent(new CustomEvent('generation:error', {
+            detail: { moduleKey: 'Appariement' }
+        }));
     }
 }
 
@@ -1277,6 +1209,11 @@ export async function handleQCMCreation(jsonInput) {
             userMessage: translations[errorInfo.userMessageKey] || errorInfo.userMessageKey,
             technicalMessage: errorInfo.technicalMessage
         });
+
+        // Signaler la fin en erreur (arrête l'animation "marmite" côté UI)
+        document.dispatchEvent(new CustomEvent('generation:error', {
+            detail: { moduleKey: 'QCM' }
+        }));
     }
 }
 
@@ -1383,6 +1320,11 @@ export function handleGlossaireXmlCreation(jsonInput) {
             userMessage: translations[errorInfo.userMessageKey] || errorInfo.userMessageKey,
             technicalMessage: errorInfo.technicalMessage
         });
+
+        // Signaler la fin en erreur (arrête l'animation "marmite" côté UI)
+        document.dispatchEvent(new CustomEvent('generation:error', {
+            detail: { moduleKey: 'glossaireXml' }
+        }));
     }
 }
 
@@ -1446,6 +1388,11 @@ export function handleTestXmlCreation(jsonInput) {
             userMessage: translations[errorInfo.userMessageKey] || errorInfo.userMessageKey,
             technicalMessage: errorInfo.technicalMessage
         });
+
+        // Signaler la fin en erreur (arrête l'animation "marmite" côté UI)
+        document.dispatchEvent(new CustomEvent('generation:error', {
+            detail: { moduleKey: 'test_elea' }
+        }));
     }
 }
 
@@ -1567,5 +1514,10 @@ export async function handleDevoirCreation(jsonInput) {
             userMessage: translations[errorInfo.userMessageKey] || errorInfo.userMessageKey,
             technicalMessage: errorInfo.technicalMessage
         });
+
+        // Signaler la fin en erreur (arrête l'animation "marmite" côté UI)
+        document.dispatchEvent(new CustomEvent('generation:error', {
+            detail: { moduleKey: 'Devoir' }
+        }));
     }
 }

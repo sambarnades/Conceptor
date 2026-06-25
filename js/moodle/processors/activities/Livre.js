@@ -14,6 +14,7 @@
 import { TEMPLATES } from '../shared/templates.js';
 import { buildCourseBackup } from '../shared/moodle-backup.js';
 import { replacePlaceholders } from '../shared/placeholder.js';
+import { parseXml, tagText, escapeXml, rewriteTag } from '../../mbz-utils.js';
 
 /**
  * Métadonnées du module Livre.
@@ -238,10 +239,93 @@ export function buildFiles(data, options = {}) {
     return files;
 }
 
+// =========================================================================
+// INVERSE : .mbz extrait → JSON éditeur
+// =========================================================================
+
+/**
+ * Lit l'archive d'un Livre (book) déjà extraite par `mbz-utils.extractMbz`.
+ * Chaque chapter est représenté avec un seul block HTML pour cohérence avec
+ * la convention de l'éditeur.
+ *
+ * @param {Object<string, Uint8Array>} files
+ * @param {string} activityDir
+ * @returns {{
+ *   title: string,
+ *   chapters: Array<{ title: string, subchapter: boolean, blocks: Array<{type:'html', html:string}> }>,
+ *   _context: { moduleId, activityId, activityContextId }
+ * }}
+ */
+export function parseFiles(files, activityDir) {
+    const xmlPath  = `${activityDir}/book.xml`;
+    const xmlBytes = files[xmlPath];
+    if (!xmlBytes) throw new Error(`livre_missing_xml:${xmlPath}`);
+
+    const xml = new TextDecoder('utf-8').decode(xmlBytes);
+    const doc = parseXml(xml);
+
+    const activityNode = doc.querySelector('activity');
+    if (!doc.querySelector('activity > book')) {
+        throw new Error('livre_invalid_xml_no_root');
+    }
+
+    const chapters = Array.from(doc.querySelectorAll('book > chapters > chapter')).map(c => ({
+        title:      c.querySelector('title')?.textContent ?? '',
+        subchapter: c.querySelector('subchapter')?.textContent === '1',
+        blocks:     [{ type: 'html', html: c.querySelector('content')?.textContent ?? '' }]
+    }));
+
+    return {
+        title: tagText(doc, 'book > name'),
+        chapters,
+        _context: {
+            moduleId:          activityNode?.getAttribute('moduleid')  ?? '',
+            activityId:        activityNode?.getAttribute('id')        ?? '',
+            activityContextId: activityNode?.getAttribute('contextid') ?? ''
+        }
+    };
+}
+
+/**
+ * Patch in-place : `name` + reconstruction de `<chapters>` (chaque chapter
+ * entièrement régénéré).
+ */
+export function serializeFiles(data, files, activityDir) {
+    const xmlPath  = `${activityDir}/book.xml`;
+    const xmlBytes = files[xmlPath];
+    if (!xmlBytes) throw new Error(`livre_missing_xml:${xmlPath}`);
+
+    let xml = new TextDecoder('utf-8').decode(xmlBytes);
+    xml = rewriteTag(xml, 'name', escapeXml(data.title || ''));
+
+    const timestamp = Math.floor(Date.now() / 1000);
+    const chaptersXml = (data.chapters || []).map((c, i) => {
+        const html = (c.blocks || [])
+            .map(b => b.type === 'html' ? (b.html || '') : '')
+            .join('\n');
+        return `      <chapter id="${100 + i}">
+        <pagenum>${i + 1}</pagenum>
+        <subchapter>${c.subchapter ? 1 : 0}</subchapter>
+        <title>${escapeXml(c.title || `Chapitre ${i + 1}`)}</title>
+        <content>${escapeXml(html)}</content>
+        <contentformat>1</contentformat>
+        <hidden>0</hidden>
+        <timemodified>${timestamp}</timemodified>
+        <importsrc></importsrc>
+      </chapter>`;
+    }).join('\n');
+
+    xml = rewriteTag(xml, 'chapters', '\n' + chaptersXml + '\n    ');
+
+    files[xmlPath] = window.fflate.strToU8(xml);
+}
+
 /**
  * Export par défaut du processeur.
  */
 export default {
     metadata,
-    buildFiles
+    buildFiles,
+    parseFiles,
+    serializeFiles
 };

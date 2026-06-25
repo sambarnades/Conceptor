@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harness — Mode prof/élève + complétion simulateurs</title>
+
+  <!-- Icônes (FontAwesome utilisé par les simulateurs Caramel) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- CSS simulateurs -->
+  <link rel="stylesheet" href="../css/simulators/shared.css">
+  <link rel="stylesheet" href="../css/simulators/qcm.css">
+  <link rel="stylesheet" href="../css/simulators/millionnaire.css">
+  <link rel="stylesheet" href="../css/simulators/elea-test.css">
+
+  <style>
+    body { font-family: -apple-system, system-ui, sans-serif; margin: 0; padding: 20px; background: #f5f5f7; color: #1d1d1f; }
+    h1 { font-size: 1.3rem; }
+    .intro { background: #fff; border-left: 4px solid #5b2e90; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 1100px; }
+    .panel { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 1px 6px rgba(0,0,0,0.08); }
+    .panel h2 { font-size: 1.05rem; margin: 0 0 10px; }
+    .controls { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+    .controls button { font: inherit; font-size: 0.82rem; font-weight: 600; padding: 6px 12px; border-radius: 8px; border: 1px solid #d1d1d6; background: #fff; cursor: pointer; }
+    .controls button.on { background: #5b2e90; color: #fff; border-color: #5b2e90; }
+    .badge { font-size: 0.75rem; padding: 2px 8px; border-radius: 999px; background: #eee; }
+    #log { position: fixed; right: 16px; bottom: 16px; width: 340px; max-height: 45vh; overflow:auto; background: #1d1d1f; color: #e6e6e6; font: 12px/1.5 ui-monospace, monospace; border-radius: 10px; padding: 12px; box-shadow: 0 6px 24px rgba(0,0,0,0.3); }
+    #log h3 { margin: 0 0 8px; font-size: 12px; color: #9b7fd4; }
+    #log .ev { color: #7ee787; }
+    #log .none { color: #ff9b9b; }
+    .hint { font-size: 0.8rem; color: #666; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Harness — Mode prof / élève &amp; événement <code>simulator:completed</code></h1>
+  <div class="intro">
+    <strong>Quoi tester :</strong>
+    <ul style="margin:6px 0 0; padding-left:18px;">
+      <li><strong>Mode prof</strong> : navigation libre (flèches), atteindre l'écran de fin sans tout réussir, pas de game-over (Millionnaire). <em>Aucun</em> événement de complétion.</li>
+      <li><strong>Mode élève</strong> : comportement strict ; à l'écran de fin, un <code>simulator:completed</code> avec <code>scorePct</code> apparaît dans le journal (en bas à droite). C'est ce signal qui débloque la collection côté Sucrerie.</li>
+      <li><strong>Plein écran</strong> : le bouton ⛶ interne doit fonctionner ici (hors modale) — c'était le bug à corriger.</li>
+    </ul>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div id="log"><h3>Journal — simulator:completed</h3><div id="log-body"><span class="none">(aucun événement pour l'instant)</span></div></div>
+
+  <script type="module">
+    import { renderSimulator, isScorableSimulator } from '../js/simulators/index.js';
+
+    const logBody = document.getElementById('log-body');
+    let logged = false;
+    function log(titleKey, detail) {
+      if (!logged) { logBody.innerHTML = ''; logged = true; }
+      const line = document.createElement('div');
+      line.className = 'ev';
+      line.textContent = `✓ ${titleKey} → scorePct=${detail.scorePct}`;
+      logBody.prepend(line);
+    }
+
+    const SAMPLES = {
+      'elea_qcm_name': {
+        title: 'QCM de démonstration',
+        questions: [
+          { text: 'Capitale de la France ?', answers: [
+            { text: 'Paris', correct: true }, { text: 'Lyon', correct: false }, { text: 'Marseille', correct: false } ] },
+          { text: '2 + 2 = ?', answers: [
+            { text: '3', correct: false }, { text: '4', correct: true }, { text: '5', correct: false } ] },
+          { text: 'Couleur du ciel par beau temps ?', answers: [
+            { text: 'Vert', correct: false }, { text: 'Bleu', correct: true } ] },
+        ],
+      },
+      'elea_millionnaire_name': {
+        title: 'Millionnaire de démonstration',
+        questions: Array.from({ length: 6 }, (_, i) => ({
+          question: `Question ${i + 1} : quelle est la bonne réponse ?`,
+          goodanswer: `Bonne réponse ${i + 1}`,
+          badanswer: [`Faux A${i + 1}`, `Faux B${i + 1}`, `Faux C${i + 1}`],
+        })),
+      },
+      'elea_test_xml_name': {
+        bank_name: 'Test de démonstration',
+        bank_description: 'Quelques questions de types variés.',
+        questions: [
+          { type: 'multichoice', content: { name: 'Q1', questiontext: 'Choisissez la bonne réponse', single: 'true',
+            answers: [ { text: 'Bonne', fraction: 1 }, { text: 'Mauvaise', fraction: 0 } ] } },
+          { type: 'truefalse', content: { name: 'Q2', questiontext: 'Le soleil est une étoile.', answer: { value: true, feedback_true: 'Oui', feedback_false: 'Non' } } },
+        ],
+      },
+    };
+
+    const grid = document.getElementById('grid');
+
+    for (const [titleKey, data] of Object.entries(SAMPLES)) {
+      const panel = document.createElement('div');
+      panel.className = 'panel';
+      const h2 = document.createElement('h2');
+      h2.innerHTML = `${titleKey} <span class="badge">${isScorableSimulator(titleKey) ? 'scorable' : 'consultatif'}</span>`;
+      panel.appendChild(h2);
+
+      const toolbar = document.createElement('div');
+      toolbar.className = 'sim-toolbar';
+      const mount = document.createElement('div');
+      mount.className = 'sim-mount';
+      panel.appendChild(toolbar);
+      panel.appendChild(mount);
+      grid.appendChild(panel);
+
+      // Le mount capte l'événement (bubbles) — comme le ferait #embed-root.
+      mount.addEventListener('simulator:completed', (e) => log(titleKey, e.detail));
+
+      let mode = 'teacher';
+      // Toggle local au harness (prof/élève) — sert juste à exercer les 2 modes
+      // pour tester le contrat (navigation + événement simulator:completed).
+      const draw = () => {
+        toolbar.innerHTML = '';
+        const bar = document.createElement('div');
+        bar.className = 'sim-mode-toggle';
+        [['teacher', 'Mode prof'], ['student', 'Mode élève']].forEach(([m, label]) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'sim-mode-toggle__btn' + (m === mode ? ' is-active' : '');
+          b.textContent = label;
+          b.addEventListener('click', async () => {
+            if (m === mode) return;
+            mode = m; draw();
+            await renderSimulator(titleKey, mount, data, null, { mode: m });
+          });
+          bar.appendChild(b);
+        });
+        toolbar.appendChild(bar);
+      };
+      await renderSimulator(titleKey, mount, data, null, { mode });
+      draw();
+
+      const hint = document.createElement('div');
+      hint.className = 'hint';
+      hint.textContent = 'Passe en « Mode élève », termine l\'activité : un événement doit apparaître dans le journal. En « Mode prof », aucun événement.';
+      panel.appendChild(hint);
+    }
+  </script>
+</body>
+</html>

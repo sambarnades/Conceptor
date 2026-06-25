@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <title>Tests XML standalone — Glossaire & Banque de questions</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #f0f2f5; padding: 24px; color: #1a1a2e;
+        }
+        h1 { font-size: 1.5rem; margin-bottom: 4px; }
+        .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 16px; }
+
+        .summary { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+        .summary__card {
+            padding: 12px 22px; border-radius: 10px; font-weight: 700;
+            font-size: 1.3rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            min-width: 120px; text-align: center;
+        }
+        .summary__card small {
+            display: block; font-size: 0.7rem; font-weight: 400;
+            opacity: 0.8; margin-top: 2px;
+        }
+        .card--pass  { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; }
+        .card--fail  { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: #721c24; }
+        .card--total { background: linear-gradient(135deg, #d1ecf1, #bee5eb); color: #0c5460; }
+
+        #test-results {
+            background: #fff; border-radius: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden;
+        }
+        .type-block { border-bottom: 4px solid #e9ecef; }
+        .type-block:last-child { border-bottom: none; }
+        .type-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 20px; background: #f8f9fa;
+            font-weight: 700; font-size: 1rem;
+        }
+        .type-header__count { font-size: 0.78rem; color: #495057; font-weight: 500; }
+        .type-header--pass { background: #f3fff7; }
+        .type-header--fail { background: #fff5f5; }
+
+        .step {
+            padding: 8px 20px 8px 56px; border-bottom: 1px solid #f1f3f5;
+            font-size: 0.86rem; line-height: 1.5;
+        }
+        .step:last-child { border-bottom: none; }
+        .step__status {
+            display: inline-block; padding: 1px 8px; border-radius: 4px;
+            font-size: 0.7rem; font-weight: 700;
+            margin-right: 8px; margin-left: -36px;
+            min-width: 36px; text-align: center;
+        }
+        .step__status--pass { background: #d4edda; color: #155724; }
+        .step__status--fail { background: #f8d7da; color: #721c24; }
+        .step__diagnostic {
+            display: block; font-size: 0.76rem; color: #666;
+            margin-top: 4px; font-family: ui-monospace, monospace;
+            word-break: break-word; max-width: 800px;
+        }
+        .step__group {
+            background: #fff; padding: 6px 20px;
+            font-size: 0.74rem; font-weight: 700;
+            color: #6c757d; text-transform: uppercase; letter-spacing: 0.04em;
+            border-top: 1px solid #f1f3f5;
+        }
+    </style>
+</head>
+<body>
+    <h1>XML standalone — Glossaire & Banque de questions</h1>
+    <p class="subtitle">
+        Vérifie la détection automatique du format (<code>detectStandaloneXmlType</code>),
+        le parsing inverse (<code>parseStandaloneXml</code>), la reconstruction
+        (<code>serializeStandaloneXml</code>) et le round-trip JSON pour les
+        formats XML hors MBZ exportés par Caramel.
+    </p>
+
+    <div class="summary">
+        <div class="summary__card card--total"><span id="count-total">…</span><small>Total</small></div>
+        <div class="summary__card card--pass"><span id="count-pass">…</span><small>OK</small></div>
+        <div class="summary__card card--fail"><span id="count-fail">…</span><small>KO</small></div>
+    </div>
+
+    <div id="test-results">Chargement…</div>
+
+    <script type="module" src="tests/test-xml-standalone.js"></script>
+</body>
+</html>

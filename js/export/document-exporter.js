@@ -10,7 +10,9 @@ import { parseLatex, containsLatex, splitTextAndMath } from './latex-parser.js';
 import { latexToMathML } from './latex-to-mathml.js';
 import { getStarMath, getSymbolMlType, BLACKBOARD, ACCENTS as ACCENT_CATALOG } from './math-catalog.js';
 import { translations, currentLang, t } from '../core/translation.js';
+import { debugLog } from '../core/utils.js';
 import { loadDocumentExportLibs, loadPDFFonts } from '../core/lib-loader.js';
+import { convertToPdfViaGotenberg } from './pdf-via-gotenberg.js';
 import {
     fetchImageAsDataURL,
     calculateDimensions,
@@ -21,6 +23,7 @@ import {
     MAX_WIDTH_PDF,
     MAX_WIDTH_ODT
 } from '../renderers/image-utils.js';
+import { generateQRDataURL } from '../renderers/qr-utils.js';
 
 /**
  * Configuration pour l'export des cartes imprimables (Flashcards/Dialog Cards)
@@ -89,6 +92,25 @@ async function prepareImages(formattedContent) {
     if (!formattedContent.sections) return;
 
     const promises = [];
+
+    // 0. Sections QR (vidéo interactive) : génère le PNG du QR depuis le texte/URL avant
+    //    de le traiter comme une image autonome. La section porte `qrText` (pas `url`) → elle
+    //    n'est pas captée par la passe 1 ci-dessous tant que l'imageData n'est pas posée.
+    formattedContent.sections
+        .filter(section => section.type === 'image' && section.qrText && !section.imageData)
+        .forEach(section => {
+            promises.push(
+                generateQRDataURL(section.qrText)
+                    .then(dataURL => {
+                        if (!dataURL) { section.imageError = true; section.errorText = section.qrText; return; }
+                        return prepareImageData(dataURL).then(result => {
+                            if (result.error) { section.imageError = true; section.errorText = result.errorText; }
+                            else { section.imageData = result; }
+                        });
+                    })
+                    .catch(() => { section.imageError = true; section.errorText = section.qrText; })
+            );
+        });
 
     // 1. Images autonomes (sections de type 'image')
     formattedContent.sections
@@ -226,29 +248,49 @@ function loadImageDimensions(dataURL) {
 }
 
 /**
+ * Construit le Blob DOCX à partir des données JSON.
+ * Helper interne partagé entre exportToDOCX et la voie Gotenberg de exportToPDF.
+ * keepLatex:true → le LaTeX \(...\) est conservé pour conversion OMML.
+ * @param {string} moduleKey
+ * @param {Object} jsonData
+ * @returns {Promise<Blob>}
+ */
+async function buildDocxBlob(moduleKey, jsonData) {
+    await loadLibraries();
+    if (!window.docx) {
+        throw new Error('La bibliothèque docx n\'a pas pu être chargée');
+    }
+    const formattedContent = await formatContentForDocument(moduleKey, jsonData, { keepLatex: true });
+    await prepareImages(formattedContent);
+    const doc = createDOCXDocument(formattedContent);
+    return await window.docx.Packer.toBlob(doc);
+}
+
+/**
+ * Construit le Blob ODT à partir des données JSON.
+ * Helper interne partagé entre exportToODT et la voie Gotenberg de exportToPDF.
+ * keepLatex:true → le LaTeX \(...\) est conservé pour conversion MathML/StarMath.
+ * @param {string} moduleKey
+ * @param {Object} jsonData
+ * @returns {Promise<Blob>}
+ */
+async function buildOdtBlob(moduleKey, jsonData) {
+    await loadLibraries();
+    const formattedContent = await formatContentForDocument(moduleKey, jsonData, { keepLatex: true });
+    await prepareImages(formattedContent);
+    return await createODTDocument(formattedContent);
+}
+
+/**
  * Exporte un contenu au format DOCX
  * @param {string} moduleKey - La clé du module
  * @param {Object} jsonData - Les données JSON du contenu
  */
 export async function exportToDOCX(moduleKey, jsonData) {
     try {
-        await loadLibraries();
-
-        if (!window.docx) {
-            throw new Error('La bibliothèque docx n\'a pas pu être chargée');
-        }
-
-        // keepLatex: true → le LaTeX \(...\) est conservé pour conversion OMML
-        const formattedContent = await formatContentForDocument(moduleKey, jsonData, { keepLatex: true });
-        await prepareImages(formattedContent);
-        const doc = createDOCXDocument(formattedContent);
-
-        // Générer le fichier
-        const blob = await window.docx.Packer.toBlob(doc);
+        const blob = await buildDocxBlob(moduleKey, jsonData);
         const fileName = generateFileName(moduleKey, 'docx');
-
         downloadBlob(blob, fileName);
-
     } catch (error) {
         console.error('Erreur lors de l\'export DOCX:', error);
         alert(t('export_error') || 'Erreur lors de l\'export DOCX');
@@ -256,11 +298,39 @@ export async function exportToDOCX(moduleKey, jsonData) {
 }
 
 /**
- * Exporte un contenu au format PDF
+ * Exporte un contenu au format PDF.
+ *
+ * Stratégie : tente d'abord la voie Gotenberg (ODT → /forms/libreoffice/convert
+ * via le proxy n8n). On envoie l'ODT — et non le DOCX — car c'est le format
+ * natif de LibreOffice : ses formules MathML/StarMath sont rendues par le
+ * paquet libreoffice-math de l'image Gotenberg, et le PDF partage ainsi la même
+ * source que l'ODT éditable téléchargé. En cas d'échec quelconque (réseau,
+ * timeout, body trop gros, 5xx…), retombe automatiquement et silencieusement
+ * sur la voie jsPDF historique. L'utilisateur obtient toujours un PDF.
+ *
  * @param {string} moduleKey - La clé du module
  * @param {Object} jsonData - Les données JSON du contenu
  */
 export async function exportToPDF(moduleKey, jsonData) {
+    try {
+        const odtBlob = await buildOdtBlob(moduleKey, jsonData);
+        const pdfBlob = await convertToPdfViaGotenberg(odtBlob, 'document.odt');
+        const fileName = generateFileName(moduleKey, 'pdf');
+        downloadBlob(pdfBlob, fileName);
+        debugLog('PDF', `Export Gotenberg réussi (${moduleKey})`);
+    } catch (error) {
+        debugLog('PDF', `Voie Gotenberg indisponible (${moduleKey}), fallback jsPDF :`, error.message);
+        return exportToPDFLegacy(moduleKey, jsonData);
+    }
+}
+
+/**
+ * Exporte un contenu au format PDF via la voie jsPDF historique (fallback).
+ * Conservée comme filet de sécurité au cas où Gotenberg serait indisponible.
+ * @param {string} moduleKey - La clé du module
+ * @param {Object} jsonData - Les données JSON du contenu
+ */
+export async function exportToPDFLegacy(moduleKey, jsonData) {
     try {
         await loadLibraries();
 
@@ -289,12 +359,7 @@ export async function exportToPDF(moduleKey, jsonData) {
  */
 export async function exportToODT(moduleKey, jsonData) {
     try {
-        await loadLibraries();
-
-        // keepLatex: true → le LaTeX \(...\) est conservé pour conversion MathML
-        const formattedContent = await formatContentForDocument(moduleKey, jsonData, { keepLatex: true });
-        await prepareImages(formattedContent);
-        const odtBlob = await createODTDocument(formattedContent);
+        const odtBlob = await buildOdtBlob(moduleKey, jsonData);
 
         const fileName = generateFileName(moduleKey, 'odt');
         downloadBlob(odtBlob, fileName);
@@ -877,8 +942,8 @@ function createDOCXImage(section) {
     const dims = calculateDimensions(
         section.imageData.width,
         section.imageData.height,
-        section.fillWidth ? 9999 : DOCX_FIXED_HEIGHT,
-        MAX_WIDTH_DOCX
+        section.imgSizeMm || (section.fillWidth ? 9999 : DOCX_FIXED_HEIGHT),
+        section.imgSizeMm || MAX_WIDTH_DOCX
     );
 
     const MM_TO_PX = 3.78;
@@ -1060,6 +1125,12 @@ function createDOCXTable(section) {
 
     // Configuration par style
     const styleConfig = {
+        default: {
+            headerBg: 'E8E8E8', headerColor: '000000', headerBold: true,
+            borderColor: '000000', borderSize: 4,
+            cellMinHeight: 340,
+            cellAlign: 'left', cellBold: false, cellColor: '000000'
+        },
         workGrid: {
             headerBg: '0066CC', headerColor: 'FFFFFF', headerBold: true,
             borderColor: '0066CC', borderSize: 6,
@@ -1726,8 +1797,8 @@ function addPDFImage(doc, section, y, margin, maxWidth, pageHeight) {
     const dims = calculateDimensions(
         section.imageData.width,
         section.imageData.height,
-        section.fillWidth ? 9999 : PDF_FIXED_HEIGHT,
-        maxWidth
+        section.imgSizeMm || (section.fillWidth ? 9999 : PDF_FIXED_HEIGHT),
+        section.imgSizeMm || maxWidth
     );
 
     // Vérifier si l'image tient sur la page
@@ -2257,7 +2328,7 @@ async function createODTDocument(formattedContent) {
                     zip.file(imageName, section.imageData.blob);
                     manifestXml += `  <manifest:file-entry manifest:full-path="${imageName}" manifest:media-type="${section.imageData.mimeType}"/>\n`;
 
-                    const dims = calculateDimensions(section.imageData.width, section.imageData.height, section.fillWidth ? 9999 : ODT_FIXED_HEIGHT, MAX_WIDTH_ODT);
+                    const dims = calculateDimensions(section.imageData.width, section.imageData.height, section.imgSizeMm || (section.fillWidth ? 9999 : ODT_FIXED_HEIGHT), section.imgSizeMm || MAX_WIDTH_ODT);
 
                     contentXml += `      <text:p text:style-name="ImagePara">
         <draw:frame draw:name="Image${imageCounter}" text:anchor-type="as-char" svg:width="${dims.width}mm" svg:height="${dims.height}mm" draw:z-index="0">
@@ -2551,8 +2622,11 @@ async function createODTDocument(formattedContent) {
  * Inclut les styles pour les 4 variantes : workGrid, cutoutLabels, correctionGrid, recapTable.
  */
 function getODTTableAutoStyles() {
+    // NB : ne PAS envelopper dans <office:automatic-styles> — le résultat est inséré
+    // à l'intérieur du bloc <office:automatic-styles> unique de createODTDocument.
+    // Un <office:automatic-styles> imbriqué est invalide en ODF et fait que LibreOffice
+    // ignore silencieusement ces styles → cellules de tableau sans bordure/fond.
     return `
-  <office:automatic-styles>
     <!-- Styles de table génériques -->
     <style:style style:name="GenTable" style:family="table">
       <style:table-properties style:width="16cm" table:align="margins"/>
@@ -2650,12 +2724,26 @@ function getODTTableAutoStyles() {
       <style:text-properties style:font-name="Arial" fo:font-size="11pt" fo:color="#333333"/>
     </style:style>
 
+    <!-- default : tableau de contenu générique (bordures noires nettes, lisibles dans LibreOffice) -->
+    <style:style style:name="DEF_HeaderCell" style:family="table-cell">
+      <style:table-cell-properties fo:padding="0.15cm" fo:border="0.03cm solid #000000" fo:background-color="#E8E8E8"/>
+    </style:style>
+    <style:style style:name="DEF_Cell" style:family="table-cell">
+      <style:table-cell-properties fo:padding="0.15cm" fo:border="0.03cm solid #000000"/>
+    </style:style>
+    <style:style style:name="DEF_HeaderText" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="center"/>
+      <style:text-properties style:font-name="Arial" fo:font-size="12pt" fo:font-weight="bold" fo:color="#000000"/>
+    </style:style>
+    <style:style style:name="DEF_CellText" style:family="paragraph">
+      <style:text-properties style:font-name="Arial" fo:font-size="12pt" fo:color="#000000"/>
+    </style:style>
+
     <!-- Texte centré générique pour cellules -->
     <style:style style:name="CellCenter" style:family="paragraph">
       <style:paragraph-properties fo:text-align="center"/>
       <style:text-properties style:font-name="Arial" fo:font-size="12pt"/>
-    </style:style>
-  </office:automatic-styles>`;
+    </style:style>`;
 }
 
 /**
@@ -2676,6 +2764,7 @@ function generateODTTable(section, tableId, zip, imageCounter, manifestXml) {
 
     // Préfixes de style selon le type
     const styleMap = {
+        default: { headerCell: 'DEF_HeaderCell', cell: 'DEF_Cell', row: '', headerText: 'DEF_HeaderText', cellText: 'DEF_CellText' },
         workGrid: { headerCell: 'WG_HeaderCell', cell: 'WG_Cell', row: 'WG_Row', headerText: 'WG_HeaderText', cellText: 'CellCenter' },
         cutoutLabels: { headerCell: 'CL_Cell', cell: 'CL_Cell', row: 'CL_Row', headerText: 'CL_CellText', cellText: 'CL_CellText' },
         correctionGrid: { headerCell: 'CG_HeaderCell', cell: 'CG_Cell', row: '', headerText: 'WG_HeaderText', cellText: 'CG_CellText' },

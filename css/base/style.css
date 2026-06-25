@@ -12,6 +12,9 @@
     --z-sidebar-overlay: 2000;
     --z-sidebar: 2050;
 
+    /* FAB flottant (Caramelia) — au-dessus du chrome de l'app, sous les modales */
+    --z-fab: 2500;
+
     /* Modales principales (une seule visible à la fois) */
     --z-modal: 3000;
 
@@ -442,6 +445,195 @@ body {
 .advanced-fields textarea {
     min-height: 60px;
     resize: vertical;
+}
+
+/* Champ avec icône Font Awesome en préfixe (qui, quoi, niveau, nombreQuestions).
+   Repris du pattern Amande pour symétrie visuelle entre les deux apps. */
+.input-icon-wrapper {
+    position: relative;
+}
+.input-icon-wrapper > i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #777;
+    pointer-events: none;
+    font-size: 0.85em;
+    opacity: 0.7;
+}
+/* Sélecteur explicitement plus spécifique que `.prompt-generator input[type="text"]`
+   (qui réinitialise `padding` en shorthand) — sinon le padding-left est écrasé.
+   `padding-right` réserve la place du bouton micro à droite. */
+.prompt-generator .input-icon-wrapper input[type="text"] {
+    padding-left: 38px;
+    padding-right: 40px;
+}
+.prompt-generator .input-icon-wrapper input[type="number"] {
+    padding-left: 38px;
+}
+
+/* ============================================================
+ * Bouton micro intégré dans les champs (qui, quoi, niveau).
+ * Réutilise les classes Caramelia (.caramelia-mic-btn, .caramelia-recording)
+ * pour bénéficier du même pipeline d'enregistrement (voice.js) et des
+ * mêmes animations (pulse rouge, vagues sur canvas). La classe additionnelle
+ * .pg-mic-btn n'ajoute QUE le repositionnement et l'ajustement de taille
+ * pour s'intégrer discrètement dans un input du prompt-generator.
+ * ============================================================ */
+.input-icon-wrapper .pg-mic-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    /* Taille plus discrète que le 32px par défaut de Caramelia. */
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+    /* Au-dessus de l'overlay d'enregistrement (qui couvre l'input) pour
+       rester cliquable et permettre l'arrêt de la dictée. */
+    z-index: 2;
+    /* Palette gris-bleu froid en harmonie avec le bleu d'accent #007AFF
+       du formulaire — le doré reste l'apanage du bouton micro de Caramelia. */
+    color: #5f7382;
+}
+/* Aucun scale sur hover/active/recording : le micro étant positionné exactement
+   sous le ✓ (tous deux à right:5px), il réapparaît sous le curseur après
+   transcription — un scale(1.05) en hover déclencherait alors un « rebond »
+   parasite. On verrouille donc le transform à translateY(-50%) dans tous les
+   états (nécessaire pour neutraliser le `transform: scale(1.05)` hérité de
+   `.caramelia-mic-btn:hover`). Le changement de fond suffit comme feedback. */
+.input-icon-wrapper .pg-mic-btn:hover,
+.input-icon-wrapper .pg-mic-btn:active,
+.input-icon-wrapper .pg-mic-btn.caramelia-mic-btn--recording,
+.input-icon-wrapper .pg-mic-btn.caramelia-mic-btn--recording:hover,
+.input-icon-wrapper .pg-mic-btn.caramelia-mic-btn--loading {
+    transform: translateY(-50%);
+}
+.input-icon-wrapper .pg-mic-btn:hover {
+    background: #eef2f6;
+    color: #3d5366;
+}
+/* État transcription en cours : spinner en gris-bleu (pas en doré).
+   On annule l'animation héritée de `.caramelia-mic-btn--loading` (qui applique
+   `transform: rotate(360deg)` sur le bouton et écrase donc notre
+   `translateY(-50%)`, ce qui faisait « tomber » le bouton). À la place, on fait
+   tourner l'icône `<i>` à l'intérieur : le bouton reste statique. */
+.input-icon-wrapper .pg-mic-btn.caramelia-mic-btn--loading {
+    background: #eef2f6;
+    color: #3d5366;
+    animation: none;
+}
+.input-icon-wrapper .pg-mic-btn.caramelia-mic-btn--loading > i {
+    display: inline-block;
+    animation: caramelia-mic-spin 1s linear infinite;
+}
+
+/* Pendant l'enregistrement : on masque l'icône de gauche et l'input
+   (visibility, pas display, pour préserver la place). L'overlay
+   .caramelia-recording, déjà mis en position:absolute;inset:0 par les styles
+   Caramelia, est rétréci à droite pour laisser le micro cliquable.
+   On reporte la bordure et le fond du champ sur le wrapper pour que le
+   contour reste visible — via box-shadow inset plutôt que border, pour
+   ne PAS modifier la hauteur du wrapper (border ajouterait 2px). */
+.input-icon-wrapper.caramelia-input-slot--recording {
+    box-shadow: inset 0 0 0 1px #dcdcdc;
+    border-radius: 12px;
+    background-color: #fcfcfc;
+}
+.input-icon-wrapper.caramelia-input-slot--recording > input,
+.input-icon-wrapper.caramelia-input-slot--recording > i {
+    visibility: hidden;
+    pointer-events: none;
+}
+/* IMPORTANT : .caramelia-recording (base Caramelia) déclare width:100%;height:100%
+   ce qui, combiné à position:absolute + inset, fait déborder l'overlay. On force
+   width/height à auto pour que `inset` contrôle seul les dimensions, et
+   box-sizing:border-box pour intégrer le padding latéral existant. */
+.input-icon-wrapper.caramelia-input-slot--recording > .caramelia-recording {
+    inset: 0 40px 0 14px; /* 40px : place du micro à droite ; 14px : marge gauche cohérente */
+    width: auto;
+    height: auto;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+/* Timer en gris-bleu (cohérent avec le micro), pas en doré Caramelia. */
+.input-icon-wrapper .caramelia-recording__time {
+    color: #3d5366;
+}
+
+/* ============================================================
+ * Boutons « ✕ annuler » et « ✓ valider » — pattern ChatGPT.
+ * Visibles UNIQUEMENT pendant l'enregistrement ; masquent le micro principal.
+ * ============================================================ */
+.input-icon-wrapper .pg-mic-cancel-btn,
+.input-icon-wrapper .pg-mic-confirm-btn {
+    display: none; /* caché par défaut, révélé en état recording */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: none;
+    padding: 0;
+    font-size: 11px;
+    line-height: 1;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    z-index: 3; /* au-dessus du canvas d'enregistrement */
+    transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+.input-icon-wrapper .pg-mic-cancel-btn {
+    right: 36px;
+    background: transparent;
+    color: #5f7382;
+}
+.input-icon-wrapper .pg-mic-confirm-btn {
+    right: 5px;
+    background: #3d5366;
+    color: #fff;
+}
+/* Pas de scale sur hover/active : on garde uniquement le feedback de fond. */
+.input-icon-wrapper .pg-mic-cancel-btn:hover {
+    background: #eef2f6;
+    color: #3d5366;
+}
+.input-icon-wrapper .pg-mic-confirm-btn:hover {
+    background: #2c3e50;
+}
+
+/* En enregistrement : on cache le micro principal et on révèle ✕/✓ */
+.input-icon-wrapper.caramelia-input-slot--recording .pg-mic-btn {
+    display: none;
+}
+.input-icon-wrapper.caramelia-input-slot--recording .pg-mic-cancel-btn,
+.input-icon-wrapper.caramelia-input-slot--recording .pg-mic-confirm-btn {
+    display: inline-flex;
+}
+
+/* L'overlay d'enregistrement doit maintenant laisser la place à DEUX boutons
+   à droite (✕ + ✓) au lieu d'un seul micro. ~67px total au lieu de 40px. */
+.input-icon-wrapper.caramelia-input-slot--recording > .caramelia-recording {
+    inset: 0 67px 0 14px;
+}
+
+/* Petite bulle d'erreur ephemère (permission refusée, transcription vide,
+   trop court, etc.) — disparaît automatiquement après quelques secondes. */
+.prompt-mic-error {
+    position: absolute;
+    left: 14px;
+    bottom: -22px;
+    font-size: 0.75em;
+    color: #C0392B;
+    pointer-events: none;
+    background: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    z-index: 3;
 }
 
 .prompt-generator input[type="text"],
@@ -898,6 +1090,8 @@ textarea::placeholder {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1.5rem;
+    /* Évite que la description longue ne colle au toggle Simple/Avancé */
     padding: 1rem 0;
     animation: fadeIn 0.3s ease-in-out;
     position: relative;
@@ -2097,6 +2291,8 @@ textarea::placeholder {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-shrink: 0;
+    /* Le toggle garde sa taille : la description se replie avant lui */
 }
 
 .switch-label {
@@ -2313,6 +2509,71 @@ input:checked+.slider:before {
     font-size: 1.2em;
     text-align: center;
     height: 50px;
+}
+
+/* Jauge de progression de la génération par lots (« plan + remplissage »).
+   Élément STABLE, distinct de #recipe-steps : la barre se remplit selon la proportion
+   de questions générées (démarre amorcée à ~10 %), avec une brillance qui balaie en
+   continu pour signaler l'activité même pendant qu'un lot cuit. */
+#caramel-batch-gauge {
+    margin-top: 4px;
+    width: 300px;
+    max-width: 80vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+#caramel-batch-gauge[hidden] {
+    display: none;
+}
+
+.caramel-gauge__track {
+    width: 100%;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(0, 0, 0, 0.45);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.caramel-gauge__fill {
+    position: relative;
+    height: 100%;
+    width: 10%;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #C97B30 0%, #E8A23D 50%, #F6C667 100%);
+    box-shadow: 0 0 8px rgba(246, 198, 103, 0.6);
+    overflow: hidden;
+    transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.caramel-gauge__fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+    transform: translateX(-100%);
+    animation: caramelGaugeShine 1.8s ease-in-out infinite;
+}
+
+@keyframes caramelGaugeShine {
+    0% { transform: translateX(-100%); }
+    60%, 100% { transform: translateX(260%); }
+}
+
+.caramel-gauge__label {
+    color: #fff;
+    font-size: 0.95em;
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .caramel-gauge__fill::after { animation: none; }
+    .caramel-gauge__fill { transition: none; }
 }
 
 /* Modale de résultat post-génération — harmonisée avec preview-modal */
@@ -2704,32 +2965,50 @@ input[type="file"] {
     color: #6e6e73;
 }
 
+/* Vide (état par défaut), il ne doit pas peser dans le centrage vertical du
+   bloc dépôt : sans cette règle, sa marge de 15px tire le contenu vers le haut
+   et laisse un vide sous « Choisissez un fichier ». La marge revient dès qu'un
+   statut de traitement s'affiche. */
+#ocr-status:empty {
+    margin-top: 0;
+}
+
+/* Bouton « Arrêter » : pilule discrète à bordure légère, sémantique stop
+   (vire au rouge au survol). Remplace l'ancien lien texte brut. */
 .ocr-cancel-btn {
     display: none;
     align-items: center;
-    gap: 3px;
-    margin-top: 6px;
-    padding: 2px 8px;
-    border: none;
-    border-radius: 8px;
-    background: transparent;
+    gap: 5px;
+    margin-top: 8px;
+    padding: 4px 12px;
+    border: 1px solid #e0e0e3;
+    border-radius: 999px;
+    background: #fff;
     color: #6e6e73;
     font-size: 11px;
-    line-height: 1;
+    font-weight: 500;
+    line-height: 1.4;
     cursor: pointer;
-    transition: color 0.2s, background-color 0.2s;
+    transition: color 0.2s, border-color 0.2s, background-color 0.2s;
 }
 
 .ocr-cancel-btn:hover {
-    color: #007AFF;
-    background: rgba(0, 122, 255, 0.08);
+    color: #d93025;
+    border-color: rgba(217, 48, 37, 0.4);
+    background: rgba(217, 48, 37, 0.06);
 }
 
-.drag-drop-content .ocr-cancel-btn i {
-    font-size: 11px;
-    line-height: 1;
+/* Spécificité renforcée : sans .drag-drop-area en tête, la règle générale
+   « .drag-drop-area .drag-drop-content i { margin-bottom: 8px } » (pictogramme
+   nuage) gagne au départage et surélève la croix. On neutralise toute marge et
+   on centre la croix sur la même médiane que le libellé. */
+.drag-drop-area .drag-drop-content .ocr-cancel-btn i {
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    line-height: 1.4;
     color: inherit;
-    margin-bottom: 0;
+    margin: 0;
 }
 
 #ocr-output-container {
@@ -2919,15 +3198,171 @@ input[type="file"] {
 }
 
 .drag-drop-area {
-    padding: 20px;
+    padding: 12px;
     text-align: center;
     background-color: #fcfcfc;
     transition: background-color 0.3s;
     border: 2px dashed #dcdcdc;
     border-radius: 12px;
+    /* Split vertical : le dépôt de fichiers occupe tout l'espace, la ligne
+       d'import par lien ne prend que sa hauteur naturelle (input). On répartit
+       l'espace existant sans augmenter la hauteur globale. */
     display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Bloc dépôt de fichiers : absorbe tout l'espace restant, contenu centré.
+   position:relative → ancre l'overlay de statut d'import. */
+.drag-drop-area .drag-drop-content {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+/* Statut d'import (« Décodage… », « Transcription… » + bouton Arrêter) :
+   affiché en OVERLAY absolu centré sur la zone de dépôt, hors du flux. Il ne
+   pousse donc plus le séparateur, la ligne URL ni le hint → aucun décalage de
+   mise en page (anti-FOUC) et le statut dispose de toute la largeur. Invisible
+   au repos (piloté par .is-busy depuis ocr.js). */
+.drag-drop-area .drag-drop-status {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px;
+    border-radius: 12px;
+    background: rgba(252, 252, 252, 0.94);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+}
+
+.drag-drop-area .drag-drop-status.is-busy {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Dans l'overlay, le statut n'a plus de marge de flux (il est centré). */
+.drag-drop-area .drag-drop-status #ocr-status {
+    margin-top: 0;
+}
+
+/* Resserre légèrement le bloc texte (icône + libellés) pour un meilleur centrage. */
+.drag-drop-area .drag-drop-content i {
+    margin-bottom: 8px;
+}
+
+.drag-drop-area .drag-drop-content p {
+    margin: 3px 0;
+}
+
+/* Séparateur « ou un lien web » : trait de chaque côté d'un libellé centré.
+   Clarifie que le lien est une SOURCE alternative au fichier (pas un 2e « ou »). */
+.drag-drop-area .url-import-divider {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 2px 4px;
+    color: #8a8a8e;
+    font-size: 0.78em;
+    text-transform: lowercase;
+}
+
+.drag-drop-area .url-import-divider::before,
+.drag-drop-area .url-import-divider::after {
+    content: "";
+    flex: 1 1 auto;
+    border-top: 1px dashed #dcdcdc;
+}
+
+/* Ligne d'import par lien : hauteur minimale (juste l'input). */
+.drag-drop-area .url-import-row {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Indication de délai, toujours visible : aucune apparition/disparition
+   dynamique → pas de décalage de mise en page (anti-FOUC). */
+.drag-drop-area .url-import-hint {
+    flex: 0 0 auto;
+    margin: 0;
+    text-align: center;
+    color: #a0a0a5;
+    font-size: 0.72em;
+    line-height: 1.3;
+}
+
+.url-import-icon {
+    flex: 0 0 auto;
+    color: #007AFF;
+    font-size: 0.95em;
+}
+
+.url-import-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 7px 10px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    font-size: 0.85em;
+    background-color: #fff;
+    transition: border-color 0.2s;
+}
+
+.url-import-input:focus {
+    outline: 2px solid #007AFF;
+    outline-offset: -2px;
+    border-color: #007AFF;
+}
+
+.url-import-input:disabled {
+    background-color: #f5f5f7;
+    cursor: default;
+}
+
+.url-import-btn {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #007AFF;
+    color: #fff;
+    font-weight: 500;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* Icône à largeur fixe : le swap +→spinner ne change pas la largeur du bouton
+   (anti-FOUC : le bouton ne bouge pas pendant le chargement). */
+.url-import-btn i {
+    width: 1em;
+    text-align: center;
+}
+
+.url-import-btn:hover {
+    background-color: #0066d6;
+}
+
+.url-import-btn:disabled {
+    opacity: 0.6;
+    cursor: default;
 }
 
 .drag-drop-area.drag-over {
@@ -4494,6 +4929,16 @@ input[type="file"] {
     box-shadow: 0 4px 12px rgba(0, 122, 255, 0.35);
 }
 
+/* État « génération en cours » : seul l'icône devient un spinner, le bouton garde
+   sa taille (l'icône fa-circle-notch a le même gabarit que fa-download). */
+.preview-modal__download-btn.is-loading {
+    cursor: progress;
+}
+
+.preview-modal__download-btn.is-loading:hover {
+    transform: none;
+}
+
 /* Secondary download buttons (inverted colors) */
 /* Cible les boutons dans les wrappers qui suivent le premier wrapper */
 .preview-modal__download-wrapper ~ .preview-modal__download-wrapper .preview-modal__download-btn {
@@ -5178,6 +5623,23 @@ input[type="file"] {
     height: auto;
     min-height: 400px;
     margin: 0 auto;
+}
+
+/* Vidéo interactive — réserve 16/9 PENDANT le chargement (classe posée puis RETIRÉE par
+   h5p-manager._releaseIVReserveWhenSized dès que le resizer h5p pose la vraie hauteur).
+   But : la vidéo apparaît directement au bon format au lieu d'être « trop courte » puis de
+   s'étirer. Surtout NE PAS laisser cette réserve active après coup (rognerait le lecteur :
+   cf. tentative revertée 2026-06-13). min-height = simple plancher de repli pour les rares
+   navigateurs sans aspect-ratio (toujours ≤ la hauteur 16/9 d'une modale large). */
+.preview-modal__h5p-container.h5p-preview--iv-loading {
+    aspect-ratio: 16 / 9;
+    height: auto;
+    min-height: 320px;
+}
+.preview-modal__h5p-container.h5p-preview--iv-loading .h5p-iframe-wrapper,
+.preview-modal__h5p-container.h5p-preview--iv-loading .h5p-iframe {
+    height: 100% !important;
+    min-height: 0 !important;
 }
 
 /* Modificateur pour le conteneur parent lorsqu'il contient du H5P */
@@ -6608,4 +7070,886 @@ input[type="file"] {
     .devoir-td-criterion {
         min-width: 100px;
     }
+}
+
+/* ============================================================
+   Vidéo interactive — champ URL + badge d'état + aide
+   (injecté dans .modal-tuto-content quand requiresVideoUrl)
+   ============================================================ */
+.video-url-section {
+    margin-top: 0.65rem;
+    position: relative; /* ancre la sous-ligne .video-url-msg, sortie du flux (cf. plus bas) */
+}
+
+.video-url-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: stretch;
+}
+
+/* Le champ est un conteneur stylé comme un input : il PORTE l'état (couleur bord/fond via
+   data-state sur .video-url-section). C'est lui qui « valide » visuellement — plus de boîte
+   d'état séparée qui agrandit le cadre. */
+.video-url-field {
+    position: relative;
+    overflow: hidden;
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 0.7rem;
+    min-height: 44px;
+    border: 1.5px solid #c4cdd9;
+    border-radius: 10px;
+    background: #fff;
+    transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+
+.video-url-field:focus-within {
+    border-color: #1768c4;
+    box-shadow: 0 0 0 3px rgba(23, 104, 196, 0.15);
+}
+
+.video-url-field__icon {
+    flex: 0 0 auto;
+    color: #8a97a6;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.video-url-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    padding: 0.55rem 0;
+    font-size: 0.92rem;
+    color: #1d2733;
+    outline: none;
+}
+
+.video-url-input::placeholder { color: #9aa7b5; }
+
+/* Indicateur d'état à droite du champ (spinner / ✓ / ⚠) — contenu injecté par le JS. */
+.video-url-field__status {
+    flex: 0 0 auto;
+    width: 1.15em;
+    height: 1.15em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.video-spinner {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 2px solid #e0a800;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: video-spin 0.7s linear infinite;
+}
+
+@keyframes video-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* --- Transcription en cours : jauge intégrée AU CHAMP du lien + voile flou par-dessus l'URL ---
+   La barre se remplit DANS la div du lien ; un voile (backdrop-filter) masque l'URL et affiche
+   « Transcription en cours… n/t » avec un bouton pour arrêter. Plus de barre séparée en dessous. */
+.video-url-field__progress {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(224, 168, 0, 0.28), rgba(224, 168, 0, 0.5));
+    transition: width 0.35s ease;
+}
+/* Indéterminée (1 seul appel : avancement inconnu) → bande qui glisse. */
+.video-url-field__progress--indet {
+    width: 36%;
+    background: linear-gradient(90deg, rgba(224, 168, 0, 0), rgba(224, 168, 0, 0.5), rgba(224, 168, 0, 0));
+    animation: video-field-progress-indet 1.2s ease-in-out infinite;
+}
+@keyframes video-field-progress-indet {
+    0%   { left: -36%; }
+    100% { left: 100%; }
+}
+/* Le contenu réel du champ (icône, saisie, statut, « Voir ») passe AU-DESSUS de la jauge. */
+.video-url-field > .video-url-field__icon,
+.video-url-field > .video-url-input,
+.video-url-field > .video-url-field__status,
+.video-url-field > .video-url-field__go,
+.video-url-field > .video-url-field__action { position: relative; z-index: 1; }
+
+/* Voile flou par-dessus le lien : masque l'URL et porte le libellé + le bouton stop. */
+.video-url-field__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* libellé centré dans la div */
+    padding: 0 2.6rem; /* marge symétrique : laisse la place au bouton stop sans décentrer le texte */
+    border-radius: 9px;
+    /* Voile ambre QUASI OPAQUE pendant la récupération de transcription (Tube/YouTube/PodEduc) :
+       il doit masquer franchement l'URL en dessous (cf. retour auteur « quasi pas transparent »). */
+    background: rgba(255, 216, 112, 0.97);
+    -webkit-backdrop-filter: blur(1.5px);
+    backdrop-filter: blur(1.5px);
+}
+.video-url-field__overlay[hidden] { display: none; }
+.video-url-field__overlay-label {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #1d2733; /* noir lisible par-dessus le flou */
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.video-url-field__overlay-label > span:last-child { overflow: hidden; text-overflow: ellipsis; }
+.video-url-field__stop {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 7px;
+    background: rgba(217, 83, 79, 0.16);
+    color: #c0392b;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.video-url-field__stop:hover { background: rgba(217, 83, 79, 0.3); }
+
+/* Jauge de progression de la transcription (dans la sous-ligne .video-url-msg). */
+.video-progress-wrap { display: flex; flex-direction: column; gap: 0.32rem; }
+.video-progress-label { font-size: 0.82rem; color: #8a6100; }
+.video-progress {
+    position: relative;
+    display: block;
+    height: 6px;
+    border-radius: 4px;
+    background: #f0e2bf;
+    overflow: hidden;
+}
+.video-progress__fill {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: #e0a800;
+    border-radius: 4px;
+    transition: width 0.35s ease;
+}
+/* Indéterminée (1 seul appel : on ne connaît pas l'avancement) → barre qui glisse. */
+.video-progress--indet .video-progress__fill {
+    width: 40%;
+    animation: video-progress-indet 1.1s ease-in-out infinite;
+}
+@keyframes video-progress-indet {
+    0%   { margin-left: -40%; }
+    100% { margin-left: 100%; }
+}
+
+/* Couleurs d'état du champ (le « passe au vert quand c'est bon »). */
+.video-url-section[data-state="checking"] .video-url-field { border-color: #e0a800; background: #fff1cc; }
+.video-url-section[data-state="checking"] .video-url-field__icon { color: #b07e00; }
+
+.video-url-section[data-state="ready"] .video-url-field { border-color: #1e9e54; background: #edf9f1; }
+.video-url-section[data-state="ready"] .video-url-field__icon { color: #1e9e54; }
+.video-url-section[data-state="ready"] .video-url-field__status { color: #1e9e54; }
+
+.video-url-section[data-state="error"] .video-url-field { border-color: #d9534f; background: #fdf3f2; }
+.video-url-section[data-state="error"] .video-url-field__icon { color: #d9534f; }
+.video-url-section[data-state="error"] .video-url-field__status { color: #d9534f; }
+
+.video-url-section[data-state="manual"] .video-url-field { border-color: #e0a800; background: #fffaf0; }
+.video-url-section[data-state="manual"] .video-url-field__icon { color: #b07e00; }
+.video-url-section[data-state="manual"] .video-url-field__status { color: #e0a800; }
+
+/* Bouton discret « Voir » DANS le champ (n'apparaît qu'une fois la transcription prête).
+   Volontairement peu saillant : il ne doit pas concurrencer « Générer en un clic ». */
+.video-url-field__action {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    border: none;
+    background: rgba(30, 158, 84, 0.13);
+    color: #137a40;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.28rem 0.6rem;
+    border-radius: 7px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+}
+
+.video-url-field__action:hover { background: rgba(30, 158, 84, 0.22); }
+.video-url-field__action[hidden] { display: none; }
+
+/* Bouton « valider le lien » (flèche) DANS le champ : même gabarit que le bouton stop, à la même
+   place, mais bleu (action). Rend visible le collage-auto/Entrée pour qui ne les devine pas.
+   Volontairement discret : il ne doit pas concurrencer « Générer en un clic ». */
+.video-url-field__go {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 7px;
+    background: rgba(45, 110, 200, 0.14);
+    color: #2563b0;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.video-url-field__go:hover { background: rgba(45, 110, 200, 0.26); }
+.video-url-field__go[hidden] { display: none; }
+
+/* Bouton d'aide « ? » — même hauteur que le champ, aligné à droite. */
+.video-help-btn {
+    flex: 0 0 auto;
+    width: 44px;
+    min-height: 44px;
+    border: 1.5px solid #c4cdd9;
+    border-radius: 10px;
+    background: #fff;
+    color: #1768c4;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.video-help-btn:hover { background: #eef4fb; border-color: #1768c4; }
+
+/* Sous-ligne discrète : masquée sur le chemin heureux (champ vert), visible en attente / erreur
+   / collage. Une simple ligne de texte — pas une boîte qui déforme le cadre. */
+/* Sortie du flux (absolue, juste sous le champ) : apparaître/disparaître ne décale RIEN, et sur le
+   chemin heureux (lien valide) il n'y a aucune bande vide réservée — le message se loge dans la zone
+   blanche déjà présente sous le champ (l'éditeur en dessous est replié tant qu'on n'a pas généré). */
+.video-url-msg {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin: 0.3rem 0 0;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: #55606c;
+}
+.video-url-msg[hidden] { display: none; }
+.video-url-section[data-state="checking"] .video-url-msg { color: #8a6100; }
+.video-url-section[data-state="error"] .video-url-msg { color: #a3302c; }
+.video-url-section[data-state="manual"] .video-url-msg { color: #8a6100; }
+
+.video-url-msg__action {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: #1768c4;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.video-url-msg__action:hover { color: #0d4f99; }
+
+/* ============================================================
+   Popover vidéo compact — aide « ? » + « Voir / coller » la transcription
+   (réutilise le langage visuel du help-popover, en plus petit)
+   ============================================================ */
+.video-popover__backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: var(--z-popover);
+}
+
+.video-popover {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(92vw, 560px);
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow:
+        0 12px 48px rgba(0, 0, 0, 0.16),
+        0 4px 16px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(0, 0, 0, 0.04);
+    z-index: calc(var(--z-popover) + 1);
+    overflow: hidden;
+    text-align: left;
+}
+
+/* Variante large : double panneau « lecture timée | collage ». Plus haute aussi (max-height relevée)
+   pour éviter le scroll sur petit écran — le contenu fixe (info + astuce + boutons) tient sans déborder. */
+.video-popover--wide { width: min(96vw, 1040px); max-height: 94vh; }
+
+.video-popover__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 18px;
+    border-bottom: 1px solid #f0f0f5;
+    background: linear-gradient(135deg, #f0f5ff 0%, #f8f9ff 100%);
+    flex-shrink: 0;
+}
+
+.video-popover__title {
+    font-weight: 700;
+    font-size: 16px;
+    color: #1d1d1f;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.video-popover__title i { color: #1768c4; }
+
+.video-popover__close {
+    background: rgba(0, 0, 0, 0.04);
+    border: none;
+    color: #8e8e93;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, color 0.15s;
+}
+.video-popover__close:hover { background: rgba(0, 0, 0, 0.08); color: #1d1d1f; }
+
+.video-popover__body {
+    padding: 16px 18px;
+    overflow: auto;
+}
+
+/* Aide : intro + liste des plateformes avec puces d'état */
+.video-help-body__intro { margin: 0 0 0.9rem; font-size: 0.9rem; line-height: 1.5; color: #3a4654; }
+.video-help-body__platforms {
+    list-style: none;
+    margin: 0 0 0.9rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+.video-help-body__platforms li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid #e6ebf1;
+    border-radius: 8px;
+    background: #fafcfe;
+}
+.video-help-body__platforms .vplat-name { font-size: 0.85rem; color: #2b3642; }
+.vplat-chip {
+    flex: 0 0 auto;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.18rem 0.5rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+.vplat-chip--ok { background: #e7f6ec; color: #137a40; }
+.vplat-chip--soon { background: #fff3e0; color: #8a5300; }
+.vplat-chip--beta { background: #eef0f5; color: #55606c; }
+.video-help-body__steps { margin: 0; font-size: 0.82rem; line-height: 1.5; color: #55606c; }
+
+/* Transcription : lecture (read-only) timée + collage manuel.
+   Double panneau « lecture | collage » côte à côte (variante --split), empilé sur petit écran. */
+.video-transcript-body--split {
+    display: flex;
+    gap: 18px;
+    align-items: stretch;
+}
+.video-transcript-body--split .video-transcript-panel {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+@media (max-width: 720px) {
+    .video-transcript-body--split { flex-direction: column; }
+}
+
+.video-transcript-body__info { margin: 0 0 0.5rem; font-size: 0.85rem; color: #137a40; font-weight: 600; }
+/* Astuce pédagogique (encadré ambre discret) : un découpage temporel propre = des questions mieux placées. */
+.video-transcript-body__pedago {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    margin: 0 0 0.2rem;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: #6a5a13;
+    background: #fff8e1;
+    border: 1px solid #f4e3a8;
+    border-radius: 8px;
+}
+.video-transcript-body__pedago .fa-lightbulb { color: #e0a106; margin-top: 0.12rem; flex: 0 0 auto; }
+.video-transcript-body__text {
+    max-height: 52vh;
+    overflow: auto;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid #e6ebf1;
+    border-radius: 8px;
+    background: #fafcfe;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: #2b3642;
+}
+.video-transcript-body--split .video-transcript-panel--view .video-transcript-body__text { flex: 1 1 auto; }
+
+/* Une ligne par passage : repère temporel `m:ss` + texte qui revient à la ligne. */
+.vtx-line { display: flex; gap: 10px; margin: 0 0 6px; align-items: baseline; }
+.vtx-line:last-child { margin-bottom: 0; }
+.vtx-time {
+    flex: 0 0 auto;
+    min-width: 40px;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #1768c4;
+}
+.vtx-text { flex: 1 1 auto; min-width: 0; }
+
+.video-transcript-body__label {
+    display: block;
+    font-size: 0.84rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: #2b3642;
+}
+.video-popover .video-paste-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid #c4cdd9;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    resize: vertical;
+}
+.video-popover .video-paste-input:focus {
+    outline: none;
+    border-color: #1768c4;
+    box-shadow: 0 0 0 3px rgba(23, 104, 196, 0.15);
+}
+.video-popover .video-paste-btn { margin-top: 0.6rem; }
+
+/* Transcription : champ UNIQUE éditable (lecture + correction au même endroit), grand et responsive,
+   bouton « Utiliser » compact aligné à droite. */
+.video-popover .video-transcript-edit {
+    min-height: 46vh;
+    max-height: 62vh;
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+.video-transcript-body__info--paste { color: #2b3642; font-weight: 600; }
+.video-transcript-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.7rem;
+}
+.video-popover .video-transcript-actions .video-paste-btn {
+    flex: 0 0 auto;
+    margin-top: 0;
+    padding: 0.5rem 1rem;
+    font-size: 0.88rem;
+    border-radius: 8px;
+}
+
+/* ===== Transcription synchronisée : 2 panneaux (transcription éditable | lecteur) ===== */
+.video-transcript-2pane {
+    display: flex;
+    gap: 16px;
+    align-items: stretch;
+    height: 66vh;
+    margin-top: 0.7rem;
+}
+.vt-left {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+.vt-right {
+    flex: 0 0 42%;
+    max-width: 42%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+/* Transcription éditable : une ligne par passage, ligne courante surlignée, défilement interne. */
+.vt-edit {
+    position: relative;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 0.5rem 0.6rem;
+    border: 1px solid #c4cdd9;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #2b3642;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+.vt-edit:focus { outline: none; border-color: #1768c4; box-shadow: 0 0 0 3px rgba(23, 104, 196, 0.15); }
+.vt-row { padding: 2px 6px 2px 10px; border-radius: 5px; scroll-margin: 40% 0; transition: background 0.12s; }
+.vt-row.is-active {
+    background: #d4e8ff;
+    box-shadow: inset 4px 0 0 #1768c4;
+    font-weight: 600;
+    color: #0f4c8f;
+}
+/* Lecteur figé (16:9) à droite ; la transcription défile, lui non. */
+.vt-player {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    position: sticky;
+    top: 0;
+}
+.vt-player video,
+.vt-player iframe { display: block; width: 100%; height: 100%; border: 0; }
+/* Boutons « Ajouter une ligne » et « Recaler sur la vidéo » : sur une même rangée, largeurs égales.
+   (« Recaler » est contextuel → masqué quand le suivi est actif, « Ajouter » prend alors toute la largeur.) */
+.vt-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: stretch;
+}
+.vt-add-line,
+.vt-resume {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.82rem;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    text-align: center;
+}
+/* Bouton « Recaler sur la vidéo » : contextuel (visible seulement quand le suivi est figé), mis en avant. */
+.vt-resume {
+    background: #eaf3ff;
+    color: #1768c4;
+    font-weight: 600;
+}
+.vt-resume:hover { background: #d4e8ff; }
+.vt-resume[hidden] { display: none; }
+/* Bouton « Valider » : action principale, sous le lecteur, pleine largeur du panneau droit. */
+.vt-right .vt-validate {
+    flex: 0 0 auto;
+    align-self: stretch;
+    justify-content: center;
+    margin-top: 0.9rem; /* détache nettement l'action principale du bouton « + Ajouter une ligne » */
+    padding: 0.6rem 1rem;
+}
+
+/* Placeholder de l'éditeur vide (transcription à bâtir à la main). */
+.vt-edit:empty::before {
+    content: attr(data-placeholder);
+    color: #9aa5b1;
+    font-style: italic;
+    pointer-events: none;
+}
+.video-transcript-body--sync .video-transcript-actions { margin-top: 0.6rem; }
+
+/* Empilé sur écran étroit : lecteur au-dessus, transcription en dessous. */
+@media (max-width: 860px) {
+    .video-transcript-2pane { flex-direction: column-reverse; height: auto; }
+    .vt-right { flex-basis: auto; max-width: none; }
+    .vt-edit { max-height: 38vh; }
+}
+
+/* Boutons de génération verrouillés tant qu'aucune transcription n'est récupérée */
+.action-btn.is-disabled-gate,
+.action-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Tout le groupe de génération grisé en bloc (bouton « Générer » + flèche modèle) tant que
+   la transcription n'est pas prête. Dès qu'elle l'est, le groupe repasse au bleu. */
+.generation-button-group.gen-gated {
+    opacity: 0.5;
+    pointer-events: none;
+    filter: grayscale(0.35);
+}
+
+/* ============================================================
+   Éditeur Vidéo interactive — panneau lecteur + capture
+   ============================================================ */
+.iv-editor-panel {
+    margin: 0 0 0.85rem;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid #d7dee8;
+    border-radius: 8px;
+    background: #f7fafd;
+}
+
+.iv-editor-novideo {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #8a5300;
+}
+
+/* Segmented Plan / Live */
+.iv-modebar {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+}
+.iv-seg {
+    display: inline-flex;
+    background: #eef1f5;
+    border: 1px solid #e0e4ea;
+    border-radius: 9px;
+    padding: 3px;
+    gap: 3px;
+}
+.iv-modebtn {
+    border: none;
+    background: none;
+    padding: 6px 14px;
+    border-radius: 7px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: inherit;
+    line-height: 1;            /* sans ça l'icône FA se décale verticalement vs le texte */
+    color: #55606c;
+    cursor: pointer;
+    display: inline-flex;
+    gap: 7px;
+    align-items: center;
+}
+.iv-modebtn i { font-size: 0.9em; line-height: 1; }
+.iv-modebtn span { line-height: 1; }
+.iv-modebtn.is-active {
+    background: #fff;
+    color: #1768c4;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.iv-modehint {
+    font-size: 0.75rem;
+    color: #55606c;
+}
+
+/* Mode Live : lecteur + timeline. Le conteneur média est 16:9, hauteur plafonnée à ~26vh et centré,
+   pour ne JAMAIS déborder sur l'éditeur (même en hauteur basse). Couvre l'iframe YouTube ET la
+   <video> PeerTube/PodEduc (les deux remplissent la boîte). */
+.iv-live {
+    margin-top: 0.65rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+/* `display:flex` ci-dessus bat l'attribut `[hidden]` (UA) → on le rétablit explicitement,
+   sinon le bloc Live reste visible en mode Plan. */
+.iv-live[hidden] { display: none; }
+.iv-editor-media {
+    position: relative;
+    width: 100%;
+    max-width: calc(26vh * 16 / 9);
+    margin: 0 auto;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.iv-editor-media iframe,
+.iv-editor-media video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #000;
+    object-fit: contain;
+    display: block;
+}
+
+.iv-live-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+.iv-live-clock {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    color: #1768c4;
+    min-width: 3.4em;
+    text-align: center;
+    font-size: 0.9rem;
+}
+.iv-live-timeline {
+    position: relative;
+    flex: 1;
+    height: 14px;
+    border-radius: 7px;
+    background: #dde6f1;
+    cursor: pointer;
+}
+.iv-live-playhead {
+    position: absolute;
+    top: -3px;
+    bottom: -3px;
+    width: 2px;
+    background: #0b3d7a;
+    border-radius: 2px;
+    left: 0;
+    pointer-events: none;
+}
+.iv-live-mk {
+    position: absolute;
+    top: 50%;
+    width: 13px;
+    height: 13px;
+    padding: 0;
+    border-radius: 50%;
+    background: #fff;
+    border: 2.5px solid #1768c4;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+.iv-live-mk:hover { transform: translate(-50%, -50%) scale(1.25); }
+.iv-live-mk.is-active {
+    background: #1768c4;
+    box-shadow: 0 0 0 3px rgba(23, 104, 196, 0.22);
+}
+/* Repère « Résumé final » : carré vert en BOUT de timeline (drapeau à damier). */
+.iv-live-mk--summary {
+    width: 17px;
+    height: 17px;
+    left: 100%;
+    border-radius: 5px;
+    background: #1c8a43;
+    border-color: #1c8a43;
+    color: #fff;
+    transform: translate(-100%, -50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+}
+.iv-live-mk--summary:hover { transform: translate(-100%, -50%) scale(1.2); }
+.iv-live-mk--summary.is-active {
+    background: #14702f;
+    box-shadow: 0 0 0 3px rgba(28, 138, 67, 0.28);
+}
+
+.iv-live-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.7rem;
+}
+.iv-live-actions .iv-live-capture {
+    flex: 0 0 auto;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+}
+/* « Suivre la lecture » : bouton-bascule (pill) — bleu actif, gris inactif. */
+.iv-follow-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    line-height: 1;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: inherit;
+    color: #1768c4;
+    background: #eaf2fc;
+    border: 1px solid #cfe0f5;
+    border-radius: 8px;
+    padding: 0.45rem 0.7rem;
+    cursor: pointer;
+}
+.iv-follow-btn i { line-height: 1; font-size: 0.95em; }
+.iv-follow-btn:not(.is-on) {
+    color: #6b7480;
+    background: #f1f2f5;
+    border-color: #e0e2e8;
+}
+
+/* Mode Live = CÔTE-À-CÔTE : le lecteur (panneau) passe en colonne GAUCHE à largeur fixe, l'éditeur
+   à DROITE n'affiche que le détail (nav masquée) → on édite la question en regard de la vidéo.
+   La classe `iv-mode-live` est posée sur le PARENT (persistante) → survit aux re-rendus. */
+.preview-modal__content--editor.iv-mode-live {
+    flex-direction: row !important;
+    gap: 14px;
+    align-items: stretch;
+}
+.iv-mode-live .iv-editor-panel {
+    flex: 0 0 360px;
+    align-self: stretch;
+    margin: 0;
+    overflow-y: auto;   /* en hauteur basse, la colonne gauche scrolle plutôt que de déborder */
+}
+.iv-mode-live .preview-modal__preview--editor {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+}
+.iv-mode-live .iv-editor-media { max-width: 100%; }   /* le média remplit la colonne gauche */
+.iv-mode-live .json-editor__nav { display: none; }
+.iv-mode-live .json-editor__body { grid-template-columns: 1fr; }
+
+/* Repli empilé (vidéo au-dessus) seulement sur écran VRAIMENT étroit (mobile portrait, donc haut) :
+   le côte-à-côte ne stacke pas la hauteur → il reste préférable tant qu'il y a ~760px de large
+   (vidéo 360 + éditeur ~360). En dessous, on empile et on borne le média à 26vh. */
+@media (max-width: 760px) {
+    /* En empilé sur écran court, on SCROLLE le contenu plutôt que d'écraser l'éditeur : le panneau
+       garde sa hauteur naturelle et l'éditeur garde une hauteur minimale utilisable (détail lisible). */
+    .preview-modal__content--editor.iv-mode-live {
+        flex-direction: column !important;
+        overflow-y: auto !important;
+    }
+    .iv-mode-live .iv-editor-panel { flex: 0 0 auto; align-self: auto; }
+    .iv-mode-live .preview-modal__preview--editor { flex: 0 0 auto; min-height: 360px; }
+    .iv-mode-live .iv-editor-media { max-width: calc(26vh * 16 / 9); }
 }

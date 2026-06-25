@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="../">
+    <title>Tests Caramelia</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; padding: 24px; color: #1a1a2e; }
+        h1 { font-size: 1.5rem; margin-bottom: 8px; }
+        .subtitle { font-size: 0.85rem; color: #666; margin-bottom: 20px; }
+        .global-summary { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .global-summary__card { padding: 14px 24px; border-radius: 10px; font-weight: 700; font-size: 1.3rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); min-width: 120px; text-align: center; }
+        .global-summary__card small { display: block; font-size: 0.7rem; font-weight: 400; opacity: 0.8; margin-top: 2px; }
+        .card--pass { background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; }
+        .card--fail { background: linear-gradient(135deg, #f8d7da, #f5c6cb); color: #721c24; }
+        .card--total { background: linear-gradient(135deg, #d1ecf1, #bee5eb); color: #0c5460; }
+
+        .step-bar { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+        .step-card {
+            flex: 1; min-width: 140px; padding: 10px 14px; border-radius: 8px;
+            background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.06); text-align: center;
+            position: relative; cursor: help;
+        }
+        .step-card__name { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 4px; }
+        .step-card__count { font-size: 1.05rem; font-weight: 700; }
+        .step-card--ok { border-left: 3px solid #28a745; }
+        .step-card--ko { border-left: 3px solid #dc3545; }
+        .step-card .tooltip {
+            visibility: hidden; opacity: 0;
+            position: absolute; z-index: 100; left: 50%; transform: translateX(-50%);
+            bottom: calc(100% + 8px); width: 320px;
+            background: #1e1e2e; color: #cdd6f4; padding: 12px 14px;
+            border-radius: 8px; font-size: 0.74rem; line-height: 1.5; font-weight: 400;
+            text-transform: none; letter-spacing: normal; text-align: left;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            transition: opacity 0.2s, visibility 0.2s; pointer-events: none;
+        }
+        .step-card:hover .tooltip { visibility: visible; opacity: 1; }
+
+        .info-box { background: #fff; padding: 14px 18px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); font-size: 0.82rem; line-height: 1.6; color: #444; }
+        .info-box summary { cursor: pointer; font-weight: 600; color: #1a1a2e; font-size: 0.9rem; }
+        .info-box ol { margin: 8px 0 0 22px; }
+        .info-box code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 0.8rem; }
+
+        .results { background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
+        .result { display: flex; align-items: flex-start; gap: 10px; padding: 7px 14px; border-bottom: 1px solid #f5f5f5; font-size: 0.82rem; }
+        .result:last-child { border-bottom: none; }
+        .result__badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-weight: 700; font-size: 0.7rem; min-width: 38px; text-align: center; flex-shrink: 0; }
+        .result__badge--pass { background: #d4edda; color: #155724; }
+        .result__badge--fail { background: #f8d7da; color: #721c24; }
+        .result__step { font-size: 0.65rem; color: #888; min-width: 150px; flex-shrink: 0; padding-top: 3px; }
+        .result--fail { background: #fff5f5; }
+        .diagnostic { margin-top: 6px; padding: 10px; background: #1e1e2e; color: #cdd6f4; border-radius: 6px; font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.72rem; line-height: 1.5; }
+        .diagnostic summary { color: #cba6f7; font-weight: 600; cursor: pointer; margin-bottom: 6px; }
+        .diagnostic .diag-label { color: #89b4fa; font-weight: 600; }
+
+        .filter-bar { background: #fff; padding: 10px 14px; border-radius: 10px; margin-bottom: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); display: flex; gap: 12px; align-items: center; font-size: 0.82rem; }
+        .filter-bar label { cursor: pointer; user-select: none; }
+        .filter-bar input { cursor: pointer; }
+
+        .loading { text-align: center; padding: 60px; color: #666; }
+        .loading__spinner { display: inline-block; width: 36px; height: 36px; border: 3px solid #ddd; border-top-color: #1a1a2e; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <h1>Tests Caramelia</h1>
+    <p class="subtitle">Sécurité · Config · i18n · Tuto-RAG · loadKnowledge · fallbackExtract</p>
+
+    <details class="info-box">
+        <summary>Périmètre des tests</summary>
+        <ol>
+            <li><strong>Sécurité</strong> : sanitizeUserInput, detectInjectionAttempt, fenceUserMessage, sanitizeForPrompt, SECURITY_PREAMBLE.</li>
+            <li><strong>Config</strong> : cohérence de allModuleKeys, h5pKeys, eleaKeys, activityCaramelMap, fuzzyMap, activityCategories, chatWebhookUrl.</li>
+            <li><strong>i18n</strong> : fetch des 11 locales <code>js/caramelia/locales/</code>, parité des clés, traduction via t() et tActivity().</li>
+            <li><strong>Tuto-RAG</strong> : fetch des 11 fichiers <code>js/caramelia/tuto-rag/*.md</code>, frontmatter cohérent (lang, version), cap 40 KB, absence d'instructions au LLM.</li>
+            <li><strong>loadKnowledge()</strong> : fetch effectif, mise en cache, fallback fr pour langue inconnue, plafonnement à 40 KB.</li>
+            <li><strong>fallbackExtract()</strong> : extraction regex de moduleKeys, niveau scolaire, nombre de questions.</li>
+        </ol>
+        <p style="margin-top:10px"><strong>Hors périmètre</strong> : appels au webhook LLM (intégration séparée, dépend du réseau et du quota ILAAS).</p>
+    </details>
+
+    <div id="output">
+        <div class="loading"><div class="loading__spinner"></div><p style="margin-top:14px">Exécution des tests en cours...</p></div>
+    </div>
+
+    <script type="module">
+        import { runAllTests } from './tests/test-caramelia.js';
+        const output = document.getElementById('output');
+        const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+        try {
+            const { passCount, failCount, results, STEP_NAMES, STEP_DESCRIPTIONS } = await runAllTests();
+            const totalCount = passCount + failCount;
+
+            // Cumul par étape
+            const stepStats = {};
+            for (const r of results) {
+                const k = r.step || 0;
+                if (!stepStats[k]) stepStats[k] = { name: r.stepName, pass: 0, fail: 0 };
+                if (r.status === 'PASS') stepStats[k].pass++; else stepStats[k].fail++;
+            }
+
+            let html = `<div class="global-summary">
+                <div class="global-summary__card card--pass">${passCount}<small>PASS</small></div>
+                <div class="global-summary__card card--fail">${failCount}<small>FAIL</small></div>
+                <div class="global-summary__card card--total">${totalCount}<small>assertions</small></div>
+            </div>`;
+
+            // Bandeau d'étapes
+            html += `<div class="step-bar">`;
+            for (let i = 1; i < STEP_NAMES.length; i++) {
+                const s = stepStats[i] || { pass: 0, fail: 0, name: STEP_NAMES[i] };
+                const cls = s.fail === 0 ? 'step-card--ok' : 'step-card--ko';
+                const desc = STEP_DESCRIPTIONS && STEP_DESCRIPTIONS[i] ? STEP_DESCRIPTIONS[i] : '';
+                html += `<div class="step-card ${cls}">
+                    <div class="step-card__name">Étape ${i} · ${esc(STEP_NAMES[i])}</div>
+                    <div class="step-card__count">${s.pass} / ${s.pass + s.fail}</div>
+                    ${desc ? `<div class="tooltip">${esc(desc)}</div>` : ''}
+                </div>`;
+            }
+            html += `</div>`;
+
+            // Filtre
+            html += `<div class="filter-bar">
+                <label><input type="checkbox" id="filter-fail" /> Afficher uniquement les FAIL</label>
+                <span style="color:#888">·</span>
+                <span style="color:#666">${results.length} assertions au total</span>
+            </div>`;
+
+            html += `<div class="results" id="results-list">`;
+            for (const r of results) {
+                const isFail = r.status === 'FAIL';
+                html += `<div class="result ${isFail ? 'result--fail' : ''}" data-status="${r.status}">
+                    <span class="result__badge result__badge--${r.status.toLowerCase()}">${r.status}</span>
+                    <span class="result__step">Étape ${r.step} · ${esc(r.stepName)}</span>
+                    <span class="result__msg">${esc(r.message)}`;
+                if (r.diagnostic) {
+                    html += `<div class="diagnostic"><details open><summary>Diagnostic</summary>`;
+                    for (const [k, v] of Object.entries(r.diagnostic)) {
+                        const formatted = typeof v === 'object' && v !== null ? JSON.stringify(v) : String(v);
+                        html += `<span class="diag-label">${esc(k)}:</span> ${esc(formatted)}<br>`;
+                    }
+                    html += `</details></div>`;
+                }
+                html += `</span></div>`;
+            }
+            html += `</div>`;
+            output.innerHTML = html;
+
+            // Filtre interactif
+            const filter = document.getElementById('filter-fail');
+            const list = document.getElementById('results-list');
+            filter.addEventListener('change', () => {
+                for (const r of list.querySelectorAll('.result')) {
+                    r.style.display = (filter.checked && r.dataset.status !== 'FAIL') ? 'none' : '';
+                }
+            });
+        } catch (e) {
+            output.innerHTML = `<div style="background:#f8d7da;color:#721c24;padding:20px;border-radius:10px;">
+                <strong>Erreur fatale :</strong> ${esc(e.message)}<br>
+                <pre style="margin-top:8px;font-size:0.8rem;">${esc(e.stack)}</pre>
+            </div>`;
+        }
+    </script>
+</body>
+</html>

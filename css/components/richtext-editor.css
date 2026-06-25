@@ -629,17 +629,14 @@
     font-size: 12px;
 }
 
-/* Petit écran : toolbar wrap plus serrée */
+/* Petit écran : toolbar resserrée (gap/padding). On NE rétrécit PLUS les
+   boutons — au doigt il faut au contraire des cibles plus grandes, gérées par
+   la règle `pointer: coarse` ci-dessous (réduire à 26px était contre-productif
+   sur mobile, le seul contexte où ces 600px s'appliquent vraiment). */
 @media (max-width: 600px) {
     .json-editor__richtext-toolbar {
         gap: 1px;
         padding: 2px 4px;
-    }
-
-    .json-editor__richtext-toolbar-btn {
-        width: 26px;
-        height: 26px;
-        font-size: 11px;
     }
 
     .json-editor__formula-panel {
@@ -648,5 +645,20 @@
 
     .json-editor__formula-grid {
         grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Pointeur grossier (tactile : mobile, tablette) : cibles confortables au
+   doigt. La toolbar étant en `flex-wrap`, des boutons plus grands passent
+   simplement sur plusieurs lignes — jamais de débordement horizontal. */
+@media (pointer: coarse) {
+    .json-editor__richtext-toolbar-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+
+    .json-editor__richtext-toolbar-separator {
+        height: 22px;
     }
 }

@@ -3,6 +3,8 @@
  * Ce module gère le téléchargement, la conversion et le dimensionnement des images.
  */
 
+import { debugLog } from '../core/utils.js';
+
 // Constantes
 const DEFAULT_TIMEOUT = 10000; // 10 secondes
 export const DOCX_FIXED_HEIGHT = 150; // mm
@@ -21,6 +23,13 @@ const MAX_IMAGE_SIZE = 15 * 1024 * 1024; // 15 MB
  * @returns {Promise<Object>} - { dataURL, width, height, mimeType, blob }
  */
 export async function fetchImageAsDataURL(url, options = {}) {
+    // Valider l'URL avant tout fetch : seuls http(s) sont autorisés.
+    // Le rejet est intercepté par l'appelant (document-exporter) qui ignore l'image.
+    if (!validateImageUrl(url)) {
+        debugLog('ImageUtils', `URL d'image invalide ou non supportée, image ignorée : ${url}`);
+        throw new Error(`Invalid or unsupported image URL: ${url}`);
+    }
+
     const timeout = options.timeout || DEFAULT_TIMEOUT;
 
     // Créer un AbortController pour le timeout
@@ -45,7 +54,7 @@ export async function fetchImageAsDataURL(url, options = {}) {
 
         // Vérifier la taille
         if (blob.size > MAX_IMAGE_SIZE) {
-            throw new Error(`Image too large: ${(blob.size / 1024 / 1024).toFixed(2)}MB (max 5MB)`);
+            throw new Error(`Image too large: ${(blob.size / 1024 / 1024).toFixed(2)}MB (max ${MAX_IMAGE_SIZE / 1024 / 1024}MB)`);
         }
 
         // Convertir en data URL

@@ -14,6 +14,7 @@ import { initEmergencyNotifications } from './ui/emergency-notification.js';
 import { initSmartPreloading } from './core/lib-loader.js';
 import { initNotificationCenter, initNotificationDropdown, initToastNotifications, initPreviewModal } from './ui/notifications.js';
 import { initDebugLogger } from './ui/debug-logger.js';
+import { initPromptMic } from './ui/prompt-mic.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     // Panneau de logs debug (ne fait rien si ?debug absent)
@@ -41,11 +42,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialisation de la logique OCR
     initOcr();
 
+    // Branche la saisie vocale (micro Caramelia) sur les champs Qui/Quoi/Niveau
+    initPromptMic();
+
     // Initialisation des effets de l'animation caramel
     initCaramelAnimationEffects();
 
     // Initialisation du préchargement intelligent des bibliothèques
     initSmartPreloading();
+
+    // Pont d'intégration embarquée (iframe) : chargé UNIQUEMENT en mode ?embed.
+    // Import dynamique gardé → en mode normal, ni embed-bridge.js ni sa dépendance
+    // (caramelia/config.js) ne sont téléchargés/parsés. Coût normal = 0 (juste ce test d'URL).
+    if (new URLSearchParams(window.location.search).has('embed')) {
+        import('./embed/embed-bridge.js')
+            .then(m => m.initEmbedBridge())
+            .catch(e => console.error('[embed] chargement du pont échoué:', e));
+    }
 
     // Chargement des traductions complètes (met à jour les textes si nécessaire)
     loadTranslations('fr').then(() => {

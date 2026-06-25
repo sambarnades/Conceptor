@@ -1,0 +1,145 @@
+{
+  "generatedAt": "2026-06-16T12:00:00.000Z",
+  "node": "v22.18.0",
+  "frozenEpoch": "2026-06-16T12:00:00Z",
+  "scope": "h5p",
+  "sanitizerMode": "identity",
+  "sanitizerFallbackCount": 0,
+  "caveats": [
+    "Sanitizer = IDENTITÉ injectée (DOMPurify réel impossible sans DOM/jsdom en Node). HTML préservé verbatim ; idempotent. Écart vs navigateur : pas de suppression des balises/attrs hors-allowlist (négligeable sur fixtures propres). T4 ≈ navigateur, à confirmer en phase Playwright."
+  ],
+  "summary": {
+    "T2": {
+      "ok": 2,
+      "fail": 0,
+      "err": 0,
+      "categories": {},
+      "duplicationGrowth": 0
+    },
+    "T1": {
+      "ok": 2,
+      "fail": 0,
+      "err": 0
+    },
+    "T3": {
+      "ok": 2,
+      "fail": 0,
+      "err": 0
+    },
+    "T4": {
+      "recorded": 2,
+      "error": 0
+    },
+    "T5_moodle": {
+      "ok": 0,
+      "fail": 0,
+      "err": 0
+    }
+  },
+  "T2_idempotence": [
+    {
+      "file": "sort_the_paragraphs_1.json",
+      "moduleKey": "SortParagraphs",
+      "ok": true,
+      "error": null,
+      "diffCount": 0,
+      "diff": []
+    },
+    {
+      "file": "sort_the_paragraphs_2.json",
+      "moduleKey": "SortParagraphs",
+      "ok": true,
+      "error": null,
+      "diffCount": 0,
+      "diff": []
+    }
+  ],
+  "T1_determinism": [
+    {
+      "file": "sort_the_paragraphs_1.json",
+      "moduleKey": "SortParagraphs",
+      "ok": true,
+      "error": null,
+      "sha1": "311ef1c33fdbd80e62e2580e8f99381f9f45f4e3b22ae491a3f972e24f764e9d",
+      "sha2": "311ef1c33fdbd80e62e2580e8f99381f9f45f4e3b22ae491a3f972e24f764e9d",
+      "diff": [],
+      "canonSize": 5681
+    },
+    {
+      "file": "sort_the_paragraphs_2.json",
+      "moduleKey": "SortParagraphs",
+      "ok": true,
+      "error": null,
+      "sha1": "a644cb897ae09f128b576a0a58b0cc50113ddd749995261e319e76169520ffb8",
+      "sha2": "a644cb897ae09f128b576a0a58b0cc50113ddd749995261e319e76169520ffb8",
+      "diff": [],
+      "canonSize": 4945
+    }
+  ],
+  "T3_verbatim": [
+    {
+      "file": "sort_the_paragraphs_1.json",
+      "moduleKey": "SortParagraphs",
+      "ok": true,
+      "error": null,
+      "verbatimBase64": true,
+      "blobUntouchedAfterExtract": true,
+      "extractMarkdownLen": 3243,
+      "extractActivityType": "H5P.SortParagraphs"
+    },
+    {
+      "file": "sort_the_paragraphs_2.json",
+      "moduleKey": "SortParagraphs",
+      "ok": true,
+      "error": null,
+      "verbatimBase64": true,
+      "blobUntouchedAfterExtract": true,
+      "extractMarkdownLen": 2521,
+      "extractActivityType": "H5P.SortParagraphs"
+    }
+  ],
+  "T4_snapshot": {
+    "sort_the_paragraphs_1.json": {
+      "moduleKey": "SortParagraphs",
+      "format": "h5p",
+      "error": null,
+      "totalSha256": "311ef1c33fdbd80e62e2580e8f99381f9f45f4e3b22ae491a3f972e24f764e9d",
+      "canonSize": 5681,
+      "fileCount": 2,
+      "files": [
+        {
+          "name": "content/content.json",
+          "canonSize": 4851,
+          "canonSha256": "fac781b017e3145830705e69911e40a2c0cf390f75a204e4fcfb86c63645663d"
+        },
+        {
+          "name": "h5p.json",
+          "canonSize": 830,
+          "canonSha256": "e6770e9499de6f617e4489cbce804fd905bf395b582d25d06e51607d010ef539"
+        }
+      ]
+    },
+    "sort_the_paragraphs_2.json": {
+      "moduleKey": "SortParagraphs",
+      "format": "h5p",
+      "error": null,
+      "totalSha256": "a644cb897ae09f128b576a0a58b0cc50113ddd749995261e319e76169520ffb8",
+      "canonSize": 4945,
+      "fileCount": 2,
+      "files": [
+        {
+          "name": "content/content.json",
+          "canonSize": 4013,
+          "canonSha256": "d7dfe92e757f92b848c9ee749fdb359e2139d19ca93c50fbdc644f0067755adb"
+        },
+        {
+          "name": "h5p.json",
+          "canonSize": 932,
+          "canonSha256": "bc0603e97a0f52438e88e8fec551676869f58bbbe1a484b9bc5cdf37ff81ee12"
+        }
+      ]
+    }
+  },
+  "T5_moodle_determinism": [],
+  "T5_moodle_snapshot": {}
+}

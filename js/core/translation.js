@@ -5,7 +5,7 @@
  */
 
 import { AVAILABLE_MODELS } from '../services/llm.js';
-import { generateTiles, toggleActivityContent } from '../ui/ui.js';
+import { generateTiles, refreshSidebar } from '../ui/ui.js';
 
 /**
  * Traductions françaises par défaut pour les tuiles (affichage immédiat avant chargement complet)
@@ -34,6 +34,8 @@ const defaultTranslations = {
     h5p_complex_fill_the_blanks_name: "Texte à trous complexe",
     h5p_chart_name: "Diagramme",
     h5p_course_presentation_name: "Présentation de cours",
+    h5p_interactive_book_name: "Livre interactif",
+    h5p_interactive_video_name: "Vidéo interactive",
     // Noms des modules Moodle/Éléa
     elea_test_xml_name: "Test",
     elea_test_gift_name: "Format GIFT",
@@ -232,11 +234,12 @@ function updateLanguageSelector() {
  * @param {HTMLElement} [container=document] - L'élément DOM à l'intérieur duquel appliquer les traductions.
  */
 export function translatePage(container = document) {
-  container.querySelectorAll('[data-key], [data-translate], [data-tooltip-key], [data-key-placeholder], [data-placeholder-key]').forEach(element => {
+  container.querySelectorAll('[data-key], [data-translate], [data-tooltip-key], [data-key-placeholder], [data-placeholder-key], [data-key-aria]').forEach(element => {
     const key = element.getAttribute('data-key') || element.getAttribute('data-translate');
     const tooltipKey = element.getAttribute('data-tooltip-key');
     const placeholderKey = element.getAttribute('data-key-placeholder');
     const dataPlaceholderKey = element.getAttribute('data-placeholder-key');
+    const ariaKey = element.getAttribute('data-key-aria');
 
     if (key) {
         const t = translations[key];
@@ -267,6 +270,13 @@ export function translatePage(container = document) {
         const t = translations[dataPlaceholderKey];
         if (typeof t !== 'undefined') {
             element.setAttribute('data-placeholder', String(t));
+        }
+    }
+
+    if (ariaKey) {
+        const ta = translations[ariaKey];
+        if (typeof ta !== 'undefined') {
+            element.setAttribute('aria-label', String(ta));
         }
     }
 
@@ -308,12 +318,8 @@ export function initLanguageSwitcher() {
 
             generateTiles();
 
-            if (window.activeTile) {
-                const moduleKey = window.activeTile.dataset?.module;
-                if (moduleKey) {
-                    toggleActivityContent(moduleKey, window.activeTile);
-                }
-            }
+            // Rafraîchir la sidebar active en place (no-op si aucune sidebar ouverte)
+            refreshSidebar();
         });
     }
 

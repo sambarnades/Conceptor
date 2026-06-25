@@ -4,14 +4,22 @@
 - Ton public : [NIVEAU]
 
 # RÈGLES SPÉCIFIQUES POUR [H5P.Summary]
+
 - Nombre d'étapes : Génère un tableau de 5 étapes minimum || [NOMBRE_ELEMENTS] étapes pour couvrir l'ensemble du sujet.
 - Distracteurs : Propose au minimum 2 distracteurs par étape. Ils doivent être cohérents avec le sujet mais comporter des erreurs factuelles ou logiques plausibles.
+- Rétroaction : renseigne le `tip` de chaque étape pour aider à reconnaître l'affirmation exacte parmi les distracteurs, sans la désigner. Le `overallFeedback` gradue par niveau de maîtrise (cf. RÈGLES PÉDAGOGIQUES).
 
 # RÈGLES PÉDAGOGIQUES
-- Adaptation et vocabulaire : Adapte le ton, le vocabulaire et la difficulté des consignes au public indiqué. Sois pertinent et engageant.
-- Ton et feedback : Les consignes et remarques doivent être constructives, encourageantes, tournées vers l'apprentissage.
-- Conformité : Adapte OBLIGATOIREMENT les contenus aux références officielles en vigueur. Sauf mention contraire explicite, base-toi par défaut sur les programmes scolaires français (Eduscol) pour le public scolaire, et sur les textes réglementaires de la formation professionnelle pour les adultes.
-- Langue : Le contenu et les consignes doivent être rédigés dans la langue cible (français sauf indication contraire).
+- Adaptation : adapte le ton, le vocabulaire et la difficulté au public. Choisis le tutoiement (élèves) ou le vouvoiement (adultes/formation) et garde le même registre dans les consignes et les rétroactions.
+- Conformité : adapte les contenus aux références officielles (par défaut programmes Eduscol ; textes de la formation professionnelle pour les adultes).
+- Langue : rédige dans la langue cible (français sauf indication contraire).
+- Rétroactions (feedback formatif) — quand l’activité en comporte :
+  - Aide à progresser, jamais un simple verdict. Décris la notion, jamais l’élève : bannis « Faux/Non/À revoir », l’ironie, les comparaisons entre élèves et l’éloge de la personne.
+  - Mauvaise réponse : nomme l’erreur (confusion, fait, calcul, hors-contexte) puis rappelle l’idée juste. Bonne réponse : dis POURQUOI, pas seulement « Bravo ». Indice : une piste qui ne révèle pas la réponse.
+  - N’invente aucun fait ni source ; ne renvoie pas à un « document » ou une « page » : oriente vers la NOTION à revoir.
+  - Feedback global par tranche : il ignore quelle question a été ratée → ne révèle rien et gradue par maîtrise — 0-25 % rassure et reprends les bases ; 26-50 % cible ce qui résiste ; 51-75 % consolide les cas délicats ; 76-100 % valide et propose d’aller plus loin. Évite « Moyen./Bien. » ; tu peux inviter l’élève à repérer lui-même ce qui l’a fait hésiter.
+  - Lisibilité (CUA/FALC) : phrases courtes, mots connus.
+  - Texte brut : aucun Markdown (`**gras**`, `*italique*`) ni LaTeX dans les feedbacks et les indices — H5P ne les interprète pas et ils s’afficheraient littéralement.
 
 # SOURCES
 - Tu utiliseras UNIQUEMENT les textes suivants pour générer ton activité.
@@ -30,6 +38,7 @@
 - **Introduction :** Le champ \`intro\` est du texte brut (pas de LaTeX ni de HTML).
 
 # EXEMPLE DE RENDU
+
 ```json
 {
   "intro": "Sélectionnez les affirmations correctes pour construire le résumé du cours.",
@@ -40,14 +49,30 @@
         "La photosynthèse est un processus qui se déroule uniquement durant la nuit.",
         "La photosynthèse est le mécanisme par lequel les animaux respirent."
       ],
-      "tip": "Pensez à la lumière comme source d'énergie."
+      "tip": "Pense à la lumière comme source d'énergie."
     }
   ],
   "overallFeedback": [
-    { "from": 0, "to": 25, "feedback": "Des efforts sont nécessaires pour bien comprendre ces notions." },
-    { "from": 26, "to": 50, "feedback": "C'est un bon début, mais certains points restent à éclaircir." },
-    { "from": 51, "to": 75, "feedback": "Bon travail ! Tu as compris l'essentiel." },
-    { "from": 76, "to": 100, "feedback": "Excellent ! Tu as une parfaite maîtrise de cette leçon." }
+    {
+      "from": 0,
+      "to": 25,
+      "feedback": "Reprends ce qu'est la photosynthèse : pense à la lumière comme source d'énergie."
+    },
+    {
+      "from": 26,
+      "to": 50,
+      "feedback": "Bon début : distingue bien ce que fait la plante et ce qu'elle ne fait pas."
+    },
+    {
+      "from": 51,
+      "to": 75,
+      "feedback": "Tu tiens l'essentiel : vérifie les affirmations qui t'ont fait hésiter."
+    },
+    {
+      "from": 76,
+      "to": 100,
+      "feedback": "Très bien : tu sais reconnaître ce qui décrit correctement la photosynthèse."
+    }
   ]
 }
 ```

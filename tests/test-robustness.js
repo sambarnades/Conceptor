@@ -904,6 +904,16 @@ async function runStep10_LatexDelimiters() {
         { got: convMulti }
     );
 
+    // --- 10g. Texte monetaire avec DEUX montants → aucune conversion (B09) ---
+    // « 5$ et … 10$ » : le $ ouvrant est precede d'un chiffre (il ferme un montant)
+    // et le contenu apparie commence par un espace → on ne convertit pas.
+    const money2 = "L'article coute 5$ et le second 10$";
+    const convMoney2 = convertLatexDelimitersDeep(money2);
+    assert(convMoney2 === money2,
+        `[10g.Money2] Texte monetaire a deux montants non converti : "${convMoney2}"`,
+        { got: convMoney2 }
+    );
+
     console.groupEnd();
 }
 

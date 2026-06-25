@@ -13,6 +13,7 @@ import { getNestedValue, setNestedValue } from './json-utils.js';
 import { healStructureForActivity } from '../h5p/json-healer.js';
 import { debugLog } from '../core/utils.js';
 import { showConfirm } from './array-manager.js';
+import { importMbz, importStandaloneXml, getEditorModuleKey } from '../moodle/moodle-importer.js';
 export { setNestedValue };
 
 // =======================================================================
@@ -52,10 +53,39 @@ export async function initJsonEditor(notification, container, jsonData, options 
     }
 
     try {
-        // Detecter le type de contenu
         debugLog('Editor', 'initJsonEditor - notification.titleKey:', notification.titleKey);
         debugLog('Editor', 'initJsonEditor - jsonData:', JSON.stringify(jsonData, null, 2));
-        const detectionResult = detectContentType(jsonData, notification.titleKey);
+
+        // Le court-circuit moduleKey est RÉSERVÉ aux notifications Moodle
+        // (import .mbz / .xml ou génération Éléa, type 'mbz'/'xml'). Les
+        // notifications H5P (type 'h5p') portent elles aussi un moduleKey
+        // (clé du processeur, ex: 'QuizSetQCM') mais celle-ci n'est PAS une
+        // clé de fieldSchema : 'QuizSetQCM'/'QuizSetVF' doivent être détectées
+        // via titleKey → 'QuizSet'. On les laisse donc passer par
+        // detectContentType. Sans cette garde, l'éditeur de Quiz QCM/VF
+        // échoue avec « No schema found for: QuizSetQCM » (régression beta7d).
+        let detectionResult = null;
+        if (notification.moduleKey && notification.type !== 'h5p') {
+            // Traduit la clé Caramel canonique exposée par l'importer
+            // ('QCM', 'Glossaire', …) vers la clé interne attendue par
+            // content-detector.js / les fieldSchemas ('elea_qcm', 'elea_glossaire', …).
+            // Si la clé n'est pas connue de la table, on retombe sur la valeur
+            // brute (cas legacy / notifications déjà annotées en elea_*).
+            const editorKey = getEditorModuleKey(notification.moduleKey) || notification.moduleKey;
+            // Filet de sécurité : on ne court-circuite que si un schéma existe
+            // réellement pour la clé résolue, sinon on retombe sur la détection.
+            if (getSchemaForType(editorKey)) {
+                debugLog('Editor', 'initJsonEditor - moduleKey pre-connu via import:', notification.moduleKey, '→', editorKey);
+                detectionResult = {
+                    moduleKey:  editorKey,
+                    moduleName: editorKey,
+                    source:     'moodle'
+                };
+            }
+        }
+        if (!detectionResult) {
+            detectionResult = detectContentType(jsonData, notification.titleKey);
+        }
         debugLog('Editor', 'initJsonEditor - detectionResult:', detectionResult);
 
         if (!detectionResult) {
@@ -103,6 +133,26 @@ export async function initJsonEditor(notification, container, jsonData, options 
             onCancel: handleCancel
         });
 
+        // Vidéo interactive : lecteur intégré + « insérer une question à ce moment » (Caramel-only,
+        // monté en frère du conteneur pour survivre aux re-rendus).
+        if (detectionResult.moduleKey === 'InteractiveVideo') {
+            import('./interactive-video-panel.js').then(m => {
+                m.mountInteractiveVideoPanel(container, {
+                    getData: () => { const d = getEditorData(); if (d) editorState.currentData = d; return editorState.currentData; },
+                    setData: (d) => { editorState.currentData = d; editorState.hasChanges = true; },
+                    rerender: () => {
+                        renderEditor(container, editorState.currentData, getSchemaForType('InteractiveVideo'), {
+                            moduleKey: 'InteractiveVideo',
+                            moduleName: detectionResult.moduleName,
+                            onChange: handleDataChange,
+                            onSave: handleSave,
+                            onCancel: handleCancel
+                        });
+                    }
+                });
+            }).catch(e => debugLog('Editor', 'IV panel échec:', e));
+        }
+
         debugLog('Editor', 'Initialized for:', detectionResult.moduleKey);
         return true;
 
@@ -118,6 +168,22 @@ export async function initJsonEditor(notification, container, jsonData, options 
  */
 export function destroyEditor() {
     if (editorState.container) {
+        // Le panneau « Vidéo interactive » est monté en FRÈRE du conteneur (pour survivre aux
+        // re-rendus) : container.innerHTML='' ne le retire donc pas. On l'enlève explicitement,
+        // sinon la barre « Lecteur vidéo » fuit dans la modale de visualisation après édition.
+        const parent = editorState.container.parentElement;
+        if (parent) {
+            const ivPanel = parent.querySelector('.iv-editor-panel');
+            if (ivPanel) ivPanel.remove();
+            // Le mode Live pose la classe `iv-mode-live` sur le parent (masque la nav) : la retirer
+            // pour qu'elle ne fuie pas si l'on ferme l'éditeur en mode Live.
+            parent.classList.remove('iv-mode-live');
+            // Tuer le lecteur encore vivant (le mode Live YouTube laisse un timer de sondage) — le
+            // module est déjà chargé (mount), l'import est donc instantané et résolu par cache.
+            if (ivPanel) import('./interactive-video-panel.js')
+                .then(m => m.destroyInteractiveVideoPanel && m.destroyInteractiveVideoPanel())
+                .catch(() => { /* module non chargé : rien à détruire */ });
+        }
         editorState.container.innerHTML = '';
     }
 
@@ -444,13 +510,39 @@ export async function extractJsonFromNotification(notification) {
             return JSON.parse(JSON.stringify(notification.originalJsonData));
         }
 
-        // PRIORITÉ 2: Extraction depuis ZIP H5P (fallback pour anciennes notifications)
+        // PRIORITÉ 2: Binaire MBZ — réouverture d'un .mbz généré par Caramel
+        // (ou par un autre Moodle). Dispatch via moodle-importer vers le
+        // processor.parseFiles() approprié.
+        if (notification.type === 'mbz' && notification.blob) {
+            debugLog('Editor', 'Importing MBZ binary');
+            const buffer = await notification.blob.arrayBuffer();
+            const result = await importMbz(buffer);
+            // Annoter la notification avec le contexte d'import pour que la
+            // sauvegarde ultérieure puisse re-packager via serializeFiles.
+            notification.moduleKey  = result.moduleKey;
+            notification._mbzFiles  = result.files;
+            notification._mbzDir    = result.activityDir;
+            notification._mbzModule = result.moduleName;
+            return result.data;
+        }
+
+        // PRIORITÉ 3: XML standalone — Glossaire (<GLOSSARY>) ou banque de
+        // questions (<quiz>) exportée hors MBZ. Détection automatique du format.
+        if (notification.type === 'xml-standalone' && notification.xml) {
+            debugLog('Editor', 'Importing XML standalone');
+            const result = importStandaloneXml(notification.xml);
+            notification.moduleKey = result.moduleKey;
+            notification._xmlType  = result.xmlType;
+            return result.data;
+        }
+
+        // PRIORITÉ 4: Extraction depuis ZIP H5P (fallback pour anciennes notifications)
         if (notification.type === 'h5p') {
             debugLog('Editor', 'Fallback: Extracting from H5P ZIP');
             return await extractH5PContent(notification.blob);
         }
 
-        // PRIORITÉ 3: jsonData direct (Moodle/Eléa - pas de transformation)
+        // PRIORITÉ 5: jsonData direct (Moodle/Eléa - pas de transformation)
         if (notification.jsonData) {
             return JSON.parse(JSON.stringify(notification.jsonData));
         }

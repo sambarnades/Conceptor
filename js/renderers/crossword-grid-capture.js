@@ -51,7 +51,7 @@ let _currentColors = DEFAULT_COLORS;
  * @returns {Promise<{emptyGrid: Object|null, solutionGrid: Object|null}>}
  */
 export async function captureCrosswordGrid(modal, words, theme) {
-    const result = { emptyGrid: null, solutionGrid: null };
+    const result = { emptyGrid: null, solutionGrid: null, placements: [], unplacedWords: [] };
     _currentColors = buildColors(theme);
 
     try {
@@ -89,12 +89,14 @@ export async function captureCrosswordGrid(modal, words, theme) {
         // 5. Grille vide
         result.emptyGrid = await renderAndExport(gridModel, null);
 
-        // 6. Grille corrigée (si mots fournis)
+        // 6. Grille corrigée + placements annotés (si mots fournis)
         if (words && words.length > 0) {
             try {
-                const solutionLetters = buildSolutionGrid(iframeDoc, gridModel, words);
-                if (solutionLetters) {
-                    result.solutionGrid = await renderAndExport(gridModel, solutionLetters);
+                const { letters, placements, unplaced } = buildSolutionData(iframeDoc, gridModel, words);
+                result.placements = placements;
+                result.unplacedWords = unplaced;
+                if (letters) {
+                    result.solutionGrid = await renderAndExport(gridModel, letters);
                 }
             } catch (err) {
                 console.warn('[CrosswordCapture] Impossible de construire la grille corrigée:', err);
@@ -109,15 +111,18 @@ export async function captureCrosswordGrid(modal, words, theme) {
 }
 
 /**
- * Construit la matrice de lettres-solution en lisant les indices du DOM H5P
- * et en les associant aux mots du JSON.
+ * Construit la matrice de lettres-solution + les placements annotés (clueId, direction, word)
+ * en lisant les indices du DOM H5P et en les associant aux mots du JSON.
+ * @returns {{ letters: Array<Array<string|null>>|null, placements: Array, unplaced: Array }}
  */
-function buildSolutionGrid(iframeDoc, gridModel, words) {
+function buildSolutionData(iframeDoc, gridModel, words) {
+    const empty = { letters: null, placements: [], unplaced: [] };
+
     // Lire les listes d'indices (Horizontal / Vertical) depuis le DOM H5P
     const clues = readCluesFromDOM(iframeDoc);
     if (clues.across.length === 0 && clues.down.length === 0) {
         console.warn('[CrosswordCapture] Aucun indice trouvé dans le DOM');
-        return null;
+        return empty;
     }
 
     // Matrice de lettres (null = pas de lettre)
@@ -125,34 +130,39 @@ function buildSolutionGrid(iframeDoc, gridModel, words) {
         Array(gridModel.cols).fill(null)
     );
 
-    let placed = 0;
+    const placements = [];
+    const matchedWords = new Set();
 
-    // Placer les mots horizontaux
-    for (const clue of clues.across) {
-        const word = matchClueToWord(clue.text, words);
-        if (!word) continue;
-        const pos = findClueCellPosition(gridModel, clue.id);
-        if (!pos) continue;
-        placeWord(letters, word.answer, pos.row, pos.col, 0, 1, gridModel);
-        placed++;
-    }
+    const collect = (clueList, direction, dRow, dCol) => {
+        for (const clue of clueList) {
+            const word = matchClueToWord(clue.text, words);
+            if (!word) continue;
+            const pos = findClueCellPosition(gridModel, clue.id);
+            if (!pos) continue;
+            placeWord(letters, word.answer, pos.row, pos.col, dRow, dCol, gridModel);
+            placements.push({
+                clueId: String(clue.id),
+                direction,
+                row: pos.row,
+                col: pos.col,
+                word
+            });
+            matchedWords.add(word);
+        }
+    };
 
-    // Placer les mots verticaux
-    for (const clue of clues.down) {
-        const word = matchClueToWord(clue.text, words);
-        if (!word) continue;
-        const pos = findClueCellPosition(gridModel, clue.id);
-        if (!pos) continue;
-        placeWord(letters, word.answer, pos.row, pos.col, 1, 0, gridModel);
-        placed++;
-    }
+    collect(clues.across, 'across', 0, 1);
+    collect(clues.down, 'down', 1, 0);
 
-    if (placed === 0) {
+    if (placements.length === 0) {
         console.warn('[CrosswordCapture] Aucun mot placé sur la grille');
-        return null;
+        return empty;
     }
 
-    return letters;
+    // Mots du JSON qui n'ont pas été matchés à un indice du DOM H5P
+    const unplaced = words.filter(w => !matchedWords.has(w));
+
+    return { letters, placements, unplaced };
 }
 
 /**

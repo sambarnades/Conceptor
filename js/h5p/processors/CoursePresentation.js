@@ -271,10 +271,11 @@ function buildContentElement(type, content, layout) {
 
 /**
  * Construit les params pour un élément Table H5P.
+ * Exporté : réutilisé par le processeur InteractiveBook (mêmes 6 styles de tableaux).
  * @param {Object} tableData - { headers: [], rows: [[]] }
  * @returns {Object} Les params Table H5P
  */
-function buildTableParams(tableData) {
+export function buildTableParams(tableData) {
     if (!tableData || !tableData.headers) return { text: '<table></table>' };
 
     const style = tableData._style || 'default';

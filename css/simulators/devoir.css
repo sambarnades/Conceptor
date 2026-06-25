@@ -1,0 +1,114 @@
+/* =======================================================================
+   Simulateur Devoir (Grille d'évaluation critériée)
+   ======================================================================= */
+
+.devoir-simulator {
+    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #333;
+    background: #fff;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 8px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.devoir-header {
+    margin-bottom: 16px;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.devoir-nav-tabs {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.devoir-nav-tabs span.active {
+    font-weight: bold;
+    color: #1a3a6b;
+    border-bottom: 2px solid #1a3a6b;
+    padding-bottom: 4px;
+    font-size: 1.1rem;
+    flex: 1;
+}
+
+.devoir-description {
+    color: #666;
+    font-style: italic;
+    font-size: 0.9rem;
+    margin: 4px 0 0 0;
+    line-height: 1.4;
+}
+
+.devoir-table-wrapper {
+    overflow-x: auto;
+    flex: 1;
+}
+
+.devoir-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    line-height: 1.45;
+}
+
+.devoir-table td {
+    border: 1px solid #d9d9d9;
+    padding: 10px 12px;
+    vertical-align: top;
+}
+
+.devoir-td-criterion {
+    font-weight: 700;
+    color: #1a3a6b;
+    background: #f5f7fa;
+    width: 18%;
+    min-width: 130px;
+    font-size: 0.9rem;
+}
+
+.devoir-td-level {
+    background: #fff;
+}
+
+.devoir-td-empty {
+    background: #fafafa;
+}
+
+.devoir-level-definition {
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.devoir-level-score {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #5b7a9d;
+    margin-top: 4px;
+}
+
+.devoir-total {
+    margin-top: 14px;
+    padding: 10px 12px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: #1a3a6b;
+    background: #f0f4f8;
+    border-radius: 6px;
+    text-align: right;
+}
+
+@media (max-width: 640px) {
+    .devoir-table {
+        font-size: 0.82rem;
+    }
+
+    .devoir-td-criterion {
+        min-width: 100px;
+    }
+}

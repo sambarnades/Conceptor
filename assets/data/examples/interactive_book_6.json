@@ -1,0 +1,221 @@
+{
+  "title": "La Révolution et l'Empire (1789-1815)",
+  "cover": {
+    "description": "Explorez la chute de la monarchie, l'expérience démocratique et l'ascension de Napoléon Bonaparte dans un parcours interactif."
+  },
+  "chapters": [
+    {
+      "title": "1789-1792 : La fin de l'Ancien Régime",
+      "content": [
+        {
+          "type": "text",
+          "text": "En **1789**, la France traverse une crise profonde. Le **Tiers État**, qui représente la grande majorité de la population, réclame des réformes. Le **14 juillet 1789**, la prise de la Bastille à Paris marque le début de la Révolution. Peu après, la **Déclaration des droits de l'homme et du citoyen** proclame les principes de liberté, d'égalité et de souveraineté du peuple.\n\nLa monarchie constitutionnelle est mise en place : le roi conserve le pouvoir exécutif mais la puissance législative revient à l'Assemblée. Cependant, la guerre et les divisions internes menacent le régime."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.MultiChoice 1.16",
+          "question": "Quels événements majeurs ont marqué l'année 1789 ?",
+          "answers": [
+            {
+              "text": "La prise de la Bastille",
+              "correct": true
+            },
+            {
+              "text": "Le couronnement de Napoléon",
+              "correct": false
+            },
+            {
+              "text": "La déclaration des droits de l'homme et du citoyen",
+              "correct": true
+            },
+            {
+              "text": "La bataille de Waterloo",
+              "correct": false
+            }
+          ],
+          "behaviour": {
+            "singleAnswer": false
+          },
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relisez attentivement la chronologie des événements de 1789."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Vous avez identificé quelques éléments, vérifiez les dates."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bon travail ! Vous maîtrisez les grandes dates du début de la Révolution."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent ! Vous connaissez parfaitement le début du processus révolutionnaire."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "1792-1799 : République et Terreur",
+      "content": [
+        {
+          "type": "text",
+          "text": "En **1792**, la République est proclamée et le roi **Louis XVI** est guillotiné en janvier **1793**. La France est alors en guerre contre plusieurs puissances européennes et traversée par des rébellions intérieures.\n\nPour sauver la Révolution, le comité de salut public, dirigé par **Robespierre**, installe une dictature connue sous le nom de **Terreur**. Les opposants sont jugés et exécutés. Ce régime prend fin avec la chute de Robespierre en juillet 1794. La République survit mais reste instable jusqu'à l'arrivée de Napoléon Bonaparte."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.TrueFalse 1.8",
+          "question": "La période de la Terreur a été caractérisée par l'exécution des opposants politiques au nom de la vertu révolutionnaire.",
+          "correct": "true",
+          "feedbackOnCorrect": "C'est exact. C'est Robespierre qui justifiait ces mesures par la nécessité de protéger la République.",
+          "feedbackOnWrong": "C'est en effet vrai. La Terreur a vu se multiplier les exécutions de suspects."
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Blanks 1.14",
+          "taskDescription": "Reconstituez la phrase en complétant les trous avec les mots appropriés.",
+          "questions": [
+            "Après la chute de Robespierre, c'est *Napoléon* qui s'impose comme le leader de la France en *1799*."
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Attention à la succession des événements et aux personnages clés."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Presque ! Vérifiez la chronologie et les noms."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bien joué ! Vous avez compris la transition vers le Consulat."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Parfait ! Votre compréhension de la fin de la Révolution est solide."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "1804-1815 : L'Empire Napoléonien",
+      "content": [
+        {
+          "type": "text",
+          "text": "En **1804**, Napoléon Bonaparte se proclame **Empereur**. Il stabilise le régime par la signature du **Concordat** avec le Pape et la création de la **Banque de France**. Mais c'est surtout par les armes qu'il impose la France en Europe.\n\nLe tableau ci-dessous récapitule les grandes batailles et les traités qui structurent son Empire.\n\n| Année | Événement majeur | Conséquence | |---|---|---| | 1805 | Bataille d'Austerlitz | Victoire majeure, éclatement du Saint-Empire. | | 1804 | Couronnement et Code civil | Renforcement du pouvoir et unification juridique. | | 1815 | Bataille de Waterloo | Défaite finale et début de l'exil à Sainte-Hélène. |"
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.SingleChoiceSet 1.11",
+          "choices": [
+            {
+              "question": "Quelle année Napoléon se fait-il couronner Empereur ?",
+              "answers": [
+                "1804",
+                "1799",
+                "1815"
+              ]
+            },
+            {
+              "question": "Comment appelle-t-on l'ensemble des lois rédigées sous Napoléon ?",
+              "answers": [
+                "Le Code civil",
+                "La Déclaration des droits",
+                "La Constitution de l'an VIII"
+              ]
+            },
+            {
+              "question": "Quel événement de 1815 marque la fin définitive du règne de Napoléon ?",
+              "answers": [
+                "La bataille de Waterloo",
+                "La prise de la Bastille",
+                "Le coup d'État du 18 Brumaire"
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 33,
+              "feedback": "Il est important de bien distinguer les dates clés de l'Empire."
+            },
+            {
+              "from": 34,
+              "to": 66,
+              "feedback": "Vous connaissez les grandes lignes, mais vérifiez certaines précisions."
+            },
+            {
+              "from": 67,
+              "to": 100,
+              "feedback": "Très bien ! Vous maîtrisez la période napoléonienne."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Synthèse : De la Révolution à l'Empire",
+      "content": [
+        {
+          "type": "exercise",
+          "library": "H5P.MultiChoice 1.16",
+          "question": "Parmi les propositions suivantes, lesquelles décrivent une continuité ou un changement majeur entre la Révolution et l'Empire ?",
+          "answers": [
+            {
+              "text": "La Révolution abolit les privilèges et l'Empire maintient l'ordre social réformé.",
+              "correct": true
+            },
+            {
+              "text": "Napoléon a restauré la monarchie absolue de droit divin comme avant 1789.",
+              "correct": false
+            },
+            {
+              "text": "La Révolution a instauré l'égalité devant la loi, principe conservé par Napoléon.",
+              "correct": true
+            },
+            {
+              "text": "La Révolution et l'Empire n'ont aucun lien, ce sont deux périodes distinctes.",
+              "correct": false
+            }
+          ],
+          "behaviour": {
+            "singleAnswer": false
+          },
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "La Révolution et l'Empire sont intimement liés. Revoir le cours."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Vous avez saisi une partie des enjeux, mais certaines nuances manquent."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bien ! Vous comprenez la complexité de la transition vers l'Empire."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent ! Votre vision globale de la période 1789-1815 est pertinente."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

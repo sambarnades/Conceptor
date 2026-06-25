@@ -1,0 +1,388 @@
+{
+  "title": "Les états de la matière et leurs transformations",
+  "cover": {
+    "description": "Découvrez les trois états de la matière et leurs changements à travers des expériences et des exercices interactifs !"
+  },
+  "baseColor": "#1768c4",
+  "showTableOfContents": true,
+  "displaySummary": true,
+  "chapters": [
+    {
+      "title": "Qu'est-ce que la matière ?",
+      "content": [
+        {
+          "type": "text",
+          "text": "La **matière** est tout ce qui nous entoure : l'air que tu respires, l'eau que tu bois, ou encore ton stylo ! Elle est composée de **particules** (atomes ou molécules) qui bougent différemment selon son état.\n\nEn classe de 5e, on étudie **trois états principaux** : solide, liquide et gazeux. Chaque état a des propriétés bien particulières que tu vas découvrir !"
+        },
+        {
+          "type": "table",
+          "tableStyle": "striped",
+          "table": {
+            "headers": [
+              "État",
+              "Forme",
+              "Volume",
+              "Exemples"
+            ],
+            "rows": [
+              [
+                "**Solide**",
+                "Fixe (ne change pas)",
+                "Constant",
+                "Pierre, glace, crayon"
+              ],
+              [
+                "**Liquide**",
+                "Variable (prend la forme du récipient)",
+                "Constant",
+                "Eau, lait, huile"
+              ],
+              [
+                "**Gazeux**",
+                "Variable (occupe tout l'espace disponible)",
+                "Variable (peut être comprimé)",
+                "Air, vapeur d'eau, oxygène"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.MultiChoice 1.16",
+          "question": "Parmi ces objets, lequel est à l'état gazeux ?",
+          "answers": [
+            {
+              "text": "La fumée qui sort d'une tasse de thé",
+              "correct": true,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Exact ! La fumée est composée de particules très éloignées les unes des autres."
+              }
+            },
+            {
+              "text": "Un glaçon dans un verre",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Un glaçon est à l'état solide."
+              }
+            },
+            {
+              "text": "Du jus de fruit dans un verre",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Le jus de fruit est à l'état liquide."
+              }
+            },
+            {
+              "text": "Un livre posé sur une table",
+              "correct": false,
+              "tipsAndFeedback": {
+                "chosenFeedback": "Un livre est à l'état solide."
+              }
+            }
+          ],
+          "behaviour": {
+            "singleAnswer": true
+          },
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relis bien la définition des états de la matière dans le tableau."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Presque ! Observe bien les exemples donnés pour chaque état."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bien joué ! Tu as bien compris les différences entre les états."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Parfait ! Tu maîtrises déjà les bases des états de la matière."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Les changements d'état",
+      "content": [
+        {
+          "type": "text",
+          "text": "Un **changement d'état** se produit quand la matière passe d'un état à un autre. Ces transformations sont **réversibles** : tu peux faire fondre de la glace puis la recongeler !\n\nOn distingue **six changements principaux** : fusion, solidification, vaporisation, liquéfaction, sublimation et condensation. Chaque transformation a un nom précis et des conditions particulières (température, pression)."
+        },
+        {
+          "type": "table",
+          "tableStyle": "bordered",
+          "table": {
+            "headers": [
+              "Changement d'état",
+              "Nom",
+              "Exemple",
+              "Température typique"
+            ],
+            "rows": [
+              [
+                "Solide → Liquide",
+                "**Fusion**",
+                "Glace qui fond en eau",
+                "*0°C* pour l'eau pure"
+              ],
+              [
+                "Liquide → Solide",
+                "**Solidification**",
+                "Eau qui gèle en glace",
+                "*0°C* pour l'eau pure"
+              ],
+              [
+                "Liquide → Gazeux",
+                "**Vaporisation** (ébullition ou évaporation)",
+                "Eau qui bout en vapeur",
+                "*100°C* pour l'eau pure (à pression normale)"
+              ],
+              [
+                "Gazeux → Liquide",
+                "**Liquéfaction** (ou condensation liquide)",
+                "Vapeur d'eau qui se transforme en rosée",
+                "Variable selon la pression"
+              ],
+              [
+                "Solide → Gazeux",
+                "**Sublimation**",
+                "Glace sèche (CO₂ solide) qui disparaît",
+                "Température ambiante"
+              ],
+              [
+                "Gazeux → Solide",
+                "**Condensation solide** (ou déposition)",
+                "Givre qui se forme sur les vitres",
+                "Température très basse"
+              ]
+            ]
+          }
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Blanks 1.14",
+          "taskDescription": "Complète les phrases avec le bon terme.",
+          "questions": [
+            "Quand l'eau liquide devient de la vapeur, on parle de *vaporisation*.",
+            "La transformation du gaz en liquide s'appelle *liquéfaction*.",
+            "La *fusion* est le passage du solide au liquide.",
+            "Le passage direct du solide au gaz est la *sublimation*."
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 25,
+              "feedback": "Relis attentivement le tableau des changements d'état."
+            },
+            {
+              "from": 26,
+              "to": 50,
+              "feedback": "Presque ! Vérifie les termes dans le tableau."
+            },
+            {
+              "from": 51,
+              "to": 75,
+              "feedback": "Bien joué ! Tu as bien compris les transformations."
+            },
+            {
+              "from": 76,
+              "to": 100,
+              "feedback": "Excellent ! Tu maîtrises parfaitement les changements d'état."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Expériences et observations",
+      "content": [
+        {
+          "type": "text",
+          "text": "Pour mieux comprendre, faisons quelques **expériences simples** avec l'eau, une substance que tu connais bien !\n\n- **Expérience 1** : Place un glaçon dans un verre et observe ce qui se passe après 10 minutes.\n- **Expérience 2** : Fais chauffer de l'eau dans une casserole (avec un adulte) et observe la vapeur qui s'échappe.\n- **Expérience 3** : Mets de l'eau dans un congélateur et observe la formation de glace après quelques heures.\n\nCes expériences te permettront de **visualiser les changements d'état** et de mieux retenir leurs noms !"
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.SingleChoiceSet 1.11",
+          "choices": [
+            {
+              "question": "Que se passe-t-il quand tu laisses un glaçon à température ambiante ?",
+              "answers": [
+                "Il fond (passage solide → liquide)",
+                "Il se transforme en gaz",
+                "Il reste solide"
+              ]
+            },
+            {
+              "question": "Que vois-tu quand l'eau bout dans une casserole ?",
+              "answers": [
+                "De la vapeur (passage liquide → gazeux)",
+                "De la fumée (qui est solide)",
+                "Rien de visible"
+              ]
+            },
+            {
+              "question": "Que se forme-t-il quand tu mets de l'eau dans le congélateur ?",
+              "answers": [
+                "De la glace (passage liquide → solide)",
+                "De la vapeur",
+                "Rien ne se passe"
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 33,
+              "feedback": "Relis les expériences proposées dans le chapitre."
+            },
+            {
+              "from": 34,
+              "to": 66,
+              "feedback": "Presque ! Observe bien les changements d'état dans le tableau du chapitre 2."
+            },
+            {
+              "from": 67,
+              "to": 100,
+              "feedback": "Parfait ! Tu as bien compris les expériences."
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.TrueFalse 1.8",
+          "question": "La vaporisation et l'évaporation sont deux noms pour le même phénomène.",
+          "correct": "true",
+          "feedbackOnCorrect": "Exact ! La vaporisation regroupe l'évaporation (à la surface) et l'ébullition (dans tout le liquide).",
+          "feedbackOnWrong": "Non, la vaporisation est le terme général qui inclut l'évaporation et l'ébullition."
+        }
+      ]
+    },
+    {
+      "title": "Synthèse et révision",
+      "content": [
+        {
+          "type": "text",
+          "text": "Félicitations ! Tu as maintenant exploré les **trois états de la matière** et leurs **transformations**. Pour vérifier tes connaissances, complète cette synthèse interactive. N'hésite pas à relire les chapitres si besoin !"
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.Summary 1.10",
+          "intro": "Associe chaque exemple à l'état de la matière correspondant.",
+          "summaries": [
+            {
+              "summary": [
+                "Un nuage",
+                "Un livre",
+                "De l'huile dans une poêle"
+              ]
+            },
+            {
+              "summary": [
+                "La fusion",
+                "La solidification",
+                "La vaporisation"
+              ],
+              "tip": "Pense aux changements d'état !"
+            },
+            {
+              "summary": [
+                "La glace fond à *0°C*",
+                "L'eau bout à *100°C*",
+                "Le fer fond à *1538°C*"
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 33,
+              "feedback": "Relis bien les définitions des états de la matière."
+            },
+            {
+              "from": 34,
+              "to": 66,
+              "feedback": "Presque ! Vérifie les exemples dans les chapitres précédents."
+            },
+            {
+              "from": 67,
+              "to": 100,
+              "feedback": "Excellent travail ! Tu as tout compris."
+            }
+          ]
+        },
+        {
+          "type": "exercise",
+          "library": "H5P.DragQuestion 1.14",
+          "title": "Classe ces exemples selon leur état de la matière.",
+          "dropZones": [
+            {
+              "label": "Solide",
+              "correctElements": [
+                0,
+                3
+              ]
+            },
+            {
+              "label": "Liquide",
+              "correctElements": [
+                1,
+                4
+              ]
+            },
+            {
+              "label": "Gazeux",
+              "correctElements": [
+                2,
+                5
+              ]
+            }
+          ],
+          "elements": [
+            {
+              "text": "Une pomme"
+            },
+            {
+              "text": "Du lait"
+            },
+            {
+              "text": "La fumée d'un feu"
+            },
+            {
+              "text": "Un rocher"
+            },
+            {
+              "text": "Du jus d'orange"
+            },
+            {
+              "text": "L'air dans un ballon"
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 33,
+              "feedback": "Relis les définitions des états de la matière."
+            },
+            {
+              "from": 34,
+              "to": 66,
+              "feedback": "Presque ! Vérifie les exemples dans les chapitres précédents."
+            },
+            {
+              "from": 67,
+              "to": 100,
+              "feedback": "Parfait ! Tu as bien classé tous les exemples."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
