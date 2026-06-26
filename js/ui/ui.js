@@ -187,11 +187,16 @@ export function setupFilters() {
             // generatePrompts() ci-dessous reconstruit le prompt avec le nouveau contexte + la même
             // transcription (cf. currentVideoSources dans prompt-generator).
 
-            // Régénérer les prompts seulement si au moins un champ requis est rempli
-            // (évite les erreurs quand l'utilisateur efface tous les champs)
+            // Régénérer les prompts dès qu'un champ de contexte porteur de sens est rempli
+            // (évite les erreurs/notifications quand l'utilisateur efface TOUS les champs).
+            // On inclut `niveau` et `nombreQuestions` : pour la Vidéo interactive, la source du
+            // prompt est la TRANSCRIPTION (pas Qui/Quoi, souvent laissés vides) — sans cela, saisir
+            // le nombre de questions en mode Avancé ne réinjectait jamais ce nombre dans le prompt.
             const qui = document.getElementById('qui')?.value.trim() || '';
             const quoi = document.getElementById('quoi')?.value.trim() || '';
-            if (qui || quoi) {
+            const niveau = document.getElementById('niveau')?.value.trim() || '';
+            const nombre = document.getElementById('nombreQuestions')?.value.trim() || '';
+            if (qui || quoi || niveau || nombre) {
                 generatePrompts();
             }
 

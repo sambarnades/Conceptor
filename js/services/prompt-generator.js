@@ -85,6 +85,55 @@ export function prefixForModule(moduleKey) {
 // transcription + les timestamps qui permettent à l'IA de placer les questions juste
 // avant la phrase qui lance une idée neuve. null = pas de transcription récupérée.
 let currentVideoSources = null;
+// Plafond PHYSIQUE de questions pour la vidéo courante (mémorisé pour getPrompts, qui n'a plus les
+// segments sous la main, seulement currentVideoSources). null = pas de transcription timée.
+let currentVideoMaxQuestions = null;
+
+/**
+ * Plafond PHYSIQUE de questions déduit de la transcription : on ne peut poser qu'UNE question par
+ * horodatage distinct (cf. `snapInteractions`, qui cale chaque question sur une ancre réelle unique).
+ * = **nombre d'horodatages distincts strictement positifs** (le `0:00` / tout début est exclu). C'est
+ * la borne dure : snap ne peut pas en placer davantage, quel que soit le nombre demandé.
+ * @param {Array<{start:number,end:number,text:string}>} segments
+ * @returns {number|null} Plafond (≥ 1), ou null si aucune ancre exploitable (transcription non timée).
+ */
+function videoMaxQuestions(segments) {
+    // Mêmes ancres que le snap : secondes entières distinctes, strictement positives.
+    const distinct = new Set(getTranscriptAnchors(segments).filter(s => Number.isFinite(s) && s > 0));
+    return distinct.size > 0 ? distinct.size : null;
+}
+
+/**
+ * En-tête dynamique placé en tête des SOURCES du prompt « Vidéo interactive » : rappelle la durée
+ * (borne des timestamps) ET le plafond physique de questions déduit de la transcription.
+ * @param {Array<{start:number,end:number,text:string}>} segments
+ * @param {number|null} durationSeconds
+ * @returns {string}
+ */
+function buildVideoHeader(segments, durationSeconds) {
+    const lines = [];
+    if (durationSeconds) {
+        lines.push(`(Durée de la vidéo : ${Math.round(durationSeconds)} secondes — tous les "timestamp" doivent rester dans cet intervalle)`);
+    }
+    const cap = videoMaxQuestions(segments);
+    if (cap) {
+        lines.push(`(NOMBRE MAXIMUM DE QUESTIONS : il n'existe que ${cap} horodatages exploitables dans la transcription ci-dessous, et tu ne peux poser qu'UNE question par horodatage → AU MAXIMUM ${cap} questions au total, quel que soit le nombre demandé. N'en produis jamais davantage.)`);
+    }
+    return lines.length ? lines.join('\n') + '\n\n' : '';
+}
+
+/**
+ * Borne le nombre de questions demandé au plafond physique de la vidéo courante (jamais au-dessus du
+ * nombre d'horodatages exploitables). Ne touche pas une valeur déjà ≤ plafond, ni un champ vide.
+ * @param {string|null} nombreQuestions
+ * @param {number|null} [cap] - Plafond explicite ; par défaut celui de la vidéo courante.
+ * @returns {string|null}
+ */
+function clampVideoCount(nombreQuestions, cap = currentVideoMaxQuestions) {
+    if (!nombreQuestions || !cap) return nombreQuestions;
+    const n = parseInt(String(nombreQuestions), 10);
+    return (Number.isFinite(n) && n > cap) ? String(cap) : nombreQuestions;
+}
 
 /**
  * Mémorise (ou efface) la transcription à injecter dans le prompt « Vidéo interactive ».
@@ -95,13 +144,12 @@ let currentVideoSources = null;
 export function setVideoTranscriptSources(segments, durationSeconds = null) {
     if (!Array.isArray(segments) || segments.length === 0) {
         currentVideoSources = null;
+        currentVideoMaxQuestions = null;
         return;
     }
     const transcriptText = formatTranscriptForPrompt(segments);
-    const header = durationSeconds
-        ? `(Durée de la vidéo : ${Math.round(durationSeconds)} secondes — tous les "timestamp" doivent rester dans cet intervalle)\n\n`
-        : '';
-    currentVideoSources = (header + transcriptText).trim() || null;
+    currentVideoMaxQuestions = videoMaxQuestions(segments);
+    currentVideoSources = (buildVideoHeader(segments, durationSeconds) + transcriptText).trim() || null;
 }
 
 // ============================================================================
@@ -319,13 +367,17 @@ function getPrompts(qui, quoi, niveau, nombreQuestions, isAdvanced) {
     const prompts = {};
 
     for (const [, config] of Object.entries(ACTIVITY_CONFIG)) {
+        const isVideo = config.prefix === 'prompt_interactive_video';
         // Pour la vidéo interactive, la « source » est la transcription timée récupérée
         // (et non l'OCR/RAG) : on l'injecte en SOURCES pour que le prompt de gauche soit
         // complet en mode Guidé (et réutilisable tel quel par le one-clic).
-        const sources = (config.prefix === 'prompt_interactive_video' && currentVideoSources)
-            ? currentVideoSources
-            : ocrContent;
-        prompts[config.resultKey] = buildActivityPrompt(config.prefix, { ...params, ocrContent: sources });
+        const sources = (isVideo && currentVideoSources) ? currentVideoSources : ocrContent;
+        // …et on borne le nombre demandé au plafond physique de la vidéo (pas plus de questions
+        // qu'il n'y a d'horodatages), sinon le prompt se contredirait avec l'en-tête de plafond.
+        const activityParams = isVideo
+            ? { ...params, nombreQuestions: clampVideoCount(params.nombreQuestions) }
+            : params;
+        prompts[config.resultKey] = buildActivityPrompt(config.prefix, { ...activityParams, ocrContent: sources });
     }
 
     return prompts;
@@ -425,8 +477,8 @@ export function getTranscriptAnchors(segments, opts = {}) {
 export function buildVideoInteractivePrompt(segments, durationSeconds = null) {
     const params = readContextParams();
     const transcriptText = formatTranscriptForPrompt(segments);
-    const header = durationSeconds
-        ? `(Durée de la vidéo : ${Math.round(durationSeconds)} secondes — tous les "timestamp" doivent rester dans cet intervalle)\n\n`
-        : '';
-    return buildActivityPrompt('prompt_interactive_video', { ...params, ocrContent: header + transcriptText });
+    const header = buildVideoHeader(segments, durationSeconds);
+    // Borne le nombre demandé au plafond physique déduit des segments (cohérent avec l'en-tête).
+    const nombreQuestions = clampVideoCount(params.nombreQuestions, videoMaxQuestions(segments));
+    return buildActivityPrompt('prompt_interactive_video', { ...params, nombreQuestions, ocrContent: header + transcriptText });
 }

@@ -3966,6 +3966,17 @@ function formatInteractiveBook(data) {
                         alt: block.alt || ''
                     });
                 }
+            } else if (blockType === 'qr' && block.url) {
+                // QR code d'une ressource (ex. vidéo interactive embarquée) : même
+                // bloc que l'export Vidéo interactive autonome (qrText résolu en image
+                // au moment de l'export). Permet de scanner le papier pour ouvrir la vidéo.
+                sections.push({
+                    type: 'image',
+                    qrText: block.url,
+                    imgSizeMm: 32,
+                    caption: block.caption || t('doc_fmt_video_qr_caption') || 'Scannez pour ouvrir la vidéo',
+                    alt: 'QR code'
+                });
             } else if (blockType === 'exercise') {
                 // Accepter le format healé (params à plat) et le format éditeur (exercise imbriqué)
                 const lib = block._exerciseLibrary || block.library;
