@@ -10,7 +10,7 @@
  */
 
 import { SUCRERIE_BRIDGE } from '../config.js';
-import { t } from '../i18n/index.js';
+import { t, getCurrentLang } from '../i18n/index.js';
 import { createPanel } from './panel.js';
 import { showConfirmDialog } from './confirm-dialog.js';
 import { openAccessRequestDialog, ensureAccessRequestStyles } from './access-request-dialog.js';
@@ -664,6 +664,7 @@ export function runSucrerieFlow({ modal, notification, translations, userIntent 
             discipline_suggestion: form.discipline_suggestion,
             levels:                form.levels,
             language:              form.language,
+            ui_language:           getCurrentLang(),   // langue de l'interface (pour l'e-mail)
             license:               FORCED_LICENSE.code,
 
             // Système éducatif cible (cf. migration 2026-05-06)

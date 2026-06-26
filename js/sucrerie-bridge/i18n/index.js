@@ -15,7 +15,7 @@
 const _cache = new Map();           // lang -> dict (figé une fois chargé)
 const _loadingPromises = new Map(); // lang -> Promise<dict> en cours
 
-function getCurrentLang() {
+export function getCurrentLang() {
     return (document.documentElement.lang || 'fr').toLowerCase().split('-')[0];
 }
 

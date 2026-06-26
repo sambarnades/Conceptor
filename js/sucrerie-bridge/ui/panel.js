@@ -31,7 +31,7 @@
  * Le code reste envoyé en dur dans le payload (FORCED_LICENSE.code).
  */
 
-import { t } from '../i18n/index.js';
+import { t, getCurrentLang } from '../i18n/index.js';
 import {
     DISCIPLINES_SCOLAIRE,
     DISCIPLINES_FORMATION,
@@ -353,6 +353,7 @@ export function createPanel({ modal, translations }) {
                 education_system:        sys,
                 education_level_custom:  educationLevelCustom,
                 language:                $('select[name="language"]')?.value || 'fr',
+                ui_language:             getCurrentLang(),   // langue de l'interface (pour l'e-mail)
                 license:                 FORCED_LICENSE.code,
                 firstname:               $('input[name="firstname"]')?.value.trim() || '',
                 lastname:                $('input[name="lastname"]')?.value.trim() || '',
