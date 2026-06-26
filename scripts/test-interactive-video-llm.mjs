@@ -9,9 +9,10 @@
 //   ex : node scripts/test-interactive-video-llm.mjs "https://tube-...apps.education.fr/w/xxxx" "Anglais" "Compréhension orale" "Lycée"
 import { readFileSync, writeFileSync, mkdirSync } from 'fs';
 // Mêmes fonctions DÉTERMINISTES que la prod (processeur + ui.js) : on les importe pour mesurer
-// la sortie RÉELLE livrée à l'utilisateur (timestamps calés + nombre plafonné), pas seulement la
-// sortie brute du modèle. Module pur, sans dépendance navigateur → importable en Node.
-import { snapInteractions, capInteractions } from '../js/h5p/processors/interactive-video-snap.js';
+// la sortie RÉELLE livrée à l'utilisateur (timestamps calés sur les ancres réelles), pas seulement
+// la sortie brute du modèle. Le nombre de questions n'est PLUS plafonné (on conserve tout le contenu
+// généré). Module pur, sans dépendance navigateur → importable en Node.
+import { snapInteractions } from '../js/h5p/processors/interactive-video-snap.js';
 
 const REPO = process.cwd();
 const OUT = '/tmp/iv-llm-test'; mkdirSync(OUT, { recursive: true });
@@ -149,10 +150,10 @@ for (const model of MODELS) {
 
     // (1) Sortie BRUTE du modèle.
     const v = validate(json, transcript);
-    // (2) Sortie PROD : snap des timestamps + plafond + normalisation TrueFalse (ce que reçoit l'élève).
+    // (2) Sortie PROD : snap des timestamps + normalisation TrueFalse (ce que reçoit l'élève).
+    // Plus aucun plafond : tout le contenu généré est conservé.
     const snap = snapInteractions(Array.isArray(json.interactions) ? json.interactions : [], anchors, { maxDuration: transcript.duration });
-    const cap = capInteractions(snap.interactions, transcript.duration);
-    const procInteractions = cap.interactions.map(applyProcessorTransforms);
+    const procInteractions = snap.interactions.map(applyProcessorTransforms);
     const prodJson = { ...json, interactions: procInteractions };
     writeFileSync(`${OUT}/${model}.prod.json`, JSON.stringify(prodJson, null, 2));
     const vp = validate(prodJson, transcript);
@@ -160,7 +161,7 @@ for (const model of MODELS) {
     const tag = (vp.issues.length || nonReal(vp.warns)) ? '🐞' : '✅';
     console.log(`${tag} ${model}${actual !== model ? ` (→ ${actual} fallback)` : ''} (${seconds}s) | langue:${vp.lang} résumé:${vp.summary}`);
     console.log(`     BRUTE : ${v.n} questions ${JSON.stringify(v.types)} | ${nonReal(v.warns)} non-réels, ${outRange(v.issues)} hors-durée, ${v.warns.filter(x => /non booléen/.test(x)).length} TF non-bool`);
-    console.log(`     PROD  : ${vp.n} questions ${JSON.stringify(vp.types)} | ${nonReal(vp.warns)} non-réels, ${outRange(vp.issues)} hors-durée | snap{snap:${snap.report.snapped},drop:${snap.report.dropped},maxShift:${snap.report.maxShift}s} cap{retiré:${cap.report.removed}/cap${cap.report.cap}}`);
+    console.log(`     PROD  : ${vp.n} questions ${JSON.stringify(vp.types)} | ${nonReal(vp.warns)} non-réels, ${outRange(vp.issues)} hors-durée | snap{snap:${snap.report.snapped},drop:${snap.report.dropped},maxShift:${snap.report.maxShift}s}`);
     vp.issues.forEach(x => console.log('     🐞 PROD ' + x));
     vp.warns.filter(x => /non réel/.test(x)).forEach(x => console.log('     ⚠  PROD ' + x));
   } catch (e) { console.log(`❌ ${model} → ${e.message}`); }

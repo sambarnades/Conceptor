@@ -7,7 +7,7 @@
 import { allModules, customOrder, h5pModules, moodleModules } from '../core/definitions.js';
 import { translations, translatePage, currentLang } from '../core/translation.js';
 import { generatePrompts, buildVideoInteractivePrompt, setVideoTranscriptSources, getTranscriptAnchors } from '../services/prompt-generator.js';
-import { snapInteractions, capInteractions, maxQuestionsFor } from '../h5p/processors/interactive-video-snap.js';
+import { snapInteractions } from '../h5p/processors/interactive-video-snap.js';
 import { buildSyncedTranscriptEditor } from './transcript-sync-editor.js';
 import { cleanJsonInput, showNotification, copyToClipboard, downloadFile, setupToolbarListeners, getCaramelVersionFromFooter, syncPanelHeights, DEBUG, debugLog, setupModalAccessibility } from '../core/utils.js';
 import { populateModelSelector, AVAILABLE_MODELS, DEFAULT_MODEL, ACTIVITY_MODEL_OVERRIDES, generateH5PWithLLM } from '../services/llm.js';
@@ -686,15 +686,14 @@ async function generateActivityContent(moduleKey, module, prompt, selectedModel,
 }
 
 /**
- * Normalise déterministiquement les interactions générées AVANT la création du .h5p (WYSIWYG :
- * le JSON affiché = celui produit) :
- *   1. Cale chaque `timestamp` sur l'horodatage RÉEL le plus proche (mêmes ancres `[mm:ss]` que
- *      celles montrées au modèle) → neutralise les modèles qui CALCULENT un instant intermédiaire
- *      (sinon pause en milieu de phrase) ; écarte les timestamps au-delà de la durée.
- *   2. Plafonne le nombre de questions (nombre demandé en mode Avancé, sinon ~1 / 2,5 min) en
- *      gardant un sous-ensemble réparti dans le temps → évite les vidéos longues sur-truffées.
- * Injecte `parsed.maxQuestions` (le plafond effectif) pour que le backstop du processeur s'aligne.
- * Mute `parsed` en place. Sans transcription timée exploitable, ne touche à rien.
+ * Cale déterministiquement les `timestamp` des interactions générées AVANT la création du .h5p
+ * (WYSIWYG : le JSON affiché = celui produit). Chaque `timestamp` est calé sur l'horodatage RÉEL le
+ * plus proche (mêmes ancres `[mm:ss]` que celles montrées au modèle) → neutralise les modèles qui
+ * CALCULENT un instant intermédiaire (sinon pause en milieu de phrase) ; les timestamps au-delà de
+ * la durée sont écartés (hallucinations). C'est la SEULE normalisation : le nombre de questions
+ * n'est JAMAIS plafonné — le prompt recommande un nombre, mais le contenu généré est conservé tel
+ * quel (l'enseignant supprime à la main ce qu'il ne veut pas). Vaut pour les deux flux (un clic ET
+ * collage d'un JSON d'IA externe). Mute `parsed` en place. Sans transcription timée, ne touche à rien.
  * @param {Object} parsed - JSON intermédiaire parsé (champ `interactions`).
  * @param {Object} transcript - Transcription normalisée (segments).
  * @param {Object} detect - Résultat de detectVideo() (pour la durée d'un bloc non timé).
@@ -708,12 +707,8 @@ function snapVideoTimestamps(parsed, transcript, detect) {
     const maxDuration = (detect && Number(detect.duration) > 0) ? Number(detect.duration) : null;
 
     const snap = snapInteractions(parsed.interactions, anchors, { maxDuration });
-    const effMax = getRequestedQuestionCount() || maxQuestionsFor(maxDuration);
-    const cap = capInteractions(snap.interactions, maxDuration, effMax);
-
-    parsed.interactions = cap.interactions;
-    parsed.maxQuestions = effMax; // borne haute → le processeur réapplique le MÊME plafond (idempotent)
-    debugLog('InteractiveVideo', 'Snap + plafond (ui)', { snap: snap.report, cap: cap.report });
+    parsed.interactions = snap.interactions;
+    debugLog('InteractiveVideo', 'Snap timestamps (ui, sans plafond)', snap.report);
 }
 
 /**
@@ -2643,7 +2638,8 @@ function attachActivityEventListeners(moduleKey, container, tile) {
                 // source détectée depuis l'URL saisie + la piste de sous-titres récupérée.
                 if (!jsonVideoUrl && detectReady && parsed && typeof parsed === 'object') {
                     // Caler les timestamps sur les horodatages RÉELS si une transcription est dispo
-                    // (cas « copier le prompt → coller la sortie d'un LLM externe »).
+                    // (cas « copier le prompt → coller la sortie d'un LLM externe »). Aucun plafond :
+                    // toutes les questions curées par l'enseignant sont conservées.
                     snapVideoTimestamps(parsed, st.transcript, st.detect);
                     parsed.videoSource = st.detect.videoSource;
                     // Durée → borne haute des timestamps côté processeur (l'IA hallucine parfois au-delà).

@@ -4,7 +4,7 @@
 
 ## Identité
 
-**Caramel** v6.0.1 — webapp 100% client-side qui génère des activités H5P (`.h5p`) et Moodle/Éléa (`.mbz`) via IA pour profs francophones. ES6 modules purs, **aucun build, aucun npm**, servi en statique. Proxy IA n8n (clés API côté serveur). 11 langues. Packaging ZIP/TAR/GZIP côté navigateur.
+**Caramel** v6.0.2 — webapp 100% client-side qui génère des activités H5P (`.h5p`) et Moodle/Éléa (`.mbz`) via IA pour profs francophones. ES6 modules purs, **aucun build, aucun npm**, servi en statique. Proxy IA n8n (clés API côté serveur). 11 langues. Packaging ZIP/TAR/GZIP côté navigateur.
 
 Lancement local : `python3 -m http.server 8000` → `http://localhost:8000`. Mode debug : `?debug` dans l'URL.
 

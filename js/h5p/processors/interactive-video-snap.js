@@ -128,37 +128,11 @@ export function snapInteractions(interactions, anchorValues, opts = {}) {
     return { interactions: out, report };
 }
 
-/**
- * Plafond de questions adapté à la durée (~1 question / 2,5 min), borné [4..12]. Évite les vidéos
- * longues sur-truffées de questions (vu : 16–21 questions pour 25 min). Durée inconnue → garde-fou
- * large (12) pour ne pas tronquer à tort.
- * @param {number|null} maxDuration - Durée de la vidéo en secondes.
- * @returns {number}
- */
-export function maxQuestionsFor(maxDuration) {
-    if (!(Number(maxDuration) > 0)) return 12;
-    return Math.min(12, Math.max(4, Math.round(Number(maxDuration) / 150)));
-}
+// NB : il n'y a VOLONTAIREMENT plus de plafonnement du nombre de questions ici. Le contenu généré
+// (par l'IA Caramel en un clic OU collé depuis une IA externe) n'est JAMAIS tronqué par un quota :
+// le prompt RECOMMANDE un nombre de questions, mais ce qui est produit est conservé tel quel. Si le
+// modèle en génère beaucoup, on les garde toutes — l'enseignant supprime à la main ce qu'il ne veut
+// pas. Seul le calage des timestamps sur les ancres réelles (snapInteractions) + l'écart des
+// timestamps hors-durée restent : ce sont des contraintes de VALIDITÉ, pas de quantité.
 
-/**
- * Plafonne le nombre d'interactions en gardant un sous-ensemble RÉPARTI dans le temps (et non les N
- * premières). Suppose `interactions` déjà trié par `timestamp` croissant.
- * @param {Array<Object>} interactions
- * @param {number|null} maxDuration
- * @param {number|null} [explicitMax] - Nombre demandé explicitement par l'utilisateur (mode Avancé) :
- *   il PRIME sur le plafond dérivé de la durée (on respecte le choix de l'enseignant).
- * @returns {{ interactions: Array<Object>, report: {kept:number, removed:number, cap:number} }}
- */
-export function capInteractions(interactions, maxDuration, explicitMax = null) {
-    const cap = Number(explicitMax) > 0 ? Math.round(Number(explicitMax)) : maxQuestionsFor(maxDuration);
-    const items = Array.isArray(interactions) ? interactions.slice() : [];
-    if (items.length <= cap) return { interactions: items, report: { kept: items.length, removed: 0, cap } };
-
-    const n = items.length;
-    const keepIdx = [];
-    for (let i = 0; i < cap; i++) keepIdx.push(Math.round(i * (n - 1) / (cap - 1)));
-    const kept = [...new Set(keepIdx)].map(i => items[i]); // dédup d'indices arrondis identiques
-    return { interactions: kept, report: { kept: kept.length, removed: items.length - kept.length, cap } };
-}
-
-export default { buildAnchors, snapInteractions, capInteractions, maxQuestionsFor };
+export default { buildAnchors, snapInteractions };

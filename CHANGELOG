@@ -4,6 +4,23 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 
 ---
 
+## [6.0.2] - 26-06-2026
+
+### Corrections
+
+- **Vidéo interactive — fin du rabotage silencieux des questions** : le nombre de questions insérées dans une **Vidéo interactive** n'est plus jamais plafonné après génération. Auparavant, un plafond automatique dérivé de la durée (~1 question / 2,5 min, borné à 4–12) tronquait le contenu **sans le signaler** : toute vidéo de moins de ~11 minutes était ramenée à **4 questions**, même quand l'IA en avait produit davantage. Un JSON soigné de 10 questions (rédigé via une IA externe, puis collé dans Caramel) se retrouvait ainsi amputé à 4 dès que le champ « nombre de questions » du Mode Avancé était laissé vide — l'enseignant devait saisir un nombre pour « débloquer » ses propres questions, ce qui n'avait aucun sens.
+- **Le prompt recommande, le contenu n'est jamais coupé** : le nombre de questions est désormais une **recommandation faite à l'IA dans le prompt** (Mode Simple : ~1 question toutes les 2-3 min, jamais plus de 10 ; Mode Avancé : le nombre saisi remplace `[NOMBRE_ELEMENTS]`, interprété comme un maximum), mais **tout ce que l'IA produit est conservé tel quel**. Si un modèle génère beaucoup de questions, on les garde toutes — l'enseignant supprime à la main, dans l'éditeur, celles qu'il ne veut pas. Vaut pour les deux flux : génération « un clic » **et** collage d'un JSON d'IA externe.
+
+### Notes techniques
+
+- `js/h5p/processors/interactive-video-snap.js` : suppression des fonctions `maxQuestionsFor` et `capInteractions` (plafonnement) ; le module ne fait plus que caler les timestamps sur les ancres réelles (`snapInteractions`).
+- `js/ui/ui.js` : `snapVideoTimestamps` ne fait plus que le snap (calage des timestamps sur les horodatages réels + écart des hors-durée), sans aucun plafond ni injection de `maxQuestions`.
+- `js/h5p/processors/InteractiveVideo.js` : retrait de l'étape de plafonnement dans le processeur.
+- `scripts/test-interactive-video-llm.mjs` : le harnais QA reflète la prod (plus de simulation de plafond).
+- Seules subsistent des contraintes de **validité** (et non de quantité) : un timestamp au-delà de la durée de la vidéo est écarté, et deux questions ne peuvent tomber sur le même horodatage réel.
+
+---
+
 ## [6.0.1] - 26-06-2026
 
 ### Améliorations

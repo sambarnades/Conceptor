@@ -28,7 +28,7 @@
 import { translations } from '../../core/translation.js';
 import { formatTextToHtml, generateUUID, debugLog } from '../../core/utils.js';
 import { healSlidesLatex } from './CoursePresentation.js';
-import { snapInteractions, capInteractions } from './interactive-video-snap.js';
+import { snapInteractions } from './interactive-video-snap.js';
 
 // === Mapping type simplifié IA → library H5P complète (mêmes versions que CP/IB) ===
 const LIBRARY_MAP = {
@@ -395,16 +395,11 @@ export default {
         // (c) Trier par timestamp croissant (l'IA / l'éditeur peuvent dé-trier).
         normalized.sort((a, b) => (Number(a.timestamp) || 0) - (Number(b.timestamp) || 0));
 
-        // (d) Plafonner le nombre de questions, réparti dans le temps (vidéos longues sur-truffées).
-        // `maxQuestions` injecté par l'UI = plafond effectif (nombre demandé en mode Avancé, sinon
-        // dérivé de la durée) ; absent (JSON collé/édité) → dérivé de la durée. Idempotent si déjà calé.
-        const capRes = capInteractions(normalized, maxDuration, Number(jsonObj.maxQuestions) || null);
-        if (capRes.report.removed > 0) {
-            debugLog('InteractiveVideo', `Plafond questions : ${capRes.report.removed} retirée(s) (cap ${capRes.report.cap}, ${capRes.report.kept} gardée(s))`);
-        }
-        normalized = capRes.interactions;
+        // NB : aucun plafonnement du nombre de questions. Le contenu généré est conservé tel quel
+        // (le prompt recommande un nombre, il ne l'impose pas) ; l'enseignant supprime à la main ce
+        // qu'il ne veut pas. Seuls l'écart des hors-durée (a) et le snap (b) s'appliquent (validité).
 
-        // (e) Construire les sous-contenus (séquentiel : préserve l'ordre temporel).
+        // (d) Construire les sous-contenus (séquentiel : préserve l'ordre temporel).
         const interactions = [];
         for (const it of normalized) {
             const built = await buildInteractionAction(it, helpers);

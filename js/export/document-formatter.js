@@ -4341,7 +4341,18 @@ function cleanHtml(html) {
     text = text.replace(/&lt;/g, '<');
     text = text.replace(/&gt;/g, '>');
     text = text.replace(/&quot;/g, '"');
-    text = text.replace(/&#39;/g, "'");
+    // Références de caractères numériques génériques : décimales `&#NNN;` (y
+    // compris zéro-paddées comme `&#039;`, que l'ancien `&#39;` littéral ne
+    // couvrait pas — les apostrophes échappées par CKEditor restaient brutes) et
+    // hexadécimales `&#xHH;`. Code points hors plage Unicode laissés intacts.
+    text = text.replace(/&#(\d+);/g, (m, dec) => {
+        const cp = parseInt(dec, 10);
+        return (cp >= 0 && cp <= 0x10FFFF) ? String.fromCodePoint(cp) : m;
+    });
+    text = text.replace(/&#x([0-9a-fA-F]+);/g, (m, hex) => {
+        const cp = parseInt(hex, 16);
+        return (cp >= 0 && cp <= 0x10FFFF) ? String.fromCodePoint(cp) : m;
+    });
 
     // Remplacer les symboles Unicode spéciaux par des équivalents textuels
     text = text.replace(/✓/g, '[V]');
