@@ -66,10 +66,10 @@
     "sucrerie_bridge_field_author_display": "公開名",
     "sucrerie_bridge_author_display_placeholder": "例：マルタン先生、理科ワークショップ…",
     "sucrerie_bridge_author_display_hint": "アクティビティとともに公開表示されます — 氏名、ペンネーム、または作業グループ名。いつでも変更できます。",
-    "sucrerie_bridge_legal_text": "私は、このアクティビティの著者であり（AI の支援の有無にかかわらず）、確認済みであり、<strong>CC BY-NC-SA 4.0</strong> ライセンスでの配布を許可することを証明します。著作権、GDPR、アクセシビリティを尊重しており、違法または差別的な内容を含みません。<br><br>メールで受け取る管理リンクから <strong>いつでも撤回</strong> できます。La Sucrerie の運営者は、利用規約に違反するアクティビティを削除する権利を留保します。",
+    "sucrerie_bridge_legal_text": "私は、このアクティビティの著者であり（AI の支援の有無にかかわらず）、確認済みであり、<strong>CC BY-SA 4.0</strong> ライセンスでの配布を許可することを証明します。著作権、GDPR、アクセシビリティを尊重しており、違法または差別的な内容を含みません。<br><br>メールで受け取る管理リンクから <strong>いつでも撤回</strong> できます。La Sucrerie の運営者は、利用規約に違反するアクティビティを削除する権利を留保します。",
 
-    "license_cc_by_nc_sa_label": "CC BY-NC-SA 4.0",
-    "license_cc_by_nc_sa_desc": "表示 — 非営利 — 継承",
+    "license_cc_by_sa_label": "CC BY-SA 4.0",
+    "license_cc_by_sa_desc": "表示 — 継承",
 
     "sucrerie_bridge_recheck_pending": "変更を確認中…",
     "sucrerie_bridge_recheck_ok": "規約に準拠",

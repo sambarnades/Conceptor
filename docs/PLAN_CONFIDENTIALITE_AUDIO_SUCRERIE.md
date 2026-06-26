@@ -39,7 +39,7 @@ Source : utilisateur (éditeur) + `js/sucrerie-bridge/` (déjà en place).
 - **Validation par e-mail** (magic link) requise avant publication. Le lien sert aussi à
   **modifier / supprimer** sa ressource **à tout moment**.
 - **Publication** : une fois validée, l'activité est **publique**, accessible à tous, sous licence
-  **CC BY-NC-SA 4.0** (Attribution — Non Commercial — Partage dans les mêmes conditions), imposée
+  **CC BY-SA 4.0** (Attribution — Partage dans les mêmes conditions), imposée
   (pas de choix). Cf. `js/sucrerie-bridge/ui/panel.js:30` et `sucrerie_bridge_legal_text` (×langues).
 - **Consentement par dépôt déjà présent** dans la sucrerie-bridge (`sucrerie_bridge_legal_text`) :
   l'utilisateur certifie être l'auteur, avoir vérifié le contenu, respecter droits d'auteur / RGPD /
@@ -61,7 +61,7 @@ publié. C'est sa responsabilité (cohérent avec `legal_terms_of_use_content` a
 | `legal_personal_data_content` | Ajouter le cas e-mail (stocké pour auth, France, non réutilisé) | ×11 |
 | `wiki.md` | Remplacer le renvoi « (en préparation) » par une vraie section dépôt Sucrerie | FR |
 | `rag/caramelia/sources/` + chunks | Pour que Caramelia réponde juste sur confidentialité/dépôt | ×11 |
-| **Dépôt Sucrerie** (hors repo) | Vérifier que SES mentions légales/wiki couvrent stockage + CC BY-NC-SA | — |
+| **Dépôt Sucrerie** (hors repo) | Vérifier que SES mentions légales/wiki couvrent stockage + CC BY-SA | — |
 
 ### Brouillon FR à valider — nouvelle section légale
 
@@ -74,7 +74,7 @@ publié. C'est sa responsabilité (cohérent avec `legal_terms_of_use_content` a
 > - **Une validation par e-mail** : un lien vous est envoyé pour confirmer la publication. Ce même lien
 >   vous permet de **modifier ou supprimer** votre ressource à tout moment.
 > - **Une publication publique** : une fois validée, l'activité (et son contenu) est **accessible à
->   tous** sous licence **CC BY-NC-SA 4.0** (attribution, non commercial, partage à l'identique), et
+>   tous** sous licence **CC BY-SA 4.0** (attribution, partage à l'identique), et
 >   stockée sur une base PostgreSQL hébergée en France par le Ministère, sans réutilisation.
 > - **Votre responsabilité** : en déposant, vous certifiez être l'auteur du contenu, détenir les droits
 >   nécessaires, et garantir l'absence de données personnelles ou de contenu illicite. Les responsables

@@ -4,6 +4,21 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 
 ---
 
+## [6.0.1] - 26-06-2026
+
+### Améliorations
+
+- **Licence de dépôt par défaut : passage de CC BY-NC-SA 4.0 à CC BY-SA 4.0** : les activités déposées sur la boutique **La Sucrerie** (via le pont *sucrerie-bridge*) sont désormais publiées sous licence **CC BY-SA 4.0** (Attribution — Partage à l'identique), au lieu de **CC BY-NC-SA 4.0**. La clause « NC » (non commercial) empêchait l'intégration des contenus dans d'autres projets libres sous licence **CC BY-SA**, celle que recommande la Forge Apps Éducation ; la clause « SA » (partage à l'identique) reste suffisante pour s'opposer à la réappropriation marchande. Le changement est **compatible** : une ressource CC BY-SA s'intègre dans un projet CC BY-NC-SA (l'inverse n'était pas possible).
+
+### Notes techniques
+
+- `js/sucrerie-bridge/data/taxonomy.js` : `FORCED_LICENSE.code` → `CC-BY-SA-4.0`, clés i18n renommées en `license_cc_by_sa_*`.
+- 11 fichiers de locale `js/sucrerie-bridge/i18n/*.json` : libellé, description et **texte d'attestation légale** du dépôt mis à jour.
+- RAG Caramélia (collection ILaaS) : 22 chunks `mentions-sucrerie-depot` + `mentions-rgpd` (11 langues) ré-ingérés pour refléter la nouvelle licence.
+- Documentation : `README.md` et `wiki.md` alignés.
+
+---
+
 ## [6.0.0] - 23-06-2026
 
 ### Nouveautés

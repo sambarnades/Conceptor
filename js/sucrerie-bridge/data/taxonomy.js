@@ -194,9 +194,14 @@ export const LANGUAGES = Object.freeze([
 // même licence — pas de choix offert à l'utilisateur. Le code est conservé
 // pour traçabilité dans le payload, mais le frontend ne propose aucun
 // sélecteur. Le défaut Postgres est aligné (cf. migration 2026-05-06).
+//
+// 2026-06-26 : passage de CC-BY-NC-SA-4.0 → CC-BY-SA-4.0. La clause NC
+// empêchait l'intégration des contenus dans d'autres projets libres en
+// CC-BY-SA (recommandation Forge). CC-BY-SA reste suffisante pour bloquer
+// la réappropriation marchande (obligation de partage à l'identique).
 
 export const FORCED_LICENSE = Object.freeze({
-    code: 'CC-BY-NC-SA-4.0',
-    labelKey: 'license_cc_by_nc_sa_label',   // ex: "CC BY-NC-SA 4.0"
-    descKey:  'license_cc_by_nc_sa_desc'     // ex: "Attribution, non commercial, partage à l'identique"
+    code: 'CC-BY-SA-4.0',
+    labelKey: 'license_cc_by_sa_label',   // ex: "CC BY-SA 4.0"
+    descKey:  'license_cc_by_sa_desc'      // ex: "Attribution, partage à l'identique"
 });

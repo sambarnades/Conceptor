@@ -886,7 +886,7 @@
   "legal_user_requests_processing_title": "通过 n8n 和国民教育部孵化器 (Incubateur) 处理用户请求",
   "legal_user_requests_processing_content": "我们的网站使用由 n8n 开发的技术解决方案，这是一个由国民教育部孵化器托管的开源工具。该服务通过自动化工作流，将用户请求转化为结构化数据（JSON 格式），以便与由 ILaaS（高等教育与研究的共享基础设施）运营的主权人工智能进行交互。在不加密的情况下，不会暴露或传输任何敏感信息，从而确保交流的机密性和安全性。",
   "legal_sucrerie_deposit_title": "在 La Sucrerie 上发布与分享",
-  "legal_sucrerie_deposit_content": "Caramel 允许您选择性地将自己创建的活动<strong>发布</strong>到 <strong>La Sucrerie</strong> 平台。此自愿操作意味着<strong>公开发布</strong>：<br>— 您的<strong>学术邮箱地址</strong>会保存在由法国教育部孵化器提供的 PostgreSQL 数据库中（托管在法国）；它<strong>仅</strong>用作身份验证的账户标识，不会被再利用，也不会提供给第三方。<br>— 通过<strong>邮件验证</strong>确认发布；同一链接可让您随时<strong>修改或删除</strong>您的资源。<br>— 验证后，该活动及其内容将以 <strong>CC BY-NC-SA 4.0</strong> 许可证（署名、非商业、相同方式共享）<strong>向所有人开放</strong>，并存储在由教育部托管于法国的 PostgreSQL 数据库中，不作再利用。<br>— <strong>您的责任</strong>：发布即表示您确认自己是内容的作者、拥有必要的权利，并保证其中不含个人数据（您本人或学生的…）或违法内容。La Sucrerie 的负责人有权删除任何不符合规定的活动。",
+  "legal_sucrerie_deposit_content": "Caramel 允许您选择性地将自己创建的活动<strong>发布</strong>到 <strong>La Sucrerie</strong> 平台。此自愿操作意味着<strong>公开发布</strong>：<br>— 您的<strong>学术邮箱地址</strong>会保存在由法国教育部孵化器提供的 PostgreSQL 数据库中（托管在法国）；它<strong>仅</strong>用作身份验证的账户标识，不会被再利用，也不会提供给第三方。<br>— 通过<strong>邮件验证</strong>确认发布；同一链接可让您随时<strong>修改或删除</strong>您的资源。<br>— 验证后，该活动及其内容将以 <strong>CC BY-SA 4.0</strong> 许可证（署名、相同方式共享）<strong>向所有人开放</strong>，并存储在由教育部托管于法国的 PostgreSQL 数据库中，不作再利用。<br>— <strong>您的责任</strong>：发布即表示您确认自己是内容的作者、拥有必要的权利，并保证其中不含个人数据（您本人或学生的…）或违法内容。La Sucrerie 的负责人有权删除任何不符合规定的活动。",
   "legal_accessibility_title": "无障碍环境",
   "legal_accessibility_content": "本应用程序专为电脑端使用设计，包括深色/浅色模式、键盘导航和符合主题的高对比度。无障碍环境的持续改进正在根据 RGAA 建议进行中。",
   "legal_applicable_law_title": "适用法律",

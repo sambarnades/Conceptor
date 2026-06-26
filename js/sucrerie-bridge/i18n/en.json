@@ -66,10 +66,10 @@
     "sucrerie_bridge_field_author_display": "Public name",
     "sucrerie_bridge_author_display_placeholder": "E.g. Ms. Martin, Science Workshop…",
     "sucrerie_bridge_author_display_hint": "Shown publicly with the activity — your name, a pseudonym or a working-group name. Can be changed at any time.",
-    "sucrerie_bridge_legal_text": "I certify that I am the author of this activity (whether or not assisted by AI), that I have reviewed it, and I authorize its distribution under the <strong>CC BY-NC-SA 4.0</strong> license. It respects copyright, GDPR, accessibility, and contains no illegal or discriminatory content. <br><br>I may <strong>remove it at any time</strong> via the management link received by email. La Sucrerie administrators reserve the right to remove any activity that does not comply with the rules of use.",
+    "sucrerie_bridge_legal_text": "I certify that I am the author of this activity (whether or not assisted by AI), that I have reviewed it, and I authorize its distribution under the <strong>CC BY-SA 4.0</strong> license. It respects copyright, GDPR, accessibility, and contains no illegal or discriminatory content. <br><br>I may <strong>remove it at any time</strong> via the management link received by email. La Sucrerie administrators reserve the right to remove any activity that does not comply with the rules of use.",
 
-    "license_cc_by_nc_sa_label": "CC BY-NC-SA 4.0",
-    "license_cc_by_nc_sa_desc": "Attribution — non-commercial — share alike",
+    "license_cc_by_sa_label": "CC BY-SA 4.0",
+    "license_cc_by_sa_desc": "Attribution — share alike",
 
     "sucrerie_bridge_recheck_pending": "Checking your changes…",
     "sucrerie_bridge_recheck_ok": "Compliant with the charter",

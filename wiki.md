@@ -1048,7 +1048,7 @@ Caramel permet, **de façon facultative**, de **déposer** une activité que vou
 |--------|-----------------|
 | **Votre e-mail académique** | Conservé dans une base PostgreSQL fournie par l'Incubateur du Ministère (hébergée en France). Sert **uniquement** d'identifiant de compte pour l'authentification — **ni réutilisé, ni cédé**. |
 | **Validation** | Un lien reçu par e-mail confirme la publication. Ce même lien vous permet de **modifier ou supprimer** votre ressource à tout moment. |
-| **Publication** | Une fois validée, l'activité est **publique**, accessible à tous, sous licence **CC BY-NC-SA 4.0** (attribution, non commercial, partage à l'identique). Stockée sur une base PostgreSQL hébergée en France par le Ministère. |
+| **Publication** | Une fois validée, l'activité est **publique**, accessible à tous, sous licence **CC BY-SA 4.0** (attribution, partage à l'identique). Stockée sur une base PostgreSQL hébergée en France par le Ministère. |
 | **Votre responsabilité** | Vous certifiez être l'auteur, détenir les droits, et garantir l'**absence de données personnelles** (la vôtre, celle d'élèves…) et de contenu illicite. |
 
 > ⚠️ **Attention au contenu dérivé** : si votre activité a été générée à partir d'une source privée (un PDF sous droits, la **transcription d'un cours enregistré**…), son dépôt la rend **publique**. Vérifiez que vous en avez le droit avant de partager.
@@ -1166,6 +1166,7 @@ Caramel est distribué sous **licence GNU Affero General Public License v3.0 (AG
 🔗 [Consultez le Journal complet des modifications (CHANGELOG)](https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG)
 
 ### Dernières mises à jour :
+- **v6.0.1** : ⚖️ **Licence de dépôt par défaut sur La Sucrerie : CC BY-SA 4.0** (au lieu de CC BY-NC-SA 4.0). L'abandon de la clause « non commercial » rend les ressources partagées compatibles avec les autres projets libres en CC BY-SA, licence recommandée sur la Forge ; la clause « partage à l'identique » suffit à empêcher la réappropriation marchande. Les dépôts antérieurs gardent leur licence.
 - **v6.0.0** : 🎉 **Vidéo interactive** (lien vidéo → transcription → questions placées par l'IA) et **Livre interactif** (livre multi-chapitres mêlant contenus et exercices). 🎙️ **Transcription audio et vidéo** dans le Mode Avancé (jusqu'à 90 min, via Albert/DINUM) + **import d'une page web** par lien. ♻️ **Génération « par lots »** automatique pour produire de nombreux éléments sans buter sur la limite de temps des appels IA. 📄 **Export PDF haute fidélité** (rendu serveur à partir de l'ODT). 🤖 **Caramelia**, l'assistante intégrée. 🧠 Nouveau modèle **Mistral Small 4 (119B)** par défaut.
 - **v5.3.0** : 🤖 **Caramelia**, le chatbot d'assistance qui remplit les champs et pilote l'interface à votre place. Refonte interne des simulateurs de prévisualisation (chargement plus rapide).
 - **v5.2.2** : 🚀 **Nouveau modèle Qwen 3.6 (35B)** — beaucoup plus rapide que Qwen 3.5 sur les générations longues, tout en conservant l'excellente qualité. 🔒 **DOMPurify 3.4.1** (mise à jour de sécurité de la bibliothèque de sanitisation HTML, aucune régression : comportement identique à la 3.3.3 sur 33 cas de test).

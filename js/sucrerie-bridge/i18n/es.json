@@ -66,10 +66,10 @@
     "sucrerie_bridge_field_author_display": "Nombre público",
     "sucrerie_bridge_author_display_placeholder": "Ej. Sra. Martín, Taller de Ciencias…",
     "sucrerie_bridge_author_display_hint": "Mostrado públicamente con la actividad: tu nombre, un seudónimo o el nombre de un grupo de trabajo. Modificable en cualquier momento.",
-    "sucrerie_bridge_legal_text": "Certifico ser autor o autora de esta actividad (asistido/a o no por IA), haberla verificado, y autorizo su difusión bajo licencia <strong>CC BY-NC-SA 4.0</strong>. Respeta los derechos de autor, el RGPD, la accesibilidad, y no contiene contenido ilegal o discriminatorio. <br><br>Podré <strong>retirarla en cualquier momento</strong> a través del enlace de gestión recibido por correo. Los responsables de La Sucrerie se reservan el derecho de retirar cualquier actividad que no cumpla las normas de uso.",
+    "sucrerie_bridge_legal_text": "Certifico ser autor o autora de esta actividad (asistido/a o no por IA), haberla verificado, y autorizo su difusión bajo licencia <strong>CC BY-SA 4.0</strong>. Respeta los derechos de autor, el RGPD, la accesibilidad, y no contiene contenido ilegal o discriminatorio. <br><br>Podré <strong>retirarla en cualquier momento</strong> a través del enlace de gestión recibido por correo. Los responsables de La Sucrerie se reservan el derecho de retirar cualquier actividad que no cumpla las normas de uso.",
 
-    "license_cc_by_nc_sa_label": "CC BY-NC-SA 4.0",
-    "license_cc_by_nc_sa_desc": "Atribución — no comercial — compartir igual",
+    "license_cc_by_sa_label": "CC BY-SA 4.0",
+    "license_cc_by_sa_desc": "Atribución — compartir igual",
 
     "sucrerie_bridge_recheck_pending": "Verificando tus modificaciones…",
     "sucrerie_bridge_recheck_ok": "Conforme con la carta",

@@ -66,10 +66,10 @@
     "sucrerie_bridge_field_author_display": "公开名称",
     "sucrerie_bridge_author_display_placeholder": "例如：马丁老师、科学工作坊…",
     "sucrerie_bridge_author_display_hint": "与活动一同公开显示——你的姓名、笔名或工作组名称。可随时修改。",
-    "sucrerie_bridge_legal_text": "我证明自己是本活动的作者（无论是否借助 AI），已对其进行核查，并授权以 <strong>CC BY-NC-SA 4.0</strong> 许可证发布。它尊重著作权、GDPR、可访问性，且不包含任何违法或歧视性内容。<br><br>我可以随时通过电子邮件收到的管理链接 <strong>将其撤回</strong>。La Sucrerie 的负责人保留删除任何不符合使用规则的活动的权利。",
+    "sucrerie_bridge_legal_text": "我证明自己是本活动的作者（无论是否借助 AI），已对其进行核查，并授权以 <strong>CC BY-SA 4.0</strong> 许可证发布。它尊重著作权、GDPR、可访问性，且不包含任何违法或歧视性内容。<br><br>我可以随时通过电子邮件收到的管理链接 <strong>将其撤回</strong>。La Sucrerie 的负责人保留删除任何不符合使用规则的活动的权利。",
 
-    "license_cc_by_nc_sa_label": "CC BY-NC-SA 4.0",
-    "license_cc_by_nc_sa_desc": "署名 — 非商业性 — 相同方式共享",
+    "license_cc_by_sa_label": "CC BY-SA 4.0",
+    "license_cc_by_sa_desc": "署名 — 相同方式共享",
 
     "sucrerie_bridge_recheck_pending": "正在核查您的修改…",
     "sucrerie_bridge_recheck_ok": "符合章程",

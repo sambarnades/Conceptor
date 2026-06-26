@@ -66,10 +66,10 @@
     "sucrerie_bridge_field_author_display": "Openbare naam",
     "sucrerie_bridge_author_display_placeholder": "Bijv. mevr. Martin, Wetenschapswerkgroep…",
     "sucrerie_bridge_author_display_hint": "Openbaar getoond bij de activiteit — je naam, een pseudoniem of de naam van een werkgroep. Op elk moment te wijzigen.",
-    "sucrerie_bridge_legal_text": "Ik verklaar de auteur te zijn van deze activiteit (al dan niet met behulp van AI), ze gecontroleerd te hebben, en geef toestemming voor de verspreiding ervan onder de licentie <strong>CC BY-NC-SA 4.0</strong>. Ze respecteert het auteursrecht, de AVG, de toegankelijkheid, en bevat geen illegale of discriminerende inhoud. <br><br>Ik kan ze <strong>op elk moment verwijderen</strong> via de per e-mail ontvangen beheerlink. De verantwoordelijken van La Sucrerie behouden zich het recht voor om elke activiteit die niet conform de gebruiksregels is te verwijderen.",
+    "sucrerie_bridge_legal_text": "Ik verklaar de auteur te zijn van deze activiteit (al dan niet met behulp van AI), ze gecontroleerd te hebben, en geef toestemming voor de verspreiding ervan onder de licentie <strong>CC BY-SA 4.0</strong>. Ze respecteert het auteursrecht, de AVG, de toegankelijkheid, en bevat geen illegale of discriminerende inhoud. <br><br>Ik kan ze <strong>op elk moment verwijderen</strong> via de per e-mail ontvangen beheerlink. De verantwoordelijken van La Sucrerie behouden zich het recht voor om elke activiteit die niet conform de gebruiksregels is te verwijderen.",
 
-    "license_cc_by_nc_sa_label": "CC BY-NC-SA 4.0",
-    "license_cc_by_nc_sa_desc": "Naamsvermelding — niet commercieel — gelijk delen",
+    "license_cc_by_sa_label": "CC BY-SA 4.0",
+    "license_cc_by_sa_desc": "Naamsvermelding — gelijk delen",
 
     "sucrerie_bridge_recheck_pending": "Je wijzigingen worden gecontroleerd…",
     "sucrerie_bridge_recheck_ok": "Conform met het handvest",

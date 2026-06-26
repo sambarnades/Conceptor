@@ -66,10 +66,10 @@
     "sucrerie_bridge_field_author_display": "Öffentlicher Name",
     "sucrerie_bridge_author_display_placeholder": "z. B. Frau Martin, Wissenschafts-AG…",
     "sucrerie_bridge_author_display_hint": "Öffentlich mit der Aktivität angezeigt — Ihr Name, ein Pseudonym oder ein Arbeitsgruppenname. Jederzeit änderbar.",
-    "sucrerie_bridge_legal_text": "Ich versichere, der Autor oder die Autorin dieser Aktivität zu sein (mit oder ohne KI-Unterstützung), sie überprüft zu haben, und ich erlaube ihre Verbreitung unter der Lizenz <strong>CC BY-NC-SA 4.0</strong>. Sie respektiert das Urheberrecht, die DSGVO, die Barrierefreiheit und enthält keine illegalen oder diskriminierenden Inhalte. <br><br>Ich kann sie <strong>jederzeit entfernen</strong> über den per E-Mail erhaltenen Verwaltungslink. Die Verantwortlichen von La Sucrerie behalten sich das Recht vor, jede nicht regelkonforme Aktivität zu entfernen.",
+    "sucrerie_bridge_legal_text": "Ich versichere, der Autor oder die Autorin dieser Aktivität zu sein (mit oder ohne KI-Unterstützung), sie überprüft zu haben, und ich erlaube ihre Verbreitung unter der Lizenz <strong>CC BY-SA 4.0</strong>. Sie respektiert das Urheberrecht, die DSGVO, die Barrierefreiheit und enthält keine illegalen oder diskriminierenden Inhalte. <br><br>Ich kann sie <strong>jederzeit entfernen</strong> über den per E-Mail erhaltenen Verwaltungslink. Die Verantwortlichen von La Sucrerie behalten sich das Recht vor, jede nicht regelkonforme Aktivität zu entfernen.",
 
-    "license_cc_by_nc_sa_label": "CC BY-NC-SA 4.0",
-    "license_cc_by_nc_sa_desc": "Namensnennung — nicht kommerziell — Weitergabe unter gleichen Bedingungen",
+    "license_cc_by_sa_label": "CC BY-SA 4.0",
+    "license_cc_by_sa_desc": "Namensnennung — Weitergabe unter gleichen Bedingungen",
 
     "sucrerie_bridge_recheck_pending": "Ihre Änderungen werden überprüft…",
     "sucrerie_bridge_recheck_ok": "Konform mit der Charta",

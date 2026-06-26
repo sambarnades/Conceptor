@@ -2,7 +2,7 @@
 
 **Création Assistée de Ressources et d'Activités Magistère et Éléa**
 
-[![Version](https://img.shields.io/badge/version-6.0.0-blue.svg)](https://caramel.forge.apps.education.fr/)
+[![Version](https://img.shields.io/badge/version-6.0.1-blue.svg)](https://caramel.forge.apps.education.fr/)
 [![Licence](https://img.shields.io/badge/licence-GNU%20AGPLv3-green.svg)](LICENSE)
 [![Plateforme](https://img.shields.io/badge/plateforme-Web-orange.svg)](https://caramel.forge.apps.education.fr/)
 [![Langues](https://img.shields.io/badge/langues-11-purple.svg)](#-multilinguisme)
@@ -225,7 +225,7 @@ Le module `json-healer.js` répare systématiquement les sorties du LLM (LaTeX, 
 - **Hébergement** : Forge des Communs Numériques Éducatifs — Ministère de l'Éducation nationale et de la Jeunesse, 110 rue de Grenelle, 75007 Paris, France
 - **Licence du code** : GNU AGPLv3
 
-> Le dépôt **facultatif** d'une activité sur la boutique **La Sucrerie** entraîne une **publication publique** sous licence **CC BY-NC-SA 4.0** ; cette démarche est distincte de la simple génération.
+> Le dépôt **facultatif** d'une activité sur la boutique **La Sucrerie** entraîne une **publication publique** sous licence **CC BY-SA 4.0** ; cette démarche est distincte de la simple génération.
 
 ---
 

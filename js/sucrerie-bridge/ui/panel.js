@@ -27,7 +27,7 @@
  *
  * --- Licence ---
  *
- * Pas de sélecteur : la licence CC BY-NC-SA 4.0 est imposée par Caramel/Sucrerie.
+ * Pas de sélecteur : la licence CC BY-SA 4.0 est imposée par Caramel/Sucrerie.
  * Le code reste envoyé en dur dans le payload (FORCED_LICENSE.code).
  */
 
