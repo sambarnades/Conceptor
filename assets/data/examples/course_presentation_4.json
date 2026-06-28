@@ -143,7 +143,7 @@
       "type": "quiz",
       "title": "Glisser-déposer — Périodes et régimes",
       "exercise": {
-        "library": "H5P.DragQuestion 1.14",
+        "library": "H5P.DragQuestion 1.15",
         "title": "Associez chaque période à son régime politique en glissant les étiquettes dans les bonnes zones.",
         "dropZones": [
           { "label": "Monarchie absolue" },

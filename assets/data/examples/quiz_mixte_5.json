@@ -32,7 +32,7 @@
       }
     },
     {
-      "library": "H5P.DragQuestion 1.14",
+      "library": "H5P.DragQuestion 1.15",
       "metadata": { "title": "Sciences naturelles - Glisser-déposer" },
       "params": {
         "title": "Classe chaque animal dans la bonne catégorie selon son mode de reproduction.",

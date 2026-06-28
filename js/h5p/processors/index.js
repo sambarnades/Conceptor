@@ -31,7 +31,7 @@ const processorMetadata = {
     },
     'Flashcards': {
         machineName: 'H5P.Flashcards',
-        version: { major: 1, minor: 6 },
+        version: { major: 1, minor: 7 }, // aligné éléa
         extraDependencies: [
             { machineName: 'H5P.MathDisplay', majorVersion: 1, minorVersion: 0 },
             { machineName: 'FontAwesome', majorVersion: 4, minorVersion: 5 },
@@ -111,7 +111,7 @@ const processorMetadata = {
     },
     'DragAndDrop': {
         machineName: 'H5P.DragQuestion',
-        version: { major: 1, minor: 14 },
+        version: { major: 1, minor: 15 }, // aligné éléa : 1.15 ajoute H5P.Components
         extraDependencies: [
             { machineName: 'H5P.DragNDrop', majorVersion: 1, minorVersion: 1 },
             { machineName: 'H5P.DragNBar', majorVersion: 1, minorVersion: 5 },
@@ -120,7 +120,8 @@ const processorMetadata = {
             { machineName: 'H5P.AdvancedText', majorVersion: 1, minorVersion: 1 },
             { machineName: 'H5P.Image', majorVersion: 1, minorVersion: 1 },
             { machineName: 'Drop', majorVersion: 1, minorVersion: 0 },
-            { machineName: 'H5P.MathDisplay', majorVersion: 1, minorVersion: 0 }
+            { machineName: 'H5P.MathDisplay', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'H5P.Components', majorVersion: 1, minorVersion: 0 }
         ]
     },
     'TrueFalse': {
@@ -209,7 +210,7 @@ const processorMetadata = {
     },
     'CoursePresentation': {
         machineName: 'H5P.CoursePresentation',
-        version: { major: 1, minor: 26 },
+        version: { major: 1, minor: 27 }, // aligné éléa : 1.27 ajoute H5P.Components
         extraDependencies: [
             // Core
             { machineName: 'FontAwesome', majorVersion: 4, minorVersion: 5 },
@@ -218,6 +219,7 @@ const processorMetadata = {
             { machineName: 'H5P.Transition', majorVersion: 1, minorVersion: 0 },
             { machineName: 'H5P.Question', majorVersion: 1, minorVersion: 5 },
             { machineName: 'H5P.MathDisplay', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'H5P.Components', majorVersion: 1, minorVersion: 0 },
             // Sous-types contenu
             { machineName: 'H5P.AdvancedText', majorVersion: 1, minorVersion: 1 },
             { machineName: 'H5P.Image', majorVersion: 1, minorVersion: 1 },
@@ -231,7 +233,7 @@ const processorMetadata = {
             { machineName: 'H5P.SingleChoiceSet', majorVersion: 1, minorVersion: 11 },
             { machineName: 'H5P.MarkTheWords', majorVersion: 1, minorVersion: 11 },
             { machineName: 'H5P.Summary', majorVersion: 1, minorVersion: 10 },
-            { machineName: 'H5P.DragQuestion', majorVersion: 1, minorVersion: 14 },
+            { machineName: 'H5P.DragQuestion', majorVersion: 1, minorVersion: 15 },
             { machineName: 'H5P.Dialogcards', majorVersion: 1, minorVersion: 9 },
             // Dépendances des sous-types
             { machineName: 'H5P.TextUtilities', majorVersion: 1, minorVersion: 3 },
@@ -248,7 +250,7 @@ const processorMetadata = {
     },
     'InteractiveBook': {
         machineName: 'H5P.InteractiveBook',
-        version: { major: 1, minor: 11 },
+        version: { major: 1, minor: 15 }, // aligné éléa : 1.15 ajoute H5P.Components
         extraDependencies: [
             // Core
             { machineName: 'FontAwesome', majorVersion: 4, minorVersion: 5 },
@@ -257,8 +259,9 @@ const processorMetadata = {
             { machineName: 'H5P.Transition', majorVersion: 1, minorVersion: 0 },
             { machineName: 'H5P.Question', majorVersion: 1, minorVersion: 5 },
             { machineName: 'H5P.MathDisplay', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'H5P.Components', majorVersion: 1, minorVersion: 0 },
             // Conteneur de chapitre
-            { machineName: 'H5P.Column', majorVersion: 1, minorVersion: 18 },
+            { machineName: 'H5P.Column', majorVersion: 1, minorVersion: 22 },
             // Sous-types contenu
             { machineName: 'H5P.AdvancedText', majorVersion: 1, minorVersion: 1 },
             { machineName: 'H5P.Image', majorVersion: 1, minorVersion: 1 },
@@ -271,7 +274,7 @@ const processorMetadata = {
             { machineName: 'H5P.SingleChoiceSet', majorVersion: 1, minorVersion: 11 },
             { machineName: 'H5P.MarkTheWords', majorVersion: 1, minorVersion: 11 },
             { machineName: 'H5P.Summary', majorVersion: 1, minorVersion: 10 },
-            { machineName: 'H5P.DragQuestion', majorVersion: 1, minorVersion: 14 },
+            { machineName: 'H5P.DragQuestion', majorVersion: 1, minorVersion: 15 },
             { machineName: 'H5P.Dialogcards', majorVersion: 1, minorVersion: 9 },
             // Dépendances des sous-types
             { machineName: 'H5P.TextUtilities', majorVersion: 1, minorVersion: 3 },
@@ -288,13 +291,14 @@ const processorMetadata = {
     },
     'InteractiveVideo': {
         machineName: 'H5P.InteractiveVideo',
-        version: { major: 1, minor: 27 },
+        version: { major: 1, minor: 28 }, // aligné éléa : 1.28 ajoute H5P.Components
         extraDependencies: [
             // Core préloadé de H5P.InteractiveVideo (cf. library.json)
             { machineName: 'FontAwesome', majorVersion: 4, minorVersion: 5 },
             { machineName: 'jQuery.ui', majorVersion: 1, minorVersion: 10 },
             { machineName: 'H5P.Video', majorVersion: 1, minorVersion: 6 },
             { machineName: 'H5P.DragNBar', majorVersion: 1, minorVersion: 5 },
+            { machineName: 'H5P.Components', majorVersion: 1, minorVersion: 0 },
             // Dépendances runtime de DragNBar
             { machineName: 'H5P.DragNDrop', majorVersion: 1, minorVersion: 1 },
             { machineName: 'H5P.DragNResize', majorVersion: 1, minorVersion: 2 },
@@ -328,7 +332,10 @@ const processorMetadata = {
     },
     'QuizSet': {
         machineName: 'H5P.QuestionSet',
-        version: { major: 1, minor: 20 },
+        // Aligné sur éléa (cible) : 1.21 introduit la barre de navigation via H5P.Components
+        // (boutons Précédent/Suivant). QuizSet.js écrit les libellés sous les deux schémas
+        // (prevButton/nextButton ≤1.20 ET previous/next 1.21+) pour rester robuste.
+        version: { major: 1, minor: 21 },
         extraDependencies: [
             { machineName: 'FontAwesome', majorVersion: 4, minorVersion: 5 },
             { machineName: 'H5P.JoubelUI', majorVersion: 1, minorVersion: 3 },
@@ -337,7 +344,8 @@ const processorMetadata = {
             { machineName: 'H5P.Question', majorVersion: 1, minorVersion: 5 },
             { machineName: 'jQuery.ui', majorVersion: 1, minorVersion: 10 },
             { machineName: 'H5P.TextUtilities', majorVersion: 1, minorVersion: 3 },
-            { machineName: 'H5P.Video', majorVersion: 1, minorVersion: 6 }
+            { machineName: 'H5P.Video', majorVersion: 1, minorVersion: 6 },
+            { machineName: 'H5P.Components', majorVersion: 1, minorVersion: 0 }
         ]
     }
 };
@@ -499,6 +507,33 @@ export function getModuleMetadata(moduleKey) {
         };
     }
     return null;
+}
+
+/**
+ * Liste dédupliquée de TOUTES les bibliothèques H5P susceptibles d'être déclarées
+ * dans les fichiers .h5p exportés par Caramel (librairies principales de chaque type
+ * + leurs dépendances). Source de vérité unique : `processorMetadata`. Utilisée pour
+ * afficher les versions dans les mentions légales (reste à jour automatiquement à
+ * chaque bump de version).
+ * @returns {Array<{machineName: string, major: number, minor: number}>} trié par nom
+ */
+export function getAllExportedH5PLibraries() {
+    const byName = new Map(); // machineName -> [major, minor] (on garde la version la plus haute)
+    const consider = (machineName, major, minor) => {
+        const prev = byName.get(machineName);
+        if (!prev || major > prev[0] || (major === prev[0] && minor > prev[1])) {
+            byName.set(machineName, [major, minor]);
+        }
+    };
+    for (const meta of Object.values(processorMetadata)) {
+        consider(meta.machineName, meta.version.major, meta.version.minor);
+        for (const dep of (meta.extraDependencies || [])) {
+            consider(dep.machineName, dep.majorVersion, dep.minorVersion);
+        }
+    }
+    return Array.from(byName.entries())
+        .map(([machineName, [major, minor]]) => ({ machineName, major, minor }))
+        .sort((a, b) => a.machineName.localeCompare(b.machineName));
 }
 
 /**

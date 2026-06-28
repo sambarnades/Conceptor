@@ -40,7 +40,7 @@ const LIBRARY_MAP = {
     'singlechoiceset':  'H5P.SingleChoiceSet 1.11',
     'markthewords':     'H5P.MarkTheWords 1.11',
     'summary':          'H5P.Summary 1.10',
-    'dragquestion':     'H5P.DragQuestion 1.14',
+    'dragquestion':     'H5P.DragQuestion 1.15',
     'dialogcards':      'H5P.Dialogcards 1.9',
     'advancedtext':     'H5P.AdvancedText 1.1',
     'table':            'H5P.Table 1.2',

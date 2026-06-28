@@ -163,3 +163,91 @@
 #legal-mentions-modal #legal-mentions-content > h3 {
     display: none;
 }
+
+/* ─── Liste dépliable des librairies H5P exportées (compacte) ─────────── */
+.legal-h5p-details {
+    border: 1px solid #e5e5ea;
+    border-radius: 10px;
+    background: #fbfbfd;
+    overflow: hidden;
+}
+
+.legal-h5p-summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #1d1d1f;
+    list-style: none;
+    user-select: none;
+}
+
+/* Supprime le triangle natif (on a notre chevron) */
+.legal-h5p-summary::-webkit-details-marker { display: none; }
+.legal-h5p-summary::marker { content: ''; }
+
+.legal-h5p-summary:hover { background: #f2f2f7; }
+
+.legal-h5p-count {
+    color: #8e8e93;
+    font-weight: 500;
+    font-size: 0.9em;
+}
+
+.legal-h5p-chevron {
+    margin-left: auto;
+    color: #8e8e93;
+    transition: transform 0.2s ease;
+    font-size: 0.85em;
+}
+
+.legal-h5p-details[open] .legal-h5p-chevron { transform: rotate(180deg); }
+
+.legal-h5p-details > p {
+    margin: 0;
+    padding: 0 14px;
+    color: #6e6e73;
+    font-size: 0.88rem;
+}
+
+/* Grille compacte multi-colonnes — liste à puce simple */
+#legal-mentions-content .legal-h5p-libraries {
+    list-style: none;
+    margin: 10px 0 0;
+    padding: 0 14px 14px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 2px 18px;
+}
+
+/* Surcharge la coche verte globale (#legal-mentions-content li::before) par une
+   puce simple, et neutralise le padding/margin hérités pour éviter le chevauchement. */
+#legal-mentions-content .legal-h5p-libraries li {
+    margin-bottom: 0;
+    padding: 2px 0 2px 14px;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#legal-mentions-content .legal-h5p-libraries li::before {
+    content: '•';
+    left: 0;
+    top: 0;
+    color: #8e8e93;
+    font-weight: normal;
+}
+
+.legal-h5p-name {
+    color: #1d1d1f;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.legal-h5p-version {
+    color: #8e8e93;
+    font-variant-numeric: tabular-nums;
+}

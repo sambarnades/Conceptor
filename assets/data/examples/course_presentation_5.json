@@ -162,7 +162,7 @@
       "type": "quiz",
       "title": "Classez les planètes",
       "exercise": {
-        "library": "H5P.DragQuestion 1.14",
+        "library": "H5P.DragQuestion 1.15",
         "title": "Glissez chaque planète dans la bonne catégorie.",
         "dropZones": [
           { "label": "Telluriques", "correctElements": [0, 1, 2, 3] },

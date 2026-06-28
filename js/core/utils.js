@@ -499,6 +499,24 @@ export function setupEventListeners() {
                 const html = await response.text();
                 legalMentionsContent.innerHTML = html;
                 translatePage(legalMentionsModal);
+
+                // Liste dynamique des versions de librairies H5P exportées dans les
+                // activités (source de vérité : les métadonnées des processeurs).
+                try {
+                    const { getAllExportedH5PLibraries } = await import('../h5p/processors/index.js');
+                    const listEl = legalMentionsModal.querySelector('#legal-h5p-libraries-list');
+                    if (listEl) {
+                        const libs = getAllExportedH5PLibraries();
+                        listEl.innerHTML = libs
+                            .map(l => `<li><span class="legal-h5p-name">${l.machineName}</span> <span class="legal-h5p-version">${l.major}.${l.minor}</span></li>`)
+                            .join('');
+                        const countEl = legalMentionsModal.querySelector('#legal-h5p-libraries-count');
+                        if (countEl) countEl.textContent = `(${libs.length})`;
+                    }
+                } catch (err) {
+                    console.error('Impossible de lister les versions de librairies H5P :', err);
+                }
+
                 legalMentionsModal.style.display = 'block';
 
                 // Accessibilité : focus trap + Escape + restauration du focus

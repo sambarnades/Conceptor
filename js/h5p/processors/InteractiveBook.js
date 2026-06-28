@@ -40,7 +40,7 @@ const LIBRARY_MAP = {
     'singlechoiceset':  'H5P.SingleChoiceSet 1.11',
     'markthewords':     'H5P.MarkTheWords 1.11',
     'summary':          'H5P.Summary 1.10',
-    'dragquestion':     'H5P.DragQuestion 1.14',
+    'dragquestion':     'H5P.DragQuestion 1.15',
     'dialogcards':      'H5P.Dialogcards 1.9',
     'advancedtext':     'H5P.AdvancedText 1.1',
     'table':            'H5P.Table 1.2',
@@ -219,7 +219,7 @@ async function processChapter(chapter, helpers, allLibs) {
     }
 
     return {
-        library: 'H5P.Column 1.18',
+        library: 'H5P.Column 1.22',
         subContentId: generateUUID(),
         metadata: {
             contentType: 'Column',
@@ -243,6 +243,13 @@ function buildL10n() {
         hideTOC: translations.h5p_ib_hide_toc || "Masquer la table des matières",
         nextPage: translations.h5p_ib_next_page || "Page suivante",
         previousPage: translations.h5p_ib_previous_page || "Page précédente",
+        // H5P.InteractiveBook 1.15+ : la barre de navigation H5P.Components affiche
+        // désormais les libellés courts `next`/`previous` (les anciens nextPage/previousPage
+        // deviennent les aria-labels) + `page` (indicateur de progression). Sans ces champs,
+        // les boutons s'affichent en anglais (« Next ») voire vides.
+        next: translations.h5p_next || "Suivant",
+        previous: translations.h5p_previous || "Précédent",
+        page: translations.h5p_ib_page || "Page",
         chapterCompleted: translations.h5p_ib_chapter_completed || "Page terminée !",
         partCompleted: translations.h5p_ib_part_completed || "@pages sur @total terminées",
         incompleteChapter: translations.h5p_ib_incomplete_chapter || "Page incomplète",
@@ -345,8 +352,8 @@ export default {
         const addedDeps = new Set();
 
         // H5P.Column est TOUJOURS requis (chaque chapitre en est un)
-        addedDeps.add('H5P.Column-1.18');
-        dependencies.push({ machineName: 'H5P.Column', majorVersion: 1, minorVersion: 18 });
+        addedDeps.add('H5P.Column-1.22');
+        dependencies.push({ machineName: 'H5P.Column', majorVersion: 1, minorVersion: 22 });
 
         if (helpers && helpers.getKeyFromLibrary && helpers.getLibraryMetadata) {
             for (const libName of allLibs) {

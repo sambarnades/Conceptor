@@ -322,7 +322,7 @@ const CP_EXERCISE_SCHEMAS = {
         textField: { type: 'textarea', label: 'editor_text_with_marks', required: true, large: true, hint: 'editor_mark_words_hint' },
         overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
     },
-    'H5P.DragQuestion 1.14': {
+    'H5P.DragQuestion 1.15': {
         title: { type: 'textarea', label: 'editor_task_description', required: true },
         layoutSettings: {
             type: 'fieldGroup',
@@ -1391,7 +1391,7 @@ const fieldSchemas = {
                                     { value: 'H5P.DragText 1.10', label: 'editor_type_dragtext' },
                                     { value: 'H5P.MarkTheWords 1.11', label: 'editor_type_markwords' },
                                     { value: 'H5P.Essay 1.5', label: 'editor_type_essay' },
-                                    { value: 'H5P.DragQuestion 1.14', label: 'h5p_drag_and_drop_name' }
+                                    { value: 'H5P.DragQuestion 1.15', label: 'h5p_drag_and_drop_name' }
                                 ],
                                 default: 'H5P.MultiChoice 1.16'
                             },
@@ -1503,7 +1503,7 @@ const fieldSchemas = {
                                             }
                                         }
                                     },
-                                    'H5P.DragQuestion 1.14': {
+                                    'H5P.DragQuestion 1.15': {
                                         title: { type: 'textarea', label: 'editor_task_description', required: true },
                                         layoutSettings: {
                                             type: 'fieldGroup',
@@ -2548,7 +2548,7 @@ const fieldSchemas = {
                                     { value: 'H5P.MarkTheWords 1.11', label: 'editor_cp_ex_markwords' },
                                     { value: 'H5P.SingleChoiceSet 1.11', label: 'editor_cp_ex_singlechoice' },
                                     { value: 'H5P.Summary 1.10', label: 'editor_cp_ex_summary' },
-                                    { value: 'H5P.DragQuestion 1.14', label: 'editor_cp_ex_dragquestion' },
+                                    { value: 'H5P.DragQuestion 1.15', label: 'editor_cp_ex_dragquestion' },
                                     { value: 'H5P.Dialogcards 1.9', label: 'editor_cp_ex_dialogcards' }
                                 ]
                             },
@@ -2718,7 +2718,7 @@ const fieldSchemas = {
                                             { value: 'H5P.MarkTheWords 1.11', label: 'editor_cp_ex_markwords' },
                                             { value: 'H5P.SingleChoiceSet 1.11', label: 'editor_cp_ex_singlechoice' },
                                             { value: 'H5P.Summary 1.10', label: 'editor_cp_ex_summary' },
-                                            { value: 'H5P.DragQuestion 1.14', label: 'editor_cp_ex_dragquestion' },
+                                            { value: 'H5P.DragQuestion 1.15', label: 'editor_cp_ex_dragquestion' },
                                             { value: 'H5P.Dialogcards 1.9', label: 'editor_cp_ex_dialogcards' }
                                         ]
                                     },
@@ -2948,6 +2948,23 @@ function getTranslatedModuleName(moduleKey) {
 // =======================================================================
 // API PUBLIQUE
 // =======================================================================
+
+/**
+ * Résout un sous-schéma à partir d'une chaîne de librairie en tolérant la version.
+ * Essaie d'abord la correspondance exacte (ex: 'H5P.DragQuestion 1.15'), puis par
+ * nom de librairie sans la version (ex: 'H5P.DragQuestion') — pour rester compatible
+ * quand la version d'une activité est bumpée sans dupliquer les schémas, et pour
+ * traiter aussi bien les anciens contenus (1.14) que les nouveaux (1.15).
+ */
+function resolveVersionedSchema(schemas, selectorValue) {
+    if (!schemas || !selectorValue) return null;
+    if (schemas[selectorValue]) return schemas[selectorValue];
+    const name = String(selectorValue).split(' ')[0];
+    for (const key in schemas) {
+        if (key.split(' ')[0] === name) return schemas[key];
+    }
+    return null;
+}
 
 /**
  * Detecte le type de contenu a partir des donnees JSON
@@ -3591,7 +3608,7 @@ function cleanDataBasedOnSchema(data, schemaDef) {
 
                 // Mais wait, si data est nested (ex: QuizSet item), data.library existe.
                 const selectorValue = getNestedValue(data, config.selector) || data[config.selector];
-                const subSchema = config.schemas[selectorValue];
+                const subSchema = resolveVersionedSchema(config.schemas, selectorValue);
 
                 if (subSchema) {
                     const cleanedValue = cleanDataBasedOnSchema(value, subSchema);

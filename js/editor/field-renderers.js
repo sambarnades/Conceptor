@@ -1898,6 +1898,23 @@ function _resolveRenderer(fieldConfig, fieldPath) {
 /**
  * Rend un objet dynamique basé sur un champ sélecteur
  */
+/**
+ * Résout un sous-schéma à partir d'une chaîne de librairie en tolérant la version.
+ * Essaie d'abord la correspondance exacte (ex: 'H5P.DragQuestion 1.15'), puis par
+ * nom de librairie sans la version (ex: 'H5P.DragQuestion') — pour rester compatible
+ * quand la version d'une activité est bumpée sans dupliquer les schémas, et pour
+ * éditer aussi bien les anciens contenus (1.14) que les nouveaux (1.15).
+ */
+function resolveVersionedSchema(schemas, selectorValue) {
+    if (!schemas || !selectorValue) return null;
+    if (schemas[selectorValue]) return schemas[selectorValue];
+    const name = String(selectorValue).split(' ')[0];
+    for (const key in schemas) {
+        if (key.split(' ')[0] === name) return schemas[key];
+    }
+    return null;
+}
+
 export function renderDynamicObjectField(config, value, onChange, path, selectorValue) {
     // Import dynamique pour éviter les dépendances circulaires
     const { createArrayManager } = window._jsonEditorArrayManager || {};
@@ -1911,7 +1928,7 @@ export function renderDynamicObjectField(config, value, onChange, path, selector
 
     // Récupérer le schéma correspondant à la valeur du sélecteur
     // config.schemas est un objet { "valeur1": schema1, "valeur2": schema2 }
-    const schema = config.schemas ? config.schemas[selectorValue] : null;
+    const schema = resolveVersionedSchema(config.schemas, selectorValue);
 
     if (!schema && selectorValue) {
         // Type non reconnu mais sélecteur présent

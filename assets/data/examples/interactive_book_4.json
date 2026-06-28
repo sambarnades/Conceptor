@@ -204,7 +204,7 @@
         },
         {
           "type": "exercise",
-          "library": "H5P.DragQuestion 1.14",
+          "library": "H5P.DragQuestion 1.15",
           "title": "Associez chaque préfixe à son facteur décimal.",
           "dropZones": [
             {

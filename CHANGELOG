@@ -4,6 +4,35 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 
 ---
 
+## [6.1.0] - 28-06-2026
+
+### Nouveautés
+
+- **Alignement complet des librairies H5P sur éléa (nouvelle génération « Components »)** : éléa a mis à jour son moteur H5P vers la dernière génération de librairies, qui introduit une brique d'interface commune, **`H5P.Components`**, et refond la barre de navigation de plusieurs activités. Caramel embarque et déclare désormais ces versions à jour : **H5P.QuestionSet 1.21**, **H5P.Components 1.0**, **H5P.CoursePresentation 1.27**, **H5P.InteractiveBook 1.15**, **H5P.InteractiveVideo 1.28**, **H5P.DragQuestion 1.15**, **H5P.Column 1.22** et **H5P.Flashcards 1.7**. La prévisualisation dans Caramel et les fichiers `.h5p` exportés utilisent les mêmes versions que celles réellement déployées sur les plateformes cibles.
+- **Mentions légales — liste des versions de librairies H5P exportées** : une nouvelle section **dépliable** des mentions légales liste, de façon compacte, **toutes les librairies de contenu H5P** déclarées dans les fichiers `.h5p` générés par Caramel, avec leur numéro de version. Cette liste est **générée dynamiquement** depuis le registre des processeurs : elle reste donc toujours exacte, sans maintenance manuelle, à chaque évolution de version.
+
+### Corrections
+
+- **Bouton de navigation « Suivant / Précédent » vide sur éléa récent** : sur un éléa équipé des nouvelles librairies, le bouton de navigation des **Quiz (Question Set)** et des **Livres interactifs** apparaissait **sans texte**. En cause : la nouvelle barre de navigation `H5P.Components` lit de **nouveaux champs de libellés** (`next` / `previous`, et `page` pour le Livre) là où l'ancienne version lisait `nextButton` / `prevButton` (devenus de simples libellés d'accessibilité). Caramel écrit désormais les libellés sous **les deux schémas de noms** : l'affichage est correct aussi bien sur les anciens éléa que sur les nouveaux, sans rien casser.
+
+### Améliorations
+
+- **Éditeur visuel tolérant à la version** : l'éditeur JSON résout désormais le schéma d'un sous-type **par nom de librairie, indépendamment de la version** (ex. `H5P.DragQuestion`, quelle que soit la version). Conséquence : il édite indifféremment les **anciens contenus** (1.14) et les **nouveaux** (1.15), et **tout futur changement de version** de librairie ne nécessitera plus de retoucher l'éditeur.
+- **Outil de génération par lot (batch) — Livre interactif & Vidéo interactive** : l'outil de test de génération en masse (`tools/batch-h5p`) couvre désormais **toutes** les activités H5P, y compris le **Livre interactif** et la **Vidéo interactive**, pour faciliter la validation de bout en bout des exports.
+
+### Notes techniques
+
+- `js/vendor/h5p-libs/` : ajout des dossiers `H5P.QuestionSet-1.21`, `H5P.Components-1.0`, `H5P.CoursePresentation-1.27`, `H5P.InteractiveBook-1.15`, `H5P.InteractiveVideo-1.28`, `H5P.DragQuestion-1.15`, `H5P.Column-1.22` (Flashcards 1.7 déjà présente).
+- `js/h5p/processors/index.js` : bump des versions et ajout de la dépendance `H5P.Components` pour QuizSet, CoursePresentation, InteractiveBook, InteractiveVideo, DragAndDrop ; bump Flashcards 1.7 ; nouveau helper `getAllExportedH5PLibraries()` (source unique pour la liste des mentions légales).
+- `js/h5p/processors/QuizSet.js` et `InteractiveBook.js` : écriture des libellés de navigation sous l'ancien **et** le nouveau schéma (`previous`/`next`/`page` + aria + textes a11y des pastilles) ; `InteractiveBook.js` et `CoursePresentation.js` : sous-types `H5P.Column 1.22` et `H5P.DragQuestion 1.15`.
+- `js/editor/content-detector.js` et `field-renderers.js` : nouveau helper `resolveVersionedSchema` (résolution de schéma tolérante à la version) aux deux points de lookup.
+- `js/locales/*.json` (11 langues) : +5 clés i18n (`h5p_quiz_jump_to_question`, `h5p_quiz_answered`, `h5p_quiz_unanswered`, `h5p_ib_page`, `legal_h5p_libraries_title/intro`) ; propagation `H5P.DragQuestion 1.14 → 1.15` dans les prompts.
+- `assets/templates/mentions-legales.html`, `js/core/utils.js`, `css/components/mentions-legales.css` : section dépliable des versions de librairies H5P (liste à puce compacte, multi-colonnes).
+- `assets/data/examples/*.json` et `assets/data/prompts/*.md` : sous-type Glisser-déposer aligné sur `H5P.DragQuestion 1.15`.
+- `tools/batch-h5p/batch.js` : ajout de `InteractiveBook` et `InteractiveVideo`.
+
+---
+
 ## [6.0.2] - 26-06-2026
 
 ### Corrections

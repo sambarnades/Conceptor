@@ -105,7 +105,7 @@ Chaque exercice contient `library` suivi des champs décrits ci-dessous. Respect
    - `summaries` (array d'objets) : Chaque objet a `summary` (array de strings — la PREMIÈRE est toujours correcte) et optionnellement `tip` (string).
    - `overallFeedback` (4 tranches)
 
-8. **Glisser-déposer** (`library: "H5P.DragQuestion 1.14"`) :
+8. **Glisser-déposer** (`library: "H5P.DragQuestion 1.15"`) :
    - `title` (string) : Consigne expliquant ce que l'élève doit faire.
    - `dropZones` (array d'objets) : Chaque objet a `label` (string) et `correctElements` (array d'entiers = indices dans `elements`, commençant à 0).
    - `elements` (array d'objets) : Chaque objet a `text` (string, 1 à 4 mots).

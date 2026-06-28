@@ -49,7 +49,7 @@
 4. **Glisser les mots (\`H5P.DragText 1.10\`)** : \`taskDescription\`, \`textField\` (avec \`*mot*\`)
 5. **Surligner (\`H5P.MarkTheWords 1.11\`)** : \`taskDescription\`, \`textField\` (avec \`*mot*\`)
 6. **Rédaction (\`H5P.Essay 1.5\`)** : \`taskDescription\`, \`keywords\` (tableau d'objets avec \`keyword\` (string, le mot attendu) et \`options\` : \`{ "points": 1, "caseSensitive": false }\`)
-7. **Glisser-déposer (\`H5P.DragQuestion 1.14\`)** : \`title\` (consigne), \`dropZones\` (tableau d'objets avec \`label\` et \`correctElements\` : indices des éléments acceptés), \`elements\` (tableau d'objets avec \`text\`)
+7. **Glisser-déposer (\`H5P.DragQuestion 1.15\`)** : \`title\` (consigne), \`dropZones\` (tableau d'objets avec \`label\` et \`correctElements\` : indices des éléments acceptés), \`elements\` (tableau d'objets avec \`text\`)
 
 **Chaque question, sauf celles de type H5P.TrueFalse 1.8, doit inclure son propre \`overallFeedback\` (4 tranches).**
 **Indices et feedbacks ciblés pour les QCM (optionnel)** : L'objet \`tipsAndFeedback\` peut contenir :
@@ -291,7 +291,7 @@ N'ajoute pas \`tipsAndFeedback\` sur toutes les réponses. Cible uniquement les 
       }
     },
     {
-      "library": "H5P.DragQuestion 1.14",
+      "library": "H5P.DragQuestion 1.15",
       "metadata": {
         "title": "Sciences - Glisser-déposer"
       },

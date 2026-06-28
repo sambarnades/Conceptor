@@ -61,12 +61,29 @@ export default {
         }
 
         // Traductions et Textes d'interface
+        // NB : H5P.QuestionSet ≤1.20 lit prevButton/nextButton ; la 1.21+ (barre de
+        // navigation H5P.Components) lit les nouveaux champs previous/next (libellés
+        // visibles) + previousbutton/nextbutton (aria) + jumpToQuestion/answeredText/
+        // unansweredText (a11y des pastilles). On renseigne les DEUX jeux pour rester
+        // compatible avec les deux versions et éviter un bouton « Suivant » vide.
+        const previousLabel = translations.h5p_previous || "Précédent";
+        const nextLabel = translations.h5p_next || "Suivant";
         content.texts = {
-            prevButton: translations.h5p_previous || "Précédent",
-            nextButton: translations.h5p_next || "Suivant",
+            // Ancien schéma (≤ 1.20)
+            prevButton: previousLabel,
+            nextButton: nextLabel,
+            // Nouveau schéma (1.21+)
+            previous: previousLabel,
+            next: nextLabel,
+            previousbutton: previousLabel,
+            nextbutton: nextLabel,
+            // Communs
             finishButton: translations.h5p_finish_label || "Terminer",
             submitButton: translations.h5p_submit_answer || "Valider",
             textualProgress: translations.h5p_quiz_textual_progress || "Question @current sur @total",
+            jumpToQuestion: translations.h5p_quiz_jump_to_question || "Question %d sur %total",
+            answeredText: translations.h5p_quiz_answered || "Réponse donnée",
+            unansweredText: translations.h5p_quiz_unanswered || "Pas de réponse donnée",
             ...content.texts
         };
 

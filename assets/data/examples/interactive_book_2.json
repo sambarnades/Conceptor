@@ -99,7 +99,7 @@
       "title": "Classer les situations",
       "content": [
         { "type": "text", "text": "Le théorème et sa réciproque ne servent pas à la même chose : à vous de classer les situations." },
-        { "type": "exercise", "library": "H5P.DragQuestion 1.14",
+        { "type": "exercise", "library": "H5P.DragQuestion 1.15",
           "title": "Glissez chaque situation dans la bonne catégorie.",
           "dropZones": [
             { "label": "Théorème direct", "correctElements": [0, 2] },

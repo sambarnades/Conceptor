@@ -49,7 +49,8 @@ const ACTIVITIES = [
         ['FindTheWords', 'find_the_words'], ['SortParagraphs', 'sort_the_paragraphs'],
         ['SingleChoiceSet', 'single_choice_set'], ['DialogCards', 'dialog_cards'],
         ['ComplexFillTheBlanks', 'complex_fill_blanks'], ['Chart', 'charts'],
-        ['CoursePresentation', 'course_presentation']
+        ['CoursePresentation', 'course_presentation'],
+        ['InteractiveBook', 'interactive_book'], ['InteractiveVideo', 'interactive_video']
     ].map(([key, prefix]) => ({
         key, prefix, type: 'h5p',
         registry: h5pModules,
