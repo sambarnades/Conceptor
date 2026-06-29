@@ -9,10 +9,14 @@ import { ENDPOINTS } from '../core/endpoints.js';
 // PodEduc 2 modes) + import de page web. URLs centralisées dans
 // core/endpoints.js et réécrites en prod par la CI (variables
 // CARAMELIA_WEBHOOK_URL, CARAMELIA_AUDIO_URL, CARAMEL_VIDEO_TRANSCRIPT_URL,
+// CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL, CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL,
 // CARAMEL_FETCH_PAGE_URL — cf. .gitlab-ci.yml).
 const CARAMELIA_WEBHOOK_URL = ENDPOINTS.caramelia;
 const CARAMELIA_AUDIO_URL = ENDPOINTS.carameliaAudio;
 const CARAMEL_VIDEO_TRANSCRIPT_URL = ENDPOINTS.videoTranscript;
+// Transcription vidéo asynchrone (submit/poll) — voies longues > 60 s (cf. services/video-transcript.js).
+const CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL = ENDPOINTS.videoTranscriptSubmit;
+const CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL = ENDPOINTS.videoTranscriptResult;
 const CARAMEL_FETCH_PAGE_URL = ENDPOINTS.fetchPage;
 
 export const CONFIG = {
@@ -22,6 +26,8 @@ export const CONFIG = {
     chatWebhookUrl: CARAMELIA_WEBHOOK_URL,
     audioWebhookUrl: CARAMELIA_AUDIO_URL,
     videoTranscriptUrl: CARAMEL_VIDEO_TRANSCRIPT_URL,
+    videoTranscriptSubmitUrl: CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL,
+    videoTranscriptResultUrl: CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL,
     fetchPageUrl: CARAMEL_FETCH_PAGE_URL,
 
     // Saisie vocale (microphone)

@@ -45,15 +45,17 @@ pages:
     #      CARAMELIA_WEBHOOK_URL   (ex: https://…/caramelia-prod)
     #      CARAMELIA_AUDIO_URL     (ex: https://…/caramel-audio-prod)
     #      PDF_CONVERT_URL         (ex: https://…/caramel-pdf-convert-prod)
-    #      CARAMEL_VIDEO_TRANSCRIPT_URL (ex: https://…/caramel-video-transcript-prod)
+    #      CARAMEL_VIDEO_TRANSCRIPT_URL        (ex: https://…/caramel-video-transcript-prod)
+    #      CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL (ex: https://…/caramel-video-transcript-submit-prod)
+    #      CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL (ex: https://…/caramel-video-transcript-result-prod)
     #      CARAMEL_FETCH_PAGE_URL       (ex: https://…/caramel-fetch-page-prod)
     #
-    #    Les 8 sont OBLIGATOIRES : le build echoue (exit 1) si l'une manque.
+    #    Les 10 sont OBLIGATOIRES : le build echoue (exit 1) si l'une manque.
     # ------------------------------------------------------------------
     - |
       echo "=== Injection URLs n8n ==="
-      if [ -z "$LLM_SUBMIT_URL" ] || [ -z "$LLM_RESULT_URL" ] || [ -z "$LLM_STATS_URL" ] || [ -z "$CARAMELIA_WEBHOOK_URL" ] || [ -z "$CARAMELIA_AUDIO_URL" ] || [ -z "$PDF_CONVERT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_URL" ] || [ -z "$CARAMEL_FETCH_PAGE_URL" ]; then
-        echo "  ERREUR: une des 8 URLs n8n (LLM_SUBMIT_URL, LLM_RESULT_URL, LLM_STATS_URL, CARAMELIA_WEBHOOK_URL, CARAMELIA_AUDIO_URL, PDF_CONVERT_URL, CARAMEL_VIDEO_TRANSCRIPT_URL, CARAMEL_FETCH_PAGE_URL) n'est pas definie dans les variables CI/CD !"
+      if [ -z "$LLM_SUBMIT_URL" ] || [ -z "$LLM_RESULT_URL" ] || [ -z "$LLM_STATS_URL" ] || [ -z "$CARAMELIA_WEBHOOK_URL" ] || [ -z "$CARAMELIA_AUDIO_URL" ] || [ -z "$PDF_CONVERT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL" ] || [ -z "$CARAMEL_FETCH_PAGE_URL" ]; then
+        echo "  ERREUR: une des 10 URLs n8n (LLM_SUBMIT_URL, LLM_RESULT_URL, LLM_STATS_URL, CARAMELIA_WEBHOOK_URL, CARAMELIA_AUDIO_URL, PDF_CONVERT_URL, CARAMEL_VIDEO_TRANSCRIPT_URL, CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL, CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL, CARAMEL_FETCH_PAGE_URL) n'est pas definie dans les variables CI/CD !"
         echo "  → GitLab > Settings > CI/CD > Variables"
         exit 1
       fi
@@ -65,6 +67,8 @@ pages:
       sed -i "s|const CARAMELIA_AUDIO_URL = \".*\"|const CARAMELIA_AUDIO_URL = \"${CARAMELIA_AUDIO_URL}\"|g" "$ENDPOINTS_FILE"
       sed -i "s|const PDF_CONVERT_URL = \".*\"|const PDF_CONVERT_URL = \"${PDF_CONVERT_URL}\"|g" "$ENDPOINTS_FILE"
       sed -i "s|const CARAMEL_VIDEO_TRANSCRIPT_URL = \".*\"|const CARAMEL_VIDEO_TRANSCRIPT_URL = \"${CARAMEL_VIDEO_TRANSCRIPT_URL}\"|g" "$ENDPOINTS_FILE"
+      sed -i "s|const CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL = \".*\"|const CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL = \"${CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL}\"|g" "$ENDPOINTS_FILE"
+      sed -i "s|const CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL = \".*\"|const CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL = \"${CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL}\"|g" "$ENDPOINTS_FILE"
       sed -i "s|const CARAMEL_FETCH_PAGE_URL = \".*\"|const CARAMEL_FETCH_PAGE_URL = \"${CARAMEL_FETCH_PAGE_URL}\"|g" "$ENDPOINTS_FILE"
       echo "  LLM_SUBMIT_URL        : ${LLM_SUBMIT_URL}"
       echo "  LLM_RESULT_URL        : ${LLM_RESULT_URL}"
@@ -73,6 +77,8 @@ pages:
       echo "  CARAMELIA_AUDIO_URL   : ${CARAMELIA_AUDIO_URL}"
       echo "  PDF_CONVERT_URL       : ${PDF_CONVERT_URL}"
       echo "  CARAMEL_VIDEO_TRANSCRIPT_URL : ${CARAMEL_VIDEO_TRANSCRIPT_URL}"
+      echo "  CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL : ${CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL}"
+      echo "  CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL : ${CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL}"
       echo "  CARAMEL_FETCH_PAGE_URL       : ${CARAMEL_FETCH_PAGE_URL}"
 
     # ------------------------------------------------------------------

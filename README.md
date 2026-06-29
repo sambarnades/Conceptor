@@ -2,7 +2,7 @@
 
 **Création Assistée de Ressources et d'Activités Magistère et Éléa**
 
-[![Version](https://img.shields.io/badge/version-6.1.0-blue.svg)](https://caramel.forge.apps.education.fr/)
+[![Version](https://img.shields.io/badge/version-6.1.1-blue.svg)](https://caramel.forge.apps.education.fr/)
 [![Licence](https://img.shields.io/badge/licence-GNU%20AGPLv3-green.svg)](LICENSE)
 [![Plateforme](https://img.shields.io/badge/plateforme-Web-orange.svg)](https://caramel.forge.apps.education.fr/)
 [![Langues](https://img.shields.io/badge/langues-11-purple.svg)](#-multilinguisme)

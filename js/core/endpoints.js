@@ -8,15 +8,17 @@
  * ── Injection prod (CI/CD GitLab Pages) ──────────────────────────────────────
  * Les valeurs ci-dessous pointent sur l'instance **prod** ("…-prod"). Au build,
  * `.gitlab-ci.yml` les écrase **dans CE fichier uniquement** via `sed`, à partir
- * des variables CI/CD (les 8 sont obligatoires : le build échoue si l'une manque) :
- *   LLM_SUBMIT_URL               → const LLM_SUBMIT_URL
- *   LLM_RESULT_URL               → const LLM_RESULT_URL
- *   LLM_STATS_URL                → const LLM_STATS_URL
- *   CARAMELIA_WEBHOOK_URL        → const CARAMELIA_WEBHOOK_URL
- *   CARAMELIA_AUDIO_URL          → const CARAMELIA_AUDIO_URL
- *   CARAMEL_VIDEO_TRANSCRIPT_URL → const CARAMEL_VIDEO_TRANSCRIPT_URL
- *   CARAMEL_FETCH_PAGE_URL       → const CARAMEL_FETCH_PAGE_URL
- *   PDF_CONVERT_URL              → const PDF_CONVERT_URL
+ * des variables CI/CD (les 10 sont obligatoires : le build échoue si l'une manque) :
+ *   LLM_SUBMIT_URL                       → const LLM_SUBMIT_URL
+ *   LLM_RESULT_URL                       → const LLM_RESULT_URL
+ *   LLM_STATS_URL                        → const LLM_STATS_URL
+ *   CARAMELIA_WEBHOOK_URL                → const CARAMELIA_WEBHOOK_URL
+ *   CARAMELIA_AUDIO_URL                  → const CARAMELIA_AUDIO_URL
+ *   CARAMEL_VIDEO_TRANSCRIPT_URL         → const CARAMEL_VIDEO_TRANSCRIPT_URL
+ *   CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL  → const CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL
+ *   CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL  → const CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL
+ *   CARAMEL_FETCH_PAGE_URL               → const CARAMEL_FETCH_PAGE_URL
+ *   PDF_CONVERT_URL                      → const PDF_CONVERT_URL
  *
  * CONTRAINTE : chaque `const … = "…"` ci-dessous DOIT rester sur une seule ligne
  * pour que les regex `sed` continuent de matcher. Ne pas réécrire en multi-ligne.
@@ -38,6 +40,10 @@ const LLM_STATS_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel/l
 const CARAMELIA_WEBHOOK_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramelia-prod";
 const CARAMELIA_AUDIO_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-audio-prod";
 const CARAMEL_VIDEO_TRANSCRIPT_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-video-transcript-prod";
+// Transcription vidéo ASYNCHRONE (submit/poll) — voies longues (YouTube audio, Albert fichier,
+// lots HLS) qui dépassent le mur ~60 s du routeur, cf. services/video-transcript.js + docs/PLAN_TRANSCRIPTION_ASYNC.md
+const CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-video-transcript-submit-prod";
+const CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-video-transcript-result-prod";
 
 // Import de page web — fetch côté serveur (contourne CORS) + extraction texte, cf. services/ocr.js
 const CARAMEL_FETCH_PAGE_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-fetch-page-prod";
@@ -52,6 +58,8 @@ export const ENDPOINTS = Object.freeze({
     caramelia: CARAMELIA_WEBHOOK_URL,
     carameliaAudio: CARAMELIA_AUDIO_URL,
     videoTranscript: CARAMEL_VIDEO_TRANSCRIPT_URL,
+    videoTranscriptSubmit: CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL,
+    videoTranscriptResult: CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL,
     fetchPage: CARAMEL_FETCH_PAGE_URL,
     pdfConvert: PDF_CONVERT_URL,
 });

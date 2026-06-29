@@ -4,6 +4,16 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 
 ---
 
+## [6.1.1] - 28-06-2026
+
+### Corrections
+
+- **Transcription des vidéos longues — fin de l'erreur « Échec de la récupération »** : lorsqu'une vidéo nécessitait une transcription dépassant la minute (repli audio d'une vidéo **YouTube sans sous-titres** via Whisper, transcription **Albert** d'un fichier entier, ou **vidéo longue découpée en lots**), la connexion était coupée par le routeur au bout d'environ 60 secondes. Le navigateur affichait alors une erreur réseau trompeuse et basculait à tort sur le collage manuel de la transcription. Ces traitements longs passent désormais en **mode asynchrone** : Caramel soumet la demande (réponse quasi immédiate) puis interroge périodiquement l'avancement jusqu'au résultat. La transcription aboutit donc même au-delà d'une minute, sans erreur trompeuse, et le bouton « Arrêter » reste pleinement opérant. La détection rapide (sous-titres existants, PodEduc) et le filet de collage manuel restent inchangés.
+
+### Notes techniques
+
+- Voie de transcription longue déportée sur un nouveau pipeline n8n **submit / worker / result / cleanup** (table PostgreSQL `caramel_transcript_tasks`), calqué sur le worker LLM : réponse `{taskId}` en ~100 ms, puis interrogation du résultat toutes les ~3 s (réponse toujours HTTP 200 + CORS, ce qui supprime le 504 opaque). Côté client, `js/services/video-transcript.js` ajoute `pollTranscriptionTask()` et reroute `transcribeYouTubeAudio` / `transcribeViaAlbert` / `transcribeViaHlsChunks` ; la boucle des lots HLS est déplacée côté serveur (un seul `taskId` par vidéo). Deux variables CI supplémentaires : `CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL` et `CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL` (10 URLs injectées au build).
+
 ## [6.1.0] - 28-06-2026
 
 ### Nouveautés

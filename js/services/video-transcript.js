@@ -40,14 +40,24 @@ function youtubeUiLang() {
 
 const FETCH_TIMEOUT_MS = 15000;
 const DETECT_TIMEOUT_MS = 30000;  // détection PodEduc serveur (GET page + scrape, rapide)
-const ALBERT_TIMEOUT_MS = 180000; // transcription serveur (vidéos courtes/moyennes)
-const YT_AUDIO_TIMEOUT_MS = 290000; // repli YouTube audio→Albert (téléchargement + transcodage + lots Whisper)
 // Détection YouTube : avec le proxy en 2 temps (caramel-proxy ≥ 1.2.0), la détection NE lance plus
 // Albert — elle liste/télécharge au plus les sous-titres existants (~10-15 s) + un court scrape de
 // durée (~0,5 s), puis renvoie `canAudio` pour le 2ᵉ appel. 60 s couvrent largement un démarrage à
 // froid sans laisser l'utilisateur planté ~5 min si le proxy se bloque. Le gros du travail (repli
-// Albert quand il n'y a pas de sous-titres) part en 2ᵉ appel `audio:true` (YT_AUDIO_TIMEOUT_MS).
+// Albert quand il n'y a pas de sous-titres) part désormais en submit/poll ASYNCHRONE (voir plus bas,
+// TRANSCRIPT_POLL_*) — il n'est donc plus borné par le mur ~60 s du routeur.
 const YT_DETECT_TIMEOUT_MS = 60000;
+
+// ── Transcription ASYNCHRONE (submit/poll) ───────────────────────────────────
+// Les voies longues (YouTube audio→Whisper, Albert fichier entier, lots HLS) dépassent
+// le mur ~60 s du routeur Scalingo (504 HTML sans CORS → « Failed to fetch » opaque).
+// On les passe en submit/poll calqué sur le worker LLM : POST submit → {taskId} en ~100 ms,
+// puis GET result?taskId=… toutes les ~3 s (réponse toujours HTTP 200 + CORS). Le travail long
+// vit côté Worker n8n, hors routeur HTTP. Cf. docs/PLAN_TRANSCRIPTION_ASYNC.md.
+const TRANSCRIPT_POLL_INITIAL_DELAY_MS = 2000;   // Albert démarre vite (< 5000 ms du LLM)
+const TRANSCRIPT_POLL_INTERVAL_MS = 3000;        // cadence de poll
+const TRANSCRIPT_POLL_TIMEOUT_MS = 600000;       // 10 min : couvre le pire multi-lots HLS
+const TRANSCRIPT_POLL_FETCH_TIMEOUT_MS = 15000;  // timeout d'UN appel (submit ou poll)
 
 /**
  * Estime la DURÉE de transcription (en secondes) selon le schéma qui sera suivi, à partir du
@@ -124,6 +134,102 @@ async function fetchWithTimeout(url, options = {}, timeout = FETCH_TIMEOUT_MS, s
     } finally {
         clearTimeout(id);
         if (signal) signal.removeEventListener('abort', onAbort);
+    }
+}
+
+// ======================================================================
+// Transcription asynchrone (submit/poll) — voies longues > mur ~60 s
+// ======================================================================
+
+/**
+ * Normalise une réponse `done` du Result (ou un cache hit `done` du Submit) vers l'objet
+ * transcript unique attendu partout dans ce module : { source, language, duration, text, segments, vtt }.
+ * @param {Object} d - Corps `done` du backend (source, language, duration, text, segments, vtt).
+ * @returns {{source:string, language:string, duration:number|null, text:string, segments:Array, vtt:string}}
+ */
+function mapTranscriptResult(d) {
+    const segments = Array.isArray(d.segments)
+        ? d.segments
+            .map(s => ({ start: Number(s.start) || 0, end: Number(s.end) || 0, text: String(s.text || '').trim() }))
+            .filter(s => s.text.length > 0)
+        : [];
+    return {
+        source: d.source || 'albert',
+        language: d.language || 'fr',
+        duration: (d.duration != null) ? Number(d.duration)
+            : (segments.length ? segments[segments.length - 1].end : null),
+        text: (d.text && String(d.text).trim()) || segments.map(s => s.text).join(' '),
+        segments,
+        vtt: d.vtt || segmentsToVtt(segments)
+    };
+}
+
+/**
+ * Soumet une tâche de transcription longue puis poll son résultat (pattern submit/poll, calqué sur
+ * generateRawWithLLM). Ne tient JAMAIS une connexion longue : submit ~100 ms, chaque poll < qq centaines
+ * de ms. Le travail long vit côté Worker n8n (hors routeur 60 s). Honore `signal` (bouton « Arrêter »).
+ * @param {Object} submitPayload - Corps multi-mode ({youtubeUrl,language,audio} | {mediaUrl,language,range?,initRange?,initUrl?} | {hlsPlanUrl,language}).
+ * @param {Object} [opts]
+ * @param {function} [opts.onProgress] - Jauge UI ({stage:'transcribe',current,total}).
+ * @param {AbortSignal} [opts.signal]
+ * @returns {Promise<Object>} Objet transcript normalisé en succès, ou { error } sinon.
+ */
+async function pollTranscriptionTask(submitPayload, { onProgress = null, signal = null } = {}) {
+    const submitUrl = CONFIG && CONFIG.videoTranscriptSubmitUrl;
+    const resultUrl = CONFIG && CONFIG.videoTranscriptResultUrl;
+    if (!submitUrl || !resultUrl) return { error: 'no_endpoint' };
+    if (signal?.aborted) return { error: 'aborted' };
+
+    // 1) Submit → { taskId, status } (ou cache hit { status:'done', … })
+    let taskId, immediate = null;
+    try {
+        const res = await fetchWithTimeout(submitUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(submitPayload)
+        }, TRANSCRIPT_POLL_FETCH_TIMEOUT_MS, signal);
+        if (!res.ok) return { error: `submit_http_${res.status}` };
+        const d = await res.json().catch(() => null);
+        if (!d || !d.taskId) return { error: 'submit_bad_json' };
+        taskId = d.taskId;
+        if (d.status === 'done') immediate = d; // cache idempotent (résultat frais < 10 min)
+    } catch (e) {
+        if (signal?.aborted) return { error: 'aborted' };
+        return { error: classifyError(e).category || 'network' };
+    }
+    if (immediate) {
+        if (onProgress) onProgress({ stage: 'transcribe', current: 1, total: 1 });
+        return mapTranscriptResult(immediate);
+    }
+
+    // 2) Poll result?taskId=… — jauge indéterminée (bande glissante) jusqu'au done/error.
+    if (onProgress) onProgress({ stage: 'transcribe', current: 0, total: 1 });
+    const start = Date.now();
+    await new Promise(r => setTimeout(r, TRANSCRIPT_POLL_INITIAL_DELAY_MS));
+    while (true) {
+        if (signal?.aborted) return { error: 'aborted' };
+        if (Date.now() - start > TRANSCRIPT_POLL_TIMEOUT_MS) return { error: 'timeout' };
+        const url = `${resultUrl}?taskId=${encodeURIComponent(taskId)}`;
+        let res;
+        try {
+            res = await fetchWithTimeout(url, { method: 'GET' }, TRANSCRIPT_POLL_FETCH_TIMEOUT_MS, signal);
+        } catch (e) {
+            if (signal?.aborted) return { error: 'aborted' };
+            // Erreur réseau transitoire sur un poll : on retente silencieusement (comme llm.js).
+            await new Promise(r => setTimeout(r, TRANSCRIPT_POLL_INTERVAL_MS));
+            continue;
+        }
+        if (!res.ok) return { error: `poll_http_${res.status}` };
+        const d = await res.json().catch(() => null);
+        if (!d) { await new Promise(r => setTimeout(r, TRANSCRIPT_POLL_INTERVAL_MS)); continue; }
+        if (d.status === 'processing') { await new Promise(r => setTimeout(r, TRANSCRIPT_POLL_INTERVAL_MS)); continue; }
+        if (d.status === 'done') {
+            if (onProgress) onProgress({ stage: 'transcribe', current: 1, total: 1 });
+            return mapTranscriptResult(d);
+        }
+        if (d.status === 'error') return { error: d.message || 'transcript_error' };
+        if (d.status === 'not_found') return { error: 'expired' };
+        return { error: `unexpected_${d.status}` };
     }
 }
 
@@ -554,39 +660,14 @@ async function detectYouTube(url) {
  * @returns {Promise<Object>} transcript normalisé ou { error }.
  */
 async function transcribeYouTubeAudio(url, onProgress = null, signal = null) {
-    const endpoint = CONFIG && CONFIG.videoTranscriptUrl;
-    if (!endpoint) return { error: 'no_endpoint' };
     const parsed = parseYouTubeUrl(url);
     if (!parsed) return { error: 'bad_url' };
-    if (onProgress) onProgress({ stage: 'plan' }); // étape indéterminée (audio + transcodage + Whisper)
-    try {
-        const res = await fetchWithTimeout(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ youtubeUrl: parsed.url, language: youtubeUiLang(), audio: true })
-        }, YT_AUDIO_TIMEOUT_MS, signal);
-        if (!res.ok) return { error: `albert_http_${res.status}` };
-        const data = await res.json().catch(() => null);
-        if (!data) return { error: 'albert_bad_json' };
-        const segments = Array.isArray(data.segments)
-            ? data.segments
-                .map(s => ({ start: Number(s.start) || 0, end: Number(s.end) || 0, text: String(s.text || '').trim() }))
-                .filter(s => s.text.length > 0)
-            : [];
-        if (segments.length === 0) return { error: data.error || 'albert_empty' };
-        if (onProgress) onProgress({ stage: 'transcribe', current: 1, total: 1 });
-        return {
-            source: 'albert',
-            language: data.language || youtubeUiLang(),
-            duration: (data.duration != null) ? Number(data.duration) : segments[segments.length - 1].end,
-            text: (data.text && String(data.text).trim()) || segments.map(s => s.text).join(' '),
-            segments,
-            vtt: data.vtt || segmentsToVtt(segments)
-        };
-    } catch (error) {
-        debugLog('video-transcript', 'transcribeYouTubeAudio erreur', error);
-        return { error: classifyError(error).category || 'network' };
-    }
+    // Voie LONGUE (yt-dlp bestaudio + Whisper, ~2-5 min) → submit/poll (hors mur ~60 s du routeur).
+    // Contrat de retour préservé : objet normalisé en succès, { error } sinon, { error:'aborted' } à l'annulation.
+    return pollTranscriptionTask(
+        { youtubeUrl: parsed.url, language: youtubeUiLang(), audio: true },
+        { onProgress, signal }
+    );
 }
 
 // ======================================================================
@@ -738,42 +819,13 @@ async function isReachable(url) {
  * @returns {Promise<Object>} Objet transcript normalisé, ou { error }.
  */
 async function transcribeViaAlbert(mediaUrl, language = 'fr', range = null, signal = null, initRange = null, initUrl = null) {
-    const endpoint = CONFIG && CONFIG.videoTranscriptUrl;
-    if (!endpoint) return { error: 'no_endpoint' };
-    try {
-        const payload = { mediaUrl, language };
-        if (range) payload.range = range;
-        // fMP4 (PeerTube) : l'init #EXT-X-MAP (ftyp+moov) est préfixé au lot côté serveur,
-        // sinon le segment moof/mdat seul n'est pas décodable par le moteur.
-        if (initRange) { payload.initRange = initRange; if (initUrl) payload.initUrl = initUrl; }
-        const res = await fetchWithTimeout(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        }, ALBERT_TIMEOUT_MS, signal);
-        if (!res.ok) return { error: `albert_http_${res.status}` };
-        const data = await res.json().catch(() => null);
-        if (!data) return { error: 'albert_bad_json' };
-        const segments = Array.isArray(data.segments)
-            ? data.segments
-                .map(s => ({ start: Number(s.start) || 0, end: Number(s.end) || 0, text: String(s.text || '').trim() }))
-                .filter(s => s.text.length > 0)
-            : [];
-        const text = (data.text && String(data.text).trim()) || segments.map(s => s.text).join(' ');
-        const duration = (data.duration != null) ? Number(data.duration)
-            : (segments.length ? segments[segments.length - 1].end : null);
-        return {
-            source: data.source || 'albert',
-            language: data.language || language || 'fr',
-            duration,
-            text,
-            segments,
-            vtt: data.vtt || segmentsToVtt(segments)
-        };
-    } catch (error) {
-        debugLog('video-transcript', 'transcribeViaAlbert erreur', error);
-        return { error: classifyError(error).category || 'network' };
-    }
+    // Voie LONGUE Albert (téléchargement serveur + Whisper) → submit/poll (hors mur ~60 s du routeur).
+    // Même payload qu'avant : { mediaUrl, language, range?, initRange?, initUrl? } ; le Worker gère
+    // le Range simple ET le fMP4 (init #EXT-X-MAP préfixé). Contrat de retour préservé.
+    const payload = { mediaUrl, language };
+    if (range) payload.range = range;
+    if (initRange) { payload.initRange = initRange; if (initUrl) payload.initUrl = initUrl; }
+    return pollTranscriptionTask(payload, { signal });
 }
 
 /**
@@ -827,74 +879,16 @@ async function lowestHlsVariant(masterUrl, signal = null) {
  * @returns {Promise<Object>} Objet transcript normalisé, ou { error }.
  */
 async function transcribeViaHlsChunks(info, planUrl, onProgress = null, signal = null) {
-    const endpoint = CONFIG && CONFIG.videoTranscriptUrl;
-    if (!endpoint) return { error: 'no_endpoint' };
+    const lang = (info.captions && info.captions.lang) || info.language || 'fr';
     const src = (info.videoSource && info.videoSource.url) || '';
-    const lang = (info.captions && info.captions.lang) || 'fr';
-
-    // 1. Plan de découpage (côté serveur : GET m3u8, suit master→variante si besoin, byte-ranges).
-    if (onProgress) onProgress({ stage: 'plan' });
-    let plan = null;
-    try {
-        const res = await fetchWithTimeout(endpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ hlsPlanUrl: planUrl })
-        }, DETECT_TIMEOUT_MS, signal);
-        if (res.ok) plan = await res.json().catch(() => null);
-    } catch (error) {
-        debugLog('video-transcript', 'plan HLS échec', error);
-    }
-    if (signal?.aborted) return { error: 'aborted' };
-
-    // Repli : pas de plan exploitable → tentative directe sur le média (vidéo courte < 20 Mo).
-    if (!plan || !plan.tsUrl || !Array.isArray(plan.chunks) || plan.chunks.length === 0) {
-        if (!src) return { error: 'hls_no_plan' };
-        if (onProgress) onProgress({ stage: 'transcribe', current: 0, total: 1 });
-        const t = await transcribeViaAlbert(src, lang, null, signal);
-        if (onProgress) onProgress({ stage: 'transcribe', current: 1, total: 1 });
-        return t;
-    }
-
-    // 2. Transcription lot par lot + recollage des timestamps.
-    const tsUrl = plan.tsUrl;
-    const initRange = plan.initRange || null;   // fMP4 (PeerTube) ; null pour le .ts PodEduc auto-suffisant
-    const initUrl = plan.initUrl || null;       // init dans un fichier séparé (sinon = tsUrl côté serveur)
-    const total = plan.chunks.length;
-    const allSegments = [];
-    let okChunks = 0;
-    for (let i = 0; i < plan.chunks.length; i++) {
-        if (signal?.aborted) break; // arrêt manuel : on stoppe les lots restants
-        const chunk = plan.chunks[i];
-        if (onProgress) onProgress({ stage: 'transcribe', current: i, total });
-        const t = await transcribeViaAlbert(tsUrl, lang, chunk.range, signal, initRange, initUrl);
-        if (t.error || !Array.isArray(t.segments) || t.segments.length === 0) {
-            debugLog('video-transcript', 'lot HLS sans segment', chunk.range, t.error);
-            continue; // transcription partielle plutôt que rien
-        }
-        const base = Math.min(...t.segments.map(s => s.start));
-        const offset = Number(chunk.offset) || 0;
-        for (const s of t.segments) {
-            allSegments.push({
-                start: +(s.start - base + offset).toFixed(3),
-                end: +(s.end - base + offset).toFixed(3),
-                text: s.text
-            });
-        }
-        okChunks++;
-    }
-    if (onProgress) onProgress({ stage: 'transcribe', current: total, total });
-    if (allSegments.length === 0) return { error: 'albert_empty' };
-    allSegments.sort((a, b) => a.start - b.start);
-    return {
-        source: 'albert',
-        language: lang,
-        duration: plan.duration || info.duration || allSegments[allSegments.length - 1].end,
-        text: allSegments.map(s => s.text).join(' ').trim(),
-        segments: allSegments,
-        vtt: segmentsToVtt(allSegments),
-        ...(okChunks < plan.chunks.length ? { partial: true } : {})
-    };
+    // La BOUCLE des lots HLS vit désormais côté Worker (1 seul taskId/vidéo au lieu de N requêtes
+    // client séquentielles, cf. §6.2/§7.3c) : GET m3u8 → plan → (download lot → Albert) × N →
+    // recollage des offsets EXTINF, le tout hors mur ~60 s. On envoie le plan + un mediaUrl de repli
+    // (le Worker bascule sur le fichier entier si le plan est vide). Contrat de retour préservé.
+    return pollTranscriptionTask(
+        { hlsPlanUrl: planUrl, language: lang, ...(src ? { mediaUrl: src } : {}) },
+        { onProgress, signal }
+    );
 }
 
 // ======================================================================

@@ -19,6 +19,7 @@ H5P.Video = (function ($, ContentCopyrights, MediaCopyright, handlers) {
     self.contentId = id;
     self.WAS_RESET = false;
     self.startAt = parameters.startAt || 0;
+    self.hasNoAutoPause = parameters.playback?.hasNoAutoPause || false;
 
     // Ref youtube.js - ipad & youtube - issue
     self.pressToPlay = false;
@@ -112,7 +113,7 @@ H5P.Video = (function ($, ContentCopyrights, MediaCopyright, handlers) {
             self.play();
           }
         }
-        else if (state !== Video.PAUSED && state !== Video.ENDED) {
+        else if (state !== Video.PAUSED && state !== Video.ENDED && !self.hasNoAutoPause) {
           self.autoPaused = true;
           self.pause();
         }
@@ -130,7 +131,7 @@ H5P.Video = (function ($, ContentCopyrights, MediaCopyright, handlers) {
      * @param {jQuery} $container
      */
     self.attach = function ($container) {
-      $container.addClass('h5p-video').html('');
+      $container.addClass('h5p-video h5p-theme').html('');
 
       if (self.appendTo !== undefined) {
         self.appendTo($container);
