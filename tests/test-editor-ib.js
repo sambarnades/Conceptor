@@ -156,7 +156,7 @@ export async function runAllTests() {
     const exSchemas = blockSchema.exercise.schemas;
     assertDefined(exSchemas['H5P.MultiChoice 1.16'], 'Schema MultiChoice partage present');
     assertDefined(exSchemas['H5P.Summary 1.10'], 'Schema Summary partage present');
-    assertDefined(exSchemas['H5P.DragQuestion 1.14'], 'Schema DragQuestion partage present');
+    assertDefined(exSchemas['H5P.DragQuestion 1.15'], 'Schema DragQuestion partage present');
     assertDefined(exSchemas['H5P.MultiChoice 1.16'].overallFeedback, 'overallFeedback (feedbackRanges) present');
 
     // -------------------------------------------------------------------
@@ -219,12 +219,14 @@ export async function runAllTests() {
 
     // DragQuestion : correctElements → zoneIndices
     const norm2 = normalizeDataForEditor(deepClone(ex2), 'InteractiveBook');
-    const dragBlock = norm2.chapters[3].content.find(b => b._exerciseLibrary === 'H5P.DragQuestion 1.14');
+    const dragBlock = norm2.chapters[3].content.find(b => b._exerciseLibrary === 'H5P.DragQuestion 1.15');
     assertDefined(dragBlock, 'Bloc DragQuestion trouve');
-    assertDefined(dragBlock.exercise.elements[0].zoneIndices, 'zoneIndices cree');
-    assertEqual(dragBlock.exercise.elements[0].zoneIndices, [0], 'element 0 → zone 0');
-    assertEqual(dragBlock.exercise.elements[1].zoneIndices, [1], 'element 1 → zone 1');
-    assert(!('correctElements' in dragBlock.exercise.dropZones[0]), 'correctElements supprime pendant edition');
+    if (dragBlock) {
+        assertDefined(dragBlock.exercise.elements[0].zoneIndices, 'zoneIndices cree');
+        assertEqual(dragBlock.exercise.elements[0].zoneIndices, [0], 'element 0 → zone 0');
+        assertEqual(dragBlock.exercise.elements[1].zoneIndices, [1], 'element 1 → zone 1');
+        assert(!('correctElements' in dragBlock.exercise.dropZones[0]), 'correctElements supprime pendant edition');
+    }
 
     // -------------------------------------------------------------------
     // GROUPE 5 : Denormalisation + aller-retour
@@ -244,11 +246,13 @@ export async function runAllTests() {
 
     // DragQuestion : zoneIndices → correctElements
     const denorm2 = denormalizeDataForSave(deepClone(norm2), 'InteractiveBook');
-    const dDrag = denorm2.chapters[3].content.find(b => b.library === 'H5P.DragQuestion 1.14');
+    const dDrag = denorm2.chapters[3].content.find(b => b.library === 'H5P.DragQuestion 1.15');
     assertDefined(dDrag, 'DragQuestion denormalise');
-    assertEqual(dDrag.dropZones[0].correctElements, [0, 2], 'zone 0 correctElements restaures');
-    assertEqual(dDrag.dropZones[1].correctElements, [1, 3], 'zone 1 correctElements restaures');
-    assert(!('zoneIndices' in dDrag.elements[0]), 'zoneIndices supprime a la sauvegarde');
+    if (dDrag) {
+        assertEqual(dDrag.dropZones[0].correctElements, [0, 2], 'zone 0 correctElements restaures');
+        assertEqual(dDrag.dropZones[1].correctElements, [1, 3], 'zone 1 correctElements restaures');
+        assert(!('zoneIndices' in dDrag.elements[0]), 'zoneIndices supprime a la sauvegarde');
+    }
 
     // Aller-retour : normalize(denormalize(normalize(x))) === normalize(x)
     const roundtrip = normalizeDataForEditor(deepClone(denorm1), 'InteractiveBook');

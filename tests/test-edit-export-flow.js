@@ -2261,7 +2261,7 @@ const MATH_TEST_CASES = [
     {
         moduleKey: 'QuizSet',
         description: 'QuizSet - sous-question DragQuestion avec formules LaTeX dans elements',
-        rawJson: '{"title":"Quiz math","questions":[{"library":"H5P.DragQuestion 1.14","metadata":{"title":"Classement"},"params":{"title":"Classe les expressions","dropZones":[{"label":"Positif","correctElements":[0,1]},{"label":"Negatif","correctElements":[2]}],"elements":[{"text":"\\\\(\\\\sqrt{9}\\\\)"},{"text":"\\\\(\\\\frac{1}{2}\\\\)"},{"text":"\\\\(-3\\\\)"}],"overallFeedback":[{"from":0,"to":50,"feedback":"A revoir."},{"from":51,"to":100,"feedback":"Bien."}]}},{"library":"H5P.TrueFalse 1.8","metadata":{"title":"VF"},"params":{"question":"\\\\(\\\\sqrt{4}=2\\\\)","correct":"true"}}],"overallFeedback":[{"from":0,"to":50,"feedback":"Moyen."},{"from":51,"to":100,"feedback":"Bien."}]}',
+        rawJson: '{"title":"Quiz math","questions":[{"library":"H5P.DragQuestion 1.15","metadata":{"title":"Classement"},"params":{"title":"Classe les expressions","dropZones":[{"label":"Positif","correctElements":[0,1]},{"label":"Negatif","correctElements":[2]}],"elements":[{"text":"\\\\(\\\\sqrt{9}\\\\)"},{"text":"\\\\(\\\\frac{1}{2}\\\\)"},{"text":"\\\\(-3\\\\)"}],"overallFeedback":[{"from":0,"to":50,"feedback":"A revoir."},{"from":51,"to":100,"feedback":"Bien."}]}},{"library":"H5P.TrueFalse 1.8","metadata":{"title":"VF"},"params":{"question":"\\\\(\\\\sqrt{4}=2\\\\)","correct":"true"}}],"overallFeedback":[{"from":0,"to":50,"feedback":"Moyen."},{"from":51,"to":100,"feedback":"Bien."}]}',
         expectedPatterns: ['\\(\\sqrt{9}\\)', '\\(\\frac{1}{2}\\)', '\\(-3\\)', '\\(\\sqrt{4}=2\\)'],
         mathMode: 'mathjax',
         source: 'h5p'

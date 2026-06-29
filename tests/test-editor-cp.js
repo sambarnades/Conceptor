@@ -246,12 +246,12 @@ export async function runAllTests() {
     const expectedLibraries = [
         'H5P.MultiChoice 1.16', 'H5P.TrueFalse 1.8', 'H5P.Blanks 1.14',
         'H5P.DragText 1.10', 'H5P.MarkTheWords 1.11', 'H5P.SingleChoiceSet 1.11',
-        'H5P.Summary 1.10', 'H5P.DragQuestion 1.14', 'H5P.Dialogcards 1.9'
+        'H5P.Summary 1.10', 'H5P.DragQuestion 1.15', 'H5P.Dialogcards 1.9'
     ];
     for (const lib of expectedLibraries) {
         const found = exLibField.options.find(o => o.value === lib);
         assertDefined(found, `Option ${lib} presente`);
-        assert(found.label && found.label.startsWith('editor_cp_ex_'), `${lib} a un label de traduction`);
+        assert(found && found.label && found.label.startsWith('editor_cp_ex_'), `${lib} a un label de traduction`);
     }
 
     // -------------------------------------------------------------------
@@ -455,7 +455,7 @@ export async function runAllTests() {
                 }
             }
 
-            if (lib === 'H5P.DragQuestion 1.14') {
+            if (lib === 'H5P.DragQuestion 1.15') {
                 assertDefined(ex.title, `Slide ${i} DragQuestion: title present`);
                 assert(Array.isArray(ex.dropZones), `Slide ${i} DragQuestion: dropZones est un array`);
                 assert(Array.isArray(ex.elements), `Slide ${i} DragQuestion: elements est un array`);
