@@ -470,10 +470,12 @@ async function autoRoute(text) {
 
 /**
  * Reçoit une intention de création (depuis le LLM ou le fallback regex).
- * Si des champs sont déjà remplis dans Caramel et qu'on ne l'a pas encore
- * demandé dans cette conversation, on propose de repartir de ces infos ou de
- * zéro (besoin remonté par les enseignants : tous ne veulent pas hériter du
- * contenu des champs). Sinon on enchaîne directement.
+ * Si les champs Caramel contiennent une info que le message courant n'a PAS
+ * fournie et qu'on ne l'a pas encore demandé dans cette conversation, on
+ * propose d'hériter de ces infos ou de repartir de zéro (besoin remonté par
+ * les enseignants : tous ne veulent pas hériter du contenu des champs).
+ * Sinon on enchaîne directement — la fusion donne de toute façon priorité
+ * au message courant (cf. mergeAndProceed), la question serait sans objet.
  */
 function handleCreationIntent(extracted, originalText, { isFallback }) {
     const sel = CONFIG.caramelSelectors;
@@ -481,12 +483,16 @@ function handleCreationIntent(extracted, originalText, { isFallback }) {
     const eQuoi = document.querySelector(sel.quoi)?.value?.trim();
     const eNiveau = document.querySelector(sel.niveau)?.value?.trim();
 
-    if ((eQui || eQuoi || eNiveau) && !state._prefillAsked) {
+    // Seuls les champs qui COMPLÈTENT le message justifient la question :
+    // un champ que l'extraction courante fournit déjà sera écrasé par elle.
+    const domAddsInfo = (eQui && !extracted.qui) || (eQuoi && !extracted.quoi) || (eNiveau && !extracted.niveau);
+
+    if (domAddsInfo && !state._prefillAsked) {
         state._prefillAsked = true;
         let details = '';
-        if (eQui) details += t('confirm_recap_qui', { qui: eQui });
-        if (eQuoi) details += t('confirm_recap_quoi', { quoi: eQuoi });
-        if (eNiveau) details += t('confirm_recap_niveau', { niveau: eNiveau });
+        if (eQui && !extracted.qui) details += t('confirm_recap_qui', { qui: eQui });
+        if (eQuoi && !extracted.quoi) details += t('confirm_recap_quoi', { quoi: eQuoi });
+        if (eNiveau && !extracted.niveau) details += t('confirm_recap_niveau', { niveau: eNiveau });
         addBotMessage(t('prefill_ask', { details }), [
             {
                 label: t('prefill_btn_reuse'),
@@ -507,9 +513,16 @@ function handleCreationIntent(extracted, originalText, { isFallback }) {
  * le genState, auto-remplit les champs, construit le récap et délègue au routeur
  * central proceedAfterCollect.
  *
- * @param {boolean} useDom - true = réutiliser #qui/#quoi/#niveau déjà remplis
- *   (priorité au DOM, l'utilisateur les a tapés) ; false = repartir de zéro
- *   (on n'utilise que ce que le LLM a extrait du message courant).
+ * PRIORITÉ AU MESSAGE COURANT : ce que l'utilisateur vient de dire dans le chat
+ * (extraction LLM) gagne toujours sur les champs déjà remplis — les champs DOM
+ * ne servent qu'à combler les trous. Sans ça, une 2e création dans la même
+ * conversation (ou des champs remplis avant d'ouvrir le chat) faisait que le
+ * récap reprenait l'ancien contenu des champs au lieu du contexte donné dans
+ * le message (bug terrain 2026-07).
+ *
+ * @param {boolean} useDom - true = combler les champs manquants avec
+ *   #qui/#quoi/#niveau déjà remplis ; false = repartir de zéro (on n'utilise
+ *   que ce que le LLM a extrait du message courant).
  */
 function mergeAndProceed(extracted, text, { useDom, isFallback }) {
     const sel = CONFIG.caramelSelectors;
@@ -518,10 +531,10 @@ function mergeAndProceed(extracted, text, { useDom, isFallback }) {
     const eNiveau = useDom ? document.querySelector(sel.niveau)?.value?.trim() : '';
     const eNombreQuestions = useDom ? document.querySelector(sel.nombreQuestions)?.value?.trim() : '';
 
-    const qui = eQui || extracted.qui;
-    const quoi = eQuoi || extracted.quoi;
-    const niveau = eNiveau || extracted.niveau;
-    const nombreQuestions = eNombreQuestions || extracted.nombreQuestions || null;
+    const qui = extracted.qui || eQui || null;
+    const quoi = extracted.quoi || eQuoi || null;
+    const niveau = extracted.niveau || eNiveau || null;
+    const nombreQuestions = extracted.nombreQuestions || eNombreQuestions || null;
 
     state.currentFlow = 'generate';
     state.genState = {
@@ -535,10 +548,13 @@ function mergeAndProceed(extracted, text, { useDom, isFallback }) {
         originalMessage: text,
         _isFallback: isFallback,
     };
+    // On réécrit les champs avec les valeurs FUSIONNÉES : si l'extraction a
+    // gagné sur un champ déjà rempli, le DOM doit refléter la nouvelle valeur
+    // (le pipeline Caramel lit ces champs pour construire ses prompts).
     if (qui) fillFormField('qui', qui);
     if (quoi) fillFormField('quoi', quoi);
-    if (extracted.niveau && !eNiveau) fillFormField('niveau', extracted.niveau);
-    if (extracted.nombreQuestions && !eNombreQuestions) fillFormField('nombreQuestions', String(extracted.nombreQuestions));
+    if (niveau) fillFormField('niveau', niveau);
+    if (nombreQuestions) fillFormField('nombreQuestions', String(nombreQuestions));
 
     // Récap. En mode fallback (LLM injoignable), avertissement honnête en préfixe.
     let recap = isFallback ? t('extract_fallback_warning') : '';

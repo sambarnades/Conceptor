@@ -8,7 +8,7 @@
  * ── Injection prod (CI/CD GitLab Pages) ──────────────────────────────────────
  * Les valeurs ci-dessous pointent sur l'instance **prod** ("…-prod"). Au build,
  * `.gitlab-ci.yml` les écrase **dans CE fichier uniquement** via `sed`, à partir
- * des variables CI/CD (les 10 sont obligatoires : le build échoue si l'une manque) :
+ * des variables CI/CD (les 11 sont obligatoires : le build échoue si l'une manque) :
  *   LLM_SUBMIT_URL                       → const LLM_SUBMIT_URL
  *   LLM_RESULT_URL                       → const LLM_RESULT_URL
  *   LLM_STATS_URL                        → const LLM_STATS_URL
@@ -19,6 +19,7 @@
  *   CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL  → const CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL
  *   CARAMEL_FETCH_PAGE_URL               → const CARAMEL_FETCH_PAGE_URL
  *   PDF_CONVERT_URL                      → const PDF_CONVERT_URL
+ *   CARAMEL_VISION_DETECT_URL            → const CARAMEL_VISION_DETECT_URL
  *
  * CONTRAINTE : chaque `const … = "…"` ci-dessous DOIT rester sur une seule ligne
  * pour que les regex `sed` continuent de matcher. Ne pas réécrire en multi-ligne.
@@ -48,6 +49,10 @@ const CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL = "https://n8n-caramel.osc-fr1.scaling
 // Import de page web — fetch côté serveur (contourne CORS) + extraction texte, cf. services/ocr.js
 const CARAMEL_FETCH_PAGE_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-fetch-page-prod";
 
+// Vision « Image interactive » (H5P.ImageHotspots) — détection des zones clés d'une image jointe
+// par le modèle vision (DEFAULT_VISION_MODEL de services/hotspot-vision.js, via ILaaS). Appel SYNCHRONE, cf. services/hotspot-vision.js +
+const CARAMEL_VISION_DETECT_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-vision-detect-prod";
+
 // Export PDF — conversion ODT→PDF via n8n + Gotenberg, cf. export/pdf-via-gotenberg.js
 const PDF_CONVERT_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-pdf-convert-prod";
 
@@ -62,4 +67,5 @@ export const ENDPOINTS = Object.freeze({
     videoTranscriptResult: CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL,
     fetchPage: CARAMEL_FETCH_PAGE_URL,
     pdfConvert: PDF_CONVERT_URL,
+    visionDetect: CARAMEL_VISION_DETECT_URL,
 });

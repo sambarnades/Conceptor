@@ -63,7 +63,10 @@ export async function formatContentForDocument(moduleKey, jsonData, options = {}
         'elea_devoir': formatDevoir,
         'CoursePresentation': formatCoursePresentation,
         'InteractiveBook': formatInteractiveBook,
-        'InteractiveVideo': formatVideoInteractive
+        'InteractiveVideo': formatVideoInteractive,
+        'ImageHotspots': formatImageHotspots,
+        'FindTheHotspot': formatFindTheHotspot,
+        'FindMultipleHotspots': formatFindMultipleHotspots
     };
 
     const formatter = formatters[moduleKey];
@@ -336,6 +339,234 @@ function formatVideoInteractive(data) {
             sections.push({ type: 'separator' });
         });
     }
+
+    return { title, sections };
+}
+
+/**
+ * Formate une « Image interactive » (H5P.ImageHotspots) pour l'export documentaire.
+ * Gère le format intermédiaire plat ({hotspots:[{x,y,header,text}], image, globalColor}) ET le
+ * content.json v1.11 ({hotspots:[{position:{x,y}, header, content:[H5P.Text]}]}). Produit :
+ * l'image de fond avec PASTILLES NUMÉROTÉES (1..N) pré-composées au canvas, puis une LÉGENDE
+ * numérotée (titre du point en en-tête « N. … » + texte). L'image de fond est résolue par
+ * `data._backgroundImage` (data URL injectée à l'export par la couche UI Caramel) ou, à défaut, depuis
+ * le registre d'export `getAllImages()` via `data.image.path` (cas Sucrerie, sans couche UI). Jamais
+ * demandée au LLM. Fonction byte-identique Caramel/Sucrerie (cf. CLAUDE.md item 7).
+ * @param {Object} data
+ * @returns {Promise<{title:string, sections:Array}>}
+ */
+async function formatImageHotspots(data) {
+    const sections = [];
+    const title = data.title || (data.metadata && data.metadata.title) || t('doc_fmt_image_hotspots_title') || 'Image interactive';
+    const color = data.globalColor || '#981d99';
+
+    // Normaliser les points : format plat {x,y,header,text} OU content.json {position:{x,y}, header,
+    // content:[{library:'H5P.Text 1.1', params:{text}}]}.
+    const rawHotspots = Array.isArray(data.hotspots) ? data.hotspots : [];
+    const points = rawHotspots.map((h, i) => {
+        const x = (h.position && h.position.x != null) ? h.position.x : h.x;
+        const y = (h.position && h.position.y != null) ? h.position.y : h.y;
+        let text = h.text;
+        if (text == null && Array.isArray(h.content)) {
+            const txt = h.content.find(c => c && c.library && /H5P\.Text/i.test(c.library) && c.params);
+            text = txt ? txt.params.text : '';
+        }
+        return { n: i + 1, x, y, header: h.header || '', text: text || '' };
+    });
+
+    sections.push({ type: 'header', level: 1, text: title });
+    if (data.backgroundImageAltText) {
+        sections.push({ type: 'paragraph', text: cleanHtml(data.backgroundImageAltText), style: 'instructions' });
+    }
+
+    // Image de fond → pastilles numérotées (PNG pré-composé au canvas). 1) data URL injectée par la
+    // couche UI (Caramel : `_backgroundImage`) ou portée par le modèle ; 2) à défaut, lue depuis le
+    // registre d'export `getAllImages()` via `data.image.path` (Sucrerie). Absente → légende seule.
+    let bg = data._backgroundImage || (data.image && data.image.dataURL) || '';
+    if (!bg && data.image && data.image.path) {
+        try {
+            const { getAllImages } = await import('../h5p/image-manager.js');
+            const blob = getAllImages().get(data.image.path);
+            if (blob) {
+                bg = await new Promise((resolve) => {
+                    const r = new FileReader();
+                    r.onload = () => resolve(r.result);
+                    r.onerror = () => resolve('');
+                    r.readAsDataURL(blob);
+                });
+            }
+        } catch (e) {
+            // Registre indisponible (Caramel passe par `_backgroundImage`) → légende seule.
+        }
+    }
+    if (bg) {
+        try {
+            const { composeNumberedHotspotImage } = await import('../renderers/hotspot-overlay-renderer.js');
+            const overlay = await composeNumberedHotspotImage(
+                bg,
+                points.map(p => ({ x: p.x, y: p.y, n: p.n })),
+                { color }
+            );
+            if (overlay) {
+                // `url` (data URL) → la pré-passe d'images de document-exporter le convertit en `imageData`
+                // structuré ({blob,width,height,dataURL,mimeType}) consommé par les rendus DOCX/ODT/PDF.
+                sections.push({ type: 'image', url: overlay, fillWidth: true, alt: data.backgroundImageAltText || title });
+            }
+        } catch (e) {
+            // Composition impossible (canvas/chargement) → on continue avec la légende seule.
+        }
+    }
+    sections.push({ type: 'separator' });
+
+    // Légende numérotée. ⚠️ Titre de point en EN-TÊTE « N. … » (pas un paragraphe « N. » isolé : Word
+    // et LibreOffice transformeraient « N. » en liste auto et casseraient la numérotation). Le texte
+    // du point suit en paragraphe normal (ne commence pas par « N. »).
+    if (points.length) {
+        sections.push({ type: 'header', level: 2, text: t('doc_fmt_image_hotspots_legend') || 'Légende' });
+    }
+    points.forEach(p => {
+        const head = p.header ? `${p.n}. ${cleanHtml(p.header)}` : `${p.n}.`;
+        sections.push({ type: 'header', level: 3, text: head });
+        if (p.text) sections.push({ type: 'paragraph', text: cleanHtml(p.text), style: 'question' });
+    });
+
+    return { title, sections };
+}
+
+/**
+ * Formate un « Find the Hotspot » (H5P.ImageHotspotQuestion) pour l'export documentaire.
+ * @param {Object} data
+ * @returns {Promise<{title:string, sections:Array}>}
+ */
+function formatFindTheHotspot(data) {
+    return formatHotspotQuestion(data, 'imageHotspotQuestion', t('doc_fmt_find_the_hotspot_title') || 'Trouver la zone');
+}
+
+/**
+ * Formate un « Find Multiple Hotspots » (H5P.ImageMultipleHotspotQuestion) pour l'export documentaire.
+ * @param {Object} data
+ * @returns {Promise<{title:string, sections:Array}>}
+ */
+function formatFindMultipleHotspots(data) {
+    return formatHotspotQuestion(data, 'imageMultipleHotspotQuestion', t('doc_fmt_find_multiple_hotspots_title') || 'Trouver les zones');
+}
+
+/**
+ * Formate les deux activités « zones à trouver sur une image » pour l'export documentaire.
+ * Gère le format intermédiaire plat ({taskDescription, hotspots:[{x,y,correct,feedbackText,label}]},
+ * x/y = CENTRES en %) ET le content.json complet ({[rootKey]: {backgroundImageSettings,
+ * hotspotSettings.hotspot[].computedSettings}}, x/y = coins haut-gauche + width/height). Produit :
+ * l'ÉNONCÉ élève (consigne + image de fond NUE — les zones sont la réponse), un saut de page, puis
+ * la CORRECTION (image avec pastilles numérotées pré-composées au canvas + légende ✓/✗ + feedbacks).
+ * L'image de fond est résolue par `data._backgroundImage` (data URL injectée à l'export par la couche
+ * UI Caramel) ou, à défaut, depuis le registre d'export `getAllImages()` (cas Sucrerie, sans couche
+ * UI). Jamais demandée au LLM. Fonction byte-identique Caramel/Sucrerie (cf. CLAUDE.md item 7).
+ * @param {Object} data
+ * @param {string} rootKey - 'imageHotspotQuestion' | 'imageMultipleHotspotQuestion'.
+ * @param {string} fallbackTitle
+ * @returns {Promise<{title:string, sections:Array}>}
+ */
+async function formatHotspotQuestion(data, rootKey, fallbackTitle) {
+    const sections = [];
+    const isMultiple = rootKey === 'imageMultipleHotspotQuestion';
+    const root = (data && data[rootKey]) || null;
+    const hs = (root && root.hotspotSettings) || {};
+
+    // Normaliser les zones vers {n, cx, cy (centres %), correct, label, feedback}.
+    const rawHotspots = Array.isArray(data.hotspots) ? data.hotspots
+        : (Array.isArray(hs.hotspot) ? hs.hotspot : []);
+    const points = rawHotspots.map((h, i) => {
+        const cs = h.computedSettings;
+        const cx = cs ? (Number(cs.x) || 0) + (Number(cs.width) || 0) / 2 : h.x;
+        const cy = cs ? (Number(cs.y) || 0) + (Number(cs.height) || 0) / 2 : h.y;
+        const us = h.userSettings || h;
+        return {
+            n: i + 1,
+            x: cx, y: cy,
+            correct: us.correct === true,
+            label: h.label || '',
+            feedback: us.feedbackText || ''
+        };
+    });
+
+    const questionTitle = isMultiple
+        ? (data.questionTitle || (root && root.backgroundImageSettings && root.backgroundImageSettings.questionTitle))
+        : null;
+    const title = data.title || questionTitle || (data.metadata && data.metadata.title) || fallbackTitle;
+    const taskDescription = data.taskDescription || hs.taskDescription || '';
+    const numberHotspots = isMultiple
+        ? (data.numberHotspots || hs.numberHotspots || points.filter(p => p.correct).length)
+        : null;
+
+    // --- Énoncé élève : consigne + image NUE (les zones sont la réponse). ---
+    sections.push({ type: 'header', level: 1, text: title });
+    if (taskDescription) {
+        sections.push({ type: 'paragraph', text: cleanHtml(taskDescription), style: 'instructions' });
+    }
+    if (isMultiple && numberHotspots) {
+        sections.push({
+            type: 'paragraph',
+            text: (t('doc_fmt_hotspot_zones_to_find') || 'Nombre de zones à trouver : {n}').replace('{n}', String(numberHotspots)),
+            style: 'instructions'
+        });
+    }
+
+    // Image de fond : 1) data URL injectée par la couche UI (Caramel : `_backgroundImage`) ou portée
+    // par le modèle ; 2) à défaut, lue depuis le registre d'export `getAllImages()` (Sucrerie).
+    const imgField = (data.image && (data.image.dataURL || data.image.path)) ? data.image
+        : (root && root.backgroundImageSettings
+            ? (isMultiple ? root.backgroundImageSettings.backgroundImage : root.backgroundImageSettings)
+            : null);
+    let bg = data._backgroundImage || (imgField && imgField.dataURL) || '';
+    if (!bg && imgField && imgField.path) {
+        try {
+            const { getAllImages } = await import('../h5p/image-manager.js');
+            const blob = getAllImages().get(imgField.path);
+            if (blob) {
+                bg = await new Promise((resolve) => {
+                    const r = new FileReader();
+                    r.onload = () => resolve(r.result);
+                    r.onerror = () => resolve('');
+                    r.readAsDataURL(blob);
+                });
+            }
+        } catch (e) {
+            // Registre indisponible (Caramel passe par `_backgroundImage`) → légende seule.
+        }
+    }
+    if (bg) {
+        sections.push({ type: 'image', url: bg, fillWidth: true, alt: taskDescription || title });
+    }
+
+    // --- Correction : image avec pastilles numérotées + légende ✓/✗ + feedbacks. ---
+    sections.push({ type: 'pageBreak' });
+    sections.push({ type: 'header', level: 2, text: t('doc_fmt_correction_title') || 'Correction' });
+    if (bg && points.length) {
+        try {
+            const { composeNumberedHotspotImage } = await import('../renderers/hotspot-overlay-renderer.js');
+            const overlay = await composeNumberedHotspotImage(
+                bg,
+                points.map(p => ({ x: p.x, y: p.y, n: p.n }))
+            );
+            if (overlay) {
+                sections.push({ type: 'image', url: overlay, fillWidth: true, alt: title });
+            }
+        } catch (e) {
+            // Composition impossible (canvas/chargement) → on continue avec la légende seule.
+        }
+    }
+    if (points.length) {
+        sections.push({ type: 'header', level: 2, text: t('doc_fmt_image_hotspots_legend') || 'Légende' });
+    }
+    points.forEach(p => {
+        const mark = p.correct
+            ? `✓ ${t('doc_fmt_hotspot_correct') || 'Zone correcte'}`
+            : `✗ ${t('doc_fmt_hotspot_incorrect') || 'Zone incorrecte'}`;
+        // Titre de zone en EN-TÊTE « N. … » (même garde-fou anti-liste auto qu'Image interactive).
+        const head = p.label ? `${p.n}. ${cleanHtml(p.label)} — ${mark}` : `${p.n}. ${mark}`;
+        sections.push({ type: 'header', level: 3, text: head });
+        if (p.feedback) sections.push({ type: 'paragraph', text: cleanHtml(p.feedback), style: 'question' });
+    });
 
     return { title, sections };
 }
@@ -802,6 +1033,10 @@ function formatFlashcards(data) {
     const sections = [];
     const title = data.title || t('doc_fmt_flashcards_title');
     const cards = data.cards || [];
+
+    // Titre du document en tête, comme les autres formatters (audit Sucrerie
+    // 2026-07-05, F6 : les flashcards sortaient sans aucun titre).
+    sections.push({ type: 'header', level: 1, text: title });
 
     if (cards.length === 0) {
         return { title, sections };
@@ -1705,7 +1940,9 @@ function formatMarkTheWords(data) {
  */
 function formatGlossary(data) {
     const sections = [];
-    const title = t('doc_fmt_glossary_title');
+    // Titre de l'activité s'il existe (titre catalogue injecté par le bridge —
+    // audit Sucrerie 2026-07-05, F6), repli sur le libellé générique.
+    const title = data.title || t('doc_fmt_glossary_title');
 
     sections.push({
         type: 'header',
@@ -2159,6 +2396,10 @@ function formatDialogCards(data) {
     const sections = [];
     const title = data.title || t('doc_fmt_dialog_cards_title');
     const dialogs = data.dialogs || [];
+
+    // Titre du document en tête, comme les autres formatters (audit Sucrerie
+    // 2026-07-05, F6 : les cartes de dialogue sortaient sans aucun titre).
+    sections.push({ type: 'header', level: 1, text: title });
 
     if (dialogs.length === 0) {
         return { title, sections };
@@ -4307,6 +4548,19 @@ function cleanHtml(html) {
     text = text.replace(/<br\s*\/?>/gi, '\n');
     text = text.replace(/<\/p>/gi, '\n');
     text = text.replace(/<p[^>]*>/gi, '');
+
+    // Emphase enveloppant des spans (sortie CKEditor, ex. <em><span color>
+    // <strong>quiz</strong></span></em>) : une fois convertie en Markdown, elle
+    // est intokenisable à plat (le * ouvrant colle à la balise) → on DISTRIBUE
+    // l'emphase À L'INTÉRIEUR de chaque span avant la conversion (audit
+    // Sucrerie 2026-07-05, F2). Ne concerne que les emphases dont le contenu
+    // est exclusivement composé de spans (+ blancs/ponctuation légère).
+    for (const tag of ['strong', 'b', 'em', 'i']) {
+        const re = new RegExp(`<${tag}>((?:\\s|,|&nbsp;|<span[^>]*>[\\s\\S]*?<\\/span>)+)<\\/${tag}>`, 'gi');
+        text = text.replace(re, (m, content) =>
+            content.replace(/(<span[^>]*>)([\s\S]*?)(<\/span>)/gi,
+                (mm, open, inner, close) => `${open}<${tag}>${inner}</${tag}>${close}`));
+    }
 
     // Convertir gras/italique en Markdown
     text = text.replace(/<strong>(.*?)<\/strong>/gi, '**$1**');

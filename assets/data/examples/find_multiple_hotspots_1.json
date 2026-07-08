@@ -1,0 +1,14 @@
+{
+  "title": "Trouver les organes reproducteurs",
+  "taskDescription": "Cliquez sur tous les organes reproducteurs de la fleur.",
+  "hotspotName": "organes reproducteurs",
+  "numberHotspots": 2,
+  "hotspots": [
+    { "x": 31.5, "y": 22.0, "correct": false, "label": "Le pétale", "feedbackText": "Non : le pétale attire les pollinisateurs mais n'est pas un organe reproducteur." },
+    { "x": 52.0, "y": 48.5, "correct": true, "label": "L'étamine", "feedbackText": "Bravo, vous avez trouvé" },
+    { "x": 50.0, "y": 63.0, "correct": true, "label": "Le pistil", "feedbackText": "Bravo, vous avez trouvé" },
+    { "x": 47.0, "y": 86.0, "correct": false, "label": "La tige", "feedbackText": "Non : la tige soutient la fleur, elle ne participe pas à la reproduction." }
+  ],
+  "noneSelectedFeedback": "Vous n'avez cliqué sur aucune zone connue. Essayez encore !",
+  "alreadySelectedFeedback": "Vous avez déjà trouvé cette zone !"
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Anatomie de la fleur",
+  "globalColor": "#1768c4",
+  "globalIconType": "numbers",
+  "hotspots": [
+    { "x": 31.5, "y": 22.0, "header": "Le pétale", "text": "<p>Les <strong>pétales</strong> colorés attirent les insectes pollinisateurs.</p>" },
+    { "x": 52.0, "y": 48.5, "header": "L'étamine", "text": "<p>L'<strong>étamine</strong> est l'organe mâle de la fleur : elle produit le pollen.</p>" },
+    { "x": 50.0, "y": 63.0, "header": "Le pistil", "text": "<p>Le <strong>pistil</strong> est l'organe femelle, situé au centre de la fleur.</p>" },
+    { "x": 47.0, "y": 86.0, "header": "La tige", "text": "<p>La <strong>tige</strong> soutient la fleur et conduit la sève.</p>" }
+  ]
+}

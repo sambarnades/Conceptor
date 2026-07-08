@@ -16,7 +16,7 @@ import { detectMathInContent, debugLog, DEBUG, classifyError } from '../core/uti
 import * as JSONHealer from './json-healer.js';
 import { loadClientZip } from '../core/lib-loader.js';
 import * as perf from '../core/perf-tracker.js';
-import { getAllImages, hasImages, clearAllImages } from './image-manager.js';
+import { getAllMedia, hasMedia, clearAllImages } from './image-manager.js';
 
 let downloadZip;
 
@@ -180,8 +180,8 @@ export async function handleH5PCreation(moduleKey, jsonInput) {
             ...dynamicDependencies // Ex: Dépendances des enfants du QuizSet
         ];
 
-        // 4. Récupérer les images du registre (si présentes)
-        const imageFiles = hasImages() ? getAllImages() : null;
+        // 4. Récupérer les médias du registre (images + audio + vidéo, si présents)
+        const mediaFiles = hasMedia() ? getAllMedia() : null;
 
         // 5. Packaging et téléchargement
         packageAndDownloadH5P(
@@ -194,7 +194,7 @@ export async function handleH5PCreation(moduleKey, jsonInput) {
             moduleKey, // Clé du module pour l'export de documents
             originalJson, // JSON original Markdown (pour édition)
             { _debugRawJson, _debugHealedJson }, // Debug data (null si DEBUG désactivé)
-            imageFiles // Images utilisateur (Map h5pPath → Blob, ou null)
+            mediaFiles // Médias utilisateur (images/audio/vidéo, Map h5pPath → Blob, ou null)
         );
 
     } catch (error) {
@@ -216,9 +216,9 @@ export async function handleH5PCreation(moduleKey, jsonInput) {
  * @param {string} [titleKey] - Clé de traduction pour le titre (optionnel).
  * @param {string} [moduleKey] - Clé du module pour l'export de documents (optionnel).
  * @param {Object} [originalJson] - JSON original en Markdown (pour édition, optionnel).
- * @param {Map<string, Blob>} [imageFiles] - Images utilisateur (h5pPath → Blob, optionnel).
+ * @param {Map<string, Blob>} [mediaFiles] - Médias utilisateur images/audio/vidéo (h5pPath → Blob, optionnel).
  */
-async function packageAndDownloadH5P(filenameBase, mainLibraryName, contentJson, options, dependencies, titleKey, moduleKey, originalJson, debugData = {}, imageFiles = null) {
+async function packageAndDownloadH5P(filenameBase, mainLibraryName, contentJson, options, dependencies, titleKey, moduleKey, originalJson, debugData = {}, mediaFiles = null) {
     // Chargement lazy de client-zip (à la demande, au lieu d'une IIFE au top-level)
     if (!downloadZip) {
         try {
@@ -250,7 +250,7 @@ async function packageAndDownloadH5P(filenameBase, mainLibraryName, contentJson,
         const zipBlob = await createH5PBlob(contentJson, mainLibraryName, dependencies, {
             title: options.title || contentJson.title,
             lang: currentLang,
-            imageFiles: imageFiles
+            mediaFiles: mediaFiles
         });
         // Recréer le blob avec le MIME type correct pour forcer Safari/iPad à respecter l'extension .h5p
         const h5pBlob = new Blob([zipBlob], { type: 'application/octet-stream' });
@@ -287,8 +287,8 @@ async function packageAndDownloadH5P(filenameBase, mainLibraryName, contentJson,
         if (debugData._debugHealedJson) notification._debugHealedJson = debugData._debugHealedJson;
         const notificationId = addNotification(notification);
 
-        // 6. Libérer la mémoire des images après packaging réussi
-        if (imageFiles) {
+        // 6. Libérer la mémoire des médias (images + audio/vidéo) après packaging réussi
+        if (mediaFiles) {
             clearAllImages();
         }
 
@@ -303,6 +303,12 @@ async function packageAndDownloadH5P(filenameBase, mainLibraryName, contentJson,
         // Classifier l'erreur
         const errorInfo = classifyError(error);
 
+        // Média référencé sans blob en mémoire (audit N1) : message dédié et actionnable,
+        // plutôt que le message générique de packaging.
+        const userMessage = error.mediaMissing
+            ? (translations.error_media_missing || 'Un média de l\'activité (image de fond ?) n\'est plus en mémoire. Re-téléversez le fichier puis relancez la création.')
+            : (translations[errorInfo.userMessageKey] || errorInfo.userMessageKey);
+
         // Ajouter notification d'erreur (remplace l'ancienne notification)
         addNotification({
             type: 'h5p',
@@ -310,7 +316,7 @@ async function packageAndDownloadH5P(filenameBase, mainLibraryName, contentJson,
             blob: new Blob([''], { type: 'text/plain' }), // Blob vide pour les erreurs
             status: 'error',
             errorCategory: errorInfo.category,
-            userMessage: translations[errorInfo.userMessageKey] || errorInfo.userMessageKey,
+            userMessage,
             technicalMessage: errorInfo.technicalMessage
         });
 
@@ -339,8 +345,9 @@ export function stripMarkdownAndHtml(text) {
  * @param {Object} contentJson - Le contenu JSON final de l'activité.
  * @param {string} mainLibraryName - Nom technique (ex: 'H5P.Timeline').
  * @param {Array} dependencies - Liste des dépendances [{machineName, majorVersion, minorVersion}].
- * @param {Object} [options] - Options : title, lang, imageFiles.
- * @param {Map<string, Blob>} [options.imageFiles] - Images (h5pPath → Blob, optionnel).
+ * @param {Object} [options] - Options : title, lang, mediaFiles.
+ * @param {Map<string, Blob>} [options.mediaFiles] - Médias images/audio/vidéo (h5pPath → Blob, optionnel).
+ * @param {Map<string, Blob>} [options.imageFiles] - Alias rétro-compatible de mediaFiles (images seules).
  * @returns {Promise<Blob>} Le blob ZIP brut (tel que produit par client-zip).
  */
 export async function createH5PBlob(contentJson, mainLibraryName, dependencies, options = {}) {
@@ -358,10 +365,38 @@ export async function createH5PBlob(contentJson, mainLibraryName, dependencies, 
         unixPermissions: 0o100644
     });
 
-    // 2. Images utilisateur (si présentes) — dans content/images/
-    const imageFiles = options.imageFiles;
-    if (imageFiles && imageFiles.size > 0) {
-        for (const [path, blob] of imageFiles) {
+    // 2. Médias utilisateur (si présents) — écrits sous content/images|audios|videos/ selon le préfixe du chemin
+    // Croisement content.json ↔ registre (audit Image interactive N1/N12) :
+    //  - un chemin local référencé par le contenu SANS blob correspondant = archive cassée
+    //    (fond invisible en preview et sur Éléa) → on BLOQUE avec une erreur explicite ;
+    //  - un blob du registre NON référencé (image d'une autre activité restée en mémoire,
+    //    ancien fond remplacé) = fichier parasite → on l'ÉCARTE silencieusement du ZIP.
+    // Forme stricte « nom de fichier » (images/image-xxxx.png) : un texte utilisateur
+    // qui MENTIONNE « images/… » (avec espaces, accents) ne doit pas être pris pour un chemin.
+    const referencedMediaPaths = new Set(
+        (contentJsonString.match(/"(?:images|audios|videos)\/[A-Za-z0-9._-]+"/g) || [])
+            .map(m => m.slice(1, -1))
+    );
+    let mediaFiles = options.mediaFiles || options.imageFiles;
+    if (mediaFiles && mediaFiles.size > 0 && referencedMediaPaths.size > 0) {
+        const filtered = new Map([...mediaFiles].filter(([path]) => referencedMediaPaths.has(path)));
+        if (filtered.size !== mediaFiles.size) {
+            debugLog('H5P', `${mediaFiles.size - filtered.size} média(s) non référencé(s) écarté(s) du ZIP`);
+        }
+        mediaFiles = filtered;
+    } else if (mediaFiles && referencedMediaPaths.size === 0) {
+        // Aucun chemin local dans le contenu : rien à embarquer (évite les parasites).
+        if (mediaFiles.size > 0) debugLog('H5P', `${mediaFiles.size} média(s) non référencé(s) écarté(s) du ZIP`);
+        mediaFiles = null;
+    }
+    const missingMedia = [...referencedMediaPaths].filter(p => !mediaFiles || !mediaFiles.has(p));
+    if (missingMedia.length > 0) {
+        const err = new Error(`Média(s) référencé(s) par l'activité mais absent(s) de la mémoire : ${missingMedia.join(', ')}. Re-téléversez le fichier (image de fond ?) puis relancez la création.`);
+        err.mediaMissing = true;
+        throw err;
+    }
+    if (mediaFiles && mediaFiles.size > 0) {
+        for (const [path, blob] of mediaFiles) {
             const arrayBuffer = await blob.arrayBuffer();
             files.push({
                 name: `content/${path}`,
@@ -369,25 +404,26 @@ export async function createH5PBlob(contentJson, mainLibraryName, dependencies, 
                 unixPermissions: 0o100644
             });
         }
-        debugLog('H5P', `${imageFiles.size} image(s) ajoutée(s) au ZIP`);
+        debugLog('H5P', `${mediaFiles.size} média(s) ajouté(s) au ZIP`);
     }
 
-    // 3. h5p.json — dédoublonnage + filtrage MathDisplay + ajout H5P.Image si images
+    // 3. h5p.json — dédoublonnage + filtrage MathDisplay + ajout des libs média selon le contenu embarqué
     let uniqueDependencies = Array.from(new Map(dependencies.map(d => [d.machineName, d])).values());
     if (!hasMathFormulas) {
         uniqueDependencies = uniqueDependencies.filter(d => d.machineName !== 'H5P.MathDisplay');
     }
 
-    // Ajouter H5P.Image 1.1 si des images sont présentes et pas déjà dans les dépendances
-    if (imageFiles && imageFiles.size > 0) {
-        const hasImageDep = uniqueDependencies.some(d => d.machineName === 'H5P.Image');
-        if (!hasImageDep) {
-            uniqueDependencies.push({
-                machineName: 'H5P.Image',
-                majorVersion: 1,
-                minorVersion: 1
-            });
-        }
+    // Ajouter H5P.Image/Audio/Video selon les médias présents (si pas déjà dans les dépendances).
+    if (mediaFiles && mediaFiles.size > 0) {
+        const paths = [...mediaFiles.keys()];
+        const ensureDep = (machineName, majorVersion, minorVersion) => {
+            if (!uniqueDependencies.some(d => d.machineName === machineName)) {
+                uniqueDependencies.push({ machineName, majorVersion, minorVersion });
+            }
+        };
+        if (paths.some(p => p.startsWith('images/'))) ensureDep('H5P.Image', 1, 1);
+        if (paths.some(p => p.startsWith('audios/'))) ensureDep('H5P.Audio', 1, 5);
+        if (paths.some(p => p.startsWith('videos/'))) ensureDep('H5P.Video', 1, 6);
     }
 
     const title = options.title || contentJson.title || "Activity";

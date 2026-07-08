@@ -43,6 +43,11 @@ export class H5PManager {
         // Compteur de génération pour annuler les chargements obsolètes lors de navigation rapide
         this._loadGeneration = 0;
 
+        // URLs blob: créées par URL.createObjectURL pour les médias embarqués de la preview
+        // (cf. _embedImagesAsDataUrls). Suivies ici pour être révoquées à chaque load()/destroy()
+        // — sinon chaque cycle édition → re-preview épingle une nouvelle copie des blobs en mémoire.
+        this._mediaObjectUrls = [];
+
         // Intercepteur Fetch pour lire les fichiers locaux depuis le ZIP
         this.initFetchInterceptor();
     }
@@ -177,6 +182,10 @@ export class H5PManager {
 
         if (!container) throw new Error(`Container not found`);
 
+        // Révoquer les URLs blob: du rendu précédent AVANT d'en recréer (anti-fuite mémoire).
+        // destroy() le fait aussi, mais on l'appelle explicitement ici par sécurité
+        // (destroy() peut être invoqué avec un conteneur différent par du code externe).
+        this._revokeMediaObjectUrls();
         this.destroy(container); // Nettoyer l'existant sur ce conteneur
 
         try {
@@ -363,9 +372,23 @@ export class H5PManager {
     }
 
     /**
+     * Révoque toutes les URLs blob: créées pour les médias embarqués de la preview
+     * et vide la liste de suivi. Idempotent (appel multiple sans effet de bord).
+     */
+    _revokeMediaObjectUrls() {
+        for (const url of this._mediaObjectUrls) {
+            try { URL.revokeObjectURL(url); } catch { /* URL déjà révoquée ou invalide */ }
+        }
+        this._mediaObjectUrls = [];
+    }
+
+    /**
      * Nettoie le conteneur et réinitialise l'état
      */
     destroy(containerElement) {
+        // Révoquer les URLs blob: des médias embarqués (anti-fuite mémoire)
+        this._revokeMediaObjectUrls();
+
         // Résolution du conteneur si ID passé ou stocké
         let container = containerElement;
         if (!container && this.containerId) {
@@ -680,51 +703,56 @@ export class H5PManager {
         if (!obj || typeof obj !== 'object' || !this.currentZip) return;
 
         const mimeTypes = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', gif: 'image/gif', webp: 'image/webp', svg: 'image/svg+xml' };
+        const imageRe = /^images\/.+\.(jpe?g|png|gif|webp|svg)$/i;
+        // Médias audio/vidéo embarqués (H5P.ImageHotspots) : servis en URL blob: (plus léger que le
+        // base64 pour les gros fichiers). Le patch de H5P.getPath reconnaît `blob:` comme URL absolue.
+        const mediaRe = /^(audios?|videos?)\/.+\.(mp3|wav|ogg|oga|m4a|aac|flac|opus|weba|webm|mp4|ogv|mov|m4v)$/i;
 
         // Collecter toutes les promesses pour traitement parallèle
         const promises = [];
 
+        // Image → data URL base64 (reconnu par le patch getPath).
+        const embedImage = (relPath, setter) => {
+            const zipPath = 'content/' + relPath;
+            const file = this.currentZip.file(zipPath);
+            if (!file) return;
+            promises.push(file.async('base64').then(base64 => {
+                const ext = relPath.split('.').pop().toLowerCase();
+                const mime = mimeTypes[ext] || 'image/jpeg';
+                setter(`data:${mime};base64,${base64}`);
+                debugLog('h5p-manager', `Image embarquée: ${zipPath}`);
+            }).catch(e => console.warn(`[h5p-manager] Erreur lecture image ${zipPath}:`, e)));
+        };
+        // Audio/vidéo → URL blob: (évite des chaînes base64 énormes pour les vidéos).
+        const embedMedia = (relPath, setter) => {
+            const zipPath = 'content/' + relPath;
+            const file = this.currentZip.file(zipPath);
+            if (!file) return;
+            promises.push(file.async('blob').then(blob => {
+                const objectUrl = URL.createObjectURL(blob);
+                // Suivre l'URL pour la révoquer au prochain load()/destroy() (anti-fuite mémoire)
+                this._mediaObjectUrls.push(objectUrl);
+                setter(objectUrl);
+                debugLog('h5p-manager', `Média embarqué: ${zipPath}`);
+            }).catch(e => console.warn(`[h5p-manager] Erreur lecture média ${zipPath}:`, e)));
+        };
+
         const walk = (node) => {
             if (!node || typeof node !== 'object') return;
 
-            // Si l'objet a un champ `path` qui ressemble à un chemin d'image
-            if (typeof node.path === 'string' && node.path.match(/^images\/.+\.(jpe?g|png|gif|webp|svg)$/i)) {
-                const imagePath = node.path;
-                const zipPath = 'content/' + imagePath;
-                const file = this.currentZip.file(zipPath);
-                if (file) {
-                    promises.push(
-                        file.async('base64').then(base64 => {
-                            const ext = imagePath.split('.').pop().toLowerCase();
-                            const mime = mimeTypes[ext] || 'image/jpeg';
-                            node.path = `data:${mime};base64,${base64}`;
-                            debugLog('h5p-manager', `Image embarquée: ${zipPath}`);
-                        }).catch(e => {
-                            console.warn(`[h5p-manager] Erreur lecture image ${zipPath}:`, e);
-                        })
-                    );
-                }
+            // Champ `path` (H5P.Image.file, H5P.Audio.files[], H5P.Video.sources[], etc.)
+            if (typeof node.path === 'string') {
+                if (imageRe.test(node.path)) embedImage(node.path, v => { node.path = v; });
+                else if (mediaRe.test(node.path)) embedMedia(node.path, v => { node.path = v; });
             }
 
-            // Valeurs string qui pointent vers une image locale (ex: Timeline asset.media)
+            // Valeurs string qui pointent vers un asset local (ex: Timeline asset.media) — hors `path` (déjà traité)
             for (const key of Object.keys(node)) {
+                if (key === 'path') continue;
                 const val = node[key];
-                if (typeof val === 'string' && val.match(/^images\/.+\.(jpe?g|png|gif|webp|svg)$/i)) {
-                    const zipPath = 'content/' + val;
-                    const file = this.currentZip.file(zipPath);
-                    if (file) {
-                        promises.push(
-                            file.async('base64').then(base64 => {
-                                const ext = val.split('.').pop().toLowerCase();
-                                const mime = mimeTypes[ext] || 'image/jpeg';
-                                node[key] = `data:${mime};base64,${base64}`;
-                                debugLog('h5p-manager', `Image string embarquée: ${zipPath}`);
-                            }).catch(e => {
-                                console.warn(`[h5p-manager] Erreur lecture image string ${zipPath}:`, e);
-                            })
-                        );
-                    }
-                }
+                if (typeof val !== 'string') continue;
+                if (imageRe.test(val)) embedImage(val, v => { node[key] = v; });
+                else if (mediaRe.test(val)) embedMedia(val, v => { node[key] = v; });
             }
 
             // Parcourir récursivement

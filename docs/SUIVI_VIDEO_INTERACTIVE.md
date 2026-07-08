@@ -555,7 +555,7 @@ Reprise prudente de la tentative revertée du 13/06 (qui forçait la hauteur en 
 - **Test navigateur** : réserve = 800→450 px (16/9), iframe remplit ; après `style.height=600px` la classe est retirée et la **vraie hauteur l'emporte** (600 px). ✅
 
 ### 4. QR code de la vidéo en haut de l'export DOCX/ODT/PDF — `caramel-add ... export`
-- **Lib vendor** : `qrcode-generator` 1.4.4 (MIT) → `js/vendor/qrcode/1.4.4/qrcode.js` + `loadQRCode()` dans `lib-loader.js`. Helper **`js/renderers/qr-utils.js`** (`generateQRDataURL` → PNG via canvas, UTF-8, niveau M).
+- **Lib vendor** : `qrcode-generator` 2.0.4 (MIT) → `js/vendor/qrcode/2.0.4/qrcode.js` + `loadQRCode()` dans `lib-loader.js`. Helper **`js/renderers/qr-utils.js`** (`generateQRDataURL` → PNG via canvas, UTF-8, niveau M).
 - `document-formatter.js` : `formatVideoInteractive` pousse une section `{type:'image', qrText:videoUrl, imgSizeMm:32}` **juste après le titre**.
 - `document-exporter.js` : passe QR dans `prepareImages` (génère le PNG depuis `qrText`) ; support `section.imgSizeMm` dans les 3 rendus (DOCX/PDF/ODT) pour dimensionner le QR (~32 mm).
 - **i18n** : `doc_fmt_video_qr_caption` ×11 (verify-all-locales **26/26**).

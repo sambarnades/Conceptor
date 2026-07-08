@@ -168,12 +168,78 @@ async function prepareImages(formattedContent) {
 }
 
 /**
- * Prépare les données d'image (dataURL, blob, dimensions) depuis une URL ou un dataURL.
- * Gère 3 cas : data URL (base64), chemin relatif (résolu depuis image-manager), URL HTTP.
+ * Formats d'image embarquables TELS QUELS par docx (extension du média dans le .docx).
+ * docx ≥ 8.6 exige un `type` explicite sur `ImageRun` : sans lui l'extension du média
+ * devient « .undefined » → aucun content-type déclaré → Word signale un « contenu
+ * illisible » et propose de réparer à l'ouverture. Tout autre format (WebP, AVIF, SVG…)
+ * doit être rastérisé en PNG (cf. ensureDocxCompatibleImage).
+ */
+const DOCX_IMAGE_TYPE_BY_MIME = {
+    'image/png': 'png', 'image/jpeg': 'jpg', 'image/jpg': 'jpg',
+    'image/gif': 'gif', 'image/bmp': 'bmp'
+};
+
+/** MIME → type docx ('png'|'jpg'|'gif'|'bmp'), ou null si non embarquable tel quel. */
+function docxImageType(mimeType) {
+    return DOCX_IMAGE_TYPE_BY_MIME[String(mimeType || '').toLowerCase().split(';')[0].trim()] || null;
+}
+
+/**
+ * Garantit qu'une image préparée est dans un format embarquable par docx/ODT et pose
+ * `imageData.docxType`. Les formats non pris en charge (WebP, AVIF, SVG rastérisé, MIME
+ * inconnu) sont re-encodés en PNG via canvas — comme le fait déjà le flux « Image
+ * interactive » pour tous ses médias. Sans effet (hors pose de `docxType`) pour
+ * PNG/JPEG/GIF/BMP. Les résultats en erreur sont laissés inchangés.
+ * @param {Object} imageData - sortie de resolveImageData.
+ * @returns {Promise<Object>} imageData avec `docxType` valide.
+ */
+async function ensureDocxCompatibleImage(imageData) {
+    if (!imageData || imageData.error) return imageData;
+    const nativeType = docxImageType(imageData.mimeType);
+    if (nativeType) { imageData.docxType = nativeType; return imageData; }
+    // Format non natif → rastérisation PNG (canvas) pour un embed valide.
+    try {
+        if (!imageData.dataURL) throw new Error('pas de dataURL à convertir');
+        const blob = await new Promise((resolve, reject) => {
+            const im = new Image();
+            im.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = imageData.width || im.naturalWidth || 1;
+                canvas.height = imageData.height || im.naturalHeight || 1;
+                canvas.getContext('2d').drawImage(im, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(b => (b ? resolve(b) : reject(new Error('toBlob null'))), 'image/png');
+            };
+            im.onerror = () => reject(new Error('image illisible'));
+            im.src = imageData.dataURL;
+        });
+        imageData.blob = blob;
+        imageData.dataURL = await blobToDataURL(blob);
+        imageData.mimeType = 'image/png';
+        imageData.docxType = 'png';
+    } catch (e) {
+        debugLog('export', `conversion PNG impossible (${imageData.mimeType}), fallback type png:`, e);
+        imageData.docxType = 'png'; // dernier recours : au moins une extension déclarée
+    }
+    return imageData;
+}
+
+/**
+ * Prépare les données d'image (dataURL, blob, dimensions) puis garantit un format
+ * embarquable par docx/ODT (pose `docxType`, convertit les formats non natifs en PNG).
  * @param {string} url - URL de l'image, data URL, ou chemin relatif (ex: "images/image-xxx.jpg")
- * @returns {Promise<Object>} - {dataURL, width, height, blob, mimeType} ou {error, errorText}
+ * @returns {Promise<Object>} - {dataURL, width, height, blob, mimeType, docxType} ou {error, errorText}
  */
 async function prepareImageData(url) {
+    return await ensureDocxCompatibleImage(await resolveImageData(url));
+}
+
+/**
+ * Résout les données d'image depuis une URL/dataURL/chemin (sans normalisation de format).
+ * Gère 3 cas : data URL (base64), chemin relatif (résolu depuis image-manager), URL HTTP.
+ * @param {string} url
+ * @returns {Promise<Object>} - {dataURL, width, height, blob, mimeType} ou {error, errorText}
+ */
+async function resolveImageData(url) {
     try {
         // Cas 1 : data URL (déjà en base64)
         if (url.startsWith('data:')) {
@@ -575,6 +641,7 @@ function createDOCXFlashcardDocument(formattedContent) {
     // Grouper les sections par pages (chaque flashcardTable = une page)
     const docSections = [];
     let currentPageChildren = [];
+    let titleEmitted = false;
 
     formattedContent.sections.forEach((section, index) => {
         if (section.type === 'flashcardTable') {
@@ -630,6 +697,17 @@ function createDOCXFlashcardDocument(formattedContent) {
                         spacing: { after: 400 }
                     })
                 );
+            }
+
+            // Titre de l'activité, une seule fois en tête du document (audit
+            // Sucrerie 2026-07-05, F6 : les cartes sortaient sans aucun titre).
+            if (!titleEmitted && formattedContent.title) {
+                titleEmitted = true;
+                currentPageChildren.push(new Paragraph({
+                    children: [new TextRun({ text: formattedContent.title, bold: true, size: 28 })],
+                    alignment: AlignmentType.CENTER,
+                    spacing: { after: 300 }
+                }));
             }
 
             // Ajouter le tableau de cartes
@@ -953,6 +1031,8 @@ function createDOCXImage(section) {
     nodes.push(new Paragraph({
         children: [
             new ImageRun({
+                // `type` requis par docx ≥ 8.6 (sinon extension média « .undefined » → Word répare).
+                type: section.imageData.docxType || docxImageType(section.imageData.mimeType) || 'png',
                 data: section.imageData.blob,
                 transformation: {
                     width: dims.width * MM_TO_PX,
@@ -1052,6 +1132,7 @@ function createDOCXFlashcardCell(cardContent) {
                 new Paragraph({
                     children: [
                         new ImageRun({
+                            type: cardContent.imageData.docxType || docxImageType(cardContent.imageData.mimeType) || 'png',
                             data: cardContent.imageData.blob,
                             transformation: {
                                 width: Math.round(dims.width * MM_TO_PX),
@@ -1248,6 +1329,7 @@ function createDOCXTable(section) {
                     new Paragraph({
                         children: [
                             new ImageRun({
+                                type: cellImageData.docxType || docxImageType(cellImageData.mimeType) || 'png',
                                 data: cellImageData.blob,
                                 transformation: {
                                     width: Math.round(dims.width * MM_TO_PX),
@@ -1887,6 +1969,15 @@ async function createPDFFlashcardDocument(formattedContent) {
             doc.setFontSize(10);
             doc.setFont(PDF_FONT, 'italic');
             doc.text(t('doc_fmt_generation_date') + dateStr, pageWidth - FLASHCARD_CONFIG.pdfMargin, 25, { align: 'right' });
+
+            // Titre de l'activité, une seule fois en tête (audit Sucrerie
+            // 2026-07-05, F6). Les tableaux démarrent à startY=50 → pas de
+            // chevauchement.
+            if (isFirstPage && formattedContent.title) {
+                doc.setFontSize(14);
+                doc.setFont(PDF_FONT, 'bold');
+                doc.text(formattedContent.title, pageWidth / 2, 35, { align: 'center' });
+            }
 
             // Pied de page
             doc.setFontSize(9);
@@ -2900,6 +2991,11 @@ async function createODTFlashcardDocument(formattedContent) {
       <style:paragraph-properties fo:text-align="end" fo:margin-top="0cm" fo:margin-bottom="0.70cm"/>
       <style:text-properties style:font-name="Arial" fo:font-size="10pt" fo:font-style="italic"/>
     </style:style>
+    <!-- Titre de l'activité : 14pt gras centré (audit Sucrerie 2026-07-05, F6) -->
+    <style:style style:name="ActivityTitle" style:family="paragraph">
+      <style:paragraph-properties fo:text-align="center" fo:margin-bottom="0.4cm"/>
+      <style:text-properties style:font-name="Arial" fo:font-size="14pt" fo:font-weight="bold"/>
+    </style:style>
     <!-- Styles de texte inline pour le Markdown dans les cellules -->
     <style:style style:name="Bold" style:family="text">
       <style:text-properties fo:font-weight="bold"/>
@@ -2969,6 +3065,12 @@ async function createODTFlashcardDocument(formattedContent) {
 
             contentXml += `      <text:p text:style-name="Title">${escapeXml(t('doc_fmt_header_title'))}</text:p>
       <text:p text:style-name="Date">${escapeXml(t('doc_fmt_generation_date') + new Date().toLocaleDateString(currentLang || 'fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }))}</text:p>\n`;
+
+            // Titre de l'activité, une seule fois en tête du document (audit
+            // Sucrerie 2026-07-05, F6 : les cartes sortaient sans aucun titre).
+            if (tableCounter === 1 && formattedContent.title) {
+                contentXml += `      <text:p text:style-name="ActivityTitle">${escapeXml(formattedContent.title)}</text:p>\n`;
+            }
 
             contentXml += generateODTFlashcardTable(section, tableCounter, zip, imageCounter, manifestImageEntries, (newCounter, newEntries) => {
                 imageCounter = newCounter;
@@ -3262,12 +3364,37 @@ function cssColorToHex(color) {
 }
 
 /**
+ * Aplatit les <span> que les parseurs inline ne savent pas styler : seuls les
+ * spans porteurs d'une couleur (`style="…color…"`) produisent un style de run —
+ * les autres (font-size, etc., typiques du rich text CKEditor) étaient recrachés
+ * littéralement dans le document (audit Sucrerie 2026-07-05, F2). On déballe en
+ * boucle pour gérer l'imbrication `<span color><span font-size>…</span></span>`.
+ *
+ * @param {string} text
+ * @returns {string}
+ */
+function unwrapNonColorSpans(text) {
+    let out = String(text == null ? '' : text);
+    let prev;
+    do {
+        prev = out;
+        out = out.replace(/<span(?![^>]*style="[^"]*color)[^>]*>([\s\S]*?)<\/span>/gi, '$1');
+    } while (out !== prev);
+    return out;
+}
+
+/**
  * Parse Markdown (**gras**, *italique*, ***gras+vert***) et retourne des TextRuns pour docx.js
  */
 function parseMarkdownToTextRuns(text, baseStyle = {}) {
     const { TextRun, ExternalHyperlink } = window.docx;
     const runs = [];
     if (!text) return runs;
+
+    // Les spans sans couleur (font-size…) n'apportent aucun style de run : on
+    // les déballe pour que leur contenu (Markdown, spans couleur imbriqués) soit
+    // parsé au lieu de sortir littéralement (audit F2).
+    text = unwrapNonColorSpans(text);
 
     // Regex pour Markdown et HTML inline supportés
     // Ordre de priorité : HTML tags d'abord, puis Markdown
@@ -3290,10 +3417,15 @@ function parseMarkdownToTextRuns(text, baseStyle = {}) {
         const linkMatch = part.match(/^___LINK_(\d+)___$/);
         if (linkMatch) {
             const link = links[parseInt(linkMatch[1])];
+            // Le texte d'un lien peut porter des marqueurs Markdown hérités de
+            // cleanHtml (<a><em>x</em></a> → *x*) : on les retire — le lien est
+            // déjà souligné/coloré, les émettre littéralement polluait le
+            // document (audit F2).
+            const linkText = link ? String(link.text).replace(/<[^>]+>/g, '').replace(/\*+/g, '') : '';
             if (link && ExternalHyperlink) {
                 runs.push(new ExternalHyperlink({
                     children: [new TextRun({
-                        text: link.text,
+                        text: linkText,
                         color: '0066CC',
                         underline: { type: 'single' },
                         ...baseStyle
@@ -3301,7 +3433,7 @@ function parseMarkdownToTextRuns(text, baseStyle = {}) {
                     link: link.href
                 }));
             } else if (link) {
-                runs.push(new TextRun({ text: `${link.text} (${link.href})`, color: '0066CC', ...baseStyle }));
+                runs.push(new TextRun({ text: `${linkText} (${link.href})`, color: '0066CC', ...baseStyle }));
             }
             return;
         }
@@ -3310,7 +3442,16 @@ function parseMarkdownToTextRuns(text, baseStyle = {}) {
         const colorMatch = part.match(/^<span[^>]*style="[^"]*color:\s*([^;"]+)[^"]*"[^>]*>(.*?)<\/span>$/s);
         if (colorMatch) {
             const color = cssColorToHex(colorMatch[1]);
-            runs.push(new TextRun({ text: colorMatch[2], color, ...baseStyle }));
+            const inner = colorMatch[2];
+            // Le contenu d'un span couleur peut porter du Markdown (**…**, issu de
+            // cleanHtml sur <strong>/<em>) ou d'autres tags inline : re-parser
+            // récursivement avec la couleur en style de base, au lieu d'émettre
+            // les marqueurs littéraux dans le document (audit F2).
+            if (/\*|<[a-z]/i.test(inner)) {
+                runs.push(...parseMarkdownToTextRuns(inner, { color, ...baseStyle }));
+            } else {
+                runs.push(new TextRun({ text: inner, color, ...baseStyle }));
+            }
             return;
         }
 
@@ -3344,19 +3485,39 @@ function parseMarkdownToTextRuns(text, baseStyle = {}) {
 
         // ***gras+vert***
         if (part.startsWith('***') && part.endsWith('***')) {
-            runs.push(new TextRun({ text: part.slice(3, -3), bold: true, color: '008000', ...baseStyle }));
+            const inner3 = part.slice(3, -3);
+            if (/[*<]/.test(inner3)) {
+                runs.push(...parseMarkdownToTextRuns(inner3, { bold: true, color: '008000', ...baseStyle }));
+            } else {
+                runs.push(new TextRun({ text: inner3, bold: true, color: '008000', ...baseStyle }));
+            }
         }
         // **gras**
         else if (part.startsWith('**') && part.endsWith('**')) {
-            runs.push(new TextRun({ text: part.slice(2, -2), bold: true, ...baseStyle }));
+            const inner = part.slice(2, -2);
+            // Le gras peut contenir un span couleur (`**<span…>x</span>**`) ou de
+            // l'italique imbriqué (`**x *y*:**`, issu de <strong>…<em>…</em></strong>) :
+            // re-parser au lieu d'émettre les marqueurs littéraux (audit F2).
+            if (/[*<]/.test(inner)) {
+                runs.push(...parseMarkdownToTextRuns(inner, { bold: true, ...baseStyle }));
+            } else {
+                runs.push(new TextRun({ text: inner, bold: true, ...baseStyle }));
+            }
         }
         // *italique*
         else if (part.startsWith('*') && part.endsWith('*') && part.length > 2) {
-            runs.push(new TextRun({ text: part.slice(1, -1), italics: true, ...baseStyle }));
+            const inner = part.slice(1, -1);
+            if (/<span[^>]*style=/i.test(inner)) {
+                runs.push(...parseMarkdownToTextRuns(inner, { italics: true, ...baseStyle }));
+            } else {
+                runs.push(new TextRun({ text: inner, italics: true, ...baseStyle }));
+            }
         }
-        // Texte normal
+        // Texte normal. Filet de sécurité (audit F2) : des balises <span>
+        // mal appariées (imbrications CKEditor pathologiques) peuvent échapper
+        // à la tokenisation — on les purge plutôt que de les imprimer.
         else {
-            runs.push(new TextRun({ text: part, ...baseStyle }));
+            runs.push(new TextRun({ text: part.replace(/<span\s[^>]*>|<\/span>/gi, ''), ...baseStyle }));
         }
     });
 
@@ -3385,6 +3546,11 @@ function parseTextWithMath(text, baseStyle = {}) {
  */
 function parseMarkdownForODT(text) {
     if (!text) return '';
+
+    // Même déballage que la voie DOCX : les spans sans couleur (font-size…)
+    // sortaient littéralement dans l'ODT — et donc dans le PDF, généré depuis
+    // l'ODT via Gotenberg (audit F2).
+    text = unwrapNonColorSpans(text);
 
     // Extraire les liens et tags HTML avant l'échappement XML
     const links = [];
@@ -3422,6 +3588,10 @@ function parseMarkdownForODT(text) {
         return `___ODTTAG_${idx}___`;
     });
 
+    // Filet de sécurité (audit F2) : balises <span> mal appariées restantes
+    // (imbrications CKEditor pathologiques) — purgées plutôt qu'imprimées.
+    processed = processed.replace(/<span\s[^>]*>|<\/span>/gi, '');
+
     let xml = escapeXml(processed);
 
     // Retours à la ligne → espace
@@ -3432,10 +3602,11 @@ function parseMarkdownForODT(text) {
     xml = xml.replace(/\*\*(.*?)\*\*/g, '<text:span text:style-name="Bold">$1</text:span>');
     xml = xml.replace(/\*(.*?)\*/g, '<text:span text:style-name="Italic">$1</text:span>');
 
-    // Restaurer les liens
+    // Restaurer les liens (marqueurs Markdown du texte de lien purgés — cf.
+    // parseMarkdownToTextRuns, audit F2)
     xml = xml.replace(/___ODTLINK_(\d+)___/g, (m, idx) => {
         const link = links[parseInt(idx)];
-        return `<text:a xlink:type="simple" xlink:href="${escapeXml(link.href)}">${escapeXml(link.text)}</text:a>`;
+        return `<text:a xlink:type="simple" xlink:href="${escapeXml(link.href)}">${escapeXml(String(link.text).replace(/<[^>]+>/g, '').replace(/\*+/g, ''))}</text:a>`;
     });
 
     // Restaurer les tags HTML en styles ODT
@@ -3444,7 +3615,15 @@ function parseMarkdownForODT(text) {
         switch (tag.type) {
             case 'color': {
                 const hex = cssColorToHex(tag.color);
-                return `<text:span text:style-name="Color_${hex}">${escapeXml(tag.text)}</text:span>`;
+                // Le contenu du span couleur peut porter du Markdown (**…**, issu de
+                // cleanHtml sur <strong>/<em>) : convertir en spans ODT imbriqués au
+                // lieu d'émettre les astérisques littéraux (audit F2). L'imbrication
+                // de text:span est valide en ODF.
+                let inner = escapeXml(tag.text);
+                inner = inner.replace(/\*\*\*(.*?)\*\*\*/g, '<text:span text:style-name="BoldGreen">$1</text:span>');
+                inner = inner.replace(/\*\*(.*?)\*\*/g, '<text:span text:style-name="Bold">$1</text:span>');
+                inner = inner.replace(/\*(.*?)\*/g, '<text:span text:style-name="Italic">$1</text:span>');
+                return `<text:span text:style-name="Color_${hex}">${inner}</text:span>`;
             }
             case 'underline':
                 return `<text:span text:style-name="Underline">${escapeXml(tag.text)}</text:span>`;

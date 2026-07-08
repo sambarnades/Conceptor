@@ -71,11 +71,12 @@ export function createVideoPlayer(mountEl, videoSource, opts = {}) {
 
     let ytPlayer = null;
     let videoEl = null;
+    let holder = null;
     let timer = null;
     let destroyed = false;
 
     if (yt) {
-        const holder = document.createElement('div');
+        holder = document.createElement('div');
         mountEl.appendChild(holder);
         loadYTApi().then((YT) => {
             if (destroyed || !holder.isConnected) return;
@@ -138,7 +139,11 @@ export function createVideoPlayer(mountEl, videoSource, opts = {}) {
             destroyed = true;
             if (timer) { clearInterval(timer); timer = null; }
             if (ytPlayer && ytPlayer.destroy) { try { ytPlayer.destroy(); } catch { /* déjà détruit */ } ytPlayer = null; }
-            if (videoEl) { try { videoEl.pause(); videoEl.removeAttribute('src'); videoEl.load(); } catch { /* ignore */ } videoEl = null; }
+            if (videoEl) { try { videoEl.pause(); videoEl.removeAttribute('src'); videoEl.load(); } catch { /* ignore */ } videoEl.remove(); videoEl = null; }
+            // Retirer du DOM le conteneur YouTube (restauré à la place de l'iframe par
+            // ytPlayer.destroy()) : sans ça, chaque destroy/re-création (bascule Plan ↔ Direct
+            // du panneau Vidéo interactive) empile un élément mort de plus dans mountEl.
+            if (holder) { try { holder.remove(); } catch { /* ignore */ } holder = null; }
         }
     };
 }

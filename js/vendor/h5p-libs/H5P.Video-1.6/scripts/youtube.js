@@ -55,6 +55,9 @@ H5P.VideoYouTube = (function ($) {
       var videoId = getId(sources[0].path);
 
       player = new YT.Player(id, {
+        // PATCH Caramel — Erreur 153 : on cible le domaine sans cookies, plus tolérant
+        // sur la vérification d'origine de l'embed (idem lecteur de transcription).
+        host: 'https://www.youtube-nocookie.com',
         width: width,
         height: width * (9/16),
         videoId: videoId,
@@ -612,8 +615,24 @@ H5P.VideoYouTube = (function ($) {
   var numInstances = 0;
 
   // Extract the current origin (used for security)
-  var ORIGIN = window.location.href.match(/http[s]?:\/\/[^\/]+/);
-  ORIGIN = !ORIGIN || ORIGIN[0] === undefined ? undefined : ORIGIN[0];
+  // PATCH Caramel — Erreur 153 « configuration du lecteur vidéo » : en preview
+  // h5p-standalone, ce script tourne dans un iframe `about:blank`, donc
+  // window.location.href vaut "about:blank" et la regex échoue → ORIGIN=undefined.
+  // Depuis fin 2025, YouTube refuse les embeds sans origine valide (Erreur 153). On
+  // remonte à la fenêtre du haut (même origine que l'iframe about:blank) pour
+  // récupérer l'origine réelle de la page. À réappliquer à chaque MAJ de H5P.Video.
+  var ORIGIN;
+  try {
+    var originHref = window.location.href;
+    if (!/^https?:\/\//.test(originHref)) {
+      try { originHref = window.top.location.href; }
+      catch (e) { originHref = document.referrer || originHref; }
+    }
+    var originMatch = originHref.match(/http[s]?:\/\/[^\/]+/);
+    ORIGIN = originMatch ? originMatch[0] : undefined;
+  } catch (e) {
+    ORIGIN = undefined;
+  }
   // ORIGIN = undefined is needed to support fetching file from device local storage
 
   return YouTube;

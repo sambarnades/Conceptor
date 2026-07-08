@@ -306,6 +306,54 @@ export const FIELD_CONSTRAINTS = {
         }
     },
 
+    'ImageHotspots': {
+        platform: 'H5P',
+        machineName: 'H5P.ImageHotspots',
+        // Contraintes sur le format intermédiaire « plat » (avant processeur).
+        // L'image de fond est injectée par l'UI ; le LLM ne produit que du texte par point.
+        fields: {
+            'title':                    { render: 'plain' },
+            'backgroundImageAltText':   { render: 'plain' },
+            'globalColor':              { render: 'plain' },
+            'hotspots[].header':        { render: 'plain' },
+            'hotspots[].text':          { render: 'html+latex' },
+            // Format éditeur enrichi : le texte d'un bloc Texte d'un point (richtext WYSIWYG + LaTeX).
+            'hotspots[].content[].text': { render: 'html+latex' },
+            'hotspots[].hotspotColor':  { render: 'plain' }
+        }
+    },
+
+    'FindTheHotspot': {
+        platform: 'H5P',
+        machineName: 'H5P.ImageHotspotQuestion',
+        // Contraintes sur le format intermédiaire « plat » (avant processeur).
+        // Tous les champs de la semantics sont de type `text` (pas de HTML ni LaTeX :
+        // les feedbacks s'affichent en popup brut) ; l'image est injectée par l'UI.
+        fields: {
+            'title':                    { render: 'plain' },
+            'taskDescription':          { render: 'plain' },
+            'hotspots[].label':         { render: 'plain' },
+            'hotspots[].feedbackText':  { render: 'plain' },
+            'noneSelectedFeedback':     { render: 'plain' }
+        }
+    },
+
+    'FindMultipleHotspots': {
+        platform: 'H5P',
+        machineName: 'H5P.ImageMultipleHotspotQuestion',
+        // Mêmes contraintes que FindTheHotspot + champs propres à la lib communautaire.
+        fields: {
+            'title':                    { render: 'plain' },
+            'questionTitle':            { render: 'plain' },
+            'taskDescription':          { render: 'plain' },
+            'hotspotName':              { render: 'plain' },
+            'hotspots[].label':         { render: 'plain' },
+            'hotspots[].feedbackText':  { render: 'plain' },
+            'noneSelectedFeedback':     { render: 'plain' },
+            'alreadySelectedFeedback':  { render: 'plain' }
+        }
+    },
+
     'QuizSet': {
         platform: 'H5P',
         machineName: 'H5P.QuestionSet',

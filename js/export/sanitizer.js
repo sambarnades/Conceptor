@@ -62,8 +62,8 @@ const PROFILES = {
             'href', 'src', 'alt', 'title', 'class', 'id', 'style',
             'target', 'rel', 'width', 'height', 'loading', 'decoding',
             'colspan', 'rowspan', 'scope', 'headers',
-            'lang', 'dir', 'role',
-            'aria-label', 'aria-hidden', 'aria-level', 'aria-describedby',
+            'lang', 'dir', 'role', 'tabindex',
+            'aria-label', 'aria-hidden', 'aria-level', 'aria-describedby', 'aria-current',
             'datetime', 'data-tooltip-key'
         ],
         ALLOW_DATA_ATTR: true,

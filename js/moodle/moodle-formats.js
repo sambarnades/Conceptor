@@ -303,6 +303,50 @@ export function normalizeFractions(answers) {
 }
 
 /**
+ * Normalise les fractions d'un tableau de réponses SHORTANSWER pour respecter
+ * la contrainte Moodle : au moins une réponse doit valoir exactement 100 %,
+ * sinon l'import Moodle/Éléa rejette TOUTE la banque
+ * (erreur « fractionsnomax » : "L'une des réponses doit donner un score de 100 %…").
+ *
+ * Contrairement au multichoice, les fractions d'un shortanswer ne se partagent PAS :
+ * chaque réponse est une alternative acceptée indépendante, notée sur 100.
+ * Deux alternatives également correctes doivent donc valoir 100 chacune (et non 50/50).
+ *
+ * Stratégie : mise à l'échelle pour que la meilleure réponse vaille 100, puis
+ * arrondi de chaque fraction à la valeur Moodle valide la plus proche. Les
+ * pénalités (fractions ≤ 0) sont préservées. Si aucune réponse n'est correcte
+ * (toutes ≤ 0), on force la première à 100 pour que l'import n'échoue pas.
+ *
+ * @param {Array} answers - Tableau de réponses { fraction, text, feedback, ... }
+ * @returns {Array} Nouveau tableau avec les fractions corrigées (objets clonés superficiellement)
+ */
+export function normalizeShortanswerFractions(answers) {
+    if (!Array.isArray(answers) || answers.length === 0) return answers;
+
+    const nums = answers.map(a => Number(a.fraction) || 0);
+    const maxFraction = Math.max(...nums);
+
+    // Aucune réponse correcte (toutes les fractions ≤ 0) : shortanswer malformé.
+    // On force la première réponse à 100 pour éviter le rejet de tout l'import.
+    if (maxFraction <= 0) {
+        return answers.map((ans, i) => ({
+            ...ans,
+            fraction: i === 0 ? 100 : fractionMoodleValide(nums[i])
+        }));
+    }
+
+    // Mise à l'échelle : la meilleure réponse devient 100, les autres suivent
+    // proportionnellement, puis chaque fraction est arrondie à une valeur Moodle valide.
+    const factor = 100 / maxFraction;
+    return answers.map((ans, i) => {
+        const f = nums[i];
+        // Ne pas mettre à l'échelle les pénalités (≤ 0) : on les arrondit telles quelles.
+        const scaled = f > 0 ? f * factor : f;
+        return { ...ans, fraction: fractionMoodleValide(scaled) };
+    });
+}
+
+/**
  * Trouve la fraction Moodle valide la plus proche d'une valeur cible.
  */
 function findClosestValidFraction(target) {
@@ -347,6 +391,47 @@ function findValidCombination(n) {
 }
 
 /**
+ * Normalise les fractions d'un QCM à réponse UNIQUE : la meilleure réponse vaut
+ * 100, toutes les autres 0. En mode « single », Moodle exige qu'exactement une
+ * réponse ait une fraction de 100 (sinon erreur « fractionsnomax » à l'import).
+ * Indispensable quand le LLM déclare single="true" mais répartit le crédit sur
+ * plusieurs réponses (ex: 50/50) : sans ça, normalizeFractions produit un QCM
+ * single sans aucune réponse à 100 → tout l'import est rejeté.
+ * @param {Array} answers - Tableau de réponses { fraction, ... }
+ * @returns {Array} Nouveau tableau (objets clonés) avec une seule réponse à 100
+ */
+function normalizeSingleChoiceFractions(answers) {
+    if (!Array.isArray(answers) || answers.length === 0) return answers;
+    const nums = answers.map(a => Number(a.fraction) || 0);
+    let maxIdx = 0;
+    for (let i = 1; i < nums.length; i++) {
+        if (nums[i] > nums[maxIdx]) maxIdx = i;
+    }
+    // Si toutes les fractions sont ≤ 0, maxIdx reste 0 → la première devient la bonne réponse.
+    return answers.map((ans, i) => ({ ...ans, fraction: i === maxIdx ? 100 : 0 }));
+}
+
+/**
+ * Applique la normalisation adaptée au mode d'un QCM :
+ * - single  → une seule réponse à 100 (normalizeSingleChoiceFractions)
+ * - multiple → répartition des positives à somme 100 (normalizeFractions),
+ *   avec repli sur le mode single si aucune réponse positive n'existe
+ *   (un QCM multiple sans positive est rejeté : « fractionsaddwrong »).
+ * @param {Array} answers - réponses brutes
+ * @param {string} isSingle - 'true' ou 'false'
+ * @returns {Array} réponses avec fractions normalisées
+ */
+function normalizeMultichoiceFractions(answers, isSingle) {
+    if (isSingle === 'true') return normalizeSingleChoiceFractions(answers);
+    const normalized = normalizeFractions(answers);
+    if (Array.isArray(normalized) && normalized.length &&
+        !normalized.some(a => Number(a.fraction) > 0)) {
+        return normalizeSingleChoiceFractions(answers);
+    }
+    return normalized;
+}
+
+/**
  * Détermine si une question multichoice est à réponse unique ou multiple.
  * Gère les 3 cas : champ explicite (string/booléen), absent (auto-détection via fractions).
  * @param {*} singleValue - La valeur du champ "single" (string, booléen, undefined)
@@ -365,7 +450,11 @@ function determineSingleMode(singleValue, answers) {
 
 function generateMultichoiceQuestionXml(content, globalOptions = {}) {
     const answers = Array.isArray(content.answers) ? content.answers : [];
-    const normalizedAnswers = normalizeFractions(answers);
+    // Le mode (unique/multiple) se détermine sur les fractions BRUTES : sinon la
+    // normalisation « multiple » (répartition somme=100) peut convertir une question
+    // à réponse unique en 50/50 et casser l'import (aucune réponse à 100 %).
+    const isSingle = determineSingleMode(content.single, answers);
+    const normalizedAnswers = normalizeMultichoiceFractions(answers, isSingle);
     let answersXml = normalizedAnswers.map(ans => `
     <answer fraction="${ans.fraction}" format="html">
       <text><![CDATA[<p>${escapeCdata(ans.text || '')}</p>]]></text>
@@ -378,11 +467,6 @@ function generateMultichoiceQuestionXml(content, globalOptions = {}) {
     const hintsXml = generateHintsXml(content.hints);
     const numbering = globalOptions.answernumbering || 'none';
     const showInstruction = globalOptions.showstandardinstruction !== undefined ? globalOptions.showstandardinstruction : 1;
-
-    // Déterminer réponse unique ou multiple :
-    // - Champ explicite "single" (string ou booléen) → respecter la valeur
-    // - Sinon, auto-détection : plusieurs réponses avec fraction > 0 = réponses multiples
-    const isSingle = determineSingleMode(content.single, normalizedAnswers);
 
     return `
   <question type="multichoice">
@@ -403,10 +487,27 @@ function generateMultichoiceQuestionXml(content, globalOptions = {}) {
   </question>`;
 }
 
+/**
+ * Interprète la valeur de vérité d'une question truefalse de façon robuste.
+ * En JS la chaîne "false" est truthy : un LLM qui émet `"value": "false"` (au lieu
+ * du booléen `false`) inverserait silencieusement la bonne réponse. On normalise
+ * donc explicitement les formes textuelles négatives.
+ * @param {*} v - booléen ou chaîne ("true"/"false"/"vrai"/"faux"/"0"/"1"/"non"/"oui"…)
+ * @returns {boolean} true si la bonne réponse est « Vrai »
+ */
+function parseTrueFalseValue(v) {
+    if (typeof v === 'string') {
+        const s = v.trim().toLowerCase();
+        return !['false', 'faux', 'no', 'non', '0', 'n', 'f', ''].includes(s);
+    }
+    return Boolean(v);
+}
+
 function generateTrueFalseQuestionXml(content) {
     const answer = content.answer || {};
-    const fractionTrue = answer.value ? 100 : 0;
-    const fractionFalse = answer.value ? 0 : 100;
+    const isTrue = parseTrueFalseValue(answer.value);
+    const fractionTrue = isTrue ? 100 : 0;
+    const fractionFalse = isTrue ? 0 : 100;
 
     const hintsXml = generateHintsXml(content.hints);
 
@@ -438,7 +539,9 @@ function generateTrueFalseQuestionXml(content) {
 
 function generateShortanswerQuestionXml(content) {
     const answers = Array.isArray(content.answers) ? content.answers : [];
-    let answersXml = answers.map(ans => `
+    // Garantit qu'au moins une réponse vaut 100 % (sinon rejet à l'import Moodle/Éléa).
+    const normalizedAnswers = normalizeShortanswerFractions(answers);
+    let answersXml = normalizedAnswers.map(ans => `
     <answer fraction="${ans.fraction || 0}" format="moodle_auto_format">
       <text>${escapeXml(ans.text || '')}</text>
       <feedback format="html">
@@ -464,9 +567,28 @@ function generateShortanswerQuestionXml(content) {
   </question>`;
 }
 
+/**
+ * Normalise une valeur numérique issue du LLM pour Moodle :
+ * virgule décimale → point, puis extraction du premier nombre (retire les unités
+ * « 9.81 m/s² », les symboles « ±0.5 », « 5 % », la virgule « 0,83 »). Indispensable
+ * car PHP `is_numeric` refuse la virgule décimale → l'import GIFT rejette « 0,83 »,
+ * et une unité collée casse la réponse numérique. Garantit aussi une chaîne sûre en XML.
+ * @param {*} v - valeur brute (nombre ou chaîne)
+ * @param {number} fallback - valeur si aucun nombre n'est trouvé
+ * @returns {string} chaîne numérique (ex: "9.81", "-3", "0")
+ */
+function normalizeNumericValue(v, fallback = 0) {
+    if (typeof v === 'number' && Number.isFinite(v)) return String(v);
+    const s = String(v == null ? '' : v).replace(',', '.');
+    const m = s.match(/-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?/);
+    return m ? m[0] : String(fallback);
+}
+
 function generateNumericalQuestionXml(content) {
     const answer = content.answer || {};
     const hintsXml = generateHintsXml(content.hints);
+    const number = normalizeNumericValue(answer.number, 0);
+    const tolerance = normalizeNumericValue(answer.tolerance, 0);
 
     return `
   <question type="numerical">
@@ -480,8 +602,8 @@ function generateNumericalQuestionXml(content) {
       <text><![CDATA[<p>${escapeCdata(content.feedback || '')}</p>]]></text>
     </generalfeedback>
     <answer fraction="100" format="moodle_auto_format">
-      <text>${answer.number || 0}</text>
-      <tolerance>${answer.tolerance || 0}</tolerance>
+      <text>${number}</text>
+      <tolerance>${tolerance}</tolerance>
       <feedback format="html">
         <text><![CDATA[<p>${escapeCdata(answer.feedback || '')}</p>]]></text>
       </feedback>
@@ -546,8 +668,10 @@ export function generateMoodleGift(data) {
 
 function generateMultichoiceGift(content) {
     const answers = Array.isArray(content.answers) ? content.answers : [];
-    const normalizedAnswers = normalizeFractions(answers);
-    const isSingle = determineSingleMode(content.single, normalizedAnswers) === 'true';
+    // Mode déterminé sur les fractions brutes (cf. generateMultichoiceQuestionXml).
+    const isSingleMode = determineSingleMode(content.single, answers);
+    const normalizedAnswers = normalizeMultichoiceFractions(answers, isSingleMode);
+    const isSingle = isSingleMode === 'true';
 
     let answers_gift = normalizedAnswers.map(ans => {
         const fraction = Number(ans.fraction) || 0;
@@ -579,8 +703,13 @@ function generateMultichoiceGift(content) {
 
 function generateMatchingGift(content) {
     const subquestions = Array.isArray(content.subquestions) ? content.subquestions : [];
+    // GIFT sépare chaque paire sur le délimiteur ' -> '. Si le contenu (texte ou réponse)
+    // contient une flèche ASCII '->' (ex: « f : ℝ -> ℝ »), Moodle coupe la paire au mauvais
+    // endroit → mauvaise réponse importée silencieusement. On remplace donc toute flèche ASCII
+    // du contenu par la flèche Unicode '→', ne laissant que le ' -> ' inséré par le générateur.
+    const noArrow = s => String(s || '').replace(/->/g, '→');
     let subquestions_gift = subquestions.map(sq =>
-        `=<p>${escapeGift(sq.text || '')}</p> -> ${escapeGift(sq.answer || '')}`
+        `=<p>${escapeGift(noArrow(sq.text))}</p> -> ${escapeGift(noArrow(sq.answer))}`
     ).join('\n\t');
 
     const general_feedback = content.feedback ? `####<p>${escapeGift(content.feedback)}</p>` : '';
@@ -594,13 +723,14 @@ function generateMatchingGift(content) {
 
 function generateTrueFalseGift(content) {
     const answer = content.answer || {};
-    const answerStr = answer.value ? 'TRUE' : 'FALSE';
+    const isTrue = parseTrueFalseValue(answer.value);
+    const answerStr = isTrue ? 'TRUE' : 'FALSE';
 
     // Syntaxe GIFT : {TRUE #feedback-si-mauvaise-réponse #feedback-si-bonne-réponse}
     // feedback_true = feedback affiché si l'élève répond VRAI (resp. feedback_false / FAUX).
     // L'ordre d'émission dépend donc de la bonne réponse.
-    const fbMauvaise = answer.value ? answer.feedback_false : answer.feedback_true;
-    const fbBonne = answer.value ? answer.feedback_true : answer.feedback_false;
+    const fbMauvaise = isTrue ? answer.feedback_false : answer.feedback_true;
+    const fbBonne = isTrue ? answer.feedback_true : answer.feedback_false;
     let feedbacks = '';
     if (fbMauvaise || fbBonne) {
         feedbacks = `#${fbMauvaise ? `<p>${escapeGift(fbMauvaise)}</p>` : ''}`;
@@ -615,11 +745,11 @@ function generateTrueFalseGift(content) {
 
 function generateShortanswerGift(content) {
     const answers = Array.isArray(content.answers) ? content.answers : [];
-    let answers_gift = answers.map(ans => {
+    // Même normalisation que le XML : au moins une réponse à 100 %, sinon rejet à l'import.
+    const normalizedAnswers = normalizeShortanswerFractions(answers);
+    let answers_gift = normalizedAnswers.map(ans => {
         const feedback = ans.feedback ? `#<p>${escapeGift(ans.feedback)}</p>` : '';
-        // Réponse unique : toujours 100% (une shortanswer sans réponse à 100%
-        // est rejetée à l'import) ; sinon fraction Moodle valide la plus proche
-        const fraction = answers.length === 1 ? 100 : fractionMoodleValide(ans.fraction || 0);
+        const fraction = Number(ans.fraction) || 0;
         return `=%${fraction}%${escapeGift(ans.text || '')}${feedback}`;
     }).join('\n\t');
 
@@ -636,10 +766,12 @@ function generateNumericalGift(content) {
     const answer = content.answer || {};
     const feedback = answer.feedback ? `#<p>${escapeGift(answer.feedback)}</p>` : '';
     const general_feedback = content.feedback ? `####<p>${escapeGift(content.feedback)}</p>` : '';
+    const number = normalizeNumericValue(answer.number, 0);
+    const tolerance = normalizeNumericValue(answer.tolerance, 0);
 
     return `// question: 0 name: ${escapeGift(content.name || '')}
 ::${escapeGiftTitle(content.name || '')}::[html]<p>${escapeGift(content.questiontext || '')}</p>{#
-\t=%100%${answer.number || 0}:${answer.tolerance || 0}${feedback}
+\t=%100%${number}:${tolerance}${feedback}
 \t${general_feedback}
 }\n\n`;
 }

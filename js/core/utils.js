@@ -87,99 +87,8 @@ export function cleanJsonInput(rawInput) {
     return cleanedInput.trim();
 }
 
-export async function showHelpModal() {
-    // Supprimer une modale existante si elle existe
-    const existingModal = document.getElementById('help-modal');
-    if (existingModal) {
-        existingModal.remove();
-    }
-
-    // Créer les éléments de la modale
-    const modal = document.createElement('div');
-    modal.id = 'help-modal';
-    modal.className = 'help-modal';
-    modal.setAttribute('role', 'dialog');
-    modal.setAttribute('aria-modal', 'true');
-    modal.setAttribute('aria-labelledby', 'help-modal-title');
-
-    const modalContent = document.createElement('div');
-    modalContent.className = 'help-modal-content';
-
-    const modalHeader = document.createElement('div');
-    modalHeader.className = 'help-modal-header';
-    modalHeader.innerHTML = `
-            <h2 id="help-modal-title">${translations.help_modal_title || 'Guide'}</h2>
-            <span class="help-close-modal-btn" id="close-help-modal">&times;</span>
-        `;
-
-    const modalBody = document.createElement('div');
-    modalBody.className = 'help-modal-body';
-
-    // Chargement du template HTML externe
-    try {
-        const response = await fetch('assets/templates/tutorial_content.html');
-        if (!response.ok) throw new Error('Erreur de chargement du tutoriel');
-        const html = await response.text();
-        modalBody.innerHTML = html;
-
-        // Traduire le contenu de la modale après son injection
-        translatePage(modalBody);
-    } catch (error) {
-        console.error('Erreur chargement aide:', error);
-        modalBody.innerHTML = '<p>Contenu d\'aide non disponible.</p>';
-        translatePage(modalBody);
-    }
-
-    // Assembler la modale
-    modalContent.appendChild(modalHeader);
-    modalContent.appendChild(modalBody);
-    modal.appendChild(modalContent);
-    document.body.appendChild(modal);
-
-    // Afficher la modale
-    modal.style.display = 'block';
-
-    // Gérer la fermeture
-    let a11yCleanup = null;
-    // Listener window nommé pour pouvoir le retirer à la fermeture
-    // (sinon il s'accumule à chaque ouverture de l'aide)
-    const handleWindowClick = (event) => {
-        if (event.target === modal) {
-            closeModal();
-        }
-    };
-    const closeModal = () => {
-        if (a11yCleanup) { a11yCleanup(); a11yCleanup = null; }
-        window.removeEventListener('click', handleWindowClick);
-        modal.style.display = 'none';
-        modal.remove();
-    };
-
-    // Accessibilité : focus trap + Escape + restauration du focus
-    a11yCleanup = setupModalAccessibility(modal, {
-        onClose: closeModal,
-        focusSelector: '#close-help-modal'
-    });
-
-    document.getElementById('close-help-modal').addEventListener('click', closeModal);
-    window.addEventListener('click', handleWindowClick);
-
-    // Logique de défilement automatique
-    const navLinks = modal.querySelectorAll('.help-nav-link');
-    navLinks.forEach(link => {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetElement = modal.querySelector(targetId);
-            if (targetElement) {
-                modalBody.scrollTo({
-                    top: targetElement.offsetTop - 70, // 70px pour compenser la barre de nav
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-}
+// Le tutoriel (ancienne modale « aide ») a été remplacé par la modale
+// « Tutoriel » à sommaire + chapitres : voir js/ui/tutorial-modal.js.
 
 
 export function copyToClipboard(textareaId, button) {
@@ -472,10 +381,8 @@ export function setupEventListeners() {
         });
     });
 
-    const helpButton = document.getElementById('help-button');
-    if (helpButton) {
-        helpButton.addEventListener('click', showHelpModal);
-    }
+    // Le bouton « Tutoriel » (#help-button) est câblé par initTutorialModal()
+    // dans js/ui/tutorial-modal.js (appelé depuis main.js).
 
     const legalMentionsLink = document.getElementById('legal-mentions-link');
     const legalMentionsModal = document.getElementById('legal-mentions-modal');

@@ -414,7 +414,13 @@ export default {
         // 2. Piste de sous-titres (si transcription disponible par URL — CORS `*` côté PeerTube).
         const transcript = jsonObj.transcript || {};
         const captionUrl = transcript.captionUrl || null;
-        const textTracks = captionUrl
+        // Sous-titres embarqués UNIQUEMENT si l'enseignant les a activés dans l'éditeur de
+        // l'activité (case « Intégrer les sous-titres » cochée → videoSource.showCaptions
+        // === true). Par défaut (champ absent) on n'embarque PAS la piste. Ne pas embarquer
+        // la piste est le seul moyen fiable de ne pas les afficher au démarrage : H5P
+        // sélectionne sinon toujours la 1re piste (cf. audit sous-titres 2026-07).
+        const showCaptions = !!(jsonObj.videoSource && jsonObj.videoSource.showCaptions === true);
+        const textTracks = (showCaptions && captionUrl)
             ? {
                 videoTrack: [{
                     label: translations.h5p_iv_subtitle_label || 'Transcription',

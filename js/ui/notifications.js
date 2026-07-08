@@ -1025,6 +1025,17 @@ async function openPreviewModal(notificationId) {
         await resetEditModeState(modal);
     }
 
+    // Démonter IMMÉDIATEMENT un éventuel panneau « Vers la Sucrerie » resté
+    // d'une visualisation précédente (étape succès du dépôt notamment). Sans
+    // ça, il n'était retiré que par mountSucrerieBridge() APRÈS l'await de
+    // renderPreview() → l'utilisateur voyait « flasher » l'ancien panneau de
+    // publication par-dessus la nouvelle visualisation pendant tout le
+    // chargement du rendu.
+    if (modal._sucrerieBridgeFlow && typeof modal._sucrerieBridgeFlow.exit === 'function') {
+        try { modal._sucrerieBridgeFlow.exit(); } catch { /* no-op */ }
+        modal._sucrerieBridgeFlow = null;
+    }
+
     // Retirer les classes CSS du mode édition si elles sont présentes
     const previewContainer = modal.querySelector('.preview-modal__preview');
     if (previewContainer) {
@@ -1744,6 +1755,14 @@ export function initPreviewModal() {
                 const baseName = fileName.replace(/\.[^/.]+$/, ""); // Retire l'ancienne extension
                 fileName = `${baseName}.gift.txt`;
                 downloadFile(giftContent, fileName, 'text/plain');
+
+                // Le format GIFT ne prend pas en charge le type « texte à trous » (cloze) :
+                // ces questions sont omises de l'export → prévenir l'utilisateur.
+                const clozeOmises = (notification.jsonData.questions || []).filter(q => q && q.type === 'cloze').length;
+                if (clozeOmises > 0) {
+                    const tmpl = translations.elea_test_gift_cloze_warning || "{count} question(s) « texte à trous » (cloze) ne sont pas prises en charge par le format GIFT et ont été omises. Utilisez l'export XML pour les conserver.";
+                    addNotification({ type: 'alert', title: tmpl.replace('{count}', clozeOmises), status: 'error' });
+                }
             }
             else if (format === 'XML' && notification.jsonData && notification.titleKey !== 'elea_glossaire_xml_name') {
                 // Pour les banques de questions (pas pour le Glossaire XML qui a son propre format)
@@ -1811,6 +1830,19 @@ export function initPreviewModal() {
                         }
                     } catch (err) {
                         console.warn('Capture grille mots mêlés échouée, export sans image:', err);
+                    }
+                }
+                // Activités à image de fond (Image interactive, Find the Hotspot, Find Multiple
+                // Hotspots) : injecter le fond en data URL pour l'export (le formatter compose
+                // fond + pastilles numérotées). Le registre mémoire étant vidé après le packaging, on
+                // ré-extrait l'image embarquée depuis le .h5p de la notification.
+                else if ((moduleKey === 'ImageHotspots' || moduleKey === 'FindTheHotspot' || moduleKey === 'FindMultipleHotspots') && notification.blob) {
+                    try {
+                        const { extractBackgroundFromH5p } = await import('../renderers/hotspot-overlay-renderer.js');
+                        const bg = await extractBackgroundFromH5p(notification.blob, jsonDataToExport);
+                        if (bg) jsonDataToExport = { ...jsonDataToExport, _backgroundImage: bg };
+                    } catch (err) {
+                        console.warn('Capture fond Image interactive échouée, export sans pastilles:', err);
                     }
                 }
 
@@ -2805,6 +2837,18 @@ async function regenerateH5PFile(originalBlob, editedData, moduleKey, titleKey) 
         const h5pJson = JSON.parse(h5pJsonString);
         debugLog('notifications', '[Regenerate H5P] Extracted h5p.json:', h5pJson.title);
 
+        // Titre de l'activité : c'est une MÉTADONNÉE h5p.json (le player l'affiche dans Éléa/Moodle),
+        // pas un champ du content.json. Sans cette réécriture, h5p.json restait celui du paquet
+        // d'origine → renommer une activité dans l'éditeur (champ « Titre ») n'avait aucun effet sur
+        // le fichier régénéré. Les activités qui exposent un champ `title` (Image interactive, Trouver
+        // la zone, Trouver les zones, …) le voient donc désormais réappliqué au h5p.json.
+        const editedTitle = (editedData && typeof editedData.title === 'string') ? editedData.title.trim() : '';
+        if (editedTitle) {
+            h5pJson.title = editedTitle;
+            h5pJson.extraTitle = editedTitle;
+            debugLog('notifications', '[Regenerate H5P] h5p.json titre mis à jour →', editedTitle);
+        }
+
         // Appliquer le processeur pour transformer Markdown -> HTML
         // Deep clone pour que le processeur ne mute pas les données d'entrée
         // (sinon originalJsonData est corrompu et le 2e cycle d'édition casse)
@@ -2835,6 +2879,17 @@ async function regenerateH5PFile(originalBlob, editedData, moduleKey, titleKey) 
         const contentJsonString = JSON.stringify(processedData, null, 2);
         debugLog('notifications', '[Regenerate H5P] Updated content.json, length:', contentJsonString.length);
 
+        // Chemins médias réellement référencés par le content.json régénéré (audit N11) :
+        // un fond remplacé change de h5pPath à chaque fois → sans ce filtre, l'ancien
+        // fichier mort est recopié et l'archive gonfle à chaque sauvegarde. On ne filtre
+        // QUE les préfixes médias connus (images|audios|videos) : les autres assets d'un
+        // paquet importé (chemins exotiques) restent recopiés tels quels.
+        const referencedMediaPaths = new Set(
+            (contentJsonString.match(/"(?:images|audios|videos)\/[A-Za-z0-9._-]+"/g) || [])
+                .map(m => `content/${m.slice(1, -1)}`)
+        );
+        const isPrunableMedia = (zipPath) => /^content\/(?:images|audios|videos)\//.test(zipPath);
+
         // Charger client-zip via lib-loader (centralisé)
         const downloadZip = await loadClientZip();
 
@@ -2855,17 +2910,23 @@ async function regenerateH5PFile(originalBlob, editedData, moduleKey, titleKey) 
             unixPermissions: 0o100644
         });
 
-        // 3. Images utilisateur depuis le registre mémoire (si présentes).
-        // Préparées d'abord pour connaître les chemins qui écrasent les assets d'origine.
+        // 3. Médias utilisateur depuis le registre mémoire (images + audio/vidéo, si présents).
+        // Préparés d'abord pour connaître les chemins qui écrasent les assets d'origine.
         const registryEntries = [];
         const registryPaths = new Set();
         try {
-            const { getAllImages, hasImages } = await import('../h5p/image-manager.js');
-            if (hasImages()) {
-                const imageFiles = getAllImages();
-                for (const [path, blob] of imageFiles) {
-                    const arrayBuffer = await blob.arrayBuffer();
+            const { getAllMedia, hasMedia } = await import('../h5p/image-manager.js');
+            if (hasMedia()) {
+                const mediaFiles = getAllMedia();
+                for (const [path, blob] of mediaFiles) {
                     const zipPath = `content/${path}`;
+                    // Registre global : écarter les blobs non référencés par CE content.json
+                    // (média d'une autre activité resté en mémoire — audit N11/N12).
+                    if (isPrunableMedia(zipPath) && !referencedMediaPaths.has(zipPath)) {
+                        debugLog('notifications', '[Regenerate H5P] Média du registre non référencé, écarté:', zipPath);
+                        continue;
+                    }
+                    const arrayBuffer = await blob.arrayBuffer();
                     registryPaths.add(zipPath);
                     registryEntries.push({
                         name: zipPath,
@@ -2873,11 +2934,11 @@ async function regenerateH5PFile(originalBlob, editedData, moduleKey, titleKey) 
                         unixPermissions: 0o100644
                     });
                 }
-                debugLog('notifications', `[Regenerate H5P] ${imageFiles.size} image(s) du registre ajoutée(s) au ZIP`);
+                debugLog('notifications', `[Regenerate H5P] ${mediaFiles.size} média(s) du registre ajouté(s) au ZIP`);
                 // Ne PAS clearAllImages() ici — l'utilisateur pourrait re-éditer
             }
         } catch (imgErr) {
-            console.warn('[Regenerate H5P] Image injection skipped:', imgErr);
+            console.warn('[Regenerate H5P] Media injection skipped:', imgErr);
         }
 
         // 4. Recopier depuis le ZIP d'origine TOUS les assets sous content/ (images, etc.).
@@ -2889,6 +2950,12 @@ async function regenerateH5PFile(originalBlob, editedData, moduleKey, titleKey) 
             if (entry.dir) continue;
             if (!entryName.startsWith('content/') || entryName === 'content/content.json') continue;
             if (registryPaths.has(entryName)) continue;
+            // Média d'origine plus référencé (fond remplacé, bloc supprimé) : ne pas le
+            // recopier — l'archive gonflait à chaque cycle « remplacer + enregistrer » (audit N11).
+            if (isPrunableMedia(entryName) && !referencedMediaPaths.has(entryName)) {
+                debugLog('notifications', '[Regenerate H5P] Asset orphelin non recopié:', entryName);
+                continue;
+            }
             const assetData = await entry.async('uint8array');
             files.push({
                 name: entryName,

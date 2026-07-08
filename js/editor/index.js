@@ -94,6 +94,16 @@ export async function initJsonEditor(notification, container, jsonData, options 
             return false;
         }
 
+        // Activités à image de fond (Image interactive, Find the Hotspot, Find Multiple Hotspots) :
+        // ré-hydrater les `dataURL` des images depuis le .h5p pour que l'éditeur AFFICHE l'image de
+        // fond (et les images de blocs). Le content.json ne porte que `path` — sans dataURL le widget
+        // image montre une preview vide. (Caramel-only : l'éditeur Sucrerie a son propre
+        // hydrateExistingImages dans son index.js divergent.)
+        if (['ImageHotspots', 'FindTheHotspot', 'FindMultipleHotspots'].includes(detectionResult.moduleKey) && notification.blob) {
+            try { await rehydrateIHImagesFromBlob(notification.blob, jsonData); }
+            catch (e) { debugLog('Editor', 'rehydrate IH images échoué:', e && e.message); }
+        }
+
         // Normaliser les données pour l'éditeur (ex: Glossary tableau -> {items: [...]})
         const normalizedData = normalizeDataForEditor(
             JSON.parse(JSON.stringify(jsonData)),
@@ -153,6 +163,37 @@ export async function initJsonEditor(notification, container, jsonData, options 
             }).catch(e => debugLog('Editor', 'IV panel échec:', e));
         }
 
+        // Activités à image de fond : image affichée en grand + points déplaçables à la souris
+        // (Caramel-only, monté en frère du conteneur pour survivre aux re-rendus — même principe que
+        // le panneau Vidéo interactive ci-dessus). Les « questions hotspot » (Find the Hotspot /
+        // Find Multiple Hotspots) passent leur variante : items {label, correct, x, y, …}, zones
+        // dessinées à TAILLE RÉELLE (ellipse/rectangle selon `figure`, redimensionnables par poignée)
+        // et colorées vert (zone correcte) / rouge (leurre).
+        if (['ImageHotspots', 'FindTheHotspot', 'FindMultipleHotspots'].includes(detectionResult.moduleKey)) {
+            const panelModuleKey = detectionResult.moduleKey;
+            const hqOpts = (panelModuleKey === 'ImageHotspots') ? {} : {
+                titleField: 'label',
+                newItem: (x, y) => ({ label: '', correct: false, x, y, width: 20, height: 20, figure: 'circle', feedbackText: '' }),
+                markerColor: (h) => (h && h.correct === true ? '#2e7d32' : '#c62828'),
+                sizedZones: true
+            };
+            import('./interactive-image-panel.js').then(m => {
+                m.mountInteractiveImagePanel(container, {
+                    getData: () => { const d = getEditorData(); if (d) editorState.currentData = d; return editorState.currentData; },
+                    setData: (d) => { editorState.currentData = d; editorState.hasChanges = true; },
+                    rerender: () => {
+                        renderEditor(container, editorState.currentData, getSchemaForType(panelModuleKey), {
+                            moduleKey: panelModuleKey,
+                            moduleName: detectionResult.moduleName,
+                            onChange: handleDataChange,
+                            onSave: handleSave,
+                            onCancel: handleCancel
+                        });
+                    }
+                }, hqOpts);
+            }).catch(e => debugLog('Editor', 'IH panel échec:', e));
+        }
+
         debugLog('Editor', 'Initialized for:', detectionResult.moduleKey);
         return true;
 
@@ -167,6 +208,8 @@ export async function initJsonEditor(notification, container, jsonData, options 
  * Detruit l'editeur et nettoie les ressources
  */
 export function destroyEditor() {
+    // URLs blob: des lecteurs audio/vidéo de l'Image interactive (cf. rehydrateIHImagesFromBlob).
+    revokeIHMediaObjectUrls();
     if (editorState.container) {
         // Le panneau « Vidéo interactive » est monté en FRÈRE du conteneur (pour survivre aux
         // re-rendus) : container.innerHTML='' ne le retire donc pas. On l'enlève explicitement,
@@ -182,6 +225,15 @@ export function destroyEditor() {
             // module est déjà chargé (mount), l'import est donc instantané et résolu par cache.
             if (ivPanel) import('./interactive-video-panel.js')
                 .then(m => m.destroyInteractiveVideoPanel && m.destroyInteractiveVideoPanel())
+                .catch(() => { /* module non chargé : rien à détruire */ });
+
+            // Image interactive : même nettoyage (panneau frère + classe de mode + listener délégué
+            // posé sur le conteneur, qui survivrait au simple innerHTML='').
+            const ihPanel = parent.querySelector('.ih-editor-panel');
+            if (ihPanel) ihPanel.remove();
+            parent.classList.remove('ih-mode-live');
+            if (ihPanel) import('./interactive-image-panel.js')
+                .then(m => m.destroyInteractiveImagePanel && m.destroyInteractiveImagePanel())
                 .catch(() => { /* module non chargé : rien à détruire */ });
         }
         editorState.container.innerHTML = '';
@@ -558,6 +610,80 @@ export async function extractJsonFromNotification(notification) {
  * @param {Blob} blob - Le fichier H5P
  * @returns {Promise<Object|null>}
  */
+/** MIME image depuis l'extension d'un chemin. */
+function ihGuessImageMime(p) {
+    const ext = String(p).toLowerCase().split('.').pop();
+    if (ext === 'png') return 'image/png';
+    if (ext === 'gif') return 'image/gif';
+    if (ext === 'webp') return 'image/webp';
+    if (ext === 'svg') return 'image/svg+xml';
+    return 'image/jpeg';
+}
+
+/** URLs blob: créées pour les lecteurs audio/vidéo de l'éditeur — révoquées par destroyEditor(). */
+let ihMediaObjectUrls = [];
+
+function revokeIHMediaObjectUrls() {
+    for (const url of ihMediaObjectUrls) {
+        try { URL.revokeObjectURL(url); } catch { /* déjà révoquée */ }
+    }
+    ihMediaObjectUrls = [];
+}
+
+/**
+ * Ré-hydrate les médias d'un content.json depuis le ZIP du .h5p, pour que l'éditeur visuel de
+ * l'« Image interactive » AFFICHE l'image de fond / les images de blocs ET puisse LIRE les
+ * audios/vidéos embarqués (audit N13 : sans ça le lecteur est monté avec src vide et
+ * l'enseignant croit le fichier perdu). Images → dataURL base64 ; audio/vidéo → URL blob:
+ * (suivie dans ihMediaObjectUrls, révoquée à destroyEditor). Mute `contentJson` en place.
+ * Best-effort : un média absent du ZIP est ignoré.
+ * @param {Blob} blob - L'archive .h5p.
+ * @param {Object} contentJson - content.json (plat ou v1.11), muté en place.
+ */
+async function rehydrateIHImagesFromBlob(blob, contentJson) {
+    if (!blob || !contentJson || typeof contentJson !== 'object') return;
+    // JSZip pas encore prêt (ouverture rapide de l'éditeur) : le charger au lieu d'un no-op
+    // silencieux qui laissait toutes les previews vides.
+    if (!window.JSZip) {
+        try { const { loadJSZip } = await import('../core/lib-loader.js'); await loadJSZip(); }
+        catch { return; }
+        if (!window.JSZip) return;
+    }
+    revokeIHMediaObjectUrls(); // URLs d'une session d'édition précédente
+    const zip = await JSZip.loadAsync(blob);
+    const imageRe = /^images\/.+\.(jpe?g|png|gif|webp|svg)$/i;
+    const avRe = /^(audios|videos)\/.+/i;
+    const imageTargets = [];
+    const avTargets = [];
+    (function walk(node) {
+        if (!node || typeof node !== 'object') return;
+        if (Array.isArray(node)) { node.forEach(walk); return; }
+        if (typeof node.path === 'string' && !node.dataURL) {
+            if (imageRe.test(node.path)) imageTargets.push(node);
+            else if (avRe.test(node.path)) avTargets.push(node);
+        }
+        for (const k of Object.keys(node)) walk(node[k]);
+    })(contentJson);
+    for (const ref of imageTargets) {
+        try {
+            const f = zip.file('content/' + ref.path);
+            if (!f) continue;
+            const b64 = await f.async('base64');
+            ref.dataURL = `data:${ref.mime || ihGuessImageMime(ref.path)};base64,${b64}`;
+        } catch { /* image manquante : ignorée */ }
+    }
+    for (const ref of avTargets) {
+        try {
+            const f = zip.file('content/' + ref.path);
+            if (!f) continue;
+            const buf = await f.async('arraybuffer');
+            const url = URL.createObjectURL(new Blob([buf], ref.mime ? { type: ref.mime } : undefined));
+            ihMediaObjectUrls.push(url);
+            ref.dataURL = url; // consommé par le lecteur de field-renderers (playableSrc)
+        } catch { /* média manquant : ignoré */ }
+    }
+}
+
 async function extractH5PContent(blob) {
     if (!blob) return null;
 

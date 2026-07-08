@@ -382,10 +382,29 @@ async function withRetry(fn, retries, label, debug) {
     throw lastErr;
 }
 
-function parseJsonStrict(content, what) {
+/**
+ * Parse une réponse LLM (plan ou lot). Quand `heal` est fourni (healJsonString du
+ * json-healer), il est appliqué AVANT le parse — même pipeline que le mono-appel
+ * (h5p-creator). Le healing systématique (et pas seulement en rattrapage d'un parse
+ * raté) est indispensable : "\times" ou "\frac" à backslash simple contiennent des
+ * échappements JSON VALIDES (\t, \f) et seraient silencieusement corrompus
+ * (tabulation + « imes ») par un parse direct. Repli sur le parse brut si la chaîne
+ * réparée ne parse pas. Pure (healer injecté) → exportée pour tests/test-llm-batch.js.
+ */
+export function parseJsonStrict(content, what, heal, debug) {
     let obj;
-    try { obj = JSON.parse(content); }
-    catch (e) { throw new Error(`${what} : JSON invalide (${e.message})`); }
+    if (typeof heal === 'function') {
+        const healed = heal(content);
+        if (debug && healed !== content) debug('llm-batch', `${what} : chaîne réparée par healJsonString avant parse`);
+        try { obj = JSON.parse(healed); }
+        catch (e) {
+            try { obj = JSON.parse(content); }
+            catch { throw new Error(`${what} : JSON invalide (${e.message})`); }
+        }
+    } else {
+        try { obj = JSON.parse(content); }
+        catch (e) { throw new Error(`${what} : JSON invalide (${e.message})`); }
+    }
     if (!obj || typeof obj !== 'object') throw new Error(`${what} : objet JSON attendu`);
     return obj;
 }
@@ -403,13 +422,14 @@ function parseJsonStrict(content, what) {
  * @returns {Promise<string>} JSON fusionné
  */
 export async function generateInBatches({ moduleKey, model, activityMeta, requestedCount, onProgress }) {
-    const [{ translations }, promptGen, llm, defs, { ENDPOINTS }, utils] = await Promise.all([
+    const [{ translations }, promptGen, llm, defs, { ENDPOINTS }, utils, { healJsonString }] = await Promise.all([
         import('../core/translation.js'),
         import('./prompt-generator.js'),
         import('./llm.js'),
         import('../core/definitions.js'),
         import('../core/endpoints.js'),
         import('../core/utils.js'),
+        import('../h5p/json-healer.js'),
     ]);
     const debug = utils.debugLog;
     const t = translations;
@@ -447,7 +467,7 @@ export async function generateInBatches({ moduleKey, model, activityMeta, reques
         const planPrompt = buildOutlinePrompt({ prefix, params, t, count: N, path, itemName, carcasse: carcasseFields });
         const res = await llm.generateRawWithLLM(planPrompt, model, { activityMeta, rag: ragCtx, stats: 'skip' });
         sumPrompt += res.promptTokens; sumCompletion += res.completionTokens;
-        const obj = parseJsonStrict(res.content, 'Plan');
+        const obj = parseJsonStrict(res.content, 'Plan', healJsonString, debug);
         if (!Array.isArray(obj.plan) || obj.plan.length < N) {
             throw new Error(`Plan incomplet (${obj.plan ? obj.plan.length : 0}/${N})`);
         }
@@ -477,7 +497,7 @@ export async function generateInBatches({ moduleKey, model, activityMeta, reques
         const fillPrompt = buildFillPrompt({ prefix, params, t, plan: outline.plan, slice, path, itemName });
         const res = await llm.generateRawWithLLM(fillPrompt, model, { activityMeta, stats: 'skip' });
         sumPrompt += res.promptTokens; sumCompletion += res.completionTokens;
-        const obj = parseJsonStrict(res.content, 'Lot');
+        const obj = parseJsonStrict(res.content, 'Lot', healJsonString, debug);
         let arr = Array.isArray(obj[arrKey]) ? obj[arrKey]
             : (Array.isArray(obj.items) ? obj.items
                 : (Array.isArray(obj[path]) ? obj[path] : null));

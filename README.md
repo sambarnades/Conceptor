@@ -169,7 +169,7 @@ Caramel utilise l'infrastructure souveraine **[ILaaS](https://www.ilaas.fr/)** v
 | Domaine | Bibliothèques |
 |---------|---------------|
 | Compression / packaging | JSZip 3.10.1, client-zip 2.5.0, fflate 0.8.3, tar-js 0.3.0 |
-| Documents | PDF.js 6.0.227, Tesseract.js 7.0.0, Mammoth.js 1.12.0, docx 8.5.0 |
+| Documents | PDF.js 6.1.200, Tesseract.js 7.0.0, Mammoth.js 1.12.0, docx 8.5.0 |
 | Export PDF / math | jsPDF 4.2.1, jsPDF-AutoTable 5.0.8, MathJax 3.2.2 |
 | H5P & sécurité | h5p-standalone 3.8.2, DOMPurify 3.4.11 |
 | Interface | Font Awesome, flag-icons, CSS personnalisé (glassmorphism) |

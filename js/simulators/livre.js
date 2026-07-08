@@ -73,12 +73,17 @@ export default function renderLivre(container, data, previewHtml) {
             });
         };
         links.forEach(link => {
-            link.setAttribute('role', 'button');
-            link.setAttribute('tabindex', '0');
-            const go = () => showChapter(link.getAttribute('data-ch-target'));
-            link.addEventListener('click', go);
+            const activate = () => showChapter(link.getAttribute('data-ch-target'));
+            // Vrais liens <a href="#livre-ch-N"> : focusables et activables à Entrée
+            // nativement (Entrée synthétise un clic). On intercepte le clic pour piloter
+            // l'affichage JS sans laisser le saut d'ancre défiler vers un chapitre masqué.
+            link.addEventListener('click', (e) => { e.preventDefault(); activate(); });
+            // A11Y : un lien natif n'est PAS activé par Espace — Espace ferait défiler
+            // la page (ici vers un chapitre en display:none → « rien ne se passe » de
+            // visible). Comme on détourne ces liens en boutons d'onglet, on câble
+            // Espace en miroir d'Entrée (RGAA). Entrée reste géré par le clic natif.
             link.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
+                if (e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); activate(); }
             });
         });
         if (chapters.length) showChapter('0');

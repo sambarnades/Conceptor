@@ -50,6 +50,8 @@
 
 **Caramelia** est votre assistante intégrée. Plutôt que de remplir vous-même les champs « Qui êtes-vous ? », « Que souhaitez-vous aborder ? », de choisir la bonne tuile et de cliquer sur les bons boutons, **dites-lui simplement ce que vous voulez faire** — en langage naturel — et elle pilote l'interface Caramel à votre place.
 
+![La fenêtre de Caramelia](https://forge.apps.education.fr/caramel/caramel/-/raw/main/assets/images/wiki/caramelia-assistant.png)
+
 ### Exemples de demandes
 
 | Vous tapez… | Caramelia… |
@@ -104,7 +106,7 @@ Décrivez le sujet, le niveau et vos attentes de manière fluide.
 - `La Révolution française pour des élèves de 4e, focus sur 1789`
 - `Les accords du participe passé en 3e`
 
-![Capture d'écran Mode Rapide](https://forge.apps.education.fr/caramel/caramel/-/raw/main/assets/images/wiki/menu_moderapide.PNG)
+![Capture d'écran Mode Rapide](https://forge.apps.education.fr/caramel/caramel/-/raw/main/assets/images/wiki/caramel-mode-rapide.png)
 
 > 💡 **Astuce** : Les tuiles sont désormais **intelligentes** ! Elles restent grisées tant que vous n'avez pas commencé à remplir les champs, pour vous guider dans les étapes essentielles.
 
@@ -124,7 +126,7 @@ Le **Mode Avancé** vous offre un contrôle précis sur chaque paramètre grâce
 
 > 💡 **Astuce** : Commencez petit (5-10 éléments) pour tester, puis augmentez !
 
-![Capture d'écran Mode Avancé](https://forge.apps.education.fr/caramel/caramel/-/raw/main/assets/images/wiki/menu_modeavance.PNG)
+![Capture d'écran Mode Avancé](https://forge.apps.education.fr/caramel/caramel/-/raw/main/assets/images/wiki/caramel-mode-avance.png)
 
 </details>
 
@@ -174,7 +176,7 @@ Cette fonctionnalité vous permet de **donner un document de référence** à l'
 
 Une fois votre contexte pédagogique défini, cliquez sur l'activité qui correspond à votre objectif.
 
-![Toutes les activités Caramel](https://forge.apps.education.fr/caramel/caramel/-/raw/main/assets/images/wiki/activites_caramel.PNG)
+![Toutes les activités Caramel](https://forge.apps.education.fr/caramel/caramel/-/raw/main/assets/images/wiki/caramel-activites.png)
 
 ### 🧩 La barre de filtres
 
@@ -441,6 +443,10 @@ En plus du format interactif, Caramel permet d'exporter vos activités pour des 
 - **Formules mathématiques** : Les formules LaTeX sont exportées comme formules éditables dans **Word** (OMML) et **LibreOffice** (MathML) — double-clic pour modifier. Le **PDF** est désormais produit à partir de l'ODT (rendu serveur), pour des formules et une mise en page haute fidélité.
 
 ![Menu d'export bureautique](https://forge.apps.education.fr/caramel/caramel/-/raw/main/assets/images/wiki/modale_menu_export.webp)
+
+Depuis la fenêtre d'aperçu, une **barre d'action** rassemble tout : télécharger dans chaque format (H5P, DOCX, ODT, PDF), **partager vers La Sucrerie**, ou **éditer** l'activité.
+
+![Barre d'action de l'aperçu](https://forge.apps.education.fr/caramel/caramel/-/raw/main/assets/images/wiki/vers-sucrerie.webp)
 
 ### 📥 Téléchargement groupé (barre de notifications)
 Lorsque vous générez **plusieurs activités**, un bouton **"Tout télécharger"** (stylisé en étiquette bleue) apparaît dans votre **barre de notifications** :

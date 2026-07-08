@@ -47,6 +47,7 @@ export const PREFIX_TO_MODULE = [
     { prefix: 'course_presentation', moduleKey: 'CoursePresentation', kind: 'h5p' },
     { prefix: 'interactive_book', moduleKey: 'InteractiveBook', kind: 'h5p' },
     { prefix: 'interactive_video', moduleKey: 'InteractiveVideo', kind: 'h5p' },
+    { prefix: 'image_hotspots', moduleKey: 'ImageHotspots', kind: 'h5p' },
     // QuizSet familles — préfixes les plus spécifiques d'abord
     { prefix: 'quiz_qcm', moduleKey: 'QuizSetQCM', kind: 'h5p' },
     { prefix: 'quiz_vraifaux', moduleKey: 'QuizSetVF', kind: 'h5p' },

@@ -261,26 +261,33 @@ function enrichLatexFeedback(val, lang) {
   // Stratégie : chercher un bloc de 2-3 lignes consécutives contenant LaTeX + Feedback
   // et le remplacer par la version enrichie.
 
+  // IMPORTANT : les remplacements passent par une FONCTION `() => ...` et non une
+  // chaîne. T.fullLatex[lang] contient le littéral « `$` » ; en remplacement-chaîne,
+  // la séquence « $` » est interprétée par String.replace comme le motif spécial
+  // (portion précédant le match) et DUPLIQUE tout le début de la valeur (bug de
+  // gonflement des locales, el.json > 512 Ko). Une fonction de remplacement neutralise
+  // tous les motifs `$…` ($&, $`, $', $$, $n).
+
   // Pattern 1 : "Mise en forme" + "LaTeX" + "Feedback" (3 lignes)
   const triplePattern = /\n(- \*\*[^\n]*)\n- \*\*LaTeX[^\n]*\n- \*\*(?:Feedback|التغذية الراجعة|反馈|フィードバック)[^\n]*/;
   if (triplePattern.test(val)) {
     const mise = val.match(triplePattern);
     const miseEnForme = mise ? mise[1] : '';
-    val = val.replace(triplePattern, '\n' + miseEnForme + '\n' + T.fullLatex[lang] + '\n' + T.feedback[lang]);
+    val = val.replace(triplePattern, () => '\n' + miseEnForme + '\n' + T.fullLatex[lang] + '\n' + T.feedback[lang]);
     return val;
   }
 
   // Pattern 2 : "LaTeX" + "Feedback" (2 lignes) — pas de "Mise en forme"
   const doublePattern = /\n- \*\*LaTeX[^\n]*\n- \*\*(?:Feedback|التغذية الراجعة|反馈|フィードバック)[^\n]*/;
   if (doublePattern.test(val)) {
-    val = val.replace(doublePattern, '\n' + T.fullLatex[lang] + '\n' + T.feedback[lang]);
+    val = val.replace(doublePattern, () => '\n' + T.fullLatex[lang] + '\n' + T.feedback[lang]);
     return val;
   }
 
   // Pattern 3 : Ligne LaTeX seule (sans feedback) contenant \\( mais sans les exemples enrichis
   const latexOnly = /\n- \*\*LaTeX[^\n]*\\\\[^\n]*/;
   if (latexOnly.test(val) && !val.includes('frac{1}{2}')) {
-    val = val.replace(latexOnly, '\n' + T.fullLatex[lang] + '\n' + T.feedback[lang]);
+    val = val.replace(latexOnly, () => '\n' + T.fullLatex[lang] + '\n' + T.feedback[lang]);
     return val;
   }
 

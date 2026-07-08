@@ -1101,6 +1101,11 @@ textarea::placeholder {
 
 .modal-tuto-content {
     flex-grow: 1;
+    /* min-width:0 indispensable : sans lui, cet item flex (flex-grow:1) ne rétrécit pas sous la
+       taille de son contenu (min-width:auto par défaut) et la description longue déborde jusqu'au
+       bord, par-dessus la colonne du toggle Simple/Avancé. Avec, le texte revient à la ligne AVANT
+       le toggle (cf. commentaire de .mode-switch-container « la description se replie avant lui »). */
+    min-width: 0;
 }
 
 .modal-tuto-content p {
@@ -1467,25 +1472,30 @@ textarea::placeholder {
 /* Optimisation pour très petits écrans */
 @media (max-width: 480px) {
     .header-right {
-        gap: 4px;
+        /* Espacement resserré : 5 boutons icône doivent tenir sans scroll horizontal */
+        gap: 2px;
     }
 
     /* Masquer UNIQUEMENT les textes des boutons - garder toutes les icônes visibles */
     .language-btn span:not(.fi),
     .help-btn span:not(.fas),
     .notification-btn>span[data-key],
-    #tchap-button span {
+    #tchap-button span,
+    #sucrerie-button span {
         display: none !important;
     }
 
-    /* Ajuster les boutons pour qu'ils soient compacts et faciles à toucher */
+    /* Ajuster les boutons pour qu'ils soient compacts et faciles à toucher.
+       min-width 40px (au lieu de 44) : avec 5 boutons le header tient sans
+       scroll horizontal jusqu'à 360px de large tout en restant tactile. */
     .language-btn,
     .help-btn,
     .notification-btn,
-    #tchap-button {
-        padding: 8px;
+    #tchap-button,
+    #sucrerie-button {
+        padding: 6px;
         height: auto;
-        min-width: 44px;
+        min-width: 40px;
         min-height: 44px;
     }
 
@@ -1499,10 +1509,15 @@ textarea::placeholder {
         gap: 8px;
     }
 
-    /* Garder l'icône Tchap compacte mais visible */
+    /* Garder les icônes Tchap et Sucrerie compactes mais visibles */
     .tchap-icon {
         width: 16px;
         height: 16px;
+    }
+
+    .sucrerie-icon {
+        width: 20px;
+        height: 20px;
     }
 }
 
@@ -1671,9 +1686,10 @@ textarea::placeholder {
     line-height: 1;
 }
 
-/* Hauteur d'icône uniforme pour aligner les 4 boutons du header */
+/* Hauteur d'icône uniforme pour aligner les boutons du header */
 .help-btn .fas,
 .help-btn .tchap-icon,
+.help-btn .sucrerie-icon,
 .language-btn .fi,
 .notification-btn .fas {
     display: flex;
@@ -2434,6 +2450,14 @@ input:checked+.slider:before {
     align-items: center;
     z-index: var(--z-modal);
     flex-direction: column;
+    transition: opacity 300ms ease;
+}
+
+/* Fondu de sortie : l'overlay s'efface pendant que la modale de résultat
+   apparaît par-dessus (fadeScaleIn 300ms), pour un enchaînement sans flash. */
+#caramel-animation-overlay.closing {
+    opacity: 0;
+    pointer-events: none;
 }
 
 .marmite {
@@ -4060,6 +4084,25 @@ input[type="file"] {
     object-fit: contain;
 }
 
+/* Style pour l'icône Sucrerie — mini-tuile d'application (le SVG porte déjà ses coins arrondis) */
+#sucrerie-button {
+    text-decoration: none;
+}
+
+.sucrerie-icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    border-radius: 5px;
+    /* Discrète mise en avant façon tuile ; le fond rose du logo est fixe (indépendant du thème) */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+    transition: box-shadow 0.2s;
+}
+
+#sucrerie-button:hover .sucrerie-icon {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.18);
+}
+
 
 
 
@@ -4500,6 +4543,10 @@ input[type="file"] {
     .notification-toast.entering,
     .notification-toast.exiting {
         animation: none !important;
+    }
+
+    #caramel-animation-overlay {
+        transition: none !important;
     }
 }
 
@@ -5007,6 +5054,50 @@ input[type="file"] {
 
 .help-popover__close {
     cursor: pointer;
+}
+
+/* === Aide « Quelles images utiliser ? » — pastilles de formats (Image interactive) === */
+.img-help-body .img-help-formats {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: rgba(0, 0, 0, 0.025);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+}
+.img-help-formats__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.img-help-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    color: #3a3a3c;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+/* Formats convertis automatiquement (HEIC/HEIF/TIFF) — accent bleu + icône ↻ */
+.img-help-pill--converted {
+    background: rgba(37, 99, 235, 0.07);
+    border-color: rgba(37, 99, 235, 0.22);
+    color: #1d4ed8;
+}
+.img-help-pill--converted i {
+    font-size: 10px;
+    opacity: 0.85;
+}
+.img-help-formats__note {
+    margin: 12px 0 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: #8e8e93;
 }
 
 /* Help Popover - backdrop flou */
@@ -7238,6 +7329,39 @@ input[type="file"] {
 }
 .video-url-field__stop:hover { background: rgba(217, 83, 79, 0.3); }
 
+/* === Image interactive : champ d'upload de l'image de fond (réutilise .video-url-field*). === */
+.img-bg-pick {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-width: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    padding: 0;
+}
+.img-bg-pick__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.img-bg-thumb {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 5px;
+    flex: 0 0 auto;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+.img-bg-field--drag { outline: 2px dashed var(--primary-color, #e8821e); outline-offset: 2px; }
+/* Bouton « retirer l'image » (✕) : nuance rouge pour le distinguer du « relancer la détection » (↻, bleu). */
+.img-bg-clear { background: rgba(220, 53, 69, 0.12); color: #c0392b; }
+.img-bg-clear:hover { background: rgba(220, 53, 69, 0.22); }
+
 /* Jauge de progression de la transcription (dans la sous-ligne .video-url-msg). */
 .video-progress-wrap { display: flex; flex-direction: column; gap: 0.32rem; }
 .video-progress-label { font-size: 0.82rem; color: #8a6100; }
@@ -7952,4 +8076,263 @@ input[type="file"] {
     .iv-mode-live .iv-editor-panel { flex: 0 0 auto; align-self: auto; }
     .iv-mode-live .preview-modal__preview--editor { flex: 0 0 auto; min-height: 360px; }
     .iv-mode-live .iv-editor-media { max-width: calc(26vh * 16 / 9); }
+}
+
+/* ============================================================
+   Éditeur Image interactive — image de fond + points déplaçables
+   Miroir du panneau Vidéo interactive (.iv-*). Cf. CLAUDE.md item 7.
+   ============================================================ */
+.ih-editor-panel {
+    margin: 0 0 0.85rem;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid #d7dee8;
+    border-radius: 8px;
+    background: #f7fafd;
+}
+.ih-editor-noimage {
+    margin: 0.4rem 0 0;
+    font-size: 0.85rem;
+    color: #8a5300;
+}
+
+/* Segmented Plan / Sur l'image */
+.ih-modebar {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+}
+.ih-seg {
+    display: inline-flex;
+    background: #eef1f5;
+    border: 1px solid #e0e4ea;
+    border-radius: 9px;
+    padding: 3px;
+    gap: 3px;
+}
+.ih-modebtn {
+    border: none;
+    background: none;
+    padding: 6px 14px;
+    border-radius: 7px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: inherit;
+    line-height: 1;
+    color: #55606c;
+    cursor: pointer;
+    display: inline-flex;
+    gap: 7px;
+    align-items: center;
+}
+.ih-modebtn i { font-size: 0.9em; line-height: 1; }
+.ih-modebtn span { line-height: 1; }
+.ih-modebtn.is-active {
+    background: #fff;
+    color: #1768c4;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.ih-modehint {
+    font-size: 0.75rem;
+    color: #55606c;
+}
+
+/* Mode « Sur l'image » : barre d'outils + image annotable */
+.ih-live {
+    margin-top: 0.65rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    min-height: 0;
+}
+.ih-live[hidden] { display: none; }
+
+.ih-live-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.7rem;
+}
+.ih-add-point {
+    flex: 0 0 auto;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+}
+/* Mode « placement armé » : le bouton devient « Annuler » (rouge). */
+.ih-add-point.is-active {
+    background: #fdecef;
+    color: #b3261e;
+    border-color: #f3c2c7;
+}
+.ih-live-hint { font-size: 0.78rem; color: #55606c; }
+.ih-live-hint.is-armed { color: #1768c4; font-weight: 600; }
+
+.ih-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+    padding: 8px;
+    background: #eef2f7;
+    border: 1px solid #dbe2ea;
+    border-radius: 8px;
+}
+.ih-stage[hidden] { display: none; }
+.ih-stage.is-placing,
+.ih-stage.is-placing .ih-stage-wrap { cursor: crosshair; }
+
+/* Le wrap se dimensionne EXACTEMENT à l'image rendue (inline-block, line-height:0) → les % des
+   marqueurs (inset:0) tombent au pixel près sur l'image, comme le player H5P. */
+.ih-stage-wrap {
+    position: relative;
+    display: inline-block;
+    line-height: 0;
+    max-width: 100%;
+}
+.ih-stage-img {
+    display: block;
+    max-width: 100%;
+    max-height: 62vh;
+    width: auto;
+    height: auto;
+    border-radius: 4px;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+.ih-markers {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+/* Marqueur = pastille numérotée colorée par globalColor (--ih-color), centrée sur la position. */
+.ih-mk {
+    position: absolute;
+    pointer-events: auto;
+    transform: translate(-50%, -50%);
+    min-width: 26px;
+    height: 26px;
+    padding: 0 6px;
+    border-radius: 13px;
+    background: var(--ih-color, #981d99);
+    color: #fff;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    font-family: inherit;
+    line-height: 1;
+    cursor: grab;
+    touch-action: none;
+    transition: box-shadow 0.12s ease, transform 0.04s ease;
+}
+.ih-mk:hover { box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.35), 0 1px 4px rgba(0, 0, 0, 0.45); }
+.ih-mk:focus-visible { outline: none; box-shadow: 0 0 0 3px #1768c4; }
+.ih-mk.is-active { box-shadow: 0 0 0 3px rgba(23, 104, 196, 0.85), 0 1px 6px rgba(0, 0, 0, 0.5); z-index: 3; }
+.ih-mk.is-dragging { cursor: grabbing; transform: translate(-50%, -50%) scale(1.08); z-index: 4; }
+.ih-mk-num { pointer-events: none; }
+.ih-mk-del {
+    position: absolute;
+    top: -9px;
+    right: -9px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #d6332b;
+    color: #fff;
+    border: 2px solid #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.ih-mk-del:hover { background: #b3261e; }
+
+/* Variante « zone à taille réelle » (questions hotspot Find the Hotspot / Find Multiple Hotspots) :
+   le marqueur devient une ellipse (ou un rectangle selon `figure`) semi-transparente aux dimensions
+   réelles width/height (% de l'image), positionnée par son CENTRE. La couleur (--ih-color) reste
+   vert = zone correcte / rouge = leurre ; la pastille classique reste le rendu d'Image interactive. */
+.ih-mk--zone {
+    min-width: 0;
+    height: auto;
+    padding: 0;
+    border-radius: 50%;
+    border: 2px solid var(--ih-color, #981d99);
+    background: rgba(120, 120, 120, 0.28); /* repli si color-mix indisponible */
+    background: color-mix(in srgb, var(--ih-color, #981d99) 30%, transparent);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+.ih-mk--zone.ih-mk--rect { border-radius: 6px; }
+.ih-mk--zone .ih-mk-num {
+    background: var(--ih-color, #981d99);
+    border-radius: 10px;
+    padding: 2px 7px;
+    font-size: 0.75rem;
+}
+/* Pas d'agrandissement au glissement : la taille de la zone est signifiante. */
+.ih-mk--zone.is-dragging { transform: translate(-50%, -50%); }
+/* Poignée de redimensionnement (bas-droite), visible au survol ou sur la zone active. */
+.ih-mk-rsz {
+    position: absolute;
+    right: -7px;
+    bottom: -7px;
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    background: #fff;
+    border: 2px solid var(--ih-color, #981d99);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    cursor: nwse-resize;
+    touch-action: none;
+    display: none;
+}
+.ih-mk--zone.is-active .ih-mk-rsz,
+.ih-mk--zone:hover .ih-mk-rsz { display: block; }
+.ih-mk--zone.is-resizing { cursor: nwse-resize; }
+
+/* Mode « Sur l'image » = CÔTE-À-CÔTE : l'image (panneau) prend la GRANDE colonne gauche, l'éditeur à
+   DROITE n'affiche que le détail du point (nav masquée), à largeur fixe. La classe `ih-mode-live` est
+   posée sur le PARENT (persistante) → survit aux re-rendus. */
+.preview-modal__content--editor.ih-mode-live {
+    flex-direction: row !important;
+    gap: 14px;
+    align-items: stretch;
+}
+/* Colonne gauche = bloc DÉFILANT (comme le panneau Vidéo interactive) : si l'image + la barre d'outils
+   dépassent la hauteur de la modale, la colonne scrolle verticalement → l'utilisateur atteint le bas de
+   l'image. SURTOUT PAS de `display:flex` ici : en flex-colonne les enfants se compriment (flex-shrink:1)
+   pour tenir dans la colonne et l'image est tronquée au lieu de déclencher le scroll. overflow-x: hidden
+   + image max-width:100% empêchent tout débordement horizontal ; l'image est plafonnée à 62vh. */
+.ih-mode-live .ih-editor-panel {
+    flex: 1 1 auto;
+    align-self: stretch;
+    margin: 0;
+    min-width: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.ih-mode-live .preview-modal__preview--editor {
+    flex: 0 0 360px;
+    min-width: 0;
+    overflow-y: auto;
+}
+.ih-mode-live .json-editor__nav { display: none; }
+.ih-mode-live .json-editor__body { grid-template-columns: 1fr; }
+
+/* Écran étroit : on empile (image au-dessus du formulaire) et on borne la hauteur de l'image. */
+@media (max-width: 760px) {
+    .preview-modal__content--editor.ih-mode-live {
+        flex-direction: column !important;
+        overflow-y: auto !important;
+    }
+    .ih-mode-live .ih-editor-panel { flex: 0 0 auto; align-self: auto; }
+    .ih-mode-live .preview-modal__preview--editor { flex: 0 0 auto; min-height: 320px; }
+    .ih-stage-img { max-height: 46vh; }
 }

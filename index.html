@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="css/components/richtext-editor.css">
     <link rel="stylesheet" href="css/components/cloze-editor.css">
     <link rel="stylesheet" href="css/components/llm.css">
-    <link rel="stylesheet" href="css/components/modale-aide.css">
+    <link rel="stylesheet" href="css/components/tutorial.css">
     <link rel="stylesheet" href="css/components/mentions-legales.css">
 
     <link rel="stylesheet" href="js/sucrerie-bridge/styles.css" data-sucrerie-bridge>
@@ -73,6 +73,12 @@
                 aria-label="Tchap">
                 <img src="assets/images/branding/tchap.svg" alt="Tchap" class="tchap-icon" width="20" height="20">
                 <span>Tchap</span>
+            </a>
+            <a href="https://sucrerie.forge.apps.education.fr/" target="_blank" rel="noopener" class="help-btn"
+                id="sucrerie-button" aria-label="Sucrerie" title="Sucrerie — déposer et partager vos activités">
+                <img src="assets/images/branding/sucrerie.svg" alt="Sucrerie" class="sucrerie-icon" width="22"
+                    height="22">
+                <span>Sucrerie</span>
             </a>
             <button class="help-btn" id="help-button" aria-label="Aide">
                 <i class="fas fa-book-open"></i>
@@ -378,7 +384,7 @@
     <!-- ================= Footer ==================== -->
 
     <footer class="footer">
-        <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank" class="footer-version"><i class="fas fa-info-circle"></i> <span>Caramel v6.1.1</span></a>
+        <a href="https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG" target="_blank" class="footer-version"><i class="fas fa-info-circle"></i> <span>Caramel v6.2.0</span></a>
         <a href="mailto:gauthier.remande@ac-nantes.fr" class="footer-author"><i class="fas fa-envelope"></i> <span>Gauthier REMANDE</span></a>
         <a href="mailto:emmanuel.gaunard@ac-grenoble.fr" class="footer-author"><i class="fas fa-envelope"></i> <span>Emmanuel GAUNARD</span></a>
         <a href="https://forge.apps.education.fr/caramel/caramel"><i class="fas fa-code-branch"></i> <span>Forge</span></a>
@@ -455,12 +461,9 @@
                          et attache le handler de clic. Pour le masquer en production,
                          ajouter l'attribut `hidden` (ou `style="display:none"`) sur ce
                          <button> — aucune modification JS nécessaire. -->
-                    <!-- TEMP (désactivation Sucrerie) : `hidden` masque le bouton.
-                         Pour réactiver : retirer l'attribut `hidden` ci-dessous. -->
                     <button type="button"
                             class="sucrerie-bridge__btn action-btn"
                             data-sucrerie-bridge-btn
-                            hidden
                             aria-label="Partager cette activité dans La Sucrerie">
                         <i class="fas fa-share-from-square" aria-hidden="true"></i>
                         <span class="sucrerie-bridge__btn-label-long">Vers la Sucrerie</span>
@@ -473,6 +476,54 @@
                     </button>
                 </div>
             </footer>
+        </div>
+    </div>
+
+    <!-- ================= Tutoriel ==================== -->
+    <!-- Coquille de la modale « Tutoriel ». Le sommaire (à gauche) et le contenu
+         (à droite) sont remplis dynamiquement par js/ui/tutorial-modal.js à partir
+         de assets/data/tutorial/<lang>.json (blocs typés). -->
+    <div class="tutorial-modal" id="tutorial-modal" role="dialog" aria-modal="true"
+         aria-labelledby="tutorial-modal-title" aria-hidden="true">
+        <div class="tutorial-modal__dialog">
+            <header class="tutorial-modal__header">
+                <h2 class="tutorial-modal__title" id="tutorial-modal-title">
+                    <img src="assets/images/branding/logo_caramel.webp" alt="" class="tutorial-modal__logo"
+                         width="28" height="28" aria-hidden="true">
+                    <span data-key="tutorial_title">Tutoriel</span>
+                </h2>
+                <button type="button" class="tutorial-modal__close" id="tutorial-close"
+                        data-key-aria="tutorial_close" aria-label="Fermer">&times;</button>
+            </header>
+            <div class="tutorial-modal__body">
+                <!-- Sommaire (colonne gauche / bandeau sur mobile) -->
+                <aside class="tutorial__toc" aria-label="Sommaire du tutoriel">
+                    <div class="tutorial__search" role="search">
+                        <svg class="tutorial__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="7"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="search" id="tutorial-search" class="tutorial__search-input"
+                               data-key-placeholder="tutorial_search_placeholder"
+                               placeholder="Rechercher dans le tutoriel…" autocomplete="off" spellcheck="false">
+                    </div>
+                    <ul class="tutorial__toc-list" id="tutorial-toc"><!-- rempli par buildToc() --></ul>
+                    <p class="tutorial__no-results" id="tutorial-no-results" data-key="tutorial_no_results" hidden>
+                        Aucun chapitre ne correspond à votre recherche.</p>
+                </aside>
+                <!-- Contenu (colonne droite) -->
+                <section class="tutorial__content" aria-label="Contenu du tutoriel">
+                    <div class="tutorial__panel" id="tutorial-panel" tabindex="-1"><!-- rempli par showChapter() --></div>
+                    <footer class="tutorial__nav">
+                        <button type="button" class="tutorial__nav-btn tutorial__nav-btn--prev" id="tutorial-prev"
+                                data-key="tutorial_prev">Précédent</button>
+                        <span class="tutorial__progress" id="tutorial-progress" aria-hidden="true"></span>
+                        <button type="button" class="tutorial__nav-btn tutorial__nav-btn--next" id="tutorial-next"
+                                data-key="tutorial_next">Suivant</button>
+                    </footer>
+                </section>
+            </div>
         </div>
     </div>
 

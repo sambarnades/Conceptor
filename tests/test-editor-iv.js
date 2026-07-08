@@ -264,5 +264,43 @@ export async function runAllTests() {
         buttonGroup.remove();
     }
 
+    // -------------------------------------------------------------------
+    // Non-régression (audit fonctionnel 2026-07 §2.2) : destroy() du lecteur doit
+    // retirer l'élément média du DOM, sinon chaque bascule Plan ↔ Direct du panneau
+    // empile un <video> (ou holder YouTube) mort de plus dans .iv-editor-media.
+    group('Lecteur — nettoyage DOM (destroy)');
+    {
+        const mount = document.createElement('div');
+        const src = { type: 'html5', url: 'https://exemple.invalid/video.mp4', mime: 'video/mp4' };
+
+        const p1 = createVideoPlayer(mount, src, {});
+        assert(mount.children.length === 1, 'Montage html5 : 1 élément média dans le conteneur');
+        p1.destroy();
+        assert(mount.children.length === 0, 'destroy() retire l\'élément <video> du DOM');
+
+        // Cycles répétés destroy/re-création (simule les bascules Plan ↔ Direct).
+        for (let i = 0; i < 3; i++) { createVideoPlayer(mount, src, {}).destroy(); }
+        const pLast = createVideoPlayer(mount, src, {});
+        assert(mount.children.length === 1, 'Après 4 cycles destroy/re-création : 1 seul élément média (pas d\'empilement)');
+        pLast.destroy();
+
+        // Cas YouTube : le conteneur intermédiaire (holder) doit aussi être retiré,
+        // Y COMPRIS si destroy() arrive avant que l'API YouTube soit prête.
+        // Stub window.YT pour rester hermétique (pas de chargement réseau de iframe_api).
+        const hadYT = 'YT' in window;
+        const prevYT = window.YT;
+        window.YT = { Player: function () { this.destroy = () => {}; } };
+        try {
+            const mountYt = document.createElement('div');
+            const pyt = createVideoPlayer(mountYt, { type: 'youtube', url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }, {});
+            assert(pyt.isYouTube === true, 'Source YouTube reconnue');
+            assert(mountYt.children.length === 1, 'Montage YouTube : holder présent dans le conteneur');
+            pyt.destroy(); // avant l'init asynchrone du player
+            assert(mountYt.children.length === 0, 'destroy() retire le holder YouTube du DOM (même avant init)');
+        } finally {
+            if (hadYT) window.YT = prevYT; else delete window.YT;
+        }
+    }
+
     return { passCount, failCount, results };
 }

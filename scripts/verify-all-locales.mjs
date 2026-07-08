@@ -28,6 +28,7 @@ const keys = [
   'prompt_elea_devoir_structure_json',
   'prompt_elea_glossaire_structure_json',
   'prompt_elea_millionnaire_structure_json',
+  'prompt_image_hotspots_structure_json',
 ];
 
 // Full LaTeX (frac{1}{2}) — activités avec support LaTeX complet dans les contenus

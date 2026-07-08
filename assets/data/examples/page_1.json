@@ -179,7 +179,9 @@
       "type": "#17_quote_bilingual",
       "data": {
         "quote_langue_initiale": "La liberté consiste à pouvoir faire tout ce qui ne nuit pas à autrui.",
+        "lang_initiale": "fr",
         "quote_langue_arrivee": "Liberty consists in being able to do anything that does not harm others.",
+        "lang_arrivee": "en",
         "author": "Article 4, DDHC 1789"
       }
     },

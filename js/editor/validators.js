@@ -405,6 +405,53 @@ function getTypeSpecificErrors(data, schema) {
         }
     }
 
+    // --- ImageHotspots (Image interactive) ---
+    // Un bloc de contenu vide serait SILENCIEUSEMENT supprimé à la dénormalisation puis
+    // le point sauté par le player (visible dans l'éditeur, absent de l'activité — audit N4).
+    // On bloque la sauvegarde avec un message ciblé plutôt que de laisser perdre le point.
+    if (moduleKey === 'ImageHotspots') {
+        const rawTmpl = t('validation_ih_block_empty');
+        const tmpl = (rawTmpl && rawTmpl !== 'validation_ih_block_empty')
+            ? rawTmpl
+            : 'Le point {n} a un bloc « {type} » sans contenu : complétez-le ou supprimez le bloc.';
+        (Array.isArray(data.hotspots) ? data.hotspots : []).forEach((h, i) => {
+            const blocks = (h && Array.isArray(h.content)) ? h.content : [];
+            blocks.forEach((b, j) => {
+                if (!b || typeof b !== 'object') return;
+                const type = b._contentType || 'text';
+                const isEmpty =
+                    (type === 'text' && (!b.text || !String(b.text).trim())) ||
+                    (type === 'image' && !(b.image && b.image.path)) ||
+                    (type === 'audio' && !((b.audioFile && b.audioFile.path) || (b.audioUrl && String(b.audioUrl).trim()))) ||
+                    (type === 'video' && !((b.videoFile && b.videoFile.path) || (b.videoUrl && String(b.videoUrl).trim())));
+                if (isEmpty) {
+                    errors.push({
+                        path: `hotspots.${i}.content.${j}`,
+                        field: (h && h.header) ? h.header : `Point ${i + 1}`,
+                        message: tmpl.replace('{n}', String(i + 1)).replace('{type}', type)
+                    });
+                }
+            });
+        });
+    }
+
+    // --- Questions hotspot (Find the Hotspot / Find Multiple Hotspots) ---
+    // Sans zone correcte, l'activité est infaisable (score maximum nul) : on bloque la
+    // sauvegarde plutôt que de laisser produire un exercice sans réponse possible.
+    if (moduleKey === 'FindTheHotspot' || moduleKey === 'FindMultipleHotspots') {
+        const zones = Array.isArray(data.hotspots) ? data.hotspots : [];
+        if (zones.length && !zones.some(h => h && h.correct === true)) {
+            const raw = t('validation_hq_no_correct');
+            errors.push({
+                path: 'hotspots.0.correct',
+                field: (zones[0] && zones[0].label) ? zones[0].label : 'Zones',
+                message: (raw && raw !== 'validation_hq_no_correct')
+                    ? raw
+                    : 'Aucune zone correcte : cochez « Zone correcte » sur au moins une zone.'
+            });
+        }
+    }
+
     // --- FindTheWords ---
     if (moduleKey === 'FindTheWords') {
         const wl = data.wordList;

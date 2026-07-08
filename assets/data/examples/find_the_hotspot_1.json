@@ -1,0 +1,11 @@
+{
+  "title": "Trouver le pistil",
+  "taskDescription": "Cliquez sur l'organe femelle de la fleur.",
+  "hotspots": [
+    { "x": 31.5, "y": 22.0, "correct": false, "label": "Le pétale", "feedbackText": "Non : le pétale sert à attirer les insectes pollinisateurs." },
+    { "x": 52.0, "y": 48.5, "correct": false, "label": "L'étamine", "feedbackText": "Non : l'étamine est l'organe mâle, elle produit le pollen." },
+    { "x": 50.0, "y": 63.0, "correct": true, "label": "Le pistil", "feedbackText": "Bravo ! Le pistil, au centre de la fleur, est bien l'organe femelle." },
+    { "x": 47.0, "y": 86.0, "correct": false, "label": "La tige", "feedbackText": "Non : la tige soutient la fleur et conduit la sève." }
+  ],
+  "noneSelectedFeedback": "Vous n'avez cliqué sur aucune zone connue. Essayez encore !"
+}

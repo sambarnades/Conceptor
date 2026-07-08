@@ -41,7 +41,7 @@ export const CONFIG = {
     activityCategories: {
         quiz: {
             iconKey: 'quiz',
-            keys: ['QuizSetQCM','QuizSetVF','QuizSet','MultipleChoice','SingleChoiceSet','TrueFalse','test_elea','QCM','Appariement','Millionnaire','Devoir','CoursePresentation','InteractiveVideo'],
+            keys: ['QuizSetQCM','QuizSetVF','QuizSet','MultipleChoice','SingleChoiceSet','TrueFalse','test_elea','QCM','Appariement','Millionnaire','Devoir','CoursePresentation','InteractiveVideo','FindTheHotspot','FindMultipleHotspots'],
         },
         text: {
             iconKey: 'text',
@@ -49,7 +49,7 @@ export const CONFIG = {
         },
         memory: {
             iconKey: 'memory',
-            keys: ['Flashcards','DialogCards','Timeline','Glossary','Crossword','FindTheWords','Chart','Summary','glossaireXml'],
+            keys: ['Flashcards','DialogCards','Timeline','Glossary','Crossword','FindTheWords','Chart','Summary','ImageHotspots','glossaireXml'],
         },
     },
 
@@ -57,7 +57,7 @@ export const CONFIG = {
     allModuleKeys: [
         'QuizSetQCM','QuizSetVF','QuizSet','MultipleChoice','TrueFalse','Flashcards',
         'Crossword','Timeline','FillInTheBlanks','DragTheWords','DragAndDrop','Essay',
-        'Glossary','CoursePresentation','InteractiveBook','InteractiveVideo','SortParagraphs','FindTheWords','Summary',
+        'Glossary','CoursePresentation','InteractiveBook','InteractiveVideo','ImageHotspots','FindTheHotspot','FindMultipleHotspots','SortParagraphs','FindTheWords','Summary',
         'SingleChoiceSet','Chart','DialogCards','MarkTheWords',
         'test_elea','glossaireXml','Millionnaire','Appariement','QCM','Page','Livre','Devoir',
     ],
@@ -65,7 +65,7 @@ export const CONFIG = {
     h5pKeys: [
         'QuizSetQCM','QuizSetVF','QuizSet','MultipleChoice','TrueFalse','Flashcards',
         'Crossword','Timeline','FillInTheBlanks','DragTheWords','DragAndDrop','Essay',
-        'Glossary','CoursePresentation','InteractiveBook','InteractiveVideo','SortParagraphs','FindTheWords','Summary',
+        'Glossary','CoursePresentation','InteractiveBook','InteractiveVideo','ImageHotspots','FindTheHotspot','FindMultipleHotspots','SortParagraphs','FindTheWords','Summary',
         'SingleChoiceSet','Chart','DialogCards','MarkTheWords',
     ],
 
@@ -88,6 +88,9 @@ export const CONFIG = {
         CoursePresentation:{ caramelKey: 'h5p_course_presentation_name', platform: 'h5p' },
         InteractiveBook:   { caramelKey: 'h5p_interactive_book_name',  platform: 'h5p' },
         InteractiveVideo:  { caramelKey: 'h5p_interactive_video_name', platform: 'h5p' },
+        ImageHotspots:     { caramelKey: 'h5p_image_hotspots_name',   platform: 'h5p' },
+        FindTheHotspot:    { caramelKey: 'h5p_find_the_hotspot_name', platform: 'h5p' },
+        FindMultipleHotspots: { caramelKey: 'h5p_find_multiple_hotspots_name', platform: 'h5p' },
         Flashcards:        { caramelKey: 'h5p_flashcards_name',       platform: 'h5p' },
         Crossword:         { caramelKey: 'h5p_crossword_name',        platform: 'h5p' },
         Timeline:          { caramelKey: 'h5p_timeline_name',         platform: 'h5p' },
@@ -138,6 +141,13 @@ export const CONFIG = {
         'vidéo interactive':'InteractiveVideo','interactive video':'InteractiveVideo','vidéo h5p':'InteractiveVideo',
         'video interactive':'InteractiveVideo','capsule':'InteractiveVideo','vidéo':'InteractiveVideo','peertube':'InteractiveVideo',
         'youtube':'InteractiveVideo','youtu.be':'InteractiveVideo',
+        'image interactive':'ImageHotspots','interactive image':'ImageHotspots','image hotspots':'ImageHotspots',
+        'points cliquables':'ImageHotspots','image cliquable':'ImageHotspots','zones cliquables':'ImageHotspots',
+        'annoter une image':'ImageHotspots','légender une image':'ImageHotspots','hotspot':'ImageHotspots','hotspots':'ImageHotspots',
+        'trouver la zone':'FindTheHotspot','zone à trouver':'FindTheHotspot','find the hotspot':'FindTheHotspot',
+        'cliquer la bonne zone':'FindTheHotspot','zone correcte':'FindTheHotspot',
+        'trouver les zones':'FindMultipleHotspots','zones à trouver':'FindMultipleHotspots',
+        'find multiple hotspots':'FindMultipleHotspots','chasse aux zones':'FindMultipleHotspots',
         'ordonner':'SortParagraphs','paragraphe':'SortParagraphs',
         'mêlés':'FindTheWords',
         'résumé':'Summary','summary':'Summary',

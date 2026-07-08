@@ -52,7 +52,7 @@
 - \`#15_myths_realities\`: Mythes vs Réalités. \`{ "type": "#15_myths_realities", "data": { "title": "...", "items": [{ "myth": "...", "reality": "..." }] } }\`
 - \`#16_method_image_desc\`: Méthode pour décrire une image. \`{ "type": "#16_method_image_desc", "data": { "title": "...", "steps": ["...", "..."], "img_src": "...", "img_alt": "...", "caption": "..." } }\`
 - \`#18_sito_graphy\`: Sitographie. \`{ "type": "#18_sito_graphy", "data": { "title": "Sitographie", "links": [{ "href": "...", "text": "..." }] } }\`
-- \`#17_quote_bilingual\`: Citation bilingue. \`{ "type": "#17_quote_bilingual", "data": { "quote_langue_initiale": "...", "quote_langue_arrivee": "...", "author": "..." } }\`
+- \`#17_quote_bilingual\`: Citation bilingue. \`{ "type": "#17_quote_bilingual", "data": { "title": "Titre du bloc (optionnel, défaut « Citation »)", "quote_langue_initiale": "...", "lang_initiale": "code BCP-47 langue initiale (ex: la, en, de)", "quote_langue_arrivee": "...", "lang_arrivee": "code BCP-47 langue d'arrivée (ex: fr)", "author": "..." } }\` — les codes \`lang_*\` sont **importants pour l'accessibilité** (RGAA 8.7, changement de langue) : fournis-les toujours.
 
 # EXEMPLE DE RENDU
 ```json

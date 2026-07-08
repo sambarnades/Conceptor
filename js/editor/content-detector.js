@@ -191,7 +191,34 @@ const contentSignatures = {
     'InteractiveVideo': (data) =>
         Array.isArray(data.interactions) &&
         ((data.videoSource && typeof data.videoSource === 'object') ||
-            (data.interactions.length > 0 && data.interactions[0] && data.interactions[0].hasOwnProperty('timestamp')))
+            (data.interactions.length > 0 && data.interactions[0] && data.interactions[0].hasOwnProperty('timestamp'))),
+
+    // Find Multiple Hotspots : content.json complet OU format plat « zones à trouver » (hotspots[]
+    // avec `correct`) + un champ propre à ce type (hotspotName / numberHotspots /
+    // alreadySelectedFeedback). Déclaré AVANT FindTheHotspot et ImageHotspots : signatures
+    // voisines, du plus spécifique au moins spécifique.
+    'FindMultipleHotspots': (data) =>
+        !!(data.imageMultipleHotspotQuestion && typeof data.imageMultipleHotspotQuestion === 'object') ||
+        (Array.isArray(data.hotspots) && data.hotspots.length > 0 &&
+            data.hotspots[0] && typeof data.hotspots[0] === 'object' && data.hotspots[0].hasOwnProperty('correct') &&
+            (data.hasOwnProperty('hotspotName') || data.hasOwnProperty('numberHotspots') || data.hasOwnProperty('alreadySelectedFeedback'))),
+
+    // Find the Hotspot : content.json complet OU format plat avec zones correct/incorrect
+    // (repli après FindMultipleHotspots, qui capte d'abord ses champs propres).
+    'FindTheHotspot': (data) =>
+        !!(data.imageHotspotQuestion && typeof data.imageHotspotQuestion === 'object') ||
+        (Array.isArray(data.hotspots) && data.hotspots.length > 0 &&
+            data.hotspots[0] && typeof data.hotspots[0] === 'object' && data.hotspots[0].hasOwnProperty('correct')),
+
+    // ImageHotspots (« Image interactive ») : hotspots[] avec position x/y (format plat OU content.json
+    // v1.11). Exclut les zones `correct` (signatures des deux « questions hotspot » ci-dessus).
+    'ImageHotspots': (data) =>
+        Array.isArray(data.hotspots) &&
+        !(data.hotspots.length > 0 && data.hotspots[0] && typeof data.hotspots[0] === 'object' &&
+            data.hotspots[0].hasOwnProperty('correct')) &&
+        (data.hasOwnProperty('globalIconType') || data.hasOwnProperty('globalColor') || data.hasOwnProperty('image') ||
+            (data.hotspots.length > 0 && data.hotspots[0] && typeof data.hotspots[0] === 'object' &&
+                (data.hotspots[0].hasOwnProperty('x') || data.hotspots[0].hasOwnProperty('position'))))
 };
 
 // Mapping titleKey -> moduleKey
@@ -258,7 +285,18 @@ const titleKeyToModuleKey = {
     'h5p_interactive_book_name': 'InteractiveBook',
     'h5p_interactivebook': 'InteractiveBook',
     'h5p_interactive_video_name': 'InteractiveVideo',
-    'h5p_interactivevideo': 'InteractiveVideo'
+    'h5p_interactivevideo': 'InteractiveVideo',
+    'h5p_image_hotspots_name': 'ImageHotspots',
+    'h5p_image_hotspots': 'ImageHotspots',
+    'h5p_imagehotspots': 'ImageHotspots',
+    'h5p_find_the_hotspot_name': 'FindTheHotspot',
+    'h5p_find_the_hotspot': 'FindTheHotspot',
+    'h5p_findthehotspot': 'FindTheHotspot',
+    'h5p_imagehotspotquestion': 'FindTheHotspot',
+    'h5p_find_multiple_hotspots_name': 'FindMultipleHotspots',
+    'h5p_find_multiple_hotspots': 'FindMultipleHotspots',
+    'h5p_findmultiplehotspots': 'FindMultipleHotspots',
+    'h5p_imagemultiplehotspotquestion': 'FindMultipleHotspots'
 };
 
 // =======================================================================
@@ -2767,7 +2805,11 @@ const fieldSchemas = {
                         type: 'object', label: 'editor_iv_video', collapsible: true, collapsibleLabel: 'editor_iv_video',
                         schema: {
                             url: { type: 'text', label: 'editor_iv_video_url' },
-                            mime: { type: 'text', label: 'editor_iv_video_mime', default: 'video/mp4' }
+                            mime: { type: 'text', label: 'editor_iv_video_mime', default: 'video/mp4' },
+                            // Décoché par défaut : pas de piste de sous-titres (transcription) dans le
+                            // .h5p → pas d'affichage automatique au démarrage (choix pédagogique / RGAA).
+                            // Cocher pour intégrer la transcription et l'afficher.
+                            showCaptions: { type: 'checkbox', label: 'video_include_subtitles', default: false, inline: true }
                         }
                     }
                 }
@@ -2895,6 +2937,270 @@ const fieldSchemas = {
                 }
             }
         ]
+    },
+
+    // === Image interactive (H5P.ImageHotspots) ===
+    // Édite le format intermédiaire plat (hotspots[].x/y) ; le contenu d'un point est polymorphe
+    // (Texte/Image/Audio/Vidéo via _contentType + showWhen), à l'image du Livre interactif.
+    'ImageHotspots': {
+        sections: [
+            // --- Général : titre + image de fond + texte alternatif ---
+            {
+                id: 'general',
+                label: 'editor_section_general',
+                icon: 'fa-info-circle',
+                fields: {
+                    // Titre de l'activité : c'est une MÉTADONNÉE (h5p.json), pas un champ du content.json
+                    // du player. On l'édite tout de même ici et on le réapplique au h5p.json à
+                    // l'enregistrement (regenerateH5PFile), pour permettre de renommer l'activité sans
+                    // repasser par la génération. `data.title` traverse normalize/denormalize sans être
+                    // injecté comme clé jouée par le player. Idem côté Sucrerie (fichier partagé).
+                    title: { type: 'text', label: 'editor_title', hint: 'editor_hq_title_hint' },
+                    image: {
+                        type: 'image',
+                        label: 'editor_ih_background',
+                        hint: 'editor_ih_background_hint',
+                        imageProcessor: 'background',          // préserve format + grande dimension (pas de 800×600/JPEG forcé)
+                        collapsible: true,
+                        collapsibleLabel: 'editor_ih_background'
+                    },
+                    // Légende d'accessibilité : champ dédié (s'initialise depuis la donnée, contrairement au
+                    // sous-champ altTextField du widget image). Rempli automatiquement par la description vision
+                    // à la génération (3-5 phrases) → textarea, éditable. Rendu plain (field-constraints) donc
+                    // pas de richtext. Réutilise les clés i18n du texte alternatif image.
+                    backgroundImageAltText: { type: 'textarea', label: 'editor_image_alt', hint: 'editor_image_alt_placeholder' }
+                }
+            },
+            // --- Apparence : couleur globale + type d'icône ---
+            {
+                id: 'appearance',
+                label: 'editor_ih_section_appearance',
+                icon: 'fa-palette',
+                startCollapsed: true,
+                compact: true,
+                fields: {
+                    globalColor: { type: 'color', label: 'editor_ih_global_color', default: '#981d99' },
+                    globalIconType: {
+                        type: 'select', label: 'editor_ih_icon_type', default: 'numbers',
+                        options: [
+                            { value: 'numbers', label: 'editor_ih_icon_numbers' },
+                            { value: 'icon', label: 'editor_ih_icon_predefined' },
+                            { value: 'image', label: 'editor_ih_icon_image' }
+                        ]
+                    },
+                    // Icône-image globale : champ d'upload, sans lequel l'option « Image » du
+                    // select ne pouvait jamais fonctionner (audit N5, semantics.json:86-102).
+                    globalIconImage: {
+                        type: 'image', label: 'editor_ih_icon_image',
+                        showWhen: { field: 'globalIconType', value: 'image' }
+                    },
+                    globalIcon: {
+                        type: 'select', label: 'editor_ih_icon', default: 'plus',
+                        showWhen: { field: 'globalIconType', value: 'icon' },
+                        options: [
+                            { value: 'plus', label: 'editor_ih_icon_plus' },
+                            { value: 'minus', label: 'editor_ih_icon_minus' },
+                            { value: 'times', label: 'editor_ih_icon_times' },
+                            { value: 'check', label: 'editor_ih_icon_check' },
+                            { value: 'question', label: 'editor_ih_icon_question' },
+                            { value: 'info', label: 'editor_ih_icon_info' },
+                            { value: 'exclamation', label: 'editor_ih_icon_exclamation' }
+                        ]
+                    }
+                }
+            },
+            // --- Points : positions, couleur par point, contenu polymorphe ---
+            {
+                id: 'hotspots',
+                label: 'editor_ih_section_hotspots',
+                icon: 'fa-location-dot',
+                countField: 'hotspots',
+                fields: {
+                    hotspots: {
+                        type: 'array',
+                        itemLabel: 'editor_ih_hotspot',
+                        addLabel: 'editor_ih_add_hotspot',
+                        dynamicTitleField: 'header',
+                        minItems: 1,
+                        itemSchema: {
+                            header: { type: 'text', label: 'editor_ih_header', hint: 'editor_ih_header_hint' },
+                            // default 50 : un point ajouté en mode Plan naît au CENTRE de l'image,
+                            // pas au coin haut-gauche (0,0) — audit N14.
+                            x: { type: 'number', label: 'editor_ih_x', min: 0, max: 100, step: 0.1, inline: true, default: 50 },
+                            y: { type: 'number', label: 'editor_ih_y', min: 0, max: 100, step: 0.1, inline: true, default: 50 },
+                            // Pas de couleur par point : en mode « numéros » (défaut), H5P n'utilise que la
+                            // couleur GLOBALE (section Apparence). La couleur par point n'agirait que sur une
+                            // icône personnalisée, non générée → champ retiré pour éviter la confusion.
+                            content: {
+                                type: 'array', nested: true,
+                                label: 'editor_ih_content',
+                                itemLabel: 'editor_ih_block',
+                                addLabel: 'editor_ih_add_block',
+                                dynamicTitleField: '_contentType',
+                                minItems: 1,
+                                itemSchema: {
+                                    _contentType: {
+                                        type: 'select', label: 'editor_ih_block_type', required: true, default: 'text',
+                                        options: [
+                                            { value: 'text', label: 'editor_ih_block_text' },
+                                            { value: 'image', label: 'editor_ih_block_image' },
+                                            { value: 'audio', label: 'editor_ih_block_audio' },
+                                            { value: 'video', label: 'editor_ih_block_video' }
+                                        ]
+                                    },
+                                    text: {
+                                        type: 'textarea', label: 'editor_ih_text', large: true,
+                                        showWhen: { field: '_contentType', value: 'text' }
+                                    },
+                                    image: {
+                                        type: 'image', label: 'editor_image',
+                                        altTextField: 'imageAlt',
+                                        showWhen: { field: '_contentType', value: 'image' }
+                                    },
+                                    audioFile: {
+                                        type: 'audio', label: 'editor_ih_audio_file',
+                                        showWhen: { field: '_contentType', value: 'audio' }
+                                    },
+                                    audioUrl: {
+                                        type: 'text', label: 'editor_ih_audio_url', hint: 'editor_ih_media_url_hint',
+                                        showWhen: { field: '_contentType', value: 'audio' }
+                                    },
+                                    videoFile: {
+                                        type: 'video', label: 'editor_ih_video_file',
+                                        showWhen: { field: '_contentType', value: 'video' }
+                                    },
+                                    videoUrl: {
+                                        type: 'text', label: 'editor_ih_video_url', hint: 'editor_ih_video_url_hint',
+                                        showWhen: { field: '_contentType', value: 'video' }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+
+    // --- Find the Hotspot (H5P.ImageHotspotQuestion) : question à zone(s) cliquable(s) ---
+    // Format plat éditable : x/y = CENTRE de la zone en % (le coin haut-gauche attendu par le
+    // player est recalculé à la dénormalisation), width/height en % (défaut 20).
+    'FindTheHotspot': {
+        sections: [
+            {
+                id: 'general',
+                label: 'editor_section_general',
+                icon: 'fa-info-circle',
+                fields: {
+                    // Titre de l'activité (métadonnée h5p.json) : éditable ici et réappliqué au
+                    // h5p.json à l'enregistrement (regenerateH5PFile) — cf. porté aussi côté Sucrerie.
+                    title: { type: 'text', label: 'editor_title', hint: 'editor_hq_title_hint' },
+                    image: {
+                        type: 'image',
+                        label: 'editor_ih_background',
+                        hint: 'editor_ih_background_hint',
+                        imageProcessor: 'background',
+                        collapsible: true,
+                        collapsibleLabel: 'editor_ih_background'
+                    },
+                    taskDescription: { type: 'textarea', label: 'editor_hq_task', hint: 'editor_hq_task_hint' },
+                    noneSelectedFeedback: { type: 'text', label: 'editor_hq_none_selected' },
+                    showFeedbackAsPopup: { type: 'checkbox', label: 'editor_hq_popup', default: true }
+                }
+            },
+            {
+                id: 'hotspots',
+                label: 'editor_hq_section_zones',
+                icon: 'fa-bullseye',
+                countField: 'hotspots',
+                fields: {
+                    hotspots: {
+                        type: 'array',
+                        itemLabel: 'editor_hq_zone',
+                        addLabel: 'editor_hq_add_zone',
+                        dynamicTitleField: 'label',
+                        minItems: 1,
+                        itemSchema: {
+                            label: { type: 'text', label: 'editor_hq_label', hint: 'editor_hq_label_hint' },
+                            correct: { type: 'checkbox', label: 'editor_hq_correct' },
+                            x: { type: 'number', label: 'editor_ih_x', min: 0, max: 100, step: 0.1, inline: true, default: 50 },
+                            y: { type: 'number', label: 'editor_ih_y', min: 0, max: 100, step: 0.1, inline: true, default: 50 },
+                            width: { type: 'number', label: 'editor_hq_width', min: 1, max: 100, step: 0.1, inline: true, default: 20 },
+                            height: { type: 'number', label: 'editor_hq_height', min: 1, max: 100, step: 0.1, inline: true, default: 20 },
+                            figure: {
+                                type: 'select', label: 'editor_hq_figure', default: 'circle',
+                                options: [
+                                    { value: 'circle', label: 'editor_hq_figure_circle' },
+                                    { value: 'rectangle', label: 'editor_hq_figure_rectangle' }
+                                ]
+                            },
+                            feedbackText: { type: 'textarea', label: 'editor_hq_feedback', hint: 'editor_hq_feedback_hint' }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+
+    // --- Find Multiple Hotspots (H5P.ImageMultipleHotspotQuestion) : chasse aux zones ---
+    'FindMultipleHotspots': {
+        sections: [
+            {
+                id: 'general',
+                label: 'editor_section_general',
+                icon: 'fa-info-circle',
+                fields: {
+                    // Titre de l'activité (métadonnée h5p.json) : éditable ici et réappliqué au
+                    // h5p.json à l'enregistrement (regenerateH5PFile) — cf. porté aussi côté Sucrerie.
+                    title: { type: 'text', label: 'editor_title', hint: 'editor_hq_title_hint' },
+                    image: {
+                        type: 'image',
+                        label: 'editor_ih_background',
+                        hint: 'editor_ih_background_hint',
+                        imageProcessor: 'background',
+                        collapsible: true,
+                        collapsibleLabel: 'editor_ih_background'
+                    },
+                    taskDescription: { type: 'textarea', label: 'editor_hq_task', hint: 'editor_hq_task_hint' },
+                    hotspotName: { type: 'text', label: 'editor_hq_hotspot_name', hint: 'editor_hq_hotspot_name_hint' },
+                    numberHotspots: { type: 'number', label: 'editor_hq_number_hotspots', hint: 'editor_hq_number_hotspots_hint', min: 1, step: 1 },
+                    noneSelectedFeedback: { type: 'text', label: 'editor_hq_none_selected' },
+                    alreadySelectedFeedback: { type: 'text', label: 'editor_hq_already_selected' }
+                }
+            },
+            {
+                id: 'hotspots',
+                label: 'editor_hq_section_zones',
+                icon: 'fa-bullseye',
+                countField: 'hotspots',
+                fields: {
+                    hotspots: {
+                        type: 'array',
+                        itemLabel: 'editor_hq_zone',
+                        addLabel: 'editor_hq_add_zone',
+                        dynamicTitleField: 'label',
+                        minItems: 1,
+                        itemSchema: {
+                            label: { type: 'text', label: 'editor_hq_label', hint: 'editor_hq_label_hint' },
+                            correct: { type: 'checkbox', label: 'editor_hq_correct' },
+                            x: { type: 'number', label: 'editor_ih_x', min: 0, max: 100, step: 0.1, inline: true, default: 50 },
+                            y: { type: 'number', label: 'editor_ih_y', min: 0, max: 100, step: 0.1, inline: true, default: 50 },
+                            width: { type: 'number', label: 'editor_hq_width', min: 1, max: 100, step: 0.1, inline: true, default: 20 },
+                            height: { type: 'number', label: 'editor_hq_height', min: 1, max: 100, step: 0.1, inline: true, default: 20 },
+                            figure: {
+                                type: 'select', label: 'editor_hq_figure', default: 'circle',
+                                options: [
+                                    { value: 'circle', label: 'editor_hq_figure_circle' },
+                                    { value: 'rectangle', label: 'editor_hq_figure_rectangle' }
+                                ]
+                            },
+                            // Zone correcte : amorce composée par le player (« … X of Y {hotspotName}. »).
+                            feedbackText: { type: 'textarea', label: 'editor_hq_feedback', hint: 'editor_hq_feedback_multi_hint' }
+                        }
+                    }
+                }
+            }
+        ]
     }
 };
 
@@ -2928,7 +3234,10 @@ const moduleTranslationKeys = {
     'elea_devoir': 'elea_devoir_name',
     'CoursePresentation': 'h5p_course_presentation_name',
     'InteractiveBook': 'h5p_interactive_book_name',
-    'InteractiveVideo': 'h5p_interactive_video_name'
+    'InteractiveVideo': 'h5p_interactive_video_name',
+    'ImageHotspots': 'h5p_image_hotspots_name',
+    'FindTheHotspot': 'h5p_find_the_hotspot_name',
+    'FindMultipleHotspots': 'h5p_find_multiple_hotspots_name'
 };
 
 /**
@@ -3101,6 +3410,328 @@ export function inferTypeFromLibrary(libraryName) {
 // =======================================================================
 // NORMALISATION DES DONNÉES
 // =======================================================================
+
+/**
+ * Normalise un sous-contenu d'« Image interactive » (un nœud H5P du content[] d'un point) vers
+ * le format plat de l'éditeur : { _contentType, ...champs spécifiques }. Sépare fichier embarqué
+ * (audioFile/videoFile : chemin local) et lien (audioUrl/videoUrl : http).
+ * @param {Object} node - { library, params } (content.json) ou déjà au format éditeur.
+ * @returns {Object|null}
+ */
+function normalizeIHContentNode(node) {
+    if (!node || typeof node !== 'object') return null;
+    const lib = (node.library || node._contentType || '').toString();
+    const params = node.params || {};
+
+    // Champs « passthrough » (cachés, hors schéma) : metadata (licence/attribution),
+    // subContentId (suivi xAPI/état Moodle) et params d'origine (réglages autoplay/loop/fit,
+    // copyright, decorative…). Sans eux, la dénormalisation reconstruisait des nœuds à
+    // défauts figés → perte non réversible à chaque sauvegarde (audit N6).
+    const carry = (out) => {
+        if (node.metadata) out._metadata = node.metadata;
+        if (node.subContentId) out._subContentId = node.subContentId;
+        if (node.params) out._origParams = node.params;
+        return out;
+    };
+
+    if (/^H5P\.Text/i.test(lib) || node._contentType === 'text') {
+        const text = params.text !== undefined ? params.text : (node.text || '');
+        return carry({ _contentType: 'text', text });
+    }
+    if (/^H5P\.Image/i.test(lib) || node._contentType === 'image') {
+        const file = params.file || {};
+        // dataURL (transitoire, ré-hydraté depuis le ZIP au chargement) conservé pour la preview
+        // éditeur ; il est strippé à la sauvegarde (denormalize n'émet que path/mime/dimensions).
+        const image = file.path
+            ? { path: file.path, mime: file.mime, width: file.width, height: file.height, dataURL: file.dataURL }
+            : (node.image || null);
+        return carry({ _contentType: 'image', image, imageAlt: params.alt || node.imageAlt || '' });
+    }
+    if (/^H5P\.Audio/i.test(lib) || node._contentType === 'audio') {
+        const src = (Array.isArray(params.files) && params.files[0]) || {};
+        const path = src.path || node.audioUrl || (node.audioFile && node.audioFile.path) || '';
+        const out = { _contentType: 'audio' };
+        if (/^https?:/i.test(path)) out.audioUrl = path;
+        // dataURL (transitoire, ré-hydraté depuis le ZIP) : conservé pour que le LECTEUR de
+        // l'éditeur puisse lire le média embarqué (audit N13) ; jamais persisté à la sauvegarde.
+        else if (path) out.audioFile = { path, mime: src.mime || (node.audioFile && node.audioFile.mime), kind: 'audio', dataURL: src.dataURL || (node.audioFile && node.audioFile.dataURL) };
+        return carry(out);
+    }
+    if (/^H5P\.Video/i.test(lib) || node._contentType === 'video') {
+        const src = (Array.isArray(params.sources) && params.sources[0]) || {};
+        const path = src.path || node.videoUrl || (node.videoFile && node.videoFile.path) || '';
+        const out = { _contentType: 'video' };
+        // YouTube et liens directs → champ URL ; fichier embarqué (chemin local) → champ fichier.
+        if (/^https?:/i.test(path) || (src.mime === 'video/YouTube')) out.videoUrl = path;
+        else if (path) out.videoFile = { path, mime: src.mime || (node.videoFile && node.videoFile.mime), kind: 'video', dataURL: src.dataURL || (node.videoFile && node.videoFile.dataURL) };
+        return carry(out);
+    }
+    return null;
+}
+
+/** UUID v4 — `crypto.randomUUID` (navigateur sécurisé + Node ≥ 19) avec repli. Pas d'import
+ * Caramel-only (ce fichier est miroir byte-identique Sucrerie). */
+function ihUUID() {
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+        const r = Math.random() * 16 | 0;
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+}
+
+/**
+ * Dénormalise un bloc de contenu de l'éditeur d'« Image interactive » vers un nœud H5P **complet et
+ * JOUABLE** { library, params, metadata, subContentId }. On ajoute metadata + subContentId ICI (et
+ * non dans un processeur en aval) car Sucrerie n'a PAS de processeur : la sortie de l'éditeur est
+ * écrite telle quelle dans le content.json. Côté Caramel, le processeur re-traite de façon
+ * idempotente (il conserve metadata/subContentId déjà présents).
+ * @param {Object} b - Bloc éditeur { _contentType, ... }.
+ * @returns {Object|null}
+ */
+function denormalizeIHContentNode(b) {
+    if (!b || typeof b !== 'object') return null;
+    const type = b._contentType
+        || (b.text !== undefined ? 'text' : (b.image ? 'image' : (b.audioFile || b.audioUrl ? 'audio' : (b.videoFile || b.videoUrl ? 'video' : null))));
+
+    // Params d'origine (champ passthrough posé par normalizeIHContentNode) : les défauts
+    // ne s'appliquent QUE si le nœud n'en avait pas — un paquet importé garde ses réglages
+    // (autoplay, loop, fit, copyright, decorative… — audit N6).
+    const orig = (b._origParams && typeof b._origParams === 'object') ? b._origParams : {};
+
+    let node = null;
+    if (type === 'text') {
+        if (!b.text || !String(b.text).trim()) return null;
+        node = { library: 'H5P.Text 1.1', params: { ...orig, text: b.text } };
+    } else if (type === 'image') {
+        const img = b.image;
+        if (!img || !img.path) return null;
+        const origFile = (orig.file && typeof orig.file === 'object') ? orig.file : {};
+        const file = {
+            ...origFile,
+            path: img.path,
+            mime: img.mime || origFile.mime || 'image/jpeg',
+            width: img.width || origFile.width || 0,
+            height: img.height || origFile.height || 0
+        };
+        delete file.dataURL; // transitoire preview : jamais persisté
+        node = {
+            library: 'H5P.Image 1.1',
+            params: { ...orig, file, alt: b.imageAlt || '', decorative: orig.decorative === true }
+        };
+    } else if (type === 'audio') {
+        const path = (b.audioFile && b.audioFile.path) || (b.audioUrl && String(b.audioUrl).trim());
+        if (!path) return null;
+        const mime = (b.audioFile && b.audioFile.mime) || 'audio/mpeg';
+        node = {
+            library: 'H5P.Audio 1.5',
+            params: { playerMode: 'minimalistic', fitToWrapper: false, controls: true, autoplay: false, ...orig, files: [{ path, mime }] }
+        };
+    } else if (type === 'video') {
+        const path = (b.videoFile && b.videoFile.path) || (b.videoUrl && String(b.videoUrl).trim());
+        if (!path) return null;
+        const isYouTube = /(?:youtube\.com|youtu\.be)/i.test(path);
+        const mime = (b.videoFile && b.videoFile.mime) || (isYouTube ? 'video/YouTube' : 'video/mp4');
+        node = {
+            library: 'H5P.Video 1.6',
+            params: { visuals: { fit: true, controls: true }, playback: { autoplay: false, loop: false }, ...orig, sources: [{ path, mime }] }
+        };
+    }
+    if (!node) return null;
+    // Compléter metadata + subContentId → nœud H5P jouable sans processeur. Les champs
+    // passthrough (_metadata/_subContentId) priment : licence, attribution et identifiant
+    // xAPI d'un paquet importé survivent à la sauvegarde (audit N6).
+    const m = /^H5P\.(\w+)/.exec(node.library);
+    const contentType = m ? m[1] : 'Text';
+    node.metadata = b._metadata || b.metadata || { contentType, license: 'U', title: `Sans titre ${contentType}` };
+    node.subContentId = b._subContentId || b.subContentId || ihUUID();
+    return node;
+}
+
+// --- Helpers « questions hotspot » (Find the Hotspot / Find Multiple Hotspots) ---
+
+/** Nombre fini borné [0,100], sinon défaut. */
+function hqNum(v, def) {
+    const n = typeof v === 'number' ? v : parseFloat(v);
+    return Number.isFinite(n) ? Math.max(0, Math.min(100, n)) : def;
+}
+/** Arrondi à 2 décimales. */
+function hqRound2(v) {
+    return Math.round(v * 100) / 100;
+}
+
+/**
+ * Normalise les deux « questions hotspot » vers le format plat éditable :
+ * hotspots[]{label, correct, x, y (CENTRES en %), width, height, figure, feedbackText}.
+ * Accepte le format plat (LLM) ET le content.json complet ({[rootKey]: …}, où computedSettings
+ * porte le COIN haut-gauche). Les libellés hors schéma du content.json (l10n, scoreBarLabel…)
+ * sont conservés en champs cachés `_…` pour être restitués tels quels à la dénormalisation.
+ * @param {Object} data
+ * @param {string} rootKey - 'imageHotspotQuestion' | 'imageMultipleHotspotQuestion'.
+ * @returns {Object} format plat éditable.
+ */
+function normalizeHotspotQuestionData(data, rootKey) {
+    const isMultiple = rootKey === 'imageMultipleHotspotQuestion';
+    const root = data && data[rootKey];
+
+    if (root && typeof root === 'object') {
+        const bis = root.backgroundImageSettings || {};
+        // Find the Hotspot stocke l'image APLATIE (bis = objet image) ; Find Multiple Hotspots
+        // l'imbrique (bis.backgroundImage) — cf. paquets Éléa de référence.
+        const image = (bis.backgroundImage && bis.backgroundImage.path) ? bis.backgroundImage
+            : (bis.path ? bis : null);
+        const hs = root.hotspotSettings || {};
+        const flat = {
+            title: data.title || (data.metadata && data.metadata.title) || bis.questionTitle || '',
+            image: image || undefined,
+            taskDescription: hs.taskDescription || '',
+            hotspots: (Array.isArray(hs.hotspot) ? hs.hotspot : []).map(h => {
+                const cs = (h && h.computedSettings) || {};
+                const us = (h && h.userSettings) || {};
+                const width = hqNum(cs.width, 20) || 20;
+                const height = hqNum(cs.height, 20) || 20;
+                return {
+                    label: (h && h.label) || '',
+                    correct: us.correct === true,
+                    // Coin haut-gauche → CENTRE (défaut : centre de l'image si coordonnée absente).
+                    x: hqRound2(hqNum(cs.x, 50 - width / 2) + width / 2),
+                    y: hqRound2(hqNum(cs.y, 50 - height / 2) + height / 2),
+                    width,
+                    height,
+                    figure: cs.figure === 'rectangle' ? 'rectangle' : 'circle',
+                    feedbackText: us.feedbackText || ''
+                };
+            }),
+            noneSelectedFeedback: hs.noneSelectedFeedback || ''
+        };
+        if (isMultiple) {
+            flat.hotspotName = hs.hotspotName || '';
+            const n = parseInt(hs.numberHotspots, 10);
+            if (Number.isFinite(n) && n > 0) flat.numberHotspots = n;
+            flat.alreadySelectedFeedback = hs.alreadySelectedFeedback || '';
+        } else {
+            flat.showFeedbackAsPopup = hs.showFeedbackAsPopup !== false;
+            if (hs.l10n) flat._l10n = hs.l10n;
+            if (data.scoreBarLabel) flat._scoreBarLabel = data.scoreBarLabel;
+            if (data.a11yRetry) flat._a11yRetry = data.a11yRetry;
+        }
+        return flat;
+    }
+
+    // Format plat (LLM) : compléter les défauts pour un aller-retour d'édition stable.
+    if (Array.isArray(data.hotspots)) {
+        data.hotspots = data.hotspots.map(h => {
+            if (!h || typeof h !== 'object') return h;
+            h.correct = h.correct === true;
+            h.x = hqRound2(hqNum(h.x, 50));
+            h.y = hqRound2(hqNum(h.y, 50));
+            h.width = hqNum(h.width, 20) || 20;
+            h.height = hqNum(h.height, 20) || 20;
+            // Compat ascendante : l'ancien passthrough caché `_figure` migre vers le champ `figure`.
+            h.figure = (h.figure === 'rectangle' || h._figure === 'rectangle') ? 'rectangle' : 'circle';
+            delete h._figure;
+            if (!h.label) h.label = '';
+            if (!h.feedbackText) h.feedbackText = '';
+            return h;
+        });
+    }
+    if (!isMultiple && data.showFeedbackAsPopup === undefined) data.showFeedbackAsPopup = true;
+    return data;
+}
+
+/**
+ * Dénormalise une « question hotspot » vers un content.json JOUABLE DIRECTEMENT
+ * (H5P.ImageHotspotQuestion 1.8 / H5P.ImageMultipleHotspotQuestion 1.0). INDISPENSABLE côté
+ * Sucrerie qui écrit cette sortie telle quelle SANS processeur ; côté Caramel le processeur
+ * re-traite de façon idempotente. Conversion CENTRES (format plat) → COINS haut-gauche
+ * (computedSettings), bornés pour que la zone reste entière dans l'image.
+ * ⚠️ Formes d'image différentes : APLATIE pour Find the Hotspot (le player 1.8 lit
+ * `backgroundImageSettings.path`), IMBRIQUÉE pour Find Multiple Hotspots.
+ * @param {Object} data - Format plat éditable.
+ * @param {string} rootKey - 'imageHotspotQuestion' | 'imageMultipleHotspotQuestion'.
+ * @returns {Object} content.json complet.
+ */
+function denormalizeHotspotQuestionData(data, rootKey) {
+    const isMultiple = rootKey === 'imageMultipleHotspotQuestion';
+    // Repli robuste si la clé manque dans la locale (t() renverrait la clé brute).
+    const hqLabel = (key, fallback) => { const v = t(key); return (v && v !== key) ? v : fallback; };
+
+    // Image de fond : retirer le dataURL transitoire (base64, alourdirait le content.json).
+    let image;
+    if (data.image && typeof data.image === 'object' && data.image.path) {
+        image = {
+            path: data.image.path,
+            mime: data.image.mime || 'image/png',
+            copyright: data.image.copyright || { license: 'U' },
+            width: data.image.width || 0,
+            height: data.image.height || 0
+        };
+    }
+
+    const hotspot = (Array.isArray(data.hotspots) ? data.hotspots : []).map(h => {
+        if (!h || typeof h !== 'object') return null;
+        const width = hqNum(h.width, 20) || 20;
+        const height = hqNum(h.height, 20) || 20;
+        const cx = hqNum(h.x, 50);
+        const cy = hqNum(h.y, 50);
+        const node = {
+            userSettings: {
+                correct: h.correct === true,
+                feedbackText: h.feedbackText || ''
+            },
+            computedSettings: {
+                x: hqRound2(Math.max(0, Math.min(100 - width, cx - width / 2))),
+                y: hqRound2(Math.max(0, Math.min(100 - height, cy - height / 2))),
+                width,
+                height,
+                figure: (h.figure === 'rectangle' || h._figure === 'rectangle') ? 'rectangle' : 'circle'
+            }
+        };
+        // Champ éditorial hors semantics (ignoré par le player, réutilisé par l'éditeur/l'export).
+        if (h.label) node.label = h.label;
+        return node;
+    }).filter(Boolean);
+
+    const hotspotSettings = {
+        taskDescription: data.taskDescription || '',
+        hotspot,
+        noneSelectedFeedback: data.noneSelectedFeedback || ''
+    };
+
+    const out = {};
+    if (isMultiple) {
+        hotspotSettings.hotspotName = data.hotspotName || '';
+        const correctCount = hotspot.filter(h => h.userSettings.correct).length;
+        const n = parseInt(data.numberHotspots, 10);
+        hotspotSettings.numberHotspots = (Number.isFinite(n) && n >= 1)
+            ? Math.min(n, Math.max(correctCount, 1))
+            : (correctCount || 1);
+        hotspotSettings.alreadySelectedFeedback = data.alreadySelectedFeedback || '';
+        out[rootKey] = {
+            backgroundImageSettings: {
+                questionTitle: data.questionTitle || data.title || '',
+                ...(image ? { backgroundImage: image } : {})
+            },
+            hotspotSettings
+        };
+    } else {
+        hotspotSettings.showFeedbackAsPopup = data.showFeedbackAsPopup !== false;
+        hotspotSettings.l10n = {
+            retryText: (data._l10n && data._l10n.retryText) || hqLabel('h5p_try_again', 'Recommencer'),
+            closeText: (data._l10n && data._l10n.closeText) || hqLabel('h5p_close', 'Fermer')
+        };
+        out[rootKey] = {
+            backgroundImageSettings: image || {},
+            hotspotSettings
+        };
+        out.scoreBarLabel = data._scoreBarLabel
+            || hqLabel('h5p_score_bar_label', 'Vous avez obtenu :num sur :total points');
+        out.a11yRetry = data._a11yRetry
+            || hqLabel('h5p_a11y_retry', 'Recommencer l\'exercice. Réinitialiser toutes les réponses et recommencer.');
+    }
+    // Titre conservé à la racine (métadonnée : détection, exports documentaires).
+    if (data.title) out.title = data.title;
+    return out;
+}
 
 /**
  * Normalise les données pour l'éditeur
@@ -3292,6 +3923,42 @@ export function normalizeDataForEditor(data, moduleKey) {
             }
             return data;
         }
+
+        case 'ImageHotspots': {
+            // Aplatir position{x,y} → x,y et construire un content[] enrichi (Texte/Image/Audio/Vidéo)
+            // que l'éditeur sait afficher via _contentType + showWhen. Accepte le format plat (LLM,
+            // hotspots[].text) ET le content.json v1.11 (hotspots[].content[]{library,params}).
+            if (Array.isArray(data.hotspots)) {
+                data.hotspots = data.hotspots.map(h => {
+                    if (!h || typeof h !== 'object') return h;
+                    if (h.position && typeof h.position === 'object') {
+                        if (h.x === undefined || h.x === null) h.x = h.position.x;
+                        if (h.y === undefined || h.y === null) h.y = h.position.y;
+                    }
+                    let content = [];
+                    if (Array.isArray(h.content) && h.content.length) {
+                        content = h.content.map(normalizeIHContentNode).filter(Boolean);
+                    } else if (h.text) {
+                        content = [{ _contentType: 'text', text: h.text }];
+                    }
+                    // Conserver le flag legacyPositioning (positionnement pré-1.8) en champ caché,
+                    // sinon il est perdu à l'aplatissement et le rendu des points se décale au ré-export
+                    // d'un .h5p legacy importé (PRD « Préserver position.legacyPositioning »).
+                    if (h.position && h.position.legacyPositioning === true) h._legacyPositioning = true;
+                    h.content = content;
+                    delete h.text;
+                    delete h.position;
+                    return h;
+                });
+            }
+            return data;
+        }
+
+        case 'FindTheHotspot':
+            return normalizeHotspotQuestionData(data, 'imageHotspotQuestion');
+
+        case 'FindMultipleHotspots':
+            return normalizeHotspotQuestionData(data, 'imageMultipleHotspotQuestion');
 
         case 'elea_test':
             // Injecter le champ "single" manquant et normaliser les fractions multichoice
@@ -3523,6 +4190,90 @@ export function denormalizeDataForSave(data, moduleKey) {
                 delete data.cover;
             }
             return data;
+        }
+
+        case 'ImageHotspots': {
+            // Produire un content.json H5P.ImageHotspots 1.11 JOUABLE DIRECTEMENT (position{x,y,
+            // legacyPositioning}, content[] de nœuds complets {library,params,metadata,subContentId},
+            // defaults globaux + libellés). INDISPENSABLE côté Sucrerie qui écrit cette sortie telle
+            // quelle SANS processeur ; côté Caramel le processeur re-traite de façon idempotente.
+            // (Avant : on produisait le format plat intermédiaire {x,y} → le player ne trouvait pas
+            // position → aucun point affiché côté Sucrerie.)
+            {
+                const DEF_COLOR = '#981d99', DEF_ICON = 'plus';
+                const clampPct = (v) => { const n = typeof v === 'number' ? v : parseFloat(v); return Number.isFinite(n) ? Math.max(0, Math.min(100, n)) : 0; };
+                const gColor = data.globalColor || DEF_COLOR;
+                const gIcon = data.globalIcon || DEF_ICON;
+                if (Array.isArray(data.hotspots)) {
+                    data.hotspots = data.hotspots.map(h => {
+                        if (!h || typeof h !== 'object') return h;
+                        const node = {
+                            position: { x: clampPct(h.x), y: clampPct(h.y), legacyPositioning: h._legacyPositioning === true },
+                            alwaysFullscreen: !!h.alwaysFullscreen,
+                            hotspotIconType: h.hotspotIconType || 'default',
+                            hotspotIcon: h.hotspotIcon || gIcon,
+                            hotspotColor: h.hotspotColor || gColor,
+                            content: (Array.isArray(h.content) ? h.content : []).map(denormalizeIHContentNode).filter(Boolean)
+                        };
+                        if (h.header) node.header = h.header;
+                        // Icône-image personnalisée d'un paquet importé : à préserver (audit N5).
+                        if (h.hotspotIconImage) node.hotspotIconImage = h.hotspotIconImage;
+                        return node;
+                    });
+                }
+                // Libellés d'accessibilité : localisés dans la langue de l'interface (audit N8).
+                // Repli robuste si la clé manque dans la locale (t() renverrait la clé brute).
+                const ihLabel = (key, fallback) => { const v = t(key); return (v && v !== key) ? v : fallback; };
+                // Champs globaux + libellés d'accessibilité (defaults) → content.json complet.
+                data.globalIconType = data.globalIconType || 'numbers';
+                data.globalIcon = gIcon;
+                data.globalColor = gColor;
+                data.backgroundImageAltText = data.backgroundImageAltText || '';
+                data.untitledHotspotLabel = data.untitledHotspotLabel || ihLabel('h5p_untitled_hotspot', 'Point sans titre');
+                data.closeButtonLabel = data.closeButtonLabel || ihLabel('h5p_close', 'Fermer');
+                data.containsAudioVideoLabel = data.containsAudioVideoLabel || ihLabel('h5p_contains_audio_video', 'Contient de l\'audio ou de la vidéo');
+                // Image de fond : retirer le dataURL (base64, alourdirait le content.json) + copyright.
+                if (data.image && typeof data.image === 'object' && data.image.path) {
+                    data.image = {
+                        path: data.image.path,
+                        mime: data.image.mime || 'image/png',
+                        copyright: data.image.copyright || { license: 'U' },
+                        width: data.image.width || 0,
+                        height: data.image.height || 0
+                    };
+                }
+                // Icône-image globale (audit N5) : même strip du dataURL transitoire que le fond.
+                if (data.globalIconImage && typeof data.globalIconImage === 'object' && data.globalIconImage.path) {
+                    data.globalIconImage = {
+                        path: data.globalIconImage.path,
+                        mime: data.globalIconImage.mime || 'image/png',
+                        copyright: data.globalIconImage.copyright || { license: 'U' },
+                        width: data.globalIconImage.width || 0,
+                        height: data.globalIconImage.height || 0
+                    };
+                }
+            }
+            return data;
+        }
+
+        case 'FindTheHotspot':
+            return denormalizeHotspotQuestionData(data, 'imageHotspotQuestion');
+
+        case 'FindMultipleHotspots':
+            return denormalizeHotspotQuestionData(data, 'imageMultipleHotspotQuestion');
+
+        case 'InteractiveVideo': {
+            // Nettoyage par schéma, MAIS on préserve les champs « passthrough » non éditables
+            // que le processeur consomme (transcript = piste de sous-titres, duration). Sans cela,
+            // éditer la vidéo supprimerait les sous-titres (transcript est hors schéma) : c'est la
+            // case « Intégrer les sous-titres » (videoSource.showCaptions, dans le schéma) qui doit
+            // décider de leur maintien — pas le nettoyage par schéma.
+            const ivSchema = getSchemaForType('InteractiveVideo');
+            const cleanedIV = ivSchema ? cleanDataBasedOnSchema(data, ivSchema) : data;
+            for (const k of ['transcript', 'duration', 'poster']) {
+                if (data[k] !== undefined) cleanedIV[k] = data[k];
+            }
+            return cleanedIV;
         }
 
         default:

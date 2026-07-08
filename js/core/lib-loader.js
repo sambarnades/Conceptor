@@ -11,8 +11,8 @@
 
 export const LIB_PATHS = {
     // OCR / Extraction de texte
-    PDF_JS: 'js/vendor/pdf-js/6.0.227/pdf.min.mjs',
-    PDF_JS_WORKER: 'js/vendor/pdf-js/6.0.227/pdf.worker.compat.mjs',
+    PDF_JS: 'js/vendor/pdf-js/6.1.200/pdf.min.mjs',
+    PDF_JS_WORKER: 'js/vendor/pdf-js/6.1.200/pdf.worker.compat.mjs',
     TESSERACT: 'js/vendor/tesseract/7.0.0/tesseract.min.js',
     // Fichiers Tesseract auto-hébergés (sinon téléchargés depuis cdn.jsdelivr.net au runtime, sans SRI)
     TESSERACT_WORKER: 'js/vendor/tesseract/7.0.0/worker.min.js',
@@ -38,13 +38,19 @@ export const LIB_PATHS = {
     // Document export
     JSPDF: 'js/vendor/jspdf/4.2.1/jspdf.umd.min.js',
     JSPDF_AUTOTABLE: 'js/vendor/jspdf-autotable/5.0.8/jspdf.plugin.autotable.min.js',
-    DOCX: 'js/vendor/docx/8.5.0/index.umd.js',
+    DOCX: 'js/vendor/docx/8.6.0/index.umd.js',
 
     // Security
     DOMPURIFY: 'js/vendor/dompurify/3.4.11/purify.min.js',
 
     // QR code (génération du QR de la vidéo source dans les exports documentaires)
-    QRCODE: 'js/vendor/qrcode/1.4.4/qrcode.js',
+    QRCODE: 'js/vendor/qrcode/2.0.4/qrcode.js',
+
+    // Conversion d'images exotiques (image de fond « Image interactive ») — lazy, chargées
+    // UNIQUEMENT si l'utilisateur joint un fichier de ce type :
+    HEIC2ANY: 'js/vendor/heic2any/0.0.4/heic2any.min.js', // HEIC/HEIF (photos iPhone) → JPEG/PNG (inclut libheif, worker blob)
+    UTIF: 'js/vendor/utif/3.1.0/UTIF.js',                 // TIFF → RGBA → PNG
+    PAKO: 'js/vendor/pako/2.1.0/pako.min.js',             // zlib (MIT AND Zlib) — requis par UTIF pour les TIFF compressés (deflate)
 
     // Caramelia (chatbot flottant)
     CARAMELIA: 'js/caramelia/index.js',
@@ -168,6 +174,9 @@ const loadState = {
     docx: false,
     dompurify: false,
     qrcode: false,
+    heic2any: false,
+    utif: false,
+    pako: false,
     fonts: false,
     caramelia: false
 };
@@ -547,6 +556,78 @@ export async function loadQRCode() {
     }
 
     return loadPromises.qrcode;
+}
+
+/**
+ * Charge heic2any (~1,3 Mo, MIT ; inclut libheif LGPL) — expose le global `window.heic2any`.
+ * Lazy : appelé UNIQUEMENT quand l'utilisateur joint une image HEIC/HEIF (photo iPhone) comme
+ * image de fond d'« Image interactive ». La conversion (HEIC → JPEG/PNG) tourne dans un Web Worker
+ * blob auto-contenu par la lib.
+ */
+export async function loadHeic2any() {
+    if (loadState.heic2any || window.heic2any) {
+        loadState.heic2any = true;
+        return;
+    }
+
+    if (!loadPromises.heic2any) {
+        loadPromises.heic2any = loadScript(LIB_PATHS.HEIC2ANY).then(() => {
+            loadState.heic2any = true;
+        }).catch((error) => {
+            delete loadPromises.heic2any;
+            throw error;
+        });
+    }
+
+    return loadPromises.heic2any;
+}
+
+/**
+ * Charge pako (~46 Ko, MIT AND Zlib) — expose le global `window.pako`. Dépendance de UTIF pour
+ * décompresser les TIFF en deflate. DOIT être chargée AVANT UTIF.js : ce dernier capte `self.pako`
+ * dans une variable au moment de son exécution (un chargement ultérieur de pako serait ignoré).
+ */
+export async function loadPako() {
+    if (loadState.pako || window.pako) {
+        loadState.pako = true;
+        return;
+    }
+
+    if (!loadPromises.pako) {
+        loadPromises.pako = loadScript(LIB_PATHS.PAKO).then(() => {
+            loadState.pako = true;
+        }).catch((error) => {
+            delete loadPromises.pako;
+            throw error;
+        });
+    }
+
+    return loadPromises.pako;
+}
+
+/**
+ * Charge UTIF.js (~57 Ko, MIT) — expose le global `window.UTIF`. Lazy : appelé UNIQUEMENT quand
+ * l'utilisateur joint une image TIFF comme image de fond d'« Image interactive ». Décode le TIFF en
+ * RGBA. pako est chargée AVANT (UTIF la capte à l'exécution) → prend en charge aussi les TIFF deflate.
+ */
+export async function loadUTIF() {
+    if (loadState.utif || window.UTIF) {
+        loadState.utif = true;
+        return;
+    }
+
+    if (!loadPromises.utif) {
+        loadPromises.utif = (async () => {
+            await loadPako();                  // pako DOIT être globale avant l'exécution d'UTIF.js
+            await loadScript(LIB_PATHS.UTIF);
+            loadState.utif = true;
+        })().catch((error) => {
+            delete loadPromises.utif;
+            throw error;
+        });
+    }
+
+    return loadPromises.utif;
 }
 
 /**

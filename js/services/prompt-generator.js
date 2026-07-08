@@ -53,8 +53,19 @@ const ACTIVITY_CONFIG = {
     eleaDevoir: { prefix: 'prompt_elea_devoir', resultKey: 'devoirResultat' },
     coursePresentation: { prefix: 'prompt_course_presentation', resultKey: 'coursePresentationResultat' },
     interactiveBook: { prefix: 'prompt_interactive_book', resultKey: 'interactiveBookResultat' },
-    interactiveVideo: { prefix: 'prompt_interactive_video', resultKey: 'interactiveVideoResultat' }
+    interactiveVideo: { prefix: 'prompt_interactive_video', resultKey: 'interactiveVideoResultat' },
+    imageHotspots: { prefix: 'prompt_image_hotspots', resultKey: 'imageHotspotsResultat' },
+    findTheHotspot: { prefix: 'prompt_find_the_hotspot', resultKey: 'findTheHotspotResultat' },
+    findMultipleHotspots: { prefix: 'prompt_find_multiple_hotspots', resultKey: 'findMultipleHotspotsResultat' }
 };
+
+// Prompts dont les SOURCES sont les zones détectées par la vision (activités à image de fond,
+// `requiresBackgroundImage` dans definitions.js) : Image interactive + les deux « Find the Hotspot ».
+const HOTSPOT_PROMPT_PREFIXES = new Set([
+    'prompt_image_hotspots',
+    'prompt_find_the_hotspot',
+    'prompt_find_multiple_hotspots'
+]);
 
 /**
  * Renvoie le préfixe de clés i18n du prompt pour un moduleKey donné
@@ -150,6 +161,80 @@ export function setVideoTranscriptSources(segments, durationSeconds = null) {
     const transcriptText = formatTranscriptForPrompt(segments);
     currentVideoMaxQuestions = videoMaxQuestions(segments);
     currentVideoSources = (buildVideoHeader(segments, durationSeconds) + transcriptText).trim() || null;
+}
+
+// ============================================================================
+// IMAGE HOTSPOTS — zones détectées par la vision injectées comme SOURCES du prompt
+// ============================================================================
+// Quand l'utilisateur joint une image de fond, le modèle vision (DEFAULT_VISION_MODEL, cf. services/hotspot-vision.js) détecte les zones
+// clés (x,y en % + description). Ce bloc, déjà formaté, est injecté en SOURCES du prompt
+// « Image interactive » par getPrompts() — de la même façon que la transcription pour la vidéo.
+// Capturé EN AMONT (dès l'upload) → disponible en mode Rapide ET Guidé. null = aucune analyse.
+let currentHotspotZones = null;
+// Nombre de zones actuellement détectées — plafond du nombre d'éléments demandé en mode Avancé :
+// la vision plafonne aux zones réellement saillantes de l'image et refuse d'en inventer
+// (cf. services/hotspot-vision.js), le prompt ne doit donc jamais exiger plus de zones que les
+// SOURCES n'en fournissent (le LLM en inventerait). Même logique que currentVideoMaxQuestions.
+let currentHotspotZoneCount = null;
+
+/**
+ * Formate les zones détectées (vision) en bloc SOURCES lisible par le LLM :
+ * description GLOBALE de l'image (contexte), puis une ligne par zone (position % + description).
+ * @param {Array<{x:number,y:number,label?:string,description?:string}>} zones
+ * @param {{width?:number,height?:number}|null} [imageMeta]
+ * @param {string} [imageDescription] - Description globale de l'image (vision).
+ * @returns {string}
+ */
+function formatZonesForPrompt(zones, imageMeta = null, imageDescription = '') {
+    if (!Array.isArray(zones) || zones.length === 0) return '';
+    const desc = (imageDescription || '').replace(/\s+/g, ' ').trim();
+    const globalLine = desc ? `DESCRIPTION GLOBALE DE L'IMAGE : ${desc}\n\n` : '';
+    const head = (imageMeta && imageMeta.width)
+        ? `(Image de fond : ${imageMeta.width}×${imageMeta.height}px. Les positions x,y sont des POURCENTAGES 0–100 à RECOPIER tels quels.)\n\n`
+        : '(Les positions x,y sont des POURCENTAGES 0–100 à RECOPIER tels quels.)\n\n';
+    const lines = zones.map((z, i) => {
+        const x = Number(z.x); const y = Number(z.y);
+        const xs = Number.isFinite(x) ? x.toFixed(1) : '?';
+        const ys = Number.isFinite(y) ? y.toFixed(1) : '?';
+        const label = z.label ? `${z.label} — ` : '';
+        const zdesc = (z.description || '').replace(/\s+/g, ' ').trim();
+        return `Zone ${i + 1} — x=${xs}% y=${ys}% : ${label}${zdesc}`;
+    });
+    return (globalLine + head + lines.join('\n')).trim();
+}
+
+/**
+ * Mémorise (ou efface) les zones détectées à injecter dans le prompt « Image interactive ».
+ * Appelé par l'UI dès que l'analyse vision est terminée (ou l'image retirée).
+ * @param {Array<{x:number,y:number,label?:string,description?:string}>|null} zones
+ * @param {{width?:number,height?:number}|null} [imageMeta]
+ * @param {string} [imageDescription] - Description globale de l'image (vision).
+ */
+export function setImageHotspotZones(zones, imageMeta = null, imageDescription = '') {
+    const formatted = formatZonesForPrompt(zones, imageMeta, imageDescription);
+    currentHotspotZones = formatted || null;
+    currentHotspotZoneCount = formatted ? zones.length : null;
+}
+
+/**
+ * Borne le nombre d'éléments demandé (mode Avancé) au nombre de zones réellement détectées —
+ * miroir de `clampVideoCount` pour les activités à image de fond. Sans ce clamp, quand la vision
+ * renvoie MOINS de zones que demandé (plafonnement anti-hallucination voulu), le prompt exigerait
+ * « N zones » alors que les SOURCES en listent moins → le LLM serait tenté d'en inventer.
+ * Ne touche pas une valeur déjà ≤ plafond, ni un champ vide.
+ * @param {string|null} nombreQuestions
+ * @param {number|null} [cap] - Plafond explicite ; par défaut le nb de zones mémorisées.
+ * @returns {string|null}
+ */
+function clampHotspotCount(nombreQuestions, cap = currentHotspotZoneCount) {
+    if (!nombreQuestions || !cap) return nombreQuestions;
+    const n = parseInt(String(nombreQuestions), 10);
+    return (Number.isFinite(n) && n > cap) ? String(cap) : nombreQuestions;
+}
+
+/** @returns {boolean} true si des zones ont été détectées et mémorisées. */
+export function hasImageHotspotZones() {
+    return !!currentHotspotZones;
 }
 
 // ============================================================================
@@ -368,15 +453,23 @@ function getPrompts(qui, quoi, niveau, nombreQuestions, isAdvanced) {
 
     for (const [, config] of Object.entries(ACTIVITY_CONFIG)) {
         const isVideo = config.prefix === 'prompt_interactive_video';
+        const isHotspots = HOTSPOT_PROMPT_PREFIXES.has(config.prefix);
         // Pour la vidéo interactive, la « source » est la transcription timée récupérée
         // (et non l'OCR/RAG) : on l'injecte en SOURCES pour que le prompt de gauche soit
         // complet en mode Guidé (et réutilisable tel quel par le one-clic).
-        const sources = (isVideo && currentVideoSources) ? currentVideoSources : ocrContent;
+        // Pour l'image interactive, la « source » est la liste des zones détectées par la vision
+        // (même logique de capture en amont → dispo en Rapide ET Guidé).
+        const sources = (isVideo && currentVideoSources) ? currentVideoSources
+            : (isHotspots && currentHotspotZones) ? currentHotspotZones
+                : ocrContent;
         // …et on borne le nombre demandé au plafond physique de la vidéo (pas plus de questions
-        // qu'il n'y a d'horodatages), sinon le prompt se contredirait avec l'en-tête de plafond.
+        // qu'il n'y a d'horodatages) ou aux zones détectées (pas plus de zones que les SOURCES),
+        // sinon le prompt se contredirait avec ses propres sources.
         const activityParams = isVideo
             ? { ...params, nombreQuestions: clampVideoCount(params.nombreQuestions) }
-            : params;
+            : (isHotspots && currentHotspotZones)
+                ? { ...params, nombreQuestions: clampHotspotCount(params.nombreQuestions) }
+                : params;
         prompts[config.resultKey] = buildActivityPrompt(config.prefix, { ...activityParams, ocrContent: sources });
     }
 
@@ -481,4 +574,22 @@ export function buildVideoInteractivePrompt(segments, durationSeconds = null) {
     // Borne le nombre demandé au plafond physique déduit des segments (cohérent avec l'en-tête).
     const nombreQuestions = clampVideoCount(params.nombreQuestions, videoMaxQuestions(segments));
     return buildActivityPrompt('prompt_interactive_video', { ...params, nombreQuestions, ocrContent: header + transcriptText });
+}
+
+/**
+ * Construit le prompt d'une activité à image de fond (« Image interactive », « Find the
+ * Hotspot », « Find Multiple Hotspots ») : contexte pédagogique + règles de rédaction
+ * + zones détectées par la vision en SOURCES (positions x,y en % + descriptions).
+ * @param {Array<{x:number,y:number,label?:string,description?:string}>} zones - Zones détectées.
+ * @param {{width?:number,height?:number}|null} [imageMeta] - Dimensions de l'image (référence des %).
+ * @param {string} [imageDescription] - Description globale de l'image (vision).
+ * @param {string} [promptPrefix] - Préfixe i18n du prompt de l'activité (défaut : Image interactive).
+ * @returns {string} Le prompt complet.
+ */
+export function buildImageHotspotsPrompt(zones, imageMeta = null, imageDescription = '', promptPrefix = 'prompt_image_hotspots') {
+    const params = readContextParams();
+    const prefix = HOTSPOT_PROMPT_PREFIXES.has(promptPrefix) ? promptPrefix : 'prompt_image_hotspots';
+    // Borne le nombre demandé aux zones effectivement fournies en SOURCES (cohérence du prompt).
+    const nombreQuestions = clampHotspotCount(params.nombreQuestions, Array.isArray(zones) ? zones.length : null);
+    return buildActivityPrompt(prefix, { ...params, nombreQuestions, ocrContent: formatZonesForPrompt(zones, imageMeta, imageDescription) });
 }

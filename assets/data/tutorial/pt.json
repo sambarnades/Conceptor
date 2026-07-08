@@ -1,0 +1,728 @@
+{
+  "meta": {
+    "lang": "pt",
+    "version": 2
+  },
+  "chapters": [
+    {
+      "id": "welcome",
+      "icon": "home",
+      "title": "Bem-vindo(a) ao Caramel",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "**Caramel** significa « **Création Assistée de Ressources et d'Activités Magistère et Éléa** » (criação assistida de recursos e atividades para Magistère e Éléa): é uma **oficina de criação de atividades pedagógicas**, feita **por professores, para professores**, **pensada em primeiro lugar para Éléa e Magistère** — mas que também funciona para **Moodle**. Você descreve o que quer, uma IA prepara o conteúdo, você verifica e ajusta, e depois obtém o arquivo pronto para enviar."
+        },
+        {
+          "type": "h",
+          "text": "A nossa filosofia: você mantém o controle"
+        },
+        {
+          "type": "p",
+          "text": "A IA é uma **assistente**, mas **é você quem decide**. A cada momento:"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "**Antes**: é você quem define o enquadramento pedagógico preenchendo os campos de descrição.",
+            "**Durante**: o conteúdo gerado pela IA é **totalmente editável** no editor, para ajustá-lo à sua intenção.",
+            "**Depois**: mesmo depois de baixar o arquivo, você ainda pode **abri-lo e modificá-lo** em outras ferramentas se precisar — nada fica travado, ele é seu."
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Os seus dados estão protegidos"
+        },
+        {
+          "type": "p",
+          "text": "O Caramel foi concebido para que **nenhum dado pedagógico fique exposto**. Aqui está, de forma simples, o que fica consigo e o que circula — e por onde."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Os seus documentos ficam no seu computador.** Quando você deposita um arquivo (PDF, imagem…) no modo avançado, a extração do texto é feita **inteiramente no seu navegador**: nada é enviado a um servidor.",
+            "**O que transita permanece hospedado na França.** As suas solicitações de geração passam por **servidores universitários compartilhados** (projeto **ILaaS**); a voz (microfone ou arquivo de áudio) é transcrita pelo **Albert**, o serviço **soberano da DINUM**. Nenhum dos dois **coleta nem revende** os seus dados — e **o áudio não é conservado**.",
+            "**Copiar e colar em uma IA externa é da sua responsabilidade.** Se você copia um prompt para usá-lo em um serviço de terceiros, a proteção dos seus dados depende então das **condições desse serviço**."
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "O percurso é sempre o mesmo: **descrever → escolher → gerar → verificar → baixar**. Ele é detalhado nos capítulos seguintes. Para reabrir este tutorial, clique em **«Tutorial»** no canto superior direito."
+        }
+      ]
+    },
+    {
+      "id": "describe",
+      "icon": "pencil",
+      "title": "Etapa 1 — Descrever a sua necessidade",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Tudo começa aqui. **Quanto mais clara for a sua descrição, mais pertinente será o resultado.** Duas formas de se exprimir, conforme prefira ir rápido ou enquadrar com precisão."
+        },
+        {
+          "type": "h",
+          "text": "O modo rápido"
+        },
+        {
+          "type": "p",
+          "text": "Ideal para ir ao essencial. Você preenche **dois campos**:"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Quem é você?** — a sua disciplina e o nível dos seus alunos (ex.: « professor de Ciências no 6.º ano »).",
+            "**O que deseja criar?** — o tema e o tipo de exercício pretendido (ex.: « um questionário sobre a digestão »)."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/caramel-mode-rapide.png",
+          "alt": "O modo rápido: dois campos para descrever quem você é e o que deseja criar."
+        },
+        {
+          "type": "h",
+          "text": "O modo avançado"
+        },
+        {
+          "type": "p",
+          "text": "Para um pedido mais estruturado. Este modo oferece **campos precisos** (disciplina, nível, tema, número de perguntas, instruções específicas…) e permite **anexar um documento** ou **importar uma página web** como ponto de partida."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/caramel-mode-avance.png",
+          "alt": "O modo avançado com os seus campos detalhados: disciplina, nível, tema, documentos."
+        },
+        {
+          "type": "plain",
+          "text": "Se deixar a zona « documentos » vazia, a IA apoiar-se-á **unicamente nos seus conhecimentos gerais**. Ao depositar aí o seu curso, você obriga-a a **ater-se ao seu conteúdo** — é você quem escolhe."
+        },
+        {
+          "type": "h",
+          "text": "O pequeno extra: a ancoragem nos programas oficiais"
+        },
+        {
+          "type": "p",
+          "text": "Quando você indica a **disciplina**, o **tema** e o **nível**, o Caramel pode **ancorar a geração nos programas escolares oficiais franceses** (Éduscol), conforme o ciclo em causa. O conteúdo produzido adere então mais aos objetivos da sua turma."
+        },
+        {
+          "type": "plain",
+          "text": "Em termos simples, um **RAG** (« geração aumentada por recuperação ») é uma **biblioteca de referência** na qual a IA vai **procurar os bons excertos** antes de redigir — aqui, os programas oficiais — em vez de responder de memória. Resultado: atividades mais bem alinhadas com o programa."
+        },
+        {
+          "type": "tip",
+          "text": "Esta ancoragem é **automática e não bloqueante**: se você não indicar nem disciplina nem nível, a geração funciona na mesma, simplesmente sem esse marco do programa. Dar essas informações não custa nada e melhora o resultado."
+        }
+      ]
+    },
+    {
+      "id": "choose",
+      "icon": "grid",
+      "title": "Etapa 2 — Escolher o tipo de atividade",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Uma vez descrita a sua necessidade, os **mosaicos de atividades** tornam-se clicáveis. Cada mosaico corresponde a um tipo de exercício. Clique naquele que lhe convém."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/caramel-activites.png",
+          "alt": "A grelha dos mosaicos de atividades disponíveis no Caramel."
+        },
+        {
+          "type": "h",
+          "text": "Duas grandes famílias"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Família",
+            "O que é",
+            "Formatos produzidos"
+          ],
+          "rows": [
+            [
+              "**H5P**",
+              "Atividades **interativas**: escolha múltipla, Verdadeiro/Falso, texto com lacunas, arrastar-e-largar, palavras cruzadas, cartões de memória, glossário, apresentação de curso, livro interativo, vídeo interativo…",
+              "**.h5p**"
+            ],
+            [
+              "**Éléa / Moodle**",
+              "Atividades e recursos para essas plataformas: Teste, Escolha múltipla, Correspondência, Milionário, Página, Livro, Glossário, Trabalho…",
+              "**.mbz**, **.xml**, **.GIFT**"
+            ]
+          ]
+        },
+        {
+          "type": "warn",
+          "text": "Os mosaicos só se ativam **depois de a descrição estar preenchida** na etapa 1. Se um mosaico continuar acinzentado, volte a descrever a sua necessidade (ou peça à Caramélia que o faça)."
+        },
+        {
+          "type": "plain",
+          "text": "O **H5P** é um **padrão aberto e gratuito** de atividades interativas, utilizado em todo o lado na educação (Moodle, Éléa, Magistère, La Sucrerie…). O Caramel inclui as **bibliotecas H5P oficiais** de cada tipo de atividade: os ficheiros produzidos são, portanto, **100 % compatíveis** com essas plataformas."
+        },
+        {
+          "type": "plain",
+          "text": "O **Moodle** é o motor das plataformas de cursos online da Educação Nacional: o **Éléa** e o **Magistère** assentam nele. É por isso que o Caramel também sabe produzir formatos próprios do Moodle — uma **cópia de segurança .mbz**, ou **perguntas .xml / GIFT** para um banco de perguntas."
+        },
+        {
+          "type": "tip",
+          "text": "Está com dúvidas sobre o tipo? Os **filtros** no topo da grelha (por plataforma, por tema) reduzem a lista, e o nome de cada mosaico descreve o exercício que produz. A Caramélia também pode aconselhá-lo sobre o tipo mais adequado."
+        }
+      ]
+    },
+    {
+      "id": "generate",
+      "icon": "rocket",
+      "title": "Etapa 3 — Gerar o conteúdo",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Depois de clicar num mosaico, abre-se uma janela. É aqui que **você pede o conteúdo à IA**. Duas opções, conforme o nível de controlo pretendido."
+        },
+        {
+          "type": "h",
+          "text": "Opção A — Gerar com um clique"
+        },
+        {
+          "type": "p",
+          "text": "A via rápida. Clique em **« Gerar com um clique »**: o Caramel envia o seu pedido à IA e preenche a atividade sozinho. Em poucos segundos, o conteúdo está pronto para visualizar."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/modale_mode_simple.PNG",
+          "alt": "A visualização simples com o botão Gerar com um clique."
+        },
+        {
+          "type": "plain",
+          "text": "A pequena **seta** à direita do botão permite **escolher o modelo de IA** (um rápido, um mais potente…). Por predefinição, um bom modelo já está selecionado: não é preciso mexer nele para começar bem. É mais um exemplo em que **você mantém o controlo**."
+        },
+        {
+          "type": "h",
+          "text": "Opção B — Utilizar uma IA externa"
+        },
+        {
+          "type": "p",
+          "text": "Para um controlo máximo. O Caramel mostra o **prompt** (a instrução destinada à IA), que você pode ler, modificar e utilizar noutro lugar."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "**Copie o prompt** proposto (botão de cópia).",
+            "**Cole-o na IA de sua escolha** (por exemplo, o Le Chat da Mistral, ou outro assistente).",
+            "**Recupere a resposta** e **cole-a** no Caramel.",
+            "O Caramel **verifica e repara** automaticamente o conteúdo antes de o utilizar."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/modale_mode_guide.PNG",
+          "alt": "A visualização guiada com o prompt a copiar para uma IA externa."
+        },
+        {
+          "type": "plain",
+          "text": "Um **prompt** é simplesmente a mensagem de instrução que se dá a uma IA. O Caramel escreve-o por si; cabe a você ajustá-lo se assim o desejar."
+        },
+        {
+          "type": "h",
+          "text": "Muitas perguntas? O Caramel trata disso"
+        },
+        {
+          "type": "p",
+          "text": "Para uma atividade com **muitos elementos** (por exemplo, um questionário de 20 ou 30 perguntas), o Caramel **divide automaticamente o trabalho em várias etapas** e mostra uma **barra de progresso**. Para si, continua a ser **um único clique** — mas, sem esta técnica, um pedido tão grande arriscar-se-ia a interromper-se a meio."
+        },
+        {
+          "type": "warn",
+          "text": "Durante uma geração por etapas, **deixe o Caramel terminar** (a barra de progresso mostra-o) antes de visualizar. O resultado é um questionário completo, fundido de forma limpa."
+        }
+      ]
+    },
+    {
+      "id": "preview",
+      "icon": "eye",
+      "title": "Etapa 4 — Visualizar e testar",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Uma vez gerado o conteúdo, **dedique tempo a verificá-lo** na janela de visualização. A atividade comporta-se aí exatamente como para os seus alunos."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Faça o exercício você mesmo**: clique nas respostas, arraste as etiquetas, preencha as lacunas.",
+            "**Verifique as correções**: as respostas certas e as explicações aparecem corretamente?",
+            "**Controle os textos**: ortografia, fórmulas, imagens — está tudo conforme a sua intenção?"
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/modale_visualisation.PNG",
+          "alt": "A janela de visualização: a atividade testa-se diretamente no simulador."
+        },
+        {
+          "type": "plain",
+          "text": "Esta janela é um **simulador**: imita o resultado final sem enviar nada para lado nenhum. Você pode testar quantas vezes forem necessárias."
+        },
+        {
+          "type": "tip",
+          "text": "Um pormenor a corrigir? Não é preciso voltar a gerar tudo: passe à **edição** (capítulo seguinte) para ajustar à mão. Também pode relançar uma geração se o resultado não lhe convier. **É você quem valida.**"
+        }
+      ]
+    },
+    {
+      "id": "edit",
+      "icon": "sliders",
+      "title": "Etapa 5 — Editar o conteúdo",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Quer modificar uma pergunta, uma palavra, uma imagem? Clique em **« Editar »** (ícone de lápis): abre-se um **editor visual**, onde cada campo da atividade é modificável diretamente, sem voltar a importar nada."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/caramel-menu-edition.webp",
+          "alt": "O menu de edição: ajustar o conteúdo no mínimo pormenor."
+        },
+        {
+          "type": "h",
+          "text": "Formatar o texto"
+        },
+        {
+          "type": "p",
+          "text": "Os campos que o permitem mostram uma **barra de ferramentas** quando você clica dentro deles: negrito, itálico, listas, etc. A formatação é conservada na atividade final."
+        },
+        {
+          "type": "h",
+          "text": "Inserir fórmulas matemáticas"
+        },
+        {
+          "type": "p",
+          "text": "Para as disciplinas científicas, você pode adicionar **fórmulas matemáticas** limpas e legíveis, diretamente nos campos em causa. Um assistente ajuda-o a compô-las sem conhecer a linguagem técnica (LaTeX)."
+        },
+        {
+          "type": "h",
+          "text": "Palavras a encontrar (arrastar, marcar, completar)"
+        },
+        {
+          "type": "p",
+          "text": "Para as atividades **Arrastar as palavras**, **Realçar as palavras** ou **Texto com lacunas**, você designa as palavras-alvo no próprio texto: o editor transforma-as em lacunas ou em etiquetas."
+        },
+        {
+          "type": "h",
+          "text": "Texto com lacunas do Teste Éléa"
+        },
+        {
+          "type": "p",
+          "text": "Para as perguntas **Texto com lacunas** da atividade Teste (Éléa), um editor dedicado facilita a criação dos espaços a completar e das suas respostas aceites."
+        },
+        {
+          "type": "h",
+          "text": "Adicionar as suas imagens"
+        },
+        {
+          "type": "p",
+          "text": "Algumas atividades aceitam **as suas próprias imagens**: arraste-as para o campo previsto (cartões, elementos a ordenar, imagem de fundo…). São integradas diretamente no ficheiro final."
+        },
+        {
+          "type": "h",
+          "text": "Configurações avançadas"
+        },
+        {
+          "type": "p",
+          "text": "Cada atividade oferece **configurações opcionais** (secção recolhida no fundo do editor): número de tentativas, exibição das dicas, comportamento dos botões… A explorar depois de o essencial estar em ordem."
+        },
+        {
+          "type": "tip",
+          "text": "Após cada modificação, **volte a visualizar** a atividade para verificar o resultado. O vaivém editar ↔ visualizar é a melhor forma de obter um resultado perfeito."
+        }
+      ]
+    },
+    {
+      "id": "download",
+      "icon": "download",
+      "title": "Etapa 6 — Descarregar",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "A sua atividade convém-lhe? Só falta **recuperá-la**. O menu de descarregamento oferece vários formatos, organizados por famílias."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/vers-sucrerie.webp",
+          "alt": "A barra de ação: descarregar (H5P, DOCX, ODT, PDF), partilhar « Para La Sucrerie », ou editar."
+        },
+        {
+          "type": "table",
+          "head": [
+            "Família",
+            "Formatos",
+            "Para quê"
+          ],
+          "rows": [
+            [
+              "**Interativo** (o original)",
+              "**H5P** (.h5p) · **Moodle** (.mbz) · **XML / GIFT** (.xml, .GIFT) · **HTML** (.html)",
+              "Importar a atividade **interativa** no Éléa, no Magistère ou no Moodle. É a opção principal."
+            ],
+            [
+              "**Documento**",
+              "**Word** (.docx) · **LibreOffice** (.odt)",
+              "Obter uma versão **texto** para imprimir ou modificar. As fórmulas matemáticas continuam editáveis."
+            ],
+            [
+              "**PDF**",
+              "**PDF** (.pdf)",
+              "Uma versão fixa, perfeita para imprimir ou distribuir."
+            ]
+          ]
+        },
+        {
+          "type": "plain",
+          "text": "O formato **.h5p** é o mais versátil: é o que mantém toda a interatividade e que se abre em todo o lado (Éléa, Magistère, Moodle, La Sucrerie)."
+        },
+        {
+          "type": "warn",
+          "text": "Em uma versão **Word / PDF**, as atividades muito interativas são forçosamente **simplificadas** (um arrastar e soltar vira uma lista para completar, por exemplo): é normal — o **formato interativo** original conserva toda a mecânica."
+        },
+        {
+          "type": "tip",
+          "text": "Quer **partilhar** a sua criação com outros professores? O botão **« Para La Sucrerie »** (à direita dos formatos) publica-a na biblioteca gémea do Caramel — ver o capítulo bónus « Partilhar em La Sucrerie »."
+        }
+      ]
+    },
+    {
+      "id": "integrate",
+      "icon": "upload",
+      "title": "Integrar no Éléa / Magistère / Moodle",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Uma vez descarregado o ficheiro, eis como adicioná-lo ao seu curso. O procedimento depende do **formato** do ficheiro. As capturas abaixo mostram o exemplo do Éléa (o procedimento é muito próximo no Magistère e no Moodle)."
+        },
+        {
+          "type": "h",
+          "text": "Ficheiro .h5p (atividade interativa)"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "No seu curso, **ative o modo de edição**.",
+            "**Adicione uma atividade** do tipo **H5P** (ou « Conteúdo interativo »).",
+            "**Deposite o ficheiro .h5p** na zona prevista, depois **guarde**."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-ajouter-h5p.webp",
+          "alt": "Adicionar uma atividade H5P num curso Éléa."
+        },
+        {
+          "type": "h",
+          "text": "Ficheiro .mbz (cópia de segurança Moodle)"
+        },
+        {
+          "type": "p",
+          "text": "Este formato adiciona uma ou várias atividades ao seu curso **sem apagar** o existente, através da ferramenta de **restauro**."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Abra o seu curso, depois **« Restauro »** (menu de cópia de segurança / restauro).",
+            "**Carregue o ficheiro .mbz**, depois escolha **« Fundir »** com o curso atual.",
+            "Percorra as etapas propostas até à confirmação."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-import-parcours-1.webp",
+          "alt": "Restaurar um ficheiro .mbz no Éléa — depósito do ficheiro."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-import-parcours-3.webp",
+          "alt": "Restaurar um ficheiro .mbz no Éléa — fusão com o curso."
+        },
+        {
+          "type": "h",
+          "text": "Ficheiro .xml (Glossário)"
+        },
+        {
+          "type": "p",
+          "text": "Para importar uma lista de definições para um **glossário**: crie um glossário no curso, depois use a sua opção **« Importar entradas »** e selecione o ficheiro .xml."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-glossaire-import-2.webp",
+          "alt": "Importar entradas para um glossário Éléa a partir de um ficheiro XML."
+        },
+        {
+          "type": "h",
+          "text": "Ficheiros .xml e .GIFT (banco de perguntas)"
+        },
+        {
+          "type": "p",
+          "text": "Para adicionar perguntas ao seu **banco de perguntas**: a partir do banco, escolha **« Importar »**, selecione o formato (Moodle XML ou GIFT) e carregue o ficheiro."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-importation-banquequestions-1.webp",
+          "alt": "Importar perguntas para o banco de perguntas Éléa."
+        },
+        {
+          "type": "h",
+          "text": "Ficheiro .html (conteúdo de página)"
+        },
+        {
+          "type": "p",
+          "text": "Para inserir diretamente conteúdo numa **zona de texto**: abra o editor da zona, passe ao modo **« código-fonte » (HTML)**, depois cole o conteúdo do ficheiro."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-import-page-code-html.webp",
+          "alt": "Colar HTML em modo código-fonte numa página Éléa."
+        },
+        {
+          "type": "tip",
+          "text": "O formato **.h5p** é o mais simples de integrar e o mais comum. Em caso de dúvida, prefira-o."
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "icon": "share",
+      "title": "Em bónus — Partilhar em La Sucrerie",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Orgulhoso(a) da sua atividade? **Publique-a em La Sucrerie**, a biblioteca gémea do Caramel, para que outros professores a encontrem e reutilizem. Tudo parte do botão **« Para La Sucrerie »** do menu de descarregamento (etapa 6)."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/vers-sucrerie.webp",
+          "alt": "O botão rosa « Para La Sucrerie » na barra de descarregamento."
+        },
+        {
+          "type": "plain",
+          "text": "**La Sucrerie** é um grande armário comum de atividades, **gratuitas e reutilizáveis** (licença Creative Commons). **O Caramel serve para criar**, **La Sucrerie para partilhar e encontrar** — os dois falam a mesma língua."
+        },
+        {
+          "type": "h",
+          "text": "Como funciona"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Clique em **« Para La Sucrerie »** (o botão rosa, à direita dos formatos de descarregamento).",
+            "Uma **IA prepara a ficha** por si (cerca de 15 segundos): título, descrição, objetivos, palavras-chave, disciplina e nível.",
+            "**Verifique e corrija** essa ficha pré-preenchida, depois indique o seu **nome** (mostrado como autor) e o seu **endereço de e-mail académico**.",
+            "Assinale a caixa de **licença** depois **confirme**: um controlo automático verifica o conteúdo, e a atividade é publicada no catálogo."
+          ]
+        },
+        {
+          "type": "warn",
+          "text": "O **nome de publicação** é exibido como autor da atividade: por padrão o seu **nome e sobrenome**, mas você pode perfeitamente escolher um **pseudônimo**. Já o seu **e-mail** permanece **privado** (criptografado, nunca exibido) — ele serve apenas para lhe enviar um **link de gestão** para editar ou remover a atividade mais tarde."
+        },
+        {
+          "type": "plain",
+          "text": "**Depositar** é publicar a sua atividade no catálogo público. A IA **sugere** as informações para a arrumar bem, mas **você mantém o controlo**: tudo permanece modificável antes de confirmar, e nada é publicado sem o seu acordo."
+        },
+        {
+          "type": "tip",
+          "text": "Você mantém o controlo mesmo após a publicação: o **link de gestão** recebido por e-mail permite-lhe **modificar ou retirar** a sua atividade quando quiser."
+        }
+      ]
+    },
+    {
+      "id": "caramelia",
+      "icon": "chat",
+      "title": "Caramélia, a sua assistente",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Agora você conhece todo o percurso — aqui está um **atalho**. A **Caramélia** é a **mascote** do Caramel: o **logo do site**, que quisemos **humanizar**. Ela também é a sua **assistente**, capaz de realizar **todas as etapas anteriores no seu lugar**. Você a encontra no **canto inferior direito da tela**; um clique abre uma **janela de conversa** onde você escreve para ela como escreveria para um colega."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/caramelia-assistant.png",
+          "alt": "A janela da Caramélia aberta, com a sua mensagem de boas-vindas e os botões « Ajuda sobre o site » e « Criar uma atividade »."
+        },
+        {
+          "type": "h",
+          "text": "Ela sabe fazer duas coisas"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Responder às suas perguntas** sobre o Caramel (« Como integrar um ficheiro no Éléa? », « O que é um texto com lacunas? », « O que acontece aos meus dados? »).",
+            "**Acompanhá-lo a criar**: descreva a sua necessidade em linguagem corrente (« um questionário de escolha múltipla de 10 perguntas sobre as frações para alunos do 5.º ano ») e ela **prepara tudo por si**."
+          ]
+        },
+        {
+          "type": "plain",
+          "text": "Concretamente, a Caramélia **não fabrica a atividade em si**: ela **preenche os campos e abre o mosaico certo por si**, exatamente como se você o fizesse à mão. O resultado é, portanto, idêntico ao obtido sem ela — ela apenas lhe faz ganhar tempo."
+        },
+        {
+          "type": "h",
+          "text": "Várias atividades de uma só vez"
+        },
+        {
+          "type": "p",
+          "text": "É um dos seus grandes trunfos. Peça, por exemplo, **« um questionário de escolha múltipla e cartões de memória sobre o ciclo da água »**: a Caramélia mostra uma **lista com caixas para assinalar** das atividades que propõe. Você assinala as que lhe interessam, confirma, e ela **lança todas as gerações em sequência**."
+        },
+        {
+          "type": "tip",
+          "text": "No fim de um lote de várias atividades, um botão **« Descarregar um ZIP »** reúne todos os ficheiros de uma só vez. Ideal para preparar uma sequência inteira em poucos minutos."
+        },
+        {
+          "type": "h",
+          "text": "Dar-lhe um documento de partida"
+        },
+        {
+          "type": "p",
+          "text": "Um **clipe** (ou um simples arrastar-e-largar) permite anexar um **documento ou uma imagem** (PDF, Word, apresentação, foto…). A Caramélia extrai o texto para servir de base — prático para transformar uma lição existente em exercícios. Também pode **falar** com ela graças ao microfone."
+        },
+        {
+          "type": "warn",
+          "text": "**Você mantém o controlo, mesmo com a Caramélia.** Antes de cada geração, ela mostra um **resumo** (quem, o quê, nível, número de perguntas, atividades escolhidas) com três botões: **Lançar**, **Mudar de atividade**, **Cancelar**. **Nada parte sem a sua confirmação.**"
+        },
+        {
+          "type": "plain",
+          "text": "Para responder com exatidão, a Caramélia apoia-se numa **base documental** (um « RAG »): em vez de improvisar, ela **recolhe excertos fiáveis** da documentação do Caramel e retoma os rótulos exatos dos botões que você vê no ecrã. (O **RAG** é também o que permite ancorar a geração nos programas oficiais — ver a etapa « Descrever a sua necessidade ».)"
+        }
+      ]
+    },
+    {
+      "id": "community",
+      "icon": "assets/images/branding/tchap.svg",
+      "title": "Trocar ideias com a comunidade",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "O Caramel é um projeto **vivo**, e a sua opinião conta. Uma **sala de conversa** reúne os professores que utilizam o Caramel no **Tchap**, a mensageria segura do Estado."
+        },
+        {
+          "type": "h",
+          "text": "Para que serve esta sala?"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Colocar as suas perguntas** e obter ajuda sobre a criação, a edição ou a integração nos seus cursos.",
+            "**Assinalar um problema** ou propor uma melhoria.",
+            "**Descobrir as novidades**: as evoluções do Caramel são aí anunciadas.",
+            "**Partilhar as suas práticas** com outros colegas."
+          ]
+        },
+        {
+          "type": "plain",
+          "text": "O **Tchap** é a mensageria oficial da administração francesa, reservada aos agentes do Estado. A ligação faz-se com o seu endereço profissional, sem criar uma nova conta."
+        },
+        {
+          "type": "cta",
+          "href": "https://edurl.fr/caramel-tchap",
+          "label": "Juntar-se à sala Tchap do Caramel",
+          "icon": "assets/images/branding/tchap.svg"
+        },
+        {
+          "type": "tip",
+          "text": "O link para a sala também está disponível no topo de cada página, ao lado do botão « Tutorial ». E para uma pergunta rápida, a **Caramélia** responde diretamente na aplicação."
+        }
+      ]
+    },
+    {
+      "id": "faq",
+      "icon": "help",
+      "title": "Perguntas frequentes e glossário",
+      "blocks": [
+        {
+          "type": "h",
+          "text": "Perguntas frequentes"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Como a IA gera o seu conteúdo?** Você descreve a sua necessidade; o Caramel a transforma em uma **instrução precisa** para a IA, enriquecida com os **programas oficiais** (o RAG), e a envia a uma **IA hospedada na França** (ILaaS) que redige o conteúdo. O Caramel o **verifica e o corrige** antes de preencher a atividade — e **é você** quem revisa e ajusta.",
+            "**Funciona no Moodle?** Sim. O Caramel produz **formatos padrão** (**.h5p**, **.mbz**, **.xml / GIFT**) que o **Moodle lê nativamente**. Aliás, **Éléa** e **Magistère** são baseados no Moodle: o que funciona para eles funciona em qualquer plataforma Moodle.",
+            "**Os meus dados são enviados para algum lado?** Os seus textos servem unicamente para gerar a atividade através da IA; o Caramel não conserva os seus conteúdos. A extração do texto dos seus documentos e imagens faz-se **no seu navegador**.",
+            "**O resultado da IA é imperfeito, o que fazer?** Ajuste à mão no editor, ou relance a geração com uma descrição mais precisa. É sempre você quem valida.",
+            "**Posso criar várias atividades de uma vez?** Sim, pedindo-o à **Caramélia**: ela propõe uma lista com caixas para assinalar e depois agrupa os ficheiros num ZIP.",
+            "**Que formato escolher para o Éléa ou o Magistère?** O **.h5p** na maioria dos casos: é interativo e abre-se em todo o lado."
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Glossário — as palavras do site"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Palavra",
+            "O que significa"
+          ],
+          "rows": [
+            [
+              "**Atividade**",
+              "Um recurso pedagógico interativo (questionário, exercício, jogo…)."
+            ],
+            [
+              "**Caramélia**",
+              "A assistente integrada (botão rebuçado) que responde às suas perguntas e prepara as atividades por si."
+            ],
+            [
+              "**Gerar**",
+              "Pedir à IA que prepare o conteúdo a partir da sua descrição."
+            ],
+            [
+              "**Prompt**",
+              "A mensagem de instrução dada a uma IA. O Caramel escreve-a por si."
+            ],
+            [
+              "**RAG**",
+              "Uma base de referência na qual a IA recolhe excertos fiáveis antes de responder (aqui: a documentação do Caramel, e os programas oficiais)."
+            ],
+            [
+              "**Programas oficiais**",
+              "Os programas escolares franceses (Éduscol) nos quais a geração se pode ancorar consoante a disciplina e o nível."
+            ],
+            [
+              "**Geração por etapas**",
+              "O corte automático de um grande pedido (muitas perguntas) para evitar interrupções — transparente para si."
+            ],
+            [
+              "**H5P (.h5p)**",
+              "O padrão aberto das atividades interativas, legível pelo Éléa, pelo Magistère e pelo Moodle."
+            ],
+            [
+              "**Moodle (.mbz / .xml)**",
+              "O motor das plataformas de cursos (Éléa, Magistère). .mbz = cópia de segurança; .xml / GIFT = perguntas."
+            ],
+            [
+              "**GIFT**",
+              "Um formato de texto simples para importar perguntas para um banco de perguntas."
+            ],
+            [
+              "**Éléa / Magistère**",
+              "Plataformas de cursos online da Educação Nacional, baseadas no Moodle."
+            ],
+            [
+              "**Editor visual**",
+              "A interface que permite modificar a atividade campo a campo, sem código."
+            ],
+            [
+              "**Simulador**",
+              "A janela de visualização que imita o resultado final para testar a atividade."
+            ],
+            [
+              "**La Sucrerie**",
+              "A biblioteca gémea onde se **partilha e encontra** atividades."
+            ]
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "Uma pergunta sem resposta aqui? Coloque-a à **Caramélia**, ou na **sala Tchap** (capítulo anterior): a comunidade está aí para isso."
+        }
+      ]
+    }
+  ]
+}

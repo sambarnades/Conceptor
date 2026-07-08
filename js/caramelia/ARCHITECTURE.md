@@ -184,6 +184,18 @@ forme de la réponse : un bloc `<DATA>` exploitable (`isMeaningfulIntent`) =
 création ; sinon = réponse texte. Un `<DATA>` vide (tous champs null) est traité
 comme une réponse (garde-fou contre les misfires du LLM).
 
+**Fusion message ↔ champs Caramel (`mergeAndProceed`) :** le message courant
+(extraction LLM) a **toujours priorité** sur les champs `#qui/#quoi/#niveau`
+déjà remplis ; les champs DOM ne servent qu'à **combler les trous** (`useDom`).
+La question « repartir de là / de zéro ? » n'est posée que si les champs
+apportent une info absente du message (et une seule fois par conversation).
+Côté serveur, le prompt auto interdit explicitement au LLM d'utiliser
+`context.qui/quoi` (état des champs envoyé dans le payload) pour remplir le
+`<DATA>` (règle 9). Historique : avant ce double verrou, le récap reprenait
+l'ancien contenu des champs au lieu du contexte donné dans le chat — notamment
+à la 2ᵉ création d'une même conversation, les champs ayant été remplis par
+Caramelia elle-même au tour précédent (bug terrain 2026-07).
+
 **Indicateur de frappe (typing dots) :** affiché par `showTyping()` (dans [`dom.js`](dom.js)), retiré par `removeTyping()`. Couleur dorée (`var(--caramelia-primary)`) avec animation `caramelia-bounce`. Présent partout où un appel LLM bloquant a lieu : `smartRoute` (extraction d'intention) ET `handleHelpMessage` (chat libre). Pas de typing sur les actions synchrones (clic catégorie, validation checklist) ni pendant `launchGenerations` qui a son propre feedback (`launch_progress` par activité).
 
 ### 5.2 Le routeur central : `proceedAfterCollect(recap)`
@@ -325,7 +337,7 @@ newlines, marqueurs internes) avant interpolation dans `Phrase a analyser :
 
 ### 6.5 Historique conversationnel envoyé au webhook
 
-Depuis v1.2 (suite à un retour utilisateur sur la perte de contexte cross-tour), l'extracteur **et** le chat libre envoient `state.history` complet dans le payload, au lieu d'un slice glissant ou d'un tableau vide :
+Depuis v1.2 (suite à un retour utilisateur sur la perte de contexte cross-tour), l'extracteur **et** le chat libre envoient l'historique via `getHistoryForLLM()` (state.js) — une **fenêtre glissante** bornée par `CONFIG.history` (8 derniers tours, 2000 caractères max par message). L'UI conserve toujours l'historique complet ; seul le payload réseau est tronqué :
 
 ```jsonc
 {
@@ -339,9 +351,9 @@ Depuis v1.2 (suite à un retour utilisateur sur la perte de contexte cross-tour)
 }
 ```
 
-**Pourquoi le complet et pas un slice :** les échanges restent courts en pratique (rarement plus de quelques tours). Si demain les conversations s'allongent significativement, basculer sur un résumé glissant côté client (ex : derniers 10 + résumé LLM des plus anciens) serait une évolution raisonnable.
+**Pourquoi 8 tours :** les échanges restent courts en pratique (rarement plus de quelques tours), et le workflow n8n borne de toute façon lui-même (`cleanHistory` : 8 tours en auto/help, 6 en extract) — envoyer plus serait ignoré. Si demain les conversations s'allongent significativement, basculer sur un résumé glissant côté client (ex : derniers 10 + résumé LLM des plus anciens) serait une évolution raisonnable.
 
-**Côté n8n :** le workflow doit consommer `history[]` pour reconstituer le contexte LLM. Sans ça, le champ est ignoré sans erreur (compat ascendante).
+**Côté n8n :** le workflow consomme `history[]` pour reconstituer le contexte LLM (filtrage des rôles valides + bornes de taille dans `cleanHistory`). Sans ça, le champ serait ignoré sans erreur (compat ascendante).
 
 ---
 

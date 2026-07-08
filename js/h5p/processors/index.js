@@ -318,6 +318,49 @@ const processorMetadata = {
             { machineName: 'H5P.TextUtilities', majorVersion: 1, minorVersion: 3 }
         ]
     },
+    'ImageHotspots': {
+        machineName: 'H5P.ImageHotspots',
+        version: { major: 1, minor: 11 }, // aligné éléa (1.11 : globalIconType 'numbers' + couleurs par point)
+        extraDependencies: [
+            // Préloadées par library.json 1.11
+            { machineName: 'FontAwesome', majorVersion: 4, minorVersion: 5 },
+            { machineName: 'H5P.Transition', majorVersion: 1, minorVersion: 0 },
+            // Sous-libs de contenu chargées dynamiquement au runtime (NON déclarées dans library.json) :
+            // doivent être listées ici sinon absentes du h5p.json export ET non préchargées en preview.
+            { machineName: 'H5P.Text', majorVersion: 1, minorVersion: 1 },
+            { machineName: 'H5P.Image', majorVersion: 1, minorVersion: 1 },
+            { machineName: 'H5P.Audio', majorVersion: 1, minorVersion: 5 },
+            { machineName: 'H5P.Video', majorVersion: 1, minorVersion: 6 },
+            { machineName: 'H5P.Components', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'jQuery.ui', majorVersion: 1, minorVersion: 10 }
+        ]
+    },
+    'FindTheHotspot': {
+        machineName: 'H5P.ImageHotspotQuestion',
+        version: { major: 1, minor: 8 }, // aligné éléa (paquet de référence : 1.8.22 + Question 1.5)
+        extraDependencies: [
+            // Chaîne de H5P.Question 1.5 (cf. h5p.json du paquet Éléa find-the-hotspot)
+            { machineName: 'H5P.Question', majorVersion: 1, minorVersion: 5 },
+            { machineName: 'FontAwesome', majorVersion: 4, minorVersion: 5 },
+            { machineName: 'H5P.JoubelUI', majorVersion: 1, minorVersion: 3 },
+            { machineName: 'H5P.FontIcons', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'H5P.Transition', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'H5P.Components', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'jQuery.ui', majorVersion: 1, minorVersion: 10 }
+        ]
+    },
+    'FindMultipleHotspots': {
+        machineName: 'H5P.ImageMultipleHotspotQuestion',
+        // Lib communautaire : dépend de H5P.Question 1.4 (PAS 1.5), les deux sont vendorées.
+        version: { major: 1, minor: 0 }, // aligné éléa (paquet de référence : 1.0.1 + Question 1.4)
+        extraDependencies: [
+            { machineName: 'H5P.Question', majorVersion: 1, minorVersion: 4 },
+            { machineName: 'FontAwesome', majorVersion: 4, minorVersion: 5 },
+            { machineName: 'H5P.JoubelUI', majorVersion: 1, minorVersion: 3 },
+            { machineName: 'H5P.FontIcons', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'H5P.Transition', majorVersion: 1, minorVersion: 0 }
+        ]
+    },
     'MarkTheWords': {
         machineName: 'H5P.MarkTheWords',
         version: { major: 1, minor: 11 },
@@ -380,7 +423,10 @@ const processorLoaders = {
     'QuizSet': () => import('./QuizSet.js'),
     'CoursePresentation': () => import('./CoursePresentation.js'),
     'InteractiveBook': () => import('./InteractiveBook.js'),
-    'InteractiveVideo': () => import('./InteractiveVideo.js')
+    'InteractiveVideo': () => import('./InteractiveVideo.js'),
+    'ImageHotspots': () => import('./ImageHotspots.js'),
+    'FindTheHotspot': () => import('./FindTheHotspot.js'),
+    'FindMultipleHotspots': () => import('./FindMultipleHotspots.js')
 };
 
 // QuizSetQCM et QuizSetVF utilisent le même processeur que QuizSet
@@ -431,7 +477,10 @@ const libraryToKey = {
     'H5P.QuestionSet': 'QuizSet',
     'H5P.CoursePresentation': 'CoursePresentation',
     'H5P.InteractiveBook': 'InteractiveBook',
-    'H5P.InteractiveVideo': 'InteractiveVideo'
+    'H5P.InteractiveVideo': 'InteractiveVideo',
+    'H5P.ImageHotspots': 'ImageHotspots',
+    'H5P.ImageHotspotQuestion': 'FindTheHotspot',
+    'H5P.ImageMultipleHotspotQuestion': 'FindMultipleHotspots'
 };
 
 /**

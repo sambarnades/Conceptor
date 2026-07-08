@@ -8,6 +8,7 @@ import { TEMPLATES } from '../shared/templates.js';
 import { buildMoodleBackup } from '../shared/moodle-backup.js';
 import { replacePlaceholders } from '../shared/placeholder.js';
 import { parseXml, tagText, escapeXml, rewriteTag, stripParagraphWrap, wrapP } from '../../mbz-utils.js';
+import { normalizeShortanswerFractions } from '../../moodle-formats.js';
 
 /**
  * Métadonnées du module Test/Quiz.
@@ -410,7 +411,8 @@ function buildQuestionXml(question) {
   </question>`;
         }
         case 'shortanswer': {
-            const answersXml = (c.answers || []).map(a => `
+            // Garantit ≥1 réponse à 100 % (règle d'import Moodle « fractionsnomax »), cf. moodle-formats.js
+            const answersXml = normalizeShortanswerFractions(c.answers || []).map(a => `
     <answer fraction="${a.fraction || 0}" format="moodle_auto_format">
       <text>${escapeXml(a.text || '')}</text>
       <feedback format="html"><text><![CDATA[${wrapP(a.feedback || '')}]]></text></feedback>

@@ -428,39 +428,72 @@ export async function generateHtmlFromBlocks(jsonData, opts = {}) {
         }
     });
 
-    // 4. Ancres de navigation intra-page pour #02_nav_summary
-    // Associe les liens href="#xxx" du sommaire aux h2 suivants dans le document
+    // 4. Sommaire (#02_nav_summary) : fiabilisation RGAA des ancres intra-page.
+    // Plutôt que d'apparier par texte les liens générés par l'IA (fragile : des
+    // libellés qui ne correspondent pas aux titres → mauvaise cible ou lien mort,
+    // cf. audit accessibilité #30), on RECONSTRUIT le sommaire à partir des sections
+    // réellement titrées du document : chaque titre reçoit une ancre déterministe et
+    // chaque entrée du sommaire pointe dessus → 0 lien cassé, 0 mauvaise cible.
     try {
         const navEl = finalHtmlContainer.querySelector('nav[role="navigation"]');
-        if (navEl) {
-            const links = Array.from(navEl.querySelectorAll('a[href^="#"]'))
-                .map(a => ({ id: (a.getAttribute('href') || '').replace(/^#/, '').trim(), text: (a.textContent || '').trim() }))
-                .filter(x => x.id);
-            const allH2 = Array.from(finalHtmlContainer.querySelectorAll(headingTag(0)));
-            const titledAfter = allH2
-                .filter(h2 => (navEl.compareDocumentPosition(h2) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0)
-                .map(h2 => ({ h2, container: h2.parentElement }));
-            const used = new Set();
-            links.forEach(link => {
-                if (document.getElementById(link.id)) return;
-                let target = titledAfter.find(b => !used.has(b.h2) && ((b.h2.textContent || '').trim() === link.text));
-                if (!target) {
-                    target = titledAfter.find(b => !used.has(b.h2));
-                }
-                const anchor = document.createElement('span');
-                anchor.id = link.id;
-                anchor.setAttribute('aria-hidden', 'true');
-                anchor.setAttribute('style', 'display:block; height:0; margin:0; padding:0; scroll-margin-top:96px;');
-                if (target && target.container) {
-                    target.container.insertBefore(anchor, target.h2);
-                    used.add(target.h2);
-                } else {
-                    finalHtmlContainer.appendChild(anchor);
-                }
-            });
+        const ul = navEl && navEl.querySelector('ul');
+        if (navEl && ul) {
+            // Sections = titres de niveau de bloc (headingTag(0)) situés APRÈS le sommaire.
+            const headings = Array.from(finalHtmlContainer.querySelectorAll(headingTag(0)))
+                .filter(h => (navEl.compareDocumentPosition(h) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0);
+
+            if (headings.length) {
+                // (a) Ancre déterministe (slug unique) posée sur chaque titre de section.
+                const usedIds = new Set();
+                const slugify = (s) => {
+                    const base = (s || '')
+                        .replace(/<[^>]*>/g, ' ')                          // enlève d'éventuelles balises
+                        .toLowerCase()
+                        .normalize('NFD').replace(/[̀-ͯ]/g, '')  // enlève les accents (plage Unicode diacritiques)
+                        .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                    let cand = 'sec-' + (base || 'section');
+                    let n = 2;
+                    while (usedIds.has(cand)) cand = 'sec-' + (base || 'section') + '-' + (n++);
+                    usedIds.add(cand);
+                    return cand;
+                };
+                const sections = headings.map(h => {
+                    const id = slugify(h.textContent || '');
+                    h.setAttribute('id', id);
+                    // A11Y : rendre le titre focusable programmatiquement pour que
+                    // l'activation d'une entrée du sommaire (Entrée sur #sec-…) déplace
+                    // le FOCUS clavier DANS la section, et pas seulement le défilement
+                    // (sans ceci, Entrée défile mais le focus reste sur le lien).
+                    // tabindex=-1 n'ajoute PAS le titre à l'ordre de tabulation.
+                    // Best-effort : conservé si l'assainisseur de la plateforme
+                    // préserve tabindex (dégradation silencieuse vers le scroll sinon).
+                    h.setAttribute('tabindex', '-1');
+                    // Décalage sous l'en-tête collant (comportement conservé).
+                    const st = h.getAttribute('style') || '';
+                    if (!/scroll-margin-top/.test(st)) h.setAttribute('style', st + ' scroll-margin-top:96px;');
+                    return { id, text: (h.textContent || '').trim() };
+                });
+
+                // (b) Style de lien repris tel quel du thème (préserve l'esthétique
+                //     « pilule » propre à chaque thème), sinon lien nu mais fonctionnel.
+                const templateLink = ul.querySelector('a');
+                const linkStyle = templateLink ? (templateLink.getAttribute('style') || '') : '';
+
+                // (c) Reconstruction complète de la liste du sommaire depuis les sections.
+                ul.innerHTML = '';
+                sections.forEach(sec => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.setAttribute('href', '#' + sec.id);
+                    if (linkStyle) a.setAttribute('style', linkStyle);
+                    a.textContent = sec.text;   // texte brut = pas d'injection HTML
+                    li.appendChild(a);
+                    ul.appendChild(li);
+                });
+            }
         }
     } catch (e) {
-        console.warn('Nav anchors mapping skipped', e);
+        console.warn('Nav summary rebuild skipped', e);
     }
 
     // 5. Robustesse Éléa : injecter les styles critiques du wrapper (font-family, line-height)
@@ -644,7 +677,7 @@ export async function buildLivrePreviewHtml(jsonData) {
     // Sections de chapitres : le 1er visible, les autres masqués (display inline).
     // livre.js bascule l'affichage au clic dans la table des matières.
     const chapterSections = chapters.map((ch, i) => `
-        <article class="livre-sim__chapter" data-ch="${i}" style="${i === 0 ? '' : 'display:none; '}text-align:left;">
+        <article class="livre-sim__chapter" id="livre-ch-${i}" data-ch="${i}" style="${i === 0 ? '' : 'display:none; '}text-align:left;">
             <h2 class="livre-sim__chapter-title" style="${S.chapTitle}">${escapeHtmlTags(titlePrefixes[i] + (ch.title || `Chapitre ${i + 1}`))}</h2>
             <div class="livre-sim__chapter-body" style="${S.chapBody}">${chapterContents[i]}</div>
         </article>`).join('');
@@ -668,9 +701,12 @@ export async function buildLivrePreviewHtml(jsonData) {
             ? `<ol class="livre-sim__toc-sublist" style="${S.sublist}">${node.children.map(renderTocNode).join('')}</ol>`
             : '';
         const cls = node.subchapter ? 'livre-sim__toc-item livre-sim__toc-item--sub' : 'livre-sim__toc-item';
-        // Lien cliquable = <span> (les <button>/<label> seraient retirés par RICH_HTML) ;
-        // livre.js lui ajoute role=button, tabindex et les handlers après injection.
-        return `<li class="${cls}" style="${S.li}"><span class="livre-sim__toc-link" data-ch-target="${node.i}" style="${node.subchapter ? S.linkSub : S.link}">${node.labelText}</span>${childrenHtml}</li>`;
+        // Lien cliquable = vrai <a href="#livre-ch-N"> (focusable + activable à
+        // Entrée nativement, conservé par RICH_HTML ; <button>/<label> seraient
+        // retirés). livre.js intercepte le clic pour piloter l'affichage JS (sans
+        // laisser le saut d'ancre défiler vers un chapitre masqué) et ajoute Espace
+        // en miroir d'Entrée → détournement en bouton d'onglet accessible.
+        return `<li class="${cls}" style="${S.li}"><a href="#livre-ch-${node.i}" class="livre-sim__toc-link" data-ch-target="${node.i}" style="${node.subchapter ? S.linkSub : S.link}">${node.labelText}</a>${childrenHtml}</li>`;
     };
     const tocItems = tocTree.map(renderTocNode);
 

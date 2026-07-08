@@ -7,7 +7,8 @@
 import { loadTranslations, initLanguageSwitcher } from './core/translation.js';
 import { setupFilters, generateTiles, initGenerationResultModal } from './ui/ui.js';
 import { initOcr } from './services/ocr.js';
-import { showHelpModal, setupEventListeners } from './core/utils.js';
+import { setupEventListeners } from './core/utils.js';
+import { initTutorialModal } from './ui/tutorial-modal.js';
 import { initCaramelAnimationEffects } from './ui/animations.js';
 import { initVersionChecker } from './ui/version-checker.js';
 import { initEmergencyNotifications } from './ui/emergency-notification.js';
@@ -29,6 +30,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialisation des écouteurs d'événements globaux
     setupEventListeners();
+
+    // Câblage du bouton « Tutoriel » (modale sommaire + contenu par chapitres)
+    initTutorialModal();
 
     // Initialisation du sélecteur de langue et du centre de notifications
     initLanguageSwitcher();

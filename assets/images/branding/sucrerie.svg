@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <title>Sucrerie</title>
+  <!--
+    Logo officiel Sucrerie — bicolore mauve clair.
+    Fond rose poudré FIXE (#fcc3ce) — indépendant du thème : il ne change jamais.
+    Double lecture : devanture de confiserie (auvent + comptoir) ET bocal de bonbons
+    (couvercle + panse bombée). Bicolore : auvent/couvercle mauve clair (#9a4f7e),
+    corps prune (#5d2a52). Festons galbés (ry=10) + panse à bol légèrement évasé
+    (flancs sans double inflexion, arrondi du bas lisse) l'éloignent volontairement
+    de l'icône « store » générique. Composition centrée : y de 16 à 84.
+  -->
+
+  <!-- Fond rose poudré (carré à coins arrondis, façon icône d'application), couleur figée.
+       Rayon 23,5 % = même proportion que la pastille du header (8px / 34px). -->
+  <rect x="0" y="0" width="100" height="100" rx="23.5" ry="23.5" fill="#fcc3ce"/>
+
+  <!-- Auvent / couvercle : 4 festons galbés (arcs elliptiques ry=10) — ton mauve clair -->
+  <path d="M 18 37
+           A 8 10 0 0 0 34 37
+           A 8 10 0 0 0 50 37
+           A 8 10 0 0 0 66 37
+           A 8 10 0 0 0 82 37
+           C 82 26, 78 16, 69 16
+           L 31 16
+           C 22 16, 18 26, 18 37 Z"
+        fill="#9a4f7e" />
+
+  <!-- Corps : comptoir / panse de bocal, montants r=5, plancher r=3,
+       bol légèrement évasé (flancs harmonisés, arrondi du bas conservé) — ton prune -->
+  <path d="M 21.5 55
+           A 5 5 0 0 1 26.5 50
+           A 5 5 0 0 1 31.5 55
+           L 31.5 67
+           A 3 3 0 0 0 34.5 70
+           L 65.5 70
+           A 3 3 0 0 0 68.5 67
+           L 68.5 55
+           A 5 5 0 0 1 73.5 50
+           A 5 5 0 0 1 78.5 55
+           C 80.5 64, 80.5 73, 72 84
+           L 28 84
+           C 19.5 73, 19.5 64, 21.5 55 Z"
+        fill="#5d2a52" />
+</svg>

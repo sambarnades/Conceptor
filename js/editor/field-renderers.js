@@ -58,10 +58,11 @@ export const fieldRenderers = {
     'select': renderSelectField,
     'multiCheckbox': renderMultiCheckboxField,
     'image': renderImageField,
+    'audio': renderAudioField,
+    'video': renderVideoField,
     'array': renderArrayField,
     'object': renderObjectField,
     'feedbackRanges': renderFeedbackRangesField,
-    'stringArray': renderStringArrayField,
     'stringArray': renderStringArrayField,
     'pageBlockData': renderPageBlockDataField,
     'dynamicObject': renderDynamicObjectField,
@@ -821,6 +822,19 @@ export function renderImageField(config, value, onChange, path) {
  */
 function renderImageFieldContent(config, value, onChange, path, label, hint, altPlaceholder, hasImage) {
     const container = document.createElement('div');
+    // Libellé i18n avec repli sûr : t() renvoie la clé brute quand elle manque (cas d'un
+    // dépôt miroir dont les locales n'ont pas encore la clé) → on détecte et on replie.
+    const tl = (key, fallback) => { const v = translateLabel(key); return (v && v !== key) ? v : fallback; };
+    // Image de FOND (« Image interactive ») : mêmes formats que la sidebar de création
+    // (HEIC/TIFF/AVIF/BMP/SVG convertis par processBackgroundImage) et limite 12 Mo —
+    // le filtre 4-formats/5 Mo ne vaut que pour les images de blocs (audit N3).
+    const isBackground = config.imageProcessor === 'background';
+    const acceptAttr = isBackground
+        ? 'image/*,.heic,.heif,.tif,.tiff,.avif,.bmp,.svg'
+        : 'image/jpeg,image/png,image/gif,image/webp';
+    const hintText = isBackground
+        ? tl('editor_image_hint_background', 'JPEG, PNG, WebP, HEIC, TIFF, AVIF, BMP, SVG — max 12 Mo')
+        : tl('editor_image_hint', 'JPEG, PNG, WebP — max 5 Mo');
     container.innerHTML = `
         <label class="json-editor__label">
             <i class="fas fa-image"></i> ${escapeHtml(label)}
@@ -828,12 +842,12 @@ function renderImageFieldContent(config, value, onChange, path, label, hint, alt
         ${hint ? `<span class="json-editor__hint">${escapeHtml(hint)}</span>` : ''}
 
         <div class="json-editor__image-dropzone" style="${hasImage ? 'display:none' : ''}">
-            <input type="file" accept="image/jpeg,image/png,image/gif,image/webp"
+            <input type="file" accept="${acceptAttr}"
                    class="json-editor__image-input" />
             <div class="json-editor__image-dropzone-content">
                 <i class="fas fa-cloud-upload-alt"></i>
                 <p>${translateLabel('editor_image_drop_text') || 'Glissez une image ici ou cliquez pour parcourir'}</p>
-                <span class="json-editor__image-hint">${translateLabel('editor_image_hint') || 'JPEG, PNG, WebP — max 5 Mo'}</span>
+                <span class="json-editor__image-hint">${hintText}</span>
             </div>
         </div>
 
@@ -870,10 +884,13 @@ function renderImageFieldContent(config, value, onChange, path, label, hint, alt
 
         try {
             // Import dynamique de image-manager (évite le chargement au démarrage)
-            const { processImage, registerImage } = await import('../h5p/image-manager.js');
+            const mm = await import('../h5p/image-manager.js');
 
-            const entry = await processImage(file);
-            registerImage(path, entry);
+            // Image de fond (« Image interactive ») : préserver format + grande dimension via
+            // processBackgroundImage. Repli sur processImage si indisponible (compat dépôt miroir).
+            const useBackground = config.imageProcessor === 'background' && typeof mm.processBackgroundImage === 'function';
+            const entry = useBackground ? await mm.processBackgroundImage(file) : await mm.processImage(file);
+            mm.registerImage(path, entry);
 
             // Afficher la prévisualisation
             previewImg.src = entry.dataURL;
@@ -896,9 +913,13 @@ function renderImageFieldContent(config, value, onChange, path, label, hint, alt
             console.error('[ImageField] Erreur:', err);
             let msg;
             if (err.message === 'FORMAT_INVALID') {
-                msg = translateLabel('editor_image_error_format') || 'Format non supporté. Utilisez JPEG, PNG ou WebP.';
+                msg = isBackground
+                    ? tl('editor_image_error_format_background', 'Format non supporté pour l\'image de fond.')
+                    : (translateLabel('editor_image_error_format') || 'Format non supporté. Utilisez JPEG, PNG ou WebP.');
             } else if (err.message === 'SIZE_EXCEEDED') {
-                msg = translateLabel('editor_image_error_size') || 'Image trop volumineuse (max 5 Mo).';
+                msg = isBackground
+                    ? tl('editor_image_error_size_background', 'Image trop volumineuse (max 12 Mo).')
+                    : (translateLabel('editor_image_error_size') || 'Image trop volumineuse (max 5 Mo).');
             } else {
                 msg = translateLabel('editor_image_error_processing') || 'Erreur lors du traitement de l\'image.';
             }
@@ -930,7 +951,13 @@ function renderImageFieldContent(config, value, onChange, path, label, hint, alt
         e.preventDefault();
         dropzone.classList.remove('json-editor__image-dropzone--dragover');
         const file = e.dataTransfer.files[0];
-        if (file && file.type.startsWith('image/')) {
+        // Test MIME **ou** extension : un .heic déposé a très souvent un `type` VIDE
+        // (rejet silencieux sinon — audit N3). L'extension couvre ce cas, comme la sidebar.
+        const looksLikeImage = file && (
+            (file.type && file.type.startsWith('image/')) ||
+            /\.(png|jpe?g|gif|webp|heic|heif|tiff?|avif|bmp|svg)$/i.test(file.name || '')
+        );
+        if (looksLikeImage) {
             handleFile(file);
         }
     });
@@ -1044,6 +1071,149 @@ function showImageError(wrapper, message) {
 
     // Supprimer après 5 secondes
     setTimeout(() => errorDiv.remove(), 5000);
+}
+
+// =======================================================================
+// CHAMPS MÉDIA (AUDIO / VIDÉO) — upload de fichier embarqué
+// =======================================================================
+// Utilisés par l'éditeur d'« Image interactive » (H5P.ImageHotspots) pour l'ajout MANUEL d'un
+// média dans un point. L'URL/YouTube est gérée à part par un simple champ texte du schéma ;
+// ces widgets ne couvrent que le téléversement de fichier (embarqué dans le .h5p via media-manager).
+
+/**
+ * Rend un champ d'upload audio (fichier embarqué). value: { path, mime, kind, dataURL }.
+ */
+export function renderAudioField(config, value, onChange, path) {
+    return renderMediaUploadField('audio', config, value, onChange, path);
+}
+
+/**
+ * Rend un champ d'upload vidéo (fichier embarqué). value: { path, mime, kind, dataURL }.
+ */
+export function renderVideoField(config, value, onChange, path) {
+    return renderMediaUploadField('video', config, value, onChange, path);
+}
+
+/**
+ * Implémentation partagée des champs audio/vidéo (dropzone, lecteur, suppression).
+ * @param {'audio'|'video'} kind
+ */
+function renderMediaUploadField(kind, config, value, onChange, path) {
+    const wrapper = document.createElement('div');
+    wrapper.className = `json-editor__field json-editor__field--media json-editor__field--${kind}`;
+    wrapper.dataset.path = path;
+
+    const isVideo = kind === 'video';
+    const icon = isVideo ? 'fa-film' : 'fa-music';
+    const label = translateLabel(config.label) || (isVideo ? 'Fichier vidéo' : 'Fichier audio');
+    const hint = config.hint ? translateLabel(config.hint) : '';
+    const accept = isVideo
+        ? 'video/*,.mp4,.webm,.ogv,.mov,.m4v'
+        : 'audio/*,.mp3,.ogg,.wav,.m4a,.webm,.aac,.flac';
+    const dropText = translateLabel(isVideo ? 'editor_media_drop_video' : 'editor_media_drop_audio')
+        || (isVideo ? 'Glissez une vidéo ici ou cliquez pour parcourir' : 'Glissez un audio ici ou cliquez pour parcourir');
+    const dropHint = translateLabel(isVideo ? 'editor_media_hint_video' : 'editor_media_hint_audio')
+        || (isVideo ? 'MP4, WebM — max 80 Mo' : 'MP3, OGG, WAV — max 25 Mo');
+    const removeTitle = translateLabel('editor_media_remove') || 'Supprimer le fichier';
+
+    // Une source jouable existe si on a une URL blob: (upload courant) ou un chemin http (rechargement).
+    const playableSrc = value && (value.dataURL || (typeof value.path === 'string' && /^https?:/i.test(value.path) ? value.path : ''));
+    const hasFile = !!(value && value.path);
+    const playerTag = isVideo ? 'video' : 'audio';
+
+    wrapper.innerHTML = `
+        <label class="json-editor__label"><i class="fas ${icon}"></i> ${escapeHtml(label)}</label>
+        ${hint ? `<span class="json-editor__hint">${escapeHtml(hint)}</span>` : ''}
+
+        <div class="json-editor__image-dropzone json-editor__media-dropzone" style="${hasFile ? 'display:none' : ''}">
+            <input type="file" accept="${accept}" class="json-editor__media-input" />
+            <div class="json-editor__image-dropzone-content">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>${escapeHtml(dropText)}</p>
+                <span class="json-editor__image-hint">${escapeHtml(dropHint)}</span>
+            </div>
+        </div>
+
+        <div class="json-editor__media-preview" style="${hasFile ? '' : 'display:none'}">
+            <${playerTag} class="json-editor__media-player" controls ${isVideo ? 'style="max-width:100%"' : ''} src="${playableSrc ? escapeHtml(playableSrc) : ''}"></${playerTag}>
+            <div class="json-editor__media-info">
+                <span class="json-editor__media-name">${hasFile ? escapeHtml(mediaBasename(value.path)) : ''}</span>
+                <button type="button" class="json-editor__image-remove-btn json-editor__media-remove-btn" title="${escapeHtml(removeTitle)}">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    `;
+
+    const dropzone = wrapper.querySelector('.json-editor__media-dropzone');
+    const fileInput = wrapper.querySelector('.json-editor__media-input');
+    const preview = wrapper.querySelector('.json-editor__media-preview');
+    const player = wrapper.querySelector('.json-editor__media-player');
+    const nameSpan = wrapper.querySelector('.json-editor__media-name');
+    const removeBtn = wrapper.querySelector('.json-editor__media-remove-btn');
+
+    async function handleFile(file) {
+        if (!file) return;
+        try {
+            const mm = await import('../h5p/image-manager.js');
+            const entry = kind === 'video' ? await mm.processVideoFile(file) : await mm.processAudioFile(file);
+            mm.registerMedia(path, entry);
+
+            player.src = entry.dataURL;
+            nameSpan.textContent = mediaBasename(entry.h5pPath);
+            dropzone.style.display = 'none';
+            preview.style.display = '';
+
+            onChange(path, { path: entry.h5pPath, mime: entry.mime, kind, dataURL: entry.dataURL });
+        } catch (err) {
+            console.error('[MediaField] Erreur:', err);
+            let msg;
+            if (err.message === 'FORMAT_INVALID') {
+                msg = translateLabel('editor_media_error_format') || 'Format non supporté.';
+            } else if (err.message === 'SIZE_EXCEEDED') {
+                msg = translateLabel('editor_media_error_size') || 'Fichier trop volumineux.';
+            } else {
+                msg = translateLabel('editor_media_error_processing') || 'Erreur lors du traitement du fichier.';
+            }
+            showImageError(wrapper, msg);
+        }
+    }
+
+    fileInput.addEventListener('change', (e) => {
+        handleFile(e.target.files[0]);
+        fileInput.value = '';
+    });
+    dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('json-editor__image-dropzone--dragover'); });
+    dropzone.addEventListener('dragleave', (e) => { e.preventDefault(); dropzone.classList.remove('json-editor__image-dropzone--dragover'); });
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('json-editor__image-dropzone--dragover');
+        handleFile(e.dataTransfer.files[0]);
+    });
+    dropzone.addEventListener('click', (e) => { if (e.target !== fileInput) fileInput.click(); });
+
+    removeBtn.addEventListener('click', async () => {
+        const { unregisterMedia } = await import('../h5p/image-manager.js');
+        unregisterMedia(path);
+        player.removeAttribute('src');
+        player.load && player.load();
+        nameSpan.textContent = '';
+        preview.style.display = 'none';
+        dropzone.style.display = '';
+        onChange(path, null);
+    });
+
+    return wrapper;
+}
+
+/**
+ * Extrait le nom de fichier d'un chemin H5P ou d'une URL.
+ */
+function mediaBasename(p) {
+    if (!p || typeof p !== 'string') return '';
+    const clean = p.split('?')[0].split('#')[0];
+    const idx = clean.lastIndexOf('/');
+    return idx >= 0 ? clean.slice(idx + 1) : clean;
 }
 
 /**

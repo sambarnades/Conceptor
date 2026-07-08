@@ -81,7 +81,10 @@ export const H5P_LIBRARY_TO_MODULE_KEY = Object.freeze({
     'H5P.QuestionSet':       'QuizSet',
     'H5P.CoursePresentation':'CoursePresentation',
     'H5P.InteractiveBook':   'InteractiveBook',
-    'H5P.InteractiveVideo':  'InteractiveVideo'
+    'H5P.InteractiveVideo':  'InteractiveVideo',
+    'H5P.ImageHotspots':     'ImageHotspots',
+    'H5P.ImageHotspotQuestion': 'FindTheHotspot',
+    'H5P.ImageMultipleHotspotQuestion': 'FindMultipleHotspots'
 });
 
 export function h5pExportModuleKey(mainLibrary, contentJson) {

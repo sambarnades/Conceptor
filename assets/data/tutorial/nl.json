@@ -1,0 +1,728 @@
+{
+  "meta": {
+    "lang": "nl",
+    "version": 2
+  },
+  "chapters": [
+    {
+      "id": "welcome",
+      "icon": "home",
+      "title": "Welkom bij Caramel",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "**Caramel** staat voor « **Création Assistée de Ressources et d'Activités Magistère et Éléa** » (AI-ondersteunde creatie van bronnen en activiteiten voor Magistère en Éléa): het is een **werkplaats om lesactiviteiten te maken**, gemaakt **door leerkrachten, voor leerkrachten**, **in de eerste plaats bedoeld voor Éléa en Magistère** — maar het werkt ook voor **Moodle**. U beschrijft wat u wilt, een AI bereidt de inhoud voor, u controleert en past die aan, en vervolgens krijgt u het bestand klaar om te uploaden."
+        },
+        {
+          "type": "h",
+          "text": "Onze filosofie: u houdt de controle"
+        },
+        {
+          "type": "p",
+          "text": "De AI is een **assistente**, maar **u beslist**. Op elk moment:"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "**Vooraf**: u bepaalt het pedagogische kader door de beschrijvingsvelden in te vullen.",
+            "**Tijdens**: de door de AI gegenereerde inhoud is **volledig bewerkbaar** in de editor, om die op uw bedoeling af te stemmen.",
+            "**Achteraf**: zelfs nadat het bestand is gedownload, kunt u het indien nodig elders **openen en bewerken** — niets ligt vast, het is van u."
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Uw gegevens zijn beschermd"
+        },
+        {
+          "type": "p",
+          "text": "Caramel is zo ontworpen dat **er geen enkel pedagogisch gegeven wordt blootgesteld**. Hier is in het kort wat bij u blijft en wat er wordt verstuurd — en waarheen."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Uw documenten blijven op uw computer.** Wanneer u in de geavanceerde modus een bestand (PDF, afbeelding…) plaatst, gebeurt de tekstextractie **volledig in uw browser**: er wordt niets naar een server gestuurd.",
+            "**Wat wél wordt verstuurd, blijft in Frankrijk gehost.** Uw generatieverzoeken lopen via **gedeelde universitaire servers** (project **ILaaS**); spraak (microfoon of audiobestand) wordt getranscribeerd door **Albert**, de **soevereine dienst van de DINUM**. Geen van beide **verzamelt of verkoopt** uw gegevens — en **de audio wordt niet bewaard**.",
+            "**Kopiëren en plakken naar een externe AI is uw eigen keuze.** Als u een prompt kopieert om die in een dienst van derden te gebruiken, hangt de bescherming van uw gegevens dan af van **de voorwaarden van die dienst**."
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "Het traject is altijd hetzelfde: **beschrijven → kiezen → genereren → controleren → downloaden**. Het wordt in de volgende hoofdstukken uitgelegd. Om deze handleiding opnieuw te openen, klikt u rechtsboven op **‘Handleiding’**."
+        }
+      ]
+    },
+    {
+      "id": "describe",
+      "icon": "pencil",
+      "title": "Stap 1 — Beschrijf wat u nodig heeft",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Alles begint hier. **Hoe duidelijker uw beschrijving, hoe relevanter het resultaat.** Er zijn twee manieren om u uit te drukken, afhankelijk van of u snel wilt gaan of nauwkeurig wilt afbakenen."
+        },
+        {
+          "type": "h",
+          "text": "De snelle modus"
+        },
+        {
+          "type": "p",
+          "text": "Ideaal om meteen tot de kern te komen. U vult **twee velden** in:"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Wie bent u?** — uw vak en het niveau van uw leerlingen (bv. « biologieleerkracht in de eerste graad »).",
+            "**Wat wilt u maken?** — het onderwerp en het gewenste type oefening (bv. « een quiz over de spijsvertering »)."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/caramel-mode-rapide.png",
+          "alt": "De snelle modus: twee velden om te beschrijven wie u bent en wat u wilt maken."
+        },
+        {
+          "type": "h",
+          "text": "De geavanceerde modus"
+        },
+        {
+          "type": "p",
+          "text": "Voor een meer gestructureerde aanvraag. Deze modus biedt **precieze velden** (vak, niveau, thema, aantal vragen, bijzondere instructies…) en maakt het mogelijk om **een document bij te voegen** of **een webpagina te importeren** als startpunt."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/caramel-mode-avance.png",
+          "alt": "De geavanceerde modus met zijn gedetailleerde velden: vak, niveau, thema, documenten."
+        },
+        {
+          "type": "plain",
+          "text": "Als u de zone « documenten » leeg laat, baseert de AI zich **uitsluitend op haar algemene kennis**. Door uw les erin te plaatsen, dwingt u haar om **dicht bij uw inhoud te blijven** — u bepaalt het."
+        },
+        {
+          "type": "h",
+          "text": "Het extraatje: de verankering in de officiële leerplannen"
+        },
+        {
+          "type": "p",
+          "text": "Wanneer u het **vak**, het **onderwerp** en het **niveau** invult, kan Caramel **de generatie verankeren in de officiële Franse schoolprogramma's** (Éduscol), afhankelijk van de betreffende cyclus. De geproduceerde inhoud sluit dan beter aan bij de verwachtingen van uw klas."
+        },
+        {
+          "type": "plain",
+          "text": "Simpel gezegd is een **RAG** (« augmented retrieval ») een **referentiebibliotheek** waarin de AI **de juiste fragmenten gaat zoeken** vóór het schrijven — hier de officiële leerplannen — in plaats van uit het geheugen te antwoorden. Resultaat: activiteiten die beter zijn afgestemd op het leerplan."
+        },
+        {
+          "type": "tip",
+          "text": "Deze verankering is **automatisch en niet blokkerend**: als u geen vak of niveau opgeeft, werkt de generatie toch, alleen zonder dit leerplanhouvast. Deze informatie geven kost niets en verbetert het resultaat."
+        }
+      ]
+    },
+    {
+      "id": "choose",
+      "icon": "grid",
+      "title": "Stap 2 — Kies het type activiteit",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Zodra uw behoefte is beschreven, worden de **activiteitentegels** klikbaar. Elke tegel komt overeen met een type oefening. Klik op de tegel die past."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/caramel-activites.png",
+          "alt": "Het raster met beschikbare activiteitentegels in Caramel."
+        },
+        {
+          "type": "h",
+          "text": "Twee grote families"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Familie",
+            "Wat het is",
+            "Geproduceerde formaten"
+          ],
+          "rows": [
+            [
+              "**H5P**",
+              "**Interactieve** activiteiten: meerkeuzevragen, waar/onwaar, invultekst, sleep-en-neerzet, kruiswoordraadsels, geheugenkaarten, woordenlijst, cursuspresentatie, interactief boek, interactieve video…",
+              "**.h5p**"
+            ],
+            [
+              "**Éléa / Moodle**",
+              "Activiteiten en bronnen voor deze platforms: Toets, meerkeuze, Koppelen, Miljonair, Pagina, Boek, Woordenlijst, Opdracht…",
+              "**.mbz**, **.xml**, **.GIFT**"
+            ]
+          ]
+        },
+        {
+          "type": "warn",
+          "text": "De tegels worden **pas actief zodra de beschrijving is ingevuld** in stap 1. Als een tegel grijs blijft, ga dan terug om uw behoefte te beschrijven (of vraag Caramélia om dat te doen)."
+        },
+        {
+          "type": "plain",
+          "text": "**H5P** is een **open en gratis standaard** voor interactieve activiteiten, overal in het onderwijs gebruikt (Moodle, Éléa, Magistère, La Sucrerie…). Caramel bevat de **officiële H5P-bibliotheken** van elk type activiteit: de geproduceerde bestanden zijn dus **100% compatibel** met deze platforms."
+        },
+        {
+          "type": "plain",
+          "text": "**Moodle** is de motor van de online cursusplatforms van het Franse onderwijs: **Éléa** en **Magistère** zijn erop gebaseerd. Daarom kan Caramel ook eigen Moodle-formaten produceren — een **.mbz-back-up**, of **.xml / GIFT-vragen** voor een vragenbank."
+        },
+        {
+          "type": "tip",
+          "text": "Twijfelt u over het type? De **filters** bovenaan het raster (per platform, per thema) verkleinen de lijst, en de naam van elke tegel beschrijft de oefening die zij produceert. Caramélia kan u ook het meest geschikte type aanraden."
+        }
+      ]
+    },
+    {
+      "id": "generate",
+      "icon": "rocket",
+      "title": "Stap 3 — Genereer de inhoud",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Nadat u op een tegel heeft geklikt, opent er een venster. Hier **vraagt u de inhoud aan de AI**. Twee opties, afhankelijk van het gewenste controleniveau."
+        },
+        {
+          "type": "h",
+          "text": "Optie A — Genereren met één klik"
+        },
+        {
+          "type": "p",
+          "text": "De snelle weg. Klik op **« Genereren met één klik »**: Caramel stuurt uw aanvraag naar de AI en vult de activiteit zelf in. In enkele seconden is de inhoud klaar om te bekijken."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/modale_mode_simple.PNG",
+          "alt": "De eenvoudige weergave met de knop Genereren met één klik."
+        },
+        {
+          "type": "plain",
+          "text": "De kleine **pijl** rechts van de knop maakt het mogelijk om **het AI-model te kiezen** (een snelle, een krachtigere…). Standaard is er al een goed model geselecteerd: u hoeft er niets aan te veranderen om goed te starten. Dit is nog een voorbeeld waarbij **u de controle houdt**."
+        },
+        {
+          "type": "h",
+          "text": "Optie B — Een externe AI gebruiken"
+        },
+        {
+          "type": "p",
+          "text": "Voor maximale controle. Caramel toont de **prompt** (de instructie bestemd voor de AI), die u kunt lezen, wijzigen en elders gebruiken."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "**Kopieer de voorgestelde prompt** (kopieerknop).",
+            "**Plak hem in de AI van uw keuze** (bijvoorbeeld Le Chat van Mistral, of een andere assistent).",
+            "**Haal het antwoord op** en **plak het** in Caramel.",
+            "Caramel **controleert en repareert** de inhoud automatisch voordat hij die gebruikt."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/modale_mode_guide.PNG",
+          "alt": "De begeleide weergave met de prompt om te kopiëren naar een externe AI."
+        },
+        {
+          "type": "plain",
+          "text": "Een **prompt** is gewoon het instructiebericht dat men aan een AI geeft. Caramel schrijft het voor u; het is aan u om het aan te passen als u dat wenst."
+        },
+        {
+          "type": "h",
+          "text": "Veel vragen? Caramel regelt het"
+        },
+        {
+          "type": "p",
+          "text": "Voor een activiteit met **veel elementen** (bijvoorbeeld een quiz van 20 of 30 vragen) **verdeelt Caramel het werk automatisch in meerdere stappen** en toont een **voortgangsbalk**. Voor u blijft het **één enkele klik** — maar zonder deze truc zou zo'n grote aanvraag onderweg kunnen afbreken."
+        },
+        {
+          "type": "warn",
+          "text": "Laat Caramel tijdens een stapsgewijze generatie **de klus afmaken** (de voortgangsbalk toont het) voordat u gaat bekijken. Het resultaat is een volledige quiz, netjes samengevoegd."
+        }
+      ]
+    },
+    {
+      "id": "preview",
+      "icon": "eye",
+      "title": "Stap 4 — Bekijken en testen",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Zodra de inhoud is gegenereerd, **neem de tijd om die te controleren** in het weergavevenster. De activiteit gedraagt zich daar precies zoals bij uw leerlingen."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Maak de oefening zelf**: klik op de antwoorden, sleep de labels, vul de gaten in.",
+            "**Controleer de correcties**: worden de juiste antwoorden en de uitleg correct weergegeven?",
+            "**Controleer de teksten**: spelling, formules, afbeeldingen — komt alles overeen met uw bedoeling?"
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/modale_visualisation.PNG",
+          "alt": "Het weergavevenster: de activiteit wordt rechtstreeks in de simulator getest."
+        },
+        {
+          "type": "plain",
+          "text": "Dit venster is een **simulator**: het bootst de uiteindelijke weergave na zonder iets ergens naartoe te sturen. U kunt zo vaak testen als nodig is."
+        },
+        {
+          "type": "tip",
+          "text": "Een detail om te corrigeren? U hoeft niet alles opnieuw te genereren: ga naar de **bewerking** (volgend hoofdstuk) om handmatig aan te passen. U kunt ook een generatie opnieuw starten als het resultaat u niet bevalt. **U bent degene die valideert.**"
+        }
+      ]
+    },
+    {
+      "id": "edit",
+      "icon": "sliders",
+      "title": "Stap 5 — Bewerk de inhoud",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Zin om een vraag, een woord of een afbeelding te wijzigen? Klik op **« Bewerken »** (potloodpictogram): een **visuele editor** opent, waarin elk veld van de activiteit rechtstreeks aanpasbaar is, zonder iets opnieuw te importeren."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/caramel-menu-edition.webp",
+          "alt": "Het bewerkingsmenu: de inhoud tot in het kleinste detail aanpassen."
+        },
+        {
+          "type": "h",
+          "text": "De tekst opmaken"
+        },
+        {
+          "type": "p",
+          "text": "De velden die het toelaten, tonen een **werkbalk** wanneer u erin klikt: vet, cursief, lijsten, enz. De opmaak blijft behouden in de uiteindelijke activiteit."
+        },
+        {
+          "type": "h",
+          "text": "Wiskundige formules invoegen"
+        },
+        {
+          "type": "p",
+          "text": "Voor de wetenschappelijke vakken kunt u **wiskundige formules** toevoegen die er verzorgd en leesbaar uitzien, rechtstreeks in de betreffende velden. Een assistent helpt u ze op te stellen zonder de technische taal (LaTeX) te kennen."
+        },
+        {
+          "type": "h",
+          "text": "Woorden vinden (slepen, markeren, aanvullen)"
+        },
+        {
+          "type": "p",
+          "text": "Voor de activiteiten **Woorden slepen**, **Woorden markeren** of **Invultekst** duidt u de doelwoorden aan in de tekst zelf: de editor zet ze om in gaten of labels."
+        },
+        {
+          "type": "h",
+          "text": "Invultekst van de Éléa-toets"
+        },
+        {
+          "type": "p",
+          "text": "Voor de **Invultekst**-vragen van de activiteit Toets (Éléa) vergemakkelijkt een speciale editor het maken van de in te vullen ruimtes en hun aanvaarde antwoorden."
+        },
+        {
+          "type": "h",
+          "text": "Uw afbeeldingen toevoegen"
+        },
+        {
+          "type": "p",
+          "text": "Sommige activiteiten aanvaarden **uw eigen afbeeldingen**: sleep ze in het daarvoor bestemde veld (kaarten, te sorteren elementen, achtergrondafbeelding…). Ze worden rechtstreeks in het uiteindelijke bestand geïntegreerd."
+        },
+        {
+          "type": "h",
+          "text": "Geavanceerde instellingen"
+        },
+        {
+          "type": "p",
+          "text": "Elke activiteit biedt **optionele instellingen** (ingeklapte sectie onderaan de editor): aantal pogingen, weergave van de hints, gedrag van de knoppen… Te verkennen zodra het essentiële op zijn plaats staat."
+        },
+        {
+          "type": "tip",
+          "text": "Ga na elke wijziging **terug om de activiteit te bekijken** om de weergave te controleren. Het heen en weer tussen bewerken ↔ bekijken is de beste manier om een perfect resultaat te bereiken."
+        }
+      ]
+    },
+    {
+      "id": "download",
+      "icon": "download",
+      "title": "Stap 6 — Downloaden",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Bevalt uw activiteit u? Dan hoeft u die alleen nog maar **op te halen**. Het downloadmenu biedt meerdere formaten, geordend in families."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/vers-sucrerie.webp",
+          "alt": "De actiebalk: downloaden (H5P, DOCX, ODT, PDF), delen « Naar La Sucrerie », of bewerken."
+        },
+        {
+          "type": "table",
+          "head": [
+            "Familie",
+            "Formaten",
+            "Waarvoor"
+          ],
+          "rows": [
+            [
+              "**Interactief** (het origineel)",
+              "**H5P** (.h5p) · **Moodle** (.mbz) · **XML / GIFT** (.xml, .GIFT) · **HTML** (.html)",
+              "De **interactieve** activiteit importeren in Éléa, Magistère of Moodle. Dit is de belangrijkste optie."
+            ],
+            [
+              "**Document**",
+              "**Word** (.docx) · **LibreOffice** (.odt)",
+              "Een **tekstversie** verkrijgen om af te drukken of te wijzigen. De wiskundige formules blijven bewerkbaar."
+            ],
+            [
+              "**PDF**",
+              "**PDF** (.pdf)",
+              "Een vaste versie, perfect om af te drukken of te verspreiden."
+            ]
+          ]
+        },
+        {
+          "type": "plain",
+          "text": "Het formaat **.h5p** is het meest veelzijdig: het behoudt alle interactiviteit en opent overal (Éléa, Magistère, Moodle, La Sucrerie)."
+        },
+        {
+          "type": "warn",
+          "text": "In een **Word- / PDF**-versie worden sterk interactieve activiteiten noodgedwongen **vereenvoudigd** (een sleep-en-neerzet wordt bijvoorbeeld een invullijst): dat is normaal — het oorspronkelijke **interactieve formaat** behoudt de volledige werking."
+        },
+        {
+          "type": "tip",
+          "text": "Wilt u uw creatie **delen** met andere leerkrachten? De knop **« Naar La Sucrerie »** (rechts van de formaten) publiceert die op de zusterbibliotheek van Caramel — zie het bonushoofdstuk « Delen op La Sucrerie »."
+        }
+      ]
+    },
+    {
+      "id": "integrate",
+      "icon": "upload",
+      "title": "Integreren in Éléa / Magistère / Moodle",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Zodra het bestand is gedownload, ziet u hier hoe u het aan uw cursus toevoegt. De te volgen werkwijze hangt af van het **formaat** van het bestand. De onderstaande schermafbeeldingen tonen het voorbeeld van Éléa (de aanpak lijkt sterk op die van Magistère en Moodle)."
+        },
+        {
+          "type": "h",
+          "text": ".h5p-bestand (interactieve activiteit)"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "**Activeer de bewerkingsmodus** in uw cursus.",
+            "**Voeg een activiteit toe** van het type **H5P** (of « Interactieve inhoud »).",
+            "**Plaats het .h5p-bestand** in de daarvoor bestemde zone en **sla op**."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-ajouter-h5p.webp",
+          "alt": "Een H5P-activiteit toevoegen in een Éléa-cursus."
+        },
+        {
+          "type": "h",
+          "text": ".mbz-bestand (Moodle-back-up)"
+        },
+        {
+          "type": "p",
+          "text": "Dit formaat voegt een of meer activiteiten aan uw cursus toe **zonder** het bestaande te overschrijven, via het **herstel**-hulpmiddel."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Open uw cursus, en dan **« Herstel »** (back-up- / herstelmenu).",
+            "**Laad het .mbz-bestand** en kies vervolgens **« Samenvoegen »** met de huidige cursus.",
+            "Doorloop de voorgestelde stappen tot de bevestiging."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-import-parcours-1.webp",
+          "alt": "Een .mbz-bestand herstellen in Éléa — het bestand plaatsen."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-import-parcours-3.webp",
+          "alt": "Een .mbz-bestand herstellen in Éléa — samenvoegen met de cursus."
+        },
+        {
+          "type": "h",
+          "text": ".xml-bestand (Woordenlijst)"
+        },
+        {
+          "type": "p",
+          "text": "Om een lijst met definities in een **woordenlijst** te importeren: maak een woordenlijst in de cursus, gebruik dan de optie **« Vermeldingen importeren »** en selecteer het .xml-bestand."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-glossaire-import-2.webp",
+          "alt": "Vermeldingen importeren in een Éléa-woordenlijst vanuit een XML-bestand."
+        },
+        {
+          "type": "h",
+          "text": ".xml- en .GIFT-bestanden (vragenbank)"
+        },
+        {
+          "type": "p",
+          "text": "Om vragen aan uw **vragenbank** toe te voegen: kies vanuit de bank **« Importeren »**, selecteer het formaat (Moodle XML of GIFT) en laad het bestand."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-importation-banquequestions-1.webp",
+          "alt": "Vragen importeren in de Éléa-vragenbank."
+        },
+        {
+          "type": "h",
+          "text": ".html-bestand (pagina-inhoud)"
+        },
+        {
+          "type": "p",
+          "text": "Om rechtstreeks inhoud in een **tekstzone** in te voegen: open de editor van de zone, schakel over naar de modus **« broncode » (HTML)**, en plak dan de inhoud van het bestand."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-import-page-code-html.webp",
+          "alt": "HTML plakken in broncodemodus in een Éléa-pagina."
+        },
+        {
+          "type": "tip",
+          "text": "Het formaat **.h5p** is het eenvoudigst te integreren en het meest gebruikelijk. Geef het bij twijfel de voorkeur."
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "icon": "share",
+      "title": "Als bonus — Delen op La Sucrerie",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Trots op uw activiteit? **Publiceer die op La Sucrerie**, de zusterbibliotheek van Caramel, zodat andere leerkrachten die terugvinden en hergebruiken. Alles vertrekt vanuit de knop **« Naar La Sucrerie »** van het downloadmenu (stap 6)."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/vers-sucrerie.webp",
+          "alt": "De roze knop « Naar La Sucrerie » in de downloadbalk."
+        },
+        {
+          "type": "plain",
+          "text": "**La Sucrerie** is een grote gemeenschappelijke kast met activiteiten, **gratis en herbruikbaar** (Creative Commons-licentie). **Caramel dient om te creëren**, **La Sucrerie om te delen en te vinden** — beide spreken dezelfde taal."
+        },
+        {
+          "type": "h",
+          "text": "Hoe het werkt"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Klik op **« Naar La Sucrerie »** (de roze knop, rechts van de downloadformaten).",
+            "Een **AI bereidt de fiche voor** in uw plaats (ongeveer 15 seconden): titel, beschrijving, doelstellingen, trefwoorden, vak en niveau.",
+            "**Controleer en corrigeer** deze vooraf ingevulde fiche, en vul dan uw **naam** in (weergegeven als auteur) en uw **academische e-mailadres**.",
+            "Vink het vakje van de **licentie** aan en **bevestig** dan: een automatische controle verifieert de inhoud, en de activiteit wordt in de catalogus gepubliceerd."
+          ]
+        },
+        {
+          "type": "warn",
+          "text": "De **publicatienaam** wordt weergegeven als auteur van de activiteit: standaard uw **voor- en achternaam**, maar u kunt gerust een **pseudoniem** kiezen. Uw **e-mail** daarentegen blijft **privé** (versleuteld, nooit weergegeven) — die dient alleen om u een **beheerlink** te sturen om de activiteit later te wijzigen of te verwijderen."
+        },
+        {
+          "type": "plain",
+          "text": "**Uploaden** is het publiceren van uw activiteit in de openbare catalogus. De AI **stelt** de informatie voor om die goed te ordenen, maar **u houdt de controle**: alles blijft aanpasbaar vóór het bevestigen, en er wordt niets gepubliceerd zonder uw akkoord."
+        },
+        {
+          "type": "tip",
+          "text": "U behoudt de controle zelfs na publicatie: de **beheerlink** die u per e-mail ontvangt, laat u toe om uw activiteit te **wijzigen of te verwijderen** wanneer u maar wilt."
+        }
+      ]
+    },
+    {
+      "id": "caramelia",
+      "icon": "chat",
+      "title": "Caramélia, uw assistente",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "U kent nu het volledige traject — hier is een **snelkoppeling**. **Caramélia** is de **mascotte** van Caramel: het **logo van de site**, dat we een **menselijk gezicht** wilden geven. Ze is ook uw **assistente** en kan **alle voorgaande stappen voor u uitvoeren**. U vindt haar **rechtsonder in het scherm**; één klik opent een **chatvenster** waarin u haar schrijft zoals u een collega zou schrijven."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/caramelia-assistant.png",
+          "alt": "Het geopende venster van Caramélia, met haar welkomstbericht en de knoppen « Hulp op de site » en « Een activiteit maken »."
+        },
+        {
+          "type": "h",
+          "text": "Ze kan twee dingen"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Uw vragen beantwoorden** over Caramel (« Hoe integreer ik een bestand in Éléa? », « Wat is een invultekst? », « Wat gebeurt er met mijn gegevens? »).",
+            "**U begeleiden bij het maken**: beschrijf uw behoefte in gewone taal (« een meerkeuzequiz van 10 vragen over breuken voor het vijfde leerjaar ») en zij **bereidt alles voor u voor**."
+          ]
+        },
+        {
+          "type": "plain",
+          "text": "Concreet **maakt Caramélia de activiteit niet zelf**: zij **vult de velden in en opent de juiste tegel voor u**, precies zoals u dat met de hand zou doen. Het resultaat is dus identiek aan wat u zonder haar zou krijgen — zij laat u alleen tijd winnen."
+        },
+        {
+          "type": "h",
+          "text": "Meerdere activiteiten in één keer"
+        },
+        {
+          "type": "p",
+          "text": "Dit is een van haar grote troeven. Vraag bijvoorbeeld **« een meerkeuzequiz en geheugenkaarten over de waterkringloop »**: Caramélia toont een **aankruislijst** van de activiteiten die zij voorstelt. U vinkt de activiteiten aan die u interesseren, u bevestigt, en zij **start alle generaties na elkaar**."
+        },
+        {
+          "type": "tip",
+          "text": "Aan het einde van een reeks van meerdere activiteiten verzamelt een knop **« Een ZIP downloaden »** alle bestanden in één keer. Ideaal om een hele lessenreeks in enkele minuten voor te bereiden."
+        },
+        {
+          "type": "h",
+          "text": "Haar een startdocument geven"
+        },
+        {
+          "type": "p",
+          "text": "Een **paperclip** (of gewoon slepen en neerzetten) maakt het mogelijk om een **document of afbeelding** bij te voegen (PDF, Word, diavoorstelling, foto…). Caramélia haalt daar de tekst uit om als basis te gebruiken — handig om een bestaande les om te vormen tot oefeningen. U kunt ook tegen haar **spreken** dankzij de microfoon."
+        },
+        {
+          "type": "warn",
+          "text": "**U houdt de controle, zelfs met Caramélia.** Vóór elke generatie toont zij een **samenvatting** (wie, wat, niveau, aantal vragen, gekozen activiteiten) met drie knoppen: **Starten**, **Van activiteit wisselen**, **Annuleren**. **Er wordt niets verstuurd zonder uw bevestiging.**"
+        },
+        {
+          "type": "plain",
+          "text": "Om juist te antwoorden, baseert Caramélia zich op een **documentaire basis** (een « RAG »): in plaats van te improviseren, **haalt zij betrouwbare fragmenten** uit de documentatie van Caramel en neemt zij de exacte labels over van de knoppen die u op het scherm ziet. (De **RAG** is ook wat het mogelijk maakt om de generatie te verankeren in de officiële leerplannen — zie de stap « Beschrijf wat u nodig heeft ».)"
+        }
+      ]
+    },
+    {
+      "id": "community",
+      "icon": "assets/images/branding/tchap.svg",
+      "title": "In contact komen met de gemeenschap",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Caramel is een **levend** project, en uw mening telt. Een **gespreksruimte** brengt de leerkrachten samen die Caramel gebruiken op **Tchap**, de beveiligde berichtendienst van de Franse Staat."
+        },
+        {
+          "type": "h",
+          "text": "Waarvoor dient deze ruimte?"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Uw vragen stellen** en hulp krijgen bij het maken, bewerken of integreren in uw cursussen.",
+            "**Een probleem melden** of een verbetering voorstellen.",
+            "**De nieuwigheden ontdekken**: de ontwikkelingen van Caramel worden er aangekondigd.",
+            "**Uw praktijken delen** met andere collega's."
+          ]
+        },
+        {
+          "type": "plain",
+          "text": "**Tchap** is de officiële berichtendienst van de Franse overheid, voorbehouden aan de ambtenaren van de Staat. De verbinding gebeurt met uw professionele adres, zonder een nieuw account aan te maken."
+        },
+        {
+          "type": "cta",
+          "href": "https://edurl.fr/caramel-tchap",
+          "label": "Word lid van de Tchap-ruimte van Caramel",
+          "icon": "assets/images/branding/tchap.svg"
+        },
+        {
+          "type": "tip",
+          "text": "De link naar de ruimte is ook beschikbaar bovenaan elke pagina, naast de knop « Handleiding ». En voor een snelle vraag antwoordt **Caramélia** rechtstreeks in de applicatie."
+        }
+      ]
+    },
+    {
+      "id": "faq",
+      "icon": "help",
+      "title": "Veelgestelde vragen & woordenlijst",
+      "blocks": [
+        {
+          "type": "h",
+          "text": "Veelgestelde vragen"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Hoe genereert de AI haar inhoud?** U beschrijft uw behoefte; Caramel maakt daar een **nauwkeurige instructie** van voor de AI, verrijkt met de **officiële leerplannen** (de RAG), en stuurt die naar een **in Frankrijk gehoste AI** (ILaaS) die de inhoud opstelt. Caramel **controleert en corrigeert** die voordat de activiteit wordt gevuld — en **u** leest na en past aan.",
+            "**Werkt het op Moodle?** Ja. Caramel produceert **standaardformaten** (**.h5p**, **.mbz**, **.xml / GIFT**) die **Moodle native leest**. **Éléa** en **Magistère** zijn trouwens op Moodle gebouwd: wat voor hen werkt, werkt op elk Moodle-platform.",
+            "**Worden mijn gegevens ergens naartoe gestuurd?** Uw teksten dienen alleen om de activiteit via de AI te genereren; Caramel bewaart uw inhoud niet. Het uithalen van de tekst uit uw documenten en afbeeldingen gebeurt **in uw browser**.",
+            "**Het resultaat van de AI is onvolmaakt, wat moet ik doen?** Pas het handmatig aan in de editor, of start de generatie opnieuw met een preciezere beschrijving. U bent altijd degene die valideert.",
+            "**Kan ik meerdere activiteiten in één keer maken?** Ja, door het aan **Caramélia** te vragen: zij stelt een aankruislijst voor en verzamelt vervolgens de bestanden in een ZIP.",
+            "**Welk formaat kiezen voor Éléa of Magistère?** Het **.h5p** in de meeste gevallen: het is interactief en opent overal."
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Woordenlijst — de woorden van de site"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Woord",
+            "Wat het betekent"
+          ],
+          "rows": [
+            [
+              "**Activiteit**",
+              "Een interactieve leerbron (quiz, oefening, spel…)."
+            ],
+            [
+              "**Caramélia**",
+              "De geïntegreerde assistente (snoepknop) die uw vragen beantwoordt en de activiteiten in uw plaats voorbereidt."
+            ],
+            [
+              "**Genereren**",
+              "De AI vragen om de inhoud voor te bereiden op basis van uw beschrijving."
+            ],
+            [
+              "**Prompt**",
+              "Het instructiebericht dat aan een AI wordt gegeven. Caramel schrijft het voor u."
+            ],
+            [
+              "**RAG**",
+              "Een referentiebasis waarin de AI betrouwbare fragmenten haalt vóór het antwoorden (hier: de documentatie van Caramel, en de officiële leerplannen)."
+            ],
+            [
+              "**Officiële leerplannen**",
+              "De Franse schoolprogramma's (Éduscol) waarin de generatie zich kan verankeren afhankelijk van het vak en het niveau."
+            ],
+            [
+              "**Stapsgewijze generatie**",
+              "Het automatisch opdelen van een grote aanvraag (veel vragen) om onderbrekingen te vermijden — transparant voor u."
+            ],
+            [
+              "**H5P (.h5p)**",
+              "De open standaard van interactieve activiteiten, leesbaar door Éléa, Magistère en Moodle."
+            ],
+            [
+              "**Moodle (.mbz / .xml)**",
+              "De motor van de cursusplatforms (Éléa, Magistère). .mbz = back-up; .xml / GIFT = vragen."
+            ],
+            [
+              "**GIFT**",
+              "Een eenvoudig tekstformaat om vragen in een vragenbank te importeren."
+            ],
+            [
+              "**Éléa / Magistère**",
+              "Online cursusplatforms van het Franse onderwijs, gebaseerd op Moodle."
+            ],
+            [
+              "**Visuele editor**",
+              "De interface die het mogelijk maakt om de activiteit veld per veld te wijzigen, zonder code."
+            ],
+            [
+              "**Simulator**",
+              "Het weergavevenster dat de uiteindelijke weergave nabootst om de activiteit te testen."
+            ],
+            [
+              "**La Sucrerie**",
+              "De zusterbibliotheek waar men activiteiten **deelt en vindt**."
+            ]
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "Een vraag die hier onbeantwoord blijft? Stel die aan **Caramélia**, of op de **Tchap-ruimte** (vorig hoofdstuk): de gemeenschap is er voor."
+        }
+      ]
+    }
+  ]
+}

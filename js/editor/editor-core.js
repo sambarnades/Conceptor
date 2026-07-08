@@ -128,7 +128,15 @@ function createEmptyItem(itemSchema) {
     for (const [key, fieldConfig] of Object.entries(itemSchema)) {
         let defaultValue;
         if (fieldConfig.type === 'array') {
+            // Respecter minItems : un tableau imbriqué créé vide violerait son propre schéma
+            // (« Minimum 1 elements » bloquant à la sauvegarde) — ex. « Ajouter un point »
+            // en mode Plan de l'Image interactive, qui doit naître avec un bloc de contenu
+            // par défaut comme en mode « Sur l'image » (audit N14).
+            const min = Number.isFinite(fieldConfig.minItems) ? fieldConfig.minItems : 0;
             defaultValue = [];
+            if (min > 0 && fieldConfig.itemSchema) {
+                for (let i = 0; i < min; i++) defaultValue.push(createEmptyItem(fieldConfig.itemSchema));
+            }
         } else if (fieldConfig.type === 'dynamicObject') {
             defaultValue = {};
         } else if (fieldConfig.type === 'object' && fieldConfig.schema) {

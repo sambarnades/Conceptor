@@ -1945,6 +1945,42 @@
     color: var(--text-secondary, #999);
 }
 
+/* --- Champs média (audio/vidéo) — éditeur « Image interactive » --- */
+.json-editor__media-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.json-editor__media-player {
+    width: 100%;
+    border-radius: 8px;
+}
+audio.json-editor__media-player { height: 40px; }
+video.json-editor__media-player {
+    max-height: 240px;
+    background: #000;
+}
+.json-editor__media-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 0.8rem;
+    color: var(--text-secondary, #999);
+}
+.json-editor__media-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+/* Le bouton supprimer du média est inline (pas en survol d'image) → toujours visible */
+.json-editor__media-remove-btn {
+    position: static;
+    opacity: 1;
+    transform: none;
+    flex: 0 0 auto;
+}
+
 /* Message d'erreur image */
 .json-editor__image-error {
     margin-top: 8px;

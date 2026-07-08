@@ -38,7 +38,7 @@ const PRIMARY           = '#0b6e4f';    // vert forêt (ratio 6.4:1)
 const SECONDARY_BORDER  = '#e85d04';    // orange vif (bordures uniquement)
 const SECONDARY_TEXT    = '#b54a00';    // orange foncé pour texte (ratio 5.7:1)
 const ACCENT            = '#9b2226';    // rouge brique (ratio 8.3:1)
-const INFO              = '#0077b6';    // bleu océan (ratio 5.1:1)
+const INFO              = '#006699';    // bleu océan foncé (AA : ≥5.4:1 sur fond bleu clair)
 
 const HEADING_PRIMARY   = '#0b6e4f';
 
@@ -62,7 +62,7 @@ const STAT_VALUE_COLOR  = '#9b2226';
 const CHIP_VARIANTS = [
     { bg: '#e8f5e9', border: '#0b6e4f', text: '#0b6e4f' },
     { bg: '#fff3e0', border: '#e85d04', text: '#b54a00' },
-    { bg: '#e3f2fd', border: '#0077b6', text: '#0077b6' },
+    { bg: '#e3f2fd', border: '#006699', text: '#006699' },
     { bg: '#fce4ec', border: '#9b2226', text: '#9b2226' }
 ];
 
@@ -74,14 +74,22 @@ const CALLOUT = {
     alerte:   { borderColor: '#9b2226', bg: '#fce4ec', borderOuter: '#ef9a9a' }
 };
 
+// Libellés accessibles des callouts (RGAA 3.1 : ne pas coder le type par la
+// seule couleur). L'icône est décorative (aria-hidden) ; le texte porte le sens.
+const CALLOUT_META = {
+    objectif: { icon: '🎯', key: 'page_callout_objectif', fallback: 'Objectif' },
+    savoir:   { icon: '💡', key: 'page_callout_savoir',   fallback: 'À savoir' },
+    alerte:   { icon: '⚠️', key: 'page_callout_alerte',   fallback: 'Attention' }
+};
+
 const CARD_VARIANTS = [
     { bg: '#e8f5e9', border: '#0b6e4f', heading: '#0b6e4f' },
     { bg: '#fff3e0', border: '#e85d04', heading: '#b54a00' },
-    { bg: '#e3f2fd', border: '#0077b6', heading: '#0077b6' },
+    { bg: '#e3f2fd', border: '#006699', heading: '#006699' },
     { bg: '#fce4ec', border: '#9b2226', heading: '#9b2226' }
 ];
 
-const STAT_BORDER_COLORS = ['#0b6e4f', '#e85d04', '#0077b6', '#9b2226'];
+const STAT_BORDER_COLORS = ['#0b6e4f', '#e85d04', '#006699', '#9b2226'];
 
 const MYTHS     = { bg: '#fff3e0', border: '#e85d04', heading: '#b54a00' };
 const REALITIES = { bg: '#e8f5e9', border: '#0b6e4f', heading: '#0b6e4f' };
@@ -198,7 +206,7 @@ function renderHistoReperes(data, ctx) {
     data.cards.forEach((card, cardIdx) => {
         const cv = CARD_VARIANTS[cardIdx % CARD_VARIANTS.length];
         const cardDiv = document.createElement('div');
-        cardDiv.setAttribute('style', `background:${cv.bg}; border:2px solid ${cv.border}; border-radius:14px; padding:12px;`);
+        cardDiv.setAttribute('style', `background:${cv.bg}; border:2px solid ${cv.border}; border-radius:16px; padding:12px;`);
         cardDiv.innerHTML = `<${ctx.headingTag(1)} style="margin:0 0 6px 0; font-size:1.05rem; color:${cv.heading};">${ctx.formatTextToHtml(card.title)}</${ctx.headingTag(1)}><p style="margin:0;">${ctx.formatTextToHtml(card.text)}</p>`;
         grid.appendChild(cardDiv);
     });
@@ -224,13 +232,17 @@ function renderCalloutSet(data, ctx) {
     grid.setAttribute('style', 'display:grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap:12px;');
 
     data.callouts.forEach(callout => {
-        const cs = CALLOUT[callout.type] || CALLOUT.objectif;
+        const type = CALLOUT_META[callout.type] ? callout.type : 'objectif';
+        const cs = CALLOUT[type];
+        const meta = CALLOUT_META[type];
         const div = document.createElement('div');
-        div.setAttribute('style', `border:2px solid ${cs.borderOuter}; border-left:6px solid ${cs.borderColor}; background:${cs.bg}; border-radius:14px; padding:12px;`);
-        if (callout.type === 'alerte') div.setAttribute('role', 'alert');
+        div.setAttribute('style', `border:2px solid ${cs.borderOuter}; border-left:6px solid ${cs.borderColor}; background:${cs.bg}; border-radius:16px; padding:12px;`);
         // Marqueur sémantique pour la rétro-ingénierie.
         if (callout.type) div.setAttribute('data-callout-type', callout.type);
-        div.innerHTML = `<p style="margin:0;">${ctx.formatTextToHtml(callout.text)}</p>`;
+        // Accessibilité RGAA 3.1 : libellé textuel visible (+ icône décorative).
+        div.innerHTML =
+            `<p style="margin:0 0 6px 0; font-weight:700;"><span aria-hidden="true">${meta.icon} </span>${ctx.escapeHtmlTags(ctx.t(meta.key, meta.fallback))}</p>` +
+            `<p style="margin:0;">${ctx.formatTextToHtml(callout.text)}</p>`;
         grid.appendChild(div);
     });
 
@@ -306,11 +318,13 @@ function renderTable(data, ctx) {
     data.rows.forEach((row, rowIdx) => {
         const tr = document.createElement('tr');
         if (rowIdx % 2 === 1) tr.setAttribute('style', `background:${BG_GREEN};`);
-        row.forEach(cell => {
-            const td = document.createElement('td');
-            td.setAttribute('style', `padding:10px; border-bottom:1px solid ${BORDER_SUBTLE};`);
-            td.innerHTML = ctx.formatTextToHtml(cell);
-            tr.appendChild(td);
+        row.forEach((cell, cellIdx) => {
+            // RGAA 5.7 : 1re colonne = en-tête de ligne (lexique/comparaison).
+            const cellEl = document.createElement(cellIdx === 0 ? 'th' : 'td');
+            if (cellIdx === 0) cellEl.scope = 'row';
+            cellEl.setAttribute('style', `padding:10px; border-bottom:1px solid ${BORDER_SUBTLE};${cellIdx === 0 ? ' text-align:left; font-weight:600;' : ''}`);
+            cellEl.innerHTML = ctx.formatTextToHtml(cell);
+            tr.appendChild(cellEl);
         });
         tbody.appendChild(tr);
     });
@@ -367,7 +381,7 @@ function renderMonumentsGrid(data, ctx) {
         article.setAttribute('style', `background:${BG_PAGE}; border:2px solid ${BORDER_LIGHT}; border-radius:16px; overflow:hidden; border-top:4px solid ${borderColor};`);
         article.innerHTML = `
             <figure style="margin:0;">
-                <img src="${ctx.escapeHtmlTags(card.img_src)}" alt="${ctx.escapeHtmlTags(card.img_alt)}" loading="lazy" decoding="async" style="width:100%; height:180px; object-fit:cover;">
+                <img src="${ctx.escapeHtmlTags(card.img_src)}" alt="${ctx.escapeHtmlTags(card.img_alt || '')}" loading="lazy" decoding="async" style="width:100%; height:180px; object-fit:cover;">
                 <figcaption style="padding:8px; font-size:0.9rem; color:${TEXT_CAPTION};">${ctx.formatTextToHtml(card.caption)}</figcaption>
             </figure>
             <div style="padding:12px;">
@@ -389,10 +403,11 @@ function renderFiguresComparison(data, ctx) {
     const section = document.createElement('section');
     section.setAttribute('style', `margin:0 0 20px 0; border:2px solid ${BORDER_LIGHT}; border-radius:16px; padding:16px;`);
 
-    if (data.title) {
+    {
+        // Titre du bloc — défaut « Comparaison » si l'IA n'en fournit pas.
         const h2 = document.createElement(ctx.headingTag(0));
         h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.3rem;`);
-        h2.innerHTML = ctx.formatTextToHtml(data.title);
+        h2.innerHTML = ctx.formatTextToHtml(data.title || ctx.t('page_figures_title', 'Comparaison'));
         section.appendChild(h2);
     }
 
@@ -401,14 +416,14 @@ function renderFiguresComparison(data, ctx) {
 
     if (data.left) {
         const leftFigure = document.createElement('figure');
-        leftFigure.setAttribute('style', `margin:0; border:2px solid ${BORDER_LIGHT}; border-radius:14px; overflow:hidden;`);
+        leftFigure.setAttribute('style', `margin:0; border:2px solid ${BORDER_LIGHT}; border-radius:16px; overflow:hidden;`);
         leftFigure.innerHTML = `<img src="${ctx.escapeHtmlTags(data.left.img_src)}" alt="${ctx.escapeHtmlTags(data.left.img_alt || data.left.caption || '')}" loading="lazy" decoding="async" style="width:100%; height:180px; object-fit:cover;"><figcaption style="padding:8px; color:${TEXT_CAPTION};">${ctx.formatTextToHtml(data.left.caption || '')}</figcaption>`;
         grid.appendChild(leftFigure);
     }
 
     if (data.right) {
         const rightFigure = document.createElement('figure');
-        rightFigure.setAttribute('style', `margin:0; border:2px solid ${BORDER_LIGHT}; border-radius:14px; overflow:hidden;`);
+        rightFigure.setAttribute('style', `margin:0; border:2px solid ${BORDER_LIGHT}; border-radius:16px; overflow:hidden;`);
         rightFigure.innerHTML = `<img src="${ctx.escapeHtmlTags(data.right.img_src)}" alt="${ctx.escapeHtmlTags(data.right.img_alt || data.right.caption || '')}" loading="lazy" decoding="async" style="width:100%; height:180px; object-fit:cover;"><figcaption style="padding:8px; color:${TEXT_CAPTION};">${ctx.formatTextToHtml(data.right.caption || '')}</figcaption>`;
         grid.appendChild(rightFigure);
     }
@@ -432,7 +447,7 @@ function renderFiguresComparison(data, ctx) {
  */
 function renderDefinitionBox(data, ctx) {
     const section = document.createElement('section');
-    section.setAttribute('style', `margin:0 0 20px 0; border:2px solid ${PRIMARY}; border-left:6px solid ${PRIMARY}; border-radius:16px; padding:14px; background:${BG_GREEN};`);
+    section.setAttribute('style', `margin:0 0 20px 0; border:2px solid ${PRIMARY}; border-left:6px solid ${PRIMARY}; border-radius:16px; padding:16px; background:${BG_GREEN};`);
 
     const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.3rem;`);
@@ -454,7 +469,7 @@ function renderDefinitionBox(data, ctx) {
  */
 function renderContextParagraphs(data, ctx) {
     const section = document.createElement('section');
-    section.setAttribute('style', `margin:0 0 20px 0; border:2px solid ${BORDER_LIGHT}; border-radius:16px; padding:14px;`);
+    section.setAttribute('style', `margin:0 0 20px 0; border:2px solid ${BORDER_LIGHT}; border-radius:16px; padding:16px;`);
 
     const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.3rem;`);
@@ -509,7 +524,7 @@ function renderMonumentSheetLong(data, ctx) {
             const img = document.createElement('img');
             img.src = ctx.escapeHtmlTags(data.img_src);
             img.alt = ctx.escapeHtmlTags(data.img_alt || '');
-            img.setAttribute('style', 'width:100%; max-width:400px; height:auto; margin:0 0 10px 0; border-radius:12px;');
+            img.setAttribute('style', 'width:100%; max-width:400px; height:auto; margin:0 0 10px 0; border-radius:16px;');
             img.loading = 'lazy';
             img.decoding = 'async';
             wrapper.appendChild(img);
@@ -541,26 +556,29 @@ function renderMonumentSheetLong(data, ctx) {
  */
 function renderFaqBlock(data, ctx) {
     const section = document.createElement('section');
-    section.setAttribute('style', `margin:0 0 20px 0; border:2px solid ${BORDER_LIGHT}; border-radius:16px; padding:14px; background:${BG_GREEN};`);
+    section.setAttribute('style', `margin:0 0 20px 0; border:2px solid ${BORDER_LIGHT}; border-radius:16px; padding:16px; background:${BG_GREEN};`);
 
     const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.3rem;`);
     h2.innerHTML = ctx.formatTextToHtml(data.title);
     section.appendChild(h2);
 
+    // Accessibilité RGAA 9.3 : associer chaque question à sa réponse via une
+    // liste de définitions (dt = question, dd = réponse).
+    const dl = document.createElement('dl');
+    dl.setAttribute('style', 'margin:0;');
     data.questions.forEach(q => {
-        const h3 = document.createElement(ctx.headingTag(1));
-        h3.setAttribute('style', `margin:0 0 6px 0; color:${HEADING_PRIMARY}; font-size:1.05rem;`);
-        h3.innerHTML = ctx.formatTextToHtml(q.q);
-        section.appendChild(h3);
+        const dt = document.createElement('dt');
+        dt.setAttribute('style', `margin:0 0 4px 0; color:${HEADING_PRIMARY}; font-weight:700; font-size:1.05rem;`);
+        dt.innerHTML = ctx.formatTextToHtml(q.q);
+        dl.appendChild(dt);
 
-        const aHtml = ctx.formatTextToHtml(q.a);
-        const aTag = _safeTag(aHtml);
-        const aEl = document.createElement(aTag);
-        aEl.setAttribute('style', 'margin:0 0 8px 0;');
-        aEl.innerHTML = aHtml;
-        section.appendChild(aEl);
+        const dd = document.createElement('dd');
+        dd.setAttribute('style', 'margin:0 0 10px 0;');
+        dd.innerHTML = ctx.formatTextToHtml(q.a);
+        dl.appendChild(dd);
     });
+    section.appendChild(dl);
 
     return section;
 }
@@ -571,7 +589,7 @@ function renderFaqBlock(data, ctx) {
  */
 function renderMythsRealities(data, ctx) {
     const section = document.createElement('section');
-    section.setAttribute('style', 'margin:0 0 20px 0; display:grid; grid-template-columns:1fr 1fr; gap:12px;');
+    section.setAttribute('style', `margin:0 0 20px 0; border:2px solid ${BORDER_LIGHT}; border-radius:16px; padding:16px; display:grid; grid-template-columns:1fr 1fr; gap:12px;`);
 
     if (data.title && String(data.title).trim()) {
         const titleH2 = document.createElement(ctx.headingTag(0));
@@ -630,7 +648,7 @@ function renderMythsRealities(data, ctx) {
  */
 function renderMethodImageDesc(data, ctx) {
     const section = document.createElement('section');
-    section.setAttribute('style', `margin:0 0 20px 0; border:2px solid ${BORDER_LIGHT}; border-radius:16px; padding:14px; background:${BG_ORANGE};`);
+    section.setAttribute('style', `margin:0 0 20px 0; border:2px solid ${BORDER_LIGHT}; border-radius:16px; padding:16px; background:${BG_ORANGE};`);
 
     const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${SECONDARY_TEXT}; font-size:1.3rem;`);
@@ -649,7 +667,7 @@ function renderMethodImageDesc(data, ctx) {
     if (data.img_src && String(data.img_src).trim()) {
         const figure = document.createElement('figure');
         figure.setAttribute('style', 'margin:12px 0 0 0; text-align:center;');
-        figure.innerHTML = `<img src="${ctx.escapeHtmlTags(data.img_src)}" alt="${ctx.escapeHtmlTags(data.img_alt || '')}" loading="lazy" decoding="async" style="width:100%; max-width:500px; height:auto; border-radius:12px;">${data.caption ? `<figcaption style="margin-top:6px; font-size:0.9rem; color:${TEXT_CAPTION};">${ctx.formatTextToHtml(data.caption)}</figcaption>` : ''}`;
+        figure.innerHTML = `<img src="${ctx.escapeHtmlTags(data.img_src)}" alt="${ctx.escapeHtmlTags(data.img_alt || '')}" loading="lazy" decoding="async" style="width:100%; max-width:500px; height:auto; border-radius:16px;">${data.caption ? `<figcaption style="margin-top:6px; font-size:0.9rem; color:${TEXT_CAPTION};">${ctx.formatTextToHtml(data.caption)}</figcaption>` : ''}`;
         section.appendChild(figure);
     }
 
@@ -667,14 +685,22 @@ function renderQuoteBilingual(data, ctx) {
     const figure = document.createElement('figure');
     figure.setAttribute('style', 'margin:0;');
 
+    const quoteTitleH2 = document.createElement(ctx.headingTag(0));
+    quoteTitleH2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.3rem;`);
+    quoteTitleH2.innerHTML = ctx.formatTextToHtml(data.title || ctx.t('page_quote_title', 'Citation'));
+    section.appendChild(quoteTitleH2);
+
     const bq1 = document.createElement('blockquote');
     bq1.setAttribute('style', `margin:0 0 6px 0; padding:8px 0 8px 16px; border-left:4px solid ${QUOTE_BORDER}; font-size:1.15rem; font-weight:600; color:${TEXT_DARK};`);
     bq1.innerHTML = ctx.formatTextToHtml(data.quote_langue_initiale);
+    // RGAA 8.7 : signaler le changement de langue si un code BCP-47 est fourni.
+    if (data.lang_initiale) bq1.setAttribute('lang', data.lang_initiale);
     figure.appendChild(bq1);
 
     const bq2 = document.createElement('blockquote');
     bq2.setAttribute('style', `margin:0; padding:8px 0 8px 16px; border-left:4px solid ${QUOTE_BORDER}; font-size:1.05rem; color:${TEXT_SECONDARY};`);
     bq2.innerHTML = ctx.formatTextToHtml(data.quote_langue_arrivee);
+    if (data.lang_arrivee) bq2.setAttribute('lang', data.lang_arrivee);
     figure.appendChild(bq2);
 
     if (data.author) {
@@ -693,7 +719,7 @@ function renderQuoteBilingual(data, ctx) {
  */
 function renderSitoGraphy(data, ctx) {
     const section = document.createElement('section');
-    section.setAttribute('style', `margin:0 0 20px 0; border:2px solid ${BORDER_LIGHT}; border-radius:16px; padding:14px;`);
+    section.setAttribute('style', `margin:0 0 20px 0; border:2px solid ${BORDER_LIGHT}; border-radius:16px; padding:16px;`);
 
     const h2 = document.createElement(ctx.headingTag(0));
     h2.setAttribute('style', `margin:0 0 10px 0; color:${HEADING_PRIMARY}; font-size:1.3rem;`);

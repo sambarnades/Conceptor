@@ -401,6 +401,56 @@ export const h5pModules = {
         requiresVideoUrl: true,
         platforms: ["Éléa", "Magistère", "Moodle"],
         formats: ["H5P", "DOCX", "ODT", "PDF"]
+    },
+    ImageHotspots: {
+        name: "h5p_image_hotspots_name",
+        englishName: "ImageHotspots",
+        machineName: "H5P.ImageHotspots",
+        description: "h5p_image_hotspots_description",
+        image: "assets/images/activities/image-hotspots-icon-color.webp",
+        promptId: "imageHotspotsResultat",
+        jsonInputId: "imageHotspotsJsonInput",
+        createBtnId: "createImageHotspotsH5P",
+        categories: ["memory", "h5p"],
+        hidden: false,
+        // Active la modale « image de fond » (upload fichier + analyse vision) dans la sidebar (cf. ui.js).
+        // L'image + les zones détectées sont capturées EN AMONT pour rester dispo en mode rapide ET guidé.
+        requiresBackgroundImage: true,
+        platforms: ["Éléa", "Magistère", "Moodle"],
+        formats: ["H5P", "DOCX", "ODT", "PDF"]
+    },
+    FindTheHotspot: {
+        name: "h5p_find_the_hotspot_name",
+        englishName: "FindTheHotspot",
+        machineName: "H5P.ImageHotspotQuestion",
+        description: "h5p_find_the_hotspot_description",
+        image: "assets/images/activities/find-the-hotspot.webp",
+        promptId: "findTheHotspotResultat",
+        jsonInputId: "findTheHotspotJsonInput",
+        createBtnId: "createFindTheHotspotH5P",
+        categories: ["quiz", "h5p"],
+        hidden: false,
+        // Même flux « image de fond + vision » qu'Image interactive (cf. ui.js) :
+        // les zones détectées servent de SOURCES, l'image est injectée en post-traitement.
+        requiresBackgroundImage: true,
+        platforms: ["Éléa", "Magistère", "Moodle"],
+        formats: ["H5P", "DOCX", "ODT", "PDF"]
+    },
+    FindMultipleHotspots: {
+        name: "h5p_find_multiple_hotspots_name",
+        englishName: "FindMultipleHotspots",
+        machineName: "H5P.ImageMultipleHotspotQuestion",
+        description: "h5p_find_multiple_hotspots_description",
+        image: "assets/images/activities/find-multiple-hotspots.webp",
+        promptId: "findMultipleHotspotsResultat",
+        jsonInputId: "findMultipleHotspotsJsonInput",
+        createBtnId: "createFindMultipleHotspotsH5P",
+        categories: ["quiz", "h5p"],
+        hidden: false,
+        // Même flux « image de fond + vision » qu'Image interactive (cf. ui.js).
+        requiresBackgroundImage: true,
+        platforms: ["Éléa", "Magistère", "Moodle"],
+        formats: ["H5P", "DOCX", "ODT", "PDF"]
     }
 };
 
@@ -559,6 +609,9 @@ export const customOrder = [
     'CoursePresentation',
     'InteractiveBook',
     'InteractiveVideo',
+    'ImageHotspots',
+    'FindTheHotspot',
+    'FindMultipleHotspots',
     'Flashcards',
     'Crossword',
     'Timeline',

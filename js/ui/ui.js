@@ -6,7 +6,7 @@
 
 import { allModules, customOrder, h5pModules, moodleModules } from '../core/definitions.js';
 import { translations, translatePage, currentLang } from '../core/translation.js';
-import { generatePrompts, buildVideoInteractivePrompt, setVideoTranscriptSources, getTranscriptAnchors } from '../services/prompt-generator.js';
+import { generatePrompts, buildVideoInteractivePrompt, setVideoTranscriptSources, getTranscriptAnchors, buildImageHotspotsPrompt, setImageHotspotZones, readContextParams, prefixForModule } from '../services/prompt-generator.js';
 import { snapInteractions } from '../h5p/processors/interactive-video-snap.js';
 import { buildSyncedTranscriptEditor } from './transcript-sync-editor.js';
 import { cleanJsonInput, showNotification, copyToClipboard, downloadFile, setupToolbarListeners, getCaramelVersionFromFooter, syncPanelHeights, DEBUG, debugLog, setupModalAccessibility } from '../core/utils.js';
@@ -196,6 +196,19 @@ export function setupFilters() {
             const quoi = document.getElementById('quoi')?.value.trim() || '';
             const niveau = document.getElementById('niveau')?.value.trim() || '';
             const nombre = document.getElementById('nombreQuestions')?.value.trim() || '';
+
+            // Image interactive : à l'INVERSE de la vidéo, les zones détectées DÉPENDENT du contexte
+            // pédagogique (la vision est guidée par qui/quoi/niveau/nombre). Un changement RÉEL de ce
+            // contexte les périme → on purge l'image capturée + les zones (avant generatePrompts pour
+            // que le prompt se reconstruise sans elles). Insensible à l'OCR/RAG. Tant que le contexte
+            // vision ne change pas, l'image reste (cohérent avec la conservation du lien vidéo).
+            const visionCtx = visionContextSig();
+            const savedVisionCtx = sessionStorage.getItem(`${STORAGE_PREFIX}ih_vision_ctx`);
+            if (savedVisionCtx !== null && savedVisionCtx !== visionCtx) {
+                invalidateImageHotspotsContext();
+            }
+            sessionStorage.setItem(`${STORAGE_PREFIX}ih_vision_ctx`, visionCtx);
+
             if (qui || quoi || niveau || nombre) {
                 generatePrompts();
             }
@@ -242,6 +255,9 @@ export function setupFilters() {
 
     // Initialiser le hash du contexte au chargement
     sessionStorage.setItem(`${STORAGE_PREFIX}context_hash`, getContextHash());
+    // …et la signature du contexte vision (Image interactive) — évite de purger une 1ʳᵉ analyse
+    // faite contexte vide quand l'utilisateur saisit ensuite qui/quoi.
+    sessionStorage.setItem(`${STORAGE_PREFIX}ih_vision_ctx`, visionContextSig());
 
     // --- Fin de la détection des changements de contexte ---
 
@@ -464,6 +480,40 @@ if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
 // État de détection par module (videoSource + transcript), persistant le temps de la session UI.
 const videoStates = new Map();
 
+// ============= IMAGE INTERACTIVE : upload image de fond + vision + verrouillage =============
+// État par module : { entry, image, dataURL, width, height, zones, imageDescription, altText, fileName }.
+// Capturé EN AMONT (dès l'upload + analyse vision) pour rester dispo en mode rapide ET guidé.
+// Survit à la fermeture de la modale → restauré au ré-rendu de la sidebar (cf. initBackgroundImageSection).
+const imageHotspotStates = new Map();
+
+/**
+ * Signature du contexte pédagogique pertinent pour la VISION (Rapide : qui/quoi ; Avancé :
+ * +niveau/nombre). Sert à détecter un changement de contexte qui rendrait caduques les zones
+ * détectées (la vision est contextuelle). N'inclut PAS l'OCR/RAG, sans effet sur l'Image interactive.
+ * @returns {string}
+ */
+function visionContextSig() {
+    const g = (id) => (document.getElementById(id)?.value || '').trim();
+    return `${g('qui')}|${g('quoi')}|${g('niveau')}|${g('nombreQuestions')}`;
+}
+
+/**
+ * Invalide l'image de fond capturée + les zones détectées de l'« Image interactive » quand le
+ * contexte vision change (cf. handleContextChange). À l'INVERSE de la vidéo — dont la transcription
+ * ne dépend pas du contexte — les zones DÉPENDENT de qui/quoi/niveau : un changement les périme.
+ * Purge l'état (Map), le registre image (id 'image') et les zones du prompt ; réinitialise l'UI de
+ * la section si la modale est ouverte (sinon la purge des données suffit, l'UI repartira vide au
+ * ré-rendu). L'utilisateur re-joindra son image pour relancer l'analyse avec le nouveau contexte.
+ */
+function invalidateImageHotspotsContext() {
+    if (imageHotspotStates.size === 0) return;
+    imageHotspotStates.clear();
+    setImageHotspotZones(null);
+    import('../h5p/image-manager.js').then(m => m.unregisterImage('image')).catch(() => { /* registre déjà vide */ });
+    const sec = sidebar.querySelector('[id^="img-bg-section-"]');
+    if (sec && typeof sec._resetImage === 'function') sec._resetImage();
+}
+
 // Dernier lien vidéo détecté avec succès par module — référence du contexte sur lequel le prompt
 // (et donc le JSON éventuellement généré) a été construit. Contrairement à `videoStates`, cette
 // map N'EST PAS purgée quand on efface le champ URL (lockGate), afin de pouvoir comparer l'ancien
@@ -568,14 +618,28 @@ function openVideoPopover(titleText, iconClass, bodyEl, opts = {}) {
  */
 function alignVideoHelpButton(root) {
     if (!root) return;
-    const row = root.querySelector('.video-url-section .video-url-row');
-    const helpBtn = root.querySelector('.video-url-section .video-help-btn');
+    const section = root.querySelector('.video-url-section');
+    const row = section ? section.querySelector('.video-url-row') : null;
+    const helpBtn = section ? section.querySelector('.video-help-btn') : null;
+    const field = section ? section.querySelector('.video-url-field') : null;
     const genGroup = root.querySelector('.top-controls-container .generation-button-group');
-    if (!row || !helpBtn || !genGroup) return;
-    row.style.marginRight = '0px'; // réinitialiser avant de mesurer la position naturelle
-    if (window.innerWidth <= 768) return; // en-tête empilé : pas d'alignement cross-rangée
-    const delta = helpBtn.getBoundingClientRect().right - genGroup.getBoundingClientRect().left;
-    if (delta > 1) row.style.marginRight = Math.round(delta) + 'px';
+    const desc = root.querySelector('.modal-tuto-content > p');
+    if (row) row.style.marginRight = '0px';   // réinitialiser avant de mesurer la position naturelle
+    if (desc) desc.style.marginRight = '0px';
+    if (window.innerWidth <= 768) return;      // en-tête empilé : pas d'alignement cross-rangée
+    // 1. La barre (+ bouton « ? ») s'arrête avant le bouton « générer en un clic ».
+    if (row && helpBtn && genGroup) {
+        const delta = helpBtn.getBoundingClientRect().right - genGroup.getBoundingClientRect().left;
+        if (delta > 1) row.style.marginRight = Math.round(delta) + 'px';
+    }
+    // 2. La description s'aligne sur la MÊME largeur que la barre (champ) juste en dessous : on lui
+    //    donne la même marge droite pour que son bord droit coïncide avec celui du champ.
+    if (desc && field && desc.parentElement) {
+        const parentRight = desc.parentElement.getBoundingClientRect().right; // bord droit de modal-tuto-content
+        const fieldRight = field.getBoundingClientRect().right;               // bord droit de la barre (après étape 1)
+        const d = parentRight - fieldRight;
+        if (d > 1) desc.style.marginRight = Math.round(d) + 'px';
+    }
 }
 
 /**
@@ -743,6 +807,391 @@ function injectVideoTranscriptIntoPrompt(module, segments, duration) {
         document.body.appendChild(hidden);
     }
     hidden.value = promptText;
+}
+
+/**
+ * Injecte les zones détectées (vision) dans le PROMPT de gauche de l'« Image interactive ».
+ * Mémorise aussi les zones côté générateur (generatePrompts les réinjectera si le contexte change).
+ * @param {Object} module
+ * @param {Array<{x:number,y:number,label?:string,description?:string}>} zones
+ * @param {{width?:number,height?:number}} imageMeta
+ * @param {string} imageDescription
+ */
+function injectImageZonesIntoPrompt(moduleKey, module, zones, imageMeta, imageDescription) {
+    setImageHotspotZones(zones, imageMeta, imageDescription);
+    const promptId = module.promptId;
+    if (!promptId) return;
+    // Chaque activité à image de fond a son propre prompt (Image interactive, Find the
+    // Hotspot, Find Multiple Hotspots) : on résout le préfixe i18n depuis le moduleKey.
+    const promptText = buildImageHotspotsPrompt(zones, imageMeta, imageDescription, prefixForModule(moduleKey));
+    const visible = document.getElementById(promptId);
+    if (visible) visible.value = promptText;
+    let hidden = document.getElementById(`hidden-${promptId}`);
+    if (!hidden) {
+        hidden = document.createElement('textarea');
+        hidden.id = `hidden-${promptId}`;
+        hidden.classList.add('hidden');
+        document.body.appendChild(hidden);
+    }
+    hidden.value = promptText;
+}
+
+/**
+ * Initialise la section « Image de fond » (activités requiresBackgroundImage uniquement).
+ * Logique calquée sur la Vidéo interactive : joindre un FICHIER image lance AUTOMATIQUEMENT
+ * le traitement (resize) + l'analyse VISION (Qwen 3.6) avec un indicateur de chargement. Dès que
+ * les zones sont détectées, elles sont injectées dans le prompt de gauche et le groupe de boutons
+ * de génération se déverrouille. Tant que ce n'est pas le cas, la génération reste grisée.
+ * L'image + les zones sont capturées EN AMONT → disponibles en mode rapide ET guidé.
+ * @param {string} moduleKey
+ * @param {Object} module
+ */
+function initBackgroundImageSection(moduleKey, module) {
+    if (!module || !module.requiresBackgroundImage) return;
+    const section = sidebar.querySelector(`#img-bg-section-${moduleKey}`);
+    const fileInput = sidebar.querySelector(`#img-bg-input-${moduleKey}`);
+    const pickBtn = sidebar.querySelector(`#img-bg-pick-${moduleKey}`);
+    if (!section || !fileInput || !pickBtn) return;
+
+    const statusEl = sidebar.querySelector(`#img-bg-status-${moduleKey}`);
+    const msgEl = sidebar.querySelector(`#img-bg-msg-${moduleKey}`);
+    const overlayEl = section.querySelector('.video-url-field__overlay');
+    const overlayLabel = section.querySelector('.video-url-field__overlay-label');
+    const progressFill = section.querySelector('.video-url-field__progress');
+    const stopBtn = sidebar.querySelector(`#img-bg-stop-${moduleKey}`);
+    const field = section.querySelector('.img-bg-field');
+    const thumb = pickBtn.querySelector('.img-bg-thumb');
+    const pickLabel = pickBtn.querySelector('.img-bg-pick__label');
+    const defaultPickLabel = pickLabel ? pickLabel.textContent : '';
+    const retryBtn = sidebar.querySelector(`#img-bg-retry-${moduleKey}`);
+    const clearBtn = sidebar.querySelector(`#img-bg-clear-${moduleKey}`);
+    const helpBtn = sidebar.querySelector(`#img-bg-help-btn-${moduleKey}`);
+
+    const createBtn = sidebar.querySelector(`#${module.createBtnId}`);
+    const llmBtn = sidebar.querySelector(`#generate-llm-${moduleKey}`);
+    const modelBtn = sidebar.querySelector(`#model-selector-btn-${moduleKey}`);
+    const llmGroup = sidebar.querySelector('.top-controls-container .generation-button-group');
+    const createGroup = createBtn ? createBtn.closest('.generation-button-group') : null;
+    const jsonInputEl = sidebar.querySelector(`#${module.jsonInputId}`);
+
+    let runToken = 0;
+    let ac = null;
+    let currentEntry = null;      // dernière image traitée (pour relancer la détection sans re-traiter)
+    let lastDisplayName = '';     // nom de fichier affiché (miniature/état)
+
+    // Affiche/masque les boutons « relancer la détection » (↻) et « retirer l'image » (✕)
+    // selon qu'une image est chargée ou non.
+    const updateActions = () => {
+        const hasImg = !!currentEntry;
+        if (retryBtn) retryBtn.hidden = !hasImg;
+        if (clearBtn) clearBtn.hidden = !hasImg;
+    };
+
+    // Le JSON collé contient-il déjà une image de fond OU des hotspots exploitables ?
+    const pastedJsonReady = () => {
+        if (!jsonInputEl) return false;
+        const v = cleanJsonInput(jsonInputEl.value || '');
+        if (!v) return false;
+        try {
+            const p = JSON.parse(v);
+            return !!(p && typeof p === 'object' && (p.image || (Array.isArray(p.hotspots) && p.hotspots.length)));
+        } catch { return false; }
+    };
+
+    const refreshCreateGate = () => {
+        if (!createBtn) return;
+        const ok = imageHotspotStates.has(moduleKey) || pastedJsonReady();
+        createBtn.disabled = !ok;
+        createBtn.classList.toggle('is-disabled-gate', !ok);
+        if (createGroup) createGroup.classList.toggle('gen-gated', !ok);
+    };
+
+    const STATUS_ICON = {
+        checking: '<span class="video-spinner" aria-hidden="true"></span>',
+        ready: '<i class="fas fa-circle-check" aria-hidden="true"></i>',
+        error: '<i class="fas fa-circle-exclamation" aria-hidden="true"></i>',
+        empty: ''
+    };
+    const setState = (state) => {
+        section.dataset.state = state;
+        if (statusEl) statusEl.innerHTML = STATUS_ICON[state] || '';
+    };
+    const setMsg = (text, actionLabel, onAction) => {
+        if (!msgEl) return;
+        msgEl.innerHTML = '';
+        if (!text) { msgEl.hidden = true; return; }
+        msgEl.hidden = false;
+        msgEl.appendChild(document.createTextNode(text));
+        if (actionLabel && onAction) {
+            msgEl.appendChild(document.createTextNode(' · '));
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'video-url-msg__action';
+            b.textContent = actionLabel;
+            b.addEventListener('click', onAction);
+            msgEl.appendChild(b);
+        }
+    };
+    const setProgressIndet = (label) => {
+        if (!overlayEl) return;
+        overlayEl.hidden = false;
+        if (progressFill) progressFill.classList.add('video-url-field__progress--indet');
+        if (overlayLabel) {
+            overlayLabel.innerHTML = '<span class="video-spinner" aria-hidden="true"></span>';
+            const s = document.createElement('span');
+            s.textContent = label || (translations.ih_image_analyzing || 'Analyse de l’image…');
+            overlayLabel.appendChild(s);
+        }
+    };
+    const hideProgress = () => {
+        if (overlayEl) overlayEl.hidden = true;
+        if (progressFill) { progressFill.style.width = ''; progressFill.classList.remove('video-url-field__progress--indet'); }
+    };
+    const setGenEnabled = (enabled) => {
+        if (llmGroup) llmGroup.classList.toggle('gen-gated', !enabled);
+        [llmBtn, modelBtn].forEach(btn => {
+            if (!btn) return;
+            btn.disabled = !enabled;
+            btn.classList.toggle('is-disabled-gate', !enabled);
+        });
+        refreshCreateGate();
+    };
+
+    const setPicked = (name, dataURL) => {
+        if (thumb && dataURL) { thumb.src = dataURL; thumb.hidden = false; }
+        if (pickLabel && name) pickLabel.textContent = name;
+    };
+    // Remet le sélecteur à l'état « aucune image » (miniature cachée, libellé par défaut, input vidé
+    // pour qu'un re-choix du même fichier redéclenche bien l'événement change).
+    const resetPicked = () => {
+        if (thumb) { thumb.src = ''; thumb.hidden = true; }
+        if (pickLabel) pickLabel.textContent = defaultPickLabel;
+        if (fileInput) fileInput.value = '';
+    };
+
+    const imgErrMsg = (e) => {
+        const code = (e && e.message) || '';
+        if (code === 'FORMAT_INVALID') return translations.ih_image_format_error || 'Format d’image non pris en charge (PNG, JPEG, WebP).';
+        if (code === 'SIZE_EXCEEDED') return translations.ih_image_size_error || 'Image trop lourde (max 12 Mo).';
+        return translations.ih_vision_error || 'Le traitement de l’image a échoué.';
+    };
+
+    if (jsonInputEl) jsonInputEl.addEventListener('input', refreshCreateGate);
+
+    // Traite une image (si `file` fourni) puis lance la détection des zones (vision). Appelée SANS
+    // argument (bouton ↻), elle relance UNIQUEMENT la détection sur l'image déjà traitée
+    // (`currentEntry`) — utile quand trop peu de zones ont été détectées, et marche aussi après
+    // restauration de la modale (où l'objet File n'existe plus, mais l'entry/dataURL survit).
+    async function runVisionAnalysis(file) {
+        const myToken = ++runToken;
+        if (ac) { try { ac.abort(); } catch { /* noop */ } }
+        ac = new AbortController();
+        setState('checking');
+        setProgressIndet(translations.ih_image_analyzing || 'Analyse de l’image…');
+        setGenEnabled(false);
+        setMsg(null);
+        try {
+            const { processBackgroundImage, registerImage, buildBackgroundImageField } = await import('../h5p/image-manager.js');
+            const { detectImageZones } = await import('../services/hotspot-vision.js');
+
+            // Nouveau fichier → traitement (resize/conversion) + remplacement PROPRE du précédent.
+            if (file) {
+                let entry;
+                try {
+                    entry = await processBackgroundImage(file);
+                } catch (e) {
+                    if (myToken !== runToken) return;
+                    currentEntry = null;
+                    hideProgress(); setState('error'); updateActions();
+                    setMsg(imgErrMsg(e), translations.video_retry || 'Réessayer', () => runVisionAnalysis(file));
+                    return;
+                }
+                if (myToken !== runToken) return;
+                currentEntry = entry;
+                lastDisplayName = file.name || '';
+                registerImage('image', entry);          // même id 'image' → remplace l'image précédente
+                setPicked(lastDisplayName, entry.dataURL);
+            }
+            if (!currentEntry) { hideProgress(); setState('empty'); updateActions(); return; }
+            updateActions();                            // image présente → boutons ↻ / ✕ disponibles
+
+            const ctx = readContextParams();
+            const reqN = parseInt(ctx.nombreQuestions, 10);
+            // Mode Avancé avec un nombre → on FORCE ce nombre de zones ; sinon (Rapide) → undefined,
+            // le serveur en détermine ~4-5 selon l'image (un peu plus/moins si justifié).
+            const count = (ctx.isAdvanced && reqN > 0) ? reqN : undefined;
+
+            let result;
+            try {
+                result = await detectImageZones(currentEntry.dataURL, {
+                    context: { qui: ctx.qui, quoi: ctx.quoi, niveau: ctx.niveau },
+                    count, lang: currentLang, signal: ac.signal
+                });
+            } catch (e) {
+                if ((e && e.name === 'AbortError') || myToken !== runToken) return;
+                hideProgress(); setState('error'); updateActions();
+                setMsg(translations.ih_vision_error || 'Détection automatique indisponible.', translations.video_retry || 'Réessayer', () => runVisionAnalysis());
+                return;
+            }
+            if (myToken !== runToken) return;
+            hideProgress();
+
+            if (!result.zones || !result.zones.length) {
+                setState('error'); updateActions();
+                setMsg(translations.ih_vision_error || 'Aucune zone détectée.', translations.video_retry || 'Réessayer', () => runVisionAnalysis());
+                return;
+            }
+
+            imageHotspotStates.set(moduleKey, {
+                entry: currentEntry,
+                image: buildBackgroundImageField(currentEntry),
+                dataURL: currentEntry.dataURL,
+                width: currentEntry.width,
+                height: currentEntry.height,
+                zones: result.zones,
+                imageDescription: result.imageDescription || '',
+                altText: result.imageDescription || lastDisplayName || '',
+                fileName: lastDisplayName
+            });
+            injectImageZonesIntoPrompt(moduleKey, module, result.zones, { width: currentEntry.width, height: currentEntry.height }, result.imageDescription || '');
+            setState('ready');
+            setGenEnabled(true);
+            updateActions();
+            setMsg((translations.ih_zones_found || '{n} zones détectées — vous pouvez générer.').replace('{n}', result.zones.length));
+        } catch (err) {
+            if (myToken !== runToken) return;
+            hideProgress(); setState('error'); updateActions();
+            setMsg(translations.ih_vision_error || 'Le traitement de l’image a échoué.', translations.video_retry || 'Réessayer', () => runVisionAnalysis());
+        }
+    }
+
+    // Retire l'image courante et remet la section à zéro (pour en charger une autre proprement).
+    function clearImage() {
+        runToken++;
+        if (ac) { try { ac.abort(); } catch { /* noop */ } }
+        currentEntry = null;
+        lastDisplayName = '';
+        imageHotspotStates.delete(moduleKey);
+        setImageHotspotZones(null);
+        import('../h5p/image-manager.js').then(m => m.unregisterImage('image')).catch(() => { /* registre déjà vide */ });
+        hideProgress();
+        resetPicked();
+        setState('empty');
+        setMsg(null);
+        setGenEnabled(false);
+        updateActions();
+    }
+
+    // Popover « ? » : formats d'image acceptés (miroir de l'aide vidéo).
+    function openImageHelpPopover() {
+        const body = document.createElement('div');
+        body.className = 'video-help-body img-help-body';
+
+        const intro = document.createElement('p');
+        intro.className = 'video-help-body__intro';
+        intro.textContent = translations.ih_help_intro || 'Joignez une image de fond (un fichier, pas un lien). Caramel l’analyse et détecte automatiquement les zones clés selon votre contexte. Vous pouvez relancer la détection (↻) ou retirer l’image (✕).';
+        body.appendChild(intro);
+
+        // Formats sous forme de pastilles (noms neutres, non traduits) : natifs vs convertis
+        // automatiquement (HEIC/HEIF/TIFF). Plus lisible qu'une phrase grise.
+        const card = document.createElement('div');
+        card.className = 'img-help-formats';
+        const pills = document.createElement('div');
+        pills.className = 'img-help-formats__pills';
+        const NATIVE = ['PNG', 'JPEG', 'WebP', 'GIF', 'BMP', 'AVIF', 'SVG'];
+        const CONVERTED = ['HEIC', 'HEIF', 'TIFF'];
+        for (const f of NATIVE) {
+            const p = document.createElement('span');
+            p.className = 'img-help-pill';
+            p.textContent = f;
+            pills.appendChild(p);
+        }
+        for (const f of CONVERTED) {
+            const p = document.createElement('span');
+            p.className = 'img-help-pill img-help-pill--converted';
+            p.innerHTML = `<i class="fas fa-rotate" aria-hidden="true"></i>${f}`;
+            p.title = translations.ih_help_converted_title || 'Converti automatiquement';
+            pills.appendChild(p);
+        }
+        card.appendChild(pills);
+
+        const note = document.createElement('p');
+        note.className = 'img-help-formats__note';
+        note.textContent = translations.ih_help_formats || 'Formats pris en charge : PNG, JPEG, WebP, GIF, BMP, AVIF, SVG, ainsi que HEIC/HEIF (photos iPhone) et TIFF — convertis automatiquement. Taille maximale : 12 Mo.';
+        card.appendChild(note);
+        body.appendChild(card);
+
+        openVideoPopover(translations.ih_help_title || 'Quelles images utiliser ?', 'fas fa-circle-question', body);
+    }
+
+    // --- Wiring ---
+    pickBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+        const file = fileInput.files && fileInput.files[0];
+        fileInput.value = '';   // réinitialiser pour permettre de re-choisir le même fichier
+        if (file) runVisionAnalysis(file);
+    });
+    if (retryBtn) retryBtn.addEventListener('click', () => runVisionAnalysis());   // relance la détection
+    if (clearBtn) clearBtn.addEventListener('click', clearImage);                  // retire l'image
+    if (helpBtn) helpBtn.addEventListener('click', openImageHelpPopover);          // ? formats acceptés
+    if (stopBtn) stopBtn.addEventListener('click', () => {
+        runToken++;
+        if (ac) { try { ac.abort(); } catch { /* noop */ } }
+        hideProgress(); setState(imageHotspotStates.has(moduleKey) ? 'ready' : 'empty');
+        setMsg(null);
+        updateActions();
+    });
+    // Glisser-déposer une image sur le champ.
+    if (field) {
+        ['dragenter', 'dragover'].forEach(ev => field.addEventListener(ev, (e) => { e.preventDefault(); field.classList.add('img-bg-field--drag'); }));
+        ['dragleave', 'drop'].forEach(ev => field.addEventListener(ev, (e) => { e.preventDefault(); field.classList.remove('img-bg-field--drag'); }));
+        field.addEventListener('drop', (e) => {
+            const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+            // file.type peut être vide pour un HEIC/TIFF déposé → on accepte aussi par extension
+            // (processBackgroundImage validera/convertira ou lèvera FORMAT_INVALID le cas échéant).
+            const looksImage = !!file && ((file.type && file.type.indexOf('image/') === 0)
+                || /\.(png|jpe?g|webp|gif|bmp|avif|svg|heic|heif|tiff?)$/i.test(file.name || ''));
+            if (looksImage) runVisionAnalysis(file);
+        });
+    }
+
+    // Réinitialisation de l'UI déclenchée par un changement de contexte (invalidateImageHotspotsContext) :
+    // l'état/le registre/les zones sont déjà purgés en amont ; on ne remet ici QUE la section à neuf.
+    section._resetImage = () => {
+        runToken++;                                 // invalide une analyse vision en vol
+        if (ac) { try { ac.abort(); } catch { /* noop */ } }
+        currentEntry = null;
+        lastDisplayName = '';
+        hideProgress();
+        resetPicked();
+        setState('empty');
+        setMsg(null);
+        setGenEnabled(false);
+        updateActions();
+    };
+
+    // Restauration au ré-ouverture de la modale (Chantier 2bis) : l'image + les zones capturées
+    // survivent dans imageHotspotStates. On restaure la miniature, l'état « prêt », les zones dans le
+    // prompt et le déverrouillage, SANS re-upload ni re-analyse. On ré-enregistre le fond dans le
+    // registre car clearAllImages() le vide après chaque packaging (sinon il manquerait à la prochaine
+    // génération). Sinon : état vide, génération verrouillée (sauf JSON collé déjà prêt).
+    const restored = imageHotspotStates.get(moduleKey);
+    if (restored && restored.entry && Array.isArray(restored.zones) && restored.zones.length) {
+        currentEntry = restored.entry;              // permet de relancer la détection (↻) après ré-ouverture
+        lastDisplayName = restored.fileName || '';
+        import('../h5p/image-manager.js').then(m => m.registerImage('image', restored.entry)).catch(() => { /* ré-enregistrement best-effort */ });
+        setPicked(restored.fileName, restored.dataURL);
+        injectImageZonesIntoPrompt(moduleKey, module, restored.zones, { width: restored.width, height: restored.height }, restored.imageDescription);
+        setState('ready');
+        setGenEnabled(true);
+        updateActions();
+        setMsg((translations.ih_zones_found || '{n} zones détectées — vous pouvez générer.').replace('{n}', restored.zones.length));
+    } else {
+        // État initial : génération verrouillée tant qu'aucune image analysée (sauf JSON collé prêt).
+        setState('empty');
+        setGenEnabled(false);
+        updateActions();
+    }
 }
 
 /**
@@ -1417,6 +1866,33 @@ export function toggleActivityContent(moduleKey, tileElement) {
                         <p class="video-url-msg" id="video-msg-${moduleKey}" role="status" aria-live="polite" hidden></p>
                     </div>` : '';
 
+    // Activité « Image interactive » : champ d'upload d'une image de fond (à la place du lien vidéo).
+    // Joindre un fichier lance l'analyse vision (zones clés) ; la génération reste verrouillée tant
+    // qu'aucune image analysée (cf. initBackgroundImageSection). Réutilise le style .video-url-field*.
+    const imageUploadHtml = module.requiresBackgroundImage ? `
+                    <div class="video-url-section img-bg-section" id="img-bg-section-${moduleKey}" data-state="empty">
+                        <div class="video-url-row">
+                            <div class="video-url-field img-bg-field">
+                                <span class="video-url-field__progress" aria-hidden="true"></span>
+                                <i class="fas fa-image video-url-field__icon" aria-hidden="true"></i>
+                                <input type="file" id="img-bg-input-${moduleKey}" class="img-bg-file" accept="image/*,.heic,.heif,.tif,.tiff,.avif,.bmp,.svg" hidden />
+                                <button type="button" id="img-bg-pick-${moduleKey}" class="img-bg-pick">
+                                    <img class="img-bg-thumb" alt="" hidden />
+                                    <span class="img-bg-pick__label" data-key="ih_image_choose">${translations.ih_image_choose || 'Joindre une image de fond…'}</span>
+                                </button>
+                                <span class="video-url-field__status" id="img-bg-status-${moduleKey}" aria-hidden="true"></span>
+                                <button type="button" id="img-bg-retry-${moduleKey}" class="video-url-field__go img-bg-retry" hidden aria-label="${translations.ih_retry_detection || 'Relancer la détection'}" title="${translations.ih_retry_detection || 'Relancer la détection'}"><i class="fas fa-rotate-right" aria-hidden="true"></i></button>
+                                <button type="button" id="img-bg-clear-${moduleKey}" class="video-url-field__go img-bg-clear" hidden aria-label="${translations.ih_remove_image || 'Retirer l’image'}" title="${translations.ih_remove_image || 'Retirer l’image'}"><i class="fas fa-xmark" aria-hidden="true"></i></button>
+                                <div class="video-url-field__overlay" id="img-bg-overlay-${moduleKey}" hidden>
+                                    <span class="video-url-field__overlay-label"></span>
+                                    <button type="button" id="img-bg-stop-${moduleKey}" class="video-url-field__stop" aria-label="${translations.video_stop_transcription || 'Arrêter'}" title="${translations.video_stop_transcription || 'Arrêter'}"><i class="fas fa-stop" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                            <button type="button" id="img-bg-help-btn-${moduleKey}" class="video-help-btn" aria-label="${translations.video_help_btn || 'Aide'}" title="${translations.video_help_btn || 'Aide'}"><i class="fas fa-question" aria-hidden="true"></i></button>
+                        </div>
+                        <p class="video-url-msg" id="img-bg-msg-${moduleKey}" role="status" aria-live="polite" hidden></p>
+                    </div>` : '';
+
     sidebar.innerHTML = `
             <div class="modal-header-group">
                 <div class="modal-header">
@@ -1447,6 +1923,7 @@ export function toggleActivityContent(moduleKey, tileElement) {
                     <div class="modal-tuto-content">
                         <p><span class="modal-description-label ${moduleLabelClass}">${moduleTypeLabel}</span> ${translations[module.description]}</p>
                         ${videoUrlHtml}
+                        ${imageUploadHtml}
                     </div>
                     <div class="mode-switch-container">
                         <span class="switch-label" data-key="simple_mode">Simple</span>
@@ -1745,6 +2222,7 @@ export function toggleActivityContent(moduleKey, tileElement) {
 
     // Activité « Vidéo interactive » : champ URL + détection + verrou de génération.
     initVideoUrlSection(moduleKey, module);
+    initBackgroundImageSection(moduleKey, module);
 }
 
 /**
@@ -1993,6 +2471,14 @@ function updateGenerationButton(moduleKey, module) {
                         const fileName = `banque-de-questions_caramel_${dateString}_${lang}.gift.txt`;
                         const giftBlob = new Blob([giftContent], { type: 'text/plain' });
                         downloadFile(giftContent, fileName, 'text/plain');
+
+                        // Le format GIFT ne prend pas en charge le type « texte à trous » (cloze) :
+                        // ces questions sont omises de l'export → prévenir l'utilisateur.
+                        const clozeOmises = (data.questions || []).filter(q => q && q.type === 'cloze').length;
+                        if (clozeOmises > 0) {
+                            const tmpl = translations.elea_test_gift_cloze_warning || "{count} question(s) « texte à trous » (cloze) ne sont pas prises en charge par le format GIFT et ont été omises. Utilisez l'export XML pour les conserver.";
+                            showNotification(tmpl.replace('{count}', clozeOmises), 'error');
+                        }
 
                         // Ajouter à la liste des notifications avec toast popup
                         addNotification({
@@ -2618,6 +3104,43 @@ function attachActivityEventListeners(moduleKey, container, tile) {
                 showNotification(translations.error_paste_ia_content || 'Veuillez coller le contenu généré par l\'IA.', 'error');
                 return;
             }
+            // Image interactive (mode Guidé / collage manuel) : l'image de fond n'est jamais demandée
+            // à l'IA. Si le JSON collé n'en contient pas, on injecte celle capturée en amont (upload).
+            if (module.requiresBackgroundImage) {
+                let parsed = null;
+                try { parsed = JSON.parse(jsonInput); }
+                catch {
+                    // JSON réparable uniquement par le healer (saut de ligne littéral, backslash
+                    // LaTeX…) : sans ce rattrapage, l'injection de l'image de fond serait sautée
+                    // et le .h5p sortirait sans champ `image` (audit N1, scénario 3).
+                    try {
+                        const { healJsonString } = await import('../h5p/json-healer.js');
+                        parsed = JSON.parse(healJsonString(jsonInput));
+                    } catch { /* irréparable : le creator lèvera une erreur propre en aval */ }
+                }
+                const st = imageHotspotStates.get(moduleKey);
+                // Ré-enregistrer le fond dans le registre AVANT le packaging : clearAllImages() vide le
+                // registre après chaque génération réussie, donc une 2ᵉ création (sans ré-ouvrir la
+                // modale) perdrait sinon le blob de l'image (content.json référencerait un fichier
+                // absent). Le state survit (Map module-level) et conserve l'entry → on la ré-injecte.
+                if (st && st.entry) {
+                    try {
+                        const { registerImage } = await import('../h5p/image-manager.js');
+                        registerImage('image', st.entry);
+                    } catch { /* ré-enregistrement best-effort */ }
+                }
+                if (parsed && typeof parsed === 'object' && !parsed.image && st && st.image) {
+                    parsed.image = st.image;
+                    // Champs propres au format plat d'Image interactive (les « Find the Hotspot »
+                    // n'ont ni alt-text ni icônes dans leur semantics).
+                    if (moduleKey === 'ImageHotspots') {
+                        if (!parsed.backgroundImageAltText) parsed.backgroundImageAltText = st.altText || '';
+                        if (!parsed.globalIconType) parsed.globalIconType = 'numbers';
+                    }
+                    jsonInput = JSON.stringify(parsed);
+                }
+            }
+
             // Vidéo interactive (mode Guidé / collage manuel) : la source de lecture et la piste
             // de sous-titres ne sont JAMAIS demandées à l'IA. Deux sources possibles, dans l'ordre :
             //   1. le JSON collé contient DÉJÀ une videoSource → elle PRIME (on génère tel quel) ;
@@ -2756,6 +3279,71 @@ function attachLLMLogic(moduleKey, container) {
     }
 
     llmBtn.addEventListener('click', async () => {
+        // Verrou + génération « Image interactive » : zones (vision) → IA → JSON intermédiaire.
+        // L'image de fond et l'alt sont injectés par Caramel (jamais demandés au LLM).
+        if (module && module.requiresBackgroundImage) {
+            const st = imageHotspotStates.get(moduleKey);
+            if (!st || !st.zones || !st.zones.length) {
+                showNotification(translations.ih_need_image || 'Joignez d’abord une image de fond (la détection des zones se lance automatiquement).', 'error');
+                return;
+            }
+            const jsonInputTarget = container.querySelector(`#${jsonInputId}`);
+            startCaramelAnimation();
+            try {
+                const prompt = buildImageHotspotsPrompt(st.zones, { width: st.width, height: st.height }, st.imageDescription, prefixForModule(moduleKey));
+                if (jsonInputTarget) jsonInputTarget.value = '';
+                sessionStorage.removeItem(`${STORAGE_PREFIX}json_${moduleKey}`);
+                preloadForPostGeneration(moduleKey);
+
+                const activityMeta = {
+                    moduleKey, category: 'h5p',
+                    nameKey: module.name, englishName: module.englishName, machineName: module.machineName,
+                    displayName: (translations && translations[module.name]) || module.englishName || moduleKey
+                };
+                const cv = getCaramelVersionFromFooter();
+                if (cv) activityMeta.caramelVersion = cv;
+
+                const content = await generateH5PWithLLM(prompt, selectedModel, activityMeta);
+                if (content) {
+                    let parsed = null;
+                    try { parsed = JSON.parse(content); } catch { parsed = null; }
+                    if (!parsed) {
+                        // Rattrapage healer : sans lui, un JSON à réparer partirait au creator
+                        // SANS injection de l'image de fond (audit N1, scénario 3).
+                        try {
+                            const { healJsonString } = await import('../h5p/json-healer.js');
+                            parsed = JSON.parse(healJsonString(content));
+                        } catch { parsed = null; }
+                    }
+                    if (parsed && typeof parsed === 'object') {
+                        parsed.image = st.image;
+                        // Champs propres au format plat d'Image interactive (cf. collage manuel).
+                        if (moduleKey === 'ImageHotspots') {
+                            if (!parsed.backgroundImageAltText) parsed.backgroundImageAltText = st.altText || '';
+                            if (!parsed.globalIconType) parsed.globalIconType = 'numbers';
+                        }
+                        jsonInputTarget.value = JSON.stringify(parsed, null, 2);
+                    } else {
+                        jsonInputTarget.value = content;
+                    }
+                    const ihCreateBtn = document.getElementById(module.createBtnId);
+                    if (ihCreateBtn) ihCreateBtn.click();
+                    closeSidebar();
+                } else {
+                    jsonInputTarget.value = translations.generation_failed_empty;
+                    showNotification(translations.generation_failed_empty, 'error');
+                    stopCaramelAnimation();
+                }
+            } catch (error) {
+                console.error('Erreur génération image interactive:', error);
+                const tmpl = translations.generation_failed_llm || 'La génération a échoué. Cause : {errorMessage}';
+                showNotification(tmpl.replace('{errorMessage}', error.message), 'error');
+                if (jsonInputTarget) jsonInputTarget.value = tmpl.replace('{errorMessage}', error.message);
+                stopCaramelAnimation();
+            }
+            return;
+        }
+
         // Verrou + génération « Vidéo interactive » : transcription → IA → JSON intermédiaire.
         if (module && module.requiresVideoUrl) {
             const st = videoStates.get(moduleKey);
@@ -3018,6 +3606,8 @@ function renderRecipeStep() {
 function startCaramelAnimation() {
     const overlay = document.getElementById('caramel-animation-overlay');
     const marmiteContent = document.querySelector('.marmite-content');
+    clearTimeout(overlayFadeTimeout);
+    overlay.classList.remove('closing');
     overlay.style.display = 'flex';
     resetBatchGauge(); // masque + ré-amorce la jauge de lots (sans effet sur une génération mono-appel)
 
@@ -3051,11 +3641,30 @@ function startCaramelAnimation() {
     marmiteContent.style.animation = 'fillMarmite 22s linear forwards';
 }
 
-function stopCaramelAnimation() {
+let overlayFadeTimeout = null;
+
+/**
+ * Arrête l'animation "marmite".
+ * @param {boolean} fadeOut - Si true, l'overlay s'efface en fondu (300 ms) au lieu de
+ *   disparaître d'un coup — utilisé quand la modale de résultat apparaît par-dessus,
+ *   pour un enchaînement sans flash. Les chemins d'erreur gardent le masquage immédiat.
+ */
+function stopCaramelAnimation(fadeOut = false) {
     const overlay = document.getElementById('caramel-animation-overlay');
     clearInterval(recipeInterval);
     resetBatchGauge();
-    if (overlay) overlay.style.display = 'none';
+    if (!overlay) return;
+    clearTimeout(overlayFadeTimeout);
+    if (fadeOut && overlay.style.display !== 'none') {
+        overlay.classList.add('closing');
+        overlayFadeTimeout = setTimeout(() => {
+            overlay.style.display = 'none';
+            overlay.classList.remove('closing');
+        }, 300);
+    } else {
+        overlay.classList.remove('closing');
+        overlay.style.display = 'none';
+    }
 }
 
 // Amorce de la jauge : on démarre à 10 % pour montrer d'emblée que « ça avance ».
@@ -3124,7 +3733,9 @@ function showGenerationResult(e) {
     // C'est ici et non dans le finally du handler LLM, car la création H5P/Moodle
     // est asynchrone (fire & forget via click()) et se termine APRÈS le finally.
     // Sans ça, l'utilisateur voit un écran vide entre la fin de l'animation et la modale.
-    stopCaramelAnimation();
+    // fadeOut=true : l'overlay s'efface en fondu pendant que la carte de la modale
+    // apparaît (fadeScaleIn 300 ms), sinon flash d'écran vide le temps du fade-in.
+    stopCaramelAnimation(true);
 
     const { notificationId, blob, fileName, titleKey, moduleKey } = e.detail;
     generationResultData = { notificationId, blob, fileName, titleKey, moduleKey };
@@ -3354,6 +3965,18 @@ export function initGenerationResultModal() {
                             }
                         } catch (err) {
                             console.warn('Capture grille échouée, export sans image:', err);
+                        }
+                    }
+                    // Activités à image de fond (Image interactive, Find the Hotspot, Find Multiple
+                    // Hotspots) : injecter le fond (ré-extrait du .h5p, registre vidé après
+                    // packaging) → le formatter compose fond + pastilles numérotées.
+                    else if ((resolvedKey === 'ImageHotspots' || resolvedKey === 'FindTheHotspot' || resolvedKey === 'FindMultipleHotspots') && notification.blob) {
+                        try {
+                            const { extractBackgroundFromH5p } = await import('../renderers/hotspot-overlay-renderer.js');
+                            const bg = await extractBackgroundFromH5p(notification.blob, jsonDataToExport);
+                            if (bg) dataToExport = { ...dataToExport, _backgroundImage: bg };
+                        } catch (err) {
+                            console.warn('Capture fond Image interactive échouée, export sans pastilles:', err);
                         }
                     }
 

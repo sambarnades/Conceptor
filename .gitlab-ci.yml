@@ -12,6 +12,13 @@ pages:
   stage: deploy
   environment: production
   image: node:20-alpine
+  # Ne se déclenche QUE sur la branche par défaut (main). Les tags de version
+  # ne doivent pas lancer ce job : GitLab Pages ne publie que depuis main, et
+  # les variables CI/CD n8n sont "Protected" → absentes sur un tag non protégé
+  # → le garde-fou d'injection des URLs (étape 3) échouait avec exit 1.
+  # (Cf. « toutes les étiquettes en erreur » — audit 2026-07.)
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
   script:
     # ------------------------------------------------------------------
     # 1. Installation des outils de minification
@@ -49,13 +56,14 @@ pages:
     #      CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL (ex: https://…/caramel-video-transcript-submit-prod)
     #      CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL (ex: https://…/caramel-video-transcript-result-prod)
     #      CARAMEL_FETCH_PAGE_URL       (ex: https://…/caramel-fetch-page-prod)
+    #      CARAMEL_VISION_DETECT_URL    (ex: https://…/caramel-vision-detect-prod)
     #
-    #    Les 10 sont OBLIGATOIRES : le build echoue (exit 1) si l'une manque.
+    #    Les 11 sont OBLIGATOIRES : le build echoue (exit 1) si l'une manque.
     # ------------------------------------------------------------------
     - |
       echo "=== Injection URLs n8n ==="
-      if [ -z "$LLM_SUBMIT_URL" ] || [ -z "$LLM_RESULT_URL" ] || [ -z "$LLM_STATS_URL" ] || [ -z "$CARAMELIA_WEBHOOK_URL" ] || [ -z "$CARAMELIA_AUDIO_URL" ] || [ -z "$PDF_CONVERT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL" ] || [ -z "$CARAMEL_FETCH_PAGE_URL" ]; then
-        echo "  ERREUR: une des 10 URLs n8n (LLM_SUBMIT_URL, LLM_RESULT_URL, LLM_STATS_URL, CARAMELIA_WEBHOOK_URL, CARAMELIA_AUDIO_URL, PDF_CONVERT_URL, CARAMEL_VIDEO_TRANSCRIPT_URL, CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL, CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL, CARAMEL_FETCH_PAGE_URL) n'est pas definie dans les variables CI/CD !"
+      if [ -z "$LLM_SUBMIT_URL" ] || [ -z "$LLM_RESULT_URL" ] || [ -z "$LLM_STATS_URL" ] || [ -z "$CARAMELIA_WEBHOOK_URL" ] || [ -z "$CARAMELIA_AUDIO_URL" ] || [ -z "$PDF_CONVERT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL" ] || [ -z "$CARAMEL_FETCH_PAGE_URL" ] || [ -z "$CARAMEL_VISION_DETECT_URL" ]; then
+        echo "  ERREUR: une des 11 URLs n8n (LLM_SUBMIT_URL, LLM_RESULT_URL, LLM_STATS_URL, CARAMELIA_WEBHOOK_URL, CARAMELIA_AUDIO_URL, PDF_CONVERT_URL, CARAMEL_VIDEO_TRANSCRIPT_URL, CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL, CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL, CARAMEL_FETCH_PAGE_URL, CARAMEL_VISION_DETECT_URL) n'est pas definie dans les variables CI/CD !"
         echo "  → GitLab > Settings > CI/CD > Variables"
         exit 1
       fi
@@ -70,6 +78,7 @@ pages:
       sed -i "s|const CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL = \".*\"|const CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL = \"${CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL}\"|g" "$ENDPOINTS_FILE"
       sed -i "s|const CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL = \".*\"|const CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL = \"${CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL}\"|g" "$ENDPOINTS_FILE"
       sed -i "s|const CARAMEL_FETCH_PAGE_URL = \".*\"|const CARAMEL_FETCH_PAGE_URL = \"${CARAMEL_FETCH_PAGE_URL}\"|g" "$ENDPOINTS_FILE"
+      sed -i "s|const CARAMEL_VISION_DETECT_URL = \".*\"|const CARAMEL_VISION_DETECT_URL = \"${CARAMEL_VISION_DETECT_URL}\"|g" "$ENDPOINTS_FILE"
       echo "  LLM_SUBMIT_URL        : ${LLM_SUBMIT_URL}"
       echo "  LLM_RESULT_URL        : ${LLM_RESULT_URL}"
       echo "  LLM_STATS_URL         : ${LLM_STATS_URL}"
@@ -80,6 +89,7 @@ pages:
       echo "  CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL : ${CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL}"
       echo "  CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL : ${CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL}"
       echo "  CARAMEL_FETCH_PAGE_URL       : ${CARAMEL_FETCH_PAGE_URL}"
+      echo "  CARAMEL_VISION_DETECT_URL    : ${CARAMEL_VISION_DETECT_URL}"
 
     # ------------------------------------------------------------------
     # 4. Minification JS — modules ES6 (~79 fichiers applicatifs)

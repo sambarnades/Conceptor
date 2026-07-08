@@ -140,6 +140,9 @@ export function mountInteractiveVideoPanel(container, api) {
     // ---- lecteur ----
     const ensurePlayer = () => {
         if (activePlayer) return;
+        // Ceinture : le conteneur doit être vide avant de monter un lecteur (le destroy()
+        // du lecteur retire déjà son élément, mais aucun média mort ne doit pouvoir s'empiler).
+        media.replaceChildren();
         activePlayer = createVideoPlayer(media, videoSource, {
             onReady: () => {
                 duration = (activePlayer && activePlayer.getDuration && activePlayer.getDuration()) || 0;
