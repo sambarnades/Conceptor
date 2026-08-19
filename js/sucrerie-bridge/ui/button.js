@@ -23,6 +23,7 @@
  */
 
 import { SUCRERIE_BRIDGE } from '../config.js';
+import { safeSession } from '../../core/utils.js';
 
 const BUTTON_DATA_ATTR = 'data-sucrerie-bridge-btn';
 
@@ -33,12 +34,8 @@ function notificationKey(notification) {
 }
 
 function isAlreadyShared(notification) {
-    try {
-        const key = `${SUCRERIE_BRIDGE.storagePrefix}shared_${notificationKey(notification)}`;
-        return !!sessionStorage.getItem(key);
-    } catch {
-        return false;
-    }
+    const key = `${SUCRERIE_BRIDGE.storagePrefix}shared_${notificationKey(notification)}`;
+    return !!safeSession.get(key);
 }
 
 /**

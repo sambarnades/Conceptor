@@ -9,7 +9,7 @@ zichtbaar is. Enige bron van waarheid: js/locales/nl.json + index.html.
 Elke wijziging gebeurt via een PR.
 -->
 ---
-version: 1.2.0
+version: 1.3.0
 lang: nl
 audience: leerkrachten
 ---
@@ -60,19 +60,22 @@ Drie mogelijkheden:
 - **Een tekst kopiëren en plakken** rechtstreeks in het invoerveld.
 - **Een document slepen en neerzetten** (of klikken op
   **„Kies een bestand"**) in **PDF-, DOCX-, PPTX-, ODT-, ODP-,
-  PNG-, JPEG-formaat**. U kunt ook een **audiobestand** (MP3, M4A, WAV…) of een **video** (MP4, MOV…) neerzetten: alleen het geluid wordt dan automatisch getranscribeerd (door Albert, de soevereine dienst van de DINUM; zie privacy hieronder). Het sleepgebied draagt het label
+  PNG-, JPEG-formaat** (de afbeeldingsformaten **WebP** en **BMP** worden ook aanvaard, zonder op het scherm vermeld te staan). Een neergezette **afbeelding** (foto, schema, diagram…) wordt **geanalyseerd door een vision-AI** die er een **beschrijving** van opstelt en **de tekst die erin staat getrouw overneemt** — als de AI niet beschikbaar is, neemt het lokale uitlezen (OCR) automatisch over. U kunt ook een **audiobestand** (MP3, M4A, WAV…) of een **video** (MP4, MOV…) neerzetten: alleen het geluid wordt dan automatisch getranscribeerd (door Albert, de soevereine dienst van de DINUM; zie privacy hieronder). Het sleepgebied draagt het label
   **„Sleep een document hierheen (PDF, DOCX, PPTX, ODT, ODP, PNG,
   JPEG)"** met als scheidingsteken **„of"**.
 - **Een webpagina importeren** : plak de link (`https://…`) in het
   veld onder de uploadzone en klik vervolgens op **„Toevoegen"**. De
   tekst van de pagina wordt automatisch opgehaald.
 
-De tekstextractie van **documenten en afbeeldingen** gebeurt
-**volledig lokaal** in uw browser (er worden geen gegevens verzonden).
-**Twee uitzonderingen lopen via onze servers (gehost in Frankrijk):**
-de **audiotranscriptie** en de **import van een webpagina** (de link
-die u invoert wordt daarheen verzonden om er de tekst uit te halen;
-links naar PDF's, video's of betalende pagina's worden niet
+De tekstextractie van **documenten** gebeurt **volledig lokaal** in uw
+browser (er worden geen gegevens verzonden).
+**Drie uitzonderingen lopen via onze servers (gehost in Frankrijk):**
+de **analyse van afbeeldingen** (de afbeelding wordt gedurende de
+analyse naar het vision-model gestuurd en wordt nooit bewaard; bij
+onbeschikbaarheid neemt de lokale OCR — die niets verzendt — het
+over), de **audiotranscriptie** en de **import van een webpagina** (de
+link die u invoert wordt daarheen verzonden om er de tekst uit te
+halen; links naar PDF's, video's of betalende pagina's worden niet
 ondersteund).
 
 Als u dit gebied leeg laat, baseert de AI zich uitsluitend op haar
@@ -110,6 +113,7 @@ gedetailleerde feedback in 4 scoresegmenten.
 - **Paragrafen ordenen** ★ — paragrafen weer in de juiste volgorde plaatsen.
 - **Reeks enkelvoudige keuzes** ★ — vragen met één enkel correct antwoord.
 - **Dialoogkaarten** — voor- en achterkaartjes met tekst en audio.
+- **Dictee** — audiodictee: zinnen voorgelezen door spraaksynthese (V/M-stem, normale of langzame snelheid, 11 talen), de leerling schrijft ze op; fouten worden gemarkeerd.
 - **Complexe gatentekst** ★ — foutspecifieke feedback.
 - **Diagram** — taart- of staafdiagram om gegevens te visualiseren.
 - **Cursuspresentatie** — interactieve diavoorstelling met geïntegreerde oefeningen.
@@ -121,8 +125,9 @@ gedetailleerde feedback in 4 scoresegmenten.
 
 ### Éléa- / Magistère-activiteiten
 
-- **Test (XML / GIFT)** — gevarieerde vragenbank (meerkeuze, koppelen…)
-  om in een Éléa/Magistère-test te importeren.
+- **Test (MBZ / XML / GIFT)** — Test-activiteit klaar om te herstellen in **`.mbz`**
+  (vragenbank + gekoppelde quiz), of gevarieerde vragenbank (meerkeuze,
+  koppelen…) om te importeren (XML / GIFT) in een Éléa/Magistère-test.
 - **Meerkeuze (QCM) (MBZ)** — eenvoudige en snelle meerkeuzeactiviteit.
 - **Koppelen (MBZ)** — koppelspel tussen paren elementen.
 - **Millionnaire (MBZ)** — speelse quiz met oplopende moeilijkheidsgraad.

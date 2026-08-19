@@ -40,8 +40,8 @@
         {
           "type": "list",
           "items": [
-            "**Uw documenten blijven op uw computer.** Wanneer u in de geavanceerde modus een bestand (PDF, afbeelding…) plaatst, gebeurt de tekstextractie **volledig in uw browser**: er wordt niets naar een server gestuurd.",
-            "**Wat wél wordt verstuurd, blijft in Frankrijk gehost.** Uw generatieverzoeken lopen via **gedeelde universitaire servers** (project **ILaaS**); spraak (microfoon of audiobestand) wordt getranscribeerd door **Albert**, de **soevereine dienst van de DINUM**. Geen van beide **verzamelt of verkoopt** uw gegevens — en **de audio wordt niet bewaard**.",
+            "**Uw documenten blijven op uw computer.** Wanneer u in de geavanceerde modus een tekstbestand (PDF, DOCX, PPTX, ODT…) plaatst, gebeurt de tekstextractie **volledig in uw browser**: er wordt niets naar een server gestuurd.",
+            "**Wat wél wordt verstuurd, blijft in Frankrijk gehost.** Uw generatieverzoeken lopen via **gedeelde universitaire servers** (project **ILaaS**); de **geplaatste afbeeldingen** worden daar geanalyseerd door een **vision-AI** (beschrijving + overgenomen tekst); spraak (microfoon of audiobestand) wordt getranscribeerd door **Albert**, de **soevereine dienst van de DINUM**. Geen van beide **verzamelt of verkoopt** uw gegevens — en **noch de audio noch de afbeeldingen worden bewaard**.",
             "**Kopiëren en plakken naar een externe AI is uw eigen keuze.** Als u een prompt kopieert om die in een dienst van derden te gebruiken, hangt de bescherming van uw gegevens dan af van **de voorwaarden van die dienst**."
           ]
         },
@@ -86,7 +86,17 @@
         },
         {
           "type": "p",
-          "text": "Voor een meer gestructureerde aanvraag. Deze modus biedt **precieze velden** (vak, niveau, thema, aantal vragen, bijzondere instructies…) en maakt het mogelijk om **een document bij te voegen** of **een webpagina te importeren** als startpunt."
+          "text": "Voor een meer gestructureerde aanvraag. Deze modus biedt **precieze velden** (vak, niveau, thema, aantal vragen, bijzondere instructies…) en maakt het mogelijk om **eigen materiaal bij te voegen** of **een webpagina te importeren** als startpunt."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Documenten** — PDF, DOCX, PPTX, ODT, ODP: de tekst wordt rechtstreeks overgenomen.",
+            "**Afbeeldingen** — PNG, JPEG (WebP en BMP worden ook aanvaard): beschreven en overgenomen door een vision-AI.",
+            "**Audio** — MP3, M4A, WAV, OGG, FLAC: de opname wordt automatisch **getranscribeerd**.",
+            "**Video** — MP4, MOV, WEBM: **alleen het geluidsspoor** wordt gehaald en getranscribeerd, het beeld wordt niet geanalyseerd.",
+            "**Webpagina** — plak een link en Caramel haalt de inhoud op."
+          ]
         },
         {
           "type": "shot",
@@ -96,6 +106,14 @@
         {
           "type": "plain",
           "text": "Als u de zone « documenten » leeg laat, baseert de AI zich **uitsluitend op haar algemene kennis**. Door uw les erin te plaatsen, dwingt u haar om **dicht bij uw inhoud te blijven** — u bepaalt het."
+        },
+        {
+          "type": "tip",
+          "text": "**Afbeeldingen worden begrepen, niet alleen gelezen.** Plaats een foto van uw les, een schema of een diagram (PNG, JPEG — WebP en BMP worden ook aanvaard): een **vision-AI beschrijft wat de afbeelding toont en neemt de tekst die erin staat getrouw over**. En als de AI niet beschikbaar is, neemt het **lokaal uitlezen van de tekst (OCR)** automatisch over."
+        },
+        {
+          "type": "tip",
+          "text": "**Een opgenomen les kan als bron dienen.** Plaats een audio- of videobestand: Caramel **transcribeert** het vóór de generatie. Lange opnamen worden in stukken van 5 minuten geknipt, dus reken op wat wachttijd bij een lesuur."
         },
         {
           "type": "h",
@@ -137,19 +155,19 @@
           "type": "table",
           "head": [
             "Familie",
-            "Wat het is",
-            "Geproduceerde formaten"
+            "Wat u krijgt",
+            "Geproduceerd bestand"
           ],
           "rows": [
             [
               "**H5P**",
-              "**Interactieve** activiteiten: meerkeuzevragen, waar/onwaar, invultekst, sleep-en-neerzet, kruiswoordraadsels, geheugenkaarten, woordenlijst, cursuspresentatie, interactief boek, interactieve video…",
+              "**Interactieve** activiteiten die overal werken: Moodle, Éléa, Magistère, La Sucrerie en zelfs een gewone website. De leerling antwoordt in de pagina zelf en ziet meteen de verbetering.",
               "**.h5p**"
             ],
             [
               "**Éléa / Moodle**",
-              "Activiteiten en bronnen voor deze platforms: Toets, meerkeuze, Koppelen, Miljonair, Pagina, Boek, Woordenlijst, Opdracht…",
-              "**.mbz**, **.xml**, **.GIFT**"
+              "**Eigen activiteiten** van het platform (Toets, Quiz, Opdracht, Miljonair…) en **cursusbronnen** (Pagina, Boek). Importeer ze in uw cursus; de resultaten komen in het cijferoverzicht.",
+              "**.mbz**, **.xml**, **.gift**"
             ]
           ]
         },
@@ -168,6 +186,219 @@
         {
           "type": "tip",
           "text": "Twijfelt u over het type? De **filters** bovenaan het raster (per platform, per thema) verkleinen de lijst, en de naam van elke tegel beschrijft de oefening die zij produceert. Caramélia kan u ook het meest geschikte type aanraden."
+        },
+        {
+          "type": "h",
+          "text": "De catalogus, activiteit per activiteit"
+        },
+        {
+          "type": "p",
+          "text": "Hier leest u in één zin wat elke tegel u laat maken. De activiteiten zijn gegroepeerd **naar gebruik**; in de app doen de **filters** boven het raster hetzelfde."
+        },
+        {
+          "type": "h",
+          "text": "Rijke interactieve inhoud"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Activiteit",
+            "Waarvoor ze dient"
+          ],
+          "rows": [
+            [
+              "**Cursuspresentatie**",
+              "Maak een interactieve diavoorstelling met ingebedde oefeningen (meerkeuzevragen, waar/onwaar, invuloefeningen, enz.) voor een gestructureerde cursus."
+            ],
+            [
+              "**Interactief boek**",
+              "Maak een digitaal boek met meerdere hoofdstukken: elke pagina combineert teksten, tabellen, afbeeldingen en oefeningen (meerkeuze, waar/onwaar, invuloefening…), met inhoudsopgave en samenvattingspagina."
+            ],
+            [
+              "**Interactieve video**",
+              "Een video verrijkt met vragen (meerkeuze, waar/onwaar, invuloefening) die op belangrijke momenten verschijnen, met een eindsamenvatting. (Tubes van Apps Éducation, PodEduc en YouTube)"
+            ],
+            [
+              "**Interactieve afbeelding**",
+              "Voeg een afbeelding toe: de AI plaatst klikbare punten en schrijft de uitleg. Media kun je zelf toevoegen."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Toetsen en evaluatie"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Activiteit",
+            "Waarvoor ze dient"
+          ],
+          "rows": [
+            [
+              "**Meerkeuze quiz**",
+              "Maak een quiz die uitsluitend bestaat uit meerkeuzevragen."
+            ],
+            [
+              "**Waar/Onwaar-quiz**",
+              "Maak een quiz die uitsluitend bestaat uit waar- of onwaar-vragen."
+            ],
+            [
+              "**Gemengde quiz**",
+              "Stel een reeks verschillende vragen samen (meerkeuze, slepen, enz.) om kennis te toetsen."
+            ],
+            [
+              "**Vind de zone**",
+              "Voeg een afbeelding toe: de AI kiest de juiste zone en schrijft de feedback. De eerste klik telt voor de score."
+            ],
+            [
+              "**Vind de zones**",
+              "Voeg een afbeelding toe: de AI kiest de te vinden zones en schrijft de feedback."
+            ],
+            [
+              "**Reeks enkelvoudige keuzes**",
+              "Maak een reeks vragen waarbij elke vraag slechts één goed antwoord heeft."
+            ],
+            [
+              "**Meerkeuze**",
+              "Maak één **enkele** meerkeuzevraag met één of meer goede antwoorden."
+            ],
+            [
+              "**Waar/Onwaar**",
+              "Maak één **enkele** eenvoudige vraag met een binair antwoord: waar of onwaar."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Werken met tekst"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Activiteit",
+            "Waarvoor ze dient"
+          ],
+          "rows": [
+            [
+              "**Woorden slepen**",
+              "Maak een tekst met gaten waar leerlingen de ontbrekende woorden naartoe moeten slepen."
+            ],
+            [
+              "**Slepen en neerzetten**",
+              "Maak een activiteit waarbij leerlingen labels naar de juiste dropzones slepen."
+            ],
+            [
+              "**Gatentekst**",
+              "Leerlingen moeten de ontbrekende woorden rechtstreeks via het toetsenbord invullen."
+            ],
+            [
+              "**Woorden markeren**",
+              "Vraag leerlingen om bepaalde woorden in een alinea te markeren."
+            ],
+            [
+              "**Dictee**",
+              "Maak een audiodictee: de leerling luistert naar elke zin en typt die over; fouten worden gemarkeerd. Stemmen worden automatisch gegenereerd (spraaksynthese)."
+            ],
+            [
+              "**Opstel**",
+              "Stel een onderwerp voor en definieer trefwoorden voor automatische correctie."
+            ],
+            [
+              "**Paragrafen ordenen**",
+              "Maak een set paragrafen die leerlingen in de juiste volgorde moeten zetten."
+            ],
+            [
+              "**Samenvatting**",
+              "Leerlingen moeten een samenvatting maken door de juiste zinnen te kiezen."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Memoriseren en ontdekken"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Activiteit",
+            "Waarvoor ze dient"
+          ],
+          "rows": [
+            [
+              "**Flitskaarten**",
+              "Maak dubbelzijdige kaarten om termen en definities te onthouden."
+            ],
+            [
+              "**Kruiswoordraadsel**",
+              "Genereer een kruiswoordpuzzel op basis van een lijst met woorden en definities."
+            ],
+            [
+              "**Tijdlijn**",
+              "Maak een interactieve tijdlijn om een reeks gebeurtenissen te presenteren."
+            ],
+            [
+              "**Woordenlijst**",
+              "Maak een woordenlijst of FAQ in de vorm van een uitklapbaar menu."
+            ],
+            [
+              "**Woordzoeker**",
+              "Maak een rooster van letters waarin leerlingen woorden moeten vinden."
+            ],
+            [
+              "**Diagram**",
+              "Maak een cirkel- of staafdiagram om gegevens te visualiseren."
+            ],
+            [
+              "**Dialoogkaarten**",
+              "Maak interactieve dubbelzijdige kaarten met tekst en optioneel afbeeldingen."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Éléa- / Moodle-activiteiten"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Activiteit",
+            "Waarvoor ze dient"
+          ],
+          "rows": [
+            [
+              "**Pagina**",
+              "Maak een visueel opgemaakte Éléa-inhoudspagina."
+            ],
+            [
+              "**Boek**",
+              "Maak een Éléa-boek met meerdere hoofdstukken en visuele opmaak, door de blokken van de Pagina-activiteit opnieuw te gebruiken."
+            ],
+            [
+              "**Opdracht**",
+              "Maak een Moodle-opdracht met een door AI gegenereerd beoordelingsraster."
+            ],
+            [
+              "**Toets**",
+              "Genereer een vragenbank die direct in een 'Test'-activiteit kan worden geïmporteerd (XML- of GIFT-formaat)."
+            ],
+            [
+              "**Meerkeuze (QCM)**",
+              "Genereer een eenvoudige meerkeuze-activiteit."
+            ],
+            [
+              "**Koppelen**",
+              "Genereer een koppelactiviteit met 10 vragen."
+            ],
+            [
+              "**Miljonair**",
+              "Genereer een 'Millionnaire'-activiteit met 6 vragen die in moeilijkheidsgraad oplopen."
+            ],
+            [
+              "**Woordenlijst**",
+              "Genereer een woordenlijst klaar voor import in XML-formaat."
+            ]
+          ]
         }
       ]
     },
@@ -461,7 +692,7 @@
         },
         {
           "type": "p",
-          "text": "Om vragen aan uw **vragenbank** toe te voegen: kies vanuit de bank **« Importeren »**, selecteer het formaat (Moodle XML of GIFT) en laad het bestand."
+          "text": "Om vragen aan uw **vragenbank** toe te voegen: kies vanuit de bank **« Importeren »**, selecteer het formaat (Moodle XML of GIFT) en laad het bestand. U kunt de Test ook rechtstreeks als **`.mbz`** importeren — een activiteit die klaar is om te herstellen (zie « .mbz-bestand » hierboven)."
         },
         {
           "type": "shot",

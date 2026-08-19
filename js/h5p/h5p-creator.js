@@ -7,12 +7,13 @@
 
 import { h5pModules } from '../core/definitions.js';
 import { translations, currentLang } from '../core/translation.js';
+import { languageCodes } from '../core/language-codes.js';
 import { addNotification } from '../ui/notifications.js';
 import {
     processH5PContent,
     getModuleMetadata
 } from './processors/index.js';
-import { detectMathInContent, debugLog, DEBUG, classifyError } from '../core/utils.js';
+import { detectMathInContent, debugLog, DEBUG, classifyError, horodatageFichier } from '../core/utils.js';
 import * as JSONHealer from './json-healer.js';
 import { loadClientZip } from '../core/lib-loader.js';
 import * as perf from '../core/perf-tracker.js';
@@ -58,6 +59,13 @@ export async function handleH5PCreation(moduleKey, jsonInput) {
             console.warn("[H5P Creator] Échec du parse initial, tentative de réparation (String Healer)...", parseError);
             const healedString = JSONHealer.healJsonString(jsonInput);
             jsonObj = JSON.parse(healedString); // Peut encore throw si irréparable
+        }
+
+        // Vidéo interactive : une IA (externe surtout) renvoie parfois directement le TABLEAU
+        // des interactions, sans objet englobant. Envelopper AVANT tout healing, sinon le
+        // healer verrait interactions=[] et toutes les questions seraient perdues.
+        if (moduleKey === 'InteractiveVideo' && Array.isArray(jsonObj)) {
+            jsonObj = { interactions: jsonObj };
         }
 
         // Stocker le JSON brut avant healing (mode debug uniquement)
@@ -142,6 +150,15 @@ export async function handleH5PCreation(moduleKey, jsonInput) {
         let dynamicDependencies = [];
 
         // 1. Traitement spécifique via le processeur du module (async : chargement paresseux)
+        // Dictée : le processeur SYNTHÉTISE l'audio (TTS serveur, 5-30 s, voire réveil à froid).
+        // On signale un traitement LONG à l'UI : l'animation « caramel » reste affichée (ou
+        // s'affiche, flux collage manuel) jusqu'au generation:complete/error, avec une étape
+        // de recette explicite. Sans ça, l'utilisateur croit l'app figée pendant la synthèse.
+        if (moduleKey === 'Dictation') {
+            document.dispatchEvent(new CustomEvent('generation:processing', {
+                detail: { moduleKey, stepKey: 'caramel_animation_step_audio' }
+            }));
+        }
         perf.markStart('processor', `processH5PContent(${moduleKey})`);
         const processingResult = await processH5PContent(moduleKey, jsonObj);
         perf.markEnd('processor', `processH5PContent(${moduleKey})`);
@@ -257,12 +274,7 @@ async function packageAndDownloadH5P(filenameBase, mainLibraryName, contentJson,
         perf.markEnd('packaging', 'createH5PBlob (ZIP)', { blobSize: h5pBlob.size });
 
         // 4. Générer le nom de fichier
-        const now = new Date();
-        const dateString = now.getFullYear() +
-            String(now.getMonth() + 1).padStart(2, '0') +
-            String(now.getDate()).padStart(2, '0') +
-            String(now.getHours()).padStart(2, '0') +
-            String(now.getMinutes()).padStart(2, '0');
+        const dateString = horodatageFichier();
 
         const cleanType = filenameBase.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
         const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
@@ -429,14 +441,21 @@ export async function createH5PBlob(contentJson, mainLibraryName, dependencies, 
     const title = options.title || contentJson.title || "Activity";
     const lang = options.lang || 'fr';
 
+    // Le contenu est écrit dans la langue de l'interface (les processeurs lisent
+    // `translations`), donc les métadonnées doivent la déclarer. `language` valait
+    // "und" en dur : l'activité ne déclarait aucune langue. `defaultLanguage`
+    // reprenait la clé de locale telle quelle, ce qui produisait un
+    // `<html lang="jp">` invalide pour le japonais (code pays, pas code langue).
+    const codes = languageCodes(lang);
+
     const h5pJson = {
         title: stripMarkdownAndHtml(title),
         extraTitle: stripMarkdownAndHtml(title),
-        language: "und",
+        language: codes.language,
         mainLibrary: mainLibraryName,
         embedTypes: ["iframe"],
         license: "U",
-        defaultLanguage: lang === 'zh' ? 'zh-cn' : lang,
+        defaultLanguage: codes.h5p,
         preloadedDependencies: uniqueDependencies
     };
 

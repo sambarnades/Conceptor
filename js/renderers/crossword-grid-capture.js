@@ -3,43 +3,16 @@
  * Lit le DOM de l'iframe H5P et redessine la grille (vide + corrigée) sur des canvas offscreen.
  */
 
-const CELL_SIZE = 48;
-const BORDER_WIDTH = 1;
-const OUTER_BORDER_WIDTH = 2;
-const CLUE_FONT_SIZE = 11;
-const LETTER_FONT_SIZE = 22;
-
-// Couleurs par defaut
-const DEFAULT_COLORS = {
-    EMPTY_CELL_COLOR: '#173354',
-    ACTIVE_CELL_COLOR: '#ffffff',
-    SOLUTION_CELL_COLOR: '#f0f7ff',
-    BORDER_COLOR: '#b0b0b0',
-    OUTER_BORDER_COLOR: '#1d1d1f',
-    CLUE_NUMBER_COLOR: '#555555',
-    LETTER_COLOR: '#1d1d1f'
-};
-
-function buildColors(theme) {
-    if (!theme) return DEFAULT_COLORS;
-    return {
-        EMPTY_CELL_COLOR: theme.backgroundColor || DEFAULT_COLORS.EMPTY_CELL_COLOR,
-        ACTIVE_CELL_COLOR: theme.cellBackgroundColor || DEFAULT_COLORS.ACTIVE_CELL_COLOR,
-        SOLUTION_CELL_COLOR: theme.cellBackgroundColor ? lightenColor(theme.cellBackgroundColor, 0.05) : DEFAULT_COLORS.SOLUTION_CELL_COLOR,
-        BORDER_COLOR: theme.gridColor || DEFAULT_COLORS.BORDER_COLOR,
-        OUTER_BORDER_COLOR: theme.gridColor || DEFAULT_COLORS.OUTER_BORDER_COLOR,
-        CLUE_NUMBER_COLOR: theme.clueIdColor || DEFAULT_COLORS.CLUE_NUMBER_COLOR,
-        LETTER_COLOR: theme.cellColor || DEFAULT_COLORS.LETTER_COLOR
-    };
-}
-
-function lightenColor(hex, amount) {
-    const num = parseInt(hex.replace('#', ''), 16);
-    const r = Math.min(255, ((num >> 16) & 0xff) + Math.round(255 * amount));
-    const g = Math.min(255, ((num >> 8) & 0xff) + Math.round(255 * amount));
-    const b = Math.min(255, (num & 0xff) + Math.round(255 * amount));
-    return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-}
+import {
+    CW_CELL_SIZE as CELL_SIZE,
+    CW_BORDER_WIDTH as BORDER_WIDTH,
+    CW_OUTER_BORDER_WIDTH as OUTER_BORDER_WIDTH,
+    CW_CLUE_FONT_SIZE as CLUE_FONT_SIZE,
+    CW_LETTER_FONT_SIZE as LETTER_FONT_SIZE,
+    CW_DEFAULT_COLORS as DEFAULT_COLORS,
+    buildCrosswordColors as buildColors,
+    canvasToBlob
+} from './grid-canvas-utils.js';
 
 // Variable de module pour stocker le theme actuel (injecte par captureCrosswordGrid)
 let _currentColors = DEFAULT_COLORS;
@@ -374,11 +347,3 @@ function renderGridToCanvas(gridModel, solutionLetters) {
 /**
  * Convertit un canvas en Blob PNG.
  */
-function canvasToBlob(canvas) {
-    return new Promise((resolve, reject) => {
-        canvas.toBlob(blob => {
-            if (blob) resolve(blob);
-            else reject(new Error('Canvas toBlob a retourné null'));
-        }, 'image/png');
-    });
-}

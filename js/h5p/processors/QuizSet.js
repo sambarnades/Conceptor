@@ -84,6 +84,12 @@ export default {
             jumpToQuestion: translations.h5p_quiz_jump_to_question || "Question %d sur %total",
             answeredText: translations.h5p_quiz_answered || "Réponse donnée",
             unansweredText: translations.h5p_quiz_unanswered || "Pas de réponse donnée",
+            // Barre de navigation entre questions (libellé, annonces lecteur d'écran).
+            questionLabel: translations.h5p_quiz_question_label || "Question",
+            readSpeakerProgress: translations.h5p_quiz_read_speaker_progress || "Question @current sur @total",
+            currentQuestionText: translations.h5p_quiz_current_question || "Question en cours",
+            navigationLabel: translations.h5p_quiz_navigation_label || "Questions",
+            questionSetInstruction: translations.h5p_quiz_instruction || "Choisir la question à afficher",
             ...content.texts
         };
 

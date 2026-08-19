@@ -14,6 +14,8 @@ import { detectContentType, getSchemaForType } from '../js/editor/content-detect
 import { healStructureForActivity } from '../js/h5p/json-healer.js';
 import InteractiveVideoProcessor from '../js/h5p/processors/InteractiveVideo.js';
 import { isYouTubeSource, ytVideoId, createVideoPlayer } from '../js/ui/sync-video-player.js';
+import { detectPlatform, isPeerTube, collectRenditions, pickPlayableRendition, albertCandidates, detectVideo } from '../js/services/video-transcript.js';
+import { matchesShowWhen } from '../js/editor/json-utils.js';
 import { clearGeneratedJson, videoLinkChanged } from '../js/ui/ui.js';
 
 let passCount = 0;
@@ -125,7 +127,10 @@ export async function runAllTests() {
     group('Schéma : apparence & adaptativité');
     assert(itemSchema.appearance && itemSchema.appearance.type === 'fieldGroup', 'Groupe « apparence » (fieldGroup)');
     const appF = itemSchema.appearance.fields;
-    assert(appF.display && appF.display.default === 'button', 'display : défaut button');
+    // Défaut inversé en 2026-08 : la question s'affiche d'elle-même sur la vidéo (poster),
+    // le bouton reste choisissable question par question.
+    assert(appF.display && appF.display.default === 'poster', 'display : défaut poster (affichage direct)');
+    assert(appF.display.options.map(o => o.value).join(',') === 'poster,button', 'display : le défaut est proposé en tête');
     assert(appF.placement && appF.placement.default === 'center', 'placement : défaut center');
     const placeVals = appF.placement.options.map(o => o.value);
     assert(['center', 'top-left', 'top-right', 'bottom-left', 'bottom-right', 'bottom', 'full', 'custom'].every(v => placeVals.includes(v)), 'placement : 8 options');
@@ -137,6 +142,10 @@ export async function runAllTests() {
     // label/visibleDuration/buttonOnMobile seulement si display button
     const visPoster = getVisibleFields(appF, { placement: 'center', display: 'poster' });
     assert(!visPoster.label && !visPoster.buttonOnMobile && !visPoster.visibleDuration, 'poster → label/mobile/durée masqués');
+    // Le placement n'a aucun effet sur un poster (plein cadre imposé par le lecteur) : ne pas
+    // l'offrir, plutôt que de proposer un réglage sans conséquence.
+    assert(!visPoster.placement, 'poster → « placement » masqué (sans effet sur un plein cadre)');
+    assert(!!visPreset.placement, 'bouton → « placement » proposé');
     assert(itemSchema.adaptivity && itemSchema.adaptivity.type === 'fieldGroup', 'Groupe « adaptativité » (fieldGroup)');
     const adaptF = itemSchema.adaptivity.fields;
     assert(adaptF.requireCompletion && adaptF.correctSeekTo && adaptF.wrongSeekTo, 'adaptativité : requireCompletion + seekTo correct/wrong');
@@ -146,22 +155,25 @@ export async function runAllTests() {
     const posOut = await InteractiveVideoProcessor.process({
         title: 'P', videoSource: { url: 'https://x/v.mp4', mime: 'video/mp4' },
         interactions: [
-            { timestamp: 5, type: 'multichoice', question: 'A', answers: [{ text: 'x', correct: true }] }, // défaut → center/button
+            { timestamp: 5, type: 'multichoice', question: 'A', answers: [{ text: 'x', correct: true }] }, // défaut → poster centré agrandi
             { timestamp: 10, type: 'truefalse', question: 'B', correct: true, display: 'poster', placement: 'bottom' },
-            { timestamp: 15, type: 'blanks', text: 'le *m*', placement: 'custom', x: 60, y: 10, width: 35, height: 30, visibleDuration: 4, label: 'Quiz', buttonOnMobile: true, requireCompletion: true, wrongSeekTo: 8, wrongMessage: 'Revois' }
+            { timestamp: 15, type: 'blanks', text: 'le *m*', display: 'button', placement: 'custom', x: 60, y: 10, width: 35, height: 30, visibleDuration: 4, label: 'Quiz', buttonOnMobile: true, requireCompletion: true, wrongSeekTo: 8, wrongMessage: 'Revois' },
+            { timestamp: 20, type: 'truefalse', question: 'C', correct: true, display: 'button' } // bouton sans placement
         ]
     }, procHelpers);
     const its = posOut.content.interactiveVideo.assets.interactions;
-    // 1) défaut : button + preset center + pas d'adaptivity + fenêtre 2s
+    // 1) défaut : la question s'affiche sur la vidéo, en PLEIN CADRE — c'est la seule chose que
+    //    sache faire le lecteur pour un poster (mesuré sur 4 géométries, cf. le processeur).
     const d0 = its[0];
-    assert(d0.displayType === 'button', 'défaut → displayType button');
-    assert(d0.x === 45 && d0.y === 32 && d0.width === 40 && d0.height === 30, 'défaut → preset center (45/32/40/30)');
+    assert(d0.displayType === 'poster', 'défaut → displayType poster (affichage direct, sans clic)');
+    assert(d0.x === 0 && d0.y === 0 && d0.width === 100 && d0.height === 100, 'poster → plein cadre (0/0/100/100)');
     assert(d0.adaptivity === undefined, 'défaut → pas de bloc adaptivity');
     assert(d0.duration.to - d0.duration.from === 2, 'défaut → fenêtre 2s');
-    // 2) poster + preset bottom
+    // 2) poster : le placement demandé est SANS EFFET côté lecteur → on stocke le plein cadre
+    //    plutôt que des coordonnées décoratives (`bottom` ici).
     const d1 = its[1];
     assert(d1.displayType === 'poster', 'display:poster → displayType poster');
-    assert(d1.x === 5 && d1.y === 65 && d1.width === 90 && d1.height === 30, 'preset bottom appliqué');
+    assert(d1.x === 0 && d1.y === 0 && d1.width === 100 && d1.height === 100, 'poster + preset bottom → plein cadre quand même');
     assert(d1.label === '', 'poster → label vidé');
     // 3) custom + options + adaptivity
     const d2 = its[2];
@@ -171,10 +183,15 @@ export async function runAllTests() {
     assert(d2.adaptivity && d2.adaptivity.requireCompletion === true, 'adaptivity.requireCompletion');
     assert(d2.adaptivity.wrong && d2.adaptivity.wrong.seekTo === 8, 'adaptivity.wrong.seekTo');
     assert(typeof d2.label === 'string' && d2.label.includes('Quiz'), 'label transmis (mode button)');
-    // 4) clamp des coordonnées custom hors bornes
+    // 4) NON-RÉGRESSION du mode bouton : la position historique de l'icône est intacte
+    //    (le contenu déjà produit ne doit pas voir ses boutons se déplacer).
+    const d3 = its[3];
+    assert(d3.displayType === 'button', 'display:button explicite → displayType button');
+    assert(d3.x === 45 && d3.y === 32 && d3.width === 40 && d3.height === 30, 'bouton sans placement → position historique (45/32/40/30)');
+    // 5) clamp des coordonnées custom hors bornes (mode bouton : le seul où elles comptent)
     const clampOut = await InteractiveVideoProcessor.process({
         videoSource: { url: 'https://x/v.mp4' },
-        interactions: [{ timestamp: 1, type: 'multichoice', question: 'Q', answers: [{ text: 'a', correct: true }], placement: 'custom', x: 999, y: -5 }]
+        interactions: [{ timestamp: 1, type: 'multichoice', question: 'Q', answers: [{ text: 'a', correct: true }], display: 'button', placement: 'custom', x: 999, y: -5 }]
     }, procHelpers);
     const c0 = clampOut.content.interactiveVideo.assets.interactions[0];
     assert(c0.x === 100 && c0.y === 0, 'custom hors bornes → clampé 0..100');
@@ -299,6 +316,191 @@ export async function runAllTests() {
             assert(mountYt.children.length === 0, 'destroy() retire le holder YouTube du DOM (même avant init)');
         } finally {
             if (hadYT) window.YT = prevYT; else delete window.YT;
+        }
+    }
+
+    // -------------------------------------------------------------------
+    // Réglage GLOBAL du mode d'affichage des questions (2026-08). Trois modes : « personnalisé »
+    // (chaque question décide), « sur la vidéo », « au clic ». Les deux derniers s'imposent à
+    // toutes les questions SANS écraser leurs valeurs (retour en arrière possible sans perte).
+    group('Mode d\'affichage global (displayMode)');
+    {
+        const gen = schema.sections.find(s => s.id === 'general');
+        const dm = gen && gen.fields.displayMode;
+        assert(!!dm && dm.type === 'select', 'Réglage « displayMode » présent dans les informations générales');
+        assert(dm.default === 'custom', 'Défaut « personnalisé » : n\'écrase pas les choix d\'un contenu importé');
+        assert(dm.options.map(o => o.value).join(',') === 'custom,poster,button', 'Trois modes, personnalisé en tête');
+        assert(!!dm.hint, 'Un texte d\'aide explique la portée du réglage');
+
+        // Le menu PAR QUESTION n'apparaît qu'en mode « personnalisé » : ailleurs il n'aurait
+        // aucun effet. Portée racine (le réglage vit dans une autre section).
+        const sw = itemSchema.appearance.fields.display.showWhen;
+        assert(sw && sw.rootField === 'displayMode', 'Le menu par question est conditionné au réglage RACINE');
+        assert(matchesShowWhen(sw, {}, null, { displayMode: 'custom' }) === true, 'mode personnalisé → menu par question visible');
+        assert(matchesShowWhen(sw, {}, null, { displayMode: 'poster' }) === false, 'mode « sur la vidéo » → menu par question masqué');
+        assert(matchesShowWhen(sw, {}, null, { displayMode: 'button' }) === false, 'mode « au clic » → menu par question masqué');
+        // Contenu antérieur au réglage (champ absent) : le menu doit rester visible, sinon
+        // l'enseignant perdrait l'accès à des choix qu'il a déjà faits.
+        assert(matchesShowWhen(sw, {}, null, {}) === true, 'réglage absent (contenu antérieur) → menu par question visible');
+
+        // Processeur : le mode global tranche pour toutes les questions.
+        const mk = (displayMode) => ({
+            title: 'T', displayMode, videoSource: { url: 'https://x/v.mp4', mime: 'video/mp4' },
+            interactions: [
+                { timestamp: 1, type: 'truefalse', question: 'A', correct: true, display: 'button' },
+                { timestamp: 2, type: 'truefalse', question: 'B', correct: true, display: 'poster' }
+            ]
+        });
+        const modes = async (dmVal) => (await InteractiveVideoProcessor.process(mk(dmVal), procHelpers))
+            .content.interactiveVideo.assets.interactions.map(i => i.displayType);
+        assert((await modes('poster')).join(',') === 'poster,poster', 'mode global « sur la vidéo » → toutes les questions en poster');
+        assert((await modes('button')).join(',') === 'button,button', 'mode global « au clic » → toutes les questions en bouton');
+        assert((await modes('custom')).join(',') === 'button,poster', 'mode « personnalisé » → chaque question garde son réglage');
+        assert((await modes(undefined)).join(',') === 'button,poster', 'réglage absent → équivaut à « personnalisé »');
+        // Le mode global ne DÉTRUIT pas les réglages par question : ils repartent intacts.
+        const forcé = mk('poster');
+        await InteractiveVideoProcessor.process(forcé, procHelpers);
+        assert(forcé.interactions[0].display === 'button' && forcé.interactions[1].display === 'poster',
+            'Le mode global n\'écrase pas les valeurs par question dans le JSON source');
+        // Healer : valeur fantaisiste → repli sur « personnalisé » ; absence → on n'invente rien.
+        const h1 = healStructureForActivity({ displayMode: 'nimportequoi', interactions: [] }, 'InteractiveVideo');
+        assert(h1.displayMode === 'custom', 'Healer : valeur inconnue → « custom »');
+        const h2 = healStructureForActivity({ displayMode: 'button', interactions: [] }, 'InteractiveVideo');
+        assert(h2.displayMode === 'button', 'Healer : valeur valide conservée');
+        const h3 = healStructureForActivity({ interactions: [] }, 'InteractiveVideo');
+        assert(!('displayMode' in h3), 'Healer : champ absent → non créé (pas de bruit dans les JSON existants)');
+    }
+
+    // -------------------------------------------------------------------
+    // Sources vidéo : la reconnaissance PeerTube ne dépend PAS de l'hôte (Tubes des Apps
+    // Education, Tube de Réseau Canopé, toute instance fédérée). Ajouté en 2026-08 avec la
+    // prise en charge de `tube.reseau-canope.fr`. Aucun réseau ici : on teste le parsing d'URL
+    // et le choix de rendition sur des réponses d'API RÉELLES, relevées le 2026-08-01.
+    group('Sources vidéo (PeerTube toutes instances)');
+    {
+        const CANOPE = 'https://tube.reseau-canope.fr/w/nxr3HQZB65MUwoSjW4efES';
+        assert(detectPlatform(CANOPE) === 'peertube', 'Tube Réseau Canopé /w/ → peertube');
+        assert(detectPlatform('https://tube.reseau-canope.fr/videos/watch/ae736789-9fc4-4e3d-a3c5-cb4032cde33e') === 'peertube',
+            'Tube Réseau Canopé /videos/watch/<uuid> → peertube');
+        assert(isPeerTube(CANOPE + '?start=42') === true, 'Paramètres de requête (?start=) sans effet sur la reconnaissance');
+        assert(detectPlatform('https://tube-sciences-technologies.apps.education.fr/w/3btBEFwmFxwD3RuMijDtEB') === 'peertube',
+            'Tube Apps Education → peertube (non-régression)');
+        assert(detectPlatform('https://tube.reseau-canope.fr/a/canope/video-channels') === 'unknown',
+            'Page non-vidéo du même hôte → unknown (pas de faux positif sur l\'hôte)');
+
+        // Instance HLS-only (cas Réseau Canopé) : `files` est VIDE, tout est dans
+        // streamingPlaylists[].files — y compris la piste audio-seule (resolution.id 0).
+        const apiCanope = {
+            duration: 93,
+            files: [],
+            streamingPlaylists: [{
+                playlistUrl: 'https://s3.reseau-canope.fr/peertube/hls/x/master.m3u8',
+                files: [
+                    { resolution: { id: 720 }, fileUrl: 'https://s3.reseau-canope.fr/peertube/hls/x/a-720-fragmented.mp4' },
+                    { resolution: { id: 480 }, fileUrl: 'https://s3.reseau-canope.fr/peertube/hls/x/b-480-fragmented.mp4' },
+                    { resolution: { id: 0 }, fileUrl: 'https://s3.reseau-canope.fr/peertube/hls/x/c-0-fragmented.mp4' }
+                ]
+            }]
+        };
+        const rC = collectRenditions(apiCanope);
+        const audioC = rC.filter(r => r.kind === 'audio');
+        assert(audioC.length === 1 && audioC[0].mime === 'audio/mp4',
+            'HLS-only : la piste audio-seule (resolution 0) est collectée (mime audio/mp4)');
+        assert(rC.filter(r => r.kind === 'hls').length === 2, 'HLS-only : les 2 renditions vidéo restent taguées hls');
+        const playC = pickPlayableRendition(rC);
+        assert(playC && playC.resolution === 720 && playC.kind === 'hls',
+            'Lecture = rendition vidéo ≤ 720p, jamais l\'audio-seule');
+        assert(albertCandidates(rC)[0].kind === 'audio',
+            'Transcription : l\'audio-seule passe en premier (poids minimal, limite 20 Mo d\'Albert)');
+
+        // Instance qui garde le progressif (cas Apps Education) : non-régression du tri.
+        const apiProg = {
+            duration: 18,
+            files: [
+                { resolution: { id: 576 }, fileUrl: 'https://tube-x.apps.education.fr/static/web-videos/v-576.mp4' },
+                { resolution: { id: 480 }, fileUrl: 'https://tube-x.apps.education.fr/static/web-videos/v-480.mp4' },
+                { resolution: { id: 0 }, fileUrl: 'https://tube-x.apps.education.fr/static/web-videos/v-0.mp4' }
+            ],
+            streamingPlaylists: [{
+                playlistUrl: 'https://tube-x.apps.education.fr/static/streaming-playlists/hls/master.m3u8',
+                files: [
+                    { resolution: { id: 576 }, fileUrl: 'https://tube-x.apps.education.fr/static/streaming-playlists/hls/v-576-fragmented.mp4' },
+                    { resolution: { id: 480 }, fileUrl: 'https://tube-x.apps.education.fr/static/streaming-playlists/hls/v-480-fragmented.mp4' }
+                ]
+            }]
+        };
+        const rP = collectRenditions(apiProg);
+        assert(rP.filter(r => r.kind === 'audio').length === 1, 'Progressif : l\'audio-seule « -0.mp4 » reste collectée');
+        const playP = pickPlayableRendition(rP);
+        assert(playP && playP.kind === 'hls' && playP.resolution === 576,
+            'Lecture : HLS fragmenté préféré au progressif (web-videos souvent 404)');
+        const candP = albertCandidates(rP).map(r => r.kind);
+        assert(candP[0] === 'audio' && candP.indexOf('hls') < candP.indexOf('progressive'),
+            'Transcription : ordre audio → hls → progressif');
+
+        // Vidéo sans aucune rendition (privée, en cours d'encodage) → non lisible.
+        assert(pickPlayableRendition(collectRenditions({ files: [], streamingPlaylists: [] })) === null,
+            'Aucune rendition → pas de source de lecture (état rouge côté UI)');
+    }
+
+    // -------------------------------------------------------------------
+    // Repli par RELAIS SERVEUR quand l'instance a des en-têtes CORS cassés.
+    // Cas réel `tube.reseau-canope.fr` (2026-08-01) : l'instance renvoie deux fois
+    // `Access-Control-Allow-Origin: *` → le NAVIGATEUR rejette la réponse (« multiple values »)
+    // alors que curl/Node l'acceptent. Sans repli : « Vidéo non lisible ou plateforme non prise
+    // en charge » sur une vidéo parfaitement valide. `fetch` est bouchonné : aucun réseau.
+    group('CORS cassé → repli par relais serveur');
+    {
+        const API_JSON = {
+            name: 'Dis-moi dix mots : nomade', duration: 93, language: { id: 'fr' },
+            thumbnailPath: '/lazy-static/thumbnails/x.jpg', files: [],
+            streamingPlaylists: [{
+                playlistUrl: 'https://s3.reseau-canope.fr/peertube/hls/x/master.m3u8',
+                files: [
+                    { resolution: { id: 480 }, fileUrl: 'https://s3.reseau-canope.fr/peertube/hls/x/b-480-fragmented.mp4' },
+                    { resolution: { id: 0 }, fileUrl: 'https://s3.reseau-canope.fr/peertube/hls/x/c-0-fragmented.mp4' }
+                ]
+            }]
+        };
+        const vraiFetch = window.fetch;
+        let appelsInstance = 0, appelsRelais = 0;
+        window.fetch = async (input) => {
+            const u = String((input && input.url) || input);
+            if (u.includes('caramel-fetch-page')) {
+                appelsRelais++;
+                const cible = u; // le corps porte l'URL demandée ; on répond selon le chemin
+                void cible;
+                return {
+                    ok: true, status: 200,
+                    json: async () => ({ text: JSON.stringify(API_JSON), truncated: false })
+                };
+            }
+            if (u.includes('tube.reseau-canope.fr')) {
+                appelsInstance++;
+                // Ce que le navigateur produit sur un en-tête ACAO dupliqué : un rejet, pas un statut.
+                throw new TypeError('Failed to fetch');
+            }
+            return vraiFetch(input);
+        };
+        try {
+            const d = await detectVideo('https://tube.reseau-canope.fr/w/nxr3HQZB65MUwoSjW4efES');
+            assert(d.supported === true && d.playable === true,
+                'Appel direct refusé par le navigateur → la vidéo reste détectée (via le relais)');
+            assert(d.title === 'Dis-moi dix mots : nomade' && d.duration === 93,
+                'Métadonnées relayées intactes (titre, durée)');
+            assert(d.videoSource && d.videoSource.url.endsWith('b-480-fragmented.mp4'),
+                'Source de lecture résolue depuis le JSON relayé');
+            assert(d.hlsPlaylistUrl === 'https://s3.reseau-canope.fr/peertube/hls/x/master.m3u8',
+                'Playlist HLS relayée (base du découpage des vidéos longues)');
+            assert(appelsRelais >= 1, 'Le relais serveur a bien été sollicité');
+            // L'instance n'est retentée en direct qu'UNE fois : l'échec est mémorisé pour la session
+            // (sinon détection + sous-titres + appels suivants = autant d'allers-retours perdus).
+            const apresPremier = appelsInstance;
+            await detectVideo('https://tube.reseau-canope.fr/w/nxr3HQZB65MUwoSjW4efES');
+            assert(apresPremier === 1, 'Un seul essai direct pour la 1ʳᵉ détection (sous-titres compris)');
+            assert(appelsInstance === 1, 'Détection suivante : plus aucun essai direct sur l\'instance cassée');
+        } finally {
+            window.fetch = vraiFetch;
         }
     }
 

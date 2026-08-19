@@ -65,7 +65,7 @@ export default {
                 check: translations.h5p_a11y_check || "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
                 showSolution: translations.h5p_a11y_show_solution || "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
                 retry: translations.h5p_a11y_retry || "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
-                yourResult: translations.h5p_essay_ariaYourResult || "Vous avez obtenu @score sur @total points",
+                yourResult: translations.h5p_sort_paragraphs_a11y_your_result || "Vous avez obtenu @score sur @total points",
                 paragraph: translations.h5p_sort_paragraphs_paragraph || "Paragraphe",
                 correct: translations.h5p_correct_text || "Correct !",
                 wrong: translations.h5p_incorrect_text || "Incorrect !",

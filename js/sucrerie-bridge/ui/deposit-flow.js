@@ -9,6 +9,7 @@
  * une réentrance propre lors de la navigation prev/next entre notifications.
  */
 
+import { escapeHtml } from '../../core/escape.js';
 import { SUCRERIE_BRIDGE } from '../config.js';
 import { t, getCurrentLang } from '../i18n/index.js';
 import { createPanel } from './panel.js';
@@ -20,8 +21,14 @@ import { fetchProfileLookup } from '../services/profile.js';
 import { fetchPublish } from '../services/publish.js';
 import { fetchRecheck, buildRecheckMarkdown } from '../services/recheck.js';
 import { testProfanity, preloadProfanityList } from '../services/profanity-filter.js';
+import {
+    ensureAllowedDomainsLoaded,
+    areAllowedDomainsLoaded,
+    isEmailAllowed
+} from '../services/allowed-domains.js';
 import { blobToBase64 } from '../utils/blob-base64.js';
 import { FORCED_LICENSE } from '../data/taxonomy.js';
+import { safeSession } from '../../core/utils.js';
 
 // Délai (ms) avant de relancer la modération après la dernière frappe
 // utilisateur dans un champ texte du formulaire d'édition.
@@ -37,7 +44,7 @@ const SS = (key) => `${SUCRERIE_BRIDGE.storagePrefix}${key}`;
  * d'identité au-delà du flux ; le pré-remplissage ne vaut que pendant celui-ci).
  */
 function purgeStoredIdentity() {
-    ['email', 'firstname', 'lastname'].forEach((k) => sessionStorage.removeItem(SS(k)));
+    ['email', 'firstname', 'lastname'].forEach((k) => safeSession.remove(SS(k)));
 }
 
 /**
@@ -57,9 +64,9 @@ export function runSucrerieFlow({ modal, notification, translations, userIntent 
     modal.classList.add(MODAL_ACTIVE_CLASS);
 
     // ----- Pré-remplissage depuis sessionStorage -----
-    const storedEmail     = sessionStorage.getItem(SS('email')) || '';
-    const storedFirstName = sessionStorage.getItem(SS('firstname')) || '';
-    const storedLastName  = sessionStorage.getItem(SS('lastname')) || '';
+    const storedEmail     = safeSession.get(SS('email')) || '';
+    const storedFirstName = safeSession.get(SS('firstname')) || '';
+    const storedLastName  = safeSession.get(SS('lastname')) || '';
     if (storedEmail) panel.setEmailValue(storedEmail);
     if (storedFirstName) panel.setName('firstname', storedFirstName);
     if (storedLastName)  panel.setName('lastname', storedLastName);
@@ -85,8 +92,8 @@ export function runSucrerieFlow({ modal, notification, translations, userIntent 
     panel.onNameChange(() => {
         const fn = panel.getName('firstname');
         const ln = panel.getName('lastname');
-        if (fn) sessionStorage.setItem(SS('firstname'), fn);
-        if (ln) sessionStorage.setItem(SS('lastname'), ln);
+        if (fn) safeSession.set(SS('firstname'), fn);
+        if (ln) safeSession.set(SS('lastname'), ln);
         syncAuthorDisplay();
         updatePublishGate();
     });
@@ -160,6 +167,19 @@ export function runSucrerieFlow({ modal, notification, translations, userIntent 
         }
     };
     modal._sucrerieBridgeFlow = flow;
+
+    // ----- Whitelist de dépôt : chargement au plus tôt -----
+    // Lancée dès l'ouverture (et non à la première frappe) pour que la liste
+    // soit là avant que l'utilisateur ait fini de saisir son adresse. Tant
+    // qu'elle n'est pas arrivée, `emailPassesLocalGate` laisse passer — donc
+    // aucun faux « adresse non reconnue » pendant le chargement.
+    // Au retour, on rejoue le feedback : l'email peut déjà être pré-rempli
+    // depuis sessionStorage. Garde de réentrance — le flow a pu être quitté
+    // (ou remplacé par un prev/next) pendant la requête.
+    ensureAllowedDomainsLoaded().then(() => {
+        if (modal._sucrerieBridgeFlow !== flow) return;
+        updateEmailFeedback();
+    });
 
     // ----- Garde-fous fermeture pendant le flow -----
     // On confirme la fermeture si l'utilisateur est en train de remplir
@@ -317,7 +337,7 @@ export function runSucrerieFlow({ modal, notification, translations, userIntent 
         // chaque frappe, (b) le bouton n'est pas détruit/recréé au blur déclenché par le
         // clic dessus (sinon 1er clic perdu → double-clic).
         let state;
-        if (!looksComplete || SUCRERIE_BRIDGE.emailDomainPattern.test(email)) state = 'clear';
+        if (!looksComplete || emailPassesLocalGate(email)) state = 'clear';
         else if (isPersonalEmailDomain(email)) state = 'personal';
         else state = 'prompt';
         if (state === lastEmailFeedbackState) return;
@@ -357,7 +377,7 @@ export function runSucrerieFlow({ modal, notification, translations, userIntent 
             panel.focusEmail();
             return;
         }
-        if (!SUCRERIE_BRIDGE.emailDomainPattern.test(email)) {
+        if (!emailPassesLocalGate(email)) {
             if (isPersonalEmailDomain(email)) {
                 // Adresse personnelle (GAFAM/FAI) : refus certain → on bloque sec,
                 // SANS proposer de demande d'accès (inutile de la soumettre).
@@ -372,7 +392,7 @@ export function runSucrerieFlow({ modal, notification, translations, userIntent 
             return;
         }
 
-        sessionStorage.setItem(SS('email'), email);
+        safeSession.set(SS('email'), email);
         flow.email = email;
 
         panel.showStep('loading');
@@ -742,7 +762,7 @@ export function runSucrerieFlow({ modal, notification, translations, userIntent 
         // On stocke aussi `status` pour que le bouton ne clame pas « Déjà partagé »
         // de façon trompeuse quand la publication n'est qu'en attente de confirmation.
         const sharedKey = SS('shared_' + notificationKey(notification));
-        sessionStorage.setItem(sharedKey, JSON.stringify({
+        safeSession.set(sharedKey, JSON.stringify({
             public_id: publicId,
             moderation,
             status,
@@ -847,11 +867,8 @@ function stripActivityTypeSuffix(title, activityType, titleHint) {
     return str || String(title).trim();
 }
 
-function escapeHtml(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[c]));
-}
+// Doublon retiré : sémantique strictement identique au canonique
+// (`String(s == null ? '' : s)` ≡ `escapeHtml`).
 
 /**
  * Fournisseurs d'email PERSONNELS connus (GAFAM + FAI), jamais académiques.
@@ -892,11 +909,43 @@ function isPersonalEmailDomain(email) {
  */
 function guessEducationSystemFromEmail(email) {
     if (!email || typeof email !== 'string') return 'francais';
-    const lower = email.toLowerCase();
+    const lower = email.trim().toLowerCase();
     if (/@(ac-[a-z-]+\.fr|education\.gouv\.fr|region-academique-[a-z-]+\.fr|reseau-canope\.fr)$/i.test(lower)) {
         return 'francais';
     }
+    // Académies d'outre-mer : `.nc`, `.pf`, `.wf` — Éducation nationale française
+    // malgré un TLD hors `.fr`. Sans ça, un enseignant de Nouméa se voyait
+    // pré-sélectionner « international » (2026-08-16, même cause racine que la
+    // regex d'autorisation supprimée de config.js).
+    if (SUCRERIE_BRIDGE.frenchEducationExtraDomains.some(d => lower.endsWith('@' + d))) {
+        return 'francais';
+    }
     return 'international';
+}
+
+/**
+ * Le pont a-t-il le droit de LAISSER PASSER cet email sans rien afficher ?
+ *
+ * Remplace l'ancien `SUCRERIE_BRIDGE.emailDomainPattern.test(email)`, qui était
+ * une copie figée — et périmée — de la whitelist (cf. services/allowed-domains.js).
+ *
+ * Trois cas :
+ *   - whitelist NON chargée (endpoint injoignable) → on laisse passer. Le backend
+ *     (workflow C) revalide et refusera proprement le cas échéant. Inventer un
+ *     refus local sans la liste, c'est exactement le bug qu'on corrige : mieux
+ *     vaut un refus tardif et juste qu'un refus immédiat et faux.
+ *   - whitelist chargée + email autorisé → on laisse passer.
+ *   - whitelist chargée + email non autorisé → false (message + demande d'accès).
+ *
+ * Le blocage « adresse personnelle » (GAFAM/FAI) reste indépendant et local :
+ * il n'a jamais dépendu de la whitelist.
+ *
+ * @param {string} email
+ * @returns {boolean}
+ */
+function emailPassesLocalGate(email) {
+    if (!areAllowedDomainsLoaded()) return true;
+    return isEmailAllowed(email);
 }
 
 /**

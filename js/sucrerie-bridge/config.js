@@ -41,16 +41,33 @@ export const SUCRERIE_BRIDGE = Object.freeze({
         // de dépôt redemande prénom/nom (compte nouveau) ou seulement la signature
         // publique « Nom d'auteur·rice » (compte connu). Réponse minimale
         // { exists:boolean }, zéro PII. Échec réseau → exists:false (jamais bloquant).
-        profileLookup:'https://n8n-caramel.osc-fr1.scalingo.io/webhook/sucrerie-profile-lookup'
+        profileLookup:'https://n8n-caramel.osc-fr1.scalingo.io/webhook/sucrerie-profile-lookup',
+        // Whitelist des domaines email autorisés au dépôt (workflow B, lecture
+        // directe de la table `sucrerie.allowed_domain`). Public, CORS `*`,
+        // Cache-Control 300 s. Consommé par services/allowed-domains.js — qui a
+        // REMPLACÉ la regex figée `emailDomainPattern` (voir l'en-tête de ce
+        // service : elle avait dérivé et refusait 30 des 79 domaines réellement
+        // autorisés, dont l'académie de Nouvelle-Calédonie).
+        allowedDomains:'https://n8n-caramel.osc-fr1.scalingo.io/webhook/sucrerie-allowed-domains'
     }),
 
     // URL publique d'une activité Sucrerie une fois publiée (consommée pour
     // afficher un lien "Voir dans le catalogue" sur l'écran de succès).
     viewUrlPattern: 'https://sucrerie.forge.apps.education.fr/?id={public_id}',
 
-    // Regex domaine email académique — alignée à l'identique sur la regex
-    // backend Sucrerie (workflow PostgreSQL.json, nœud "Sucrerie - Preparer publication")
-    emailDomainPattern: /^[^\s@]+@(ac-[a-z-]+\.fr|education\.gouv\.fr|region-academique-[a-z-]+\.fr|reseau-canope\.fr)$/i,
+    // ⚠️ `emailDomainPattern` a été SUPPRIMÉ le 2026-08-16. C'était une copie
+    // figée de la whitelist ; elle a dérivé de la base et bloquait des
+    // enseignants autorisés (détail dans services/allowed-domains.js).
+    // Toute validation d'email passe désormais par ce service, qui lit
+    // l'endpoint `allowedDomains` en live. NE PAS réintroduire de liste en dur.
+
+    // Domaines de l'Éducation nationale française hors `.fr` — académies
+    // d'outre-mer. Sert UNIQUEMENT à la pré-sélection du système éducatif
+    // (heuristique cosmétique, écrasable par l'IA et par l'utilisateur), jamais
+    // à autoriser quoi que ce soit.
+    frenchEducationExtraDomains: Object.freeze([
+        'ac-noumea.nc', 'ac-polynesie.pf', 'ac-wf.wf', 'education.pf'
+    ]),
 
     // Préfixe sessionStorage propre au pont (évite collision avec `caramel_*` existant)
     storagePrefix: 'caramel_sucrerie_'

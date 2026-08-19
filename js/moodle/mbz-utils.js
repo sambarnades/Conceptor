@@ -212,17 +212,12 @@ export const tagText = (doc, sel) => doc.querySelector(sel)?.textContent ?? '';
 
 /**
  * Échappe les caractères XML.
- * Supprime aussi les caractères de contrôle C0 (sauf \t \n \r), illégaux en
- * XML 1.0 même entitisés : un seul suffit à faire rejeter le .mbz à l'import.
+ * Supprime aussi les caractères illégaux en XML 1.0 (contrôles C0 hors \t \n \r,
+ * demi-codets isolés, non-caractères) : un seul suffit à faire rejeter le .mbz à
+ * l'import. Implémentation canonique dans `core/escape.js` — ré-exportée ici pour
+ * ne pas changer les ~9 imports existants.
  */
-export function escapeXml(s) {
-    if (s == null) return '';
-    return String(s)
-        .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '')
-        .replace(/[<>&'"]/g, c => ({
-            '<': '&lt;', '>': '&gt;', '&': '&amp;', '\'': '&apos;', '"': '&quot;'
-        }[c]));
-}
+export { escapeXml } from '../core/escape.js';
 
 /**
  * Remplace le contenu du premier `<tag>...</tag>` trouvé (non récursif).

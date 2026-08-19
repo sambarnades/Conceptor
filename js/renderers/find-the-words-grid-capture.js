@@ -4,18 +4,21 @@
  * et redessine la grille (vide + solution) sur des canvas offscreen.
  */
 
-// Taille de cellule pour le rendu export (indépendant du rendu H5P)
-const CELL_SIZE = 40;
-const GRID_PADDING = 4;
-const FONT_SIZE_RATIO = 0.45; // ratio par rapport à CELL_SIZE
-const EXPORT_SCALE = 2; // Facteur d'échelle pour un rendu haute résolution (export document)
-const BG_COLOR = '#ffffff';
-const GRID_LINE_COLOR = '#e0e0e0';
-const LETTER_COLOR = '#333333';
-// Couleurs du surlignage solution (style H5P "show solution" : bleu + pointillés)
-const MARK_COLOR_STROKE = 'rgba(51, 102, 255, 0.9)';
-const MARK_COLOR_FILL = 'rgba(51, 102, 255, 0.1)';
-const MARK_LINE_DASH = [8, 4];
+// Constantes de rendu, orientations et surlignage : partagés avec les variantes
+// « generator » (cf. grid-canvas-utils.js).
+import {
+    FTW_CELL_SIZE as CELL_SIZE,
+    FTW_GRID_PADDING as GRID_PADDING,
+    FTW_FONT_SIZE_RATIO as FONT_SIZE_RATIO,
+    FTW_EXPORT_SCALE as EXPORT_SCALE,
+    FTW_BG_COLOR as BG_COLOR,
+    FTW_GRID_LINE_COLOR as GRID_LINE_COLOR,
+    FTW_LETTER_COLOR as LETTER_COLOR,
+    orientationFns,
+    checkOrientations,
+    drawWordHighlight,
+    canvasToBlob
+} from './grid-canvas-utils.js';
 
 /**
  * Capture la grille de mots mêlés (vide et corrigée) depuis le H5P dans la modale.
@@ -104,28 +107,6 @@ function extractInstanceData(instance) {
 }
 
 // ===================== RECHERCHE DE MOTS =====================
-
-const orientationFns = {
-    horizontal:     (x, y, i) => ({ x: x + i, y }),
-    horizontalBack: (x, y, i) => ({ x: x - i, y }),
-    vertical:       (x, y, i) => ({ x, y: y + i }),
-    verticalUp:     (x, y, i) => ({ x, y: y - i }),
-    diagonal:       (x, y, i) => ({ x: x + i, y: y + i }),
-    diagonalBack:   (x, y, i) => ({ x: x - i, y: y + i }),
-    diagonalUp:     (x, y, i) => ({ x: x + i, y: y - i }),
-    diagonalUpBack: (x, y, i) => ({ x: x - i, y: y - i })
-};
-
-const checkOrientations = {
-    horizontal:     (x, y, h, w, l) => w >= x + l,
-    horizontalBack: (x, y, h, w, l) => x + 1 >= l,
-    vertical:       (x, y, h, w, l) => h >= y + l,
-    verticalUp:     (x, y, h, w, l) => y + 1 >= l,
-    diagonal:       (x, y, h, w, l) => (w >= x + l) && (h >= y + l),
-    diagonalBack:   (x, y, h, w, l) => (x + 1 >= l) && (h >= y + l),
-    diagonalUp:     (x, y, h, w, l) => (w >= x + l) && (y + 1 >= l),
-    diagonalUpBack: (x, y, h, w, l) => (x + 1 >= l) && (y + 1 >= l)
-};
 
 const skipOrientations = {
     horizontal:     (x, y)    => ({ x: 0, y: y + 1 }),
@@ -285,74 +266,3 @@ async function renderAndExport(wordGrid, wordLocations) {
     };
 }
 
-/**
- * Dessine le surlignage d'un mot trouvé.
- * Reproduit le style H5P "show solution" : fond bleu clair + bordure pointillée bleue,
- * forme stadium (rectangle aux bords arrondis) englobant toutes les lettres.
- */
-function drawWordHighlight(ctx, location, cellSize, padding) {
-    const next = orientationFns[location.orientation];
-    const word = location.word;
-    const startX = location.x;
-    const startY = location.y;
-    const endPos = next(startX, startY, word.length - 1);
-
-    // Centres des cellules de début et fin
-    const x1 = padding + startX * cellSize + cellSize / 2;
-    const y1 = padding + startY * cellSize + cellSize / 2;
-    const x2 = padding + endPos.x * cellSize + cellSize / 2;
-    const y2 = padding + endPos.y * cellSize + cellSize / 2;
-
-    // Rayon des demi-cercles : assez grand pour couvrir une cellule entière
-    const radius = Math.floor(cellSize * 0.45);
-
-    ctx.save();
-    ctx.strokeStyle = MARK_COLOR_STROKE;
-    ctx.fillStyle = MARK_COLOR_FILL;
-    ctx.lineWidth = 2;
-    ctx.setLineDash(MARK_LINE_DASH);
-
-    // Forme stadium : deux demi-cercles aux extrémités reliés par des lignes droites
-    ctx.beginPath();
-
-    if (word.length === 1) {
-        ctx.arc(x1, y1, radius, 0, 2 * Math.PI);
-    } else {
-        const dx = x2 - x1;
-        const dy = y2 - y1;
-        const len = Math.sqrt(dx * dx + dy * dy);
-        // Vecteur perpendiculaire normalisé, mis à l'échelle du rayon
-        const nx = (-dy / len) * radius;
-        const ny = (dx / len) * radius;
-        // Angle de la direction du mot
-        const angle = Math.atan2(dy, dx);
-
-        // Côté droit (de start vers end)
-        ctx.moveTo(x1 + nx, y1 + ny);
-        ctx.lineTo(x2 + nx, y2 + ny);
-        // Demi-cercle à l'extrémité end (courbe vers l'extérieur, sens anti-horaire)
-        ctx.arc(x2, y2, radius, angle + Math.PI / 2, angle - Math.PI / 2, true);
-        // Côté gauche (de end vers start)
-        ctx.lineTo(x1 - nx, y1 - ny);
-        // Demi-cercle à l'extrémité start (courbe vers l'extérieur, sens anti-horaire)
-        ctx.arc(x1, y1, radius, angle - Math.PI / 2, angle + Math.PI / 2, true);
-    }
-
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.restore();
-}
-
-/**
- * Convertit un canvas en Blob PNG.
- */
-function canvasToBlob(canvas) {
-    return new Promise((resolve, reject) => {
-        canvas.toBlob(blob => {
-            if (blob) resolve(blob);
-            else reject(new Error('Canvas toBlob a retourné null'));
-        }, 'image/png');
-    });
-}

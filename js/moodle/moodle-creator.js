@@ -7,12 +7,13 @@
  */
 
 import { translations, currentLang } from '../core/translation.js';
-import { cleanJsonInput, downloadFile, formatTextToHtml, markdownToHtml, escapeHtmlTags, DEBUG, classifyError, debugLog } from '../core/utils.js';
+import { cleanJsonInput, downloadFile, formatTextToHtml, markdownToHtml, escapeHtmlTags, DEBUG, classifyError, debugLog, horodatageFichier } from '../core/utils.js';
 import { addNotification } from '../ui/notifications.js';
 import { loadMoodleLibs } from '../core/lib-loader.js';
-import { escapeXml, generateMoodleXml, generateMoodleGift } from './moodle-formats.js';
+import { escapeXml, escapeXmlPreservingEntities, generateMoodleXml, generateMoodleGift, canonicalizeTestModel } from './moodle-formats.js';
 import * as MoodleProcessors from './processors/index.js';
-import { healStructureForActivity, normalizeDoubleEscapedLatex, repairBrokenLatexEscapes, autoWrapLatex, convertLatexDelimitersDeep, convertLatexEnvironmentsDeep, latexToUnicode } from '../h5p/json-healer.js';
+import { assembleTestBackupFiles } from './mbz-quiz-backup.js';
+import { healStructureForActivity, normalizeDoubleEscapedLatex, repairBrokenLatexEscapes, autoWrapLatex, convertLatexDelimitersDeep, convertLatexEnvironmentsDeep, latexToUnicode, checkLatexBalance } from '../h5p/json-healer.js';
 import { getTheme } from './page-themes.js';
 
 /**
@@ -24,7 +25,7 @@ import { getTheme } from './page-themes.js';
  * @param {any} data - Les données JSON (objet, tableau ou chaîne)
  * @returns {any} Les données avec le LaTeX normalisé
  */
-export { healLatexForMoodle as healLatexForTest, healClozeQuestiontext };
+export { healLatexForMoodle as healLatexForTest, healClozeQuestiontext, prepareIntroHtml };
 function healLatexForMoodle(data) {
     let healed = normalizeDoubleEscapedLatex(data);
     healed = repairBrokenLatexEscapes(healed);
@@ -34,7 +35,44 @@ function healLatexForMoodle(data) {
     healed = normalizeDoubleEscapedLatex(healed);
     healed = healClozeSyntax(healed);
     healed = healTestAnswerFields(healed);
+    // Diagnostic ?debug : alerter (sans rien changer) si une formule reste déséquilibrée.
+    if (DEBUG) {
+        const imbalances = checkLatexBalance(healed);
+        if (imbalances.length) {
+            debugLog('moodle-creator', `⚠️ ${imbalances.length} formule(s) LaTeX déséquilibrée(s) (Moodle) :`, imbalances.slice(0, 5));
+        }
+    }
     return healed;
+}
+
+/** Balises HTML de niveau bloc : si l'intro en contient déjà une, on n'enveloppe
+ *  PAS le tout dans un <p> (évite le <p><div>…</div></p> invalide qui casse le rendu). */
+const INTRO_BLOCK_HTML_RE = /<(p|div|section|article|ul|ol|li|table|thead|tbody|tr|td|th|h[1-6]|blockquote|pre|figure)[\s/>]/i;
+
+/**
+ * Normalise une intro Moodle (texte brut, Markdown ou HTML mixte issu de l'IA)
+ * en HTML propre, échappé UNE SEULE FOIS pour insertion dans un élément XML
+ * (`<intro>`). Corrige les 3 défauts déterministes du packaging Appariement/Devoir :
+ *   - Markdown `**gras**`/`*italique*` converti en `<strong>`/`<em>` (LaTeX préservé) ;
+ *   - PAS d'enveloppe `<p>` autour d'un bloc HTML (`<div>`, `<ul>`, `<table>`…) →
+ *     plus de `<p><div>…</div></p>` invalide (le `<div` « disparaissait » au rendu) ;
+ *   - échappement entité-safe (via escapeXmlPreservingEntities) → plus de `&amp;gt;`.
+ * Le texte brut multi-lignes est découpé en paragraphes `<p>…</p>`.
+ *
+ * @param {string|null|undefined} raw - Intro brute (jsonData.intro / .description)
+ * @param {string} [fallback=''] - Texte par défaut si l'intro est vide
+ * @returns {string} HTML échappé une fois, prêt pour `<intro>{{…}}</intro>`
+ */
+function prepareIntroHtml(raw, fallback = '') {
+    const trimmed = raw != null ? String(raw).trim() : '';
+    const src = trimmed || (fallback != null ? String(fallback).trim() : '');
+    if (!src) return '';
+    let html = markdownToHtml(src); // **gras** → <strong>, *ital* → <em>, LaTeX protégé
+    if (!INTRO_BLOCK_HTML_RE.test(src)) {
+        // Texte / Markdown pur → un paragraphe par ligne non vide
+        html = html.split(/\n+/).map(l => l.trim()).filter(Boolean).map(l => `<p>${l}</p>`).join('');
+    }
+    return escapeXmlPreservingEntities(html);
 }
 
 /**
@@ -240,12 +278,7 @@ export async function handlePageCreation(jsonInput, exportType) {
             throw new Error("Le JSON doit contenir un 'title' et un tableau 'blocks'.");
         }
         const htmlContent = await generateHtmlFromBlocks(jsonData);
-        const now = new Date();
-        const dateString = now.getFullYear() +
-            String(now.getMonth() + 1).padStart(2, '0') +
-            String(now.getDate()).padStart(2, '0') +
-            String(now.getHours()).padStart(2, '0') +
-            String(now.getMinutes()).padStart(2, '0');
+        const dateString = horodatageFichier();
 
         if (exportType === 'html') {
             const fileName = `page-elea-${dateString}.html`;
@@ -757,12 +790,7 @@ export async function handleLivreCreation(jsonInput, exportType = 'mbz') {
         // Composition du HTML de prévisualisation (simulateur fidèle à Éléa avec TOC)
         const previewHtml = await buildLivrePreviewHtml(jsonData);
 
-        const now = new Date();
-        const dateString = now.getFullYear() +
-            String(now.getMonth() + 1).padStart(2, '0') +
-            String(now.getDate()).padStart(2, '0') +
-            String(now.getHours()).padStart(2, '0') +
-            String(now.getMinutes()).padStart(2, '0');
+        const dateString = horodatageFichier();
 
         const activityTitle = jsonData.title;
         const timestamp = Math.floor(Date.now() / 1000);
@@ -776,7 +804,7 @@ export async function handleLivreCreation(jsonInput, exportType = 'mbz') {
         const data = {
             'ACTIVITY_TITLE': escapeXml(activityTitle),
             'BOOK_NAME': escapeXml(activityTitle),
-            'INTRO': escapeXml(formatTextToHtml(jsonData.intro || '')),
+            'INTRO': escapeXmlPreservingEntities(formatTextToHtml(jsonData.intro || '')),
             'NUMBERING': String(jsonData.numbering ?? 1),
             // Toujours 0 (table des matières) : Éléa n'expose pas les autres
             // modes de navigation à l'utilisateur final.
@@ -904,12 +932,7 @@ export async function handleMillionnaireCreation(jsonInput) {
         // Ajout automatique du fichier moodle_backup.log minimal
         files['moodle_backup.log'] = translations.millionnaire_backup_log || "Sauvegarde créée automatiquement par Caramel";
         const gzData = await createMbz(files);
-        const now = new Date();
-        const dateString = now.getFullYear() +
-            String(now.getMonth() + 1).padStart(2, '0') +
-            String(now.getDate()).padStart(2, '0') +
-            String(now.getHours()).padStart(2, '0') +
-            String(now.getMinutes()).padStart(2, '0');
+        const dateString = horodatageFichier();
         const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
         const fileName = `millionnaire-caramel-${dateString}-${lang}.mbz`;
         const mbzBlob = new Blob([gzData], { type: 'application/octet-stream' });
@@ -1016,15 +1039,16 @@ export async function handleAppariementCreation(jsonInput) {
         const categoryId = 1000 + Math.floor(Math.random() * 9000);
         const courseItemId = 1000 + Math.floor(Math.random() * 9000);
 
-        // Préparer l'intro en vérifiant si elle contient déjà du HTML
-        let introHtml = jsonData.intro ? String(jsonData.intro).trim() : (translations.appariement_activity_intro || "Trouvez les paires correspondantes.");
-        if (!introHtml.match(/^\s*<p[\s>]/i)) {
-            introHtml = `<p dir="ltr" style="text-align: left;">${introHtml}</p>`;
-        }
+        // Normaliser l'intro : Markdown → HTML, pas de <p> autour d'un bloc,
+        // échappement entité-safe (une seule fois). Voir prepareIntroHtml().
+        const introHtml = prepareIntroHtml(
+            jsonData.intro,
+            translations.appariement_activity_intro || "Trouvez les paires correspondantes."
+        );
 
         const data = {
             'ACTIVITY_TITLE': escapeXml(activityTitle),
-            'ACTIVITY_INTRO_HTML': escapeXml(introHtml),
+            'ACTIVITY_INTRO_HTML': introHtml,
             'ASSOCIATIONS_JSON': associations,
             'COURSE_FULLNAME': escapeXml(activityTitle),
             'COURSE_SHORTNAME': `parcours-${Math.random().toString(36).substring(2, 15)}`,
@@ -1045,12 +1069,7 @@ export async function handleAppariementCreation(jsonInput) {
         let files = MoodleProcessors.getActivityFiles('Appariement', data);
 
         // Met à jour le nom de sauvegarde dans moodle_backup.xml pour éviter toute trace du modèle
-        const now = new Date();
-        const dateString = now.getFullYear() +
-            String(now.getMonth() + 1).padStart(2, '0') +
-            String(now.getDate()).padStart(2, '0') +
-            String(now.getHours()).padStart(2, '0') +
-            String(now.getMinutes()).padStart(2, '0');
+        const dateString = horodatageFichier();
         const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
         const fileName = `appariement-caramel-${dateString}-${lang}.mbz`;
         if (files['moodle_backup.xml']) {
@@ -1200,12 +1219,7 @@ export async function handleQCMCreation(jsonInput) {
 
         files['moodle_backup.log'] = translations.millionnaire_backup_log || 'Backup created automatically by Caramel\n';
         const gzData = await createMbz(files);
-        const now = new Date();
-        const dateString = now.getFullYear() +
-            String(now.getMonth() + 1).padStart(2, '0') +
-            String(now.getDate()).padStart(2, '0') +
-            String(now.getHours()).padStart(2, '0') +
-            String(now.getMinutes()).padStart(2, '0');
+        const dateString = horodatageFichier();
         const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
         const fileName = `qcm-caramel-${dateString}-${lang}.mbz`;
         const mbzBlob = new Blob([gzData], { type: 'application/octet-stream' });
@@ -1282,7 +1296,7 @@ export function handleGlossaireXmlCreation(jsonInput) {
             entriesXml += `
       <ENTRY>
         <CONCEPT>${escapeXml(entry.concept)}</CONCEPT>
-        <DEFINITION>${escapeXml(formatTextToHtml(entry.definition))}</DEFINITION>
+        <DEFINITION>${escapeXmlPreservingEntities(formatTextToHtml(entry.definition))}</DEFINITION>
         <FORMAT>1</FORMAT>
         <DEFINITIONTRUST>0</DEFINITIONTRUST>
         <USEDYNALINK>1</USEDYNALINK>
@@ -1314,12 +1328,7 @@ export function handleGlossaireXmlCreation(jsonInput) {
   </INFO>
 </GLOSSARY>`;
 
-        const now = new Date();
-        const dateString = now.getFullYear() +
-            String(now.getMonth() + 1).padStart(2, '0') +
-            String(now.getDate()).padStart(2, '0') +
-            String(now.getHours()).padStart(2, '0') +
-            String(now.getMinutes()).padStart(2, '0');
+        const dateString = horodatageFichier();
         const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
         const fileName = `glossaire-caramel-${dateString}-${lang}.xml`;
         const xmlBlob = new Blob([xmlContent], { type: 'text/xml' });
@@ -1365,11 +1374,47 @@ export function handleGlossaireXmlCreation(jsonInput) {
 }
 
 /**
- * Gère la création d'un fichier d'import Test (banque de questions) au format XML Moodle.
- * Applique le pipeline de healing LaTeX avant la génération XML, comme pour les autres activités Moodle.
+ * Construit le `.mbz` restaurable d'un Test depuis le modèle éditeur (DÉJÀ healé).
+ * Réutilisé à la génération ET à la régénération après édition (notifications.js).
+ *
+ * Canonicalisation PURE (`canonicalizeTestModel`, sans DOM) : applique les mêmes
+ * normalisations que `generateMoodleXml` (fractions Moodle valides, `single`
+ * déterminé, `truefalse.value` → booléen, numériques nettoyés) → le `.mbz` note
+ * EXACTEMENT comme le `.xml`, et la génération reste exécutable hors navigateur
+ * (harness Node). L'assemblage des fichiers est PUR (`assembleTestBackupFiles`,
+ * mbz-quiz-backup.js, testé par l'oracle headless).
+ *
+ * @param {Object} jsonHealed - modèle { bank_name, bank_description, questions }
+ * @returns {Promise<{ blob: Blob, fileName: string }>}
+ */
+export async function buildTestMbz(jsonHealed) {
+    const canonical = canonicalizeTestModel(jsonHealed);
+
+    const title = String(jsonHealed.title || canonical.bank_name || translations.elea_test_xml_name || 'Test').trim() || 'Test';
+
+    const base = MoodleProcessors.generateBaseData(title);
+    base.COURSE_SHORTNAME = `test-${Math.random().toString(36).substring(2, 15)}`;
+
+    const files = assembleTestBackupFiles(canonical, base, title, base.TIMESTAMP);
+    files['moodle_backup.log'] = translations.millionnaire_backup_log || 'Backup created automatically by Caramel\n';
+    const gzData = await createMbz(files);
+
+    const dateString = horodatageFichier();
+    const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
+    const fileName = `test-caramel-${dateString}-${lang}.mbz`;
+    const blob = new Blob([gzData], { type: 'application/octet-stream' });
+    return { blob, fileName };
+}
+
+/**
+ * Gère la création d'un Test. Produit par défaut un `.mbz` RESTAURABLE (banque de
+ * questions + quiz câblé, « comme les autres .mbz »), posé comme blob primaire de
+ * la notification. Les autres formats (XML « banque de questions » — inchangé —,
+ * GIFT, DOCX, ODT, PDF) restent régénérés à la demande depuis `jsonData` dans la
+ * modale. Applique le pipeline de healing LaTeX comme les autres activités Moodle.
  * @param {string} jsonInput - La chaîne JSON brute contenant la banque de questions.
  */
-export function handleTestXmlCreation(jsonInput) {
+export async function handleTestXmlCreation(jsonInput) {
     try {
         let jsonData = JSON.parse(cleanJsonInput(jsonInput));
         const _debugRawJson = DEBUG ? structuredClone(jsonData) : null;
@@ -1378,26 +1423,17 @@ export function handleTestXmlCreation(jsonInput) {
         const _debugHealedJson = DEBUG ? structuredClone(jsonData) : null;
         const originalJsonData = structuredClone(jsonData);
 
-        const xmlContent = generateMoodleXml(jsonData);
-
-        const now = new Date();
-        const dateString = now.getFullYear() +
-            String(now.getMonth() + 1).padStart(2, '0') +
-            String(now.getDate()).padStart(2, '0') +
-            String(now.getHours()).padStart(2, '0') +
-            String(now.getMinutes()).padStart(2, '0');
-        const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
-        const fileName = `banque-de-questions-caramel-${dateString}-${lang}.xml`;
-        const xmlBlob = new Blob([xmlContent], { type: 'text/xml' });
+        // Export .mbz restaurable (blob primaire, proposé par défaut dans la modale).
+        const { blob: mbzBlob, fileName } = await buildTestMbz(jsonData);
 
         // Ajouter à la liste des notifications (silent pour la modale de résultat)
         const notifTest = {
-            type: 'xml',
+            type: 'mbz',
             title: translations.elea_test_xml_name || 'Banque de questions (XML)',
             titleKey: 'elea_test_xml_name',
             moduleKey: 'test_elea',
             fileName: fileName,
-            blob: xmlBlob,
+            blob: mbzBlob,
             status: 'success',
             jsonData: jsonData,
             originalJsonData: originalJsonData,
@@ -1407,7 +1443,7 @@ export function handleTestXmlCreation(jsonInput) {
         if (_debugHealedJson) notifTest._debugHealedJson = _debugHealedJson;
         const notificationId = addNotification(notifTest);
         document.dispatchEvent(new CustomEvent('generation:complete', {
-            detail: { notificationId, blob: xmlBlob, fileName, titleKey: 'elea_test_xml_name', moduleKey: 'test_elea' }
+            detail: { notificationId, blob: mbzBlob, fileName, titleKey: 'elea_test_xml_name', moduleKey: 'test_elea' }
         }));
 
     } catch (error) {
@@ -1469,15 +1505,16 @@ export async function handleDevoirCreation(jsonInput) {
         const categoryId = 1000 + Math.floor(Math.random() * 9000);
         const courseItemId = 1000 + Math.floor(Math.random() * 9000);
 
-        // Préparer l'intro HTML à partir de la description
-        let introHtml = jsonData.description ? String(jsonData.description).trim() : (translations.devoir_activity_intro || "Consultez la grille d'évaluation ci-dessous pour connaître les critères de réussite.");
-        if (!introHtml.match(/^\s*<p[\s>]/i)) {
-            introHtml = `<p dir="ltr" style="text-align: left;">${introHtml}</p>`;
-        }
+        // Normaliser l'intro HTML à partir de la description : Markdown → HTML,
+        // pas de <p> autour d'un bloc, échappement entité-safe. Voir prepareIntroHtml().
+        const introHtml = prepareIntroHtml(
+            jsonData.description,
+            translations.devoir_activity_intro || "Consultez la grille d'évaluation ci-dessous pour connaître les critères de réussite."
+        );
 
         const data = {
             'ACTIVITY_TITLE': escapeXml(activityTitle),
-            'ACTIVITY_INTRO_HTML': escapeXml(introHtml),
+            'ACTIVITY_INTRO_HTML': introHtml,
             'RUBRIC_NAME': jsonData.rubricName || jsonData.title || 'Grille d\'évaluation',
             'CRITERIA': jsonData.criteria,
             'COURSE_FULLNAME': escapeXml(activityTitle),
@@ -1499,12 +1536,7 @@ export async function handleDevoirCreation(jsonInput) {
         let files = MoodleProcessors.getActivityFiles('Devoir', data);
 
         // Personnaliser le nom de sauvegarde dans moodle_backup.xml
-        const now = new Date();
-        const dateString = now.getFullYear() +
-            String(now.getMonth() + 1).padStart(2, '0') +
-            String(now.getDate()).padStart(2, '0') +
-            String(now.getHours()).padStart(2, '0') +
-            String(now.getMinutes()).padStart(2, '0');
+        const dateString = horodatageFichier();
         const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
         const fileName = `devoir-caramel-${dateString}-${lang}.mbz`;
         if (files['moodle_backup.xml']) {

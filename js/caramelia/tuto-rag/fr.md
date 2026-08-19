@@ -9,7 +9,7 @@ dans Caramel. Source unique de vérité : js/locales/fr.json + index.html.
 Toute édition se fait via PR.
 -->
 ---
-version: 1.2.0
+version: 1.3.0
 lang: fr
 audience: enseignants
 ---
@@ -59,17 +59,20 @@ Trois possibilités :
 - **Copier-coller un texte** directement dans la zone de saisie
   (placeholder « Copiez-collez votre texte ici… »).
 - **Glisser-déposer un document** (ou cliquer sur **« Choisissez un
-  fichier »**) au format **PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG**. Vous pouvez aussi déposer un **fichier audio** (MP3, M4A, WAV…) ou une **vidéo** (MP4, MOV…) : seule la bande-son est alors transcrite automatiquement (par Albert, le service souverain de la DINUM ; voir la confidentialité ci-dessous).
+  fichier »**) au format **PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG** (les images **WebP** et **BMP** sont aussi acceptées, sans être listées à l'écran). Une **image** déposée (photo, schéma, diagramme…) est **analysée par une IA de vision** qui en rédige une **description** et **recopie fidèlement le texte** qu'elle contient — si l'IA est indisponible, la lecture locale (OCR) prend automatiquement le relais. Vous pouvez aussi déposer un **fichier audio** (MP3, M4A, WAV…) ou une **vidéo** (MP4, MOV…) : seule la bande-son est alors transcrite automatiquement (par Albert, le service souverain de la DINUM ; voir la confidentialité ci-dessous).
 - **Importer une page web** : coller son lien (`https://…`) dans le
   champ sous la zone de dépôt, puis cliquer sur **« Ajouter »**. Le
   texte de la page est récupéré automatiquement.
 
-L'extraction du texte des **documents et images** se fait
-**entièrement en local** dans votre navigateur (aucune donnée envoyée).
-**Deux exceptions transitent par nos serveurs (hébergés en France) :**
-la **transcription audio** et l'**import d'une page web** (le lien que
-vous saisissez y est envoyé pour en extraire le texte ; les liens vers
-des PDF, vidéos ou pages payantes ne sont pas pris en charge).
+L'extraction du texte des **documents** se fait **entièrement en
+local** dans votre navigateur (aucune donnée envoyée).
+**Trois exceptions transitent par nos serveurs (hébergés en France) :**
+l'**analyse des images** (l'image est envoyée au modèle de vision le
+temps de l'analyse, jamais conservée ; en cas d'indisponibilité,
+l'OCR local — qui n'envoie rien — prend le relais), la **transcription
+audio** et l'**import d'une page web** (le lien que vous saisissez y
+est envoyé pour en extraire le texte ; les liens vers des PDF, vidéos
+ou pages payantes ne sont pas pris en charge).
 
 Si vous laissez cette zone vide, l'IA s'appuiera uniquement sur ses
 connaissances générales pour générer l'activité.
@@ -107,6 +110,7 @@ un feedback détaillé en 4 tranches de score.
 - **Ordonner les paragraphes** ★ — remettre des paragraphes dans l'ordre.
 - **Série de choix uniques** ★ — questions à une seule bonne réponse.
 - **Cartes de dialogue** — cartes recto-verso avec texte et audio.
+- **Dictée** — dictée audio : phrases lues par synthèse vocale (voix F/M, débit normal ou lent, 11 langues), l'élève écrit, la correction met les fautes en évidence.
 - **Texte à trous complexe** ★ — feedbacks spécifiques par erreur.
 - **Diagramme** — circulaire ou en barres pour visualiser des données.
 - **Présentation de cours** — diaporama interactif avec exercices intégrés.
@@ -118,8 +122,9 @@ un feedback détaillé en 4 tranches de score.
 
 ### Activités Éléa / Magistère
 
-- **Test (XML / GIFT)** — banque de questions variées (QCM, appariement…)
-  à importer dans un test Éléa/Magistère.
+- **Test (MBZ / XML / GIFT)** — activité Test prête à restaurer en **`.mbz`**
+  (banque de questions + quiz câblé), ou banque de questions variées (QCM,
+  appariement…) à importer (XML / GIFT) dans un test Éléa/Magistère.
 - **QCM (MBZ)** — activité QCM simple et rapide.
 - **Appariement (MBZ)** — jeu d'association entre paires d'éléments.
 - **Millionnaire (MBZ)** — quiz ludique à difficulté croissante.

@@ -37,6 +37,35 @@
     color: #B9459B;
 }
 
+/* Badges dynamiques : plateforme sélectionnée via les chips de filtre.
+   Libellés plus longs qu'« Éléa » → taille réduite pour ne pas chevaucher l'icône
+   (sélecteur préfixé .h5p-tile pour surclasser .h5p-tile .module-label). */
+.h5p-tile .magistere-label,
+.h5p-tile .moodle-label {
+    font-size: 9px;
+    padding: 1px 6px;
+    top: 6px;
+    right: 6px;
+}
+
+.magistere-label {
+    border: 1.5px solid #064CA4;
+    color: #064CA4;
+}
+
+.magistere-label span {
+    color: #064CA4;
+}
+
+.moodle-label {
+    border: 1.5px solid #F98012;
+    color: #8F4800;
+}
+
+.moodle-label span {
+    color: #8F4800;
+}
+
 /* =======================================================================
    2. ÉTIQUETTES DANS LA MODALE
    ======================================================================= */
@@ -61,19 +90,28 @@
 /* =======================================================================
    3. STYLE DU TEXTE D'AIDE POUR L'IA
    ======================================================================= */
-/* Scoped IA guidance (modal footer only) */
+/* Scoped IA guidance (modal footer only).
+   Fond/padding/bordure sur le CONTENEUR et non sur le <p> line-clampé :
+   overflow:hidden clippe au bord du padding, donc un padding vertical sur le
+   <p> laisserait apparaître la ligne suivante en « texte fantôme » dans la
+   zone de padding (visible sur écrans étroits). */
+.modal-panel-footer .action-buttons-group:has(.ia-guidance-text) {
+    padding: 10px 15px;
+    background-color: #eaf2fa;
+    /* Fond bleu clair */
+    border-left: 4px solid #037aff;
+    /* Bordure gauche bleu-vert */
+}
+
 .modal-panel-footer .ia-guidance-text {
     font-size: 13px;
     color: #333;
     /* Couleur de texte plus foncée pour le contraste */
     text-align: left;
-    padding: 10px 15px;
     margin: 0;
     line-height: 1.4;
-    background-color: #eaf2fa;
-    /* Fond bleu clair */
-    border-left: 4px solid #037aff;
-    /* Bordure gauche bleu-vert */
+    flex: 1 1 auto;
+    min-width: 0;
     position: relative;
 }
 

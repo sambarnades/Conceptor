@@ -9,6 +9,7 @@
  * @exports {Object} default.process - Transformation principale
  */
 import { currentLang } from '../../core/translation.js';
+import { languageCodes } from '../../core/language-codes.js';
 import { formatTextToHtml } from '../../core/utils.js';
 
 export default {
@@ -18,7 +19,9 @@ export default {
 
         // Ajout des champs manquants avec des valeurs par défaut
         timelineData.timeline.defaultZoomLevel = timelineData.timeline.defaultZoomLevel || "0";
-        const h5pLang = currentLang === 'zh' ? 'zh-cn' : currentLang;
+        // Code de langue normalisé : TimelineJS charge son fichier de locale à ce
+        // nom — `jp` (code pays) ne correspond à aucun fichier, `ja` oui.
+        const h5pLang = languageCodes(currentLang).h5p;
         timelineData.timeline.language = timelineData.timeline.language || h5pLang;
         // height peut venir de l'éditeur au niveau racine (pas dans timeline)
         timelineData.timeline.height = timelineData.timeline.height || jsonObj.height || 600;

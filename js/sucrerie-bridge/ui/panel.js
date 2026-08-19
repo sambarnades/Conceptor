@@ -31,6 +31,7 @@
  * Le code reste envoyé en dur dans le payload (FORCED_LICENSE.code).
  */
 
+import { escapeHtml as escape } from '../../core/escape.js';
 import { t, getCurrentLang } from '../i18n/index.js';
 import {
     DISCIPLINES_SCOLAIRE,
@@ -1018,11 +1019,8 @@ function setVal($, name, value) {
     if (el) el.value = value;
 }
 
-function escape(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[c]));
-}
+// Doublon retiré : sémantique strictement identique au canonique.
+// (`escape` masquait en plus la globale du même nom.)
 
 /**
  * Rend un message contenant le jeton `{email}` dans un élément, l'adresse étant

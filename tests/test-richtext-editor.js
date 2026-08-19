@@ -8,7 +8,7 @@
  */
 
 import { resolveRenderTypeForField, htmlToCleanOutput, sourceToDisplay, protectLatex, unprotectLatex, renderRichtextField } from '../js/editor/richtext-editor.js';
-import { FIELD_CONSTRAINTS, RENDER_TYPES } from '../js/h5p/field-constraints.js';
+import { FIELD_CONSTRAINTS, RENDER_TYPES, stripHtmlKeepLatex } from '../js/h5p/field-constraints.js';
 import { parseClozeText, serializeGap, parseGapContent, renderClozeField } from '../js/editor/cloze-editor.js';
 
 // =======================================================================
@@ -136,58 +136,58 @@ function runStep1_PathResolution() {
         ['MultipleChoice', 'answers.2.tipsAndFeedback.tip', 'html'],
         ['MultipleChoice', 'answers.0.tipsAndFeedback.chosenFeedback', 'html'],
         ['MultipleChoice', 'answers.0.tipsAndFeedback.notChosenFeedback', 'html'],
-        ['MultipleChoice', 'overallFeedback.0.feedback', 'html'],
+        ['MultipleChoice', 'overallFeedback.0.feedback', 'latex'],
 
         // H5P - TrueFalse
         ['TrueFalse', 'question', 'html+latex'],
         ['TrueFalse', 'correct', 'plain'],
-        ['TrueFalse', 'feedbackOnCorrect', 'html'],
-        ['TrueFalse', 'feedbackOnWrong', 'html'],
-        ['TrueFalse', 'overallFeedback.0.feedback', 'html'],
+        ['TrueFalse', 'feedbackOnCorrect', 'latex'],
+        ['TrueFalse', 'feedbackOnWrong', 'latex'],
+        ['TrueFalse', 'overallFeedback.0.feedback', 'latex'],
 
         // H5P - FillInTheBlanks
         ['FillInTheBlanks', 'taskDescription', 'html+latex'],
         ['FillInTheBlanks', 'questions.0', 'unicode+markers'],
         ['FillInTheBlanks', 'questions.5', 'unicode+markers'],
-        ['FillInTheBlanks', 'overallFeedback.0.feedback', 'html'],
+        ['FillInTheBlanks', 'overallFeedback.0.feedback', 'latex'],
 
         // H5P - DragTheWords
         ['DragTheWords', 'textField', 'unicode+markers'],
         ['DragTheWords', 'taskDescription', 'html+latex'],
-        ['DragTheWords', 'overallFeedback.0.feedback', 'html'],
+        ['DragTheWords', 'overallFeedback.0.feedback', 'latex'],
 
         // H5P - MarkTheWords
         ['MarkTheWords', 'textField', 'unicode+markers'],
         ['MarkTheWords', 'taskDescription', 'html+latex'],
-        ['MarkTheWords', 'overallFeedback.0.feedback', 'html'],
+        ['MarkTheWords', 'overallFeedback.0.feedback', 'latex'],
 
         // H5P - Flashcards
         ['Flashcards', 'cards.0.text', 'html+latex'],
         ['Flashcards', 'cards.5.answer', 'html+latex'],
         ['Flashcards', 'cards.0.tip', 'html+latex'],
         ['Flashcards', 'title', 'plain'],
-        ['Flashcards', 'description', 'html+latex'],
+        ['Flashcards', 'description', 'latex'],
 
         // H5P - Crossword
         ['Crossword', 'taskDescription', 'html+latex'],
         ['Crossword', 'words.0.clue', 'plain'],
         ['Crossword', 'words.0.answer', 'plain+letters'],
         ['Crossword', 'words.0.extraClue.params.text', 'html+latex'],
-        ['Crossword', 'overallFeedback.0.feedback', 'html'],
+        ['Crossword', 'overallFeedback.0.feedback', 'latex'],
 
         // H5P - Essay
         ['Essay', 'taskDescription', 'html+latex'],
         ['Essay', 'keywords.0.keyword', 'plain'],
         ['Essay', 'solution.introduction', 'html+latex'],
         ['Essay', 'solution.sample', 'html+latex'],
-        ['Essay', 'overallFeedback.0.feedback', 'html'],
+        ['Essay', 'overallFeedback.0.feedback', 'latex'],
 
         // H5P - DialogCards
         ['DialogCards', 'dialogs.0.text', 'html+latex'],
         ['DialogCards', 'dialogs.1.answer', 'html+latex'],
         ['DialogCards', 'dialogs.0.tips.front', 'html'],
         ['DialogCards', 'dialogs.0.tips.back', 'html'],
-        ['DialogCards', 'title', 'plain'],
+        ['DialogCards', 'title', 'html+latex'],
         ['DialogCards', 'description', 'html+latex'],
 
         // H5P - Glossary (chemins H5P et alias éditeur)
@@ -197,26 +197,26 @@ function runStep1_PathResolution() {
         ['Glossary', 'items.0.text', 'html+latex'],
 
         // H5P - Summary
-        ['Summary', 'intro', 'plain'],
+        ['Summary', 'intro', 'html+latex'],
         ['Summary', 'summaries.0.summary.0', 'html+latex'],
         ['Summary', 'summaries.0.tip', 'html'],
-        ['Summary', 'overallFeedback.0.feedback', 'html'],
+        ['Summary', 'overallFeedback.0.feedback', 'latex'],
 
         // H5P - SingleChoiceSet
         ['SingleChoiceSet', 'choices.0.question', 'html+latex'],
         ['SingleChoiceSet', 'choices.0.answers.1', 'html+latex'],
-        ['SingleChoiceSet', 'overallFeedback.0.feedback', 'html'],
+        ['SingleChoiceSet', 'overallFeedback.0.feedback', 'latex'],
 
         // H5P - DragAndDrop
         ['DragAndDrop', 'elements.0.text', 'html+latex'],
         ['DragAndDrop', 'dropZones.0.label', 'html+latex'],
         ['DragAndDrop', 'title', 'plain'],
-        ['DragAndDrop', 'overallFeedback.0.feedback', 'html'],
+        ['DragAndDrop', 'overallFeedback.0.feedback', 'latex'],
 
         // H5P - SortParagraphs
         ['SortParagraphs', 'taskDescription', 'html+latex'],
         ['SortParagraphs', 'paragraphs.0', 'html+latex'],
-        ['SortParagraphs', 'overallFeedback.0.feedback', 'html'],
+        ['SortParagraphs', 'overallFeedback.0.feedback', 'latex'],
 
         // H5P - Chart
         ['Chart', 'listOfTypes.0.text', 'unicode'],
@@ -231,7 +231,7 @@ function runStep1_PathResolution() {
         ['Timeline', 'timeline.date.0.startDate', 'plain'],
 
         // H5P - FindTheWords
-        ['FindTheWords', 'taskDescription', 'html+latex'],
+        ['FindTheWords', 'taskDescription', 'latex'],
         ['FindTheWords', 'wordList', 'plain'],
 
         // H5P - CoursePresentation
@@ -246,7 +246,7 @@ function runStep1_PathResolution() {
         // H5P - QuizSet
         ['QuizSet', 'progressType', 'plain'],
         ['QuizSet', 'passPercentage', 'plain'],
-        ['QuizSet', 'overallFeedback.0.feedback', 'html'],
+        ['QuizSet', 'overallFeedback.0.feedback', 'latex'],
 
         // Moodle - QCM
         ['QCM', 'questions.0.text', 'html+latex'],
@@ -408,11 +408,11 @@ function runStep1_PathResolution() {
     assertEqual(resolveRenderTypeForField('QuizSet', 'questions.0.params.question'), 'html+latex', 'QuizSet→MC: params.question → html+latex');
     assertEqual(resolveRenderTypeForField('QuizSet', 'questions.0.params.answers.0.text'), 'html+latex', 'QuizSet→MC: params.answers.0.text → html+latex');
     assertEqual(resolveRenderTypeForField('QuizSet', 'questions.0.params.answers.1.tipsAndFeedback.tip'), 'html', 'QuizSet→MC: params.tip → html');
-    assertEqual(resolveRenderTypeForField('QuizSet', 'questions.0.params.overallFeedback.0.feedback'), 'html', 'QuizSet→MC: params.overallFeedback → html');
+    assertEqual(resolveRenderTypeForField('QuizSet', 'questions.0.params.overallFeedback.0.feedback'), 'latex', 'QuizSet→MC: params.overallFeedback → latex');
 
     // QuizSet contenant TrueFalse
     assertEqual(resolveRenderTypeForField('QuizSet', 'questions.1.params.question'), 'html+latex', 'QuizSet→TF: params.question → html+latex');
-    assertEqual(resolveRenderTypeForField('QuizSet', 'questions.1.params.feedbackOnCorrect'), 'html', 'QuizSet→TF: params.feedbackOnCorrect → html');
+    assertEqual(resolveRenderTypeForField('QuizSet', 'questions.1.params.feedbackOnCorrect'), 'latex', 'QuizSet→TF: params.feedbackOnCorrect → latex');
 
     // QuizSet contenant FillInTheBlanks
     assertEqual(resolveRenderTypeForField('QuizSet', 'questions.2.params.taskDescription'), 'html+latex', 'QuizSet→Blanks: params.taskDescription → html+latex');
@@ -781,9 +781,12 @@ function runStep9_ExportIntegrity() {
 function runStep10_ActivityCoverage() {
     setStep(10, 'Couverture activites');
 
-    // Verifier que chaque champ html+latex, html ou unicode+markers
-    // dans FIELD_CONSTRAINTS est correctement resolu
-    const richtextTypes = ['html+latex', 'html', 'unicode+markers'];
+    // Verifier que chaque champ confie a l'editeur richtext dans FIELD_CONSTRAINTS
+    // est correctement resolu. La liste DOIT rester alignee sur celle de
+    // getRendererForField() (editor-core.js) : un type qui manque ici sort
+    // silencieusement de la couverture (constate en ajoutant `latex`, qui avait
+    // fait disparaitre 15 assertions sans provoquer le moindre echec).
+    const richtextTypes = ['html+latex', 'html', 'latex', 'unicode+markers'];
 
     let totalFields = 0;
     let resolvedFields = 0;
@@ -923,6 +926,38 @@ function runStep12_ToolbarContextual() {
     } else {
         assert(false, 'markers: toolbar non trouvee apres focus');
     }
+
+    // latex : formule + source, mais AUCUN formatage HTML.
+    // Le semantics de ces champs (overallFeedback[].feedback, TrueFalse.feedbackOn*,
+    // Flashcards.description, FindTheWords.taskDescription) est un `text` sans tags :
+    // Moodle y ECHAPPE le HTML (l'eleve verrait « <strong> »), mais laisse passer
+    // les formules. Offrir le gras ici serait donc un piege.
+    const wrapper4 = renderRichtextField({ label: 'L', renderType: 'latex' }, '', () => {}, 'l');
+    const editable4 = wrapper4.querySelector('.json-editor__richtext-editable');
+    editable4.dispatchEvent(new Event('focus'));
+    const toolbar4 = wrapper4.querySelector('.json-editor__richtext-toolbar');
+    if (toolbar4) {
+        assert(toolbar4.querySelector('[data-action="math"]') !== null, 'latex: bouton math present');
+        assert(toolbar4.querySelector('[data-action="toggle_source"]') !== null, 'latex: bouton source present');
+        assert(toolbar4.querySelector('[data-action="bold"]') === null, 'latex: bouton bold absent');
+        assert(toolbar4.querySelector('[data-action="italic"]') === null, 'latex: bouton italic absent');
+        assert(toolbar4.querySelector('[data-action="color"]') === null, 'latex: bouton color absent');
+        assert(toolbar4.querySelector('[data-action="link"]') === null, 'latex: bouton link absent');
+        assert(toolbar4.querySelector('[data-action="list_ordered"]') === null, 'latex: bouton liste absent');
+    } else {
+        assert(false, 'latex: toolbar non trouvee apres focus');
+    }
+
+    // Le convertisseur du type `latex` : retire les balises, garde les formules.
+    const sale = 'Bravo <strong>tres</strong> bien : \\(\\sqrt{16} = 4\\) et **gras**';
+    const propre = stripHtmlKeepLatex(sale);
+    assert(!/<[a-z]/i.test(propre), 'latex: balises retirees par stripHtmlKeepLatex');
+    assert(propre.includes('\\(\\sqrt{16} = 4\\)'), 'latex: formule preservee verbatim');
+    assert(!propre.includes('**'), 'latex: Markdown retire');
+    // Cas critique : une formule contenant < ne doit pas etre amputee
+    const avecInf = stripHtmlKeepLatex('Si \\(a < b\\) alors <em>ok</em>');
+    assert(avecInf.includes('\\(a < b\\)'), 'latex: formule avec < preservee intacte');
+    assert(!avecInf.includes('<em>'), 'latex: balise retiree malgre le < de la formule');
 }
 
 // =======================================================================

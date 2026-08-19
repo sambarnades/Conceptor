@@ -422,7 +422,7 @@ export function parseJsonStrict(content, what, heal, debug) {
  * @returns {Promise<string>} JSON fusionné
  */
 export async function generateInBatches({ moduleKey, model, activityMeta, requestedCount, onProgress }) {
-    const [{ translations }, promptGen, llm, defs, { ENDPOINTS }, utils, { healJsonString }] = await Promise.all([
+    const [{ translations }, promptGen, llm, defs, { ENDPOINTS }, utils, { healJsonString }, ragOrchestrator] = await Promise.all([
         import('../core/translation.js'),
         import('./prompt-generator.js'),
         import('./llm.js'),
@@ -430,6 +430,7 @@ export async function generateInBatches({ moduleKey, model, activityMeta, reques
         import('../core/endpoints.js'),
         import('../core/utils.js'),
         import('../h5p/json-healer.js'),
+        import('./rag-orchestrator.js'),
     ]);
     const debug = utils.debugLog;
     const t = translations;
@@ -450,11 +451,9 @@ export async function generateInBatches({ moduleKey, model, activityMeta, reques
     params.ocrContent = ocrContent;
 
     // Contexte RAG (programmes officiels) : injecté UNIQUEMENT sur le plan (ancrage programme).
-    const ragSujet = document.getElementById('quoi')?.value?.trim() || '';
-    const ragDiscipline = document.getElementById('qui')?.value?.trim() || '';
-    const ragNiveau = document.getElementById('niveau')?.value?.trim() || '';
-    const ragCtx = (ragSujet || ragDiscipline || ragNiveau)
-        ? { sujet: ragSujet, discipline: ragDiscipline, niveau: ragNiveau } : null;
+    // La pertinence et le cycle (multilingue) sont décidés par l'orchestrateur ; la
+    // raison de la décision reste locale (log ?debug), jamais transmise au serveur.
+    const ragCtx = ragOrchestrator.decideRagContextFromDom(debug).context;
 
     const startedAt = new Date();
     let sumPrompt = 0, sumCompletion = 0;

@@ -98,16 +98,16 @@ Caramel automatise la création de contenus pédagogiques en cinq étapes :
 
 ## 📚 Types d'activités
 
-**31 types** au total : **23 H5P** + **8 Moodle/Éléa**.
+**35 types** au total : **27 H5P** + **8 Moodle/Éléa**.
 
 ### Activités H5P (`.h5p`)
 
 | Catégorie | Activités |
 |-----------|-----------|
-| **Quiz & tests** | Quiz mixte (QuestionSet), Quiz QCM, Quiz Vrai/Faux, Choix multiple, Vrai/Faux, Choix unique en série |
-| **Manipulation de texte** | Texte à trous, Glisser les mots, Surligner les mots, Trier les paragraphes, Glisser-déposer, Rédaction, Résumé |
-| **Mémorisation & découverte** | Cartes mémo (Flashcards), Frise chronologique, Mots croisés, Mots mêlés, Cartes de dialogue, Glossaire/Accordéon, Graphique |
-| **Contenus interactifs riches** | Présentation de cours, **Livre interactif**, **Vidéo interactive** |
+| **Quiz & tests** | Quiz mixte (QuestionSet), Quiz QCM, Quiz Vrai/Faux, Choix multiples, Vrai/Faux, Série de choix uniques, **Trouver la zone**, **Trouver les zones** |
+| **Manipulation de texte** | Texte à trous, Glisser les mots, Surligner les mots, Ordonner les paragraphes, Glisser-déposer, Rédaction, Résumé, **Dictée** |
+| **Mémorisation & découverte** | Cartes mémoires, Frise chronologique, Mots croisés, Mots mêlés, Cartes de dialogue, Glossaire/Accordéon, Diagramme |
+| **Contenus interactifs riches** | Présentation de cours, **Livre interactif**, **Vidéo interactive**, **Image interactive** |
 
 ### Activités Moodle/Éléa (`.mbz`, `.xml`, `.html`)
 
@@ -169,9 +169,9 @@ Caramel utilise l'infrastructure souveraine **[ILaaS](https://www.ilaas.fr/)** v
 | Domaine | Bibliothèques |
 |---------|---------------|
 | Compression / packaging | JSZip 3.10.1, client-zip 2.5.0, fflate 0.8.3, tar-js 0.3.0 |
-| Documents | PDF.js 6.1.200, Tesseract.js 7.0.0, Mammoth.js 1.12.0, docx 8.5.0 |
-| Export PDF / math | jsPDF 4.2.1, jsPDF-AutoTable 5.0.8, MathJax 3.2.2 |
-| H5P & sécurité | h5p-standalone 3.8.2, DOMPurify 3.4.11 |
+| Documents | PDF.js 6.2.108, Tesseract.js 7.0.0, Mammoth.js 1.12.1, docx 9.7.1 |
+| Export PDF / math | jsPDF 4.2.1, jsPDF-AutoTable 5.0.8, MathJax 4.1.3 |
+| H5P & sécurité | h5p-standalone 3.8.2, DOMPurify 3.4.14 |
 | Interface | Font Awesome, flag-icons, CSS personnalisé (glassmorphism) |
 
 ### Génération IA — architecture asynchrone (polling)

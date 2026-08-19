@@ -9,7 +9,7 @@ sullo schermo in Caramel. Fonte unica di verità: js/locales/it.json
 + index.html. Ogni modifica avviene tramite PR.
 -->
 ---
-version: 1.2.0
+version: 1.3.0
 lang: it
 audience: insegnanti
 ---
@@ -59,18 +59,20 @@ Tre possibilità:
 
 - **Copiare e incollare un testo** direttamente nell'area di input.
 - **Trascinare e rilasciare un documento** (o cliccare su
-  **«Scegli un file»**) in formato **PDF, DOCX, PPTX, ODT, ODP,
-  PNG, JPEG**. Puoi anche rilasciare un **file audio** (MP3, M4A, WAV…) o un **video** (MP4, MOV…): viene quindi trascritta automaticamente solo la traccia audio (tramite Albert, il servizio sovrano della DINUM; vedi riservatezza più sotto). La zona di rilascio mostra **«Trascina un documento
+  **«Scegli un file»**) in formato **PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG** (sono accettate anche le immagini **WebP** e **BMP**, senza essere elencate sullo schermo). Un'**immagine** caricata (foto, schema, diagramma…) viene **analizzata da un'IA di visione** che ne redige una **descrizione** e **ricopia fedelmente il testo** che contiene — se l'IA non è disponibile, la lettura locale (OCR) subentra automaticamente. Puoi anche rilasciare un **file audio** (MP3, M4A, WAV…) o un **video** (MP4, MOV…): viene quindi trascritta automaticamente solo la traccia audio (tramite Albert, il servizio sovrano della DINUM; vedi riservatezza più sotto). La zona di rilascio mostra **«Trascina un documento
   qui (PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG)»** con il separatore
   **«o»**.
 - **Importare una pagina web**: incolla il suo link (`https://…`) nel
   campo sotto l'area di rilascio, poi clicca su **«Aggiungi»**. Il
   testo della pagina viene recuperato automaticamente.
 
-L'estrazione del testo dei **documenti e delle immagini** avviene
-**interamente in locale** nel tuo browser (nessun dato inviato).
-**Due eccezioni transitano dai nostri server (ospitati in Francia):**
-la **trascrizione audio** e l'**import di una pagina web** (il link che
+L'estrazione del testo dei **documenti** avviene **interamente in
+locale** nel tuo browser (nessun dato inviato).
+**Tre eccezioni transitano dai nostri server (ospitati in Francia):**
+l'**analisi delle immagini** (l'immagine viene inviata al modello di
+visione per il tempo dell'analisi, mai conservata; in caso di
+indisponibilità, l'OCR locale — che non invia nulla — subentra), la
+**trascrizione audio** e l'**import di una pagina web** (il link che
 inserisci vi viene inviato per estrarne il testo; i link verso PDF,
 video o pagine a pagamento non sono supportati).
 
@@ -110,6 +112,7 @@ un feedback dettagliato in 4 fasce di punteggio.
 - **Ordina i paragrafi** ★ — rimettere i paragrafi nell'ordine corretto.
 - **Serie di scelte singole** ★ — domande con una sola risposta corretta.
 - **Carte di dialogo** — carte fronte-retro con testo e audio.
+- **Dettato** — dettato audio: frasi lette dalla sintesi vocale (voce F/M, velocità normale o lenta, 11 lingue), lo studente le scrive e la correzione evidenzia gli errori.
 - **Testo a buchi complesso** ★ — feedback specifici per errore.
 - **Diagramma** — a torta o a barre per visualizzare dati.
 - **Presentazione del corso** — diapositive interattive con esercizi integrati.
@@ -121,8 +124,9 @@ un feedback dettagliato in 4 fasce di punteggio.
 
 ### Attività Éléa / Magistère
 
-- **Test (XML / GIFT)** — banca di domande variate (scelta multipla, abbinamento…)
-  da importare in un test Éléa/Magistère.
+- **Test (MBZ / XML / GIFT)** — attività Test pronta da ripristinare in **`.mbz`**
+  (banca di domande + quiz cablato), oppure banca di domande variate (scelta multipla,
+  abbinamento…) da importare (XML / GIFT) in un test Éléa/Magistère.
 - **QCM (MBZ)** — attività a scelta multipla semplice e rapida.
 - **Abbinamento (MBZ)** — gioco di associazione tra coppie di elementi.
 - **Milionario (MBZ)** — quiz ludico con difficoltà crescente.

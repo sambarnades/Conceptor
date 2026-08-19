@@ -40,8 +40,8 @@
         {
           "type": "list",
           "items": [
-            "**Sus documentos permanecen en su ordenador.** Cuando deposita un archivo (PDF, imagen…) en el modo avanzado, la extracción del texto se realiza **enteramente en su navegador**: no se envía nada a un servidor.",
-            "**Lo que circula permanece alojado en Francia.** Sus solicitudes de generación pasan por **servidores universitarios compartidos** (proyecto **ILaaS**); la voz (micrófono o archivo de audio) se transcribe mediante **Albert**, el servicio **soberano de la DINUM**. Ninguno de los dos **recopila ni revende** sus datos — y **el audio no se conserva**.",
+            "**Sus documentos permanecen en su ordenador.** Cuando deposita un archivo de texto (PDF, DOCX, PPTX, ODT…) en el modo avanzado, la extracción se realiza **enteramente en su navegador**: no se envía nada a un servidor.",
+            "**Lo que circula permanece alojado en Francia.** Sus solicitudes de generación pasan por **servidores universitarios compartidos** (proyecto **ILaaS**); las **imágenes depositadas** se analizan allí mediante una **IA de visión** (descripción + texto transcrito); la voz (micrófono o archivo de audio) se transcribe mediante **Albert**, el servicio **soberano de la DINUM**. Ninguno de los dos **recopila ni revende** sus datos — y **ni el audio ni las imágenes se conservan**.",
             "**Copiar y pegar en una IA externa es responsabilidad suya.** Si copia un prompt para usarlo en un servicio de terceros, la protección de sus datos depende entonces de **las condiciones de ese servicio**."
           ]
         },
@@ -86,7 +86,17 @@
         },
         {
           "type": "p",
-          "text": "Para una petición más estructurada. Este modo ofrece **campos precisos** (disciplina, nivel, tema, número de preguntas, instrucciones concretas…) y permite **adjuntar un documento** o **importar una página web** como punto de partida."
+          "text": "Para una petición más estructurada. Este modo ofrece **campos precisos** (disciplina, nivel, tema, número de preguntas, instrucciones concretas…) y permite **adjuntar sus propios materiales** o **importar una página web** como punto de partida."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Documentos** — PDF, DOCX, PPTX, ODT, ODP: el texto se extrae tal cual.",
+            "**Imágenes** — PNG, JPEG (WebP y BMP también aceptados): descritas y transcritas por una IA de visión.",
+            "**Audio** — MP3, M4A, WAV, OGG, FLAC: la grabación se **transcribe** automáticamente.",
+            "**Vídeo** — MP4, MOV, WEBM: **solo se extrae la pista de audio** y se transcribe, la imagen no se analiza.",
+            "**Página web** — pegue un enlace y Caramel recupera su contenido."
+          ]
         },
         {
           "type": "shot",
@@ -96,6 +106,14 @@
         {
           "type": "plain",
           "text": "Si deja la zona «documentos» vacía, la IA se basará **únicamente en sus conocimientos generales**. Al colocar ahí su curso, la obliga a **ceñirse a su contenido**: es usted quien decide."
+        },
+        {
+          "type": "tip",
+          "text": "**Las imágenes se comprenden, no solo se leen.** Deposite una foto de clase, un esquema o un diagrama (PNG, JPEG — WebP y BMP también aceptados): una **IA de visión describe lo que muestra la imagen y transcribe fielmente el texto** que contiene. Y si la IA no está disponible, la **lectura local del texto (OCR)** toma automáticamente el relevo."
+        },
+        {
+          "type": "tip",
+          "text": "**Una clase grabada puede servir de fuente.** Deposite un archivo de audio o de vídeo: Caramel lo **transcribe** antes de generar. Las grabaciones largas se dividen en fragmentos de 5 minutos, así que cuente con algo de espera para una hora de clase."
         },
         {
           "type": "h",
@@ -137,19 +155,19 @@
           "type": "table",
           "head": [
             "Familia",
-            "Qué es",
-            "Formatos producidos"
+            "Lo que obtiene",
+            "Archivo generado"
           ],
           "rows": [
             [
               "**H5P**",
-              "Actividades **interactivas**: preguntas de opción múltiple, verdadero/falso, texto con huecos, arrastrar y soltar, crucigramas, tarjetas de memoria, glosario, presentación de curso, libro interactivo, vídeo interactivo…",
+              "Actividades **interactivas** que funcionan en todas partes: Moodle, Éléa, Magistère, La Sucrerie e incluso un sitio web corriente. El alumno responde en la propia página y ve la corrección al instante.",
               "**.h5p**"
             ],
             [
               "**Éléa / Moodle**",
-              "Actividades y recursos para estas plataformas: Test, opción múltiple, Emparejamiento, Millonario, Página, Libro, Glosario, Tarea…",
-              "**.mbz**, **.xml**, **.GIFT**"
+              "**Actividades nativas** de la plataforma (Test, QCM, Tarea, Millonario…) y **recursos de curso** (Página, Libro). Se importan en su curso; los resultados llegan al libro de calificaciones.",
+              "**.mbz**, **.xml**, **.gift**"
             ]
           ]
         },
@@ -168,6 +186,219 @@
         {
           "type": "tip",
           "text": "¿Duda sobre el tipo? Los **filtros** de la parte superior de la cuadrícula (por plataforma, por tema) reducen la lista, y el nombre de cada ficha describe el ejercicio que produce. Caramélia también puede aconsejarle el tipo más adecuado."
+        },
+        {
+          "type": "h",
+          "text": "El catálogo, actividad por actividad"
+        },
+        {
+          "type": "p",
+          "text": "Esto es, en una frase, lo que cada mosaico le permite crear. Las actividades se agrupan **por uso**; en la aplicación, los **filtros** situados encima de la cuadrícula hacen lo mismo."
+        },
+        {
+          "type": "h",
+          "text": "Contenidos interactivos completos"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Actividad",
+            "Para qué sirve"
+          ],
+          "rows": [
+            [
+              "**Presentación de curso**",
+              "Cree una presentación interactiva con ejercicios integrados (opción múltiple, verdadero/falso, completar texto, etc.) para un curso estructurado en diapositivas."
+            ],
+            [
+              "**Libro interactivo**",
+              "Cree un libro digital de varios capítulos: cada página combina textos, tablas, imágenes y ejercicios (opción múltiple, verdadero/falso, completar huecos…), con índice y página de resumen."
+            ],
+            [
+              "**Vídeo interactivo**",
+              "Un vídeo enriquecido con preguntas (opción múltiple, verdadero/falso, rellenar huecos) que aparecen en momentos clave, con un resumen final. (Tubes de Apps Éducation, PodEduc y YouTube)"
+            ],
+            [
+              "**Imagen interactiva**",
+              "Adjunta una imagen: la IA coloca puntos clicables y redacta sus explicaciones. Puedes añadir medios a mano."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Cuestionarios y evaluación"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Actividad",
+            "Para qué sirve"
+          ],
+          "rows": [
+            [
+              "**Quiz de opción múltiple**",
+              "Cree un quiz compuesto exclusivamente de preguntas de opción múltiple."
+            ],
+            [
+              "**Quiz Verdadero/Falso**",
+              "Crea un quiz compuesto exclusivamente por preguntas de tipo Verdadero o Falso."
+            ],
+            [
+              "**Quiz mixto**",
+              "Componga una serie de preguntas variadas (opción múltiple, arrastrar y soltar, etc.) para evaluar conocimientos."
+            ],
+            [
+              "**Encontrar la zona**",
+              "Adjunta una imagen: la IA elige la zona correcta y redacta los feedbacks. Puntuación al primer clic."
+            ],
+            [
+              "**Encontrar las zonas**",
+              "Adjunta una imagen: la IA elige las zonas que hay que encontrar y redacta los feedbacks."
+            ],
+            [
+              "**Serie de elección única**",
+              "Cree una serie de preguntas donde cada pregunta tenga solo una respuesta correcta."
+            ],
+            [
+              "**Opción múltiple**",
+              "Cree una **única** pregunta de opción múltiple con una o varias respuestas correctas."
+            ],
+            [
+              "**Verdadero/Falso**",
+              "Cree una **única** pregunta simple con una respuesta binaria: verdadero o falso."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Manipulación de texto"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Actividad",
+            "Para qué sirve"
+          ],
+          "rows": [
+            [
+              "**Arrastrar palabras**",
+              "Cree un texto con huecos donde los alumnos deban arrastrar las palabras faltantes."
+            ],
+            [
+              "**Arrastrar y soltar**",
+              "Cree una actividad donde los alumnos arrastran etiquetas a las zonas de depósito correctas."
+            ],
+            [
+              "**Texto para completar**",
+              "Los alumnos deben escribir las palabras faltantes en un texto directamente con el teclado."
+            ],
+            [
+              "**Resaltar palabras**",
+              "Pida a los alumnos que resalten ciertas palabras en un párrafo."
+            ],
+            [
+              "**Dictado**",
+              "Cree un dictado con audio: el alumno escucha cada frase y la escribe; la corrección resalta los errores. Voces generadas automáticamente (síntesis de voz)."
+            ],
+            [
+              "**Redacción**",
+              "Proponga un tema de redacción y defina palabras clave para una corrección automatizada."
+            ],
+            [
+              "**Ordenar párrafos**",
+              "Cree un conjunto de párrafos que los alumnos deban poner en el orden correcto."
+            ],
+            [
+              "**Resumen**",
+              "Los alumnos deben reconstruir un resumen correcto eligiendo las frases adecuadas."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Memorización y descubrimiento"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Actividad",
+            "Para qué sirve"
+          ],
+          "rows": [
+            [
+              "**Tarjetas de memoria**",
+              "Cree tarjetas de dos caras para ayudar a la memorización de términos y definiciones."
+            ],
+            [
+              "**Crucigrama**",
+              "Genere una cuadrícula de crucigrama a partir de una lista de palabras y definiciones."
+            ],
+            [
+              "**Línea de tiempo**",
+              "Cree una línea de tiempo interactiva para presentar una secuencia de eventos."
+            ],
+            [
+              "**Glosario**",
+              "Cree un glosario o una FAQ en forma de acordeón desplegable."
+            ],
+            [
+              "**Sopa de letras**",
+              "Cree una cuadrícula de letras donde los alumnos deban encontrar palabras."
+            ],
+            [
+              "**Diagrama**",
+              "Cree un diagrama circular o de barras para visualizar datos."
+            ],
+            [
+              "**Tarjetas de diálogo**",
+              "Cree tarjetas interactivas de dos caras con texto y, opcionalmente, imágenes."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Actividades Éléa / Moodle"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Actividad",
+            "Para qué sirve"
+          ],
+          "rows": [
+            [
+              "**Página**",
+              "Crear una página de contenido Éléa con formato visual."
+            ],
+            [
+              "**Libro**",
+              "Crear un libro Éléa de varios capítulos con formato visual, reutilizando los bloques de la actividad Página."
+            ],
+            [
+              "**Tarea**",
+              "Cree una tarea Moodle con una rúbrica de evaluación generada por IA."
+            ],
+            [
+              "**Cuestionario**",
+              "Genere un banco de preguntas para importar directamente a una actividad de Cuestionario (en formato XML o GIFT)"
+            ],
+            [
+              "**Cuestionario de opción múltiple**",
+              "Genere una actividad simple de opción múltiple."
+            ],
+            [
+              "**Emparejamiento**",
+              "Genere una actividad de emparejamiento de 10 preguntas."
+            ],
+            [
+              "**Millonario**",
+              "Genere una actividad única tipo 'Millonario' de 6 preguntas graduales en términos de dificultad."
+            ],
+            [
+              "**Glosario**",
+              "Genere un glosario listo para ser importado en formato XML."
+            ]
+          ]
         }
       ]
     },
@@ -461,7 +692,7 @@
         },
         {
           "type": "p",
-          "text": "Para añadir preguntas a su **banco de preguntas**: desde el banco, elija **«Importar»**, seleccione el formato (Moodle XML o GIFT) y cargue el archivo."
+          "text": "Para añadir preguntas a su **banco de preguntas**: desde el banco, elija **«Importar»**, seleccione el formato (Moodle XML o GIFT) y cargue el archivo. También puede importar el Test directamente en **`.mbz`** — una actividad lista para restaurar (véase «Archivo .mbz» más arriba)."
         },
         {
           "type": "shot",

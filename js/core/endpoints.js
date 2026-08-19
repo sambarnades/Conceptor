@@ -6,9 +6,9 @@
  * changer toutes les URLs de webhook écrites en dur dans le frontend.
  *
  * ── Injection prod (CI/CD GitLab Pages) ──────────────────────────────────────
- * Les valeurs ci-dessous pointent sur l'instance **prod** ("…-prod"). Au build,
+ * Les valeurs écrites en dur ci-dessous sont celles de l'environnement du dépôt. Au build,
  * `.gitlab-ci.yml` les écrase **dans CE fichier uniquement** via `sed`, à partir
- * des variables CI/CD (les 11 sont obligatoires : le build échoue si l'une manque) :
+ * des variables CI/CD (les 13 sont obligatoires : le build échoue si l'une manque) :
  *   LLM_SUBMIT_URL                       → const LLM_SUBMIT_URL
  *   LLM_RESULT_URL                       → const LLM_RESULT_URL
  *   LLM_STATS_URL                        → const LLM_STATS_URL
@@ -20,6 +20,8 @@
  *   CARAMEL_FETCH_PAGE_URL               → const CARAMEL_FETCH_PAGE_URL
  *   PDF_CONVERT_URL                      → const PDF_CONVERT_URL
  *   CARAMEL_VISION_DETECT_URL            → const CARAMEL_VISION_DETECT_URL
+ *   CARAMEL_TTS_URL                      → const CARAMEL_TTS_URL
+ *   CARAMEL_TTS_VOICES_URL               → const CARAMEL_TTS_VOICES_URL
  *
  * CONTRAINTE : chaque `const … = "…"` ci-dessous DOIT rester sur une seule ligne
  * pour que les regex `sed` continuent de matcher. Ne pas réécrire en multi-ligne.
@@ -51,10 +53,18 @@ const CARAMEL_FETCH_PAGE_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/
 
 // Vision « Image interactive » (H5P.ImageHotspots) — détection des zones clés d'une image jointe
 // par le modèle vision (DEFAULT_VISION_MODEL de services/hotspot-vision.js, via ILaaS). Appel SYNCHRONE, cf. services/hotspot-vision.js +
+// workflow n8n « Caramel · Vision Image Hotspots — Détection »
 const CARAMEL_VISION_DETECT_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-vision-detect-prod";
 
 // Export PDF — conversion ODT→PDF via n8n + Gotenberg, cf. export/pdf-via-gotenberg.js
 const PDF_CONVERT_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-pdf-convert-prod";
+
+// Synthèse vocale (Dictée H5P) — relais n8n vers le service TTS Rust (Piper/OpenJTalk sur
+// Scaleway, cf. docs/PRD_DICTATION.md §11). Appel SYNCHRONE (une dictée ≤ ~15 phrases tient
+// sous le mur ~60 s), cf. services/tts.js. Le catalogue liste les voix disponibles par langue
+// (genres à null → grisés dans le panneau réglages de l'éditeur).
+const CARAMEL_TTS_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-tts-prod";
+const CARAMEL_TTS_VOICES_URL = "https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-tts-voices-prod";
 
 export const ENDPOINTS = Object.freeze({
     llmSubmit: LLM_SUBMIT_URL,
@@ -68,4 +78,6 @@ export const ENDPOINTS = Object.freeze({
     fetchPage: CARAMEL_FETCH_PAGE_URL,
     pdfConvert: PDF_CONVERT_URL,
     visionDetect: CARAMEL_VISION_DETECT_URL,
+    tts: CARAMEL_TTS_URL,
+    ttsVoices: CARAMEL_TTS_VOICES_URL,
 });

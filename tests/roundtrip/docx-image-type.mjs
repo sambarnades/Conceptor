@@ -24,7 +24,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const REPO = fileURLToPath(new URL('../..', import.meta.url));
-const DOCX_BUNDLE = join(REPO, 'js/vendor/docx/8.6.0/index.umd.js');
+const DOCX_BUNDLE = join(REPO, 'js/vendor/docx/9.7.1/index.iife.js');
 
 let passed = 0, failed = 0;
 const fails = [];

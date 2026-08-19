@@ -1,6 +1,7 @@
 import { translations, translatePage } from './translation.js';
 import { addNotification } from '../ui/notifications.js';
 import { sanitizeSync, preloadSanitizer } from '../export/sanitizer.js';
+import { escapeHtml } from './escape.js';
 
 // Préchargement de DOMPurify pendant le temps d'inactivité
 if (typeof window !== 'undefined') {
@@ -21,6 +22,76 @@ export function debugLog(module, ...args) {
 }
 
 // =======================================================================
+// Stockage web sûr (sessionStorage / localStorage)
+// =======================================================================
+
+/**
+ * Construit un accesseur de stockage web qui ne lève JAMAIS.
+ *
+ * Un accès au stockage peut échouer à trois moments distincts :
+ *   1. à la LECTURE de la globale elle-même — `SecurityError` quand le stockage
+ *      est bloqué par une politique de navigateur/entreprise ou que les cookies
+ *      tiers sont désactivés (d'où l'accès paresseux via `getStore()`) ;
+ *   2. à `setItem` — `QuotaExceededError` : quota atteint, ou quota nul en
+ *      navigation privée sur certaines versions de Safari ;
+ *   3. à `getItem`/`removeItem` — plus rare, mais possible si le stockage est
+ *      révoqué en cours de session.
+ *
+ * Sans garde, une seule de ces exceptions interrompt la fonction appelante au
+ * milieu de son travail. Cas réel : `closeSidebar()` sauvegardait la session en
+ * PREMIÈRE instruction ; un `setItem` en échec laissait le piège à focus armé,
+ * la sidebar visuellement ouverte et ses ID en doublon à la réouverture.
+ *
+ * @param {() => Storage} getStore - Accès paresseux à la globale de stockage.
+ * @param {string} label - Nom lisible pour les logs de debug.
+ */
+function createSafeStorage(getStore, label) {
+    const fail = (op, key, e) => {
+        debugLog('storage', `${label}.${op}("${key}") a échoué : ${e?.name || e}`);
+    };
+    return {
+        /** @returns {string|null} La valeur, ou null si absente OU inaccessible. */
+        get(key) {
+            try { return getStore().getItem(key); }
+            catch (e) { fail('getItem', key, e); return null; }
+        },
+        /** @returns {boolean} true si la valeur est réellement persistée. */
+        set(key, value) {
+            try { getStore().setItem(key, value); return true; }
+            catch (e) { fail('setItem', key, e); return false; }
+        },
+        /** @returns {boolean} true si la suppression a abouti. */
+        remove(key) {
+            try { getStore().removeItem(key); return true; }
+            catch (e) { fail('removeItem', key, e); return false; }
+        },
+        /**
+         * Liste les clés présentes. Renvoie un INSTANTANÉ : itérer dessus tout en
+         * supprimant des clés est donc sûr (contrairement à une boucle sur
+         * `store.key(i)`, dont les index glissent à chaque suppression).
+         * @returns {string[]} Tableau vide si le stockage est inaccessible.
+         */
+        keys() {
+            try {
+                const store = getStore();
+                const out = [];
+                for (let i = 0; i < store.length; i++) {
+                    const k = store.key(i);
+                    if (k !== null) out.push(k);
+                }
+                return out;
+            } catch (e) { fail('keys', '*', e); return []; }
+        }
+    };
+}
+
+/** Stockage de session sûr — à préférer TOUJOURS à `sessionStorage` nu. */
+export const safeSession = createSafeStorage(() => sessionStorage, 'sessionStorage');
+
+/** Stockage persistant sûr — à préférer TOUJOURS à `localStorage` nu. */
+export const safeLocal = createSafeStorage(() => localStorage, 'localStorage');
+
+// =======================================================================
 // Classification des erreurs
 // =======================================================================
 
@@ -35,13 +106,53 @@ export const ErrorCategory = {
 };
 
 /**
- * Classifie une erreur selon sa nature
- * @param {Error} error - L'erreur à classifier
- * @returns {{category: string, userMessage: string, technicalMessage: string}}
+ * Horodatage LOCAL des noms de fichiers exportés : `AAAAMMJJHHmm`.
+ *
+ * Cette formule était recopiée à l'identique dans `moodle-creator.js` (8 fois),
+ * `h5p-creator.js`, `package-activity.js`, `notifications.js` et `ui.js` — soit
+ * 12 endroits à modifier de concert pour changer le format d'un nom de fichier.
+ *
+ * Volontairement en heure LOCALE (et non UTC) : c'est le nom que l'enseignant voit
+ * dans son dossier de téléchargements, il doit correspondre à SA pendule.
+ *
+ * @param {string} [separateur=''] - Inséré entre les champs. `'-'` donne
+ *   `AAAA-MM-JJ-HH-mm`, la variante utilisée par l'export Test Éléa.
+ * @returns {string}
+ */
+export function horodatageFichier(separateur = '') {
+    const d = new Date();
+    return [
+        d.getFullYear(),
+        String(d.getMonth() + 1).padStart(2, '0'),
+        String(d.getDate()).padStart(2, '0'),
+        String(d.getHours()).padStart(2, '0'),
+        String(d.getMinutes()).padStart(2, '0')
+    ].join(separateur);
+}
+
+/**
+ * Classifie une erreur selon sa nature.
+ *
+ * Robuste à TOUTE valeur levée : en JavaScript un `throw` peut porter autre chose
+ * qu'un `Error` (chaîne, `null`, objet nu, valeur rejetée d'une promesse). La version
+ * initiale lisait `error.message` sans garde et levait donc elle-même une TypeError
+ * sur `null`/`undefined` — soit une panne DANS le gestionnaire d'erreur, au moment
+ * précis où l'utilisateur a besoin d'un message.
+ *
+ * @param {*} error - L'erreur à classifier (Error, chaîne, ou n'importe quoi d'autre).
+ * @returns {{category: string, userMessageKey: string, technicalMessage: string}}
  */
 export function classifyError(error) {
-    const errorMsg = error.message || String(error);
-    const errorName = error.name || '';
+    const estObjet = error !== null && typeof error === 'object';
+    let errorMsg;
+    try {
+        errorMsg = (estObjet && error.message) ? String(error.message) : String(error);
+    } catch {
+        // Objet dont le `toString` lève (rare, mais possible) : on ne fait pas tomber
+        // le gestionnaire d'erreur pour autant.
+        errorMsg = '[erreur non représentable]';
+    }
+    const errorName = (estObjet && error.name) ? String(error.name) : '';
 
     let category = ErrorCategory.PACKAGING_ERROR; // Défaut
     let userMessageKey = 'error_packaging';
@@ -72,19 +183,79 @@ export function classifyError(error) {
 // =======================================================================
 // Fonctions utilitaires
 // =======================================================================
+/**
+ * Extrait le PREMIER bloc JSON équilibré d'un texte : de la première accolade/crochet
+ * ouvrant(e) jusqu'à sa fermeture correspondante (comptage de profondeur, en ignorant
+ * les accolades/crochets à l'intérieur des chaînes JSON et les caractères échappés).
+ *
+ * C'est le cœur du nettoyage d'un collage venu d'une IA EXTERNE : celle-ci ajoute souvent
+ * une phrase avant (« Voici le JSON demandé : ») et/ou après (« J'espère que cela convient ! »).
+ * On ne garde que ce qui se trouve entre l'accolade d'ouverture et sa fermeture finale.
+ *
+ * Miroir de `extractJsonContent()` dans `services/llm.js` (utilisé, lui, pour la réponse du
+ * proxy n8n) : même logique de comptage de profondeur, volontairement identique.
+ *
+ * @param {string} text - Texte pouvant contenir du JSON noyé dans de la prose.
+ * @returns {string|null} Le bloc JSON extrait (trimmé), ou `null` si aucun `{`/`[` n'est trouvé.
+ */
+function extractBalancedJson(text) {
+    const firstBrace = text.indexOf('{');
+    const firstBracket = text.indexOf('[');
+    let start = -1;
+    if (firstBrace > -1 && firstBracket > -1) start = Math.min(firstBrace, firstBracket);
+    else start = firstBrace > -1 ? firstBrace : firstBracket;
+    if (start < 0) return null;
+
+    const cand = text.slice(start);
+    let depth = 0, inString = false, escaped = false;
+    for (let i = 0; i < cand.length; i++) {
+        const c = cand[i];
+        if (escaped) { escaped = false; continue; }
+        if (c === '\\' && inString) { escaped = true; continue; }
+        if (c === '"') { inString = !inString; continue; }
+        if (inString) continue;
+        if (c === '{' || c === '[') depth++;
+        else if (c === '}' || c === ']') {
+            depth--;
+            if (depth === 0) return cand.slice(0, i + 1).trim();
+        }
+    }
+    // JSON probablement tronqué (jamais refermé) : renvoyer du 1ᵉʳ { jusqu'à la fin,
+    // le healer / JSON.parse tentera ensuite sa chance plutôt que d'échouer d'emblée.
+    return cand.trim();
+}
+
+/**
+ * Nettoie un collage brut (souvent produit par une IA externe) pour en extraire le JSON
+ * exploitable. Trois passes tolérantes :
+ *   1. Bloc de code markdown ``` ```json … ``` ``` (n'importe où dans le texte) → on prend l'intérieur.
+ *   2. Extraction du bloc JSON ÉQUILIBRÉ (1ʳᵉ accolade → sa fermeture) → supprime tout texte
+ *      d'accompagnement avant/après (ex. « Voici votre activité : {…} Bonne journée ! »).
+ *   3. Si aucun `{`/`[` n'est présent, on renvoie le texte trimmé (comportement historique :
+ *      la validation/JSON.parse en aval décidera).
+ *
+ * Idempotent : un JSON déjà propre ressort inchangé.
+ * @param {string} rawInput - Contenu brut du textarea de collage.
+ * @returns {string} Le JSON nettoyé (ou le texte trimmé si rien d'exploitable).
+ */
 export function cleanJsonInput(rawInput) {
-    let cleanedInput = rawInput.trim();
-    // Supprimer le ```json ou ``` au début
-    if (cleanedInput.startsWith('```json')) {
-        cleanedInput = cleanedInput.substring(7);
-    } else if (cleanedInput.startsWith('```')) {
-        cleanedInput = cleanedInput.substring(3);
+    if (rawInput == null) return '';
+    let cleaned = String(rawInput).trim();
+    if (!cleaned) return '';
+
+    // 1. Bloc markdown ```json … ``` (ou ``` … ```) — n'importe où. On ne le retient que s'il
+    //    contient effectivement un objet/tableau JSON (évite d'attraper un autre bloc de code).
+    const fenced = cleaned.match(/```(?:json|JSON)?\s*([\s\S]*?)```/);
+    if (fenced && fenced[1] && /[{[]/.test(fenced[1])) {
+        cleaned = fenced[1].trim();
     }
-    // Supprimer le ``` à la fin
-    if (cleanedInput.endsWith('```')) {
-        cleanedInput = cleanedInput.slice(0, -3);
-    }
-    return cleanedInput.trim();
+
+    // 2. Ne garder que le bloc JSON équilibré (retire la prose avant/après un collage IA externe).
+    const block = extractBalancedJson(cleaned);
+    if (block != null) return block;
+
+    // 3. Aucun { ou [ : renvoyer le texte nettoyé tel quel.
+    return cleaned;
 }
 
 // Le tutoriel (ancienne modale « aide ») a été remplacé par la modale
@@ -299,14 +470,34 @@ export function markdownTablesToHtml(text) {
 // =======================================================================
 // 6.4. Fonctions d'échappement et UUID
 // =======================================================================
+
+/**
+ * Échappe les caractères significatifs en HTML — sémantique HISTORIQUE.
+ *
+ * ⚠️ Diffère volontairement d'`escapeHtml` sur les entrées nulles : ici
+ * `null`/`undefined` sont coercés (`"null"`, `"undefined"`), là où `escapeHtml`
+ * renvoie `''`. Ce comportement est CONSERVÉ parce que plusieurs appelants s'y
+ * exposent sans repli — notamment `ctx.escapeHtmlTags(data.img_src)` dans les
+ * quatre thèmes de Page, dont la sortie HTML n'est pas couverte par le banc de
+ * snapshots (Page/Livre = rendu DOM, différés dans `harness.mjs`). Le changer
+ * ici modifierait silencieusement des exports non testés.
+ *
+ * La TABLE d'échappement, elle, est bien partagée avec `core/escape.js` : un
+ * ajout de caractère à échapper profite aux deux.
+ *
+ * @deprecated Pour tout NOUVEAU code, importer `escapeHtml` depuis
+ *   `core/escape.js` (renvoie `''` sur entrée nulle, ce qui est presque toujours
+ *   le comportement voulu).
+ * @param {*} str
+ * @returns {string}
+ */
 export function escapeHtmlTags(str) {
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+    return escapeHtml(String(str));
 }
+
+// Ré-export : permet d'importer la primitive canonique depuis `core/utils.js`,
+// déjà importé presque partout, sans multiplier les chemins d'import.
+export { escapeHtml, escapeHtmlAttr, escapeXml, stripHtml } from './escape.js';
 
 /**
  * Sanitize une URL destinée à un attribut href/src.

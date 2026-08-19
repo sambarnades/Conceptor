@@ -9,11 +9,14 @@
  * @exports {Object} default.process - Transformation principale
  */
 import { translations, currentLang } from '../../core/translation.js';
+import { languageCodes } from '../../core/language-codes.js';
 import { formatTextToHtml } from '../../core/utils.js';
 
 export default {
     process: (jsonObj) => {
-        const h5pLang = currentLang === 'zh' ? 'zh-cn' : currentLang;
+        // Code de langue normalisé : `jp` est une clé de locale Caramel, pas un
+        // code de langue (le japonais est `ja`) — la lib ne le reconnaîtrait pas.
+        const h5pLang = languageCodes(currentLang).h5p;
 
         // Valeurs par défaut et traductions
         return {

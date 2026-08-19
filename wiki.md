@@ -29,7 +29,7 @@
 |--------------------------|-------------------|
 | 🎯 **Quiz interactifs** (QCM, vrai/faux, question sets...) | ⏱️ **Moins de 5 minutes** |
 | 📝 **Exercices de texte** (textes à trous, mots à glisser...) | de la description |
-| 🧠 **Outils de mémorisation** (flashcards, frises chronologiques...) | à l'intégration |
+| 🧠 **Outils de mémorisation** (cartes mémoires, frises chronologiques...) | à l'intégration |
 | 🎮 **Activités ludiques** (mots croisés, millionnaire, mots mêlés...) | dans votre cours ! |
 | 📚 **Ressources de cours** (pages Éléa, livres, glossaires, accordéons...) | |
 | 🎬 **Contenus interactifs riches** (vidéo interactive, livre interactif, présentations...) | |
@@ -64,7 +64,7 @@
 
 - 🧠 **Comprend votre intention** : elle distingue toute seule une demande d'activité (« je veux faire… ») d'une question d'aide (« comment je fais pour… »)
 - ✏️ **Remplit les champs à votre place** : Qui êtes-vous ?, Que souhaitez-vous aborder ?, niveau, nombre d'éléments
-- 🎯 **Choisit la bonne tuile** parmi les 31 activités disponibles
+- 🎯 **Choisit la bonne tuile** parmi les 35 activités disponibles
 - 📎 **Accepte les pièces jointes** : glissez un PDF ou un document directement dans la conversation, elle l'utilise comme support pour la génération (RAG)
 - 🌍 **Parle vos 11 langues** : elle s'aligne automatiquement sur la langue choisie dans Caramel
 - ♿ **Accessible au clavier** : navigation complète sans souris, focus restauré à la fermeture
@@ -186,10 +186,10 @@ Les activités se trient selon **deux axes complémentaires** : par **type péda
 
 | Filtre | Contenu |
 |--------|---------|
-| **📂 Tout** | Affiche les 31 activités en un seul écran |
-| **🎯 Quiz & Tests** | Quiz mixte, Quiz QCM, Quiz Vrai/Faux, Vrai/Faux, Choix multiples, Single Choice Set, Présentation de cours, Vidéo interactive, Livre interactif, Test, Millionnaire, Appariement, QCM, Devoir |
-| **✏️ Manipulation de texte** | Textes à trous, Glisser les mots, Glisser-déposer, Marquer les mots, Trier les paragraphes, Rédaction, Résumé, Présentation de cours, Livre interactif |
-| **🧠 Mémorisation & Découverte** | Flashcards, Frises, Glossaires/Accordéons, Mots croisés, Mots mêlés, Graphiques, Cartes de dialogue |
+| **📂 Tout** | Affiche les 35 activités en un seul écran |
+| **🎯 Quiz & Tests** | Quiz mixte, Quiz QCM, Quiz Vrai/Faux, Vrai/Faux, Choix multiples, Série de choix uniques, Trouver la zone, Trouver les zones, Présentation de cours, Vidéo interactive, Livre interactif, Test, Millionnaire, Appariement, QCM, Devoir |
+| **✏️ Manipulation de texte** | Textes à trous, Glisser les mots, Glisser-déposer, Surligner les mots, Ordonner les paragraphes, Rédaction, Résumé, Dictée, Présentation de cours, Livre interactif |
+| **🧠 Mémorisation & Découverte** | Cartes mémoires, Frises, Glossaires/Accordéons, Mots croisés, Mots mêlés, Diagramme, Cartes de dialogue, Image interactive |
 
 **Par plateforme :**
 
@@ -200,7 +200,7 @@ Les activités se trient selon **deux axes complémentaires** : par **type péda
 | **🏛️ Magistère** | Les activités compatibles avec Magistère |
 | **🟧 Moodle** | Les activités compatibles avec Moodle |
 
-> 💡 La **Vidéo interactive** et le **Livre interactif** sont des activités H5P comme les autres : on les retrouve naturellement dans les filtres ci-dessus selon leur usage pédagogique.
+> 💡 La **Vidéo interactive**, le **Livre interactif** et l'**Image interactive** sont des activités H5P comme les autres : on les retrouve naturellement dans les filtres ci-dessus selon leur usage pédagogique.
 
 <details>
 <summary><strong>🎯 Activités H5P (fichiers <code>.h5p</code>)</strong></summary>
@@ -214,7 +214,7 @@ Les fichiers **H5P** sont des modules interactifs universels, compatibles avec M
 | **Quiz mixte** | Ensemble varié de questions (QCM, V/F, glisser-déposer,...) | Évaluation complète avec plusieurs types de questions |
 | **Quiz QCM** | Question à choix multiples via Quizset | Création ultra-rapide d'évaluation ciblée |
 | **Quiz Vrai/Faux** | Question affirmation vrai ou faux via Quizset | Vérification flash d'une connaissance |
-| **Single Choice Set** | Série de questions à choix unique | Quiz rapide style "cartes flash" |
+| **Série de choix uniques** | Série de questions à choix unique | Quiz rapide style "cartes flash" |
 | **Vidéo interactive** | À partir d'un **lien vidéo**, l'IA récupère la transcription et place des questions (QCM, Vrai/Faux, texte à trous) aux moments clés, avec un résumé final | Capsule vidéo enrichie, classe inversée, vérification de compréhension |
 
 > 💡 **Information** : Les activités Quiz QCM et Quiz Vrai/Faux utilisent le moteur **Quizset** pour une génération fiable et rapide.
@@ -227,15 +227,18 @@ Les fichiers **H5P** sont des modules interactifs universels, compatibles avec M
 |----------|-------------|-------------|
 | **Glisser les mots** | Déplacer des mots pour compléter un texte | Exercice de vocabulaire, syntaxe |
 | **Texte à trous** | Compléter les mots manquants par saisie | Exercice de complétion classique |
-| **Marquer les mots** | Cliquer sur les mots corrects dans un texte | Repérage de mots-clés, analyse |
-| **Trier des paragraphes** | Remettre des paragraphes dans l'ordre | Reconstitution de texte, chronologie |
+| **Surligner les mots** | Cliquer sur les mots corrects dans un texte | Repérage de mots-clés, analyse |
+| **Ordonner les paragraphes** | Remettre des paragraphes dans l'ordre | Reconstitution de texte, chronologie |
 | **Glisser-déposer (Drag & Drop)** | Déplacer des étiquettes dans des zones dédiées | Associations spatiales, étiquetage d'images, tris thématiques |
+| **Dictée** | Dictée **audio** : l'IA rédige les phrases, Caramel les **lit** (voix de synthèse F/M, 11 langues, débit normal ou lent — ou **votre propre voix** enregistrée au micro), l'élève écoute puis écrit ; la correction met les fautes en évidence | Orthographe, écoute, autonomie |
+
+> 🎧 **Dictée — comment ça marche ?** Indiquez un thème et un niveau : l'IA rédige la **consigne** et les **phrases**, et Caramel **synthétise la voix** automatiquement (aucun fichier à fournir). Dans l'éditeur, un **panneau de réglages** choisit la **langue**, la **voix** (féminine / masculine) et une piste **« lecture lente »**. Vous pouvez aussi enregistrer **votre propre voix** au microphone (dictaphone **« Ma voix »**), **rogner** la prise et laisser la machine en générer une **version ralentie** (curseur de vitesse). Ajoutez une **image d'illustration** si besoin. À l'export **DOCX/ODT/PDF**, la dictée sort en **feuille élève** (lignes d'écriture) + **feuille de correction**.
 
 ### Mémorisation et révision
 
 | Activité | Description | Cas d'usage |
 |----------|-------------|-------------|
-| **Flashcards** | Cartes mémoire recto-verso | Révision de vocabulaire, formules |
+| **Cartes mémoires** | Cartes mémoire recto-verso | Révision de vocabulaire, formules |
 | **Frise chronologique** | Ligne du temps interactive | Histoire, sciences, chronologie |
 | **Accordéon / Glossaire** | Définitions déroulantes | Lexique, FAQ, ressources |
 | **Cartes de dialogue** | Questions-réponses en cartes | Révision active, entraînement |
@@ -248,7 +251,7 @@ Les fichiers **H5P** sont des modules interactifs universels, compatibles avec M
 | **Mots mêlés** | Grille de recherche de mots cachés | Découverte de termes, échauffement |
 | **Rédaction (Essay)** | Production écrite avec grille de mots-clés | Évaluation de rédaction semi-automatisée |
 | **Résumé** | Création de résumés interactifs | Synthèse de cours, révision |
-| **Graphiques (Chart)** | Diagrammes et graphiques visuels | Données statistiques, sciences |
+| **Diagramme** | Diagrammes et graphiques visuels | Données statistiques, sciences |
 
 ### Cours et présentations interactifs
 
@@ -258,6 +261,16 @@ Les fichiers **H5P** sont des modules interactifs universels, compatibles avec M
 | **Livre interactif** | Livre numérique **multi-chapitres** : chaque page mêle textes, tableaux, images **et exercices** (QCM, Vrai/Faux, texte à trous…), avec table des matières et page de résumé | Chapitre de manuel, séquence complète, dossier documentaire auto-évalué |
 
 > 📖 **Livre interactif vs Livre Éléa** : le **Livre interactif** (H5P) est autonome et embarque de vrais exercices auto-corrigés sur chaque page ; le **Livre** Éléa (`.mbz`, voir plus bas) est un cours multi-chapitres natif Moodle réutilisant les blocs de Page. Choisissez le premier pour un contenu interactif universel, le second pour une intégration profonde dans Éléa.
+
+### Activités sur image
+
+| Activité | Description | Cas d'usage |
+|----------|-------------|-------------|
+| **Image interactive** | Annotez une **image que vous joignez** de **points cliquables** ; Caramel repère automatiquement les zones clés selon votre contexte et rédige le contenu de chaque point (texte, image, son ou vidéo) | Schéma légendé, œuvre commentée, carte interactive |
+| **Trouver la zone** | Une question dont la réponse **se clique sur l'image** ; Caramel détecte les zones, choisit la bonne réponse et rédige consigne et feedbacks (score au premier clic) | Repérage sur schéma, carte, illustration |
+| **Trouver les zones** | Une chasse aux zones sur l'image : l'élève clique **toutes** les zones correctes (légumes, erreurs, risques…), avec feedbacks de progression rédigés par Caramel | Repérage multiple, détection d'erreurs |
+
+> 🖼️ **Activités sur image — comment ça marche ?** Vous **joignez un fichier image** (PNG, JPEG, WebP, HEIC, TIFF… converti automatiquement) ; un **modèle de vision** repère les **zones pertinentes** selon votre contexte (discipline, thème, niveau), puis l'IA texte rédige le contenu, choisit la (ou les) bonne(s) réponse(s) et peut ajouter des **leurres**. Un **éditeur visuel** permet ensuite de déplacer, redimensionner et retyper chaque zone « sur l'image ».
 
 </details>
 
@@ -400,7 +413,7 @@ Les formules sont rendues correctement dans Éléa/Magistère (MathJax) et expor
 
 #### ✨ Marqueurs pour mots à trouver
 
-Pour les activités **Glisser les mots**, **Marquer les mots** et **Texte à trous** (H5P), un mode spécial surligne les mots marqués en jaune. Sélectionnez un mot et cliquez **Marquer**, ou entourez-le d'**astérisques** (`*mot*`).
+Pour les activités **Glisser les mots**, **Surligner les mots** et **Texte à trous** (H5P), un mode spécial surligne les mots marqués en jaune. Sélectionnez un mot et cliquez **Marquer**, ou entourez-le d'**astérisques** (`*mot*`).
 
 #### 🧩 Éditeur Cloze (Texte à trous Éléa)
 
@@ -426,7 +439,7 @@ Vous pouvez enrichir vos activités avec vos propres images, directement dans l'
 
 | Activité | Type d'image | Emplacement dans l'éditeur |
 |----------|-------------|---------------------------|
-| **Flashcards** | Image par carte | Section pliable « Image » sous chaque carte |
+| **Cartes mémoires** | Image par carte | Section pliable « Image » sous chaque carte |
 | **DialogCards** | Image par carte | Section pliable « Image » sous chaque carte |
 | **Drag & Drop** | Arrière-plan + étiquettes | Section dédiée « Image d'arrière-plan » |
 | **Mots croisés** | Arrière-plan | Section dédiée « Image d'arrière-plan » |
@@ -696,7 +709,7 @@ L'IA a besoin de savoir **combien d'éléments** générer :
 | Quiz | questions (10, 15, 20...) |
 | Frise | événements (8, 12, 15...) |
 | Glossaire | termes (20, 30, 50...) |
-| Flashcards | cartes (10, 15, 20...) |
+| Cartes mémoires | cartes (10, 15, 20...) |
 
 </details>
 
@@ -837,7 +850,7 @@ Besoin d'inspiration ? Voici des exemples concrets d'utilisation par matière.
 | Cas | Type | Contexte | Résultat |
 |-----|------|----------|----------|
 | **Révision Théorème de Pythagore (4e)** | Question Set H5P | _"12 questions sur le théorème de Pythagore, niveau 4e, difficulté progressive, avec figures géométriques"_ + PDF du chapitre | Quiz complet en 3 minutes |
-| **Vocabulaire mathématique (6e)** | Flashcards H5P | _"20 cartes mémoire sur les termes de géométrie : sommet, arête, face, angle, polygone..."_ | Outil de révision interactif |
+| **Vocabulaire mathématique (6e)** | Cartes mémoires H5P | _"20 cartes mémoire sur les termes de géométrie : sommet, arête, face, angle, polygone..."_ | Outil de révision interactif |
 | **Frises historiques des mathématiques (Lycée)** | Timeline H5P | _"15 événements clés de l'histoire des mathématiques, de Pythagore à Turing"_ | Frise chronologique illustrée |
 
 </details>
@@ -869,7 +882,7 @@ Besoin d'inspiration ? Voici des exemples concrets d'utilisation par matière.
 
 | Cas | Type | Contexte | Résultat |
 |-----|------|----------|----------|
-| **Vocabulaire thématique (5e)** | Flashcards H5P | _"20 mots anglais sur la famille : mother, father, sister, brother..."_ | Cartes avec traduction |
+| **Vocabulaire thématique (5e)** | Cartes mémoires H5P | _"20 mots anglais sur la famille : mother, father, sister, brother..."_ | Cartes avec traduction |
 | **Texte à trous conjugaison (4e)** | Fill in the Blanks H5P | _"Texte en anglais avec 15 trous sur le present perfect"_ | Exercice autocorrigé |
 | **Quiz civilisation UK (3e)** | Question Set H5P | _"12 questions sur la culture britannique, niveau A2-B1"_ | Quiz culturel avec images |
 
@@ -1172,6 +1185,9 @@ Caramel est distribué sous **licence GNU Affero General Public License v3.0 (AG
 🔗 [Consultez le Journal complet des modifications (CHANGELOG)](https://forge.apps.education.fr/caramel/caramel/-/blob/main/CHANGELOG)
 
 ### Dernières mises à jour :
+- **v6.3.0** : 🎧 **Nouvelle activité Dictée** (H5P.Dictation) : dictée **audio** dont l'IA rédige les phrases et que Caramel **lit à voix haute** (synthèse vocale féminine/masculine, 11 langues, débit normal ou lent) ; l'élève écoute puis écrit, la correction met les fautes en évidence. Enregistrez aussi **votre propre voix** au micro (dictaphone « Ma voix », rognage + lecture lente à vitesse réglable), ajoutez une **image d'illustration**, feedback en 4 tranches, exports **DOCX/ODT/PDF** (feuille élève à lignes d'écriture + correction) et **dépôt Sucrerie**.
+- **v6.2.1** : 🎬 **Vidéo interactive fiabilisée** au collage d'un JSON d'IA externe (liste nue enveloppée, lien vidéo réinjecté, schémas étrangers absorbés par le réparateur) et **prompt à copier réorganisé** pour mieux guider les IA externes (11 langues).
+- **v6.2.0** : 🖼️ **Trois nouvelles activités sur image** : **Image interactive** (points cliquables sur une image que vous joignez, zones repérées par un modèle de vision), **Trouver la zone** et **Trouver les zones** (la réponse se clique sur l'image). Éditeur visuel « sur l'image » (glisser/redimensionner les points et zones), export documentaire numéroté, refonte accessible du **Livre** (Moodle/éléa).
 - **v6.1.1** : 🎬 **Transcription des vidéos longues fiabilisée**. Les transcriptions qui dépassaient une minute (repli audio d'une vidéo YouTube sans sous-titres, transcription d'un fichier entier, vidéos longues découpées en morceaux) échouaient avec une erreur réseau trompeuse et renvoyaient au collage manuel ; elles s'exécutent désormais en arrière-plan, avec suivi de l'avancement, et aboutissent sans coupure — le bouton « Arrêter » restant disponible à tout moment.
 - **v6.1.0** : 🧩 **Activités H5P à jour avec les nouvelles plateformes éléa**. Caramel s'aligne sur la dernière génération de librairies H5P déployée sur éléa : cela corrige le **bouton de navigation « Suivant / Précédent » qui apparaissait vide** dans les Quiz et les Livres interactifs récemment exportés, et garantit que la prévisualisation reflète exactement le rendu final. Les **mentions légales** affichent désormais, dans une liste dépliable, toutes les versions de librairies H5P utilisées.
 - **v6.0.2** : 🎬 **Vidéo interactive — toutes vos questions sont conservées**. Le contenu généré n'est plus jamais tronqué après coup : un plafond automatique ramenait silencieusement les vidéos courtes à 4 questions (il fallait renseigner le Mode Avancé pour récupérer ses propres questions). Désormais le nombre de questions n'est qu'une **recommandation faite à l'IA** ; tout ce qui est produit — génération « un clic » ou collage d'un JSON d'IA externe — est gardé, et l'enseignant supprime à la main ce qu'il ne veut pas.

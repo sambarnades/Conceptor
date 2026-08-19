@@ -14,6 +14,7 @@
  * overlay/dialog/boutons déjà présentes dans les deux `styles.css`.
  */
 
+import { escapeHtml as esc } from '../../core/escape.js';
 import { SUCRERIE_BRIDGE } from '../config.js';
 import { t } from '../i18n/index.js';
 
@@ -191,8 +192,4 @@ export function ensureAccessRequestStyles() {
     (document.head || document.documentElement).appendChild(style);
 }
 
-function esc(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[c]));
-}
+// Doublon retiré : sémantique strictement identique au canonique.

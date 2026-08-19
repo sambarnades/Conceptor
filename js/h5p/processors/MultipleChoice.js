@@ -9,9 +9,45 @@
  * @exports {Function} default.transformForQuizSet - Adaptation pour intégration QuizSet
  */
 import { translations } from '../../core/translation.js';
-import { formatTextToHtml } from '../../core/utils.js';
+import { formatTextToHtml, markdownToHtml } from '../../core/utils.js';
 import { buildMediaStructure } from '../image-manager.js';
 
+/**
+ * Convertit le Markdown des indices et retours par réponse.
+ *
+ * Le semantics de H5P.MultiChoice 1.16 autorise explicitement le HTML sur ces trois
+ * champs — `widget: html`, avec `strong` dans leurs `tags` :
+ *     answers[].answer.tipsAndFeedback.tip               tags = p, br, strong, em, a, code
+ *     answers[].answer.tipsAndFeedback.chosenFeedback    tags = strong, em, sub, sup, a, code
+ *     answers[].answer.tipsAndFeedback.notChosenFeedback tags = strong, em, sub, sup, a, code
+ * (vérifiable par `node tests/run_semantics_audit.mjs --module=MultipleChoice`)
+ *
+ * `field-constraints.js` les déclarait bien `html+latex`, mais AUCUN processeur ne les
+ * convertissait : un `**gras**` écrit par l'enseignant s'affichait en astérisques dans
+ * l'activité publiée — constaté en aperçu réel (audit 2026-07). Les autres champs du
+ * module (`question`, `answers[].text`) passaient déjà par `formatTextToHtml`.
+ *
+ * `markdownToHtml` et NON `formatTextToHtml` : ce dernier commence par assainir, ce qui
+ * échappe le `<` en `&lt;` — et détruit donc les comparaisons LaTeX du type
+ * `\(\sqrt{12} < 4\)`, fréquentes dans les retours de QCM de mathématiques (régression
+ * attrapée par `test-edit-export-flow` sur `multiple_choice_3.json`). `markdownToHtml`
+ * met les blocs `\(…\)` et `\[…\]` de côté par placeholder avant de convertir, et ne
+ * touche pas au reste. Ces champs ne recevaient AUCUN traitement auparavant : on ajoute
+ * la conversion sans retirer d'assainissement qui aurait existé.
+ *
+ * @param {Object} tips - { tip, chosenFeedback, notChosenFeedback }
+ * @returns {Object} Les mêmes champs, Markdown converti (chaînes vides laissées vides).
+ */
+function convertirTips(tips) {
+    if (!tips || typeof tips !== 'object') return tips;
+    const converti = { ...tips };
+    for (const cle of ['tip', 'chosenFeedback', 'notChosenFeedback']) {
+        if (typeof converti[cle] === 'string' && converti[cle].trim()) {
+            converti[cle] = markdownToHtml(converti[cle]);
+        }
+    }
+    return converti;
+}
 
 export default {
     process: (jsonObj) => {
@@ -21,7 +57,8 @@ export default {
             media: buildMediaStructure(jsonObj.mediaImage, jsonObj.mediaImageAlt),
             answers: (Array.isArray(jsonObj.answers) ? jsonObj.answers : []).map(answer => ({
                 ...answer,
-                text: formatTextToHtml(answer.text)
+                text: formatTextToHtml(answer.text),
+                ...(answer.tipsAndFeedback ? { tipsAndFeedback: convertirTips(answer.tipsAndFeedback) } : {})
             })),
             UI: {
                 checkAnswerButton: translations.h5p_check_answer || "Vérifier",
@@ -103,7 +140,9 @@ export default {
         };
         if (question.params.answers) {
             question.params.answers.forEach(a => {
-                a.tipsAndFeedback = { tip: "", chosenFeedback: "", notChosenFeedback: "", ...a.tipsAndFeedback };
+                a.tipsAndFeedback = convertirTips({
+                    tip: "", chosenFeedback: "", notChosenFeedback: "", ...a.tipsAndFeedback
+                });
             });
         }
         return question;

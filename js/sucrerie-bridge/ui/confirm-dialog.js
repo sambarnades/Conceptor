@@ -8,6 +8,8 @@
  * d'afficher une modale custom pendant un unload, contrainte navigateur).
  */
 
+import { escapeHtml as escape } from '../../core/escape.js';
+
 const OVERLAY_DATA = 'data-sucrerie-bridge-confirm';
 
 /**
@@ -94,8 +96,5 @@ export function showConfirmDialog(opts = {}) {
     });
 }
 
-function escape(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[c]));
-}
+// Doublon retiré : sémantique strictement identique au canonique.
+// (`escape` masquait en plus la globale du même nom.)

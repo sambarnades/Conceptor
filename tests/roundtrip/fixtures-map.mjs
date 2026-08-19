@@ -20,49 +20,13 @@ import { dirname, resolve } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export const EXAMPLES_DIR = resolve(__dirname, '../../assets/data/examples');
 
-/**
- * Préfixe snake_case du nom de fixture → moduleKey.
- * L'ordre n'importe pas : on matche par préfixe le plus long d'abord (cf. resolveModuleKey).
- * `kind` : 'h5p' ou 'moodle'.
- */
-export const PREFIX_TO_MODULE = [
-    // --- H5P ---
-    { prefix: 'timeline', moduleKey: 'Timeline', kind: 'h5p' },
-    { prefix: 'flashcards', moduleKey: 'Flashcards', kind: 'h5p' },
-    { prefix: 'accordion', moduleKey: 'Glossary', kind: 'h5p' },        // H5P.Accordion = Glossary (Caramel)
-    { prefix: 'crosswords', moduleKey: 'Crossword', kind: 'h5p' },
-    { prefix: 'essay', moduleKey: 'Essay', kind: 'h5p' },
-    { prefix: 'summary', moduleKey: 'Summary', kind: 'h5p' },
-    { prefix: 'drag_the_words', moduleKey: 'DragTheWords', kind: 'h5p' },
-    { prefix: 'drag_and_drop', moduleKey: 'DragAndDrop', kind: 'h5p' },
-    { prefix: 'fill_in_the_blanks', moduleKey: 'FillInTheBlanks', kind: 'h5p' },
-    { prefix: 'mark_the_words', moduleKey: 'MarkTheWords', kind: 'h5p' },
-    { prefix: 'true_false', moduleKey: 'TrueFalse', kind: 'h5p' },
-    { prefix: 'multiple_choice', moduleKey: 'MultipleChoice', kind: 'h5p' },
-    { prefix: 'find_the_words', moduleKey: 'FindTheWords', kind: 'h5p' },
-    { prefix: 'sort_the_paragraphs', moduleKey: 'SortParagraphs', kind: 'h5p' },
-    { prefix: 'single_choice_set', moduleKey: 'SingleChoiceSet', kind: 'h5p' },
-    { prefix: 'dialog_cards', moduleKey: 'DialogCards', kind: 'h5p' },
-    { prefix: 'charts', moduleKey: 'Chart', kind: 'h5p' },
-    { prefix: 'course_presentation', moduleKey: 'CoursePresentation', kind: 'h5p' },
-    { prefix: 'interactive_book', moduleKey: 'InteractiveBook', kind: 'h5p' },
-    { prefix: 'interactive_video', moduleKey: 'InteractiveVideo', kind: 'h5p' },
-    { prefix: 'image_hotspots', moduleKey: 'ImageHotspots', kind: 'h5p' },
-    // QuizSet familles — préfixes les plus spécifiques d'abord
-    { prefix: 'quiz_qcm', moduleKey: 'QuizSetQCM', kind: 'h5p' },
-    { prefix: 'quiz_vraifaux', moduleKey: 'QuizSetVF', kind: 'h5p' },
-    { prefix: 'quiz_mixte', moduleKey: 'QuizSet', kind: 'h5p' },
-
-    // --- Moodle / Éléa (phase ultérieure) ---
-    { prefix: 'glossaire_xml', moduleKey: 'glossaireXml', kind: 'moodle' },
-    { prefix: 'millionnaire', moduleKey: 'Millionnaire', kind: 'moodle' },
-    { prefix: 'appariement', moduleKey: 'Appariement', kind: 'moodle' },
-    { prefix: 'qcm', moduleKey: 'QCM', kind: 'moodle' },
-    { prefix: 'devoir', moduleKey: 'Devoir', kind: 'moodle' },
-    { prefix: 'page', moduleKey: 'Page', kind: 'moodle' },
-    { prefix: 'livre', moduleKey: 'Livre', kind: 'moodle' },
-    { prefix: 'test', moduleKey: 'test_elea', kind: 'moodle' }
-];
+// La table vit dans `fixtures-prefixes.js` (données pures, sans import Node) afin
+// d'être aussi lisible depuis le navigateur par `tests/test-activity-wiring.js`.
+// Ré-exportée ici : les appelants Node existants sont inchangés.
+// IMPORTER puis exporter, et non `export … from` : la table est utilisée plus bas
+// dans ce module (une ré-exportation ne crée aucune liaison locale).
+import { PREFIX_TO_MODULE } from './fixtures-prefixes.js';
+export { PREFIX_TO_MODULE };
 
 // Trié par longueur de préfixe décroissante pour matcher le plus spécifique d'abord
 // (ex: 'quiz_qcm' avant un hypothétique 'quiz').

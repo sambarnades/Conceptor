@@ -9,7 +9,7 @@ Single source of truth: js/locales/en.json + index.html.
 Any edit goes through a PR.
 -->
 ---
-version: 1.2.0
+version: 1.3.0
 lang: en
 audience: teachers
 ---
@@ -58,19 +58,21 @@ Three options:
 
 - **Copy and paste a text** directly into the input area.
 - **Drag and drop a document** (or click **"Choose a file"**)
-  in **PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG** format. You can also drop an **audio file** (MP3, M4A, WAV…) or a **video** (MP4, MOV…): only the soundtrack is then transcribed automatically (by Albert, the French government’s sovereign service; see privacy below). The drop
+  in **PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG** format (**WebP** and **BMP** images are also accepted, without being listed on screen). An **image** you drop (photo, diagram, chart…) is **analysed by a vision AI** that writes a **description** of it and **faithfully transcribes the text** it contains — if the AI is unavailable, local reading (OCR) automatically takes over. You can also drop an **audio file** (MP3, M4A, WAV…) or a **video** (MP4, MOV…): only the soundtrack is then transcribed automatically (by Albert, the French government’s sovereign service; see privacy below). The drop
   zone is labelled **"Drag and drop a document here (PDF, DOCX,
   PPTX, ODT, ODP, PNG, JPEG)"** with an **"or"** separator.
 - **Import a web page**: paste its link (`https://…`) into the
   field below the drop zone, then click **"Add"**. The page text
   is fetched automatically.
 
-Text extraction from **documents and images** happens
-**entirely locally** in your browser (no data sent).
-**Two exceptions transit through our servers (hosted in France):**
-**audio transcription** and **importing a web page** (the link you
-enter is sent there to extract its text; links to PDFs, videos or
-paywalled pages are not supported).
+Text extraction from **documents** happens **entirely locally**
+in your browser (no data sent).
+**Three exceptions transit through our servers (hosted in France):**
+**image analysis** (the image is sent to the vision model for the
+duration of the analysis, never retained; if it is unavailable, local
+OCR — which sends nothing — takes over), **audio transcription** and
+**importing a web page** (the link you enter is sent there to extract
+its text; links to PDFs, videos or paywalled pages are not supported).
 
 If you leave this area empty, the AI will rely solely on its
 general knowledge to generate the activity.
@@ -108,6 +110,7 @@ detailed feedback in 4 score ranges.
 - **Sort the Paragraphs** ★ — put paragraphs back in order.
 - **Single Choice Set** ★ — questions with a single correct answer.
 - **Dialog Cards** — front-and-back cards with text and audio.
+- **Dictation** — audio dictation: sentences read by text-to-speech (F/M voice, normal or slow speed, 11 languages), the student writes them, correction highlights mistakes.
 - **Complex Fill in the Blanks** ★ — error-specific feedback.
 - **Chart** — pie or bar chart to visualize data.
 - **Course Presentation** — interactive slideshow with embedded exercises.
@@ -119,8 +122,9 @@ detailed feedback in 4 score ranges.
 
 ### Éléa / Magistère activities
 
-- **Quiz (XML / GIFT)** — varied question bank (MCQ, matching…)
-  to import into an Éléa/Magistère quiz.
+- **Quiz (MBZ / XML / GIFT)** — Quiz activity ready to restore as **`.mbz`**
+  (question bank + wired-up quiz), or a varied question bank (MCQ,
+  matching…) to import (XML / GIFT) into an Éléa/Magistère quiz.
 - **MCQ (MBZ)** — simple and quick MCQ activity.
 - **Matching (MBZ)** — pairing game between elements.
 - **Millionaire (MBZ)** — playful quiz with increasing difficulty.

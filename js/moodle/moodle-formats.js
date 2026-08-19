@@ -21,6 +21,65 @@ export function escapeXml(str) {
 }
 
 /**
+ * Vrai si `cp` est un caractère AUTORISÉ en XML 1.0 (mêmes règles que le filtre
+ * de escapeXml : tab/LF/CR tolérés, C0 interdits, surrogates et FFFE/FFFF exclus,
+ * hors-plage exclu). Sert à valider une référence numérique déjà présente.
+ * @param {number} cp
+ * @returns {boolean}
+ */
+function isXmlChar(cp) {
+    if (cp === 0x09 || cp === 0x0A || cp === 0x0D) return true;
+    if (cp < 0x20) return false;                    // autres contrôles C0
+    if (cp > 0x10FFFF) return false;                // hors plage Unicode
+    if (cp >= 0xD800 && cp <= 0xDFFF) return false; // surrogates
+    if (cp === 0xFFFE || cp === 0xFFFF) return false; // non-caractères
+    return true;
+}
+
+/**
+ * Échappe pour insertion dans un élément XML un contenu qui est DÉJÀ du HTML
+ * (issu de markdownToHtml / formatTextToHtml). Objectif : produire du XML
+ * TOUJOURS bien formé tout en évitant le double-échappement des entités XML
+ * (`&gt;` NE doit PAS devenir `&amp;gt;`) qui corrompait l'intro Appariement/Devoir.
+ *
+ * Ne sont PRÉSERVÉES telles quelles QUE les références d'entités RÉELLEMENT
+ * valides dans un XML sans DTD :
+ *   - les 5 entités nommées prédéfinies : `&amp;` `&lt;` `&gt;` `&quot;` `&apos;` ;
+ *   - les références numériques (`&#233;`, `&#x1F4A1;`) dont le code point est un
+ *     caractère XML 1.0 légal.
+ * TOUTE autre séquence — entité HTML non prédéfinie (`&nbsp;`, `&eacute;`, `&copy;`),
+ * variante de casse (`&AMP;`), référence numérique interdite (`&#0;`, `&#xD800;`,
+ * `&#999999999;`) ou faux ami (`Curie & Einstein`) — voit son `&` échappé en `&amp;`
+ * par escapeXml : le XML reste bien formé, et le double décodage de Moodle (restore
+ * XML → rendu HTML) restitue correctement `&amp;nbsp;` → `&nbsp;` → espace insécable.
+ *
+ * @param {string} html - HTML propre à insérer dans un élément XML
+ * @returns {string} HTML échappé une seule fois, XML garanti bien formé
+ */
+export function escapeXmlPreservingEntities(html) {
+    const s = String(html);
+    // Candidats-entités : référence décimale, hexadécimale, ou l'une des 5 entités
+    // nommées prédéfinies en XML. Les captures 1/2 = valeur numérique (déc/hex).
+    const ENTITY = /&(?:#(\d+)|#x([0-9a-fA-F]+)|amp|lt|gt|quot|apos);/g;
+    let out = '', last = 0, m;
+    while ((m = ENTITY.exec(s)) !== null) {
+        out += escapeXml(s.slice(last, m.index)); // texte hors-entité → échappé
+        let keep;
+        if (m[1] !== undefined || m[2] !== undefined) {
+            // Référence numérique : préservée seulement si le code point est XML-légal.
+            const cp = m[1] !== undefined ? parseInt(m[1], 10) : parseInt(m[2], 16);
+            keep = isXmlChar(cp);
+        } else {
+            keep = true; // entité nommée prédéfinie (amp/lt/gt/quot/apos)
+        }
+        out += keep ? m[0] : escapeXml(m[0]); // entité invalide → & échappé en &amp;
+        last = m.index + m[0].length;
+    }
+    out += escapeXml(s.slice(last));
+    return out;
+}
+
+/**
  * Protège une chaîne pour insertion dans une section CDATA.
  * Remplace la séquence ]]> qui terminerait prématurément la section CDATA
  * et supprime les caractères de contrôle C0 (hors \t \n \r), interdits
@@ -159,6 +218,54 @@ export function generateMoodleXml(data) {
 
     xml += '</quiz>';
     return xml;
+}
+
+/**
+ * Canonicalise un modèle de Test (banque de questions) : applique EXACTEMENT les
+ * mêmes normalisations que `generateMoodleXml` (fractions Moodle valides, mode
+ * `single` déterminé, `truefalse.value` → booléen réel, numériques nettoyés), mais
+ * SANS DOM — sur le modèle directement, pas via un aller-retour XML. Garantit que
+ * l'export `.mbz` (format BACKUP) note EXACTEMENT comme l'export `.xml`, et rend
+ * `buildTestMbz` exécutable hors navigateur (harness Node : pas de DOMParser).
+ *
+ * Les fractions restent sur l'échelle 0-100 (le builder BACKUP divise par 100).
+ * matching et cloze sont inchangés (pas de normalisation numérique/fraction).
+ *
+ * @param {{ bank_name?, bank_description?, options?, questions?:Array<{type,content}> }} model
+ * @returns {{ bank_name, bank_description, options, questions:Array<{type,content}> }}
+ */
+export function canonicalizeTestModel(model) {
+    const src = model || {};
+    const questions = Array.isArray(src.questions) ? src.questions : [];
+    const outQuestions = questions.map(q => {
+        const type = q.type;
+        const c = { ...(q.content || {}) };
+        if (type === 'multichoice') {
+            const answers = Array.isArray(c.answers) ? c.answers : [];
+            const isSingle = determineSingleMode(c.single, answers);
+            c.single = isSingle;
+            c.answers = normalizeMultichoiceFractions(answers, isSingle);
+        } else if (type === 'shortanswer') {
+            c.answers = normalizeShortanswerFractions(Array.isArray(c.answers) ? c.answers : []);
+        } else if (type === 'truefalse') {
+            const a = { ...(c.answer || {}) };
+            a.value = parseTrueFalseValue(a.value);
+            c.answer = a;
+        } else if (type === 'numerical') {
+            const a = { ...(c.answer || {}) };
+            a.number = normalizeNumericValue(a.number, 0);
+            a.tolerance = normalizeNumericValue(a.tolerance, 0);
+            c.answer = a;
+        }
+        // matching, cloze : inchangés
+        return { type, content: c };
+    });
+    return {
+        bank_name: src.bank_name || '',
+        bank_description: src.bank_description || '',
+        options: src.options || {},
+        questions: outQuestions,
+    };
 }
 
 function generateMatchingQuestionXml(content) {

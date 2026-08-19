@@ -39,7 +39,7 @@ Ces deux flux peuvent venir de la même résolution n8n mais répondent à des c
 
 | Sujet | Décision |
 |---|---|
-| **Plateformes** | PeerTube (apps.education) + PodEduc. *(YouTube et MP4-direct écartés ; MP4-direct reste une option « filet de secours » quasi gratuite — cf. §10.)* |
+| **Plateformes** | PeerTube (apps.education) + PodEduc. *(YouTube et MP4-direct écartés ; MP4-direct reste une option « filet de secours » quasi gratuite — cf. §10.)* **Depuis** : YouTube a finalement été ajouté (best-effort, cf. `services/video-transcript.js`), et la reconnaissance PeerTube s'est révélée **indépendante de l'instance** — `tube.reseau-canope.fr` validé le 2026-08-01 (cf. `docs/SUIVI_VIDEO_INTERACTIVE.md`). |
 | **Transcription** | **Cascade** : sous-titres existants timés → sinon fallback Albert/Whisper. |
 | **Types d'interactions générées** | QCM (`H5P.MultiChoice`), Vrai/Faux (`H5P.TrueFalse`), Texte à trous (`H5P.Blanks`) + **Résumé final** (`H5P.Summary` via le champ natif `summary.task`). |
 | **Vidéos longues / transcription lente** | Polling asynchrone + barre de progression (réutilise le mécanisme `submit`/`result` de `llm.js`). |

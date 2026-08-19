@@ -39,7 +39,10 @@ import {
 import { loadJSZip, loadMoodleLibs } from '../js/core/lib-loader.js';
 import { generateMoodleXml, generateMoodleGift } from '../js/moodle/moodle-formats.js';
 import { createH5PBlob } from '../js/h5p/h5p-creator.js';
-import { createMbz } from '../js/moodle/moodle-creator.js';
+// Types de rendu par champ : seul `html+latex` doit préserver le LaTeX ; ailleurs, sa
+// conversion en Unicode est le comportement attendu (cf. collectMathStringsRendues).
+import { FIELD_CONSTRAINTS } from '../js/h5p/field-constraints.js';
+import { createMbz, prepareIntroHtml } from '../js/moodle/moodle-creator.js';
 
 // =======================================================================
 // UTILITAIRES DE TEST
@@ -837,13 +840,11 @@ function buildMoodleData(moduleKey, healedObj) {
                 INTRO: escapeXml(healedObj.intro || '')
             };
         case 'elea_devoir': {
-            let introHtml = healedObj.description ? String(healedObj.description).trim() : 'Consultez la grille d\'évaluation ci-dessous.';
-            if (!introHtml.match(/^\s*<p[\s>]/i)) {
-                introHtml = `<p dir="ltr" style="text-align: left;">${introHtml}</p>`;
-            }
+            // Aligné sur la génération réelle : prepareIntroHtml (Markdown→HTML,
+            // pas de <p> autour d'un bloc, échappement entité-safe).
             return {
                 ...base,
-                ACTIVITY_INTRO_HTML: escapeXml(introHtml),
+                ACTIVITY_INTRO_HTML: prepareIntroHtml(healedObj.description, 'Consultez la grille d\'évaluation ci-dessous.'),
                 RUBRIC_NAME: healedObj.rubricName || healedObj.title || 'Grille d\'évaluation',
                 CRITERIA: healedObj.criteria || []
             };
@@ -2381,6 +2382,67 @@ function collectMathStrings(obj) {
 }
 
 /**
+ * Variante de `collectMathStrings` CONSCIENTE DU TYPE DE RENDU du champ.
+ *
+ * `collectMathStrings` parcourt l'objet à l'aveugle : il compte toute chaîne contenant
+ * du LaTeX, sans savoir dans quel champ elle se trouve. Or un seul type de rendu porte
+ * `supportsLatex: true` — `html+latex`. Partout ailleurs, Caramel CONVERTIT
+ * volontairement le LaTeX (en Unicode pour `unicode`/`plain`, cf. RENDER_TYPES) : la
+ * formule « disparaît » du décompte alors que le produit a fait exactement ce qu'il
+ * devait.
+ *
+ * Cas qui a révélé le défaut — `crosswords_3.json`, fixture de cas limite volontaire
+ * qui met du LaTeX dans les DEUX familles de champs :
+ *   · `words[].clue`                  → semantics `type: text` sans widget → texte brut,
+ *                                        donc AUCUN rendu MathJax possible ; Caramel le
+ *                                        déclare `plain` et convertit en Unicode. Une
+ *                                        formule y « disparaît » : c'est correct.
+ *   · `words[].extraClue.params.text` → semantics `widget: html` (sous-contenu
+ *                                        H5P.AdvancedText) → le LaTeX doit survivre.
+ * L'assertion globale à 80 % mélangeait les deux et échouait par intermittence selon le
+ * chemin d'édition emprunté, en accusant le produit d'une dégradation inexistante.
+ *
+ * @param {any} obj - Contenu à parcourir.
+ * @param {string} moduleKey - Clé du module, pour résoudre les contraintes de champ.
+ * @returns {string[]} Les seules formules situées dans un champ `html+latex`.
+ */
+function collectMathStringsRendues(obj, moduleKey) {
+    const cons = FIELD_CONSTRAINTS[moduleKey];
+    if (!cons || !cons.fields) return collectMathStrings(obj);   // module inconnu : on ne filtre pas
+
+    // Chemins déclarés, normalisés sans indices : 'words[].clue' → 'words.clue'
+    const nu = (p) => p.replace(/\[\]/g, '').replace(/\.\d+/g, '');
+    const latex = new Set();
+    const autres = new Set();
+    // Les types qui PRÉSERVENT le LaTeX verbatim : `html+latex` et `latex`. Ce
+    // dernier interdit les balises mais garde les formules (cf. field-constraints.js) ;
+    // l'oublier ici retire silencieusement des fixtures de l'assertion 8d.
+    const PRESERVENT_LATEX = ['html+latex', 'latex'];
+    for (const [champ, decl] of Object.entries(cons.fields)) {
+        (PRESERVENT_LATEX.includes(decl.render) ? latex : autres).add(nu(champ));
+    }
+
+    const results = [];
+    const parcourir = (n, chemin) => {
+        if (typeof n === 'string') {
+            if (!containsMathFormulas(n)) return;
+            // On EXCLUT uniquement ce qui est explicitement déclaré non-LaTeX ; un chemin
+            // inconnu reste compté, pour ne pas affaiblir l'assertion ailleurs.
+            const estNonLatex = [...autres].some(c => chemin === c || chemin.endsWith('.' + c));
+            const estLatex = [...latex].some(c => chemin === c || chemin.endsWith('.' + c));
+            if (estNonLatex && !estLatex) return;
+            results.push(n);
+        } else if (Array.isArray(n)) {
+            n.forEach(v => parcourir(v, chemin));
+        } else if (n !== null && typeof n === 'object') {
+            for (const [k, v] of Object.entries(n)) parcourir(v, chemin ? `${chemin}.${k}` : k);
+        }
+    };
+    parcourir(obj, '');
+    return results;
+}
+
+/**
  * Verifie l'encodage math dans un objet : cherche les expectedPatterns,
  * verifie l'absence de forbiddenPatterns, detecte les double-echappements.
  * @param {any} obj - L'objet a verifier
@@ -2863,9 +2925,24 @@ async function runStep8_MathEncodingPostEdit() {
             ? state.editedObj
             : (state.processedContent || state.blobContent);
         if (preContent8d) {
-            const mathPre = collectMathStrings(preContent8d);
-            const mathPost = collectMathStrings(reContent);
+            // Seules les formules situées dans un champ `html+latex` doivent survivre :
+            // ailleurs, leur conversion en Unicode est le comportement ATTENDU.
+            const mathPre = collectMathStringsRendues(preContent8d, tc.expectedModule || tc.moduleKey);
+            const mathPost = collectMathStringsRendues(reContent, tc.expectedModule || tc.moduleKey);
             // On verifie que le nombre de formules n'a pas diminue significativement
+            // Filet pour les fixtures dont TOUT le LaTeX vit dans des champs non-LaTeX
+            // (grille de mots croisés, texte à trous, graphique…) : le filtre par type de
+            // rendu vide alors `mathPre`, et l'assertion ci-dessous ne s'exécuterait plus
+            // du tout — 5 fixtures perdaient ainsi toute vérification. On garde donc un
+            // invariant valable partout : l'édition ne doit jamais FABRIQUER du LaTeX.
+            const brutPre = collectMathStrings(preContent8d);
+            const brutPost = collectMathStrings(reContent);
+            if (brutPre.length > 0) {
+                assert(brutPost.length <= brutPre.length,
+                    `[8d.MathNoGrowth] ${tc.file} : l'édition ne fabrique pas de LaTeX (${brutPre.length} → ${brutPost.length})`,
+                    brutPost.length > brutPre.length ? { avant: brutPre.length, apres: brutPost.length } : null);
+            }
+
             if (mathPre.length > 0) {
                 const ratioPreserved = mathPost.length / mathPre.length;
                 assert(ratioPreserved >= 0.8,

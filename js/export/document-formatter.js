@@ -40,6 +40,7 @@ export async function formatContentForDocument(moduleKey, jsonData, options = {}
         'SingleChoiceSet': formatSingleChoiceSet,
         'TrueFalse': formatTrueFalse,
         'DialogCards': formatDialogCards,
+        'Dictation': formatDictation,
         'SortParagraphs': formatSortParagraphs,
         'FindTheWords': formatFindTheWords,
         'Essay': formatEssay,
@@ -2481,6 +2482,60 @@ function formatDialogCards(data) {
             pageNumber: pageIndex + 1,
             totalPages: pageGroups.length
         });
+    });
+
+    return { title, sections };
+}
+
+/**
+ * Formate Dictation (dictée)
+ * Structure pédagogique : énoncé (lignes d'écriture numérotées — l'audio n'existe pas sur
+ * papier, l'enseignant dicte) + saut de page + correction (phrases solutions).
+ * Host-agnostique : ne lit QUE data (title, taskDescription, sentences[].text/description).
+ */
+function formatDictation(data) {
+    const sections = [];
+    const title = data.title || t('doc_fmt_dictation_title') || 'Dictée';
+    const sentences = (Array.isArray(data.sentences) ? data.sentences : [])
+        .map(s => (typeof s === 'string' ? { text: s } : (s || {})))
+        .filter(s => typeof s.text === 'string' && s.text.trim());
+
+    // ÉNONCÉ (feuille élève)
+    sections.push({ type: 'header', level: 1, text: title });
+    // Consigne : la `taskDescription` de l'activité si elle existe, SINON l'instruction
+    // générique — jamais les deux (elles disent la même chose → doublon visible à l'export).
+    const taskDesc = (typeof data.taskDescription === 'string' && data.taskDescription.trim())
+        ? cleanHtml(data.taskDescription) : '';
+    if (taskDesc) {
+        sections.push({ type: 'paragraph', text: taskDesc, style: 'description' });
+    }
+    // Illustration (champ éditeur mediaImage, ou bloc « Média » H5P d'un content.json
+    // rechargé) — même patron que les activités à media context.
+    const dictImageUrl = getMediaImageUrl(data.mediaImage)
+        || getMediaImageUrl(data.media && data.media.type && data.media.type.params && data.media.type.params.file);
+    if (dictImageUrl) {
+        sections.push({ type: 'image', url: dictImageUrl });
+    }
+    if (!taskDesc) {
+        sections.push({
+            type: 'paragraph',
+            text: t('doc_fmt_dictation_instructions') || 'Écoutez chaque phrase puis écrivez-la sans faute sur les lignes ci-dessous.',
+            style: 'instructions'
+        });
+    }
+    sentences.forEach((s, i) => {
+        const label = s.description ? cleanHtml(s.description) : `${t('doc_fmt_dictation_sentence') || 'Phrase'} ${i + 1}`;
+        sections.push({ type: 'paragraph', text: `${i + 1}. ${label}` });
+        sections.push({ type: 'paragraph', text: '__________________________________________________' });
+        sections.push({ type: 'paragraph', text: '__________________________________________________' });
+    });
+
+    // CORRECTION (feuille enseignant — sert aussi de texte à dicter)
+    sections.push({ type: 'pageBreak' });
+    sections.push({ type: 'header', level: 1, text: t('doc_fmt_correction_title') || 'Correction' });
+    sentences.forEach((s, i) => {
+        // Les variantes acceptées `mot|variante` s'affichent « mot / variante » à l'impression.
+        sections.push({ type: 'paragraph', text: `${i + 1}. ${s.text.trim().replace(/\|/g, ' / ')}` });
     });
 
     return { title, sections };

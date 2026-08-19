@@ -6,7 +6,7 @@
  * `{ x, y, label, description }` avec x/y en POURCENTAGES (0–100).
  *
  * Appel SYNCHRONE (webhook → ILaaS → réponse). Contrat & implémentation serveur :
- *   n8n-workflows-bas/Caramel · Vision Image Hotspots — Détection (bas).json
+ *   workflow n8n « Caramel · Vision Image Hotspots — Détection »
  *   endpoint : ENDPOINTS.visionDetect
  *
  * REPLI : si l'endpoint n'est pas déployé / échoue, l'appelant capte l'erreur et laisse
@@ -32,17 +32,52 @@ const VISION_JSON_SCHEMA = '{"imageDescription":"...","zones":[{"x":number,"y":n
  * défaut). Rédiger TOUT le prompt dans la langue cible fiabilise la langue de sortie du modèle
  * vision (il répond dans la langue dans laquelle on lui parle) — cf. le repli FR intermittent
  * observé quand on ne lui donnait qu'une consigne de langue en fin de prompt français.
- * @param {{qui?:string,quoi?:string,niveau?:string}} [context]
+ * @param {{qui?:string,quoi?:string,niveau?:string,hint?:string}} [context] - `hint` = contexte
+ *   d'analyse édité par l'utilisateur dans la barre image ; s'il est présent, il REMPLACE le
+ *   bloc dérivé de qui/quoi/niveau (il en est le prérempli, donc l'édition fait foi).
  * @param {number} [count] - Nombre de zones demandé (mode Avancé) ; 5 par défaut.
  * @returns {string|null} prompt localisé, ou null si la clé locale est absente (→ repli serveur).
  */
 function buildLocalizedVisionPrompt(context = {}, count) {
     const tpl = translations && translations.hotspot_vision_prompt;
     if (!tpl || typeof tpl !== 'string') return null;
-    const ctxBlock = [context.qui, context.quoi, context.niveau]
-        .map((s) => (s || '').toString().trim()).filter(Boolean).join(' · ') || '—';
+    const ctxBlock = computeCtxBlock(context);
     const n = (count && count > 0) ? count : 5;
     return tpl.replace(/\{context\}/g, ctxBlock).replace(/\{count\}/g, String(n)) + '\n' + VISION_JSON_SCHEMA;
+}
+
+/** Bloc contexte du prompt vision : le hint édité par l'utilisateur prime sur qui/quoi/niveau. */
+function computeCtxBlock(context = {}) {
+    const hint = (context.hint || '').toString().trim();
+    return hint || [context.qui, context.quoi, context.niveau]
+        .map((s) => (s || '').toString().trim()).filter(Boolean).join(' · ') || '—';
+}
+
+/**
+ * Aperçu LECTURE SEULE du prompt vision assemblé, pour affichage dans l'aide de la section
+ * image (transparence : le prof voit ce que reçoit exactement le modèle). Renvoyé en trois
+ * morceaux — prompt final = before + ctxBlock + after — pour que l'UI puisse surligner le
+ * bloc contexte (seule partie modifiable) sans re-parser. Mêmes règles d'assemblage que
+ * buildLocalizedVisionPrompt : tout écart entre l'aperçu et l'appel réel serait un bug.
+ * @param {{qui?:string,quoi?:string,niveau?:string,hint?:string}} [context]
+ * @param {number} [count]
+ * @returns {{before:string, ctxBlock:string, after:string}|null} null si clé locale absente
+ *   (→ le prompt FR par défaut du workflow n8n sera utilisé, non prévisible côté client).
+ */
+export function getVisionPromptPreview(context = {}, count) {
+    const tpl = translations && translations.hotspot_vision_prompt;
+    if (!tpl || typeof tpl !== 'string') return null;
+    const ctxBlock = computeCtxBlock(context);
+    const n = (count && count > 0) ? count : 5;
+    const filled = tpl.replace(/\{count\}/g, String(n));
+    const suffix = '\n' + VISION_JSON_SCHEMA;
+    const idx = filled.indexOf('{context}');
+    if (idx === -1) return { before: filled + suffix, ctxBlock: '', after: '' };
+    return {
+        before: filled.slice(0, idx),
+        ctxBlock,
+        after: filled.slice(idx + '{context}'.length).replace(/\{context\}/g, ctxBlock) + suffix,
+    };
 }
 
 /**

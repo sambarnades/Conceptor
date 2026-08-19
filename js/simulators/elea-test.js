@@ -8,6 +8,7 @@ import { tr, createFullscreenButton, activateOnKey, rerenderPreservingFocus, emi
 import { debugLog, markdownToHtml } from '../core/utils.js';
 import { mathRenderer } from '../renderers/math-renderer.js';
 import { sanitizeSync } from '../export/sanitizer.js';
+import { escapeHtml as escapeHtmlCanonical } from '../core/escape.js';
 
 /**
  * Normalise la bonne réponse d'une question Vrai/Faux en booléen.
@@ -72,10 +73,11 @@ export default function renderEleaTest(container, data, _previewHtml, options = 
     // --- Helpers ---
     const formatMarkdown = (text) => !text ? '' : sanitizeSync(markdownToHtml(text, { newlineToBr: true }), 'EDUCATIONAL');
 
-    function escapeHtml(text) {
-        if (!text) return '';
-        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-    }
+    // Délégation au canonique (`core/escape.js`). L'ancienne copie locale levait un
+    // TypeError sur toute entrée non-chaîne (`text.replace`) et transformait `0` en
+    // chaîne vide. Elle sert ici en contexte d'ATTRIBUT (`<option value="…">`), d'où
+    // l'importance d'échapper aussi `"` et `'`.
+    const escapeHtml = escapeHtmlCanonical;
 
     // Page d'accueil (mode prof) : présentation CENTRÉE de la banque (icône,
     // titre, description) + bouton « Commencer » au centre → 1re question.

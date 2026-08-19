@@ -99,7 +99,7 @@ export async function initJsonEditor(notification, container, jsonData, options 
         // fond (et les images de blocs). Le content.json ne porte que `path` — sans dataURL le widget
         // image montre une preview vide. (Caramel-only : l'éditeur Sucrerie a son propre
         // hydrateExistingImages dans son index.js divergent.)
-        if (['ImageHotspots', 'FindTheHotspot', 'FindMultipleHotspots'].includes(detectionResult.moduleKey) && notification.blob) {
+        if (['ImageHotspots', 'FindTheHotspot', 'FindMultipleHotspots', 'DragAndDrop'].includes(detectionResult.moduleKey) && notification.blob) {
             try { await rehydrateIHImagesFromBlob(notification.blob, jsonData); }
             catch (e) { debugLog('Editor', 'rehydrate IH images échoué:', e && e.message); }
         }
@@ -194,6 +194,52 @@ export async function initJsonEditor(notification, container, jsonData, options 
             }).catch(e => debugLog('Editor', 'IH panel échec:', e));
         }
 
+        // Glisser-déposer : panneau « Disposition des zones » (vues Plan / Sur le canevas,
+        // dispositions auto / personnalisée, zones ET étiquettes déplaçables/redimensionnables,
+        // coordonnées saisissables). Panneau et calcul de layout sont PARTAGÉS avec Sucrerie
+        // (dragdrop-layout-panel.js importe dragdrop-layout-model.js — la même math que le
+        // processeur, cf. CLAUDE.md item 7).
+        if (detectionResult.moduleKey === 'DragAndDrop') {
+            import('./dragdrop-layout-panel.js')
+                .then((panel) => {
+                    panel.mountDragDropLayoutPanel(container, {
+                        getData: () => { const d = getEditorData(); if (d) editorState.currentData = d; return editorState.currentData; },
+                        setData: (d) => { editorState.currentData = d; editorState.hasChanges = true; }
+                    });
+                }).catch(e => debugLog('Editor', 'panneau disposition D&D échec:', e));
+        }
+
+        // Dictée : panneau réglages TTS (langue / voix / lecture lente / régénérer) au-dessus
+        // de l'éditeur. Le panneau est PARTAGÉ (host-agnostique) mais son câblage réseau est
+        // Caramel-only : on lui injecte services/tts.js ici (cf. CLAUDE.md item 7). Avant le
+        // montage, on ré-hydrate le cache TTS depuis les audios du .h5p : les phrases
+        // inchangées se réécoutent et se re-packagent SANS nouvel appel serveur.
+        if (detectionResult.moduleKey === 'Dictation') {
+            Promise.all([import('./dictation-tts-panel.js'), import('../services/tts.js'), import('../core/translation.js'), import('../h5p/image-manager.js')])
+                .then(async ([panel, tts, tr, im]) => {
+                    if (notification.blob) {
+                        try { await primeDictationTtsCache(notification.blob, tts); }
+                        catch (e) { debugLog('Editor', 'ré-hydratation cache TTS échouée:', e && e.message); }
+                        try { await hydrateDictationMediaImage(notification.blob); }
+                        catch (e) { debugLog('Editor', 'ré-hydratation image média échouée:', e && e.message); }
+                    }
+                    panel.mountDictationTtsPanel(container, {
+                        getData: () => { const d = getEditorData(); if (d) editorState.currentData = d; return editorState.currentData; },
+                        setData: (d) => { editorState.currentData = d; editorState.hasChanges = true; }
+                    }, {
+                        synthesize: tts.synthesizeSentences,
+                        fetchVoices: tts.fetchTtsVoices,
+                        getCachedAudio: tts.getCachedAudio,
+                        audioPath: tts.ttsAudioPath,
+                        getManualAudio: tts.getManualAudio,
+                        processAudioFile: im.processAudioFile,
+                        registerMedia: im.registerMedia,
+                        langs: tts.TTS_LANGS,
+                        defaultLang: tr.currentLang
+                    });
+                }).catch(e => debugLog('Editor', 'panneau TTS dictée échec:', e));
+        }
+
         debugLog('Editor', 'Initialized for:', detectionResult.moduleKey);
         return true;
 
@@ -234,6 +280,25 @@ export function destroyEditor() {
             parent.classList.remove('ih-mode-live');
             if (ihPanel) import('./interactive-image-panel.js')
                 .then(m => m.destroyInteractiveImagePanel && m.destroyInteractiveImagePanel())
+                .catch(() => { /* module non chargé : rien à détruire */ });
+
+            // Glisser-déposer : panneau « Disposition des zones » (frère + classe de vue +
+            // listeners délégués change/click posés sur le conteneur, qui survivraient au
+            // simple innerHTML='').
+            const dzPanel = parent.querySelector('.dz-editor-panel');
+            if (dzPanel) dzPanel.remove();
+            parent.classList.remove('dz-mode-live');
+            if (dzPanel) import('./dragdrop-layout-panel.js')
+                .then(m => m.destroyDragDropLayoutPanel && m.destroyDragDropLayoutPanel())
+                .catch(() => { /* module non chargé : rien à détruire */ });
+
+            // Dictée : panneau réglages TTS (dans la section « Informations générales » du
+            // mode maître/détail — il peut être DÉTACHÉ du DOM quand une autre vue est
+            // affichée : la destruction doit donc être INCONDITIONNELLE pour la Dictée,
+            // sinon son MutationObserver survit et re-greffe la barre sur la preview).
+            const dtPanel = parent.querySelector('.dt-editor-panel');
+            if (dtPanel || editorState.moduleKey === 'Dictation') import('./dictation-tts-panel.js')
+                .then(m => m.destroyDictationTtsPanel && m.destroyDictationTtsPanel())
                 .catch(() => { /* module non chargé : rien à détruire */ });
         }
         editorState.container.innerHTML = '';
@@ -441,18 +506,47 @@ function showValidationErrors(errors) {
     const summary = document.createElement('div');
     summary.className = 'json-editor__validation-summary';
 
-    // Grouper les erreurs par message pour éviter la répétition
-    const uniqueMessages = [...new Set(errors.map(e => e.message))];
-    const message = uniqueMessages.length === 1 ? uniqueMessages[0] : (t('editor_validation_multiple_errors') || 'Veuillez corriger les erreurs ci-dessous.');
+    // On liste « OÙ — quoi », pas seulement « quoi ». Le résumé ne gardait que les messages
+    // dédupliqués : trois blocs incomplets dans trois chapitres différents se réduisaient à
+    // un unique « Ce champ est obligatoire », sans dire lequel ni où. L'éditeur étant en
+    // maître-détail, le champ fautif n'est le plus souvent NI visible NI même rendu — le
+    // surlignage plus bas ne pouvait donc rien montrer. `field` porte désormais le chemin
+    // lisible complet (« Chapitre 2 › Bloc 4 › Type de bloc », cf. validators.js).
+    const seen = new Set();
+    const entries = [];
+    for (const err of errors) {
+        const key = `${err.field} ${err.message}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        entries.push(err);
+    }
 
-    summary.innerHTML = `
-        <div class="json-editor__validation-summary-title">
-            <i class="fas fa-exclamation-circle"></i>
-            ${t('editor_validation_errors') || 'Erreurs de validation'}
-        </div>
-        <p>${message}</p>
-        ${uniqueMessages.length > 1 ? `<ul class="json-editor__validation-summary-list">${uniqueMessages.map(msg => `<li>${msg}</li>`).join('')}</ul>` : ''}
-    `;
+    const title = document.createElement('div');
+    title.className = 'json-editor__validation-summary-title';
+    const icon = document.createElement('i');
+    icon.className = 'fas fa-exclamation-circle';
+    title.appendChild(icon);
+    title.appendChild(document.createTextNode(' ' + (t('editor_validation_errors') || 'Erreurs de validation')));
+    summary.appendChild(title);
+
+    const intro = document.createElement('p');
+    intro.textContent = t('editor_validation_multiple_errors') || 'Veuillez corriger les erreurs ci-dessous.';
+    summary.appendChild(intro);
+
+    const list = document.createElement('ul');
+    list.className = 'json-editor__validation-summary-list';
+    for (const err of entries) {
+        const li = document.createElement('li');
+        if (err.field) {
+            const strong = document.createElement('strong');
+            strong.textContent = err.field;
+            li.appendChild(strong);
+            li.appendChild(document.createTextNode(' — '));
+        }
+        li.appendChild(document.createTextNode(err.message || ''));
+        list.appendChild(li);
+    }
+    summary.appendChild(list);
 
     // Inserer au debut
     const editorContent = container.querySelector('.json-editor');
@@ -682,6 +776,67 @@ async function rehydrateIHImagesFromBlob(blob, contentJson) {
             ref.dataURL = url; // consommé par le lecteur de field-renderers (playableSrc)
         } catch { /* média manquant : ignoré */ }
     }
+}
+
+/**
+ * Ré-hydrate le cache du service TTS depuis les audios synthétisés d'un .h5p rouvert
+ * (`content/audios/dictation-<hash>.mp3`). Le hash du nom de fichier EST la clé de cache
+ * (chemins déterministes, cf. services/tts.js) : les phrases inchangées sont ensuite
+ * réécoutables dans le panneau et re-packagées sans aucun appel serveur.
+ * @param {Blob} blob - L'archive .h5p de la notification.
+ * @param {Object} tts - Le module services/tts.js (déjà importé).
+ */
+async function primeDictationTtsCache(blob, tts) {
+    if (!blob || !tts || !tts.primeTtsCacheFromPath) return;
+    if (!window.JSZip) {
+        try { const { loadJSZip } = await import('../core/lib-loader.js'); await loadJSZip(); }
+        catch { return; }
+        if (!window.JSZip) return;
+    }
+    const zip = await JSZip.loadAsync(blob);
+    const reTts = /^content\/(audios\/dictation-[0-9a-f]{8}\.mp3)$/;
+    const reAudio = /^content\/(audios\/[A-Za-z0-9._-]+)$/;
+    for (const name of Object.keys(zip.files)) {
+        if (zip.files[name].dir) continue;
+        const mTts = reTts.exec(name);
+        const mAudio = mTts ? null : reAudio.exec(name);
+        if (!mTts && !mAudio) continue;
+        try {
+            const buf = await zip.files[name].async('arraybuffer');
+            if (mTts) {
+                tts.primeTtsCacheFromPath(mTts[1], new Blob([buf], { type: 'audio/mpeg' }));
+            } else if (tts.primeManualAudio) {
+                // Audio « Ma voix » / import : relisible dans le panneau sans re-téléversement.
+                tts.primeManualAudio(mAudio[1], new Blob([buf]));
+            }
+        } catch { /* audio illisible : ignoré */ }
+    }
+}
+
+/**
+ * Ré-hydrate l'aperçu de l'image « Média » de la Dictée depuis le .h5p rouvert : le
+ * content.json rechargé ne porte que le chemin `images/…` (le dataURL est volontairement
+ * exclu du fichier) — sans cette étape, le widget image de l'éditeur s'ouvre vide.
+ * Même logique que hydrateExistingImages côté Sucrerie.
+ * @param {Blob} blob - L'archive .h5p de la notification.
+ */
+async function hydrateDictationMediaImage(blob) {
+    const img = editorState.currentData && editorState.currentData.mediaImage;
+    if (!blob || !img || !img.path || img.dataURL) return;
+    if (!window.JSZip) {
+        try { const { loadJSZip } = await import('../core/lib-loader.js'); await loadJSZip(); }
+        catch { return; }
+        if (!window.JSZip) return;
+    }
+    const zip = await JSZip.loadAsync(blob);
+    const entry = zip.file('content/' + img.path);
+    if (!entry) return;
+    const b64 = await entry.async('base64');
+    img.dataURL = `data:${img.mime || 'image/jpeg'};base64,${b64}`;
+    // La vue courante (« Informations générales ») est déjà rendue : mettre l'aperçu à jour
+    // en place (les navigations suivantes re-rendront depuis la donnée hydratée).
+    const previewImg = document.querySelector('.json-editor__image-preview-img');
+    if (previewImg && !previewImg.getAttribute('src')) previewImg.setAttribute('src', img.dataURL);
 }
 
 async function extractH5PContent(blob) {

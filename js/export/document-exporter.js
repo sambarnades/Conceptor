@@ -5,11 +5,13 @@
  */
 
 import { formatContentForDocument } from './document-formatter.js';
+import { formatCourseForDocument } from './course-formatter.js';
 import { textWithMathToDocxChildren } from './latex-to-omml.js';
 import { parseLatex, containsLatex, splitTextAndMath } from './latex-parser.js';
 import { latexToMathML } from './latex-to-mathml.js';
 import { getStarMath, getSymbolMlType, BLACKBOARD, ACCENTS as ACCENT_CATALOG } from './math-catalog.js';
 import { translations, currentLang, t } from '../core/translation.js';
+import { LANGUAGE_CODES } from '../core/language-codes.js';
 import { debugLog } from '../core/utils.js';
 import { loadDocumentExportLibs, loadPDFFonts } from '../core/lib-loader.js';
 import { convertToPdfViaGotenberg } from './pdf-via-gotenberg.js';
@@ -58,20 +60,15 @@ const FLASHCARD_CONFIG = {
     imageMaxHeightTwips: 1418   // 25mm * 56.7
 };
 
-/** Correspondance langue Caramel → locale pour les exports documentaires */
-const LANG_TO_LOCALE = {
-    fr: { language: 'fr', country: 'FR', bcp47: 'fr-FR' },
-    en: { language: 'en', country: 'GB', bcp47: 'en-GB' },
-    es: { language: 'es', country: 'ES', bcp47: 'es-ES' },
-    de: { language: 'de', country: 'DE', bcp47: 'de-DE' },
-    it: { language: 'it', country: 'IT', bcp47: 'it-IT' },
-    nl: { language: 'nl', country: 'NL', bcp47: 'nl-NL' },
-    pt: { language: 'pt', country: 'PT', bcp47: 'pt-PT' },
-    ar: { language: 'ar', country: 'SA', bcp47: 'ar-SA' },
-    zh: { language: 'zh', country: 'CN', bcp47: 'zh-CN' },
-    jp: { language: 'ja', country: 'JP', bcp47: 'ja-JP' },
-    el: { language: 'el', country: 'GR', bcp47: 'el-GR' }
-};
+/**
+ * Correspondance langue Caramel → locale pour les exports documentaires.
+ * La table vit désormais dans `core/language-codes.js`, partagé avec Sucrerie :
+ * elle était dupliquée avec celle de `core/translation.js` et avec l'écriture
+ * verbatim du code de locale côté éditeur Sucrerie, où `jp` (code pays) partait
+ * tel quel au lieu de `ja`. Alias conservé : les 6 sites d'appel sont inchangés,
+ * y compris leur repli français propre à l'export documentaire.
+ */
+const LANG_TO_LOCALE = LANGUAGE_CODES;
 
 /** Nom de la police utilisée pour le PDF (Liberation Sans, métriquement identique à Arial) */
 const PDF_FONT = 'LiberationSans';
@@ -196,7 +193,9 @@ function docxImageType(mimeType) {
 async function ensureDocxCompatibleImage(imageData) {
     if (!imageData || imageData.error) return imageData;
     const nativeType = docxImageType(imageData.mimeType);
-    if (nativeType) { imageData.docxType = nativeType; return imageData; }
+    // Format natif (PNG/JPEG/GIF/BMP) : rien à ré-encoder, mais il reste à extraire
+    // les octets ci-dessous — c'est le cas le PLUS courant, il ne doit pas sortir ici.
+    if (nativeType) { imageData.docxType = nativeType; return await _poserDocxBytes(imageData); }
     // Format non natif → rastérisation PNG (canvas) pour un embed valide.
     try {
         if (!imageData.dataURL) throw new Error('pas de dataURL à convertir');
@@ -219,6 +218,35 @@ async function ensureDocxCompatibleImage(imageData) {
     } catch (e) {
         debugLog('export', `conversion PNG impossible (${imageData.mimeType}), fallback type png:`, e);
         imageData.docxType = 'png'; // dernier recours : au moins une extension déclarée
+    }
+
+    return await _poserDocxBytes(imageData);
+}
+
+/**
+ * Pose `imageData.docxBytes` : les octets de l'image, à passer à `new ImageRun({ data })`.
+ *
+ * NE PAS y passer le Blob directement. Depuis docx 9, ImageRun nomme le média d'après un
+ * HACHAGE DE SON CONTENU (`hashedId(options.data)`) et range les médias dans une Map
+ * indexée par ce nom. Or ce hachage parcourt `.length`, qu'un Blob n'expose pas : toutes
+ * les images d'un même document reçoivent alors le SHA-1 de la chaîne vide (da39a3ee…)
+ * et s'écrasent mutuellement — un document à 5 images n'en garde qu'UNE, les 4 autres
+ * pointant dessus. Aucune erreur n'est levée : la perte est silencieuse, et invisible
+ * côté ODT, qui n'utilise pas cette API.
+ *
+ * Un Uint8Array donne des noms distincts sur docx 8.6 comme sur 9.x (vérifié sur les deux
+ * bundles) : ce fichier étant byte-identique avec Sucrerie, il doit rester bon des deux
+ * côtés quelle que soit la version vendorée là-bas.
+ * @param {Object} imageData
+ * @returns {Promise<Object>} le même objet, avec `docxBytes` si les octets sont lisibles.
+ */
+async function _poserDocxBytes(imageData) {
+    try {
+        if (imageData && imageData.blob && typeof imageData.blob.arrayBuffer === 'function') {
+            imageData.docxBytes = new Uint8Array(await imageData.blob.arrayBuffer());
+        }
+    } catch (e) {
+        debugLog('export', 'lecture des octets de l\'image impossible :', e);
     }
     return imageData;
 }
@@ -433,6 +461,115 @@ export async function exportToODT(moduleKey, jsonData) {
     } catch (error) {
         console.error('Erreur lors de l\'export ODT:', error);
         alert(t('export_error') || 'Erreur lors de l\'export ODT');
+    }
+}
+
+// ============================================================
+// EXPORT DE PARCOURS (agrégation multi-activités)
+// Modèle fusionné construit par course-formatter.js, puis même
+// pipeline builder/prepareImages que les exports mono-activité.
+// ============================================================
+
+/**
+ * Construit le Blob DOCX d'un parcours complet.
+ * @param {Object} course - { title?, description?, activities: [{moduleKey, jsonData, title?}] }
+ * @returns {Promise<Blob>}
+ */
+async function buildCourseDocxBlob(course) {
+    await loadLibraries();
+    if (!window.docx) {
+        throw new Error('La bibliothèque docx n\'a pas pu être chargée');
+    }
+    const formattedContent = await formatCourseForDocument(course, { keepLatex: true });
+    await prepareImages(formattedContent);
+    const doc = createDOCXDocument(formattedContent);
+    return await window.docx.Packer.toBlob(doc);
+}
+
+/**
+ * Construit le Blob ODT d'un parcours complet.
+ * @param {Object} course - { title?, description?, activities: [{moduleKey, jsonData, title?}] }
+ * @returns {Promise<Blob>}
+ */
+async function buildCourseOdtBlob(course) {
+    await loadLibraries();
+    const formattedContent = await formatCourseForDocument(course, { keepLatex: true });
+    await prepareImages(formattedContent);
+    return await createODTDocument(formattedContent);
+}
+
+/**
+ * Exporte un parcours (plusieurs activités agrégées) au format DOCX.
+ * @param {Object} course - { title?, description?, activities: [{moduleKey, jsonData, title?}] }
+ */
+export async function exportCourseToDOCX(course) {
+    try {
+        const blob = await buildCourseDocxBlob(course);
+        const fileName = generateCourseFileName(course.title, 'docx');
+        downloadBlob(blob, fileName);
+    } catch (error) {
+        console.error('Erreur lors de l\'export DOCX du parcours:', error);
+        alert(t('export_error') || 'Erreur lors de l\'export DOCX');
+    }
+}
+
+/**
+ * Exporte un parcours au format ODT.
+ * @param {Object} course - { title?, description?, activities: [{moduleKey, jsonData, title?}] }
+ */
+export async function exportCourseToODT(course) {
+    try {
+        const odtBlob = await buildCourseOdtBlob(course);
+        const fileName = generateCourseFileName(course.title, 'odt');
+        downloadBlob(odtBlob, fileName);
+    } catch (error) {
+        console.error('Erreur lors de l\'export ODT du parcours:', error);
+        alert(t('export_error') || 'Erreur lors de l\'export ODT');
+    }
+}
+
+/**
+ * Exporte un parcours au format PDF.
+ * Même stratégie que exportToPDF : voie Gotenberg (ODT → PDF) en priorité,
+ * repli automatique et silencieux sur la voie jsPDF hors-ligne.
+ * @param {Object} course - { title?, description?, activities: [{moduleKey, jsonData, title?}] }
+ */
+export async function exportCourseToPDF(course) {
+    try {
+        const odtBlob = await buildCourseOdtBlob(course);
+        const pdfBlob = await convertToPdfViaGotenberg(odtBlob, 'document.odt');
+        const fileName = generateCourseFileName(course.title, 'pdf');
+        downloadBlob(pdfBlob, fileName);
+        debugLog('PDF', 'Export Gotenberg du parcours réussi');
+    } catch (error) {
+        debugLog('PDF', 'Voie Gotenberg indisponible (parcours), fallback jsPDF :', error.message);
+        return exportCourseToPDFLegacy(course);
+    }
+}
+
+/**
+ * Exporte un parcours au format PDF via la voie jsPDF (fallback hors-ligne).
+ * @param {Object} course - { title?, description?, activities: [{moduleKey, jsonData, title?}] }
+ */
+export async function exportCourseToPDFLegacy(course) {
+    try {
+        await loadLibraries();
+
+        if (!window.jspdf) {
+            throw new Error('La bibliothèque jsPDF n\'a pas pu être chargée');
+        }
+
+        const formattedContent = await formatCourseForDocument(course);
+        sanitizeForPDFFont(formattedContent);
+        await prepareImages(formattedContent);
+        const doc = await createPDFDocument(formattedContent);
+
+        const fileName = generateCourseFileName(course.title, 'pdf');
+        doc.save(fileName);
+
+    } catch (error) {
+        console.error('Erreur lors de l\'export PDF du parcours:', error);
+        alert(t('export_error') || 'Erreur lors de l\'export PDF');
     }
 }
 
@@ -1033,7 +1170,7 @@ function createDOCXImage(section) {
             new ImageRun({
                 // `type` requis par docx ≥ 8.6 (sinon extension média « .undefined » → Word répare).
                 type: section.imageData.docxType || docxImageType(section.imageData.mimeType) || 'png',
-                data: section.imageData.blob,
+                data: section.imageData.docxBytes || section.imageData.blob,
                 transformation: {
                     width: dims.width * MM_TO_PX,
                     height: dims.height * MM_TO_PX
@@ -1133,7 +1270,7 @@ function createDOCXFlashcardCell(cardContent) {
                     children: [
                         new ImageRun({
                             type: cardContent.imageData.docxType || docxImageType(cardContent.imageData.mimeType) || 'png',
-                            data: cardContent.imageData.blob,
+                            data: cardContent.imageData.docxBytes || cardContent.imageData.blob,
                             transformation: {
                                 width: Math.round(dims.width * MM_TO_PX),
                                 height: Math.round(dims.height * MM_TO_PX)
@@ -1330,7 +1467,7 @@ function createDOCXTable(section) {
                         children: [
                             new ImageRun({
                                 type: cellImageData.docxType || docxImageType(cellImageData.mimeType) || 'png',
-                                data: cellImageData.blob,
+                                data: cellImageData.docxBytes || cellImageData.blob,
                                 transformation: {
                                     width: Math.round(dims.width * MM_TO_PX),
                                     height: Math.round(dims.height * MM_TO_PX)
@@ -2289,6 +2426,44 @@ function addPDFTable(doc, section, y, margin, maxWidth, pageHeight, bottomMargin
 }
 
 /**
+ * Accumulateur des entrées de `META-INF/manifest.xml` d'un paquet ODT.
+ *
+ * Remplace la CHAÎNE MUTABLE qui était auparavant passée en paramètre ET renvoyée
+ * par `generateODTTable`, `generateODTFlashcardTable` et `formatODTCellContent` —
+ * soit trois niveaux d'imbrication où oublier une réaffectation
+ * (`manifestEntries = résultat.manifestEntries`) faisait disparaître silencieusement
+ * une image du manifeste : le `.odt` s'ouvrait alors avec une image manquante, sans
+ * erreur visible à la génération.
+ *
+ * Fournit aussi le SEUL squelette de manifeste du module : les deux constructeurs
+ * ODT en dupliquaient chacun une copie, qui avaient déjà divergé sur l'espacement.
+ *
+ * Couverture : `node tests/run_document_export_oracle.mjs`
+ */
+function _creerManifestOdt() {
+    const entrees = [];
+    return {
+        /** Déclare un fichier du paquet (image, objet Math…). */
+        ajouter(chemin, mediaType, version = null) {
+            entrees.push(version
+                ? `<manifest:file-entry manifest:full-path="${chemin}" manifest:version="${version}" manifest:media-type="${mediaType}"/>`
+                : `<manifest:file-entry manifest:full-path="${chemin}" manifest:media-type="${mediaType}"/>`);
+        },
+        versXml() {
+            return [
+                '<?xml version="1.0" encoding="UTF-8"?>',
+                '<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.2">',
+                '  <manifest:file-entry manifest:full-path="/" manifest:version="1.2" manifest:media-type="application/vnd.oasis.opendocument.text"/>',
+                '  <manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>',
+                '  <manifest:file-entry manifest:full-path="styles.xml" manifest:media-type="text/xml"/>',
+                ...entrees.map(e => '  ' + e),
+                '</manifest:manifest>'
+            ].join('\n');
+        }
+    };
+}
+
+/**
  * Crée un document ODT à partir du contenu formaté
  * (Version simplifiée - génère un fichier texte structuré au format OpenDocument)
  */
@@ -2311,11 +2486,7 @@ async function createODTDocument(formattedContent) {
     zip.file('mimetype', 'application/vnd.oasis.opendocument.text', { compression: 'STORE' });
 
     // 2. META-INF/manifest.xml
-    let manifestXml = `<?xml version="1.0" encoding="UTF-8"?>
-<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.2">
-  <manifest:file-entry manifest:full-path="/" manifest:version="1.2" manifest:media-type="application/vnd.oasis.opendocument.text"/>
-  <manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>
-  <manifest:file-entry manifest:full-path="styles.xml" manifest:media-type="text/xml"/>`;
+    const manifeste = _creerManifestOdt();
 
     // 3. content.xml (Le cœur du document)
     // Vérifier si le document contient des tables pour ajouter les styles automatiques
@@ -2340,8 +2511,10 @@ async function createODTDocument(formattedContent) {
         colorStylesXml += `\n    <style:style style:name="Color_${hex}" style:family="text"><style:text-properties fo:color="#${hex}"/></style:style>`;
     });
 
+    // ODF 1.2 lie `svg:` à son espace « svg-compatible » — pas à celui du W3C.
+    // LibreOffice tolère les deux, mais les parseurs stricts (import ODT de Word) non.
     let contentXml = `<?xml version="1.0" encoding="UTF-8"?>
-<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:math="http://www.w3.org/1998/Math/MathML" office:version="1.2">
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" xmlns:math="http://www.w3.org/1998/Math/MathML" office:version="1.2">
   <office:automatic-styles>${tableStylesXml}${colorStylesXml}
     <style:style style:name="fr_math" style:family="graphic" style:parent-style-name="Formula"><style:graphic-properties style:vertical-pos="middle" style:vertical-rel="text" draw:ole-draw-aspect="1"/></style:style>
   </office:automatic-styles>
@@ -2417,7 +2590,7 @@ async function createODTDocument(formattedContent) {
                 } else if (section.imageData && section.imageData.blob) {
                     const imageName = `Pictures/image${++imageCounter}.${section.imageData.mimeType.split('/')[1] || 'jpg'}`;
                     zip.file(imageName, section.imageData.blob);
-                    manifestXml += `  <manifest:file-entry manifest:full-path="${imageName}" manifest:media-type="${section.imageData.mimeType}"/>\n`;
+                    manifeste.ajouter(imageName, section.imageData.mimeType);
 
                     const dims = calculateDimensions(section.imageData.width, section.imageData.height, section.imgSizeMm || (section.fillWidth ? 9999 : ODT_FIXED_HEIGHT), section.imgSizeMm || MAX_WIDTH_ODT);
 
@@ -2432,10 +2605,9 @@ async function createODTDocument(formattedContent) {
                 }
                 break;
             case 'table': {
-                const tableResult = generateODTTable(section, ++imageCounter, zip, imageCounter, manifestXml);
+                const tableResult = generateODTTable(section, ++imageCounter, zip, imageCounter, manifeste);
                 contentXml += tableResult.xml;
                 imageCounter = tableResult.imageCounter;
-                manifestXml = tableResult.manifestXml;
                 break;
             }
         }
@@ -2446,11 +2618,8 @@ async function createODTDocument(formattedContent) {
 </office:document-content>`;
 
     // Injecter les objets Math (Object N/content.xml) dans le ZIP
-    const mathManifestEntries = _injectMathObjectsIntoZip(zip);
-    manifestXml += mathManifestEntries;
-
-    manifestXml += `\n</manifest:manifest>`;
-    zip.file('META-INF/manifest.xml', manifestXml);
+    _injectMathObjectsIntoZip(zip, manifeste);
+    zip.file('META-INF/manifest.xml', manifeste.versXml());
     zip.file('content.xml', contentXml);
 
     // 4. styles.xml — Espacements alignés sur le DOCX (twips → cm)
@@ -2461,6 +2630,7 @@ async function createODTDocument(formattedContent) {
     xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
     xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
     xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+    xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
     office:version="1.2">
   <office:font-face-decls>
     <style:font-face style:name="Arial" svg:font-family="Arial" style:font-family-generic="swiss"/>
@@ -2843,7 +3013,7 @@ function getODTTableAutoStyles() {
  * @param {number} tableId - Identifiant unique pour le nom du tableau
  * @returns {string} XML du tableau
  */
-function generateODTTable(section, tableId, zip, imageCounter, manifestXml) {
+function generateODTTable(section, tableId, zip, imageCounter, manifeste) {
     const headers = section.headers || [];
     const rows = section.rows || [];
     const style = section.style || 'default';
@@ -2909,7 +3079,7 @@ function generateODTTable(section, tableId, zip, imageCounter, manifestXml) {
                 const ext = cellImageData.mimeType?.split('/')[1] || 'jpg';
                 const imageName = `Pictures/table${tableId}_cell${imageCounter}.${ext}`;
                 zip.file(imageName, cellImageData.blob);
-                manifestXml += `  <manifest:file-entry manifest:full-path="${imageName}" manifest:media-type="${cellImageData.mimeType}"/>\n`;
+                manifeste.ajouter(imageName, cellImageData.mimeType);
 
                 const dims = calculateDimensions(
                     cellImageData.width, cellImageData.height,
@@ -2929,24 +3099,38 @@ function generateODTTable(section, tableId, zip, imageCounter, manifestXml) {
     });
 
     xml += `      </table:table>\n`;
-    return { xml, imageCounter, manifestXml };
+    return { xml, imageCounter };
 }
 
 /**
  * Échappe les caractères spéciaux pour le XML
  */
 function escapeXml(unsafe) {
-    if (!unsafe) return '';
-    return unsafe.replace(/[<>&"']/g, function (m) {
-        switch (m) {
-            case '<': return '&lt;';
-            case '>': return '&gt;';
-            case '&': return '&amp;';
-            case '"': return '&quot;';
-            case "'": return '&apos;';
-            default: return m;
+    if (unsafe === null || unsafe === undefined) return '';
+    // Filtrage des caractères ILLÉGAUX en XML 1.0 (contrôles C0 hors \t \n \r,
+    // demi-codets isolés, non-caractères). Ils ne peuvent pas être représentés en
+    // XML, même entitisés : un seul suffit à rendre le .odt illisible par
+    // LibreOffice. Le contenu passé ici vient de sorties LLM (légendes, cellules),
+    // donc le cas est réel — l'ancienne version les recopiait tels quels.
+    // Table et prédicat alignés sur `js/core/escape.js` ; recopiés ici
+    // volontairement car ce fichier est byte-identique côté Sucrerie.
+    let out = '';
+    for (const ch of String(unsafe)) {
+        const cp = ch.codePointAt(0);
+        if (cp === 0x09 || cp === 0x0A || cp === 0x0D) { out += ch; continue; }
+        if (cp < 0x20) continue;
+        if (cp >= 0xD800 && cp <= 0xDFFF) continue;
+        if (cp === 0xFFFE || cp === 0xFFFF) continue;
+        switch (ch) {
+            case '<': out += '&lt;'; break;
+            case '>': out += '&gt;'; break;
+            case '&': out += '&amp;'; break;
+            case '"': out += '&quot;'; break;
+            case "'": out += '&apos;'; break;
+            default: out += ch;
         }
-    });
+    }
+    return out;
 }
 
 /**
@@ -2962,9 +3146,9 @@ async function createODTFlashcardDocument(formattedContent) {
     // 1. mimetype
     zip.file('mimetype', 'application/vnd.oasis.opendocument.text', { compression: 'STORE' });
 
-    // Compteur d'images et entrées manifest additionnelles
+    // Compteur d'images et manifeste du paquet
     let imageCounter = 0;
-    let manifestImageEntries = '';
+    const manifeste = _creerManifestOdt();
 
     // 3. content.xml avec tableaux de cartes
     let contentXml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -3072,9 +3256,8 @@ async function createODTFlashcardDocument(formattedContent) {
                 contentXml += `      <text:p text:style-name="ActivityTitle">${escapeXml(formattedContent.title)}</text:p>\n`;
             }
 
-            contentXml += generateODTFlashcardTable(section, tableCounter, zip, imageCounter, manifestImageEntries, (newCounter, newEntries) => {
+            contentXml += generateODTFlashcardTable(section, tableCounter, zip, imageCounter, manifeste, (newCounter) => {
                 imageCounter = newCounter;
-                manifestImageEntries = newEntries;
             });
         }
     });
@@ -3085,17 +3268,10 @@ async function createODTFlashcardDocument(formattedContent) {
     zip.file('content.xml', contentXml);
 
     // Injecter les objets Math dans le ZIP
-    const mathManifestEntries = _injectMathObjectsIntoZip(zip);
+    _injectMathObjectsIntoZip(zip, manifeste);
 
-    // 2. META-INF/manifest.xml (avec entrées d'images + math dynamiques)
-    const manifestXml = `<?xml version="1.0" encoding="UTF-8"?>
-<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.2">
-  <manifest:file-entry manifest:full-path="/" manifest:version="1.2" manifest:media-type="application/vnd.oasis.opendocument.text"/>
-  <manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>
-  <manifest:file-entry manifest:full-path="styles.xml" manifest:media-type="text/xml"/>
-${manifestImageEntries}${mathManifestEntries}
-</manifest:manifest>`;
-    zip.file('META-INF/manifest.xml', manifestXml);
+    // 2. META-INF/manifest.xml (images + objets Math déclarés au fil de la génération)
+    zip.file('META-INF/manifest.xml', manifeste.versXml());
 
     // 4. styles.xml avec configuration de page
     const stylesXml = generateODTFlashcardStyles();
@@ -3110,22 +3286,20 @@ ${manifestImageEntries}${mathManifestEntries}
  * @param {number} tableId - Identifiant du tableau
  * @param {JSZip} zip - Archive ZIP pour ajouter les images
  * @param {number} imageCounter - Compteur d'images courant
- * @param {string} manifestEntries - Entrées manifest accumulées
- * @param {Function} updateCounters - Callback pour mettre à jour compteur et manifest
+ * @param {{ajouter: Function}} manifeste - Accumulateur du manifeste ODT
+ * @param {Function} updateCounters - Callback pour remonter le compteur d'images au parent
  */
-function generateODTFlashcardTable(section, tableId, zip, imageCounter, manifestEntries, updateCounters) {
+function generateODTFlashcardTable(section, tableId, zip, imageCounter, manifeste, updateCounters) {
     let xml = `      <table:table table:name="FlashcardTable${tableId}" table:style-name="FlashcardTable">
         <table:table-column table:style-name="FlashcardColumn" table:number-columns-repeated="2"/>
 `;
 
     section.rows.forEach(row => {
-        const leftResult = formatODTCellContent(row.left, zip, imageCounter, manifestEntries);
+        const leftResult = formatODTCellContent(row.left, zip, imageCounter, manifeste);
         imageCounter = leftResult.imageCounter;
-        manifestEntries = leftResult.manifestEntries;
 
-        const rightResult = formatODTCellContent(row.right, zip, imageCounter, manifestEntries);
+        const rightResult = formatODTCellContent(row.right, zip, imageCounter, manifeste);
         imageCounter = rightResult.imageCounter;
-        manifestEntries = rightResult.manifestEntries;
 
         xml += `        <table:table-row table:style-name="FlashcardRow">
           <table:table-cell table:style-name="FlashcardCell">
@@ -3140,8 +3314,8 @@ ${rightResult.xml}
 
     xml += `      </table:table>\n`;
 
-    // Mettre à jour les compteurs dans le parent
-    updateCounters(imageCounter, manifestEntries);
+    // Mettre à jour le compteur d'images dans le parent
+    updateCounters(imageCounter);
 
     return xml;
 }
@@ -3151,15 +3325,14 @@ ${rightResult.xml}
  * @param {Object|null} cardContent - Contenu de la carte
  * @param {JSZip} zip - Archive ZIP
  * @param {number} imageCounter - Compteur d'images
- * @param {string} manifestEntries - Entrées manifest
- * @returns {{xml: string, imageCounter: number, manifestEntries: string}}
+ * @param {{ajouter: Function}} manifeste - Accumulateur du manifeste ODT
+ * @returns {{xml: string, imageCounter: number}}
  */
-function formatODTCellContent(cardContent, zip, imageCounter, manifestEntries) {
+function formatODTCellContent(cardContent, zip, imageCounter, manifeste) {
     if (!cardContent) {
         return {
             xml: '            <text:p text:style-name="CellContent"></text:p>',
-            imageCounter,
-            manifestEntries
+            imageCounter
         };
     }
 
@@ -3171,7 +3344,7 @@ function formatODTCellContent(cardContent, zip, imageCounter, manifestEntries) {
         const ext = cardContent.imageData.mimeType?.split('/')[1] || 'jpg';
         const imageName = `Pictures/flashcard${imageCounter}.${ext}`;
         zip.file(imageName, cardContent.imageData.blob);
-        manifestEntries += `  <manifest:file-entry manifest:full-path="${imageName}" manifest:media-type="${cardContent.imageData.mimeType}"/>\n`;
+        manifeste.ajouter(imageName, cardContent.imageData.mimeType);
 
         const dims = calculateDimensions(
             cardContent.imageData.width,
@@ -3195,7 +3368,7 @@ function formatODTCellContent(cardContent, zip, imageCounter, manifestEntries) {
         xml += `\n            <text:p text:style-name="CellHint">${parseODTWithMath(cardContent.hint)}</text:p>`;
     }
 
-    return { xml, imageCounter, manifestEntries };
+    return { xml, imageCounter };
 }
 
 /**
@@ -3211,6 +3384,7 @@ function generateODTFlashcardStyles() {
     xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
     xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
     xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+    xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
     office:version="1.2">
   <office:font-face-decls>
     <style:font-face style:name="Arial" svg:font-family="Arial" style:font-family-generic="swiss"/>
@@ -3302,6 +3476,11 @@ function sanitizeForPDFFont(formattedContent) {
  * Génère un nom de fichier unique basé sur le type d'activité (moduleKey)
  */
 function generateFileName(moduleKey, extension) {
+    // Horodatage recopié à dessein : le reste de Caramel utilise `horodatageFichier()`
+    // de `core/utils.js`, mais ce fichier est BYTE-IDENTIQUE côté Sucrerie, dont le
+    // `core/utils.js` est un fichier PROPRE (absent du manifeste partagé) et ne porte
+    // pas ce helper. Un import ici casserait Sucrerie au premier `cp`.
+    // Même format que `horodatageFichier()` : AAAAMMJJHHmm, heure locale.
     const now = new Date();
     const dateString = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
 
@@ -3313,6 +3492,24 @@ function generateFileName(moduleKey, extension) {
     const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
 
     return `${cleanType}-caramel-${dateString}-${lang}.${extension}`;
+}
+
+/**
+ * Génère le nom de fichier d'un export de parcours (multi-activités).
+ * Même convention que generateFileName, le titre du parcours servant de slug
+ * (accents retirés, tronqué à 40 caractères).
+ * @param {string} courseTitle - Titre du parcours (peut être vide)
+ * @param {string} extension - docx | odt | pdf
+ * @returns {string}
+ */
+function generateCourseFileName(courseTitle, extension) {
+    const slug = String(courseTitle || '')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase().replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 40)
+        .replace(/-+$/, '');
+    return generateFileName(slug ? `parcours-${slug}` : 'parcours', extension);
 }
 
 /**
@@ -3961,8 +4158,7 @@ function parseODTWithMath(text) {
  * @param {JSZip} zip — L'archive ZIP en construction
  * @returns {string} XML manifest supplémentaire pour les objets Math
  */
-function _injectMathObjectsIntoZip(zip) {
-    let manifestEntries = '';
+function _injectMathObjectsIntoZip(zip, manifeste) {
 
     for (const obj of _odtMathCtx.objects) {
         const objPath = `Object ${obj.id}`;
@@ -3979,11 +4175,9 @@ function _injectMathObjectsIntoZip(zip) {
         zip.file(`${objPath}/content.xml`, objContent);
 
         // Entrées manifest pour l'objet
-        manifestEntries += `\n  <manifest:file-entry manifest:full-path="${objPath}/" manifest:version="1.2" manifest:media-type="application/vnd.oasis.opendocument.formula"/>`;
-        manifestEntries += `\n  <manifest:file-entry manifest:full-path="${objPath}/content.xml" manifest:media-type="text/xml"/>`;
+        manifeste.ajouter(`${objPath}/`, 'application/vnd.oasis.opendocument.formula', '1.2');
+        manifeste.ajouter(`${objPath}/content.xml`, 'text/xml');
     }
-
-    return manifestEntries;
 }
 
 /**

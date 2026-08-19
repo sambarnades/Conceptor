@@ -40,8 +40,8 @@
         {
           "type": "list",
           "items": [
-            "**Your documents stay on your computer.** When you drop a file (PDF, image…) in advanced mode, the text is extracted **entirely in your browser**: nothing is sent to a server.",
-            "**What does travel stays hosted in France.** Your generation requests go through **shared university servers** (the **ILaaS** project); voice (microphone or audio file) is transcribed by **Albert**, the **DINUM's sovereign service**. Neither one **collects nor resells** your data — and **the audio is not kept**.",
+            "**Your documents stay on your computer.** When you drop a text file (PDF, DOCX, PPTX, ODT…) in advanced mode, the text is extracted **entirely in your browser**: nothing is sent to a server.",
+            "**What does travel stays hosted in France.** Your generation requests go through **shared university servers** (the **ILaaS** project); the **images you drop** are analysed there by a **vision AI** (description + transcribed text); voice (microphone or audio file) is transcribed by **Albert**, the **DINUM's sovereign service**. Neither one **collects nor resells** your data — and **neither the audio nor the images are kept**.",
             "**Copying and pasting to an external AI is on you.** If you copy a prompt to use it in a third-party service, the protection of your data then depends on **that service's terms**."
           ]
         },
@@ -86,7 +86,17 @@
         },
         {
           "type": "p",
-          "text": "For a more structured request. This mode offers **precise fields** (subject, level, theme, number of questions, specific instructions…) and lets you **attach a document** or **import a web page** as a starting point."
+          "text": "For a more structured request. This mode offers **precise fields** (subject, level, theme, number of questions, specific instructions…) and lets you **attach your own material** or **import a web page** as a starting point."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Documents** — PDF, DOCX, PPTX, ODT, ODP: the text is extracted as is.",
+            "**Images** — PNG, JPEG (WebP and BMP accepted too): described and transcribed by a vision AI.",
+            "**Audio** — MP3, M4A, WAV, OGG, FLAC: the recording is **transcribed** automatically.",
+            "**Video** — MP4, MOV, WEBM: **only the audio track** is extracted and transcribed, the picture is not analysed.",
+            "**Web page** — paste a link and Caramel fetches its content."
+          ]
         },
         {
           "type": "shot",
@@ -96,6 +106,14 @@
         {
           "type": "plain",
           "text": "If you leave the \"documents\" area empty, the AI will rely **solely on its general knowledge**. By dropping your lesson in there, you force it to **stick to your content** — it's your choice."
+        },
+        {
+          "type": "tip",
+          "text": "**Images are understood, not just read.** Drop a photo of a lesson, a diagram or a chart (PNG, JPEG — WebP and BMP are accepted too): a **vision AI describes what the image shows and faithfully transcribes the text** it contains. And if the AI is unavailable, **local text reading (OCR)** automatically takes over."
+        },
+        {
+          "type": "tip",
+          "text": "**A recorded lesson can be your source.** Drop an audio or video file: Caramel **transcribes** it before generating. Long recordings are split into 5-minute chunks, so expect a short wait for an hour of class."
         },
         {
           "type": "h",
@@ -137,19 +155,19 @@
           "type": "table",
           "head": [
             "Family",
-            "What it is",
-            "Formats produced"
+            "What you get",
+            "File produced"
           ],
           "rows": [
             [
               "**H5P**",
-              "**Interactive** activities: multiple choice, True/False, fill-in-the-blanks, drag and drop, crosswords, flashcards, glossary, course presentation, interactive book, interactive video…",
+              "**Interactive** activities that work everywhere: Moodle, Éléa, Magistère, La Sucrerie, even an ordinary website. Students answer inside the page and see their correction straight away.",
               "**.h5p**"
             ],
             [
               "**Éléa / Moodle**",
-              "Activities and resources for these platforms: Quiz, multiple choice, Matching, Millionaire, Page, Book, Glossary, Assignment…",
-              "**.mbz**, **.xml**, **.GIFT**"
+              "**Native activities** of the platform (Test, Quiz, Assignment, Millionaire…) and **course resources** (Page, Book). Import them into your course; results feed into the gradebook.",
+              "**.mbz**, **.xml**, **.gift**"
             ]
           ]
         },
@@ -168,6 +186,219 @@
         {
           "type": "tip",
           "text": "Not sure which type to pick? The **filters** at the top of the grid (by platform, by theme) narrow the list, and each tile's name describes the exercise it produces. Caramélia can also advise you on the most suitable type."
+        },
+        {
+          "type": "h",
+          "text": "The catalogue, activity by activity"
+        },
+        {
+          "type": "p",
+          "text": "Here is, in one sentence, what each tile lets you build. The activities are grouped **by purpose**; in the app, the **filters** above the grid do the same job."
+        },
+        {
+          "type": "h",
+          "text": "Rich interactive content"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Activity",
+            "What it lets you do"
+          ],
+          "rows": [
+            [
+              "**Course Presentation**",
+              "Create an interactive slideshow with embedded exercises (MCQ, true/false, fill in the blanks, etc.) for a structured course."
+            ],
+            [
+              "**Interactive Book**",
+              "Create a multi-chapter digital book: each page combines texts, tables, images and exercises (MCQ, true/false, fill in the blanks…), with a table of contents and a summary page."
+            ],
+            [
+              "**Interactive video**",
+              "A video enriched with questions (multiple choice, true/false, fill-in-the-blanks) appearing at key moments, with a final summary. (Apps Éducation Tubes, PodEduc and YouTube)"
+            ],
+            [
+              "**Interactive image**",
+              "Attach an image: the AI places clickable hotspots and writes their explanations. Media can be added by hand."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Quizzes and assessment"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Activity",
+            "What it lets you do"
+          ],
+          "rows": [
+            [
+              "**MCQ Quiz**",
+              "Create a quiz composed exclusively of multiple-choice questions (MCQ)."
+            ],
+            [
+              "**True/False Quiz**",
+              "Create a quiz composed exclusively of True or False questions."
+            ],
+            [
+              "**Mixed Quiz**",
+              "Compose a series of varied questions (MCQ, drag-and-drop, etc.) to assess knowledge."
+            ],
+            [
+              "**Find the Hotspot**",
+              "Attach an image: the AI picks the correct area to click and writes the feedback. Scored on the first click."
+            ],
+            [
+              "**Find Multiple Hotspots**",
+              "Attach an image: the AI picks the areas to find and writes the feedback."
+            ],
+            [
+              "**Single Choice Set**",
+              "Create a series of questions where each question has only one correct answer."
+            ],
+            [
+              "**Multiple Choice**",
+              "Create a **single** multiple choice question with one or more correct answers."
+            ],
+            [
+              "**True/False**",
+              "Create a **single** simple question with a binary answer: true or false."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Working with text"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Activity",
+            "What it lets you do"
+          ],
+          "rows": [
+            [
+              "**Drag the Words**",
+              "Create a gap-fill text where students must drag the missing words."
+            ],
+            [
+              "**Drag and Drop**",
+              "Create an activity where students drag labels into the correct drop zones."
+            ],
+            [
+              "**Fill in the Blanks**",
+              "Students must fill in the missing words in a text directly using the keyboard."
+            ],
+            [
+              "**Mark the Words**",
+              "Ask students to highlight certain words in a paragraph."
+            ],
+            [
+              "**Dictation**",
+              "Create an audio dictation: students listen to each sentence and type it; mistakes are highlighted. Voices are generated automatically (text-to-speech)."
+            ],
+            [
+              "**Essay**",
+              "Propose an essay topic and define keywords for automated correction."
+            ],
+            [
+              "**Sort the Paragraphs**",
+              "Create a set of paragraphs that students must sort into the correct order."
+            ],
+            [
+              "**Summary**",
+              "Students must reconstruct a correct summary by choosing the right sentences."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Memorisation and discovery"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Activity",
+            "What it lets you do"
+          ],
+          "rows": [
+            [
+              "**Flashcards**",
+              "Create double-sided cards to help memorize terms and definitions."
+            ],
+            [
+              "**Crossword**",
+              "Generate a crossword grid from a list of words and definitions."
+            ],
+            [
+              "**Timeline**",
+              "Create an interactive timeline to present a sequence of events."
+            ],
+            [
+              "**Glossary**",
+              "Create a glossary or FAQ in accordion format."
+            ],
+            [
+              "**Find the Words**",
+              "Create a grid of letters where students must find words."
+            ],
+            [
+              "**Chart**",
+              "Create a pie or bar chart to visualize data."
+            ],
+            [
+              "**Dialog Cards**",
+              "Create interactive cards with text and optional images on both sides."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Éléa / Moodle activities"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Activity",
+            "What it lets you do"
+          ],
+          "rows": [
+            [
+              "**Page**",
+              "Create a visually formatted Éléa content page."
+            ],
+            [
+              "**Book**",
+              "Create a multi-chapter Éléa book with visual formatting, reusing the blocks from the Page activity."
+            ],
+            [
+              "**Assignment**",
+              "Create a Moodle assignment with an AI-generated evaluation rubric."
+            ],
+            [
+              "**Quiz**",
+              "Generate a question bank to import directly into a Quiz activity (in XML or GIFT format)"
+            ],
+            [
+              "**MCQ**",
+              "Generate a simple MCQ activity."
+            ],
+            [
+              "**Matching**",
+              "Generate a 10-question matching activity."
+            ],
+            [
+              "**Millionaire**",
+              "Generate a unique 'Millionaire' activity with 6 questions of increasing difficulty."
+            ],
+            [
+              "**Glossary**",
+              "Generate a glossary ready to be imported in XML format."
+            ]
+          ]
         }
       ]
     },
@@ -461,7 +692,7 @@
         },
         {
           "type": "p",
-          "text": "To add questions to your **question bank**: from the bank, choose **\"Import\"**, select the format (Moodle XML or GIFT) and load the file."
+          "text": "To add questions to your **question bank**: from the bank, choose **\"Import\"**, select the format (Moodle XML or GIFT) and load the file. You can also import the Quiz directly as a **`.mbz`** — a ready-to-restore activity (see \".mbz file\" above)."
         },
         {
           "type": "shot",

@@ -6,7 +6,8 @@
 import { translations } from '../core/translation.js';
 import { loadJSZip, loadClientZip } from '../core/lib-loader.js';
 import { allModules, formatHelpKeys, xmlHelpByActivity } from '../core/definitions.js';
-import { downloadFile, debugLog, setupModalAccessibility } from '../core/utils.js';
+import { downloadFile, debugLog, setupModalAccessibility, horodatageFichier } from '../core/utils.js';
+import { escapeHtml } from '../core/escape.js';
 
 // ============= IMPORTS DYNAMIQUES (chargés à la demande) =============
 // Les modules lourds ci-dessous sont chargés via import() dynamique au moment
@@ -334,12 +335,7 @@ async function packageNotificationsAsZip(successNotifs) {
         input: n.blob
     }));
     const zipBlob = await downloadZip(files).blob();
-    const now = new Date();
-    const dateStr = now.getFullYear() +
-        String(now.getMonth() + 1).padStart(2, '0') +
-        String(now.getDate()).padStart(2, '0') +
-        String(now.getHours()).padStart(2, '0') +
-        String(now.getMinutes()).padStart(2, '0');
+    const dateStr = horodatageFichier();
     const a = document.createElement('a');
     a.href = URL.createObjectURL(zipBlob);
     a.download = `caramel-pack-${successNotifs.length}-${dateStr}.zip`;
@@ -527,15 +523,11 @@ function formatNotificationTime(timestamp) {
  * @returns {string} Chaîne sécurisée avec caractères HTML échappés
  * @private
  */
-function escapeHtml(unsafe) {
-    if (!unsafe) return '';
-    return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
+// Cette copie levait un TypeError sur toute entrée non-chaîne (`unsafe.replace`)
+// et transformait `0` en chaîne vide (`if (!unsafe)`). Le canonique coerce et
+// préserve `0`. L'apostrophe passe de `&#039;` à `&#39;` : rendu identique, et
+// cet helper ne sert qu'à l'affichage (aucun chemin d'export).
+
 
 /**
  * Génère le HTML d'une notification item.
@@ -1781,6 +1773,11 @@ export function initPreviewModal() {
                 // Export au format document (DOCX, PDF ou ODT)
                 // Prioriser originalJsonData (Markdown édité) sur jsonData (HTML transformé)
                 let jsonDataToExport = notification.originalJsonData || notification.jsonData;
+                // Données rechargées après édition : les images n'y sont plus que des
+                // chemins `images/…` (le registre média est vidé après chaque packaging).
+                // On hydrate leurs dataURL depuis le .h5p (sur une COPIE : le dataURL ne
+                // doit pas fuir dans les données vives puis dans un content.json sauvé).
+                jsonDataToExport = await hydrateImagesForExport(notification.blob, jsonDataToExport);
                 let moduleKey = notification.moduleKey;
                 if (!moduleKey && notification.titleKey) {
                     const entry = Object.entries(allModules).find(([k, m]) => m.name === notification.titleKey);
@@ -2423,6 +2420,44 @@ async function handleEditorSave(result, notification, previewContainer, editBtn)
  * @param {string} moduleKey - La clé du module
  * @returns {Promise<Blob|null>} - Le nouveau blob ou null en cas d'erreur
  */
+/**
+ * Hydrate (sur une copie profonde) les dataURL des images référencées par chemin
+ * `images/…` dans des données d'export, depuis le .h5p de la notification. Nécessaire
+ * après une édition : le registre média est vidé au packaging, seuls les chemins
+ * subsistent dans les données — sans cette étape, DOCX/ODT/PDF perdraient les images.
+ * @param {Blob|null} blob - L'archive .h5p de la notification (null → données inchangées).
+ * @param {Object} data - Données à exporter.
+ * @returns {Promise<Object>} Copie hydratée (ou les données d'origine si rien à faire).
+ */
+export async function hydrateImagesForExport(blob, data) {
+    if (!blob || !data || typeof data !== 'object' || !window.JSZip) return data;
+    // Collecte des nœuds image { path: "images/…" } sans dataURL.
+    const clone = JSON.parse(JSON.stringify(data));
+    const targets = [];
+    (function walk(node) {
+        if (!node || typeof node !== 'object') return;
+        if (Array.isArray(node)) { node.forEach(walk); return; }
+        if (typeof node.path === 'string' && /^images\//.test(node.path) && !node.dataURL &&
+            /\.(jpe?g|png|gif|webp)$/i.test(node.path)) {
+            targets.push(node);
+        }
+        Object.keys(node).forEach(k => walk(node[k]));
+    })(clone);
+    if (targets.length === 0) return data;
+    try {
+        const zip = await window.JSZip.loadAsync(blob);
+        for (const ref of targets) {
+            const entry = zip.file('content/' + ref.path);
+            if (!entry) continue;
+            const b64 = await entry.async('base64');
+            ref.dataURL = `data:${ref.mime || 'image/jpeg'};base64,${b64}`;
+        }
+        return clone;
+    } catch {
+        return data; // archive illisible : export sans images plutôt que rien
+    }
+}
+
 async function regenerateFile(notification, editedData, moduleKey) {
     try {
         debugLog('notifications', '[Regenerate] notification.type:', notification.type);
@@ -2468,7 +2503,7 @@ async function regenerateGlossaireXMLFile(editedData) {
         debugLog('notifications', '[Regenerate XML] Is entries array?', Array.isArray(editedData?.entries));
 
         // Import dynamique pour éviter la dépendance circulaire
-        const [{ escapeXml }, { formatTextToHtml }] = await Promise.all([
+        const [{ escapeXml, escapeXmlPreservingEntities }, { formatTextToHtml }] = await Promise.all([
             import('../moodle/moodle-formats.js'),
             import('../core/utils.js')
         ]);
@@ -2490,7 +2525,7 @@ async function regenerateGlossaireXMLFile(editedData) {
                 entriesXml += `
       <ENTRY>
         <CONCEPT>${escapeXml(entry.concept)}</CONCEPT>
-        <DEFINITION>${escapeXml(formatTextToHtml(entry.definition))}</DEFINITION>
+        <DEFINITION>${escapeXmlPreservingEntities(formatTextToHtml(entry.definition))}</DEFINITION>
         <FORMAT>1</FORMAT>
         <DEFINITIONTRUST>0</DEFINITIONTRUST>
         <USEDYNALINK>1</USEDYNALINK>
@@ -2565,13 +2600,21 @@ async function regenerateMoodleTestXMLFile(editedData) {
 async function regenerateMBZFile(notification, editedData, moduleKey) {
     try {
         // Import dynamique pour éviter la dépendance circulaire
-        const [{ createMbz, healLatexForTest }, MoodleProcessors, { escapeXml }] = await Promise.all([
+        const [{ createMbz, healLatexForTest, buildTestMbz, prepareIntroHtml }, MoodleProcessors, { escapeXml, escapeXmlPreservingEntities }] = await Promise.all([
             import('../moodle/moodle-creator.js'),
             import('../moodle/processors/index.js'),
             import('../moodle/moodle-formats.js')
         ]);
         // Pipeline LaTeX complet pour Moodle (identique à moodle-creator.js)
         const healLatex = healLatexForTest;
+
+        // Test (mod_quiz) : le .mbz restaurable est régénéré par le MÊME builder que
+        // la génération initiale (generate == edit-regenerate). Heal puis buildTestMbz.
+        if (notification.titleKey === 'elea_test_xml_name') {
+            const healed = healLatex(editedData);
+            const { blob } = await buildTestMbz(healed);
+            return blob;
+        }
 
         // Mapper le titleKey vers le type de processeur Moodle
         const titleKeyToMoodleType = {
@@ -2621,12 +2664,12 @@ async function regenerateMBZFile(notification, editedData, moduleKey) {
                     });
                     activitySpecificData.ASSOCIATIONS_JSON = escapeXml(JSON.stringify({ questions, responses }));
                 }
-                // Intro HTML
-                let introHtml = editedData.intro ? String(editedData.intro).trim() : (translations.appariement_activity_intro || "Trouvez les paires correspondantes.");
-                if (!introHtml.match(/^\s*<p[\s>]/i)) {
-                    introHtml = `<p dir="ltr" style="text-align: left;">${introHtml}</p>`;
-                }
-                activitySpecificData.ACTIVITY_INTRO_HTML = escapeXml(introHtml);
+                // Intro HTML — normalisation identique à la génération (prepareIntroHtml) :
+                // Markdown → HTML, pas de <p> autour d'un bloc, échappement entité-safe.
+                activitySpecificData.ACTIVITY_INTRO_HTML = prepareIntroHtml(
+                    editedData.intro,
+                    translations.appariement_activity_intro || "Trouvez les paires correspondantes."
+                );
                 break;
             }
 
@@ -2744,7 +2787,7 @@ async function regenerateMBZFile(notification, editedData, moduleKey) {
                 const { formatTextToHtml } = await import('../core/utils.js');
 
                 activitySpecificData.BOOK_NAME = escapeXml(editedData.title || notification.title || 'Livre');
-                activitySpecificData.INTRO = escapeXml(formatTextToHtml(editedData.intro || ''));
+                activitySpecificData.INTRO = escapeXmlPreservingEntities(formatTextToHtml(editedData.intro || ''));
                 activitySpecificData.NUMBERING = String(editedData.numbering ?? 1);
                 // navstyle forcé à 0 (table des matières) — Éléa n'expose pas les autres modes
                 activitySpecificData.NAVSTYLE = '0';
@@ -2759,11 +2802,11 @@ async function regenerateMBZFile(notification, editedData, moduleKey) {
             case 'Devoir': {
                 // Transformation identique à handleDevoirCreation (moodle-creator.js)
                 // Intro HTML depuis la description
-                let introHtml = editedData.description ? String(editedData.description).trim() : (translations.devoir_activity_intro || "Consultez la grille d'évaluation ci-dessous pour connaître les critères de réussite.");
-                if (!introHtml.match(/^\s*<p[\s>]/i)) {
-                    introHtml = `<p dir="ltr" style="text-align: left;">${introHtml}</p>`;
-                }
-                activitySpecificData.ACTIVITY_INTRO_HTML = escapeXml(introHtml);
+                // Normalisation identique à la génération (prepareIntroHtml).
+                activitySpecificData.ACTIVITY_INTRO_HTML = prepareIntroHtml(
+                    editedData.description,
+                    translations.devoir_activity_intro || "Consultez la grille d'évaluation ci-dessous pour connaître les critères de réussite."
+                );
                 activitySpecificData.RUBRIC_NAME = editedData.rubricName || editedData.title || 'Grille d\'évaluation';
                 activitySpecificData.CRITERIA = editedData.criteria || [];
                 break;

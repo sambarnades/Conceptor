@@ -1,5 +1,5 @@
 import { translations, translatePage } from '../core/translation.js';
-import { getCaramelVersionFromFooter } from '../core/utils.js';
+import { getCaramelVersionFromFooter, safeSession } from '../core/utils.js';
 
 const CHECK_INTERVAL_MS = 5 * 60 * 1000; // vérification toutes les 5 minutes
 const INITIAL_DELAY_MS = 8000; // délai initial
@@ -46,7 +46,7 @@ async function runVersionCheck() {
 }
 
 function shouldSkip(remoteVersion) {
-    const dismissedVersion = sessionStorage.getItem(DISMISSED_STORAGE_KEY);
+    const dismissedVersion = safeSession.get(DISMISSED_STORAGE_KEY);
     if (dismissedVersion && dismissedVersion === remoteVersion) {
         return true;
     }
@@ -176,13 +176,13 @@ function updateModalTexts() {
 
 function dismissModalForSession() {
     if (modalElement?.dataset?.latestVersion) {
-        sessionStorage.setItem(DISMISSED_STORAGE_KEY, modalElement.dataset.latestVersion);
+        safeSession.set(DISMISSED_STORAGE_KEY, modalElement.dataset.latestVersion);
     }
     closeModal();
 }
 
 function handleRefreshClick() {
-    sessionStorage.removeItem(DISMISSED_STORAGE_KEY);
+    safeSession.remove(DISMISSED_STORAGE_KEY);
     performHardReload();
 }
 

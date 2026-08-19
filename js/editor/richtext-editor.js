@@ -14,7 +14,7 @@
 import { t } from '../core/translation.js';
 import { validateField } from './validators.js';
 import { escapeHtml, generateId } from './field-renderers.js';
-import { getConstraints, RENDER_TYPES, FIELD_CONSTRAINTS } from '../h5p/field-constraints.js';
+import { getConstraints, RENDER_TYPES, FIELD_CONSTRAINTS, stripHtmlKeepLatex } from '../h5p/field-constraints.js';
 import { loadDOMPurify, loadMathJax } from '../core/lib-loader.js';
 import { markdownToHtml } from '../core/utils.js';
 
@@ -183,6 +183,16 @@ function _buildToolbarButtons(toolbar, renderType, compact = false) {
         _addButton(toolbar, { id: 'unmark_word', icon: 'fa-eraser', command: null, tooltip: 'editor_richtext_unmark_word', isUnmarker: true });
         _addSeparator(toolbar);
         _addButton(toolbar, TOOLBAR_GROUPS.source[0]);
+        return;
+    }
+
+    // `latex` : le semantics du champ interdit les balises mais laisse passer les
+    // formules (cf. field-constraints.js). On n'offre donc AUCUN bouton de
+    // formatage HTML — seulement l'assistant de formule et la vue source.
+    if (renderType === 'latex') {
+        _addButton(toolbar, TOOLBAR_GROUPS.math[0]);        // Math
+        _addSeparator(toolbar);
+        _addButton(toolbar, TOOLBAR_GROUPS.source[0]);      // Source
         return;
     }
 
@@ -541,7 +551,7 @@ export function sourceToDisplay(htmlString, renderType, options) {
 
     // En mode compact (champs text une ligne), convertir display math en inline
     // Le healer convertit \begin{equation} → \[...\] (display), inadapté en champ compact
-    if (options?.compact && renderType === 'html+latex') {
+    if (options?.compact && (renderType === 'html+latex' || renderType === 'latex')) {
         html = html.replace(/\\\[([\s\S]*?)\\\]/g, '\\($1\\)');
     }
 
@@ -551,8 +561,8 @@ export function sourceToDisplay(htmlString, renderType, options) {
         html = markdownToHtml(html, { newlineToBr: true });
     }
 
-    // Protéger les formules LaTeX pour affichage dans contenteditable (html+latex uniquement)
-    if (renderType === 'html+latex') {
+    // Protéger les formules LaTeX pour affichage dans contenteditable
+    if (renderType === 'html+latex' || renderType === 'latex') {
         html = protectLatex(html);
     }
 
@@ -1223,6 +1233,13 @@ function _emitChange(field) {
         value = htmlToCleanOutput(field.editable.innerHTML);
     }
 
+    // `latex` : le semantics du champ n'accepte aucune balise. Un collage depuis
+    // Word ou la vue source peut en introduire → on les retire à l'enregistrement,
+    // sans toucher aux formules (cf. field-constraints.js).
+    if (field.renderType === 'latex') {
+        value = stripHtmlKeepLatex(value);
+    }
+
     // Synchroniser la textarea source avec la valeur nettoyée.
     // CRITIQUE : editor-core.js > collectInputValues() lit les textarea[data-path]
     // lors de l'enregistrement. Sans cette synchro, la source obsolète écrase les données.
@@ -1458,7 +1475,7 @@ export function renderRichtextField(config, value, onChange, path) {
     });
 
     // Rendu LaTeX initial (après insertion dans le DOM)
-    if (renderType === 'html+latex' && value && (value.includes('\\(') || value.includes('\\['))) {
+    if ((renderType === 'html+latex' || renderType === 'latex') && value && (value.includes('\\(') || value.includes('\\['))) {
         requestAnimationFrame(() => {
             renderLatexInContainer(editable);
         });
@@ -1467,7 +1484,7 @@ export function renderRichtextField(config, value, onChange, path) {
     // Double-clic sur un span LaTeX → ouvrir l'éditeur de formule
     editable.addEventListener('dblclick', (e) => {
         const latexSpan = e.target.closest('.json-editor__richtext-latex');
-        if (!latexSpan || renderType !== 'html+latex') return;
+        if (!latexSpan || (renderType !== 'html+latex' && renderType !== 'latex')) return;
 
         e.preventDefault();
         e.stopPropagation();

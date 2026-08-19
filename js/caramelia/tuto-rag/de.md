@@ -9,7 +9,7 @@ entsprechen. Einzige Quelle: js/locales/de.json + index.html.
 Änderungen erfolgen per PR.
 -->
 ---
-version: 1.2.0
+version: 1.3.0
 lang: de
 audience: Lehrkräfte
 ---
@@ -61,17 +61,20 @@ Drei Möglichkeiten:
 - **Einen Text kopieren und einfügen** direkt in das Eingabefeld.
 - **Ein Dokument per Drag-and-Drop ablegen** (oder auf
   **„Datei auswählen"** klicken) im Format **PDF, DOCX, PPTX, ODT,
-  ODP, PNG, JPEG**. Sie können auch eine **Audiodatei** (MP3, M4A, WAV…) oder ein **Video** (MP4, MOV…) ablegen: Dann wird nur die Tonspur automatisch transkribiert (durch Albert, den souveränen Dienst der DINUM; siehe Datenschutz unten). Die Ablagezone trägt die Beschriftung
+  ODP, PNG, JPEG** (die Bildformate **WebP** und **BMP** werden ebenfalls akzeptiert, ohne auf dem Bildschirm aufgeführt zu sein). Ein abgelegtes **Bild** (Foto, Schema, Diagramm…) wird **von einer Bild-KI analysiert**, die eine **Beschreibung** dazu verfasst und den **darin enthaltenen Text originalgetreu abschreibt** — ist die KI nicht verfügbar, übernimmt automatisch die lokale Texterkennung (OCR). Sie können auch eine **Audiodatei** (MP3, M4A, WAV…) oder ein **Video** (MP4, MOV…) ablegen: Dann wird nur die Tonspur automatisch transkribiert (durch Albert, den souveränen Dienst der DINUM; siehe Datenschutz unten). Die Ablagezone trägt die Beschriftung
   **„Dokument hierher ziehen (PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG)"**
   mit dem Trenner **„oder"**.
 - **Eine Webseite importieren**: ihren Link (`https://…`) in das
   Feld unter dem Ablagebereich einfügen, dann auf **„Hinzufügen"**
   klicken. Der Text der Seite wird automatisch abgerufen.
 
-Die Textextraktion aus **Dokumenten und Bildern** erfolgt
-**vollständig lokal** in Ihrem Browser (es werden keine Daten gesendet).
-**Zwei Ausnahmen laufen über unsere Server (gehostet in Frankreich):**
-die **Audiotranskription** und der **Import einer Webseite** (der von
+Die Textextraktion aus **Dokumenten** erfolgt **vollständig lokal**
+in Ihrem Browser (es werden keine Daten gesendet).
+**Drei Ausnahmen laufen über unsere Server (gehostet in Frankreich):**
+die **Bildanalyse** (das Bild wird für die Dauer der Analyse an das
+Vision-Modell gesendet und nie aufbewahrt; bei Nichtverfügbarkeit
+übernimmt die lokale OCR — die nichts sendet), die
+**Audiotranskription** und der **Import einer Webseite** (der von
 Ihnen eingegebene Link wird dorthin gesendet, um den Text zu
 extrahieren; Links zu PDF, Videos oder kostenpflichtigen Seiten werden
 nicht unterstützt).
@@ -112,6 +115,7 @@ detailliertes Feedback in 4 Punktebereichen.
 - **Absätze ordnen** ★ — Absätze in die richtige Reihenfolge bringen.
 - **Einfachauswahl-Serie** ★ — Fragen mit nur einer richtigen Antwort.
 - **Dialogkarten** — Vorder- und Rückseite mit Text und Audio.
+- **Diktat** — Audio-Diktat: Sätze werden per Sprachsynthese vorgelesen (weibliche/männliche Stimme, normales oder langsames Tempo, 11 Sprachen), die Lernenden schreiben sie auf; Fehler werden hervorgehoben.
 - **Komplexer Lückentext** ★ — fehlerspezifisches Feedback.
 - **Diagramm** — Kreis- oder Balkendiagramm zur Visualisierung von Daten.
 - **Kurspräsentation** — interaktive Diashow mit eingebetteten Übungen.
@@ -123,8 +127,9 @@ detailliertes Feedback in 4 Punktebereichen.
 
 ### Éléa- / Magistère-Aktivitäten
 
-- **Test (XML / GIFT)** — vielfältige Fragenbank (MCQ, Zuordnung…)
-  zum Import in einen Éléa/Magistère-Test.
+- **Test (MBZ / XML / GIFT)** — wiederherstellbare Test-Aktivität als **`.mbz`**
+  (Fragenbank + verknüpftes Quiz), oder vielfältige Fragenbank (MCQ,
+  Zuordnung…) zum Import (XML / GIFT) in einen Éléa/Magistère-Test.
 - **MCQ (MBZ)** — einfache und schnelle MCQ-Aktivität.
 - **Zuordnung (MBZ)** — Zuordnungsspiel zwischen Elementpaaren.
 - **Millionär (MBZ)** — spielerisches Quiz mit steigendem Schwierigkeitsgrad.

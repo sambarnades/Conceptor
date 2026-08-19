@@ -1,6 +1,6 @@
 import { t } from '../core/translation.js';
 import { fieldRenderers, escapeHtml, generateId, renderTextField } from './field-renderers.js';
-import { getNestedValue, setNestedValue } from './json-utils.js';
+import { getNestedValue, setNestedValue, matchesShowWhen, remapIndexReferences } from './json-utils.js';
 
 /**
  * Résout le renderer via getRendererForField (exposé par editor-core.js).
@@ -53,6 +53,106 @@ function translateLabel(label) {
     if (!label) return '';
     const translated = t(label);
     return translated !== label ? translated : label;
+}
+
+/**
+ * Valeur initiale d'un champ dans un item de tableau fraîchement créé.
+ *
+ * INVARIANT : la valeur produite doit être celle que le widget AFFICHERA. Un `<select>`
+ * sans option vide montre toujours sa première option quand la valeur ne correspond à
+ * aucune : renvoyer '' faisait diverger l'affichage (« Texte ») et le modèle ('') — un
+ * champ `required` bloquait alors l'enregistrement sur un menu qui paraissait rempli, sans
+ * qu'aucun indice ne désigne le fautif. Cf. le même réalignement dans `renderSelectField`.
+ *
+ * Récursif : les sous-champs d'un `object` recevaient tous '', y compris les tableaux
+ * (`table: { headers: '', rows: '' }` alors que le gestionnaire de tableau attend `[]`).
+ */
+function emptyValueForField(fieldConfig, fillMinItems = false) {
+    if (!fieldConfig || typeof fieldConfig !== 'object') return '';
+
+    if (fieldConfig.type === 'array') {
+        // Respecter minItems : un tableau imbriqué créé vide violerait son propre schéma
+        // (« Minimum 1 elements » bloquant à la sauvegarde) — ex. « Ajouter un point »
+        // en mode Plan de l'Image interactive, qui doit naître avec un bloc de contenu
+        // par défaut comme en mode « Sur l'image » (audit N14).
+        //
+        // UNIQUEMENT pour un tableau porté DIRECTEMENT par l'item (`fillMinItems`). Sous un
+        // `object`, pré-remplir fabriquerait une entrée obligatoire vide dans une branche
+        // que l'item n'utilise même pas : le `table.headers` d'un bloc de texte (masqué par
+        // `showWhen`, mais la validation ne connaît pas la visibilité) redeviendrait un
+        // « En-tête 1 obligatoire » introuvable à l'écran — le bug qu'on corrige, refait
+        // par l'autre bout.
+        const min = fillMinItems && Number.isFinite(fieldConfig.minItems) ? fieldConfig.minItems : 0;
+        const arr = [];
+        if (min > 0 && fieldConfig.itemSchema) {
+            for (let i = 0; i < min; i++) arr.push(createEmptyArrayItem(fieldConfig, i));
+        }
+        return arr;
+    }
+    // dynamicObject doit être un objet, jamais une chaîne
+    if (fieldConfig.type === 'dynamicObject') return {};
+    if (fieldConfig.type === 'object' && fieldConfig.schema) {
+        const sub = {};
+        for (const [subKey, subConfig] of Object.entries(fieldConfig.schema)) {
+            sub[subKey] = emptyValueForField(subConfig);
+        }
+        return sub;
+    }
+    if (fieldConfig.type === 'checkbox') return fieldConfig.valueType === 'number' ? 0 : false;
+    if (fieldConfig.type === 'number') return fieldConfig.default !== undefined ? fieldConfig.default : 0;
+    if (fieldConfig.type === 'select') {
+        // `!== undefined` et non un test de vérité : un défaut `false` ou `0` (menus
+        // Vrai/Faux, valueType boolean/number) doit être conservé tel quel.
+        if (fieldConfig.default !== undefined) return fieldConfig.default;
+        const opts = Array.isArray(fieldConfig.options) ? fieldConfig.options : [];
+        // Options dynamiques (`optionsFrom`) : rien à choisir au moment de la création.
+        return opts.length ? opts[0].value : '';
+    }
+    return fieldConfig.default ?? '';
+}
+
+/**
+ * Construit un item vide pour un tableau, d'après la config du CHAMP tableau.
+ *
+ * SOURCE UNIQUE : `editor-core.js` en portait une seconde copie, divergente — le
+ * correctif des menus obligatoires n'y avait donc pas cours, et le bouton « Ajouter »
+ * du sommaire (maître-détail) restait bloquant là où celui d'un tableau imbriqué ne
+ * l'était plus. Les deux chemins passent désormais ici.
+ *
+ * `autoTitleField` : titre générique des CONTENEURS (chapitre, diapositive), dont le
+ * titre obligatoire est une étiquette de navigation et non du contenu pédagogique. Le
+ * laisser vide bloquait l'enregistrement pour un intitulé que l'éditeur sait fabriquer et
+ * que l'enseignant renomme ensuite. On reprend `itemLabel`, déjà traduit et déjà affiché
+ * dans l'accordéon (« Diapositive 6 ») : pas de nouvelle clé i18n, pas de français figé.
+ * Réservé aux tableaux qui le déclarent — remplir d'office le recto d'une carte ou
+ * l'énoncé d'une question fabriquerait du faux contenu.
+ *
+ * @param {Object} arrayConfig - Config du champ tableau (itemSchema, itemLabel, autoTitleField…)
+ * @param {number} index - Position de l'item créé, pour numéroter le titre générique
+ */
+export function createEmptyArrayItem(arrayConfig, index = 0) {
+    const itemSchema = arrayConfig && arrayConfig.itemSchema;
+    if (!itemSchema) return {};
+
+    // Valeur simple (isArrayValue) : l'item n'est pas un objet
+    if (Object.values(itemSchema).some(v => v && v.isArrayValue)) return '';
+
+    const item = {};
+    for (const [key, fieldConfig] of Object.entries(itemSchema)) {
+        const value = emptyValueForField(fieldConfig, true);
+        // Clés pointées (ex: 'metadata.title') → créer la structure imbriquée
+        if (key.includes('.')) setNestedValue(item, key, value);
+        else item[key] = value;
+    }
+
+    // Clé pointée acceptée (`metadata.title` du sous-quiz d'un Quiz), d'où get/setNestedValue.
+    const titleField = arrayConfig.autoTitleField;
+    if (titleField && !String(getNestedValue(item, titleField) ?? '').trim()) {
+        const base = translateLabel(arrayConfig.itemLabel) || translateLabel('editor_element') || 'Element';
+        setNestedValue(item, titleField, `${base} ${index + 1}`);
+    }
+
+    return item;
 }
 
 /**
@@ -670,19 +770,14 @@ export class ArrayManager {
                         // Champs cachés : préservés dans les données mais non affichés
                     if (fieldConfig.hidden) continue;
 
-                    // Visibilité conditionnelle (showWhen) — on rend le champ mais on le masque si condition non remplie
+                    // Visibilité conditionnelle (showWhen) — on rend le champ mais on le masque si
+                    // condition non remplie. Portée frère (`field`) ou racine (`rootField`, réglage
+                    // global d'une autre section) — cf. matchesShowWhen dans json-utils.js.
                     let showWhenHidden = false;
                     if (fieldConfig.showWhen && item) {
-                        const sw = fieldConfig.showWhen;
-                        let refValue = item[sw.field];
-                        // Si la valeur n'est pas définie, utiliser le default du champ référencé
-                        if (refValue === undefined && this.config.itemSchema[sw.field] && this.config.itemSchema[sw.field].default !== undefined) {
-                            refValue = this.config.itemSchema[sw.field].default;
-                        }
-                        const matches = sw.values
-                            ? sw.values.includes(refValue)
-                            : refValue === sw.value;
-                        if (!matches) showWhenHidden = true;
+                        showWhenHidden = !matchesShowWhen(
+                            fieldConfig.showWhen, item, this.config.itemSchema, window._jsonEditorData
+                        );
                     }
 
                     const fieldValue = item ? getNestedValue(item, fieldKey) : undefined;
@@ -727,26 +822,25 @@ export class ArrayManager {
                                 const subField = subRenderer(subResolved, subValue, (p, v) => this.handleFieldChange(p, v), subPath);
                                 groupContent.appendChild(subField);
 
-                                // showWhen sur les sous-champs du groupe
+                                // showWhen sur les sous-champs du groupe (frère ou racine)
                                 if (subConfig.showWhen) {
                                     const sw = subConfig.showWhen;
-                                    let refValue = item ? item[sw.field] : undefined;
-                                    if (refValue === undefined && fieldConfig.fields[sw.field] && fieldConfig.fields[sw.field].default !== undefined) {
-                                        refValue = fieldConfig.fields[sw.field].default;
+                                    if (!matchesShowWhen(sw, item, fieldConfig.fields, window._jsonEditorData)) {
+                                        subField.style.display = 'none';
                                     }
-                                    const matches = sw.values ? sw.values.includes(refValue) : refValue === sw.value;
-                                    if (!matches) subField.style.display = 'none';
-
-                                    subField.dataset.showWhenField = sw.field;
-                                    subField.dataset.showWhenValue = sw.value || '';
-                                    if (sw.values) subField.dataset.showWhenValues = JSON.stringify(sw.values);
+                                    // Portée racine : pas de champ frère à écouter (cf. json-utils).
+                                    if (!sw.rootField) {
+                                        subField.dataset.showWhenField = sw.field;
+                                        subField.dataset.showWhenValue = sw.value || '';
+                                        if (sw.values) subField.dataset.showWhenValues = JSON.stringify(sw.values);
+                                    }
                                 }
                             }
 
                             // Listeners showWhen dans le groupe
                             const showWhenFields = new Set();
                             for (const [, subConfig] of Object.entries(fieldConfig.fields)) {
-                                if (subConfig.showWhen) showWhenFields.add(subConfig.showWhen.field);
+                                if (subConfig.showWhen && !subConfig.showWhen.rootField) showWhenFields.add(subConfig.showWhen.field);
                             }
                             for (const selectorField of showWhenFields) {
                                 const selectorPath = `${this.path}.${index}.${selectorField}`;
@@ -879,8 +973,11 @@ export class ArrayManager {
                         content.appendChild(fieldElement);
                     }
 
-                    // Masquer les champs conditionnels (showWhen) sans les détruire
-                    if (showWhenHidden && content.lastElementChild) {
+                    // Masquer les champs conditionnels (showWhen) sans les détruire.
+                    // Portée racine : masquage seul, sans `data-show-when-*` (cf. json-utils.js).
+                    if (fieldConfig.showWhen?.rootField && content.lastElementChild) {
+                        if (showWhenHidden) content.lastElementChild.style.display = 'none';
+                    } else if (showWhenHidden && content.lastElementChild) {
                         const el = content.lastElementChild;
                         el.style.display = 'none';
                         el.dataset.showWhenField = fieldConfig.showWhen.field;
@@ -1022,7 +1119,8 @@ export class ArrayManager {
         // Trouver tous les champs showWhen.field uniques
         const showWhenFields = new Set();
         for (const [, fieldConfig] of Object.entries(this.config.itemSchema)) {
-            if (fieldConfig.showWhen) {
+            // `rootField` exclu : son selecteur vit dans une autre section, pas dans cet item.
+            if (fieldConfig.showWhen && !fieldConfig.showWhen.rootField) {
                 showWhenFields.add(fieldConfig.showWhen.field);
             }
         }
@@ -1153,24 +1251,51 @@ export class ArrayManager {
     }
 
     /**
+     * Réécrit les renvois PAR INDICE vers ce tableau après une mutation de structure,
+     * puis re-rend la liste qui les porte si elle est à l'écran.
+     *
+     * Le schéma déclare ces renvois sur le tableau RÉFÉRENCÉ (`indexReferencedBy`) ; ils
+     * pointent vers un tableau FRÈRE, résolu à partir du parent de `this.path` — la même
+     * résolution que `getDynamicSelectOptions` pour `optionsFrom`, afin que la
+     * numérotation affichée et la numérotation stockée ne puissent pas diverger.
+     *
+     * @param {{type: string, index?: number, from?: number, to?: number}} operation
+     */
+    remapperRenvoisDIndice(operation) {
+        const renvois = this.config && this.config.indexReferencedBy;
+        if (!Array.isArray(renvois) || renvois.length === 0) return;
+
+        const racine = window._jsonEditorData;
+        if (!racine) return;
+
+        const cheminParent = this.path && this.path.includes('.')
+            ? this.path.substring(0, this.path.lastIndexOf('.'))
+            : '';
+        const parent = cheminParent ? getNestedValue(racine, cheminParent) : racine;
+        if (!parent) return;
+
+        if (!remapIndexReferences(parent, renvois, operation)) return;
+
+        for (const { array } of renvois) {
+            refreshArrayManagerAt(cheminParent ? `${cheminParent}.${array}` : array);
+        }
+    }
+
+    /**
      * Ajoute un nouvel element
      */
     addItem(atIndex = -1) {
-        // Creer un nouvel element vide base sur le schema
-        const newItem = this.createEmptyItem();
-
-        if (atIndex >= 0 && atIndex < this.items.length) {
-            this.items.splice(atIndex + 1, 0, newItem);
-        } else {
-            this.items.push(newItem);
-        }
+        const insertAt = (atIndex >= 0 && atIndex < this.items.length) ? atIndex + 1 : this.items.length;
+        // Creer un nouvel element vide base sur le schema (titre générique compris)
+        const newItem = createEmptyArrayItem(this.config, insertAt);
+        this.items.splice(insertAt, 0, newItem);
+        this.remapperRenvoisDIndice({ type: 'insert', index: insertAt });
 
         this.render();
         this.notifyChange();
 
         // Trouver le nouvel element
-        const targetIndex = atIndex >= 0 && atIndex < this.items.length - 1 ? atIndex + 1 : this.items.length - 1;
-        const newElement = this.container.querySelector(`[data-index="${targetIndex}"]`);
+        const newElement = this.container.querySelector(`[data-index="${insertAt}"]`);
         if (newElement) {
             // Forcer l'état déplié sur le nouvel item (quel que soit itemsExpanded)
             const content = newElement.querySelector('.json-editor__array-item-content');
@@ -1212,6 +1337,7 @@ export class ArrayManager {
         if (!confirmed) return;
 
         this.items.splice(index, 1);
+        this.remapperRenvoisDIndice({ type: 'remove', index });
         this.render();
         this.notifyChange();
     }
@@ -1233,6 +1359,7 @@ export class ArrayManager {
         const duplicate = JSON.parse(JSON.stringify(original));
 
         this.items.splice(index + 1, 0, duplicate);
+        this.remapperRenvoisDIndice({ type: 'duplicate', index });
         this.render();
         this.notifyChange();
     }
@@ -1247,6 +1374,7 @@ export class ArrayManager {
 
         const item = this.items.splice(fromIndex, 1)[0];
         this.items.splice(toIndex, 0, item);
+        this.remapperRenvoisDIndice({ type: 'move', from: fromIndex, to: toIndex });
 
         this.render();
         this.notifyChange();
@@ -1266,47 +1394,7 @@ export class ArrayManager {
      * Cree un element vide base sur le schema
      */
     createEmptyItem() {
-        if (!this.config.itemSchema) return {};
-
-        // Verifier si c'est une valeur simple
-        const valueField = Object.entries(this.config.itemSchema).find(([k, v]) => v.isArrayValue);
-        if (valueField) {
-            return ''; // Valeur simple vide
-        }
-
-        // Objet vide avec les champs du schema
-        const item = {};
-        for (const [key, fieldConfig] of Object.entries(this.config.itemSchema)) {
-            let defaultValue;
-            if (fieldConfig.type === 'array') {
-                defaultValue = [];
-            } else if (fieldConfig.type === 'dynamicObject') {
-                // dynamicObject doit être un objet, jamais une chaîne
-                defaultValue = {};
-            } else if (fieldConfig.type === 'object' && fieldConfig.schema) {
-                defaultValue = {};
-                for (const subKey of Object.keys(fieldConfig.schema)) {
-                    defaultValue[subKey] = '';
-                }
-            } else if (fieldConfig.type === 'checkbox') {
-                defaultValue = fieldConfig.valueType === 'number' ? 0 : false;
-            } else if (fieldConfig.type === 'number') {
-                defaultValue = fieldConfig.default !== undefined ? fieldConfig.default : 0;
-            } else if (fieldConfig.type === 'select' && fieldConfig.default) {
-                // Utiliser la valeur par défaut si définie (crucial pour le selector dynamicObject)
-                defaultValue = fieldConfig.default;
-            } else {
-                defaultValue = fieldConfig.default || '';
-            }
-
-            // Clés pointées (ex: 'metadata.title') → créer la structure imbriquée
-            if (key.includes('.')) {
-                setNestedValue(item, key, defaultValue);
-            } else {
-                item[key] = defaultValue;
-            }
-        }
-        return item;
+        return createEmptyArrayItem(this.config, this.items.length);
     }
 
     // =======================================================================
@@ -1691,6 +1779,18 @@ export class ArrayManager {
 // =======================================================================
 
 /**
+ * Registre des gestionnaires par chemin — la fabrique ci-dessous est leur unique point
+ * d'entrée (editor-core comme field-renderers y passent), le registre est donc complet.
+ *
+ * Il sert au rafraîchissement CROISÉ : quand une liste change, la liste FRÈRE qui la
+ * référence par indice est déjà à l'écran, avec ses cases à cocher construites sur
+ * l'ancienne numérotation (`optionsFrom`). Réécrire le modèle ne suffit pas : sans
+ * re-rendu, l'utilisateur voit encore une zone supprimée, et cocher une case réécrirait
+ * les anciens indices dans le modèle.
+ */
+const GESTIONNAIRES = new Map();
+
+/**
  * Cree et initialise un ArrayManager
  * @param {HTMLElement} container - Container DOM
  * @param {Array} items - Elements initiaux
@@ -1700,5 +1800,24 @@ export class ArrayManager {
  * @returns {ArrayManager}
  */
 export function createArrayManager(container, items, config, path, onChange) {
-    return new ArrayManager(container, items, config, path, onChange);
+    const gestionnaire = new ArrayManager(container, items, config, path, onChange);
+    GESTIONNAIRES.set(path, gestionnaire);
+    return gestionnaire;
+}
+
+/**
+ * Re-rend le gestionnaire de tableau situé à `path`, s'il est encore affiché.
+ * Les entrées dont le conteneur a quitté le DOM (vue changée) sont purgées au passage :
+ * le registre ne survit pas aux re-rendus, il ne doit pas non plus les retenir en mémoire.
+ * @param {string} path - chemin du tableau dans le modèle
+ * @returns {boolean} true si un gestionnaire vivant a été re-rendu
+ */
+export function refreshArrayManagerAt(path) {
+    for (const [cle, g] of GESTIONNAIRES) {
+        if (!g || !g.container || !g.container.isConnected) GESTIONNAIRES.delete(cle);
+    }
+    const gestionnaire = GESTIONNAIRES.get(path);
+    if (!gestionnaire) return false;
+    gestionnaire.render();
+    return true;
 }

@@ -16,6 +16,7 @@
 
 // Validation de schéma des URLs interpolées en href (anti `javascript:`) —
 // en complément de l'échappement HTML (ctx.escapeHtmlTags), pas à sa place.
+import { safeTag as _safeTag } from './shared.js';
 import { sanitizeUrl } from '../../core/utils.js';
 
 // =========================================================================
@@ -80,9 +81,7 @@ const BOX_SHADOW = '0 2px 6px rgba(0,0,0,.08)';
 // par formatTextToHtml(). Si le HTML contient déjà des <p>, on utilise un
 // <div> conteneur pour éviter l'imbrication invalide <p><p>…</p></p>.
 // =========================================================================
-function _safeTag(html) {
-    return /<p[\s>]/i.test(html) ? 'div' : 'p';
-}
+// `_safeTag` vit désormais dans ./shared.js (il était byte-identique dans les 4 thèmes).
 
 // =========================================================================
 // Renderers (18 blocs)

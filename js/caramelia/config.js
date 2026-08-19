@@ -18,6 +18,9 @@ const CARAMEL_VIDEO_TRANSCRIPT_URL = ENDPOINTS.videoTranscript;
 const CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL = ENDPOINTS.videoTranscriptSubmit;
 const CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL = ENDPOINTS.videoTranscriptResult;
 const CARAMEL_FETCH_PAGE_URL = ENDPOINTS.fetchPage;
+// Synthèse vocale (Dictée H5P) — relais n8n → service TTS Rust, cf. services/tts.js.
+const CARAMEL_TTS_URL = ENDPOINTS.tts;
+const CARAMEL_TTS_VOICES_URL = ENDPOINTS.ttsVoices;
 
 export const CONFIG = {
     name: 'Caramelia',
@@ -29,6 +32,8 @@ export const CONFIG = {
     videoTranscriptSubmitUrl: CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL,
     videoTranscriptResultUrl: CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL,
     fetchPageUrl: CARAMEL_FETCH_PAGE_URL,
+    ttsUrl: CARAMEL_TTS_URL,
+    ttsVoicesUrl: CARAMEL_TTS_VOICES_URL,
 
     // Saisie vocale (microphone)
     voice: {
@@ -45,7 +50,7 @@ export const CONFIG = {
         },
         text: {
             iconKey: 'text',
-            keys: ['DragTheWords','DragAndDrop','FillInTheBlanks','MarkTheWords','Essay','SortParagraphs','Page','Livre','InteractiveBook'],
+            keys: ['DragTheWords','DragAndDrop','FillInTheBlanks','MarkTheWords','Essay','SortParagraphs','Dictation','Page','Livre','InteractiveBook'],
         },
         memory: {
             iconKey: 'memory',
@@ -58,7 +63,7 @@ export const CONFIG = {
         'QuizSetQCM','QuizSetVF','QuizSet','MultipleChoice','TrueFalse','Flashcards',
         'Crossword','Timeline','FillInTheBlanks','DragTheWords','DragAndDrop','Essay',
         'Glossary','CoursePresentation','InteractiveBook','InteractiveVideo','ImageHotspots','FindTheHotspot','FindMultipleHotspots','SortParagraphs','FindTheWords','Summary',
-        'SingleChoiceSet','Chart','DialogCards','MarkTheWords',
+        'SingleChoiceSet','Chart','DialogCards','MarkTheWords','Dictation',
         'test_elea','glossaireXml','Millionnaire','Appariement','QCM','Page','Livre','Devoir',
     ],
 
@@ -66,12 +71,16 @@ export const CONFIG = {
         'QuizSetQCM','QuizSetVF','QuizSet','MultipleChoice','TrueFalse','Flashcards',
         'Crossword','Timeline','FillInTheBlanks','DragTheWords','DragAndDrop','Essay',
         'Glossary','CoursePresentation','InteractiveBook','InteractiveVideo','ImageHotspots','FindTheHotspot','FindMultipleHotspots','SortParagraphs','FindTheWords','Summary',
-        'SingleChoiceSet','Chart','DialogCards','MarkTheWords',
+        'SingleChoiceSet','Chart','DialogCards','MarkTheWords','Dictation',
     ],
 
     // Activités qui EXIGENT une URL vidéo avant de pouvoir générer (flag requiresVideoUrl
     // côté definitions.js). Caramelia demande l'URL, remplit le champ, attend la transcription.
     requiresVideoUrlKeys: ['InteractiveVideo'],
+    // Activités qui EXIGENT une image de fond avant de pouvoir générer (flag
+    // requiresBackgroundImage côté definitions.js). Caramelia demande l'image en pièce
+    // jointe, l'injecte dans la section image de la sidebar, attend l'analyse vision.
+    requiresBackgroundImageKeys: ['ImageHotspots', 'FindTheHotspot', 'FindMultipleHotspots'],
     eleaKeys: [
         'test_elea','glossaireXml','Millionnaire','Appariement','QCM','Page','Livre','Devoir',
     ],
@@ -108,6 +117,7 @@ export const CONFIG = {
         DialogCards:       { caramelKey: 'h5p_dialog_cards_name',     platform: 'h5p' },
         MultipleChoice:    { caramelKey: 'h5p_multiple_choice_name',  platform: 'h5p' },
         TrueFalse:         { caramelKey: 'h5p_true_false_name',       platform: 'h5p' },
+        Dictation:         { caramelKey: 'h5p_dictation_name',        platform: 'h5p' },
         test_elea:         { caramelKey: 'elea_test_xml_name',        platform: 'elea' },
         glossaireXml:      { caramelKey: 'elea_glossaire_xml_name',   platform: 'elea' },
         Millionnaire:      { caramelKey: 'elea_millionnaire_name',    platform: 'elea' },
@@ -155,6 +165,8 @@ export const CONFIG = {
         'appariement':'Appariement','paires':'Appariement',
         'page':'Page','livre':'Livre','devoir':'Devoir',
         'graphique':'Chart','chart':'Chart','dialogue':'DialogCards',
+        'dictée':'Dictation','dictee':'Dictation','dictation':'Dictation','orthographe':'Dictation',
+        'compréhension orale':'Dictation','écouter et écrire':'Dictation',
     },
 
     // Délais d'attente pour le pipeline de génération
@@ -194,6 +206,8 @@ export const CONFIG = {
         llmBtn: (k) => `#generate-llm-${k}`,
         videoUrlInput: (k) => `#video-url-input-${k}`,
         videoSection: (k) => `#video-url-section-${k}`,
+        imgBgInput: (k) => `#img-bg-input-${k}`,
+        imgBgSection: (k) => `#img-bg-section-${k}`,
         tileSelectors: (k) => [
             `[data-module="${k}"]`,
             `[data-module-key="${k}"]`,

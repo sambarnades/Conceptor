@@ -7,7 +7,10 @@
 
 import { t, currentLang } from '../core/translation.js';
 import { validateField } from './validators.js';
-import { h5pDateToLocale, localeDateToH5p, getTimelineDateFormat } from '../core/utils.js';
+// `core/utils.js` n'est PAS un fichier partagé (chaque dépôt a le sien) : n'importer
+// ici que des helpers présents des DEUX côtés. `debugLog` l'est (signature variadique
+// côté Sucrerie, `debugLog(module, ...)` côté Caramel — les deux acceptent cet appel).
+import { h5pDateToLocale, localeDateToH5p, getTimelineDateFormat, debugLog } from '../core/utils.js';
 import { showConfirm } from './array-manager.js';
 import { renderRichtextField } from './richtext-editor.js';
 import { renderClozeField } from './cloze-editor.js';
@@ -21,9 +24,16 @@ import { renderClozeField } from './cloze-editor.js';
  */
 export function escapeHtml(str) {
     if (str === null || str === undefined) return '';
-    const div = document.createElement('div');
-    div.textContent = String(str);
-    return div.innerHTML;
+    // NE PAS revenir à `div.textContent = s; return div.innerHTML` : ce détour par
+    // le DOM échappe `& < >` mais PAS `"` ni `'`. Le résultat était donc sûr en
+    // nœud texte, mais permettait de sortir d'une valeur d'attribut — et cet
+    // helper est bel et bien utilisé en contexte d'attribut ailleurs dans l'éditeur.
+    // Table alignée sur `js/core/escape.js` (source unique de vérité côté Caramel) ;
+    // recopiée ici volontairement car ce fichier est byte-identique côté Sucrerie
+    // et ne doit pas dépendre d'un module absent de ce dépôt.
+    return String(str).replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
 }
 
 /**
@@ -564,12 +574,41 @@ export function renderSelectField(config, value, onChange, path) {
     wrapper.className = 'json-editor__field json-editor__field--select';
 
     const label = translateLabel(config.label);
+    // `hint` était géré par tous les autres renderers SAUF celui-ci : un `hint:` posé sur un select
+    // était donc silencieusement perdu. Ajouté avec le réglage « Mode d'affichage des questions »
+    // de la Vidéo interactive, qui a besoin d'expliquer ses trois modes.
+    const hint = config.hint ? translateLabel(config.hint) : '';
 
     // Appliquer la valeur par defaut si la valeur est absente
     let effectiveValue = value;
     if ((effectiveValue === undefined || effectiveValue === null) && config.default !== undefined) {
         effectiveValue = config.default;
         if (onChange) onChange(path, config.default);
+    }
+
+    // CE QUI EST AFFICHÉ DOIT ÊTRE CE QUI EST STOCKÉ.
+    // Un <select> sans option vide affiche TOUJOURS sa première option quand la valeur
+    // stockée ne correspond à aucune d'elles. Un champ `required` valant '' montrait donc
+    // un menu qui paraissait rempli (« Texte ») tout en faisant échouer l'enregistrement,
+    // sans qu'aucun indice ne désigne le fautif — « il manque toujours un élément à remplir
+    // que je ne perçois pas » (Livre interactif, Course Presentation, Vidéo interactive,
+    // Page / Livre / Test Éléa : tous ont un menu de type d'item obligatoire sans `default`).
+    //
+    // On ne réaligne QUE les valeurs vides : une valeur non vide inconnue du menu est du
+    // contenu utilisateur, jamais écrasé ici. Options dynamiques (`optionsFrom`) exclues :
+    // `config.options` est vide au rendu, elles sont injectées ensuite.
+    //
+    // La propagation au modèle est réservée aux champs OBLIGATOIRES : `onChange` pendant le
+    // rendu lève l'indicateur « modifications non enregistrées », et le faire sur les champs
+    // conditionnels masqués d'un item (`showWhen`) marquerait le contenu comme modifié à la
+    // simple navigation. Les items neufs reçoivent de toute façon la bonne valeur dès leur
+    // création (cf. `emptyValueForField` dans array-manager.js).
+    const opts = Array.isArray(config.options) ? config.options : [];
+    const matchesOption = (v) => opts.some(o => String(o.value) === String(v));
+    if (opts.length && !matchesOption(effectiveValue) &&
+        (effectiveValue === undefined || effectiveValue === null || effectiveValue === '')) {
+        effectiveValue = matchesOption(config.default) ? config.default : opts[0].value;
+        if (onChange && config.required) onChange(path, effectiveValue);
     }
 
     let optionsHtml = '';
@@ -596,6 +635,7 @@ export function renderSelectField(config, value, onChange, path) {
         >
             ${optionsHtml}
         </select>
+        ${hint ? `<span class="json-editor__hint">${escapeHtml(hint)}</span>` : ''}
         <span class="json-editor__error" role="alert" aria-live="assertive"></span>
     `;
 
@@ -2115,7 +2155,12 @@ export function renderDynamicObjectField(config, value, onChange, path, selector
                 try {
                     const parsed = JSON.parse(v);
                     if (onChange) onChange(path, parsed);
-                } catch (e) { }
+                } catch (e) {
+                    // Saisie JSON intermédiaire (l'utilisateur tape encore) : on ne
+                    // propage PAS la valeur, mais on trace en ?debug — un `catch` muet
+                    // masquait aussi les vraies erreurs du `onChange` en aval.
+                    debugLog('editor', 'Données brutes : JSON incomplet, valeur non propagée', e.message);
+                }
             },
             path
         );

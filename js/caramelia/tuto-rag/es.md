@@ -9,7 +9,7 @@ el texto visible en pantalla en Caramel. Fuente única de verdad:
 js/locales/es.json + index.html. Toda edición se realiza mediante PR.
 -->
 ---
-version: 1.2.0
+version: 1.3.0
 lang: es
 audience: docentes
 ---
@@ -60,17 +60,20 @@ Tres posibilidades:
 - **Copiar y pegar un texto** directamente en el área de entrada.
 - **Arrastrar y soltar un documento** (o hacer clic en
   **«Seleccione un archivo»**) en formato **PDF, DOCX, PPTX, ODT,
-  ODP, PNG, JPEG**. También puede soltar un **archivo de audio** (MP3, M4A, WAV…) o un **vídeo** (MP4, MOV…): solo se transcribe automáticamente la pista de audio (mediante Albert, el servicio soberano de la DINUM; véase la confidencialidad más abajo). La zona de carga muestra **«Arrastre y suelte
+  ODP, PNG, JPEG** (las imágenes **WebP** y **BMP** también se aceptan, sin figurar en la lista mostrada en pantalla). Una **imagen** depositada (foto, esquema, diagrama…) es **analizada por una IA de visión** que redacta una **descripción** de la misma y **transcribe fielmente el texto** que contiene — si la IA no está disponible, la lectura local (OCR) toma automáticamente el relevo. También puede soltar un **archivo de audio** (MP3, M4A, WAV…) o un **vídeo** (MP4, MOV…): solo se transcribe automáticamente la pista de audio (mediante Albert, el servicio soberano de la DINUM; véase la confidencialidad más abajo). La zona de carga muestra **«Arrastre y suelte
   un documento aquí (PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG)»** con
   un separador **«o»**.
 - **Importar una página web**: pegar su enlace (`https://…`) en el
   campo situado debajo de la zona de carga y luego hacer clic en
   **«Añadir»**. El texto de la página se recupera automáticamente.
 
-La extracción del texto de los **documentos e imágenes** se realiza
+La extracción del texto de los **documentos** se realiza
 **completamente en local** en su navegador (no se envía ningún dato).
-**Dos excepciones transitan por nuestros servidores (alojados en
-Francia):** la **transcripción de audio** y la **importación de una
+**Tres excepciones transitan por nuestros servidores (alojados en
+Francia):** el **análisis de las imágenes** (la imagen se envía al
+modelo de visión durante el tiempo del análisis, nunca se conserva;
+en caso de indisponibilidad, el OCR local — que no envía nada — toma
+el relevo), la **transcripción de audio** y la **importación de una
 página web** (el enlace que usted introduce se envía allí para
 extraer su texto; los enlaces a PDF, vídeos o páginas de pago no son
 compatibles).
@@ -111,6 +114,7 @@ una retroalimentación detallada en 4 tramos de puntuación.
 - **Ordenar párrafos** ★ — colocar párrafos en el orden correcto.
 - **Serie de elección única** ★ — preguntas con una sola respuesta correcta.
 - **Tarjetas de diálogo** — tarjetas anverso-reverso con texto y audio.
+- **Dictado** — dictado con audio: frases leídas por síntesis de voz (voz F/M, velocidad normal o lenta, 11 idiomas), el alumno las escribe y la corrección resalta los errores.
 - **Texto para completar complejo** ★ — retroalimentaciones específicas por error.
 - **Diagrama** — circular o de barras para visualizar datos.
 - **Presentación de curso** — diapositivas interactivas con ejercicios integrados.
@@ -122,8 +126,9 @@ una retroalimentación detallada en 4 tramos de puntuación.
 
 ### Actividades Éléa / Magistère
 
-- **Cuestionario (XML / GIFT)** — banco de preguntas variadas (opción múltiple, emparejamiento…)
-  para importar en un cuestionario Éléa/Magistère.
+- **Cuestionario (MBZ / XML / GIFT)** — actividad Cuestionario lista para restaurar en **`.mbz`**
+  (banco de preguntas + cuestionario ya configurado), o banco de preguntas variadas (opción múltiple,
+  emparejamiento…) para importar (XML / GIFT) en un cuestionario Éléa/Magistère.
 - **Cuestionario de opción múltiple (MBZ)** — actividad de opción múltiple simple y rápida.
 - **Emparejamiento (MBZ)** — juego de asociación entre pares de elementos.
 - **Millonario (MBZ)** — quiz lúdico con dificultad creciente.

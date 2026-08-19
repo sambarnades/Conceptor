@@ -6,7 +6,19 @@
  */
 
 import { t } from '../core/translation.js';
-import { getNestedValue } from './json-utils.js';
+import { getNestedValue, matchesShowWhen } from './json-utils.js';
+
+/**
+ * Traduit un label de schéma (même idiome que array-manager / field-renderers :
+ * `t()` renvoie la clé quand elle manque, on garde alors la clé telle quelle).
+ * Les erreurs de schéma exposaient jusqu'ici la clé i18n brute (`editor_ib_block_type`)
+ * dans leur champ `field`.
+ */
+function translateLabel(label) {
+    if (!label) return '';
+    const translated = t(label);
+    return translated !== label ? translated : label;
+}
 
 // =======================================================================
 // REGLES DE VALIDATION
@@ -96,6 +108,11 @@ export const validators = {
      */
     feedbackRanges: (ranges) => {
         if (!Array.isArray(ranges) || ranges.length === 0) return false;
+        // Une tranche non-objet est inexploitable : invalide, mais sans lever. Sans ce
+        // garde, un `null` dans le tableau faisait échouer le comparateur de tri, et
+        // l'exception remontait jusqu'à `debounceValidation` (aucun try/catch côté
+        // éditeur) — la validation temps réel cessait alors de fonctionner.
+        if (ranges.some(r => !r || typeof r !== 'object')) return false;
 
         // Trier par 'from'
         const sorted = [...ranges].sort((a, b) => a.from - b.from);
@@ -124,7 +141,7 @@ export const validators = {
      */
     hasCorrectAnswer: (answers) => {
         if (!Array.isArray(answers)) return false;
-        return answers.some(a => a.correct === true || a.iscorrect === 1);
+        return answers.some(a => a?.correct === true || a?.iscorrect === 1);
     },
 
     /**
@@ -185,8 +202,18 @@ export function validateField(value, config) {
         errors.push(t(errorMessages.required) || 'Ce champ est obligatoire');
     }
 
-    // Si vide et pas required, pas d'autres validations
-    if (!validators.required(value) && !config.required) {
+    // Si vide et pas required, pas d'autres validations.
+    //
+    // EXCEPTION — un tableau qui déclare `minItems >= 1` exige DÉJÀ du contenu : cette
+    // contrainte EST l'exigence, et la plupart de ces champs ne portent volontairement
+    // pas `required` (les 5 déclarations de `answers` en sont l'exemple : `minItems: 2`
+    // et rien d'autre). Sans cette exception, la sortie anticipée sautait la mesure pour
+    // un tableau ABSENT ou VIDE : la règle ne se déclenchait donc QUE sur les tableaux
+    // déjà non vides — `answers` à 1 élément était signalé, `answers` à 0 passait en
+    // silence. Le trou était exactement à zéro, et il laissait enregistrer (puis partir
+    // dans le .h5p) un QCM sans aucune réponse : une question injouable.
+    const exigeDesElements = config.type === 'array' && config.minItems >= 1;
+    if (!validators.required(value) && !config.required && !exigeDesElements) {
         return { valid: true, errors: [] };
     }
 
@@ -219,7 +246,11 @@ export function validateField(value, config) {
     }
 
     // Array validations
-    if (config.type === 'array' && Array.isArray(value)) {
+    // Pas de garde `Array.isArray(value)` : un tableau ABSENT doit être mesuré comme
+    // vide, sinon `minItems` reste muet précisément quand il n'y a rien. `minItems`
+    // renvoie false sur un non-tableau (donc signale), `maxItems` renvoie true (donc
+    // se tait) — les deux se comportent déjà correctement sur `undefined`.
+    if (config.type === 'array') {
         if (config.minItems && !validators.minItems(config.minItems)(value)) {
             errors.push((t(errorMessages.minItems) || 'Minimum {0} elements').replace('{0}', config.minItems));
         }
@@ -287,9 +318,34 @@ export function getValidationErrors(data, schema) {
 
 /**
  * Valide un champ recursivement (pour les tableaux et objets imbriques)
+ *
+ * `trail` accumule le chemin LISIBLE menant au champ (« Chapitre 2 › Bloc 4 »). L'éditeur
+ * est en maître-détail et replie les items : un « Ce champ est obligatoire » sans repère
+ * désignait un champ que l'utilisateur ne pouvait ni voir ni situer — parfois dans un
+ * chapitre qui n'était même pas rendu. Le `field` produit ici est ce qui s'affiche dans le
+ * résumé d'erreurs, il doit donc suffire à retrouver le champ à la main.
  */
-function validateFieldRecursive(value, config, path, rootData) {
+function validateFieldRecursive(value, config, path, rootData, trail = []) {
     const errors = [];
+
+    // Un champ que l'écran NE MONTRE PAS ne peut pas être rempli : il ne doit jamais
+    // bloquer l'enregistrement. La règle existait déjà pour les conteneurs
+    // `dynamicObject` (cf. plus bas) ; elle vaut pour n'importe quel champ portant un
+    // `showWhen`, et il faut l'appliquer AVANT de descendre — sinon on valide le contenu
+    // d'un objet masqué (le `table` d'une diapositive « titre », les `answers` d'une
+    // interaction qui n'est pas un QCM) au seul motif que le sous-schéma existe.
+    // `showWhen` désigne un champ FRÈRE : on l'évalue donc contre l'objet PARENT.
+    if (config.showWhen) {
+        const parent = getNestedValue(rootData, path.includes('.') ? path.slice(0, path.lastIndexOf('.')) : '');
+        if (!matchesShowWhen(config.showWhen, parent, null, rootData)) return errors;
+    }
+
+    // Un tableau déclare souvent `itemLabel` plutôt que `label` (le titre de section porte
+    // déjà son nom) : sans ce repli, une erreur de cardinalité sur un tableau imbriqué
+    // affichait le CHEMIN BRUT (« questions.0.params.answers ») en guise de libellé — donc
+    // ni traduit, ni situable dans un éditeur maître-détail.
+    const label = translateLabel(config.label) || translateLabel(config.itemLabel) || path;
+    const fullLabel = trail.length ? `${trail.join(' › ')} › ${label}` : label;
 
     // Validation du champ lui-meme
     const fieldValidation = validateField(value, config);
@@ -297,7 +353,7 @@ function validateFieldRecursive(value, config, path, rootData) {
         for (const err of fieldValidation.errors) {
             errors.push({
                 path,
-                field: config.label || path,
+                field: fullLabel,
                 message: err
             });
         }
@@ -305,16 +361,20 @@ function validateFieldRecursive(value, config, path, rootData) {
 
     // Si c'est un tableau, valider chaque element
     if (config.type === 'array' && Array.isArray(value) && config.itemSchema) {
+        const itemLabel = translateLabel(config.itemLabel) || label;
         value.forEach((item, index) => {
+            const itemTrail = [...trail, `${itemLabel} ${index + 1}`];
             // Si l'item est une valeur simple (isArrayValue)
             if (config.itemSchema._value && config.itemSchema._value.isArrayValue) {
                 const itemErrors = validateFieldRecursive(
                     item,
                     config.itemSchema._value,
                     `${path}.${index}`,
-                    rootData
+                    rootData,
+                    trail
                 );
-                errors.push(...itemErrors);
+                // L'item EST la valeur : son libellé est déjà « <itemLabel> N ».
+                errors.push(...itemErrors.map(e => ({ ...e, field: itemTrail.join(' › ') })));
             } else {
                 // L'item est un objet
                 for (const [subKey, subConfig] of Object.entries(config.itemSchema)) {
@@ -324,7 +384,8 @@ function validateFieldRecursive(value, config, path, rootData) {
                         subValue,
                         subConfig,
                         `${path}.${index}.${subKey}`,
-                        rootData
+                        rootData,
+                        itemTrail
                     );
                     errors.push(...itemErrors);
                 }
@@ -332,15 +393,62 @@ function validateFieldRecursive(value, config, path, rootData) {
         });
     }
 
+    // Objet dont le sous-schéma dépend d'un champ FRÈRE (`selector`) : sous-question de
+    // Quiz, exercice de diapositive ou de bloc de Livre interactif, contenu d'une question
+    // Éléa. Sans cette descente, un champ obligatoire imbriqué n'était JAMAIS vérifié : le
+    // Glisser-déposer autonome refusait une étiquette sans zone cible, la même étiquette
+    // passait en silence dans une diapositive — et l'activité partait avec des étiquettes
+    // qui n'appartiennent à aucune zone.
+    if (config.type === 'dynamicObject' && config.schemas && value && typeof value === 'object') {
+        const parent = getNestedValue(rootData, path.includes('.') ? path.slice(0, path.lastIndexOf('.')) : '');
+        const cleSousSchema = parent ? parent[config.selector || 'type'] : undefined;
+        const sousSchema = config.schemas[cleSousSchema];
+        // Un conteneur MASQUÉ (`showWhen`) ne peut pas être rempli : il ne doit pas bloquer
+        // l'enregistrement — c'est exactement le défaut de 6.3.0, un champ obligatoire que
+        // l'écran ne montre pas.
+        const affiche = !config.showWhen || matchesShowWhen(config.showWhen, parent, null, rootData);
+        if (sousSchema && affiche) {
+            const dynTrail = label ? [...trail, label] : trail;
+            for (const [subKey, subConfig] of Object.entries(sousSchema)) {
+                errors.push(...validateFieldRecursive(
+                    getNestedValue(value, subKey),
+                    subConfig,
+                    `${path}.${subKey}`,
+                    rootData,
+                    dynTrail
+                ));
+            }
+        }
+    }
+
+    // Groupe de champs (présentation seulement : les champs vivent au même niveau que le
+    // groupe dans les données). Le groupe n'a pas de valeur propre.
+    if (config.type === 'fieldGroup' && config.fields) {
+        const parent = getNestedValue(rootData, path.includes('.') ? path.slice(0, path.lastIndexOf('.')) : '');
+        if (parent && typeof parent === 'object') {
+            for (const [subKey, subConfig] of Object.entries(config.fields)) {
+                errors.push(...validateFieldRecursive(
+                    getNestedValue(parent, subKey),
+                    subConfig,
+                    path.includes('.') ? `${path.slice(0, path.lastIndexOf('.'))}.${subKey}` : subKey,
+                    rootData,
+                    trail
+                ));
+            }
+        }
+    }
+
     // Si c'est un objet imbrique
     if (config.type === 'object' && config.schema && value && typeof value === 'object') {
+        const objTrail = label ? [...trail, label] : trail;
         for (const [subKey, subConfig] of Object.entries(config.schema)) {
             const subValue = getNestedValue(value, subKey);
             const subErrors = validateFieldRecursive(
                 subValue,
                 subConfig,
                 `${path}.${subKey}`,
-                rootData
+                rootData,
+                objTrail
             );
             errors.push(...subErrors);
         }
@@ -348,6 +456,677 @@ function validateFieldRecursive(value, config, path, rootData) {
 
     return errors;
 }
+
+// =======================================================================
+// VALIDATIONS SPÉCIFIQUES PAR TYPE DE MODULE
+// =======================================================================
+// Une fonction par activité, enregistrée dans `TYPE_RULES` (plus bas) et appelée
+// par `getTypeSpecificErrors`. Ces validations s'exécutent APRÈS le healing
+// structurel : elles ne portent QUE sur le contenu pédagogique irréparable.
+//
+// Contrat : `(data, errors) => void` — chaque règle POUSSE dans `errors`, dans
+// l'ordre où l'éditeur doit les afficher, et ne retourne rien.
+//
+// Couverture : `node tests/run_validators_oracle.mjs` (157 fixtures × 40 clés).
+
+/** QuizSet / QuizSetQCM / QuizSetVF. */
+function validateQuizSet(data, errors) {
+    if (!Array.isArray(data.questions) || data.questions.length === 0) {
+        errors.push({
+            path: 'questions',
+            field: 'Quiz',
+            message: t('validation_quiz_no_questions') || 'Le quiz doit contenir au moins une question'
+        });
+    } else {
+        data.questions.forEach((q, i) => {
+            if (!q?.library) {
+                errors.push({
+                    path: `questions.${i}.library`,
+                    field: `Question ${i + 1}`,
+                    message: t('validation_question_no_type') || `La question ${i + 1} n'a pas de type defini`
+                });
+            }
+        });
+    }
+}
+
+/** MultipleChoice. */
+function validateMultipleChoice(data, errors) {
+    if (!Array.isArray(data.answers) || data.answers.length === 0) {
+        errors.push({
+            path: 'answers',
+            field: t('editor_section_answers') || 'Reponses',
+            message: t('validation_no_answers') || 'Au moins une reponse est requise'
+        });
+    }
+}
+
+/** TrueFalse. */
+function validateTrueFalse(data, errors) {
+    if (!data.question || (typeof data.question === 'string' && data.question.trim() === '')) {
+        errors.push({
+            path: 'question',
+            field: 'Question',
+            message: t('validation_question_empty') || 'La question est vide'
+        });
+    }
+}
+
+/**
+ * ImageHotspots.
+ * Un bloc de contenu vide serait SILENCIEUSEMENT supprimé à la dénormalisation puis
+ * le point sauté par le player (visible dans l'éditeur, absent de l'activité — audit N4).
+ * On bloque la sauvegarde avec un message ciblé plutôt que de laisser perdre le point.
+ */
+function validateImageHotspots(data, errors) {
+    const rawTmpl = t('validation_ih_block_empty');
+    const tmpl = (rawTmpl && rawTmpl !== 'validation_ih_block_empty')
+        ? rawTmpl
+        : 'Le point {n} a un bloc « {type} » sans contenu : complétez-le ou supprimez le bloc.';
+    (Array.isArray(data.hotspots) ? data.hotspots : []).forEach((h, i) => {
+        const blocks = (h && Array.isArray(h.content)) ? h.content : [];
+        blocks.forEach((b, j) => {
+            if (!b || typeof b !== 'object') return;
+            const type = b._contentType || 'text';
+            const isEmpty =
+                (type === 'text' && (!b.text || !String(b.text).trim())) ||
+                (type === 'image' && !(b.image && b.image.path)) ||
+                (type === 'audio' && !((b.audioFile && b.audioFile.path) || (b.audioUrl && String(b.audioUrl).trim()))) ||
+                (type === 'video' && !((b.videoFile && b.videoFile.path) || (b.videoUrl && String(b.videoUrl).trim())));
+            if (isEmpty) {
+                errors.push({
+                    path: `hotspots.${i}.content.${j}`,
+                    field: (h && h.header) ? h.header : `Point ${i + 1}`,
+                    message: tmpl.replace('{n}', String(i + 1)).replace('{type}', type)
+                });
+            }
+        });
+    });
+}
+
+/**
+ * FindTheHotspot / FindMultipleHotspots.
+ * Sans zone correcte, l'activité est infaisable (score maximum nul) : on bloque la
+ * sauvegarde plutôt que de laisser produire un exercice sans réponse possible.
+ */
+function validateFindTheHotspot(data, errors) {
+    const zones = Array.isArray(data.hotspots) ? data.hotspots : [];
+    if (zones.length && !zones.some(h => h && h.correct === true)) {
+        const raw = t('validation_hq_no_correct');
+        errors.push({
+            path: 'hotspots.0.correct',
+            field: (zones[0] && zones[0].label) ? zones[0].label : 'Zones',
+            message: (raw && raw !== 'validation_hq_no_correct')
+                ? raw
+                : 'Aucune zone correcte : cochez « Zone correcte » sur au moins une zone.'
+        });
+    }
+}
+
+/** FindTheWords. */
+function validateFindTheWords(data, errors) {
+    const wl = data.wordList;
+    if (!wl || (typeof wl === 'string' && wl.trim() === '')) {
+        errors.push({
+            path: 'wordList',
+            field: t('editor_word_list') || 'Liste de mots',
+            message: t('validation_wordlist_empty') || 'La liste de mots est vide'
+        });
+    }
+}
+
+/** FillInTheBlanks / ComplexFillTheBlanks. */
+function validateFillInTheBlanks(data, errors) {
+    if (!Array.isArray(data.questions) || data.questions.length === 0) {
+        errors.push({
+            path: 'questions',
+            field: t('editor_section_sentences') || 'Phrases',
+            message: t('validation_no_sentences') || 'Au moins une phrase est requise'
+        });
+    }
+}
+
+/** MarkTheWords. */
+function validateMarkTheWords(data, errors) {
+    if (!data.textField || (typeof data.textField === 'string' && data.textField.trim() === '')) {
+        errors.push({
+            path: 'textField',
+            field: t('editor_text_with_blanks') || 'Texte',
+            message: t('validation_text_empty') || 'Le texte est vide'
+        });
+    }
+}
+
+/** DragTheWords. */
+function validateDragTheWords(data, errors) {
+    if (!data.textField || (typeof data.textField === 'string' && data.textField.trim() === '')) {
+        errors.push({
+            path: 'textField',
+            field: t('editor_text_with_blanks') || 'Texte',
+            message: t('validation_text_empty') || 'Le texte est vide'
+        });
+    }
+}
+
+/** DragAndDrop. */
+function validateDragAndDrop(data, errors) {
+    if (!Array.isArray(data.dropZones) || data.dropZones.length < 2) {
+        errors.push({
+            path: 'dropZones',
+            field: t('editor_section_zones') || 'Zones',
+            message: t('validation_min_zones') || 'Au moins 2 zones de dépôt sont requises'
+        });
+    }
+    if (!Array.isArray(data.elements) || data.elements.length < 2) {
+        errors.push({
+            path: 'elements',
+            field: t('editor_section_elements') || 'Étiquettes',
+            message: t('validation_min_elements') || 'Au moins 2 étiquettes sont requises'
+        });
+    }
+    // Vérifier que chaque élément a au moins une zone cible valide
+    if (Array.isArray(data.elements) && Array.isArray(data.dropZones)) {
+        data.elements.forEach((el, i) => {
+            const zoneIndices = Array.isArray(el?.zoneIndices) ? el.zoneIndices : [];
+            if (zoneIndices.length === 0) {
+                errors.push({
+                    path: `elements.${i}.zoneIndices`,
+                    field: `${t('editor_element') || 'Étiquette'} ${i + 1}`,
+                    message: t('validation_no_zone_selected') || 'Au moins une zone cible doit être sélectionnée'
+                });
+            } else {
+                const hasInvalid = zoneIndices.some(zi => {
+                    const idx = typeof zi === 'string' ? parseInt(zi, 10) : zi;
+                    return idx < 0 || idx >= data.dropZones.length;
+                });
+                if (hasInvalid) {
+                    errors.push({
+                        path: `elements.${i}.zoneIndices`,
+                        field: `${t('editor_element') || 'Étiquette'} ${i + 1}`,
+                        message: t('validation_invalid_zone') || 'Zone cible invalide'
+                    });
+                }
+            }
+        });
+    }
+}
+
+/** Crossword. */
+function validateCrossword(data, errors) {
+    if (!Array.isArray(data.words) || data.words.length === 0) {
+        errors.push({
+            path: 'words',
+            field: t('editor_section_words') || 'Mots',
+            message: t('validation_no_words') || 'Au moins un mot est requis'
+        });
+    } else {
+        data.words.forEach((word, i) => {
+            if (!word?.answer || word.answer.trim() === '') {
+                errors.push({
+                    path: `words.${i}.answer`,
+                    field: `${t('editor_word') || 'Mot'} ${i + 1}`,
+                    message: t('validation_word_no_answer') || `Le mot ${i + 1} n'a pas de reponse`
+                });
+            }
+            if (!word?.clue || word.clue.trim() === '') {
+                errors.push({
+                    path: `words.${i}.clue`,
+                    field: `${t('editor_word') || 'Mot'} ${i + 1}`,
+                    message: t('validation_word_no_clue') || `Le mot ${i + 1} n'a pas d'indice`
+                });
+            }
+        });
+    }
+}
+
+/** Flashcards. */
+function validateFlashcards(data, errors) {
+    if (!Array.isArray(data.cards) || data.cards.length === 0) {
+        errors.push({
+            path: 'cards',
+            field: t('editor_section_cards') || 'Cartes',
+            message: t('validation_no_cards') || 'Au moins une carte est requise'
+        });
+    } else {
+        data.cards.forEach((card, i) => {
+            if (!card?.text || card.text.trim() === '') {
+                errors.push({
+                    path: `cards.${i}.text`,
+                    field: `${t('editor_card') || 'Carte'} ${i + 1}`,
+                    message: t('validation_card_no_question') || `La carte ${i + 1} n'a pas de question`
+                });
+            }
+            if (!card?.answer || card.answer.trim() === '') {
+                errors.push({
+                    path: `cards.${i}.answer`,
+                    field: `${t('editor_card') || 'Carte'} ${i + 1}`,
+                    message: t('validation_card_no_answer') || `La carte ${i + 1} n'a pas de reponse`
+                });
+            }
+        });
+    }
+}
+
+/** DialogCards. */
+function validateDialogCards(data, errors) {
+    if (!Array.isArray(data.dialogs) || data.dialogs.length === 0) {
+        errors.push({
+            path: 'dialogs',
+            field: t('editor_section_dialogs') || 'Dialogues',
+            message: t('validation_no_dialogs') || 'Au moins un dialogue est requis'
+        });
+    } else {
+        data.dialogs.forEach((dialog, i) => {
+            if (!dialog?.text || dialog.text.trim() === '') {
+                errors.push({
+                    path: `dialogs.${i}.text`,
+                    field: `${t('editor_dialog') || 'Dialogue'} ${i + 1}`,
+                    message: t('validation_dialog_no_front') || `Le dialogue ${i + 1} n'a pas de recto`
+                });
+            }
+            if (!dialog?.answer || dialog.answer.trim() === '') {
+                errors.push({
+                    path: `dialogs.${i}.answer`,
+                    field: `${t('editor_dialog') || 'Dialogue'} ${i + 1}`,
+                    message: t('validation_dialog_no_back') || `Le dialogue ${i + 1} n'a pas de verso`
+                });
+            }
+        });
+    }
+}
+
+/** Timeline. */
+function validateTimeline(data, errors) {
+    const dates = data.timeline?.date;
+    if (!Array.isArray(dates) || dates.length === 0) {
+        errors.push({
+            path: 'timeline.date',
+            field: 'Timeline',
+            message: t('validation_no_events') || 'Au moins un evenement est requis'
+        });
+    }
+}
+
+/** Essay. */
+function validateEssay(data, errors) {
+    if (!Array.isArray(data.keywords) || data.keywords.length === 0) {
+        errors.push({
+            path: 'keywords',
+            field: t('editor_section_keywords') || 'Mots-cles',
+            message: t('validation_no_keywords') || 'Au moins un mot-cle est requis'
+        });
+    }
+}
+
+/** Summary. */
+function validateSummary(data, errors) {
+    if (!Array.isArray(data.summaries) || data.summaries.length === 0) {
+        errors.push({
+            path: 'summaries',
+            field: t('editor_section_summaries') || 'Groupes',
+            message: t('validation_no_summaries') || 'Au moins un groupe est requis'
+        });
+    }
+}
+
+/** SingleChoiceSet. */
+function validateSingleChoiceSet(data, errors) {
+    if (!Array.isArray(data.choices) || data.choices.length === 0) {
+        errors.push({
+            path: 'choices',
+            field: t('editor_section_choices') || 'Questions',
+            message: t('validation_no_choices') || 'Au moins une question est requise'
+        });
+    } else {
+        data.choices.forEach((choice, i) => {
+            if (!choice?.question || choice.question.trim() === '') {
+                errors.push({
+                    path: `choices.${i}.question`,
+                    field: `Question ${i + 1}`,
+                    message: t('validation_choice_empty') || `La question ${i + 1} est vide`
+                });
+            }
+        });
+    }
+}
+
+/** SortParagraphs. */
+function validateSortParagraphs(data, errors) {
+    if (!Array.isArray(data.paragraphs) || data.paragraphs.length === 0) {
+        errors.push({
+            path: 'paragraphs',
+            field: t('editor_section_paragraphs') || 'Paragraphes',
+            message: t('validation_no_paragraphs') || 'Au moins un paragraphe est requis'
+        });
+    }
+}
+
+/** Chart. */
+function validateChart(data, errors) {
+    if (!Array.isArray(data.listOfTypes) || data.listOfTypes.length === 0) {
+        errors.push({
+            path: 'listOfTypes',
+            field: t('editor_section_data') || 'Donnees',
+            message: t('validation_no_chart_data') || 'Au moins une donnee est requise'
+        });
+    }
+}
+
+/** Millionnaire. */
+function validateMillionnaire(data, errors) {
+    if (!Array.isArray(data.questions) || data.questions.length !== 6) {
+        errors.push({
+            path: 'questions',
+            field: 'Millionnaire',
+            message: t('validation_millionnaire_exact_6') || 'Le jeu doit contenir exactement 6 questions'
+        });
+    }
+    if (Array.isArray(data.questions)) {
+        data.questions.forEach((q, i) => {
+            if (!q?.question || q.question.trim() === '') {
+                errors.push({
+                    path: `questions.${i}.question`,
+                    field: `Question ${i + 1}`,
+                    message: t('validation_question_empty') || `La question ${i + 1} est vide`
+                });
+            }
+            if (!q?.goodanswer || q.goodanswer.trim() === '') {
+                errors.push({
+                    path: `questions.${i}.goodanswer`,
+                    field: `Question ${i + 1}`,
+                    message: t('validation_no_good_answer') || `La question ${i + 1} n'a pas de bonne reponse`
+                });
+            }
+        });
+    }
+}
+
+/** Appariement. */
+function validateAppariement(data, errors) {
+    if (!Array.isArray(data.pairs) || data.pairs.length === 0) {
+        errors.push({
+            path: 'pairs',
+            field: t('editor_section_pairs') || 'Paires',
+            message: t('validation_no_pairs') || 'Au moins une paire est requise'
+        });
+    } else {
+        data.pairs.forEach((pair, i) => {
+            if ((!pair.question || pair.question.trim() === '') || (!pair.answer || pair.answer.trim() === '')) {
+                errors.push({
+                    path: `pairs.${i}`,
+                    field: `${t('editor_pair') || 'Paire'} ${i + 1}`,
+                    message: t('validation_pair_incomplete') || `La paire ${i + 1} est incomplete`
+                });
+            }
+        });
+    }
+}
+
+/** QCM. */
+function validateQCM(data, errors) {
+    if (!Array.isArray(data.questions) || data.questions.length === 0) {
+        errors.push({
+            path: 'questions',
+            field: 'QCM',
+            message: t('validation_no_questions') || 'Au moins une question est requise'
+        });
+    } else {
+        data.questions.forEach((q, i) => {
+            if (!q?.text || q.text.trim() === '') {
+                errors.push({
+                    path: `questions.${i}.text`,
+                    field: `Question ${i + 1}`,
+                    message: t('validation_question_empty') || `La question ${i + 1} est vide`
+                });
+            }
+        });
+    }
+}
+
+/** glossaireXml. */
+function validateGlossaireXml(data, errors) {
+    if (!Array.isArray(data.entries) || data.entries.length === 0) {
+        errors.push({
+            path: 'entries',
+            field: t('editor_section_entries') || 'Entrees',
+            message: t('validation_no_entries') || 'Au moins une entree est requise'
+        });
+    } else {
+        data.entries.forEach((entry, i) => {
+            if (!entry?.concept || entry.concept.trim() === '') {
+                errors.push({
+                    path: `entries.${i}.concept`,
+                    field: `${t('editor_entry') || 'Entree'} ${i + 1}`,
+                    message: t('validation_entry_no_concept') || `L'entree ${i + 1} n'a pas de concept`
+                });
+            }
+            if (!entry?.definition || entry.definition.trim() === '') {
+                errors.push({
+                    path: `entries.${i}.definition`,
+                    field: `${t('editor_entry') || 'Entree'} ${i + 1}`,
+                    message: t('validation_entry_no_definition') || `L'entree ${i + 1} n'a pas de definition`
+                });
+            }
+        });
+    }
+}
+
+/** Page. */
+function validatePage(data, errors) {
+    if (!Array.isArray(data.blocks) || data.blocks.length === 0) {
+        errors.push({
+            path: 'blocks',
+            field: t('editor_section_blocks') || 'Blocs',
+            message: t('validation_no_blocks') || 'Au moins un bloc est requis'
+        });
+    } else {
+        data.blocks.forEach((block, i) => {
+            if (!block?.type || block.type.trim() === '') {
+                errors.push({
+                    path: `blocks.${i}.type`,
+                    field: `${t('editor_block') || 'Bloc'} ${i + 1}`,
+                    message: t('validation_block_no_type') || `Le bloc ${i + 1} n'a pas de type`
+                });
+            }
+        });
+    }
+}
+
+/** Livre / elea_livre. */
+function validateLivre(data, errors) {
+    if (!data.title || (typeof data.title === 'string' && data.title.trim() === '')) {
+        errors.push({
+            path: 'title',
+            field: t('editor_title') || 'Titre',
+            message: t('validation_livre_no_title') || 'Le livre doit avoir un titre'
+        });
+    }
+    if (!Array.isArray(data.chapters) || data.chapters.length === 0) {
+        errors.push({
+            path: 'chapters',
+            field: t('editor_livre_chapters') || 'Chapitres',
+            message: t('validation_livre_no_chapters') || 'Le livre doit contenir au moins un chapitre'
+        });
+    } else {
+        // Le premier chapitre ne peut pas être un sous-chapitre
+        if (data.chapters[0]?.subchapter) {
+            errors.push({
+                path: 'chapters.0.subchapter',
+                field: `${t('editor_livre_chapter') || 'Chapitre'} 1`,
+                message: t('validation_livre_first_subchapter') || 'Le premier chapitre ne peut pas être un sous-chapitre'
+            });
+        }
+        // Validation séquence : sous-chapitre orphelin
+        // Un sous-chapitre est valide tant qu'il existe au moins un chapitre normal avant lui
+        // (plusieurs sous-chapitres consécutifs peuvent partager le même parent).
+        let hasParentBefore = false;
+        data.chapters.forEach((ch, i) => {
+            if (ch?.subchapter && !hasParentBefore) {
+                errors.push({
+                    path: `chapters.${i}.subchapter`,
+                    field: `${t('editor_livre_chapter') || 'Chapitre'} ${i + 1}`,
+                    message: t('validation_livre_orphan_subchapter') || 'Un sous-chapitre doit suivre un chapitre normal'
+                });
+            }
+            if (!ch?.subchapter) hasParentBefore = true;
+            if (!ch?.title || (typeof ch.title === 'string' && ch.title.trim() === '')) {
+                errors.push({
+                    path: `chapters.${i}.title`,
+                    field: `${t('editor_livre_chapter') || 'Chapitre'} ${i + 1}`,
+                    message: t('validation_livre_chapter_no_title') || `Le chapitre ${i + 1} n'a pas de titre`
+                });
+            }
+            // Chaque bloc doit avoir un type
+            if (Array.isArray(ch?.blocks)) {
+                ch.blocks.forEach((block, j) => {
+                    if (!block?.type || block.type.trim() === '') {
+                        errors.push({
+                            path: `chapters.${i}.blocks.${j}.type`,
+                            field: `${t('editor_block') || 'Bloc'} ${j + 1}`,
+                            message: t('validation_block_no_type') || `Le bloc ${j + 1} n'a pas de type`
+                        });
+                    }
+                });
+            }
+        });
+    }
+}
+
+/** CoursePresentation. */
+function validateCoursePresentation(data, errors) {
+    if (!Array.isArray(data.slides) || data.slides.length < 2) {
+        errors.push({
+            path: 'slides',
+            field: t('editor_cp_section_slides') || 'Slides',
+            message: t('validation_cp_min_slides') || ''
+        });
+    } else {
+        data.slides.forEach((slide, i) => {
+            if (!slide.type || slide.type.trim() === '') {
+                errors.push({
+                    path: `slides.${i}.type`,
+                    field: `${t('editor_cp_slide') || 'Slide'} ${i + 1}`,
+                    message: t('validation_cp_no_type') || ''
+                });
+            }
+            if (!slide.title || slide.title.trim() === '') {
+                errors.push({
+                    path: `slides.${i}.title`,
+                    field: `${t('editor_cp_slide') || 'Slide'} ${i + 1}`,
+                    message: t('validation_cp_no_title') || ''
+                });
+            }
+            // Exercice obligatoire pour les slides quiz/content-quiz/summary
+            // Note: après normalisation, exercise.library est déplacé vers _exerciseLibrary
+            if (['quiz', 'content-quiz', 'summary'].includes(slide.type)) {
+                const hasExerciseLib = slide._exerciseLibrary || (slide.exercise && slide.exercise.library);
+                if (!slide.exercise || !hasExerciseLib) {
+                    errors.push({
+                        path: `slides.${i}.exercise`,
+                        field: `${t('editor_cp_slide') || 'Slide'} ${i + 1}`,
+                        message: t('validation_cp_no_exercise') || ''
+                    });
+                }
+            }
+        });
+    }
+}
+
+/** InteractiveBook. */
+function validateInteractiveBook(data, errors) {
+    if (!Array.isArray(data.chapters) || data.chapters.length < 2) {
+        errors.push({
+            path: 'chapters',
+            field: t('editor_ib_section_chapters') || 'Chapitres',
+            message: t('validation_ib_min_chapters') || ''
+        });
+    } else {
+        data.chapters.forEach((ch, i) => {
+            if (!ch.title || !ch.title.trim()) {
+                errors.push({
+                    path: `chapters.${i}.title`,
+                    field: `${t('editor_ib_chapter') || 'Chapitre'} ${i + 1}`,
+                    message: t('validation_ib_no_chapter_title') || ''
+                });
+            }
+            if (!Array.isArray(ch.content) || ch.content.length === 0) {
+                errors.push({
+                    path: `chapters.${i}.content`,
+                    field: `${t('editor_ib_chapter') || 'Chapitre'} ${i + 1}`,
+                    message: t('validation_ib_empty_chapter') || ''
+                });
+            }
+            // Bloc exercice sans type d'exercice choisi
+            // Note: après normalisation, library est déplacé vers _exerciseLibrary
+            (Array.isArray(ch.content) ? ch.content : []).forEach((b, j) => {
+                if (!b || typeof b !== 'object') return;
+                const blockType = b._blockType || b.type;
+                if (blockType === 'exercise' && !(b._exerciseLibrary || b.library)) {
+                    errors.push({
+                        path: `chapters.${i}.content.${j}`,
+                        field: `${t('editor_ib_chapter') || 'Chapitre'} ${i + 1} — ${t('editor_ib_block') || 'Bloc'} ${j + 1}`,
+                        message: t('validation_ib_no_exercise_lib') || ''
+                    });
+                }
+                // Bloc image sans fichier : le processeur l'ignorerait silencieusement
+                // (buildImageBlock exige image.path) → on le signale ici à l'utilisateur.
+                if (blockType === 'image' && !(b.image && b.image.path)) {
+                    errors.push({
+                        path: `chapters.${i}.content.${j}`,
+                        field: `${t('editor_ib_chapter') || 'Chapitre'} ${i + 1} — ${t('editor_ib_block') || 'Bloc'} ${j + 1}`,
+                        message: t('validation_ib_image_no_file') || ''
+                    });
+                }
+            });
+        });
+    }
+}
+
+/**
+ * Registre : clé de module → validation dédiée. Plusieurs clés peuvent partager
+ * une règle (les trois variantes de QuizSet, `Livre`/`elea_livre`), ce que la
+ * table rend explicite là où la chaîne de `if` d’origine le noyait.
+ *
+ * Prototype nul : une clé de module valant `constructor` ou `toString` ne doit
+ * pas résoudre vers une méthode héritée d’`Object`.
+ */
+const TYPE_RULES = Object.assign(Object.create(null), {
+    QuizSet: validateQuizSet,
+    QuizSetQCM: validateQuizSet,
+    QuizSetVF: validateQuizSet,
+    MultipleChoice: validateMultipleChoice,
+    TrueFalse: validateTrueFalse,
+    ImageHotspots: validateImageHotspots,
+    FindTheHotspot: validateFindTheHotspot,
+    FindMultipleHotspots: validateFindTheHotspot,
+    FindTheWords: validateFindTheWords,
+    FillInTheBlanks: validateFillInTheBlanks,
+    ComplexFillTheBlanks: validateFillInTheBlanks,
+    MarkTheWords: validateMarkTheWords,
+    DragTheWords: validateDragTheWords,
+    DragAndDrop: validateDragAndDrop,
+    Crossword: validateCrossword,
+    Flashcards: validateFlashcards,
+    DialogCards: validateDialogCards,
+    Timeline: validateTimeline,
+    Essay: validateEssay,
+    Summary: validateSummary,
+    SingleChoiceSet: validateSingleChoiceSet,
+    SortParagraphs: validateSortParagraphs,
+    Chart: validateChart,
+    Millionnaire: validateMillionnaire,
+    Appariement: validateAppariement,
+    QCM: validateQCM,
+    glossaireXml: validateGlossaireXml,
+    Page: validatePage,
+    Livre: validateLivre,
+    elea_livre: validateLivre,
+    CoursePresentation: validateCoursePresentation,
+    InteractiveBook: validateInteractiveBook
+});
+
+/** Clés de module disposant d’une validation dédiée (pour les tests). */
+export const VALIDATED_MODULE_KEYS = Object.freeze(Object.keys(TYPE_RULES));
 
 /**
  * Validations specifiques par type de module.
@@ -358,622 +1137,10 @@ function getTypeSpecificErrors(data, schema) {
     const errors = [];
     const moduleKey = schema?._moduleKey || '';
 
-    // =================================================================
-    // VALIDATIONS H5P
-    // =================================================================
-
-    // --- QuizSet / QuizSetQCM / QuizSetVF ---
-    if (moduleKey === 'QuizSet' || moduleKey === 'QuizSetQCM' || moduleKey === 'QuizSetVF') {
-        if (!Array.isArray(data.questions) || data.questions.length === 0) {
-            errors.push({
-                path: 'questions',
-                field: 'Quiz',
-                message: t('validation_quiz_no_questions') || 'Le quiz doit contenir au moins une question'
-            });
-        } else {
-            data.questions.forEach((q, i) => {
-                if (!q.library) {
-                    errors.push({
-                        path: `questions.${i}.library`,
-                        field: `Question ${i + 1}`,
-                        message: t('validation_question_no_type') || `La question ${i + 1} n'a pas de type defini`
-                    });
-                }
-            });
-        }
-    }
-
-    // --- MultipleChoice ---
-    if (moduleKey === 'MultipleChoice') {
-        if (!Array.isArray(data.answers) || data.answers.length === 0) {
-            errors.push({
-                path: 'answers',
-                field: t('editor_section_answers') || 'Reponses',
-                message: t('validation_no_answers') || 'Au moins une reponse est requise'
-            });
-        }
-    }
-
-    // --- TrueFalse ---
-    if (moduleKey === 'TrueFalse') {
-        if (!data.question || (typeof data.question === 'string' && data.question.trim() === '')) {
-            errors.push({
-                path: 'question',
-                field: 'Question',
-                message: t('validation_question_empty') || 'La question est vide'
-            });
-        }
-    }
-
-    // --- ImageHotspots (Image interactive) ---
-    // Un bloc de contenu vide serait SILENCIEUSEMENT supprimé à la dénormalisation puis
-    // le point sauté par le player (visible dans l'éditeur, absent de l'activité — audit N4).
-    // On bloque la sauvegarde avec un message ciblé plutôt que de laisser perdre le point.
-    if (moduleKey === 'ImageHotspots') {
-        const rawTmpl = t('validation_ih_block_empty');
-        const tmpl = (rawTmpl && rawTmpl !== 'validation_ih_block_empty')
-            ? rawTmpl
-            : 'Le point {n} a un bloc « {type} » sans contenu : complétez-le ou supprimez le bloc.';
-        (Array.isArray(data.hotspots) ? data.hotspots : []).forEach((h, i) => {
-            const blocks = (h && Array.isArray(h.content)) ? h.content : [];
-            blocks.forEach((b, j) => {
-                if (!b || typeof b !== 'object') return;
-                const type = b._contentType || 'text';
-                const isEmpty =
-                    (type === 'text' && (!b.text || !String(b.text).trim())) ||
-                    (type === 'image' && !(b.image && b.image.path)) ||
-                    (type === 'audio' && !((b.audioFile && b.audioFile.path) || (b.audioUrl && String(b.audioUrl).trim()))) ||
-                    (type === 'video' && !((b.videoFile && b.videoFile.path) || (b.videoUrl && String(b.videoUrl).trim())));
-                if (isEmpty) {
-                    errors.push({
-                        path: `hotspots.${i}.content.${j}`,
-                        field: (h && h.header) ? h.header : `Point ${i + 1}`,
-                        message: tmpl.replace('{n}', String(i + 1)).replace('{type}', type)
-                    });
-                }
-            });
-        });
-    }
-
-    // --- Questions hotspot (Find the Hotspot / Find Multiple Hotspots) ---
-    // Sans zone correcte, l'activité est infaisable (score maximum nul) : on bloque la
-    // sauvegarde plutôt que de laisser produire un exercice sans réponse possible.
-    if (moduleKey === 'FindTheHotspot' || moduleKey === 'FindMultipleHotspots') {
-        const zones = Array.isArray(data.hotspots) ? data.hotspots : [];
-        if (zones.length && !zones.some(h => h && h.correct === true)) {
-            const raw = t('validation_hq_no_correct');
-            errors.push({
-                path: 'hotspots.0.correct',
-                field: (zones[0] && zones[0].label) ? zones[0].label : 'Zones',
-                message: (raw && raw !== 'validation_hq_no_correct')
-                    ? raw
-                    : 'Aucune zone correcte : cochez « Zone correcte » sur au moins une zone.'
-            });
-        }
-    }
-
-    // --- FindTheWords ---
-    if (moduleKey === 'FindTheWords') {
-        const wl = data.wordList;
-        if (!wl || (typeof wl === 'string' && wl.trim() === '')) {
-            errors.push({
-                path: 'wordList',
-                field: t('editor_word_list') || 'Liste de mots',
-                message: t('validation_wordlist_empty') || 'La liste de mots est vide'
-            });
-        }
-    }
-
-    // --- FillInTheBlanks ---
-    if (moduleKey === 'FillInTheBlanks' || moduleKey === 'ComplexFillTheBlanks') {
-        if (!Array.isArray(data.questions) || data.questions.length === 0) {
-            errors.push({
-                path: 'questions',
-                field: t('editor_section_sentences') || 'Phrases',
-                message: t('validation_no_sentences') || 'Au moins une phrase est requise'
-            });
-        }
-    }
-
-    // --- MarkTheWords ---
-    if (moduleKey === 'MarkTheWords') {
-        if (!data.textField || (typeof data.textField === 'string' && data.textField.trim() === '')) {
-            errors.push({
-                path: 'textField',
-                field: t('editor_text_with_blanks') || 'Texte',
-                message: t('validation_text_empty') || 'Le texte est vide'
-            });
-        }
-    }
-
-    // --- DragTheWords ---
-    if (moduleKey === 'DragTheWords') {
-        if (!data.textField || (typeof data.textField === 'string' && data.textField.trim() === '')) {
-            errors.push({
-                path: 'textField',
-                field: t('editor_text_with_blanks') || 'Texte',
-                message: t('validation_text_empty') || 'Le texte est vide'
-            });
-        }
-    }
-
-    // --- DragAndDrop ---
-    if (moduleKey === 'DragAndDrop') {
-        if (!Array.isArray(data.dropZones) || data.dropZones.length < 2) {
-            errors.push({
-                path: 'dropZones',
-                field: t('editor_section_zones') || 'Zones',
-                message: t('validation_min_zones') || 'Au moins 2 zones de dépôt sont requises'
-            });
-        }
-        if (!Array.isArray(data.elements) || data.elements.length < 2) {
-            errors.push({
-                path: 'elements',
-                field: t('editor_section_elements') || 'Étiquettes',
-                message: t('validation_min_elements') || 'Au moins 2 étiquettes sont requises'
-            });
-        }
-        // Vérifier que chaque élément a au moins une zone cible valide
-        if (Array.isArray(data.elements) && Array.isArray(data.dropZones)) {
-            data.elements.forEach((el, i) => {
-                const zoneIndices = Array.isArray(el.zoneIndices) ? el.zoneIndices : [];
-                if (zoneIndices.length === 0) {
-                    errors.push({
-                        path: `elements.${i}.zoneIndices`,
-                        field: `${t('editor_element') || 'Étiquette'} ${i + 1}`,
-                        message: t('validation_no_zone_selected') || 'Au moins une zone cible doit être sélectionnée'
-                    });
-                } else {
-                    const hasInvalid = zoneIndices.some(zi => {
-                        const idx = typeof zi === 'string' ? parseInt(zi, 10) : zi;
-                        return idx < 0 || idx >= data.dropZones.length;
-                    });
-                    if (hasInvalid) {
-                        errors.push({
-                            path: `elements.${i}.zoneIndices`,
-                            field: `${t('editor_element') || 'Étiquette'} ${i + 1}`,
-                            message: t('validation_invalid_zone') || 'Zone cible invalide'
-                        });
-                    }
-                }
-            });
-        }
-    }
-
-    // --- Crossword ---
-    if (moduleKey === 'Crossword') {
-        if (!Array.isArray(data.words) || data.words.length === 0) {
-            errors.push({
-                path: 'words',
-                field: t('editor_section_words') || 'Mots',
-                message: t('validation_no_words') || 'Au moins un mot est requis'
-            });
-        } else {
-            data.words.forEach((word, i) => {
-                if (!word.answer || word.answer.trim() === '') {
-                    errors.push({
-                        path: `words.${i}.answer`,
-                        field: `${t('editor_word') || 'Mot'} ${i + 1}`,
-                        message: t('validation_word_no_answer') || `Le mot ${i + 1} n'a pas de reponse`
-                    });
-                }
-                if (!word.clue || word.clue.trim() === '') {
-                    errors.push({
-                        path: `words.${i}.clue`,
-                        field: `${t('editor_word') || 'Mot'} ${i + 1}`,
-                        message: t('validation_word_no_clue') || `Le mot ${i + 1} n'a pas d'indice`
-                    });
-                }
-            });
-        }
-    }
-
-    // --- Flashcards ---
-    if (moduleKey === 'Flashcards') {
-        if (!Array.isArray(data.cards) || data.cards.length === 0) {
-            errors.push({
-                path: 'cards',
-                field: t('editor_section_cards') || 'Cartes',
-                message: t('validation_no_cards') || 'Au moins une carte est requise'
-            });
-        } else {
-            data.cards.forEach((card, i) => {
-                if (!card.text || card.text.trim() === '') {
-                    errors.push({
-                        path: `cards.${i}.text`,
-                        field: `${t('editor_card') || 'Carte'} ${i + 1}`,
-                        message: t('validation_card_no_question') || `La carte ${i + 1} n'a pas de question`
-                    });
-                }
-                if (!card.answer || card.answer.trim() === '') {
-                    errors.push({
-                        path: `cards.${i}.answer`,
-                        field: `${t('editor_card') || 'Carte'} ${i + 1}`,
-                        message: t('validation_card_no_answer') || `La carte ${i + 1} n'a pas de reponse`
-                    });
-                }
-            });
-        }
-    }
-
-    // --- DialogCards ---
-    if (moduleKey === 'DialogCards') {
-        if (!Array.isArray(data.dialogs) || data.dialogs.length === 0) {
-            errors.push({
-                path: 'dialogs',
-                field: t('editor_section_dialogs') || 'Dialogues',
-                message: t('validation_no_dialogs') || 'Au moins un dialogue est requis'
-            });
-        } else {
-            data.dialogs.forEach((dialog, i) => {
-                if (!dialog.text || dialog.text.trim() === '') {
-                    errors.push({
-                        path: `dialogs.${i}.text`,
-                        field: `${t('editor_dialog') || 'Dialogue'} ${i + 1}`,
-                        message: t('validation_dialog_no_front') || `Le dialogue ${i + 1} n'a pas de recto`
-                    });
-                }
-                if (!dialog.answer || dialog.answer.trim() === '') {
-                    errors.push({
-                        path: `dialogs.${i}.answer`,
-                        field: `${t('editor_dialog') || 'Dialogue'} ${i + 1}`,
-                        message: t('validation_dialog_no_back') || `Le dialogue ${i + 1} n'a pas de verso`
-                    });
-                }
-            });
-        }
-    }
-
-    // --- Timeline ---
-    if (moduleKey === 'Timeline') {
-        const dates = data.timeline?.date;
-        if (!Array.isArray(dates) || dates.length === 0) {
-            errors.push({
-                path: 'timeline.date',
-                field: 'Timeline',
-                message: t('validation_no_events') || 'Au moins un evenement est requis'
-            });
-        }
-    }
-
-    // --- Essay ---
-    if (moduleKey === 'Essay') {
-        if (!Array.isArray(data.keywords) || data.keywords.length === 0) {
-            errors.push({
-                path: 'keywords',
-                field: t('editor_section_keywords') || 'Mots-cles',
-                message: t('validation_no_keywords') || 'Au moins un mot-cle est requis'
-            });
-        }
-    }
-
-    // --- Summary ---
-    if (moduleKey === 'Summary') {
-        if (!Array.isArray(data.summaries) || data.summaries.length === 0) {
-            errors.push({
-                path: 'summaries',
-                field: t('editor_section_summaries') || 'Groupes',
-                message: t('validation_no_summaries') || 'Au moins un groupe est requis'
-            });
-        }
-    }
-
-    // --- SingleChoiceSet ---
-    if (moduleKey === 'SingleChoiceSet') {
-        if (!Array.isArray(data.choices) || data.choices.length === 0) {
-            errors.push({
-                path: 'choices',
-                field: t('editor_section_choices') || 'Questions',
-                message: t('validation_no_choices') || 'Au moins une question est requise'
-            });
-        } else {
-            data.choices.forEach((choice, i) => {
-                if (!choice.question || choice.question.trim() === '') {
-                    errors.push({
-                        path: `choices.${i}.question`,
-                        field: `Question ${i + 1}`,
-                        message: t('validation_choice_empty') || `La question ${i + 1} est vide`
-                    });
-                }
-            });
-        }
-    }
-
-    // --- SortParagraphs ---
-    if (moduleKey === 'SortParagraphs') {
-        if (!Array.isArray(data.paragraphs) || data.paragraphs.length === 0) {
-            errors.push({
-                path: 'paragraphs',
-                field: t('editor_section_paragraphs') || 'Paragraphes',
-                message: t('validation_no_paragraphs') || 'Au moins un paragraphe est requis'
-            });
-        }
-    }
-
-    // --- Chart ---
-    if (moduleKey === 'Chart') {
-        if (!Array.isArray(data.listOfTypes) || data.listOfTypes.length === 0) {
-            errors.push({
-                path: 'listOfTypes',
-                field: t('editor_section_data') || 'Donnees',
-                message: t('validation_no_chart_data') || 'Au moins une donnee est requise'
-            });
-        }
-    }
-
-    // =================================================================
-    // VALIDATIONS MOODLE
-    // =================================================================
-
-    // --- Millionnaire ---
-    if (moduleKey === 'Millionnaire') {
-        if (!Array.isArray(data.questions) || data.questions.length !== 6) {
-            errors.push({
-                path: 'questions',
-                field: 'Millionnaire',
-                message: t('validation_millionnaire_exact_6') || 'Le jeu doit contenir exactement 6 questions'
-            });
-        }
-        if (Array.isArray(data.questions)) {
-            data.questions.forEach((q, i) => {
-                if (!q.question || q.question.trim() === '') {
-                    errors.push({
-                        path: `questions.${i}.question`,
-                        field: `Question ${i + 1}`,
-                        message: t('validation_question_empty') || `La question ${i + 1} est vide`
-                    });
-                }
-                if (!q.goodanswer || q.goodanswer.trim() === '') {
-                    errors.push({
-                        path: `questions.${i}.goodanswer`,
-                        field: `Question ${i + 1}`,
-                        message: t('validation_no_good_answer') || `La question ${i + 1} n'a pas de bonne reponse`
-                    });
-                }
-            });
-        }
-    }
-
-    // --- Appariement ---
-    if (moduleKey === 'Appariement') {
-        if (!Array.isArray(data.pairs) || data.pairs.length === 0) {
-            errors.push({
-                path: 'pairs',
-                field: t('editor_section_pairs') || 'Paires',
-                message: t('validation_no_pairs') || 'Au moins une paire est requise'
-            });
-        } else {
-            data.pairs.forEach((pair, i) => {
-                if ((!pair.question || pair.question.trim() === '') || (!pair.answer || pair.answer.trim() === '')) {
-                    errors.push({
-                        path: `pairs.${i}`,
-                        field: `${t('editor_pair') || 'Paire'} ${i + 1}`,
-                        message: t('validation_pair_incomplete') || `La paire ${i + 1} est incomplete`
-                    });
-                }
-            });
-        }
-    }
-
-    // --- QCM (Moodle) ---
-    if (moduleKey === 'QCM') {
-        if (!Array.isArray(data.questions) || data.questions.length === 0) {
-            errors.push({
-                path: 'questions',
-                field: 'QCM',
-                message: t('validation_no_questions') || 'Au moins une question est requise'
-            });
-        } else {
-            data.questions.forEach((q, i) => {
-                if (!q.text || q.text.trim() === '') {
-                    errors.push({
-                        path: `questions.${i}.text`,
-                        field: `Question ${i + 1}`,
-                        message: t('validation_question_empty') || `La question ${i + 1} est vide`
-                    });
-                }
-            });
-        }
-    }
-
-    // --- Glossaire (elea_glossaire) ---
-    if (moduleKey === 'glossaireXml') {
-        if (!Array.isArray(data.entries) || data.entries.length === 0) {
-            errors.push({
-                path: 'entries',
-                field: t('editor_section_entries') || 'Entrees',
-                message: t('validation_no_entries') || 'Au moins une entree est requise'
-            });
-        } else {
-            data.entries.forEach((entry, i) => {
-                if (!entry.concept || entry.concept.trim() === '') {
-                    errors.push({
-                        path: `entries.${i}.concept`,
-                        field: `${t('editor_entry') || 'Entree'} ${i + 1}`,
-                        message: t('validation_entry_no_concept') || `L'entree ${i + 1} n'a pas de concept`
-                    });
-                }
-                if (!entry.definition || entry.definition.trim() === '') {
-                    errors.push({
-                        path: `entries.${i}.definition`,
-                        field: `${t('editor_entry') || 'Entree'} ${i + 1}`,
-                        message: t('validation_entry_no_definition') || `L'entree ${i + 1} n'a pas de definition`
-                    });
-                }
-            });
-        }
-    }
-
-    // --- Page (Moodle) ---
-    if (moduleKey === 'Page') {
-        if (!Array.isArray(data.blocks) || data.blocks.length === 0) {
-            errors.push({
-                path: 'blocks',
-                field: t('editor_section_blocks') || 'Blocs',
-                message: t('validation_no_blocks') || 'Au moins un bloc est requis'
-            });
-        } else {
-            data.blocks.forEach((block, i) => {
-                if (!block.type || block.type.trim() === '') {
-                    errors.push({
-                        path: `blocks.${i}.type`,
-                        field: `${t('editor_block') || 'Bloc'} ${i + 1}`,
-                        message: t('validation_block_no_type') || `Le bloc ${i + 1} n'a pas de type`
-                    });
-                }
-            });
-        }
-    }
-
-    // --- Livre (Moodle book, multi-chapitres) ---
-    if (moduleKey === 'Livre' || moduleKey === 'elea_livre') {
-        if (!data.title || (typeof data.title === 'string' && data.title.trim() === '')) {
-            errors.push({
-                path: 'title',
-                field: t('editor_title') || 'Titre',
-                message: t('validation_livre_no_title') || 'Le livre doit avoir un titre'
-            });
-        }
-        if (!Array.isArray(data.chapters) || data.chapters.length === 0) {
-            errors.push({
-                path: 'chapters',
-                field: t('editor_livre_chapters') || 'Chapitres',
-                message: t('validation_livre_no_chapters') || 'Le livre doit contenir au moins un chapitre'
-            });
-        } else {
-            // Le premier chapitre ne peut pas être un sous-chapitre
-            if (data.chapters[0].subchapter) {
-                errors.push({
-                    path: 'chapters.0.subchapter',
-                    field: `${t('editor_livre_chapter') || 'Chapitre'} 1`,
-                    message: t('validation_livre_first_subchapter') || 'Le premier chapitre ne peut pas être un sous-chapitre'
-                });
-            }
-            // Validation séquence : sous-chapitre orphelin
-            // Un sous-chapitre est valide tant qu'il existe au moins un chapitre normal avant lui
-            // (plusieurs sous-chapitres consécutifs peuvent partager le même parent).
-            let hasParentBefore = false;
-            data.chapters.forEach((ch, i) => {
-                if (ch.subchapter && !hasParentBefore) {
-                    errors.push({
-                        path: `chapters.${i}.subchapter`,
-                        field: `${t('editor_livre_chapter') || 'Chapitre'} ${i + 1}`,
-                        message: t('validation_livre_orphan_subchapter') || 'Un sous-chapitre doit suivre un chapitre normal'
-                    });
-                }
-                if (!ch.subchapter) hasParentBefore = true;
-                if (!ch.title || (typeof ch.title === 'string' && ch.title.trim() === '')) {
-                    errors.push({
-                        path: `chapters.${i}.title`,
-                        field: `${t('editor_livre_chapter') || 'Chapitre'} ${i + 1}`,
-                        message: t('validation_livre_chapter_no_title') || `Le chapitre ${i + 1} n'a pas de titre`
-                    });
-                }
-                // Chaque bloc doit avoir un type
-                if (Array.isArray(ch.blocks)) {
-                    ch.blocks.forEach((block, j) => {
-                        if (!block.type || block.type.trim() === '') {
-                            errors.push({
-                                path: `chapters.${i}.blocks.${j}.type`,
-                                field: `${t('editor_block') || 'Bloc'} ${j + 1}`,
-                                message: t('validation_block_no_type') || `Le bloc ${j + 1} n'a pas de type`
-                            });
-                        }
-                    });
-                }
-            });
-        }
-    }
-
-    // --- CoursePresentation ---
-    if (moduleKey === 'CoursePresentation') {
-        if (!Array.isArray(data.slides) || data.slides.length < 2) {
-            errors.push({
-                path: 'slides',
-                field: t('editor_cp_section_slides') || 'Slides',
-                message: t('validation_cp_min_slides') || ''
-            });
-        } else {
-            data.slides.forEach((slide, i) => {
-                if (!slide.type || slide.type.trim() === '') {
-                    errors.push({
-                        path: `slides.${i}.type`,
-                        field: `${t('editor_cp_slide') || 'Slide'} ${i + 1}`,
-                        message: t('validation_cp_no_type') || ''
-                    });
-                }
-                if (!slide.title || slide.title.trim() === '') {
-                    errors.push({
-                        path: `slides.${i}.title`,
-                        field: `${t('editor_cp_slide') || 'Slide'} ${i + 1}`,
-                        message: t('validation_cp_no_title') || ''
-                    });
-                }
-                // Exercice obligatoire pour les slides quiz/content-quiz/summary
-                // Note: après normalisation, exercise.library est déplacé vers _exerciseLibrary
-                if (['quiz', 'content-quiz', 'summary'].includes(slide.type)) {
-                    const hasExerciseLib = slide._exerciseLibrary || (slide.exercise && slide.exercise.library);
-                    if (!slide.exercise || !hasExerciseLib) {
-                        errors.push({
-                            path: `slides.${i}.exercise`,
-                            field: `${t('editor_cp_slide') || 'Slide'} ${i + 1}`,
-                            message: t('validation_cp_no_exercise') || ''
-                        });
-                    }
-                }
-            });
-        }
-    }
-
-    // --- InteractiveBook ---
-    if (moduleKey === 'InteractiveBook') {
-        if (!Array.isArray(data.chapters) || data.chapters.length < 2) {
-            errors.push({
-                path: 'chapters',
-                field: t('editor_ib_section_chapters') || 'Chapitres',
-                message: t('validation_ib_min_chapters') || ''
-            });
-        } else {
-            data.chapters.forEach((ch, i) => {
-                if (!ch.title || !ch.title.trim()) {
-                    errors.push({
-                        path: `chapters.${i}.title`,
-                        field: `${t('editor_ib_chapter') || 'Chapitre'} ${i + 1}`,
-                        message: t('validation_ib_no_chapter_title') || ''
-                    });
-                }
-                if (!Array.isArray(ch.content) || ch.content.length === 0) {
-                    errors.push({
-                        path: `chapters.${i}.content`,
-                        field: `${t('editor_ib_chapter') || 'Chapitre'} ${i + 1}`,
-                        message: t('validation_ib_empty_chapter') || ''
-                    });
-                }
-                // Bloc exercice sans type d'exercice choisi
-                // Note: après normalisation, library est déplacé vers _exerciseLibrary
-                (Array.isArray(ch.content) ? ch.content : []).forEach((b, j) => {
-                    if (!b || typeof b !== 'object') return;
-                    const blockType = b._blockType || b.type;
-                    if (blockType === 'exercise' && !(b._exerciseLibrary || b.library)) {
-                        errors.push({
-                            path: `chapters.${i}.content.${j}`,
-                            field: `${t('editor_ib_chapter') || 'Chapitre'} ${i + 1} — ${t('editor_ib_block') || 'Bloc'} ${j + 1}`,
-                            message: t('validation_ib_no_exercise_lib') || ''
-                        });
-                    }
-                    // Bloc image sans fichier : le processeur l'ignorerait silencieusement
-                    // (buildImageBlock exige image.path) → on le signale ici à l'utilisateur.
-                    if (blockType === 'image' && !(b.image && b.image.path)) {
-                        errors.push({
-                            path: `chapters.${i}.content.${j}`,
-                            field: `${t('editor_ib_chapter') || 'Chapitre'} ${i + 1} — ${t('editor_ib_block') || 'Bloc'} ${j + 1}`,
-                            message: t('validation_ib_image_no_file') || ''
-                        });
-                    }
-                });
-            });
-        }
-    }
+    // Validation dédiée à l’activité (cf. TYPE_RULES ci-dessus). Un accès par clé
+    // remplace la chaîne de 27 `if (moduleKey === …)` séquentiels d’origine.
+    const rule = TYPE_RULES[moduleKey];
+    if (rule) rule(data, errors);
 
     // =================================================================
     // VALIDATIONS TRANSVERSALES (existantes, conservées)
@@ -993,7 +1160,7 @@ function getTypeSpecificErrors(data, schema) {
     // QCM Moodle: verifier chaque question (hasCorrectAnswer)
     if (moduleKey === 'QCM' && Array.isArray(data.questions)) {
         data.questions.forEach((q, i) => {
-            if (q.answers && Array.isArray(q.answers)) {
+            if (Array.isArray(q?.answers)) {
                 if (!validators.hasCorrectAnswer(q.answers)) {
                     errors.push({
                         path: `questions.${i}.answers`,

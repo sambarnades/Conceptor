@@ -719,3 +719,158 @@ Dépôts : `/d/Bureau/Forge/Caramel/sucrerie.forge.apps.education.fr` et `…/su
 - Le **CSS `.iv-*`** vit côté Sucrerie dans `assets/css/components/editor-view.css` (PAS `style.css`) → y reporter
   le nouveau bloc en adaptant aux tokens Sucrerie. `index.js` est divergent → reporter manuellement les 2 ajouts
   de `destroyEditor` (retrait classe + kill player).
+
+---
+
+## SESSION 2026-08-01 — Tube de Réseau Canopé (`tube.reseau-canope.fr`)
+
+**Demande** : accepter les vidéos PeerTube de Réseau Canopé (ex. `https://tube.reseau-canope.fr/w/nxr3HQZB65MUwoSjW4efES`).
+
+**Constat** : rien à « ajouter » côté reconnaissance — `parsePeerTubeUrl()` n'a JAMAIS filtré sur l'hôte
+(elle lit `/w/<id>` ou `/videos/watch/<uuid>` sur n'importe quelle origine, puis interroge
+`<origin>/api/v1/videos/<id>`). Chaîne vérifiée de bout en bout le 2026-08-01 sur l'exemple de l'auteur :
+- API `tube.reseau-canope.fr/api/v1/videos/<id>` → `200`, `access-control-allow-origin: *` ✅
+- master m3u8 + mp4 fragmentés sur `s3.reseau-canope.fr` → `200`, CORS `*`, `accept-ranges: bytes` ✅
+- `/captions` → `{"total":0}` (aucun sous-titre publié) → voie Albert ✅
+- transcription réelle via le webhook `caramel-video-transcript-submit-bas` → `status:"done"`, texte correct ✅
+
+**Un vrai trou trouvé au passage** — `collectRenditions()` ne retenait la piste **audio-seule**
+(`resolution.id === 0`) que si elle venait de `files` (progressif). Canopé est **HLS-only** : `files` est
+VIDE, l'audio-seule vit dans `streamingPlaylists[].files` (`…-0-fragmented.mp4`) → elle était **jetée**, et
+Albert recevait la 480p. Mesuré sur la vidéo de l'auteur : **1,9 Mo (audio) contre 6,3 Mo (480p)**, soit
+3,3× de marge perdue sur la limite 20 Mo d'Albert (donc découpage HLS déclenché bien plus tôt sur les
+vidéos longues de Canopé). Corrigé : la condition `kind === 'progressive'` est supprimée. Les deux voies
+sont couvertes par des tests (`pickPlayableRendition` ne prend jamais l'audio-seule pour la LECTURE).
+
+**Fichiers touchés**
+- `js/services/video-transcript.js` : correctif `collectRenditions` + doc d'en-tête (PeerTube = toutes
+  instances, pas « apps.education ») ; `collectRenditions`/`pickPlayableRendition`/`albertCandidates`
+  exportées pour les tests (fonctions pures).
+- `js/ui/video-url-section.js` : libellé du popover « ? » → « Tubes PeerTube (Apps Education, Réseau Canopé…) ».
+- `js/locales/*.json` (×11) : `video_help_peertube` retraduite.
+- `_headers` : `connect-src` élargi (`*.apps.education.fr` — qui couvre l'ancienne entrée codimd —,
+  `tube.reseau-canope.fr`, `s3.reseau-canope.fr`) + `media-src 'self' data: blob: https:` (absent
+  jusqu'ici → retombait sur `default-src 'self'`). CSP toujours en **Report-Only**, donc sans effet
+  fonctionnel ; c'est la description qui devient juste avant une éventuelle promotion.
+- `tests/test-editor-iv.js` : +13 assertions (groupe « Sources vidéo (PeerTube toutes instances) »),
+  sur des réponses d'API réelles relevées ce jour. Aucun réseau.
+
+**Validations** : suite navigateur complète `13842 PASS / 0 FAIL` ; `run_sidebar_media_sections` 56/56 ;
+`run_module_hygiene` 10/10 ; `verify-all-locales` 27/27 × 11 langues.
+
+**Reste (🔬, navigateur réel)** : coller le lien Canopé dans Caramel → champ vert, générer, puis vérifier la
+LECTURE de la vidéo dans l'aperçu et sur Éléa (le `.h5p` référence `s3.reseau-canope.fr` par URL ; le rendu
+final dépend du CSP/Referrer-Policy de la plateforme hôte, hors de portée de Caramel).
+
+### Le VRAI blocage : en-tête CORS dupliqué côté Canopé (corrigé par un relais serveur)
+
+Premier essai de l'auteur en navigateur : **« Vidéo non lisible ou plateforme non prise en charge »** — alors
+que toutes mes vérifications étaient vertes. Explication, et **piège de diagnostic à retenir** :
+
+`tube.reseau-canope.fr` renvoie `Access-Control-Allow-Origin: *` **DEUX FOIS** (nginx l'ajoute alors que
+PeerTube l'envoie déjà). Un navigateur REJETTE une réponse portant deux fois cet en-tête
+(« contains multiple values '*, *', but only one is allowed ») → `fetch` lève, la détection échoue.
+**`curl`, Node et le banc de test ne vérifient PAS le CORS** : hors navigateur, la chaîne semble parfaite.
+Toute vérification d'une nouvelle instance doit donc se faire **dans une page**, pas en `curl`.
+
+Correctif (`js/services/video-transcript.js`) : `fetchPeerTubeResource()` tente l'appel direct puis, s'il est
+refusé, repasse par le webhook d'import de page (`fetchPage`, déjà appelé depuis le navigateur par
+`services/ocr.js`) qui récupère la ressource côté serveur et rend le corps brut dans `text`. **Aucun
+développement n8n.** L'origine fautive est mémorisée pour la session (`brokenCorsOrigins`) → un seul
+aller-retour perdu, pas un par requête. Appliqué à l'API vidéo, aux `/captions` et au VTT des sous-titres
+(un VTT relayé qui ne donnerait aucun segment retombe sur la voie Albert plutôt que d'embarquer une piste vide).
+
+Validé en vrai navigateur (Playwright, réseau réel) : détection **860 ms**, puis parcours UI complet
+(coller le lien → champ vert, bouton IA déverrouillé) en **3 s**. Test hermétique associé dans
+`tests/test-editor-iv.js` (groupe « CORS cassé → repli par relais serveur », `fetch` bouchonné).
+
+---
+
+## SESSION 2026-08-01 (bis) — Les questions s'affichent SUR la vidéo par défaut
+
+**Demande auteur** : « avoir par défaut un cadre de texte plutôt qu'un bouton ». Auparavant l'élève devait
+cliquer une icône (visible 2 s) pour voir la question ; le mode « poster » existait mais se choisissait
+question par question dans l'éditeur — donc personne ne l'utilisait.
+
+**Défaut inversé** aux trois endroits qui tranchaient, désormais alignés (`display` absent ⇒ poster ;
+`button` doit être demandé explicitement) :
+- `js/h5p/processors/InteractiveVideo.js` — `buildInteractionItem` ;
+- `js/h5p/json-healer.js` — normalisation d'une valeur fournie ;
+- `js/editor/content-detector.js` — `default: 'poster'`, option mise en tête du menu.
+`assets/data/examples/interactive_video_1.json` : la 1ʳᵉ question illustre le nouveau défaut (plus de
+`display`/`placement`/`label`), les deux autres gardent un `poster` et un `button` explicites.
+Le **prompt n'a pas été touché** : le LLM n'émet pas ce champ, et son absence donne maintenant le bon mode.
+
+**Découverte au banc, contre l'intuition** : la TAILLE du cadre n'existe pas. J'avais d'abord ajouté une
+table de préréglages « version poster » (cadre centré agrandi, bandeau…). Mesure sur le vrai lecteur
+(H5P.InteractiveVideo 1.27, aperçu h5p-standalone, vraie vidéo Canopé), 4 géométries très différentes —
+76×56, 40×30, 90×38, 90×90 — **toutes rendues `900×506 px @ 0,0`**, soit exactement la surface de la vidéo :
+`repositionToWrapper` recalcule la boîte d'un poster puis la rabat sur le conteneur dès qu'elle déborde, ce
+qui arrive systématiquement. La table a donc été **supprimée** au profit de `POSTER_POS = 0/0/100/100` — on
+écrit la géométrie réellement appliquée plutôt que des coordonnées décoratives (qui mentiraient aussi à
+l'éditeur H5P natif d'Éléa/Lumi, lui fidèle aux valeurs stockées). Corollaire UI : le champ « placement »
+est masqué en mode poster (`showWhen: display=button`), on n'offre pas un réglage sans effet.
+Le mode bouton est **inchangé** — position historique 45/32/40/30 vérifiée par un test de non-régression.
+
+**Validations** : suite navigateur `13854 PASS / 0 FAIL` (dont 12 assertions IV nouvelles/réécrites) ;
+roundtrip T1–T5 conformes (inventaire T2 gelé inchangé) ; hygiène modules 10/10 ; locales 27/27 × 11 ;
+`run_semantics_audit` sans anomalie (`poster` est bien une valeur du semantics IV 1.27).
+
+**Reste (🔬)** : jugement esthétique de l'auteur sur le plein cadre en conditions réelles (Éléa), et
+arbitrage éventuel « bouton pour les textes à trous » si le plein cadre gêne sur les questions longues.
+
+---
+
+## SESSION 2026-08-01 (ter) — Réglage GLOBAL du mode d'affichage des questions
+
+**Demande auteur** (après essai du défaut « sur la vidéo ») : pouvoir choisir le mode **pour toute
+l'activité** depuis les informations générales — *affichage direct*, *au clic*, ou *personnalisé*,
+ce dernier laissant le réglage question par question.
+
+**Modèle retenu** : champ racine `displayMode` (`custom` | `poster` | `button`).
+- `poster`/`button` **s'imposent** à toutes les questions ; `custom` (défaut) laisse chaque question décider.
+- **Absent ⇒ `custom`** : aucun contenu antérieur ne change de rendu, et le healer ne CRÉE pas le champ
+  (pas de bruit dans les JSON et snapshots existants). Le défaut de l'éditeur est `custom` **et non**
+  `poster` pour la même raison : un contenu importé où l'enseignant a réglé ses questions une à une
+  garde ses choix. Une question qui ne dit rien s'affiche de toute façon directement.
+- Un mode global **n'écrase jamais** les `display` par question : ils restent dans le JSON et reprennent
+  effet au retour en « personnalisé » (testé).
+- En mode global, le menu par question est **masqué** — ainsi que `placement`/`label`/`visibleDuration`/
+  `buttonOnMobile`, qui en dépendent. Règle simple et explicable : **« personnalisé » est le mode où
+  l'apparence est réglable par question**. C'est exactement le modèle décrit par l'auteur.
+
+**Le point technique** : la visibilité du menu par question dépend d'un réglage vivant dans une AUTRE
+section — impossible avec le `showWhen` existant, qui ne lisait que les champs FRÈRES. D'où
+`matchesShowWhen()` dans `js/editor/json-utils.js` : **implémentation unique** (les deux moteurs de
+rendu, `array-manager.js` et `editor-core.js`, dupliquaient la logique) acceptant en plus `rootField`.
+Aucun listener pour cette portée **et il n'en faut pas** : l'éditeur est en maître-détail, le réglage
+global et le détail d'une question ne coexistent jamais à l'écran, et le détail est re-rendu à chaque
+navigation. `defaultValue` couvre le contenu antérieur au réglage. Au passage, `renderSelectField()`
+honore enfin `hint` (perdu silencieusement jusque-là, contrairement à tous les autres renderers).
+
+**Vérifié dans le VRAI DOM de l'éditeur** (Playwright, `renderEditor` réel) : réglage global présent et
+sur « personnalisé » ; menu par question **visible** en personnalisé (valeur `button` conservée),
+**masqué** après bascule en « sur la vidéo » ; `displayMode` bien enregistré ; les valeurs par question
+intactes dans les données.
+
+**Fichiers** : `js/editor/{json-utils,array-manager,editor-core,field-renderers,content-detector}.js`,
+`js/h5p/processors/InteractiveVideo.js`, `js/h5p/json-healer.js`, `js/locales/*.json` (5 clés × 11),
+`tests/test-editor-iv.js` (+17 assertions), `CHANGELOG` (6.3.0).
+
+**Validations** : suite navigateur `13871 PASS / 0 FAIL` ; roundtrip T1–T5 conformes ; hygiène 10/10 ;
+locales 27/27 × 11 ; `check-shared-i18n` OK.
+
+### ✅ Propagation Sucrerie FAITE (CLAUDE.md item 7)
+- **5 fichiers byte-identiques recopiés** (`json-utils`, `array-manager`, `editor-core`,
+  `field-renderers`, `content-detector`) — vérifié AVANT copie que Sucrerie était strictement aligné sur
+  Caramel `HEAD`, donc `cp` sûr. `diff-editor-vs-caramel` : **26 identiques / 0 divergent**.
+  Manifeste sha256 régénéré (`gen-shared-manifest.mjs`) → 41 fichiers, `--check` vert.
+- **5 clés i18n** `editor_iv_display_mode*` ajoutées aux **11 locales Sucrerie** (le `.js` voyage par `cp`,
+  *pas* sa traduction) ; `check-shared-i18n.mjs` vert **dans les deux dépôts**.
+- Suite Sucrerie : **2940 PASS / 0 FAIL** (140 suites). Deux échecs au premier passage : le manifeste
+  (attendu, régénéré) et **BUG-05, préexistant** — `defaultTranslations.footer_version` resté à
+  « v1.5.2 » alors que `i18n/fr.json` est en « v1.5.4 » (bumps 1.5.3/1.5.4 oubliés dans la table
+  anti-FOUC). Corrigé côté Sucrerie, entrée « Non publié » ajoutée à son CHANGELOG.
+- `js/h5p/json-healer.js`, `js/h5p/processors/InteractiveVideo.js` et `js/services/video-transcript.js` sont
+  **Caramel-only** → rien à propager. Le repli CORS n'existe donc PAS côté Sucrerie ; sans objet
+  (Sucrerie ne détecte pas de vidéo, elle importe des `.h5p` déjà construits).

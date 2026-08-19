@@ -14,7 +14,7 @@
 
 import { state } from './state.js';
 import { addBotMessage } from './dom.js';
-import { offerActivityFromDocument } from './flow.js';
+import { offerActivityFromDocument, handleBackgroundImageAttachment } from './flow.js';
 import { t } from './i18n.js';
 import { debugLog } from '../core/utils.js';
 
@@ -73,6 +73,12 @@ function waitForTranscription(fileName, { timeoutMs = TRANSCRIPTION_TIMEOUT_MS }
  * en plus du drag & drop.
  */
 export async function handleAttachment(file) {
+    // Étape « image de fond » en cours (Image interactive / Trouve la/les zone·s) :
+    // la pièce jointe EST l'image demandée → routée vers le flux de génération,
+    // sans OCR (elle sert de fond d'activité, pas de source de texte). Le flux
+    // accepte les formats du pipeline image (PNG/JPEG/WebP/GIF/BMP/AVIF/SVG/HEIC/HEIF/TIFF).
+    if (handleBackgroundImageAttachment(file)) return;
+
     if (!isOcrAvailable()) {
         addBotMessage(t('attachment_error', { name: file.name, error: 'OCR indisponible' }));
         return;

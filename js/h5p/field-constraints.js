@@ -24,6 +24,12 @@ export const RENDER_TYPES = {
         converter: null,
         description: 'HTML sans math — formatage Markdown converti en HTML'
     },
+    'latex': {
+        supportsLatex: true,
+        supportsHtml: false,
+        converter: 'stripHtmlOnly',
+        description: 'Texte brut + MathJax — le semantics interdit les balises, pas les formules'
+    },
     'unicode': {
         supportsLatex: false,
         supportsHtml: false,
@@ -54,6 +60,27 @@ export const RENDER_TYPES = {
 // --- Contraintes de champs par activité H5P ---
 // Clé = moduleKey (identique aux clés de processors/index.js)
 // Chaque champ utilise la notation pointée, [] pour les tableaux
+//
+// RÈGLE : un champ ne peut être déclaré `html`/`html+latex` que si le `semantics.json`
+// de la bibliothèque lui donne des `tags` (ou `widget: 'html'`). Un champ `type: text`
+// SANS `tags` est du texte brut pour la plateforme, et y injecter du HTML se retourne
+// contre l'élève :
+//   1. Moodle/Éléa appelle `filterParameters()` avant CHAQUE rendu
+//      (moodle/h5p/classes/player.php) ;
+//   2. `H5PContentValidator::validateText()` (h5p.classes.php) fait, sur un champ
+//      sans `tags`, `htmlspecialchars($text, ENT_QUOTES, 'UTF-8', FALSE)` — il
+//      ÉCHAPPE le HTML au lieu de le retirer ;
+//   3. le lecteur réinjecte ensuite en `$('<div>', {'html': content})`.
+//   → l'élève lit « <strong>Bravo !</strong> » en toutes lettres.
+// L'aperçu Caramel (h5p-standalone, 100 % JS) n'exécute AUCUN de ces filtres PHP :
+// il affiche le gras correctement. L'aperçu ne prouve donc rien ici — seul le
+// `semantics.json` fait foi. Contrôle : `node tests/run_semantics_audit.mjs`.
+//
+// MAIS le LaTeX n'est PAS du HTML : `\(\sqrt{x}\)` ne contient ni `<` ni `&`, il
+// traverse `htmlspecialchars` intact et H5P.MathDisplay le rend. D'où le type
+// `latex` (pas `plain`) sur ces champs : il retire les balises SANS toucher aux
+// formules. Les rétrograder en `plain` dégraderait en Unicode les formules déjà
+// présentes dans les exemples livrés (intégrales, matrices).
 
 export const FIELD_CONSTRAINTS = {
 
@@ -75,7 +102,9 @@ export const FIELD_CONSTRAINTS = {
         machineName: 'H5P.Flashcard',
         fields: {
             'title':           { render: 'plain' },
-            'description':     { render: 'html+latex' },
+            // H5P.Flashcards : `description` est un `text` sans tags (pas de balises,
+            // mais MathDisplay est embarqué → les formules restent rendues)
+            'description':     { render: 'latex' },
             'cards[].text':    { render: 'html+latex' },
             'cards[].answer':  { render: 'html+latex' },
             'cards[].tip':     { render: 'html+latex' }
@@ -91,7 +120,7 @@ export const FIELD_CONSTRAINTS = {
             'answers[].tipsAndFeedback.tip':               { render: 'html' },
             'answers[].tipsAndFeedback.chosenFeedback':    { render: 'html' },
             'answers[].tipsAndFeedback.notChosenFeedback': { render: 'html' },
-            'overallFeedback[].feedback':                  { render: 'html' }
+            'overallFeedback[].feedback':                  { render: 'latex' }
         }
     },
 
@@ -101,9 +130,10 @@ export const FIELD_CONSTRAINTS = {
         fields: {
             'question':                     { render: 'html+latex' },
             'correct':                      { render: 'plain' },
-            'feedbackOnCorrect':            { render: 'html' },
-            'feedbackOnWrong':              { render: 'html' },
-            'overallFeedback[].feedback':   { render: 'html' }
+            // H5P.TrueFalse : `behaviour.feedbackOn*` sont des `text` sans tags
+            'feedbackOnCorrect':            { render: 'latex' },
+            'feedbackOnWrong':              { render: 'latex' },
+            'overallFeedback[].feedback':   { render: 'latex' }
         }
     },
 
@@ -113,7 +143,7 @@ export const FIELD_CONSTRAINTS = {
         fields: {
             'taskDescription':              { render: 'html+latex' },
             'questions[]':                  { render: 'unicode+markers', markerType: 'blanks' },
-            'overallFeedback[].feedback':   { render: 'html' }
+            'overallFeedback[].feedback':   { render: 'latex' }
         }
     },
 
@@ -123,7 +153,7 @@ export const FIELD_CONSTRAINTS = {
         fields: {
             'taskDescription':              { render: 'html+latex' },
             'textField':                    { render: 'unicode+markers', markerType: 'markthewords' },
-            'overallFeedback[].feedback':   { render: 'html' }
+            'overallFeedback[].feedback':   { render: 'latex' }
         }
     },
 
@@ -133,7 +163,7 @@ export const FIELD_CONSTRAINTS = {
         fields: {
             'taskDescription':              { render: 'html+latex' },
             'textField':                    { render: 'unicode+markers', markerType: 'dragtext' },
-            'overallFeedback[].feedback':   { render: 'html' }
+            'overallFeedback[].feedback':   { render: 'latex' }
         }
     },
 
@@ -144,7 +174,7 @@ export const FIELD_CONSTRAINTS = {
             'elements[].text':              { render: 'html+latex' },
             'dropZones[].label':            { render: 'html+latex' },
             'title':                        { render: 'plain' },
-            'overallFeedback[].feedback':   { render: 'html' }
+            'overallFeedback[].feedback':   { render: 'latex' }
         }
     },
 
@@ -156,7 +186,7 @@ export const FIELD_CONSTRAINTS = {
             'keywords[].keyword':           { render: 'plain' },
             'solution.introduction':        { render: 'html+latex' },
             'solution.sample':              { render: 'html+latex' },
-            'overallFeedback[].feedback':   { render: 'html' }
+            'overallFeedback[].feedback':   { render: 'latex' }
         }
     },
 
@@ -164,10 +194,12 @@ export const FIELD_CONSTRAINTS = {
         platform: 'H5P',
         machineName: 'H5P.Summary',
         fields: {
-            'intro':                        { render: 'plain' },
+            // H5P.Summary : `intro` est un `widget: 'html'` (tags strong, em, u, a,
+            // ul, ol, h2, h3, hr, pre, code) — le processeur y écrit déjà du <p>
+            'intro':                        { render: 'html+latex' },
             'summaries[].summary[]':        { render: 'html+latex' },
             'summaries[].tip':              { render: 'html' },
-            'overallFeedback[].feedback':   { render: 'html' }
+            'overallFeedback[].feedback':   { render: 'latex' }
         }
     },
 
@@ -177,7 +209,7 @@ export const FIELD_CONSTRAINTS = {
         fields: {
             'choices[].question':           { render: 'html+latex' },
             'choices[].answers[]':          { render: 'html+latex' },
-            'overallFeedback[].feedback':   { render: 'html' }
+            'overallFeedback[].feedback':   { render: 'latex' }
         }
     },
 
@@ -185,12 +217,27 @@ export const FIELD_CONSTRAINTS = {
         platform: 'H5P',
         machineName: 'H5P.Dialogcards',
         fields: {
-            'title':                        { render: 'plain' },
+            // H5P.Dialogcards : `title` accepte p, br, strong, em, code
+            'title':                        { render: 'html+latex' },
             'description':                  { render: 'html+latex' },
             'dialogs[].text':               { render: 'html+latex' },
             'dialogs[].answer':             { render: 'html+latex' },
             'dialogs[].tips.front':         { render: 'html' },
             'dialogs[].tips.back':          { render: 'html' }
+        }
+    },
+
+    'Dictation': {
+        platform: 'H5P',
+        machineName: 'H5P.Dictation',
+        fields: {
+            'title':                        { render: 'plain' },
+            'taskDescription':              { render: 'html' },
+            // Texte à taper par l'élève : Unicode STRICT (accents et ponctuation comptent
+            // pour la correction de la dictée — ni HTML ni LaTeX, jamais de strip).
+            'sentences[].text':             { render: 'unicode' },
+            'sentences[].description':      { render: 'unicode' },
+            'overallFeedback[].feedback':   { render: 'latex' }
         }
     },
 
@@ -214,7 +261,7 @@ export const FIELD_CONSTRAINTS = {
             'words[].clue':                 { render: 'plain' },
             'words[].answer':               { render: 'plain+letters' },
             'words[].extraClue.params.text': { render: 'html+latex' },
-            'overallFeedback[].feedback':   { render: 'html' }
+            'overallFeedback[].feedback':   { render: 'latex' }
         }
     },
 
@@ -222,7 +269,8 @@ export const FIELD_CONSTRAINTS = {
         platform: 'H5P',
         machineName: 'H5P.FindTheWords',
         fields: {
-            'taskDescription':              { render: 'html+latex' },
+            // H5P.FindTheWords : `taskDescription` est un `text` sans tags
+            'taskDescription':              { render: 'latex' },
             'wordList':                     { render: 'plain' }
         }
     },
@@ -233,7 +281,7 @@ export const FIELD_CONSTRAINTS = {
         fields: {
             'taskDescription':              { render: 'html+latex' },
             'paragraphs[]':                 { render: 'html+latex' },
-            'overallFeedback[].feedback':   { render: 'html' }
+            'overallFeedback[].feedback':   { render: 'latex' }
         }
     },
 
@@ -361,7 +409,7 @@ export const FIELD_CONSTRAINTS = {
         fields: {
             'progressType':                 { render: 'plain' },
             'passPercentage':               { render: 'plain' },
-            'overallFeedback[].feedback':   { render: 'html' }
+            'overallFeedback[].feedback':   { render: 'latex' }
             // questions[].params.* → délégué au processeur enfant selon questions[].library
         }
     },
@@ -814,6 +862,44 @@ const _converters = {};
  */
 export function registerConverters(converters) {
     Object.assign(_converters, converters);
+}
+
+/**
+ * Retire les balises HTML et le Markdown d'un texte, mais PRÉSERVE les formules
+ * LaTeX telles quelles. C'est le convertisseur du type de rendu `latex`.
+ *
+ * Pour un champ `type: text` sans `tags`, Moodle applique `htmlspecialchars` :
+ * une balise devient visible à l'écran (« <strong> » en toutes lettres), alors
+ * qu'une formule `\(...\)` traverse le filtre intacte et se fait rendre par
+ * H5P.MathDisplay. On retire donc les unes sans toucher aux autres.
+ *
+ * Vit ICI plutôt que dans json-healer.js parce que `richtext-editor.js` (fichier
+ * byte-identique avec Sucrerie) en a besoin et que Sucrerie n'a pas de healer.
+ */
+export function stripHtmlKeepLatex(text) {
+    if (!text || typeof text !== 'string') return text;
+
+    // Mettre les formules de côté AVANT tout : elles peuvent contenir < et >
+    // (ex. \(a < b\)) que le retrait de balises confondrait avec du HTML.
+    const formules = [];
+    let cleaned = text.replace(/\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]/g, (m) => {
+        formules.push(m);
+        return `\u0000LATEX${formules.length - 1}\u0000`;
+    });
+
+    // Markdown : la plateforme ne le convertit pas → les * s'afficheraient
+    cleaned = cleaned.replace(/\*\*(.*?)\*\*/g, '$1');
+    cleaned = cleaned.replace(/\*(.*?)\*/g, '$1');
+    // Balises HTML
+    cleaned = cleaned.replace(/<[^>]*>/g, '');
+    // Entités courantes
+    cleaned = cleaned.replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+
+    // Restaurer les formules intactes
+    cleaned = cleaned.replace(/\u0000LATEX(\d+)\u0000/g, (_, i) => formules[Number(i)]);
+    return cleaned.trim();
 }
 
 /**

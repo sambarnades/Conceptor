@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><base href="/"><title>QA manuelle — éditeur Caramel</title>
+<link rel="stylesheet" href="css/base/style.css">
+<link rel="stylesheet" href="css/components/json-editor.css">
+<link rel="stylesheet" href="css/components/richtext-editor.css">
+<link rel="stylesheet" href="css/components/cloze-editor.css">
+</head>
+<body>
+<!--
+  Page-hôte des scénarios de QA manuelle (tests/qa-manuel/*.mjs).
+
+  Elle reproduit la STRUCTURE RÉELLE dans laquelle l'application monte l'éditeur :
+  `#conteneur` (= previewContainer) DANS un `.preview-modal__content--editor`. Ce parent
+  n'est pas décoratif : `dragdrop-layout-panel.js` fait `container.parentElement` pour y
+  poser la classe de vue `dz-mode-live`. Sans lui, la classe atterrit sur <body> et la
+  règle `.dz-mode-live .json-editor__nav { display:none }` masque la navigation ENTIÈRE,
+  ce qui rend la page intestable (constaté pendant la campagne).
+
+  `<base href="/">` est indispensable : translation.js fait `fetch('./js/locales/…')`,
+  résolu contre l'URL du DOCUMENT. Sans base, une page servie depuis /tests/qa-manuel/
+  chercherait /tests/qa-manuel/js/locales/fr.json → 404 → libellés en clés brutes.
+
+  Servir depuis la RACINE du dépôt : python3 -m http.server 8010
+-->
+<div id="version-info" style="display:none">v6.3.0</div>
+<div class="preview-modal__content--editor" id="modale">
+  <div id="conteneur" class="preview-modal__preview--editor"></div>
+</div>
+<script type="module">
+import { initJsonEditor, saveChanges, destroyEditor, getEditorState } from './js/editor/index.js';
+import { loadTranslations } from './js/core/translation.js';
+import { processH5PContent } from './js/h5p/processors/index.js';
+import { healStructureForActivity } from './js/h5p/json-healer.js';
+import { getEditorData, __testing } from './js/editor/editor-core.js';
+import { getModuleMetadata } from './js/h5p/processors/index.js';
+import { createH5PBlob } from './js/h5p/h5p-creator.js';
+
+window.__qa = {
+  async init(lang = 'fr') { await loadTranslations(lang); },
+
+  /** Ouvre l'éditeur sur une fixture d'assets/data/examples/, par le VRAI chemin. */
+  async ouvrir(fixture, moduleKey) {
+    const json = await (await fetch('assets/data/examples/' + fixture)).json();
+    const notif = { titleKey: moduleKey, type: 'h5p', moduleKey, data: json };
+    const cont = document.getElementById('conteneur');
+    cont.innerHTML = '';
+    const ok = await initJsonEditor(notif, cont, JSON.parse(JSON.stringify(json)), { moduleKey });
+    return { ok, brut: json };
+  },
+
+  /** Rouvre l'éditeur sur un objet déjà en main (2e cycle, contrôle de point fixe). */
+  async ouvrirDonnees(data, moduleKey) {
+    const cont = document.getElementById('conteneur');
+    cont.innerHTML = '';
+    const notif = { titleKey: moduleKey, type: 'h5p', moduleKey, data };
+    return await initJsonEditor(notif, cont, JSON.parse(JSON.stringify(data)), { moduleKey });
+  },
+
+  /** saveChanges() réel : renvoie null ET peuple le résumé d'erreurs quand ça bloque. */
+  async save() { return await saveChanges(); },
+
+  /** Le résumé d'erreurs tel que l'utilisateur le lit à l'écran. */
+  resumeErreurs() {
+    const box = document.querySelector('.json-editor__validation-summary');
+    return box ? box.innerText.replace(/\n{2,}/g, '\n').trim() : null;
+  },
+
+  modele() { return getEditorData(); },
+  etat() { return getEditorState(); },
+  detruire() { destroyEditor(); },
+  heal(d, k) { return healStructureForActivity(d, k); },
+  /** ATTENTION à l'ordre : processH5PContent(moduleKey, données), pas l'inverse. */
+  async build(d, k) { return await processH5PContent(k, d); },
+
+  /**
+   * Construit un VRAI .h5p depuis une fixture, SANS jamais ouvrir l'éditeur —
+   * même enchaînement que handleH5PCreation : healing → processeur → dépendances → ZIP.
+   * Renvoie les octets du .h5p (tableau d'entiers, sérialisable vers Node).
+   */
+  async h5pDepuisFixture(fixture, moduleKey) {
+    const json = await (await fetch('assets/data/examples/' + fixture)).json();
+    const soigne = healStructureForActivity(JSON.parse(JSON.stringify(json)), moduleKey);
+    const r = await processH5PContent(moduleKey, soigne);
+    const contenu = (r && r.content && r.dependencies) ? r.content : r;
+    const dyn = (r && r.dependencies) ? r.dependencies : [];
+    const meta = getModuleMetadata(moduleKey);
+    const deps = [...meta.extraDependencies,
+                  { machineName: meta.machineName, majorVersion: meta.version.major, minorVersion: meta.version.minor },
+                  ...dyn];
+    const blob = await createH5PBlob(contenu, meta.machineName, deps, { title: contenu.title || moduleKey, lang: 'fr' });
+    return [...new Uint8Array(await blob.arrayBuffer())];
+  },
+  testing() { return __testing; }
+};
+window.__qaPret = true;
+</script>
+</body></html>

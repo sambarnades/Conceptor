@@ -57,7 +57,8 @@
       "Read(//Applications/**)"
     ],
     "additionalDirectories": [
-      "/Users/egaunard/Desktop/Forge/Caramel/bas/.claude"
+      "/Users/egaunard/Desktop/Forge/Caramel/bas/.claude",
+      "/Users/egaunard/Desktop/Forge/Caramel/rag/caramelia/chunks/fr"
     ]
   }
 }

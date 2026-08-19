@@ -10,3 +10,18 @@ chatbot
 audit/
 assets/images/.DS_Store
 retag-disciplines.mjs
+n8n-workflows-dev2/
+n8n-workflows-prod/
+n8n-workflows-bas/
+
+# Exports de workflows n8n : jamais publiés sur la forge (ils exposent le nom
+# d'hôte du container Scaleway et le nommage des credentials). Ils restent sur
+# le disque, comme les dossiers n8n-* — cf. docs/PRD_DICTATION.md pour le mode d'emploi.
+docs/n8n/
+# Cartographie semantics H5P : artefact GÉNÉRÉ (2,5 Mo), régénérable en 1 s par
+# `node tests/run_semantics_audit.mjs --ecrire`. Hors dépôt pour ne pas alourdir l'historique.
+tests/fixtures/h5p-semantics-map.json
+
+# Captures du banc de rendu des feedbacks (tests/run_preview_feedback.mjs)
+tests/.captures-feedback/
+tests/.captures-smoke/

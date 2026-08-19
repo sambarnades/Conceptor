@@ -6,6 +6,7 @@
 
 import { debugLog, DEBUG } from '../core/utils.js';
 import { ENDPOINTS } from '../core/endpoints.js';
+import { decideRagContextFromDom } from './rag-orchestrator.js';
 
 // La clé API n'est pas stockée ici pour des raisons de sécurité.
 // Elle est gérée côté serveur par le proxy n8n.
@@ -237,29 +238,43 @@ function extractJsonContent(content) {
 const LLM_SUBMIT_URL = ENDPOINTS.llmSubmit;
 const LLM_RESULT_URL = ENDPOINTS.llmResult;
 
-// Délai avant le premier poll : la plupart des LLM mettent au moins 5s à répondre,
-// inutile de poller plus tôt et de gaspiller des requêtes.
-const POLL_INITIAL_DELAY_MS = 5000;
-// Intervalle entre 2 polls successifs.
-const POLL_INTERVAL_MS = 3000;
-// Timeout global de sécurité : si on n'a toujours rien après 5 minutes, on abandonne.
-const POLL_TIMEOUT_MS = 300000;
+/**
+ * Cadencement du polling. Objet EXPORTÉ et mutable, et non trois `const` privées,
+ * pour une seule raison : le rendre observable et surchargeable par les tests.
+ *
+ * Sans cela, la boucle de polling — soumission, reprise sur erreur réseau, statuts
+ * `error`/`not_found`, timeout global — était strictement intestable : le moindre cas
+ * imposait 5 s d'attente initiale, et le chemin « délai dépassé » 5 MINUTES. C'est
+ * précisément pourquoi ce module, sur le chemin critique de chaque génération, n'a
+ * jamais eu le moindre test.
+ *
+ * Les valeurs de PRODUCTION sont celles écrites ici ; `tests/test-llm-service.js` les
+ * abaisse à quelques millisecondes le temps d'une assertion puis les restaure, et
+ * vérifie en fin de suite qu'elles ont bien retrouvé leur valeur nominale.
+ *
+ *  · initialDelayMs — la plupart des LLM mettent au moins 5 s à répondre : poller plus
+ *    tôt ne ferait que gaspiller des requêtes.
+ *  · intervalMs     — intervalle entre 2 polls successifs.
+ *  · timeoutMs      — garde-fou global : au-delà, on abandonne avec un message clair.
+ */
+export const POLL_TIMINGS = {
+    initialDelayMs: 5000,
+    intervalMs: 3000,
+    timeoutMs: 300000
+};
 
 /**
  * Lit le contexte RAG programmes scolaires depuis le DOM : discipline (champ "qui"),
  * sujet pédagogique (champ "quoi") et niveau saisis par l'enseignant. Le Worker n8n
  * s'en sert pour une recherche RAG non-bloquante sur les programmes officiels
- * (collection 56). Renvoie null si tout est vide (le Worker ignore alors le RAG).
- * @returns {{sujet:string, discipline:string, niveau:string}|null}
+ * (collection 56). La pertinence ET le cycle (multilingue) sont décidés par
+ * l'orchestrateur (`services/rag-orchestrator.js`) : `context` vaut null si le RAG
+ * doit être ignoré (champs vides, public hors scolaire, thème sans ancrage
+ * programme, corpus fourni) ; `reason` sert uniquement au log ?debug local.
+ * @returns {{context: (Object|null), reason: string, cycle: string}}
  */
 function readRagContextFromDom() {
-    const ragSujet = document.getElementById('quoi')?.value?.trim() || '';
-    const ragDiscipline = document.getElementById('qui')?.value?.trim() || '';
-    const ragNiveau = document.getElementById('niveau')?.value?.trim() || '';
-    if (ragSujet || ragDiscipline || ragNiveau) {
-        return { sujet: ragSujet, discipline: ragDiscipline, niveau: ragNiveau };
-    }
-    return null;
+    return decideRagContextFromDom(debugLog);
 }
 
 /**
@@ -270,7 +285,7 @@ function readRagContextFromDom() {
  *
  * Pipeline :
  *   1. POST submit → {taskId} (~100ms)
- *   2. GET result?taskId=xxx en boucle (POLL_INTERVAL_MS), timeout POLL_TIMEOUT_MS
+ *   2. GET result?taskId=xxx en boucle (POLL_TIMINGS.intervalMs), timeout POLL_TIMINGS.timeoutMs
  *   3. done → résultat ; error/not_found → throw
  *
  * @param {string} prompt - Le prompt à envoyer.
@@ -329,13 +344,13 @@ export async function generateRawWithLLM(prompt, model, { activityMeta = null, r
 
         // Délai initial : on laisse au Worker le temps de démarrer le LLM
         // (la plupart des appels mettent au moins 5s à répondre)
-        await new Promise(resolve => setTimeout(resolve, POLL_INITIAL_DELAY_MS));
+        await new Promise(resolve => setTimeout(resolve, POLL_TIMINGS.initialDelayMs));
 
         let pollCount = 0;
         // eslint-disable-next-line no-constant-condition
         while (true) {
             // Sécurité : timeout global
-            if (Date.now() - startTime > POLL_TIMEOUT_MS) {
+            if (Date.now() - startTime > POLL_TIMINGS.timeoutMs) {
                 throw new Error('Délai dépassé : la génération a pris trop de temps (5 minutes). Veuillez réessayer.');
             }
 
@@ -346,8 +361,8 @@ export async function generateRawWithLLM(prompt, model, { activityMeta = null, r
                 pollResponse = await fetch(pollUrl, { method: 'GET' });
             } catch (networkError) {
                 // Erreur réseau transitoire : on attend et on retente
-                console.warn(`[LLM] Erreur réseau au poll #${pollCount}, retry dans ${POLL_INTERVAL_MS}ms`, networkError);
-                await new Promise(resolve => setTimeout(resolve, POLL_INTERVAL_MS));
+                console.warn(`[LLM] Erreur réseau au poll #${pollCount}, retry dans ${POLL_TIMINGS.intervalMs}ms`, networkError);
+                await new Promise(resolve => setTimeout(resolve, POLL_TIMINGS.intervalMs));
                 continue;
             }
 
@@ -359,7 +374,7 @@ export async function generateRawWithLLM(prompt, model, { activityMeta = null, r
 
             if (pollData.status === 'processing') {
                 // Encore en cours, on attend et on retente
-                await new Promise(resolve => setTimeout(resolve, POLL_INTERVAL_MS));
+                await new Promise(resolve => setTimeout(resolve, POLL_TIMINGS.intervalMs));
                 continue;
             }
 
@@ -413,7 +428,9 @@ export async function generateRawWithLLM(prompt, model, { activityMeta = null, r
  * @throws {Error} Si la soumission échoue, si le LLM échoue, ou si le timeout est atteint.
  */
 export async function generateH5PWithLLM(prompt, model, activityMeta) {
-    const rag = readRagContextFromDom();
+    // La raison de la décision RAG n'est PAS transmise au serveur (aucune
+    // persistance souhaitée) : elle n'existe que dans le log ?debug.
+    const { context: rag } = readRagContextFromDom();
     const result = await generateRawWithLLM(prompt, model, { activityMeta, rag });
     return result.content;
 }

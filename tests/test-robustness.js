@@ -234,15 +234,15 @@ async function runStep3_JsonHealer() {
         assert(false, `[3e.Pipeline] Code fence simple non gere`, { error: e.message });
     }
 
-    // 3f. Pipeline : texte autour du JSON (reponse IA typique)
-    // Note : cleanJsonInput ne gere que les code fences, pas le texte libre autour.
-    // Ce test documente cette limitation connue.
+    // 3f. Pipeline : texte libre autour du JSON (reponse IA externe typique)
+    // cleanJsonInput extrait desormais le bloc JSON equilibre meme avec de la prose
+    // avant/apres le code fence (le texte d'accompagnement d'une IA externe est retire).
     const withText = 'Voici le JSON demande:\n```json\n{"title": "Frise"}\n```\nBon courage!';
     const cleaned = cleanJsonInput(withText);
-    // cleanJsonInput supprime ```json au debut et ``` a la fin, mais le texte avant ```json reste
-    // Le pipeline reel dans llm.js extrait le JSON differemment
     const startsClean = cleaned.startsWith('{') || cleaned.startsWith('[');
-    assert(true, `[3f.Limitation] Texte autour du JSON : cleanJsonInput extrait "${cleaned.substring(0, 40)}..." (limitation connue si texte avant le code fence)`);
+    let parsed3f; try { parsed3f = JSON.parse(cleaned); } catch { parsed3f = null; }
+    assert(startsClean && parsed3f && parsed3f.title === 'Frise',
+        `[3f.ProseAutour] Texte libre autour du JSON extrait proprement : "${cleaned.substring(0, 40)}"`);
 
     // 3g. Performance : healer sur un gros JSON
     const bigJson = JSON.stringify({
@@ -2306,23 +2306,16 @@ async function runStep15_HealJsonStringStress() {
         { cleaned }
     );
 
-    // --- 15a2. Code fences avec texte autour (limitation connue) ---
+    // --- 15a2. Code fences avec texte libre autour (desormais gere) ---
+    // cleanJsonInput extrait le bloc JSON equilibre meme noye dans de la prose IA.
     const fencedWithText = 'Voici le JSON :\n```json\n{"key": "value"}\n```\nVoila !';
     const cleaned2 = cleanJsonInput(fencedWithText);
-    // cleanJsonInput ne gere que les fences en debut/fin de chaine,
-    // le texte autour empeche la detection — on documente cette limitation
-    const startsFence = cleaned2.startsWith('{');
-    if (!startsFence) {
-        skipCount++;
-        results.push({ status: 'SKIP', message: '[15a2.FencesTexte] cleanJsonInput ne gere pas le texte autour des fences (limitation connue)', step: 15, stepName: 'healJsonString stress' });
-    } else {
-        let parsed2;
-        try { parsed2 = JSON.parse(healJsonString(cleaned2)); } catch(e) { parsed2 = null; }
-        assert(parsed2 && parsed2.key === 'value',
-            '[15a2.FencesTexte] Code fences + texte autour',
-            { cleaned: cleaned2 }
-        );
-    }
+    let parsed2;
+    try { parsed2 = JSON.parse(healJsonString(cleaned2)); } catch(e) { parsed2 = null; }
+    assert(parsed2 && parsed2.key === 'value',
+        '[15a2.FencesTexte] Code fences + texte libre autour extraits',
+        { cleaned: cleaned2 }
+    );
 
     // --- 15b. JSON avec virgule finale (trailing comma) ---
     // healJsonString est un healer de backslashes/echappements, pas un reparateur JSON complet
@@ -2914,7 +2907,7 @@ export const STEP_NAMES = [
 export const STEP_DESCRIPTIONS = [
     '',
     'Verifie que classifyError() dans utils.js categorise correctement chaque type d\'erreur : SyntaxError → PARSE_ERROR, timeout/fetch → NETWORK_ERROR, validation → VALIDATION_ERROR, autre → PACKAGING_ERROR.\n\nExemple : quand l\'IA retourne du JSON invalide, l\'utilisateur voit "Erreur de format" plutot qu\'un message technique.',
-    'Verifie que cleanJsonInput() nettoie les reponses brutes de l\'IA : supprime les blocs ```json, trim les espaces, preserve le JSON valide.\n\nExemple : l\'IA repond parfois avec ```json\\n{...}\\n``` — cette fonction extrait le JSON propre.',
+    'Verifie que cleanJsonInput() nettoie les reponses brutes de l\'IA : supprime les blocs ```json, trim les espaces, extrait le bloc JSON equilibre (1re accolade -> fermeture correspondante) en retirant tout texte libre avant/apres, preserve le JSON valide.\n\nExemple : une IA externe repond "Voici le JSON : {...} Bonne journee !" — cette fonction ne garde que {...}.',
     'Verifie que healJsonString() repare les cas courants de JSON malformes : virgules finales, blocs de code, texte autour du JSON. Mesure aussi la performance sur de gros JSON.\n\nExemple : l\'IA genere {"items": [1, 2, 3,]} (virgule finale) — le healer le corrige automatiquement.',
     'Verifie que le systeme i18n resiste aux cas d\'erreur : langue inexistante, chaine vide, et qu\'on peut toujours revenir a une langue valide apres une erreur.\n\nExemple : un utilisateur qui modifie l\'URL manuellement ne doit pas casser l\'interface.',
     'Verifie que les fichiers de traduction ne contiennent pas de patterns dangereux (XSS) comme <script>, onerror=, javascript:, eval(). Verifie aussi que les balises HTML sont dans une liste blanche pedagogique.\n\nExemple : une traduction compromise avec du <script> pourrait compromettre les donnees de l\'utilisateur.',

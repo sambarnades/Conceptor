@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<!-- Les libs vendor sont référencées depuis la racine du dépôt (cf. LIB_PATHS) -->
+<base href="../">
+<title>Banc d'essai — rendu des feedbacks dans h5p-standalone</title>
+<!--
+  Monte une activité RÉELLE dans h5p-standalone (même chemin que l'aperçu de
+  Caramel : healer → processeur → createH5PBlob → H5PManager.load) afin de
+  VOIR ce que l'élève voit : feedbacks, formules, balises éventuelles.
+
+  Piloté par tests/run_preview_feedback.mjs (Playwright). Ce fichier n'est pas
+  une suite d'assertions : il expose window.__monter() et laisse le pilote
+  inspecter le DOM et prendre les captures.
+-->
+<style>
+    body { font-family: system-ui, sans-serif; margin: 0; padding: 16px; background: #fff; }
+    #preview { max-width: 900px; }
+    #etat { font: 12px/1.5 ui-monospace, monospace; color: #555; padding: 4px 0; }
+</style>
+</head>
+<body>
+<div id="etat">prêt</div>
+<div id="preview"></div>
+
+<script type="module">
+import { healJsonString, healJsonObject, healActivitySpecificFields, healStructureForActivity } from './js/h5p/json-healer.js';
+import { processH5PContent, getModuleMetadata } from './js/h5p/processors/index.js';
+import { createH5PBlob } from './js/h5p/h5p-creator.js';
+import { H5PManager } from './js/h5p/h5p-manager.js';
+import { LIB_PATHS } from './js/core/lib-loader.js';
+
+// h5p-standalone construit les URL de ses assets à partir de l'emplacement de la
+// PAGE, sans tenir compte du <base>. Comme ce banc vit dans tests/, elles
+// pointeraient sur /tests/js/vendor/… (404) alors qu'en production index.html est
+// à la racine. On absolutise donc les chemins concernés.
+for (const cle of ['H5P_STANDALONE', 'H5P_FRAME_JS', 'H5P_FRAME_CSS', 'H5P_LIBRARIES']) {
+    LIB_PATHS[cle] = new URL(LIB_PATHS[cle], document.baseURI).href;
+}
+
+const etat = document.getElementById('etat');
+const manager = new H5PManager();
+
+/**
+ * Construit puis monte une activité dans l'aperçu.
+ * @param {string} moduleKey — clé Caramel (ex: 'MultipleChoice')
+ * @param {object|string} json — JSON d'activité (objet), ou son TEXTE brut : les
+ *        fixtures d'exemples contiennent volontairement du JSON invalide (backslashes
+ *        LaTeX) que `healJsonString` répare — c'est le chemin réel de l'application.
+ */
+window.__monter = async function (moduleKey, json) {
+    etat.textContent = `montage ${moduleKey}…`;
+    document.getElementById('preview').innerHTML = '';
+
+    const objet = (typeof json === 'string') ? JSON.parse(healJsonString(json)) : json;
+
+    // 1. Pipeline identique à la production
+    let healed = healJsonObject(JSON.parse(JSON.stringify(objet)), moduleKey);
+    healed = healActivitySpecificFields(healed, moduleKey);
+    healed = healStructureForActivity(healed, moduleKey);
+
+    // Le processeur retourne soit le contenu, soit { content, dependencies } — ces
+    // dépendances DYNAMIQUES sont les bibliothèques des sous-contenus (questions
+    // d'un QuizSet…). Les oublier produit un lecteur incapable de charger ses
+    // sous-activités : l'activité se monte mais reste vide.
+    const processed = await processH5PContent(moduleKey, JSON.parse(JSON.stringify(healed)));
+    let content = processed, depsDynamiques = [];
+    if (processed && processed.content) {
+        content = processed.content;
+        depsDynamiques = processed.dependencies || [];
+    }
+
+    // 2. Empaquetage .h5p
+    // Même ordre qu'en production (h5p-creator.js) : les dépendances extra AVANT
+    // la bibliothèque principale, et `mainLibrary` sans numéro de version.
+    const meta = getModuleMetadata(moduleKey);
+    const deps = [
+        ...(meta.extraDependencies || []),
+        { machineName: meta.machineName, majorVersion: meta.version.major, minorVersion: meta.version.minor },
+        ...depsDynamiques
+    ];
+    const blob = await createH5PBlob(content, meta.machineName, deps, { title: moduleKey });
+
+    // 3. Montage dans h5p-standalone
+    await manager.load(blob, document.getElementById('preview'));
+    etat.textContent = `monté ${moduleKey}`;
+
+    // Relevé des champs soumis au type de rendu `latex` : c'est LEUR contenu qui
+    // décide du sort sur Éléa (balise = échappée et visible, formule = rendue).
+    const CHAMPS = ['feedback', 'feedbackOnCorrect', 'feedbackOnWrong', 'description', 'taskDescription'];
+    const releve = [];
+    (function scan(n) {
+        if (Array.isArray(n)) { n.forEach(scan); return; }
+        if (!n || typeof n !== 'object') return;
+        for (const [k, v] of Object.entries(n)) {
+            if (CHAMPS.includes(k) && typeof v === 'string') releve.push({ champ: k, valeur: v });
+            else scan(v);
+        }
+    })(content);
+
+    return { contentJson: content, releve };
+};
+
+window.__pret = true;
+</script>
+</body>
+</html>

@@ -27,7 +27,7 @@ import {
 import { loadClientZip, loadMoodleLibs, loadDOMPurify, loadJSZip, loadH5pLibs } from '../js/core/lib-loader.js';
 import { generateMoodleXml, generateMoodleGift } from '../js/moodle/moodle-formats.js';
 import { createH5PBlob } from '../js/h5p/h5p-creator.js';
-import { createMbz } from '../js/moodle/moodle-creator.js';
+import { createMbz, prepareIntroHtml } from '../js/moodle/moodle-creator.js';
 import { allModules, h5pModules, moodleModules } from '../js/core/definitions.js';
 import { formatContentForDocument } from '../js/export/document-formatter.js';
 
@@ -150,13 +150,11 @@ function buildMoodleData(moduleKey, healedObj) {
                 INTRO: escapeXml(healedObj.intro || '')
             };
         case 'elea_devoir': {
-            let introHtml = healedObj.description ? String(healedObj.description).trim() : 'Consultez la grille d\'évaluation ci-dessous.';
-            if (!introHtml.match(/^\s*<p[\s>]/i)) {
-                introHtml = `<p dir="ltr" style="text-align: left;">${introHtml}</p>`;
-            }
+            // Aligné sur la génération réelle : prepareIntroHtml (Markdown→HTML,
+            // pas de <p> autour d'un bloc, échappement entité-safe).
             return {
                 ...base,
-                ACTIVITY_INTRO_HTML: escapeXml(introHtml),
+                ACTIVITY_INTRO_HTML: prepareIntroHtml(healedObj.description, 'Consultez la grille d\'évaluation ci-dessous.'),
                 RUBRIC_NAME: healedObj.rubricName || healedObj.title || 'Grille d\'évaluation',
                 CRITERIA: healedObj.criteria || []
             };

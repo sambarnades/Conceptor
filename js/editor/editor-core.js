@@ -7,7 +7,7 @@
  * Le panneau detail affiche les champs de la section ou de l'item selectionne.
  */
 
-import { t } from '../core/translation.js';
+import { t, currentLang } from '../core/translation.js';
 import {
     fieldRenderers,
     renderActionBar,
@@ -15,9 +15,10 @@ import {
     escapeHtml,
     generateId
 } from './field-renderers.js';
-import { createArrayManager, showConfirm, showAlert } from './array-manager.js';
+import { createArrayManager, createEmptyArrayItem, showConfirm, showAlert, refreshArrayManagerAt } from './array-manager.js';
 import { createFeedbackEditor } from './feedback-editor.js';
-import { getNestedValue, setNestedValue } from './json-utils.js';
+import { getNestedValue, setNestedValue, matchesShowWhen, remapIndexReferences } from './json-utils.js';
+import { localeDateToH5p } from '../core/utils.js';
 import { resolveRenderTypeForField } from './richtext-editor.js';
 
 // Exposer createArrayManager globalement pour les renderers dynamiques (pageBlockData)
@@ -76,7 +77,7 @@ function getRendererForField(fieldConfig, fieldPath) {
     }
 
     const renderType = resolveRenderTypeForField(editorOptions.moduleKey, fieldPath);
-    if (!renderType || !['html+latex', 'html', 'unicode+markers'].includes(renderType)) {
+    if (!renderType || !['html+latex', 'html', 'latex', 'unicode+markers'].includes(renderType)) {
         return { renderer: fieldRenderers[fieldConfig.type] || fieldRenderers['text'], config: fieldConfig };
     }
 
@@ -115,53 +116,6 @@ function findPrimaryArrayField(section) {
     return null;
 }
 
-/**
- * Cree un element vide base sur le schema d'un item
- */
-function createEmptyItem(itemSchema) {
-    if (!itemSchema) return {};
-
-    const valueField = Object.entries(itemSchema).find(([, v]) => v.isArrayValue);
-    if (valueField) return '';
-
-    const item = {};
-    for (const [key, fieldConfig] of Object.entries(itemSchema)) {
-        let defaultValue;
-        if (fieldConfig.type === 'array') {
-            // Respecter minItems : un tableau imbriqué créé vide violerait son propre schéma
-            // (« Minimum 1 elements » bloquant à la sauvegarde) — ex. « Ajouter un point »
-            // en mode Plan de l'Image interactive, qui doit naître avec un bloc de contenu
-            // par défaut comme en mode « Sur l'image » (audit N14).
-            const min = Number.isFinite(fieldConfig.minItems) ? fieldConfig.minItems : 0;
-            defaultValue = [];
-            if (min > 0 && fieldConfig.itemSchema) {
-                for (let i = 0; i < min; i++) defaultValue.push(createEmptyItem(fieldConfig.itemSchema));
-            }
-        } else if (fieldConfig.type === 'dynamicObject') {
-            defaultValue = {};
-        } else if (fieldConfig.type === 'object' && fieldConfig.schema) {
-            defaultValue = {};
-            for (const subKey of Object.keys(fieldConfig.schema)) {
-                defaultValue[subKey] = '';
-            }
-        } else if (fieldConfig.type === 'checkbox') {
-            defaultValue = fieldConfig.valueType === 'number' ? 0 : false;
-        } else if (fieldConfig.type === 'number') {
-            defaultValue = fieldConfig.default !== undefined ? fieldConfig.default : 0;
-        } else if (fieldConfig.type === 'select' && fieldConfig.default) {
-            defaultValue = fieldConfig.default;
-        } else {
-            defaultValue = fieldConfig.default || '';
-        }
-
-        if (key.includes('.')) {
-            setNestedValue(item, key, defaultValue);
-        } else {
-            item[key] = defaultValue;
-        }
-    }
-    return item;
-}
 
 /**
  * Genere un resume d'un item pour le panneau nav
@@ -310,6 +264,17 @@ function getItemStatus(item, config) {
                     (typeof value === 'string' && !value.trim()) ||
                     (Array.isArray(value) && value.length === 0)) {
                     hasError = true;
+                }
+            }
+
+            // Tableau imbriqué : descendre dans ses items. Sans cela, la pastille d'un
+            // chapitre restait verte alors qu'un de ses blocs bloquait l'enregistrement —
+            // aucun repère ne désignait le chapitre fautif dans le sommaire.
+            if (fieldConfig.type === 'array' && fieldConfig.itemSchema && Array.isArray(value)) {
+                for (const subItem of value) {
+                    if (subItem && typeof subItem === 'object') {
+                        checkFields(fieldConfig.itemSchema, subItem);
+                    }
                 }
             }
 
@@ -703,6 +668,17 @@ function refreshNavItemList(sectionId) {
     }
 
     updateNavActiveState();
+
+    // Notifie les panneaux externes (ex: canevas du Glisser-déposer) qu'une mutation
+    // STRUCTURELLE des items a eu lieu (ajout/suppression/duplication/déplacement).
+    // Indispensable pour la suppression : sa confirmation vit dans une modale hors du
+    // conteneur, donc aucun 'click'/'change' n'atteint le conteneur au moment du splice.
+    if (editorContainer) {
+        editorContainer.dispatchEvent(new CustomEvent('json-editor:items-changed', {
+            bubbles: true,
+            detail: { sectionId }
+        }));
+    }
 }
 
 /**
@@ -805,16 +781,53 @@ function navigateTo(sectionId, itemIndex = null, options = {}) {
 }
 
 /**
+ * Un chemin de gestionnaire est OBSOLÈTE si l'un de ses indices sort des bornes du
+ * tableau qu'il traverse.
+ *
+ * `arrayManagers` est indexé par chemin (`chapters.0.content.2.exercise.answers`) et n'est
+ * purgé qu'à la navigation. Supprimer ou déplacer un item d'un tableau IMBRIQUÉ re-rend le
+ * sous-arbre sans passer par `navigateTo` : les gestionnaires enregistrés pour les indices
+ * disparus survivent. La collecte les réécrivait ensuite avec `setNestedValue`, qui RECRÉE
+ * les maillons manquants — ressuscitant l'item supprimé sous la forme d'un objet partiel
+ * (`{ exercise: {…} }`, sans `_blockType`). L'éditeur affichait 2 blocs, les données en
+ * portaient 3, et la validation réclamait un champ obligatoire sur un bloc invisible.
+ */
+function isStaleManagerPath(path) {
+    const keys = String(path).split('.');
+    let current = editorData;
+    for (const key of keys) {
+        if (current === null || current === undefined || typeof current !== 'object') return false;
+        if (/^\d+$/.test(key) && Array.isArray(current) && Number(key) >= current.length) return true;
+        current = current[key];
+    }
+    return false;
+}
+
+/**
+ * Reverse dans `editorData` ce que portent les gestionnaires de la vue courante.
+ *
+ * Ordre du plus court au plus long chemin : le tableau parent est écrit AVANT ses
+ * descendants, sinon le contrôle de bornes ci-dessus jugerait sur un état périmé.
+ */
+function flushManagersIntoData() {
+    const byDepth = (a, b) => a[0].split('.').length - b[0].split('.').length;
+
+    for (const [path, manager] of [...arrayManagers.entries()].sort(byDepth)) {
+        if (isStaleManagerPath(path)) { arrayManagers.delete(path); continue; }
+        setNestedValue(editorData, path, manager.getData());
+    }
+    for (const [path, editor] of [...feedbackEditors.entries()].sort(byDepth)) {
+        if (isStaleManagerPath(path)) { feedbackEditors.delete(path); continue; }
+        setNestedValue(editorData, path, editor.getData());
+    }
+    collectInputValues();
+}
+
+/**
  * Collecte les donnees de la vue actuelle
  */
 function collectCurrentViewData() {
-    arrayManagers.forEach((manager, path) => {
-        setNestedValue(editorData, path, manager.getData());
-    });
-    feedbackEditors.forEach((editor, path) => {
-        setNestedValue(editorData, path, editor.getData());
-    });
-    collectInputValues();
+    flushManagersIntoData();
     arrayManagers.clear();
     feedbackEditors.clear();
 }
@@ -1130,16 +1143,10 @@ function renderItemFields(container, item, itemSchema, basePath, onChange) {
         const fieldValue = item ? getNestedValue(item, fieldKey) : undefined;
         const fieldPath = `${basePath}.${fieldKey}`;
 
-        // showWhen : determiner si masque
+        // showWhen : determiner si masque (portée frère `field` ou racine `rootField`)
         let showWhenHidden = false;
         if (fieldConfig.showWhen && item) {
-            const sw = fieldConfig.showWhen;
-            let refValue = item[sw.field];
-            if (refValue === undefined && itemSchema[sw.field]?.default !== undefined) {
-                refValue = itemSchema[sw.field].default;
-            }
-            const matches = sw.values ? sw.values.includes(refValue) : refValue === sw.value;
-            if (!matches) showWhenHidden = true;
+            showWhenHidden = !matchesShowWhen(fieldConfig.showWhen, item, itemSchema, editorData);
         }
 
         let fieldElement;
@@ -1229,8 +1236,11 @@ function renderItemFields(container, item, itemSchema, basePath, onChange) {
             }
         }
 
-        // Marquer showWhen
-        if (fieldElement && showWhenHidden) {
+        // Marquer showWhen. Portée RACINE : on masque si besoin mais SANS `data-show-when-*`
+        // (pas de champ frère à écouter ici — cf. applyShowWhen).
+        if (fieldElement && fieldConfig.showWhen?.rootField) {
+            if (showWhenHidden) fieldElement.style.display = 'none';
+        } else if (fieldElement && showWhenHidden) {
             fieldElement.style.display = 'none';
             fieldElement.dataset.showWhenField = fieldConfig.showWhen.field;
             fieldElement.dataset.showWhenValue = fieldConfig.showWhen.value || '';
@@ -1414,14 +1424,12 @@ function renderFieldGroupInSection(groupConfig, data) {
  * Applique la visibilite conditionnelle initiale
  */
 function applyShowWhen(element, showWhen, data, fields) {
-    let refValue = getNestedValue(data, showWhen.field);
-    if (refValue === undefined && fields[showWhen.field]?.default !== undefined) {
-        refValue = fields[showWhen.field].default;
-    }
-    const matches = showWhen.values
-        ? showWhen.values.includes(refValue)
-        : refValue === showWhen.value;
-    if (!matches) element.style.display = 'none';
+    if (!matchesShowWhen(showWhen, data, fields, editorData)) element.style.display = 'none';
+
+    // Portée RACINE : aucun champ frère à écouter dans ce conteneur (le réglage vit dans une autre
+    // section, jamais affichée en même temps). On ne pose donc pas les `data-show-when-*`, sinon le
+    // listener générique croirait devoir piloter cet élément et le laisserait masqué à tort.
+    if (showWhen.rootField) return;
 
     element.dataset.showWhenField = showWhen.field;
     element.dataset.showWhenValue = showWhen.value || '';
@@ -1434,7 +1442,8 @@ function applyShowWhen(element, showWhen, data, fields) {
 function setupItemShowWhenListeners(container, itemSchema, basePath, item) {
     const showWhenFields = new Set();
     for (const [, fieldConfig] of Object.entries(itemSchema)) {
-        if (fieldConfig.showWhen) showWhenFields.add(fieldConfig.showWhen.field);
+        // `rootField` exclu : son sélecteur vit dans une autre section, pas dans ce conteneur.
+        if (fieldConfig.showWhen && !fieldConfig.showWhen.rootField) showWhenFields.add(fieldConfig.showWhen.field);
     }
     if (showWhenFields.size === 0) return;
 
@@ -1462,7 +1471,8 @@ function setupItemShowWhenListeners(container, itemSchema, basePath, item) {
 function setupShowWhenListenersGeneric(container, fields, basePath) {
     const showWhenFields = new Set();
     for (const [, fieldConfig] of Object.entries(fields)) {
-        if (fieldConfig.showWhen) showWhenFields.add(fieldConfig.showWhen.field);
+        // `rootField` exclu : son sélecteur vit dans une autre section, pas dans ce conteneur.
+        if (fieldConfig.showWhen && !fieldConfig.showWhen.rootField) showWhenFields.add(fieldConfig.showWhen.field);
     }
     if (showWhenFields.size === 0) return;
 
@@ -1581,6 +1591,38 @@ function setupItemDynamicListeners(container, itemSchema, basePath, _item, onCha
 /**
  * Ajoute un item
  */
+/**
+ * Réécrit les renvois PAR INDICE vers une liste du sommaire après une mutation de structure.
+ *
+ * Miroir de `ArrayManager.remapperRenvoisDIndice` pour les listes pilotées par le sommaire
+ * (le Glisser-déposer y gère ses zones, référencées par `elements[].zoneIndices`). Les
+ * renvois sont déclarés par le schéma sur la liste RÉFÉRENCÉE (`indexReferencedBy`).
+ *
+ * `handleArrayAdd` n'appelle pas cette fonction : il ajoute en FIN de liste, ce qui ne
+ * renumérote aucun item existant.
+ *
+ * @param {string} cheminTableau - chemin de la liste mutée (ex. « dropZones »)
+ * @param {Object} config - configuration du champ tableau (porte `indexReferencedBy`)
+ * @param {{type: string, index?: number, from?: number, to?: number}} operation
+ */
+function remapperRenvoisDIndice(cheminTableau, config, operation) {
+    const renvois = config && config.indexReferencedBy;
+    if (!Array.isArray(renvois) || renvois.length === 0 || !editorData) return;
+
+    const cheminParent = cheminTableau.includes('.')
+        ? cheminTableau.substring(0, cheminTableau.lastIndexOf('.'))
+        : '';
+    const parent = cheminParent ? getNestedValue(editorData, cheminParent) : editorData;
+    if (!parent) return;
+    if (!remapIndexReferences(parent, renvois, operation)) return;
+
+    // La liste référente peut être à l'écran (même vue) : ses cases à cocher ont été
+    // construites sur l'ANCIENNE numérotation, il faut les redessiner.
+    for (const { array } of renvois) {
+        refreshArrayManagerAt(cheminParent ? `${cheminParent}.${array}` : array);
+    }
+}
+
 function handleArrayAdd(sectionId, arrayField) {
     const items = getNestedValue(editorData, arrayField.path) || [];
     if (arrayField.config.maxItems && items.length >= arrayField.config.maxItems) {
@@ -1591,7 +1633,7 @@ function handleArrayAdd(sectionId, arrayField) {
         return;
     }
 
-    const newItem = createEmptyItem(arrayField.config.itemSchema);
+    const newItem = createEmptyArrayItem(arrayField.config, items.length);
     items.push(newItem);
     setNestedValue(editorData, arrayField.path, items);
 
@@ -1628,6 +1670,7 @@ async function handleArrayRemove(sectionId, arrayField, index) {
 
     items.splice(index, 1);
     setNestedValue(editorData, arrayField.path, items);
+    remapperRenvoisDIndice(arrayField.path, arrayField.config, { type: 'remove', index });
 
     refreshNavItemList(sectionId);
     const newIndex = items.length > 0 ? Math.min(index, items.length - 1) : null;
@@ -1657,6 +1700,7 @@ async function handleArrayDuplicate(sectionId, arrayField, index) {
     const duplicate = JSON.parse(JSON.stringify(items[index]));
     items.splice(index + 1, 0, duplicate);
     setNestedValue(editorData, arrayField.path, items);
+    remapperRenvoisDIndice(arrayField.path, arrayField.config, { type: 'duplicate', index });
 
     refreshNavItemList(sectionId);
     navigateTo(sectionId, index + 1, { skipCollect: true });
@@ -1688,6 +1732,13 @@ function handleArrayMove(sectionId, arrayPath, fromIndex, toIndex) {
     }
 
     setNestedValue(editorData, arrayPath, items);
+
+    // Le déplacement renumérote la tranche parcourue : les renvois par indice suivent.
+    const sectionDeplacee = (editorSchema?.sections || []).find(sec => sec.id === sectionId);
+    const champDeplace = sectionDeplacee ? findPrimaryArrayField(sectionDeplacee) : null;
+    if (champDeplace && champDeplace.path === arrayPath) {
+        remapperRenvoisDIndice(arrayPath, champDeplace.config, { type: 'move', from: fromIndex, to: toIndex });
+    }
 
     refreshNavItemList(sectionId);
 
@@ -1893,14 +1944,8 @@ export function updateEditorState(newData) {
  * Retourne les donnees actuelles de l'editeur
  */
 export function getEditorData() {
-    // Collecter depuis la vue actuelle
-    arrayManagers.forEach((manager, path) => {
-        setNestedValue(editorData, path, manager.getData());
-    });
-    feedbackEditors.forEach((editor, path) => {
-        setNestedValue(editorData, path, editor.getData());
-    });
-    collectInputValues();
+    // Collecter depuis la vue actuelle (gestionnaires obsolètes écartés, cf. flushManagersIntoData)
+    flushManagersIntoData();
     return editorData;
 }
 
@@ -1942,6 +1987,14 @@ function collectInputValues() {
             if (m) secs = (+m[1]) * 3600 + (+m[2]) * 60 + (+m[3]);
             else { m = v.match(/^(\d{1,2}):([0-5]?\d)$/); if (m) secs = (+m[1]) * 60 + (+m[2]); }
             value = secs !== null ? secs : (v === '' ? 0 : (Number(v) || 0));
+        } else if (input.dataset.timelineDate === 'true') {
+            // Date Timeline : l'input AFFICHE la date au format local (« 14/07/1789 ») alors que
+            // le modèle stocke le format H5P « AAAA,M,J ». Sans cette reconversion, la collecte
+            // écrasait la valeur du modèle par la chaîne affichée : il suffisait de PARCOURIR les
+            // événements — sans rien modifier — pour que le .h5p parte avec des dates que
+            // TimelineJS ne sait pas lire. Même défaut, même remède que l'horodatage ci-dessus.
+            // Cf. renderTimelineDateField (l'année seule n'a pas de séparateur : rendue telle quelle).
+            value = localeDateToH5p(String(input.value || '').trim(), currentLang || 'fr');
         } else if (input.tagName === 'SELECT' && input.dataset.valueType === 'boolean') {
             // Un <select> renvoie toujours une string : recoercer vers booléen
             // quand le champ le déclare (ex: bonne réponse Vrai/Faux).

@@ -102,8 +102,16 @@ const LOCALES_DIR = '../js/locales';
 // QuizSet/QuizSetQCM contiennent des sous-questions multi-types → healing/processing plus lourd
 const THRESHOLDS = {
     LOCALE_FETCH: 500,          // ms par locale
-    LOCALE_SIZE: 560 * 1024,    // 560 Ko par fichier (le grec ~535 Ko en UTF-8 — 2 o/caractère — après accumulation des features v6.2.0 : Image interactive + questions sur image « Trouver la zone » / « Trouver les zones » (clés éditeur, prompts, aide, export) ; 491 Ko en v5.3.0, 454 Ko à la vidéo interactive, 450 Ko depuis Livre v5.2.0. Garde anti-bloat : ~4-5 % de marge sur el.)
-    TOTAL_LOCALES_SIZE: 4.5 * 1024 * 1024, // 4,5 Mo total (~4,13 Mo en v6.2.0 ; ~9 % de marge)
+    // Garde anti-bloat du payload i18n, re-baselisée à chaque vague de fonctionnalités.
+    // Le grec est toujours le plus gros fichier : alphabet à 2 octets/caractère en UTF-8.
+    // Historique : 450 Ko (Livre v5.2.0) → 454 Ko (vidéo interactive) → 491 Ko (v5.3.0)
+    // → 535 Ko (v6.2.0 : Image interactive + « Trouver la zone » / « Trouver les zones »)
+    // → 563 Ko (v6.3.0 : Dictée + TTS, disposition des zones du Glisser-déposer).
+    // Vérifié en v6.3.0 avant relèvement — la croissance est du CONTENU, pas du gaspillage :
+    // les 11 locales portent exactement 2728 clés (parité stricte), la minification ne
+    // gagnerait que 1,9 %, et les valeurs longues dupliquées pèsent 0,6 % du fichier.
+    LOCALE_SIZE: 590 * 1024,    // 590 Ko par fichier (el = 564 Ko → ~4,4 % de marge)
+    TOTAL_LOCALES_SIZE: 4.5 * 1024 * 1024, // 4,5 Mo total (4,15 Mo en v6.3.0 ; ~7,7 % de marge)
     TRANSLATE_PAGE: 200,        // ms
     HEAL_STRING: 100,           // ms par fixture
     HEAL_STRING_AVG: 50,        // ms moyenne

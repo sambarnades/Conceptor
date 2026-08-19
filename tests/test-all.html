@@ -112,7 +112,7 @@
 </head>
 <body>
     <h1>Caramel &mdash; Tous les tests</h1>
-    <p class="subtitle">Lance les 21 suites de tests sequentiellement et agrege les resultats</p>
+    <p class="subtitle">Lance les 40 suites de tests sequentiellement et agrege les resultats</p>
 
     <div id="output">
         <div class="loading">
@@ -144,9 +144,12 @@
             { id: 'performance', name: 'Performance', file: 'test-performance.js', needsIframe: false },
             { id: 'grid-export', name: 'Export grilles', file: 'test-grid-export.js', needsIframe: false },
             { id: 'document-export', name: 'Export documents', file: 'test-document-export.js', needsIframe: false },
+            { id: 'course-export', name: 'Export parcours (agregation)', file: 'test-course-export.js', needsIframe: false },
             { id: 'editor-cp', name: 'Editeur CoursePresentation', file: 'test-editor-cp.js', needsIframe: false },
             { id: 'editor-ib', name: 'Editeur InteractiveBook', file: 'test-editor-ib.js', needsIframe: false },
             { id: 'editor-iv', name: 'Vidéo interactive', file: 'test-editor-iv.js', needsIframe: false },
+            { id: 'editor-lifecycle', name: 'Editeur — cycle édition/enregistrement', file: 'test-editor-lifecycle.js', needsIframe: false },
+            { id: 'editor-activities', name: 'Editeur — toutes les activités', file: 'test-editor-activities.js', needsIframe: false },
             { id: 'edit-export-flow', name: 'Pipeline complet', file: 'test-edit-export-flow.js', needsIframe: false },
             { id: 'generation-download', name: 'Generation & telechargement', file: 'test-generation-download.js', needsIframe: false },
             { id: 'package-activity', name: 'Empaquetage sans effet de bord (packageActivity)', file: 'test-package-activity.js', needsIframe: false },
@@ -157,11 +160,33 @@
             { id: 'moodle-unicode', name: 'Moodle Unicode (escapeXml)', file: 'test-moodle-unicode.js', needsIframe: false },
             { id: 'simulators', name: 'Simulateurs (refactorisation)', file: 'test-simulators.js', needsIframe: false },
             { id: 'caramelia', name: 'Caramelia (chatbot)', file: 'test-caramelia.js', needsIframe: false },
+            { id: 'module-hygiene', name: 'Hygiene des modules ES', file: 'test-module-hygiene.js', needsIframe: false },
+            { id: 'vendor-patches', name: 'Patchs vendor (apercu H5P)', file: 'test-vendor-patches.js', needsIframe: false },
+            { id: 'activity-wiring', name: 'Cablage des activites (integration)', file: 'test-activity-wiring.js', needsIframe: false },
+            { id: 'llm-service', name: 'Service LLM (proxy n8n, polling)', file: 'test-llm-service.js', needsIframe: false },
+            { id: 'legal-notices', name: 'Mentions legales (credits vendor)', file: 'test-legal-notices.js', needsIframe: false },
             // --- Tests avec iframe (necessitent le DOM de index.html) ---
             { id: 'css', name: 'CSS & styles', file: 'test-css.js', needsIframe: true },
             { id: 'ui', name: 'Interface utilisateur', file: 'test-ui.js', needsIframe: true },
+            { id: 'caramelia-ui', name: 'Caramelia (widget, DOM)', file: 'test-caramelia-ui.js', needsIframe: true, needsWindow: true },
+            { id: 'ui-chrome', name: 'Habillage UI (tutoriel, version, micro)', file: 'test-ui-chrome.js', needsIframe: true, needsWindow: true },
+            { id: 'embed-bridge', name: 'Pont d\'embarquement (?embed)', file: 'test-embed-bridge.js', needsIframe: true, needsWindow: true },
             { id: 'integration', name: 'Integration', file: 'test-integration.js', needsIframe: true, needsWindow: true }
         ];
+
+        // Filtre `?suite=a,b` : n'exécuter qu'un sous-ensemble des suites.
+        // Sert au diagnostic d'un test instable — rejouer UNE suite en quelques
+        // secondes plutôt que les 38 (≈ 100 s). Sans le paramètre, rien ne change.
+        const suiteFilter = (new URLSearchParams(location.search).get('suite') || '')
+            .split(',').map(s => s.trim()).filter(Boolean);
+        if (suiteFilter.length > 0) {
+            const inconnues = suiteFilter.filter(id => !SUITES.some(s => s.id === id));
+            if (inconnues.length > 0) {
+                console.warn(`⚠ Suite(s) inconnue(s) ignorée(s) : ${inconnues.join(', ')}`);
+            }
+            const gardees = SUITES.filter(s => suiteFilter.includes(s.id));
+            if (gardees.length > 0) SUITES.splice(0, SUITES.length, ...gardees);
+        }
 
         // =======================================================================
         // ETAT

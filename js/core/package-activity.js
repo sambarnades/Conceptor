@@ -27,6 +27,7 @@
 
 import { h5pModules } from './definitions.js';
 import { translations, currentLang } from './translation.js';
+import { horodatageFichier } from './utils.js';
 import {
     healJsonString,
     healJsonObject,
@@ -71,12 +72,7 @@ function detectPlatform(moduleKey) {
  * @returns {string}
  */
 function buildFileName(filenameBase, ext, lang) {
-    const now = new Date();
-    const dateString = now.getFullYear() +
-        String(now.getMonth() + 1).padStart(2, '0') +
-        String(now.getDate()).padStart(2, '0') +
-        String(now.getHours()).padStart(2, '0') +
-        String(now.getMinutes()).padStart(2, '0');
+    const dateString = horodatageFichier();
     const cleanType = String(filenameBase || 'activity')
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')

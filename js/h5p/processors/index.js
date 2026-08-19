@@ -196,6 +196,22 @@ const processorMetadata = {
             { machineName: 'H5P.MathDisplay', majorVersion: 1, minorVersion: 0 }
         ]
     },
+    'Dictation': {
+        machineName: 'H5P.Dictation',
+        version: { major: 1, minor: 3 },
+        extraDependencies: [
+            // Chaîne de H5P.Question 1.5 (cf. library.json de H5P.Dictation 1.3)
+            { machineName: 'H5P.Question', majorVersion: 1, minorVersion: 5 },
+            { machineName: 'FontAwesome', majorVersion: 4, minorVersion: 5 },
+            { machineName: 'H5P.JoubelUI', majorVersion: 1, minorVersion: 3 },
+            { machineName: 'H5P.Transition', majorVersion: 1, minorVersion: 0 },
+            { machineName: 'H5P.FontIcons', majorVersion: 1, minorVersion: 0 },
+            // Lecture des échantillons audio (sample/sampleAlternative)
+            { machineName: 'H5P.Audio', majorVersion: 1, minorVersion: 5 },
+            { machineName: 'H5P.TextUtilities', majorVersion: 1, minorVersion: 3 },
+            { machineName: 'H5P.MathDisplay', majorVersion: 1, minorVersion: 0 }
+        ]
+    },
     'ComplexFillTheBlanks': {
         machineName: 'H5P.AdvancedBlanks',
         version: { major: 1, minor: 2 },
@@ -417,6 +433,7 @@ const processorLoaders = {
     'SortParagraphs': () => import('./SortParagraphs.js'),
     'SingleChoiceSet': () => import('./SingleChoiceSet.js'),
     'DialogCards': () => import('./DialogCards.js'),
+    'Dictation': () => import('./Dictation.js'),
     'ComplexFillTheBlanks': () => import('./ComplexFillTheBlanks.js'),
     'Chart': () => import('./Chart.js'),
     'MarkTheWords': () => import('./MarkTheWords.js'),
@@ -471,6 +488,7 @@ const libraryToKey = {
     'H5P.SortParagraphs': 'SortParagraphs',
     'H5P.SingleChoiceSet': 'SingleChoiceSet',
     'H5P.Dialogcards': 'DialogCards',
+    'H5P.Dictation': 'Dictation',
     'H5P.AdvancedBlanks': 'ComplexFillTheBlanks',
     'H5P.Chart': 'Chart',
     'H5P.MarkTheWords': 'MarkTheWords',

@@ -2533,6 +2533,7 @@ input:checked+.slider:before {
     font-size: 1.2em;
     text-align: center;
     height: 50px;
+    max-width: min(520px, 90vw);
 }
 
 /* Jauge de progression de la génération par lots (« plan + remplissage »).
@@ -4301,14 +4302,18 @@ input[type="file"] {
     text-align: left;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    /* Limite le texte à 3 lignes */
-    line-clamp: 3;
+    -webkit-line-clamp: 5;
+    /* Garde-fou uniquement : sur écran étroit le message légitime prend 4
+       lignes, ne pas tronquer en dessous. PAS de max-height ni de padding ici
+       (un padding vertical laisserait « déborder » la ligne suivante dans la
+       zone de padding, overflow:hidden clippant au bord du padding — le fond
+       et le padding sont portés par le conteneur, cf. custom.css).
+       L'alignement des séparateurs gauche/droite est assuré par
+       syncPanelHeights() (utils.js). */
+    line-clamp: 5;
     /* Propriété standard */
     overflow: hidden;
     text-overflow: ellipsis;
-    max-height: 4.2em;
-    /* Environ 3 lignes (3 * 1.4em) */
 }
 
 .ia-guidance-text .fa-info-circle {
@@ -5082,16 +5087,6 @@ input[type="file"] {
     letter-spacing: 0.2px;
     color: #3a3a3c;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-}
-/* Formats convertis automatiquement (HEIC/HEIF/TIFF) — accent bleu + icône ↻ */
-.img-help-pill--converted {
-    background: rgba(37, 99, 235, 0.07);
-    border-color: rgba(37, 99, 235, 0.22);
-    color: #1d4ed8;
-}
-.img-help-pill--converted i {
-    font-size: 10px;
-    opacity: 0.85;
 }
 .img-help-formats__note {
     margin: 12px 0 0;
@@ -7362,6 +7357,86 @@ input[type="file"] {
 .img-bg-clear { background: rgba(220, 53, 69, 0.12); color: #c0392b; }
 .img-bg-clear:hover { background: rgba(220, 53, 69, 0.22); }
 
+/* Contexte d'analyse (popover « ? » image) : mini-prompt vision éditable, prérempli
+   depuis qui/quoi/niveau ; « Relancer la détection » applique la version modifiée. */
+.img-help-ctx {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e4e8ee;
+}
+.img-help-ctx__label {
+    font-size: 0.84rem;
+    font-weight: 600;
+}
+.img-help-ctx__label i {
+    color: var(--primary-color, #e8821e);
+    margin-right: 0.15rem;
+}
+.img-help-ctx__input {
+    width: 100%;
+    resize: vertical;
+    min-height: 52px;
+    font: inherit;
+    font-size: 0.85rem;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid #c4cdd9;
+    border-radius: 8px;
+}
+.img-help-ctx__input:focus {
+    outline: none;
+    border-color: var(--primary-color, #e8821e);
+}
+/* Dépliant « prompt complet envoyé à l'IA » : aperçu lecture seule, contexte surligné. */
+.img-help-prompt summary {
+    cursor: pointer;
+    font-size: 0.78rem;
+    color: #6b7280;
+    user-select: none;
+}
+.img-help-prompt summary:hover { color: #374151; }
+.img-help-prompt__pre {
+    margin: 0.45rem 0 0;
+    padding: 0.6rem 0.7rem;
+    background: #f6f7f9;
+    border: 1px solid #e4e8ee;
+    border-radius: 8px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    line-height: 1.45;
+    color: #4b5563;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 220px;
+    overflow-y: auto;
+}
+.img-help-prompt__ctx {
+    background: rgba(232, 130, 30, 0.18);
+    border-radius: 3px;
+    padding: 0 2px;
+    color: inherit;
+    font-weight: 600;
+}
+
+.img-help-ctx__actions { display: flex; justify-content: flex-end; }
+.img-help-ctx__go {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: none;
+    border-radius: 8px;
+    padding: 0.42rem 0.8rem;
+    background: rgba(45, 110, 200, 0.14);
+    color: #2563b0;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.img-help-ctx__go:hover:not(:disabled) { background: rgba(45, 110, 200, 0.26); }
+.img-help-ctx__go:disabled { opacity: 0.5; cursor: default; }
+
 /* Jauge de progression de la transcription (dans la sous-ligne .video-url-msg). */
 .video-progress-wrap { display: flex; flex-direction: column; gap: 0.32rem; }
 .video-progress-label { font-size: 0.82rem; color: #8a6100; }
@@ -8336,3 +8411,543 @@ input[type="file"] {
     .ih-mode-live .preview-modal__preview--editor { flex: 0 0 auto; min-height: 320px; }
     .ih-stage-img { max-height: 46vh; }
 }
+/* ============================================================
+   Panneau « Disposition des zones » — éditeur Glisser-déposer
+   Monté en FRÈRE du conteneur de l'éditeur (cf. editor/dragdrop-layout-panel.js).
+   Côté Sucrerie, ces règles vivent dans assets/css/components/editor-view.css.
+   ============================================================ */
+/* Volontairement plus COMPACT que le panneau Image interactive : en vue Plan il ne reste que
+   cette barre au-dessus de l'éditeur — chaque pixel vertical compte sur petit écran. */
+.dz-editor-panel {
+    margin: 0 0 0.5rem;
+    padding: 0.3rem 0.55rem;
+    border: 1px solid #d7dee8;
+    border-radius: 8px;
+    background: #f7fafd;
+}
+
+/* Segmented Automatique / Personnalisée (mêmes cotes que le panneau Image interactive) */
+.dz-modebar {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+}
+.dz-seg {
+    display: inline-flex;
+    background: #eef1f5;
+    border: 1px solid #e0e4ea;
+    border-radius: 9px;
+    padding: 2px;
+    gap: 2px;
+}
+.dz-viewbtn,
+.dz-modebtn {
+    border: none;
+    background: none;
+    padding: 4px 11px;
+    border-radius: 7px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: inherit;
+    line-height: 1;
+    color: #55606c;
+    cursor: pointer;
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+}
+.dz-viewbtn i, .dz-modebtn i { font-size: 0.9em; line-height: 1; }
+.dz-viewbtn span, .dz-modebtn span { line-height: 1; }
+.dz-viewbtn.is-active,
+.dz-modebtn.is-active {
+    background: #fff;
+    color: #1768c4;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.dz-modehint {
+    font-size: 0.72rem;
+    color: #55606c;
+}
+
+/* Vue « Sur le canevas » : barre disposition (auto/personnalisée) + outils + canvas */
+.dz-live {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    min-height: 0;
+}
+.dz-live[hidden] { display: none; }
+.dz-live-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.7rem;
+}
+.dz-live-hint { font-size: 0.78rem; color: #55606c; }
+
+/* Barre d'outils du mode personnalisé : zone active + coordonnées + hauteur du canvas + reset */
+.dz-tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.8rem;
+}
+.dz-tools[hidden] { display: none; }
+.dz-tools-zone {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #1768c4;
+}
+.dz-num {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    color: #55606c;
+}
+.dz-num input {
+    width: 4.6em;
+    padding: 4px 6px;
+    border: 1px solid #ccd4de;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-family: inherit;
+}
+.dz-num--canvas { margin-left: auto; }
+.dz-num--canvas input { width: 5.4em; }
+.dz-reset {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.78rem;
+    border-radius: 7px;
+}
+
+/* Canvas : ratio réel du cadre H5P (aspect-ratio posé en JS), fond quadrillé façon plan de travail */
+.dz-stage {
+    padding: 8px;
+    background: #eef2f7;
+    border: 1px solid #dbe2ea;
+    border-radius: 8px;
+}
+/* PAS de max-height ici : la hauteur découle du ratio (aspect-ratio posé en JS) — la brider
+   fausserait les positions en % des zones (WYSIWYG). Canvas haut → la colonne scrolle. */
+.dz-stage-wrap {
+    position: relative;
+    width: 100%;
+    border-radius: 4px;
+    background: #fff;
+    background-image:
+        linear-gradient(rgba(23, 104, 196, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(23, 104, 196, 0.05) 1px, transparent 1px);
+    background-size: 5% 5%;
+    overflow: hidden;
+    outline: 1px dashed #c4cfdc;
+}
+.dz-stage-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+/* Barre d'ajout zone/étiquette : insérée en FIN du conteneur de l'éditeur (colonne de droite),
+   COLLÉE en bas de la zone défilante (sticky) → toujours accessible, même formulaire long.
+   Visible en vue canevas uniquement — en Plan, la nav a déjà ses boutons « + ». */
+.dz-addbar { display: none; }
+.dz-mode-live .dz-addbar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    position: sticky;
+    bottom: 0;
+    margin-top: 0.7rem;
+    padding: 0.6rem;
+    background: #fff;
+    border: 1px solid #e3e8ee;
+    border-radius: 10px;
+    box-shadow: 0 -4px 10px -6px rgba(0, 0, 0, 0.18);
+}
+.dz-add {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border: 1.5px dashed #b9c6d6;
+    border-radius: 7px;
+    background: transparent;
+    color: #1768c4;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 150ms ease, border-color 150ms ease;
+}
+.dz-add i { font-size: 0.85em; line-height: 1; }
+.dz-add:hover:not(:disabled) {
+    border-color: #1768c4;
+    background: rgba(23, 104, 196, 0.06);
+}
+.dz-add:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* Couches zones / étiquettes : transparentes aux clics (les ITEMS, eux, les captent) —
+   les étiquettes sont AU-DESSUS des zones (une étiquette posée dans une zone reste saisissable). */
+.dz-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+.dz-layer > * { pointer-events: auto; }
+
+/* Zone de dépôt sur le canvas */
+.dz-zn {
+    position: absolute;
+    border: 2px solid #1768c4;
+    border-radius: 6px;
+    background: rgba(23, 104, 196, 0.10);
+    cursor: pointer;
+    touch-action: none;
+    display: flex;
+    align-items: flex-start;
+    overflow: hidden;
+}
+.dz-zn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(23, 104, 196, 0.55); }
+.dz-zn.is-active {
+    background: rgba(23, 104, 196, 0.18);
+    box-shadow: 0 0 0 3px rgba(23, 104, 196, 0.45);
+    z-index: 2;
+}
+.dz-zn-label {
+    max-width: 100%;
+    padding: 2px 7px;
+    background: #1768c4;
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1.25;
+    border-radius: 4px 0 6px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    pointer-events: none;
+}
+
+/* Étiquette (draggable) sur le canvas : cliquable dans les deux modes (ouvre son formulaire),
+   déplaçable/redimensionnable comme les zones en mode personnalisé. */
+.dz-el {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    border: 1px dashed #8fa3ba;
+    border-radius: 4px;
+    background: rgba(182, 194, 209, 0.28);
+    color: #5d6c7e;
+    font-size: 0.68rem;
+    line-height: 1.1;
+    overflow: hidden;
+    cursor: pointer;
+    touch-action: none;
+}
+.dz-el-label {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    pointer-events: none;
+}
+.dz-el:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(23, 104, 196, 0.55); }
+.dz-el.is-active {
+    border-style: solid;
+    border-color: #1768c4;
+    background: rgba(23, 104, 196, 0.14);
+    color: #1a4473;
+    box-shadow: 0 0 0 3px rgba(23, 104, 196, 0.45);
+    z-index: 2;
+}
+
+/* Mode personnalisé : zones et étiquettes se saisissent */
+.dz-custom .dz-zn,
+.dz-custom .dz-el { cursor: grab; }
+.dz-custom .dz-zn.is-dragging,
+.dz-custom .dz-el.is-dragging { cursor: grabbing; opacity: 0.92; z-index: 3; }
+.dz-custom .dz-zn.is-resizing,
+.dz-custom .dz-el.is-resizing { cursor: nwse-resize; z-index: 3; }
+
+/* Poignée de redimensionnement (bas-droite), visible au survol ou sur l'item actif */
+.dz-rsz {
+    position: absolute;
+    right: -1px;
+    bottom: -1px;
+    width: 14px;
+    height: 14px;
+    border-radius: 4px 0 4px 0;
+    background: #fff;
+    border: 2px solid #1768c4;
+    cursor: nwse-resize;
+    touch-action: none;
+    display: none;
+}
+.dz-zn.is-active .dz-rsz,
+.dz-zn:hover .dz-rsz,
+.dz-el.is-active .dz-rsz,
+.dz-el:hover .dz-rsz { display: block; }
+
+/* Vue « Sur le canevas » = CÔTE-À-CÔTE : le canevas (panneau) prend la GRANDE colonne gauche,
+   l'éditeur à DROITE n'affiche que le détail de la zone (nav masquée), à largeur fixe. La classe
+   `dz-mode-live` est posée sur le PARENT (persistante) → survit aux re-rendus. Même patron que
+   `ih-mode-live` : colonne gauche DÉFILANTE (pas de flex ici, sinon le canvas se comprime au
+   lieu de déclencher le scroll). */
+.preview-modal__content--editor.dz-mode-live {
+    flex-direction: row !important;
+    gap: 14px;
+    align-items: stretch;
+}
+.dz-mode-live .dz-editor-panel {
+    flex: 1 1 auto;
+    align-self: stretch;
+    margin: 0;
+    min-width: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.dz-mode-live .preview-modal__preview--editor {
+    flex: 0 0 360px;
+    min-width: 0;
+    overflow-y: auto;
+}
+.dz-mode-live .json-editor__nav { display: none; }
+.dz-mode-live .json-editor__body { grid-template-columns: 1fr; }
+
+/* Écran étroit : on empile (canevas au-dessus du formulaire) et on masque le hint
+   (le texte ferait passer la barre sur deux lignes — l'inverse du but). */
+@media (max-width: 760px) {
+    .dz-num--canvas { margin-left: 0; }
+    .dz-modehint { display: none; }
+    .preview-modal__content--editor.dz-mode-live {
+        flex-direction: column !important;
+        overflow-y: auto !important;
+    }
+    .dz-mode-live .dz-editor-panel { flex: 0 0 auto; align-self: auto; }
+    .dz-mode-live .preview-modal__preview--editor { flex: 0 0 auto; min-height: 320px; }
+}
+
+/* ============================================================
+   Panneau réglages TTS — éditeur « Dictée » (H5P.Dictation)
+   Monté en FRÈRE du conteneur de l'éditeur (cf. editor/dictation-tts-panel.js).
+   Côté Sucrerie, ces règles vivent dans assets/css/components/editor-view.css.
+   ============================================================ */
+.dt-editor-panel {
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 10px;
+    background: var(--card-bg, var(--bg-secondary, #faf7f2));
+    padding: 12px 14px;
+    margin: 0 0 12px;
+    font-size: 0.92rem;
+}
+.dt-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+.dt-header .dt-title { font-weight: 600; }
+.dt-status { margin-left: auto; color: var(--text-muted, #777); font-size: 0.85rem; }
+.dt-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 14px;
+}
+.dt-field { display: flex; flex-direction: column; gap: 4px; }
+.dt-field > span { font-size: 0.82rem; color: var(--text-muted, #666); }
+.dt-field select {
+    padding: 5px 8px;
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 6px;
+    background: var(--input-bg, #fff);
+    color: inherit;
+}
+.dt-field--slow { flex-direction: row; align-items: center; gap: 6px; }
+.dt-field--slow > span { font-size: 0.88rem; color: inherit; }
+.dt-voice-toggle { display: inline-flex; border: 1px solid var(--border-color, #ccc); border-radius: 6px; overflow: hidden; }
+.dt-voice {
+    padding: 5px 12px;
+    border: none;
+    background: var(--input-bg, #fff);
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+}
+.dt-voice + .dt-voice { border-left: 1px solid var(--border-color, #ccc); }
+.dt-voice[aria-pressed="true"] { background: var(--primary-color, #c46f31); color: #fff; }
+.dt-voice:disabled { opacity: 0.45; cursor: not-allowed; }
+.dt-regenerate {
+    padding: 7px 14px;
+    border: none;
+    border-radius: 6px;
+    background: var(--primary-color, #c46f31);
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+.dt-regenerate:hover { filter: brightness(1.08); }
+.dt-fallback {
+    margin-top: 8px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: rgba(196, 111, 49, 0.12);
+    color: var(--text-color, inherit);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+}
+/* L'attribut hidden (bandeau repli, boutons du dictaphone, zone de rognage…) doit
+   toujours gagner sur les display:flex/inline-flex des règles de classe ci-dessus. */
+.dt-editor-panel [hidden],
+.dt-fallback[hidden],
+.dt-sentence-audio [hidden],
+.dt-rec [hidden] { display: none !important; }
+.dt-players { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+.dt-player-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+.dt-player-num { color: var(--text-muted, #888); flex: 0 0 auto; }
+.dt-player-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.dt-player-audios { display: inline-flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+.dt-player-audios audio { height: 30px; max-width: 210px; }
+.dt-slow-tag { display: inline-flex; align-items: center; gap: 4px; color: var(--text-muted, #888); }
+.dt-missing { color: var(--text-muted, #999); font-style: italic; font-size: 0.85rem; }
+
+@media (max-width: 760px) {
+    .dt-controls { align-items: stretch; flex-direction: column; }
+    .dt-player-row { flex-wrap: wrap; }
+    .dt-player-text { flex-basis: 100%; }
+}
+
+/* — Refonte 2026-07-10 : contrôles audio INTÉGRÉS à chaque phrase (le panneau ne garde
+   que la barre compacte de réglages ; .dt-players ci-dessus n'est plus rendu). — */
+.dt-editor-panel { flex: 0 0 auto; }
+.dt-sentence-audio {
+    margin-top: 10px;
+    padding: 8px 10px;
+    border: 1px dashed var(--border-color, #d8cdbf);
+    border-radius: 8px;
+    background: rgba(196, 111, 49, 0.05);
+}
+.dt-sa-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.dt-sa-players { display: inline-flex; align-items: center; gap: 8px; flex: 1 1 auto; min-width: 0; flex-wrap: wrap; }
+.dt-sa-players audio { height: 30px; max-width: 230px; }
+.dt-sa-actions { display: inline-flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+.dt-sa-actions button {
+    padding: 5px 10px;
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 6px;
+    background: var(--input-bg, #fff);
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.dt-sa-actions button:hover { border-color: var(--primary-color, #c46f31); }
+.dt-sa-generate { font-weight: 600; }
+.dt-manual-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(46, 125, 50, 0.14);
+    color: #2e7d32;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+.dt-rec-slowrate {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+}
+.dt-rec-slowrate input[type="range"] { flex: 1 1 120px; max-width: 220px; accent-color: var(--primary-color, #c46f31); }
+.dt-rec-slowrate-val { font-variant-numeric: tabular-nums; color: var(--text-muted, #777); min-width: 34px; }
+/* Dictaphone (audio-recorder-widget) */
+.dt-sa-recorder { margin-top: 8px; }
+.dt-rec {
+    border: 1px solid var(--border-color, #ddd);
+    border-radius: 8px;
+    padding: 10px;
+    background: var(--card-bg, var(--bg-secondary, #faf7f2));
+}
+.dt-rec-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dt-rec-controls button, .dt-rec-import {
+    padding: 6px 12px;
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 6px;
+    background: var(--input-bg, #fff);
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.88rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+.dt-rec-start { border-color: #c62828 !important; color: #c62828; font-weight: 600; }
+.dt-rec-stop { background: #c62828 !important; color: #fff !important; border: none !important; font-weight: 600; }
+.dt-rec-timer { font-variant-numeric: tabular-nums; }
+.dt-rec-close { margin-left: auto; border: none !important; background: transparent !important; opacity: 0.6; }
+.dt-rec-close:hover { opacity: 1; }
+.dt-rec-status { margin: 6px 0 0; font-size: 0.85rem; color: var(--text-muted, #777); }
+.dt-rec-editor { margin-top: 8px; }
+.dt-rec-wave {
+    width: 100%;
+    height: 90px;
+    display: block;
+    border-radius: 6px;
+    background: var(--input-bg, #fff);
+    border: 1px solid var(--border-color, #eee);
+}
+.dt-rec-trims { display: flex; gap: 16px; margin-top: 6px; flex-wrap: wrap; }
+.dt-rec-trim { display: flex; align-items: center; gap: 8px; flex: 1 1 220px; font-size: 0.85rem; }
+.dt-rec-trim input[type="range"] { flex: 1 1 auto; accent-color: var(--primary-color, #c46f31); }
+.dt-rec-trim-start-val, .dt-rec-trim-end-val { font-variant-numeric: tabular-nums; color: var(--text-muted, #777); min-width: 46px; }
+.dt-rec-actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.dt-rec-actions button {
+    padding: 6px 12px;
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 6px;
+    background: var(--input-bg, #fff);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.88rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+.dt-rec-use { background: var(--primary-color, #c46f31) !important; color: #fff !important; border: none !important; font-weight: 600; }

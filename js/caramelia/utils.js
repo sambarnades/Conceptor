@@ -5,14 +5,14 @@
 
 import { state } from './state.js';
 
-export function esc(s) {
-    return String(s ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
+// `esc` était une 7e copie de la même fonction. Sémantique identique au canonique
+// (`String(s ?? '')` ≡ `escapeHtml` : null/undefined → chaîne vide).
+//
+// IMPORTER puis exporter, et NON `export { … } from` : une ré-exportation ne crée
+// AUCUNE liaison locale dans le module, si bien que le `esc(text)` de `md()` ci-dessous
+// levait `ReferenceError` — toute réponse du chatbot restait alors vide.
+import { escapeHtml as esc } from '../core/escape.js';
+export { esc };
 
 export function md(text) {
     if (!text) return '';

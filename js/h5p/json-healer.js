@@ -5,8 +5,8 @@
  * sans altérer les fichiers déjà valides.
  */
 
-import { generateUUID, debugLog } from '../core/utils.js';
-import { registerConverters, getConstraints, getConverter, applyToPath } from './field-constraints.js';
+import { generateUUID, debugLog, DEBUG } from '../core/utils.js';
+import { registerConverters, getConstraints, getConverter, applyToPath, stripHtmlKeepLatex } from './field-constraints.js';
 
 // =======================================================================
 // CONSTANTES PARTAGÉES
@@ -42,7 +42,7 @@ const H5P_MODULE_KEYS = new Set([
     'Glossary', 'Crossword', 'Essay', 'Summary', 'DragTheWords',
     'DragAndDrop', 'FillInTheBlanks', 'MarkTheWords', 'TrueFalse',
     'MultipleChoice', 'FindTheWords', 'SortParagraphs', 'SingleChoiceSet',
-    'DialogCards', 'ComplexFillTheBlanks', 'Chart', 'CoursePresentation',
+    'DialogCards', 'Dictation', 'ComplexFillTheBlanks', 'Chart', 'CoursePresentation',
     'InteractiveBook', 'InteractiveVideo'
 ]);
 
@@ -235,8 +235,13 @@ export function autoWrapLatex(item) {
 
         commandRegex.lastIndex = 0;
         if (commandRegex.test(processed)) {
-            if (!processed.includes('\\(') && !processed.includes('\\)')) {
-                // Cas simple : pas de blocs math existants → envelopper toute la chaîne
+            if (!processed.includes('\\(') && !processed.includes('\\)') &&
+                !processed.includes('\\[') && !processed.includes('\\]')) {
+                // Cas simple : AUCUN délimiteur math existant (ni inline \(\) ni display
+                // \[\]) → envelopper toute la chaîne en inline. On teste aussi \[ \] pour
+                // NE PAS ré-emballer une formule display en inline (\[…\] → \(\[…\]\), math
+                // imbriquée invalide) : ce cas passe par la branche mixte qui préserve les
+                // blocs \[…\] et convertit seulement le LaTeX nu HORS blocs.
                 const wrapped = `\\(${processed.trim()}\\)`;
                 debugLog('json-healer', `[JSON Healer] Auto-wrap LaTeX: "${processed}" -> "${wrapped}"`);
                 return wrapped;
@@ -615,6 +620,38 @@ export function repairBrokenLatexEscapes(item) {
 }
 
 /**
+ * DIAGNOSTIC (mode ?debug uniquement) — détecte les formules LaTeX déséquilibrées d'un objet :
+ * délimiteur `\(`/`\)` ou `\[`/`\]` orphelin, ou accolades `{ }` déséquilibrées dans une formule.
+ * NE MODIFIE RIEN. Sert d'alerte QA : le healer ne répare le LaTeX QUE dans des blocs `\(...\)`
+ * équilibrés, donc un délimiteur ouvrant oublié par l'IA passe entre les mailles et livre une
+ * math cassée (constaté sur ~2 % des activités math, campagne de tests réels 2026-07). Cette
+ * détection ne cherche pas à corriger (ambigu) mais à signaler en développement.
+ * @param {*} item - Objet/tableau/chaîne à inspecter.
+ * @returns {string[]} Descriptions courtes des déséquilibres trouvés (vide si tout est équilibré).
+ */
+export function checkLatexBalance(item) {
+    const issues = [];
+    const visit = (s) => {
+        if (s.indexOf('\\(') === -1 && s.indexOf('\\)') === -1 && s.indexOf('\\[') === -1 && s.indexOf('\\]') === -1) return;
+        const oi = (s.match(/\\\(/g) || []).length, ci = (s.match(/\\\)/g) || []).length;
+        const od = (s.match(/\\\[/g) || []).length, cd = (s.match(/\\\]/g) || []).length;
+        if (oi !== ci) issues.push(`\\( (${oi}) ≠ \\) (${ci}) : « ${s.slice(0, 60)}… »`);
+        if (od !== cd) issues.push(`\\[ (${od}) ≠ \\] (${cd}) : « ${s.slice(0, 60)}… »`);
+        for (const f of s.match(/\\\(([\s\S]*?)\\\)/g) || []) {
+            const ob = (f.match(/\{/g) || []).length, cb = (f.match(/\}/g) || []).length;
+            if (ob !== cb) { issues.push(`accolades { } déséquilibrées : « ${f.slice(0, 50)}… »`); break; }
+        }
+    };
+    const walk = (x) => {
+        if (typeof x === 'string') visit(x);
+        else if (Array.isArray(x)) x.forEach(walk);
+        else if (x && typeof x === 'object') Object.values(x).forEach(walk);
+    };
+    walk(item);
+    return issues;
+}
+
+/**
  * Répare un objet JSON selon les patterns connus de l'IA.
  * @param {Object} obj - L'objet JSON à réparer.
  * @param {string} moduleKey - Le type de module.
@@ -711,6 +748,14 @@ export function healJsonObject(obj, moduleKey) {
         });
     }
 
+    // Diagnostic ?debug : alerter (sans rien changer) si l'IA a livré une formule déséquilibrée.
+    if (DEBUG) {
+        const imbalances = checkLatexBalance(healed);
+        if (imbalances.length) {
+            debugLog('json-healer', `⚠️ ${imbalances.length} formule(s) LaTeX déséquilibrée(s) — « ${moduleKey} » :`, imbalances.slice(0, 5));
+        }
+    }
+
     return healed;
 }
 
@@ -726,10 +771,991 @@ export function healJsonObject(obj, moduleKey) {
  * @param {string} moduleKey - Le type de module (ex: 'QuizSet', 'Millionnaire')
  * @returns {Object} Les données avec les champs structurels complétés
  */
+// =======================================================================
+// Règles de healing par activité
+// =======================================================================
+
+/**
+ * Chaque règle reçoit l'objet `healed` (clone profond de l'entrée, déjà passé par
+ * le préambule commun) et le MUTE EN PLACE. Aucune ne renvoie de valeur ni ne
+ * lit le `data` d'origine — c'est le contrat vérifié par les tests.
+ *
+ * Ces 24 règles formaient auparavant une chaîne de 28 `if (moduleKey === …)`
+ * séquentiels dans `healStructureForActivity` (868 lignes) : les 28 conditions
+ * étaient évaluées à chaque appel, rien ne garantissait ni exhaustivité ni
+ * unicité, et ajouter une activité imposait d'opérer au milieu du bloc.
+ */
+
+function healQuizSet(healed) {
+    if (!healed.progressType) healed.progressType = "dots";
+    if (healed.passPercentage === undefined) healed.passPercentage = 50;
+
+    if (Array.isArray(healed.questions)) {
+        healed.questions = healed.questions.map(q => {
+            // subContentId manquant → générer UUID
+            if (!q.subContentId) q.subContentId = generateUUID();
+
+            // library sans version → ajouter depuis la map
+            if (q.library && !q.library.includes(' ')) {
+                const baseLib = q.library.trim();
+                if (H5P_LIB_VERSIONS[baseLib]) {
+                    q.library = `${baseLib} ${H5P_LIB_VERSIONS[baseLib]}`;
+                }
+            }
+
+            // library présent et params absent mais d'autres champs → envelopper dans params
+            if (q.library && !q.params) {
+                const { library, metadata, subContentId, ...rest } = q;
+                if (Object.keys(rest).length > 0) {
+                    return {
+                        library,
+                        metadata: metadata || { title: "Question" },
+                        subContentId: subContentId || generateUUID(),
+                        params: rest
+                    };
+                }
+            }
+
+            // metadata manquant
+            if (!q.metadata) q.metadata = { title: "Question" };
+
+            // DragQuestion : valider la structure dropZones/elements (même logique que DragAndDrop autonome)
+            if (q.library && q.library.startsWith('H5P.DragQuestion') && q.params) {
+                if (!Array.isArray(q.params.dropZones)) q.params.dropZones = [];
+                if (!Array.isArray(q.params.elements)) q.params.elements = [];
+                const maxIdx = q.params.elements.length - 1;
+                q.params.dropZones = q.params.dropZones.map(zone => {
+                    if (Array.isArray(zone.correctElements)) {
+                        zone.correctElements = zone.correctElements.filter(idx => {
+                            const n = typeof idx === 'string' ? parseInt(idx, 10) : idx;
+                            return Number.isInteger(n) && n >= 0 && n <= maxIdx;
+                        });
+                    } else {
+                        zone.correctElements = [];
+                    }
+                    if (!zone.label) zone.label = "";
+                    return zone;
+                });
+                q.params.elements = q.params.elements.map(el => {
+                    if (typeof el === 'string') return { text: el };
+                    if (!el.text) el.text = "";
+                    return el;
+                });
+                if (!q.params.title) q.params.title = "";
+            }
+
+            return q;
+        });
+    }
+}
+
+// --- MultipleChoice ---
+function healMultipleChoice(healed) {
+    if (Array.isArray(healed.answers)) {
+        healed.answers = healed.answers.map(ans => {
+            // iscorrect → correct (1/0 → true/false)
+            if (ans.correct === undefined && ans.iscorrect !== undefined) {
+                ans.correct = ans.iscorrect === 1 || ans.iscorrect === true;
+                delete ans.iscorrect;
+            }
+            // answer → text
+            if (!ans.text && ans.answer) {
+                ans.text = ans.answer;
+                delete ans.answer;
+            }
+            return ans;
+        });
+    }
+}
+
+// --- TrueFalse ---
+function healTrueFalse(healed) {
+    if (typeof healed.correct === 'string') {
+        healed.correct = healed.correct.toLowerCase() === 'true';
+    }
+    if (!healed.l10n) healed.l10n = {};
+}
+
+// --- Flashcards ---
+function healFlashcards(healed) {
+    if (Array.isArray(healed.cards)) {
+        healed.cards = healed.cards.map(card => {
+            if (!card.image) card.image = { path: "", alt: "" };
+            return card;
+        });
+    }
+}
+
+// --- Crossword ---
+function healCrossword(healed) {
+    if (Array.isArray(healed.words)) {
+        // Map des commandes LaTeX grecques → nom en lettres (min 2 caractères alphabétiques)
+        const GREEK_LETTER_NAMES = {
+            'alpha': 'ALPHA', 'beta': 'BETA', 'gamma': 'GAMMA', 'delta': 'DELTA',
+            'epsilon': 'EPSILON', 'varepsilon': 'EPSILON', 'zeta': 'ZETA', 'eta': 'ETA',
+            'theta': 'THETA', 'iota': 'IOTA', 'kappa': 'KAPPA', 'lambda': 'LAMBDA',
+            'mu': 'MU', 'nu': 'NU', 'xi': 'XI', 'pi': 'PI', 'rho': 'RHO',
+            'sigma': 'SIGMA', 'tau': 'TAU', 'upsilon': 'UPSILON', 'phi': 'PHI',
+            'varphi': 'PHI', 'chi': 'CHI', 'psi': 'PSI', 'omega': 'OMEGA',
+            'Gamma': 'GAMMA', 'Delta': 'DELTA', 'Theta': 'THETA', 'Lambda': 'LAMBDA',
+            'Xi': 'XI', 'Pi': 'PI', 'Sigma': 'SIGMA', 'Phi': 'PHI', 'Psi': 'PSI', 'Omega': 'OMEGA'
+        };
+        // Symboles Unicode grecs → nom en lettres
+        const UNICODE_GREEK_NAMES = {
+            'α': 'ALPHA', 'β': 'BETA', 'γ': 'GAMMA', 'δ': 'DELTA', 'ε': 'EPSILON',
+            'ζ': 'ZETA', 'η': 'ETA', 'θ': 'THETA', 'ι': 'IOTA', 'κ': 'KAPPA',
+            'λ': 'LAMBDA', 'μ': 'MU', 'ν': 'NU', 'ξ': 'XI', 'π': 'PI', 'ρ': 'RHO',
+            'σ': 'SIGMA', 'τ': 'TAU', 'υ': 'UPSILON', 'φ': 'PHI', 'χ': 'CHI',
+            'ψ': 'PSI', 'ω': 'OMEGA', 'Γ': 'GAMMA', 'Δ': 'DELTA', 'Θ': 'THETA',
+            'Λ': 'LAMBDA', 'Ξ': 'XI', 'Π': 'PI', 'Σ': 'SIGMA', 'Φ': 'PHI', 'Ψ': 'PSI', 'Ω': 'OMEGA'
+        };
+
+        healed.words = healed.words.map(word => {
+            // hint → clue
+            if (!word.clue && word.hint) {
+                word.clue = word.hint;
+                delete word.hint;
+            }
+            if (word.fixWord === undefined) word.fixWord = false;
+
+            if (word.answer) {
+                let ans = word.answer.trim();
+
+                // 1. Si l'answer est une formule LaTeX contenant uniquement une lettre grecque → convertir en mot
+                // Formes possibles après healing : \(\pi\), \\(\pi\\), \pi, juste "pi" entouré de LaTeX
+                // On extrait le contenu en enlevant les délimiteurs \( \) ou \[ \] et le \ devant la commande
+                const stripped = ans
+                    .replace(/^\\[\(\[]/, '')   // enlever \( ou \[ au début
+                    .replace(/\\[\)\]]$/, '')   // enlever \) ou \] à la fin
+                    .replace(/^\\\[/, '').replace(/\\\]$/, '')
+                    .replace(/^\\/, '')          // enlever le \ devant la commande
+                    .trim();
+                if (GREEK_LETTER_NAMES[stripped]) {
+                    const oldAns = ans;
+                    ans = GREEK_LETTER_NAMES[stripped];
+                    debugLog('json-healer', `[JSON Healer] Crossword answer : "${oldAns}" → "${ans}" (lettre grecque en mot)`);
+                }
+
+                // 2. Si l'answer est un seul symbole Unicode grec → convertir en mot
+                if (ans.trim().length === 1 && UNICODE_GREEK_NAMES[ans.trim()]) {
+                    const oldAns = ans;
+                    ans = UNICODE_GREEK_NAMES[ans.trim()];
+                    debugLog('json-healer', `[JSON Healer] Crossword answer : "${oldAns}" → "${ans}" (symbole Unicode → mot)`);
+                }
+
+                // 3. Retirer les espaces
+                if (ans.includes(' ')) {
+                    const oldAns = ans;
+                    ans = ans.replace(/\s+/g, '');
+                    debugLog('json-healer', `[JSON Healer] Crossword answer : "${oldAns}" → "${ans}" (espaces supprimés)`);
+                }
+
+                word.answer = ans;
+            }
+            return word;
+        });
+
+        // 4. Filtrer les mots dont l'answer contient encore du LaTeX ou des symboles math non-alphabétiques
+        // Un answer valide = au moins 2 caractères alphanumériques dont AU MOINS une lettre
+        // (H5P.Crossword accepte les chiffres : « H2O », « A4 » sont valides ; « 42 » est écarté)
+        const beforeCount = healed.words.length;
+        healed.words = healed.words.filter(word => {
+            const ans = word.answer || '';
+            // Détecter LaTeX restant (commandes ou délimiteurs)
+            const hasLatex = /\\[a-zA-Z]/.test(ans) || ans.includes('\\(') || ans.includes('\\)');
+            // Détecter symboles Unicode math (pas les lettres grecques déjà converties)
+            const hasUnicodeMath = /[\u221A\u2200-\u22FF\u2190-\u21FF]/.test(ans);
+            // Mot valide = ≥ 2 caractères alphanumériques (accents inclus) et au moins une lettre
+            const alnumCount = (ans.match(/[a-zA-Z0-9À-ÿ]/g) || []).length;
+            const hasLetter = /[a-zA-ZÀ-ÿ]/.test(ans);
+            const isValidWord = alnumCount >= 2 && hasLetter;
+
+            if (hasLatex || hasUnicodeMath || !isValidWord) {
+                debugLog('json-healer', `[JSON Healer] Crossword : suppression de l'entrée "${ans}" (formule math ou réponse invalide)`);
+                return false;
+            }
+            // Plafond anti-DoS (S12) : réponse trop longue → entrée écartée (pas tronquée)
+            if (ans.length > GRID_MAX_ANSWER_LENGTH) {
+                debugLog('json-healer', `[JSON Healer] Crossword : suppression de l'entrée "${ans}" (réponse > ${GRID_MAX_ANSWER_LENGTH} caractères)`);
+                return false;
+            }
+            return true;
+        });
+        if (healed.words.length < beforeCount) {
+            debugLog('json-healer', `[JSON Healer] Crossword : ${beforeCount - healed.words.length} entrée(s) supprimée(s) (formules math, réponses invalides ou trop longues)`);
+        }
+        // Plafond anti-DoS (S12) : nombre de mots limité, excédent écarté
+        if (healed.words.length > GRID_MAX_WORDS) {
+            const discarded = healed.words.slice(GRID_MAX_WORDS);
+            healed.words = healed.words.slice(0, GRID_MAX_WORDS);
+            debugLog('json-healer', `[JSON Healer] Crossword : ${discarded.length} mot(s) excédentaire(s) écarté(s) (plafond ${GRID_MAX_WORDS}) : ${discarded.map(w => `"${w.answer}"`).join(', ')}`);
+        }
+    }
+}
+
+// --- Chart ---
+function healChart(healed) {
+    if (Array.isArray(healed.listOfTypes)) {
+        healed.listOfTypes = healed.listOfTypes.map((item, i) => {
+            if (!item.color) {
+                item.color = CHART_DEFAULT_COLORS[i % CHART_DEFAULT_COLORS.length];
+            }
+            return item;
+        });
+    }
+    // "barChart" et non "bar" : H5P.Chart 1.2 ne connaît QUE `pieChart` et `barChart`
+    // (semantics.json), et le menu « Type de graphique » de l'éditeur n'offre que ces deux
+    // valeurs. Un `graphMode` inconnu passait la validation (champ non vide) tout en affichant
+    // la première option du menu : le modèle et l'écran divergeaient, et le .h5p partait avec
+    // une valeur que la librairie ne sait pas lire.
+    if (!healed.graphMode) healed.graphMode = "barChart";
+}
+
+// --- Timeline ---
+function healTimeline(healed) {
+    if (healed.timeline) {
+        if (!healed.timeline.type) healed.timeline.type = "default";
+        if (Array.isArray(healed.timeline.date)) {
+            healed.timeline.date = healed.timeline.date.map(event => {
+                // "YYYY-MM-DD" → "YYYY,M,D"
+                if (event.startDate && typeof event.startDate === 'string' && event.startDate.includes('-')) {
+                    const parts = event.startDate.split('-');
+                    if (parts.length === 3) {
+                        event.startDate = `${parts[0]},${parseInt(parts[1])},${parseInt(parts[2])}`;
+                    }
+                }
+                return event;
+            });
+        }
+    }
+}
+
+/**
+ * Glisser-déposer : rétablit `dropZones[].correctElements` quand l'association
+ * étiquette → zone n'est donnée que sous la forme ÉDITEUR (`elements[].zoneIndices`).
+ *
+ * Deux formes coexistent pour la MÊME information. Le `.h5p`, les prompts et les
+ * processeurs utilisent `correctElements` (zone → étiquettes) ; l'éditeur travaille sur
+ * `zoneIndices` (étiquette → zones) et reconvertit à l'enregistrement. Un JSON déjà écrit
+ * dans la forme éditeur — sortie de LLM qui suit l'exemple d'une fixture, contenu repris
+ * d'un autre outil — traversait tout le pipeline sans être compris : le `.h5p` partait avec
+ * `correctElements: []`, c'est-à-dire SANS AUCUNE bonne réponse, et sans que rien ne le
+ * signale (constaté sur `course_presentation_4.json`).
+ *
+ * Deux garde-fous :
+ *   · `correctElements` NON VIDE reste prioritaire — c'est la forme que joue H5P ;
+ *   · `zoneIndices` n'est PAS supprimé. Cette fonction tourne aussi à l'enregistrement
+ *     depuis l'éditeur (`saveChanges` → `healStructureForActivity`), où `zoneIndices` est
+ *     la source de vérité que `denormalizeDataForSave` relit juste après : la retirer
+ *     effacerait les associations au premier enregistrement.
+ *
+ * @param {Object} params - params d'un DragQuestion (porte `dropZones` ET `elements`)
+ */
+function healDragQuestionAssociations(params) {
+    const dropZones = params.dropZones;
+    const elements = params.elements;
+    if (dropZones.some(z => z && Array.isArray(z.correctElements) && z.correctElements.length > 0)) return;
+    if (!elements.some(el => el && Array.isArray(el.zoneIndices) && el.zoneIndices.length > 0)) return;
+
+    dropZones.forEach(zone => { if (zone && typeof zone === 'object') zone.correctElements = []; });
+    elements.forEach((el, elemIdx) => {
+        if (!el || typeof el !== 'object' || !Array.isArray(el.zoneIndices)) return;
+        el.zoneIndices.forEach(brut => {
+            const zIdx = typeof brut === 'string' ? parseInt(brut, 10) : brut;
+            if (!Number.isInteger(zIdx) || zIdx < 0 || zIdx >= dropZones.length) return;
+            const zone = dropZones[zIdx];
+            if (!zone || typeof zone !== 'object') return;
+            if (!zone.correctElements.includes(elemIdx)) zone.correctElements.push(elemIdx);
+        });
+    });
+}
+
+/**
+ * Applique `healDragQuestionAssociations` à TOUT objet du document portant à la fois
+ * `dropZones` et `elements` — la signature d'un DragQuestion, et d'aucun autre contenu.
+ *
+ * Un parcours en profondeur plutôt que quatre branchements : le Glisser-déposer existe
+ * en autonome, en sous-question de Quiz, en exercice de diapositive et en bloc de Livre
+ * interactif, chacun avec sa forme propre (`params`, `exercise`, bloc aplati, forme
+ * éditeur avec `_exerciseLibrary`). Le prochain conteneur sera couvert sans rien ajouter.
+ *
+ * @param {*} noeud - document (ou sous-arbre) à réparer, muté sur place
+ */
+function healDragQuestionsDeep(noeud) {
+    if (!noeud || typeof noeud !== 'object') return;
+    if (Array.isArray(noeud)) {
+        noeud.forEach(healDragQuestionsDeep);
+        return;
+    }
+    if (Array.isArray(noeud.dropZones) && Array.isArray(noeud.elements)) {
+        healDragQuestionAssociations(noeud);
+    }
+    Object.values(noeud).forEach(healDragQuestionsDeep);
+}
+
+// --- DragAndDrop ---
+function healDragAndDrop(healed) {
+    // Assurer que les tableaux existent
+    if (!Array.isArray(healed.dropZones)) healed.dropZones = [];
+    if (!Array.isArray(healed.elements)) healed.elements = [];
+
+    // Valider les indices correctElements (supprimer ceux hors limites)
+    const maxElementIndex = healed.elements.length - 1;
+    healed.dropZones = healed.dropZones.map(zone => {
+        if (Array.isArray(zone.correctElements)) {
+            zone.correctElements = zone.correctElements.filter(idx => {
+                const n = typeof idx === 'string' ? parseInt(idx, 10) : idx;
+                return Number.isInteger(n) && n >= 0 && n <= maxElementIndex;
+            });
+        } else {
+            zone.correctElements = [];
+        }
+        if (!zone.label) zone.label = "";
+        return zone;
+    });
+
+    // Assurer que chaque élément a un texte
+    healed.elements = healed.elements.map(el => {
+        if (typeof el === 'string') return { text: el };
+        if (!el.text) el.text = "";
+        return el;
+    });
+
+    // Titre par défaut
+    if (!healed.title) healed.title = "";
+
+    // Note : le mélange des étiquettes est fait dans h5p-creator.js (après healing,
+    // avant stockage) pour ne s'exécuter qu'à la création initiale IA.
+}
+
+// --- CoursePresentation ---
+function healCoursePresentation(healed) {
+    // Assurer que slides est un tableau
+    if (!Array.isArray(healed.slides)) {
+        if (healed.slide || healed.content) {
+            healed.slides = Array.isArray(healed.slide || healed.content)
+                ? (healed.slide || healed.content)
+                : [healed.slide || healed.content];
+            delete healed.slide;
+            delete healed.content;
+        } else {
+            healed.slides = [];
+        }
+    }
+
+    // Valider chaque slide
+    healed.slides = healed.slides.map((slide, i) => {
+        // Assurer un type de slide valide
+        if (!slide.type) {
+            if (i === 0) slide.type = 'title';
+            else if (slide.exercise) slide.type = 'quiz';
+            else slide.type = 'content';
+        }
+
+        // Préserver la library d'exercice telle quelle (le processeur accepte les deux formats)
+        // Ne PAS simplifier ici : l'éditeur et l'export document ont besoin du format complet
+
+        return slide;
+    });
+
+    // Assurer un titre global
+    if (!healed.title) {
+        const firstSlide = healed.slides[0];
+        healed.title = firstSlide?.title || 'Présentation';
+    }
+}
+
+// --- InteractiveBook ---
+function healInteractiveBook(healed) {
+    // Assurer que chapters est un tableau (accepter chapter/pages/sections comme alias)
+    if (!Array.isArray(healed.chapters)) {
+        const src = healed.chapter || healed.pages || healed.sections;
+        if (src) {
+            healed.chapters = Array.isArray(src) ? src : [src];
+            delete healed.chapter;
+            delete healed.pages;
+            delete healed.sections;
+        } else {
+            healed.chapters = [];
+        }
+    }
+
+    // Normaliser la couverture : accepter une chaîne directe
+    if (typeof healed.cover === 'string') {
+        healed.cover = { description: healed.cover };
+    }
+
+    healed.chapters = healed.chapters.map((ch, i) => {
+        if (!ch || typeof ch !== 'object') ch = {};
+
+        // Titre obligatoire (affiché dans la table des matières)
+        if (!ch.title) ch.title = `Chapitre ${i + 1}`;
+
+        // Normaliser content[] : accepter blocks comme alias, ou des champs à plat
+        if (!Array.isArray(ch.content)) {
+            if (Array.isArray(ch.blocks)) {
+                ch.content = ch.blocks;
+                delete ch.blocks;
+            } else {
+                const blocks = [];
+                if (ch.text) blocks.push({ type: 'text', text: ch.text });
+                if (ch.table) blocks.push({ type: 'table', table: ch.table, tableStyle: ch.tableStyle });
+                if (ch.exercise) blocks.push({ type: 'exercise', ...ch.exercise });
+                ch.content = blocks;
+                delete ch.text;
+                delete ch.table;
+                delete ch.tableStyle;
+                delete ch.exercise;
+            }
+        }
+
+        // Normaliser chaque bloc : inférer le type si absent, dénouer exercise imbriqué
+        ch.content = (ch.content || []).filter(b => b && typeof b === 'object').map(b => {
+            // Format éditeur (déjà normalisé par normalizeDataForEditor : marqueurs
+            // _blockType / _exerciseLibrary + wrapper `exercise`). On ne touche PAS :
+            // la dénormalisation post-validation reconstruit le format à plat, et
+            // aplatir ici détruirait _exerciseLibrary/_blockType (→ « type d'exercice
+            // requis » au save). Même philosophie que CoursePresentation ci-dessus.
+            if ('_blockType' in b || '_exerciseLibrary' in b) {
+                return b;
+            }
+            // --- Format brut (sortie LLM) ---
+            // Bloc {type:'exercise', exercise:{...}} → aplatir l'exercice au niveau du bloc
+            if (b.exercise && typeof b.exercise === 'object' && !b.library
+                && !b.text && !b.table && !b.image) {
+                b = { type: 'exercise', ...b.exercise };
+            }
+            if (!b.type) {
+                if (b.library) b.type = 'exercise';
+                else if (b.table) b.type = 'table';
+                else if (b.image) b.type = 'image';
+                else b.type = 'text';
+            }
+            // Exercice : compléter la version de library manquante (l'éditeur exige le format complet)
+            if (b.type === 'exercise' && typeof b.library === 'string' && b.library.includes('.') && !b.library.includes(' ')) {
+                const baseLib = b.library.trim();
+                const known = Object.keys(H5P_LIB_VERSIONS).find(k => k.toLowerCase() === baseLib.toLowerCase());
+                if (known) b.library = `${known} ${H5P_LIB_VERSIONS[known]}`;
+            }
+            return b;
+        });
+
+        return ch;
+    });
+
+    // Assurer un titre global
+    if (!healed.title) {
+        healed.title = healed.chapters[0]?.title || 'Livre interactif';
+    }
+}
+
+// --- InteractiveVideo ---
+function healInteractiveVideo(healed) {
+    // Coercition d'un timestamp (nombre, "HH:MM:SS", "MM:SS") en secondes.
+    const ivToSeconds = (t) => {
+        if (typeof t === 'number') return Math.max(0, t);
+        if (typeof t === 'string') {
+            const parts = t.trim().replace(',', '.').split(':').map(Number);
+            if (parts.some(n => Number.isNaN(n))) return 0;
+            if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+            if (parts.length === 2) return parts[0] * 60 + parts[1];
+            return parts[0] || 0;
+        }
+        return 0;
+    };
+
+    // displayMode (racine) : mode d'affichage imposé à toutes les questions. Seules trois valeurs
+    // ont un sens ; toute autre (LLM fantaisiste, import) retombe sur 'custom' = chaque question
+    // décide, ce qui est aussi le comportement des contenus antérieurs au réglage. On ne CRÉE pas
+    // le champ quand il est absent : son absence vaut déjà 'custom' côté processeur, et l'ajouter
+    // ferait diverger inutilement les JSON existants (bruit dans les diffs / snapshots).
+    if (healed.displayMode != null) {
+        healed.displayMode = ['poster', 'button', 'custom'].includes(healed.displayMode)
+            ? healed.displayMode : 'custom';
+    }
+
+    // interactions[] : accepter les alias interaction/questions/items
+    if (!Array.isArray(healed.interactions)) {
+        const src = healed.interaction || healed.items;
+        healed.interactions = Array.isArray(src) ? src : (src ? [src] : []);
+        delete healed.interaction;
+        delete healed.items;
+    }
+
+    const IV_TYPES = ['multichoice', 'truefalse', 'blanks'];
+    healed.interactions = healed.interactions
+        .filter(it => it && typeof it === 'object')
+        .map(it => {
+            // timestamp : accepter time/start/at comme alias, coercer en secondes
+            if (it.timestamp == null) it.timestamp = it.time ?? it.start ?? it.at ?? 0;
+            it.timestamp = ivToSeconds(it.timestamp);
+            delete it.time; delete it.start; delete it.at;
+            // pause par défaut (point d'arrêt pédagogique)
+            if (it.pause == null) it.pause = true;
+            // Schéma étranger (IA externe) : `options` est un alias d'`answers`.
+            if (!Array.isArray(it.answers) && Array.isArray(it.options)) {
+                it.answers = it.options;
+                delete it.options;
+            }
+            // type : valider ou inférer
+            const t = String(it.type || '').toLowerCase();
+            if (IV_TYPES.includes(t)) {
+                it.type = t;
+            } else if (Array.isArray(it.answers)) {
+                it.type = 'multichoice';
+            } else if (typeof it.correct === 'boolean' || it.correct === 'true' || it.correct === 'false') {
+                it.type = 'truefalse';
+            } else if (it.text || Array.isArray(it.questions)) {
+                it.type = 'blanks';
+            } else {
+                it.type = 'multichoice';
+            }
+            if (it.type === 'multichoice' && !Array.isArray(it.answers)) it.answers = [];
+            // truefalse exprimé en réponses Vrai/Faux (schéma étranger) : dériver `correct`
+            // du libellé de la réponse marquée correcte, puis retirer les réponses.
+            if (it.type === 'truefalse' && it.correct == null && Array.isArray(it.answers)) {
+                const good = it.answers.find(a => a && typeof a === 'object' && a.correct === true);
+                if (good) it.correct = /^\s*(vrai|true|oui|yes|waar|wahr|verdadero|vero|1)\b/i.test(String(good.text || ''));
+                delete it.answers;
+            }
+            // Normaliser `correct` en booléen (l'éditeur stocke "true"/"false" en string).
+            if (it.type === 'truefalse') {
+                it.correct = (it.correct === true || it.correct === 'true' || it.correct === 1
+                    || it.correct === '1' || it.correct === 'vrai');
+            }
+            // `feedback: {correct, incorrect}` (schéma étranger) → rétroactions natives :
+            // truefalse → feedbackOnCorrect/feedbackOnWrong ; multichoice → feedback par
+            // réponse (bonne réponse ← correct, distracteurs ← incorrect).
+            if (it.feedback && typeof it.feedback === 'object' && !Array.isArray(it.feedback)) {
+                const fbOk = typeof it.feedback.correct === 'string' ? it.feedback.correct : '';
+                const fbKo = typeof it.feedback.incorrect === 'string' ? it.feedback.incorrect : '';
+                if (it.type === 'truefalse') {
+                    if (fbOk && !it.feedbackOnCorrect) it.feedbackOnCorrect = fbOk;
+                    if (fbKo && !it.feedbackOnWrong) it.feedbackOnWrong = fbKo;
+                } else if (it.type === 'multichoice' && Array.isArray(it.answers)) {
+                    for (const a of it.answers) {
+                        if (a && typeof a === 'object' && !a.feedback && !a.chosenFeedback) {
+                            const fb = a.correct ? fbOk : fbKo;
+                            if (fb) a.feedback = fb;
+                        }
+                    }
+                }
+                delete it.feedback;
+            }
+            // blanks : `question` (schéma étranger) → consigne de l'exercice.
+            if (it.type === 'blanks' && !it.taskDescription && typeof it.question === 'string' && it.question.trim()) {
+                it.taskDescription = it.question;
+            }
+            // Apparence/placement (champs optionnels) : on borne uniquement les valeurs FOURNIES
+            // pour éviter un rendu cassé ; on n'impose pas de défaut (le processeur applique les
+            // défauts sains quand le champ est absent).
+            // `button` doit être demandé explicitement ; toute autre valeur fournie retombe sur le
+            // défaut `poster` (aligné sur le processeur — les deux doivent trancher pareil).
+            if (it.display != null) it.display = (it.display === 'button' ? 'button' : 'poster');
+            if (it.placement != null
+                && !['center', 'top-left', 'top-right', 'bottom-left', 'bottom-right', 'bottom', 'full', 'custom'].includes(it.placement)) {
+                it.placement = 'center';
+            }
+            for (const k of ['x', 'y', 'width', 'height']) {
+                if (it[k] != null && it[k] !== '') {
+                    const n = Number(it[k]);
+                    if (Number.isFinite(n)) it[k] = Math.min(100, Math.max(0, n));
+                    else delete it[k];
+                }
+            }
+            if (it.visibleDuration != null && it.visibleDuration !== '') {
+                const n = Number(it.visibleDuration);
+                if (Number.isFinite(n) && n > 0) it.visibleDuration = n; else delete it.visibleDuration;
+            }
+            return it;
+        })
+        .sort((a, b) => a.timestamp - b.timestamp);
+
+    // summary : normaliser statements en tableau de tableaux non vides
+    if (healed.summary && typeof healed.summary === 'object') {
+        if (!Array.isArray(healed.summary.statements)) healed.summary.statements = [];
+        healed.summary.statements = healed.summary.statements
+            .map(g => Array.isArray(g) ? g : (typeof g === 'string' ? [g] : []))
+            .filter(g => g.length > 0);
+    }
+
+    // videoSource : accepter une URL en chaîne directe, et choisir le bon mime.
+    // YouTube → mime `video/YouTube` (handler natif H5P.VideoYouTube, lecture par embed, aucun
+    // téléchargement). Sans ce mime, le handler YouTube ne prend pas la main → vidéo non jouable.
+    const isYouTubeUrl = (s) => {
+        s = String(s || '');
+        return /youtu\.be\/[\w-]{11}/i.test(s)
+            || /youtube(?:-nocookie)?\.com\/(?:embed|shorts|live|v)\/[\w-]{11}/i.test(s)
+            || (/youtube(?:-nocookie)?\.com\/watch/i.test(s) && /[?&]v=[\w-]{11}/i.test(s));
+    };
+    if (typeof healed.videoSource === 'string') {
+        const u = healed.videoSource;
+        healed.videoSource = { type: 'html5', url: u, mime: isYouTubeUrl(u) ? 'video/YouTube' : 'video/mp4' };
+    } else if (healed.videoSource && typeof healed.videoSource === 'object' && healed.videoSource.url
+        && isYouTubeUrl(healed.videoSource.url) && healed.videoSource.mime !== 'video/YouTube') {
+        // Objet fourni avec une URL YouTube mais un mime mp4/absent → corriger.
+        healed.videoSource.mime = 'video/YouTube';
+    }
+
+    if (!healed.title) healed.title = 'Vidéo interactive';
+}
+
+// --- DialogCards ---
+function healDialogCards(healed) {
+    if (!Array.isArray(healed.dialogs)) healed.dialogs = [];
+    healed.dialogs = healed.dialogs.map(d => {
+        if (!d || typeof d !== 'object') return { text: '', answer: '', tips: { front: '', back: '' } };
+        if (!d.tips || typeof d.tips !== 'object') d.tips = { front: '', back: '' };
+        if (!d.tips.front) d.tips.front = '';
+        if (!d.tips.back) d.tips.back = '';
+        return d;
+    });
+}
+
+// --- Dictation ---
+// NE JAMAIS toucher au contenu de sentences[].text : accents, casse et ponctuation
+// comptent pour la correction de la dictée (render 'unicode' dans field-constraints).
+// (Le tableau nu a déjà été enveloppé en tête de fonction, avant le bloc H5P commun.)
+function healDictation(healed) {
+    if (!Array.isArray(healed.sentences)) healed.sentences = [];
+    healed.sentences = healed.sentences
+        .map(s => (typeof s === 'string' ? { text: s } : s))
+        .filter(s => s && typeof s === 'object');
+}
+
+// --- Essay ---
+function healEssay(healed) {
+    if (!Array.isArray(healed.keywords)) healed.keywords = [];
+    healed.keywords = healed.keywords.map(kw => {
+        // Accepter les chaînes simples ou les objets avec word/keyword
+        if (typeof kw === 'string') return { keyword: kw };
+        if (kw && !kw.keyword && kw.word) {
+            kw.keyword = kw.word;
+            delete kw.word;
+        }
+        return kw;
+    });
+    if (!healed.solution) healed.solution = { introduction: '', sample: '' };
+}
+
+// --- SingleChoiceSet ---
+function healSingleChoiceSet(healed) {
+    if (!Array.isArray(healed.choices)) healed.choices = [];
+    healed.choices = healed.choices.map(c => {
+        if (!c.subContentId) c.subContentId = generateUUID();
+        if (!Array.isArray(c.answers) && typeof c.answers === 'string') {
+            c.answers = [c.answers];
+        }
+        return c;
+    });
+}
+
+// --- SortParagraphs ---
+function healSortParagraphs(healed) {
+    if (!Array.isArray(healed.paragraphs)) {
+        // Accepter aussi sentences (nom alternatif courant)
+        if (Array.isArray(healed.sentences)) {
+            healed.paragraphs = healed.sentences;
+            delete healed.sentences;
+        } else {
+            healed.paragraphs = [];
+        }
+    }
+}
+
+// --- Summary ---
+function healSummary(healed) {
+    if (!Array.isArray(healed.summaries)) healed.summaries = [];
+    healed.summaries = healed.summaries.map(s => {
+        if (!s || typeof s !== 'object') return { summary: [], tip: '' };
+        if (!s.tip) s.tip = '';
+        if (!s.subContentId) s.subContentId = generateUUID();
+        // summary doit être un tableau de chaînes
+        if (!Array.isArray(s.summary) && typeof s.summary === 'string') {
+            s.summary = [s.summary];
+        }
+        return s;
+    });
+}
+
+// --- FindTheWords ---
+function healFindTheWords(healed) {
+    if (Array.isArray(healed.wordList)) {
+        healed.wordList = healed.wordList.join(',');
+    }
+
+    // Nettoyage de la wordList : la grille ne supporte que des mots en lettres
+    // Supprimer les entrées contenant du LaTeX, des délimiteurs \(...\), ou des symboles Unicode math
+    if (typeof healed.wordList === 'string') {
+        const words = healed.wordList.split(',').map(w => w.trim()).filter(w => w.length > 0);
+        const beforeCount = words.length;
+        const cleanWords = words.filter(word => {
+            // Détecter LaTeX (commandes \cmd ou délimiteurs \( \))
+            const hasLatex = /\\[a-zA-Z()\[\]]/.test(word);
+            // Détecter symboles Unicode math (√, π, α-ω, Σ, ∞, etc.)
+            const hasUnicodeMath = /[\u221A\u03B1-\u03C9\u03A0-\u03A9\u2200-\u22FF\u2190-\u21FF\u00B2\u00B3\u2070-\u209F]/.test(word);
+
+            if (hasLatex || hasUnicodeMath) {
+                debugLog('json-healer', `[JSON Healer] FindTheWords wordList : suppression de "${word}" (formule math dans grille de lettres)`);
+                return false;
+            }
+            return true;
+        });
+        if (cleanWords.length < beforeCount) {
+            debugLog('json-healer', `[JSON Healer] FindTheWords : ${beforeCount - cleanWords.length} mot(s) supprimé(s) de la wordList (formules math)`);
+        }
+        // Nettoyer chaque mot : ne garder que les lettres (la grille ne supporte que ca)
+        let finalWords = cleanWords
+            .map(w => w.replace(/[^a-zA-ZÀ-ÿ]/g, ''))
+            .filter(w => w.length > 0);
+        // Plafond anti-DoS (S12) : mot trop long → écarté (pas tronqué)
+        finalWords = finalWords.filter(w => {
+            if (w.length > GRID_MAX_ANSWER_LENGTH) {
+                debugLog('json-healer', `[JSON Healer] FindTheWords : suppression de "${w}" (mot > ${GRID_MAX_ANSWER_LENGTH} caractères)`);
+                return false;
+            }
+            return true;
+        });
+        // Plafond anti-DoS (S12) : nombre de mots limité, excédent écarté
+        if (finalWords.length > GRID_MAX_WORDS) {
+            const discarded = finalWords.slice(GRID_MAX_WORDS);
+            finalWords = finalWords.slice(0, GRID_MAX_WORDS);
+            debugLog('json-healer', `[JSON Healer] FindTheWords : ${discarded.length} mot(s) excédentaire(s) écarté(s) (plafond ${GRID_MAX_WORDS}) : ${discarded.map(w => `"${w}"`).join(', ')}`);
+        }
+        healed.wordList = finalWords.join(',');
+    }
+}
+
+// --- Millionnaire (Moodle) ---
+function healMillionnaire(healed) {
+    if (Array.isArray(healed.questions)) {
+        healed.questions = healed.questions.map(q => {
+            // badanswer string → tableau
+            if (typeof q.badanswer === 'string') {
+                q.badanswer = [q.badanswer];
+            }
+            // badanswer avec moins de 3 éléments → compléter avec ""
+            if (Array.isArray(q.badanswer) && q.badanswer.length < 3) {
+                while (q.badanswer.length < 3) {
+                    q.badanswer.push("");
+                }
+            }
+            return q;
+        });
+    }
+}
+
+// --- Appariement (Moodle) ---
+function healAppariement(healed) {
+    if (Array.isArray(healed.pairs)) {
+        healed.pairs = healed.pairs.map(pair => {
+            if (pair.question === null || pair.question === undefined) pair.question = "";
+            if (pair.answer === null || pair.answer === undefined) pair.answer = "";
+            return pair;
+        });
+    }
+}
+
+// --- QCM (Moodle) ---
+function healQCM(healed) {
+    if (Array.isArray(healed.questions)) {
+        healed.questions = healed.questions.map(q => {
+            if (Array.isArray(q.answers)) {
+                q.answers = q.answers.map(ans => {
+                    // 1. Si iscorrect manque (ex: génération IA), on le recrée à partir de correct
+                    if (ans.iscorrect === undefined && ans.correct !== undefined) {
+                        ans.iscorrect = (ans.correct === true || ans.correct === 1) ? 1 : 0;
+                    }
+                    // 2. On s'assure que correct existe pour les simulateurs sans supprimer iscorrect
+                    if (ans.correct === undefined && ans.iscorrect !== undefined) {
+                        ans.correct = (ans.iscorrect === 1 || ans.iscorrect === true);
+                    }
+                    return ans;
+                });
+            }
+            return q;
+        });
+    }
+}
+
+// --- Page (Moodle) ---
+function healPage(healed) {
+    if (Array.isArray(healed.blocks)) {
+        healed.blocks = healed.blocks.map(block => {
+            if (!block.data) block.data = {};
+            return block;
+        });
+    }
+}
+
+// --- Livre (Moodle, module book) ---
+function healLivre(healed) {
+    // 1. Defaults pour les réglages d'affichage (jamais générés par l'IA)
+    // NB : les <select> de l'éditeur renvoient toujours des strings — on coerce
+    // d'abord en Number avant de valider, sinon l'éditeur perd le choix utilisateur.
+    const coerceInt = (v) => {
+        if (typeof v === 'number') return v;
+        if (typeof v === 'string' && v.trim() !== '' && !Number.isNaN(Number(v))) return Number(v);
+        return NaN;
+    };
+    const numberingNum = coerceInt(healed.numbering);
+    if (![0, 1, 2, 3].includes(numberingNum)) {
+        healed.numbering = 1;     // Numérotation décimale par défaut
+    } else {
+        healed.numbering = numberingNum;
+    }
+    // navstyle : option non exposée à l'utilisateur (Éléa ne supporte que la TOC).
+    // Toujours forcée à 0 ; on nettoie la clé si elle a été renvoyée par l'IA ou un ancien JSON.
+    if ('navstyle' in healed) delete healed.navstyle;
+    // customtitles : option Moodle interne, non exposée à l'utilisateur.
+    // Toujours forcée à 0 côté processeur ; on nettoie la clé si l'IA l'a renvoyée.
+    if ('customtitles' in healed) delete healed.customtitles;
+
+    // 2. Default theme (parmi les 4 thèmes Page disponibles)
+    if (typeof healed.theme !== 'string' || !['elea', 'dsfr', 'accessible', 'dynamique'].includes(healed.theme)) {
+        healed.theme = 'elea';
+    }
+
+    // 3. Default intro (chaîne vide acceptée, mais jamais undefined)
+    if (typeof healed.intro !== 'string') {
+        healed.intro = '';
+    }
+
+    // 4. Validation et correction de la séquence des chapitres
+    if (Array.isArray(healed.chapters) && healed.chapters.length > 0) {
+        // Le premier chapitre ne peut JAMAIS être un sous-chapitre
+        healed.chapters[0].subchapter = false;
+
+        // Chaque sous-chapitre doit être précédé d'au moins un chapitre normal
+        let lastWasNormal = true;
+        healed.chapters.forEach((ch, idx) => {
+            if (idx === 0) {
+                lastWasNormal = true;
+                return;
+            }
+            if (ch.subchapter && !lastWasNormal) {
+                // Sous-chapitre orphelin → forcer en chapitre normal
+                ch.subchapter = false;
+            }
+            lastWasNormal = !ch.subchapter;
+        });
+
+        // 5. Chaque chapitre doit avoir un tableau blocks (au moins vide)
+        //    et chaque bloc doit avoir un objet data (mêmes règles que Page)
+        healed.chapters.forEach(ch => {
+            if (!Array.isArray(ch.blocks)) ch.blocks = [];
+            ch.blocks = ch.blocks.map(b => {
+                if (!b.data) b.data = {};
+                return b;
+            });
+            // Title fallback
+            if (typeof ch.title !== 'string' || !ch.title.trim()) {
+                ch.title = 'Chapitre sans titre';
+            }
+            // Subchapter doit être un booléen
+            ch.subchapter = !!ch.subchapter;
+        });
+    } else {
+        // Cas dégénéré : aucun chapitre → créer un chapitre vide pour éviter le crash
+        healed.chapters = [{
+            title: healed.title || 'Chapitre 1',
+            subchapter: false,
+            blocks: []
+        }];
+    }
+}
+
+// --- Devoir (Moodle) ---
+function healDevoir(healed) {
+    if (Array.isArray(healed.criteria)) {
+        // 1. Déterminer le nombre maximal de niveaux parmi tous les critères
+        const maxLevels = Math.max(...healed.criteria.map(c => (Array.isArray(c.levels) ? c.levels.length : 0)), 0);
+
+        healed.criteria = healed.criteria.map(criterion => {
+            // S'assurer que levels est un tableau
+            if (!Array.isArray(criterion.levels)) criterion.levels = [];
+
+            // S'assurer que description existe
+            if (!criterion.description) criterion.description = '';
+
+            // 2. Compléter les niveaux manquants pour égaliser les colonnes
+            while (criterion.levels.length < maxLevels) {
+                criterion.levels.push({ score: 0, definition: '' });
+            }
+
+            // 3. Convertir le LaTeX en Unicode dans chaque champ texte
+            criterion.description = _convertLatexField(criterion.description);
+            criterion.levels = criterion.levels.map(level => {
+                if (level.definition) {
+                    level.definition = _convertLatexField(level.definition);
+                }
+                return level;
+            });
+
+            return criterion;
+        });
+    }
+
+    // Convertir le LaTeX dans le titre et la description du devoir
+    if (healed.title) healed.title = _convertLatexField(healed.title);
+    if (healed.description) healed.description = _convertLatexField(healed.description);
+    if (healed.rubricName) healed.rubricName = _convertLatexField(healed.rubricName);
+}
+
+/**
+ * Registre : clé de module → règle. Plusieurs clés peuvent partager une règle
+ * (les trois variantes de QuizSet), ce que la table rend explicite.
+ */
+const HEAL_RULES = {
+    QuizSet: healQuizSet,
+    QuizSetQCM: healQuizSet,
+    QuizSetVF: healQuizSet,
+    MultipleChoice: healMultipleChoice,
+    TrueFalse: healTrueFalse,
+    Flashcards: healFlashcards,
+    Crossword: healCrossword,
+    Chart: healChart,
+    Timeline: healTimeline,
+    DragAndDrop: healDragAndDrop,
+    CoursePresentation: healCoursePresentation,
+    InteractiveBook: healInteractiveBook,
+    InteractiveVideo: healInteractiveVideo,
+    DialogCards: healDialogCards,
+    Dictation: healDictation,
+    Essay: healEssay,
+    SingleChoiceSet: healSingleChoiceSet,
+    SortParagraphs: healSortParagraphs,
+    Summary: healSummary,
+    FindTheWords: healFindTheWords,
+    Millionnaire: healMillionnaire,
+    Appariement: healAppariement,
+    QCM: healQCM,
+    Page: healPage,
+    Livre: healLivre,
+    Devoir: healDevoir
+};
+
+/** Clés de module disposant d'une règle de healing dédiée (pour les tests). */
+export const HEALED_MODULE_KEYS = Object.freeze(Object.keys(HEAL_RULES));
+
 export function healStructureForActivity(data, moduleKey) {
     if (!data || typeof data !== 'object') return data;
 
     let healed = structuredClone(data);
+
+    // Vidéo interactive : les IA externes (copier le prompt → coller le JSON) renvoient parfois
+    // directement le TABLEAU des interactions, sans objet englobant. Envelopper AVANT tout
+    // healing : sinon `healed.interactions` vaudrait [] et toutes les questions seraient perdues.
+    if (moduleKey === 'InteractiveVideo' && Array.isArray(healed)) {
+        healed = { interactions: healed };
+    }
+
+    // Dictée : même principe — IA externes renvoyant le TABLEAU nu des phrases. Envelopper
+    // AVANT le bloc « H5P commun » ci-dessous, sinon overallFeedback/behaviour seraient posés
+    // sur le tableau puis PERDUS à l'enveloppement.
+    if (moduleKey === 'Dictation' && Array.isArray(healed)) {
+        healed = { sentences: healed };
+    }
 
     // --- H5P commun (tous les types H5P) ---
     if (H5P_MODULE_KEYS.has(moduleKey)) {
@@ -741,796 +1767,15 @@ export function healStructureForActivity(data, moduleKey) {
         }
     }
 
-    // --- QuizSet / QuizSetQCM / QuizSetVF ---
-    if (moduleKey === 'QuizSet' || moduleKey === 'QuizSetQCM' || moduleKey === 'QuizSetVF') {
-        if (!healed.progressType) healed.progressType = "dots";
-        if (healed.passPercentage === undefined) healed.passPercentage = 50;
-
-        if (Array.isArray(healed.questions)) {
-            healed.questions = healed.questions.map(q => {
-                // subContentId manquant → générer UUID
-                if (!q.subContentId) q.subContentId = generateUUID();
-
-                // library sans version → ajouter depuis la map
-                if (q.library && !q.library.includes(' ')) {
-                    const baseLib = q.library.trim();
-                    if (H5P_LIB_VERSIONS[baseLib]) {
-                        q.library = `${baseLib} ${H5P_LIB_VERSIONS[baseLib]}`;
-                    }
-                }
-
-                // library présent et params absent mais d'autres champs → envelopper dans params
-                if (q.library && !q.params) {
-                    const { library, metadata, subContentId, ...rest } = q;
-                    if (Object.keys(rest).length > 0) {
-                        return {
-                            library,
-                            metadata: metadata || { title: "Question" },
-                            subContentId: subContentId || generateUUID(),
-                            params: rest
-                        };
-                    }
-                }
-
-                // metadata manquant
-                if (!q.metadata) q.metadata = { title: "Question" };
-
-                // DragQuestion : valider la structure dropZones/elements (même logique que DragAndDrop autonome)
-                if (q.library && q.library.startsWith('H5P.DragQuestion') && q.params) {
-                    if (!Array.isArray(q.params.dropZones)) q.params.dropZones = [];
-                    if (!Array.isArray(q.params.elements)) q.params.elements = [];
-                    const maxIdx = q.params.elements.length - 1;
-                    q.params.dropZones = q.params.dropZones.map(zone => {
-                        if (Array.isArray(zone.correctElements)) {
-                            zone.correctElements = zone.correctElements.filter(idx => {
-                                const n = typeof idx === 'string' ? parseInt(idx, 10) : idx;
-                                return Number.isInteger(n) && n >= 0 && n <= maxIdx;
-                            });
-                        } else {
-                            zone.correctElements = [];
-                        }
-                        if (!zone.label) zone.label = "";
-                        return zone;
-                    });
-                    q.params.elements = q.params.elements.map(el => {
-                        if (typeof el === 'string') return { text: el };
-                        if (!el.text) el.text = "";
-                        return el;
-                    });
-                    if (!q.params.title) q.params.title = "";
-                }
-
-                return q;
-            });
-        }
-    }
-
-    // --- MultipleChoice ---
-    if (moduleKey === 'MultipleChoice') {
-        if (Array.isArray(healed.answers)) {
-            healed.answers = healed.answers.map(ans => {
-                // iscorrect → correct (1/0 → true/false)
-                if (ans.correct === undefined && ans.iscorrect !== undefined) {
-                    ans.correct = ans.iscorrect === 1 || ans.iscorrect === true;
-                    delete ans.iscorrect;
-                }
-                // answer → text
-                if (!ans.text && ans.answer) {
-                    ans.text = ans.answer;
-                    delete ans.answer;
-                }
-                return ans;
-            });
-        }
-    }
-
-    // --- TrueFalse ---
-    if (moduleKey === 'TrueFalse') {
-        if (typeof healed.correct === 'string') {
-            healed.correct = healed.correct.toLowerCase() === 'true';
-        }
-        if (!healed.l10n) healed.l10n = {};
-    }
-
-    // --- Flashcards ---
-    if (moduleKey === 'Flashcards') {
-        if (Array.isArray(healed.cards)) {
-            healed.cards = healed.cards.map(card => {
-                if (!card.image) card.image = { path: "", alt: "" };
-                return card;
-            });
-        }
-    }
-
-    // --- Crossword ---
-    if (moduleKey === 'Crossword') {
-        if (Array.isArray(healed.words)) {
-            // Map des commandes LaTeX grecques → nom en lettres (min 2 caractères alphabétiques)
-            const GREEK_LETTER_NAMES = {
-                'alpha': 'ALPHA', 'beta': 'BETA', 'gamma': 'GAMMA', 'delta': 'DELTA',
-                'epsilon': 'EPSILON', 'varepsilon': 'EPSILON', 'zeta': 'ZETA', 'eta': 'ETA',
-                'theta': 'THETA', 'iota': 'IOTA', 'kappa': 'KAPPA', 'lambda': 'LAMBDA',
-                'mu': 'MU', 'nu': 'NU', 'xi': 'XI', 'pi': 'PI', 'rho': 'RHO',
-                'sigma': 'SIGMA', 'tau': 'TAU', 'upsilon': 'UPSILON', 'phi': 'PHI',
-                'varphi': 'PHI', 'chi': 'CHI', 'psi': 'PSI', 'omega': 'OMEGA',
-                'Gamma': 'GAMMA', 'Delta': 'DELTA', 'Theta': 'THETA', 'Lambda': 'LAMBDA',
-                'Xi': 'XI', 'Pi': 'PI', 'Sigma': 'SIGMA', 'Phi': 'PHI', 'Psi': 'PSI', 'Omega': 'OMEGA'
-            };
-            // Symboles Unicode grecs → nom en lettres
-            const UNICODE_GREEK_NAMES = {
-                'α': 'ALPHA', 'β': 'BETA', 'γ': 'GAMMA', 'δ': 'DELTA', 'ε': 'EPSILON',
-                'ζ': 'ZETA', 'η': 'ETA', 'θ': 'THETA', 'ι': 'IOTA', 'κ': 'KAPPA',
-                'λ': 'LAMBDA', 'μ': 'MU', 'ν': 'NU', 'ξ': 'XI', 'π': 'PI', 'ρ': 'RHO',
-                'σ': 'SIGMA', 'τ': 'TAU', 'υ': 'UPSILON', 'φ': 'PHI', 'χ': 'CHI',
-                'ψ': 'PSI', 'ω': 'OMEGA', 'Γ': 'GAMMA', 'Δ': 'DELTA', 'Θ': 'THETA',
-                'Λ': 'LAMBDA', 'Ξ': 'XI', 'Π': 'PI', 'Σ': 'SIGMA', 'Φ': 'PHI', 'Ψ': 'PSI', 'Ω': 'OMEGA'
-            };
-
-            healed.words = healed.words.map(word => {
-                // hint → clue
-                if (!word.clue && word.hint) {
-                    word.clue = word.hint;
-                    delete word.hint;
-                }
-                if (word.fixWord === undefined) word.fixWord = false;
-
-                if (word.answer) {
-                    let ans = word.answer.trim();
-
-                    // 1. Si l'answer est une formule LaTeX contenant uniquement une lettre grecque → convertir en mot
-                    // Formes possibles après healing : \(\pi\), \\(\pi\\), \pi, juste "pi" entouré de LaTeX
-                    // On extrait le contenu en enlevant les délimiteurs \( \) ou \[ \] et le \ devant la commande
-                    const stripped = ans
-                        .replace(/^\\[\(\[]/, '')   // enlever \( ou \[ au début
-                        .replace(/\\[\)\]]$/, '')   // enlever \) ou \] à la fin
-                        .replace(/^\\\[/, '').replace(/\\\]$/, '')
-                        .replace(/^\\/, '')          // enlever le \ devant la commande
-                        .trim();
-                    if (GREEK_LETTER_NAMES[stripped]) {
-                        const oldAns = ans;
-                        ans = GREEK_LETTER_NAMES[stripped];
-                        debugLog('json-healer', `[JSON Healer] Crossword answer : "${oldAns}" → "${ans}" (lettre grecque en mot)`);
-                    }
-
-                    // 2. Si l'answer est un seul symbole Unicode grec → convertir en mot
-                    if (ans.trim().length === 1 && UNICODE_GREEK_NAMES[ans.trim()]) {
-                        const oldAns = ans;
-                        ans = UNICODE_GREEK_NAMES[ans.trim()];
-                        debugLog('json-healer', `[JSON Healer] Crossword answer : "${oldAns}" → "${ans}" (symbole Unicode → mot)`);
-                    }
-
-                    // 3. Retirer les espaces
-                    if (ans.includes(' ')) {
-                        const oldAns = ans;
-                        ans = ans.replace(/\s+/g, '');
-                        debugLog('json-healer', `[JSON Healer] Crossword answer : "${oldAns}" → "${ans}" (espaces supprimés)`);
-                    }
-
-                    word.answer = ans;
-                }
-                return word;
-            });
-
-            // 4. Filtrer les mots dont l'answer contient encore du LaTeX ou des symboles math non-alphabétiques
-            // Un answer valide = au moins 2 caractères alphanumériques dont AU MOINS une lettre
-            // (H5P.Crossword accepte les chiffres : « H2O », « A4 » sont valides ; « 42 » est écarté)
-            const beforeCount = healed.words.length;
-            healed.words = healed.words.filter(word => {
-                const ans = word.answer || '';
-                // Détecter LaTeX restant (commandes ou délimiteurs)
-                const hasLatex = /\\[a-zA-Z]/.test(ans) || ans.includes('\\(') || ans.includes('\\)');
-                // Détecter symboles Unicode math (pas les lettres grecques déjà converties)
-                const hasUnicodeMath = /[\u221A\u2200-\u22FF\u2190-\u21FF]/.test(ans);
-                // Mot valide = ≥ 2 caractères alphanumériques (accents inclus) et au moins une lettre
-                const alnumCount = (ans.match(/[a-zA-Z0-9À-ÿ]/g) || []).length;
-                const hasLetter = /[a-zA-ZÀ-ÿ]/.test(ans);
-                const isValidWord = alnumCount >= 2 && hasLetter;
-
-                if (hasLatex || hasUnicodeMath || !isValidWord) {
-                    debugLog('json-healer', `[JSON Healer] Crossword : suppression de l'entrée "${ans}" (formule math ou réponse invalide)`);
-                    return false;
-                }
-                // Plafond anti-DoS (S12) : réponse trop longue → entrée écartée (pas tronquée)
-                if (ans.length > GRID_MAX_ANSWER_LENGTH) {
-                    debugLog('json-healer', `[JSON Healer] Crossword : suppression de l'entrée "${ans}" (réponse > ${GRID_MAX_ANSWER_LENGTH} caractères)`);
-                    return false;
-                }
-                return true;
-            });
-            if (healed.words.length < beforeCount) {
-                debugLog('json-healer', `[JSON Healer] Crossword : ${beforeCount - healed.words.length} entrée(s) supprimée(s) (formules math, réponses invalides ou trop longues)`);
-            }
-            // Plafond anti-DoS (S12) : nombre de mots limité, excédent écarté
-            if (healed.words.length > GRID_MAX_WORDS) {
-                const discarded = healed.words.slice(GRID_MAX_WORDS);
-                healed.words = healed.words.slice(0, GRID_MAX_WORDS);
-                debugLog('json-healer', `[JSON Healer] Crossword : ${discarded.length} mot(s) excédentaire(s) écarté(s) (plafond ${GRID_MAX_WORDS}) : ${discarded.map(w => `"${w.answer}"`).join(', ')}`);
-            }
-        }
-    }
-
-    // --- Chart ---
-    if (moduleKey === 'Chart') {
-        if (Array.isArray(healed.listOfTypes)) {
-            healed.listOfTypes = healed.listOfTypes.map((item, i) => {
-                if (!item.color) {
-                    item.color = CHART_DEFAULT_COLORS[i % CHART_DEFAULT_COLORS.length];
-                }
-                return item;
-            });
-        }
-        if (!healed.graphMode) healed.graphMode = "bar";
-    }
-
-    // --- Timeline ---
-    if (moduleKey === 'Timeline') {
-        if (healed.timeline) {
-            if (!healed.timeline.type) healed.timeline.type = "default";
-            if (Array.isArray(healed.timeline.date)) {
-                healed.timeline.date = healed.timeline.date.map(event => {
-                    // "YYYY-MM-DD" → "YYYY,M,D"
-                    if (event.startDate && typeof event.startDate === 'string' && event.startDate.includes('-')) {
-                        const parts = event.startDate.split('-');
-                        if (parts.length === 3) {
-                            event.startDate = `${parts[0]},${parseInt(parts[1])},${parseInt(parts[2])}`;
-                        }
-                    }
-                    return event;
-                });
-            }
-        }
-    }
-
-    // --- DragAndDrop ---
-    if (moduleKey === 'DragAndDrop') {
-        // Assurer que les tableaux existent
-        if (!Array.isArray(healed.dropZones)) healed.dropZones = [];
-        if (!Array.isArray(healed.elements)) healed.elements = [];
-
-        // Valider les indices correctElements (supprimer ceux hors limites)
-        const maxElementIndex = healed.elements.length - 1;
-        healed.dropZones = healed.dropZones.map(zone => {
-            if (Array.isArray(zone.correctElements)) {
-                zone.correctElements = zone.correctElements.filter(idx => {
-                    const n = typeof idx === 'string' ? parseInt(idx, 10) : idx;
-                    return Number.isInteger(n) && n >= 0 && n <= maxElementIndex;
-                });
-            } else {
-                zone.correctElements = [];
-            }
-            if (!zone.label) zone.label = "";
-            return zone;
-        });
-
-        // Assurer que chaque élément a un texte
-        healed.elements = healed.elements.map(el => {
-            if (typeof el === 'string') return { text: el };
-            if (!el.text) el.text = "";
-            return el;
-        });
-
-        // Titre par défaut
-        if (!healed.title) healed.title = "";
-
-        // Note : le mélange des étiquettes est fait dans h5p-creator.js (après healing,
-        // avant stockage) pour ne s'exécuter qu'à la création initiale IA.
-    }
-
-    // --- CoursePresentation ---
-    if (moduleKey === 'CoursePresentation') {
-        // Assurer que slides est un tableau
-        if (!Array.isArray(healed.slides)) {
-            if (healed.slide || healed.content) {
-                healed.slides = Array.isArray(healed.slide || healed.content)
-                    ? (healed.slide || healed.content)
-                    : [healed.slide || healed.content];
-                delete healed.slide;
-                delete healed.content;
-            } else {
-                healed.slides = [];
-            }
-        }
-
-        // Valider chaque slide
-        healed.slides = healed.slides.map((slide, i) => {
-            // Assurer un type de slide valide
-            if (!slide.type) {
-                if (i === 0) slide.type = 'title';
-                else if (slide.exercise) slide.type = 'quiz';
-                else slide.type = 'content';
-            }
-
-            // Préserver la library d'exercice telle quelle (le processeur accepte les deux formats)
-            // Ne PAS simplifier ici : l'éditeur et l'export document ont besoin du format complet
-
-            return slide;
-        });
-
-        // Assurer un titre global
-        if (!healed.title) {
-            const firstSlide = healed.slides[0];
-            healed.title = firstSlide?.title || 'Présentation';
-        }
-    }
-
-    // --- InteractiveBook ---
-    if (moduleKey === 'InteractiveBook') {
-        // Assurer que chapters est un tableau (accepter chapter/pages/sections comme alias)
-        if (!Array.isArray(healed.chapters)) {
-            const src = healed.chapter || healed.pages || healed.sections;
-            if (src) {
-                healed.chapters = Array.isArray(src) ? src : [src];
-                delete healed.chapter;
-                delete healed.pages;
-                delete healed.sections;
-            } else {
-                healed.chapters = [];
-            }
-        }
-
-        // Normaliser la couverture : accepter une chaîne directe
-        if (typeof healed.cover === 'string') {
-            healed.cover = { description: healed.cover };
-        }
-
-        healed.chapters = healed.chapters.map((ch, i) => {
-            if (!ch || typeof ch !== 'object') ch = {};
-
-            // Titre obligatoire (affiché dans la table des matières)
-            if (!ch.title) ch.title = `Chapitre ${i + 1}`;
-
-            // Normaliser content[] : accepter blocks comme alias, ou des champs à plat
-            if (!Array.isArray(ch.content)) {
-                if (Array.isArray(ch.blocks)) {
-                    ch.content = ch.blocks;
-                    delete ch.blocks;
-                } else {
-                    const blocks = [];
-                    if (ch.text) blocks.push({ type: 'text', text: ch.text });
-                    if (ch.table) blocks.push({ type: 'table', table: ch.table, tableStyle: ch.tableStyle });
-                    if (ch.exercise) blocks.push({ type: 'exercise', ...ch.exercise });
-                    ch.content = blocks;
-                    delete ch.text;
-                    delete ch.table;
-                    delete ch.tableStyle;
-                    delete ch.exercise;
-                }
-            }
-
-            // Normaliser chaque bloc : inférer le type si absent, dénouer exercise imbriqué
-            ch.content = (ch.content || []).filter(b => b && typeof b === 'object').map(b => {
-                // Format éditeur (déjà normalisé par normalizeDataForEditor : marqueurs
-                // _blockType / _exerciseLibrary + wrapper `exercise`). On ne touche PAS :
-                // la dénormalisation post-validation reconstruit le format à plat, et
-                // aplatir ici détruirait _exerciseLibrary/_blockType (→ « type d'exercice
-                // requis » au save). Même philosophie que CoursePresentation ci-dessus.
-                if ('_blockType' in b || '_exerciseLibrary' in b) {
-                    return b;
-                }
-                // --- Format brut (sortie LLM) ---
-                // Bloc {type:'exercise', exercise:{...}} → aplatir l'exercice au niveau du bloc
-                if (b.exercise && typeof b.exercise === 'object' && !b.library
-                    && !b.text && !b.table && !b.image) {
-                    b = { type: 'exercise', ...b.exercise };
-                }
-                if (!b.type) {
-                    if (b.library) b.type = 'exercise';
-                    else if (b.table) b.type = 'table';
-                    else if (b.image) b.type = 'image';
-                    else b.type = 'text';
-                }
-                // Exercice : compléter la version de library manquante (l'éditeur exige le format complet)
-                if (b.type === 'exercise' && typeof b.library === 'string' && b.library.includes('.') && !b.library.includes(' ')) {
-                    const baseLib = b.library.trim();
-                    const known = Object.keys(H5P_LIB_VERSIONS).find(k => k.toLowerCase() === baseLib.toLowerCase());
-                    if (known) b.library = `${known} ${H5P_LIB_VERSIONS[known]}`;
-                }
-                return b;
-            });
-
-            return ch;
-        });
-
-        // Assurer un titre global
-        if (!healed.title) {
-            healed.title = healed.chapters[0]?.title || 'Livre interactif';
-        }
-    }
-
-    // --- InteractiveVideo ---
-    if (moduleKey === 'InteractiveVideo') {
-        // Coercition d'un timestamp (nombre, "HH:MM:SS", "MM:SS") en secondes.
-        const ivToSeconds = (t) => {
-            if (typeof t === 'number') return Math.max(0, t);
-            if (typeof t === 'string') {
-                const parts = t.trim().replace(',', '.').split(':').map(Number);
-                if (parts.some(n => Number.isNaN(n))) return 0;
-                if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
-                if (parts.length === 2) return parts[0] * 60 + parts[1];
-                return parts[0] || 0;
-            }
-            return 0;
-        };
-
-        // interactions[] : accepter les alias interaction/questions/items
-        if (!Array.isArray(healed.interactions)) {
-            const src = healed.interaction || healed.items;
-            healed.interactions = Array.isArray(src) ? src : (src ? [src] : []);
-            delete healed.interaction;
-            delete healed.items;
-        }
-
-        const IV_TYPES = ['multichoice', 'truefalse', 'blanks'];
-        healed.interactions = healed.interactions
-            .filter(it => it && typeof it === 'object')
-            .map(it => {
-                // timestamp : accepter time/start/at comme alias, coercer en secondes
-                if (it.timestamp == null) it.timestamp = it.time ?? it.start ?? it.at ?? 0;
-                it.timestamp = ivToSeconds(it.timestamp);
-                delete it.time; delete it.start; delete it.at;
-                // pause par défaut (point d'arrêt pédagogique)
-                if (it.pause == null) it.pause = true;
-                // type : valider ou inférer
-                const t = String(it.type || '').toLowerCase();
-                if (IV_TYPES.includes(t)) {
-                    it.type = t;
-                } else if (Array.isArray(it.answers)) {
-                    it.type = 'multichoice';
-                } else if (typeof it.correct === 'boolean' || it.correct === 'true' || it.correct === 'false') {
-                    it.type = 'truefalse';
-                } else if (it.text || Array.isArray(it.questions)) {
-                    it.type = 'blanks';
-                } else {
-                    it.type = 'multichoice';
-                }
-                if (it.type === 'multichoice' && !Array.isArray(it.answers)) it.answers = [];
-                // Normaliser `correct` en booléen (l'éditeur stocke "true"/"false" en string).
-                if (it.type === 'truefalse') {
-                    it.correct = (it.correct === true || it.correct === 'true' || it.correct === 1
-                        || it.correct === '1' || it.correct === 'vrai');
-                }
-                // Apparence/placement (champs optionnels) : on borne uniquement les valeurs FOURNIES
-                // pour éviter un rendu cassé ; on n'impose pas de défaut (le processeur applique les
-                // défauts sains quand le champ est absent).
-                if (it.display != null) it.display = (it.display === 'poster' ? 'poster' : 'button');
-                if (it.placement != null
-                    && !['center', 'top-left', 'top-right', 'bottom-left', 'bottom-right', 'bottom', 'full', 'custom'].includes(it.placement)) {
-                    it.placement = 'center';
-                }
-                for (const k of ['x', 'y', 'width', 'height']) {
-                    if (it[k] != null && it[k] !== '') {
-                        const n = Number(it[k]);
-                        if (Number.isFinite(n)) it[k] = Math.min(100, Math.max(0, n));
-                        else delete it[k];
-                    }
-                }
-                if (it.visibleDuration != null && it.visibleDuration !== '') {
-                    const n = Number(it.visibleDuration);
-                    if (Number.isFinite(n) && n > 0) it.visibleDuration = n; else delete it.visibleDuration;
-                }
-                return it;
-            })
-            .sort((a, b) => a.timestamp - b.timestamp);
-
-        // summary : normaliser statements en tableau de tableaux non vides
-        if (healed.summary && typeof healed.summary === 'object') {
-            if (!Array.isArray(healed.summary.statements)) healed.summary.statements = [];
-            healed.summary.statements = healed.summary.statements
-                .map(g => Array.isArray(g) ? g : (typeof g === 'string' ? [g] : []))
-                .filter(g => g.length > 0);
-        }
-
-        // videoSource : accepter une URL en chaîne directe, et choisir le bon mime.
-        // YouTube → mime `video/YouTube` (handler natif H5P.VideoYouTube, lecture par embed, aucun
-        // téléchargement). Sans ce mime, le handler YouTube ne prend pas la main → vidéo non jouable.
-        const isYouTubeUrl = (s) => {
-            s = String(s || '');
-            return /youtu\.be\/[\w-]{11}/i.test(s)
-                || /youtube(?:-nocookie)?\.com\/(?:embed|shorts|live|v)\/[\w-]{11}/i.test(s)
-                || (/youtube(?:-nocookie)?\.com\/watch/i.test(s) && /[?&]v=[\w-]{11}/i.test(s));
-        };
-        if (typeof healed.videoSource === 'string') {
-            const u = healed.videoSource;
-            healed.videoSource = { type: 'html5', url: u, mime: isYouTubeUrl(u) ? 'video/YouTube' : 'video/mp4' };
-        } else if (healed.videoSource && typeof healed.videoSource === 'object' && healed.videoSource.url
-            && isYouTubeUrl(healed.videoSource.url) && healed.videoSource.mime !== 'video/YouTube') {
-            // Objet fourni avec une URL YouTube mais un mime mp4/absent → corriger.
-            healed.videoSource.mime = 'video/YouTube';
-        }
-
-        if (!healed.title) healed.title = 'Vidéo interactive';
-    }
-
-    // --- DialogCards ---
-    if (moduleKey === 'DialogCards') {
-        if (!Array.isArray(healed.dialogs)) healed.dialogs = [];
-        healed.dialogs = healed.dialogs.map(d => {
-            if (!d || typeof d !== 'object') return { text: '', answer: '', tips: { front: '', back: '' } };
-            if (!d.tips || typeof d.tips !== 'object') d.tips = { front: '', back: '' };
-            if (!d.tips.front) d.tips.front = '';
-            if (!d.tips.back) d.tips.back = '';
-            return d;
-        });
-    }
-
-    // --- Essay ---
-    if (moduleKey === 'Essay') {
-        if (!Array.isArray(healed.keywords)) healed.keywords = [];
-        healed.keywords = healed.keywords.map(kw => {
-            // Accepter les chaînes simples ou les objets avec word/keyword
-            if (typeof kw === 'string') return { keyword: kw };
-            if (kw && !kw.keyword && kw.word) {
-                kw.keyword = kw.word;
-                delete kw.word;
-            }
-            return kw;
-        });
-        if (!healed.solution) healed.solution = { introduction: '', sample: '' };
-    }
-
-    // --- SingleChoiceSet ---
-    if (moduleKey === 'SingleChoiceSet') {
-        if (!Array.isArray(healed.choices)) healed.choices = [];
-        healed.choices = healed.choices.map(c => {
-            if (!c.subContentId) c.subContentId = generateUUID();
-            if (!Array.isArray(c.answers) && typeof c.answers === 'string') {
-                c.answers = [c.answers];
-            }
-            return c;
-        });
-    }
-
-    // --- SortParagraphs ---
-    if (moduleKey === 'SortParagraphs') {
-        if (!Array.isArray(healed.paragraphs)) {
-            // Accepter aussi sentences (nom alternatif courant)
-            if (Array.isArray(healed.sentences)) {
-                healed.paragraphs = healed.sentences;
-                delete healed.sentences;
-            } else {
-                healed.paragraphs = [];
-            }
-        }
-    }
-
-    // --- Summary ---
-    if (moduleKey === 'Summary') {
-        if (!Array.isArray(healed.summaries)) healed.summaries = [];
-        healed.summaries = healed.summaries.map(s => {
-            if (!s || typeof s !== 'object') return { summary: [], tip: '' };
-            if (!s.tip) s.tip = '';
-            if (!s.subContentId) s.subContentId = generateUUID();
-            // summary doit être un tableau de chaînes
-            if (!Array.isArray(s.summary) && typeof s.summary === 'string') {
-                s.summary = [s.summary];
-            }
-            return s;
-        });
-    }
-
-    // --- FindTheWords ---
-    if (moduleKey === 'FindTheWords') {
-        if (Array.isArray(healed.wordList)) {
-            healed.wordList = healed.wordList.join(',');
-        }
-
-        // Nettoyage de la wordList : la grille ne supporte que des mots en lettres
-        // Supprimer les entrées contenant du LaTeX, des délimiteurs \(...\), ou des symboles Unicode math
-        if (typeof healed.wordList === 'string') {
-            const words = healed.wordList.split(',').map(w => w.trim()).filter(w => w.length > 0);
-            const beforeCount = words.length;
-            const cleanWords = words.filter(word => {
-                // Détecter LaTeX (commandes \cmd ou délimiteurs \( \))
-                const hasLatex = /\\[a-zA-Z()\[\]]/.test(word);
-                // Détecter symboles Unicode math (√, π, α-ω, Σ, ∞, etc.)
-                const hasUnicodeMath = /[\u221A\u03B1-\u03C9\u03A0-\u03A9\u2200-\u22FF\u2190-\u21FF\u00B2\u00B3\u2070-\u209F]/.test(word);
-
-                if (hasLatex || hasUnicodeMath) {
-                    debugLog('json-healer', `[JSON Healer] FindTheWords wordList : suppression de "${word}" (formule math dans grille de lettres)`);
-                    return false;
-                }
-                return true;
-            });
-            if (cleanWords.length < beforeCount) {
-                debugLog('json-healer', `[JSON Healer] FindTheWords : ${beforeCount - cleanWords.length} mot(s) supprimé(s) de la wordList (formules math)`);
-            }
-            // Nettoyer chaque mot : ne garder que les lettres (la grille ne supporte que ca)
-            let finalWords = cleanWords
-                .map(w => w.replace(/[^a-zA-ZÀ-ÿ]/g, ''))
-                .filter(w => w.length > 0);
-            // Plafond anti-DoS (S12) : mot trop long → écarté (pas tronqué)
-            finalWords = finalWords.filter(w => {
-                if (w.length > GRID_MAX_ANSWER_LENGTH) {
-                    debugLog('json-healer', `[JSON Healer] FindTheWords : suppression de "${w}" (mot > ${GRID_MAX_ANSWER_LENGTH} caractères)`);
-                    return false;
-                }
-                return true;
-            });
-            // Plafond anti-DoS (S12) : nombre de mots limité, excédent écarté
-            if (finalWords.length > GRID_MAX_WORDS) {
-                const discarded = finalWords.slice(GRID_MAX_WORDS);
-                finalWords = finalWords.slice(0, GRID_MAX_WORDS);
-                debugLog('json-healer', `[JSON Healer] FindTheWords : ${discarded.length} mot(s) excédentaire(s) écarté(s) (plafond ${GRID_MAX_WORDS}) : ${discarded.map(w => `"${w}"`).join(', ')}`);
-            }
-            healed.wordList = finalWords.join(',');
-        }
-    }
-
-    // --- Millionnaire (Moodle) ---
-    if (moduleKey === 'Millionnaire') {
-        if (Array.isArray(healed.questions)) {
-            healed.questions = healed.questions.map(q => {
-                // badanswer string → tableau
-                if (typeof q.badanswer === 'string') {
-                    q.badanswer = [q.badanswer];
-                }
-                // badanswer avec moins de 3 éléments → compléter avec ""
-                if (Array.isArray(q.badanswer) && q.badanswer.length < 3) {
-                    while (q.badanswer.length < 3) {
-                        q.badanswer.push("");
-                    }
-                }
-                return q;
-            });
-        }
-    }
-
-    // --- Appariement (Moodle) ---
-    if (moduleKey === 'Appariement') {
-        if (Array.isArray(healed.pairs)) {
-            healed.pairs = healed.pairs.map(pair => {
-                if (pair.question === null || pair.question === undefined) pair.question = "";
-                if (pair.answer === null || pair.answer === undefined) pair.answer = "";
-                return pair;
-            });
-        }
-    }
-
-    // --- QCM (Moodle) ---
-    if (moduleKey === 'QCM') {
-        if (Array.isArray(healed.questions)) {
-            healed.questions = healed.questions.map(q => {
-                if (Array.isArray(q.answers)) {
-                    q.answers = q.answers.map(ans => {
-                        // 1. Si iscorrect manque (ex: génération IA), on le recrée à partir de correct
-                        if (ans.iscorrect === undefined && ans.correct !== undefined) {
-                            ans.iscorrect = (ans.correct === true || ans.correct === 1) ? 1 : 0;
-                        }
-                        // 2. On s'assure que correct existe pour les simulateurs sans supprimer iscorrect
-                        if (ans.correct === undefined && ans.iscorrect !== undefined) {
-                            ans.correct = (ans.iscorrect === 1 || ans.iscorrect === true);
-                        }
-                        return ans;
-                    });
-                }
-                return q;
-            });
-        }
-    }
-
-    // --- Page (Moodle) ---
-    if (moduleKey === 'Page') {
-        if (Array.isArray(healed.blocks)) {
-            healed.blocks = healed.blocks.map(block => {
-                if (!block.data) block.data = {};
-                return block;
-            });
-        }
-    }
-
-    // --- Livre (Moodle, module book) ---
-    if (moduleKey === 'Livre') {
-        // 1. Defaults pour les réglages d'affichage (jamais générés par l'IA)
-        // NB : les <select> de l'éditeur renvoient toujours des strings — on coerce
-        // d'abord en Number avant de valider, sinon l'éditeur perd le choix utilisateur.
-        const coerceInt = (v) => {
-            if (typeof v === 'number') return v;
-            if (typeof v === 'string' && v.trim() !== '' && !Number.isNaN(Number(v))) return Number(v);
-            return NaN;
-        };
-        const numberingNum = coerceInt(healed.numbering);
-        if (![0, 1, 2, 3].includes(numberingNum)) {
-            healed.numbering = 1;     // Numérotation décimale par défaut
-        } else {
-            healed.numbering = numberingNum;
-        }
-        // navstyle : option non exposée à l'utilisateur (Éléa ne supporte que la TOC).
-        // Toujours forcée à 0 ; on nettoie la clé si elle a été renvoyée par l'IA ou un ancien JSON.
-        if ('navstyle' in healed) delete healed.navstyle;
-        // customtitles : option Moodle interne, non exposée à l'utilisateur.
-        // Toujours forcée à 0 côté processeur ; on nettoie la clé si l'IA l'a renvoyée.
-        if ('customtitles' in healed) delete healed.customtitles;
-
-        // 2. Default theme (parmi les 4 thèmes Page disponibles)
-        if (typeof healed.theme !== 'string' || !['elea', 'dsfr', 'accessible', 'dynamique'].includes(healed.theme)) {
-            healed.theme = 'elea';
-        }
-
-        // 3. Default intro (chaîne vide acceptée, mais jamais undefined)
-        if (typeof healed.intro !== 'string') {
-            healed.intro = '';
-        }
-
-        // 4. Validation et correction de la séquence des chapitres
-        if (Array.isArray(healed.chapters) && healed.chapters.length > 0) {
-            // Le premier chapitre ne peut JAMAIS être un sous-chapitre
-            healed.chapters[0].subchapter = false;
-
-            // Chaque sous-chapitre doit être précédé d'au moins un chapitre normal
-            let lastWasNormal = true;
-            healed.chapters.forEach((ch, idx) => {
-                if (idx === 0) {
-                    lastWasNormal = true;
-                    return;
-                }
-                if (ch.subchapter && !lastWasNormal) {
-                    // Sous-chapitre orphelin → forcer en chapitre normal
-                    ch.subchapter = false;
-                }
-                lastWasNormal = !ch.subchapter;
-            });
-
-            // 5. Chaque chapitre doit avoir un tableau blocks (au moins vide)
-            //    et chaque bloc doit avoir un objet data (mêmes règles que Page)
-            healed.chapters.forEach(ch => {
-                if (!Array.isArray(ch.blocks)) ch.blocks = [];
-                ch.blocks = ch.blocks.map(b => {
-                    if (!b.data) b.data = {};
-                    return b;
-                });
-                // Title fallback
-                if (typeof ch.title !== 'string' || !ch.title.trim()) {
-                    ch.title = 'Chapitre sans titre';
-                }
-                // Subchapter doit être un booléen
-                ch.subchapter = !!ch.subchapter;
-            });
-        } else {
-            // Cas dégénéré : aucun chapitre → créer un chapitre vide pour éviter le crash
-            healed.chapters = [{
-                title: healed.title || 'Chapitre 1',
-                subchapter: false,
-                blocks: []
-            }];
-        }
-    }
-
-    // --- Devoir (Moodle) ---
-    if (moduleKey === 'Devoir') {
-        if (Array.isArray(healed.criteria)) {
-            // 1. Déterminer le nombre maximal de niveaux parmi tous les critères
-            const maxLevels = Math.max(...healed.criteria.map(c => (Array.isArray(c.levels) ? c.levels.length : 0)), 0);
-
-            healed.criteria = healed.criteria.map(criterion => {
-                // S'assurer que levels est un tableau
-                if (!Array.isArray(criterion.levels)) criterion.levels = [];
-
-                // S'assurer que description existe
-                if (!criterion.description) criterion.description = '';
-
-                // 2. Compléter les niveaux manquants pour égaliser les colonnes
-                while (criterion.levels.length < maxLevels) {
-                    criterion.levels.push({ score: 0, definition: '' });
-                }
-
-                // 3. Convertir le LaTeX en Unicode dans chaque champ texte
-                criterion.description = _convertLatexField(criterion.description);
-                criterion.levels = criterion.levels.map(level => {
-                    if (level.definition) {
-                        level.definition = _convertLatexField(level.definition);
-                    }
-                    return level;
-                });
-
-                return criterion;
-            });
-        }
-
-        // Convertir le LaTeX dans le titre et la description du devoir
-        if (healed.title) healed.title = _convertLatexField(healed.title);
-        if (healed.description) healed.description = _convertLatexField(healed.description);
-        if (healed.rubricName) healed.rubricName = _convertLatexField(healed.rubricName);
-    }
+    // Glisser-déposer : accepter l'association écrite dans la forme ÉDITEUR
+    // (`elements[].zoneIndices`) partout où un DragQuestion peut se trouver — autonome,
+    // sous-question de Quiz, exercice de diapositive, bloc de Livre interactif.
+    healDragQuestionsDeep(healed);
+
+    // Règle spécifique à l'activité (cf. HEAL_RULES ci-dessus). Un simple accès
+    // par clé remplace la chaîne de 28 `if` séquentiels d'origine.
+    const rule = HEAL_RULES[moduleKey];
+    if (rule) rule(healed);
 
     return healed;
 }
@@ -2298,5 +2543,6 @@ registerConverters({
     latexToUnicode: _convertLatexField,
     cleanMarkerText: null, // Dispatché par markerType dans healActivitySpecificFields
     stripAll,
+    stripHtmlOnly: stripHtmlKeepLatex,
     toLettersOnly
 });

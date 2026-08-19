@@ -10,10 +10,7 @@
         { "text": "Du dioxygène", "correct": true, "feedback": "Exact !" },
         { "text": "Du dioxyde de carbone", "correct": false, "feedback": "C'est l'inverse : il est consommé." },
         { "text": "De l'azote", "correct": false, "feedback": "Non, l'azote n'intervient pas ici." }
-      ],
-      "display": "button",
-      "placement": "top-right",
-      "label": "Question"
+      ]
     },
     {
       "timestamp": 72,

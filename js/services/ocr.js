@@ -1,12 +1,15 @@
 ﻿/**
  * @file Gestion de l'extraction de texte depuis différents formats de fichiers.
- * Supporte : PDF (texte natif + OCR), DOCX, PPTX, ODT, ODP, PNG, JPEG, AUDIO
+ * Supporte : PDF (texte natif + OCR), DOCX, PPTX, ODT, ODP, PNG, JPEG, WEBP et BMP
+ * (acceptés silencieusement, non listés dans les libellés), AUDIO
  * Utilise PDF.js, Tesseract.js, mammoth.js et JSZip ; l'audio est transcrit
  * par le webhook Whisper/Albert (le même que le micro Caramelia), via un
  * découpage en lots préparé côté navigateur (Web Audio API).
+ * Les images passent d'abord par l'ANALYSE VISION (services/image-analysis.js :
+ * description + transcription par le modèle vision), avec repli Tesseract.
  */
 
-import { showNotification, escapeHtmlTags } from '../core/utils.js';
+import { showNotification, escapeHtmlTags, debugLog } from '../core/utils.js';
 import { translations, currentLang } from '../core/translation.js';
 import { loadOcrLibs, LIB_PATHS } from '../core/lib-loader.js';
 import { CONFIG } from '../caramelia/config.js';
@@ -21,6 +24,13 @@ const SUPPORTED_TYPES = {
     'image/png': 'image',
     'image/jpeg': 'image',
     'image/jpg': 'image',
+    // WebP/BMP : acceptés SILENCIEUSEMENT (volontairement absents de SUPPORTED_FORMATS_LABEL
+    // et des libellés i18n). Vision : ILaaS/Qwen décode le data:image/webp tel quel, et le BMP
+    // est ré-encodé en PNG par processBackgroundImage avant envoi ; repli Tesseract :
+    // conversion PNG préalable via canvas pour les deux (cf. processImage).
+    'image/webp': 'image',
+    'image/bmp': 'image',
+    'image/x-ms-bmp': 'image',
     // Audio → transcription Whisper/Albert (décodés par decodeAudioData)
     'audio/mpeg': 'audio',
     'audio/mp3': 'audio',
@@ -55,6 +65,8 @@ const EXTENSION_MAP = {
     'png': 'image',
     'jpg': 'image',
     'jpeg': 'image',
+    'webp': 'image',   // accepté silencieusement (cf. SUPPORTED_TYPES)
+    'bmp': 'image',    // accepté silencieusement (cf. SUPPORTED_TYPES)
     'mp3': 'audio',
     'm4a': 'audio',
     'aac': 'audio',
@@ -84,7 +96,9 @@ function isVideoFile(file) {
     return VIDEO_EXTENSIONS.has(ext);
 }
 
-// Libellé des formats acceptés (réutilisé pour le message d'erreur et l'API publique)
+// Libellé des formats acceptés (réutilisé pour le message d'erreur et l'API publique).
+// WEBP et BMP sont acceptés mais VOLONTAIREMENT non listés (éviter la confusion
+// WEBP/WEBM et ne pas allonger le libellé) — ne pas les ajouter ici sans décision explicite.
 const SUPPORTED_FORMATS_LABEL = 'PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG, MP3, M4A, WAV, OGG, FLAC, MP4, MOV, WEBM (audio extrait)';
 
 // --- Paramètres de transcription audio ---
@@ -337,12 +351,103 @@ async function processPptx(file, updateStatus) {
 }
 
 /**
- * Traite une image (PNG/JPEG) via Tesseract.js
+ * Analyse une image via le modèle vision (description globale + transcription fidèle
+ * du texte), pour enrichir le corpus au-delà du simple OCR : un schéma, un diagramme
+ * ou une photo sans texte deviennent exploitables. Toute erreur est captée par
+ * processImage(), qui retombe sur Tesseract.
+ * @param {File} file
+ * @param {function} updateStatus
+ * @param {function} checkCancel - lève une AbortError si l'utilisateur arrête
+ * @returns {Promise<string>} Texte prêt pour le corpus (description + texte transcrit)
  */
-async function processImage(file, updateStatus) {
+async function analyzeImageWithVision(file, updateStatus, checkCancel) {
+    updateStatus(translations.ocr_preparing || 'Préparation de l\'analyse...');
+
+    // Même prétraitement que le fond d'« Image interactive » (1920 px max, formats
+    // larges dont HEIC/TIFF) : borne le poids envoyé au webhook vision.
+    const [{ processBackgroundImage }, { analyzeImage }] = await Promise.all([
+        import('../h5p/image-manager.js'),
+        import('./image-analysis.js')
+    ]);
+    const entry = await processBackgroundImage(file);
+    checkCancel();
+
+    updateStatus(translations.ocr_vision_analyzing || 'Analyse de l\'image par l\'IA...');
+
+    // Le bouton « Arrêter » est un drapeau sondé (pas un AbortSignal) : on le
+    // convertit en abort réseau pour ne pas laisser filer un appel de 2 minutes.
+    const ac = new AbortController();
+    const poll = setInterval(() => {
+        try { checkCancel(); } catch (e) { ac.abort(); }
+    }, 400);
+    let result;
+    try {
+        result = await analyzeImage(entry.dataURL, { lang: currentLang, signal: ac.signal });
+    } finally {
+        clearInterval(poll);
+    }
+    checkCancel();
+
+    const parts = [];
+    if (result.description) {
+        parts.push(`[${translations.ocr_vision_description_label || 'Description de l\'image (IA)'}]\n${result.description}`);
+    }
+    if (result.text) {
+        parts.push(`[${translations.ocr_vision_text_label || 'Texte contenu dans l\'image'}]\n${result.text}`);
+    }
+    return parts.join('\n\n');
+}
+
+/**
+ * Rastérise une image en PNG (dataURL) via canvas. Repli Tesseract pour les formats
+ * que son décodeur interne (leptonica) ne lit pas de façon fiable (WebP, certaines
+ * variantes BMP — RLE, 32 bits) : le canvas du navigateur, lui, les décode partout.
+ * @param {File} file
+ * @returns {Promise<string>} dataURL PNG
+ */
+function rasterizeToPngDataUrl(file) {
+    return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => {
+            URL.revokeObjectURL(url);
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth || img.width;
+            canvas.height = img.naturalHeight || img.height;
+            canvas.getContext('2d').drawImage(img, 0, 0);
+            resolve(canvas.toDataURL('image/png'));
+        };
+        img.onerror = () => {
+            URL.revokeObjectURL(url);
+            reject(new Error('FORMAT_INVALID'));
+        };
+        img.src = url;
+    });
+}
+
+/**
+ * Traite une image (PNG/JPEG/WebP/BMP) : analyse vision d'abord (description +
+ * transcription), repli sur l'OCR Tesseract si l'IA est indisponible ou répond mal.
+ */
+async function processImage(file, updateStatus, checkCancel = () => {}) {
+    try {
+        const visionText = await analyzeImageWithVision(file, updateStatus, checkCancel);
+        if (visionText) return visionText;
+    } catch (error) {
+        if (error.name === 'AbortError') throw error; // annulation utilisateur : on s'arrête vraiment
+        debugLog('ocr', 'Analyse vision indisponible → repli OCR Tesseract', error);
+        showNotification(
+            translations.ocr_vision_fallback || 'Analyse IA de l\'image indisponible — reconnaissance de caractères (OCR) classique utilisée.',
+            'info'
+        );
+    }
+    checkCancel();
+
     updateStatus(translations.ocr_image_processing || 'Reconnaissance (OCR) de l\'image...');
 
-    const imageUrl = URL.createObjectURL(file);
+    // WebP/BMP → PNG avant Tesseract (décodeur interne peu fiable sur ces formats).
+    const needsPng = /^image\/(webp|bmp|x-ms-bmp)$/.test(file.type || '') || /\.(webp|bmp)$/i.test(file.name || '');
+    const imageUrl = needsPng ? await rasterizeToPngDataUrl(file) : URL.createObjectURL(file);
 
     const { data: { text } } = await Tesseract.recognize(imageUrl, 'fra', getTesseractOptions(m => {
         if (m.status === 'recognizing text') {
@@ -356,7 +461,7 @@ async function processImage(file, updateStatus) {
         }
     }));
 
-    URL.revokeObjectURL(imageUrl);
+    if (!needsPng) URL.revokeObjectURL(imageUrl); // dataURL PNG (webp/bmp) : rien à révoquer
     return text;
 }
 
@@ -656,7 +761,7 @@ export function initOcr() {
                     extractedText = await processOdp(file, updateStatus);
                     break;
                 case 'image':
-                    extractedText = await processImage(file, updateStatus);
+                    extractedText = await processImage(file, updateStatus, checkCancel);
                     break;
                 case 'audio':
                     extractedText = await processAudio(file, updateStatus, checkCancel);

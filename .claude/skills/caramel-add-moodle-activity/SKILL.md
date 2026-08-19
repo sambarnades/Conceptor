@@ -63,6 +63,11 @@ Voir skill `caramel-translations`. Conventions de clés :
 - `prompt_{snake}_*`
 - `emergency_moodle_{snake}_*` si aide d'urgence
 
+**Surfaces de découverte (à NE PAS oublier — non couvert par `verify-all-locales`) :** au-delà de ses propres clés, l'activité doit apparaître là où l'utilisateur la découvre :
+- **Tutoriel global** : ajouter une entrée `<li><strong>{nom} (FORMAT) :</strong> …</li>` dans `tuto_step2_elea_content` (section Éléa/Moodle de l'étape « Choisir une activité ») des **11 `js/locales/*.json`**. Suffixer le format comme les voisines (`(MBZ)`, `(XML)`, `(MBZ / HTML)`…) ; ponctuation par langue (` :` fr, `：` zh/jp, `:` ailleurs). `assets/templates/tutorial_content.html` ne change PAS (il ne fait que référencer les clés `tuto_*`).
+- **Tuto-rag de Caramelia** : ajouter une ligne descriptive dans les **11 `js/caramelia/tuto-rag/*.md`** (le chatbot s'en sert pour recommander / guider l'activité). Cf. skill `caramel-caramelia`.
+- **Aide d'édition** : `assets/templates/editor-help/{moduleKey}.html` (popover « ? » de l'éditeur ; ex. `elea_qcm.html`) + clés `eh_{snake}_*` ×11 — déjà en place pour les activités Éléa existantes, à reproduire.
+
 ### 7. Asset visuel
 `assets/images/activities/newtype.webp`
 
@@ -86,6 +91,7 @@ Le module `Page` (mod_page) supporte des thèmes visuels. Voir skill `caramel-pa
 4. L'activité s'affiche correctement, fonctionne pour l'élève
 5. 11 traductions OK : `node scripts/verify-all-locales.mjs`
 6. Test backup → restore (rountrip) si possible
+7. **Surfaces de découverte** : l'activité figure dans le **tutoriel global** (`tuto_step2_elea_content`, 11 langues) **et** le **tuto-rag Caramelia** (`js/caramelia/tuto-rag/*.md`) ; aide d'édition `editor-help/{moduleKey}.html` présente.
 
 ## Pièges connus
 

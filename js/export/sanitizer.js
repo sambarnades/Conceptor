@@ -4,6 +4,7 @@
  */
 
 import { loadDOMPurify, isDOMPurifyLoaded } from '../core/lib-loader.js';
+import { escapeHtml } from '../core/escape.js';
 
 // Instance DOMPurify mise en cache
 let purifier = null;
@@ -148,12 +149,10 @@ export function sanitizeSync(dirty, profileName = 'EDUCATIONAL') {
  * @returns {string}
  */
 function escapeAllHtml(str) {
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+    // `String(str)` conservé : c'est le repli fail-closed de `sanitizeSync`, dont
+    // les appelants peuvent passer n'importe quoi. Voir escapeHtmlTags pour la
+    // même précaution sur les entrées nulles.
+    return escapeHtml(String(str));
 }
 
 /**

@@ -40,12 +40,26 @@ Le harnais `scripts/test-interactive-video-llm.mjs` importe le **même** module 
 
 ## Sections assemblées (clés i18n)
 
+> ⚠️ **Ordre spécifique à la vidéo** (différent des autres activités) : la transcription
+> (SOURCES) fait souvent des dizaines de milliers de caractères — si le schéma JSON arrivait
+> APRÈS, une IA externe le perd (collage tronqué, attention diluée en fin de prompt long) et
+> invente son propre format : tableau nu `[...]`, `options` au lieu d'`answers`, objet `feedback`
+> global (cas réel, audit 2026-07). `buildActivityPrompt` place donc STRUCTURE + EXEMPLE **avant**
+> les SOURCES et termine par un **rappel court** du format.
+
 1. `prompt_contexte_pedagogique_commun` — contexte ([QUI]/[QUOI]/[NIVEAU]).
 2. `prompt_interactive_video_regles_specifiques` — règles de placement + types + résumé.
 3. `prompt_regles_pedagogiques_communes` — règles communes.
-4. `prompt_interactive_video_sources` — cadrage de la transcription (remplace `[RAG]`).
-5. `prompt_interactive_video_structure_json` — schéma du JSON intermédiaire attendu.
-6. `prompt_interactive_video_exemple_rendu` — exemple complet.
+4. `prompt_interactive_video_structure_json` — schéma du JSON intermédiaire attendu (interdit
+   explicitement les alias `options`/`hint`/`feedback` global).
+5. `prompt_interactive_video_exemple_rendu` — exemple complet.
+6. `prompt_interactive_video_sources` — cadrage de la transcription (remplace `[RAG]`).
+7. `prompt_interactive_video_rappel_final` — rappel final : OBJET `{title, interactions, summary}`,
+   jamais un tableau nu, jamais de `videoSource`.
+
+Filet de sécurité côté code (si l'IA dérive quand même) : le healer wrappe un tableau nu en
+`{interactions}` et absorbe les alias `options`/Vrai-Faux-en-options/`feedback` global
+(cf. `json-healer.js`, branche InteractiveVideo).
 
 ## Format de sortie attendu (JSON intermédiaire)
 

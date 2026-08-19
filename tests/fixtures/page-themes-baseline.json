@@ -1,0 +1,310 @@
+{
+ "elea": {
+  "config": "a7106c52fad058b5b2e9c7655d861f11f4f0df482b7258b44a1cdaa8045be14c",
+  "blocks": {
+   "#01_hero_header": {
+    "sha": "e8116c66ca3c77821a4d31b59a5e9855897e167f09d04cfc5b8f6e58336c2ffb",
+    "len": 514
+   },
+   "#02_nav_summary": {
+    "sha": "005954bf1d488ccd3442c0dfd6b78956de82346c5aad3049e67eeef1f26fd938",
+    "len": 677
+   },
+   "#03_histo_reperes": {
+    "sha": "46cafd93ed068fe7221569871e1b6ae70c2da148b941c18f21f69214cfc3ea55",
+    "len": 730
+   },
+   "#04_callout_set": {
+    "sha": "15c0c10aae76f108b8274f6dcc1f46a333572bd11ffeb5013c3e8a3e41e31dd3",
+    "len": 889
+   },
+   "#05_stats_cards": {
+    "sha": "7d5c57e6a20591b74ddc42a2b83f373770dd45897c6c3f9d0cfa713c323b583b",
+    "len": 1118
+   },
+   "#06_lexique_table": {
+    "sha": "07edbcb7390e52278418e5db2792212fd1800a17086089f4d9cac0862a0bc9fb",
+    "len": 1105
+   },
+   "#07_glossary_chips": {
+    "sha": "fde05395a49a27f458d0cf881ae7b60ed08a71df945c6526a9ad72172d3704f3",
+    "len": 775
+   },
+   "#08_monuments_grid": {
+    "sha": "76e1346407d42ecf86897ded130b9ab83d7ce87da0c1af8e369dd77c85cc34c8",
+    "len": 1774
+   },
+   "#09_figures_comparison": {
+    "sha": "0a1edb28c4077f71a644a525f741a396338762f8ffe04043de5c2422b04a43fb",
+    "len": 993
+   },
+   "#10_table_comparison": {
+    "sha": "07edbcb7390e52278418e5db2792212fd1800a17086089f4d9cac0862a0bc9fb",
+    "len": 1105
+   },
+   "#11_definition_box": {
+    "sha": "7ab033130ebaeaf653324633df875d2b36df387aefc4f61e77de04e11a425ac0",
+    "len": 305
+   },
+   "#12_context_paragraphs": {
+    "sha": "a75be1b49c5e21c4f7ddb838c2dca1fd3680f13fa825527c32acdbdaad8abbe3",
+    "len": 317
+   },
+   "#13_monument_sheet_long": {
+    "sha": "003296ed3390ea20e4cc67551bd2e010342a126b624d1fea0bce1029cca2e814",
+    "len": 345
+   },
+   "#14_faq_block": {
+    "sha": "b94af40ae3bfb18b46ca18ee38c0bf1121b6b75a813f44c168936d04a8c3f2b1",
+    "len": 517
+   },
+   "#15_myths_realities": {
+    "sha": "0f0e5f9934a5e4c3771ae5f54ccd05445c226e915dffaff7c9e508e9bd2a6172",
+    "len": 725
+   },
+   "#16_method_image_desc": {
+    "sha": "0488fb549d6c4d59615eae245a0997d9795ab5202f13ce4bd33c039b2c574796",
+    "len": 685
+   },
+   "#17_quote_bilingual": {
+    "sha": "c69d9f1dd0da27bb097e3256b9f4de738a0a0e79ddcc0cbd49f7f4f0679c8de4",
+    "len": 603
+   },
+   "#18_sito_graphy": {
+    "sha": "f981292cff6df54bd2cb5811645959cfaaea7f7803e0ed1612efb0871d4f0dbf",
+    "len": 456
+   }
+  }
+ },
+ "dsfr": {
+  "config": "2bce1ce2d01a03e9f72e3902138bc8917ca031ea78acdbe616e3c76f14065df7",
+  "blocks": {
+   "#01_hero_header": {
+    "sha": "2585a9f1aaf2f07f5e92cbef335eb084887599d3b61ca6c2a3fdf118e65d144e",
+    "len": 640
+   },
+   "#02_nav_summary": {
+    "sha": "fa3c7650690c4b5950034ec4d1dd5ba83e022ac97888de9a8a492ec18f02326f",
+    "len": 538
+   },
+   "#03_histo_reperes": {
+    "sha": "4cb4c69a8372cecb91f621f18974ac8a2785ac64ab8a83a7e2f89ab03dba3f13",
+    "len": 746
+   },
+   "#04_callout_set": {
+    "sha": "c34710f74d72e70ffa00c3cd66b7a5b44fe66132db0c190ddda2ed1eea7e3cfe",
+    "len": 853
+   },
+   "#05_stats_cards": {
+    "sha": "09b3b79b84dcf46d77fd170b99c3b4a5b7d8634cfe135b4724ccd14394dfdf56",
+    "len": 852
+   },
+   "#06_lexique_table": {
+    "sha": "0d220582e5229b95ac0389b9e21b8108a6ee52c789ef76c5a737dd7ad3c344d0",
+    "len": 1400
+   },
+   "#07_glossary_chips": {
+    "sha": "03ef24e1b5b214d0637ab45fc0bd86bfdca11f516dcaf555e2503d385a151254",
+    "len": 758
+   },
+   "#08_monuments_grid": {
+    "sha": "8d98a1377027c601a81a70a94581a38ac5af07b67bd1af3bdcd3c0613299b81c",
+    "len": 1636
+   },
+   "#09_figures_comparison": {
+    "sha": "a2a5fcea3c94304db721fa84781052019e747c52bdb6dbfd683fd3647314c000",
+    "len": 999
+   },
+   "#10_table_comparison": {
+    "sha": "0d220582e5229b95ac0389b9e21b8108a6ee52c789ef76c5a737dd7ad3c344d0",
+    "len": 1400
+   },
+   "#11_definition_box": {
+    "sha": "4797de861f4cee035ffed9a6bd8998c92e609cfd1ea374ee6998b1f67bf33344",
+    "len": 331
+   },
+   "#12_context_paragraphs": {
+    "sha": "32fd6c18a67f55bdd475c775609e4733c17e1a1436d7fb44151c7ccd57c3d756",
+    "len": 363
+   },
+   "#13_monument_sheet_long": {
+    "sha": "45af9d0dc935619616950780c99a90b517017431dfa659b3b8be00ccb9096f69",
+    "len": 290
+   },
+   "#14_faq_block": {
+    "sha": "54c870a5c093f0dbf30ba989ce37f609f73243c5d0166a9d7f03e32d6804b2d5",
+    "len": 563
+   },
+   "#15_myths_realities": {
+    "sha": "1438bb753bdd811df9f193c0fab768498d439f8e4d410835ba09a996827f4942",
+    "len": 741
+   },
+   "#16_method_image_desc": {
+    "sha": "72b94a7d61dc6af96b424b0e544653df90df61ae995b10141c80ca0349e8283f",
+    "len": 711
+   },
+   "#17_quote_bilingual": {
+    "sha": "72d11bea94a98d2c9d076dbb3ce8ac367f7eec7ed54658a629f44e66cdcd5931",
+    "len": 649
+   },
+   "#18_sito_graphy": {
+    "sha": "30d944137e24f21dacd66a2887bf42512ff80815d2a41664704a5b62204d4917",
+    "len": 502
+   }
+  }
+ },
+ "accessible": {
+  "config": "b71078c6ee38eee8f4b23dc9b2b771ee3878fe20d695c57bd45427bb7f86ac10",
+  "blocks": {
+   "#01_hero_header": {
+    "sha": "0d90e3e94e2b9380d6403d7860fa7393cbec6ab3ecd8e4e119fd9f17ff9f7c0e",
+    "len": 684
+   },
+   "#02_nav_summary": {
+    "sha": "fec6c742df25ef27e978cd2dd90e6fa6cfb8029322a4e31a945b5dc329502c68",
+    "len": 573
+   },
+   "#03_histo_reperes": {
+    "sha": "5e6e0c6a3efea2a027902f932c5afb709332472704480afb988823299d7b7b72",
+    "len": 759
+   },
+   "#04_callout_set": {
+    "sha": "7bc1e3fecc33ec8ef856832566f9fc7725f8c90497c64c6454b347c785987132",
+    "len": 948
+   },
+   "#05_stats_cards": {
+    "sha": "42aa42a1facb519d60d6561331a66552688e0a0f37ccea054a9e008fab7acfdf",
+    "len": 899
+   },
+   "#06_lexique_table": {
+    "sha": "b4e00a0c475dc87a2c7c3703e50d9357dfa4fccae01951696809bf3839cb95f7",
+    "len": 1476
+   },
+   "#07_glossary_chips": {
+    "sha": "5aa0f22e6d5bd021cc0d8c1b2e45607984ddfbc3b12704694f0a51152d064100",
+    "len": 799
+   },
+   "#08_monuments_grid": {
+    "sha": "ada66dfa0af8873422dcc70a32b244260d7265c3505c3f345ca4661e40950389",
+    "len": 1571
+   },
+   "#09_figures_comparison": {
+    "sha": "9f5a327a6b7212252b488c73350ca79057dc31a83c9ece983037e2687ff0fe40",
+    "len": 1036
+   },
+   "#10_table_comparison": {
+    "sha": "b4e00a0c475dc87a2c7c3703e50d9357dfa4fccae01951696809bf3839cb95f7",
+    "len": 1476
+   },
+   "#11_definition_box": {
+    "sha": "76f76cfcb5dc744235fc8bd99affd3ca90ae83b1ebe45fc264e0dbe5e2ff5b14",
+    "len": 379
+   },
+   "#12_context_paragraphs": {
+    "sha": "3a68f7d214d5caeca501573338ddf96b4ea6604bac910fed6afb6ad0a322bd19",
+    "len": 386
+   },
+   "#13_monument_sheet_long": {
+    "sha": "34828db69a02bf45841ea250c585ec134ebac0a09dacf7f3d4acd303af1adda5",
+    "len": 299
+   },
+   "#14_faq_block": {
+    "sha": "fc6bc9023bd31a07ec010fdd556110635fe1564dc61cb3422f9652f0d1964e0d",
+    "len": 584
+   },
+   "#15_myths_realities": {
+    "sha": "aacd45d539de2c39dad8b27b92e58c94e72d98eec10f5501826edc17c52a7e75",
+    "len": 752
+   },
+   "#16_method_image_desc": {
+    "sha": "6f59d5315e54950ebaec09d8abbe2568d62f9dc78ead4dc44101b7a85ed8783c",
+    "len": 740
+   },
+   "#17_quote_bilingual": {
+    "sha": "89bc6e4663bd2301ae3b00df35307b049a65677ad73223617ba21c145cd2e6a7",
+    "len": 653
+   },
+   "#18_sito_graphy": {
+    "sha": "fd6383fb125a044cee4f9e9e7cdfe6c45c131ccc2831a96820de57ffc7350319",
+    "len": 549
+   }
+  }
+ },
+ "dynamique": {
+  "config": "fd862cc5acb480a2ace4c5f16caca8b84ea7f457d3aed823c7bedf8d9bd01a6a",
+  "blocks": {
+   "#01_hero_header": {
+    "sha": "1a531a496ec69b4894ce2b785829340990c2d42101da839131352bea0a749931",
+    "len": 745
+   },
+   "#02_nav_summary": {
+    "sha": "d92e6419f83c7169f438c9c51611b787b66c99564af50e813434ba9cdf0f4977",
+    "len": 687
+   },
+   "#03_histo_reperes": {
+    "sha": "5a1b019342adf19aec8b2507ea458c6516cffc2485c665a3fe8c1ca42bd35cbd",
+    "len": 730
+   },
+   "#04_callout_set": {
+    "sha": "e52987bdbb7a45d8e02552da03001e4c08475e69e1c3bd65e998e343687dd132",
+    "len": 889
+   },
+   "#05_stats_cards": {
+    "sha": "398bcc01652e19630e29bb6c5143554b263ea0a28597a1cf16051a3581d66ded",
+    "len": 856
+   },
+   "#06_lexique_table": {
+    "sha": "552f19937e94d1410442cedc8a2f1402a355a6a9138c9022d848f8ce6c8a329b",
+    "len": 1354
+   },
+   "#07_glossary_chips": {
+    "sha": "5263135e2fe920a91b7733738cc0844fd18e677e3705b01145fc1f41b0dcb972",
+    "len": 826
+   },
+   "#08_monuments_grid": {
+    "sha": "ca80eaff1ab40e8090729a1a3d6d8081fe53809a1adbac64f33cb15d0d9b08c4",
+    "len": 1606
+   },
+   "#09_figures_comparison": {
+    "sha": "bcaa67b3290d1443bd21114a06a83d13ed2c30cce1d66e2ae6298d1a15f12c54",
+    "len": 993
+   },
+   "#10_table_comparison": {
+    "sha": "552f19937e94d1410442cedc8a2f1402a355a6a9138c9022d848f8ce6c8a329b",
+    "len": 1354
+   },
+   "#11_definition_box": {
+    "sha": "9bce6027dc8e05f83ffc8ab3bca13c1862cc946efc9d728c59baef45ff727880",
+    "len": 336
+   },
+   "#12_context_paragraphs": {
+    "sha": "f9a2316aca692d00ff159ccdc1590b5ab49a36eebb3f6a615a7f59d8e47354ff",
+    "len": 317
+   },
+   "#13_monument_sheet_long": {
+    "sha": "8cdf6e7d6b630526da6999b9d979ac07ccce7e9a653351551ae02e5eba161eb6",
+    "len": 368
+   },
+   "#14_faq_block": {
+    "sha": "6eddfa330d62285aa3e5331b20ddfb4712d8de67cdcc91e9d3ec1623045eefa1",
+    "len": 517
+   },
+   "#15_myths_realities": {
+    "sha": "6b7bb3a381eae090aac00d145b3b0aedbbf00fbc34fe27f41206692217a199a0",
+    "len": 725
+   },
+   "#16_method_image_desc": {
+    "sha": "55a67ef00ca1184a4510fa2748ad686fb588c11950e75d75e219d8d728c9cc70",
+    "len": 685
+   },
+   "#17_quote_bilingual": {
+    "sha": "025586f6cb8f88da4f963764fe8d80454a8111f60e97ff715eb54543e078d992",
+    "len": 603
+   },
+   "#18_sito_graphy": {
+    "sha": "afccc24f11600f9f27131a7d6f54b510e88b824f73271d352554234d475ff845",
+    "len": 456
+   }
+  }
+ }
+}

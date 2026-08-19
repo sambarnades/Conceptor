@@ -6,8 +6,15 @@
  *   ② Transcription timée : les segments {start,end,text} injectés dans le prompt.
  *
  * Trois plateformes :
- *   - PeerTube apps.education : detectVideo() résout tout CÔTÉ NAVIGATEUR (API publique, CORS `*`) ;
- *     transcription via captions (instantané) sinon voie Albert (webhook n8n).
+ *   - PeerTube (Tubes des Apps Education, Tube de Réseau Canopé…) : detectVideo() résout tout CÔTÉ
+ *     NAVIGATEUR (API publique `/api/v1/videos/<id>`, CORS `*`) ; transcription via captions
+ *     (instantané) sinon voie Albert (webhook n8n). La reconnaissance est INDÉPENDANTE DE L'HÔTE
+ *     (toute instance PeerTube servant /w/<id> ou /videos/watch/<uuid>) : c'est la forme de l'URL
+ *     puis la réponse de l'API qui décident, pas une liste d'hôtes à tenir à jour. Vérifié sur
+ *     `tube.reseau-canope.fr` le 2026-08-01 (API + m3u8 + mp4 en CORS `*`, médias sur
+ *     `s3.reseau-canope.fr`). Les instances dont les en-têtes CORS sont cassés (ACAO envoyé en
+ *     double → le NAVIGATEUR refuse la réponse, pas curl/Node) passent automatiquement par un
+ *     relais serveur, cf. `fetchPeerTubeResource`.
  *   - PodEduc (esup-pod) : page sans CORS + API 401 → detectVideo() délègue au webhook n8n en mode
  *     « détection » (POST `{ url }`, scrape serveur de l'URL mp4) ; transcription via la voie Albert
  *     (POST `{ mediaUrl }` au même webhook) car PodEduc n'expose aucun sous-titre public.
@@ -238,8 +245,11 @@ async function pollTranscriptionTask(submitPayload, { onProgress = null, signal 
 // ======================================================================
 
 /**
- * Extrait { origin, id } d'une URL PeerTube (apps.education).
- * Gère /w/<shortUUID> et /videos/watch/<uuid>.
+ * Extrait { origin, id } d'une URL PeerTube, quelle que soit l'INSTANCE (Tubes des Apps Education,
+ * `tube.reseau-canope.fr`, toute autre instance fédérée). Gère /w/<shortUUID> et /videos/watch/<uuid>.
+ * Volontairement SANS liste d'hôtes : une URL à la bonne forme est simplement essayée contre
+ * `/api/v1/videos/<id>` ; un hôte qui n'est pas PeerTube échoue proprement en `http_404`
+ * (état rouge + « Réessayer »), aucune liste à maintenir à chaque nouvelle plateforme.
  * @param {string} rawUrl
  * @returns {{origin:string, id:string}|null}
  */
@@ -258,7 +268,7 @@ function parsePeerTubeUrl(rawUrl) {
 }
 
 /**
- * Indique si une URL est une vidéo PeerTube reconnue (Lot 1).
+ * Indique si une URL a la forme d'une vidéo PeerTube (toutes instances).
  * @param {string} url
  * @returns {boolean}
  */
@@ -331,10 +341,12 @@ export function detectPlatform(url) {
  * Collecte toutes les renditions mp4 vidéo (resolution.id > 0) depuis files[] et
  * streamingPlaylists[].files[], triées par résolution CROISSANTE.
  * Règle (cf. audit) : ne JAMAIS reconstruire l'URL — utiliser fileUrl tel quel (fédération).
+ * Exportée pour les tests (`tests/test-editor-iv.js`) : c'est ici que se joue la différence entre
+ * une instance progressive et une instance HLS-only, impossible à vérifier via detectVideo() sans réseau.
  * @param {Object} apiVideo - L'objet vidéo de l'API PeerTube.
- * @returns {Array<{url:string, mime:string, resolution:number}>}
+ * @returns {Array<{url:string, mime:string, resolution:number, kind:string}>}
  */
-function collectRenditions(apiVideo) {
+export function collectRenditions(apiVideo) {
     const candidates = [];
     const collect = (files, kind) => {
         if (!Array.isArray(files)) return;
@@ -344,10 +356,15 @@ function collectRenditions(apiVideo) {
             if (!url || typeof resId !== 'number') continue;
             if (resId > 0) {
                 candidates.push({ url, mime: 'video/mp4', resolution: resId, kind });
-            } else if (resId === 0 && kind === 'progressive') {
-                // Rendition AUDIO-SEULE (web-videos « -0.mp4 ») : idéale pour Albert (poids minimal,
-                // ex. 5,9 Mo vs 41 Mo en 480p → tient sous 20 Mo bien plus longtemps). NON jouable
-                // comme vidéo → taguée 'audio' et exclue de pickPlayableRendition.
+            } else if (resId === 0) {
+                // Rendition AUDIO-SEULE : idéale pour Albert (poids minimal, ex. 5,9 Mo vs 41 Mo en
+                // 480p → tient sous 20 Mo bien plus longtemps). NON jouable comme vidéo → taguée
+                // 'audio' et exclue de pickPlayableRendition.
+                // Elle se trouve dans `files` (« …-0.mp4 ») sur les instances qui gardent le
+                // progressif, mais UNIQUEMENT dans `streamingPlaylists[].files` (« …-0-fragmented.mp4 »)
+                // sur les instances HLS-only — cas de `tube.reseau-canope.fr`, dont `files` est vide.
+                // La restreindre au progressif la perdait donc là où elle sert le plus (mesuré sur
+                // Canopé : 1,9 Mo audio-seul contre 6,3 Mo en 480p pour 1 min 33, soit 3,3× moins).
                 candidates.push({ url, mime: 'audio/mp4', resolution: 0, kind: 'audio' });
             }
         }
@@ -366,10 +383,12 @@ function collectRenditions(apiVideo) {
 /**
  * Choisit la rendition de LECTURE : progressif de préférence (compatibilité <video>),
  * la plus haute ≤ 720p (confort/poids), sinon la plus basse ; repli HLS si pas de progressif.
+ * Exportée pour les tests : la rendition audio-seule ne doit JAMAIS devenir la source de lecture
+ * (une « vidéo » noire avec le son serait un échec silencieux, invisible à la génération).
  * @param {Array} renditions - Renditions triées croissant (cf. collectRenditions).
  * @returns {{url:string, mime:string, resolution:number}|null}
  */
-function pickPlayableRendition(renditions) {
+export function pickPlayableRendition(renditions) {
     if (!renditions || renditions.length === 0) return null;
     // Lecture = vidéo uniquement (jamais la rendition audio-seule 0p).
     const videos = renditions.filter(r => r.kind !== 'audio');
@@ -386,10 +405,11 @@ function pickPlayableRendition(renditions) {
 /**
  * Ordonne les renditions pour la voie Albert : HLS « fragmented » d'abord (téléchargeable par n8n),
  * puis progressif en repli ; chaque groupe trié par résolution croissante (plus petit = < 20 Mo).
+ * Exportée pour les tests (ordre audio-seul → HLS → progressif).
  * @param {Array} renditions
  * @returns {Array}
  */
-function albertCandidates(renditions) {
+export function albertCandidates(renditions) {
     const list = renditions || [];
     const audio = list.filter(r => r.kind === 'audio');                                          // poids minimal → essayé en 1er
     const hls = list.filter(r => r.kind === 'hls').sort((a, b) => a.resolution - b.resolution);
@@ -402,7 +422,7 @@ function albertCandidates(renditions) {
 // ======================================================================
 
 /**
- * Détecte une vidéo (LOT 1 : PeerTube apps.education uniquement, côté navigateur).
+ * Détecte une vidéo (PeerTube toutes instances côté navigateur, PodEduc et YouTube côté serveur).
  * @param {string} url
  * @returns {Promise<Object>} Objet de détection :
  *   { supported, platform, title, duration, thumbnail, playable,
@@ -423,8 +443,85 @@ export async function detectVideo(url) {
     return { supported: false, platform: 'unknown', playable: false, error: 'unsupported_platform' };
 }
 
+// ── Instances PeerTube dont l'appel DIRECT est refusé par le navigateur ──────
+// Mémorise l'origine (le temps de la session) dès qu'un appel direct a échoué, pour ne pas
+// repayer un aller-retour perdu à chaque requête suivante sur la même instance (détection puis
+// sous-titres = 2 échecs sinon). Vidé à chaque rechargement de page : une instance réparée
+// entre-temps repasse en direct.
+const brokenCorsOrigins = new Set();
+
 /**
- * Détection PeerTube via l'API REST publique (sans auth, CORS `*`).
+ * GET d'une ressource PUBLIQUE d'une instance PeerTube, avec repli par RELAIS SERVEUR.
+ *
+ * Pourquoi ce repli — cas réel `tube.reseau-canope.fr` (2026-08-01) : l'instance renvoie
+ * `Access-Control-Allow-Origin: *` **EN DOUBLE** (le proxy nginx l'ajoute alors que PeerTube
+ * l'envoie déjà). Un navigateur REJETTE une réponse portant deux fois cet en-tête
+ * (« contains multiple values '*, *', but only one is allowed ») → `fetch` lève, l'utilisateur
+ * voit « Vidéo non lisible ou plateforme non prise en charge ». Piège de diagnostic : `curl`,
+ * Node et le banc de test ne vérifient PAS le CORS, donc la chaîne semble parfaitement verte
+ * hors navigateur — c'est SEULEMENT dans une page que ça casse. Ne pas « re-vérifier avec curl ».
+ *
+ * Le repli réutilise le webhook d'import de page (`fetchPage`, déjà appelé depuis le navigateur
+ * par `services/ocr.js`) : il récupère la ressource CÔTÉ SERVEUR, où le CORS n'existe pas, et
+ * renvoie le corps brut dans `text`. Aucun développement n8n n'est nécessaire.
+ *
+ * @param {string} url - URL absolue de la ressource (API JSON, fichier VTT…).
+ * @param {AbortSignal} [signal]
+ * @returns {Promise<{ok:boolean, status:number, body:string, via:'direct'|'relay'}>}
+ *   `ok:false` avec `status:0` = ni le direct ni le relais n'ont abouti.
+ */
+async function fetchPeerTubeResource(url, signal = null) {
+    let origin = '';
+    try { origin = new URL(url).origin; } catch { /* url exotique : on tente quand même */ }
+
+    // 1) Appel direct (chemin normal, instantané) — sauf instance déjà connue comme cassée.
+    if (!brokenCorsOrigins.has(origin)) {
+        try {
+            const res = await fetchWithTimeout(url, {}, FETCH_TIMEOUT_MS, signal);
+            // Réponse HTTP obtenue : elle fait foi, y compris un 404 (vidéo privée/supprimée).
+            // Passer par le relais dans ce cas ne changerait rien et masquerait la vraie cause.
+            return { ok: res.ok, status: res.status, body: res.ok ? await res.text() : '', via: 'direct' };
+        } catch (error) {
+            if (signal?.aborted) return { ok: false, status: 0, body: '', via: 'direct' };
+            if (origin) brokenCorsOrigins.add(origin);
+            debugLog('video-transcript', `appel direct refusé (CORS/réseau) sur ${origin} → relais serveur`, error);
+        }
+    }
+
+    // 2) Repli par le relais serveur.
+    const endpoint = CONFIG && CONFIG.fetchPageUrl;
+    if (!endpoint) return { ok: false, status: 0, body: '', via: 'relay' };
+    try {
+        const res = await fetchWithTimeout(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url })
+        }, DETECT_TIMEOUT_MS, signal);
+        if (!res.ok) return { ok: false, status: res.status, body: '', via: 'relay' };
+        const data = await res.json().catch(() => null);
+        // `truncated` : le relais coupe les très grosses pages. Un JSON tronqué ne parse pas —
+        // autant le refuser ici plutôt que de laisser un JSON.parse cryptique en aval.
+        if (!data || typeof data.text !== 'string' || data.truncated) {
+            return { ok: false, status: 0, body: '', via: 'relay' };
+        }
+        return { ok: true, status: 200, body: data.text, via: 'relay' };
+    } catch (error) {
+        debugLog('video-transcript', 'relais serveur en échec', error);
+        return { ok: false, status: 0, body: '', via: 'relay' };
+    }
+}
+
+/** Idem, en parsant le corps en JSON. `null` si l'appel ou le parsing échoue. */
+async function fetchPeerTubeJson(url, signal = null) {
+    const res = await fetchPeerTubeResource(url, signal);
+    if (!res.ok) return { data: null, status: res.status };
+    try { return { data: JSON.parse(res.body), status: 200, via: res.via }; }
+    catch { return { data: null, status: 0 }; }
+}
+
+/**
+ * Détection PeerTube via l'API REST publique (sans auth, CORS `*` — avec repli par relais
+ * serveur pour les instances dont les en-têtes CORS sont cassés, cf. fetchPeerTubeResource).
  * @param {string} url
  * @returns {Promise<Object>}
  */
@@ -435,11 +532,14 @@ async function detectPeerTube(url) {
     }
     const { origin, id } = parsed;
     try {
-        const videoRes = await fetchWithTimeout(`${origin}/api/v1/videos/${encodeURIComponent(id)}`);
-        if (!videoRes.ok) {
-            return { supported: false, platform: 'peertube', playable: false, error: `http_${videoRes.status}` };
+        const videoRes = await fetchPeerTubeJson(`${origin}/api/v1/videos/${encodeURIComponent(id)}`);
+        if (!videoRes.data) {
+            return {
+                supported: false, platform: 'peertube', playable: false,
+                error: videoRes.status ? `http_${videoRes.status}` : 'api_unreachable'
+            };
         }
-        const v = await videoRes.json();
+        const v = videoRes.data;
         const renditions = collectRenditions(v);
         const rendition = pickPlayableRendition(renditions);
 
@@ -452,10 +552,9 @@ async function detectPeerTube(url) {
         // Sous-titres : endpoint séparé. On préfère le français, sinon la 1ère piste.
         let captions = { available: false, lang: null, fileUrl: null, source: 'none' };
         try {
-            const capRes = await fetchWithTimeout(`${origin}/api/v1/videos/${encodeURIComponent(id)}/captions`);
-            if (capRes.ok) {
-                const capData = await capRes.json();
-                const list = Array.isArray(capData?.data) ? capData.data : [];
+            const capRes = await fetchPeerTubeJson(`${origin}/api/v1/videos/${encodeURIComponent(id)}/captions`);
+            if (capRes.data) {
+                const list = Array.isArray(capRes.data?.data) ? capRes.data.data : [];
                 if (list.length > 0) {
                     const fr = list.find(c => (c?.language?.id || '').toLowerCase().startsWith('fr'));
                     const chosen = fr || list[0];
@@ -689,10 +788,17 @@ export async function fetchTranscript(url, detectInfo = null, onProgress = null,
 
     if (info?.captions?.available && info.captions.fileUrl) {
         try {
-            const res = await fetchWithTimeout(info.captions.fileUrl, {}, undefined, signal);
-            if (!res.ok) return { error: `captions_http_${res.status}` };
-            const raw = await res.text();
+            // Même repli par relais que la détection : sur une instance aux en-têtes CORS cassés,
+            // le VTT est refusé par le navigateur exactement comme l'API (cf. fetchPeerTubeResource).
+            // Perdre les sous-titres ici coûterait cher : c'est la voie INSTANTANÉE, sinon on repart
+            // pour une transcription Albert complète.
+            const res = await fetchPeerTubeResource(info.captions.fileUrl, signal);
+            if (!res.ok) return { error: res.status ? `captions_http_${res.status}` : 'captions_unreachable' };
+            const raw = res.body;
             const segments = parseVtt(raw);
+            // Un relais qui aurait « extrait le texte » d'un VTT au lieu de le rendre brut donnerait
+            // 0 segment : on retombe alors sur la voie Albert plutôt que de servir une piste vide.
+            if (segments.length === 0) throw new Error('captions_empty');
             const text = segments.map(s => s.text).join(' ').trim();
             const duration = info.duration
                 || (segments.length ? segments[segments.length - 1].end : null);

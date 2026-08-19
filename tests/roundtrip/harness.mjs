@@ -248,6 +248,17 @@ function classifyT2(diff, lengthDelta) {
     return lengthDelta > 0 ? 'GROWTH' : 'OTHER';
 }
 
+/**
+ * Activités dont l'EMPAQUETAGE est différé (T1/T4), faute d'un prérequis que Node ne
+ * peut pas fournir. Leur pipeline DONNÉES reste couvert par T2.
+ *
+ * `Dictation` : chaque phrase référence un .mp3 produit par la synthèse vocale et
+ * conservé en mémoire média du navigateur. Hors navigateur, `packageContent` refuse
+ * — à raison — de produire un .h5p aux médias manquants. Le différer ici évite de
+ * confondre ce garde légitime avec une régression.
+ */
+const EMPAQUETAGE_DIFFERE = new Set(['Dictation']);
+
 // ---------------------------------------------------------------------------
 // T1 — Déterminisme de l'export packagé
 // ---------------------------------------------------------------------------
@@ -256,6 +267,12 @@ async function runT1(fixtures) {
     const results = [];
     for (const fx of fixtures) {
         let row = { file: fx.file, moduleKey: fx.moduleKey, ok: null, error: null, sha1: null, sha2: null, diff: [] };
+        if (EMPAQUETAGE_DIFFERE.has(fx.moduleKey)) {
+            row.deferred = true;
+            results.push(row);
+            if (!QUIET) logRow('T1', fx, 'DIFFÉRÉ (médias produits par le navigateur)');
+            continue;
+        }
         try {
             resetRandom();
             const content1 = await healAndProcess(await loadFixture(fx.path), fx.moduleKey);
@@ -304,6 +321,12 @@ async function runT4(fixtures) {
     const snapshots = {};
     for (const fx of fixtures) {
         let entry = { moduleKey: fx.moduleKey, format: 'h5p', error: null };
+        if (EMPAQUETAGE_DIFFERE.has(fx.moduleKey)) {
+            entry.deferred = true;
+            snapshots[fx.file] = entry;
+            if (!QUIET) logRow('T4', { file: fx.file, moduleKey: fx.moduleKey }, 'DIFFÉRÉ (médias produits par le navigateur)');
+            continue;
+        }
         try {
             resetRandom();
             const content = await healAndProcess(await loadFixture(fx.path), fx.moduleKey);
@@ -389,8 +412,12 @@ async function runT3(fixtures) {
 // moodle-creator.js (handleXxxCreation) ; il ne RETOURNE pas le blob mais le dispatche
 // via document.dispatchEvent('generation:complete', {detail:{blob}}) → capturé par le
 // stub document (drainDispatchedEvents/lastDispatched).
-//   - .mbz (Millionnaire, Appariement, QCM, Devoir) : canonicalisé (scrub IDs/timestamps Moodle).
-//   - .xml (glossaireXml, test_elea) : blob = fichier XML unique, hashé tel quel après scrub.
+//   - .mbz (Millionnaire, Appariement, QCM, Devoir, Test) : canonicalisé (scrub IDs/timestamps Moodle).
+//   - .xml (glossaireXml) : blob = fichier XML unique, hashé tel quel après scrub.
+// Note Test : le blob primaire de `handleTestXmlCreation` est désormais un `.mbz` RESTAURABLE
+// (banque de questions au format BACKUP + quiz câblé) ; la canonicalisation du modèle est PURE
+// (canonicalizeTestModel, sans DOM) → exécutable sous ce harness Node. Le `.xml` (banque) reste
+// disponible à la demande dans la modale mais n'est plus le blob de génération.
 // T2 (idempotence) ne s'applique pas : les handlers prennent une STRING, pas une structure
 // re-réinjectable. On mesure donc T1 (déterminisme) + T4 (snapshot).
 const MOODLE_HANDLERS = {
@@ -399,7 +426,7 @@ const MOODLE_HANDLERS = {
     QCM: { fn: 'handleQCMCreation', kind: 'mbz' },
     Devoir: { fn: 'handleDevoirCreation', kind: 'mbz' },
     glossaireXml: { fn: 'handleGlossaireXmlCreation', kind: 'xml' },
-    test_elea: { fn: 'handleTestXmlCreation', kind: 'xml' }
+    test_elea: { fn: 'handleTestXmlCreation', kind: 'mbz' }
 };
 
 /** Scrub minimal d'un .xml standalone (Moodle GIFT/Glossary) pour le hash stable. */
@@ -592,10 +619,11 @@ async function main() {
     const catStr = Object.entries(t2cats).map(([k, v]) => `${k}:${v}`).join(' ');
     const s5 = sum(t5.t1);
     console.log(`T2 Idempotence (H5P)  : ${s2.ok} OK | ${s2.fail} NON-IDEMPOTENT (${catStr}) | ${s2.err} erreur`);
-    console.log(`T1 Déterminisme (H5P) : ${s1.ok} OK | ${s1.fail} NON-DÉTERMINISTE | ${s1.err} erreur`);
+    console.log(`T1 Déterminisme (H5P) : ${s1.ok} OK | ${s1.fail} NON-DÉTERMINISTE | ${s1.err} erreur | ${t1.filter(r => r.deferred).length} différé(s)`);
     console.log(`T3 Verbatim (H5P)     : ${s3.ok} OK | ${s3.fail} échec | ${s3.err} erreur`);
     const t4err = Object.values(t4).filter(e => e.error).length;
-    console.log(`T4 Snapshot (H5P)     : ${Object.keys(t4).length - t4err} enregistrés | ${t4err} erreur`);
+    const t4dif = Object.values(t4).filter(e => e.deferred).length;
+    console.log(`T4 Snapshot (H5P)     : ${Object.keys(t4).length - t4err - t4dif} enregistrés | ${t4err} erreur | ${t4dif} différé(s)`);
     console.log(`T5 Moodle/Éléa        : ${s5.ok} déterministes | ${s5.fail} non-déterministes | ${s5.err} différés/erreur (Page/Livre = DOM)`);
     console.log('\nLégende catégories T2 :');
     console.log('  DUPLICATION = une valeur grandit par doublon répété (ex: <p>→<p><p>) → VRAI risque « +1 char/passe »');
@@ -686,15 +714,105 @@ async function main() {
     await writeFile(REPORT_PATH, JSON.stringify(report, null, 2), 'utf8');
     console.log(`\nRapport écrit : ${REPORT_PATH}`);
 
+    // ---- Gel de l'inventaire T2 ----
+    const deriveT2 = await verifierBaselineT2(t2);
+
     // Code de sortie : non-zéro UNIQUEMENT pour les régressions dures —
     //   T1/T5 non-déterministe (seeding insuffisant) ou T2 DUPLICATION/GROWTH (vrai « +1 char/passe »).
-    //   SHAPE-LOSS n'est PAS un échec (comportement attendu d'un transform one-shot).
+    //   SHAPE-LOSS n'est PAS un échec EN SOI (comportement attendu d'un transform one-shot),
+    //   mais toute DÉRIVE de l'inventaire gelé en est une (cf. verifierBaselineT2).
     //   Les erreurs T5 « différé Page/Livre » ne comptent PAS (attendu).
-    const hardFail = s1.fail + s1.err + s2.err + dupTotal + s5.fail;
+    const hardFail = s1.fail + s1.err + s2.err + dupTotal + s5.fail + deriveT2;
     if (hardFail > 0) {
-        console.log(`\n⚠ ${hardFail} régression(s) dure(s) (T1/T5 non-déterministe et/ou T2 DUPLICATION/GROWTH). Exit 1.`);
+        console.log(`\n⚠ ${hardFail} régression(s) dure(s) (T1/T5 non-déterministe, T2 DUPLICATION/GROWTH, ou dérive de l'inventaire T2). Exit 1.`);
     }
     process.exit(hardFail > 0 ? 1 : 0);
+}
+
+/**
+ * Gèle l'inventaire des non-idempotences T2.
+ *
+ * POURQUOI. Les 26 SHAPE-LOSS connus ne sont PAS des bugs : le flux produit est
+ * « Markdown-First » — l'éditeur re-traite toujours le Markdown d'ORIGINE, jamais le
+ * contenu déjà processé — donc la 2e passe n'a jamais lieu en vrai. Les rendre
+ * idempotents demanderait de réécrire 26 processeurs pour un risque qui n'existe pas
+ * dans le parcours actuel : le remède serait plus dangereux que le mal.
+ *
+ * Ce qui manquait, en revanche, c'est le CONSTAT DE STABILITÉ. Jusqu'ici la porte ne
+ * comptait que les DUPLICATION/GROWTH : une activité qui basculait d'IDEMPOTENT à
+ * SHAPE-LOSS passait totalement inaperçue, alors que c'est précisément le signe qu'un
+ * processeur s'est mis à lire un champ d'entrée qu'il ne lisait pas — donc que la
+ * latence de risque s'est étendue.
+ *
+ * Trois dérives font échouer :
+ *   · APPARITION   — une fixture jusqu'ici idempotente ne l'est plus ;
+ *   · AGGRAVATION  — une fixture change de catégorie (SHAPE-LOSS → DUPLICATION…) ;
+ *   · DISPARITION  — une entrée gelée n'est plus produite : ce n'est pas grave, mais
+ *                    la référence doit être mise à jour pour rester une référence.
+ *
+ * Régénérer après une évolution VOULUE : `node tests/roundtrip/harness.mjs --gel-t2`.
+ *
+ * @param {Array<Object>} t2 - Résultats bruts de la phase T2.
+ * @returns {Promise<number>} Nombre de dérives (0 = conforme).
+ */
+async function verifierBaselineT2(t2) {
+    const CHEMIN = resolve(__dirname, '../fixtures/t2-idempotence-baseline.json');
+
+    const courant = {};
+    for (const r of t2) {
+        if (r.ok === false) courant[`${r.moduleKey}/${r.file}`] = r.category;
+    }
+
+    if (process.argv.includes('--gel-t2')) {
+        await writeFile(CHEMIN, JSON.stringify({
+            _commentaire: 'Inventaire GELÉ des non-idempotences T2. Voir verifierBaselineT2() '
+                + 'dans tests/roundtrip/harness.mjs. Régénérer : node tests/roundtrip/harness.mjs --gel-t2',
+            _pourquoi: 'Ces non-idempotences sont LATENTES (flux Markdown-First : le contenu déjà '
+                + 'processé n\'est jamais re-soumis). Elles sont tolérées mais figées : toute '
+                + 'apparition, aggravation ou disparition doit être vue et décidée.',
+            entrees: Object.fromEntries(Object.entries(courant).sort(([a], [b]) => a.localeCompare(b)))
+        }, null, 2), 'utf8');
+        console.log(`\n📌 Inventaire T2 gelé (${Object.keys(courant).length} entrées) → ${CHEMIN}`);
+        return 0;
+    }
+
+    let reference;
+    try {
+        reference = JSON.parse(await readFile(CHEMIN, 'utf8')).entrees || {};
+    } catch {
+        console.log(`\n⚠ Inventaire T2 de référence absent (${CHEMIN}).`);
+        console.log('  Le générer une première fois : node tests/roundtrip/harness.mjs --gel-t2');
+        return 0;   // absence de référence ≠ régression
+    }
+
+    const apparitions = Object.keys(courant).filter(k => !(k in reference));
+    const disparitions = Object.keys(reference).filter(k => !(k in courant));
+    const aggravations = Object.keys(courant)
+        .filter(k => k in reference && reference[k] !== courant[k])
+        .map(k => `${k} : ${reference[k]} → ${courant[k]}`);
+
+    console.log(`\nT2 inventaire gelé    : ${Object.keys(reference).length} entrées de référence`);
+
+    if (!apparitions.length && !disparitions.length && !aggravations.length) {
+        console.log('  ✅ Inventaire conforme (aucune apparition, aggravation ni disparition).');
+        return 0;
+    }
+
+    if (apparitions.length) {
+        console.log(`  ❌ ${apparitions.length} APPARITION(S) — ces fixtures étaient idempotentes :`);
+        for (const k of apparitions) console.log(`     • ${k}  [${courant[k]}]`);
+    }
+    if (aggravations.length) {
+        console.log(`  ❌ ${aggravations.length} AGGRAVATION(S) — changement de catégorie :`);
+        for (const k of aggravations) console.log(`     • ${k}`);
+    }
+    if (disparitions.length) {
+        console.log(`  ❌ ${disparitions.length} DISPARITION(S) — corrigées ? mettre à jour la référence :`);
+        for (const k of disparitions) console.log(`     • ${k}  [était ${reference[k]}]`);
+    }
+    console.log('  → si la dérive est VOULUE : node tests/roundtrip/harness.mjs --gel-t2');
+
+    return apparitions.length + aggravations.length + disparitions.length;
 }
 
 main().catch(e => {

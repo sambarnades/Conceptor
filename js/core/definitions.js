@@ -330,6 +330,22 @@ export const h5pModules = {
         platforms: ["Éléa", "Magistère", "Moodle"],
         formats: ["H5P", "DOCX", "ODT", "PDF"]
     },
+    Dictation: {
+        name: "h5p_dictation_name",
+        englishName: "Dictation",
+        machineName: "H5P.Dictation",
+        description: "h5p_dictation_description",
+        image: "assets/images/activities/dictation.webp",
+        promptId: "dictationResultat",
+        jsonInputId: "dictationJsonInput",
+        createBtnId: "createDictationH5P",
+        // L'audio des phrases est SYNTHÉTISÉ (TTS serveur, cf. services/tts.js) par le
+        // processor : le LLM ne produit que taskDescription + sentences[].text.
+        categories: ["text", "h5p"],
+        hidden: false,
+        platforms: ["Éléa", "Magistère", "Moodle"],
+        formats: ["H5P", "DOCX", "ODT", "PDF"]
+    },
     ComplexFillTheBlanks: {
         name: "h5p_complex_fill_the_blanks_name",
         englishName: "Complex fill the blanks",
@@ -476,7 +492,9 @@ export const moodleModules = {
         categories: ["quiz", "elea"],
         hidden: false,
         platforms: ["Éléa", "Magistère", "Moodle"],
-        formats: ["XML", "GIFT", "DOCX", "ODT", "PDF"]
+        // MBZ en 1er = bouton primaire par défaut (Test restaurable « comme les autres .mbz »).
+        // XML en 2e = fichier d'import de banque de questions (inchangé), bouton secondaire inversé.
+        formats: ["MBZ", "XML", "GIFT", "DOCX", "ODT", "PDF"]
     },
     glossaireXml: {
         name: "elea_glossaire_xml_name",
@@ -540,7 +558,12 @@ export const moodleModules = {
     gift: {
         name: "elea_test_gift_name",
         description: "elea_test_gift_description",
-        image: "https://moodle.org/theme/moodleorg/pix/moodle_logo_TM.svg",
+        // Image LOCALE obligatoire : une URL distante ferait sortir une requête vers un
+        // tiers au chargement de la grille (traçage + dépendance externe). Ce module
+        // pointait moodle.org ; inerte tant que `hidden: true`, mais actif au premier
+        // démasquage. Garde-fou : test-activity-wiring vérifie qu'aucun module n'a
+        // d'image en http(s).
+        image: "assets/images/activities/test.webp",
         categories: ["quiz", "elea"],
         platforms: ["Éléa"],
         hidden: true,
@@ -619,6 +642,7 @@ export const customOrder = [
     'DragAndDrop',
     'FillInTheBlanks',
     'MarkTheWords',
+    'Dictation',
     'Essay',
     'Glossary',
     'SortParagraphs',

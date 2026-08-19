@@ -8,6 +8,44 @@
 # Outils : terser (JS ES6), clean-css-cli (CSS), html-minifier-terser (HTML)
 # =============================================================================
 
+# -----------------------------------------------------------------------------
+# JOB 1 — Validation (avant tout déploiement)
+#
+# Ajouté suite à l'audit de synchronisation avec Sucrerie (2026-07-29) : ce
+# pipeline n'avait aucune étape de contrôle, si bien qu'une clé i18n absente
+# partait en production sans rien déclencher. `t()` (et son wrapper
+# `translateLabel()`) renvoient la CLÉ quand elle manque — elle s'affiche donc
+# brute à l'utilisateur, et l'idiome `t(x) || 'repli'` ne protège pas puisque la
+# clé est « truthy ». 8 clés étaient dans ce cas, dont du texte visible.
+# -----------------------------------------------------------------------------
+validate:
+  stage: test
+  image: node:20-alpine
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: $CI_MERGE_REQUEST_ID
+  script:
+    - echo "→ Validation JSON des 11 locales"
+    - |
+      set -eu
+      for f in js/locales/*.json; do
+        node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" || { echo "  KO : $f"; exit 1; }
+        echo "  OK : $f"
+      done
+    - echo "→ Complétude des locales"
+    - node scripts/verify-all-locales.mjs
+    - echo "→ Parité i18n de l'éditeur et de l'export (partagés avec Sucrerie)"
+    - node scripts/check-shared-i18n.mjs
+    # Un .h5p n'embarque PAS les librairies : sur Éléa, seule la partie de
+    # content.json écrite par le processeur est traduite. Un champ traduisible
+    # oublié repart donc en ANGLAIS, et un champ écrit en dur fige une langue —
+    # deux régressions invisibles en relecture de diff. (Audit langues 2026-08.)
+    - echo "→ Couverture des libellés d'interface H5P (11 locales)"
+    - node tests/run_h5p_ui_coverage.mjs
+
+# -----------------------------------------------------------------------------
+# JOB 2 — Minification + déploiement GitLab Pages
+# -----------------------------------------------------------------------------
 pages:
   stage: deploy
   environment: production
@@ -57,13 +95,15 @@ pages:
     #      CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL (ex: https://…/caramel-video-transcript-result-prod)
     #      CARAMEL_FETCH_PAGE_URL       (ex: https://…/caramel-fetch-page-prod)
     #      CARAMEL_VISION_DETECT_URL    (ex: https://…/caramel-vision-detect-prod)
+    #      CARAMEL_TTS_URL              (ex: https://…/caramel-tts-prod)
+    #      CARAMEL_TTS_VOICES_URL       (ex: https://…/caramel-tts-voices-prod)
     #
-    #    Les 11 sont OBLIGATOIRES : le build echoue (exit 1) si l'une manque.
+    #    Les 13 sont OBLIGATOIRES : le build echoue (exit 1) si l'une manque.
     # ------------------------------------------------------------------
     - |
       echo "=== Injection URLs n8n ==="
-      if [ -z "$LLM_SUBMIT_URL" ] || [ -z "$LLM_RESULT_URL" ] || [ -z "$LLM_STATS_URL" ] || [ -z "$CARAMELIA_WEBHOOK_URL" ] || [ -z "$CARAMELIA_AUDIO_URL" ] || [ -z "$PDF_CONVERT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL" ] || [ -z "$CARAMEL_FETCH_PAGE_URL" ] || [ -z "$CARAMEL_VISION_DETECT_URL" ]; then
-        echo "  ERREUR: une des 11 URLs n8n (LLM_SUBMIT_URL, LLM_RESULT_URL, LLM_STATS_URL, CARAMELIA_WEBHOOK_URL, CARAMELIA_AUDIO_URL, PDF_CONVERT_URL, CARAMEL_VIDEO_TRANSCRIPT_URL, CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL, CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL, CARAMEL_FETCH_PAGE_URL, CARAMEL_VISION_DETECT_URL) n'est pas definie dans les variables CI/CD !"
+      if [ -z "$LLM_SUBMIT_URL" ] || [ -z "$LLM_RESULT_URL" ] || [ -z "$LLM_STATS_URL" ] || [ -z "$CARAMELIA_WEBHOOK_URL" ] || [ -z "$CARAMELIA_AUDIO_URL" ] || [ -z "$PDF_CONVERT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL" ] || [ -z "$CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL" ] || [ -z "$CARAMEL_FETCH_PAGE_URL" ] || [ -z "$CARAMEL_VISION_DETECT_URL" ] || [ -z "$CARAMEL_TTS_URL" ] || [ -z "$CARAMEL_TTS_VOICES_URL" ]; then
+        echo "  ERREUR: une des 13 URLs n8n (LLM_SUBMIT_URL, LLM_RESULT_URL, LLM_STATS_URL, CARAMELIA_WEBHOOK_URL, CARAMELIA_AUDIO_URL, PDF_CONVERT_URL, CARAMEL_VIDEO_TRANSCRIPT_URL, CARAMEL_VIDEO_TRANSCRIPT_SUBMIT_URL, CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL, CARAMEL_FETCH_PAGE_URL, CARAMEL_VISION_DETECT_URL, CARAMEL_TTS_URL, CARAMEL_TTS_VOICES_URL) n'est pas definie dans les variables CI/CD !"
         echo "  → GitLab > Settings > CI/CD > Variables"
         exit 1
       fi
@@ -79,6 +119,8 @@ pages:
       sed -i "s|const CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL = \".*\"|const CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL = \"${CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL}\"|g" "$ENDPOINTS_FILE"
       sed -i "s|const CARAMEL_FETCH_PAGE_URL = \".*\"|const CARAMEL_FETCH_PAGE_URL = \"${CARAMEL_FETCH_PAGE_URL}\"|g" "$ENDPOINTS_FILE"
       sed -i "s|const CARAMEL_VISION_DETECT_URL = \".*\"|const CARAMEL_VISION_DETECT_URL = \"${CARAMEL_VISION_DETECT_URL}\"|g" "$ENDPOINTS_FILE"
+      sed -i "s|const CARAMEL_TTS_URL = \".*\"|const CARAMEL_TTS_URL = \"${CARAMEL_TTS_URL}\"|g" "$ENDPOINTS_FILE"
+      sed -i "s|const CARAMEL_TTS_VOICES_URL = \".*\"|const CARAMEL_TTS_VOICES_URL = \"${CARAMEL_TTS_VOICES_URL}\"|g" "$ENDPOINTS_FILE"
       echo "  LLM_SUBMIT_URL        : ${LLM_SUBMIT_URL}"
       echo "  LLM_RESULT_URL        : ${LLM_RESULT_URL}"
       echo "  LLM_STATS_URL         : ${LLM_STATS_URL}"
@@ -90,6 +132,8 @@ pages:
       echo "  CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL : ${CARAMEL_VIDEO_TRANSCRIPT_RESULT_URL}"
       echo "  CARAMEL_FETCH_PAGE_URL       : ${CARAMEL_FETCH_PAGE_URL}"
       echo "  CARAMEL_VISION_DETECT_URL    : ${CARAMEL_VISION_DETECT_URL}"
+      echo "  CARAMEL_TTS_URL              : ${CARAMEL_TTS_URL}"
+      echo "  CARAMEL_TTS_VOICES_URL       : ${CARAMEL_TTS_VOICES_URL}"
 
     # ------------------------------------------------------------------
     # 4. Minification JS — modules ES6 (~79 fichiers applicatifs)

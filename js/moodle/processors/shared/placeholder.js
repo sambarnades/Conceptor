@@ -12,14 +12,17 @@
 export function replacePlaceholders(template, data) {
     if (!template) return template;
 
-    let result = template;
-    for (const key in data) {
-        const regex = new RegExp(`\\{\\{${key}\\}\\}`, 'g');
-        // Gère le caractère $ spécial dans les chaînes de remplacement
-        const replacement = String(data[key]).replace(/\$/g, '$$$$');
-        result = result.replace(regex, replacement);
-    }
-    return result;
+    // Passe UNIQUE sur le template : chaque {{CLÉ}} présent DANS LE TEMPLATE est
+    // remplacé au plus une fois par sa valeur, et les valeurs insérées ne sont
+    // JAMAIS re-scannées. Conséquence : un {{AUTRE_CLÉ}} tapé par l'utilisateur
+    // dans une valeur (intro, titre, JSON d'associations…) reste LITTÉRAL au lieu
+    // d'être ré-substitué par une autre donnée (collision de placeholders qui
+    // pouvait injecter du markup brut ou corrompre le texte selon l'ordre des clés).
+    // La forme « fonction de remplacement » neutralise aussi les motifs spéciaux
+    // ($1, $&, $$…) dans les valeurs — plus besoin d'échapper les $ manuellement.
+    return String(template).replace(/\{\{(\w+)\}\}/g, (match, key) =>
+        Object.prototype.hasOwnProperty.call(data, key) ? String(data[key]) : match
+    );
 }
 
 /**

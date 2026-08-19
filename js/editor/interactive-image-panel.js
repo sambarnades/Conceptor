@@ -41,7 +41,13 @@ let activeParent = null;
 let activeOnInput = null;
 
 function escapeText(s) {
-    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    // Échappe AUSSI `"` et `'` : ces valeurs finissent en attribut (title=…, value=…)
+    // dans les gabarits de ce panneau, où `& < >` seuls ne suffisent pas.
+    // Table alignée sur `js/core/escape.js` ; recopiée ici volontairement car ce
+    // fichier est byte-identique côté Sucrerie (pas de dépendance inter-dépôts).
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
 }
 function stripHtml(s) {
     return String(s == null ? '' : s).replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();

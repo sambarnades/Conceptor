@@ -434,7 +434,16 @@
   line-height: 1.5;
   color: var(--tuto-ink-soft);
 }
-.tutorial-table th[scope="row"] { color: var(--tuto-ink); font-weight: 600; white-space: nowrap; }
+/* `text-align: start` et non `left` : le tutoriel existe en arabe, où la colonne des
+   noms doit s'aligner à droite. Sans cette règle, les `th` héritaient du CENTRAGE par
+   défaut du navigateur — acceptable sur un tableau de deux lignes, franchement bancal
+   sur le catalogue des 35 activités. */
+.tutorial-table th[scope="row"] {
+  color: var(--tuto-ink);
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: start;
+}
 .tutorial-table tbody tr:last-child th,
 .tutorial-table tbody tr:last-child td { border-bottom: none; }
 

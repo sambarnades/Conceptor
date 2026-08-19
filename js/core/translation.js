@@ -6,6 +6,7 @@
 
 import { AVAILABLE_MODELS } from '../services/llm.js';
 import { generateTiles, refreshSidebar } from '../ui/ui.js';
+import { languageCodes } from './language-codes.js';
 
 /**
  * Traductions françaises par défaut pour les tuiles (affichage immédiat avant chargement complet)
@@ -31,6 +32,7 @@ const defaultTranslations = {
     h5p_sort_the_paragraphs_name: "Ordonner les paragraphes",
     h5p_single_choice_set_name: "Série de choix uniques",
     h5p_dialog_cards_name: "Cartes de dialogue",
+    h5p_dictation_name: "Dictée",
     h5p_complex_fill_the_blanks_name: "Texte à trous complexe",
     h5p_chart_name: "Diagramme",
     h5p_course_presentation_name: "Présentation de cours",
@@ -174,6 +176,24 @@ async function loadTranslationScript(lang) {
 }
 
 /**
+ * Charge (une seule fois) le dictionnaire anglais qui sert de socle de repli.
+ * Un échec réseau ne doit pas empêcher la langue demandée de s'appliquer : on
+ * retombe alors sur un socle vide, comportement identique à l'ancien.
+ * @returns {Promise<Object>}
+ */
+let _englishBase = null;
+async function loadEnglishBase() {
+    if (_englishBase) return _englishBase;
+    try {
+        _englishBase = await loadTranslationScript('en');
+    } catch (err) {
+        console.warn('Socle de repli anglais indisponible :', err);
+        _englishBase = {};
+    }
+    return _englishBase;
+}
+
+/**
  * Orchestrateur : charge la langue puis applique la traduction à la page.
  */
 /**
@@ -185,15 +205,25 @@ export async function loadTranslations(lang) {
   const myToken = ++_langToken;
   try {
     const data = await loadTranslationScript(lang);
+    // Socle anglais : une clé absente de la locale demandée doit retomber sur
+    // l'ANGLAIS. Sans lui, deux replis silencieux se produisaient — le dictionnaire
+    // était fusionné par-dessus le précédent (passer de fr à el laissait donc du
+    // français), et `defaultTranslations` est lui-même français. Un utilisateur
+    // grec voyait alors du français, y compris dans les .h5p exportés puisque les
+    // processeurs lisent ce même dictionnaire.
+    const baseEn = (lang === 'en') ? data : await loadEnglishBase();
     if (myToken !== _langToken) return; // une autre langue a été demandée entre-temps
 
-    // On ne modifie plus la variable globale, on la réassigne
-    translations = Object.assign(translations, data);
+    // Reconstruction complète en CONSERVANT l'identité de l'objet : `translations`
+    // est importé un peu partout, une réaffectation casserait les références.
+    for (const key of Object.keys(translations)) delete translations[key];
+    Object.assign(translations, defaultTranslations, baseEn, data);
     currentLang = lang;
     hydrateLegalLLMLine();
 
     // Mettre à jour l'attribut lang et la direction du texte
-    document.documentElement.lang = lang;
+    // Code ISO 639-1 : `jp` est une clé de locale, pas une langue (→ `ja`).
+    document.documentElement.lang = languageCodes(lang).language;
     document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
 
     // Appliquer les traductions + mettre à jour l'UI du sélecteur

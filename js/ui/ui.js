@@ -6,13 +6,15 @@
 
 import { allModules, customOrder, h5pModules, moodleModules } from '../core/definitions.js';
 import { translations, translatePage, currentLang } from '../core/translation.js';
-import { generatePrompts, buildVideoInteractivePrompt, setVideoTranscriptSources, getTranscriptAnchors, buildImageHotspotsPrompt, setImageHotspotZones, readContextParams, prefixForModule } from '../services/prompt-generator.js';
+import { generatePrompts, buildVideoInteractivePrompt, buildImageHotspotsPrompt, setImageHotspotZones, prefixForModule, resultKeyForModule } from '../services/prompt-generator.js';
 import { snapInteractions } from '../h5p/processors/interactive-video-snap.js';
-import { buildSyncedTranscriptEditor } from './transcript-sync-editor.js';
-import { cleanJsonInput, showNotification, copyToClipboard, downloadFile, setupToolbarListeners, getCaramelVersionFromFooter, syncPanelHeights, DEBUG, debugLog, setupModalAccessibility } from '../core/utils.js';
+import { cleanJsonInput, showNotification, copyToClipboard, downloadFile, setupToolbarListeners, getCaramelVersionFromFooter, syncPanelHeights, DEBUG, debugLog, setupModalAccessibility, safeSession, horodatageFichier, classifyError } from '../core/utils.js';
 import { populateModelSelector, AVAILABLE_MODELS, DEFAULT_MODEL, ACTIVITY_MODEL_OVERRIDES, generateH5PWithLLM } from '../services/llm.js';
 import { generateInBatches, shouldChunk, BATCH_CONFIG } from '../services/llm-batch.js';
-import { addNotification, getNotificationById, getLastDebugNotification, showToastForNotification, revealNotification } from './notifications.js';
+import { addNotification, getNotificationById, getLastDebugNotification, showToastForNotification, revealNotification, hydrateImagesForExport } from './notifications.js';
+import { visionContextSig, alignVideoHelpButton, snapVideoTimestamps } from './media-helpers.js';
+import { initBackgroundImageSection } from './background-image-section.js';
+import { initVideoUrlSection } from './video-url-section.js';
 
 // ============= IMPORTS DYNAMIQUES (chargés à la demande) =============
 // Les modules de création/export sont chargés via import() dynamique au moment
@@ -76,8 +78,10 @@ export function generateTiles() {
             label.innerHTML = '<span>H5P</span>';
             tile.appendChild(label);
         } else if (module.categories.includes('elea')) {
+            // Badge plateforme dynamique : Éléa par défaut, suit le filtre actif (cf. applyFilters)
             const label = document.createElement('div');
             label.className = 'module-label elea-label';
+            label.dataset.platformBadge = '';
             label.innerHTML = '<span>Éléa</span>';
             tile.appendChild(label);
         }
@@ -161,14 +165,9 @@ export function setupFilters() {
      * Appelé lors d'un changement de contexte pour invalider les anciennes données.
      */
     function clearSessionData() {
-        const keysToRemove = [];
-        for (let i = 0; i < sessionStorage.length; i++) {
-            const key = sessionStorage.key(i);
-            if (key?.startsWith(`${STORAGE_PREFIX}json_`) || key?.startsWith(`${STORAGE_PREFIX}prompt_`)) {
-                keysToRemove.push(key);
-            }
-        }
-        keysToRemove.forEach(key => sessionStorage.removeItem(key));
+        safeSession.keys()
+            .filter(key => key.startsWith(`${STORAGE_PREFIX}json_`) || key.startsWith(`${STORAGE_PREFIX}prompt_`))
+            .forEach(key => safeSession.remove(key));
     }
 
     /**
@@ -176,7 +175,7 @@ export function setupFilters() {
      */
     function handleContextChange() {
         const currentHash = getContextHash();
-        const savedHash = sessionStorage.getItem(`${STORAGE_PREFIX}context_hash`);
+        const savedHash = safeSession.get(`${STORAGE_PREFIX}context_hash`);
 
         if (savedHash && savedHash !== currentHash) {
             // Le contexte a changé : effacer les données sauvegardées (prompts et JSON)
@@ -203,11 +202,11 @@ export function setupFilters() {
             // que le prompt se reconstruise sans elles). Insensible à l'OCR/RAG. Tant que le contexte
             // vision ne change pas, l'image reste (cohérent avec la conservation du lien vidéo).
             const visionCtx = visionContextSig();
-            const savedVisionCtx = sessionStorage.getItem(`${STORAGE_PREFIX}ih_vision_ctx`);
+            const savedVisionCtx = safeSession.get(`${STORAGE_PREFIX}ih_vision_ctx`);
             if (savedVisionCtx !== null && savedVisionCtx !== visionCtx) {
                 invalidateImageHotspotsContext();
             }
-            sessionStorage.setItem(`${STORAGE_PREFIX}ih_vision_ctx`, visionCtx);
+            safeSession.set(`${STORAGE_PREFIX}ih_vision_ctx`, visionCtx);
 
             if (qui || quoi || niveau || nombre) {
                 generatePrompts();
@@ -228,7 +227,7 @@ export function setupFilters() {
                 }
             }
         }
-        sessionStorage.setItem(`${STORAGE_PREFIX}context_hash`, currentHash);
+        safeSession.set(`${STORAGE_PREFIX}context_hash`, currentHash);
     }
 
     // Debounce pour éviter trop d'appels lors de la saisie rapide
@@ -254,10 +253,10 @@ export function setupFilters() {
     }
 
     // Initialiser le hash du contexte au chargement
-    sessionStorage.setItem(`${STORAGE_PREFIX}context_hash`, getContextHash());
+    safeSession.set(`${STORAGE_PREFIX}context_hash`, getContextHash());
     // …et la signature du contexte vision (Image interactive) — évite de purger une 1ʳᵉ analyse
     // faite contexte vide quand l'utilisateur saisit ensuite qui/quoi.
-    sessionStorage.setItem(`${STORAGE_PREFIX}ih_vision_ctx`, visionContextSig());
+    safeSession.set(`${STORAGE_PREFIX}ih_vision_ctx`, visionContextSig());
 
     // --- Fin de la détection des changements de contexte ---
 
@@ -266,10 +265,18 @@ export function setupFilters() {
     /**
      * Applique les filtres actifs (type d'activité + plateforme) sur les tuiles.
      */
+    // Apparence du badge des tuiles non-H5P selon la plateforme filtrée (Éléa = défaut)
+    const PLATFORM_BADGES = {
+        elea: { className: 'elea-label', text: 'Éléa' },
+        magistere: { className: 'magistere-label', text: 'Magistère' },
+        moodle: { className: 'moodle-label', text: 'Moodle' }
+    };
+
     function applyFilters() {
         const activeType = document.querySelector('.filter-chip--activity.active')?.dataset.filterType || 'all';
         const activePlatforms = [...document.querySelectorAll('.filter-chip[data-filter-platform].active')]
             .map(el => el.dataset.filterPlatform);
+        const selectedBadgePlatform = activePlatforms.find(p => p === 'magistere' || p === 'moodle');
 
         document.querySelectorAll('.h5p-tile').forEach(tile => {
             const types = (tile.dataset.activityTypes || '').split(',');
@@ -284,6 +291,17 @@ export function setupFilters() {
                 });
 
             tile.style.display = (matchesType && matchesPlatform) ? '' : 'none';
+
+            // Le badge non-H5P affiche la plateforme sélectionnée (si la tuile la supporte)
+            const badge = tile.querySelector('.module-label[data-platform-badge]');
+            if (badge) {
+                const target = (selectedBadgePlatform && platforms.includes(selectedBadgePlatform))
+                    ? PLATFORM_BADGES[selectedBadgePlatform]
+                    : PLATFORM_BADGES.elea;
+                badge.className = `module-label ${target.className}`;
+                const span = badge.querySelector('span');
+                if (span) span.textContent = target.text;
+            }
         });
     }
 
@@ -317,6 +335,9 @@ export function setupFilters() {
     }
     updateMagistereChipVisibility();
     window.addEventListener('caramel:language-changed', updateMagistereChipVisibility);
+    // Le changement de langue régénère les tuiles APRÈS cet événement (cf. translation.js) :
+    // on ré-applique les filtres (et le badge plateforme dynamique) au tick suivant.
+    window.addEventListener('caramel:language-changed', () => setTimeout(applyFilters, 0));
 
 
 
@@ -364,14 +385,14 @@ function saveModalDataToSession(moduleKey) {
     // après changement de langue (sinon écrase la nouvelle traduction).
     const promptTextarea = document.getElementById(promptId);
     if (promptTextarea?.value.trim()) {
-        sessionStorage.setItem(`${STORAGE_PREFIX}prompt_${moduleKey}`, promptTextarea.value);
-        sessionStorage.setItem(`${STORAGE_PREFIX}prompt_lang_${moduleKey}`, currentLang);
+        safeSession.set(`${STORAGE_PREFIX}prompt_${moduleKey}`, promptTextarea.value);
+        safeSession.set(`${STORAGE_PREFIX}prompt_lang_${moduleKey}`, currentLang);
     }
 
     // Sauvegarder le JSON (contenu généré par LLM)
     const jsonTextarea = document.getElementById(jsonInputId);
     if (jsonTextarea?.value.trim()) {
-        sessionStorage.setItem(`${STORAGE_PREFIX}json_${moduleKey}`, jsonTextarea.value);
+        safeSession.set(`${STORAGE_PREFIX}json_${moduleKey}`, jsonTextarea.value);
     }
 }
 
@@ -392,7 +413,7 @@ export function clearGeneratedJson(moduleKey, module) {
                       : mod.jsonInputId;
     const jsonTextarea = jsonInputId && document.getElementById(jsonInputId);
     if (jsonTextarea) jsonTextarea.value = '';
-    sessionStorage.removeItem(`${STORAGE_PREFIX}json_${moduleKey}`);
+    safeSession.remove(`${STORAGE_PREFIX}json_${moduleKey}`);
     const buttonGroup = document.getElementById(`generation-button-group-${moduleKey}`);
     if (buttonGroup?._ctxUpdate) buttonGroup._ctxUpdate();
 }
@@ -486,16 +507,6 @@ const videoStates = new Map();
 // Survit à la fermeture de la modale → restauré au ré-rendu de la sidebar (cf. initBackgroundImageSection).
 const imageHotspotStates = new Map();
 
-/**
- * Signature du contexte pédagogique pertinent pour la VISION (Rapide : qui/quoi ; Avancé :
- * +niveau/nombre). Sert à détecter un changement de contexte qui rendrait caduques les zones
- * détectées (la vision est contextuelle). N'inclut PAS l'OCR/RAG, sans effet sur l'Image interactive.
- * @returns {string}
- */
-function visionContextSig() {
-    const g = (id) => (document.getElementById(id)?.value || '').trim();
-    return `${g('qui')}|${g('quoi')}|${g('niveau')}|${g('nombreQuestions')}`;
-}
 
 /**
  * Invalide l'image de fond capturée + les zones détectées de l'« Image interactive » quand le
@@ -514,11 +525,6 @@ function invalidateImageHotspotsContext() {
     if (sec && typeof sec._resetImage === 'function') sec._resetImage();
 }
 
-// Dernier lien vidéo détecté avec succès par module — référence du contexte sur lequel le prompt
-// (et donc le JSON éventuellement généré) a été construit. Contrairement à `videoStates`, cette
-// map N'EST PAS purgée quand on efface le champ URL (lockGate), afin de pouvoir comparer l'ancien
-// lien au nouveau même après un effacement intermédiaire. Persistant le temps de la session UI.
-const promptVideoUrl = new Map();
 
 /**
  * Indique si le lien vidéo a changé entre deux détections (donc transcription/contexte différents).
@@ -532,115 +538,8 @@ export function videoLinkChanged(prevUrl, newUrl) {
     return !!prevUrl && !!newUrl && prevUrl !== newUrl;
 }
 
-/** Échappe le HTML pour le contenu statique des popovers vidéo. */
-function escVid(s) {
-    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
 
-/**
- * Ouvre un popover compact (fond assombri, carte blanche arrondie), au-dessus de la modale
- * d'activité. Réutilisé par l'aide « ? » et par « Voir / coller la transcription ».
- * Escape + piège de focus gérés en phase de CAPTURE pour ne PAS fermer la modale parente.
- * @param {string} titleText - Titre affiché dans l'en-tête.
- * @param {string} iconClass - Classe Font Awesome de l'icône de titre.
- * @param {HTMLElement} bodyEl - Contenu du corps.
- * @param {{wide?:boolean}} [opts] - wide : popover large (double panneau transcription).
- * @returns {{close:Function, el:HTMLElement}}
- */
-function openVideoPopover(titleText, iconClass, bodyEl, opts = {}) {
-    document.querySelectorAll('.video-popover, .video-popover__backdrop').forEach(n => n.remove());
-    const prevFocus = document.activeElement;
 
-    const backdrop = document.createElement('div');
-    backdrop.className = 'video-popover__backdrop';
-
-    const pop = document.createElement('div');
-    pop.className = 'video-popover' + (opts && opts.wide ? ' video-popover--wide' : '');
-    pop.setAttribute('role', 'dialog');
-    pop.setAttribute('aria-modal', 'true');
-
-    const header = document.createElement('div');
-    header.className = 'video-popover__header';
-    const title = document.createElement('span');
-    title.className = 'video-popover__title';
-    title.innerHTML = `<i class="${iconClass}" aria-hidden="true"></i>`;
-    title.append(document.createTextNode(' ' + titleText));
-    const closeBtn = document.createElement('button');
-    closeBtn.type = 'button';
-    closeBtn.className = 'video-popover__close';
-    closeBtn.setAttribute('aria-label', translations.help_download_close || 'Fermer');
-    closeBtn.innerHTML = '<i class="fas fa-xmark" aria-hidden="true"></i>';
-    header.append(title, closeBtn);
-
-    const body = document.createElement('div');
-    body.className = 'video-popover__body';
-    body.appendChild(bodyEl);
-
-    pop.append(header, body);
-    document.body.append(backdrop, pop);
-
-    const FOCUSABLE = 'button:not([disabled]),[href],input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])';
-    const onKey = (e) => {
-        if (e.key === 'Escape') { e.stopPropagation(); e.preventDefault(); close(); return; }
-        if (e.key === 'Tab') {
-            const f = [...pop.querySelectorAll(FOCUSABLE)].filter(el => el.offsetParent !== null);
-            if (!f.length) return;
-            const first = f[0], last = f[f.length - 1];
-            if (!pop.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
-            else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-            e.stopPropagation();
-        }
-    };
-    let closed = false;
-    function close() {
-        if (closed) return;
-        closed = true;
-        document.removeEventListener('keydown', onKey, true);
-        if (typeof opts.onClose === 'function') { try { opts.onClose(); } catch { /* nettoyage best-effort */ } }
-        pop.remove();
-        backdrop.remove();
-        if (prevFocus && typeof prevFocus.focus === 'function') prevFocus.focus();
-    }
-    closeBtn.addEventListener('click', close);
-    backdrop.addEventListener('click', close);
-    document.addEventListener('keydown', onKey, true);
-    setTimeout(() => { (pop.querySelector(FOCUSABLE) || closeBtn).focus(); }, 50);
-    return { close, el: pop };
-}
-
-/**
- * Aligne le bord DROIT du bouton « ? » (barre lien vidéo) sur le bord GAUCHE du bouton
- * « Générer en un clic » (en-tête). Les deux sont sur des rangées différentes et la largeur du
- * bouton Générer varie selon la langue → alignement calculé à l'exécution (rejoué au resize).
- * Sur petit écran (en-tête empilé), on neutralise l'alignement.
- * @param {HTMLElement} root
- */
-function alignVideoHelpButton(root) {
-    if (!root) return;
-    const section = root.querySelector('.video-url-section');
-    const row = section ? section.querySelector('.video-url-row') : null;
-    const helpBtn = section ? section.querySelector('.video-help-btn') : null;
-    const field = section ? section.querySelector('.video-url-field') : null;
-    const genGroup = root.querySelector('.top-controls-container .generation-button-group');
-    const desc = root.querySelector('.modal-tuto-content > p');
-    if (row) row.style.marginRight = '0px';   // réinitialiser avant de mesurer la position naturelle
-    if (desc) desc.style.marginRight = '0px';
-    if (window.innerWidth <= 768) return;      // en-tête empilé : pas d'alignement cross-rangée
-    // 1. La barre (+ bouton « ? ») s'arrête avant le bouton « générer en un clic ».
-    if (row && helpBtn && genGroup) {
-        const delta = helpBtn.getBoundingClientRect().right - genGroup.getBoundingClientRect().left;
-        if (delta > 1) row.style.marginRight = Math.round(delta) + 'px';
-    }
-    // 2. La description s'aligne sur la MÊME largeur que la barre (champ) juste en dessous : on lui
-    //    donne la même marge droite pour que son bord droit coïncide avec celui du champ.
-    if (desc && field && desc.parentElement) {
-        const parentRight = desc.parentElement.getBoundingClientRect().right; // bord droit de modal-tuto-content
-        const fieldRight = field.getBoundingClientRect().right;               // bord droit de la barre (après étape 1)
-        const d = parentRight - fieldRight;
-        if (d > 1) desc.style.marginRight = Math.round(d) + 'px';
-    }
-}
 
 /**
  * Indique si une vidéo lisible a été détectée pour ce module (verrou de génération).
@@ -685,23 +584,6 @@ function revealVideoManual(moduleKey) {
     if (typeof section._openTranscript === 'function') section._openTranscript('paste');
 }
 
-/**
- * Construit l'objet `segments` pour le prompt à partir d'une transcription normalisée :
- * segments timés tels quels, ou — si la transcription n'est pas timée (texte brut collé) —
- * un unique bloc couvrant toute la durée (l'IA répartira les questions).
- * @param {Object} transcript - Transcription normalisée (cf. video-transcript.js).
- * @param {Object} detect - Résultat de detectVideo() (pour la durée).
- * @returns {Array<{start:number,end:number,text:string}>}
- */
-function transcriptToSegments(transcript, detect) {
-    if (transcript && Array.isArray(transcript.segments) && transcript.segments.length) {
-        return transcript.segments;
-    }
-    if (transcript && transcript.text) {
-        return [{ start: 0, end: (detect && detect.duration) || 0, text: transcript.text }];
-    }
-    return [];
-}
 
 /**
  * Nombre de questions demandé explicitement par l'utilisateur (champ « nombre » du mode Avancé),
@@ -754,930 +636,10 @@ async function generateActivityContent(moduleKey, module, prompt, selectedModel,
     return generateH5PWithLLM(prompt, selectedModel, activityMeta);
 }
 
-/**
- * Cale déterministiquement les `timestamp` des interactions générées AVANT la création du .h5p
- * (WYSIWYG : le JSON affiché = celui produit). Chaque `timestamp` est calé sur l'horodatage RÉEL le
- * plus proche (mêmes ancres `[mm:ss]` que celles montrées au modèle) → neutralise les modèles qui
- * CALCULENT un instant intermédiaire (sinon pause en milieu de phrase) ; les timestamps au-delà de
- * la durée sont écartés (hallucinations). C'est la SEULE normalisation : le nombre de questions
- * n'est JAMAIS plafonné — le prompt recommande un nombre, mais le contenu généré est conservé tel
- * quel (l'enseignant supprime à la main ce qu'il ne veut pas). Vaut pour les deux flux (un clic ET
- * collage d'un JSON d'IA externe). Mute `parsed` en place. Sans transcription timée, ne touche à rien.
- * @param {Object} parsed - JSON intermédiaire parsé (champ `interactions`).
- * @param {Object} transcript - Transcription normalisée (segments).
- * @param {Object} detect - Résultat de detectVideo() (pour la durée d'un bloc non timé).
- */
-function snapVideoTimestamps(parsed, transcript, detect) {
-    if (!parsed || !Array.isArray(parsed.interactions) || !parsed.interactions.length) return;
-    const segs = transcriptToSegments(transcript, detect);
-    if (!segs.length) return;
-    const anchors = getTranscriptAnchors(segs);
-    if (!anchors.length) return;
-    const maxDuration = (detect && Number(detect.duration) > 0) ? Number(detect.duration) : null;
 
-    const snap = snapInteractions(parsed.interactions, anchors, { maxDuration });
-    parsed.interactions = snap.interactions;
-    debugLog('InteractiveVideo', 'Snap timestamps (ui, sans plafond)', snap.report);
-}
 
-/**
- * Injecte la transcription dans le PROMPT de gauche (« Obtenir le prompt à copier ») :
- * la transcription horodatée devient les SOURCES du prompt « Vidéo interactive », ce qui
- * permet à l'IA de placer les questions juste avant la phrase qui lance une idée neuve.
- * Écrit le textarea visible ET le textarea caché (réutilisés par « copier le prompt » et
- * par generatePrompts si le contexte change ensuite).
- * @param {Object} module
- * @param {Array<{start:number,end:number,text:string}>} segments
- * @param {number|null} duration
- */
-function injectVideoTranscriptIntoPrompt(module, segments, duration) {
-    // Mémorise la transcription côté générateur : si l'utilisateur modifie qui/quoi ensuite,
-    // generatePrompts() la réinjectera automatiquement (pas de perte).
-    setVideoTranscriptSources(segments, duration);
-    const promptId = module.promptId;
-    if (!promptId) return;
-    const promptText = buildVideoInteractivePrompt(segments, duration);
-    const visible = document.getElementById(promptId);
-    if (visible) visible.value = promptText;
-    let hidden = document.getElementById(`hidden-${promptId}`);
-    if (!hidden) {
-        hidden = document.createElement('textarea');
-        hidden.id = `hidden-${promptId}`;
-        hidden.classList.add('hidden');
-        document.body.appendChild(hidden);
-    }
-    hidden.value = promptText;
-}
 
-/**
- * Injecte les zones détectées (vision) dans le PROMPT de gauche de l'« Image interactive ».
- * Mémorise aussi les zones côté générateur (generatePrompts les réinjectera si le contexte change).
- * @param {Object} module
- * @param {Array<{x:number,y:number,label?:string,description?:string}>} zones
- * @param {{width?:number,height?:number}} imageMeta
- * @param {string} imageDescription
- */
-function injectImageZonesIntoPrompt(moduleKey, module, zones, imageMeta, imageDescription) {
-    setImageHotspotZones(zones, imageMeta, imageDescription);
-    const promptId = module.promptId;
-    if (!promptId) return;
-    // Chaque activité à image de fond a son propre prompt (Image interactive, Find the
-    // Hotspot, Find Multiple Hotspots) : on résout le préfixe i18n depuis le moduleKey.
-    const promptText = buildImageHotspotsPrompt(zones, imageMeta, imageDescription, prefixForModule(moduleKey));
-    const visible = document.getElementById(promptId);
-    if (visible) visible.value = promptText;
-    let hidden = document.getElementById(`hidden-${promptId}`);
-    if (!hidden) {
-        hidden = document.createElement('textarea');
-        hidden.id = `hidden-${promptId}`;
-        hidden.classList.add('hidden');
-        document.body.appendChild(hidden);
-    }
-    hidden.value = promptText;
-}
 
-/**
- * Initialise la section « Image de fond » (activités requiresBackgroundImage uniquement).
- * Logique calquée sur la Vidéo interactive : joindre un FICHIER image lance AUTOMATIQUEMENT
- * le traitement (resize) + l'analyse VISION (Qwen 3.6) avec un indicateur de chargement. Dès que
- * les zones sont détectées, elles sont injectées dans le prompt de gauche et le groupe de boutons
- * de génération se déverrouille. Tant que ce n'est pas le cas, la génération reste grisée.
- * L'image + les zones sont capturées EN AMONT → disponibles en mode rapide ET guidé.
- * @param {string} moduleKey
- * @param {Object} module
- */
-function initBackgroundImageSection(moduleKey, module) {
-    if (!module || !module.requiresBackgroundImage) return;
-    const section = sidebar.querySelector(`#img-bg-section-${moduleKey}`);
-    const fileInput = sidebar.querySelector(`#img-bg-input-${moduleKey}`);
-    const pickBtn = sidebar.querySelector(`#img-bg-pick-${moduleKey}`);
-    if (!section || !fileInput || !pickBtn) return;
-
-    const statusEl = sidebar.querySelector(`#img-bg-status-${moduleKey}`);
-    const msgEl = sidebar.querySelector(`#img-bg-msg-${moduleKey}`);
-    const overlayEl = section.querySelector('.video-url-field__overlay');
-    const overlayLabel = section.querySelector('.video-url-field__overlay-label');
-    const progressFill = section.querySelector('.video-url-field__progress');
-    const stopBtn = sidebar.querySelector(`#img-bg-stop-${moduleKey}`);
-    const field = section.querySelector('.img-bg-field');
-    const thumb = pickBtn.querySelector('.img-bg-thumb');
-    const pickLabel = pickBtn.querySelector('.img-bg-pick__label');
-    const defaultPickLabel = pickLabel ? pickLabel.textContent : '';
-    const retryBtn = sidebar.querySelector(`#img-bg-retry-${moduleKey}`);
-    const clearBtn = sidebar.querySelector(`#img-bg-clear-${moduleKey}`);
-    const helpBtn = sidebar.querySelector(`#img-bg-help-btn-${moduleKey}`);
-
-    const createBtn = sidebar.querySelector(`#${module.createBtnId}`);
-    const llmBtn = sidebar.querySelector(`#generate-llm-${moduleKey}`);
-    const modelBtn = sidebar.querySelector(`#model-selector-btn-${moduleKey}`);
-    const llmGroup = sidebar.querySelector('.top-controls-container .generation-button-group');
-    const createGroup = createBtn ? createBtn.closest('.generation-button-group') : null;
-    const jsonInputEl = sidebar.querySelector(`#${module.jsonInputId}`);
-
-    let runToken = 0;
-    let ac = null;
-    let currentEntry = null;      // dernière image traitée (pour relancer la détection sans re-traiter)
-    let lastDisplayName = '';     // nom de fichier affiché (miniature/état)
-
-    // Affiche/masque les boutons « relancer la détection » (↻) et « retirer l'image » (✕)
-    // selon qu'une image est chargée ou non.
-    const updateActions = () => {
-        const hasImg = !!currentEntry;
-        if (retryBtn) retryBtn.hidden = !hasImg;
-        if (clearBtn) clearBtn.hidden = !hasImg;
-    };
-
-    // Le JSON collé contient-il déjà une image de fond OU des hotspots exploitables ?
-    const pastedJsonReady = () => {
-        if (!jsonInputEl) return false;
-        const v = cleanJsonInput(jsonInputEl.value || '');
-        if (!v) return false;
-        try {
-            const p = JSON.parse(v);
-            return !!(p && typeof p === 'object' && (p.image || (Array.isArray(p.hotspots) && p.hotspots.length)));
-        } catch { return false; }
-    };
-
-    const refreshCreateGate = () => {
-        if (!createBtn) return;
-        const ok = imageHotspotStates.has(moduleKey) || pastedJsonReady();
-        createBtn.disabled = !ok;
-        createBtn.classList.toggle('is-disabled-gate', !ok);
-        if (createGroup) createGroup.classList.toggle('gen-gated', !ok);
-    };
-
-    const STATUS_ICON = {
-        checking: '<span class="video-spinner" aria-hidden="true"></span>',
-        ready: '<i class="fas fa-circle-check" aria-hidden="true"></i>',
-        error: '<i class="fas fa-circle-exclamation" aria-hidden="true"></i>',
-        empty: ''
-    };
-    const setState = (state) => {
-        section.dataset.state = state;
-        if (statusEl) statusEl.innerHTML = STATUS_ICON[state] || '';
-    };
-    const setMsg = (text, actionLabel, onAction) => {
-        if (!msgEl) return;
-        msgEl.innerHTML = '';
-        if (!text) { msgEl.hidden = true; return; }
-        msgEl.hidden = false;
-        msgEl.appendChild(document.createTextNode(text));
-        if (actionLabel && onAction) {
-            msgEl.appendChild(document.createTextNode(' · '));
-            const b = document.createElement('button');
-            b.type = 'button';
-            b.className = 'video-url-msg__action';
-            b.textContent = actionLabel;
-            b.addEventListener('click', onAction);
-            msgEl.appendChild(b);
-        }
-    };
-    const setProgressIndet = (label) => {
-        if (!overlayEl) return;
-        overlayEl.hidden = false;
-        if (progressFill) progressFill.classList.add('video-url-field__progress--indet');
-        if (overlayLabel) {
-            overlayLabel.innerHTML = '<span class="video-spinner" aria-hidden="true"></span>';
-            const s = document.createElement('span');
-            s.textContent = label || (translations.ih_image_analyzing || 'Analyse de l’image…');
-            overlayLabel.appendChild(s);
-        }
-    };
-    const hideProgress = () => {
-        if (overlayEl) overlayEl.hidden = true;
-        if (progressFill) { progressFill.style.width = ''; progressFill.classList.remove('video-url-field__progress--indet'); }
-    };
-    const setGenEnabled = (enabled) => {
-        if (llmGroup) llmGroup.classList.toggle('gen-gated', !enabled);
-        [llmBtn, modelBtn].forEach(btn => {
-            if (!btn) return;
-            btn.disabled = !enabled;
-            btn.classList.toggle('is-disabled-gate', !enabled);
-        });
-        refreshCreateGate();
-    };
-
-    const setPicked = (name, dataURL) => {
-        if (thumb && dataURL) { thumb.src = dataURL; thumb.hidden = false; }
-        if (pickLabel && name) pickLabel.textContent = name;
-    };
-    // Remet le sélecteur à l'état « aucune image » (miniature cachée, libellé par défaut, input vidé
-    // pour qu'un re-choix du même fichier redéclenche bien l'événement change).
-    const resetPicked = () => {
-        if (thumb) { thumb.src = ''; thumb.hidden = true; }
-        if (pickLabel) pickLabel.textContent = defaultPickLabel;
-        if (fileInput) fileInput.value = '';
-    };
-
-    const imgErrMsg = (e) => {
-        const code = (e && e.message) || '';
-        if (code === 'FORMAT_INVALID') return translations.ih_image_format_error || 'Format d’image non pris en charge (PNG, JPEG, WebP).';
-        if (code === 'SIZE_EXCEEDED') return translations.ih_image_size_error || 'Image trop lourde (max 12 Mo).';
-        return translations.ih_vision_error || 'Le traitement de l’image a échoué.';
-    };
-
-    if (jsonInputEl) jsonInputEl.addEventListener('input', refreshCreateGate);
-
-    // Traite une image (si `file` fourni) puis lance la détection des zones (vision). Appelée SANS
-    // argument (bouton ↻), elle relance UNIQUEMENT la détection sur l'image déjà traitée
-    // (`currentEntry`) — utile quand trop peu de zones ont été détectées, et marche aussi après
-    // restauration de la modale (où l'objet File n'existe plus, mais l'entry/dataURL survit).
-    async function runVisionAnalysis(file) {
-        const myToken = ++runToken;
-        if (ac) { try { ac.abort(); } catch { /* noop */ } }
-        ac = new AbortController();
-        setState('checking');
-        setProgressIndet(translations.ih_image_analyzing || 'Analyse de l’image…');
-        setGenEnabled(false);
-        setMsg(null);
-        try {
-            const { processBackgroundImage, registerImage, buildBackgroundImageField } = await import('../h5p/image-manager.js');
-            const { detectImageZones } = await import('../services/hotspot-vision.js');
-
-            // Nouveau fichier → traitement (resize/conversion) + remplacement PROPRE du précédent.
-            if (file) {
-                let entry;
-                try {
-                    entry = await processBackgroundImage(file);
-                } catch (e) {
-                    if (myToken !== runToken) return;
-                    currentEntry = null;
-                    hideProgress(); setState('error'); updateActions();
-                    setMsg(imgErrMsg(e), translations.video_retry || 'Réessayer', () => runVisionAnalysis(file));
-                    return;
-                }
-                if (myToken !== runToken) return;
-                currentEntry = entry;
-                lastDisplayName = file.name || '';
-                registerImage('image', entry);          // même id 'image' → remplace l'image précédente
-                setPicked(lastDisplayName, entry.dataURL);
-            }
-            if (!currentEntry) { hideProgress(); setState('empty'); updateActions(); return; }
-            updateActions();                            // image présente → boutons ↻ / ✕ disponibles
-
-            const ctx = readContextParams();
-            const reqN = parseInt(ctx.nombreQuestions, 10);
-            // Mode Avancé avec un nombre → on FORCE ce nombre de zones ; sinon (Rapide) → undefined,
-            // le serveur en détermine ~4-5 selon l'image (un peu plus/moins si justifié).
-            const count = (ctx.isAdvanced && reqN > 0) ? reqN : undefined;
-
-            let result;
-            try {
-                result = await detectImageZones(currentEntry.dataURL, {
-                    context: { qui: ctx.qui, quoi: ctx.quoi, niveau: ctx.niveau },
-                    count, lang: currentLang, signal: ac.signal
-                });
-            } catch (e) {
-                if ((e && e.name === 'AbortError') || myToken !== runToken) return;
-                hideProgress(); setState('error'); updateActions();
-                setMsg(translations.ih_vision_error || 'Détection automatique indisponible.', translations.video_retry || 'Réessayer', () => runVisionAnalysis());
-                return;
-            }
-            if (myToken !== runToken) return;
-            hideProgress();
-
-            if (!result.zones || !result.zones.length) {
-                setState('error'); updateActions();
-                setMsg(translations.ih_vision_error || 'Aucune zone détectée.', translations.video_retry || 'Réessayer', () => runVisionAnalysis());
-                return;
-            }
-
-            imageHotspotStates.set(moduleKey, {
-                entry: currentEntry,
-                image: buildBackgroundImageField(currentEntry),
-                dataURL: currentEntry.dataURL,
-                width: currentEntry.width,
-                height: currentEntry.height,
-                zones: result.zones,
-                imageDescription: result.imageDescription || '',
-                altText: result.imageDescription || lastDisplayName || '',
-                fileName: lastDisplayName
-            });
-            injectImageZonesIntoPrompt(moduleKey, module, result.zones, { width: currentEntry.width, height: currentEntry.height }, result.imageDescription || '');
-            setState('ready');
-            setGenEnabled(true);
-            updateActions();
-            setMsg((translations.ih_zones_found || '{n} zones détectées — vous pouvez générer.').replace('{n}', result.zones.length));
-        } catch (err) {
-            if (myToken !== runToken) return;
-            hideProgress(); setState('error'); updateActions();
-            setMsg(translations.ih_vision_error || 'Le traitement de l’image a échoué.', translations.video_retry || 'Réessayer', () => runVisionAnalysis());
-        }
-    }
-
-    // Retire l'image courante et remet la section à zéro (pour en charger une autre proprement).
-    function clearImage() {
-        runToken++;
-        if (ac) { try { ac.abort(); } catch { /* noop */ } }
-        currentEntry = null;
-        lastDisplayName = '';
-        imageHotspotStates.delete(moduleKey);
-        setImageHotspotZones(null);
-        import('../h5p/image-manager.js').then(m => m.unregisterImage('image')).catch(() => { /* registre déjà vide */ });
-        hideProgress();
-        resetPicked();
-        setState('empty');
-        setMsg(null);
-        setGenEnabled(false);
-        updateActions();
-    }
-
-    // Popover « ? » : formats d'image acceptés (miroir de l'aide vidéo).
-    function openImageHelpPopover() {
-        const body = document.createElement('div');
-        body.className = 'video-help-body img-help-body';
-
-        const intro = document.createElement('p');
-        intro.className = 'video-help-body__intro';
-        intro.textContent = translations.ih_help_intro || 'Joignez une image de fond (un fichier, pas un lien). Caramel l’analyse et détecte automatiquement les zones clés selon votre contexte. Vous pouvez relancer la détection (↻) ou retirer l’image (✕).';
-        body.appendChild(intro);
-
-        // Formats sous forme de pastilles (noms neutres, non traduits) : natifs vs convertis
-        // automatiquement (HEIC/HEIF/TIFF). Plus lisible qu'une phrase grise.
-        const card = document.createElement('div');
-        card.className = 'img-help-formats';
-        const pills = document.createElement('div');
-        pills.className = 'img-help-formats__pills';
-        const NATIVE = ['PNG', 'JPEG', 'WebP', 'GIF', 'BMP', 'AVIF', 'SVG'];
-        const CONVERTED = ['HEIC', 'HEIF', 'TIFF'];
-        for (const f of NATIVE) {
-            const p = document.createElement('span');
-            p.className = 'img-help-pill';
-            p.textContent = f;
-            pills.appendChild(p);
-        }
-        for (const f of CONVERTED) {
-            const p = document.createElement('span');
-            p.className = 'img-help-pill img-help-pill--converted';
-            p.innerHTML = `<i class="fas fa-rotate" aria-hidden="true"></i>${f}`;
-            p.title = translations.ih_help_converted_title || 'Converti automatiquement';
-            pills.appendChild(p);
-        }
-        card.appendChild(pills);
-
-        const note = document.createElement('p');
-        note.className = 'img-help-formats__note';
-        note.textContent = translations.ih_help_formats || 'Formats pris en charge : PNG, JPEG, WebP, GIF, BMP, AVIF, SVG, ainsi que HEIC/HEIF (photos iPhone) et TIFF — convertis automatiquement. Taille maximale : 12 Mo.';
-        card.appendChild(note);
-        body.appendChild(card);
-
-        openVideoPopover(translations.ih_help_title || 'Quelles images utiliser ?', 'fas fa-circle-question', body);
-    }
-
-    // --- Wiring ---
-    pickBtn.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', () => {
-        const file = fileInput.files && fileInput.files[0];
-        fileInput.value = '';   // réinitialiser pour permettre de re-choisir le même fichier
-        if (file) runVisionAnalysis(file);
-    });
-    if (retryBtn) retryBtn.addEventListener('click', () => runVisionAnalysis());   // relance la détection
-    if (clearBtn) clearBtn.addEventListener('click', clearImage);                  // retire l'image
-    if (helpBtn) helpBtn.addEventListener('click', openImageHelpPopover);          // ? formats acceptés
-    if (stopBtn) stopBtn.addEventListener('click', () => {
-        runToken++;
-        if (ac) { try { ac.abort(); } catch { /* noop */ } }
-        hideProgress(); setState(imageHotspotStates.has(moduleKey) ? 'ready' : 'empty');
-        setMsg(null);
-        updateActions();
-    });
-    // Glisser-déposer une image sur le champ.
-    if (field) {
-        ['dragenter', 'dragover'].forEach(ev => field.addEventListener(ev, (e) => { e.preventDefault(); field.classList.add('img-bg-field--drag'); }));
-        ['dragleave', 'drop'].forEach(ev => field.addEventListener(ev, (e) => { e.preventDefault(); field.classList.remove('img-bg-field--drag'); }));
-        field.addEventListener('drop', (e) => {
-            const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-            // file.type peut être vide pour un HEIC/TIFF déposé → on accepte aussi par extension
-            // (processBackgroundImage validera/convertira ou lèvera FORMAT_INVALID le cas échéant).
-            const looksImage = !!file && ((file.type && file.type.indexOf('image/') === 0)
-                || /\.(png|jpe?g|webp|gif|bmp|avif|svg|heic|heif|tiff?)$/i.test(file.name || ''));
-            if (looksImage) runVisionAnalysis(file);
-        });
-    }
-
-    // Réinitialisation de l'UI déclenchée par un changement de contexte (invalidateImageHotspotsContext) :
-    // l'état/le registre/les zones sont déjà purgés en amont ; on ne remet ici QUE la section à neuf.
-    section._resetImage = () => {
-        runToken++;                                 // invalide une analyse vision en vol
-        if (ac) { try { ac.abort(); } catch { /* noop */ } }
-        currentEntry = null;
-        lastDisplayName = '';
-        hideProgress();
-        resetPicked();
-        setState('empty');
-        setMsg(null);
-        setGenEnabled(false);
-        updateActions();
-    };
-
-    // Restauration au ré-ouverture de la modale (Chantier 2bis) : l'image + les zones capturées
-    // survivent dans imageHotspotStates. On restaure la miniature, l'état « prêt », les zones dans le
-    // prompt et le déverrouillage, SANS re-upload ni re-analyse. On ré-enregistre le fond dans le
-    // registre car clearAllImages() le vide après chaque packaging (sinon il manquerait à la prochaine
-    // génération). Sinon : état vide, génération verrouillée (sauf JSON collé déjà prêt).
-    const restored = imageHotspotStates.get(moduleKey);
-    if (restored && restored.entry && Array.isArray(restored.zones) && restored.zones.length) {
-        currentEntry = restored.entry;              // permet de relancer la détection (↻) après ré-ouverture
-        lastDisplayName = restored.fileName || '';
-        import('../h5p/image-manager.js').then(m => m.registerImage('image', restored.entry)).catch(() => { /* ré-enregistrement best-effort */ });
-        setPicked(restored.fileName, restored.dataURL);
-        injectImageZonesIntoPrompt(moduleKey, module, restored.zones, { width: restored.width, height: restored.height }, restored.imageDescription);
-        setState('ready');
-        setGenEnabled(true);
-        updateActions();
-        setMsg((translations.ih_zones_found || '{n} zones détectées — vous pouvez générer.').replace('{n}', restored.zones.length));
-    } else {
-        // État initial : génération verrouillée tant qu'aucune image analysée (sauf JSON collé prêt).
-        setState('empty');
-        setGenEnabled(false);
-        updateActions();
-    }
-}
-
-/**
- * Initialise la section « URL vidéo » (activités requiresVideoUrl uniquement).
- * Logique : coller le lien lance AUTOMATIQUEMENT la détection + la récupération de la
- * transcription (sous-titres si dispo, sinon transcription audio Albert), avec un indicateur
- * qui tourne. Dès que la transcription est prête, elle est injectée dans le prompt de gauche
- * et le groupe de boutons de génération passe au bleu (déverrouillé). Tant qu'elle ne l'est
- * pas, tout le groupe reste grisé.
- * @param {string} moduleKey
- * @param {Object} module
- */
-function initVideoUrlSection(moduleKey, module) {
-    if (!module || !module.requiresVideoUrl) return;
-    const section = sidebar.querySelector(`#video-url-section-${moduleKey}`);
-    const input = sidebar.querySelector(`#video-url-input-${moduleKey}`);
-    const statusEl = sidebar.querySelector(`#video-status-${moduleKey}`);
-    const msgEl = sidebar.querySelector(`#video-msg-${moduleKey}`);
-    const helpBtn = sidebar.querySelector(`#video-help-btn-${moduleKey}`);
-    const seeBtn = sidebar.querySelector(`#video-see-btn-${moduleKey}`);
-    const goBtn = sidebar.querySelector(`#video-go-btn-${moduleKey}`);
-    if (!section || !input) return;
-
-    // Jauge + voile « Transcription en cours » intégrés au champ du lien (cf. setProgress).
-    const progressFill = section.querySelector('.video-url-field__progress');
-    const overlayEl = section.querySelector('.video-url-field__overlay');
-    const overlayLabel = section.querySelector('.video-url-field__overlay-label');
-    const stopBtn = section.querySelector(`#video-stop-btn-${moduleKey}`);
-
-    // Estimation d'attente affichée à côté de « Transcription en cours… » (cf. setProgress).
-    // Renseignée une fois la vidéo détectée (durée connue) ; vidée à la fin/à l'arrêt.
-    let etaLabel = '';
-    // Met en forme une estimation (secondes) en libellé court : « ≈ 25 s » ou « ≈ 3 min ».
-    const fmtEta = (sec) => {
-        if (sec == null || !(sec > 0)) return '';
-        if (sec < 60) {
-            const n = Math.max(5, Math.round(sec / 5) * 5); // arrondi à 5 s (pas de fausse précision)
-            return (translations.video_eta_seconds || '≈ {n} s').replace('{n}', n);
-        }
-        return (translations.video_eta_minutes || '≈ {n} min').replace('{n}', Math.round(sec / 60));
-    };
-
-    const createBtn = sidebar.querySelector(`#${module.createBtnId}`);
-    const llmBtn = sidebar.querySelector(`#generate-llm-${moduleKey}`);
-    const modelBtn = sidebar.querySelector(`#model-selector-btn-${moduleKey}`);
-
-    // Groupes de boutons de génération. Le groupe LLM (génération IA) est strictement lié à la
-    // vidéo détectée ; le bouton de création (depuis un JSON collé) a un verrou plus souple.
-    const llmGroup = sidebar.querySelector('.top-controls-container .generation-button-group');
-    const createGroup = createBtn ? createBtn.closest('.generation-button-group') : null;
-    const jsonInputEl = sidebar.querySelector(`#${module.jsonInputId}`);
-
-    // Le JSON collé contient-il déjà une source vidéo exploitable ?
-    const pastedJsonHasVideo = () => {
-        if (!jsonInputEl) return false;
-        const v = cleanJsonInput(jsonInputEl.value || '');
-        if (!v) return false;
-        try {
-            const p = JSON.parse(v);
-            if (!p || typeof p !== 'object') return false;
-            const vs = p.videoSource;
-            return !!(vs && (typeof vs === 'string' ? vs.trim() : (vs.url && String(vs.url).trim())));
-        } catch { return false; }
-    };
-
-    // Verrou du bouton de création : actif si une vidéo est détectée OU si le JSON collé embarque
-    // déjà sa videoSource (collage manuel d'un JSON tout prêt, sans avoir saisi d'URL).
-    const refreshCreateGate = () => {
-        if (!createBtn) return;
-        const ok = isVideoReady(moduleKey) || pastedJsonHasVideo();
-        createBtn.disabled = !ok;
-        createBtn.classList.toggle('is-disabled-gate', !ok);
-        if (createGroup) createGroup.classList.toggle('gen-gated', !ok);
-    };
-
-    // Icône d'état affichée DANS le champ (à droite) selon l'état courant.
-    const STATUS_ICON = {
-        checking: '<span class="video-spinner" aria-hidden="true"></span>',
-        ready: '<i class="fas fa-circle-check" aria-hidden="true"></i>',
-        error: '<i class="fas fa-circle-exclamation" aria-hidden="true"></i>',
-        manual: '<i class="fas fa-circle-exclamation" aria-hidden="true"></i>',
-        empty: ''
-    };
-    // L'état vit dans le champ : la couleur du bord/fond (CSS via data-state) + l'icône.
-    const setState = (state) => {
-        section.dataset.state = state;
-        if (statusEl) statusEl.innerHTML = STATUS_ICON[state] || '';
-        refreshGo();
-    };
-    // Sous-ligne discrète : visible seulement quand il y a quelque chose à dire (attente, erreur,
-    // collage). Sur le chemin heureux (champ vert), elle reste masquée → le cadre ne grandit pas.
-    const setMsg = (text, actionLabel, onAction) => {
-        if (!msgEl) return;
-        msgEl.innerHTML = '';
-        if (!text) { msgEl.hidden = true; return; }
-        msgEl.hidden = false;
-        msgEl.appendChild(document.createTextNode(text));
-        if (actionLabel && onAction) {
-            msgEl.appendChild(document.createTextNode(' · '));
-            const b = document.createElement('button');
-            b.type = 'button';
-            b.className = 'video-url-msg__action';
-            b.textContent = actionLabel;
-            b.addEventListener('click', onAction);
-            msgEl.appendChild(b);
-        }
-    };
-    const showSee = (show) => { if (seeBtn) seeBtn.hidden = !show; };
-    // Bouton « valider le lien » (flèche) DANS le champ : affordance visible du collage-auto/Entrée.
-    // N'apparaît qu'en état neutre AVEC un lien saisi (idle) — masqué pendant la transcription
-    // (le voile + bouton stop prennent sa place), une fois prêt (« Voir »), ou en erreur/manuel
-    // (la sous-ligne porte déjà « Réessayer » / « Coller la transcription »).
-    const refreshGo = () => {
-        if (!goBtn) return;
-        const hasText = !!(input.value || '').trim();
-        goBtn.hidden = !(hasText && section.dataset.state === 'empty');
-    };
-    // Jauge de progression DANS le champ du lien : la barre se remplit dans la div et un voile
-    // flou (backdrop-filter) recouvre l'URL avec « Transcription en cours… n/t ». Déterminée
-    // quand on connaît le nombre de lots (PodEduc : « 3/10 »), indéterminée sinon (bande qui glisse).
-    const setProgress = (current, total, label) => {
-        if (!overlayEl) return;
-        overlayEl.hidden = false;
-        const determinate = total > 1;
-        if (progressFill) {
-            progressFill.classList.toggle('video-url-field__progress--indet', !determinate);
-            progressFill.style.width = determinate ? Math.round((current / total) * 100) + '%' : '';
-        }
-        if (overlayLabel) {
-            const txt = determinate
-                ? (translations.video_progress_chunk || 'Transcription en cours… {n}/{t}').replace('{n}', current).replace('{t}', total)
-                : (label || translations.video_detecting || 'Transcription en cours…');
-            const full = etaLabel ? `${txt} · ${etaLabel}` : txt;
-            overlayLabel.innerHTML = `<span class="video-spinner" aria-hidden="true"></span><span>${escVid(full)}</span>`;
-        }
-    };
-    // Retire le voile + remet la jauge à zéro (transcription terminée, arrêtée ou en erreur).
-    const hideTranscribing = () => {
-        etaLabel = '';
-        if (overlayEl) overlayEl.hidden = true;
-        if (progressFill) {
-            progressFill.style.width = '';
-            progressFill.classList.remove('video-url-field__progress--indet');
-        }
-    };
-    // Verrou de génération IA (LLM) : strictement lié à la détection d'une vidéo lisible.
-    // Le bouton de création (createBtn) est géré à part par refreshCreateGate (verrou plus souple :
-    // il accepte aussi un JSON collé contenant déjà une videoSource).
-    const setGenEnabled = (enabled) => {
-        if (llmGroup) llmGroup.classList.toggle('gen-gated', !enabled);
-        [llmBtn, modelBtn].forEach(btn => {
-            if (!btn) return;
-            btn.disabled = !enabled;
-            btn.classList.toggle('is-disabled-gate', !enabled);
-        });
-        refreshCreateGate();
-    };
-
-    // Le collage/l'édition d'un JSON peut déverrouiller le bouton de création (videoSource incluse).
-    if (jsonInputEl) jsonInputEl.addEventListener('input', refreshCreateGate);
-
-    // Applique une transcription récupérée : prompt de gauche + champ vert + déverrouillage.
-    const applyTranscript = (transcript, detect) => {
-        const segs = transcriptToSegments(transcript, detect);
-        injectVideoTranscriptIntoPrompt(module, segs, detect && detect.duration);
-        hideTranscribing();
-        setState('ready');
-        setMsg(null);
-        showSee(true);
-        setGenEnabled(true);
-    };
-
-    // Verrouille tout (URL vide ou modifiée) et purge la transcription du prompt.
-    const lockGate = () => {
-        videoStates.delete(moduleKey);
-        setGenEnabled(false);
-        hideTranscribing();
-        setState('empty');
-        setMsg(null);
-        showSee(false);
-        setVideoTranscriptSources(null);
-    };
-
-    // --- Popover « ? » : quelles vidéos utiliser ---
-    const openHelpPopover = () => {
-        const body = document.createElement('div');
-        body.className = 'video-help-body';
-        const chip = (txt, cls) => `<span class="vplat-chip ${cls}">${escVid(txt)}</span>`;
-        body.innerHTML =
-            `<p class="video-help-body__intro">${escVid(translations.video_help_intro || 'Collez le lien d’une vidéo : Caramel détecte la vidéo, récupère la transcription, puis l’IA place les questions aux bons moments. Le champ passe au vert quand tout est prêt.')}</p>` +
-            `<ul class="video-help-body__platforms">` +
-            `<li><span class="vplat-name">${escVid(translations.video_help_peertube || 'Tubes (des Apps Education)')}</span>${chip(translations.video_help_status_ok || 'Pris en charge', 'vplat-chip--ok')}</li>` +
-            `<li><span class="vplat-name">${escVid(translations.video_help_podeduc || 'PodEduc (des Apps Education)')}</span>${chip(translations.video_help_status_ok || 'Pris en charge', 'vplat-chip--ok')}</li>` +
-            `<li><span class="vplat-name">${escVid(translations.video_help_youtube || 'YouTube (de Google)')}</span>${chip(translations.video_help_status_ok || 'Pris en charge', 'vplat-chip--ok')}</li>` +
-            `</ul>` +
-            `<p class="video-help-body__steps">${escVid(translations.video_help_steps || 'Pas de transcription automatique ? Ouvrez « Voir / coller » et collez un sous-titrage (WebVTT, SRT) ou le texte de la vidéo.')}</p>`;
-        openVideoPopover(translations.video_help_title || 'Quelles vidéos utiliser ?', 'fas fa-circle-question', body);
-    };
-
-    // Repère temporel relu par parsePastedTranscript. h:mm:ss au-delà d'une heure (sinon les minutes
-    // > 99 d'une vidéo longue ne seraient PAS re-parsées si l'utilisateur édite le texte).
-    const fmtTsLong = (sec) => {
-        sec = Math.max(0, Math.floor(Number(sec) || 0));
-        const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), s = sec % 60;
-        return h > 0
-            ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
-            : `${m}:${String(s).padStart(2, '0')}`;
-    };
-
-    // Applique le texte d'un champ : inchangé → on garde l'objet d'origine (fidélité des `end`) ;
-    // sinon on re-parse. `closeAfter` ferme le popover (et donc détruit le lecteur via onClose).
-    const commitTranscript = async (rawText, origPrefill, tr, closeAfter) => {
-        const rawT = (rawText || '').trim();
-        if (!rawT) { showNotification(translations.video_paste_empty || 'Collez d\'abord une transcription.', 'error'); return; }
-        const s = videoStates.get(moduleKey) || {};
-        if (tr && origPrefill != null && rawT === origPrefill.trim()) {
-            applyTranscript(tr, s.detect);
-        } else {
-            const { parsePastedTranscript } = await import('../services/video-transcript.js');
-            const parsed = parsePastedTranscript(rawT);
-            if (parsed.error) { showNotification(translations.video_paste_empty || 'Transcription vide ou illisible.', 'error'); return; }
-            s.transcript = parsed;
-            videoStates.set(moduleKey, s);
-            applyTranscript(parsed, s.detect);
-            showNotification(translations.video_paste_ok || 'Transcription enregistrée.', 'success');
-        }
-        if (typeof closeAfter === 'function') closeAfter();
-    };
-
-    // --- Popover « Voir / coller » ---
-    // Transcription TIMÉE + vidéo lisible → éditeur 2 panneaux : transcription (gauche, surlignage de
-    // la ligne courante + auto-défilement + édition live) | lecteur (droite). Sinon → champ unique.
-    const openTranscriptPopover = (/* mode */) => {
-        const st = videoStates.get(moduleKey) || {};
-        const tr = (st.transcript && !st.transcript.error) ? st.transcript : null;
-        const segs = (tr && Array.isArray(tr.segments)) ? tr.segments : [];
-        const videoSource = (st.detect && st.detect.videoSource && st.detect.videoSource.url) ? st.detect.videoSource : null;
-        // 2 panneaux dès qu'une vidéo est LISIBLE — même sans transcription auto : on lit la vidéo et
-        // on bâtit les passages à la main (bouton « ajouter une ligne »). Sinon → champ unique de collage.
-        const synced = !!videoSource;
-
-        // ===== Mode simple : champ unique éditable (pas de timing OU pas de vidéo lisible) =====
-        if (!synced) {
-            const prefill = segs.length
-                ? segs.map(s => `[${fmtTsLong(s.start)}] ${s.text}`).join('\n')
-                : (tr && tr.text ? tr.text : '');
-            const body = document.createElement('div');
-            body.className = 'video-transcript-body';
-            const info = document.createElement('p');
-            info.className = 'video-transcript-body__info';
-            if (tr) {
-                const base = segs.length
-                    ? (translations.video_transcript_segments || '{n} passages récupérés.').replace('{n}', segs.length)
-                    : (translations.video_transcript_plain || 'Transcription récupérée.');
-                info.textContent = base + ' ' + (translations.video_transcript_edit_hint || 'Vous pouvez corriger le texte avant de l’utiliser.');
-            } else {
-                info.classList.add('video-transcript-body__info--paste');
-                info.textContent = translations.video_paste_label || 'Transcription (WebVTT, SRT ou texte)';
-            }
-            const ta = document.createElement('textarea');
-            ta.className = 'video-paste-input video-transcript-edit';
-            ta.placeholder = translations.video_paste_placeholder || 'WEBVTT… ou collez le texte de la transcription';
-            ta.value = prefill;
-            const actions = document.createElement('div');
-            actions.className = 'video-transcript-actions';
-            const useBtn = document.createElement('button');
-            useBtn.type = 'button';
-            useBtn.className = 'action-btn primary-btn video-paste-btn';
-            useBtn.innerHTML = `<i class="fas fa-check" aria-hidden="true"></i> ${escVid(translations.video_paste_btn || 'Valider la transcription')}`;
-            actions.appendChild(useBtn);
-            body.append(info, ta, actions);
-            let ctrl;
-            useBtn.addEventListener('click', () => commitTranscript(ta.value, prefill, tr, () => ctrl && ctrl.close()));
-            ctrl = openVideoPopover(translations.video_transcript_title || 'Transcription', 'fas fa-closed-captioning', body, { wide: true });
-            setTimeout(() => ta.focus(), 60);
-            return;
-        }
-
-        // ===== Mode synchronisé : 2 panneaux (transcription éditable | lecteur) =====
-        const prefill = segs.length ? segs.map(s => `[${fmtTsLong(s.start)}] ${s.text}`).join('\n') : '';
-
-        const body = document.createElement('div');
-        body.className = 'video-transcript-body video-transcript-body--sync';
-        const info = document.createElement('p');
-        info.className = 'video-transcript-body__info';
-        if (segs.length) {
-            info.textContent = (translations.video_transcript_segments || '{n} passages récupérés.').replace('{n}', segs.length)
-                + ' ' + (translations.video_transcript_edit_hint || 'Vous pouvez corriger le texte avant de l’utiliser.');
-        } else {
-            info.classList.add('video-transcript-body__info--paste');
-            info.textContent = translations.video_transcript_build_hint || 'Aucune transcription automatique : lisez la vidéo et ajoutez les passages, ou collez la vôtre.';
-        }
-
-        // Astuce pédagogique : une transcription bien découpée dans le temps = des questions mieux placées.
-        const pedago = document.createElement('p');
-        pedago.className = 'video-transcript-body__pedago';
-        pedago.innerHTML = `<i class="fas fa-lightbulb" aria-hidden="true"></i> ${escVid(translations.video_transcript_pedago || 'Astuce : plus la transcription est découpée en passages courts et bien horodatés, plus l’IA place les questions au bon moment.')}`;
-
-        const widget = buildSyncedTranscriptEditor(segs, videoSource, {
-            labels: {
-                use: translations.video_paste_btn || 'Valider la transcription',
-                resume: translations.video_transcript_resume || 'Recaler sur la vidéo',
-                resumeTip: translations.video_transcript_resume_tip || 'Reprend le défilement automatique calé sur la lecture',
-                addLine: translations.video_transcript_add_line || 'Ajouter une ligne à cet instant',
-                placeholder: translations.video_paste_placeholder || 'WEBVTT… ou collez le texte de la transcription'
-            },
-            onUse: (text, edited) => commitTranscript(text, edited ? null : prefill, tr, () => ctrl && ctrl.close())
-        });
-        body.append(info, pedago, widget.element);
-
-        const ctrl = openVideoPopover(
-            translations.video_transcript_title || 'Transcription',
-            'fas fa-closed-captioning',
-            body,
-            { wide: true, onClose: () => widget.destroy() }
-        );
-        widget.activate(); // crée le lecteur (le conteneur est maintenant dans le DOM)
-    };
-    // Exposé pour revealVideoManual (filet de sécurité côté génération).
-    section._openTranscript = openTranscriptPopover;
-
-    // État initial : génération verrouillée tant qu'aucune transcription n'est prête.
-    const initialState = videoStates.get(moduleKey);
-    if (!initialState || !initialState.transcript || initialState.transcript.error) setGenEnabled(false);
-
-    let busy = false;
-    let currentAbort = null;   // AbortController du run en cours (annulation réseau)
-    let runToken = 0;          // jeton de run : un résultat dont le jeton a changé est ignoré
-
-    // Arrêt manuel de la transcription (bouton stop dans le champ). Invalide le run courant,
-    // coupe les requêtes réseau en vol (lots PodEduc restants), et remet le champ au neutre.
-    const cancelDetection = () => {
-        if (!busy) return;
-        runToken++;
-        if (currentAbort) { try { currentAbort.abort(); } catch { /* déjà abort */ } currentAbort = null; }
-        busy = false;
-        hideTranscribing();
-        setGenEnabled(false);
-        setState('empty');
-        setMsg(translations.video_transcription_cancelled || 'Transcription arrêtée.');
-        showSee(false);
-        videoStates.delete(moduleKey);
-        setVideoTranscriptSources(null);
-    };
-
-    const runDetection = async () => {
-        const url = (input.value || '').trim();
-        if (!url) { lockGate(); return; }
-        if (busy) return;
-        busy = true;
-        const myToken = ++runToken;
-        const ac = new AbortController();
-        currentAbort = ac;
-        etaLabel = ''; // pas d'estimation tant que la durée est inconnue (phase de détection)
-        setState('checking');
-        setProgress(0, 0, translations.video_detecting || 'Transcription en cours…'); // voile + jauge indéterminée
-        setMsg(null);
-        showSee(false);
-        setGenEnabled(false);
-        try {
-            const { detectVideo, fetchTranscript, estimateTranscriptionSeconds, detectPlatform } = await import('../services/video-transcript.js');
-            // YouTube : l'attente EST la détection (yt-dlp côté serveur) → on affiche l'estimation
-            // tout de suite (durée pas encore connue, mais l'attente y est quasi insensible : ~10 s).
-            if (detectPlatform(url) === 'youtube') {
-                etaLabel = fmtEta(estimateTranscriptionSeconds({ platform: 'youtube' }));
-                setProgress(0, 0, translations.video_detecting || 'Transcription en cours…');
-            }
-            const detect = await detectVideo(url);
-            if (myToken !== runToken) return; // arrêté pendant la détection → on ignore
-            if (!detect || !detect.supported || !detect.playable) {
-                hideTranscribing();
-                setState('error');
-                setMsg(translations.video_status_error || 'Vidéo non lisible ou plateforme non supportée (Tubes).', translations.video_retry || 'Réessayer', runDetection);
-                showSee(false);
-                videoStates.delete(moduleKey);
-                setVideoTranscriptSources(null);
-                return;
-            }
-            videoStates.set(moduleKey, { url, detect, transcript: null });
-
-            // Changement de lien vidéo = changement de contexte : un JSON généré pour la vidéo
-            // précédente ne correspond plus (transcription différente). On l'efface (textarea +
-            // sessionStorage) pour que la bascule en mode guidé reparte d'une base propre — y
-            // compris si l'utilisateur a effacé le champ entre-temps (d'où la référence persistante
-            // promptVideoUrl, non purgée par lockGate, plutôt que videoStates). Le prompt de gauche
-            // est de toute façon reconstruit par applyTranscript ci-dessous.
-            if (videoLinkChanged(promptVideoUrl.get(moduleKey), url)) {
-                clearGeneratedJson(moduleKey, module);
-            }
-            promptVideoUrl.set(moduleKey, url);
-
-            // Durée connue → estimation d'attente affichée dans le voile, selon le schéma suivi
-            // (sous-titres ≈ instantané, voie Albert ≈ 3 s + 0,5 s/min, repli YouTube audio plus lent).
-            etaLabel = fmtEta(estimateTranscriptionSeconds(detect));
-            setProgress(0, 0, translations.video_detecting || 'Transcription en cours…');
-
-            // Récupération de la transcription : sous-titres si dispo, sinon transcription audio
-            // (Albert) — le tout côté serveur (CORS résolu par le webhook n8n). La jauge suit la
-            // progression (lot par lot pour les vidéos PodEduc longues découpées).
-            const onProgress = (p) => {
-                if (myToken !== runToken || !p) return;
-                if (p.stage === 'plan') setProgress(0, 0, translations.video_progress_analyze || 'Analyse et découpage de la vidéo…');
-                else if (p.stage === 'transcribe') setProgress(p.current, p.total);
-            };
-            let transcript = null;
-            try { transcript = await fetchTranscript(url, detect, onProgress, ac.signal); } catch { transcript = { error: 'fetch_failed' }; }
-            if (myToken !== runToken) return; // arrêté pendant la transcription → on ignore le résultat
-
-            const usable = transcript && !transcript.error
-                && ((Array.isArray(transcript.segments) && transcript.segments.length > 0) || (transcript.untimed && transcript.text));
-
-            if (usable) {
-                const st = videoStates.get(moduleKey) || { url, detect };
-                st.transcript = transcript;
-                videoStates.set(moduleKey, st);
-                applyTranscript(transcript, detect);
-            } else {
-                // Transcription automatique indisponible → filet de sécurité : collage manuel (popover).
-                hideTranscribing();
-                setState('manual');
-                setMsg(translations.video_manual_short || 'Transcription automatique indisponible.', translations.video_paste_cta || 'Coller la transcription', () => openTranscriptPopover('paste'));
-                showSee(false);
-            }
-        } catch (e) {
-            if (myToken !== runToken) return; // arrêté : l'erreur du run abandonné est sans intérêt
-            debugLog('ui', 'détection vidéo échec', e);
-            hideTranscribing();
-            setState('error');
-            setMsg(translations.video_error_network || 'Erreur réseau pendant la détection. Vérifiez le lien et réessayez.', translations.video_retry || 'Réessayer', runDetection);
-            showSee(false);
-            videoStates.delete(moduleKey);
-            setVideoTranscriptSources(null);
-        } finally {
-            if (myToken === runToken) { busy = false; currentAbort = null; }
-        }
-    };
-
-    // Une URL « complète » (suffisante pour lancer la détection automatiquement) :
-    // PeerTube (/w/ ou /videos/watch/), PodEduc (host podeduc + /video/<slug>),
-    // ou YouTube (watch?v= / youtu.be / embed / shorts / live → id 11 car.).
-    const looksComplete = (u) =>
-        /^https?:\/\/[^\s]+\/(w|videos\/watch)\/[\w-]+/.test(u)
-        || (/podeduc\.apps\.education\.fr/i.test(u) && /\/video\/[\w-]+/.test(u))
-        || /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/)|youtu\.be\/)[\w-]{11}/i.test(u);
-
-    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); runDetection(); } });
-    // Coller / saisir un lien lance AUTOMATIQUEMENT la récupération (debounce) — pas d'attente.
-    input.addEventListener('input', () => {
-        refreshGo(); // affordance immédiate (avant le debounce), tant qu'on est en état neutre
-        clearTimeout(sidebar._videoDebounceTimer);
-        sidebar._videoDebounceTimer = setTimeout(() => {
-            const cur = (input.value || '').trim();
-            const st = videoStates.get(moduleKey);
-            if (!cur) { lockGate(); return; }
-            if (st && st.url === cur) return; // déjà traité
-            if (looksComplete(cur)) runDetection();
-            else lockGate();
-        }, 600);
-    });
-
-    if (helpBtn) helpBtn.addEventListener('click', openHelpPopover);
-    if (seeBtn) seeBtn.addEventListener('click', () => openTranscriptPopover('view'));
-    if (stopBtn) stopBtn.addEventListener('click', cancelDetection);
-    if (goBtn) goBtn.addEventListener('click', runDetection);
-
-    // Réouverture de la modale : NE PAS relancer la transcription (c'est lent et débile si elle
-    // a déjà été faite). Si une transcription est en cache pour cette URL → on RESTAURE l'état
-    // (lien + prompt + champ vert) sans rien relancer. Sinon, on remplit juste le lien.
-    const cached = videoStates.get(moduleKey);
-    const cachedUsable = cached && cached.transcript && !cached.transcript.error
-        && ((Array.isArray(cached.transcript.segments) && cached.transcript.segments.length > 0)
-            || (cached.transcript.untimed && cached.transcript.text));
-    if (cached && cached.url && cachedUsable) {
-        if (!input.value) input.value = cached.url;
-        promptVideoUrl.set(moduleKey, cached.url); // référence du contexte restauré (cohérence comparaison)
-        injectVideoTranscriptIntoPrompt(module, transcriptToSegments(cached.transcript, cached.detect), cached.detect && cached.detect.duration);
-        setState('ready');
-        setMsg(null);
-        showSee(true);
-        setGenEnabled(true);
-    }
-    // NB : on ne restaure PLUS l'URL vidéo après un RECHARGEMENT de page (plus aucune relecture de
-    // sessionStorage). Un refresh complet doit repartir d'un champ vide — sinon la vidéo précédente
-    // « revenait » même en navigation privée (cf. demande auteur). L'URL ne vit donc qu'en mémoire
-    // (videoStates + valeur du champ), le temps de la session ; le champ est en autocomplete="off".
-}
 
 
 export function toggleActivityContent(moduleKey, tileElement) {
@@ -1767,16 +729,20 @@ export function toggleActivityContent(moduleKey, tileElement) {
                     </div>
                 </div>`;
     } else { // Moodle/Éléa
+        // Les deux activités Éléa ci-dessous ne déclarent ni `jsonInputId` ni `createBtnId`
+        // dans definitions.js : leurs identifiants de panneau vivent ici. L'identifiant du
+        // textarea de prompt, lui, vient de `resultKeyForModule` — source unique (cf. le
+        // défaut « Glossaire » documenté dans prompt-generator.js).
+        const PANNEAUX_ELEA = {
+            test_elea:    { jsonInputId: 'xmlEleaMoodleInput',    createBtnId: 'createXmlEleaMoodle' },
+            glossaireXml: { jsonInputId: 'glossaireXmlJsonInput', createBtnId: 'createGlossaireXmlBtn' }
+        };
         let promptId = '', jsonInputId = '', createBtnId = '', createBtnText = '';
-        if (moduleKey === 'test_elea') {
-            promptId = 'test_eleaResultat';
-            jsonInputId = 'xmlEleaMoodleInput';
-            createBtnId = 'createXmlEleaMoodle';
-            createBtnText = translations.generate_xml_file;
-        } else if (moduleKey === 'glossaireXml') {
-            promptId = 'glossaireXmlResultat';
-            jsonInputId = 'glossaireXmlJsonInput';
-            createBtnId = 'createGlossaireXmlBtn';
+        const panneauElea = PANNEAUX_ELEA[moduleKey];
+        if (panneauElea) {
+            promptId = resultKeyForModule(moduleKey);
+            jsonInputId = panneauElea.jsonInputId;
+            createBtnId = panneauElea.createBtnId;
             createBtnText = translations.generate_xml_file;
         } else if (module.promptId) {
             promptId = module.promptId;
@@ -2139,6 +1105,9 @@ export function toggleActivityContent(moduleKey, tileElement) {
             if (topLlmGroup) {
                 topLlmGroup.style.display = isAdvanced ? 'none' : 'flex';
             }
+            // Le footer droit change de structure entre Simple et Guidé :
+            // resynchroniser pour garder les séparateurs gauche/droite alignés
+            requestAnimationFrame(() => syncPanelHeights(sidebar));
         });
     }
 
@@ -2190,7 +1159,9 @@ export function toggleActivityContent(moduleKey, tileElement) {
             attachLLMLogic(moduleKey, sidebar);
         }
 
-        const promptIdForCopy = module.promptId || (moduleKey === 'gift' ? 'giftResultat' : (moduleKey === 'test_elea' ? 'test_eleaResultat' : (moduleKey === 'glossaireXml' ? 'glossaireXmlResultat' : (moduleKey === 'Page' ? 'pageResultat' : (moduleKey === 'Livre' ? 'livreResultat' : null)))));
+        // `Page`/`Livre` déclarent leur `promptId` dans definitions.js : les replis en dur
+        // qui les nommaient ici étaient morts (jamais atteints).
+        const promptIdForCopy = resultKeyForModule(moduleKey);
         if (promptIdForCopy) {
             sidebar.querySelectorAll('.go-duck').forEach(btn => btn.addEventListener('click', function () {
                 copyToClipboard(promptIdForCopy, this);
@@ -2203,7 +1174,7 @@ export function toggleActivityContent(moduleKey, tileElement) {
         }
     }
 
-    const promptId = module.promptId || (moduleKey === 'test_elea' ? 'test_eleaResultat' : (moduleKey === 'glossaireXml' ? 'glossaireXmlResultat' : (moduleKey === 'Page' ? 'pageResultat' : (moduleKey === 'Livre' ? 'livreResultat' : null))));
+    const promptId = resultKeyForModule(moduleKey);
     if (promptId) {
         const generatedPrompt = document.getElementById(`hidden-${promptId}`)?.value;
         if (generatedPrompt) {
@@ -2221,8 +1192,13 @@ export function toggleActivityContent(moduleKey, tileElement) {
     restoreModalDataFromSession(moduleKey, promptId, jsonInputId);
 
     // Activité « Vidéo interactive » : champ URL + détection + verrou de génération.
-    initVideoUrlSection(moduleKey, module);
-    initBackgroundImageSection(moduleKey, module);
+    initVideoUrlSection(moduleKey, module, {
+        sidebar, videoStates, clearGeneratedJson,
+        isVideoReady, revealVideoManual, videoLinkChanged
+    });
+    initBackgroundImageSection(moduleKey, module, {
+        sidebar, imageHotspotStates, invalidateImageHotspotsContext
+    });
 }
 
 /**
@@ -2239,8 +1215,8 @@ function restoreModalDataFromSession(moduleKey, promptId, jsonInputId) {
 
     // Restaurer le prompt sauvegardé UNIQUEMENT si la langue n'a pas changé depuis la sauvegarde.
     // Sinon on conserve le prompt fraîchement régénéré dans la nouvelle langue par generatePrompts().
-    const savedPrompt = sessionStorage.getItem(`${STORAGE_PREFIX}prompt_${moduleKey}`);
-    const savedLang = sessionStorage.getItem(`${STORAGE_PREFIX}prompt_lang_${moduleKey}`);
+    const savedPrompt = safeSession.get(`${STORAGE_PREFIX}prompt_${moduleKey}`);
+    const savedLang = safeSession.get(`${STORAGE_PREFIX}prompt_lang_${moduleKey}`);
     if (savedPrompt && promptId && savedLang === currentLang) {
         const promptTextarea = document.getElementById(promptId);
         if (promptTextarea) {
@@ -2248,12 +1224,12 @@ function restoreModalDataFromSession(moduleKey, promptId, jsonInputId) {
         }
     } else if (savedPrompt && savedLang && savedLang !== currentLang) {
         // La langue a changé : nettoyer la sauvegarde obsolète pour éviter de re-écraser plus tard
-        sessionStorage.removeItem(`${STORAGE_PREFIX}prompt_${moduleKey}`);
-        sessionStorage.removeItem(`${STORAGE_PREFIX}prompt_lang_${moduleKey}`);
+        safeSession.remove(`${STORAGE_PREFIX}prompt_${moduleKey}`);
+        safeSession.remove(`${STORAGE_PREFIX}prompt_lang_${moduleKey}`);
     }
 
     // Restaurer le JSON sauvegardé (contenu généré par LLM, indépendant de la langue d'UI)
-    const savedJson = sessionStorage.getItem(`${STORAGE_PREFIX}json_${moduleKey}`);
+    const savedJson = safeSession.get(`${STORAGE_PREFIX}json_${moduleKey}`);
     if (savedJson && jsonInputId) {
         const jsonTextarea = document.getElementById(jsonInputId);
         if (jsonTextarea) {
@@ -2295,7 +1271,7 @@ export function refreshSidebar() {
                       : module.jsonInputId;
     const jsonTextarea = jsonInputId ? document.getElementById(jsonInputId) : null;
     if (jsonTextarea?.value.trim()) {
-        sessionStorage.setItem(`${STORAGE_PREFIX}json_${moduleKey}`, jsonTextarea.value);
+        safeSession.set(`${STORAGE_PREFIX}json_${moduleKey}`, jsonTextarea.value);
     }
 
     // Re-render en place : neutraliser le toggle « même tuile = fermeture »
@@ -2461,8 +1437,7 @@ function updateGenerationButton(moduleKey, module) {
                     // Pipeline LaTeX : même healing que pour la génération XML principale
                     const { healLatexForTest } = await import('../moodle/moodle-creator.js');
                     data = healLatexForTest(data);
-                    const now = new Date();
-                    const dateString = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}-${String(now.getHours()).padStart(2, '0')}-${String(now.getMinutes()).padStart(2, '0')}`;
+                    const dateString = horodatageFichier('-');
                     const lang = currentLang === 'zh' ? 'zh-cn' : currentLang;
 
                     const moodleFormats = await import('../moodle/moodle-formats.js');
@@ -2917,7 +1892,7 @@ function attachContextualBottomButton(moduleKey, module, buttonGroup) {
 
             // Nettoyage du champ JSON avant génération
             if (jsonInputTarget) jsonInputTarget.value = '';
-            sessionStorage.removeItem(`${STORAGE_PREFIX}json_${moduleKey}`);
+            safeSession.remove(`${STORAGE_PREFIX}json_${moduleKey}`);
 
             // Tracking de performance (mode debug uniquement)
             if (DEBUG) import('../core/perf-tracker.js').then(perf => {
@@ -2967,8 +1942,7 @@ function attachContextualBottomButton(moduleKey, module, buttonGroup) {
                 }
             } catch (error) {
                 console.error("Erreur lors de la génération contextuelle avec le LLM:", error);
-                const tmpl = translations.generation_failed_llm || 'La génération a échoué. Cause : {errorMessage}';
-                const errorMessage = tmpl.replace('{errorMessage}', error.message);
+                const errorMessage = messageEchecGeneration(error);
                 showNotification(errorMessage, 'error');
                 if (jsonInputTarget) jsonInputTarget.value = errorMessage;
                 stopCaramelAnimation();
@@ -3053,7 +2027,7 @@ function attachContextualBottomButton(moduleKey, module, buttonGroup) {
                 // En mode guidé, le prompt a changé → l'ancien JSON n'est plus pertinent
                 if (sidebar.classList.contains('advanced-view') && jsonTextarea) {
                     jsonTextarea.value = '';
-                    sessionStorage.removeItem(`${STORAGE_PREFIX}json_${moduleKey}`);
+                    safeSession.remove(`${STORAGE_PREFIX}json_${moduleKey}`);
                     updateCtxState();
                 }
             }, 300);
@@ -3148,7 +2122,21 @@ function attachActivityEventListeners(moduleKey, container, tile) {
             // On ne bloque que si AUCUNE des deux n'est disponible (sinon le .h5p n'aurait pas de vidéo).
             if (module.requiresVideoUrl) {
                 let parsed = null;
-                try { parsed = JSON.parse(jsonInput); } catch { /* JSON invalide : le healer réparera en aval */ }
+                try { parsed = JSON.parse(jsonInput); } catch {
+                    // JSON imparfait (backslashes LaTeX, sauts de ligne bruts…) : retenter après
+                    // string-healing. Sinon l'injection de la videoSource ci-dessous serait sautée
+                    // alors que le healer aval, lui, finirait par réparer le JSON → .h5p sans vidéo.
+                    try {
+                        const { healJsonString } = await import('../h5p/json-healer.js');
+                        parsed = JSON.parse(healJsonString(jsonInput));
+                    } catch { /* irréparable ici : le healer aval notifiera l'erreur */ }
+                }
+                // Tableau nu (l'IA externe renvoie souvent directement la liste des questions) :
+                // envelopper AVANT l'injection. Poser videoSource sur un Array serait perdu
+                // silencieusement (JSON.stringify ne sérialise pas les propriétés nommées d'un
+                // tableau) et snapVideoTimestamps ne verrait pas les interactions.
+                if (Array.isArray(parsed)) parsed = { interactions: parsed };
+                if (parsed && typeof parsed === 'object') jsonInput = JSON.stringify(parsed);
                 const jsonVideoUrl = (parsed && typeof parsed === 'object' && parsed.videoSource)
                     ? (typeof parsed.videoSource === 'string' ? parsed.videoSource.trim() : ((parsed.videoSource.url || '').trim()))
                     : '';
@@ -3292,7 +2280,7 @@ function attachLLMLogic(moduleKey, container) {
             try {
                 const prompt = buildImageHotspotsPrompt(st.zones, { width: st.width, height: st.height }, st.imageDescription, prefixForModule(moduleKey));
                 if (jsonInputTarget) jsonInputTarget.value = '';
-                sessionStorage.removeItem(`${STORAGE_PREFIX}json_${moduleKey}`);
+                safeSession.remove(`${STORAGE_PREFIX}json_${moduleKey}`);
                 preloadForPostGeneration(moduleKey);
 
                 const activityMeta = {
@@ -3336,9 +2324,9 @@ function attachLLMLogic(moduleKey, container) {
                 }
             } catch (error) {
                 console.error('Erreur génération image interactive:', error);
-                const tmpl = translations.generation_failed_llm || 'La génération a échoué. Cause : {errorMessage}';
-                showNotification(tmpl.replace('{errorMessage}', error.message), 'error');
-                if (jsonInputTarget) jsonInputTarget.value = tmpl.replace('{errorMessage}', error.message);
+                const errorMessage = messageEchecGeneration(error);
+                showNotification(errorMessage, 'error');
+                if (jsonInputTarget) jsonInputTarget.value = errorMessage;
                 stopCaramelAnimation();
             }
             return;
@@ -3380,7 +2368,7 @@ function attachLLMLogic(moduleKey, container) {
                 const prompt = buildVideoInteractivePrompt(segs, st.detect.duration);
 
                 if (jsonInputTarget) jsonInputTarget.value = '';
-                sessionStorage.removeItem(`${STORAGE_PREFIX}json_${moduleKey}`);
+                safeSession.remove(`${STORAGE_PREFIX}json_${moduleKey}`);
                 preloadForPostGeneration(moduleKey);
 
                 const activityMeta = {
@@ -3420,9 +2408,9 @@ function attachLLMLogic(moduleKey, container) {
                 }
             } catch (error) {
                 console.error('Erreur génération vidéo interactive:', error);
-                const tmpl = translations.generation_failed_llm || 'La génération a échoué. Cause : {errorMessage}';
-                showNotification(tmpl.replace('{errorMessage}', error.message), 'error');
-                if (jsonInputTarget) jsonInputTarget.value = tmpl.replace('{errorMessage}', error.message);
+                const errorMessage = messageEchecGeneration(error);
+                showNotification(errorMessage, 'error');
+                if (jsonInputTarget) jsonInputTarget.value = errorMessage;
                 stopCaramelAnimation();
             }
             return;
@@ -3443,7 +2431,7 @@ function attachLLMLogic(moduleKey, container) {
         if (jsonInputTarget) {
             jsonInputTarget.value = '';
         }
-        sessionStorage.removeItem(`${STORAGE_PREFIX}json_${moduleKey}`);
+        safeSession.remove(`${STORAGE_PREFIX}json_${moduleKey}`);
 
         const processorDiv = jsonInputTarget.closest('.h5p-processor');
 
@@ -3506,8 +2494,24 @@ function attachLLMLogic(moduleKey, container) {
                     }
                 }
 
-                // Fermeture de la sidebar (la modale de résultat prend le relais)
-                closeSidebar();
+                // Fermeture de la sidebar (la modale de résultat prend le relais).
+                // Dictée : le processor est ASYNC (la synthèse des voix démarre APRÈS le
+                // clic) — fermer ici faisait disparaître la sidebar en plein milieu de la
+                // génération (retour de test 2026-07). Elle reste donc affichée en fond
+                // jusqu'à generation:complete ; en cas d'erreur de synthèse elle reste
+                // ouverte (relance facile).
+                if (moduleKey === 'Dictation') {
+                    const onGenDone = () => { cleanupGenListeners(); closeSidebar(); };
+                    const onGenError = () => cleanupGenListeners();
+                    const cleanupGenListeners = () => {
+                        document.removeEventListener('generation:complete', onGenDone);
+                        document.removeEventListener('generation:error', onGenError);
+                    };
+                    document.addEventListener('generation:complete', onGenDone, { once: true });
+                    document.addEventListener('generation:error', onGenError, { once: true });
+                } else {
+                    closeSidebar();
+                }
             } else {
                 jsonInputTarget.value = translations.generation_failed_empty;
                 showNotification(translations.generation_failed_empty, 'error');
@@ -3515,8 +2519,7 @@ function attachLLMLogic(moduleKey, container) {
             }
         } catch (error) {
             console.error("Erreur lors de la génération avec le LLM:", error);
-            const tmpl = translations.generation_failed_llm || 'La génération a échoué. Cause : {errorMessage}';
-            const errorMessage = tmpl.replace('{errorMessage}', error.message);
+            const errorMessage = messageEchecGeneration(error);
             showNotification(errorMessage, 'error');
             jsonInputTarget.value = errorMessage;
             stopCaramelAnimation();
@@ -3596,7 +2599,10 @@ function preloadForPostGeneration(moduleKey) {
 let recipeInterval;
 let currentRecipeStepKey = '';
 
-/** Affiche l'étape de recette courante (texte décoratif qui défile, indépendant de la jauge). */
+/**
+ * Affiche l'étape/anecdote courante (texte qui défile, indépendant de la jauge).
+ * Style uniforme (normal) pour la recette, la phrase de transition et les anecdotes.
+ */
 function renderRecipeStep() {
     const recipeSteps = document.getElementById('recipe-steps');
     if (!recipeSteps) return;
@@ -3606,6 +2612,7 @@ function renderRecipeStep() {
 function startCaramelAnimation() {
     const overlay = document.getElementById('caramel-animation-overlay');
     const marmiteContent = document.querySelector('.marmite-content');
+    clearInterval(recipeInterval);   // évite deux défilés concurrents si déjà lancé
     clearTimeout(overlayFadeTimeout);
     overlay.classList.remove('closing');
     overlay.style.display = 'flex';
@@ -3625,20 +2632,95 @@ function startCaramelAnimation() {
         "caramel_animation_step_11"
     ];
 
+    // Anecdotes « le saviez-vous » — affichées SEULEMENT après la recette (voir plus bas).
+    // Découverte dynamique des clés traduites (caramel_animation_fact_1..N) : en ajouter une
+    // dans les locales suffit, aucun tableau à maintenir ici.
+    const factKeys = [];
+    for (let i = 1; typeof translations[`caramel_animation_fact_${i}`] === 'string'; i++) {
+        factKeys.push(`caramel_animation_fact_${i}`);
+    }
+    let factBag = [];
+    const drawFact = () => {
+        if (!factBag.length) factBag = factKeys.slice().sort(() => Math.random() - 0.5);
+        return factBag.pop();
+    };
+
+    const STEP_MS = 3600;   // durée d'affichage d'une étape de recette (ralenti : lecture confortable)
+    const FACT_MS = 6500;   // phrase de transition + anecdotes : plus longues à lire
+
+    // Ordonnancement : on enchaîne les 11 étapes de recette DANS L'ORDRE (aucune
+    // anecdote pendant la recette) ; UNE FOIS la recette au bout, une phrase de
+    // transition (« En attendant que ça refroidisse… ») PUIS les anecdotes en boucle
+    // (sac mélangé). Tout est affiché en style NORMAL (plus d'italique).
     let currentStep = 0;
+    let recipeDone = false;
+    let factsIntroShown = false;
     currentRecipeStepKey = steps[currentStep];
     renderRecipeStep();
-    recipeInterval = setInterval(() => {
-        currentStep = (currentStep + 1) % steps.length;
-        currentRecipeStepKey = steps[currentStep];
-        renderRecipeStep();
-    }, 2000);
+    // Chaîne de setTimeout (durées variables) ; l'id reste compatible avec les
+    // clearInterval() existants (timeouts et intervals partagent le même registre).
+    const tick = () => {
+        if (!recipeDone) {
+            currentStep++;
+            if (currentStep < steps.length) {          // étape suivante de la recette
+                currentRecipeStepKey = steps[currentStep];
+                renderRecipeStep();
+                recipeInterval = setTimeout(tick, STEP_MS);
+                return;
+            }
+            recipeDone = true;                          // recette terminée
+        }
+        if (factKeys.length > 0) {
+            // Transition (une seule fois) avant de passer aux anecdotes.
+            if (!factsIntroShown) {
+                factsIntroShown = true;
+                currentRecipeStepKey = 'caramel_animation_facts_intro';
+                renderRecipeStep();                     // style NORMAL (pas d'italique)
+                recipeInterval = setTimeout(tick, FACT_MS);
+                return;
+            }
+            currentRecipeStepKey = drawFact();
+            renderRecipeStep();                         // anecdotes en style NORMAL (pas d'italique)
+            recipeInterval = setTimeout(tick, FACT_MS);
+        } else {
+            // Aucune anecdote disponible : on fige sur la dernière étape de recette.
+            recipeInterval = setTimeout(tick, STEP_MS);
+        }
+    };
+    recipeInterval = setTimeout(tick, STEP_MS);
 
     // Reset animation
     marmiteContent.style.animation = 'none';
     marmiteContent.offsetHeight; /* trigger reflow */
     marmiteContent.style.animation = null;
     marmiteContent.style.animation = 'fillMarmite 22s linear forwards';
+}
+
+/**
+ * Compose le message affiché à l'enseignant quand une génération IA échoue.
+ *
+ * Les quatre chemins de génération (contextuelle, image interactive, vidéo
+ * interactive, standard) affichaient jusqu'ici `error.message` BRUT : « Erreur du
+ * proxy n8n (poll) : 502 Bad Gateway » ou « Unexpected token < in JSON », c'est-à-dire
+ * un texte technique, non traduit, et sans indication de quoi faire ensuite.
+ *
+ * `classifyError` range l'erreur dans l'une des quatre familles (PARSE / NETWORK /
+ * VALIDATION / PACKAGING) et fournit la clé i18n du conseil correspondant
+ * (`error_network`, `error_parse`, …), traduite dans les 11 langues.
+ *
+ * La cause technique est CONSERVÉE (elle sert au signalement de bug) : on ajoute le
+ * conseil, on ne remplace rien — le message existant reste un préfixe exact.
+ *
+ * @param {*} error - L'erreur levée (classifyError tolère toute valeur).
+ * @returns {string} Message prêt à afficher.
+ */
+function messageEchecGeneration(error) {
+    const { userMessageKey, technicalMessage, category } = classifyError(error);
+    const tmpl = translations.generation_failed_llm || 'La génération a échoué. Cause : {errorMessage}';
+    const base = tmpl.replace('{errorMessage}', technicalMessage);
+    const conseil = translations[userMessageKey];
+    debugLog('ui', `Échec de génération classé ${category} → ${userMessageKey}`, technicalMessage);
+    return conseil ? `${base}\n${conseil}` : base;
 }
 
 let overlayFadeTimeout = null;
@@ -3778,9 +2860,12 @@ function showGenerationResult(e) {
         const resolvedKey = moduleKey || modulesByTitleKey.get(titleKey)?.key || null;
         const moduleDef2 = resolvedKey ? allModules[resolvedKey] : null;
         const formats = moduleDef2 ? moduleDef2.formats : [];
-        // Formats natifs à exclure du dropdown (déjà gérés par le bouton principal)
+        // Formats natifs à exclure du dropdown (déjà gérés par le bouton principal).
+        // XML exclu aussi : ce dropdown ne gère QUE les documents (DOCX/ODT/PDF) — le
+        // XML « banque de questions » se télécharge depuis la modale de visualisation
+        // (sinon, le Test ayant MBZ pour format natif, XML y apparaîtrait en bouton mort).
         const nativeExt = fileName ? fileName.split('.').pop().toUpperCase() : '';
-        const excludeFormats = [nativeExt, 'GIFT', 'HTML'];
+        const excludeFormats = [nativeExt, 'GIFT', 'HTML', 'XML'];
         const docFormats = formats.filter(f => !excludeFormats.includes(f));
 
         if (docFormats.length > 0) {
@@ -3901,6 +2986,24 @@ export function initGenerationResultModal() {
         stopCaramelAnimation();
     });
 
+    // Traitement LONG côté processeur (ex. Dictée : synthèse vocale serveur, 5-30 s).
+    // Couvre les DEUX flux : génération LLM interne (l'overlay est déjà affiché → on ne
+    // touche pas) ET collage d'un JSON d'IA externe + « Générer » (aucune animation en
+    // cours → on l'affiche pour faire patienter). L'étape de recette est figée sur le
+    // libellé fourni (ex. « Enregistrement des voix… ») jusqu'au generation:complete/error.
+    document.addEventListener('generation:processing', (e) => {
+        const overlay = document.getElementById('caramel-animation-overlay');
+        if (overlay && overlay.style.display !== 'flex') {
+            startCaramelAnimation();
+        }
+        const stepKey = e.detail && e.detail.stepKey;
+        if (stepKey) {
+            clearInterval(recipeInterval); // fige le défilé décoratif sur l'étape réelle
+            currentRecipeStepKey = stepKey;
+            renderRecipeStep();
+        }
+    });
+
     const modal = document.getElementById('generation-result-modal');
     if (!modal) return;
 
@@ -3946,6 +3049,9 @@ export function initGenerationResultModal() {
                 try {
                     // Enrichir les données avec les images de grille (Crossword/FindTheWords)
                     let dataToExport = jsonDataToExport;
+                    // Après une édition, les images n'y sont plus que des chemins images/… :
+                    // hydrate leurs dataURL depuis le .h5p (copie), sinon DOCX/ODT/PDF les perdent.
+                    dataToExport = await hydrateImagesForExport(notification.blob, dataToExport);
                     if (_gridCapturePromise && (resolvedKey === 'Crossword' || resolvedKey === 'FindTheWords')) {
                         try {
                             const grids = await _gridCapturePromise;

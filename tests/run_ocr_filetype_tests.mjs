@@ -65,6 +65,8 @@ const expectations = {
   'diapo.odp': 'odp',
   'photo.png': 'image',
   'photo.jpg': 'image',
+  'photo.webp': 'image',   // accepté silencieusement (absent du libellé, cf. [7])
+  'scan.bmp': 'image',     // accepté silencieusement (absent du libellé, cf. [7])
   'son.mp3': 'audio',
   'son.m4a': 'audio',
   'son.wav': 'audio',
@@ -84,6 +86,18 @@ for (const name of ['virus.exe', 'archive.zip', 'data.csv', 'page.html', 'film.m
 
 console.log('\n[6] Le libellé public mentionne la vidéo');
 assert(/MP4/i.test(SUPPORTED_FORMATS_LABEL), 'SUPPORTED_FORMATS_LABEL contient « MP4 »', { label: SUPPORTED_FORMATS_LABEL });
+
+console.log('\n[7] WebP/BMP : acceptés SILENCIEUSEMENT (routés image, mais absents du libellé)');
+for (const mime of ['image/webp', 'image/bmp', 'image/x-ms-bmp']) {
+  assert(detectFileType(file('sans-extension', mime)) === 'image',
+    `MIME ${mime} → 'image'`, { got: detectFileType(file('sans-extension', mime)) });
+}
+assert(!/WEBP/i.test(SUPPORTED_FORMATS_LABEL.replace(/WEBM/gi, '')),
+  'SUPPORTED_FORMATS_LABEL ne mentionne PAS « WEBP » (acceptation silencieuse voulue)',
+  { label: SUPPORTED_FORMATS_LABEL });
+assert(!/BMP/i.test(SUPPORTED_FORMATS_LABEL),
+  'SUPPORTED_FORMATS_LABEL ne mentionne PAS « BMP » (acceptation silencieuse voulue)',
+  { label: SUPPORTED_FORMATS_LABEL });
 
 console.log(`\n${failed === 0 ? '✅' : '❌'} ${passed} assertions OK, ${failed} échec(s).`);
 process.exit(failed === 0 ? 0 : 1);

@@ -11,14 +11,14 @@
 
 export const LIB_PATHS = {
     // OCR / Extraction de texte
-    PDF_JS: 'js/vendor/pdf-js/6.1.200/pdf.min.mjs',
-    PDF_JS_WORKER: 'js/vendor/pdf-js/6.1.200/pdf.worker.compat.mjs',
+    PDF_JS: 'js/vendor/pdf-js/6.2.108/pdf.min.mjs',
+    PDF_JS_WORKER: 'js/vendor/pdf-js/6.2.108/pdf.worker.compat.mjs',
     TESSERACT: 'js/vendor/tesseract/7.0.0/tesseract.min.js',
     // Fichiers Tesseract auto-hébergés (sinon téléchargés depuis cdn.jsdelivr.net au runtime, sans SRI)
     TESSERACT_WORKER: 'js/vendor/tesseract/7.0.0/worker.min.js',
     TESSERACT_CORE: 'js/vendor/tesseract/7.0.0/core',   // répertoire : le worker y choisit la variante *-lstm.wasm.js
     TESSERACT_LANG: 'js/vendor/tesseract/7.0.0/lang',   // répertoire : contient <lang>.traineddata.gz
-    MAMMOTH: 'js/vendor/mammoth/1.12.0/mammoth.browser.min.js',
+    MAMMOTH: 'js/vendor/mammoth/1.12.1/mammoth.browser.min.js',
     JSZIP: 'js/vendor/jszip/3.10.1/jszip.min.js',
 
     // H5P
@@ -33,15 +33,15 @@ export const LIB_PATHS = {
     TAR_JS: 'js/vendor/tar-js/0.3.0/tar.bundle.js',
 
     // Math rendering
-    MATHJAX: 'js/vendor/mathjax/3.2.2/tex-svg.js',
+    MATHJAX: 'js/vendor/mathjax/4.1.3/tex-svg.js',
 
     // Document export
     JSPDF: 'js/vendor/jspdf/4.2.1/jspdf.umd.min.js',
     JSPDF_AUTOTABLE: 'js/vendor/jspdf-autotable/5.0.8/jspdf.plugin.autotable.min.js',
-    DOCX: 'js/vendor/docx/8.6.0/index.umd.js',
+    DOCX: 'js/vendor/docx/9.7.1/index.iife.js',
 
     // Security
-    DOMPURIFY: 'js/vendor/dompurify/3.4.11/purify.min.js',
+    DOMPURIFY: 'js/vendor/dompurify/3.4.14/purify.min.js',
 
     // QR code (génération du QR de la vidéo source dans les exports documentaires)
     QRCODE: 'js/vendor/qrcode/2.0.4/qrcode.js',
@@ -50,7 +50,7 @@ export const LIB_PATHS = {
     // UNIQUEMENT si l'utilisateur joint un fichier de ce type :
     HEIC2ANY: 'js/vendor/heic2any/0.0.4/heic2any.min.js', // HEIC/HEIF (photos iPhone) → JPEG/PNG (inclut libheif, worker blob)
     UTIF: 'js/vendor/utif/3.1.0/UTIF.js',                 // TIFF → RGBA → PNG
-    PAKO: 'js/vendor/pako/2.1.0/pako.min.js',             // zlib (MIT AND Zlib) — requis par UTIF pour les TIFF compressés (deflate)
+    PAKO: 'js/vendor/pako/3.0.1/pako.umd.min.js',         // zlib (MIT AND Zlib) — requis par UTIF pour les TIFF compressés (deflate)
 
     // Caramelia (chatbot flottant)
     CARAMELIA: 'js/caramelia/index.js',
@@ -405,6 +405,20 @@ export async function loadMathJax() {
             if (!loadState.mathjax && !window.MathJax) {
                 // Configuration MathJax avant le chargement
                 window.MathJax = {
+                    // MathJax 4 découpe ses polices en fragments chargés À LA DEMANDE
+                    // (double-struck pour \mathbb{R}, etc.). Par défaut il va les
+                    // chercher sur https://cdn.jsdelivr.net/npm/@mathjax — ce que la
+                    // règle « zéro CDN » du projet interdit, et qui casserait le rendu
+                    // hors ligne ou sous CSP stricte. On redirige donc vers la copie
+                    // locale. (MathJax 4 exige aussi le dossier `sre/` à côté de
+                    // tex-svg.js : sans lui, son worker de synthèse vocale échoue et
+                    // `typesetPromise` ne se résout JAMAIS — le SVG s'affiche mais tout
+                    // `await` reste bloqué.)
+                    loader: {
+                        paths: {
+                            fonts: new URL(LIB_PATHS.MATHJAX.replace(/\/[^/]+$/, '/fonts'), document.baseURI).href
+                        }
+                    },
                     tex: {
                         inlineMath: [['\\(', '\\)'], ['$', '$']],
                         displayMath: [['\\[', '\\]'], ['$$', '$$']],

@@ -150,6 +150,43 @@ async function fillVideoUrlAndWait(moduleKey, url) {
 }
 
 /**
+ * Pour une activité à image de fond (Image interactive / Trouve la/les zone·s) : injecte le
+ * fichier image dans l'input de la sidebar ouverte (via DataTransfer + event `change`, comme
+ * un choix de fichier manuel), ce qui déclenche le traitement + l'analyse VISION côté Caramel,
+ * puis ATTEND que la section passe en `data-state="ready"` (zones détectées = bouton de
+ * génération débloqué). L'appel vision peut être lent (timeout client 120 s) → marge à 150 s.
+ * @param {string} moduleKey
+ * @param {File} file
+ * @returns {Promise<boolean>} true si prêt, false si erreur/timeout.
+ */
+async function fillBackgroundImageAndWait(moduleKey, file) {
+    const input = await waitForElement(CONFIG.caramelSelectors.imgBgInput(moduleKey), { timeoutMs: 6000 });
+    if (!input) return false;
+    try {
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        input.files = dt.files;
+    } catch (e) {
+        console.warn('[Caramelia] fillBackgroundImageAndWait:', e);
+        return false;
+    }
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+    const section = document.querySelector(CONFIG.caramelSelectors.imgBgSection(moduleKey));
+    if (!section) return false;
+    return new Promise((resolve) => {
+        const start = Date.now();
+        const tick = () => {
+            const st = section.dataset.state;
+            if (st === 'ready') return resolve(true);
+            if (st === 'error') return resolve(false);
+            if (Date.now() - start > 150000) return resolve(false);
+            setTimeout(tick, 500);
+        };
+        tick();
+    });
+}
+
+/**
  * Attend que Caramel ait régénéré ses prompts cachés (`textarea[id^="hidden-"]`).
  * Caramel debounce le contextChange à 500ms après l'event `input` sur qui/quoi —
  * sans cette attente, la sidebar peut s'ouvrir avec un prompt vide.
@@ -216,7 +253,7 @@ function waitForSidebarClose({ timeoutMs = CONFIG.timing.generationMaxWait } = {
  * cassée…). Sans ce signal, l'utilisateur croit que tout va bien et finit
  * avec un ZIP partiel sans comprendre pourquoi.
  */
-async function launchSingleGeneration(moduleKey, idx, total, batchIds, videoUrl) {
+async function launchSingleGeneration(moduleKey, idx, total, batchIds, videoUrl, backgroundImageFile) {
     const label = tActivity(moduleKey);
     addBotMessage(t('launch_progress', { idx, total, label }));
 
@@ -235,6 +272,20 @@ async function launchSingleGeneration(moduleKey, idx, total, batchIds, videoUrl)
         const ready = await fillVideoUrlAndWait(moduleKey, videoUrl);
         if (!ready) {
             addBotMessage(t('video_url_failed', { label }));
+            const closeBtn = document.querySelector(CONFIG.caramelSelectors.sidebarCloseBtn);
+            if (closeBtn) closeBtn.click();
+            await delay(CONFIG.timing.afterCloseDelay);
+            return;
+        }
+    }
+
+    // Activité à image de fond : injecter l'image jointe + attendre l'analyse vision AVANT
+    // de cliquer « Générer » (le bouton reste verrouillé tant que les zones ne sont pas prêtes).
+    if (backgroundImageFile && (CONFIG.requiresBackgroundImageKeys || []).includes(moduleKey)) {
+        addBotMessage(t('bg_image_detecting'));
+        const ready = await fillBackgroundImageAndWait(moduleKey, backgroundImageFile);
+        if (!ready) {
+            addBotMessage(t('bg_image_failed', { label }));
             const closeBtn = document.querySelector(CONFIG.caramelSelectors.sidebarCloseBtn);
             if (closeBtn) closeBtn.click();
             await delay(CONFIG.timing.afterCloseDelay);
@@ -278,7 +329,7 @@ async function launchSingleGeneration(moduleKey, idx, total, batchIds, videoUrl)
  *
  * @returns {Promise<string[]>} IDs des notifications ajoutées pendant la chaîne
  */
-export async function launchGenerations(moduleKeys, { qui, quoi, videoUrl } = {}) {
+export async function launchGenerations(moduleKeys, { qui, quoi, videoUrl, backgroundImageFile } = {}) {
     if (qui !== undefined) fillFormField('qui', qui);
     if (quoi !== undefined) fillFormField('quoi', quoi);
     triggerPromptGeneration();
@@ -299,7 +350,7 @@ export async function launchGenerations(moduleKeys, { qui, quoi, videoUrl } = {}
         await waitForHiddenPrompts();
 
         for (let i = 0; i < moduleKeys.length; i++) {
-            await launchSingleGeneration(moduleKeys[i], i + 1, moduleKeys.length, batchIds, videoUrl);
+            await launchSingleGeneration(moduleKeys[i], i + 1, moduleKeys.length, batchIds, videoUrl, backgroundImageFile);
         }
     } finally {
         document.removeEventListener('notification:added', onAdded);

@@ -40,8 +40,8 @@
         {
           "type": "list",
           "items": [
-            "**Ihre Dokumente bleiben auf Ihrem Computer.** Wenn Sie im erweiterten Modus eine Datei (PDF, Bild…) ablegen, erfolgt die Textextraktion **vollständig in Ihrem Browser**: Es wird nichts an einen Server gesendet.",
-            "**Was übertragen wird, bleibt in Frankreich gehostet.** Ihre Generierungsanfragen laufen über **gemeinsam genutzte Hochschulserver** (Projekt **ILaaS**); die Stimme (Mikrofon oder Audiodatei) wird von **Albert** transkribiert, dem **souveränen Dienst der DINUM**. Keiner von beiden **erfasst oder verkauft** Ihre Daten weiter — und **das Audio wird nicht aufbewahrt**.",
+            "**Ihre Dokumente bleiben auf Ihrem Computer.** Wenn Sie im erweiterten Modus eine Textdatei (PDF, DOCX, PPTX, ODT…) ablegen, erfolgt die Extraktion **vollständig in Ihrem Browser**: Es wird nichts an einen Server gesendet.",
+            "**Was übertragen wird, bleibt in Frankreich gehostet.** Ihre Generierungsanfragen laufen über **gemeinsam genutzte Hochschulserver** (Projekt **ILaaS**); die **abgelegten Bilder** werden dort von einer **Bild-KI** analysiert (Beschreibung + abgeschriebener Text); die Stimme (Mikrofon oder Audiodatei) wird von **Albert** transkribiert, dem **souveränen Dienst der DINUM**. Keiner von beiden **erfasst oder verkauft** Ihre Daten weiter — und **weder das Audio noch die Bilder werden aufbewahrt**.",
             "**Das Kopieren in eine externe KI liegt in Ihrer Verantwortung.** Wenn Sie einen Prompt kopieren, um ihn in einem Drittdienst zu verwenden, hängt der Schutz Ihrer Daten dann von **den Bedingungen dieses Dienstes** ab."
           ]
         },
@@ -86,7 +86,17 @@
         },
         {
           "type": "p",
-          "text": "Für eine strukturiertere Anfrage. Dieser Modus bietet **präzise Felder** (Fach, Niveau, Thema, Anzahl der Fragen, besondere Anweisungen …) und ermöglicht es, **ein Dokument anzuhängen** oder **eine Webseite zu importieren** als Ausgangspunkt."
+          "text": "Für eine strukturiertere Anfrage. Dieser Modus bietet **präzise Felder** (Fach, Niveau, Thema, Anzahl der Fragen, besondere Anweisungen …) und ermöglicht es, **eigene Materialien anzuhängen** oder **eine Webseite zu importieren** als Ausgangspunkt."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Dokumente** — PDF, DOCX, PPTX, ODT, ODP: Der Text wird unverändert übernommen.",
+            "**Bilder** — PNG, JPEG (WebP und BMP werden ebenfalls akzeptiert): von einer Bild-KI beschrieben und abgeschrieben.",
+            "**Audio** — MP3, M4A, WAV, OGG, FLAC: Die Aufnahme wird automatisch **transkribiert**.",
+            "**Video** — MP4, MOV, WEBM: Es wird **nur die Tonspur** entnommen und transkribiert, das Bild wird nicht ausgewertet.",
+            "**Webseite** — Link einfügen, Caramel holt den Inhalt."
+          ]
         },
         {
           "type": "shot",
@@ -96,6 +106,14 @@
         {
           "type": "plain",
           "text": "Wenn Sie den Bereich „Dokumente“ leer lassen, stützt sich die KI **ausschließlich auf ihr Allgemeinwissen**. Indem Sie dort Ihren Unterrichtsstoff hinterlegen, zwingen Sie sie, **sich an Ihren Inhalt zu halten** — Sie entscheiden."
+        },
+        {
+          "type": "tip",
+          "text": "**Bilder werden verstanden, nicht nur gelesen.** Legen Sie ein Unterrichtsfoto, ein Schema oder ein Diagramm ab (PNG, JPEG — WebP und BMP werden ebenfalls akzeptiert): Eine **Bild-KI beschreibt, was das Bild zeigt, und schreibt den darin enthaltenen Text originalgetreu ab**. Und falls die KI nicht verfügbar ist, übernimmt automatisch die **lokale Texterkennung (OCR)**."
+        },
+        {
+          "type": "tip",
+          "text": "**Eine Unterrichtsaufnahme kann als Quelle dienen.** Legen Sie eine Audio- oder Videodatei ab: Caramel **transkribiert** sie vor der Generierung. Lange Aufnahmen werden in 5-Minuten-Abschnitte zerlegt — bei einer Unterrichtsstunde dauert das entsprechend etwas."
         },
         {
           "type": "h",
@@ -137,19 +155,19 @@
           "type": "table",
           "head": [
             "Familie",
-            "Was es ist",
-            "Erzeugte Formate"
+            "Was Sie erhalten",
+            "Erzeugte Datei"
           ],
           "rows": [
             [
               "**H5P**",
-              "**Interaktive** Aktivitäten: Multiple-Choice, Wahr/Falsch, Lückentext, Drag-and-Drop, Kreuzworträtsel, Lernkarten, Glossar, Kurspräsentation, interaktives Buch, interaktives Video …",
+              "**Interaktive** Aktivitäten, die überall laufen: Moodle, Éléa, Magistère, La Sucrerie und sogar eine gewöhnliche Website. Die Lernenden antworten direkt auf der Seite und sehen die Korrektur sofort.",
               "**.h5p**"
             ],
             [
               "**Éléa / Moodle**",
-              "Aktivitäten und Ressourcen für diese Plattformen: Test, Multiple-Choice, Zuordnung, Millionär, Seite, Buch, Glossar, Aufgabe …",
-              "**.mbz**, **.xml**, **.GIFT**"
+              "**Native Aktivitäten** der Plattform (Test, Quiz, Aufgabe, Millionär …) und **Kursressourcen** (Seite, Buch). In Ihren Kurs importieren; die Ergebnisse laufen in die Bewertungsübersicht.",
+              "**.mbz**, **.xml**, **.gift**"
             ]
           ]
         },
@@ -168,6 +186,219 @@
         {
           "type": "tip",
           "text": "Unsicher beim Typ? Die **Filter** oben im Raster (nach Plattform, nach Thema) verkürzen die Liste, und der Name jeder Kachel beschreibt die Übung, die sie erzeugt. Caramélia kann Ihnen auch den am besten geeigneten Typ empfehlen."
+        },
+        {
+          "type": "h",
+          "text": "Der Katalog, Aktivität für Aktivität"
+        },
+        {
+          "type": "p",
+          "text": "Hier steht in einem Satz, was Sie mit jeder Kachel bauen können. Die Aktivitäten sind **nach Verwendungszweck** gruppiert; in der App leisten die **Filter** über dem Raster dasselbe."
+        },
+        {
+          "type": "h",
+          "text": "Reichhaltige interaktive Inhalte"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Aktivität",
+            "Wofür sie gut ist"
+          ],
+          "rows": [
+            [
+              "**Kurspräsentation**",
+              "Erstellen Sie eine interaktive Diashow mit integrierten Übungen (Multiple-Choice, Wahr/Falsch, Lückentext usw.) für einen strukturierten Kurs."
+            ],
+            [
+              "**Interaktives Buch**",
+              "Erstellen Sie ein digitales Buch mit mehreren Kapiteln: Jede Seite kombiniert Texte, Tabellen, Bilder und Übungen (Multiple-Choice, Wahr/Falsch, Lückentext…), mit Inhaltsverzeichnis und Zusammenfassungsseite."
+            ],
+            [
+              "**Interaktives Video**",
+              "Ein mit Fragen (Multiple-Choice, Wahr/Falsch, Lückentext) angereichertes Video, die an Schlüsselstellen erscheinen, mit einer abschließenden Zusammenfassung. (Apps-Éducation-Tubes, PodEduc und YouTube)"
+            ],
+            [
+              "**Interaktives Bild**",
+              "Hängen Sie ein Bild an: Die KI setzt anklickbare Punkte und verfasst die Erklärungen. Medien können von Hand ergänzt werden."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Quiz und Bewertung"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Aktivität",
+            "Wofür sie gut ist"
+          ],
+          "rows": [
+            [
+              "**Multiple-Choice-Quiz**",
+              "Erstellen Sie ein Quiz, das ausschließlich aus Multiple-Choice-Fragen besteht."
+            ],
+            [
+              "**Wahr/Falsch-Quiz**",
+              "Erstellen Sie ein Quiz, das ausschließlich aus Wahr- oder Falsch-Fragen besteht."
+            ],
+            [
+              "**Gemischtes Quiz**",
+              "Erstellen Sie eine Reihe verschiedener Fragen (MCQ, Drag & Drop usw.) zur Wissensüberprüfung."
+            ],
+            [
+              "**Den Bereich finden**",
+              "Hängen Sie ein Bild an: Die KI wählt den richtigen Bereich und verfasst das Feedback. Gewertet wird der erste Klick."
+            ],
+            [
+              "**Die Bereiche finden**",
+              "Hängen Sie ein Bild an: Die KI wählt die zu findenden Bereiche und verfasst das Feedback."
+            ],
+            [
+              "**Einfachauswahl-Serie**",
+              "Erstellen Sie eine Serie von Fragen, bei denen jede Frage nur eine richtige Antwort hat."
+            ],
+            [
+              "**Multiple Choice**",
+              "Erstellen Sie **eine** Multiple-Choice-Frage mit einer oder mehreren richtigen Antworten."
+            ],
+            [
+              "**Wahr/Falsch**",
+              "Erstellen Sie **eine** einfache Frage mit der Antwortmöglichkeit Wahr oder Falsch."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Arbeit mit Text"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Aktivität",
+            "Wofür sie gut ist"
+          ],
+          "rows": [
+            [
+              "**Wörter ziehen**",
+              "Erstellen Sie einen Lückentext, in den Schüler die fehlenden Wörter ziehen müssen."
+            ],
+            [
+              "**Drag and Drop**",
+              "Erstellen Sie eine Aktivität, bei der Schüler Beschriftungen in die richtigen Ablagezonen ziehen."
+            ],
+            [
+              "**Lückentext**",
+              "Schüler müssen die fehlenden Wörter in einem Text direkt über die Tastatur eingeben."
+            ],
+            [
+              "**Wörter markieren**",
+              "Lassen Sie die Schüler bestimmte Wörter in einem Absatz markieren."
+            ],
+            [
+              "**Diktat**",
+              "Erstellen Sie ein Audio-Diktat: Die Lernenden hören jeden Satz und tippen ihn ab; Fehler werden hervorgehoben. Stimmen werden automatisch erzeugt (Sprachsynthese)."
+            ],
+            [
+              "**Aufsatz**",
+              "Stellen Sie eine Schreibaufgabe und definieren Sie Schlüsselwörter für eine automatische Bewertung."
+            ],
+            [
+              "**Absätze ordnen**",
+              "Erstellen Sie eine Gruppe von Absätzen, die die Schüler in die richtige Reihenfolge bringen müssen."
+            ],
+            [
+              "**Zusammenfassung**",
+              "Schüler müssen eine korrekte Zusammenfassung erstellen, indem sie die richtigen Sätze auswählen."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Merken und Entdecken"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Aktivität",
+            "Wofür sie gut ist"
+          ],
+          "rows": [
+            [
+              "**Lernkarten**",
+              "Erstellen Sie Karten mit Vorder- und Rückseite zum Lernen von Begriffen und Definitionen."
+            ],
+            [
+              "**Kreuzworträtsel**",
+              "Generieren Sie ein Kreuzworträtsel aus einer Liste von Wörtern und Definitionen."
+            ],
+            [
+              "**Zeitstrahl**",
+              "Erstellen Sie eine interaktive Zeitleiste zur Darstellung einer Ereignisfolge."
+            ],
+            [
+              "**Glossar**",
+              "Erstellen Sie ein Glossar oder FAQ als ausklappbares Akkordeon."
+            ],
+            [
+              "**Wortsuchrätsel**",
+              "Erstellen Sie ein Buchstabengitter, in dem Schüler Wörter finden müssen."
+            ],
+            [
+              "**Diagramm**",
+              "Erstellen Sie ein Kreis- oder Balkendiagramm zur Datenvisualisierung."
+            ],
+            [
+              "**Dialogkarten**",
+              "Erstellen Sie interaktive Karten mit Vorder- und Rückseite, Text und optional Bildern."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Éléa- / Moodle-Aktivitäten"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Aktivität",
+            "Wofür sie gut ist"
+          ],
+          "rows": [
+            [
+              "**Seite**",
+              "Erstellen Sie eine visuell formatierte Inhaltsseite für Éléa."
+            ],
+            [
+              "**Buch**",
+              "Erstellen Sie ein mehrkapiteliges Éléa-Buch mit visueller Gestaltung, indem Sie die Blöcke der Seite-Aktivität wiederverwenden."
+            ],
+            [
+              "**Aufgabe**",
+              "Erstellen Sie eine Moodle-Aufgabe mit einem KI-generierten Bewertungsraster."
+            ],
+            [
+              "**Test**",
+              "Generieren Sie eine Fragensammlung zum Import in eine Test-Aktivität (XML- oder GIFT-Format)"
+            ],
+            [
+              "**MCQ**",
+              "Erstellen Sie eine einfache MCQ-Aktivität."
+            ],
+            [
+              "**Zuordnung**",
+              "Erstellen Sie eine Zuordnungsaktivität mit 10 Fragen."
+            ],
+            [
+              "**Millionär**",
+              "Erstellen Sie eine Millionär-Aktivität mit 6 Fragen ansteigender Schwierigkeit."
+            ],
+            [
+              "**Glossar**",
+              "Erstellen Sie ein Glossar zum Import im XML-Format."
+            ]
+          ]
         }
       ]
     },
@@ -461,7 +692,7 @@
         },
         {
           "type": "p",
-          "text": "Um Fragen zu Ihrer **Fragensammlung** hinzuzufügen: Wählen Sie in der Sammlung **„Importieren“**, wählen Sie das Format (Moodle XML oder GIFT) und laden Sie die Datei."
+          "text": "Um Fragen zu Ihrer **Fragensammlung** hinzuzufügen: Wählen Sie in der Sammlung **„Importieren“**, wählen Sie das Format (Moodle XML oder GIFT) und laden Sie die Datei. Sie können den Test auch direkt als **`.mbz`** importieren — eine wiederherstellbare Aktivität (siehe „Datei .mbz“ oben)."
         },
         {
           "type": "shot",

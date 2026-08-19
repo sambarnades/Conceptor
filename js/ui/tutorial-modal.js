@@ -28,7 +28,7 @@
  */
 
 import { t, translatePage, currentLang } from '../core/translation.js';
-import { debugLog, setupModalAccessibility } from '../core/utils.js';
+import { debugLog, setupModalAccessibility, safeLocal } from '../core/utils.js';
 
 const MODAL_ID = 'tutorial-modal';
 const LAST_CHAPTER_KEY = 'caramel.tutorial.last';
@@ -50,19 +50,16 @@ const state = {
 // Helpers PURS (aucun accès au DOM)
 // ============================================================================
 
-/**
- * Échappe les caractères HTML sensibles. Première barrière avant toute
- * insertion via innerHTML.
- * @param {string} s
- * @returns {string}
- */
-export function escapeHtml(s) {
-  return String(s == null ? '' : s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
+// Échappement : première barrière avant toute insertion via innerHTML.
+// La copie locale historique n'échappait PAS l'apostrophe — une valeur réinjectée
+// dans un attribut à guillemets simples pouvait en sortir. Remplacée par le
+// canonique de `core/escape.js`, qui échappe les 5 caractères.
+//
+// IMPORTER puis exporter, et NON `export { … } from` : une ré-exportation ne crée
+// AUCUNE liaison locale, or `formatInline()` ci-dessous appelle `escapeHtml` —
+// la ré-exportation seule levait `ReferenceError` à chaque mise en forme.
+import { escapeHtml } from '../core/escape.js';
+export { escapeHtml };
 
 /**
  * Met en forme un texte de contenu : échappe le HTML, puis convertit la SEULE
@@ -438,14 +435,12 @@ function els() {
 }
 
 function rememberChapter(id) {
-  try { localStorage.setItem(LAST_CHAPTER_KEY, id); } catch (_) { /* ignore */ }
+  safeLocal.set(LAST_CHAPTER_KEY, id);
 }
 function recallChapterIndex() {
-  try {
-    const id = localStorage.getItem(LAST_CHAPTER_KEY);
-    const i = state.chapters.findIndex(c => c.id === id);
-    return i >= 0 ? i : 0;
-  } catch (_) { return 0; }
+  const id = safeLocal.get(LAST_CHAPTER_KEY);
+  const i = state.chapters.findIndex(c => c.id === id);
+  return i >= 0 ? i : 0;
 }
 
 /** (Re)construit le sommaire à partir de state.chapters. */

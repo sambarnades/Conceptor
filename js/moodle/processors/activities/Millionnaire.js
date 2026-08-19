@@ -63,18 +63,11 @@ const MILLIONNAIRE_XML = `<?xml version="1.0" encoding="UTF-8"?>
  * @param {Object} options - Options de génération
  * @returns {Object} Objet { chemin: contenu } de tous les fichiers
  */
-function escapeXml(unsafe) {
-    if (!unsafe) return "";
-    return unsafe.replace(/[<>&'"]/g, function (c) {
-        switch (c) {
-            case '<': return '&lt;';
-            case '>': return '&gt;';
-            case '&': return '&amp;';
-            case '\'': return '&apos;';
-            case '"': return '&quot;';
-        }
-    });
-}
+// Cet échappeur local NE filtrait PAS les caractères de contrôle, contrairement à
+// celui de mbz-utils déjà importé ci-dessus sous le nom `xmlEscape`. Un caractère
+// de contrôle dans l'intro produisait donc un .mbz refusé à l'import. On utilise
+// désormais le même canonique partout dans ce fichier.
+const escapeXml = xmlEscape;
 
 export function buildFiles(data, options = {}) {
     const files = {};

@@ -6,7 +6,10 @@
  */
 
 import { t } from '../core/translation.js';
-import { debugLog } from '../core/utils.js';
+// `core/utils.js` n'est PAS partagé avec Sucrerie (chaque dépôt a le sien) : n'importer
+// ici que des helpers présents des DEUX côtés. `debugLog` et `markdownToHtml` le sont
+// (corps fonctionnellement identiques, vérifié).
+import { debugLog, markdownToHtml } from '../core/utils.js';
 import { getNestedValue, setNestedValue } from './json-utils.js';
 import { normalizeFractions } from '../moodle/moodle-formats.js';
 
@@ -46,6 +49,14 @@ const contentSignatures = {
         data.dialogs.length > 0 &&
         data.dialogs[0].hasOwnProperty('text') &&
         data.dialogs[0].hasOwnProperty('answer'),
+
+    // Dictation : sentences[] d'objets {text} (ou chaînes). Signature unique — ne pas
+    // confondre avec FillInTheBlanks (questions[] de chaînes) ni Summary (summaries[]).
+    'Dictation': (data) =>
+        Array.isArray(data.sentences) &&
+        data.sentences.length > 0 &&
+        (typeof data.sentences[0] === 'string' ||
+            (data.sentences[0] && data.sentences[0].hasOwnProperty('text'))),
 
     'Timeline': (data) =>
         data.hasOwnProperty('timeline') &&
@@ -231,6 +242,7 @@ const titleKeyToModuleKey = {
     'h5p_true_false_name': 'TrueFalse',
     'h5p_fill_in_the_blanks_name': 'FillInTheBlanks',
     'h5p_dialog_cards_name': 'DialogCards',
+    'h5p_dictation_name': 'Dictation',
     'h5p_timeline_name': 'Timeline',
     'h5p_crossword_name': 'Crossword',
     'h5p_essay_name': 'Essay',
@@ -252,6 +264,7 @@ const titleKeyToModuleKey = {
     'h5p_truefalse': 'TrueFalse',
     'h5p_fillintheblanks': 'FillInTheBlanks',
     'h5p_dialogcards': 'DialogCards',
+    'h5p_dictation': 'Dictation',
     'h5p_timeline': 'Timeline',
     'h5p_crossword': 'Crossword',
     'h5p_essay': 'Essay',
@@ -380,6 +393,11 @@ const CP_EXERCISE_SCHEMAS = {
         },
         dropZones: {
             type: 'array', itemLabel: 'editor_zone', addLabel: 'editor_add_zone',
+            // Les étiquettes visent leurs zones par INDICE (`elements[].zoneIndices`, déclaré
+            // `optionsValueType: 'index'`) : supprimer, insérer, dupliquer ou déplacer une zone
+            // renumérote les suivantes, et ces renvois doivent suivre — sinon les étiquettes
+            // changent de zone en silence. Cf. remapIndexReferences() dans json-utils.js.
+            indexReferencedBy: [{ array: 'elements', field: 'zoneIndices' }],
             minItems: 2, maxItems: 10, itemsExpanded: true,
             itemSchema: { label: { type: 'text', label: 'editor_zone_label', required: true } }
         },
@@ -708,6 +726,102 @@ const fieldSchemas = {
                             separateLines: { type: 'checkbox', label: 'editor_separate_lines', default: false, hint: 'editor_separate_lines_hint' },
                             confirmCheckDialog: { type: 'checkbox', label: 'editor_confirm_check_dialog', default: false, hint: 'editor_confirm_check_dialog_hint' },
                             confirmRetryDialog: { type: 'checkbox', label: 'editor_confirm_retry_dialog', default: false, hint: 'editor_confirm_retry_dialog_hint' }
+                        }
+                    }
+                }
+            }
+        ]
+    },
+
+    // === DICTATION (dictée) ===
+    // L'audio des phrases est SYNTHÉTISÉ par l'hôte (panneau réglages TTS monté par
+    // l'index.js divergent de chaque dépôt, cf. editor/dictation-tts-panel.js). Les champs
+    // audio ci-dessous permettent en plus un téléversement MANUEL (jamais écrasé par la
+    // synthèse) : valeur éditeur { path, mime, kind, dataURL } ↔ tableau H5P via
+    // normalizeDataForEditor / denormalizeDataForSave.
+    'Dictation': {
+        sections: [
+            {
+                id: 'general',
+                label: 'editor_section_general',
+                icon: 'fa-info-circle',
+                fields: {
+                    title: { type: 'text', label: 'editor_title' },
+                    taskDescription: { type: 'textarea', label: 'editor_task_description', required: true },
+                    // Bloc « Média » H5P (illustration au-dessus de la consigne) — patron
+                    // media context, mêmes clés i18n que Choix multiples.
+                    mediaImage: { type: 'image', label: 'editor_image_context', hint: 'editor_image_context_hint', collapsible: true, collapsibleLabel: 'editor_image_context', altTextField: 'mediaImageAlt' }
+                }
+            },
+            {
+                id: 'sentences',
+                label: 'editor_section_sentences',
+                icon: 'fa-headphones',
+                countField: 'sentences',
+                fields: {
+                    sentences: {
+                        type: 'array',
+                        itemLabel: 'editor_sentence',
+                        addLabel: 'editor_add_sentence',
+                        minItems: 1,
+                        itemsExpanded: false,
+                        itemSchema: {
+                            text: { type: 'textarea', label: 'editor_dictation_text', required: true, hint: 'editor_dictation_text_hint' },
+                            description: { type: 'text', label: 'editor_dictation_description', hint: 'editor_dictation_description_hint' },
+                            sample: { type: 'audio', label: 'editor_dictation_sample', hint: 'editor_dictation_sample_hint' },
+                            sampleAlternative: { type: 'audio', label: 'editor_dictation_sample_slow', hint: 'editor_dictation_sample_slow_hint' }
+                        }
+                    }
+                }
+            },
+            {
+                id: 'feedback',
+                label: 'editor_section_feedback',
+                icon: 'fa-comment-dots',
+                fields: {
+                    overallFeedback: { type: 'feedbackRanges', label: 'editor_overall_feedback' }
+                }
+            },
+            {
+                id: 'settings',
+                label: 'editor_section_settings',
+                icon: 'fa-cog',
+                startCollapsed: true,
+                fields: {
+                    behaviour: {
+                        type: 'object',
+                        schema: {
+                            ignorePunctuation: { type: 'checkbox', label: 'editor_dictation_ignore_punctuation', default: true, hint: 'editor_dictation_ignore_punctuation_hint' },
+                            typoFactor: {
+                                type: 'select',
+                                label: 'editor_dictation_typo_factor',
+                                default: '50',
+                                hint: 'editor_dictation_typo_factor_hint',
+                                options: [
+                                    { value: '100', label: 'editor_dictation_typo_100' },
+                                    { value: '50', label: 'editor_dictation_typo_50' },
+                                    { value: '0', label: 'editor_dictation_typo_0' }
+                                ]
+                            },
+                            zeroMistakeMode: { type: 'checkbox', label: 'editor_dictation_zero_mistake', default: false, hint: 'editor_dictation_zero_mistake_hint' },
+                            customTypoDisplay: { type: 'checkbox', label: 'editor_dictation_show_typos', default: false, hint: 'editor_dictation_show_typos_hint' },
+                            tries: { type: 'number', label: 'editor_dictation_tries', hint: 'editor_dictation_tries_hint', min: 1 },
+                            triesAlternative: { type: 'number', label: 'editor_dictation_tries_slow', hint: 'editor_dictation_tries_slow_hint', min: 1 },
+                            playButtonDelay: { type: 'number', label: 'editor_dictation_play_delay', hint: 'editor_dictation_play_delay_hint', min: 0, max: 3 },
+                            disablePause: { type: 'checkbox', label: 'editor_dictation_disable_pause', default: false, hint: 'editor_dictation_disable_pause_hint' },
+                            shuffleSentences: {
+                                type: 'select',
+                                label: 'editor_dictation_shuffle',
+                                default: 'never',
+                                options: [
+                                    { value: 'never', label: 'editor_dictation_shuffle_never' },
+                                    { value: 'once', label: 'editor_dictation_shuffle_once' },
+                                    { value: 'onRetry', label: 'editor_dictation_shuffle_on_retry' }
+                                ]
+                            },
+                            enableRetry: { type: 'checkbox', label: 'editor_enable_retry', default: true },
+                            enableSolutionsButton: { type: 'checkbox', label: 'editor_enable_solutions', default: true },
+                            enableSolutionOnCheck: { type: 'checkbox', label: 'editor_dictation_solution_on_check', default: false, hint: 'editor_dictation_solution_on_check_hint' }
                         }
                     }
                 }
@@ -1261,6 +1375,11 @@ const fieldSchemas = {
                 fields: {
                     dropZones: {
                         type: 'array',
+                        // Les étiquettes visent leurs zones par INDICE (`elements[].zoneIndices`, déclaré
+                        // `optionsValueType: 'index'`) : supprimer, insérer, dupliquer ou déplacer une zone
+                        // renumérote les suivantes, et ces renvois doivent suivre — sinon les étiquettes
+                        // changent de zone en silence. Cf. remapIndexReferences() dans json-utils.js.
+                        indexReferencedBy: [{ array: 'elements', field: 'zoneIndices' }],
                         itemLabel: 'editor_zone',
                         addLabel: 'editor_add_zone',
                         minItems: 2,
@@ -1415,6 +1534,10 @@ const fieldSchemas = {
                         itemLabel: 'editor_question',
                         addLabel: 'editor_add_question',
                         minItems: 1,
+                        // `metadata.title` est l'intitulé H5P de la sous-question (étiquette de
+                        // navigation), distinct de `params.question` qui porte l'énoncé vu par
+                        // l'élève : titre générique à la création. cf. addItem() / createEmptyArrayItem().
+                        autoTitleField: 'metadata.title',
                         itemSchema: {
                             subContentId: { type: 'text', label: 'subContentId', hidden: true },
                             library: {
@@ -1561,6 +1684,11 @@ const fieldSchemas = {
                                         },
                                         dropZones: {
                                             type: 'array',
+                                            // Les étiquettes visent leurs zones par INDICE (`elements[].zoneIndices`, déclaré
+                                            // `optionsValueType: 'index'`) : supprimer, insérer, dupliquer ou déplacer une zone
+                                            // renumérote les suivantes, et ces renvois doivent suivre — sinon les étiquettes
+                                            // changent de zone en silence. Cf. remapIndexReferences() dans json-utils.js.
+                                            indexReferencedBy: [{ array: 'elements', field: 'zoneIndices' }],
                                             itemLabel: 'editor_zone',
                                             addLabel: 'editor_add_zone',
                                             minItems: 2,
@@ -2397,6 +2525,8 @@ const fieldSchemas = {
                         itemLabel: 'editor_livre_chapter',
                         addLabel: 'editor_livre_add_chapter',
                         dynamicTitleField: 'title',
+                        // Titre générique à la création (« Chapitre 5 ») : cf. addItem() dans array-manager.js
+                        autoTitleField: 'title',
                         minItems: 1,
                         itemSchema: {
                             title: {
@@ -2502,6 +2632,8 @@ const fieldSchemas = {
                         itemLabel: 'editor_cp_slide',
                         addLabel: 'editor_cp_add_slide',
                         dynamicTitleField: 'type',
+                        // Titre générique à la création (« Diapositive 6 ») : cf. addItem() dans array-manager.js
+                        autoTitleField: 'title',
                         minItems: 2,
                         itemSchema: {
                             // === Champs communs ===
@@ -2679,6 +2811,10 @@ const fieldSchemas = {
                         itemLabel: 'editor_ib_chapter',
                         addLabel: 'editor_ib_add_chapter',
                         dynamicTitleField: 'title',
+                        // Titre générique à la création. `healInteractiveBook` posait déjà un repli
+                        // « Chapitre N » — mais en français figé, et seulement à l'enregistrement :
+                        // le sommaire de l'éditeur restait sans intitulé. cf. addItem().
+                        autoTitleField: 'title',
                         minItems: 2,
                         itemSchema: {
                             title: { type: 'text', label: 'editor_ib_chapter_title', required: true, hint: 'editor_ib_chapter_title_hint' },
@@ -2801,6 +2937,22 @@ const fieldSchemas = {
                 icon: 'fa-info-circle',
                 fields: {
                     title: { type: 'text', label: 'editor_title' },
+                    // Réglage GLOBAL du mode d'affichage des questions (2026-08, demande auteur).
+                    // « Personnalisé » (défaut) = chaque question décide, via son propre menu ; les
+                    // deux autres modes s'imposent à toutes les questions et masquent ce menu
+                    // (cf. `display` plus bas, showWhen à portée racine). Le défaut est
+                    // « personnalisé » et NON « direct » pour rester sans perte : un contenu
+                    // importé où l'enseignant a réglé ses questions une à une garde ses choix.
+                    // Une question qui ne dit rien s'affiche de toute façon directement.
+                    displayMode: {
+                        type: 'select', label: 'editor_iv_display_mode', hint: 'editor_iv_display_mode_hint',
+                        default: 'custom',
+                        options: [
+                            { value: 'custom', label: 'editor_iv_display_mode_custom' },
+                            { value: 'poster', label: 'editor_iv_display_mode_poster' },
+                            { value: 'button', label: 'editor_iv_display_mode_button' }
+                        ]
+                    },
                     videoSource: {
                         type: 'object', label: 'editor_iv_video', collapsible: true, collapsibleLabel: 'editor_iv_video',
                         schema: {
@@ -2872,15 +3024,27 @@ const fieldSchemas = {
                             appearance: {
                                 type: 'fieldGroup', label: 'editor_iv_group_appearance', collapsible: true,
                                 fields: {
+                                    // Défaut `poster` depuis 2026-08 (demande auteur) : la question
+                                    // s'affiche d'elle-même sur la vidéo. L'option bouton reste
+                                    // offerte question par question — d'où l'ordre, défaut en tête.
+                                    // Visible UNIQUEMENT en mode global « personnalisé » : dans les
+                                    // deux autres modes le réglage global tranche pour toutes les
+                                    // questions, ce menu n'aurait aucun effet.
                                     display: {
-                                        type: 'select', label: 'editor_iv_display', default: 'button',
+                                        type: 'select', label: 'editor_iv_display', default: 'poster',
+                                        showWhen: { rootField: 'displayMode', value: 'custom', defaultValue: 'custom' },
                                         options: [
-                                            { value: 'button', label: 'editor_iv_display_button' },
-                                            { value: 'poster', label: 'editor_iv_display_poster' }
+                                            { value: 'poster', label: 'editor_iv_display_poster' },
+                                            { value: 'button', label: 'editor_iv_display_button' }
                                         ]
                                     },
+                                    // Masqué en mode poster : le lecteur affiche TOUJOURS un poster
+                                    // en plein cadre, quelles que soient les coordonnées stockées
+                                    // (mesuré sur H5P.InteractiveVideo 1.27, cf. le processeur).
+                                    // Offrir le réglage y ferait croire à un pouvoir qu'il n'a pas.
                                     placement: {
                                         type: 'select', label: 'editor_iv_placement', default: 'center',
+                                        showWhen: { field: 'display', value: 'button' },
                                         options: [
                                             { value: 'center', label: 'editor_iv_placement_center' },
                                             { value: 'top-left', label: 'editor_iv_placement_top_left' },
@@ -3211,6 +3375,7 @@ const moduleTranslationKeys = {
     'TrueFalse': 'h5p_true_false_name',
     'FillInTheBlanks': 'h5p_fill_in_the_blanks_name',
     'DialogCards': 'h5p_dialog_cards_name',
+    'Dictation': 'h5p_dictation_name',
     'Timeline': 'h5p_timeline_name',
     'Crossword': 'h5p_crossword_name',
     'Essay': 'h5p_essay_name',
@@ -3734,6 +3899,52 @@ function denormalizeHotspotQuestionData(data, rootKey) {
 }
 
 /**
+ * Glisser-déposer : met les associations étiquette ↔ zone dans la forme de l'ÉDITEUR
+ * (`elements[].zoneIndices`), quelle que soit la forme d'entrée.
+ *
+ * `correctElements` (zone → étiquettes) est la forme du `.h5p`, des prompts et des
+ * processeurs : elle fait autorité DÈS QU'ELLE PORTE QUELQUE CHOSE. Sinon les renvois déjà
+ * écrits dans la forme éditeur sont CONSERVÉS — les écraser sans rien avoir à mettre à la
+ * place effaçait en silence toutes les bonnes réponses d'un contenu rédigé dans cette forme
+ * (constaté sur `course_presentation_4.json`). L'autre bout de la chaîne est réparé par
+ * `healDragQuestionAssociations` (json-healer.js), qui fait le trajet inverse avant export.
+ *
+ * Les quatre conteneurs d'un Glisser-déposer — autonome, sous-question de Quiz, exercice de
+ * diapositive, bloc de Livre interactif — passent tous par ici : une seule règle, un seul
+ * endroit à corriger.
+ *
+ * @param {Array} dropZones - zones de dépôt (mutées : `correctElements` retiré)
+ * @param {Array} elements - étiquettes (mutées : `zoneIndices` posé)
+ */
+function normalizeDragQuestionForEditor(dropZones, elements) {
+    const zonesRenseignees = dropZones.some(
+        z => z && Array.isArray(z.correctElements) && z.correctElements.length > 0
+    );
+
+    if (zonesRenseignees) {
+        elements.forEach(el => { if (el && typeof el === 'object') el.zoneIndices = []; });
+        dropZones.forEach((zone, zoneIdx) => {
+            if (!zone || !Array.isArray(zone.correctElements)) return;
+            zone.correctElements.forEach(elemIdx => {
+                const idx = typeof elemIdx === 'string' ? parseInt(elemIdx, 10) : elemIdx;
+                if (!Number.isInteger(idx) || idx < 0 || idx >= elements.length) return;
+                const el = elements[idx];
+                if (!el || typeof el !== 'object') return;
+                if (!el.zoneIndices.includes(zoneIdx)) el.zoneIndices.push(zoneIdx);
+            });
+        });
+    } else {
+        elements.forEach(el => {
+            if (el && typeof el === 'object' && !Array.isArray(el.zoneIndices)) el.zoneIndices = [];
+        });
+    }
+
+    // `correctElements` est reconstruit à l'enregistrement (denormalizeDataForSave) : le
+    // garder pendant l'édition ferait une seconde source de vérité, qui divergerait.
+    dropZones.forEach(zone => { if (zone && typeof zone === 'object') delete zone.correctElements; });
+}
+
+/**
  * Normalise les données pour l'éditeur
  * Certains types (comme Glossary) utilisent un tableau direct qui doit être encapsulé
  * @param {Object|Array} data - Les données brutes
@@ -3796,20 +4007,7 @@ export function normalizeDataForEditor(data, moduleKey) {
                     if (q.library && q.library.startsWith('H5P.DragQuestion') && q.params) {
                         const dropZones = q.params.dropZones || [];
                         const elements = q.params.elements || [];
-                        elements.forEach(el => { el.zoneIndices = []; });
-                        dropZones.forEach((zone, zoneIdx) => {
-                            if (Array.isArray(zone.correctElements)) {
-                                zone.correctElements.forEach(elemIdx => {
-                                    const idx = typeof elemIdx === 'string' ? parseInt(elemIdx, 10) : elemIdx;
-                                    if (idx >= 0 && idx < elements.length) {
-                                        if (!elements[idx].zoneIndices.includes(zoneIdx)) {
-                                            elements[idx].zoneIndices.push(zoneIdx);
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                        dropZones.forEach(zone => { delete zone.correctElements; });
+                        normalizeDragQuestionForEditor(dropZones, elements);
                     }
                 });
             }
@@ -3818,23 +4016,7 @@ export function normalizeDataForEditor(data, moduleKey) {
         case 'DragAndDrop': {
             const dropZones = data.dropZones || [];
             const elements = data.elements || [];
-            // Initialiser tous les éléments avec un tableau vide
-            elements.forEach(el => { el.zoneIndices = []; });
-            // Mapper correctElements → zoneIndices (un élément peut être dans plusieurs zones)
-            dropZones.forEach((zone, zoneIdx) => {
-                if (Array.isArray(zone.correctElements)) {
-                    zone.correctElements.forEach(elemIdx => {
-                        const idx = typeof elemIdx === 'string' ? parseInt(elemIdx, 10) : elemIdx;
-                        if (idx >= 0 && idx < elements.length) {
-                            if (!elements[idx].zoneIndices.includes(zoneIdx)) {
-                                elements[idx].zoneIndices.push(zoneIdx);
-                            }
-                        }
-                    });
-                }
-            });
-            // Supprimer correctElements (inutile pendant l'édition)
-            dropZones.forEach(zone => { delete zone.correctElements; });
+            normalizeDragQuestionForEditor(dropZones, elements);
             return data;
         }
 
@@ -3858,18 +4040,7 @@ export function normalizeDataForEditor(data, moduleKey) {
                         slide._exerciseLibrary.startsWith('H5P.DragQuestion')) {
                         const dropZones = slide.exercise.dropZones || [];
                         const elements = slide.exercise.elements || [];
-                        elements.forEach(el => { el.zoneIndices = []; });
-                        dropZones.forEach((zone, zoneIdx) => {
-                            if (Array.isArray(zone.correctElements)) {
-                                zone.correctElements.forEach(elemIdx => {
-                                    const idx = typeof elemIdx === 'string' ? parseInt(elemIdx, 10) : elemIdx;
-                                    if (idx >= 0 && idx < elements.length && !elements[idx].zoneIndices.includes(zoneIdx)) {
-                                        elements[idx].zoneIndices.push(zoneIdx);
-                                    }
-                                });
-                            }
-                        });
-                        dropZones.forEach(zone => { delete zone.correctElements; });
+                        normalizeDragQuestionForEditor(dropZones, elements);
                     }
                 });
             }
@@ -3891,18 +4062,7 @@ export function normalizeDataForEditor(data, moduleKey) {
                             if (library && library.startsWith('H5P.DragQuestion')) {
                                 const dropZones = params.dropZones || [];
                                 const elements = params.elements || [];
-                                elements.forEach(el => { el.zoneIndices = []; });
-                                dropZones.forEach((zone, zoneIdx) => {
-                                    if (Array.isArray(zone.correctElements)) {
-                                        zone.correctElements.forEach(elemIdx => {
-                                            const idx = typeof elemIdx === 'string' ? parseInt(elemIdx, 10) : elemIdx;
-                                            if (idx >= 0 && idx < elements.length && !elements[idx].zoneIndices.includes(zoneIdx)) {
-                                                elements[idx].zoneIndices.push(zoneIdx);
-                                            }
-                                        });
-                                    }
-                                });
-                                dropZones.forEach(zone => { delete zone.correctElements; });
+                                normalizeDragQuestionForEditor(dropZones, elements);
                             }
                             return { _blockType: 'exercise', _exerciseLibrary: library || '', exercise: params };
                         }
@@ -3939,7 +4099,25 @@ export function normalizeDataForEditor(data, moduleKey) {
                     if (Array.isArray(h.content) && h.content.length) {
                         content = h.content.map(normalizeIHContentNode).filter(Boolean);
                     } else if (h.text) {
-                        content = [{ _contentType: 'text', text: h.text }];
+                        // Le champ plat `text` vient du LLM et porte du MARKDOWN. On le
+                        // convertit ICI, car ce passage est à sens unique : `delete h.text`
+                        // ci-dessous supprime le champ plat, et le processeur ne verra plus
+                        // que le bloc structuré — dont le chemin se contente d'assainir,
+                        // sans convertir. Sans cette conversion, ouvrir puis enregistrer une
+                        // « Image interactive » transformait `**gras**` en astérisques
+                        // visibles dans l'activité publiée (constaté 2026-07 sur Sucrerie).
+                        //
+                        // Le semantics l'autorise explicitement : le contenu d'un point est
+                        // un sous-contenu `H5P.Text 1.1`, dont le champ `text` est
+                        // `widget: html` avec `strong` dans ses `tags`
+                        // (cf. node tests/run_semantics_audit.mjs --module=ImageHotspots).
+                        //
+                        // `markdownToHtml` et non `formatTextToHtml` : ce fichier est
+                        // byte-identique côté Sucrerie et ne peut importer que des helpers
+                        // présents dans les DEUX `core/utils.js` (celui-ci n'est pas partagé).
+                        // La conversion est idempotente — un texte déjà converti ne contient
+                        // plus de `**`, une seconde passe le laisse intact.
+                        content = [{ _contentType: 'text', text: markdownToHtml(h.text) }];
                     }
                     // Conserver le flag legacyPositioning (positionnement pré-1.8) en champ caché,
                     // sinon il est perdu à l'aplatissement et le rendu des points se décale au ré-export
@@ -3959,6 +4137,58 @@ export function normalizeDataForEditor(data, moduleKey) {
 
         case 'FindMultipleHotspots':
             return normalizeHotspotQuestionData(data, 'imageMultipleHotspotQuestion');
+
+        case 'Dictation': {
+            // Tableau nu / phrases en chaînes (IA externes) → objets {text}
+            if (Array.isArray(data)) data = { sentences: data };
+            if (Array.isArray(data.sentences)) {
+                data.sentences = data.sentences.map(s => {
+                    const st = (typeof s === 'string') ? { text: s } : { ...(s || {}) };
+                    // Champ audio H5P (tableau [{path,mime,…}]) → valeur éditeur {path,mime,kind,dataURL?}
+                    const toEditorAudio = (v) => {
+                        const f = Array.isArray(v) ? v[0] : v;
+                        if (!f || typeof f.path !== 'string' || !f.path) return null;
+                        return { path: f.path, mime: f.mime || 'audio/mpeg', kind: 'audio', ...(f.dataURL ? { dataURL: f.dataURL } : {}) };
+                    };
+                    const sample = toEditorAudio(st.sample);
+                    const alt = toEditorAudio(st.sampleAlternative);
+                    if (sample) st.sample = sample; else delete st.sample;
+                    if (alt) st.sampleAlternative = alt; else delete st.sampleAlternative;
+                    return st;
+                });
+            }
+            // behaviour imbriqué du content.json (scoring/textual/feedbackPresentation)
+            // → forme PLATE attendue par le schéma éditeur
+            if (data.behaviour && typeof data.behaviour === 'object') {
+                const b = { ...data.behaviour };
+                for (const grp of ['scoring', 'textual', 'feedbackPresentation']) {
+                    if (b[grp] && typeof b[grp] === 'object') {
+                        Object.assign(b, b[grp]);
+                        delete b[grp];
+                    }
+                }
+                data.behaviour = b;
+            }
+            // Bloc « Média » du content.json (media.type = H5P.Image) → champ éditeur
+            // mediaImage {path,mime,…} + mediaImageAlt (round-trip d'un .h5p rechargé,
+            // y compris ré-enregistré par Éléa/Lumi).
+            {
+                const file = data.media?.type?.params?.file;
+                if (!data.mediaImage && file && typeof file.path === 'string' && file.path) {
+                    data.mediaImage = {
+                        path: file.path,
+                        mime: file.mime || 'image/jpeg',
+                        ...(file.width ? { width: file.width } : {}),
+                        ...(file.height ? { height: file.height } : {}),
+                        // dataURL posé par la ré-hydratation du ZIP (preview de l'image
+                        // dans le widget éditeur à la réouverture).
+                        ...(file.dataURL ? { dataURL: file.dataURL } : {})
+                    };
+                    data.mediaImageAlt = data.media.type.params.alt || '';
+                }
+            }
+            return data;
+        }
 
         case 'elea_test':
             // Injecter le champ "single" manquant et normaliser les fractions multichoice
@@ -4015,6 +4245,89 @@ export function denormalizeDataForSave(data, moduleKey) {
                 data.wordList = data.wordList.join(',');
             }
             return data;
+
+        case 'Dictation': {
+            // Valeur éditeur {path,mime,kind,dataURL} → champ audio H5P [{path,mime,copyright}]
+            // (forme DIRECTEMENT jouable : indispensable côté hôtes sans processeur).
+            if (Array.isArray(data.sentences)) {
+                data.sentences = data.sentences.map(s => {
+                    const st = { ...(s || {}) };
+                    const toH5PAudio = (v) => {
+                        const f = Array.isArray(v) ? v[0] : v;
+                        if (!f || typeof f.path !== 'string' || !f.path) return null;
+                        return [{ path: f.path, mime: f.mime || 'audio/mpeg', copyright: { license: 'U' } }];
+                    };
+                    const sample = toH5PAudio(st.sample);
+                    const alt = toH5PAudio(st.sampleAlternative);
+                    if (sample) st.sample = sample; else delete st.sample;
+                    if (alt) st.sampleAlternative = alt; else delete st.sampleAlternative;
+                    return st;
+                });
+            }
+            // behaviour plat de l'éditeur → groupes imbriqués attendus par H5P.Dictation
+            // (behaviour.scoring.*, .textual.*, .feedbackPresentation.*)
+            if (data.behaviour && typeof data.behaviour === 'object') {
+                const b = { ...data.behaviour };
+                const lift = (keys) => {
+                    const grp = {};
+                    keys.forEach(k => {
+                        if (b[k] !== undefined) { grp[k] = b[k]; delete b[k]; }
+                    });
+                    return grp;
+                };
+                const scoring = lift(['ignorePunctuation', 'zeroMistakeMode', 'typoFactor']);
+                const textual = lift(['wordSeparator', 'overrideRTL', 'autosplit']);
+                const feedbackPresentation = lift(['customTypoDisplay', 'alternateSolution']);
+                b.scoring = {
+                    ignorePunctuation: scoring.ignorePunctuation !== false,
+                    zeroMistakeMode: scoring.zeroMistakeMode === true,
+                    typoFactor: ['100', '50', '0'].includes(String(scoring.typoFactor)) ? String(scoring.typoFactor) : '50'
+                };
+                b.textual = {
+                    wordSeparator: textual.wordSeparator || ' ',
+                    overrideRTL: ['auto', 'on', 'off'].includes(textual.overrideRTL) ? textual.overrideRTL : 'auto',
+                    autosplit: textual.autosplit !== false
+                };
+                b.feedbackPresentation = {
+                    customTypoDisplay: feedbackPresentation.customTypoDisplay === true,
+                    alternateSolution: (feedbackPresentation.alternateSolution === 'all') ? 'all' : 'first'
+                };
+                data.behaviour = b;
+            }
+            // Champ éditeur mediaImage → bloc « Média » H5P JOUABLE (indispensable côté
+            // hôtes sans processeur). Image retirée dans l'éditeur → retour au bloc vide.
+            // Un media NON-image (vidéo/audio posé par Éléa) est conservé tel quel : le
+            // champ éditeur ne gère que l'image et ne doit pas l'écraser.
+            {
+                const img = data.mediaImage;
+                const isNonImageMedia = data.media?.type && !data.media.type.params?.file;
+                if (img && typeof img.path === 'string' && img.path) {
+                    data.media = {
+                        type: {
+                            library: 'H5P.Image 1.1',
+                            params: {
+                                file: {
+                                    path: img.path,
+                                    mime: img.mime || 'image/jpeg',
+                                    width: img.width || 0,
+                                    height: img.height || 0
+                                },
+                                alt: data.mediaImageAlt || '',
+                                decorative: false
+                            },
+                            subContentId: ihUUID(),
+                            metadata: { contentType: 'Image', license: 'U', title: 'Untitled Image' }
+                        },
+                        disableImageZooming: false
+                    };
+                } else if (!isNonImageMedia) {
+                    data.media = { disableImageZooming: false };
+                }
+                delete data.mediaImage;
+                delete data.mediaImageAlt;
+            }
+            return data;
+        }
 
         case 'DragAndDrop': {
             const dropZones = data.dropZones || [];

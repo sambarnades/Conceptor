@@ -125,3 +125,12 @@ Workflow de debug :
 - **`subContentId`** : les sous-questions QuizSet et éléments CoursePresentation EXIGENT un UUID — utiliser `getUUID()`
 - **Double échappement LaTeX** : `\\frac` vs `\frac` — le healer normalise mais si tu codes en dur, attention aux strings JSON
 - **Markers DragTheWords** : `*mot*` doit rester intact dans le processor — ne pas escape en HTML
+- **Libellé écrit en dur = une seule langue.** Un `.h5p` n'embarque pas les libs : seul le
+  `content.json` produit par le processeur est traduit sur Éléa, et les `language/*.json` du
+  vendor ne servent qu'à l'éditeur de la plateforme. Donc `checkAnswer: "Vérifier"` sort en
+  français même en interface grecque, et un champ `common: true` **non écrit** sort en anglais
+  même en interface française. Toujours `champ: translations.h5p_xxx || "repli"`.
+  Ce piège s'était installé en masse : le lecteur de Vidéo interactive (47 libellés), 10 champs
+  de Glisser les mots et le groupe `a11y` entier des Mots croisés étaient figés (audit 2026-08).
+  Garde-fou : `node tests/run_h5p_ui_coverage.mjs --verbose` (en CI) ; pré-remplissage des
+  locales depuis les traductions officielles H5P : `node scripts/sync-h5p-ui-labels.mjs --write`.

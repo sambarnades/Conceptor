@@ -9,7 +9,7 @@ interface do Caramel. Fonte única de verdade: js/locales/pt.json
 + index.html. Toda edição é feita via PR.
 -->
 ---
-version: 1.2.0
+version: 1.3.0
 lang: pt
 audience: professores
 ---
@@ -60,19 +60,22 @@ Três possibilidades:
 - **Copiar e colar um texto** diretamente na área de entrada.
 - **Arrastar e soltar um documento** (ou clicar em
   **"Escolher arquivo"**) em formato **PDF, DOCX, PPTX, ODT, ODP,
-  PNG, JPEG**. Também pode soltar um **ficheiro de áudio** (MP3, M4A, WAV…) ou um **vídeo** (MP4, MOV…): apenas a faixa de áudio é então transcrita automaticamente (pelo Albert, o serviço soberano da DINUM; ver confidencialidade abaixo). A área de soltar mostra **"Arraste e solte um
+  PNG, JPEG** (as imagens **WebP** e **BMP** também são aceites, sem serem listadas na tela). Uma **imagem** depositada (foto, esquema, diagrama…) é **analisada por uma IA de visão** que redige uma **descrição** dela e **transcreve fielmente o texto** que ela contém — se a IA estiver indisponível, a leitura local (OCR) assume automaticamente. Também pode soltar um **ficheiro de áudio** (MP3, M4A, WAV…) ou um **vídeo** (MP4, MOV…): apenas a faixa de áudio é então transcrita automaticamente (pelo Albert, o serviço soberano da DINUM; ver confidencialidade abaixo). A área de soltar mostra **"Arraste e solte um
   documento aqui (PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG)"** com o
   separador **"ou"**.
 - **Importar uma página web**: colar o seu link (`https://…`) no
   campo abaixo da zona de depósito, depois clicar em **"Adicionar"**.
   O texto da página é recuperado automaticamente.
 
-A extração do texto dos **documentos e imagens** acontece
+A extração do texto dos **documentos** acontece
 **inteiramente local** no seu navegador (nenhum dado enviado).
-**Duas exceções transitam pelos nossos servidores (alojados em
-França):** a **transcrição de áudio** e a **importação de uma página
-web** (o link que você introduz é enviado para extrair o seu texto; os
-links para PDF, vídeos ou páginas pagas não são suportados).
+**Três exceções transitam pelos nossos servidores (alojados em
+França):** a **análise das imagens** (a imagem é enviada ao modelo de
+visão durante o tempo da análise, nunca conservada; em caso de
+indisponibilidade, o OCR local — que nada envia — assume), a
+**transcrição de áudio** e a **importação de uma página web** (o link
+que você introduz é enviado para extrair o seu texto; os links para
+PDF, vídeos ou páginas pagas não são suportados).
 
 Se você deixar essa zona vazia, a IA se baseará apenas em seus
 conhecimentos gerais para gerar a atividade.
@@ -110,6 +113,7 @@ feedback detalhado em 4 faixas de pontuação.
 - **Ordenar parágrafos** ★ — recolocar parágrafos na ordem correta.
 - **Série de escolha única** ★ — questões com apenas uma resposta correta.
 - **Cartões de diálogo** — cartões frente e verso com texto e áudio.
+- **Ditado** — ditado com áudio: frases lidas por síntese de voz (voz F/M, velocidade normal ou lenta, 11 línguas), o aluno escreve-as e a correção destaca os erros.
 - **Preencher lacunas complexo** ★ — feedbacks específicos por erro.
 - **Gráfico** — circular ou de barras para visualizar dados.
 - **Apresentação de curso** — slideshow interativo com exercícios integrados.
@@ -121,8 +125,9 @@ feedback detalhado em 4 faixas de pontuação.
 
 ### Atividades Éléa / Magistère
 
-- **Teste (XML / GIFT)** — banco de questões variadas (múltipla escolha, associação…)
-  para importar em um teste Éléa/Magistère.
+- **Teste (MBZ / XML / GIFT)** — atividade Teste pronta a restaurar em **`.mbz`**
+  (banco de questões + quiz já montado), ou banco de questões variadas (múltipla
+  escolha, associação…) para importar (XML / GIFT) em um teste Éléa/Magistère.
 - **Múltipla escolha (QCM) (MBZ)** — atividade de múltipla escolha simples e rápida.
 - **Associação (MBZ)** — jogo de associação entre pares de elementos.
 - **Milionário (MBZ)** — quiz lúdico com dificuldade crescente.

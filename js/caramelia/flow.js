@@ -121,6 +121,10 @@ function handleGenerateStep(text) {
             runGeneration(state.genState._pendingModuleKeys || state.genState.moduleKeys || []);
             break;
         }
+        case 'bg_image':
+            // L'utilisateur tape du texte alors qu'on attend une pièce jointe image.
+            addBotMessage(t('bg_image_reminder'));
+            break;
         default:
             addBotMessage(t('gen_resume'), [
                 { label: t('gen_btn_create'), action: () => startGenerateFlow() },
@@ -247,12 +251,74 @@ function needsVideoUrl(moduleKeys) {
     return (moduleKeys || []).some(k => reqs.includes(k));
 }
 
+// Vrai si l'un des modules sélectionnés exige une image de fond (cf. requiresBackgroundImage).
+function needsBackgroundImage(moduleKeys) {
+    const reqs = CONFIG.requiresBackgroundImageKeys || [];
+    return (moduleKeys || []).some(k => reqs.includes(k));
+}
+
+// ── Étape « image de fond » (Image interactive / Trouve la zone / Trouve les zones) ──
+// Formats acceptés : miroir de la drop-zone hotspot de ui.js (image-manager convertit
+// HEIC/HEIF/TIFF automatiquement) ; taille max alignée sur BG_IMAGE_CONFIG.maxFileSize.
+const BG_IMAGE_NAME_RE = /\.(png|jpe?g|webp|gif|bmp|avif|svg|heic|heif|tiff?)$/i;
+const BG_IMAGE_MAX_MB = 12;
+const BG_IMAGE_ACCEPT = 'image/*,.png,.jpg,.jpeg,.webp,.gif,.bmp,.avif,.svg,.heic,.heif,.tif,.tiff';
+
+/**
+ * Bascule l'`accept` du trombone vers les formats d'image de fond pendant l'étape
+ * 'bg_image' (le filtre habituel PDF/DOCX/PNG/JPEG cacherait les WebP/HEIC/TIFF
+ * pourtant acceptés par le pipeline image), puis le restaure ensuite.
+ */
+function setAttachAcceptForImage(on) {
+    const fi = state.elements.fileInput;
+    if (!fi) return;
+    if (on) {
+        if (!fi.dataset.defaultAccept) fi.dataset.defaultAccept = fi.getAttribute('accept') || '';
+        fi.setAttribute('accept', BG_IMAGE_ACCEPT);
+    } else if (fi.dataset.defaultAccept) {
+        fi.setAttribute('accept', fi.dataset.defaultAccept);
+        delete fi.dataset.defaultAccept;
+    }
+}
+
+/** Vrai si Caramelia attend une image de fond (étape 'bg_image' du flow guidé). */
+export function isAwaitingBackgroundImage() {
+    return state.currentFlow === 'generate' && state.genState && state.genState.step === 'bg_image';
+}
+
+/**
+ * Consomme une pièce jointe déposée pendant l'étape 'bg_image'. Renvoie true si le
+ * fichier a été traité (accepté OU refusé avec message) — attachment.js ne doit alors
+ * PAS lancer l'OCR dessus : l'image sert de FOND d'activité, pas de source de texte.
+ * @param {File} file
+ * @returns {boolean}
+ */
+export function handleBackgroundImageAttachment(file) {
+    if (!isAwaitingBackgroundImage() || !file) return false;
+    const looksImage = (file.type && file.type.indexOf('image/') === 0) || BG_IMAGE_NAME_RE.test(file.name || '');
+    if (!looksImage) {
+        addBotMessage(t('bg_image_invalid', { name: file.name || '?' }));
+        return true;
+    }
+    if (file.size > BG_IMAGE_MAX_MB * 1024 * 1024) {
+        addBotMessage(t('bg_image_too_large', { name: file.name, max: BG_IMAGE_MAX_MB }));
+        return true;
+    }
+    setAttachAcceptForImage(false);
+    state.genState.backgroundImageFile = file;
+    state.genState.step = null;
+    addBotMessage(t('bg_image_received', { name: file.name }));
+    runGeneration(state.genState._pendingModuleKeys || state.genState.moduleKeys || []);
+    return true;
+}
+
 // ── Lancement final ──
 async function doLaunch(moduleKeys) {
     const batchIds = await launchGenerations(moduleKeys, {
         qui: state.genState.qui,
         quoi: state.genState.quoi,
         videoUrl: state.genState.videoUrl,
+        backgroundImageFile: state.genState.backgroundImageFile,
     });
 
     // Si plusieurs activités générées avec succès dans ce batch, proposer un ZIP groupé
@@ -394,6 +460,17 @@ function runGeneration(moduleKeys) {
         return;
     }
 
+    // Activité à image de fond (Image interactive, Trouve la/les zone·s) : on a besoin
+    // du FICHIER image AVANT de générer. On le demande une fois (trombone ou glisser-
+    // déposer sur le panel), puis handleBackgroundImageAttachment relance runGeneration.
+    if (needsBackgroundImage(moduleKeys) && !state.genState.backgroundImageFile) {
+        state.genState.step = 'bg_image';
+        state.genState._pendingModuleKeys = moduleKeys;
+        setAttachAcceptForImage(true);
+        addBotMessage(t('bg_image_ask'));
+        return;
+    }
+
     const labels = moduleKeys.map(k => tActivity(k)).join(', ');
     let recap = t('confirm_recap_intro') + '\n';
     recap += t('confirm_recap_qui', { qui: state.genState.qui });
@@ -401,6 +478,7 @@ function runGeneration(moduleKeys) {
     if (state.genState.niveau) recap += t('confirm_recap_niveau', { niveau: state.genState.niveau });
     if (state.genState.nombreQuestions) recap += t('confirm_recap_nombre_questions', { n: state.genState.nombreQuestions });
     if (state.genState.videoUrl) recap += t('confirm_recap_video', { url: state.genState.videoUrl });
+    if (state.genState.backgroundImageFile) recap += t('confirm_recap_image', { name: state.genState.backgroundImageFile.name });
     recap += t('confirm_recap_activities', { list: labels });
 
     addBotMessage(recap, [
@@ -678,6 +756,7 @@ export async function offerActivityFromDocument(text, fileName) {
 
 // ── Reset ──
 export function resetConversation() {
+    setAttachAcceptForImage(false);   // restaure le filtre habituel du trombone
     resetGenState();
     showWelcome();
 }

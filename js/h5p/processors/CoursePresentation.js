@@ -577,6 +577,7 @@ async function processSlide(slide, helpers) {
 function buildL10n() {
     return {
         slide: translations.h5p_cp_slide || "Diapositive",
+        slides: translations.h5p_cp_slides || "Diapositives",
         currentSlide: translations.h5p_cp_current_slide || "Diapositive actuelle",
         nextSlide: translations.h5p_cp_next_slide || "Diapositive suivante",
         prevSlide: translations.h5p_cp_prev_slide || "Diapositive précédente",
@@ -621,6 +622,16 @@ function buildL10n() {
         confirmDialogConfirmText: translations.h5p_cp_confirm_ok || "Soumettre et voir les résultats",
         confirmDialogConfirmLabel: translations.h5p_cp_confirm_label || "Confirmer",
         confirmDialogCancelLabel: translations.h5p_cp_cancel_label || "Annuler",
+        // Écran de résultats et boutons de partage : non écrits jusqu'ici, donc
+        // affichés en anglais quelle que soit la langue de l'interface.
+        resultHeader: translations.h5p_cp_result_header || "Résultats",
+        amountCorrect: translations.h5p_cp_amount_correct || "@value / @max correctes",
+        amountCorrectAria: translations.h5p_cp_amount_correct_aria || "@value sur @max correctes",
+        shareResult: translations.h5p_cp_share_result || "Partager le résultat",
+        shareFacebook: translations.h5p_cp_share_facebook || "Partager sur Facebook",
+        shareTwitter: translations.h5p_cp_share_twitter || "Partager sur Twitter",
+        shareGoogle: translations.h5p_cp_share_google || "Partager sur Google+",
+        slideshowNavigationLabel: translations.h5p_cp_slideshow_navigation || "Navigation dans le diaporama",
     };
 }
 

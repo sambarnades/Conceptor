@@ -74,8 +74,6 @@ function toBool(v) {
     return !!v;
 }
 
-// Position/dimensions par défaut du bouton d'interaction (pourcentages, cf. semantics IV).
-const DEFAULT_POS = { x: 45, y: 32, width: 40, height: 30 };
 // Fenêtre d'affichage du bouton (secondes). Courte : comme la vidéo se met en pause au
 // `timestamp`, le bouton est visible pendant la pause ; une fenêtre courte évite qu'il
 // « traîne » à l'écran une fois la question passée et la lecture reprise.
@@ -83,8 +81,9 @@ const BUTTON_VISIBLE_S = 2;
 
 // Positions prédéfinies (presets) → coordonnées en % du cadre vidéo. Pour `displayType:'button'`,
 // seuls x/y positionnent l'icône (width/height ignorés par H5P) ; pour `'poster'`, tout le rectangle
-// compte (le contenu s'affiche directement sur la vidéo). `center` reprend le défaut historique
-// (`DEFAULT_POS`) → le contenu déjà généré (sans champ placement) reste positionné à l'identique.
+// compte (le contenu s'affiche directement sur la vidéo). `center` sert aussi de REPLI (placement
+// absent ou inconnu) et reprend le défaut historique → le contenu déjà généré en mode bouton, sans
+// champ placement, reste positionné à l'identique.
 const PLACEMENTS = {
     'center':       { x: 45, y: 32, width: 40, height: 30 },
     'top-left':     { x: 2,  y: 2,  width: 40, height: 35 },
@@ -95,6 +94,21 @@ const PLACEMENTS = {
     'full':         { x: 5,  y: 5,  width: 90, height: 90 }
 };
 
+// Géométrie des interactions en mode POSTER : PLEIN CADRE, toujours.
+//
+// Ce n'est pas un choix de design, c'est ce que fait le lecteur. MESURÉ le 2026-08-01 sur
+// H5P.InteractiveVideo 1.27 (aperçu h5p-standalone, vraie vidéo) : quatre géométries très
+// différentes — 76×56, 40×30 (l'ancien défaut bouton), 90×38 et 90×90 — donnent TOUTES le même
+// rendu, `900×506 px @ 0,0`, soit exactement la surface de la vidéo. En cause `repositionToWrapper`
+// dans le bundle de la lib : pour un poster (`!isButton()`), la boîte est recalculée puis rabattue
+// sur le conteneur dès qu'elle déborde, ce qui arrive systématiquement.
+//
+// On écrit donc la géométrie que le lecteur applique RÉELLEMENT, plutôt que des coordonnées
+// décoratives qui laisseraient croire à un réglage inexistant (et qui mentiraient à l'éditeur H5P
+// natif d'Éléa/Lumi, lui, fidèle aux valeurs stockées). Corollaire : le champ « placement » n'a
+// aucun sens en mode poster — l'éditeur Caramel le masque (cf. content-detector.js).
+const POSTER_POS = { x: 0, y: 0, width: 100, height: 100 };
+
 // Borne une valeur en pourcentage [0..100] ; repli sur `dflt` si non numérique.
 const clampPct = (v, dflt) => {
     const n = Number(v);
@@ -102,21 +116,25 @@ const clampPct = (v, dflt) => {
 };
 
 /**
- * Résout la position d'une interaction : coordonnées libres si `placement:'custom'`,
- * sinon preset nommé, sinon repli sur le défaut historique.
+ * Résout la position d'une interaction.
+ * - Poster : plein cadre, sans discussion — le lecteur ne sait rien faire d'autre (cf. POSTER_POS).
+ * - Bouton : coordonnées libres si `placement:'custom'`, sinon preset nommé, sinon défaut historique.
  * @param {Object} it - L'interaction simplifiée.
+ * @param {'button'|'poster'} displayType - Mode d'affichage déjà résolu.
  * @returns {{x:number,y:number,width:number,height:number}}
  */
-function resolvePosition(it) {
+function resolvePosition(it, displayType) {
+    if (displayType === 'poster') return { ...POSTER_POS };
+    const dflt = PLACEMENTS.center;
     if (it.placement === 'custom') {
         return {
-            x: clampPct(it.x, DEFAULT_POS.x),
-            y: clampPct(it.y, DEFAULT_POS.y),
-            width: clampPct(it.width, DEFAULT_POS.width),
-            height: clampPct(it.height, DEFAULT_POS.height)
+            x: clampPct(it.x, dflt.x),
+            y: clampPct(it.y, dflt.y),
+            width: clampPct(it.width, dflt.width),
+            height: clampPct(it.height, dflt.height)
         };
     }
-    return PLACEMENTS[it.placement] || DEFAULT_POS;
+    return PLACEMENTS[it.placement] || dflt;
 }
 
 /**
@@ -149,58 +167,66 @@ function buildAdaptivity(it) {
     return Object.keys(adaptivity).length ? adaptivity : null;
 }
 
-// Localisation française des libellés d'interface de H5P.InteractiveVideo (le fichier de langue
-// de la lib ne traduit pas le groupe l10n → sans ça, « Open summary dialog », « Play », etc.
-// s'affichent en anglais, en preview ET dans Lumi/Éléa). Injecté dans content.l10n.
-const IV_L10N_FR = {
-    interaction: 'Interaction',
-    play: 'Lecture',
-    pause: 'Pause',
-    mute: 'Couper le son',
-    unmute: 'Activer le son',
-    quality: 'Qualité de la vidéo',
-    captions: 'Sous-titres',
-    close: 'Fermer',
-    fullscreen: 'Plein écran',
-    exitFullscreen: 'Quitter le plein écran',
-    summary: 'Ouvrir le résumé',
-    bookmarks: 'Signets',
-    endscreen: 'Écran de soumission',
-    defaultAdaptivitySeekLabel: 'Continuer',
-    continueWithVideo: 'Continuer la vidéo',
-    more: 'Plus d’options',
-    playbackRate: 'Vitesse de lecture',
-    rewind10: 'Reculer de 10 secondes',
-    navDisabled: 'La navigation est désactivée',
-    navForwardDisabled: 'La navigation en avant est désactivée',
-    sndDisabled: 'Le son est désactivé',
-    requiresCompletionWarning: 'Vous devez répondre correctement à toutes les questions avant de continuer.',
-    back: 'Retour',
-    hours: 'Heures',
-    minutes: 'Minutes',
-    seconds: 'Secondes',
-    currentTime: 'Temps actuel :',
-    totalTime: 'Durée totale :',
-    singleInteractionAnnouncement: 'Une interaction est apparue :',
-    multipleInteractionsAnnouncement: 'Plusieurs interactions sont apparues.',
-    videoPausedAnnouncement: 'La vidéo est en pause',
-    content: 'Contenu',
-    answered: '@answered répondue(s)',
-    endcardTitle: '@answered question(s) répondue(s)',
-    endcardInformation: 'Vous avez répondu à @answered questions, cliquez ci-dessous pour soumettre vos réponses.',
-    endcardInformationOnSubmitButtonDisabled: 'Vous avez répondu à @answered questions.',
-    endcardInformationNoAnswers: 'Vous n’avez répondu à aucune question.',
-    endcardInformationMustHaveAnswer: 'Vous devez répondre à au moins une question avant de pouvoir soumettre vos réponses.',
-    endcardSubmitButton: 'Soumettre les réponses',
-    endcardSubmitMessage: 'Vos réponses ont été soumises !',
-    endcardTableRowAnswered: 'Questions répondues',
-    endcardTableRowScore: 'Score',
-    endcardAnsweredScore: 'répondue',
-    endCardTableRowSummaryWithScore: 'Vous avez obtenu @score sur @total points pour la @question apparue après @minutes minutes et @seconds secondes.',
-    endCardTableRowSummaryWithoutScore: 'Vous avez répondu à la @question apparue après @minutes minutes et @seconds secondes.',
-    videoProgressBar: 'Progression de la vidéo',
-    howToCreateInteractions: 'Lancez la vidéo pour commencer à créer des interactions'
-};
+// Libellés d'interface de H5P.InteractiveVideo (lecteur, écran de soumission,
+// annonces pour lecteurs d'écran). Le `.h5p` n'embarque pas les libs : seul ce
+// qui est écrit ici dans content.l10n est traduit sur Éléa. Ce bloc était figé
+// en français — le lecteur restait donc francophone en interface grecque ou
+// espagnole. Construit à la demande pour suivre la langue courante.
+function buildIvL10n() {
+    return {
+        interaction: translations.h5p_iv_interaction || 'Interaction',
+        play: translations.h5p_iv_play || 'Lecture',
+        pause: translations.h5p_iv_pause || 'Pause',
+        mute: translations.h5p_iv_mute || 'Couper le son',
+        unmute: translations.h5p_iv_unmute || 'Activer le son',
+        quality: translations.h5p_iv_quality || 'Qualité de la vidéo',
+        captions: translations.h5p_iv_captions || 'Sous-titres',
+        close: translations.h5p_iv_close || 'Fermer',
+        fullscreen: translations.h5p_iv_fullscreen || 'Plein écran',
+        exitFullscreen: translations.h5p_iv_exit_fullscreen || 'Quitter le plein écran',
+        summary: translations.h5p_iv_summary || 'Ouvrir le résumé',
+        bookmarks: translations.h5p_iv_bookmarks || 'Signets',
+        endscreen: translations.h5p_iv_endscreen || 'Écran de soumission',
+        defaultAdaptivitySeekLabel: translations.h5p_iv_default_adaptivity_seek_label || 'Continuer',
+        continueWithVideo: translations.h5p_iv_continue_with_video || 'Continuer la vidéo',
+        more: translations.h5p_iv_more || 'Plus d’options',
+        playbackRate: translations.h5p_iv_playback_rate || 'Vitesse de lecture',
+        rewind10: translations.h5p_iv_rewind10 || 'Reculer de 10 secondes',
+        navDisabled: translations.h5p_iv_nav_disabled || 'La navigation est désactivée',
+        navForwardDisabled: translations.h5p_iv_nav_forward_disabled || 'La navigation en avant est désactivée',
+        sndDisabled: translations.h5p_iv_snd_disabled || 'Le son est désactivé',
+        requiresCompletionWarning: translations.h5p_iv_requires_completion_warning || 'Vous devez répondre correctement à toutes les questions avant de continuer.',
+        back: translations.h5p_iv_back || 'Retour',
+        hours: translations.h5p_iv_hours || 'Heures',
+        minutes: translations.h5p_iv_minutes || 'Minutes',
+        seconds: translations.h5p_iv_seconds || 'Secondes',
+        currentTime: translations.h5p_iv_current_time || 'Temps actuel :',
+        totalTime: translations.h5p_iv_total_time || 'Durée totale :',
+        singleInteractionAnnouncement: translations.h5p_iv_single_interaction_announcement || 'Une interaction est apparue :',
+        multipleInteractionsAnnouncement: translations.h5p_iv_multiple_interactions_announcement || 'Plusieurs interactions sont apparues.',
+        videoPausedAnnouncement: translations.h5p_iv_video_paused_announcement || 'La vidéo est en pause',
+        content: translations.h5p_iv_content || 'Contenu',
+        answered: translations.h5p_iv_answered || '@answered répondue(s)',
+        endcardQuestion: translations.h5p_iv_endcard_question || 'Question',
+        endcardTitle: translations.h5p_iv_endcard_title || '@answered question(s) répondue(s)',
+        endcardInformation: translations.h5p_iv_endcard_information || 'Vous avez répondu à @answered questions, cliquez ci-dessous pour soumettre vos réponses.',
+        endcardInformationOnSubmitButtonDisabled: translations.h5p_iv_endcard_information_on_submit_button_disabled || 'Vous avez répondu à @answered questions.',
+        endcardInformationNoAnswers: translations.h5p_iv_endcard_information_no_answers || 'Vous n’avez répondu à aucune question.',
+        endcardInformationMustHaveAnswer: translations.h5p_iv_endcard_information_must_have_answer || 'Vous devez répondre à au moins une question avant de pouvoir soumettre vos réponses.',
+        endcardSubmitButton: translations.h5p_iv_endcard_submit_button || 'Soumettre les réponses',
+        endcardSubmitMessage: translations.h5p_iv_endcard_submit_message || 'Vos réponses ont été soumises !',
+        // Champ HÉRITÉ : absent de semantics.json 1.28 mais toujours lu par le JS
+        // de la lib (en-tête de colonne du tableau récapitulatif). À conserver —
+        // sans lui, la colonne repasse au défaut anglais de la plateforme.
+        endcardTableRowAnswered: translations.h5p_iv_endcard_table_row_answered || 'Questions répondues',
+        endcardTableRowScore: translations.h5p_iv_endcard_table_row_score || 'Score',
+        endcardAnsweredScore: translations.h5p_iv_endcard_answered_score || 'répondue',
+        endCardTableRowSummaryWithScore: translations.h5p_iv_end_card_table_row_summary_with_score || 'Vous avez obtenu @score sur @total points pour la @question apparue après @minutes minutes et @seconds secondes.',
+        endCardTableRowSummaryWithoutScore: translations.h5p_iv_end_card_table_row_summary_without_score || 'Vous avez répondu à la @question apparue après @minutes minutes et @seconds secondes.',
+        videoProgressBar: translations.h5p_iv_video_progress_bar || 'Progression de la vidéo',
+        howToCreateInteractions: translations.h5p_iv_how_to_create_interactions || 'Lancez la vidéo pour commencer à créer des interactions'
+    };
+}
 
 /**
  * Normalise une interaction du format intermédiaire vers les params attendus par le
@@ -280,15 +306,26 @@ async function buildInteractionAction(it, helpers) {
  * @param {Object} action - Le sous-contenu H5P traité.
  * @returns {Object} L'item interaction conforme au semantics IV.
  */
-function buildInteractionItem(it, action) {
+function buildInteractionItem(it, action, displayMode = 'custom') {
     const from = Math.max(0, Number(it.timestamp) || 0);
     const visible = Number(it.visibleDuration);
     const to = from + (Number.isFinite(visible) && visible > 0 ? visible : BUTTON_VISIBLE_S);
 
-    const pos = resolvePosition(it);
-    // `poster` = contenu affiché directement sur la vidéo (apparition auto à la pause) ;
-    // `button` (défaut) = icône discrète, la question s'ouvre au clic.
-    const displayType = it.display === 'poster' ? 'poster' : 'button';
+    // `poster` (DÉFAUT depuis 2026-08) = contenu affiché directement sur la vidéo, apparition
+    // automatique à la pause : l'élève n'a rien à cliquer pour voir la question.
+    // `button` = icône discrète, la question s'ouvre au clic — il faut le demander explicitement.
+    // Le défaut a été inversé sur demande de l'auteur : l'icône passait inaperçue (visible 2 s),
+    // et personne n'allait changer le mode question par question dans l'éditeur.
+    //
+    // `displayMode` (racine, 2026-08) tranche pour TOUTE l'activité quand il vaut 'poster' ou
+    // 'button' ; en 'custom' (défaut, et cas des contenus antérieurs au réglage) chaque question
+    // garde son propre `display`. Cet ordre est ce qui rend le réglage global compréhensible :
+    // il ne « pré-remplit » pas les questions, il décide à leur place — sans écraser leurs valeurs,
+    // qui restent intactes dans le JSON et reprennent effet dès le retour en « personnalisé ».
+    const displayType = (displayMode === 'poster' || displayMode === 'button')
+        ? displayMode
+        : (it.display === 'button' ? 'button' : 'poster');
+    const pos = resolvePosition(it, displayType);
 
     const item = {
         duration: { from, to },
@@ -333,14 +370,18 @@ function buildSummary(summary) {
             subContentId: generateUUID(),
             metadata: { contentType: 'Summary', license: 'U', title: 'Résumé' },
             params: {
-                intro: formatTextToHtml(summary.intro || (translations.h5p_iv_summary_intro || 'Choisis la bonne affirmation :')),
+                // Mêmes clés que l'activité « Résumé » autonome : c'est la même
+                // lib H5P.Summary, donc les mêmes champs de semantics. Dupliquer
+                // les clés (anciens `h5p_iv_summary_*`, absents des 11 locales)
+                // faisait retomber TOUTES les langues sur le repli français.
+                intro: formatTextToHtml(summary.intro || (translations.h5p_summary_intro || "Choisissez l'affirmation correcte.")),
                 summaries,
                 overallFeedback: [{ from: 0, to: 100, feedback: '' }],
-                solvedLabel: translations.h5p_iv_summary_solved || 'Progression :',
-                scoreLabel: translations.h5p_iv_summary_score || 'Mauvaises réponses :',
-                resultLabel: translations.h5p_iv_summary_result || 'Votre résultat',
-                labelCorrect: translations.h5p_iv_summary_correct || 'Correct.',
-                labelIncorrect: translations.h5p_iv_summary_incorrect || 'Incorrect !'
+                solvedLabel: translations.h5p_summary_solved_label || 'Progression :',
+                scoreLabel: translations.h5p_summary_score_label || 'Mauvaises réponses :',
+                resultLabel: translations.h5p_summary_result_label || 'Votre résultat',
+                labelCorrect: translations.h5p_summary_label_correct || 'Correct.',
+                labelIncorrect: translations.h5p_summary_label_incorrect || 'Incorrect ! Veuillez réessayer.'
             }
         },
         displayAt: 3
@@ -400,11 +441,16 @@ export default {
         // qu'il ne veut pas. Seuls l'écart des hors-durée (a) et le snap (b) s'appliquent (validité).
 
         // (d) Construire les sous-contenus (séquentiel : préserve l'ordre temporel).
+        // Mode d'affichage global : 'poster' | 'button' imposent le mode à toutes les questions,
+        // 'custom' (défaut, et absence du champ) laisse chaque question décider.
+        const displayMode = (jsonObj.displayMode === 'poster' || jsonObj.displayMode === 'button')
+            ? jsonObj.displayMode
+            : 'custom';
         const interactions = [];
         for (const it of normalized) {
             const built = await buildInteractionAction(it, helpers);
             if (!built) continue;
-            interactions.push(buildInteractionItem(it, built.action));
+            interactions.push(buildInteractionItem(it, built.action, displayMode));
             allLibs.add(built.libName);
         }
         if (droppedOutOfRange > 0) debugLog('InteractiveVideo', `${droppedOutOfRange} interaction(s) hors-durée écartée(s)`);
@@ -468,7 +514,7 @@ export default {
                 deactivateSound: false
             },
             // Libellés d'interface en français (sinon défauts anglais de la lib).
-            l10n: IV_L10N_FR
+            l10n: buildIvL10n()
         };
 
         // 5. Dépendances dynamiques (libs réellement utilisées + leurs sous-dépendances).

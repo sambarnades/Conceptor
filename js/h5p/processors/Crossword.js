@@ -31,7 +31,38 @@ export default {
                 showSolution: translations.h5p_show_solution || "Afficher la solution",
                 extraClue: translations.h5p_crossword_extra_clue || "Indice supplémentaire",
                 closeWindow: translations.h5p_close || "Fermer",
-                submitAnswer: translations.h5p_submit_answer || "Valider"
+                submitAnswer: translations.h5p_submit_answer || "Valider",
+                // Messages d'échec de génération de la grille : rendus par la lib
+                // à l'affichage, donc à traduire ici comme le reste.
+                couldNotGenerateCrossword: translations.h5p_crossword_could_not_generate
+                    || "Impossible de générer les mots-croisés avec les mots saisis. Veuillez réessayer avec moins de mots ou utiliser des mots qui ont plus de caractères en commun.",
+                couldNotGenerateCrosswordTooFewWords: translations.h5p_crossword_could_not_generate_too_few_words
+                    || "Impossible de générer les mots-croisés. Vous devez saisir au moins deux mots.",
+                probematicWords: translations.h5p_crossword_problematic_words
+                    || "Certains mots n'ont pas pu être placés. Mot(s) problématique(s): @words"
+            },
+            // Groupe a11y : lu UNIQUEMENT par les lecteurs d'écran. Il n'était pas
+            // écrit du tout, donc une grille française était annoncée en anglais.
+            a11y: {
+                crosswordGrid: translations.h5p_crossword_a11y_grid
+                    || "Utiliser les touches fléchées pour naviguer et les lettres du clavier pour saisir les caractères. Utiliser Tab pour faire usage des champs d'entrée au lieu de la grille.",
+                column: translations.h5p_crossword_a11y_column || "Colonne",
+                row: translations.h5p_crossword_a11y_row || "Ligne",
+                across: translations.h5p_crossword_across || "Horizontal",
+                down: translations.h5p_crossword_down || "Vertical",
+                empty: translations.h5p_crossword_a11y_empty || "Vide",
+                resultFor: translations.h5p_crossword_a11y_result_for || "Résultat pour : @clue",
+                correct: translations.h5p_crossword_a11y_correct || "Réponse correcte",
+                wrong: translations.h5p_crossword_a11y_wrong || "Faux",
+                point: translations.h5p_crossword_a11y_point || "point",
+                solutionFor: translations.h5p_crossword_a11y_solution_for || "Pour @clue, la solution est : @solution",
+                extraClueFor: translations.h5p_crossword_a11y_extra_clue_for || "Afficher l'indice supplémentaire pour @clue",
+                letterSevenOfNine: translations.h5p_crossword_a11y_letter_position || "Lettre @position de @length",
+                lettersWord: translations.h5p_crossword_a11y_letters_word || "Mot de @length lettres",
+                check: translations.h5p_crossword_a11y_check || "Vérifier les caractères. Les réponses seront marquées correctes, incorrectes ou sans réponse.",
+                showSolution: translations.h5p_crossword_a11y_show_solution || "Afficher la solution. Le mot-croisé sera ensuite rempli avec la solution correcte.",
+                retry: translations.h5p_crossword_a11y_retry || "Réessayer la tâche. Réinitialiser toutes les réponses et recommencer l'activité.",
+                yourResult: translations.h5p_crossword_a11y_your_result || "Vous avez obtenu @score sur @total points."
             },
             // Thème visuel optionnel (couleurs de la grille + image d'arrière-plan)
             theme: {

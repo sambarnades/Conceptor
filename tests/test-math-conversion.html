@@ -5,7 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="../">
     <title>Tests Conversion Formules Math - Caramel</title>
-    <script src="js/vendor/mathjax/3.2.2/tex-svg.js" async></script>
+    <!-- MathJax 4 : polices redirigées vers la copie locale (règle « zéro CDN » —
+         par défaut MathJax 4 va chercher ses fragments de police sur jsdelivr).
+         Le dossier sre/ posé à côté de tex-svg.js est indispensable : sans lui,
+         typesetPromise ne se résout JAMAIS. Même config que loadMathJax()
+         dans js/core/lib-loader.js. -->
+    <script>
+        window.MathJax = { loader: { paths: { fonts: new URL('js/vendor/mathjax/4.1.3/fonts', document.baseURI).href } } };
+    </script>
+    <script src="js/vendor/mathjax/4.1.3/tex-svg.js" async></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f0f2f5; padding: 24px; color: #1a1a2e; }

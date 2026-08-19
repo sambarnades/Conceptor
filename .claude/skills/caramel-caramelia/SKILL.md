@@ -59,10 +59,11 @@ Caramelia doit savoir reconnaître "fais-moi un quiz" → tile `MultipleChoice`.
 1. `config.js` → `fuzzyMap` (ajouter mots-clés → activityKey)
 2. `extractor.js` → si nouvelle activité a des paramètres spécifiques
 
-### Ajouter un tuto RAG (mode aide)
+### Ajouter un tuto RAG (mode aide) — DEUX surfaces à tenir ensemble
 1. Créer/éditer `js/caramelia/tuto-rag/fr.md` (référence)
 2. Traduire dans les 10 autres langues : `ar.md, de.md, el.md, en.md, es.md, it.md, jp.md, nl.md, pt.md, zh.md`
 3. Le mode aide `chat.js` injecte automatiquement les tutos comme contexte LLM
+4. **Chunks RAG ILaaS** (`rag/caramelia/chunks/<lang>/*.md`, dossier RAG frère du dépôt — cf. CLAUDE.md §RAG ILaaS) : toute connaissance ajoutée/modifiée dans le tuto-rag embarqué doit être répercutée dans les chunks ILaaS correspondants, **dans les 11 langues** (frontmatter YAML `referentiel/code/titre/lang/categorie/breadcrumb/version`, préfixe `> Contexte :`, sur le modèle des chunks existants). Pour une activité : fiche source FR `rag/caramelia/sources/` + `chunks/fr/INDEX.md` + `STATUT.md` à jour. **L'ingestion ILaaS est faite séparément par le mainteneur** (nommage `<lang>__<code>`, REPLACE = DELETE + INGEST) — ne lancer aucun script d'ingestion.
 
 ### Modifier les locales Caramelia
 Indépendantes des locales Caramel (`js/locales/*.json`). Fichiers : `js/caramelia/locales/{lang}.json`. Mêmes 11 langues.
@@ -98,6 +99,7 @@ Retirer du `index.html` :
 - **`fuzzyMap`** : matching approximatif des activités — trop flexible = mauvais routage, trop strict = utilisateur frustré
 - **Webhook partagé** : si Caramel change le format de payload n8n, Caramelia plante aussi
 - **Tutos RAG** : si trop longs, dépassent le contexte LLM → préférer plusieurs tutos courts ciblés
+- **Deux surfaces RAG à synchroniser** : le tuto-rag embarqué (`js/caramelia/tuto-rag/`) ET les chunks ILaaS (`rag/caramelia/chunks/<lang>/`) décrivent le même produit — mettre à jour l'un sans l'autre = Caramelia répond différemment selon le canal (contexte injecté vs recherche ILaaS)
 - **Imports descendants** : `index → flow → chat/extractor → actions → dom → config/utils` (jamais circulaire)
 
 ## Fichiers touchés
@@ -106,5 +108,6 @@ Retirer du `index.html` :
 js/caramelia/{module}.js                [selon la modif]
 js/caramelia/locales/{11}.json          [traductions]
 js/caramelia/tuto-rag/{11}.md           [RAG aide]
+rag/caramelia/chunks/{11}/*.md          [chunks RAG ILaaS, hors dépôt — synchroniser avec le tuto-rag ; ingestion à part]
 js/caramelia/ARCHITECTURE.md            [si arch change, mettre à jour ce doc]
 ```

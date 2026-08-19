@@ -39,6 +39,7 @@ const ACTIVITY_CONFIG = {
     sortParagraphs: { prefix: 'prompt_sort_the_paragraphs', resultKey: 'sortParagraphsResultat' },
     singleChoiceSet: { prefix: 'prompt_single_choice_set', resultKey: 'singleChoiceSetResultat' },
     dialogCards: { prefix: 'prompt_dialog_cards', resultKey: 'dialogCardsResultat' },
+    dictation: { prefix: 'prompt_dictation', resultKey: 'dictationResultat' },
     chart: { prefix: 'prompt_chart', resultKey: 'chartResultat' },
     quizset: { prefix: 'prompt_quizset', resultKey: 'quizSetResultat' },
     quizsetQcm: { prefix: 'prompt_quizset_qcm', resultKey: 'quizSetQcmResultat' },
@@ -68,6 +69,40 @@ const HOTSPOT_PROMPT_PREFIXES = new Set([
 ]);
 
 /**
+ * Activités dont l'identifiant de prompt N'EST PAS déclaré en `promptId` dans
+ * `definitions.js` — il n'existait qu'en dur, réécrit à la main à cinq endroits.
+ *
+ * `gift` n'est pas une activité générée (`hidden: true`, format d'export du Test Éléa) :
+ * aucun groupe d'`ACTIVITY_CONFIG` ne produit `giftResultat`, donc le résoudre reste sans
+ * effet. L'entrée est conservée pour que la table décrive TOUT le vocabulaire d'identifiants
+ * du produit, plutôt que de laisser un cas particulier survivre côté `ui.js`.
+ */
+const RESULT_KEY_HORS_DEFINITIONS = {
+    test_elea: 'test_eleaResultat',
+    glossaireXml: 'glossaireXmlResultat',
+    gift: 'giftResultat'
+};
+
+/**
+ * Identifiant du `<textarea>` de prompt d'une activité (ex. 'Page' → 'pageResultat').
+ *
+ * SOURCE UNIQUE de cette résolution. Elle était auparavant réécrite à la main en cinq
+ * endroits aux couvertures divergentes, et l'un d'eux — le rafraîchissement d'après
+ * génération, plus bas dans ce fichier — omettait `glossaireXml` : la tuile « Glossaire »
+ * ouverte, « Générer les prompts » remplissait `hidden-glossaireXmlResultat` mais laissait
+ * le textarea visible VIDE jusqu'à ce que l'utilisateur referme et rouvre la tuile.
+ *
+ * Couverture : `node tests/run_prompt_id_resolution.mjs`
+ *
+ * @param {string} moduleKey
+ * @returns {string|null} null si l'activité n'a pas de prompt
+ */
+export function resultKeyForModule(moduleKey) {
+    const module = h5pModules[moduleKey] || moodleModules[moduleKey];
+    return (module && module.promptId) || RESULT_KEY_HORS_DEFINITIONS[moduleKey] || null;
+}
+
+/**
  * Renvoie le préfixe de clés i18n du prompt pour un moduleKey donné
  * (ex. 'QuizSetQCM' → 'prompt_quizset_qcm'), résolu via `resultKey === module.promptId`.
  * Utilisé par le moteur de génération par lots (`services/llm-batch.js`) pour reconstruire
@@ -76,10 +111,7 @@ const HOTSPOT_PROMPT_PREFIXES = new Set([
  * @returns {string|null}
  */
 export function prefixForModule(moduleKey) {
-    const module = h5pModules[moduleKey] || moodleModules[moduleKey];
-    const resultKey = (module && module.promptId)
-        || (moduleKey === 'test_elea' ? 'test_eleaResultat'
-            : moduleKey === 'glossaireXml' ? 'glossaireXmlResultat' : null);
+    const resultKey = resultKeyForModule(moduleKey);
     if (!resultKey) return null;
     for (const cfg of Object.values(ACTIVITY_CONFIG)) {
         if (cfg.resultKey === resultKey) return cfg.prefix;
@@ -327,6 +359,22 @@ ${reglesSpecifiques}
 ${reglesPedagogiques}
 `;
 
+    const structureBlock = `
+# ${pt.prompt_header_json_structure || 'STRUCTURE DU JSON ATTENDUE'}
+${structureJson}
+
+# ${pt.prompt_header_rendering_example || 'EXEMPLE DE RENDU'}
+${exempleRendu}`;
+
+    // Vidéo interactive : les SOURCES (transcription horodatée) font souvent des dizaines de
+    // milliers de caractères. Si le schéma JSON arrivait APRÈS, une IA externe le perd (collage
+    // tronqué, attention diluée en fin de prompt long) et invente son propre format — tableau nu,
+    // `options` au lieu d'`answers`… (cas réel, audit 2026-07). On place donc STRUCTURE + EXEMPLE
+    // AVANT la transcription, et on termine par un rappel court du format.
+    const structureBeforeSources = activityPrefix === 'prompt_interactive_video';
+
+    if (structureBeforeSources) prompt += structureBlock + '\n';
+
     // Ajouter les sources seulement si elles existent
     if (sources) {
         prompt += `
@@ -335,12 +383,12 @@ ${sources}
 `;
     }
 
-    prompt += `
-# ${pt.prompt_header_json_structure || 'STRUCTURE DU JSON ATTENDUE'}
-${structureJson}
-
-# ${pt.prompt_header_rendering_example || 'EXEMPLE DE RENDU'}
-${exempleRendu}`;
+    if (structureBeforeSources) {
+        const rappel = pt[`${activityPrefix}_rappel_final`] || '';
+        if (rappel) prompt += `\n${rappel}`;
+    } else {
+        prompt += structureBlock;
+    }
 
     return prompt;
 }
@@ -400,14 +448,7 @@ export function generatePrompts() {
         const module = h5pModules[moduleKey] || moodleModules[moduleKey];
 
         if (module) {
-            let promptId;
-            if (module.promptId) {
-                promptId = module.promptId;
-            }
-            else if (moduleKey === 'test_elea') {
-                promptId = 'test_eleaResultat';
-            }
-
+            const promptId = resultKeyForModule(moduleKey);
             if (promptId) {
                 const promptTextarea = document.getElementById(promptId);
                 const generatedPrompt = document.getElementById(`hidden-${promptId}`)?.value;

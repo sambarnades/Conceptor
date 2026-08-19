@@ -7,7 +7,7 @@
  * que l'ODT éditable téléchargé → cohérence des formules entre les deux exports.
  *
  * Le frontend ne connaît PAS l'URL/les credentials Gotenberg : tout passe par
- * n8n qui détient le secret côté serveur (workflow caramel-pdf-convert-bas).
+ * n8n qui détient le secret côté serveur (workflow n8n « Caramel - PDF Converter », cf. ENDPOINTS.pdfConvert).
  *
  * Cette voie est tentée en priorité depuis exportToPDF() ; en cas d'échec
  * (réseau, timeout, body trop gros, 5xx, réponse non-PDF), l'appelant

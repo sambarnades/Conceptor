@@ -63,6 +63,15 @@ node scripts/verify-locale-latex.mjs
 # Propage les directives LaTeX dans les 11 prompts (si field-constraints changé)
 node scripts/update-locale-latex.mjs
 
+# Libellés d'interface des activités H5P : pré-remplit les 11 locales depuis les
+# traductions OFFICIELLES embarquées dans js/vendor/h5p-libs/<lib>/language/
+node scripts/sync-h5p-ui-labels.mjs            # rapport, aucune écriture
+node scripts/sync-h5p-ui-labels.mjs --write    # écrit les clés absentes
+
+# Garde-fou : chaque champ traduisible d'une lib est-il écrit par son processeur,
+# via translations.* (et non en dur), avec sa clé présente dans les 11 locales ?
+node tests/run_h5p_ui_coverage.mjs --verbose
+
 # Traduction Course Presentation (modèles à adapter pour autres activités)
 node scripts/translate-course-presentation.mjs        # langues latines
 node scripts/translate-cp-ar.mjs                       # arabe
@@ -74,6 +83,16 @@ node scripts/translate-cp-el.mjs                       # grec
 ## Pièges connus
 
 - **fr.json est la source de vérité** : si une clé manque, la cascader vers les 10 autres
+- **Une clé manquante ne tombe PAS en français par accident — mais elle tombe en anglais.**
+  Depuis l'audit langues 2026-08, `loadTranslations()` reconstruit le dictionnaire sur un socle
+  `en.json` (`{...defaultTranslations, ...en, ...langue}`) et purge l'ancien contenu. Avant, la
+  fusion se faisait **par-dessus** la langue précédente : passer de `fr` à `el` laissait donc du
+  français à l'écran, et `defaultTranslations` (français) comblait le reste. Corollaire : une clé
+  oubliée dans une locale est désormais **invisible à l'œil** (elle s'affiche en anglais correct)
+  → s'appuyer sur `verify-all-locales.mjs`, pas sur une relecture visuelle.
+- **Libellés H5P : une clé = un champ de semantics.** Ne pas dupliquer une clé pour la même
+  chaîne dans deux activités (les copies divergent en silence) — ex. la Vidéo interactive
+  réutilise les clés `h5p_summary_*` du Résumé, puisque c'est la même lib imbriquée.
 - **Caractères spéciaux** : JSON strict — échapper `"` en `\"`, `\` en `\\`, conserver les `\(...\)` LaTeX intacts
 - **Langues RTL** (arabe `ar`) : pas de traitement spécial CSS au niveau de la chaîne — gérer dans le composant si besoin (`dir="rtl"`)
 - **Ordre des sections** : conserver le même ordre dans les 11 fichiers pour faciliter les diff
