@@ -1973,12 +1973,28 @@ video.json-editor__media-player {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-/* Le bouton supprimer du média est inline (pas en survol d'image) → toujours visible */
+/* Le bouton supprimer du média est inline (pas en survol d'image) → toujours visible.
+   Il NE DOIT PAS garder le disque rouge plein de `.json-editor__image-remove-btn`, taillé
+   pour flotter au coin d'une vignette et n'apparaître qu'au survol : posé en permanence
+   sous un lecteur, il devient la chose la plus voyante du champ alors que c'est l'action
+   la plus rare — et la plus destructrice (retour d'usage 2026-08-20 : « le bouton de
+   suppression est super gros »). Ici : icône discrète, qui ne vire au rouge qu'au survol. */
 .json-editor__media-remove-btn {
     position: static;
     opacity: 1;
     transform: none;
     flex: 0 0 auto;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-secondary, #999);
+    font-size: 0.8rem;
+}
+.json-editor__media-remove-btn:hover {
+    background: rgba(220, 53, 69, 0.12);
+    color: #dc3545;
+    transform: none;
 }
 
 /* Message d'erreur image */

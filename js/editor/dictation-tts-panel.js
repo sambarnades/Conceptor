@@ -8,8 +8,11 @@
  *
  *   • Une BARRE COMPACTE (frère du conteneur, hauteur fixe, ne casse pas le scroll) :
  *     langue (11), voix F/M (genres indisponibles grisés d'après le catalogue serveur),
- *     lecture lente, « Tout régénérer », statut. Changer langue/voix/lente régénère
- *     immédiatement TOUTES les phrases (le cache écarte les inchangées).
+ *     lecture lente, bouton de génération, statut. Changer langue/voix/lente NE LANCE
+ *     RIEN : le réglage s'applique (les phrases déjà synthétisées pour ce réglage se
+ *     réécoutent aussitôt depuis le cache, aller-retour entre voix compris) et ce qui
+ *     reste à produire est annoncé par le bandeau `.dt-pending` — seul son bouton
+ *     déclenche la synthèse, qui peut durer jusqu'à une minute (retour d'usage 2026-08-20).
  *
  *   • Des CONTRÔLES PAR PHRASE, injectés DANS chaque item du tableau « Phrases » de
  *     l'éditeur (décoration idempotente du DOM, re-posée après chaque re-rendu via
@@ -121,8 +124,10 @@ export function mountDictationTtsPanel(container, api, deps) {
         slowRate: (typeof saved.slowRate === 'number' && saved.slowRate >= 0.5 && saved.slowRate <= 0.9) ? saved.slowRate : 0.7,
         busy: false,
         abort: null,
+        elapsedTimer: null,   // compteur de secondes affiché pendant la synthèse
+        startedAt: 0,
         catalog: null,
-        objectUrls: [],
+        objectUrls: new Map(),   // clé phrase (ou '_') → URLs blob: à révoquer
         panel: null,
         observer: null,
         resyncTimer: null,
@@ -161,8 +166,16 @@ export function mountDictationTtsPanel(container, api, deps) {
             </label>
             <button type="button" class="dt-regenerate">
                 <i class="fas fa-sync-alt" aria-hidden="true"></i>
-                ${escapeText(t('editor_dictation_tts_regenerate_all') || 'Tout régénérer')}
+                <span class="dt-regenerate-label">${escapeText(t('editor_dictation_tts_regenerate_all') || 'Tout régénérer')}</span>
             </button>
+            <button type="button" class="dt-cancel" hidden>
+                <i class="fas fa-times" aria-hidden="true"></i>
+                ${escapeText(t('editor_dictation_tts_cancel') || 'Annuler')}
+            </button>
+        </div>
+        <div class="dt-pending" hidden>
+            <i class="fas fa-info-circle" aria-hidden="true"></i>
+            <span class="dt-pending-msg"></span>
         </div>
         <div class="dt-fallback" hidden>
             <i class="fas fa-info-circle" aria-hidden="true"></i>
@@ -175,27 +188,35 @@ export function mountDictationTtsPanel(container, api, deps) {
     // écrans (retour de test 2026-07). Repli : au-dessus du conteneur (mode à plat).
     placePanel();
 
-    // Changer LANGUE / VOIX / LECTURE LENTE relance la synthèse immédiatement (toutes phrases,
-    // cache par phrase → seules les manquantes partent en réseau).
+    // Changer LANGUE / VOIX / LECTURE LENTE ne DÉCLENCHE PLUS la synthèse : la synthèse est
+    // longue (jusqu'à ~1 min) et partait sans que l'utilisateur sache qu'il venait de la
+    // lancer (retour d'usage 2026-08-20 : « si je clique sur masculine, l'utilisateur ne
+    // sait même pas qu'il valide »). Le réglage est appliqué immédiatement — les phrases
+    // DÉJÀ synthétisées pour ce réglage se réécoutent aussitôt depuis le cache (aller-retour
+    // Féminine → Masculine → Féminine = zéro appel réseau) — et ce qui reste à produire est
+    // annoncé par le bandeau `.dt-pending`, dont le bouton « Générer » est le seul déclencheur.
     panel.querySelector('.dt-lang').addEventListener('change', (e) => {
         state.lang = e.target.value;
         persistSettings();
         applyCatalog();
-        regenerateAll();
+        onSettingsChanged();
     });
     panel.querySelectorAll('.dt-voice').forEach(btn => btn.addEventListener('click', () => {
-        if (btn.disabled || state.voice === btn.dataset.voice) return;
+        if (btn.disabled || state.busy || state.voice === btn.dataset.voice) return;
         state.voice = btn.dataset.voice;
         panel.querySelectorAll('.dt-voice').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.voice === state.voice)));
         persistSettings();
-        regenerateAll();
+        onSettingsChanged();
     }));
     panel.querySelector('.dt-slow').addEventListener('change', (e) => {
         state.slow = !!e.target.checked;
         persistSettings();
-        regenerateAll();
+        onSettingsChanged();
     });
     panel.querySelector('.dt-regenerate').addEventListener('click', () => regenerateAll());
+    panel.querySelector('.dt-cancel').addEventListener('click', () => {
+        if (state && state.abort) { try { state.abort.abort(); } catch { /* déjà annulé */ } }
+    });
 
     persistSettings();
 
@@ -256,32 +277,240 @@ function applyCatalog() {
     }
 }
 
+/** Écrit `v` dans un nœud SEULEMENT s'il change (évite un repaint pour rien). */
+function setText(el, v) { if (el && el.textContent !== v) el.textContent = v; }
+/** Idem pour l'attribut `hidden`. */
+function setHidden(el, v) { if (el && el.hidden !== v) el.hidden = v; }
+
+/**
+ * Statut de la barre. Idempotent : réécrire un statut identique repeint la zone pour rien
+ * et, en passant par innerHTML, refait clignoter l'icône FontAwesome. Hors mode « spinner »
+ * on écrit du texte, pas du HTML — c'est du texte, et ça évite une analyse HTML par frappe.
+ */
 function setStatus(msg, spinning = false) {
     const el = state && state.panel && state.panel.querySelector('.dt-status');
     if (!el) return;
-    el.innerHTML = spinning ? `<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> ${escapeText(msg)}` : escapeText(msg || '');
+    const text = String(msg || '');
+    if (el.dataset.msg === text && el.dataset.spin === String(spinning)) return;
+    el.dataset.msg = text;
+    el.dataset.spin = String(spinning);
+    if (spinning) el.innerHTML = `<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> ${escapeText(text)}`;
+    else el.textContent = text;
+}
+
+// =======================================================================
+// TRAVAIL RESTANT (« qu'est-ce qui partirait en réseau si je générais ? »)
+// =======================================================================
+
+/** true si l'audio de ce texte est DÉJÀ disponible (cache session ou .h5p ré-hydraté). */
+function isCached(text, slow) {
+    const entry = state.deps.getCachedAudio(text, { lang: state.lang, voice: state.voice, slow });
+    return !!(entry && entry.blob);
+}
+
+/**
+ * Phrases qu'une génération devrait réellement SYNTHÉTISER pour les réglages courants.
+ * Exclut les phrases vides, celles en « Ma voix » et celles déjà en cache — c'est
+ * exactement le sous-ensemble que `synthesizeSentences` enverrait au serveur, donc le
+ * seul chiffre honnête à annoncer avant de lancer.
+ */
+function pendingSentences(data) {
+    const d = data || state.api.getData() || {};
+    const sentences = Array.isArray(d.sentences) ? d.sentences : [];
+    return sentences.filter(s => {
+        const text = sentenceText(s);
+        if (!text || isManualSample(s.sample)) return false;
+        if (!isCached(text, false)) return true;
+        return state.slow && !isCached(text, true);
+    });
+}
+
+/** Nombre de phrases synthétisables (vides et « Ma voix » exclues). */
+function synthesizableCount(data) {
+    const d = data || state.api.getData() || {};
+    const sentences = Array.isArray(d.sentences) ? d.sentences : [];
+    return sentences.filter(s => sentenceText(s) && !isManualSample(s.sample)).length;
+}
+
+/** Applique `{n}` (convention d'interpolation du projet, cf. validators.js). */
+function withCount(key, fallback, n) {
+    return String(t(key) || fallback).replace('{n}', String(n));
+}
+
+/**
+ * Met à jour le bandeau « reste à générer » et le libellé du bouton.
+ * Rien en attente → bandeau masqué et bouton neutralisé : l'utilisateur voit d'un coup
+ * d'œil que le réglage courant est déjà couvert (cas de l'aller-retour entre voix).
+ */
+function refreshPending(data) {
+    if (!state || !state.panel) return;
+    const bar = state.panel.querySelector('.dt-pending');
+    const msg = state.panel.querySelector('.dt-pending-msg');
+    const btn = state.panel.querySelector('.dt-regenerate');
+    const label = state.panel.querySelector('.dt-regenerate-label');
+    if (!bar || !msg || !btn || !label) return;
+
+    if (state.busy) { setHidden(bar, true); return; }
+
+    const d = data || state.api.getData() || {};
+    const pending = pendingSentences(d).length;
+    const total = synthesizableCount(d);
+
+    if (total === 0) {
+        setHidden(bar, true);
+        btn.disabled = true;
+        setText(label, t('editor_dictation_tts_regenerate_all') || 'Tout régénérer');
+        return;
+    }
+    btn.disabled = false;
+    if (pending === 0) {
+        setHidden(bar, true);
+        setText(label, t('editor_dictation_tts_regenerate_all') || 'Tout régénérer');
+        return;
+    }
+    setHidden(bar, false);
+    setText(msg, withCount(
+        'editor_dictation_tts_pending',
+        '{n} phrase(s) restent à générer pour ce réglage. La synthèse peut prendre jusqu\'à une minute.',
+        pending
+    ));
+    setText(label, withCount('editor_dictation_tts_generate_pending', 'Générer ({n})', pending));
+}
+
+/**
+ * Réglage changé : on applique SANS générer. Les lecteurs se rafraîchissent depuis le
+ * cache (audio déjà produit pour ce réglage → réécoute immédiate), le reste est annoncé.
+ */
+function onSettingsChanged() {
+    if (!state) return;
+
+    // Les phrases dont l'audio du NOUVEAU réglage est déjà en cache voient leurs chemins
+    // reportés tout de suite : sans cela, `sentences[].sample` continuerait de désigner
+    // l'audio de l'ancienne voix alors que `data.tts` annonce la nouvelle. Caramel s'en
+    // remettrait au processeur (qui resynthétise d'après `data.tts`), mais Sucrerie écrit
+    // la sortie de l'éditeur TELLE QUELLE — les deux doivent rester cohérents (item 7).
+    const data = state.api.getData() || {};
+    const sentences = Array.isArray(data.sentences) ? data.sentences : [];
+    let touched = false;
+    sentences.forEach(s => {
+        const text = sentenceText(s);
+        if (!text || isManualSample(s.sample) || !isCached(text, false)) return;
+        writeTtsPaths(s, text);
+        touched = true;
+    });
+    if (touched) state.api.setData(data);
+
+    decorateSentences();          // appelle refreshPending() en fin de parcours
+    setStatus(pendingSentences(data).length === 0
+        ? (t('editor_dictation_tts_cached') || 'Déjà généré pour ce réglage : rien à attendre.')
+        : '');
+}
+
+/** Verrouille les réglages pendant la synthèse et affiche « Annuler ». */
+function setBusy(busy) {
+    if (!state || !state.panel) return;
+    state.busy = busy;
+    const p = state.panel;
+    p.querySelector('.dt-lang').disabled = busy;
+    p.querySelector('.dt-slow').disabled = busy;
+    p.querySelector('.dt-regenerate').disabled = busy;
+    p.querySelector('.dt-cancel').hidden = !busy;
+    if (busy) {
+        p.querySelectorAll('.dt-voice').forEach(b => { b.disabled = true; });
+        p.querySelector('.dt-pending').hidden = true;
+    } else {
+        // Restaure le grisage RÉEL des voix (disponibilité par langue), pas un dégrisage aveugle.
+        applyCatalog();
+        refreshPending();
+    }
+}
+
+/** Compteur de secondes écoulées — une attente d'une minute sans repère paraît figée. */
+function startElapsed(count) {
+    if (!state) return;
+    state.startedAt = Date.now();
+    const tick = () => {
+        if (!state || !state.busy) return;
+        const s = Math.round((Date.now() - state.startedAt) / 1000);
+        setStatus(`${withCount('editor_dictation_tts_generating_n', 'Synthèse de {n} phrase(s)…', count)} ${s}s`, true);
+    };
+    tick();
+    state.elapsedTimer = setInterval(tick, 1000);
+}
+
+function stopElapsed() {
+    if (!state) return;
+    clearInterval(state.elapsedTimer);
+    state.elapsedTimer = null;
 }
 
 function showFallback(fallback) {
     const fb = state && state.panel && state.panel.querySelector('.dt-fallback');
-    if (fb) fb.hidden = !fallback;
+    setHidden(fb, !fallback);
 }
 
+// Phrase en cours de rendu : sert à ranger les URLs blob: créées sous la bonne clé.
+let renderingKey = '_';
+
+/**
+ * Mémorise une URL blob: SOUS LA CLÉ de la phrase en cours de rendu.
+ * Le suivi était global et `decorateSentences` révoquait tout à chaque passage : un bloc
+ * qu'on décide de NE PAS reconstruire aurait alors gardé des `<audio>` pointant sur des
+ * URLs mortes. On ne révoque donc plus que ce qu'on s'apprête effectivement à remplacer.
+ */
 function trackUrl(url) {
-    state.objectUrls.push(url);
+    const list = state.objectUrls.get(renderingKey) || [];
+    list.push(url);
+    state.objectUrls.set(renderingKey, list);
     return url;
 }
 
+/** Révoque les URLs d'UNE phrase (appelé juste avant de reconstruire son bloc). */
+function revokeUrlsFor(key) {
+    if (!state) return;
+    const list = state.objectUrls.get(key);
+    if (!list) return;
+    list.forEach(u => { try { URL.revokeObjectURL(u); } catch { /* déjà révoquée */ } });
+    state.objectUrls.delete(key);
+}
+
+/** Révoque TOUTES les URLs (démontage du panneau). */
 function revokeUrls() {
     if (!state) return;
-    state.objectUrls.forEach(u => { try { URL.revokeObjectURL(u); } catch { /* déjà révoquée */ } });
-    state.objectUrls = [];
+    [...state.objectUrls.keys()].forEach(revokeUrlsFor);
 }
 
 /** Source jouable d'un audio TTS (cache) pour le texte courant, ou null. */
 function ttsSrc(text, slow) {
     const entry = state.deps.getCachedAudio(text, { lang: state.lang, voice: state.voice, slow });
     return (entry && entry.blob) ? trackUrl(URL.createObjectURL(entry.blob)) : null;
+}
+
+/**
+ * Nom de fichier lisible pour un téléchargement : « dictee-01-les-trente-glorieuses.mp3 »
+ * plutôt que le `dictation-<hash>.mp3` interne, illisible une fois dans le dossier
+ * Téléchargements. Accents retirés (NFD) : certains systèmes de fichiers les rendent mal.
+ */
+function downloadName(idx, text, slow) {
+    const slug = String(text || '')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase().replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '').slice(0, 40).replace(/-+$/, '');
+    const n = String(idx + 1).padStart(2, '0');
+    return `dictee-${n}${slug ? '-' + slug : ''}${slow ? '-lent' : ''}.mp3`;
+}
+
+/**
+ * Bouton de téléchargement d'une piste. Le `href` est l'URL blob: déjà créée pour le
+ * lecteur — aucun octet supplémentaire, et l'attribut `download` impose le nom lisible.
+ */
+function downloadBtn(src, idx, text, slow) {
+    if (!src) return '';
+    const title = slow
+        ? (t('editor_dictation_download_slow') || 'Télécharger la lecture lente')
+        : (t('editor_dictation_download') || 'Télécharger l\'audio');
+    return `<a class="dt-sa-dl" href="${src}" download="${escapeText(downloadName(idx, text, slow))}"
+               title="${escapeText(title)}" aria-label="${escapeText(title)}"><i class="fas fa-download" aria-hidden="true"></i></a>`;
 }
 
 /** Source jouable d'un audio MANUEL (dataURL de l'entrée éditeur, ou blob du .h5p rouvert). */
@@ -366,7 +595,6 @@ function sentenceHosts() {
 function decorateSentences() {
     if (!state) return;
     placePanel(); // la barre suit la vue (section générale ↔ autres vues)
-    revokeUrls(); // les URLs blob: des lecteurs vont être recréées
     const data = state.api.getData() || {};
     const sentences = Array.isArray(data.sentences) ? data.sentences : [];
     sentenceHosts().forEach(({ host, idx, anchor }) => {
@@ -379,12 +607,49 @@ function decorateSentences() {
         }
         renderSentenceBlock(block, idx, sentences[idx]);
     });
+    // Le travail restant se recalcule à CHAQUE re-décoration : ajouter une phrase ou en
+    // modifier le texte fait donc apparaître tout seul « 1 phrase reste à générer ».
+    refreshPending(data);
+}
+
+/**
+ * Empreinte de tout ce dont dépend le rendu d'un bloc. Deux rendus de même empreinte
+ * produisent exactement le même DOM : inutile de le réécrire.
+ *
+ * `lang`/`voice` en font PARTIE même si les booléens de cache suffisaient à l'affichage :
+ * si les deux voix sont en cache, les booléens sont identiques d'une voix à l'autre — sans
+ * ces deux champs, basculer Féminine ↔ Masculine ne reconstruirait pas le bloc et le
+ * lecteur continuerait de jouer l'ANCIENNE voix.
+ */
+function blockSignature(idx, sentence) {
+    const text = sentenceText(sentence);
+    const manual = !!(sentence && isManualSample(sentence.sample));
+    const parts = [idx, state.lang, state.voice, state.slow ? 1 : 0, manual ? 'M' : 'T', text];
+    if (manual) {
+        const f = Array.isArray(sentence.sample) ? sentence.sample[0] : sentence.sample;
+        const a = Array.isArray(sentence.sampleAlternative) ? sentence.sampleAlternative[0] : sentence.sampleAlternative;
+        parts.push((f && f.path) || '', (f && f.dataURL) ? 'd' : '');
+        parts.push(isManualSample(sentence.sampleAlternative) ? ((a && a.path) || '') : '');
+    } else if (text) {
+        parts.push(isCached(text, false) ? '1' : '0', state.slow ? (isCached(text, true) ? '1' : '0') : '-');
+    }
+    return parts.join('\u0001');
 }
 
 /** Rendu du bloc audio d'UNE phrase (lecteurs / générer / ma voix / retour synthèse). */
 function renderSentenceBlock(block, idx, sentence) {
+    // Rendu IDEMPOTENT : sans cette sortie, chaque clic sur un réglage détruisait et
+    // recréait TOUS les `<audio>` de la dictée, d'où le clignotement (retour d'usage
+    // 2026-08-20 : « il y a un FOUC quand je clique sur Masculin et Féminin »).
+    const sig = blockSignature(idx, sentence);
+    if (block.dataset.index === String(idx) && block.dataset.sig === sig) return;
+
     const text = sentenceText(sentence);
     const manual = sentence && isManualSample(sentence.sample);
+
+    // Ce bloc-ci va être remplacé : ses anciennes URLs blob: peuvent partir.
+    revokeUrlsFor(idx);
+    renderingKey = idx;
 
     // Un dictaphone OUVERT (enregistrement/rognage en cours) survit à la re-décoration :
     // on détache sa zone avant de réécrire le bloc, puis on la remet à la place de la
@@ -397,6 +662,8 @@ function renderSentenceBlock(block, idx, sentence) {
 
     if (!text) {
         block.innerHTML = `<span class="dt-missing">${escapeText(t('editor_dictation_write_first') || 'Écrivez d\'abord la phrase pour générer son audio.')}</span>`;
+        renderingKey = '_';
+        block.dataset.sig = sig;
         return;
     }
 
@@ -406,16 +673,17 @@ function renderSentenceBlock(block, idx, sentence) {
         const altManual = isManualSample(sentence.sampleAlternative) ? manualSrc(sentence.sampleAlternative) : null;
         playersHtml = `
             <span class="dt-manual-badge"><i class="fas fa-user" aria-hidden="true"></i> ${escapeText(t('editor_dictation_manual_badge') || 'Ma voix')}</span>
-            ${src ? `<audio controls preload="none" src="${src}"></audio>` : `<span class="dt-missing">${escapeText(t('editor_dictation_manual_unreadable') || 'Audio dans le fichier')}</span>`}
-            ${altManual ? `<span class="dt-slow-tag" title="${escapeText(t('editor_dictation_sample_slow') || 'Lecture lente')}"><i class="fas fa-hourglass-half" aria-hidden="true"></i><audio controls preload="none" src="${altManual}"></audio></span>` : ''}
+            ${src ? `<audio controls preload="none" src="${src}"></audio>${downloadBtn(src, idx, text, false)}` : `<span class="dt-missing">${escapeText(t('editor_dictation_manual_unreadable') || 'Audio dans le fichier')}</span>`}
+            ${altManual ? `<span class="dt-slow-tag" title="${escapeText(t('editor_dictation_sample_slow') || 'Lecture lente')}"><i class="fas fa-hourglass-half" aria-hidden="true"></i><audio controls preload="none" src="${altManual}"></audio>${downloadBtn(altManual, idx, text, true)}</span>` : ''}
         `;
     } else {
         const srcN = ttsSrc(text, false);
         const srcS = state.slow ? ttsSrc(text, true) : null;
         playersHtml = srcN
             ? `<audio controls preload="none" src="${srcN}" title="${escapeText(t('editor_dictation_sample') || 'Voix normale')}"></audio>
+               ${downloadBtn(srcN, idx, text, false)}
                ${state.slow ? (srcS
-                    ? `<span class="dt-slow-tag" title="${escapeText(t('editor_dictation_sample_slow') || 'Lecture lente')}"><i class="fas fa-hourglass-half" aria-hidden="true"></i><audio controls preload="none" src="${srcS}"></audio></span>`
+                    ? `<span class="dt-slow-tag" title="${escapeText(t('editor_dictation_sample_slow') || 'Lecture lente')}"><i class="fas fa-hourglass-half" aria-hidden="true"></i><audio controls preload="none" src="${srcS}"></audio>${downloadBtn(srcS, idx, text, true)}</span>`
                     : `<span class="dt-missing">${escapeText(t('editor_dictation_tts_missing') || 'À générer')}</span>`) : ''}`
             : `<span class="dt-missing">${escapeText(t('editor_dictation_tts_missing') || 'À générer')}</span>`;
     }
@@ -445,6 +713,9 @@ function renderSentenceBlock(block, idx, sentence) {
     const resetBtn = block.querySelector('.dt-sa-reset');
     if (resetBtn) resetBtn.addEventListener('click', () => resetToTts(idx));
     block.querySelector('.dt-sa-record').addEventListener('click', () => toggleRecorder(idx, block));
+
+    renderingKey = '_';
+    block.dataset.sig = sig;
 }
 
 // =======================================================================
@@ -458,10 +729,10 @@ async function generateOne(idx, block) {
     const sentence = Array.isArray(data.sentences) ? data.sentences[idx] : null;
     const text = sentenceText(sentence);
     if (!text) return;
-    state.busy = true;
+    setBusy(true);
     const btn = block.querySelector('.dt-sa-generate');
     if (btn) { btn.disabled = true; btn.innerHTML = `<i class="fas fa-spinner fa-spin" aria-hidden="true"></i>`; }
-    setStatus(t('editor_dictation_tts_generating') || 'Synthèse en cours…', true);
+    startElapsed(1);
     try {
         const base = { lang: state.lang, voice: state.voice };
         const normal = await state.deps.synthesize([text], { ...base, slow: false });
@@ -482,7 +753,9 @@ async function generateOne(idx, block) {
     } catch (e) {
         setStatus((t('editor_dictation_tts_error') || 'Échec de la synthèse') + (e && e.message ? ` (${e.message})` : ''));
     } finally {
-        state.busy = false;
+        stopElapsed();
+        setBusy(false);
+        decorateSentences();
     }
 }
 
@@ -499,20 +772,41 @@ async function regenerateAll() {
         decorateSentences();
         return;
     }
-    state.busy = true;
+    const pendingCount = pendingSentences().length;
+    if (pendingCount === 0) {
+        // Tout est déjà en cache : aucun appel réseau ne partira. On le DIT plutôt que de
+        // laisser croire à une régénération (c'est le cas de l'aller-retour entre voix).
+        targets.forEach(s => writeTtsPaths(s, sentenceText(s)));
+        if (!state.slow) {
+            sentences.forEach(s => { if (s && !isManualSample(s.sampleAlternative)) delete s.sampleAlternative; });
+        }
+        state.api.setData(data);
+        setStatus(t('editor_dictation_tts_cached') || 'Déjà généré pour ce réglage (aucune attente).');
+        decorateSentences();
+        return;
+    }
+    setBusy(true);
     if (state.abort) state.abort.abort();
     state.abort = new AbortController();
-    setStatus(t('editor_dictation_tts_generating') || 'Synthèse en cours…', true);
+    startElapsed(pendingCount);
     try {
         const base = { lang: state.lang, voice: state.voice, signal: state.abort.signal };
         const normal = await state.deps.synthesize(texts, { ...base, slow: false });
         if (normal.error) {
-            setStatus((t('editor_dictation_tts_error') || 'Échec de la synthèse') + ` (${normal.error})`);
+            setStatus(normal.error === 'aborted'
+                ? (t('editor_dictation_tts_cancelled') || 'Génération annulée.')
+                : (t('editor_dictation_tts_error') || 'Échec de la synthèse') + ` (${normal.error})`);
+            decorateSentences();
             return;
         }
         let fallback = !!normal.genderFallback;
         if (state.slow) {
             const slowRes = await state.deps.synthesize(texts, { ...base, slow: true });
+            if (slowRes && slowRes.error === 'aborted') {
+                setStatus(t('editor_dictation_tts_cancelled') || 'Génération annulée.');
+                decorateSentences();
+                return;
+            }
             fallback = fallback || !!(slowRes && slowRes.genderFallback);
         }
         targets.forEach(s => writeTtsPaths(s, sentenceText(s)));
@@ -527,7 +821,8 @@ async function regenerateAll() {
     } catch (e) {
         setStatus((t('editor_dictation_tts_error') || 'Échec de la synthèse') + (e && e.message ? ` (${e.message})` : ''));
     } finally {
-        state.busy = false;
+        stopElapsed();
+        setBusy(false);
     }
 }
 
@@ -653,6 +948,7 @@ export function destroyDictationTtsPanel() {
     if (state.abort) { try { state.abort.abort(); } catch { /* déjà annulé */ } }
     for (const rec of state.recorders.values()) { try { rec.destroy(); } catch { /* déjà détruit */ } }
     state.recorders.clear();
+    clearInterval(state.elapsedTimer);
     if (state.observer) state.observer.disconnect();
     if (state.container && state._onEditorInput) state.container.removeEventListener('input', state._onEditorInput);
     clearTimeout(state.resyncTimer);

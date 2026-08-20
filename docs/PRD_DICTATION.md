@@ -393,10 +393,26 @@ mentions légales (§11.4), portage Sucrerie.
   l'`index.js` divergent de chaque dépôt (Caramel : `js/services/tts.js` ; Sucrerie :
   `assets/js/services/tts.js`).
 - Langue (11), voix F/M (genres à `null` au catalogue → grisés, bascule auto), lecture lente,
-  « Régénérer l'audio » ; **changer langue/voix/lente régénère immédiatement** ; lecteurs par
-  phrase (normale + lente) ; bandeau repli de genre. CSS `.dt-*` (style.css / editor-view.css).
-- Après synthèse, le panneau **reporte les chemins** dans `sentences[].sample` (indispensable
-  côté Sucrerie, sans processeur).
+  bouton de génération unique ; lecteurs par phrase (normale + lente) ; bandeau repli de
+  genre. CSS `.dt-*` (style.css / editor-view.css).
+- **Changer langue/voix/lente NE DÉCLENCHE AUCUNE SYNTHÈSE** (retour d'usage 2026-08-20 :
+  la synthèse dure jusqu'à ~1 min et partait sans que l'utilisateur ait rien validé). Le
+  réglage s'applique aussitôt ; les phrases déjà synthétisées pour ce réglage se réécoutent
+  immédiatement depuis le cache — **l'aller-retour Féminine → Masculine → Féminine ne coûte
+  aucun appel réseau** — et ce qui reste à produire est annoncé par le bandeau `.dt-pending`
+  (« {n} phrase(s) restent à générer… ») avec le décompte repris sur le bouton « Générer ({n}) ».
+  Ce bouton est le SEUL déclencheur, avec le « Générer » de chaque phrase.
+- Le décompte se recalcule à chaque re-décoration : **ajouter une phrase après coup la
+  signale comme seule phrase à générer**, le cache des autres étant conservé.
+- Pendant une synthèse, les réglages sont **verrouillés** et « Annuler » est proposé (abort
+  du fetch en cours). Sans ce verrou, un clic de voix basculait le réglage et le persistait
+  alors que `regenerateAll` repartait sur son garde `busy` : réglage et audio se
+  désynchronisaient en silence. Le statut affiche le nombre de phrases et les secondes écoulées.
+- Après synthèse — et dès qu'un changement de réglage est **déjà couvert par le cache** — le
+  panneau **reporte les chemins** dans `sentences[].sample` (indispensable côté Sucrerie, sans
+  processeur : la sortie de l'éditeur y est écrite telle quelle).
+- Garde-fou : suite navigateur `dictation-tts` (`tests/test-dictation-tts-panel.js`), qui
+  injecte un faux service comptant ses appels — seule façon d'affirmer « aucun appel réseau ».
 
 ### 12.4 Éditeur (fichiers partagés)
 
