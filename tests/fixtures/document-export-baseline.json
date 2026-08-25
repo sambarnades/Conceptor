@@ -1,7 +1,7 @@
 {
  "_doc": "Oracle DOCX/ODT — NE PAS éditer à la main. Régénérer : node tests/run_document_export_oracle.mjs --update",
- "exports": 132,
- "entrees": 2069,
+ "exports": 134,
+ "entrees": 2098,
  "resultats": {
   "Appariement/appariement_1.json#docx": {
    "type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -10601,6 +10601,155 @@
     "content.xml": {
      "taille": 2052,
      "sha": "3663e582e63eb25a9172fdd4"
+    },
+    "mimetype": {
+     "taille": 39,
+     "sha": "714dbe370b0a7063669217d9"
+    },
+    "styles.xml": {
+     "taille": 14866,
+     "sha": "f46e3b4390663cb0e40bb83a"
+    }
+   }
+  },
+  "QuizSet/export-cases/quizset_image_question.json#docx": {
+   "type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+   "entrees": {
+    "_ordre": [
+     "word/_rels/document.xml.rels",
+     "word/document.xml",
+     "word/styles.xml",
+     "docProps/core.xml",
+     "word/numbering.xml",
+     "_rels/.rels",
+     "word/_rels/footer1.xml.rels",
+     "word/footer1.xml",
+     "[Content_Types].xml",
+     "docProps/custom.xml",
+     "docProps/app.xml",
+     "word/footnotes.xml",
+     "word/_rels/footnotes.xml.rels",
+     "word/endnotes.xml",
+     "word/_rels/endnotes.xml.rels",
+     "word/settings.xml",
+     "word/comments.xml",
+     "word/_rels/comments.xml.rels",
+     "word/fontTable.xml",
+     "word/_rels/fontTable.xml.rels",
+     "word/media/media0.jpg"
+    ],
+    "[Content_Types].xml": {
+     "taille": 2232,
+     "sha": "9dade5058cf89e28a9bca4ca"
+    },
+    "_rels/.rels": {
+     "taille": 718,
+     "sha": "641d22a23aa9eb550103a7a0"
+    },
+    "docProps/app.xml": {
+     "taille": 230,
+     "sha": "579eba9a8d602575736c3880"
+    },
+    "docProps/core.xml": {
+     "taille": 607,
+     "sha": "9dc3b7fac5b297bd4b0c564c"
+    },
+    "docProps/custom.xml": {
+     "taille": 228,
+     "sha": "8ec73cc7ce297e42cc652a1d"
+    },
+    "word/_rels/comments.xml.rels": {
+     "taille": 123,
+     "sha": "bf64631f0bc7bd46712fef82"
+    },
+    "word/_rels/document.xml.rels": {
+     "taille": 1317,
+     "sha": "64a2aba9c7828989c42770c8"
+    },
+    "word/_rels/endnotes.xml.rels": {
+     "taille": 123,
+     "sha": "bf64631f0bc7bd46712fef82"
+    },
+    "word/_rels/fontTable.xml.rels": {
+     "taille": 123,
+     "sha": "bf64631f0bc7bd46712fef82"
+    },
+    "word/_rels/footer1.xml.rels": {
+     "taille": 123,
+     "sha": "bf64631f0bc7bd46712fef82"
+    },
+    "word/_rels/footnotes.xml.rels": {
+     "taille": 123,
+     "sha": "bf64631f0bc7bd46712fef82"
+    },
+    "word/comments.xml": {
+     "taille": 2246,
+     "sha": "dd2d62f68c6fd01fc4d7d440"
+    },
+    "word/document.xml": {
+     "taille": 12121,
+     "sha": "16ae247fd90c8c7cb5add758"
+    },
+    "word/endnotes.xml": {
+     "taille": 1682,
+     "sha": "52f6c33e62c233e0d9f9c41e"
+    },
+    "word/fontTable.xml": {
+     "taille": 835,
+     "sha": "a746dbb577ec5d68983d6597"
+    },
+    "word/footer1.xml": {
+     "taille": 1573,
+     "sha": "4ae0fcc889c8d4bb8d7b4109"
+    },
+    "word/footnotes.xml": {
+     "taille": 1709,
+     "sha": "774ce254f01cde1079d43e81"
+    },
+    "word/media/media0.jpg": {
+     "taille": 45310,
+     "sha": "1e60de284158428bf6ebd348"
+    },
+    "word/numbering.xml": {
+     "taille": 3154,
+     "sha": "aae067c32dd80d876358a0cc"
+    },
+    "word/settings.xml": {
+     "taille": 1395,
+     "sha": "36b68f012adfd6d2f8faaebc"
+    },
+    "word/styles.xml": {
+     "taille": 5704,
+     "sha": "30cf638994fffe75a27cf9cf"
+    }
+   }
+  },
+  "QuizSet/export-cases/quizset_image_question.json#odt": {
+   "type": "application/zip",
+   "entrees": {
+    "_ordre": [
+     "mimetype",
+     "Pictures/media0.jpeg",
+     "Pictures/media1.jpeg",
+     "META-INF/manifest.xml",
+     "content.xml",
+     "styles.xml"
+    ],
+    "META-INF/manifest.xml": {
+     "taille": 680,
+     "sha": "dc702b74f503b7befe185a99"
+    },
+    "Pictures/media0.jpeg": {
+     "taille": 45310,
+     "sha": "1e60de284158428bf6ebd348"
+    },
+    "Pictures/media1.jpeg": {
+     "taille": 45310,
+     "sha": "1e60de284158428bf6ebd348"
+    },
+    "content.xml": {
+     "taille": 4507,
+     "sha": "7572a2df9f675cffc44565a2"
     },
     "mimetype": {
      "taille": 39,

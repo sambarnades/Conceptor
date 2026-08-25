@@ -549,6 +549,87 @@ section('T11 — Anti-chevauchement des zones (forme plate uniquement)');
     }
 }
 
+// ===========================================================================
+// T12 — FMH : « Zones à trouver » suit l'ajout/la suppression d'une zone correcte
+// Non-régression du bug 6.3.0 : une zone correcte ajoutée dans l'éditeur puis enregistrée
+// n'était pas comptabilisée (numberHotspots figé sur l'ancien total → maxScore du player figé).
+// ===========================================================================
+section('T12 — FMH : total des bonnes réponses après édition');
+if (contentDetector) {
+    const { normalizeDataForEditor, denormalizeDataForSave } = contentDetector;
+    const zone = (label, correct, x, y) => ({
+        label, correct, x, y, width: 15, height: 15, figure: 'circle', feedbackText: correct ? 'Bravo, vous avez trouvé' : 'Raté'
+    });
+    const baseFlat = {
+        title: 'Chasse', taskDescription: 'Cliquez sur toutes les zones.', hotspotName: 'légumes',
+        image: { path: 'images/bg.png', mime: 'image/png', width: 800, height: 600, copyright: { license: 'U' } },
+        hotspots: [zone('A', true, 20, 20), zone('B', true, 50, 20), zone('C', false, 80, 20)],
+        numberHotspots: 2, noneSelectedFeedback: 'Rien', alreadySelectedFeedback: 'Déjà'
+    };
+
+    // a) Chargement : valeur alignée sur le nb de zones correctes → baseline posée.
+    const model = normalizeDataForEditor(structuredClone(baseFlat), FMH);
+    ok(model.numberHotspots === 2 && model._numberHotspotsAuto === 2,
+        'FMH : valeur automatique (= nb de zones correctes) → baseline posée', JSON.stringify([model.numberHotspots, model._numberHotspotsAuto]));
+
+    // b) L'utilisateur AJOUTE une zone correcte sans toucher au champ « Zones à trouver ».
+    const added = structuredClone(model);
+    added.hotspots.push(zone('D', true, 20, 60));
+    const savedAdd = denormalizeDataForSave(structuredClone(added), FMH);
+    ok(savedAdd[ROOT_FMH].hotspotSettings.numberHotspots === 3,
+        'FMH : zone correcte ajoutée → total recalculé (2 → 3)', String(savedAdd[ROOT_FMH].hotspotSettings.numberHotspots));
+    const cAdd = await healAndProcess(savedAdd, FMH);
+    ok(cAdd[ROOT_FMH].hotspotSettings.numberHotspots === 3,
+        'FMH : total conservé après passage par le processeur', String(cAdd[ROOT_FMH].hotspotSettings.numberHotspots));
+    ok(normalizeDataForEditor(structuredClone(cAdd), FMH).numberHotspots === 3,
+        'FMH : ré-ouverture de l\'éditeur → 3 affiché', '');
+
+    // c) Une zone correcte DÉCOCHÉE fait redescendre le total.
+    const removed = structuredClone(model);
+    removed.hotspots[1].correct = false;
+    const savedRem = denormalizeDataForSave(structuredClone(removed), FMH);
+    ok(savedRem[ROOT_FMH].hotspotSettings.numberHotspots === 1,
+        'FMH : zone correcte décochée → total recalculé (2 → 1)', String(savedRem[ROOT_FMH].hotspotSettings.numberHotspots));
+
+    // d) Plafond VOLONTAIRE (« trouver 2 zones sur 3 ») : pas de baseline, valeur respectée
+    //    même après ajout d'une zone correcte.
+    const capFlat = structuredClone(baseFlat);
+    capFlat.hotspots.push(zone('D', true, 50, 60)); // 3 zones correctes
+    capFlat.numberHotspots = 2;                     // < 3 → restriction délibérée
+    const capModel = normalizeDataForEditor(structuredClone(capFlat), FMH);
+    ok(capModel.numberHotspots === 2 && capModel._numberHotspotsAuto === undefined,
+        'FMH : plafond volontaire (2 sur 3) → aucune baseline', JSON.stringify([capModel.numberHotspots, capModel._numberHotspotsAuto]));
+    capModel.hotspots.push(zone('E', true, 80, 60)); // 4 zones correctes
+    const savedCap = denormalizeDataForSave(structuredClone(capModel), FMH);
+    ok(savedCap[ROOT_FMH].hotspotSettings.numberHotspots === 2,
+        'FMH : plafond volontaire préservé malgré l\'ajout d\'une zone correcte', String(savedCap[ROOT_FMH].hotspotSettings.numberHotspots));
+
+    // d-bis) Même plafond volontaire, mais chargé depuis un content.json COMPLET (activité
+    //        rouverte) : il ne doit pas être remonté au nb de zones correctes à l'ouverture.
+    const fullCap = denormalizeDataForSave(structuredClone(capFlat), FMH);
+    fullCap[ROOT_FMH].hotspotSettings.numberHotspots = 2; // plafond volontaire (3 zones correctes)
+    const fullModel = normalizeDataForEditor(structuredClone(fullCap), FMH);
+    ok(fullModel.numberHotspots === 2 && fullModel._numberHotspotsAuto === undefined,
+        'FMH : forme complète — plafond volontaire relu tel quel (pas de remontée)', JSON.stringify([fullModel.numberHotspots, fullModel._numberHotspotsAuto]));
+    const fullAuto = structuredClone(fullCap);
+    fullAuto[ROOT_FMH].hotspotSettings.numberHotspots = 3; // = nb de zones correctes → automatique
+    const fullAutoModel = normalizeDataForEditor(structuredClone(fullAuto), FMH);
+    ok(fullAutoModel._numberHotspotsAuto === 3,
+        'FMH : forme complète — valeur automatique → baseline posée', String(fullAutoModel._numberHotspotsAuto));
+
+    // e) La baseline ne fuit JAMAIS dans le content.json enregistré.
+    ok(!('_numberHotspotsAuto' in savedAdd) && !('_numberHotspotsAuto' in savedAdd[ROOT_FMH].hotspotSettings),
+        'FMH : baseline absente du content.json', JSON.stringify(Object.keys(savedAdd)));
+
+    // f) FindTheHotspot (mono-zone) n'est pas concerné : aucune baseline, et le champ
+    //    `numberHotspots` — hors schéma FTH — n'est jamais réémis dans son content.json.
+    const fthModel = normalizeDataForEditor(structuredClone(baseFlat), FTH);
+    ok(!('_numberHotspotsAuto' in fthModel), 'FTH : aucune baseline posée', JSON.stringify(Object.keys(fthModel)));
+    const fthSaved = denormalizeDataForSave(structuredClone(fthModel), FTH);
+    ok(!('numberHotspots' in fthSaved[ROOT_FTH].hotspotSettings),
+        'FTH : numberHotspots absent du content.json', JSON.stringify(Object.keys(fthSaved[ROOT_FTH].hotspotSettings)));
+}
+
 // ---------------------------------------------------------------------------
 // Bilan
 // ---------------------------------------------------------------------------

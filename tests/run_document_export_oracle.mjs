@@ -34,7 +34,7 @@ import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
-import { readFile } from 'fs/promises';
+import { readFile, readdir } from 'fs/promises';
 import { createHash } from 'crypto';
 import { deflateSync } from 'zlib';
 
@@ -48,6 +48,7 @@ const { listH5pFixtures, listMoodleFixtures, EXAMPLES_DIR } =
     await import('./roundtrip/fixtures-map.mjs');
 
 const BASELINE_PATH = join(ROOT, 'tests/fixtures/document-export-baseline.json');
+const CASES_DIR = join(ROOT, 'tests/fixtures/export-cases');
 const UPDATE = process.argv.includes('--update');
 const PORT = 8098;
 
@@ -68,6 +69,55 @@ for (const fx of all) {
     });
 }
 CAS.sort((a, b) => (a.moduleKey + a.file).localeCompare(b.moduleKey + b.file));
+
+// ── Cas SUPPLÉMENTAIRES : tests/fixtures/export-cases/ ──────────────────────────
+// Les fixtures de `assets/data/examples/` servent AUSSI d'échantillons few-shot aux
+// prompts : on n'y ajoute pas un champ que le LLM ne doit jamais produire (`mediaImage`
+// — l'image est jointe par l'utilisateur). Et le plafond de 2 fixtures par module
+// empêcherait de toute façon un 3ᵉ exemple d'être vu. Les cas destinés à couvrir un tel
+// champ vivent donc ici, dans un dossier propre aux tests.
+//
+// Enveloppe : { _moduleKey, _attendImages?, _doc?, data }. `_attendImages` = nombre
+// MINIMAL d'entrées média attendues dans chaque archive produite (cf. contrôle plus bas).
+//
+// AJOUTÉS EN QUEUE, jamais dans le tri : le préchauffage utilise `CAS[0]`, et changer
+// ce premier cas déplacerait l'état de départ de TOUS les exports mesurés.
+const CAS_SUP = [];
+if (existsSync(CASES_DIR)) {
+    for (const f of (await readdir(CASES_DIR)).filter(n => n.endsWith('.json')).sort()) {
+        const j = JSON.parse(await readFile(join(CASES_DIR, f), 'utf8'));
+        if (!j._moduleKey) throw new Error(`tests/fixtures/export-cases/${f} : _moduleKey manquant`);
+        CAS_SUP.push({ moduleKey: j._moduleKey, file: `export-cases/${f}`, data: await inlinerImages(j.data), attendImages: j._attendImages || 0 });
+    }
+    CAS.push(...CAS_SUP);
+}
+
+/**
+ * Remplace tout `{ _fichier: 'x.jpg', mime }` par le `dataURL` du fichier correspondant
+ * de `tests/fixtures/export-images/`.
+ *
+ * Pourquoi pas un chemin ? `fetchImageAsDataURL` (renderers/image-utils.js) appelle
+ * `validateImageUrl`, qui n'autorise QUE http(s) : un chemin relatif est refusé, et le
+ * repli « chemin relatif » de `resolveImageData` lit le registre MÉMOIRE d'image-manager,
+ * vide hors application. Le `dataURL` est de toute façon la forme réelle que Caramel donne
+ * à une image jointe (`getMediaImageUrl` le lit AVANT `path`), et il rend le cas
+ * entièrement déterministe : aucun octet ne transite par le réseau.
+ *
+ * Le fichier reste sur disque — vrai JPEG relisible et crédité (CREDITS.md) — plutôt
+ * qu'un pavé base64 illisible recopié dans la fixture.
+ */
+async function inlinerImages(noeud) {
+    if (Array.isArray(noeud)) return Promise.all(noeud.map(inlinerImages));
+    if (!noeud || typeof noeud !== 'object') return noeud;
+    if (typeof noeud._fichier === 'string') {
+        const bin = await readFile(join(ROOT, 'tests/fixtures/export-images', noeud._fichier));
+        const { _fichier, ...reste } = noeud;
+        return { ...reste, dataURL: `data:${noeud.mime || 'image/jpeg'};base64,${bin.toString('base64')}` };
+    }
+    const out = {};
+    for (const [k, v] of Object.entries(noeud)) out[k] = await inlinerImages(v);
+    return out;
+}
 
 // ---------------------------------------------------------------- serveur
 const server = spawn('python3', ['-m', 'http.server', String(PORT), '--bind', '127.0.0.1'],
@@ -358,6 +408,36 @@ try {
     if (pageErrors.length) {
         console.log(`\n${pageErrors.length} erreur(s) JS de page :`);
         for (const e of [...new Set(pageErrors)].slice(0, 6)) console.log('   • ' + e);
+    }
+
+    // ── Contrôle des cas `_attendImages` ────────────────────────────────────────
+    // La baseline prouve « rien n'a changé », jamais « l'image est là » : un correctif
+    // d'image qu'on retirerait AVANT la première capture passerait vert à jamais. On
+    // exige donc explicitement N entrée(s) média par archive, et des octets réels —
+    // ces images-là sont inlinées en `dataURL` depuis un VRAI fichier (jamais interceptées,
+    // le filtre de route laisse passer `data:`) : un PNG synthétique de l'oracle
+    // (1 pixel, ~70 octets) ne pourrait pas franchir le seuil de taille.
+    const MEDIA_RE = /^(word\/media|Pictures|media)\//i;
+    const TAILLE_MINI = 1024;
+    const manquants = [];
+    for (const cas of CAS_SUP.filter(c => c.attendImages > 0)) {
+        for (const fmt of ['docx', 'odt']) {
+            const r = results[`${cas.moduleKey}/${cas.file}#${fmt}`];
+            const medias = Object.entries(r?.entrees ?? {}).filter(([n]) => MEDIA_RE.test(n));
+            const vrais = medias.filter(([, v]) => (v?.taille ?? 0) >= TAILLE_MINI);
+            if (vrais.length < cas.attendImages) {
+                manquants.push(`${cas.file}#${fmt} : ${vrais.length} média(s) ≥ ${TAILLE_MINI} o`
+                    + ` sur ${cas.attendImages} attendu(s) (entrées média : ${medias.map(([n, v]) => `${n} ${v.taille}o`).join(', ') || 'aucune'})`);
+            }
+        }
+    }
+    if (manquants.length) {
+        console.log(`\n❌ ${manquants.length} archive(s) sans l'image attendue :`);
+        for (const m of manquants) console.log('   • ' + m);
+        exitCode = 1;
+    } else if (CAS_SUP.some(c => c.attendImages > 0)) {
+        const n = CAS_SUP.filter(c => c.attendImages > 0).length;
+        console.log(`\n✅ images embarquées : ${n} cas × 2 formats portent leurs octets d'image réels`);
     }
 
     if (UPDATE || !existsSync(BASELINE_PATH)) {

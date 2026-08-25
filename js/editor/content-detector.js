@@ -3725,6 +3725,29 @@ function hqRound2(v) {
 }
 
 /**
+ * « Zones à trouver » (`numberHotspots`, Find Multiple Hotspots) : aligne la valeur sur le
+ * nombre de zones correctes et pose une BASELINE cachée `_numberHotspotsAuto` quand la valeur
+ * EST cette valeur automatique. La baseline permet à `denormalizeHotspotQuestionData()` de
+ * distinguer deux intentions que le seul nombre ne suffit pas à séparer :
+ *  - champ jamais retouché (valeur = nb de zones correctes) → il SUIT l'ajout ou la
+ *    suppression d'une zone correcte à l'enregistrement ;
+ *  - plafond volontairement plus bas (« trouver 3 zones sur 5 ») → respecté tel quel.
+ * Sans elle, ajouter une zone correcte dans l'éditeur laissait `numberHotspots` figé sur
+ * l'ancien total : le player plafonnait `maxScore` à cette valeur et la nouvelle bonne
+ * réponse n'était pas comptabilisée (« … 1 of 3 » au lieu de « … 1 of 4 »).
+ * @param {Object} target - Modèle PLAT (muté sur place).
+ * @param {number} correctCount - Nombre de zones `correct: true` dans ce modèle.
+ */
+function hqSyncNumberHotspots(target, correctCount) {
+    const auto = correctCount || 1;
+    const n = parseInt(target.numberHotspots, 10);
+    const value = (Number.isFinite(n) && n >= 1) ? Math.min(n, auto) : auto;
+    target.numberHotspots = value;
+    if (value === auto) target._numberHotspotsAuto = auto;
+    else delete target._numberHotspotsAuto;
+}
+
+/**
  * Normalise les deux « questions hotspot » vers le format plat éditable :
  * hotspots[]{label, correct, x, y (CENTRES en %), width, height, figure, feedbackText}.
  * Accepte le format plat (LLM) ET le content.json complet ({[rootKey]: …}, où computedSettings
@@ -3770,8 +3793,10 @@ function normalizeHotspotQuestionData(data, rootKey) {
         };
         if (isMultiple) {
             flat.hotspotName = hs.hotspotName || '';
-            const n = parseInt(hs.numberHotspots, 10);
-            if (Number.isFinite(n) && n > 0) flat.numberHotspots = n;
+            // Reprendre la valeur du content.json AVANT de la synchroniser : sans elle, un
+            // plafond volontaire (« trouver 3 zones sur 5 ») serait remonté à 5 à l'ouverture.
+            flat.numberHotspots = hs.numberHotspots;
+            hqSyncNumberHotspots(flat, flat.hotspots.filter(h => h.correct === true).length);
             flat.alreadySelectedFeedback = hs.alreadySelectedFeedback || '';
         } else {
             flat.showFeedbackAsPopup = hs.showFeedbackAsPopup !== false;
@@ -3798,6 +3823,12 @@ function normalizeHotspotQuestionData(data, rootKey) {
             if (!h.feedbackText) h.feedbackText = '';
             return h;
         });
+    }
+    if (isMultiple) {
+        // Recalculé à CHAQUE normalisation : une baseline devenue obsolète (modèle plat
+        // rouvert après édition) est ainsi réalignée avant affichage.
+        hqSyncNumberHotspots(data, (Array.isArray(data.hotspots) ? data.hotspots : [])
+            .filter(h => h && h.correct === true).length);
     }
     if (!isMultiple && data.showFeedbackAsPopup === undefined) data.showFeedbackAsPopup = true;
     return data;
@@ -3866,10 +3897,16 @@ function denormalizeHotspotQuestionData(data, rootKey) {
     if (isMultiple) {
         hotspotSettings.hotspotName = data.hotspotName || '';
         const correctCount = hotspot.filter(h => h.userSettings.correct).length;
+        const auto = correctCount || 1;
         const n = parseInt(data.numberHotspots, 10);
-        hotspotSettings.numberHotspots = (Number.isFinite(n) && n >= 1)
-            ? Math.min(n, Math.max(correctCount, 1))
-            : (correctCount || 1);
+        // Valeur restée sur sa baseline automatique (cf. hqSyncNumberHotspots) → elle suit le
+        // nombre de zones correctes du moment, sinon l'ajout d'une zone correcte laissait le
+        // total du player figé. Un plafond saisi à la main reste respecté (borné à `auto`).
+        const base = parseInt(data._numberHotspotsAuto, 10);
+        const surBaseline = Number.isFinite(base) && n === base;
+        hotspotSettings.numberHotspots = (!surBaseline && Number.isFinite(n) && n >= 1)
+            ? Math.min(n, auto)
+            : auto;
         hotspotSettings.alreadySelectedFeedback = data.alreadySelectedFeedback || '';
         out[rootKey] = {
             backgroundImageSettings: {

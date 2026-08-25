@@ -1,0 +1,60 @@
+{
+  "_doc": "`_fichier` = nom d'un fichier de tests/fixtures/export-images/, remplacé par son `dataURL` au chargement (cf. run_document_export_oracle.mjs) : c'est la forme RÉELLE que Caramel donne à une image jointe, et la seule que l'export sait résoudre — `validateImageUrl` n'accepte que http(s), un chemin relatif ne vit que dans le registre mémoire d'image-manager. Cas d'oracle HORS assets/data/examples — les exemples livrés servent aussi d'échantillons few-shot aux prompts, et `mediaImage` ne doit JAMAIS être produit par le LLM (l'image est jointe par l'utilisateur). Ce cas couvre la régression corrigée en 6.3.1 : l'image d'une question DANS un questionnaire était perdue aux trois formats (formatQuizSet n'émettait pas params.mediaImage, là où formatMultipleChoice le faisait).",
+  "_moduleKey": "QuizSet",
+  "_attendImages": 1,
+  "data": {
+    "title": "Le post-impressionnisme",
+    "questions": [
+      {
+        "library": "H5P.MultiChoice 1.16",
+        "metadata": { "title": "Reconnaître une œuvre" },
+        "params": {
+          "question": "Quel peintre a réalisé l'œuvre ci-dessous ?",
+          "mediaImage": {
+            "_fichier": "van-gogh-nuit-etoilee.jpg",
+            "path": "images/van-gogh-nuit-etoilee.jpg",
+            "mime": "image/jpeg",
+            "width": 330,
+            "height": 261,
+            "copyright": { "license": "U" }
+          },
+          "mediaImageAlt": "Un ciel nocturne tourbillonnant au-dessus d'un village, peint à larges touches.",
+          "answers": [
+            { "text": "Vincent van Gogh", "correct": true },
+            { "text": "Claude Monet", "correct": false },
+            { "text": "Paul Cézanne", "correct": false }
+          ],
+          "behaviour": { "singleAnswer": true }
+        }
+      },
+      {
+        "library": "H5P.TrueFalse 1.8",
+        "metadata": { "title": "Datation" },
+        "params": {
+          "question": "Cette œuvre a été peinte au XIXe siècle.",
+          "mediaImage": {
+            "_fichier": "van-gogh-nuit-etoilee.jpg",
+            "path": "images/van-gogh-nuit-etoilee.jpg",
+            "mime": "image/jpeg",
+            "width": 330,
+            "height": 261,
+            "copyright": { "license": "U" }
+          },
+          "correct": "true"
+        }
+      },
+      {
+        "library": "H5P.MultiChoice 1.16",
+        "metadata": { "title": "Sans illustration (témoin)" },
+        "params": {
+          "question": "Le post-impressionnisme succède à quel mouvement ?",
+          "answers": [
+            { "text": "L'impressionnisme", "correct": true },
+            { "text": "Le cubisme", "correct": false }
+          ],
+          "behaviour": { "singleAnswer": true }
+        }
+      }
+    ]
+  }
+}

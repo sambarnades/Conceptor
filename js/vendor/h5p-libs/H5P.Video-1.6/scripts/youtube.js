@@ -27,6 +27,28 @@ H5P.VideoYouTube = (function ($) {
     // var $placeholder = $('<iframe id="' + id + '" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/' + getId(sources[0].path) + '?enablejsapi=1&origin=' + encodeURIComponent(ORIGIN) + '&autoplay=' + (options.autoplay ? 1 : 0) + '&controls=' + (options.controls ? 1 : 0) + '&disabledkb=' + (options.controls ? 0 : 1) + '&fs=0&loop=' + (options.loop ? 1 : 0) + '&rel=0&showinfo=0&iv_load_policy=3" frameborder="0"></iframe>').appendTo($wrapper);
 
     /**
+     * PATCH Caramel — positionne l'iframe YouTube en absolu dans son conteneur.
+     * Remplace l'accès à la propriété minifiée `player.g` (cassée par YouTube).
+     *
+     * @private
+     */
+    var styleIframe = function () {
+      var iframe = null;
+      try {
+        if (player && typeof player.getIframe === 'function') {
+          iframe = player.getIframe();
+        }
+      }
+      catch (err) {}
+      if (!iframe) {
+        iframe = document.getElementById(id);
+      }
+      if (iframe && iframe.style) {
+        iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
+      }
+    };
+
+    /**
      * Use the YouTube API to create a new player
      *
      * @private
@@ -79,13 +101,15 @@ H5P.VideoYouTube = (function ($) {
         },
         events: {
           onReady: function () {
+            // PATCH Caramel — l'iframe n'existe pas toujours dès `new YT.Player()`.
+            styleIframe();
             self.trigger('ready');
             self.trigger('loaded');
 
             if (!options.autoplay) {
               self.toPause = true;
             }
-            
+
             if (options.deactivateSound) {
               self.mute();
             }
@@ -169,7 +193,13 @@ H5P.VideoYouTube = (function ($) {
           }
         }
       });
-      player.g.style = "position:absolute;top:0;left:0;width:100%;height:100%;";
+      // PATCH Caramel — « écran noir » : l'original faisait `player.g.style = "..."`,
+      // où `g` était le nom MINIFIÉ (donc instable) de la propriété interne de l'API
+      // YouTube pointant sur l'iframe. Google l'a renommée → `player.g` vaut undefined
+      // → TypeError levée dans create(), l'iframe ne reçoit jamais son positionnement
+      // absolu et reste invisible (la vidéo joue pourtant : le chrono avance).
+      // On passe par l'API PUBLIQUE getIframe(), avec repli sur l'id du conteneur.
+      styleIframe();
     };
 
     /**

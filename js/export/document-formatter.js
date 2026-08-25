@@ -157,6 +157,16 @@ function formatQuizSet(data) {
                 });
             }
 
+            // Image de contexte, après l'énoncé et avant les propositions — même
+            // placement que `formatMultipleChoice` pour une question autonome. Sans
+            // ça, l'image d'une question DANS un questionnaire était perdue aux trois
+            // formats : le modèle porte bien `params.mediaImage`, seul ce formatter
+            // omettait de l'émettre.
+            const qImageUrl = getMediaImageUrl(params.mediaImage);
+            if (qImageUrl) {
+                sections.push({ type: 'image', url: qImageUrl });
+            }
+
             // Propositions de réponse (sans indication de la bonne réponse)
             if (question.library && question.library.includes('MultiChoice')) {
                 formatMultiChoiceStatement(params, sections);
