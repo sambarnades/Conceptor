@@ -59,7 +59,7 @@ Trois possibilités :
 - **Copier-coller un texte** directement dans la zone de saisie
   (placeholder « Copiez-collez votre texte ici… »).
 - **Glisser-déposer un document** (ou cliquer sur **« Choisissez un
-  fichier »**) au format **PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG** (les images **WebP** et **BMP** sont aussi acceptées, sans être listées à l'écran). Une **image** déposée (photo, schéma, diagramme…) est **analysée par une IA de vision** qui en rédige une **description** et **recopie fidèlement le texte** qu'elle contient — si l'IA est indisponible, la lecture locale (OCR) prend automatiquement le relais. Vous pouvez aussi déposer un **fichier audio** (MP3, M4A, WAV…) ou une **vidéo** (MP4, MOV…) : seule la bande-son est alors transcrite automatiquement (par Albert, le service souverain de la DINUM ; voir la confidentialité ci-dessous).
+  fichier »**) au format **PDF, TXT, DOCX, PPTX, ODT, ODP, PNG, JPEG** (les images **WebP** et **BMP** sont aussi acceptées, sans être listées à l'écran). Une **image** déposée (photo, schéma, diagramme…) est **analysée par une IA de vision** qui en rédige une **description** et **recopie fidèlement le texte** qu'elle contient — si l'IA est indisponible, la lecture locale (OCR) prend automatiquement le relais. Vous pouvez aussi déposer un **fichier audio** (MP3, M4A, WAV…) ou une **vidéo** (MP4, MOV…) : seule la bande-son est alors transcrite automatiquement (par Albert, le service souverain de la DINUM ; voir la confidentialité ci-dessous).
 - **Importer une page web** : coller son lien (`https://…`) dans le
   champ sous la zone de dépôt, puis cliquer sur **« Ajouter »**. Le
   texte de la page est récupéré automatiquement.

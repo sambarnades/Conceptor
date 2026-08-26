@@ -40,7 +40,7 @@
         {
           "type": "list",
           "items": [
-            "**I vostri documenti restano sul vostro computer.** Quando caricate un file di testo (PDF, DOCX, PPTX, ODT…) nella modalità avanzata, l'estrazione avviene **interamente nel vostro browser**: nulla viene inviato a un server.",
+            "**I vostri documenti restano sul vostro computer.** Quando caricate un file di testo (PDF, TXT, DOCX, PPTX, ODT…) nella modalità avanzata, l'estrazione avviene **interamente nel vostro browser**: nulla viene inviato a un server.",
             "**Ciò che transita resta ospitato in Francia.** Le vostre richieste di generazione passano per **server universitari condivisi** (progetto **ILaaS**); le **immagini caricate** vi sono analizzate da un'**IA di visione** (descrizione + testo ricopiato); la voce (microfono o file audio) è trascritta da **Albert**, il servizio **sovrano della DINUM**. Nessuno dei due **raccoglie né rivende** i vostri dati — e **né l'audio né le immagini vengono conservati**.",
             "**Copiare e incollare in una IA esterna è una vostra scelta.** Se copiate un prompt per usarlo in un servizio di terze parti, la protezione dei vostri dati dipende allora dalle **condizioni di quel servizio**."
           ]
@@ -91,8 +91,9 @@
         {
           "type": "list",
           "items": [
-            "**Documenti** — PDF, DOCX, PPTX, ODT, ODP: il testo viene estratto così com'è.",
-            "**Immagini** — PNG, JPEG (accettati anche WebP e BMP): descritte e ricopiate da un'IA di visione.",
+            "**Documenti** — PDF, TXT, DOCX, PPTX, ODT, ODP: il testo viene estratto così com'è. **Accettati anche Markdown (MD), CSV/TSV, fogli di calcolo (XLSX, ODS), pagine HTML, sottotitoli (SRT, VTT), RTF e libri EPUB** (non elencati a schermo).",
+            "**Archivi** — un file ZIP viene **scompattato**: ogni documento contenuto è aggiunto separatamente. Puoi inoltre rilasciare **più file in una volta**: vengono elaborati uno dopo l'altro.",
+            "**Immagini** — PNG, JPEG (accettati anche WebP, BMP, TIFF e le foto di iPhone in HEIC): descritte e ricopiate da un'IA di visione.",
             "**Audio** — MP3, M4A, WAV, OGG, FLAC: la registrazione viene **trascritta** automaticamente.",
             "**Video** — MP4, MOV, WEBM: viene estratta **solo la traccia audio**, poi trascritta, l'immagine non viene analizzata.",
             "**Pagina web** — incollate un link e Caramel ne recupera il contenuto."

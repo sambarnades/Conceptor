@@ -40,7 +40,7 @@
         {
           "type": "list",
           "items": [
-            "**Uw documenten blijven op uw computer.** Wanneer u in de geavanceerde modus een tekstbestand (PDF, DOCX, PPTX, ODT…) plaatst, gebeurt de tekstextractie **volledig in uw browser**: er wordt niets naar een server gestuurd.",
+            "**Uw documenten blijven op uw computer.** Wanneer u in de geavanceerde modus een tekstbestand (PDF, TXT, DOCX, PPTX, ODT…) plaatst, gebeurt de tekstextractie **volledig in uw browser**: er wordt niets naar een server gestuurd.",
             "**Wat wél wordt verstuurd, blijft in Frankrijk gehost.** Uw generatieverzoeken lopen via **gedeelde universitaire servers** (project **ILaaS**); de **geplaatste afbeeldingen** worden daar geanalyseerd door een **vision-AI** (beschrijving + overgenomen tekst); spraak (microfoon of audiobestand) wordt getranscribeerd door **Albert**, de **soevereine dienst van de DINUM**. Geen van beide **verzamelt of verkoopt** uw gegevens — en **noch de audio noch de afbeeldingen worden bewaard**.",
             "**Kopiëren en plakken naar een externe AI is uw eigen keuze.** Als u een prompt kopieert om die in een dienst van derden te gebruiken, hangt de bescherming van uw gegevens dan af van **de voorwaarden van die dienst**."
           ]
@@ -91,8 +91,9 @@
         {
           "type": "list",
           "items": [
-            "**Documenten** — PDF, DOCX, PPTX, ODT, ODP: de tekst wordt rechtstreeks overgenomen.",
-            "**Afbeeldingen** — PNG, JPEG (WebP en BMP worden ook aanvaard): beschreven en overgenomen door een vision-AI.",
+            "**Documenten** — PDF, TXT, DOCX, PPTX, ODT, ODP: de tekst wordt overgenomen zoals hij is. **Markdown (MD), CSV/TSV, spreadsheets (XLSX, ODS), HTML-pagina's, ondertitels (SRT, VTT), RTF en EPUB-boeken worden ook geaccepteerd** (niet op het scherm vermeld).",
+            "**Archieven** — een ZIP-bestand wordt **uitgepakt**: elk document erin wordt afzonderlijk toegevoegd. U kunt bovendien **meerdere bestanden tegelijk** neerzetten; ze worden na elkaar verwerkt.",
+            "**Afbeeldingen** — PNG, JPEG (WebP, BMP, TIFF en iPhone-foto's in HEIC worden ook aanvaard): beschreven en overgenomen door een vision-AI.",
             "**Audio** — MP3, M4A, WAV, OGG, FLAC: de opname wordt automatisch **getranscribeerd**.",
             "**Video** — MP4, MOV, WEBM: **alleen het geluidsspoor** wordt gehaald en getranscribeerd, het beeld wordt niet geanalyseerd.",
             "**Webpagina** — plak een link en Caramel haalt de inhoud op."

@@ -131,6 +131,8 @@ let currentVideoSources = null;
 // Plafond PHYSIQUE de questions pour la vidéo courante (mémorisé pour getPrompts, qui n'a plus les
 // segments sous la main, seulement currentVideoSources). null = pas de transcription timée.
 let currentVideoMaxQuestions = null;
+// Durée de la vidéo courante (mémorisée pour la même raison : l'en-tête est assemblé tardivement).
+let currentVideoDuration = null;
 
 /**
  * Plafond PHYSIQUE de questions déduit de la transcription : on ne peut poser qu'UNE question par
@@ -147,20 +149,42 @@ function videoMaxQuestions(segments) {
 }
 
 /**
+ * Plafond ÉDITORIAL par défaut : la règle `prompt_interactive_video_regles_specifiques` dit
+ * « JAMAIS plus de 10 au total » (mode Rapide). Sert de référence pour décider si la ligne
+ * « nombre maximum » de l'en-tête apporte une information — cf. `buildVideoHeader`.
+ */
+const VIDEO_EDITORIAL_CAP = 10;
+
+/**
  * En-tête dynamique placé en tête des SOURCES du prompt « Vidéo interactive » : rappelle la durée
- * (borne des timestamps) ET le plafond physique de questions déduit de la transcription.
- * @param {Array<{start:number,end:number,text:string}>} segments
+ * (borne des timestamps) et, LE CAS ÉCHÉANT, le plafond physique de questions.
+ *
+ * ⚠️ La ligne « nombre maximum » n'est émise QUE si les horodatages sont PLUS restrictifs que ce
+ * que les règles demandent déjà. Sinon elle est au mieux inutile, au pire nocive : elle arrive
+ * APRÈS la règle « JAMAIS plus de 10 au total » et la contredit frontalement (« AU MAXIMUM 113
+ * questions au total, QUEL QUE SOIT LE NOMBRE DEMANDÉ »). Un modèle qui suit cette dernière
+ * consigne part rédiger des dizaines de questions → la génération dépasse le **mur des 59 s** du
+ * proxy n8n et échoue (constaté en prod le 2026-08-26 sur une vidéo de 288 s : 113 ancres
+ * annoncées, `mistral-small-4-119b` en échec deux fois de suite ; cf. docs/guide-generation-par-lots.md §1
+ * « 10 questions ≈ échec »). Le plafond physique reste appliqué de façon DÉTERMINISTE après coup
+ * par `snapInteractions` (une question par ancre, collisions décalées) : le prompt n'a pas à le
+ * répéter quand il ne borne rien.
+ *
+ * @param {number|null} cap - Plafond physique (cf. `videoMaxQuestions`), ou null.
  * @param {number|null} durationSeconds
+ * @param {string|number|null} [requestedCount] - Nombre de questions demandé (mode Guidé), s'il existe.
  * @returns {string}
  */
-function buildVideoHeader(segments, durationSeconds) {
+function buildVideoHeader(cap, durationSeconds, requestedCount = null) {
     const lines = [];
     if (durationSeconds) {
         lines.push(`(Durée de la vidéo : ${Math.round(durationSeconds)} secondes — tous les "timestamp" doivent rester dans cet intervalle)`);
     }
-    const cap = videoMaxQuestions(segments);
-    if (cap) {
-        lines.push(`(NOMBRE MAXIMUM DE QUESTIONS : il n'existe que ${cap} horodatages exploitables dans la transcription ci-dessous, et tu ne peux poser qu'UNE question par horodatage → AU MAXIMUM ${cap} questions au total, quel que soit le nombre demandé. N'en produis jamais davantage.)`);
+    // Plafond que les RÈGLES imposent déjà : le nombre demandé en mode Guidé, sinon les 10 du mode Rapide.
+    const wanted = parseInt(String(requestedCount ?? ''), 10);
+    const ceiling = (Number.isFinite(wanted) && wanted > 0) ? wanted : VIDEO_EDITORIAL_CAP;
+    if (cap && cap < ceiling) {
+        lines.push(`(NOMBRE MAXIMUM DE QUESTIONS : il n'existe que ${cap} horodatages exploitables dans la transcription ci-dessous, et tu ne peux poser qu'UNE question par horodatage → AU MAXIMUM ${cap} questions au total. N'en produis jamais davantage.)`);
     }
     return lines.length ? lines.join('\n') + '\n\n' : '';
 }
@@ -181,6 +205,11 @@ function clampVideoCount(nombreQuestions, cap = currentVideoMaxQuestions) {
 /**
  * Mémorise (ou efface) la transcription à injecter dans le prompt « Vidéo interactive ».
  * Appelé par l'UI dès que la transcription est récupérée (ou l'URL effacée).
+ *
+ * On ne mémorise que le CORPS de la transcription : l'en-tête est assemblé plus tard, par
+ * `videoSourcesFor()`, car sa ligne « nombre maximum » dépend du nombre de questions demandé —
+ * que l'enseignant peut saisir APRÈS avoir récupéré la transcription.
+ *
  * @param {Array<{start:number,end:number,text:string}>|null} segments - Segments timés, ou null pour effacer.
  * @param {number|null} [durationSeconds] - Durée de la vidéo (borne des timestamps).
  */
@@ -188,11 +217,24 @@ export function setVideoTranscriptSources(segments, durationSeconds = null) {
     if (!Array.isArray(segments) || segments.length === 0) {
         currentVideoSources = null;
         currentVideoMaxQuestions = null;
+        currentVideoDuration = null;
         return;
     }
-    const transcriptText = formatTranscriptForPrompt(segments);
     currentVideoMaxQuestions = videoMaxQuestions(segments);
-    currentVideoSources = (buildVideoHeader(segments, durationSeconds) + transcriptText).trim() || null;
+    currentVideoDuration = durationSeconds;
+    currentVideoSources = formatTranscriptForPrompt(segments) || null;
+}
+
+/**
+ * Bloc SOURCES complet de la vidéo courante (en-tête + transcription), assemblé au moment où le
+ * prompt est construit pour que l'en-tête tienne compte du nombre de questions demandé.
+ * @param {string|number|null} [requestedCount]
+ * @returns {string|null}
+ */
+function videoSourcesFor(requestedCount = null) {
+    if (!currentVideoSources) return null;
+    const header = buildVideoHeader(currentVideoMaxQuestions, currentVideoDuration, requestedCount);
+    return (header + currentVideoSources).trim() || null;
 }
 
 // ============================================================================
@@ -500,9 +542,6 @@ function getPrompts(qui, quoi, niveau, nombreQuestions, isAdvanced) {
         // complet en mode Guidé (et réutilisable tel quel par le one-clic).
         // Pour l'image interactive, la « source » est la liste des zones détectées par la vision
         // (même logique de capture en amont → dispo en Rapide ET Guidé).
-        const sources = (isVideo && currentVideoSources) ? currentVideoSources
-            : (isHotspots && currentHotspotZones) ? currentHotspotZones
-                : ocrContent;
         // …et on borne le nombre demandé au plafond physique de la vidéo (pas plus de questions
         // qu'il n'y a d'horodatages) ou aux zones détectées (pas plus de zones que les SOURCES),
         // sinon le prompt se contredirait avec ses propres sources.
@@ -511,6 +550,11 @@ function getPrompts(qui, quoi, niveau, nombreQuestions, isAdvanced) {
             : (isHotspots && currentHotspotZones)
                 ? { ...params, nombreQuestions: clampHotspotCount(params.nombreQuestions) }
                 : params;
+        // L'en-tête de la transcription est assemblé ICI (et non à la récupération) : sa ligne
+        // « nombre maximum » dépend du nombre demandé, saisi éventuellement après coup.
+        const sources = (isVideo && currentVideoSources) ? videoSourcesFor(activityParams.nombreQuestions)
+            : (isHotspots && currentHotspotZones) ? currentHotspotZones
+                : ocrContent;
         prompts[config.resultKey] = buildActivityPrompt(config.prefix, { ...activityParams, ocrContent: sources });
     }
 
@@ -611,9 +655,10 @@ export function getTranscriptAnchors(segments, opts = {}) {
 export function buildVideoInteractivePrompt(segments, durationSeconds = null) {
     const params = readContextParams();
     const transcriptText = formatTranscriptForPrompt(segments);
-    const header = buildVideoHeader(segments, durationSeconds);
+    const cap = videoMaxQuestions(segments);
     // Borne le nombre demandé au plafond physique déduit des segments (cohérent avec l'en-tête).
-    const nombreQuestions = clampVideoCount(params.nombreQuestions, videoMaxQuestions(segments));
+    const nombreQuestions = clampVideoCount(params.nombreQuestions, cap);
+    const header = buildVideoHeader(cap, durationSeconds, nombreQuestions);
     return buildActivityPrompt('prompt_interactive_video', { ...params, nombreQuestions, ocrContent: header + transcriptText });
 }
 

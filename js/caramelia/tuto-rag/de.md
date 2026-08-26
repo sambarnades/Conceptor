@@ -60,9 +60,9 @@ Drei Möglichkeiten:
 
 - **Einen Text kopieren und einfügen** direkt in das Eingabefeld.
 - **Ein Dokument per Drag-and-Drop ablegen** (oder auf
-  **„Datei auswählen"** klicken) im Format **PDF, DOCX, PPTX, ODT,
+  **„Datei auswählen"** klicken) im Format **PDF, TXT, DOCX, PPTX, ODT,
   ODP, PNG, JPEG** (die Bildformate **WebP** und **BMP** werden ebenfalls akzeptiert, ohne auf dem Bildschirm aufgeführt zu sein). Ein abgelegtes **Bild** (Foto, Schema, Diagramm…) wird **von einer Bild-KI analysiert**, die eine **Beschreibung** dazu verfasst und den **darin enthaltenen Text originalgetreu abschreibt** — ist die KI nicht verfügbar, übernimmt automatisch die lokale Texterkennung (OCR). Sie können auch eine **Audiodatei** (MP3, M4A, WAV…) oder ein **Video** (MP4, MOV…) ablegen: Dann wird nur die Tonspur automatisch transkribiert (durch Albert, den souveränen Dienst der DINUM; siehe Datenschutz unten). Die Ablagezone trägt die Beschriftung
-  **„Dokument hierher ziehen (PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG)"**
+  **„Ein oder mehrere Dokumente hierher ziehen (PDF, TXT, DOCX, PPTX, ODT, ODP, PNG, JPEG)"**
   mit dem Trenner **„oder"**.
 - **Eine Webseite importieren**: ihren Link (`https://…`) in das
   Feld unter dem Ablagebereich einfügen, dann auf **„Hinzufügen"**

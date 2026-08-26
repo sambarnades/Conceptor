@@ -40,8 +40,23 @@ export const DEFAULT_MODEL = 'mistral-small-4-119b';
  * Valeur : ID du modèle LLM à utiliser pour cette activité
  */
 export const ACTIVITY_MODEL_OVERRIDES = {
-    // Aucun override actif pour le moment : toutes les activités passent par DEFAULT_MODEL.
-    // Anciens overrides (à réactiver après benchmark de mistral-small-4-119b) :
+    // Aucun override actif : toutes les activités passent par DEFAULT_MODEL.
+    //
+    // ⚠️ NE PAS y inscrire de contournement d'INDISPONIBILITÉ. Une panne ILaaS est passagère et
+    // la cascade de fallbacks du Worker est là pour l'absorber ; un override figé, lui, survit à
+    // la panne et détourne durablement une activité vers un modèle qui n'était pas le bon choix.
+    // Épisode fondateur (2026-08-26/27) : `mistral-small-4-119b` — le DEFAULT_MODEL — partait en
+    // fallback à TOUS les coups, y compris sur un prompt de 90 caractères (mesuré 6/6 sur les
+    // webhooks de PROD, ~4 s par essai perdu), pendant que `gpt-oss-120b` et
+    // `qwen-3.6-35b-instruct` répondaient en 4-5 s. Symptôme d'un modèle en carafe, PAS d'un
+    // prompt trop lourd ni du mur des 59 s (un mur de temps échoue à 59 s, pas à 4 s).
+    // Sonde de diagnostic, à refaire avant toute conclusion :
+    //     node scripts/test-interactive-video-llm.mjs --prod --model <id> --transcript <fichier>
+    // Appels ISOLÉS obligatoires : trois requêtes rapprochées saturent le backend PARTAGÉ et
+    // fabriquent des fallbacks en cascade qu'on prend à tort pour un défaut du modèle.
+    //
+    // Anciens overrides (à réactiver après benchmark, pour un motif de QUALITÉ ou de VITESSE
+    // reproductible — jamais pour une panne du jour) :
     // 'QuizSetQCM': 'gpt-oss-120b',        // Plus rapide et plus fiable pour les QCM
     // 'QuizSetVF': 'gpt-oss-120b',         // Idem pour les Vrai/Faux
     // 'QuizSet': 'gpt-oss-120b',           // Idem pour les Quiz génériques
@@ -49,8 +64,9 @@ export const ACTIVITY_MODEL_OVERRIDES = {
     // 'Livre': 'gpt-oss-120b',             // Idem pour Livre (Page multi-chapitres)
     // 'test_elea': 'gpt-oss-120b',         // Idem pour Test (XML)
     // 'CoursePresentation': 'gpt-oss-120b', // Structure complexe avec slides et sous-exercices
-    // 'InteractiveBook': 'gpt-oss-120b',   // Structure conteneur riche (chapitres + blocs) — réactiver après benchmark
-    // 'InteractiveVideo': 'gpt-oss-120b'   // Conteneur vidéo + interactions horodatées — réactiver après benchmark
+    // 'InteractiveBook': 'gpt-oss-120b',   // Structure conteneur riche (chapitres + blocs)
+    // 'InteractiveVideo': 'gpt-oss-120b'   // Conteneur vidéo + interactions horodatées ; seul des 3 à
+                                            // RECOPIER les horodatages réels (motif de QUALITÉ, à mesurer)
 };
 
 // =======================================================================

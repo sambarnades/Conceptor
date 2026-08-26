@@ -2,7 +2,7 @@
 
 **Création Assistée de Ressources et d'Activités Magistère et Éléa**
 
-[![Version](https://img.shields.io/badge/version-6.3.1-blue.svg)](https://caramel.forge.apps.education.fr/)
+[![Version](https://img.shields.io/badge/version-6.3.2-blue.svg)](https://caramel.forge.apps.education.fr/)
 [![Licence](https://img.shields.io/badge/licence-GNU%20AGPLv3-green.svg)](LICENSE)
 [![Plateforme](https://img.shields.io/badge/plateforme-Web-orange.svg)](https://caramel.forge.apps.education.fr/)
 [![Langues](https://img.shields.io/badge/langues-11-purple.svg)](#-fonctionnalités)
@@ -84,7 +84,7 @@ Caramel automatise la création de contenus pédagogiques en cinq étapes :
 - Ancrage sur les **programmes scolaires français** (RAG) déclenché automatiquement quand le contexte saisi s'y prête
 
 ### Enrichissement du contexte (RAG)
-- **Documents** : PDF, DOCX, PPTX, ODT, ODP — extraction native, dans le navigateur
+- **Documents** : PDF, TXT, DOCX, PPTX, ODT, ODP — extraction native, dans le navigateur
 - **Images** : PNG, JPEG, WebP, BMP — décrites et transcrites par un **modèle de vision**, avec repli OCR local (Tesseract.js)
 - **Transcription** : audio et vidéo (bande-son), jusqu'à 90 min
 - **Import web** : récupération du texte d'une page par lien
@@ -228,7 +228,7 @@ Le module `json-healer.js` répare systématiquement les sorties du LLM (LaTeX, 
 ## 🔒 Confidentialité et sécurité
 
 - ✅ Aucune donnée personnelle collectée, aucun compte, aucun cookie de suivi
-- ✅ Documents bureautiques (PDF, DOCX, PPTX, ODT, ODP) **extraits localement**, dans le navigateur
+- ✅ Documents bureautiques (PDF, TXT, DOCX, PPTX, ODT, ODP) **extraits localement**, dans le navigateur
 - ✅ Génération IA sur infrastructure **ESR française**
 - ⚠️ **Images jointes au corpus** : transmises au modèle de **vision ILaaS** pour être décrites et transcrites (repli sur l'OCR local Tesseract si le service est indisponible)
 - ⚠️ **La voix, dans les deux sens** : dictée au micro, fichiers audio et bandes-son vidéo sont transmis à **Albert (DINUM)** pour transcription puis non conservés ; à l'inverse, les phrases d'une **Dictée** sont envoyées au service de synthèse vocale pour produire les MP3

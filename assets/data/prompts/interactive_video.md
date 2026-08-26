@@ -29,6 +29,40 @@ Caramel les injecte après génération.
 - Ordre chronologique, pas de doublon temporel, répartition sur toute la durée.
 - Nombre adaptatif : 4–8 par défaut (le prompt plafonne à ~1 question / 2-3 min, jamais plus de 10), ou `[NOMBRE_ELEMENTS]` si fourni (mode Avancé).
 
+### ⚠️ Une SEULE consigne de volume dans le prompt (mur des 59 s)
+
+`buildVideoHeader` (prompt-generator.js) préfixe les SOURCES de deux lignes : la **durée** (borne des
+timestamps) et, *conditionnellement*, un **plafond physique** (« il n'existe que N horodatages
+exploitables → AU MAXIMUM N questions »). Cette seconde ligne n'est émise **que si N est inférieur au
+nombre de questions que les règles demandent déjà** (le `[NOMBRE_ELEMENTS]` du mode Guidé, sinon les 10
+du mode Rapide).
+
+Pourquoi cette condition : la ligne arrive **après** les règles (elle est dans le bloc SOURCES) et disait
+« AU MAXIMUM N questions au total, **quel que soit le nombre demandé** ». Sur une vidéo bien
+sous-titrée, N vaut facilement 113 (sous-titres auto YouTube : une ligne toutes les ~2,5 s) — la ligne
+**contredisait** alors frontalement « JAMAIS plus de 10 au total », en se présentant comme un
+écrasement explicite de cette règle. Un modèle qui la suit part rédiger des dizaines de questions et
+dépasse le **mur des 59 s** par appel LLM du proxy n8n (cf. `docs/guide-generation-par-lots.md` §1 : pour
+le modèle par défaut, « 5 questions ≈ 45 s, 10 questions ≈ échec »).
+
+> **Ce n'est pas ce qui a causé l'incident du 2026-08-26** (tâches n8n 1564109 / 1564152). Mesuré le
+> 2026-08-27 : `mistral-small-4-119b` partait en fallback serveur même sur un prompt de 90 caractères
+> — panne passagère du modèle côté ILaaS, sans rapport avec la vidéo. La contradiction ci-dessus est
+> un défaut réel, trouvé chemin faisant, mais elle n'était pas la cause. Leçon retenue : devant un
+> échec de génération, **sonder le modèle avec un prompt trivial avant d'accuser le prompt**.
+
+Le plafond physique n'a pas besoin d'être répété dans le prompt : il est appliqué de façon
+**déterministe** après génération par `snapInteractions` (une question par ancre, collisions décalées).
+Et en mode Guidé, `clampVideoCount` a déjà ramené le nombre demandé au plafond **dans les règles**.
+
+Banc de non-régression : `node tests/run_interactive_video_prompt.mjs` (rejoue la VRAIE transcription de
+la vidéo concernée, `tests/fixtures/interactive-video-transcript.json`).
+
+Piste ouverte (non tranchée) : GPT-OSS est le seul des trois modèles à **recopier** les horodatages
+réels au lieu de les interpoler, ce qui plaiderait pour un `ACTIVITY_MODEL_OVERRIDES` sur cette
+activité — mais pour un motif de QUALITÉ mesuré, jamais pour contourner une panne du jour. À arbitrer
+avec le harnais, backend stable.
+
 ### Garde-fous déterministes (indépendants du modèle)
 
 Le prompt « RECOPIE une valeur `[mm:ss]`, ne la calcule pas » réduit le problème mais ne le supprime pas : Mistral/Qwen interpolent encore des instants intermédiaires (GPT-OSS recopie les vrais). Donc, **après génération** (`ui.js`, helper `snapVideoTimestamps`, puis backstop dans `InteractiveVideo.js`), un module pur **`processors/interactive-video-snap.js`** applique, pour **les 3 modèles** :

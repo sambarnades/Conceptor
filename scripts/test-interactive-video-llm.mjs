@@ -17,9 +17,14 @@ import { snapInteractions } from '../js/h5p/processors/interactive-video-snap.js
 const REPO = process.cwd();
 const OUT = '/tmp/iv-llm-test'; mkdirSync(OUT, { recursive: true });
 const T = JSON.parse(readFileSync(REPO + '/js/locales/fr.json', 'utf8'));
-const WEBHOOK = 'https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-video-transcript-dev2';
-const SUBMIT = 'https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel/llm/submit-dev2';
-const RESULT = 'https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel/llm/result-dev2';
+// Cible par défaut : dev2. `--prod` bascule sur les webhooks de PRODUCTION — utile quand dev2
+// est instable au point de rendre la mesure ininterprétable (constaté le 2026-08-27 : Qwen et
+// GPT-OSS alternaient succès et échec total d'un passage à l'autre). ⚠️ En prod, chaque appel
+// écrit une ligne de statistiques Grist comme une génération d'enseignant.
+const ENV = process.argv.includes('--prod') ? 'prod' : 'dev2';
+const WEBHOOK = `https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel-video-transcript-${ENV}`;
+const SUBMIT = `https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel/llm/submit-${ENV}`;
+const RESULT = `https://n8n-caramel.osc-fr1.scalingo.io/webhook/caramel/llm/result-${ENV}`;
 const MODELS = ['mistral-small-4-119b', 'qwen-3.6-35b-instruct', 'gpt-oss-120b'];
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 async function fetchTO(url, opts = {}, to = 30000) { const c = new AbortController(); const id = setTimeout(() => c.abort(), to); try { return await fetch(url, { ...opts, signal: c.signal }); } finally { clearTimeout(id); } }
@@ -130,10 +135,33 @@ function validate(json, transcript) {
 }
 
 // ===================== MAIN =====================
-const [url, qui = 'Enseignant', quoi = 'créer une vidéo interactive sur ce contenu', niveau = ''] = process.argv.slice(2);
-if (!url) { console.error('Usage : node scripts/test-interactive-video-llm.mjs "<url>" ["discipline"] ["objectif"] ["niveau"]'); process.exit(1); }
-console.log(`\n🎬 Transcription de ${url} …`);
-const transcript = await fetchTranscript(url);
+// `--transcript <fichier.json>` : rejoue une transcription DÉJÀ récupérée ({duration, segments})
+// au lieu d'appeler le webhook. Deux usages : (a) tester la partie LLM quand la voie de
+// transcription est indisponible (webhook dev2 éteint, YouTube qui change ses sous-titres) ;
+// (b) rejouer À L'IDENTIQUE un cas de prod — cf. tests/fixtures/interactive-video-transcript.json,
+// extraite du payload n8n de la génération qui a échoué le 2026-08-26.
+// `--model <id>` : n'interroge QU'UN modèle. Indispensable pour une mesure propre — les trois
+// appels du mode par défaut s'enchaînent à 1,5 s d'intervalle et ILaaS (backend PARTAGÉ) tolère
+// mal la concurrence : on déclenche alors des fallbacks en cascade qu'on prend à tort pour un
+// défaut du modèle (cf. docs/guide-generation-par-lots.md §2, « pourquoi séquentiel »).
+const argv = process.argv.slice(2).filter(a => a !== '--prod');
+const iMod = argv.indexOf('--model');
+if (iMod > -1) { MODELS.length = 0; MODELS.push(argv[iMod + 1]); argv.splice(iMod, 2); }
+let fixturePath = null;
+const iFix = argv.indexOf('--transcript');
+if (iFix > -1) { fixturePath = argv[iFix + 1]; argv.splice(iFix, 2); }
+const [url, qui = 'Enseignant', quoi = 'créer une vidéo interactive sur ce contenu', niveau = ''] = argv;
+if (!url && !fixturePath) { console.error('Usage : node scripts/test-interactive-video-llm.mjs "<url>" ["discipline"] ["objectif"] ["niveau"]\n        node scripts/test-interactive-video-llm.mjs --transcript <fichier.json> ["discipline"] ["objectif"] ["niveau"]'); process.exit(1); }
+let transcript;
+if (fixturePath) {
+  console.log(`\n🎬 Transcription rejouée depuis ${fixturePath} …`);
+  transcript = JSON.parse(readFileSync(fixturePath, 'utf8'));
+  transcript.language = transcript.language || 'fr';
+  if (transcript.duration == null) transcript.duration = transcript.segments.at(-1)?.end ?? null;
+} else {
+  console.log(`\n🎬 Transcription de ${url} …`);
+  transcript = await fetchTranscript(url);
+}
 if (transcript.error) { console.error('❌ Transcription impossible : ' + transcript.error); process.exit(1); }
 console.log(`✅ ${transcript.segments.length} segments, langue=${transcript.language}, durée=${Math.round(transcript.duration)}s`);
 writeFileSync(`${OUT}/transcript.json`, JSON.stringify(transcript, null, 2));

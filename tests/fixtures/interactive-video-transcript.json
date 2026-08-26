@@ -1,0 +1,579 @@
+{
+ "_source": "caramel_prod_llm_tasks.csv — tâches 1564109 / 1564152 (prod, 2026-08-26)",
+ "_url": "https://www.youtube.com/watch?v=kdQc9LXR1n4",
+ "_titre": "HACCP EXPLIQUÉ SIMPLEMENT — sous-titres automatiques YouTube",
+ "language": "fr",
+ "duration": 288,
+ "segments": [
+  {
+   "start": 0,
+   "text": "[Musique]",
+   "end": 10
+  },
+  {
+   "start": 10,
+   "text": "Dans l'industrie agroalimentaire, le mot",
+   "end": 13
+  },
+  {
+   "start": 13,
+   "text": "HACCP revient partout. Mais au fond,",
+   "end": 15
+  },
+  {
+   "start": 15,
+   "text": "c'est quoi exactement ? Comment le",
+   "end": 17
+  },
+  {
+   "start": 17,
+   "text": "mettre en place efficacement ? Et",
+   "end": 19
+  },
+  {
+   "start": 19,
+   "text": "surtout, comment éviter les erreurs que",
+   "end": 21
+  },
+  {
+   "start": 21,
+   "text": "font la majorité des entreprises ? Ce",
+   "end": 23
+  },
+  {
+   "start": 23,
+   "text": "guide vous explique clairement le",
+   "end": 25
+  },
+  {
+   "start": 25,
+   "text": "système HACCP, même si vous partez de",
+   "end": 28
+  },
+  {
+   "start": 28,
+   "text": "zéro, avec des exemples, des étapes",
+   "end": 31
+  },
+  {
+   "start": 31,
+   "text": "simples et des conseils pratiques à",
+   "end": 33
+  },
+  {
+   "start": 33,
+   "text": "appliquer dès aujourd'hui. Premièrement,",
+   "end": 36
+  },
+  {
+   "start": 36,
+   "text": "comprendre l'HCP.",
+   "end": 39
+  },
+  {
+   "start": 39,
+   "text": "[Musique]",
+   "end": 40
+  },
+  {
+   "start": 40,
+   "text": "Hacp signifie hasard analysis and",
+   "end": 44
+  },
+  {
+   "start": 44,
+   "text": "critical control point ou en français",
+   "end": 47
+  },
+  {
+   "start": 47,
+   "text": "analyse des dangers et maîtrise des",
+   "end": 48
+  },
+  {
+   "start": 48,
+   "text": "points critiques. C'est une méthode qui",
+   "end": 50
+  },
+  {
+   "start": 50,
+   "text": "permet de garantir la sécurité des",
+   "end": 52
+  },
+  {
+   "start": 52,
+   "text": "aliments à chaque étape de la",
+   "end": 53
+  },
+  {
+   "start": 53,
+   "text": "fabrication. Elle repose sur un principe",
+   "end": 56
+  },
+  {
+   "start": 56,
+   "text": "simple. Identifier les risques. Imaginez",
+   "end": 58
+  },
+  {
+   "start": 58,
+   "text": "que vous produisez du yaourt. Un risque",
+   "end": 61
+  },
+  {
+   "start": 61,
+   "text": "peut venir du lait cru ou d'un mauvais",
+   "end": 63
+  },
+  {
+   "start": 63,
+   "text": "nettoyage. Avec HCP, on identifie ses",
+   "end": 66
+  },
+  {
+   "start": 66,
+   "text": "risques. Puis on installe des contrôles.",
+   "end": 68
+  },
+  {
+   "start": 68,
+   "text": "Analyse du lait, lavage validé, contrôle",
+   "end": 71
+  },
+  {
+   "start": 71,
+   "text": "de température. Deuxièmement, les sep",
+   "end": 73
+  },
+  {
+   "start": 73,
+   "text": "principes clés de",
+   "end": 75
+  },
+  {
+   "start": 75,
+   "text": "[Musique]",
+   "end": 76
+  },
+  {
+   "start": 76,
+   "text": "l'acp. Le système HACCP repose sur se",
+   "end": 79
+  },
+  {
+   "start": 79,
+   "text": "principes fondamentaux. Voici chacun",
+   "end": 82
+  },
+  {
+   "start": 82,
+   "text": "expliqué simplement avec un exemple",
+   "end": 84
+  },
+  {
+   "start": 84,
+   "text": "concret. Première, analyser les dangers.",
+   "end": 86
+  },
+  {
+   "start": 86,
+   "text": "On identifie tous les dangers possibles",
+   "end": 88
+  },
+  {
+   "start": 88,
+   "text": "à chaque étape. Bactéries, produits",
+   "end": 90
+  },
+  {
+   "start": 90,
+   "text": "chimiques, corps étranger. Deuxième,",
+   "end": 93
+  },
+  {
+   "start": 93,
+   "text": "déterminer les points critiques. Ce sont",
+   "end": 95
+  },
+  {
+   "start": 95,
+   "text": "les étapes où le danger peut être",
+   "end": 97
+  },
+  {
+   "start": 97,
+   "text": "maîtrisé efficacement. Exemple : cuisson",
+   "end": 100
+  },
+  {
+   "start": 100,
+   "text": "à 75° Celus. 3è, fixer des limites",
+   "end": 104
+  },
+  {
+   "start": 104,
+   "text": "critiques. Il faut définir une valeur",
+   "end": 106
+  },
+  {
+   "start": 106,
+   "text": "cible. Exemple : cuisson à 72° Celus",
+   "end": 109
+  },
+  {
+   "start": 109,
+   "text": "minimum. 4è mettre en place un système",
+   "end": 112
+  },
+  {
+   "start": 112,
+   "text": "de surveillance. Comment vérifier que",
+   "end": 114
+  },
+  {
+   "start": 114,
+   "text": "tout reste sous contrôle ? Exemple :",
+   "end": 117
+  },
+  {
+   "start": 117,
+   "text": "thermomètre digital vérifié toutes les",
+   "end": 119
+  },
+  {
+   "start": 119,
+   "text": "heures. 5: définir des actions",
+   "end": 121
+  },
+  {
+   "start": 121,
+   "text": "correctives si la température tombe à",
+   "end": 123
+  },
+  {
+   "start": 123,
+   "text": "65° Celus, il faut réagir, isoler le",
+   "end": 126
+  },
+  {
+   "start": 126,
+   "text": "lot, analyser, ne pas livrer, 6e.",
+   "end": 129
+  },
+  {
+   "start": 129,
+   "text": "Vérifier le système audit. Test analyse",
+   "end": 131
+  },
+  {
+   "start": 131,
+   "text": "confirme que le système fonctionne. 7e",
+   "end": 134
+  },
+  {
+   "start": 134,
+   "text": "documenter tout le système. Chaque",
+   "end": 136
+  },
+  {
+   "start": 136,
+   "text": "action doit être enregistrée et",
+   "end": 137
+  },
+  {
+   "start": 137,
+   "text": "archivée. Les fondements de",
+   "end": 142
+  },
+  {
+   "start": 142,
+   "text": "HACP. Avant d'appliquer les sept",
+   "end": 144
+  },
+  {
+   "start": 144,
+   "text": "principes de l'achat CCP, il faut",
+   "end": 146
+  },
+  {
+   "start": 146,
+   "text": "comprendre ce qui les rend possible. Ce",
+   "end": 149
+  },
+  {
+   "start": 149,
+   "text": "sont les bonnes pratiques d'hygiène",
+   "end": 151
+  },
+  {
+   "start": 151,
+   "text": "qu'on appelle aussi les PRP, programme",
+   "end": 154
+  },
+  {
+   "start": 154,
+   "text": "prérequis. Elle forme la base de tout",
+   "end": 156
+  },
+  {
+   "start": 156,
+   "text": "système HACCP. Sans elle, l'arbre ne",
+   "end": 159
+  },
+  {
+   "start": 159,
+   "text": "donnera pas de fruit. 1er, nettoyage et",
+   "end": 162
+  },
+  {
+   "start": 162,
+   "text": "désinfection. 2, hygiène du personnel.",
+   "end": 165
+  },
+  {
+   "start": 165,
+   "text": "3, lutte contre les nuisibles. 4,",
+   "end": 167
+  },
+  {
+   "start": 167,
+   "text": "qualité de l'eau et de l'air 5. Contrôle",
+   "end": 170
+  },
+  {
+   "start": 170,
+   "text": "des matières premières. 6e entretien des",
+   "end": 173
+  },
+  {
+   "start": 173,
+   "text": "équipements. 7e gestion des déchets. Les",
+   "end": 177
+  },
+  {
+   "start": 177,
+   "text": "cinq étapes pratiques pour l'appliquer",
+   "end": 179
+  },
+  {
+   "start": 179,
+   "text": "en",
+   "end": 180
+  },
+  {
+   "start": 180,
+   "text": "usine. Passons maintenant aux étapes",
+   "end": 182
+  },
+  {
+   "start": 182,
+   "text": "concrètes pour appliquer un système",
+   "end": 184
+  },
+  {
+   "start": 184,
+   "text": "HACP dans votre usine. Forme les",
+   "end": 187
+  },
+  {
+   "start": 187,
+   "text": "équipes, chaque opérateur doit",
+   "end": 189
+  },
+  {
+   "start": 189,
+   "text": "comprendre les risques et gestes de",
+   "end": 190
+  },
+  {
+   "start": 190,
+   "text": "sécurité. Former une équipe HACP, une",
+   "end": 194
+  },
+  {
+   "start": 194,
+   "text": "équipe interservice, production qualité",
+   "end": 197
+  },
+  {
+   "start": 197,
+   "text": "maintenance. Exemple : réception,",
+   "end": 199
+  },
+  {
+   "start": 199,
+   "text": "stockage, mélange, pasteurisation,",
+   "end": 201
+  },
+  {
+   "start": 201,
+   "text": "emballage. Identifier les dangers et les",
+   "end": 204
+  },
+  {
+   "start": 204,
+   "text": "CCP. À chaque étape, on évalue les",
+   "end": 207
+  },
+  {
+   "start": 207,
+   "text": "risques et fixe les CCP. Écrire les",
+   "end": 209
+  },
+  {
+   "start": 209,
+   "text": "procédures et les fiches de suivi. Ces",
+   "end": 211
+  },
+  {
+   "start": 211,
+   "text": "documents précisent qui fait quoi,",
+   "end": 214
+  },
+  {
+   "start": 214,
+   "text": "comment et quand. Les erreurs à",
+   "end": 217
+  },
+  {
+   "start": 217,
+   "text": "[Musique]",
+   "end": 219
+  },
+  {
+   "start": 219,
+   "text": "éviter. Voici les erreurs fréquentes",
+   "end": 221
+  },
+  {
+   "start": 221,
+   "text": "dans l'application de l'HAC CCP. Et",
+   "end": 224
+  },
+  {
+   "start": 224,
+   "text": "comment les éviter ? Erreur hein. Copier",
+   "end": 226
+  },
+  {
+   "start": 226,
+   "text": "un HACCP d'un autre site. Chaque site",
+   "end": 229
+  },
+  {
+   "start": 229,
+   "text": "est unique. Copier un plan, c'est",
+   "end": 231
+  },
+  {
+   "start": 231,
+   "text": "ignorer vos vrais risques. Erreur 2, ne",
+   "end": 234
+  },
+  {
+   "start": 234,
+   "text": "pas impliquer le terrain. Les opérateurs",
+   "end": 237
+  },
+  {
+   "start": 237,
+   "text": "ont des infos clés. Ne pas les écouter",
+   "end": 239
+  },
+  {
+   "start": 239,
+   "text": "est une erreur. Erreur 3 : ne pas",
+   "end": 242
+  },
+  {
+   "start": 242,
+   "text": "actualiser le système. Si une recette",
+   "end": 244
+  },
+  {
+   "start": 244,
+   "text": "change, le plan doit être mise à jour.",
+   "end": 247
+  },
+  {
+   "start": 247,
+   "text": "Erreur 4 : Contrôler sans comprendre.",
+   "end": 250
+  },
+  {
+   "start": 250,
+   "text": "Mesurer le pH sans savoir pourquoi,",
+   "end": 252
+  },
+  {
+   "start": 252,
+   "text": "c'est inutile.",
+   "end": 254
+  },
+  {
+   "start": 254,
+   "text": "HCP n'est pas juste un document. C'est",
+   "end": 257
+  },
+  {
+   "start": 257,
+   "text": "un outil vivant et puissant. Il permet",
+   "end": 259
+  },
+  {
+   "start": 259,
+   "text": "de produire plus sûr, plus serein. En",
+   "end": 262
+  },
+  {
+   "start": 262,
+   "text": "appliquant les principes, vous protégez",
+   "end": 264
+  },
+  {
+   "start": 264,
+   "text": "les consommateurs et améliorer la",
+   "end": 266
+  },
+  {
+   "start": 266,
+   "text": "qualité. Pour continuer à progresser",
+   "end": 268
+  },
+  {
+   "start": 268,
+   "text": "ensemble dans l'industrie, n'hésitez pas",
+   "end": 270
+  },
+  {
+   "start": 270,
+   "text": "à explorer les autres vidéos disponibles",
+   "end": 273
+  },
+  {
+   "start": 273,
+   "text": "sur la chaîne et dites-moi en",
+   "end": 274
+  },
+  {
+   "start": 274,
+   "text": "commentaire si vous avez déjà mis en",
+   "end": 276
+  },
+  {
+   "start": 276,
+   "text": "place l'achat CCP. Quels ont été les",
+   "end": 279
+  },
+  {
+   "start": 279,
+   "text": "défis ?",
+   "end": 283
+  },
+  {
+   "start": 283,
+   "text": "[Musique]",
+   "end": 288
+  }
+ ]
+}

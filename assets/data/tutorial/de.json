@@ -40,7 +40,7 @@
         {
           "type": "list",
           "items": [
-            "**Ihre Dokumente bleiben auf Ihrem Computer.** Wenn Sie im erweiterten Modus eine Textdatei (PDF, DOCX, PPTX, ODT…) ablegen, erfolgt die Extraktion **vollständig in Ihrem Browser**: Es wird nichts an einen Server gesendet.",
+            "**Ihre Dokumente bleiben auf Ihrem Computer.** Wenn Sie im erweiterten Modus eine Textdatei (PDF, TXT, DOCX, PPTX, ODT…) ablegen, erfolgt die Extraktion **vollständig in Ihrem Browser**: Es wird nichts an einen Server gesendet.",
             "**Was übertragen wird, bleibt in Frankreich gehostet.** Ihre Generierungsanfragen laufen über **gemeinsam genutzte Hochschulserver** (Projekt **ILaaS**); die **abgelegten Bilder** werden dort von einer **Bild-KI** analysiert (Beschreibung + abgeschriebener Text); die Stimme (Mikrofon oder Audiodatei) wird von **Albert** transkribiert, dem **souveränen Dienst der DINUM**. Keiner von beiden **erfasst oder verkauft** Ihre Daten weiter — und **weder das Audio noch die Bilder werden aufbewahrt**.",
             "**Das Kopieren in eine externe KI liegt in Ihrer Verantwortung.** Wenn Sie einen Prompt kopieren, um ihn in einem Drittdienst zu verwenden, hängt der Schutz Ihrer Daten dann von **den Bedingungen dieses Dienstes** ab."
           ]
@@ -91,8 +91,9 @@
         {
           "type": "list",
           "items": [
-            "**Dokumente** — PDF, DOCX, PPTX, ODT, ODP: Der Text wird unverändert übernommen.",
-            "**Bilder** — PNG, JPEG (WebP und BMP werden ebenfalls akzeptiert): von einer Bild-KI beschrieben und abgeschrieben.",
+            "**Dokumente** — PDF, TXT, DOCX, PPTX, ODT, ODP: Der Text wird unverändert übernommen. **Markdown (MD), CSV/TSV, Tabellen (XLSX, ODS), HTML-Seiten, Untertitel (SRT, VTT), RTF und EPUB-Bücher werden ebenfalls akzeptiert** (nicht auf dem Bildschirm aufgeführt).",
+            "**Archive** — eine ZIP-Datei wird **entpackt**: Jedes enthaltene Dokument wird einzeln hinzugefügt. Sie können außerdem **mehrere Dateien auf einmal** ablegen; sie werden nacheinander verarbeitet.",
+            "**Bilder** — PNG, JPEG (WebP, BMP, TIFF und iPhone-Fotos im HEIC-Format werden ebenfalls akzeptiert): von einer Bild-KI beschrieben und abgeschrieben.",
             "**Audio** — MP3, M4A, WAV, OGG, FLAC: Die Aufnahme wird automatisch **transkribiert**.",
             "**Video** — MP4, MOV, WEBM: Es wird **nur die Tonspur** entnommen und transkribiert, das Bild wird nicht ausgewertet.",
             "**Webseite** — Link einfügen, Caramel holt den Inhalt."

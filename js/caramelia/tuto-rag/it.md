@@ -59,8 +59,7 @@ Tre possibilità:
 
 - **Copiare e incollare un testo** direttamente nell'area di input.
 - **Trascinare e rilasciare un documento** (o cliccare su
-  **«Scegli un file»**) in formato **PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG** (sono accettate anche le immagini **WebP** e **BMP**, senza essere elencate sullo schermo). Un'**immagine** caricata (foto, schema, diagramma…) viene **analizzata da un'IA di visione** che ne redige una **descrizione** e **ricopia fedelmente il testo** che contiene — se l'IA non è disponibile, la lettura locale (OCR) subentra automaticamente. Puoi anche rilasciare un **file audio** (MP3, M4A, WAV…) o un **video** (MP4, MOV…): viene quindi trascritta automaticamente solo la traccia audio (tramite Albert, il servizio sovrano della DINUM; vedi riservatezza più sotto). La zona di rilascio mostra **«Trascina un documento
-  qui (PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG)»** con il separatore
+  **«Scegli un file»**) in formato **PDF, TXT, DOCX, PPTX, ODT, ODP, PNG, JPEG** (sono accettate anche le immagini **WebP** e **BMP**, senza essere elencate sullo schermo). Un'**immagine** caricata (foto, schema, diagramma…) viene **analizzata da un'IA di visione** che ne redige una **descrizione** e **ricopia fedelmente il testo** che contiene — se l'IA non è disponibile, la lettura locale (OCR) subentra automaticamente. Puoi anche rilasciare un **file audio** (MP3, M4A, WAV…) o un **video** (MP4, MOV…): viene quindi trascritta automaticamente solo la traccia audio (tramite Albert, il servizio sovrano della DINUM; vedi riservatezza più sotto). La zona di rilascio mostra **«Trascina qui uno o più documenti (PDF, TXT, DOCX, PPTX, ODT, ODP, PNG, JPEG)»** con il separatore
   **«o»**.
 - **Importare una pagina web**: incolla il suo link (`https://…`) nel
   campo sotto l'area di rilascio, poi clicca su **«Aggiungi»**. Il

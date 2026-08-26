@@ -86,6 +86,22 @@ Le moteur est **générique**. Pour activer le découpage sur une activité « l
 - **Oui** : QuizSet/QCM/VF (`questions`), Flashcards (`cards`), DialogCards (`dialogs`), SingleChoiceSet (`choices`), Summary (`summaries`), Glossary (`panels`/racine), FillInTheBlanks (`questions`), Moodle test_elea/QCM/Millionnaire (`questions`, ⚠ Millionnaire = exactement 6), Appariement (`pairs`), Glossaire (`entries`)…
 - **Non** (monolithiques / items interdépendants) : Page, Livre, CoursePresentation, InteractiveBook, InteractiveVideo, DragAndDrop, Chart, et les activités à champ unique (TrueFalse, DragTheWords, MarkTheWords, FindTheWords). Ne pas leur mettre de `chunking`.
 
+> **Une activité « Non » n'est pas pour autant à l'abri du mur.** InteractiveVideo produit jusqu'à
+> 10 interactions riches (QCM + rétroactions) **plus** un résumé en UN appel — exactement le régime
+> mesuré ci-dessus comme échouant. Le découpage étant exclu (les timestamps doivent rester
+> chronologiques, distincts et répartis), les deux leviers restants sont : **ne pas gonfler la
+> commande** (une consigne contradictoire du prompt annonçait « au maximum 113 questions » — corrigé
+> le 2026-08-27, cf. `assets/data/prompts/interactive_video.md`) et, si le mur est un jour VRAIMENT
+> constaté sur cette activité, **un modèle plus rapide** via `ACTIVITY_MODEL_OVERRIDES`.
+>
+> **Attention au faux positif, cependant.** L'échec de prod du 2026-08-26 sur cette activité (tâches
+> n8n 1564109 / 1564152) *ressemblait* au mur des 59 s — et n'en était pas un : `mistral-small-4-119b`
+> traversait une panne côté ILaaS et partait en fallback même sur un prompt de 90 caractères. Deux indices
+> qui doivent faire écarter l'hypothèse du mur : l'échec survient en **quelques secondes** (un mur de
+> temps échoue à 59 s, pas à 4 s), et il se reproduit sur un **prompt trivial**. Sonder le modèle
+> isolément avant d'accuser le volume — et isolément *vraiment* : trois appels rapprochés saturent le
+> backend PARTAGÉ et fabriquent des fallbacks en cascade qu'on prend pour un défaut du modèle.
+
 ### Activités activées (15, seuils mesurés)
 
 **Actives** (le découpage se déclenche réellement — items lourds) :

@@ -59,9 +59,8 @@ Tres posibilidades:
 
 - **Copiar y pegar un texto** directamente en el área de entrada.
 - **Arrastrar y soltar un documento** (o hacer clic en
-  **«Seleccione un archivo»**) en formato **PDF, DOCX, PPTX, ODT,
-  ODP, PNG, JPEG** (las imágenes **WebP** y **BMP** también se aceptan, sin figurar en la lista mostrada en pantalla). Una **imagen** depositada (foto, esquema, diagrama…) es **analizada por una IA de visión** que redacta una **descripción** de la misma y **transcribe fielmente el texto** que contiene — si la IA no está disponible, la lectura local (OCR) toma automáticamente el relevo. También puede soltar un **archivo de audio** (MP3, M4A, WAV…) o un **vídeo** (MP4, MOV…): solo se transcribe automáticamente la pista de audio (mediante Albert, el servicio soberano de la DINUM; véase la confidencialidad más abajo). La zona de carga muestra **«Arrastre y suelte
-  un documento aquí (PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG)»** con
+  **«Seleccione un archivo»**) en formato **PDF, TXT, DOCX, PPTX, ODT,
+  ODP, PNG, JPEG** (las imágenes **WebP** y **BMP** también se aceptan, sin figurar en la lista mostrada en pantalla). Una **imagen** depositada (foto, esquema, diagrama…) es **analizada por una IA de visión** que redacta una **descripción** de la misma y **transcribe fielmente el texto** que contiene — si la IA no está disponible, la lectura local (OCR) toma automáticamente el relevo. También puede soltar un **archivo de audio** (MP3, M4A, WAV…) o un **vídeo** (MP4, MOV…): solo se transcribe automáticamente la pista de audio (mediante Albert, el servicio soberano de la DINUM; véase la confidencialidad más abajo). La zona de carga muestra **«Arrastre y suelte uno o varios documentos aquí (PDF, TXT, DOCX, PPTX, ODT, ODP, PNG, JPEG)»** con
   un separador **«o»**.
 - **Importar una página web**: pegar su enlace (`https://…`) en el
   campo situado debajo de la zona de carga y luego hacer clic en

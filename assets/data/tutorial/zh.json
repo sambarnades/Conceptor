@@ -91,8 +91,9 @@
         {
           "type": "list",
           "items": [
-            "**文档** — PDF、DOCX、PPTX、ODT、ODP：直接提取其中的文字。",
-            "**图片** — PNG、JPEG（WebP 和 BMP 同样支持）：由视觉 AI 描述并抄录其中的文字。",
+            "**文档** — PDF、TXT、DOCX、PPTX、ODT、ODP：直接提取其中的文字。**Markdown（MD）、CSV/TSV、表格（XLSX、ODS）、HTML 页面、字幕（SRT、VTT）、RTF 和 EPUB 电子书同样支持**（未在界面上列出）。",
+            "**压缩包** — ZIP 文件会被**解开**：其中的每个文档都会单独加入。您还可以**一次拖入多个文件**，它们会依次处理。",
+            "**图片** — PNG、JPEG（WebP、BMP、TIFF 以及 iPhone 的 HEIC 照片同样支持）：由视觉 AI 描述并抄录其中的文字。",
             "**音频** — MP3、M4A、WAV、OGG、FLAC：录音会被自动**转写**成文字。",
             "**视频** — MP4、MOV、WEBM：**仅提取音轨**并转写，画面不会被分析。",
             "**网页** — 粘贴链接，Caramel 会获取其内容。"

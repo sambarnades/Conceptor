@@ -59,9 +59,8 @@ Três possibilidades:
 
 - **Copiar e colar um texto** diretamente na área de entrada.
 - **Arrastar e soltar um documento** (ou clicar em
-  **"Escolher arquivo"**) em formato **PDF, DOCX, PPTX, ODT, ODP,
-  PNG, JPEG** (as imagens **WebP** e **BMP** também são aceites, sem serem listadas na tela). Uma **imagem** depositada (foto, esquema, diagrama…) é **analisada por uma IA de visão** que redige uma **descrição** dela e **transcreve fielmente o texto** que ela contém — se a IA estiver indisponível, a leitura local (OCR) assume automaticamente. Também pode soltar um **ficheiro de áudio** (MP3, M4A, WAV…) ou um **vídeo** (MP4, MOV…): apenas a faixa de áudio é então transcrita automaticamente (pelo Albert, o serviço soberano da DINUM; ver confidencialidade abaixo). A área de soltar mostra **"Arraste e solte um
-  documento aqui (PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG)"** com o
+  **"Escolher arquivo"**) em formato **PDF, TXT, DOCX, PPTX, ODT, ODP,
+  PNG, JPEG** (as imagens **WebP** e **BMP** também são aceites, sem serem listadas na tela). Uma **imagem** depositada (foto, esquema, diagrama…) é **analisada por uma IA de visão** que redige uma **descrição** dela e **transcreve fielmente o texto** que ela contém — se a IA estiver indisponível, a leitura local (OCR) assume automaticamente. Também pode soltar um **ficheiro de áudio** (MP3, M4A, WAV…) ou um **vídeo** (MP4, MOV…): apenas a faixa de áudio é então transcrita automaticamente (pelo Albert, o serviço soberano da DINUM; ver confidencialidade abaixo). A área de soltar mostra **"Arraste e solte um ou mais documentos aqui (PDF, TXT, DOCX, PPTX, ODT, ODP, PNG, JPEG)"** com o
   separador **"ou"**.
 - **Importar uma página web**: colar o seu link (`https://…`) no
   campo abaixo da zona de depósito, depois clicar em **"Adicionar"**.

@@ -39,14 +39,21 @@ function waitForTranscription(fileName, { timeoutMs = TRANSCRIPTION_TIMEOUT_MS }
         if (!container) return resolve(false);
 
         // Vérifier d'emblée si déjà présent (cas du fichier déjà transcrit)
-        const alreadyThere = Array.from(container.querySelectorAll('.filename'))
-            .some(el => el.getAttribute('title') === fileName);
+        // Une ARCHIVE ne produit pas d'étiquette à son nom : elle en produit une
+        // par document extrait, préfixée « archive.zip › ». Sans ce préfixe accepté,
+        // un .zip déposé sur le panel finirait en « erreur : timeout » alors que
+        // tout s'est bien passé.
+        const correspond = (el) => {
+            const titre = el.getAttribute('title');
+            return titre === fileName || (titre || '').startsWith(fileName + ' › ');
+        };
+
+        const alreadyThere = Array.from(container.querySelectorAll('.filename')).some(correspond);
         if (alreadyThere) return resolve(true);
 
         let resolved = false;
         const observer = new MutationObserver(() => {
-            const found = Array.from(container.querySelectorAll('.filename'))
-                .some(el => el.getAttribute('title') === fileName);
+            const found = Array.from(container.querySelectorAll('.filename')).some(correspond);
             if (found && !resolved) {
                 resolved = true;
                 observer.disconnect();
@@ -83,7 +90,9 @@ export async function handleAttachment(file) {
         addBotMessage(t('attachment_error', { name: file.name, error: 'OCR indisponible' }));
         return;
     }
-    if (!window.CaramelOCR.isSupported(file)) {
+    // isSupported est ASYNCHRONE depuis 6.3.2 (elle peut lire la signature
+    // binaire du fichier quand ni le MIME ni l'extension ne concluent).
+    if (!(await window.CaramelOCR.isSupported(file))) {
         addBotMessage(t('attachment_unsupported', { name: file.name }));
         return;
     }
@@ -123,7 +132,9 @@ export async function handleAttachment(file) {
             // l'utilisateur est déjà en train de répondre à une étape guidée.
             const busyInGuidedStep = state.currentFlow === 'generate' && state.genState && state.genState.step;
             if (!busyInGuidedStep && window.CaramelOCR && typeof window.CaramelOCR.getFiles === 'function') {
-                const entry = window.CaramelOCR.getFiles().find(f => f.name === file.name);
+                const fichiers = window.CaramelOCR.getFiles();
+                const entry = fichiers.find(f => f.name === file.name)
+                    || fichiers.find(f => f.name.startsWith(file.name + ' › '));
                 if (entry && entry.content) offerActivityFromDocument(entry.content, file.name);
             }
         } else {

@@ -59,9 +59,9 @@ Drie mogelijkheden:
 
 - **Een tekst kopiëren en plakken** rechtstreeks in het invoerveld.
 - **Een document slepen en neerzetten** (of klikken op
-  **„Kies een bestand"**) in **PDF-, DOCX-, PPTX-, ODT-, ODP-,
+  **„Kies een bestand"**) in **PDF-, TXT-, DOCX-, PPTX-, ODT-, ODP-,
   PNG-, JPEG-formaat** (de afbeeldingsformaten **WebP** en **BMP** worden ook aanvaard, zonder op het scherm vermeld te staan). Een neergezette **afbeelding** (foto, schema, diagram…) wordt **geanalyseerd door een vision-AI** die er een **beschrijving** van opstelt en **de tekst die erin staat getrouw overneemt** — als de AI niet beschikbaar is, neemt het lokale uitlezen (OCR) automatisch over. U kunt ook een **audiobestand** (MP3, M4A, WAV…) of een **video** (MP4, MOV…) neerzetten: alleen het geluid wordt dan automatisch getranscribeerd (door Albert, de soevereine dienst van de DINUM; zie privacy hieronder). Het sleepgebied draagt het label
-  **„Sleep een document hierheen (PDF, DOCX, PPTX, ODT, ODP, PNG,
+  **„Sleep een of meer documenten hierheen (PDF, TXT, DOCX, PPTX, ODT, ODP, PNG,
   JPEG)"** met als scheidingsteken **„of"**.
 - **Een webpagina importeren** : plak de link (`https://…`) in het
   veld onder de uploadzone en klik vervolgens op **„Toevoegen"**. De

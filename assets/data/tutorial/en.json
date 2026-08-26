@@ -40,7 +40,7 @@
         {
           "type": "list",
           "items": [
-            "**Your documents stay on your computer.** When you drop a text file (PDF, DOCX, PPTX, ODT…) in advanced mode, the text is extracted **entirely in your browser**: nothing is sent to a server.",
+            "**Your documents stay on your computer.** When you drop a text file (PDF, TXT, DOCX, PPTX, ODT…) in advanced mode, the text is extracted **entirely in your browser**: nothing is sent to a server.",
             "**What does travel stays hosted in France.** Your generation requests go through **shared university servers** (the **ILaaS** project); the **images you drop** are analysed there by a **vision AI** (description + transcribed text); voice (microphone or audio file) is transcribed by **Albert**, the **DINUM's sovereign service**. Neither one **collects nor resells** your data — and **neither the audio nor the images are kept**.",
             "**Copying and pasting to an external AI is on you.** If you copy a prompt to use it in a third-party service, the protection of your data then depends on **that service's terms**."
           ]
@@ -91,8 +91,9 @@
         {
           "type": "list",
           "items": [
-            "**Documents** — PDF, DOCX, PPTX, ODT, ODP: the text is extracted as is.",
-            "**Images** — PNG, JPEG (WebP and BMP accepted too): described and transcribed by a vision AI.",
+            "**Documents** — PDF, TXT, DOCX, PPTX, ODT, ODP: the text is extracted as is. **Markdown (MD), CSV/TSV, spreadsheets (XLSX, ODS), HTML pages, subtitles (SRT, VTT), RTF and EPUB books accepted too** (not listed on screen).",
+            "**Archives** — a ZIP file is **unpacked**: each document it contains is added separately. You can also drop **several files at once**; they are processed one after another.",
+            "**Images** — PNG, JPEG (WebP, BMP, TIFF and iPhone HEIC photos accepted too): described and transcribed by a vision AI.",
             "**Audio** — MP3, M4A, WAV, OGG, FLAC: the recording is **transcribed** automatically.",
             "**Video** — MP4, MOV, WEBM: **only the audio track** is extracted and transcribed, the picture is not analysed.",
             "**Web page** — paste a link and Caramel fetches its content."

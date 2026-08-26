@@ -261,8 +261,13 @@ function classifyImage(file) {
  * @param {File|Blob} file
  * @returns {Promise<{ blob: Blob, mime: string }>} Blob décodable + son MIME effectif.
  * @throws {Error} 'FORMAT_INVALID' si le format est inconnu ou si la conversion échoue.
+ *
+ * Exportée depuis la 6.3.2 : `services/ocr.js` s'en sert pour accepter au dépôt
+ * de documents les photos d'iPhone (HEIC) et les TIFF, plutôt que de dupliquer
+ * la même conversion — c'est la SEULE façon de garder les deux flux d'accord
+ * sur ce qui est décodable.
  */
-async function ensureCanvasDecodable(file) {
+export async function ensureCanvasDecodable(file) {
     const { kind, mime } = classifyImage(file);
 
     if (kind === 'native') {

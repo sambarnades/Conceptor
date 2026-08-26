@@ -58,8 +58,8 @@ Three options:
 
 - **Copy and paste a text** directly into the input area.
 - **Drag and drop a document** (or click **"Choose a file"**)
-  in **PDF, DOCX, PPTX, ODT, ODP, PNG, JPEG** format (**WebP** and **BMP** images are also accepted, without being listed on screen). An **image** you drop (photo, diagram, chart…) is **analysed by a vision AI** that writes a **description** of it and **faithfully transcribes the text** it contains — if the AI is unavailable, local reading (OCR) automatically takes over. You can also drop an **audio file** (MP3, M4A, WAV…) or a **video** (MP4, MOV…): only the soundtrack is then transcribed automatically (by Albert, the French government’s sovereign service; see privacy below). The drop
-  zone is labelled **"Drag and drop a document here (PDF, DOCX,
+  in **PDF, TXT, DOCX, PPTX, ODT, ODP, PNG, JPEG** format (**WebP** and **BMP** images are also accepted, without being listed on screen). An **image** you drop (photo, diagram, chart…) is **analysed by a vision AI** that writes a **description** of it and **faithfully transcribes the text** it contains — if the AI is unavailable, local reading (OCR) automatically takes over. You can also drop an **audio file** (MP3, M4A, WAV…) or a **video** (MP4, MOV…): only the soundtrack is then transcribed automatically (by Albert, the French government’s sovereign service; see privacy below). The drop
+  zone is labelled **"Drag and drop one or more documents here (PDF, TXT, DOCX,
   PPTX, ODT, ODP, PNG, JPEG)"** with an **"or"** separator.
 - **Import a web page**: paste its link (`https://…`) into the
   field below the drop zone, then click **"Add"**. The page text
