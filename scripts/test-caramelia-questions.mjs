@@ -211,19 +211,36 @@ async function main() {
     }
     await Promise.all(Array.from({ length: CONCURRENCY }, worker));
 
+    // Un appel qui n'aboutit pas n'est PAS un défaut de prompt, et les confondre
+    // fait accuser le prompt d'une panne de plateforme. Vécu le 27-08-2026 : le
+    // modèle principal était en carafe, tout passait par le secours, et une
+    // concurrence de 2 suffisait à produire des 503 qu'on lisait comme des
+    // régressions — les mêmes cas passaient tous en série (`--concurrency 1`).
+    const indispo = r => !r.result?.ok;
     const ko = results.filter(r => !r.pass);
+    const koIndispo = ko.filter(indispo);
+    const koPrompt = ko.filter(r => !indispo(r));
+
     const byTag = {};
     for (const r of results) {
-        byTag[r.tag] ??= { total: 0, ko: 0 };
+        byTag[r.tag] ??= { total: 0, defauts: 0, indispo: 0 };
         byTag[r.tag].total++;
-        if (!r.pass) byTag[r.tag].ko++;
+        if (r.pass) continue;
+        if (indispo(r)) byTag[r.tag].indispo++; else byTag[r.tag].defauts++;
     }
     console.log('\n── Synthèse par groupe ─────────────────────────────');
     for (const [tag, s] of Object.entries(byTag)) {
-        const pct = Math.round(((s.total - s.ko) / s.total) * 100);
-        console.log(`  ${tag.padEnd(12)} ${String(s.total - s.ko).padStart(2)}/${String(s.total).padEnd(2)} (${pct}%)`);
+        const ok = s.total - s.defauts - s.indispo;
+        const note = s.indispo ? `  (+${s.indispo} injoignable${s.indispo > 1 ? 's' : ''})` : '';
+        console.log(`  ${tag.padEnd(12)} ${String(ok).padStart(2)}/${String(s.total).padEnd(2)}${note}`);
     }
-    console.log(`\n  TOTAL        ${results.length - ko.length}/${results.length}\n`);
+    console.log(`\n  Réussis            ${results.length - ko.length}/${results.length}`);
+    console.log(`  Défauts de prompt  ${koPrompt.length}`);
+    if (koIndispo.length) {
+        console.log(`  Appels injoignables ${koIndispo.length}  ← service, PAS le prompt : rejouer avec --concurrency 1`);
+        for (const r of koIndispo) console.log(`      ${r.id} (${r.result?.error})`);
+    }
+    console.log('');
 
     const stamp = new Date().toISOString().replace(/[:.]/g, '-');
     const file = `${OUT}/run-${ENV}-${stamp}.json`;
