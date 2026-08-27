@@ -279,6 +279,90 @@ export const POLL_TIMINGS = {
     timeoutMs: 300000
 };
 
+// =======================================================================
+// Annulation d'une génération en cours
+// =======================================================================
+// Toute génération — mono-appel comme génération par lots — passe par
+// `generateRawWithLLM`. C'est donc ici, et nulle part ailleurs, qu'on installe
+// le point d'arrêt : un seul drapeau suffit à couper l'attente, quel que soit le
+// nombre d'appels que l'activité demande.
+//
+// Ce qu'on arrête vraiment : **l'attente côté navigateur**. La tâche déjà
+// soumise continue sa vie côté serveur (elle est en file dans Postgres) et
+// finira par se terminer dans le vide. On ne prétend donc pas « annuler la
+// génération » côté serveur — on rend simplement la main à l'enseignant, ce qui
+// est précisément ce qu'il demande quand il clique.
+
+const CANCELLED = 'GENERATION_CANCELLED';
+let cancelRequested = false;
+const inFlightControllers = new Set();   // requêtes en vol, à interrompre net
+const sleepWakers = new Set();           // attentes de polling, à réveiller net
+
+/** Vrai si `err` est une annulation utilisateur, et non un échec technique. */
+export function isCancellation(err) {
+    return !!err && err.code === CANCELLED;
+}
+
+function cancellationError() {
+    const err = new Error('Génération interrompue à la demande de l\'utilisateur.');
+    err.code = CANCELLED;
+    return err;
+}
+
+/**
+ * À appeler au DÉMARRAGE d'une génération : réarme le drapeau.
+ * Surtout pas au début de `generateRawWithLLM` — une génération par lots
+ * l'appelle N fois et effacerait l'annulation demandée entre deux lots.
+ */
+export function beginGeneration() {
+    cancelRequested = false;
+}
+
+/** Vrai si l'utilisateur a demandé l'arrêt de la génération en cours. */
+export function isCancelRequested() {
+    return cancelRequested;
+}
+
+/**
+ * Demande l'arrêt de la génération en cours. Effet immédiat : les requêtes en
+ * vol sont interrompues et les attentes de polling réveillées, sans quoi on
+ * resterait jusqu'à 5 s (délai initial) ou 3 s (intervalle) sur un bouton déjà
+ * cliqué — largement assez pour croire qu'il n'a rien fait.
+ */
+export function requestCancelGeneration() {
+    cancelRequested = true;
+    for (const ctrl of inFlightControllers) {
+        try { ctrl.abort(); } catch { /* déjà terminée */ }
+    }
+    inFlightControllers.clear();
+    for (const wake of Array.from(sleepWakers)) wake();
+}
+
+/** Attente interruptible : se réveille aussi sur `requestCancelGeneration()`. */
+function sleepOrCancel(ms) {
+    return new Promise(resolve => {
+        const done = () => { clearTimeout(timer); sleepWakers.delete(done); resolve(); };
+        const timer = setTimeout(done, ms);
+        sleepWakers.add(done);
+    });
+}
+
+/** `fetch` dont on garde la poignée d'interruption le temps de la requête. */
+async function fetchInterruptible(url, opts = {}) {
+    const ctrl = new AbortController();
+    inFlightControllers.add(ctrl);
+    try {
+        return await fetch(url, { ...opts, signal: ctrl.signal });
+    } finally {
+        inFlightControllers.delete(ctrl);
+    }
+}
+
+/** Lève l'annulation si elle a été demandée. À appeler à chaque point d'attente. */
+function throwIfCancelled() {
+    if (cancelRequested) throw cancellationError();
+}
+
 /**
  * Lit le contexte RAG programmes scolaires depuis le DOM : discipline (champ "qui"),
  * sujet pédagogique (champ "quoi") et niveau saisis par l'enseignant. Le Worker n8n
@@ -328,9 +412,13 @@ export async function generateRawWithLLM(prompt, model, { activityMeta = null, r
     try { perfMod = await import('../core/perf-tracker.js'); } catch { perfMod = null; }
 
     try {
+        // Une génération par lots enchaîne N appels : si l'arrêt a été demandé
+        // pendant le lot précédent, on ne soumet pas le suivant.
+        throwIfCancelled();
+
         // === Étape 1 : Soumission ===
         if (perfMod) perfMod.markStart('llm', 'Soumission requête n8n');
-        const submitResponse = await fetch(LLM_SUBMIT_URL, {
+        const submitResponse = await fetchInterruptible(LLM_SUBMIT_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody)
@@ -360,7 +448,8 @@ export async function generateRawWithLLM(prompt, model, { activityMeta = null, r
 
         // Délai initial : on laisse au Worker le temps de démarrer le LLM
         // (la plupart des appels mettent au moins 5s à répondre)
-        await new Promise(resolve => setTimeout(resolve, POLL_TIMINGS.initialDelayMs));
+        await sleepOrCancel(POLL_TIMINGS.initialDelayMs);
+        throwIfCancelled();
 
         let pollCount = 0;
         // eslint-disable-next-line no-constant-condition
@@ -374,11 +463,16 @@ export async function generateRawWithLLM(prompt, model, { activityMeta = null, r
             const pollUrl = `${LLM_RESULT_URL}?taskId=${encodeURIComponent(taskId)}`;
             let pollResponse;
             try {
-                pollResponse = await fetch(pollUrl, { method: 'GET' });
+                pollResponse = await fetchInterruptible(pollUrl, { method: 'GET' });
             } catch (networkError) {
+                // Une interruption volontaire arrive ici sous forme d'AbortError :
+                // sans ce test, elle serait prise pour un incident réseau et le
+                // polling repartirait de plus belle.
+                throwIfCancelled();
                 // Erreur réseau transitoire : on attend et on retente
                 console.warn(`[LLM] Erreur réseau au poll #${pollCount}, retry dans ${POLL_TIMINGS.intervalMs}ms`, networkError);
-                await new Promise(resolve => setTimeout(resolve, POLL_TIMINGS.intervalMs));
+                await sleepOrCancel(POLL_TIMINGS.intervalMs);
+                throwIfCancelled();
                 continue;
             }
 
@@ -390,11 +484,18 @@ export async function generateRawWithLLM(prompt, model, { activityMeta = null, r
 
             if (pollData.status === 'processing') {
                 // Encore en cours, on attend et on retente
-                await new Promise(resolve => setTimeout(resolve, POLL_TIMINGS.intervalMs));
+                await sleepOrCancel(POLL_TIMINGS.intervalMs);
+                throwIfCancelled();
                 continue;
             }
 
             if (pollData.status === 'done') {
+                // Course : l'arrêt a pu être demandé pendant que ce dernier poll
+                // était en vol. Rendre le résultat quand même produirait le
+                // fichier que l'enseignant vient d'annuler — on le jette. C'est
+                // le seul endroit à couvrir : les quatre chemins de génération
+                // passent tous par ici.
+                throwIfCancelled();
                 const llmDurationS = Math.round((Date.now() - startTime) / 1000);
                 if (perfMod) perfMod.markEnd('llm', 'Polling LLM result', {
                     durationSeconds: llmDurationS,
@@ -427,7 +528,13 @@ export async function generateRawWithLLM(prompt, model, { activityMeta = null, r
         }
 
     } catch (error) {
-        console.error("Erreur lors de l'appel au proxy n8n pour le LLM", error);
+        // Une annulation n'est pas un incident : la journaliser en `error` ferait
+        // remonter une fausse alerte dans la console de l'enseignant.
+        if (isCancellation(error)) {
+            debugLog('LLM', 'Génération interrompue à la demande de l\'utilisateur.');
+        } else {
+            console.error("Erreur lors de l'appel au proxy n8n pour le LLM", error);
+        }
         throw error;
     }
 }

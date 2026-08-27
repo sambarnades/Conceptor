@@ -92,8 +92,36 @@ Retirer du `index.html` :
 
 `security.js` sanitise les inputs avant injection DOM (préventif XSS via messages utilisateur). Ne pas bypasser.
 
+## Banc de QA en langage naturel
+
+`node scripts/test-caramelia-questions.mjs` rejoue le payload EXACT du client contre le
+webhook n8n sur ~58 questions réelles (`scripts/lib/caramelia-questions.mjs`), puis
+reclasse la réponse comme le fait `chat.js` : bloc `<DATA>` exploitable = création,
+sinon = réponse texte. Groupes : `meta`, `integration`, `pedago`, `creation-en`,
+`creation-pro` (publics HORS Éducation nationale), `social`, `multitour`, `trouble`,
+`horschamp`, `langue`.
+
+```bash
+node scripts/test-caramelia-questions.mjs                  # tout, sur `bas`
+node scripts/test-caramelia-questions.mjs --prod --tag meta
+node scripts/test-caramelia-questions.mjs --id llm-list --concurrency 1
+```
+
+`--sim <src/construire-messages.js>` essaie un prompt système candidat avant de
+l'importer dans n8n — il est glissé dans le message et envoyé par la voie `help`.
+Utile pour comparer deux rédactions, **pas** pour mesurer un taux : le prompt de la
+voie `help` s'ajoute par-dessus et le payload double, ce qui provoque des 503 à 59 s
+qui n'ont rien à voir avec le prompt testé. Toujours conclure sur une passe SANS `--sim`.
+
+**Toute conversation de test coûte un appel LLM sur un backend PARTAGÉ.** Concurrence 2
+au maximum ; au-delà, on fabrique des pannes qu'on prend ensuite pour des défauts.
+
 ## Pièges connus
 
+- **Ne JAMAIS envoyer `stop: ['</DATA>']` au modèle** (workflow n8n `Caramelia — chatbot RAG`, nœud `Construire messages`). La passerelle ILaaS applique la séquence d'arrêt au flux BRUT du modèle, délibération comprise — or `</DATA>` figure dans le prompt système lui-même, le modèle le recopie en réfléchissant, et la génération est coupée AVANT que le canal de réponse s'ouvre. Résultat : HTTP 200 au corps vide, affiché « Désolé, je n'ai pas pu obtenir de réponse » sur une demande parfaitement comprise, de façon intermittente — d'où l'impression d'un chatbot capricieux. Mesuré le 27-08-2026 sur `bas`, même modèle et même question : **5 vides sur 6 AVEC, 0 sur 6 SANS**. Le bloc `<DATA>` se termine tout seul et `parseDataBlock` ignore déjà ce qui suit : ce paramètre n'apportait rien. Correctif et mesure : `bas/docs/n8n-caramelia-v2/`.
+- **Un HTTP 200 au corps vide n'est pas un succès** : `fetchWithRetry` ne regarde que le statut. `runAutoQuery` retente une fois puis renvoie `{kind:'empty'}` → `flow.js` affiche `help_error_empty`, et surtout PAS `help_error_offline` (qui envoie l'utilisateur vérifier un réseau qui marche).
+- **Le public n'est pas toujours une classe** : Caramel sert autant les formateurs (organismes de formation, entreprises, CFA, supérieur, associations) que l'Éducation nationale. Une audience nommée — « opérateurs agroalimentaires », « apprentis CAP », « salariés », « bénévoles » — EST un `niveau` valide. Réclamer un « niveau scolaire » à un formateur bloque la conversation avant la première génération ; c'était le principal point de rupture hors EN.
+- **Le prompt serveur exige des clés de `<DATA>` en français**, mais les petits modèles traduisent quand même la clé dans la langue de la conversation (`"nivel"` en espagnol). Filet côté client : `FIELD_ALIASES` dans `extractor.js`. Ne pas l'étendre au jugé — n'y mettre que des traductions CONSTATÉES.
 - **`MutationObserver`** : Caramelia attend que la sidebar Caramel soit prête avant de cliquer — si Caramel change la timing/structure, les actions plantent silencieusement → instrumenter `actions.js` avec logs
 - **Locales séparées** : ne pas confondre `js/locales/` (Caramel) et `js/caramelia/locales/` (Caramelia) — clés indépendantes
 - **`fuzzyMap`** : matching approximatif des activités — trop flexible = mauvais routage, trop strict = utilisateur frustré

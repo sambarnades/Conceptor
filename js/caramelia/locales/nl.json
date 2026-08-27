@@ -62,6 +62,7 @@
   "help_error_offline": "Oeps, ik kan geen verbinding maken 😓 Hier zijn wat tips:\n\n- **Snelle modus**: vul \"Wie\" en \"Wat\" in en klik op een activiteit\n- **Geavanceerde modus**: voeg het niveau en een brondocument toe\n- Het bestand wordt automatisch gedownload",
   "help_error_timeout": "⏱️ De server doet er te lang over om te antwoorden. Probeer het zo opnieuw.",
   "help_error_server": "🔧 De server gaf een fout terug. Probeer het over enkele ogenblikken opnieuw.",
+  "help_error_empty": "🤐 De server antwoordde, maar zei niets. Dat gebeurt wanneer het model overbelast is — probeer het opnieuw, meestal lukt het meteen.",
   "help_btn_retry": "🔄 Opnieuw proberen",
   "gen_user_label": "Een activiteit maken",
   "gen_qui_prompt": "Top, laten we samen een activiteit maken! 🎨\n\n**Wie ben je?**\n_Voorbeeld: \"Wiskundeleraar middelbare school\", \"Bedrijfstrainer\"_",

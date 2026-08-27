@@ -62,6 +62,7 @@
   "help_error_offline": "Ups, não consigo ligar 😓 Aqui ficam algumas dicas:\n\n- **Modo rápido**: preenche \"Quem\" e \"O quê\" e clica numa atividade\n- **Modo avançado**: adiciona o nível e um documento fonte\n- O ficheiro é descarregado automaticamente",
   "help_error_timeout": "⏱️ O servidor está a demorar demasiado a responder. Tenta novamente daqui a pouco.",
   "help_error_server": "🔧 O servidor devolveu um erro. Tenta novamente dentro de alguns instantes.",
+  "help_error_empty": "🤐 O servidor respondeu, mas sem dizer nada. Acontece quando o modelo está sobrecarregado — tenta novamente, normalmente funciona logo.",
   "help_btn_retry": "🔄 Tentar novamente",
   "gen_user_label": "Criar uma atividade",
   "gen_qui_prompt": "Ótimo, vamos criar uma atividade juntos! 🎨\n\n**Quem és?**\n_Exemplo: \"Professor de matemática do 2º ciclo\", \"Formador em empresa\"_",

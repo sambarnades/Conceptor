@@ -517,6 +517,17 @@ async function runStep8_ClassificationErreurs() {
             `[8.5] ${cle} est traduit dans les 11 langues`, manquantes);
     }
 
+    // --- 8.5b : libellés du bouton « Arrêter » dans les 11 langues -----------
+    // Le bouton vit dans index.html avec `data-key`/`data-key-aria` : une clé
+    // absente d'une locale s'affiche BRUTE à l'enseignant (`translatePage` ne
+    // substitue que ce qu'il trouve).
+    const CLES_ARRET = ['generation_cancel_btn', 'generation_cancel_aria', 'generation_cancelling', 'generation_cancelled'];
+    for (const cle of CLES_ARRET) {
+        const manquantes = LANGS.filter(l => !locales[l] || !locales[l][cle]);
+        assert(manquantes.length === 0,
+            `[8.5b] ${cle} est traduit dans les 11 langues`, manquantes);
+    }
+
     // --- 8.6 : ui.js branche bien la classification --------------------------
     // Les quatre chemins de génération affichaient `error.message` BRUT — texte
     // technique, non traduit, sans indication d'action. Le contrôle est statique
@@ -532,11 +543,27 @@ async function runStep8_ClassificationErreurs() {
         assert(/function\s+messageEchecGeneration\s*\(/.test(source),
             '[8.8] ui.js définit le composeur de message messageEchecGeneration');
 
-        const appels = (source.match(/messageEchecGeneration\s*\(/g) || []).length;
+        // Depuis la 6.3.3, les quatre chemins n'appellent plus le composeur
+        // directement : ils passent par `signalerFinGeneration`, entonnoir unique
+        // qui sépare l'ÉCHEC (on explique et on conseille) de l'ARRÊT DEMANDÉ
+        // par l'enseignant (bouton « Arrêter » de l'overlay). La propriété
+        // verrouillée est la même — aucun chemin ne remonte un message brut —,
+        // elle est simplement tenue en un seul endroit au lieu de quatre.
+        assert(/function\s+signalerFinGeneration\s*\(/.test(source),
+            '[8.9] ui.js définit l\'entonnoir signalerFinGeneration');
+
+        const parEntonnoir = (source.match(/signalerFinGeneration\s*\(/g) || []).length;
         // 1 déclaration + 4 chemins de génération (contextuelle, image, vidéo, standard).
-        assert(appels >= 5,
-            '[8.9] Les 4 chemins de génération passent par le composeur',
-            { occurrences: appels, attendu: '≥ 5 (déclaration + 4 appels)' });
+        assert(parEntonnoir >= 5,
+            '[8.9b] Les 4 chemins de génération passent par l\'entonnoir',
+            { occurrences: parEntonnoir, attendu: '≥ 5 (déclaration + 4 appels)' });
+
+        const corpsEntonnoir = (source.match(/function\s+signalerFinGeneration[\s\S]*?\n\}/) || [''])[0];
+        assert(/messageEchecGeneration\s*\(/.test(corpsEntonnoir),
+            '[8.9c] L\'entonnoir compose son message d\'échec via messageEchecGeneration');
+        assert(/isCancellation\s*\(/.test(corpsEntonnoir),
+            '[8.9d] L\'entonnoir distingue l\'arrêt volontaire d\'un échec technique',
+            'sans ce test, cliquer « Arrêter » afficherait « La génération a échoué. Cause : … »');
 
         const brut = source.match(/generation_failed_llm[\s\S]{0,200}?replace\(\s*'\{errorMessage\}'\s*,\s*error\.message/g) || [];
         assert(brut.length === 0,

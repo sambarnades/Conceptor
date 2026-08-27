@@ -104,11 +104,13 @@ Phrase a analyser : "${safeUser}"`;
 /**
  * Parse la réponse du webhook. Retourne null si le format est invalide.
  *
- * Tolère l'absence de </DATA> à la fin : le workflow n8n utilise un stop token
- * sur "</DATA>" pour couper la génération du LLM dès la fin du bloc, ce qui
- * fait que la balise fermante n'est PAS présente dans la réponse renvoyée
- * (comportement standard des APIs OpenAI-compatibles : le stop est une
- * frontière, pas un contenu). On accepte donc soit </DATA>, soit fin de chaîne.
+ * Tolère l'absence de </DATA> à la fin, et tolère du texte après le bloc.
+ * Historique : le workflow n8n envoyait `stop: ['</DATA>']` au modèle pour
+ * couper la génération dès la fin du bloc — d'où cette tolérance. Ce `stop`
+ * a été retiré le 2026-08-27 (il coupait la génération PENDANT la délibération
+ * du modèle, la balise figurant dans le prompt lui-même : réponse vide dans
+ * ~80 % des créations, mesuré). La tolérance reste utile : elle absorbe les
+ * deux formes, et un déploiement n8n plus ancien continue de fonctionner.
  */
 export function parseDataBlock(rawResponse) {
     if (!rawResponse) return null;
@@ -128,8 +130,33 @@ export function parseDataBlock(rawResponse) {
  * Si qui ou quoi manque mais que le LLM a quand même proposé des moduleKeys,
  * on les efface et on force une clarif locale (le LLM peut désobéir).
  */
-function validateSchema(obj) {
-    if (typeof obj !== 'object' || obj === null) return null;
+// Le schéma nomme ses champs en français, et le prompt serveur l'exige
+// explicitement. Les petits modèles traduisent quand même la CLÉ dans la langue
+// de la conversation ("nivel" en espagnol, "level" en anglais — constaté sur
+// mistral-small-4 le 2026-08-27) : le champ devenait alors invisible et
+// l'assistante redemandait le niveau qu'elle venait d'extraire. On re-normalise
+// avant lecture. Seules les traductions des 11 langues de Caramel sont listées ;
+// une clé inconnue est ignorée, jamais devinée.
+const FIELD_ALIASES = {
+    qui: ['who', 'quien', 'quién', 'chi', 'wer', 'wie', 'quem', 'من', '谁', '誰', 'ποιος'],
+    quoi: ['what', 'que', 'qué', 'cosa', 'was', 'wat', 'o_que', 'ماذا', '什么', '何', 'τι'],
+    niveau: ['nivel', 'level', 'livello', 'niveau_scolaire', 'niveaustufe', 'nivo', 'público', 'public', 'audience', 'المستوى', '级别', 'レベル', 'επίπεδο'],
+    nombreQuestions: ['numeroPreguntas', 'numberOfQuestions', 'numeroDomande', 'anzahlFragen', 'aantalVragen'],
+};
+
+function normalizeFieldNames(obj) {
+    const out = { ...obj };
+    for (const [canon, aliases] of Object.entries(FIELD_ALIASES)) {
+        if (out[canon] != null && out[canon] !== '') continue;
+        const hit = aliases.find(a => out[a] != null && out[a] !== '');
+        if (hit) out[canon] = out[hit];
+    }
+    return out;
+}
+
+function validateSchema(raw) {
+    if (typeof raw !== 'object' || raw === null) return null;
+    const obj = normalizeFieldNames(raw);
     const allowedKeys = new Set(CONFIG.allModuleKeys);
     const moduleKeys = Array.isArray(obj.moduleKeys)
         ? obj.moduleKeys.filter(k => allowedKeys.has(k))

@@ -11,6 +11,9 @@ import { addBotMessage, showTyping, removeTyping } from './dom.js';
 import { t, getLangFullName, getLang } from './i18n.js';
 import { SECURITY_PREAMBLE, fenceUserMessage, detectInjectionAttempt } from './security.js';
 import { fetchWithRetry } from './utils.js';
+// `DEBUG` vient du cœur de Caramel (drapeau `?debug` dans l'URL), pas de
+// `caramelia/utils.js` : même drapeau que le reste de l'app, une seule source.
+import { DEBUG } from '../core/utils.js';
 import { parseDataBlock, isMeaningfulIntent, buildExtractSchemaBlock } from './extractor.js';
 
 // Borne dure : un .md mal édité ne doit pas saturer le webhook ni les tokens LLM.
@@ -78,6 +81,13 @@ function getPageContext() {
             // Version Caramelia : non affichée dans l'UI, mais transmise pour que
             // l'assistante puisse l'indiquer si on la lui demande.
             carameliaVersion: CONFIG.version,
+            // Demande au serveur de joindre sa sonde de diagnostic (modèle
+            // réellement utilisé, nombre d'extraits ramenés par la recherche
+            // documentaire). Sans ça, une recherche qui ne ramène RIEN est
+            // invisible : on accuse le prompt, puis le modèle, sans jamais voir
+            // que la base n'avait rien pour cette langue. Actif seulement avec
+            // `?debug` dans l'URL — la réponse est identique sinon.
+            debug: DEBUG || undefined,
         };
     } catch {
         return { page: 'Caramel', lang: getLang() };
@@ -116,8 +126,9 @@ ${fenceUserMessage(userText)}`;
  * des regex fragiles côté client mais par le LLM ancré sur la documentation.
  *
  * @param {string} text - message utilisateur brut (déjà sanitizé en amont)
- * @returns {Promise<{kind:'answer', text:string} | {kind:'creation', data:object} | null>}
- *   null = service injoignable (le caller bascule sur le fallback regex).
+ * @returns {Promise<{kind:'answer', text:string} | {kind:'creation', data:object} | {kind:'empty'} | null>}
+ *   'empty' = le service a répondu 200 mais sans un mot, deux fois de suite.
+ *   null    = service injoignable (le caller bascule sur le fallback regex).
  */
 export async function runAutoQuery(text) {
     const injection = detectInjectionAttempt(text);
@@ -125,43 +136,59 @@ export async function runAutoQuery(text) {
         console.warn('[Caramelia] tentative d\'injection détectée (auto):', injection.reason);
     }
 
+    const payload = JSON.stringify({
+        // Message sandboxé entre <USER_MESSAGE> : permet au serveur d'extraire
+        // la requête RAG proprement ET sert de défense anti-injection (le system
+        // prompt côté n8n traite ce bloc comme une donnée, jamais une instruction).
+        message: fenceUserMessage(text),
+        context: getPageContext(),
+        history: getHistoryForLLM(),
+        intent: 'auto',
+        lang: getLangFullName(),
+        // Schéma de création envoyé séparément : le LLM ne l'utilise QUE s'il
+        // décide (mode B) que l'utilisateur veut créer une activité.
+        extractSchema: buildExtractSchemaBlock(getLangFullName()),
+        securityFlag: injection.detected ? { detected: true, reason: injection.reason } : null,
+    });
+
     try {
-        const res = await fetchWithRetry(CONFIG.chatWebhookUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                // Message sandboxé entre <USER_MESSAGE> : permet au serveur d'extraire
-                // la requête RAG proprement ET sert de défense anti-injection (le system
-                // prompt côté n8n traite ce bloc comme une donnée, jamais une instruction).
-                message: fenceUserMessage(text),
-                context: getPageContext(),
-                history: getHistoryForLLM(),
-                intent: 'auto',
-                lang: getLangFullName(),
-                // Schéma de création envoyé séparément : le LLM ne l'utilise QUE s'il
-                // décide (mode B) que l'utilisateur veut créer une activité.
-                extractSchema: buildExtractSchemaBlock(getLangFullName()),
-                securityFlag: injection.detected ? { detected: true, reason: injection.reason } : null,
-            }),
-        }, { retries: 1, timeoutMs: 25000 });
-        if (!res.ok) {
-            const err = new Error(`HTTP ${res.status}`);
-            err.kind = res.status >= 500 ? 'server' : 'client';
-            throw err;
-        }
-        const data = await res.json();
-        const raw = String(data.response || data.message || '');
+        // Un HTTP 200 au corps VIDE est un échec serveur déguisé : `fetchWithRetry`
+        // ne le voit pas (il ne regarde que le statut), et l'afficher tel quel
+        // donnait « Désolé, je n'ai pas pu obtenir de réponse » sur une demande
+        // pourtant parfaitement comprise — le symptôme le plus visible de la
+        // régression `stop: ['</DATA>']` du 2026-08-27. On retente une fois avant
+        // de conclure, la cause étant corrigée côté n8n mais l'aléa restant
+        // possible (modèle dégradé, réponse partie dans un canal de réflexion).
+        for (let attempt = 0; attempt < 2; attempt++) {
+            const res = await fetchWithRetry(CONFIG.chatWebhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: payload,
+            }, { retries: 1, timeoutMs: 25000 });
+            if (!res.ok) {
+                const err = new Error(`HTTP ${res.status}`);
+                err.kind = res.status >= 500 ? 'server' : 'client';
+                throw err;
+            }
+            const data = await res.json();
+            const raw = String(data.response || data.message || '');
+            if (!raw.trim()) {
+                console.warn(`[Caramelia] réponse vide du webhook (tentative ${attempt + 1}/2)`);
+                continue;
+            }
 
-        // Le LLM a-t-il choisi le mode CRÉATION (bloc <DATA>) ?
-        const parsed = parseDataBlock(raw);
-        if (parsed && isMeaningfulIntent(parsed)) {
-            return { kind: 'creation', data: parsed };
-        }
+            // Le LLM a-t-il choisi le mode CRÉATION (bloc <DATA>) ?
+            const parsed = parseDataBlock(raw);
+            if (parsed && isMeaningfulIntent(parsed)) {
+                return { kind: 'creation', data: parsed };
+            }
 
-        // Sinon c'est une RÉPONSE. On retire un éventuel bloc <DATA> résiduel
-        // (cas où le LLM a émis un DATA vide à tort) pour ne pas l'afficher.
-        const answer = raw.replace(/<DATA>[\s\S]*?(?:<\/DATA>|$)/g, '').trim();
-        return { kind: 'answer', text: answer || t('help_no_response') };
+            // Sinon c'est une RÉPONSE. On retire un éventuel bloc <DATA> résiduel
+            // (cas où le LLM a émis un DATA vide à tort) pour ne pas l'afficher.
+            const answer = raw.replace(/<DATA>[\s\S]*?(?:<\/DATA>|$)/g, '').trim();
+            if (answer) return { kind: 'answer', text: answer };
+        }
+        return { kind: 'empty' };
     } catch (err) {
         console.warn('[Caramelia] Erreur auto:', err);
         return null;

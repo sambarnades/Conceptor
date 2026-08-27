@@ -9,7 +9,7 @@ import { translations, translatePage, currentLang } from '../core/translation.js
 import { generatePrompts, buildVideoInteractivePrompt, buildImageHotspotsPrompt, setImageHotspotZones, prefixForModule, resultKeyForModule } from '../services/prompt-generator.js';
 import { snapInteractions } from '../h5p/processors/interactive-video-snap.js';
 import { cleanJsonInput, showNotification, copyToClipboard, downloadFile, setupToolbarListeners, getCaramelVersionFromFooter, syncPanelHeights, DEBUG, debugLog, setupModalAccessibility, safeSession, horodatageFichier, classifyError } from '../core/utils.js';
-import { populateModelSelector, AVAILABLE_MODELS, DEFAULT_MODEL, ACTIVITY_MODEL_OVERRIDES, generateH5PWithLLM } from '../services/llm.js';
+import { populateModelSelector, AVAILABLE_MODELS, DEFAULT_MODEL, ACTIVITY_MODEL_OVERRIDES, generateH5PWithLLM, beginGeneration, requestCancelGeneration, isCancellation } from '../services/llm.js';
 import { generateInBatches, shouldChunk, BATCH_CONFIG } from '../services/llm-batch.js';
 import { addNotification, getNotificationById, getLastDebugNotification, showToastForNotification, revealNotification, hydrateImagesForExport } from './notifications.js';
 import { visionContextSig, alignVideoHelpButton, snapVideoTimestamps } from './media-helpers.js';
@@ -1941,11 +1941,7 @@ function attachContextualBottomButton(moduleKey, module, buttonGroup) {
                     stopCaramelAnimation();
                 }
             } catch (error) {
-                console.error("Erreur lors de la génération contextuelle avec le LLM:", error);
-                const errorMessage = messageEchecGeneration(error);
-                showNotification(errorMessage, 'error');
-                if (jsonInputTarget) jsonInputTarget.value = errorMessage;
-                stopCaramelAnimation();
+                signalerFinGeneration(error, jsonInputTarget, 'Génération contextuelle');
             }
         });
     }
@@ -2323,11 +2319,7 @@ function attachLLMLogic(moduleKey, container) {
                     stopCaramelAnimation();
                 }
             } catch (error) {
-                console.error('Erreur génération image interactive:', error);
-                const errorMessage = messageEchecGeneration(error);
-                showNotification(errorMessage, 'error');
-                if (jsonInputTarget) jsonInputTarget.value = errorMessage;
-                stopCaramelAnimation();
+                signalerFinGeneration(error, jsonInputTarget, 'Génération image interactive');
             }
             return;
         }
@@ -2407,11 +2399,7 @@ function attachLLMLogic(moduleKey, container) {
                     stopCaramelAnimation();
                 }
             } catch (error) {
-                console.error('Erreur génération vidéo interactive:', error);
-                const errorMessage = messageEchecGeneration(error);
-                showNotification(errorMessage, 'error');
-                if (jsonInputTarget) jsonInputTarget.value = errorMessage;
-                stopCaramelAnimation();
+                signalerFinGeneration(error, jsonInputTarget, 'Génération vidéo interactive');
             }
             return;
         }
@@ -2518,11 +2506,7 @@ function attachLLMLogic(moduleKey, container) {
                 stopCaramelAnimation();
             }
         } catch (error) {
-            console.error("Erreur lors de la génération avec le LLM:", error);
-            const errorMessage = messageEchecGeneration(error);
-            showNotification(errorMessage, 'error');
-            jsonInputTarget.value = errorMessage;
-            stopCaramelAnimation();
+            signalerFinGeneration(error, jsonInputTarget, 'Génération standard');
         }
     });
 }
@@ -2617,6 +2601,11 @@ function startCaramelAnimation() {
     overlay.classList.remove('closing');
     overlay.style.display = 'flex';
     resetBatchGauge(); // masque + ré-amorce la jauge de lots (sans effet sur une génération mono-appel)
+    // Réarmement du drapeau d'annulation ici et NON dans `generateRawWithLLM` :
+    // une génération par lots appelle cette dernière N fois et effacerait un
+    // arrêt demandé entre deux lots.
+    beginGeneration();
+    armCancelButton();
 
     const steps = [
         "caramel_animation_step_1",
@@ -2696,6 +2685,49 @@ function startCaramelAnimation() {
     marmiteContent.style.animation = 'fillMarmite 22s linear forwards';
 }
 
+// ── Bouton « Arrêter » de l'overlay de génération ────────────────────────────
+// Un seul bouton pour les quatre chemins de génération (contextuelle, image
+// interactive, vidéo interactive, standard) : ils partagent tous cet overlay,
+// et tous passent par `generateRawWithLLM`, seul endroit où l'attente se coupe.
+
+/** Rend le bouton d'arrêt visible et cliquable au début d'une génération. */
+function armCancelButton() {
+    const btn = document.getElementById('caramel-cancel-generation');
+    if (!btn) return;
+    btn.hidden = false;
+    btn.disabled = false;
+    const label = btn.querySelector('span');
+    if (label) label.textContent = translations.generation_cancel_btn || 'Arrêter';
+}
+
+/**
+ * Retire le bouton d'arrêt. Appelé en fin de génération, mais AUSSI quand on
+ * bascule sur un traitement post-IA (`generation:processing` : synthèse vocale
+ * de la Dictée, empaquetage…). À ce stade l'attente n'est plus interruptible :
+ * laisser le bouton affiché promettrait un arrêt qui n'arriverait jamais.
+ */
+function disarmCancelButton() {
+    const btn = document.getElementById('caramel-cancel-generation');
+    if (btn) btn.hidden = true;
+}
+
+/**
+ * Clic sur « Arrêter ». On coupe l'attente côté navigateur — la tâche déjà
+ * soumise, elle, finit sa vie côté serveur : on ne le cache pas dans le message.
+ * Le bouton reste AFFICHÉ mais désactivé le temps que la génération en cours
+ * remonte son annulation, sinon un second clic relancerait l'interruption sur
+ * une génération déjà arrêtée.
+ */
+function onCancelGenerationClick() {
+    const btn = document.getElementById('caramel-cancel-generation');
+    if (btn) {
+        btn.disabled = true;
+        const label = btn.querySelector('span');
+        if (label) label.textContent = translations.generation_cancelling || 'Arrêt en cours…';
+    }
+    requestCancelGeneration();
+}
+
 /**
  * Compose le message affiché à l'enseignant quand une génération IA échoue.
  *
@@ -2723,6 +2755,37 @@ function messageEchecGeneration(error) {
     return conseil ? `${base}\n${conseil}` : base;
 }
 
+/**
+ * Fin anormale d'une génération, quel qu'en soit le chemin. Sépare deux choses
+ * que les quatre blocs `catch` confondaient : l'ÉCHEC (le service a lâché, on
+ * explique et on conseille) et l'ARRÊT DEMANDÉ (l'enseignant a cliqué, il sait
+ * déjà pourquoi ça s'arrête — lui servir « La génération a échoué. Cause : … »
+ * serait absurde, et écrire ce texte dans le champ JSON lui laisserait un
+ * message d'erreur à effacer à la main avant de pouvoir réessayer).
+ *
+ * @param {*} error - l'erreur remontée.
+ * @param {HTMLElement|null} jsonInputTarget - champ JSON de la sidebar, si présent.
+ * @param {string} contexte - libellé pour la console (chemin de génération).
+ */
+function signalerFinGeneration(error, jsonInputTarget, contexte) {
+    if (isCancellation(error)) {
+        debugLog('ui', `${contexte} : génération interrompue par l'utilisateur.`);
+        if (jsonInputTarget) jsonInputTarget.value = '';
+        // `showNotification` ne connaît que deux statuts, 'error' et tout le
+        // reste (cf. core/utils.js → addNotification). Un arrêt volontaire n'est
+        // pas une erreur : on prend donc la branche neutre, explicitement, plutôt
+        // qu'un 'info' que l'API ne reconnaît pas et retomberait ici sans le dire.
+        showNotification(translations.generation_cancelled || 'Génération arrêtée.', 'success');
+        stopCaramelAnimation();
+        return;
+    }
+    console.error(`${contexte} :`, error);
+    const errorMessage = messageEchecGeneration(error);
+    showNotification(errorMessage, 'error');
+    if (jsonInputTarget) jsonInputTarget.value = errorMessage;
+    stopCaramelAnimation();
+}
+
 let overlayFadeTimeout = null;
 
 /**
@@ -2735,6 +2798,7 @@ function stopCaramelAnimation(fadeOut = false) {
     const overlay = document.getElementById('caramel-animation-overlay');
     clearInterval(recipeInterval);
     resetBatchGauge();
+    disarmCancelButton();
     if (!overlay) return;
     clearTimeout(overlayFadeTimeout);
     if (fadeOut && overlay.style.display !== 'none') {
@@ -3002,7 +3066,18 @@ export function initGenerationResultModal() {
             currentRecipeStepKey = stepKey;
             renderRecipeStep();
         }
+        // L'IA a fini ; ce qui suit (synthèse vocale, empaquetage) n'est plus
+        // interruptible. `startCaramelAnimation()` vient peut-être de réarmer le
+        // bouton : on le retire pour ne pas promettre un arrêt impossible.
+        disarmCancelButton();
     });
+
+    // Bouton « Arrêter » de l'overlay : branché ici, une fois pour toutes. Le
+    // bouton vit dans index.html et n'est jamais recréé, donc pas de risque de
+    // double écoute — contrairement aux boutons de la sidebar, reconstruits à
+    // chaque ouverture.
+    const cancelBtn = document.getElementById('caramel-cancel-generation');
+    if (cancelBtn) cancelBtn.addEventListener('click', onCancelGenerationClick);
 
     const modal = document.getElementById('generation-result-modal');
     if (!modal) return;

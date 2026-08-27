@@ -533,6 +533,18 @@ async function autoRoute(text) {
         return;
     }
 
+    // Service joignable mais muet (200 au corps vide, deux fois). On le dit
+    // honnêtement plutôt que d'afficher « je n'arrive pas à me connecter »
+    // (faux : la connexion a marché) ou une bulle vide.
+    if (result.kind === 'empty') {
+        state.currentFlow = null;
+        addBotMessage(t('help_error_empty'), [
+            { label: t('help_btn_retry'), action: () => autoRoute(text) },
+            { label: t('help_btn_create'), action: () => startGenerateFlow() },
+        ]);
+        return;
+    }
+
     if (result.kind === 'answer') {
         // Reste conversationnel : le prochain message repassera par autoRoute.
         state.currentFlow = null;

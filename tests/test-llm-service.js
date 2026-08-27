@@ -32,7 +32,11 @@ import {
     POLL_TIMINGS,
     AVAILABLE_MODELS,
     DEFAULT_MODEL,
-    ACTIVITY_MODEL_OVERRIDES
+    ACTIVITY_MODEL_OVERRIDES,
+    beginGeneration,
+    requestCancelGeneration,
+    isCancelRequested,
+    isCancellation
 } from '../js/services/llm.js';
 import { ENDPOINTS } from '../js/core/endpoints.js';
 import { allModules } from '../js/core/definitions.js';
@@ -62,7 +66,8 @@ export const STEP_NAMES = {
     4: 'Reprise réseau et délai global',
     5: 'Extraction du JSON dans la réponse du LLM',
     6: 'Registre des modèles',
-    7: 'Sélecteur de modèles (DOM) et restauration des constantes'
+    7: 'Sélecteur de modèles (DOM) et restauration des constantes',
+    8: 'Arrêt d\'une génération en cours'
 };
 
 export const STEP_DESCRIPTIONS = {
@@ -72,7 +77,8 @@ export const STEP_DESCRIPTIONS = {
     4: 'Une erreur réseau transitoire est RETENTÉE ; une panne durable finit en délai dépassé.',
     5: 'Bloc markdown, prose avant le JSON, JSON tronqué, contenu vide, deux objets à la suite.',
     6: 'DEFAULT_MODEL connu, identifiants uniques, ordre des modèles mis en avant, surcharges valides.',
-    7: 'Filtrage featured/debug, ordre, classe sélectionnée, clavier — puis POLL_TIMINGS revenu en prod.'
+    7: 'Filtrage featured/debug, ordre, classe sélectionnée, clavier — puis POLL_TIMINGS revenu en prod.',
+    8: 'Le bouton « Arrêter » coupe l\'attente pendant le délai initial comme en plein sondage, et le drapeau se réarme.'
 };
 
 // ============================================================================
@@ -767,6 +773,75 @@ function runStep7_SelecteurEtRestauration() {
 }
 
 // ============================================================================
+// ÉTAPE 8 — ARRÊT D'UNE GÉNÉRATION EN COURS
+// ============================================================================
+
+/**
+ * Le bouton « Arrêter » de l'overlay repose entièrement sur ces primitives.
+ * Ce qui est vérifié ici n'est pas « une erreur est levée » — ce serait vrai
+ * même avec une attente qui continue de tourner en fond — mais bien que la
+ * boucle S'ARRÊTE : plus aucun appel au faux serveur après la demande d'arrêt.
+ */
+async function runStep8_Annulation() {
+    beginStep(8, STEP_NAMES[8]);
+    accelererPolling({ initialDelayMs: 60, intervalMs: 20, timeoutMs: 5000 });
+
+    try {
+        // --- 8.1 : arrêt PENDANT le délai initial, avant le premier sondage.
+        installerFauxServeur({ polls: [{ json: { status: 'processing' } }] });
+        beginGeneration();
+        const promesse = capturer(() => generateRawWithLLM('p', 'm'));
+        await new Promise(r => setTimeout(r, 10));   // submit parti, délai initial en cours
+        requestCancelGeneration();
+        const r1 = await promesse;
+        assert(!r1.ok && isCancellation(r1.erreur),
+            '[8.1] Un arrêt pendant le délai initial rejette avec une annulation',
+            { ok: r1.ok, erreur: r1.erreur && r1.erreur.message });
+        const sondages = journal.filter(a => a.url.startsWith(RESULT_URL)).length;
+        assert(sondages === 0,
+            '[8.2] Aucun sondage n\'est émis après un arrêt pendant le délai initial',
+            { sondages });
+
+        // --- 8.3 : arrêt EN PLEIN SONDAGE (autre chemin de code : requête en vol).
+        installerFauxServeur({ polls: [{ json: { status: 'processing' } }] });
+        beginGeneration();
+        const promesse2 = capturer(() => generateRawWithLLM('p', 'm'));
+        await new Promise(r => setTimeout(r, 150));  // délai initial passé, boucle lancée
+        const avantArret = journal.filter(a => a.url.startsWith(RESULT_URL)).length;
+        assert(avantArret >= 1, '[8.3] Le sondage a bien démarré avant l\'arrêt', { avantArret });
+        requestCancelGeneration();
+        const r2 = await promesse2;
+        assert(!r2.ok && isCancellation(r2.erreur),
+            '[8.4] Un arrêt en plein sondage rejette avec une annulation',
+            { ok: r2.ok, erreur: r2.erreur && r2.erreur.message });
+        await new Promise(r => setTimeout(r, 120));  // laisser une boucle survivante se trahir
+        const apresArret = journal.filter(a => a.url.startsWith(RESULT_URL)).length;
+        assert(apresArret === avantArret,
+            '[8.5] La boucle de sondage s\'est réellement arrêtée',
+            { avantArret, apresArret });
+
+        // --- 8.6 : le drapeau se réarme, sinon la génération suivante naîtrait annulée.
+        assert(isCancelRequested() === true,
+            '[8.6] Le drapeau reste levé tant qu\'aucune génération n\'a redémarré');
+        beginGeneration();
+        assert(isCancelRequested() === false,
+            '[8.7] beginGeneration() réarme le drapeau');
+
+        installerFauxServeur({ polls: [{ json: { status: 'done', content: '{"ok":1}' } }] });
+        const r3 = await capturer(() => generateRawWithLLM('p', 'm'));
+        assert(r3.ok && r3.valeur && r3.valeur.content === '{"ok":1}',
+            '[8.8] Une génération relancée après un arrêt aboutit normalement',
+            { ok: r3.ok, erreur: r3.erreur && r3.erreur.message });
+    } finally {
+        retirerFauxServeur();
+        restaurerPolling();
+        beginGeneration();   // ne jamais laisser le drapeau levé pour les suites voisines
+    }
+
+    endStep();
+}
+
+// ============================================================================
 // RUNNER
 // ============================================================================
 
@@ -784,6 +859,7 @@ export async function runAllTests() {
         await runStep4_ReseauEtTimeout();
         await runStep5_ExtractionJson();
         runStep6_Modeles();
+        await runStep8_Annulation();
     } finally {
         // Quoi qu'il arrive, on rend à l'application son fetch et son cadencement.
         retirerFauxServeur();

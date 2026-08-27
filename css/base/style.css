@@ -2601,6 +2601,66 @@ input:checked+.slider:before {
     .caramel-gauge__fill { transition: none; }
 }
 
+/* Arrêt d'une génération en cours.
+   Volontairement DISCRET : il ne doit pas rivaliser avec la marmite ni suggérer
+   qu'il y a quelque chose à faire pendant l'attente. Il se pose en bas de
+   l'écran, à distance des yeux, et ne s'affirme qu'au survol et au focus clavier.
+
+   HORS DU FLUX, et c'est le point important : l'overlay est une colonne centrée
+   verticalement (`justify-content: center`). Un bouton posé dans cette colonne
+   allonge la pile et remonte donc la marmite et la recette d'autant — la mise
+   en scène bougeait à l'arrivée du bouton. En absolu, la pile retrouve
+   exactement la position qu'elle avait avant l'ajout. */
+.caramel-cancel-btn {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    /* Assez bas pour ne jamais toucher la recette ni la jauge de lots, assez
+       haut pour rester au pouce sur un écran court. */
+    bottom: clamp(24px, 9vh, 76px);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.25);
+    color: rgba(255, 255, 255, 0.72);
+    font-family: inherit;
+    font-size: 0.85em;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.caramel-cancel-btn[hidden] { display: none; }
+
+.caramel-cancel-btn:hover,
+.caramel-cancel-btn:focus-visible {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.65);
+    background: rgba(0, 0, 0, 0.45);
+}
+
+/* L'anneau de focus par défaut se perdrait sur le fond sombre de l'overlay. */
+.caramel-cancel-btn:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+/* Pendant l'arrêt : plus cliquable, mais toujours lisible — l'enseignant doit
+   voir que son clic a été pris en compte, pas se demander s'il a raté le bouton. */
+.caramel-cancel-btn:disabled {
+    cursor: default;
+    opacity: 0.55;
+}
+
+.caramel-cancel-btn i { font-size: 0.95em; }
+
+@media (prefers-reduced-motion: reduce) {
+    .caramel-cancel-btn { transition: none; }
+}
+
 /* Modale de résultat post-génération — harmonisée avec preview-modal */
 .generation-result-modal {
     position: fixed;

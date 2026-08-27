@@ -62,6 +62,7 @@
   "help_error_offline": "Vaya, no puedo conectarme 😓 Aquí van algunos consejos:\n\n- **Modo rápido**: rellena \"Quién\" y \"Qué\" y haz clic en una actividad\n- **Modo avanzado**: añade el nivel y un documento fuente\n- El archivo se descarga automáticamente",
   "help_error_timeout": "⏱️ El servidor tarda demasiado en responder. Vuelve a intentarlo en un momento.",
   "help_error_server": "🔧 El servidor devolvió un error. Vuelve a intentarlo en unos instantes.",
+  "help_error_empty": "🤐 El servidor respondió, pero sin decir nada. Ocurre cuando el modelo está sobrecargado: vuelve a intentarlo, suele funcionar enseguida.",
   "help_btn_retry": "🔄 Reintentar",
   "gen_user_label": "Crear una actividad",
   "gen_qui_prompt": "¡Genial, creemos una actividad juntos! 🎨\n\n**¿Quién eres?**\n_Ejemplo: \"Profesor de matemáticas en secundaria\", \"Formador en empresa\"_",

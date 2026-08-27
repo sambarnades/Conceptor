@@ -62,6 +62,7 @@
   "help_error_offline": "Ups, ich kann keine Verbindung herstellen 😓 Hier ein paar Tipps:\n\n- **Schnellmodus**: fülle „Wer\" und „Was\" aus und klicke auf eine Aktivität\n- **Erweiterter Modus**: füge das Niveau und ein Quelldokument hinzu\n- Die Datei wird automatisch heruntergeladen",
   "help_error_timeout": "⏱️ Der Server braucht zu lange. Bitte versuche es gleich erneut.",
   "help_error_server": "🔧 Der Server hat einen Fehler zurückgegeben. Bitte versuche es in wenigen Augenblicken erneut.",
+  "help_error_empty": "🤐 Der Server hat geantwortet, aber kein Wort gesagt. Das passiert, wenn das Modell überlastet ist — versuche es erneut, meist klappt es sofort.",
   "help_btn_retry": "🔄 Erneut versuchen",
   "gen_user_label": "Aktivität erstellen",
   "gen_qui_prompt": "Super, lass uns gemeinsam eine Aktivität erstellen! 🎨\n\n**Wer bist du?**\n_Beispiel: \"Mathematiklehrer/in an der Mittelschule\", \"Trainer/in im Unternehmen\"_",

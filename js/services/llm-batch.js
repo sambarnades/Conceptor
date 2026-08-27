@@ -374,6 +374,10 @@ async function withRetry(fn, retries, label, debug) {
         try {
             return await fn(attempt);
         } catch (e) {
+            // Une annulation demandée par l'enseignant n'est pas un échec à
+            // retenter : sans cette sortie, le bouton « Arrêter » relancerait
+            // aussitôt le lot qu'il vient d'interrompre.
+            if (e && e.code === 'GENERATION_CANCELLED') throw e;
             lastErr = e;
             if (debug) debug('llm-batch', `Échec ${label} (tentative ${attempt + 1}/${retries + 1}) : ${e.message}`);
             if (attempt < retries) await sleep(800);

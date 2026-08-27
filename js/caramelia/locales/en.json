@@ -62,6 +62,7 @@
   "help_error_offline": "Oops, I can't connect 😓 Here are some tips:\n\n- **Quick mode**: fill in \"Who\" and \"What\" then click an activity\n- **Advanced mode**: add the level and a source document\n- The file downloads automatically",
   "help_error_timeout": "⏱️ The server is taking too long to reply. Please try again in a moment.",
   "help_error_server": "🔧 The server returned an error. Please try again in a few moments.",
+  "help_error_empty": "🤐 The server answered, but said nothing. That happens when the model is overloaded — try again, it usually works right away.",
   "help_btn_retry": "🔄 Retry",
   "gen_user_label": "Create an activity",
   "gen_qui_prompt": "Great, let's create an activity together! 🎨\n\n**Who are you?**\n_Example: \"Math teacher in middle school\", \"Corporate trainer\"_",

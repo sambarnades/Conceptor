@@ -8,6 +8,7 @@
  *  4. Tuto-RAG — existence et conformité des 11 fichiers markdown
  *  5. loadKnowledge — fetch, cache, fallback fr, cap 40 KB
  *  6. fallbackExtract — extraction regex (niveau, nombre, moduleKeys)
+ *  7. runAutoQuery — réponse vide (200 au corps vide), clés <DATA> traduites
  *
  * Le webhook LLM lui-même n'est pas testé ici (test d'intégration séparé,
  * dépend de la disponibilité réseau et du quota ILAAS).
@@ -25,7 +26,7 @@ import {
 } from '../js/caramelia/security.js';
 import { CONFIG } from '../js/caramelia/config.js';
 import { loadLocale, t as caramT, tActivity } from '../js/caramelia/i18n.js';
-import { loadKnowledge, _resetKnowledgeCache } from '../js/caramelia/chat.js';
+import { loadKnowledge, _resetKnowledgeCache, runAutoQuery } from '../js/caramelia/chat.js';
 import { fallbackExtract } from '../js/caramelia/extractor.js';
 import { translations as caramelTranslations, loadTranslations } from '../js/core/translation.js';
 
@@ -82,6 +83,7 @@ const STEP_NAMES = [
     'Tuto-RAG (fichiers .md)',
     'loadKnowledge()',
     'fallbackExtract()',
+    'runAutoQuery() — réponses dégradées',
 ];
 
 export const STEP_DESCRIPTIONS = {
@@ -91,6 +93,7 @@ export const STEP_DESCRIPTIONS = {
     4: 'Les 11 fichiers de base de connaissances existent, ont un frontmatter cohérent, sont sous le cap 40 KB.',
     5: 'loadKnowledge() charge le bon fichier, met en cache, applique le fallback fr, et plafonne à 40 KB.',
     6: 'fallbackExtract() détecte les types d\'activité par mots-clés, extrait niveau scolaire et nombre de questions.',
+    7: 'runAutoQuery() retente puis signale un HTTP 200 au corps vide, et rattrape une clé de <DATA> traduite par le modèle.',
 };
 
 // ============================================================================
@@ -659,6 +662,76 @@ function runStep6_FallbackExtract() {
 // RUNNER
 // ============================================================================
 
+// ============================================================================
+// ÉTAPE 7 — runAutoQuery() sur réponses dégradées
+// ============================================================================
+
+/**
+ * Verrou de non-régression sur la panne du 27-08-2026. Le webhook renvoyait un
+ * HTTP 200 au corps VIDE (séquence d'arrêt `stop: ['</DATA>']` qui coupait la
+ * génération pendant la délibération du modèle) : `fetchWithRetry` ne voit rien —
+ * il ne juge que le statut — et l'utilisateur lisait « Désolé, je n'ai pas pu
+ * obtenir de réponse » sur une demande parfaitement comprise. On stubbe `fetch`
+ * plutôt que d'appeler le vrai webhook : le comportement testé est celui du
+ * CLIENT face à un serveur muet, il ne doit dépendre ni du réseau ni du quota.
+ */
+async function runStep7_AutoQueryDegraded() {
+    setStep(7, STEP_NAMES[7]);
+
+    const realFetch = window.fetch;
+    const reply = (body) => ({ ok: true, status: 200, json: async () => body });
+
+    try {
+        // 7.1 — deux corps vides d'affilée : on retente UNE fois, puis on le dit.
+        let calls = 0;
+        window.fetch = async () => { calls++; return reply({ response: '' }); };
+        let r = await runAutoQuery('fais un QCM sur les fractions pour des 6e');
+        assert(
+            r && r.kind === 'empty',
+            "[7.1] deux réponses vides → kind 'empty' (jamais une bulle vide)",
+            { result: r }
+        );
+        assert(calls === 2, '[7.2] une seule nouvelle tentative avant de conclure', { calls });
+
+        // 7.3 — vide puis réponse valable : l'utilisateur ne voit que la bonne.
+        calls = 0;
+        window.fetch = async () => {
+            calls++;
+            return reply({ response: calls === 1 ? '   ' : 'Les flashcards servent à mémoriser.' });
+        };
+        r = await runAutoQuery("c'est quoi des flashcards ?");
+        assert(
+            r && r.kind === 'answer' && r.text.includes('mémoriser'),
+            '[7.3] un vide isolé est rattrapé par la seconde tentative',
+            { result: r, calls }
+        );
+
+        // 7.4 — clé de <DATA> traduite par le modèle : "nivel" doit être lu comme
+        // "niveau", sinon l'assistante redemande un niveau qu'elle vient d'extraire.
+        window.fetch = async () => reply({
+            response: '<DATA>{"qui":"Profesor de historia","quoi":"la Guerra Civil","nivel":"4º de ESO",'
+                + '"nombreQuestions":null,"moduleKeys":["QuizSetQCM"],"plateforme":null,'
+                + '"besoinClarification":null,"suggestionEnrichissement":null,"confiance":0.9}</DATA>',
+        });
+        r = await runAutoQuery('quiero un cuestionario sobre la Guerra Civil');
+        assert(
+            r && r.kind === 'creation' && r.data.niveau === '4º de ESO',
+            '[7.4] une clé de <DATA> traduite ("nivel") est rattrapée en "niveau"',
+            { result: r }
+        );
+
+        // 7.5 — réseau réellement coupé : null, pour que le flow bascule sur le
+        // fallback regex. Ne PAS confondre avec 'empty' (le serveur, lui, répond).
+        window.fetch = async () => { throw Object.assign(new TypeError('offline'), { name: 'TypeError' }); };
+        r = await runAutoQuery('bonjour');
+        assert(r === null, '[7.5] réseau injoignable → null (distinct de la réponse vide)', { result: r });
+    } finally {
+        window.fetch = realFetch;
+    }
+
+    endStep();
+}
+
 export { STEP_NAMES };
 
 export async function runAllTests() {
@@ -674,6 +747,7 @@ export async function runAllTests() {
     await runStep4_TutoRag();
     await runStep5_LoadKnowledge();
     runStep6_FallbackExtract();
+    await runStep7_AutoQueryDegraded();
 
     console.log(`\n=== Résultat : ${passCount} PASS / ${failCount} FAIL ===`);
 

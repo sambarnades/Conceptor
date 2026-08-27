@@ -11,6 +11,10 @@ chemin : vrais boutons, vraie modale de confirmation, vraie poignée de tri, vra
 `saveChanges()`, et pour le (c) un **vrai `.h5p`** décompressé sur disque. Les deux se
 complètent ; aucune ne remplace l'autre.
 
+> Le scénario **(g)** sort du cadre « éditeur » des six premiers : il pilote `index.html`
+> et non la page-hôte de l'éditeur, et bouchonne le webhook LLM (`page.route`) pour
+> tester l'arrêt d'une génération sans émettre le moindre appel réel.
+
 ## Prérequis
 
 ```bash
@@ -29,6 +33,7 @@ node tests/qa-manuel/c-course-presentation-h5p.mjs  # (c) correctElements dans l
 node tests/qa-manuel/d-quiz-sous-question.mjs       # (d) sous-question de Quiz
 node tests/qa-manuel/e-diapositive-contenu.mjs      # (e) diapositive « contenu »
 node tests/qa-manuel/f-qcm-sans-reponses.mjs        # (f) QCM sans réponses
+node tests/qa-manuel/g-arret-generation.mjs        # (g) bouton « Arrêter » d'une génération
 ```
 
 Chaque scénario sort en code 0 s'il est conforme, 1 sinon.

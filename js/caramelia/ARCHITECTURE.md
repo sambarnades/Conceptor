@@ -166,6 +166,7 @@ autoRoute(text)
   ├─ runAutoQuery(text)  (chat.js)      ← 1 appel webhook intent='auto', RAG+schéma
   │     ├─ { kind:'answer', text }      → réponse pédagogique (mode A)
   │     ├─ { kind:'creation', data }    → <DATA> parsé (mode B)
+  │     ├─ { kind:'empty' }             → 200 au corps vide, 2 fois de suite
   │     └─ null                         → service injoignable
   ├─ removeTyping()                     ← try/finally → toujours nettoyé
   │
@@ -174,9 +175,20 @@ autoRoute(text)
   │              ├─ champs Caramel déjà remplis & pas encore demandé ?
   │              │     → « Repartir de là / de zéro ? » (1×/conversation)
   │              └─ mergeAndProceed() → genState + récap → proceedAfterCollect()
+  ├─ empty    → help_error_empty + boutons Réessayer / Créer
   └─ null     → fallbackExtract() : si moduleKeys trouvés → création dégradée,
                  sinon message hors-ligne + boutons Réessayer / Créer
 ```
+
+**Pourquoi un état `empty` distinct (27-08-2026).** Le webhook peut répondre
+HTTP 200 avec un corps VIDE : `fetchWithRetry` ne le voit pas (il ne juge que le
+statut) et l'utilisateur lisait « Désolé, je n'ai pas pu obtenir de réponse » sur
+une demande pourtant comprise — de façon intermittente, d'où la réputation de
+chatbot capricieux. La cause était côté n8n (`stop: ['</DATA>']` envoyé au modèle,
+qui coupait la génération pendant sa délibération puisque la balise figure dans le
+prompt : 5 réponses vides sur 6, mesuré). C'est corrigé serveur, mais le client
+retente désormais une fois puis le DIT — sans prétendre que la connexion a échoué,
+ce qui envoyait vérifier un réseau qui marchait. Voir `bas/docs/n8n-caramelia-v2/`.
 
 **Décision question vs création :** portée par le LLM (`runAutoQuery` dans
 [`chat.js`](chat.js)), pas par des regex. Le client se contente de détecter la
