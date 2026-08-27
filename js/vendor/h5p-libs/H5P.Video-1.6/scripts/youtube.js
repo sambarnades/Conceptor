@@ -13,6 +13,9 @@ H5P.VideoYouTube = (function ($) {
     var self = this;
 
     var player;
+    // PATCH Caramel (sous-titres) — passe à true dès que l'utilisateur choisit lui-même une
+    // piste dans le menu « CC » : voir disableDefaultCaptions() dans create().
+    var captionsTrackChosen = false;
     var playbackRate = 1;
     var id = 'h5p-youtube-' + numInstances;
     numInstances++;
@@ -74,6 +77,43 @@ H5P.VideoYouTube = (function ($) {
 
       var loadCaptionsModule = true;
 
+      /**
+       * PATCH Caramel — sous-titres affichés d'office sur les vidéos YouTube.
+       *
+       * `player.loadModule('captions')` (plus bas) ne fait pas que rendre les pistes
+       * listables : il demande au lecteur d'ACTIVER sa piste par défaut. Sur une vidéo à
+       * sous-titres AUTOMATIQUES (kind « asr »), cette piste existe toujours — les
+       * sous-titres apparaissent donc dès la lecture, sans que l'auteur les ait demandés.
+       * Pire, H5P n'en sait rien : pour une piste asr, `getOption('captions','tracklist')`
+       * revient VIDE, l'événement `captions` n'est jamais émis, et le bouton « CC » de la
+       * barre H5P n'est même pas construit — l'utilisateur n'a aucun moyen de les couper.
+       * D'où le symptôme : case « Intégrer les sous-titres » DÉCOCHÉE dans l'éditeur
+       * Caramel, sous-titres pourtant affichés dans la vidéo.
+       *
+       * On neutralise donc la sélection par défaut, SAUF si l'auteur a réellement déclaré
+       * une piste de sous-titres : `options.tracks` est alimenté par `parameters.a11y`
+       * (H5P.Video), lui-même égal à `interactiveVideo.video.textTracks.videoTrack` du
+       * content.json — c'est-à-dire exactement la case de l'éditeur. En pratique, une source
+       * YouTube n'a aujourd'hui JAMAIS de piste déclarée (Caramel ne pose `captionUrl` que
+       * pour PeerTube) : la condition protège donc les sources qui en ont réellement une,
+       * et le jour où le VTT YouTube sera embarqué dans le .h5p elle marchera sans retouche.
+       *
+       * Attention : après ce `setOption`, `getOption('captions','track')` continue de
+       * renvoyer la piste asr alors que l'affichage est bien coupé (vérifié par capture
+       * d'écran). Ne jamais s'en servir comme oracle de test.
+       *
+       * @private
+       */
+      var disableDefaultCaptions = function () {
+        if (captionsTrackChosen || (options.tracks && options.tracks.length)) {
+          return;
+        }
+        try {
+          player.setOption('captions', 'track', {});
+        }
+        catch (err) {}
+      };
+
       var videoId = getId(sources[0].path);
 
       player = new YT.Player(id, {
@@ -120,6 +160,15 @@ H5P.VideoYouTube = (function ($) {
 
               // Always load captions
               player.loadModule('captions');
+
+              // PATCH Caramel — le module met un instant à s'initialiser. `onApiChange`
+              // repasse en principe juste après (branche `else`), mais pas sur toutes les
+              // vidéos : deux rappels temporisés garantissent l'extinction.
+              setTimeout(disableDefaultCaptions, 500);
+              setTimeout(disableDefaultCaptions, 2000);
+            }
+            else {
+              disableDefaultCaptions();
             }
 
             var trackList;
@@ -530,6 +579,8 @@ H5P.VideoYouTube = (function ($) {
      * @param {H5P.Video.LabelValue} Captions track to show during playback
      */
     self.setCaptionsTrack = function (track) {
+      // PATCH Caramel — choix explicite de l'utilisateur : ne plus rien neutraliser ensuite.
+      captionsTrackChosen = true;
       player.setOption('captions', 'track', track ? {languageCode: track.value} : {});
     };
 

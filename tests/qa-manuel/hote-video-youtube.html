@@ -1,0 +1,59 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>QA — H5P.VideoYouTube (sous-titres)</title>
+<!--
+  Page-hôte du scénario `h-sous-titres-youtube.mjs`.
+
+  Elle monte le VRAI handler `H5P.VideoYouTube` du dépôt (celui que la preview
+  h5p-standalone charge) dans les mêmes conditions que H5P.Video : le handler est
+  appelé par `handler.call(self, …)` sur une instance qui hérite d'EventDispatcher.
+  Instancier avec `new` donnerait « self.on is not a function ».
+
+  Elle DOIT être servie en http:// (python3 -m http.server 8010) : dans un document
+  sans origine, l'embed YouTube échoue en Erreur 153.
+
+  `?temoin` charge la copie désarmée écrite par le scénario (contre-épreuve).
+-->
+<style>html,body{margin:0;background:#111} #box{width:700px;height:394px}</style>
+<div id="box"></div>
+<script src="/js/vendor/h5p-standalone/3.8.2/frame.bundle.js"></script>
+<script>
+// frame.bundle.js expose H5P + H5P.jQuery + H5P.EventDispatcher. Il lève au passage
+// un « H5PIntegration is not defined » (il s'attend à tourner dans l'iframe d'une
+// activité) : sans conséquence ici, on n'utilise que le socle.
+window.__sondePrete = false;
+(function attendre() {
+  if (!(window.H5P && H5P.jQuery && H5P.EventDispatcher)) { return setTimeout(attendre, 50); }
+  // Stubs minimaux normalement fournis par H5P.Video (video.js).
+  H5P.Video = H5P.Video || {};
+  H5P.Video.LabelValue = function (label, value) { this.label = label; this.value = value; };
+  ['ENDED', 'PLAYING', 'PAUSED', 'BUFFERING', 'VIDEO_CUED'].forEach(function (k, i) { H5P.Video[k] = i; });
+
+  var s = document.createElement('script');
+  s.src = /temoin/.test(location.search)
+    ? '/tests/qa-manuel/.temoin-youtube.js'
+    : '/js/vendor/h5p-libs/H5P.Video-1.6/scripts/youtube.js';
+  s.onload = function () { window.__sondePrete = true; };
+  document.head.appendChild(s);
+})();
+
+/**
+ * Monte le lecteur.
+ * @param {Array} tracks pistes déclarées par l'auteur (= textTracks.videoTrack du
+ *                content.json, soit la case « Intégrer les sous-titres » de l'éditeur).
+ */
+window.__lancer = function (videoId, tracks) {
+  var lecteur = {};
+  H5P.EventDispatcher.call(lecteur);
+  for (var k in H5P.EventDispatcher.prototype) { lecteur[k] = H5P.EventDispatcher.prototype[k]; }
+  H5P.VideoYouTube.call(
+    lecteur,
+    [{ path: 'https://www.youtube.com/watch?v=' + videoId, mime: 'video/YouTube' }],
+    { controls: true, autoplay: false, loop: false, fit: false, startAt: 0, tracks: tracks || [] },
+    { loading: 'Chargement…', unknownError: 'Erreur' }
+  );
+  window.__lecteur = lecteur;
+  lecteur.appendTo(H5P.jQuery('#box'));
+  lecteur.on('ready', function () { window.__pret = true; });
+};
+</script>

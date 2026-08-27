@@ -25,3 +25,7 @@ tests/fixtures/h5p-semantics-map.json
 # Captures du banc de rendu des feedbacks (tests/run_preview_feedback.mjs)
 tests/.captures-feedback/
 tests/.captures-smoke/
+
+# Copie DÉSARMÉE du handler YouTube, écrite et supprimée par
+# tests/qa-manuel/h-sous-titres-youtube.mjs (subsiste si le scénario est interrompu).
+tests/qa-manuel/.temoin-youtube.js

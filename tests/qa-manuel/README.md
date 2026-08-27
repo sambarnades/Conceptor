@@ -14,6 +14,14 @@ complètent ; aucune ne remplace l'autre.
 > Le scénario **(g)** sort du cadre « éditeur » des six premiers : il pilote `index.html`
 > et non la page-hôte de l'éditeur, et bouchonne le webhook LLM (`page.route`) pour
 > tester l'arrêt d'une génération sans émettre le moindre appel réel.
+>
+> Le scénario **(h)** en sort autrement : il monte le vrai handler `H5P.VideoYouTube` du
+> dépôt sur sa propre page-hôte (`hote-video-youtube.html`) et appelle **YouTube pour de
+> vrai** — c'est le seul moyen d'observer une piste de sous-titres automatiques. Il
+> **exige donc le réseau**, ne va pas en CI, et son oracle est **visuel** : le lecteur
+> YouTube est un iframe cross-origin, son DOM est hors de portée et l'API ment (voir
+> plus bas). Il **porte sa propre contre-épreuve** — il écrit lui-même une copie désarmée
+> du handler — et n'a rien à faire dans `contre-epreuves.sh`.
 
 ## Prérequis
 
@@ -34,6 +42,7 @@ node tests/qa-manuel/d-quiz-sous-question.mjs       # (d) sous-question de Quiz
 node tests/qa-manuel/e-diapositive-contenu.mjs      # (e) diapositive « contenu »
 node tests/qa-manuel/f-qcm-sans-reponses.mjs        # (f) QCM sans réponses
 node tests/qa-manuel/g-arret-generation.mjs        # (g) bouton « Arrêter » d'une génération
+node tests/qa-manuel/h-sous-titres-youtube.mjs      # (h) sous-titres YouTube non sollicités (RÉSEAU)
 ```
 
 Chaque scénario sort en code 0 s'il est conforme, 1 sinon.
@@ -88,7 +97,25 @@ Un filtre `hasText` ne les trouve jamais ; utiliser `bouton(p, 'Supprimer')` de 
 Enfin, le Glisser-déposer s'ouvre en vue **« Sur le canevas »**, qui masque la nav *par
 design* ; `ouvrir()` bascule en « Plan » quand le panneau est présent.
 
+## Pièges de la page-hôte vidéo (`hote-video-youtube.html`)
+
+- **Servir en `http://`, jamais par `setContent` ni `file://`** — sans origine valide,
+  l'embed YouTube répond **Erreur 153** et rien ne se charge.
+- **Monter le handler par `.call()`, pas par `new`** — `H5P.Video` invoque ses handlers
+  par `handler.call(self, …)` sur une instance qui hérite **déjà** d'`EventDispatcher`.
+  Un `new H5P.VideoYouTube(…)` échoue sur « self.on is not a function ».
+- **`getOption('captions','track')` n'est PAS un oracle** — après extinction des
+  sous-titres, il continue de renvoyer la piste `asr` alors que plus rien ne s'affiche :
+  il décrit la *sélection*, pas l'*affichage*. Une première version du test a conclu à
+  tort que le correctif ne marchait pas. Seuls les pixels font foi.
+- **La comparaison s'arrête à 60 % de la largeur** — vidéo en pause, YouTube pose en bas
+  à droite des vignettes « Plus de vidéos » qui changent à chaque exécution : incluses,
+  elles font un bruit de plusieurs points et le cas « case cochée » échoue au hasard.
+
 ## Sorties
 
 `c-course-presentation-h5p.mjs` écrit les archives dans `.sorties/` (ignoré par git) —
 utile pour ouvrir le `.h5p` produit et l'inspecter à la main.
+
+`h-sous-titres-youtube.mjs` accepte `QA_CAPTURES=<dossier>` pour y déposer les trois
+captures comparées — l'oracle étant visuel, c'est le seul moyen de comprendre un écart.
