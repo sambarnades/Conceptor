@@ -52,7 +52,7 @@ Elea: ${elea}
 
 PRECISIONS sur des types proches (ne jamais confondre) :
 - "un QCM"/"questionnaire a choix multiples" de PLUSIEURS questions, ou "un quiz" -> QuizSetQCM (H5P : ensemble de questions QCM). N'utilise MultipleChoice QUE si l'utilisateur veut explicitement UNE seule question isolee.
-- "vrai/faux" de plusieurs affirmations -> QuizSetVF. TrueFalse = une seule affirmation isolee.
+- "un vrai/faux", "des vrai-faux", "un questionnaire vrai/faux" -> QuizSetVF PAR DEFAUT (ensemble d'affirmations : c'est ce qu'un enseignant demande quand il dit "un vrai/faux"). N'utilise TrueFalse QUE si l'utilisateur precise explicitement UNE SEULE affirmation.
 - Quiz melangeant plusieurs TYPES de questions -> QuizSet.
 
 Regles strictes (dans cet ordre) :
