@@ -135,13 +135,13 @@ export function parseDataBlock(rawResponse) {
 // de la conversation ("nivel" en espagnol, "level" en anglais — constaté sur
 // mistral-small-4 le 2026-08-27) : le champ devenait alors invisible et
 // l'assistante redemandait le niveau qu'elle venait d'extraire. On re-normalise
-// avant lecture. Seules les traductions des 11 langues de Caramel sont listées ;
+// avant lecture. Seules les traductions des 12 langues de Caramel sont listées ;
 // une clé inconnue est ignorée, jamais devinée.
 const FIELD_ALIASES = {
-    qui: ['who', 'quien', 'quién', 'chi', 'wer', 'wie', 'quem', 'من', '谁', '誰', 'ποιος'],
-    quoi: ['what', 'que', 'qué', 'cosa', 'was', 'wat', 'o_que', 'ماذا', '什么', '何', 'τι'],
-    niveau: ['nivel', 'level', 'livello', 'niveau_scolaire', 'niveaustufe', 'nivo', 'público', 'public', 'audience', 'المستوى', '级别', 'レベル', 'επίπεδο'],
-    nombreQuestions: ['numeroPreguntas', 'numberOfQuestions', 'numeroDomande', 'anzahlFragen', 'aantalVragen'],
+    qui: ['who', 'quien', 'quién', 'chi', 'wer', 'wie', 'quem', 'من', '谁', '誰', 'ποιος', 'piv'],
+    quoi: ['what', 'que', 'qué', 'cosa', 'was', 'wat', 'o_que', 'ماذا', '什么', '何', 'τι', 'petra'],
+    niveau: ['nivel', 'level', 'livello', 'niveau_scolaire', 'niveaustufe', 'nivo', 'público', 'public', 'audience', 'المستوى', '级别', 'レベル', 'επίπεδο', 'live'],
+    nombreQuestions: ['numeroPreguntas', 'numberOfQuestions', 'numeroDomande', 'anzahlFragen', 'aantalVragen', 'niverGoulennou'],
 };
 
 function normalizeFieldNames(obj) {

@@ -47,7 +47,7 @@ Caramel automatise la création de contenus pédagogiques en cinq étapes :
 - ✅ **100 % client-side** : tout le traitement se fait dans le navigateur — seuls partent vers les services IA les prompts, et le cas échéant les images, la voix et le texte des dictées
 - ✅ **Sans compte, sans cookie de suivi, sans collecte de données personnelles** (RGPD)
 - ✅ **IA souveraine** : modèles hébergés sur infrastructure française
-- ✅ **Multilingue** : interface et génération en 11 langues
+- ✅ **Multilingue** : interface et génération en 12 langues (dont le breton)
 - ✅ **Aucun build, aucun `npm`** : ES6 modules natifs servis en statique
 
 ---
@@ -56,7 +56,7 @@ Caramel automatise la création de contenus pédagogiques en cinq étapes :
 
 > **20 août 2026** — La dictée audio de bout en bout, un glisser-déposer que l'on met en page, et des images que l'IA sait lire.
 
-- **🎧 Nouvelle activité « Dictée » (H5P.Dictation)** : à partir d'un simple thème, l'IA rédige la consigne et les phrases — Caramel se charge de la voix. Les phrases sont **synthétisées automatiquement** par un service de synthèse vocale souverain : 11 langues, voix féminine ou masculine, piste **« lecture lente »** optionnelle. L'élève écoute, écrit, et la correction met les fautes en évidence.
+- **🎧 Nouvelle activité « Dictée » (H5P.Dictation)** : à partir d'un simple thème, l'IA rédige la consigne et les phrases — Caramel se charge de la voix. Les phrases sont **synthétisées automatiquement** par un service de synthèse vocale souverain : 11 langues (toutes sauf le breton, pour lequel il n'existe pas de voix), voix féminine ou masculine, piste **« lecture lente »** optionnelle. L'élève écoute, écrit, et la correction met les fautes en évidence.
 - **🎙️ Dictaphone « Ma voix »** : dans l'éditeur, enregistrez chaque phrase **au microphone**, rognez la prise et laissez Caramel en générer une version ralentie (vitesse réglable). Un audio enregistré ou téléversé n'est jamais écrasé par la synthèse, et une régénération ne re-synthétise que les phrases modifiées.
 - **📝 Feuille élève à l'export** : en DOCX / ODT / PDF, la Dictée devient une feuille de travail — consigne, illustration, **lignes d'écriture numérotées**, puis la correction.
 - **🖐️ Glisser-déposer : disposition des zones personnalisable** : l'éditeur gagne une vue **« Sur le canevas »** (même principe que la Vidéo et l'Image interactives) pour placer, redimensionner et aligner zones et étiquettes à la souris, en ajoutant les unes et les autres sans quitter le canevas.
@@ -78,7 +78,7 @@ Caramel automatise la création de contenus pédagogiques en cinq étapes :
 ## ⚡ Fonctionnalités
 
 ### Génération assistée par IA
-- Prompts pré-optimisés par type d'activité, dans les 11 langues
+- Prompts pré-optimisés par type d'activité, dans les 12 langues
 - Modèles IA souverains via ILaaS, avec **cascade de repli automatique** sur 3 modèles
 - Découpage automatique des grosses générations (« par lots »)
 - Ancrage sur les **programmes scolaires français** (RAG) déclenché automatiquement quand le contexte saisi s'y prête
@@ -209,7 +209,7 @@ Les appels à l'IA passent par un proxy **n8n** qui découple la soumission de l
 
 ### Services associés
 - **Transcription audio/vidéo** : service souverain **Albert (DINUM)**, basé sur Whisper — l'audio est transmis le temps de la transcription puis non conservé
-- **Synthèse vocale (Dictée)** : miroir inverse de la transcription — le texte des phrases part vers un service **Piper / OpenJTalk** relayé par n8n et revient en MP3 (11 langues, voix féminine/masculine, lecture lente). Aucune clé ni modèle côté navigateur
+- **Synthèse vocale (Dictée)** : miroir inverse de la transcription — le texte des phrases part vers un service **Piper / OpenJTalk** relayé par n8n et revient en MP3 (11 langues — les 12 de l'interface **moins le breton**, faute de voix disponible ; une dictée créée en breton retombe sur la voix française — voix féminine/masculine, lecture lente). Aucune clé ni modèle côté navigateur
 - **Vision** : description et transcription des images jointes, détection des zones cliquables — modèle de vision ILaaS, avec repli sur l'OCR local
 - **Import de page web** : extraction de texte côté serveur (contourne CORS)
 - **Export PDF** : conversion ODT → PDF via un service serveur (LibreOffice + Math), avec repli local jsPDF

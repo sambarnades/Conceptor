@@ -41,7 +41,7 @@ tuiles, clique sur les boutons « Générer via LLM ». Tout le pipeline réel
 
 - 100 % client-side (ES6 modules, pas de build)
 - Webhook n8n unique pour le LLM (chat libre + extraction d'intention)
-- 11 langues, alignées sur la langue active de Caramel
+- 12 langues, alignées sur la langue active de Caramel
 - Désactivable : retirer le `<script type="module" src="js/caramelia/index.js">`
 - Mode debug : `?debug` dans l'URL → expose `window.Caramelia.{open,close,reset,state}`
 
@@ -490,7 +490,7 @@ Le widget respecte `@media (prefers-reduced-motion: reduce)` : animations FAB, p
 
 ## 9. Internationalisation
 
-11 langues (fr en es de it nl pt ar zh jp el). Source de vérité : la langue
+12 langues (fr en es de it nl pt ar zh jp el br). Source de vérité : la langue
 active de Caramel (`currentLang` exporté par `js/core/translation.js`).
 
 ```
@@ -499,7 +499,13 @@ loadLocale(lang) ─→ fetch js/caramelia/locales/{lang}.json
                   └─ idempotent (ne refait rien si déjà chargé)
 
 watchLanguageChanges() ─→ setInterval 2s, recharge si lang a changé
-                          + refreshWidgetLabels() pour les aria + placeholders
+                          + applyLanguageChange()
+
+applyLanguageChange() ─→ refreshWidgetLabels()   (châssis : aria, title, placeholder)
+     [index.js]         + resetConversation()    SI la conversation est vierge
+                          (history ≤ 1 && !currentFlow) → réaffiche l'accueil
+                          dans la nouvelle langue. Appelé AUSSI par toggle(),
+                          pour l'ouverture dans les 2 s qui suivent le clic.
 
 t(key, vars)      ─→ "Bonjour {name}" + {name:'Léa'} → "Bonjour Léa"
                      warn console si clé manquante
@@ -508,8 +514,18 @@ tActivity(key)    ─→ utilise d'abord la clé Caramel officielle (single sour
                      " (H5P)" ou " (Éléa)"
 ```
 
-**Pour ajouter une nouvelle clé :** l'ajouter aux 11 fichiers locales (sinon
+**Pour ajouter une nouvelle clé :** l'ajouter aux 12 fichiers locales (sinon
 les langues non couvertes affichent la clé brute en console.warn).
+
+**Piège — recharger la locale ne repeint PAS ce qui est déjà à l'écran.**
+`refreshWidgetLabels()` ne touche que le châssis ; les seuls textes VISIBLES du
+panneau sont les bulles et leurs boutons de réponse rapide, peints une fois pour
+toutes par `addBotMessage()`. Et `showWelcome()` est gardé par `if (!state.history.length)`.
+Sans `applyLanguageChange()`, un panneau ouvert ne serait-ce qu'une fois restait
+donc dans la langue de cette première ouverture, indéfiniment (constaté 2026-08-28).
+Une conversation ENGAGÉE, elle, n'est volontairement pas réécrite : un transcript est
+un historique — seuls les messages suivants sortent dans la nouvelle langue.
+Couverture : `tests/qa-manuel/i-langue-caramelia.mjs` (+ `--contre-epreuve`).
 
 **Convention italique dans les bulles bot :** utiliser `_texte_` (ou `*texte*`) dans les locales pour les exemples/aparté. Le parser `md()` les convertit en `<em>` et le CSS `.caramelia-msg--bot em` les affiche en doré (`var(--caramelia-primary-dark)`) pour les distinguer du texte courant sans confusion avec un lien hypertexte. Les bornes `_..._` excluent lettres/chiffres/_ pour ne pas casser les `snake_case` ni les URLs.
 
@@ -581,7 +597,7 @@ Tout est dans [`config.js`](config.js). Aucune valeur magique ailleurs.
    - `activityCaramelMap` (mapping vers la clé i18n Caramel + plateforme)
    - `activityCategories.{quiz|text|memory}.keys` (pour le menu catégorie)
    - Quelques entrées dans `fuzzyMap` (fallback regex)
-2. Ajouter `activity_<key>` dans les 11 locales (fallback si Caramel n'a pas la clé)
+2. Ajouter `activity_<key>` dans les 12 locales (fallback si Caramel n'a pas la clé)
 3. Vérifier que la tuile Caramel répond bien à `findActivityTile(moduleKey)`
 
 ### 12.2 Ajouter un champ extrait (ex: durée, mode d'évaluation…)
@@ -590,7 +606,7 @@ Tout est dans [`config.js`](config.js). Aucune valeur magique ailleurs.
 2. Ajouter une regex dans `fallbackExtract` si possible
 3. Stocker dans `state.genState.<champ>` via `smartRoute`
 4. Auto-remplir le champ DOM correspondant via `fillFormField('<id>', val)`
-5. Ajouter la ligne récap dans `extract_recap_<champ>` + `confirm_recap_<champ>` (11 locales)
+5. Ajouter la ligne récap dans `extract_recap_<champ>` + `confirm_recap_<champ>` (12 locales)
 6. Ajouter au récap dans `smartRoute()` + `runGeneration()`
 
 ### 12.3 Ajouter un nouveau flow

@@ -237,6 +237,18 @@ body {
     display: block;
 }
 
+/* Gwenn ha du (breton) — drapeau ABSENT de flag-icons : la bibliothèque ne couvre que
+   les codes pays ISO 3166 (+ quelques subdivisions GB/ES), et le breton n'en a pas.
+   Plutôt que de patcher `css/vendor/flag-icons/` — qui serait écrasé à la prochaine
+   mise à jour, cf. CLAUDE.md — on complète ici la classe `.fi` du vendor avec un asset
+   Caramel. Le fichier vient de Wikimedia Commons (CC0), sa viewBox est ramenée au
+   rapport 4:3 attendu par le `background-size: contain` de `.fi` : provenance, licence
+   et justification du cadrage sont détaillées dans l'en-tête du SVG lui-même.
+   NB : pas de variante `.fi-squared` (1:1), Caramel n'utilise que le format 4:3. */
+.fi-bzh {
+    background-image: url('../../assets/images/flags/bzh.svg');
+}
+
 
 /* =======================================================================
    4. BARRE LATÉRALE / MODALE D'ACTIVITÉ

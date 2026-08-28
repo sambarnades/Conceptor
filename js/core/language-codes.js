@@ -45,7 +45,16 @@ export const LANGUAGE_CODES = Object.freeze({
     ar: { language: 'ar', country: 'SA', bcp47: 'ar-SA', h5p: 'ar' },
     zh: { language: 'zh', country: 'CN', bcp47: 'zh-CN', h5p: 'zh-cn' },
     jp: { language: 'ja', country: 'JP', bcp47: 'ja-JP', h5p: 'ja' },
-    el: { language: 'el', country: 'GR', bcp47: 'el-GR', h5p: 'el' }
+    el: { language: 'el', country: 'GR', bcp47: 'el-GR', h5p: 'el' },
+    // Breton : `br` EST le code ISO 639-1 (contrairement à `jp`), donc aucun mapping à
+    // faire — la clé de locale et le code de langue coïncident. Pas de code pays propre
+    // (le breton n'est pas une langue d'État) : `FR` et `br-FR` sont les valeurs
+    // attendues par Word/LibreOffice pour le breton de France.
+    // `h5p: 'br'` : aucune bibliothèque H5P n'est traduite en breton (vérifié sur les
+    // 221 libs de js/vendor/h5p-libs, aucun `language/br.json`) — le lecteur retombera
+    // donc sur l'anglais pour SES propres libellés. Ceux que Caramel écrit dans le
+    // content.json (via les processeurs et js/locales/br.json) restent en breton.
+    br: { language: 'br', country: 'FR', bcp47: 'br-FR', h5p: 'br' }
 });
 
 /**

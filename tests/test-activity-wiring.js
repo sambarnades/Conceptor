@@ -59,7 +59,7 @@ export const STEP_DESCRIPTIONS = {
 };
 
 const BASE = new URL('../', new URL(import.meta.url)).href;
-const LANGS = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el'];
+const LANGS = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el', 'br'];
 
 let definitions = null, processors = null, locales = {}, exemples = [];
 

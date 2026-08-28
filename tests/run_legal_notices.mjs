@@ -3,7 +3,7 @@
  *
  * Complément Node de `tests/test-legal-notices.js` (navigateur). Le navigateur ne peut
  * pas lister un répertoire : il vérifie donc l'inventaire contre ce qui est *câblé*
- * (LIB_PATHS, le HTML, les 11 locales). Le seul contrôle qu'il ne peut pas faire est
+ * (LIB_PATHS, le HTML, les 12 locales). Le seul contrôle qu'il ne peut pas faire est
  * aussi le plus important : **un dossier `js/vendor/` posé sur le disque sans être
  * inventorié nulle part**. C'est exactement la façon dont `qrcode-generator` est resté
  * non crédité — le fichier était là, chargé, et rien ne le réclamait.
@@ -11,7 +11,10 @@
  * Contrôles :
  *   1. tout répertoire de `js/vendor/` est inventorié ;
  *   2. tout fichier de `css/vendor/` est inventorié ;
- *   3. tout répertoire inventorié existe réellement (pas d'entrée périmée) ;
+ *   2 bis. tout fichier d'`assets/images/flags/` est inventorié — les ressources
+ *      tierces hors vendor (le Gwenn ha du vient de Wikimedia Commons) avaient le
+ *      même angle mort que les dossiers vendor : présentes, servies, non créditées ;
+ *   3. tout répertoire ou fichier inventorié existe réellement (pas d'entrée périmée) ;
  *   4. les licences déclarées dans `js/vendor/h5p-libs/ * /library.json` sont bien
  *      couvertes par le texte du crédit `legal_library_h5p_content_types`.
  *
@@ -26,11 +29,12 @@ import { dirname, join, resolve } from 'node:path';
 import {
     VENDOR_JS_A_MENTION,
     VENDOR_CSS_A_MENTION,
+    ASSETS_A_MENTION,
     clesAttendues
 } from './vendor-legal-map.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const LANGUES = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el'];
+const LANGUES = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el', 'br'];
 
 let echecs = 0;
 const ok = (m) => console.log(`  ✅ ${m}`);
@@ -84,6 +88,33 @@ async function main() {
             { fichiers: cssNonInventories, dossiers: dossiersNonInventories });
     }
 
+    // ---------------------------------------------------------------- 2 bis
+    // `assets/images/flags/` est le SEUL répertoire d'assets contenant aujourd'hui des
+    // ressources tierces. Le balayer permet de voir un drapeau déposé sans crédit —
+    // impossible depuis le navigateur, qui ne sait pas lister un répertoire.
+    console.log('\n2 bis. Ressources tierces d\'assets/');
+    const DOSSIER_DRAPEAUX = 'images/flags';
+    const cheminDrapeaux = join(ROOT, 'assets', DOSSIER_DRAPEAUX);
+    if (existsSync(cheminDrapeaux)) {
+        const drapeauxDisque = (await readdir(cheminDrapeaux, { withFileTypes: true }))
+            .filter(e => e.isFile() && !e.name.startsWith('.'))
+            .map(e => `${DOSSIER_DRAPEAUX}/${e.name}`)
+            .sort();
+        const inventoriesAssets = new Set(ASSETS_A_MENTION.map(e => e.fichier));
+        const assetsNonInventories = drapeauxDisque.filter(f => !inventoriesAssets.has(f));
+        if (assetsNonInventories.length === 0) {
+            ok(`${drapeauxDisque.length} ressource(s) dans assets/${DOSSIER_DRAPEAUX}/, toutes inventoriées`);
+        } else {
+            ko(`${assetsNonInventories.length} ressource(s) tierce(s) sans mention légale`, {
+                fichiers: assetsNonInventories,
+                correction: 'ajouter { fichier, cle } dans ASSETS_A_MENTION (tests/vendor-legal-map.js), '
+                    + 'le <li> dans assets/templates/mentions-legales.html, et la clé dans les 12 js/locales/*.json'
+            });
+        }
+    } else {
+        ok('assets/images/flags/ absent — rien à inventorier');
+    }
+
     // ---------------------------------------------------------------- 3
     console.log('\n3. Entrées d\'inventaire périmées');
     const perimesJs = VENDOR_JS_A_MENTION
@@ -92,14 +123,18 @@ async function main() {
     const perimesCss = VENDOR_CSS_A_MENTION
         .filter(e => !existsSync(join(ROOT, 'css/vendor', e.fichier)))
         .map(e => e.fichier);
-    if (perimesJs.length === 0 && perimesCss.length === 0) {
+    const perimesAssets = ASSETS_A_MENTION
+        .filter(e => !existsSync(join(ROOT, 'assets', e.fichier)))
+        .map(e => e.fichier);
+    if (perimesJs.length === 0 && perimesCss.length === 0 && perimesAssets.length === 0) {
         ok('Aucune entrée ne pointe un fichier absent');
     } else {
-        ko('Entrée(s) d\'inventaire pointant un fichier absent', { js: perimesJs, css: perimesCss });
+        ko('Entrée(s) d\'inventaire pointant un fichier absent',
+            { js: perimesJs, css: perimesCss, assets: perimesAssets });
     }
 
     // ---------------------------------------------------------------- 4
-    console.log('\n4. HTML et 11 locales');
+    console.log(`\n4. HTML et ${LANGUES.length} locales`);
     const html = await readFile(join(ROOT, 'assets/templates/mentions-legales.html'), 'utf8');
     const clesHtml = new Set(
         [...html.matchAll(/data-translate="(legal_library_[a-z0-9_]+)"/g)].map(m => m[1])
@@ -172,7 +207,7 @@ async function main() {
         ko('Famille(s) de licence non prévues par le contrôle', {
             inconnues,
             correction: 'ajouter l\'entrée dans RECONNAISSANCE_LICENCE (tests/run_legal_notices.mjs) '
-                + 'puis citer la licence dans legal_library_h5p_content_types (11 locales)'
+                + 'puis citer la licence dans legal_library_h5p_content_types (12 locales)'
         });
     }
 

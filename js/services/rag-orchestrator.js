@@ -28,7 +28,7 @@
  * « Enseignant de 3e » déclenche bien le RAG : l'enseignant a déclaré un niveau,
  * ancrer la difficulté sur le programme de 3e reste pertinent.
  *
- * Les lexiques couvrent les 11 langues de l'UI (« Grade 5 », « 7. Klasse »,
+ * Les lexiques couvrent les 12 langues de l'UI (« Grade 5 », « 7. Klasse »,
  * « 3º de la ESO », « 小学 »…) : un enseignant travaillant dans une autre langue
  * (section internationale, AEFE, UI non française) garde l'ancrage programme.
  *
@@ -59,8 +59,8 @@ function normaliser(texte) {
 // ---------------------------------------------------------------------------
 // Lexiques (appliqués sur texte normalisé : minuscules, sans accents latins)
 //
-// Couverture : les 11 langues de Caramel (fr, en, es, de, it, nl, pt, ar, zh,
-// jp, el) + variantes francophones (Belgique, Suisse, Québec) + abréviations.
+// Couverture : les 12 langues de Caramel (fr, en, es, de, it, nl, pt, ar, zh,
+// jp, el, br) + variantes francophones (Belgique, Suisse, Québec) + abréviations.
 //
 // Pièges regex à connaître avant de modifier :
 //   - `\b` en JS ne fonctionne qu'autour de [A-Za-z0-9_] → pour l'arabe, le grec
@@ -90,6 +90,12 @@ const HORS_SCOLAIRE = [
     /\badultes?\b/, /\bformation continue\b/, /\bformateur/, /\bformatrice/, /\bgreta\b/,
     /\bcnam\b/, /\bafpa\b/, /\bentreprise/, /\bsalarie/, /\bdaeu\b/, /\bvae\b/,
     /\bandragogi/, /\bcegep\b/,
+    // Breton — skol-veur / hollskol = université. DOIT rester AVANT les ancrages :
+    // `evaluateRagRelevance` teste HORS_SCOLAIRE en premier, sinon le `\bskol` de
+    // ANCRAGE_NIVEAU capterait « skol-veur » comme un anchor scolaire.
+    // `\bstudier` couvre studier/studierien (bretons) et, accessoirement,
+    // studieren/studierende (allemand) — hors scolaire dans les deux cas.
+    /skol-? ?veur/, /hollskol/, /\bstudier/,
     // Anglais
     /\bundergrad/, /\bbachelor/, /\bphd\b/, /\bdoctorate/, /\bhigher education\b/,
     /\bfreshman\b/, /\bsophomore\b/, /\badult education\b/, /\bbusiness school\b/,
@@ -153,6 +159,15 @@ const ANCRAGE_NIVEAU = [
     // Chinois / japonais (sous-chaîne ; 小學/中學 = variantes traditionnelles)
     /小学/, /小學/, /中学/, /中學/, /初中/, /高中/, /年级/, /幼儿园/, /小学校/, /中学校/,
     /高校/, /高等学校/, /年生/, /生徒/, /児童/, /幼稚園/,
+    // Breton — même système scolaire que le français (Bretagne), vocabulaire propre :
+    // skol = école, skol-vamm = maternelle, skolaj = collège, lise = lycée,
+    // skoliad/skolidi = élève(s), deskard = apprenant, klas = classe.
+    // Diwan / Div Yezh / Dihun sont les trois réseaux d'enseignement en breton :
+    // les citer, c'est décrire un public scolaire sans ambiguïté possible.
+    // La normalisation NFD retire le `~` de `kentañ` → on écrit `kentan` ici.
+    /\bskol\b/, /\bskol-? ?vamm/, /\bskolaj/, /\blise\b/, /\bskolidi\b/, /\bskoliad/,
+    /\bdeskard/, /\bklas\b/, /\bdiwan\b/, /\bdiv ?yezh\b/, /\bdihun\b/,
+    /\bkentan derez\b/, /\beil derez\b/,
 ];
 
 // Ancrages cherchés dans le sujet (« quoi ») : uniquement les marqueurs NON ambigus
@@ -169,6 +184,10 @@ const ANCRAGE_SUJET = [
     /basisschool/, /\bensino (fundamental|medio|basico|secundario)/,
     /δημοτικ/, /γυμνασι/, /λυκει/, /بتدائي/,
     /小学校/, /中学校/, /高等学校/, /幼稚園/, /小学/, /初中/, /高中/, /幼儿园/,
+    // Breton — seulement les marqueurs longs. `\blise\b` est écarté ici : dans un
+    // SUJET français, « lise » est aussi le subjonctif de « lire » (« pour qu'il lise
+    // ce texte »). `diwan` est écarté de même (mot arabe/persan : recueil de poèmes).
+    /\bskolaj/, /\bskol-? ?vamm/,
 ];
 
 // Mots-métiers de l'enseignement scolaire cherchés dans `discipline` (champ
@@ -190,6 +209,9 @@ const ANCRAGE_METIER = [
     /معلم/, /مدرس/,
     // Chinois / japonais (sous-chaîne)
     /老师/, /教师/, /班主任/, /先生/, /教員/, /教諭/,
+    // Breton — kelenner(ez) = enseignant(e), skolaer(ez) = instituteur(rice),
+    // mestr-skol = maître d'école.
+    /\bkelenner/, /\bskolaer/, /mestr-? ?skol/,
 ];
 
 function matchUn(lexique, texte) {
@@ -260,6 +282,17 @@ export function detectCycle({ sujet = '', discipline = '', niveau = '' } = {}) {
     if (/\b[3-5](e|eme)s?\b/.test(strict) || /\b(cinquieme|quatrieme|troisieme)/.test(tout)) return 'cycle-4';
     if (/\b(lycees?|lyceen\w*|2nde?|2de|seconde|1ere|1re|premiere|terminales?|tle|term|baccalaureat|stmg|sti2d|st2s|stav|gymnase|rhetos?|humanites)\b/.test(strict)
         || /\b(lycees?|terminales?)\b/.test(tout)) return 'lycee-gt';
+
+    // 3 bis. Breton — MÊME système scolaire que le français (Bretagne) : on calque
+    //   donc les mêmes décisions, y compris la retenue sur « skolaj » (collège), qui
+    //   comme « collège » couvre 4 niveaux et ne permet pas de choisir un cycle.
+    if (/\bskol-? ?vamm/.test(tout)) return 'cycle-1';
+    if (/\blise\b/.test(strict)) return 'lycee-gt';
+    //   Niveaux de skolaj, formes longues (c'hwec'hvet = 6e) et abrégées (6vet).
+    //   L'apostrophe du digramme `c'h` survit à `normaliser()`, qui ne retire que les
+    //   diacritiques : on la garde donc telle quelle dans le motif.
+    if (/c'hwec'hvet|\b6 ?vet\b/.test(strict)) return 'cycle-3';
+    if (/pempvet|pevarvet|\btrede\b|\b[345] ?vet\b/.test(strict)) return 'cycle-4';
 
     // 4. Anglais (Year N UK ≈ Grade N-1 US ; Key Stage 1-5)
     m = strict.match(/\bgrades? ?([1-9]|1[0-3])\b/) || strict.match(/\b([1-9]|1[0-3])(?:st|nd|rd|th)[ -]grade/);

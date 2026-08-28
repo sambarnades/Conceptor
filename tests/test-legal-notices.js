@@ -62,7 +62,7 @@ export const STEP_DESCRIPTIONS = {
 };
 
 const BASE = new URL('../', new URL(import.meta.url)).href;
-const LANGUES = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el'];
+const LANGUES = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el', 'br'];
 
 async function lireTexte(chemin) {
     const r = await fetch(BASE + chemin);

@@ -51,7 +51,7 @@ function recordTiming(category, operation, durationMs) {
 // CONFIGURATION
 // =======================================================================
 
-const LANGS = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el'];
+const LANGS = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el', 'br'];
 const LOCALES_DIR = './js/locales';
 
 // =======================================================================
@@ -100,11 +100,16 @@ async function runStep1_FileIntegrity() {
                 `[1c.Keys] ${lang}.json : ${keyCount} cles`
             );
 
-            // Taille raisonnable ?
+            // Taille raisonnable ? Garde-fou anti-emballement, pas une cible : le
+            // seuil se mesure en CARACTÈRES (text.length), pas en octets — d'où un
+            // ar.json de 465 Ko sur disque qui ne pèse ici que 340 Ko. Relevé de
+            // 400 à 450 Ko à l'ajout du breton (2026-08-28) : el.json était déjà à
+            // 399 Ko, une seule clé de plus faisait passer la suite au rouge alors
+            // que rien n'était cassé.
             const sizeKo = Math.round(text.length / 1024);
             assert(
-                sizeKo < 400,
-                `[1d.Size] ${lang}.json : ${sizeKo} Ko (< 400 Ko)`
+                sizeKo < 450,
+                `[1d.Size] ${lang}.json : ${sizeKo} Ko (< 450 Ko)`
             );
 
             loadedLocales[lang] = obj;

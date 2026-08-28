@@ -62,7 +62,7 @@ function recordTiming(category, operation, durationMs) {
 // CONSTANTES
 // =======================================================================
 
-const LANGS = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el'];
+const LANGS = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el', 'br'];
 
 /** 19 fixtures H5P (meme mapping que les autres suites de test) */
 const H5P_FIXTURES = [
@@ -111,7 +111,13 @@ const THRESHOLDS = {
     // les 11 locales portent exactement 2728 clés (parité stricte), la minification ne
     // gagnerait que 1,9 %, et les valeurs longues dupliquées pèsent 0,6 % du fichier.
     LOCALE_SIZE: 590 * 1024,    // 590 Ko par fichier (el = 564 Ko → ~4,4 % de marge)
-    TOTAL_LOCALES_SIZE: 4.5 * 1024 * 1024, // 4,5 Mo total (4,15 Mo en v6.3.0 ; ~7,7 % de marge)
+    // Le seuil PAR FICHIER ci-dessus est le vrai garde anti-bloat ; le total ne fait que
+    // borner le poids servi. Il croît donc mécaniquement d'un fichier entier à chaque
+    // langue ajoutée : 4,5 Mo couvrait 11 locales, le breton (2026-08-28) porte le total
+    // à ~4,85 Mo. Relevé à 5,5 Mo — marge pour la croissance du breton une fois traduit
+    // (le breton est un peu plus long que le français) sans masquer un emballement, qui
+    // se verrait de toute façon d'abord sur LOCALE_SIZE.
+    TOTAL_LOCALES_SIZE: 5.5 * 1024 * 1024, // 5,5 Mo total (4,85 Mo avec 12 locales ; ~12 % de marge)
     TRANSLATE_PAGE: 200,        // ms
     HEAL_STRING: 100,           // ms par fixture
     HEAL_STRING_AVG: 50,        // ms moyenne

@@ -93,6 +93,11 @@ const languageBtn      = document.querySelector('.language-btn');
 
 let _langToken   = 0;           // Anti-course : ne garde que la dernière demande
 
+// `code` = suffixe de la classe de drapeau (`fi fi-<code>`). Ce sont des codes PAYS
+// (flag-icons n'indexe pas par langue) : d'où `en → gb`, `ar → sa`, `zh → cn`.
+// `br → bzh` est le seul drapeau NON fourni par flag-icons : il vient de
+// `assets/images/flags/bzh.svg` (fichier de Wikimedia Commons, CC0, crédité en mentions
+// légales), branché par la règle `.fi-bzh` de css/base/style.css.
 const languageConfig = {
   'fr': { name: 'Français',  code: 'fr' },
   'de': { name: 'Deutsch',   code: 'de' },
@@ -104,7 +109,8 @@ const languageConfig = {
   'it': { name: 'Italiano',  code: 'it' },
   'jp': { name: '日本語',     code: 'jp' },
   'nl': { name: 'Nederlands',code: 'nl' },
-  'pt': { name: 'Português', code: 'pt' }
+  'pt': { name: 'Português', code: 'pt' },
+  'br': { name: 'Brezhoneg', code: 'bzh' }
 };
 
 function getFeaturedLLMModels(count = 3) {
@@ -176,21 +182,37 @@ async function loadTranslationScript(lang) {
 }
 
 /**
- * Charge (une seule fois) le dictionnaire anglais qui sert de socle de repli.
+ * Locale de repli d'une locale donnée — l'anglais par défaut (langue de repli de H5P
+ * lui-même), SAUF pour le breton dont le socle est le FRANÇAIS.
+ *
+ * Justification : les locuteurs du breton sont francophones, et une activité produite
+ * en breton est destinée à une classe de Bretagne. Une clé encore absente de `br.json`
+ * (clé récente, traduction en cours) rendue en français y est lisible ; rendue en
+ * anglais, elle serait une régression — y compris dans les `.h5p` exportés, puisque les
+ * processeurs lisent ce même dictionnaire.
+ * @constant {Object<string, string>}
+ */
+const BASE_LOCALE = { br: 'fr' };
+
+/**
+ * Charge (une seule fois par locale) le dictionnaire qui sert de socle de repli.
  * Un échec réseau ne doit pas empêcher la langue demandée de s'appliquer : on
  * retombe alors sur un socle vide, comportement identique à l'ancien.
+ * @param {string} base - Locale du socle ('en' ou 'fr').
  * @returns {Promise<Object>}
  */
-let _englishBase = null;
-async function loadEnglishBase() {
-    if (_englishBase) return _englishBase;
+const _bases = new Map();
+async function loadBase(base) {
+    if (_bases.has(base)) return _bases.get(base);
+    let data;
     try {
-        _englishBase = await loadTranslationScript('en');
+        data = await loadTranslationScript(base);
     } catch (err) {
-        console.warn('Socle de repli anglais indisponible :', err);
-        _englishBase = {};
+        console.warn(`Socle de repli "${base}" indisponible :`, err);
+        data = {};
     }
-    return _englishBase;
+    _bases.set(base, data);
+    return data;
 }
 
 /**
@@ -205,19 +227,21 @@ export async function loadTranslations(lang) {
   const myToken = ++_langToken;
   try {
     const data = await loadTranslationScript(lang);
-    // Socle anglais : une clé absente de la locale demandée doit retomber sur
-    // l'ANGLAIS. Sans lui, deux replis silencieux se produisaient — le dictionnaire
-    // était fusionné par-dessus le précédent (passer de fr à el laissait donc du
-    // français), et `defaultTranslations` est lui-même français. Un utilisateur
-    // grec voyait alors du français, y compris dans les .h5p exportés puisque les
-    // processeurs lisent ce même dictionnaire.
-    const baseEn = (lang === 'en') ? data : await loadEnglishBase();
+    // Socle de repli : une clé absente de la locale demandée doit retomber sur une
+    // langue COMPLÈTE, pas sur la précédente. Sans lui, deux replis silencieux se
+    // produisaient — le dictionnaire était fusionné par-dessus le précédent (passer de
+    // fr à el laissait donc du français), et `defaultTranslations` est lui-même
+    // français. Un utilisateur grec voyait alors du français, y compris dans les .h5p
+    // exportés puisque les processeurs lisent ce même dictionnaire.
+    // Le socle est l'anglais, sauf pour le breton (français, cf. BASE_LOCALE).
+    const baseLang = BASE_LOCALE[lang] || 'en';
+    const base = (lang === baseLang) ? data : await loadBase(baseLang);
     if (myToken !== _langToken) return; // une autre langue a été demandée entre-temps
 
     // Reconstruction complète en CONSERVANT l'identité de l'objet : `translations`
     // est importé un peu partout, une réaffectation casserait les références.
     for (const key of Object.keys(translations)) delete translations[key];
-    Object.assign(translations, defaultTranslations, baseEn, data);
+    Object.assign(translations, defaultTranslations, base, data);
     currentLang = lang;
     hydrateLegalLLMLine();
 

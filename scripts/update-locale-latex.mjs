@@ -14,7 +14,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const LOCALES_DIR = join(__dirname, '..', 'js', 'locales');
-const LOCALES = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el'];
+const LOCALES = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el', 'br'];
 
 // ==================== EXEMPLES LATEX (identiques toutes langues) ====================
 const FULL_EX = '`\\\\( \\\\frac{1}{2} \\\\)`, `\\\\( \\\\sqrt{2} \\\\)`, `\\\\( \\\\alpha \\\\)`, `\\\\( x^{2} \\\\)`, `\\\\( \\\\mathbb{R} \\\\)`, `\\\\( \\\\sin(\\\\theta) \\\\)`, `\\\\( \\\\sum_{k=0}^{n} k \\\\)`, `\\\\( x \\\\geq 0 \\\\)`, `\\\\( \\\\forall x \\\\in \\\\mathbb{R} \\\\)`';

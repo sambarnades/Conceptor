@@ -23,7 +23,9 @@
 
 **Caramel** est une application **gratuite**, **sans inscription** et **sans publicité**, créée par des enseignants pour des enseignants. Elle vous permet de créer en quelques minutes des activités pédagogiques interactives qui vous prendraient des heures à concevoir manuellement.
 
-> 🌍 **Ouverte sur le monde** : Caramel est déjà disponible en **11 langues** pour accompagner les enseignants partout dans le monde.
+> 🌍 **Ouverte sur le monde** : Caramel est déjà disponible en **12 langues** pour accompagner les enseignants partout dans le monde.
+>
+> 🖤🤍 **Et en breton** : la 12ᵉ langue est le **brezhoneg**. Entre le caramel et le caramel au beurre salé — né à Quiberon —, il fallait bien que Caramel fasse une place à la langue bretonne. L'interface, les activités générées et le tutoriel sont traduits ; le drapeau du sélecteur de langue est le Gwenn ha du.
 
 | Ce que vous pouvez créer | Temps de création |
 |--------------------------|-------------------|
@@ -66,7 +68,7 @@
 - ✏️ **Remplit les champs à votre place** : Qui êtes-vous ?, Que souhaitez-vous aborder ?, niveau, nombre d'éléments
 - 🎯 **Choisit la bonne tuile** parmi les 35 activités disponibles
 - 📎 **Accepte les pièces jointes** : glissez un PDF ou un document directement dans la conversation, elle l'utilise comme support pour la génération (RAG)
-- 🌍 **Parle vos 11 langues** : elle s'aligne automatiquement sur la langue choisie dans Caramel
+- 🌍 **Parle vos 12 langues** (breton compris) : elle s'aligne automatiquement sur la langue choisie dans Caramel
 - ♿ **Accessible au clavier** : navigation complète sans souris, focus restauré à la fermeture
 
 ### Ce qu'elle ne fait *pas*
@@ -230,7 +232,7 @@ Les fichiers **H5P** sont des modules interactifs universels, compatibles avec M
 | **Surligner les mots** | Cliquer sur les mots corrects dans un texte | Repérage de mots-clés, analyse |
 | **Ordonner les paragraphes** | Remettre des paragraphes dans l'ordre | Reconstitution de texte, chronologie |
 | **Glisser-déposer (Drag & Drop)** | Déplacer des étiquettes dans des zones dédiées | Associations spatiales, étiquetage d'images, tris thématiques |
-| **Dictée** | Dictée **audio** : l'IA rédige les phrases, Caramel les **lit** (voix de synthèse F/M, 11 langues, débit normal ou lent — ou **votre propre voix** enregistrée au micro), l'élève écoute puis écrit ; la correction met les fautes en évidence | Orthographe, écoute, autonomie |
+| **Dictée** | Dictée **audio** : l'IA rédige les phrases, Caramel les **lit** (voix de synthèse F/M, 11 langues — toutes sauf le breton, faute de voix —, débit normal ou lent — ou **votre propre voix** enregistrée au micro), l'élève écoute puis écrit ; la correction met les fautes en évidence | Orthographe, écoute, autonomie |
 
 > 🎧 **Dictée — comment ça marche ?** Indiquez un thème et un niveau : l'IA rédige la **consigne** et les **phrases**, et Caramel **synthétise la voix** automatiquement (aucun fichier à fournir). Dans l'éditeur, un **panneau de réglages** choisit la **langue**, la **voix** (féminine / masculine) et une piste **« lecture lente »**. Vous pouvez aussi enregistrer **votre propre voix** au microphone (dictaphone **« Ma voix »**), **rogner** la prise et laisser la machine en générer une **version ralentie** (curseur de vitesse). Ajoutez une **image d'illustration** si besoin. À l'export **DOCX/ODT/PDF**, la dictée sort en **feuille élève** (lignes d'écriture) + **feuille de correction**.
 
@@ -1142,7 +1144,9 @@ La façon la plus simple de soutenir Caramel :
 <details>
 <summary><strong>🌐 Traduire Caramel</strong></summary>
 
-Caramel est disponible en **11 langues**. Contribuez aux traductions dans `/js/locales/`
+Caramel est disponible en **12 langues** : français, anglais, espagnol, allemand, italien, néerlandais,
+portugais, arabe, chinois, japonais, grec et **breton**. Contribuez aux traductions dans `/js/locales/`
+(une langue = un fichier JSON ; la procédure complète est dans `docs/guide-traduction.md`).
 
 </details>
 

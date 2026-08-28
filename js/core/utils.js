@@ -920,7 +920,9 @@ const TIMELINE_DATE_FORMATS = {
     ar: { order: ['DD', 'MM', 'YYYY'], sep: '/', placeholder: 'DD/MM/YYYY', yearPlaceholder: 'YYYY' },
     zh: { order: ['YYYY', 'MM', 'DD'], sep: '/', placeholder: 'YYYY/MM/DD', yearPlaceholder: 'YYYY' },
     jp: { order: ['YYYY', 'MM', 'DD'], sep: '/', placeholder: 'YYYY/MM/DD', yearPlaceholder: 'YYYY' },
-    el: { order: ['DD', 'MM', 'YYYY'], sep: '/', placeholder: 'HH/MM/EEEE', yearPlaceholder: 'EEEE' }
+    el: { order: ['DD', 'MM', 'YYYY'], sep: '/', placeholder: 'HH/MM/EEEE', yearPlaceholder: 'EEEE' },
+    // Breton : usage français (jour/mois/année), initiales bretonnes — Deiz / Miz / Bloaz.
+    br: { order: ['DD', 'MM', 'YYYY'], sep: '/', placeholder: 'DD/MM/BBBB', yearPlaceholder: 'BBBB' }
 };
 
 /**

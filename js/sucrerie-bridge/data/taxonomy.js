@@ -170,8 +170,8 @@ export const LEVELS_FORMATION = Object.freeze([
 
 // ----- Langues d'activité --------------------------------------------
 //
-// Alignées sur les 11 langues de l'interface Caramel : fr, en, es, de, it,
-// nl, pt, ar, zh, jp, el. Le label en langue native pour faciliter le
+// Alignées sur les 12 langues de l'interface Caramel : fr, en, es, de, it,
+// nl, pt, ar, zh, jp, el, br. Le label en langue native pour faciliter le
 // repérage quel que soit le contexte hôte (Caramel / Sucrerie / aManDe).
 
 export const LANGUAGES = Object.freeze([
@@ -185,7 +185,8 @@ export const LANGUAGES = Object.freeze([
     { code: 'ar', label: 'العربية' },
     { code: 'zh', label: '中文' },
     { code: 'jp', label: '日本語' },
-    { code: 'el', label: 'Ελληνικά' }
+    { code: 'el', label: 'Ελληνικά' },
+    { code: 'br', label: 'Brezhoneg' }
 ]);
 
 // ----- Licence imposée -----------------------------------------------

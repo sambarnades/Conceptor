@@ -38,7 +38,13 @@ export const CARAMEL_TO_H5P_LANGUAGE_FILES = {
     ar: ['ar'],
     zh: ['zh-hans', 'zh-cn', 'zh-tw', 'zh-hant'],
     jp: ['ja'],
-    el: ['el']
+    el: ['el'],
+    // Breton : AUCUNE bibliothèque H5P n'est traduite en breton (vérifié sur les 221
+    // libs de js/vendor/h5p-libs — pas un seul `language/br.json`). Le tableau vide
+    // est explicite : sans lui, le repli `[caramelLang]` chercherait un `br.json`
+    // inexistant, pour le même résultat. Les libellés bretons ne peuvent donc PAS être
+    // pré-remplis depuis l'amont H5P : ils viennent uniquement de js/locales/br.json.
+    br: []
 };
 
 /**

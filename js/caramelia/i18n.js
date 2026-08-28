@@ -12,7 +12,7 @@
 import { currentLang, t as caramelT } from '../core/translation.js';
 import { CONFIG } from './config.js';
 
-const SUPPORTED = ['fr','en','es','de','it','nl','pt','ar','zh','jp','el'];
+const SUPPORTED = ['fr','en','es','de','it','nl','pt','ar','zh','jp','el','br'];
 const FALLBACK = 'fr';
 
 let translations = {};

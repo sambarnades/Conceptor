@@ -1,11 +1,13 @@
 ---
 name: caramel-translations
-description: Ajouter, modifier ou vérifier des traductions dans les 11 fichiers locales (fr, en, es, de, it, nl, pt, ar, zh, jp, el). À utiliser quand l'utilisateur dit "traduire", "ajouter clé i18n", "data-key", "11 langues", "locale", "manque traduction", "vérifier locales", ou veut éditer les fichiers `js/locales/*.json`.
+description: Ajouter, modifier ou vérifier des traductions dans les 12 fichiers locales (fr, en, es, de, it, nl, pt, ar, zh, jp, el, br). À utiliser quand l'utilisateur dit "traduire", "ajouter clé i18n", "data-key", "12 langues", "locale", "manque traduction", "vérifier locales", "ajouter une langue", ou veut éditer les fichiers `js/locales/*.json`.
 ---
 
-# Traductions multilingues (11 langues)
+# Traductions multilingues (12 langues)
 
-Référence : `docs/guide-traduction.md`. Fichiers : `js/locales/{fr,en,es,de,it,nl,pt,ar,zh,jp,el}.json` (~2034 clés chacun, 170+ sections).
+Référence : `docs/guide-traduction.md`. Fichiers : `js/locales/{fr,en,es,de,it,nl,pt,ar,zh,jp,el,br}.json` (~2873 clés chacun, 170+ sections).
+
+**Ajouter une 13ᵉ langue** : ne pas improviser — suivre la checklist `docs/guide-traduction.md` § « Ajouter une nouvelle langue » (≈20 points de câblage, établie à l'ajout du breton le 28-08-2026).
 
 ## Système i18n
 
@@ -27,11 +29,11 @@ Exemples : `h5p_timeline_name`, `tab_quiz`, `error_parse`, `editor_field_questio
 
 ## Tâches courantes
 
-### Ajouter une nouvelle clé (à insérer dans les 11 langues)
+### Ajouter une nouvelle clé (à insérer dans les 12 langues)
 
 1. Identifier la section sémantique dans le JSON (recherche dans `fr.json`)
 2. Ajouter la clé en français (référence)
-3. Traduire dans les 10 autres langues — pour les langues non-latines (ar, zh, jp, el), demander si fait à la main ou si script à utiliser
+3. Traduire dans les 11 autres langues — pour les langues non-latines (ar, zh, jp, el), demander si fait à la main ou si script à utiliser
 4. Vérifier : `node scripts/verify-all-locales.mjs`
 
 ### Ajouter en masse pour une nouvelle activité
@@ -63,13 +65,13 @@ node scripts/verify-locale-latex.mjs
 # Propage les directives LaTeX dans les 11 prompts (si field-constraints changé)
 node scripts/update-locale-latex.mjs
 
-# Libellés d'interface des activités H5P : pré-remplit les 11 locales depuis les
+# Libellés d'interface des activités H5P : pré-remplit les 12 locales depuis les
 # traductions OFFICIELLES embarquées dans js/vendor/h5p-libs/<lib>/language/
 node scripts/sync-h5p-ui-labels.mjs            # rapport, aucune écriture
 node scripts/sync-h5p-ui-labels.mjs --write    # écrit les clés absentes
 
 # Garde-fou : chaque champ traduisible d'une lib est-il écrit par son processeur,
-# via translations.* (et non en dur), avec sa clé présente dans les 11 locales ?
+# via translations.* (et non en dur), avec sa clé présente dans les 12 locales ?
 node tests/run_h5p_ui_coverage.mjs --verbose
 
 # Traduction Course Presentation (modèles à adapter pour autres activités)
@@ -82,7 +84,11 @@ node scripts/translate-cp-el.mjs                       # grec
 
 ## Pièges connus
 
-- **fr.json est la source de vérité** : si une clé manque, la cascader vers les 10 autres
+- **fr.json est la source de vérité** : si une clé manque, la cascader vers les 11 autres
+- **Le BRETON (`br`) retombe sur le FRANÇAIS, pas sur l'anglais** (`BASE_LOCALE` dans
+  `core/translation.js`) — les locuteurs sont francophones. Aucune lib H5P n'est traduite en
+  breton et le serveur TTS n'a pas de voix bretonne : `sync-h5p-ui-labels.mjs` ne peut rien
+  pré-remplir, et `br` est volontairement hors de `TTS_LANGS`. Cf. piège 14 de `CLAUDE.md`.
 - **Une clé manquante ne tombe PAS en français par accident — mais elle tombe en anglais.**
   Depuis l'audit langues 2026-08, `loadTranslations()` reconstruit le dictionnaire sur un socle
   `en.json` (`{...defaultTranslations, ...en, ...langue}`) et purge l'ancien contenu. Avant, la
@@ -104,7 +110,7 @@ node scripts/translate-cp-el.mjs                       # grec
 ## Fichiers touchés
 
 ```
-js/locales/{fr,en,es,de,it,nl,pt,ar,zh,jp,el}.json
+js/locales/{fr,en,es,de,it,nl,pt,ar,zh,jp,el,br}.json
 js/core/translation.js                  [si nouveau défaut FR à ajouter]
 js/caramelia/locales/                   [si traduction Caramelia]
 js/caramelia/tuto-rag/                  [tutos RAG du chatbot]

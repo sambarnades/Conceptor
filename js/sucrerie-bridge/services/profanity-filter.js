@@ -35,8 +35,18 @@ const PROFANITY_VERSION = 'v1';
 /** Langues supportées par cette version (cf. vendor/profanity/v1/). */
 const SUPPORTED_LANGS = new Set(['fr','en','es','de','it','nl','pt','ar','zh','ja','el']);
 
-/** Mapping locale Caramel → code wordlist LDNOOBW (Caramel utilise 'jp', LDNOOBW 'ja'). */
-const LANG_ALIAS = { jp: 'ja' };
+/**
+ * Mapping locale Caramel → code wordlist LDNOOBW.
+ *  - `jp` → `ja` : Caramel utilise le code PAYS, LDNOOBW le code langue.
+ *  - `br` → `fr` : LDNOOBW n'a PAS de liste bretonne, et la wordlist bretonne n'existe
+ *    dans aucun corpus public. Sans alias, `normalizeLang('br')` renvoie null et le
+ *    filtre local est purement inopérant sur les dépôts en breton. Le repli français est
+ *    utile et sans faux positif notable : les termes sont matchés avec des frontières de
+ *    mot (`\b`), le breton est une écriture latine, et l'auteur d'un dépôt en breton
+ *    évolue de toute façon dans un environnement francophone. La modération LLM du
+ *    workflow reste le filet principal.
+ */
+const LANG_ALIAS = { jp: 'ja', br: 'fr' };
 
 /**
  * Langues écrites sans espaces : on n'utilise pas `\b` pour matcher mais une

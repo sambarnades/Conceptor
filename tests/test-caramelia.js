@@ -71,7 +71,7 @@ function endStep() {
 // CONFIGURATION
 // ============================================================================
 
-const LANGS = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el'];
+const LANGS = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el', 'br'];
 const KNOWLEDGE_DIR = './js/caramelia/tuto-rag';
 const KNOWLEDGE_MAX_BYTES = 40_000;
 

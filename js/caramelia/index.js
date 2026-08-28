@@ -33,6 +33,34 @@ import { attachMic, isMicSupported } from './voice.js';
 // Mémorise le dernier élément focus avant ouverture pour restaurer le focus à la fermeture (a11y)
 let lastFocusedBeforeOpen = null;
 
+// ── Application d'un changement de langue ──
+/**
+ * Répercute une langue fraîchement chargée sur ce qui est DÉJÀ à l'écran.
+ *
+ * Recharger la locale ne suffit pas : `refreshWidgetLabels()` ne repeint que le
+ * châssis (aria-labels, title, placeholder). Les seuls textes VISIBLES du panneau
+ * sont les bulles et leurs boutons de réponse rapide, peints une fois pour toutes
+ * par `addBotMessage()` — ils restaient donc dans l'ancienne langue.
+ *
+ * Règle retenue : on ne repeint que si la conversation n'a pas commencé (bulle
+ * d'accueil seule, aucun flux engagé). Une vraie conversation est un HISTORIQUE :
+ * on ne la réécrit pas rétroactivement — les messages suivants, eux, sortiront
+ * dans la nouvelle langue puisque `t()` lit la locale rechargée.
+ */
+function applyLanguageChange() {
+    // `refreshWidgetLabels()` sort en early-return quand le widget n'existe pas, mais
+    // `resetConversation()` descend jusqu'à `addBotMessage()`, qui fait
+    // `state.elements.messages.appendChild(...)` SANS garde. Comme ce code est appelé
+    // par un setInterval de 2 s qui survit à la page l'ayant créé (`test-caramelia-ui.js`
+    // réimporte ce module dans une iframe), on refuse de repeindre un widget absent
+    // plutôt que de lever une TypeError toutes les 2 secondes.
+    if (!state.elements.fab || !state.elements.messages) return;
+
+    refreshWidgetLabels();
+    const conversationVierge = state.history.length <= 1 && !state.currentFlow;
+    if (conversationVierge) resetConversation();
+}
+
 // ── Toggle ──
 async function toggle() {
     state.isOpen = !state.isOpen;
@@ -44,10 +72,12 @@ async function toggle() {
     if (state.isOpen) {
         lastFocusedBeforeOpen = document.activeElement;
 
-        // Si la langue Caramel a changé entre-temps, recharger la locale et rafraîchir le widget
+        // Si la langue Caramel a changé entre-temps, recharger la locale et repeindre.
+        // Ce chemin sert quand l'utilisateur ouvre le panneau dans les 2 s qui suivent
+        // le changement de drapeau, avant que le poller de watchLanguageChanges() ait vu.
         const prev = getLang();
         await syncLocale();
-        if (getLang() !== prev) refreshWidgetLabels();
+        if (getLang() !== prev) applyLanguageChange();
 
         if (!state.history.length) showWelcome();
         setTimeout(() => state.elements.input.focus(), 350);
@@ -84,7 +114,7 @@ function watchLanguageChanges() {
         if (currentLang !== lastLang) {
             lastLang = currentLang;
             await loadLocale(currentLang);
-            refreshWidgetLabels();
+            applyLanguageChange();
         }
     }, 2000);
 }

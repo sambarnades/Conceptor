@@ -1031,7 +1031,7 @@ async function runStep11_FullHealPipeline() {
     );
 
     // --- 11i. Securite : scan de toutes les traductions (pas seulement fr) ---
-    const LOCALES = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el'];
+    const LOCALES = ['fr', 'en', 'es', 'de', 'it', 'nl', 'pt', 'ar', 'zh', 'jp', 'el', 'br'];
     const dangerousPatterns = [
         /<script/i, /onerror\s*=/i, /javascript:/i,
         /eval\s*\(/i, /onclick\s*=/i, /onload\s*=/i, /onmouseover\s*=/i

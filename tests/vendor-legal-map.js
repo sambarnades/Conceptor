@@ -3,7 +3,7 @@
  *
  * CLAUDE.md pose la règle : « Toute nouvelle lib vendor doit être inscrite dans les
  * mentions légales : `<li data-translate="legal_library_<nom>">` **+** clé
- * `legal_library_<nom>` dans les 11 `js/locales/*.json` ». Cette règle était écrite
+ * `legal_library_<nom>` dans les 12 `js/locales/*.json` ». Cette règle était écrite
  * mais RIEN ne la vérifiait — trois bibliothèques y avaient échappé (audit 2026-07) :
  *   · `qrcode-generator`  — embarquée et chargée par lib-loader, jamais créditée ;
  *   · les 221 bibliothèques de contenu `js/vendor/h5p-libs/` — seul le lecteur
@@ -12,17 +12,18 @@
  *
  * Ce fichier est la source de vérité de l'inventaire. Il est consommé par :
  *   · `tests/test-legal-notices.js`  (navigateur) — croise l'inventaire avec le HTML
- *     des mentions légales, les 11 locales et les chemins réellement chargés ;
+ *     des mentions légales, les 12 locales et les chemins réellement chargés ;
  *   · `tests/run_legal_notices.mjs`  (Node)       — croise l'inventaire avec le CONTENU
  *     RÉEL du disque, seul capable de voir un dossier vendor ajouté sans aucun câblage.
  *
  * Données pures, sans import : lisible des deux côtés (même idiome que
  * `tests/roundtrip/fixtures-prefixes.js`).
  *
- * AJOUTER UNE BIBLIOTHÈQUE = 3 gestes, dans cet ordre :
- *   1. une entrée ici ;
+ * AJOUTER UNE BIBLIOTHÈQUE (ou une ressource tierce d'`assets/`) = 3 gestes,
+ * dans cet ordre :
+ *   1. une entrée ici (VENDOR_JS_A_MENTION, VENDOR_CSS_A_MENTION ou ASSETS_A_MENTION) ;
  *   2. un `<li data-translate="…">` dans `assets/templates/mentions-legales.html` ;
- *   3. la clé dans les 11 `js/locales/*.json`.
+ *   3. la clé dans les 12 `js/locales/*.json`.
  * Sauter l'un des trois fait échouer la suite.
  */
 
@@ -72,6 +73,24 @@ export const VENDOR_CSS_A_MENTION = [
 ];
 
 /**
+ * Ressources TIERCES embarquées hors `js/vendor/` et `css/vendor/` → clé de mention
+ * légale. Chemins relatifs à `assets/`.
+ *
+ * Créée à l'ajout du Gwenn ha du (28-08-2026). Le drapeau breton ne pouvait entrer
+ * dans aucune des deux listes ci-dessus : ce n'est pas une bibliothèque, et il ne
+ * pouvait pas non plus vivre dans `css/vendor/flag-icons/` (le vendor est écrasé à
+ * chaque mise à jour). Sans cette troisième liste, un fichier tiers déposé dans
+ * `assets/` échappait au contrôle sur disque — exactement l'angle mort qui avait
+ * laissé `qrcode-generator` non crédité en 2026-07.
+ *
+ * Un asset n'y figure QUE s'il vient d'un tiers. Une image produite pour Caramel
+ * (captures du tutoriel, logo) n'a rien à y faire.
+ */
+export const ASSETS_A_MENTION = [
+    { fichier: 'images/flags/bzh.svg', cle: 'legal_library_gwenn_ha_du' }
+];
+
+/**
  * Clés `legal_library_*` qui ne correspondent À AUCUN fichier embarqué, avec la
  * raison. Sans cette liste, le contrôle « toute clé correspond à une lib » signalerait
  * à tort ces entrées légitimes.
@@ -87,6 +106,7 @@ export function clesAttendues() {
     const set = new Set([
         ...VENDOR_JS_A_MENTION.map(e => e.cle),
         ...VENDOR_CSS_A_MENTION.map(e => e.cle),
+        ...ASSETS_A_MENTION.map(e => e.cle),
         ...MENTIONS_SANS_FICHIER.map(e => e.cle)
     ]);
     return [...set].sort();

@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 
-const locales = ['fr','en','es','de','it','nl','pt','ar','zh','jp','el'];
+const locales = ['fr','en','es','de','it','nl','pt','ar','zh','jp','el','br'];
 const keys = [
   'prompt_accordion_structure_json',
   'prompt_multiple_choice_structure_json',

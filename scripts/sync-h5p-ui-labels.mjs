@@ -311,7 +311,7 @@ export const LABEL_MAP = {
             ar: 'الأسئلة المجاب عنها', de: 'Beantwortete Fragen', el: 'Ερωτήσεις που απαντήθηκαν',
             en: 'Questions answered', es: 'Preguntas respondidas', fr: 'Questions répondues',
             it: 'Domande risposte', jp: '回答した質問', nl: 'Beantwoorde vragen',
-            pt: 'Perguntas respondidas', zh: '已回答的问题'
+            pt: 'Perguntas respondidas', zh: '已回答的问题', br: 'Goulennoù respontet'
         }
     },
 

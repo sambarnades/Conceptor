@@ -15,6 +15,14 @@ complètent ; aucune ne remplace l'autre.
 > et non la page-hôte de l'éditeur, et bouchonne le webhook LLM (`page.route`) pour
 > tester l'arrêt d'une génération sans émettre le moindre appel réel.
 >
+> Le scénario **(i)** sort du cadre « éditeur » comme (g) : il pilote `index.html` et
+> vérifie que **Caramelia suit le drapeau de Caramel**. Il n'appelle aucun LLM — son
+> oracle est le texte VISIBLE du panneau (bulle d'accueil, boutons de réponse rapide,
+> placeholder), lu contre `js/caramelia/locales/*.json`, jamais un libellé en dur.
+> Comme (h), il **porte sa propre contre-épreuve** (`--contre-epreuve`, qui désarme
+> `applyLanguageChange()` par snapshot) et n'a rien à faire dans `contre-epreuves.sh`,
+> lequel ne pilote que la suite navigateur.
+>
 > Le scénario **(h)** en sort autrement : il monte le vrai handler `H5P.VideoYouTube` du
 > dépôt sur sa propre page-hôte (`hote-video-youtube.html`) et appelle **YouTube pour de
 > vrai** — c'est le seul moyen d'observer une piste de sous-titres automatiques. Il
@@ -43,6 +51,7 @@ node tests/qa-manuel/e-diapositive-contenu.mjs      # (e) diapositive « contenu
 node tests/qa-manuel/f-qcm-sans-reponses.mjs        # (f) QCM sans réponses
 node tests/qa-manuel/g-arret-generation.mjs        # (g) bouton « Arrêter » d'une génération
 node tests/qa-manuel/h-sous-titres-youtube.mjs      # (h) sous-titres YouTube non sollicités (RÉSEAU)
+node tests/qa-manuel/i-langue-caramelia.mjs         # (i) Caramelia suit le drapeau de Caramel
 ```
 
 Chaque scénario sort en code 0 s'il est conforme, 1 sinon.

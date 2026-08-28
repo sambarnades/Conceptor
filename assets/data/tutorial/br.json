@@ -1,0 +1,960 @@
+{
+  "meta": {
+    "lang": "br",
+    "version": 2
+  },
+  "chapters": [
+    {
+      "id": "welcome",
+      "icon": "home",
+      "title": "Degemer mat war Caramel",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "**Caramel** a dalvez « **Krouiñ Skoazellet Danvezioù hag Oberezhioù Magistère hag Éléa** » : un **atalier krouiñ oberezhioù pedagogel** eo, savet **gant kelennerien, evit kelennerien**, **soñjet da gentañ evit Éléa ha Magistère** — met a ya en-dro ivez evit **Moodle**. Deskrivañ a rit ar pezh a fell deoc'h, un naoudegezh artifisiel a brienta an danvez, gwiriañ hag azasaat a rit anezhañ, neuze e tapit ar restr prest da leuskel."
+        },
+        {
+          "type": "h",
+          "text": "Hor prederouriezh : c'hwi a zalc'h ar sturiañ"
+        },
+        {
+          "type": "p",
+          "text": "Ur **skoazellerez** eo an IA, met **c'hwi eo a ziviz**. E pep mare :"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "**A-raok** : c'hwi eo a termen ar frammad pedagogel en ur leuniañ an tachennoù deskrivañ.",
+            "**E-pad** : an danvez genet gant an IA a c'hall bezañ **kemmet penn-da-benn** en aozer, evit e azasaat d'ho mennozh.",
+            "**Goude** : ur wech pellgarget ar restr zoken, gallout a rit **e zigeriñ hag e gemmañ** e lec'h all mar bez ezhomm — netra n'eo skoulmet, deoc'h eo."
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Gwarezet eo ho roadennoù"
+        },
+        {
+          "type": "p",
+          "text": "Savet eo Caramel evit na vefe **roadenn bedagogel ebet diskouezet**. Setu, sklaer, ar pezh a chom ganeoc'h hag ar pezh a dremen — ha pelec'h."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Ho teulioù a chom war hoc'h urzhiataer.** Pa leuskit ur restr testenn (PDF, TXT, DOCX, PPTX, ODT…) er mod araokaet, an tennañ a c'hoarvez **penn-da-benn en ho merdeer** : netra ne vez kaset d'ur servijer.",
+            "**Ar pezh a dremen a chom herberc'hiet e Frañs.** Ho koulennoù genel a dremen dre **servijerien skol-veur kenrannet** (raktres **ILaaS**) ; ar **skeudennoù leusket** a vez dielfennet eno gant un **IA gweled** (deskrivadur + testenn adskrivet) ; ar vouezh (mikro pe restr son) a vez treuzskrivet gant **Albert**, ar servij **dievezhiek eus an DINUM**. Hini ebet anezho ne **zastum na ne werzh** ho roadennoù — ha **na ar son na ar skeudennoù ne vezont miret**.",
+            "**An eilañ-pegañ war-du un IA diavaez a zo dindan ho karg.** Ma eilit ur prompt evit e implijout en ur servij tredeadour, gwarez ho roadennoù a zepand neuze eus **divizoù ar servij-se**."
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "Heñvel eo an hent atav : **deskrivañ → dibab → genel → gwiriañ → pellgargañ**. Displeget e vez er chabistroù da-heul. Evit addigeriñ ar sturlevr-mañ, klikit war **« Sturlevr »** e krec'h a-zehou."
+        }
+      ]
+    },
+    {
+      "id": "describe",
+      "icon": "pencil",
+      "title": "Pazenn 1 — Deskrivañ hoc'h ezhomm",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Amañ e krog pep tra. **Seul sklaeroc'h e vo ho teskrivadur, seul zereatoc'h e vo an disoc'h.** Div zoare da lavarout ho soñj, hervez ma karit mont buan pe frammañ resis."
+        },
+        {
+          "type": "h",
+          "text": "Ar mod prim"
+        },
+        {
+          "type": "p",
+          "text": "Dispar evit mont d'ar pouezusañ. Leuniañ a rit **div dachenn** :"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Piv oc'h ?** — ho tanvez ha live ho skolidi (sk. « kelenner bevoniezh e pempvet »).",
+            "**Petra ho peus c'hoant da grouiñ ?** — an danvez hag ar seurt poelladenn c'hoantaet (sk. « ur quiz war an dijestiñ »)."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/caramel-mode-rapide.png",
+          "alt": "Ar mod prim : div dachenn evit deskrivañ piv oc'h ha petra ho peus c'hoant da grouiñ."
+        },
+        {
+          "type": "h",
+          "text": "Ar mod araokaet"
+        },
+        {
+          "type": "p",
+          "text": "Evit ur goulenn frammetoc'h. Ar mod-mañ a ginnig **tachennoù resis** (danvez, live, tem, niver a c'houlennoù, kemennoù dibar…) hag a bermet **stagañ ho skoroù ho-unan** pe **enporzhiañ ur bajenn web** evel poent-loc'hañ."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Teulioù** — PDF, TXT, DOCX, PPTX, ODT, ODP : tennet e vez an destenn evel m'emañ. **Markdown (MD), CSV/TSV, taolennata (XLSX, ODS), pajennoù HTML, istitloù (SRT, VTT), RTF ha levrioù EPUB degemeret ivez** (nann-rollet war ar skramm).",
+            "**Dielloù** — ur restr ZIP a vez **displeget** : pep teul a zo enni a vez ouzhpennet a-du. Gallout a rit ivez leuskel **meur a restr war un dro**, tretet e vezont an eil goude egile.",
+            "**Skeudennoù** — PNG, JPEG (WebP, BMP, TIFF ha poltredoù iPhone e HEIC degemeret ivez) : deskrivet ha treuzskrivet gant un IA gweled.",
+            "**Son** — MP3, M4A, WAV, OGG, FLAC : an enrolladenn a vez **treuzskrivet** emgefre.",
+            "**Video** — MP4, MOV, WEBM : **ar vandenn-son hepken** a vez tennet ha treuzskrivet, n'eo ket dielfennet ar skeudenn.",
+            "**Pajenn web** — pegit ul liamm, Caramel a dap he danvez."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/caramel-mode-avance.png",
+          "alt": "Ar mod araokaet gant e dachennoù munudek : danvez, live, tem, teulioù."
+        },
+        {
+          "type": "plain",
+          "text": "Ma lezit an takad « teulioù » goullo, an IA a ziazezo **hepken war he gouiziegezh hollek**. En ur leuskel ho kentel enni e rankit anezhi da **stagañ ouzh ho tanvez** — c'hwi eo a zibab."
+        },
+        {
+          "type": "tip",
+          "text": "**Komprenet e vez ar skeudennoù, ket lennet hepken.** Leuskit ur poltred kentel, ur steuñv pe un diagramm (PNG, JPEG — WebP ha BMP degemeret ivez) : un **IA gweled a zeskriv ar pezh a ziskouez ar skeudenn hag a adskriv feal an destenn** a zo enni. Ha ma n'eo ket hegerz an IA, al **lenn lec'hel eus an destenn (OCR)** a gemer al lec'h emgefre."
+        },
+        {
+          "type": "tip",
+          "text": "**Ur gentel enrollet a c'hall servijout evel mammenn.** Leuskit ur restr son pe ur video : Caramel he **zreuzskriv** a-raok genel. An enrolladennoù hir a vez troc'het e rannoù a 5 munut — gortozit un tammig eta evit un eur kentel."
+        },
+        {
+          "type": "h",
+          "text": "An dra vihan ouzhpenn : an eoriañ war ar programmoù ofisiel"
+        },
+        {
+          "type": "p",
+          "text": "Pa leuniit an **danvez**, ar **sujed** hag al **live**, Caramel a c'hall **eoriañ ar c'henel war programmoù skol ofisiel Frañs** (Éduscol), hervez ar c'helc'hiad. An danvez produet a stag neuze muioc'h ouzh ar pezh a c'hortozer eus ho klas."
+        },
+        {
+          "type": "plain",
+          "text": "Sklaer : ur **RAG** (« enklask kreñvaet ») a zo ur **levraoueg dave** ma vez klasket enni gant an IA **an tennadoù mat** a-raok skrivañ — amañ, ar programmoù ofisiel — kentoc'h eget respont diwar goun. Disoc'h : oberezhioù steudet gwelloc'h war ar programm."
+        },
+        {
+          "type": "tip",
+          "text": "Emgefre ha nann-stankus eo an eoriañ-mañ : ma ne resisait na danvez na live, ar c'henel a ya en-dro memes tra, hep ar poent-dave programm hepken. Reiñ an titouroù-se ne goust netra hag a wella an disoc'h."
+        }
+      ]
+    },
+    {
+      "id": "choose",
+      "icon": "grid",
+      "title": "Pazenn 2 — Dibab ar seurt obererezh",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Ur wech deskrivet hoc'h ezhomm e teu an **teolioù oberezhioù** da vezañ klikadus. Pep teol a glot gant ur seurt poelladenn. Klikit war an hini a zere."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/caramel-activites.png",
+          "alt": "Kael teolioù an oberezhioù hegerz e Caramel."
+        },
+        {
+          "type": "h",
+          "text": "Div familh vras"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Familh",
+            "Ar pezh a dapit",
+            "Restr produet"
+          ],
+          "rows": [
+            [
+              "**H5P**",
+              "Oberezhioù **etrewezhiat** a ya en-dro e pep lec'h : Moodle, Éléa, Magistère, La Sucrerie, ha zoken ul lec'hienn web voutin. Ar skoliad a respont er bajenn hag a wel e reizhañ raktal.",
+              "**.h5p**"
+            ],
+            [
+              "**Éléa / Moodle**",
+              "Oberezhioù **genidik** eus ar savenn (Test, QCM, Devoir, Milionour…) ha **mammennoù kentel** (Pajenn, Levr). Da enporzhiañ en ho kentelioù ; an disoc'hoù a bign er c'harned notennoù.",
+              "**.mbz**, **.xml**, **.gift**"
+            ]
+          ]
+        },
+        {
+          "type": "warn",
+          "text": "N'en em waska an teolioù nemet **ur wech leuniet an deskrivadur** er bazenn 1. Ma chom un deol louet, distroit da zeskrivañ hoc'h ezhomm (pe goulennit digant Caramelia ober)."
+        },
+        {
+          "type": "plain",
+          "text": "**H5P** a zo ur **standard digor ha digoust** a oberezhioù etrewezhiat, implijet e pep lec'h en deskadurezh (Moodle, Éléa, Magistère, La Sucrerie…). Caramel a zoug **levraouegoù H5P ofisiel** pep seurt obererezh : **kenglotus 100 %** gant ar savennoù-se eo ar restroù produet eta."
+        },
+        {
+          "type": "plain",
+          "text": "**Moodle** a zo keflusker savennoù kentelioù enlinenn an Deskadurezh Vroadel : **Éléa** ha **Magistère** a ziazez warnañ. Setu perak e oar Caramel produiñ ivez mentrezhoù dezho o-unan da Moodle — un **enrolladenn .mbz**, pe **goulennoù .xml / GIFT** evit ur bank goulennoù."
+        },
+        {
+          "type": "tip",
+          "text": "War var emaoc'h war ar seurt ? Ar **silerezhioù** e krec'h ar gael (dre savenn, dre dem) a vihana ar roll, hag anv pep teol a zeskriv ar boelladenn a bourchas. Caramelia a c'hall ivez aliañ deoc'h ar seurt dereatañ."
+        },
+        {
+          "type": "h",
+          "text": "Ar c'hatalog, obererezh dre obererezh"
+        },
+        {
+          "type": "p",
+          "text": "Setu, en ur frazenn, ar pezh a bermet deoc'h sevel pep teol. Rummet eo an oberezhioù **dre implij** ; en arload, ar **silerezhioù** a-us d'ar gael a ra an hevelep labour."
+        },
+        {
+          "type": "h",
+          "text": "Danvezioù etrewezhiat pinvidik"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Obererezh",
+            "Ar pezh a bermet"
+          ],
+          "rows": [
+            [
+              "**Kinnigadenn gentel**",
+              "Krouit un diaporama etrewezhiat gant boelladennoù enframmet (QCM, gwir/gaou, testenn gant toulloù, h.a.) evit ur gentel frammennet e trezennadoù."
+            ],
+            [
+              "**Levr etrewezhiat**",
+              "Krouit ul levr niverel lieschabistr : pep pajenn a vesk testennoù, taolennoù, skeudennoù ha boelladennoù (QCM, gwir/gaou, testenn gant toulloù…), gant un daolenn hag ur bajenn ziverrañ."
+            ],
+            [
+              "**Video etrewezhiat**",
+              "Pinvidikait ur video gant goulennoù (QCM, gwir/gaou, testenn gant toulloù) a zeu war wel er mareoù pennañ, gant un diverradenn ziwezhañ. (Tubes Apps Éducation, PodEduc ha YouTube)."
+            ],
+            [
+              "**Skeudenn etrewezhiat**",
+              "Stagit ur skeudenn : lakaat a ra an AI poentoù klikadus ha skrivañ a ra o displegadennoù. Gallout a reer ouzhpennañ mediaoù gant an dorn."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Quiz ha priziadennoù"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Obererezh",
+            "Ar pezh a bermet"
+          ],
+          "rows": [
+            [
+              "**Quiz QCM**",
+              "Krouit ur quiz savet gant goulennoù QCM hepken."
+            ],
+            [
+              "**Quiz Gwir/Gaou**",
+              "Krouit ur quiz savet gant goulennoù Gwir pe Gaou hepken."
+            ],
+            [
+              "**Quiz mesket**",
+              "Savit ur steudad goulennoù liesseurt (QCM, riklañ-leuskel, h.a.) evit priziañ ar gouiziegezhioù."
+            ],
+            [
+              "**Kavout an takad**",
+              "Stagit ur skeudenn : dibab a ra an AI an takad reizh da glikañ ha skrivañ a ra ar feedbackoù. Skor d'ar c'hlik kentañ."
+            ],
+            [
+              "**Kavout an takadoù**",
+              "Stagit ur skeudenn : dibab a ra an AI an takadoù da gavout ha skrivañ a ra ar feedbackoù."
+            ],
+            [
+              "**Heuliad dibaboù nemetañ**",
+              "Krouit ur steudad goulennoù ma n'eus nemet ur respont mat da bep goulenn."
+            ],
+            [
+              "**Dibaboù lies**",
+              "Krouit ur goulenn nemetañ gant dibaboù lies, gant ur respont mat pe meur a hini."
+            ],
+            [
+              "**Gwir/Gaou**",
+              "Krouit ur goulenn nemetañ gant ur respont daouel : gwir pe gaou."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Dornata testennoù"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Obererezh",
+            "Ar pezh a bermet"
+          ],
+          "rows": [
+            [
+              "**Riklañ ar gerioù**",
+              "Krouit un destenn gant toulloù ma rank ar skolidi riklañ ar gerioù a vank."
+            ],
+            [
+              "**Riklañ-leuskel**",
+              "Krouit un obererezh ma rikl ar skolidi tikedennoù en takadoù leuskel mat."
+            ],
+            [
+              "**Testenn gant toulloù**",
+              "Krouit un destenn gant toulloù a gloka ar skolidi war-eeun gant ar c'hlavier."
+            ],
+            [
+              "**Usskediñ ar gerioù**",
+              "Goulennit digant ar skolidi usskediñ gerioù zo en ur rannbennad."
+            ],
+            [
+              "**Diktenn**",
+              "Krouit un diktenn audio : ar skoliad a selaou pep frazenn hag a skriv anezhi, ar reizhadur a laka ar fazioù war wel. Mouezhioù ganet ent emgefreek (sintezenn gomz)."
+            ],
+            [
+              "**Skridaozañ**",
+              "Kinnigit un dodenn skridaozañ ha termeniñ gerioù-alc'hwez evit ur reizhadur emgefreek."
+            ],
+            [
+              "**Urzhiañ ar rannbennadoù**",
+              "Krouit un hollad rannbennadoù a rank ar skolidi adlakaat en urzh mat."
+            ],
+            [
+              "**Diverradenn**",
+              "Krouit ur boelladenn ma adsav ar skolidi un diverradenn en ur zibab ar frazennoù mat."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Kounaat ha dizoleiñ"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Obererezh",
+            "Ar pezh a bermet"
+          ],
+          "rows": [
+            [
+              "**Kartennoù-koun**",
+              "Krouit kartennoù daou du evit sikour da zerc'hel soñj en termenoù hag an termenadurioù."
+            ],
+            [
+              "**Gerioù kroaziet**",
+              "Genit ur gael c'herioù kroaziet diwar ur roll gerioù ha termenadurioù."
+            ],
+            [
+              "**Linenn-amzer**",
+              "Krouit ul linenn-amzer etrewezhiat evit kinnig un heuliad darvoudoù."
+            ],
+            [
+              "**Geriadurig**",
+              "Krouit ur geriadurig pe ur FAG e stumm akordeoñs pleg-dibleg."
+            ],
+            [
+              "**Gerioù kuzhet**",
+              "Krouit ur gael lizherennoù ma rank ar skolidi kavout gerioù."
+            ],
+            [
+              "**Diagramm**",
+              "Krouit un diagramm kelc'h pe barrennoù evit gwelet roadennoù."
+            ],
+            [
+              "**Kartennoù komzadeg**",
+              "Krouit kartennoù etrewezhiat daou du gant testenn ha skeudennoù diret."
+            ]
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Oberezhioù Éléa / Moodle"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Obererezh",
+            "Ar pezh a bermet"
+          ],
+          "rows": [
+            [
+              "**Pajenn**",
+              "Krouit ur bajenn danvez Éléa aozet ent-gwelus."
+            ],
+            [
+              "**Levr**",
+              "Krouit ul levr Éléa lies-chabistr gant aozadur gwelus, oc'h adimplijout bloc'hadoù an obererezh Pajenn."
+            ],
+            [
+              "**Devoir**",
+              "Krouit ur gael briziañ dre zezverkoù evit un obererezh Devoir."
+            ],
+            [
+              "**Test Moodle**",
+              "Genit un obererezh Test prest da adsevel (.mbz), pe ur bank goulennoù da enporzhiañ (XML pe GIFT)."
+            ],
+            [
+              "**QCM**",
+              "Genit un obererezh QCM eeun."
+            ],
+            [
+              "**Kenglotadur**",
+              "Genit un obererezh kenglotañ gant 10 goulenn."
+            ],
+            [
+              "**Milionour**",
+              "Genit un obererezh « Milionour » gant 6 goulenn diaesoc'h-diaesañ."
+            ],
+            [
+              "**Geriadurig**",
+              "Genit ur geriadurig prest da vezañ enporzhiet er mentrezh XML."
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "generate",
+      "icon": "rocket",
+      "title": "Pazenn 3 — Genel an danvez",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Goude bezañ klikaet war un deol e tigor ur prenestr. Amañ e **c'houlennit an danvez digant an IA**. Daou zibarzh, hervez ar vestroni c'hoantaet."
+        },
+        {
+          "type": "h",
+          "text": "Dibarzh A — Genel gant ur c'hlik"
+        },
+        {
+          "type": "p",
+          "text": "An hent prim. Klikit war **« Genel gant ur c'hlik »** : Caramel a gas ho koulenn d'an IA hag a leun an obererezh e-unan. E-barzh un nebeud eilennoù eo prest an danvez da welout."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/modale_mode_simple.PNG",
+          "alt": "Ar skrammañ eeun gant ar bouton Genel gant ur c'hlik."
+        },
+        {
+          "type": "plain",
+          "text": "Ar **birig** bihan a-zehou d'ar bouton a bermet **dibab ar patrom IA** (unan prim, unan galloudusoc'h…). Dre ziouer eo diuzet ur patrom mat dija : didalvoud eo mont d'e douchañ evit kregiñ mat. Ur skouer ouzhpenn ma **talc'hit ar vestroni**."
+        },
+        {
+          "type": "h",
+          "text": "Dibarzh B — Implijout un IA diavaez"
+        },
+        {
+          "type": "p",
+          "text": "Evit ur vestroni a-bezh. Caramel a ziskouez ar **prompt** (ar gemenn evit an IA), a c'hallit lenn, kemmañ hag implijout e lec'h all."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "**Eilit ar prompt** kinniget (bouton eilañ).",
+            "**Pegit anezhañ en IA a garit** (da skouer Le Chat gant Mistral, pe ur skoazeller all).",
+            "**Tapit ar respont** ha **pegit anezhañ** e Caramel.",
+            "Caramel a **wiria hag a ratrea** an danvez emgefre a-raok e implijout."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/modale_mode_guide.PNG",
+          "alt": "Ar skrammañ sturiet gant ar prompt da eilañ war-du un IA diavaez."
+        },
+        {
+          "type": "plain",
+          "text": "Ur **prompt** a zo eeun ar gemennadenn gemenn a roer d'un IA. Caramel he skriv evidoc'h ; deoc'h-c'hwi eo he azasaat mar bez c'hoant."
+        },
+        {
+          "type": "h",
+          "text": "Kalz a c'houlennoù ? Caramel a zo war e giz"
+        },
+        {
+          "type": "p",
+          "text": "Evit un obererezh gant **kalz elfennoù** (da skouer ur quiz gant 20 pe 30 goulenn), Caramel a **droc'h emgefre al labour e meur a bazenn** hag a ziskouez ur **varrenn araokadur**. Evidoc'h e chom **ur c'hlik hepken** — met hep an dro-vicher-mañ e c'hallfe ur goulenn ken bras bezañ paouezet en hent."
+        },
+        {
+          "type": "warn",
+          "text": "E-pad ur c'henel dre bazennoù, **lezit Caramel da echuiñ** (ar varrenn araokadur a ziskouez) a-raok gwelout. An disoc'h a zo ur quiz klok, kendeuzet naet."
+        }
+      ]
+    },
+    {
+      "id": "preview",
+      "icon": "eye",
+      "title": "Pazenn 4 — Gwelout hag amprouiñ",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Ur wech genet an danvez, **kemerit an amzer d'e wiriañ** er prenestr gwelout. An obererezh en em zalc'h eno rik evel evit ho skolidi."
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Grit ar boelladenn ho-unan** : klikit war ar respontoù, riklit an tikedennoù, leuniit an toulloù.",
+            "**Gwiriit ar reizhadennoù** : hag emañ ar respontoù mat hag an displegadennoù skrammet mat ?",
+            "**Kontrollit an testennoù** : reizhskrivadur, formulennoù, skeudennoù — hag emañ pep tra hervez ho mennozh ?"
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/modale_visualisation.PNG",
+          "alt": "Ar prenestr gwelout : an obererezh en em amprou end-eeun er c'hendarvanour."
+        },
+        {
+          "type": "plain",
+          "text": "Ur **c'hendarvanour** eo ar prenestr-mañ : heñvelekaat a ra ar rentadur diwezhañ hep kas netra e lec'h ebet. Gallout a rit amprouiñ kement a wech ha ma vez ret."
+        },
+        {
+          "type": "tip",
+          "text": "Un dra vihan da reizhañ ? N'eo ket ret adc'henel pep tra : tremenit d'an **aozañ** (chabistr da-heul) evit azasaat gant an dorn. Gallout a rit ivez adlañsañ ur c'henel ma ne blij ket deoc'h an disoc'h. **C'hwi eo a gadarna.**"
+        }
+      ]
+    },
+    {
+      "id": "edit",
+      "icon": "sliders",
+      "title": "Pazenn 5 — Aozañ an danvez",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "C'hoant da gemmañ ur goulenn, ur ger, ur skeudenn ? Klikit war **« Aozañ »** (arlun kreion) : un **aozer gwelus** a zigor, ma vez kemmadus end-eeun pep tachenn eus an obererezh, hep adenporzhiañ netra."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/caramel-menu-edition.webp",
+          "alt": "Al lañser aozañ : azasaat an danvez betek ar munud bihanañ."
+        },
+        {
+          "type": "h",
+          "text": "Aozañ an destenn"
+        },
+        {
+          "type": "p",
+          "text": "An tachennoù a bermet a ziskouez ur **varrenn ostilhoù** pa glikit e-barzh : tev, italek, rolloù, h.a. Miret e vez an aozadur en obererezh diwezhañ."
+        },
+        {
+          "type": "h",
+          "text": "Enlakaat formulennoù matematek"
+        },
+        {
+          "type": "p",
+          "text": "Evit an danvezioù skiantel e c'hallit ouzhpennañ **formulennoù matematek** naet ha lennus, end-eeun en tachennoù a sell. Ur skoazeller a sikour ac'hanoc'h d'o sevel hep anavezout ar yezh deknikel (LaTeX)."
+        },
+        {
+          "type": "h",
+          "text": "Gerioù da gavout (riklañ, merkañ, leuniañ)"
+        },
+        {
+          "type": "p",
+          "text": "Evit an oberezhioù **Riklañ ar gerioù**, **Usskediñ ar gerioù** pe **Testenn gant toulloù**, e verkit ar gerioù-pal war an destenn end-eeun : an aozer o zroc'h e toulloù pe e tikedennoù."
+        },
+        {
+          "type": "h",
+          "text": "Testenn gant toulloù eus an Test Éléa"
+        },
+        {
+          "type": "p",
+          "text": "Evit ar goulennoù **Testenn gant toulloù** eus an obererezh Test (Éléa), un aozer dediet a aesa krouiñ an takadoù da leuniañ hag o respontoù degemeret."
+        },
+        {
+          "type": "h",
+          "text": "Ouzhpennañ ho skeudennoù"
+        },
+        {
+          "type": "p",
+          "text": "Oberezhioù zo a zegemer **ho skeudennoù ho-unan** : riklit anezho en dachenn rakwelet (kartennoù, elfennoù da rummañ, skeudenn foñs…). Enframmet e vezont end-eeun er restr diwezhañ."
+        },
+        {
+          "type": "h",
+          "text": "Arventennoù araokaet"
+        },
+        {
+          "type": "p",
+          "text": "Pep obererezh a ginnig **arventennoù diret** (rann pleget e traoñ an aozer) : niver a esaeoù, skrammañ an arouezioù, emzalc'h ar boutonoù… Da furchal ur wech lakaet ar pouezusañ."
+        },
+        {
+          "type": "tip",
+          "text": "Goude pep kemm, **distroit da welout** an obererezh evit gwiriañ ar rentadur. An dro-ha-distro aozañ ↔ gwelout eo an doare gwellañ da gaout un disoc'h peurvat."
+        }
+      ]
+    },
+    {
+      "id": "download",
+      "icon": "download",
+      "title": "Pazenn 6 — Pellgargañ",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Hag e plij deoc'h hoc'h obererezh ? Ne chom nemet d'he **zapout**. Al lañser pellgargañ a ginnig meur a fentrezh, rummet dre familhoù."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/vers-sucrerie.webp",
+          "alt": "Ar varrenn oberoù : pellgargañ (H5P, DOCX, ODT, PDF), rannañ « War-du ar Sucrerie », pe aozañ."
+        },
+        {
+          "type": "table",
+          "head": [
+            "Familh",
+            "Mentrezhoù",
+            "Da betra"
+          ],
+          "rows": [
+            [
+              "**Etrewezhiat** (an orin)",
+              "**H5P** (.h5p) · **Moodle** (.mbz) · **XML / GIFT** (.xml, .GIFT) · **HTML** (.html)",
+              "Enporzhiañ an obererezh **etrewezhiat** e Éléa, Magistère pe Moodle. An dibarzh pennañ eo."
+            ],
+            [
+              "**Teul**",
+              "**Word** (.docx) · **LibreOffice** (.odt)",
+              "Kaout ur stumm **testenn** da voullañ pe da gemmañ. Ar formulennoù matematek a chom aozadus."
+            ],
+            [
+              "**PDF**",
+              "**PDF** (.pdf)",
+              "Ur stumm skoulmet, dispar da voullañ pe da skignañ."
+            ]
+          ]
+        },
+        {
+          "type": "plain",
+          "text": "Ar mentrezh **.h5p** eo an hini liesvicher : an hini a vir an etrewezhiegezh a-bezh hag a zigor e pep lec'h (Éléa, Magistère, Moodle, La Sucrerie)."
+        },
+        {
+          "type": "warn",
+          "text": "War ur stumm **Word / PDF**, an oberezhioù etrewezhiat-tre a zo dre ret **eeunaet** (ur riklañ-leuskel a zeu da vezañ ur roll da leuniañ, da skouer) : boutin eo — ar **mentrezh etrewezhiat** orin, eñ, a vir ar mekanik a-bezh."
+        },
+        {
+          "type": "tip",
+          "text": "C'hoant ho peus da **rannañ** ho krouadenn gant kelennerien all ? Ar bouton **« War-du ar Sucrerie »** (a-zehou d'ar mentrezhoù) he embann war levraoueg gevell Caramel — sellit ouzh ar chabistr ouzhpenn « Rannañ war La Sucrerie »."
+        }
+      ]
+    },
+    {
+      "id": "integrate",
+      "icon": "upload",
+      "title": "Enframmañ e Éléa / Magistère / Moodle",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Ur wech pellgarget ar restr, setu penaos he ouzhpennañ d'ho kentel. An hent da heuliañ a zepand eus **mentrezh** ar restr. Ar pakadennoù skramm a-is a ziskouez skouer Éléa (tost-tre eo an doare war Magistère ha Moodle). Dalc'het eo e galleg anvioù ar boutonoù : e galleg emañ etrefas Éléa."
+        },
+        {
+          "type": "h",
+          "text": "Restr .h5p (obererezh etrewezhiat)"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "En ho kentel, **gweredekait ar mod aozañ**.",
+            "**Ouzhpennit un obererezh** eus ar seurt **H5P** (pe « Contenu interactif »).",
+            "**Leuskit ar restr .h5p** en takad rakwelet, ha **enrollit**."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-ajouter-h5p.webp",
+          "alt": "Ouzhpennañ un obererezh H5P en ur gentel Éléa."
+        },
+        {
+          "type": "h",
+          "text": "Restr .mbz (enrolladenn Moodle)"
+        },
+        {
+          "type": "p",
+          "text": "Ar mentrezh-mañ a ouzhpenn unan pe meur a obererezh en ho kentel **hep flastrañ** ar re a zo dija, dre an ostilh **assav**."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Digorit ho kentel, ha **« Restauration »** (lañser enrollañ / assav).",
+            "**Kargit ar restr .mbz**, ha dibabit **« Fusionner »** gant ar gentel a-vremañ.",
+            "Displegit ar pazennoù kinniget betek ar c'hadarnaat."
+          ]
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-import-parcours-1.webp",
+          "alt": "Assav ur restr .mbz e Éléa — leuskel ar restr."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-import-parcours-3.webp",
+          "alt": "Assav ur restr .mbz e Éléa — kendeuziñ gant ar gentel."
+        },
+        {
+          "type": "h",
+          "text": "Restr .xml (Geriadurig)"
+        },
+        {
+          "type": "p",
+          "text": "Evit enporzhiañ ur roll termenadurioù en ur **geriadurig** : krouit ur geriadurig er gentel, ha implijit an dibarzh **« Importer des entrées »** anezhañ ha diuzit ar restr .xml."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-glossaire-import-2.webp",
+          "alt": "Enporzhiañ enmontoù en ur geriadurig Éléa diwar ur restr XML."
+        },
+        {
+          "type": "h",
+          "text": "Restroù .xml ha .GIFT (bank goulennoù)"
+        },
+        {
+          "type": "p",
+          "text": "Evit ouzhpennañ goulennoù d'ho **pank goulennoù** : adalek ar bank, dibabit **« Importer »**, diuzit ar mentrezh (Moodle XML pe GIFT) ha kargit ar restr. Gallout a rit ivez enporzhiañ an Test end-eeun e **`.mbz`** — un obererezh prest da assav (sellit ouzh « Restr .mbz » a-us)."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-importation-banquequestions-1.webp",
+          "alt": "Enporzhiañ goulennoù er bank goulennoù Éléa."
+        },
+        {
+          "type": "h",
+          "text": "Restr .html (danvez pajenn)"
+        },
+        {
+          "type": "p",
+          "text": "Evit enlakaat danvez end-eeun en un **takad testenn** : digorit aozer an takad, tremenit er mod **« code source » (HTML)**, ha pegit danvez ar restr."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/tutorials/elea-import-page-code-html.webp",
+          "alt": "Pegañ HTML er mod tarzh-kod en ur bajenn Éléa."
+        },
+        {
+          "type": "tip",
+          "text": "Ar mentrezh **.h5p** eo an aesañ da enframmañ hag an hini boutinañ. Mar bez douetañs, gwellocʼh eo dibab hemañ."
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "icon": "share",
+      "title": "Ouzhpenn — Rannañ war La Sucrerie",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Lorc'h ennoc'h gant hoc'h obererezh ? **Embannit anezhi war La Sucrerie**, levraoueg gevell Caramel, evit ma kavfe kelennerien all anezhi hag e adimplijfent anezhi. Pep tra a grog gant ar bouton **« War-du ar Sucrerie »** eus al lañser pellgargañ (pazenn 6)."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/vers-sucrerie.webp",
+          "alt": "Ar bouton roz « War-du ar Sucrerie » er varrenn bellgargañ."
+        },
+        {
+          "type": "plain",
+          "text": "**La Sucrerie** a zo ur presad boutin bras a oberezhioù, **digoust hag adimplijadus** (aotre-implijout Creative Commons). **Caramel a servij da grouiñ**, **La Sucrerie da rannañ ha da gavout** — an hevelep yezh a gomz an daou."
+        },
+        {
+          "type": "h",
+          "text": "Penaos ez a en-dro"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Klikit war **« War-du ar Sucrerie »** (ar bouton roz, a-zehou d'ar mentrezhoù pellgargañ).",
+            "Un **IA a brienta ar fichenn** en ho lec'h (war-dro 15 eilenn) : titl, deskrivadur, palioù, gerioù-alc'hwez, danvez ha live.",
+            "**Gwiriit ha reizhit** ar fichenn rakleuniet-se, ha leuniit hoc'h **anv** (diskouezet evel aozer) hag ho **chomlec'h postel akademek**.",
+            "Askellit ar voest **aotre-implijout** ha **kadarnait** : ur gwiriañ emgefre a sell ouzh an danvez, hag embannet e vez an obererezh er c'hatalog."
+          ]
+        },
+        {
+          "type": "warn",
+          "text": "An **anv embann** a vez diskouezet evel aozer an obererezh : dre ziouer hoc'h **anv-bihan hag anv-familh**, met gallout a rit dibab ul **lesanv** hep mar ebet. Ho **postel**, eñ, a chom **prevez** (sifrennet, morse diskouezet) — ne servij nemet da gas deoc'h ul **liamm merañ** evit kemmañ pe zilemel an obererezh diwezhatoc'h."
+        },
+        {
+          "type": "plain",
+          "text": "**Leuskel** a zo embann hoc'h obererezh er c'hatalog foran. An IA a **ginnig** an titouroù evit he rummañ mat, met **c'hwi a zalc'h ar sturiañ** : pep tra a chom kemmadus a-raok kadarnaat, ha netra n'eo embannet hep hoc'h asant."
+        },
+        {
+          "type": "tip",
+          "text": "Dalc'het e vez ar mestroni ganeoc'h goude an embann zoken : al **liamm merañ** degemeret dre bostel a bermet deoc'h **kemmañ pe zilemel** hoc'h obererezh pa gerit."
+        }
+      ]
+    },
+    {
+      "id": "caramelia",
+      "icon": "chat",
+      "title": "Caramelia, ho skoazellerez",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Anavezout a rit bremañ an hent a-bezh — setu ur **berrhent**. **Caramelia** eo **mailhez** Caramel : **logo al lec'hienn**, hon eus c'hoantaet **denelaat**. Ho **skoazellerez** eo ivez, gouest da seveniñ **an holl pazennoù a-us en ho lec'h**. Kavout a rit anezhi e **traoñ a-zehou ar skramm** ; ur c'hlik a zigor ur **prenestr kaozeal** ma skrivit dezhi evel d'ur c'henseurt."
+        },
+        {
+          "type": "shot",
+          "src": "assets/images/wiki/caramelia-assistant.png",
+          "alt": "Prenestr Caramelia digor, gant he c'hemennadenn zegemer hag ar boutonoù « Skoazell war al lec'hienn » ha « Krouiñ un obererezh »."
+        },
+        {
+          "type": "h",
+          "text": "Daou dra a oar ober"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Respont d'ho koulennoù** war Caramel (« Penaos enframmañ ur restr e Éléa ? », « Petra eo un destenn gant toulloù ? », « Petra a zeu eus ma roadennoù ? »).",
+            "**Ho ambroug evit krouiñ** : deskrivit hoc'h ezhomm e yezh voutin (« ur QCM gant 10 goulenn war ar rannoù evit CM2 ») hag e prienta pep tra en ho lec'h."
+          ]
+        },
+        {
+          "type": "plain",
+          "text": "E gwirionez, Caramelia ne **sav ket an obererezh he-unan** : **leuniañ a ra an tachennoù hag e tigor an deol vat evidoc'h**, rik evel ma rafec'h gant an dorn. Heñvel eo an disoc'h eta ouzh an hini tapet hepti — n'ober nemet lakaat ac'hanoc'h da c'hounit amzer."
+        },
+        {
+          "type": "h",
+          "text": "Meur a obererezh war un dro"
+        },
+        {
+          "type": "p",
+          "text": "Unan eus he ferzhioù bras eo. Goulennit da skouer **« ur QCM ha kartennoù-koun war kelc'hiad an dour »** : Caramelia a ziskouez ur **roll da askellañ** eus an oberezhioù a ginnig. Askellit ar re a blij deoc'h, kadarnait, hag e **lañs an holl c'henadennoù an eil war-lerc'h eben**."
+        },
+        {
+          "type": "tip",
+          "text": "E fin ul lod gant meur a obererezh, ur bouton **« Pellgargañ ur ZIP »** a strollañ an holl restroù war un dro. Dispar evit prientiñ ur gevrenn a-bezh e nebeud munutoù."
+        },
+        {
+          "type": "h",
+          "text": "Reiñ dezhi un teul loc'hañ"
+        },
+        {
+          "type": "p",
+          "text": "Ur **c'hravazh** (pe ur riklañ-leuskel eeun) a bermet stagañ un **teul pe ur skeudenn** (PDF, Word, kinnigadenn, poltred…). Caramelia a denn an destenn anezhañ evit ober diazez — talvoudus evit treuzfurmiñ ur gentel a zo dija e poelladennoù. Gallout a rit ivez **komz** outi dre ar mikro."
+        },
+        {
+          "type": "warn",
+          "text": "**C'hwi a zalc'h ar sturiañ, gant Caramelia zoken.** A-raok pep genel e tiskouez un **diverrañ** (piv, petra, live, niver a c'houlennoù, oberezhioù dibabet) gant tri bouton : **Lañsañ**, **Cheñch obererezh**, **Nullañ**. **Netra ne bar hep ho kadarnadur.**"
+        },
+        {
+          "type": "plain",
+          "text": "Evit respont reizh e ziazez Caramelia war un **diaz teulioù** (ur « RAG ») : e-lec'h ijinañ e **tenn tennadoù fiziadus** eus teuliadur Caramel hag e adkemer libelloù rik ar boutonoù a welit war ar skramm. (Ar **RAG** eo ivez ar pezh a bermet eoriañ ar c'henel war ar programmoù ofisiel — sellit ouzh ar bazenn « Deskrivañ hoc'h ezhomm ».)"
+        }
+      ]
+    },
+    {
+      "id": "community",
+      "icon": "assets/images/branding/tchap.svg",
+      "title": "Eskemm gant ar gumuniezh",
+      "blocks": [
+        {
+          "type": "p",
+          "text": "Ur raktres **bev** eo Caramel, hag ho ali a gont. Ur **sal gaozeal** a vodañ ar gelennerien a implij Caramel war **Tchap**, postelerezh surentezet ar Stad."
+        },
+        {
+          "type": "h",
+          "text": "Da betra e servij ar sal-mañ ?"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Sevel ho koulennoù** ha kaout skoazell war ar c'hrouiñ, an aozañ pe an enframmañ en ho kentelioù.",
+            "**Menegiñ ur gudenn** pe ginnig ur gwellaat.",
+            "**Dizoleiñ an traoù nevez** : embannet e vez eno emdroadurioù Caramel.",
+            "**Rannañ ho pratikoù** gant kenseurted all."
+          ]
+        },
+        {
+          "type": "plain",
+          "text": "**Tchap** eo postelerezh ofisiel melestradurezh Frañs, miret evit implijidi ar Stad. Ar c'hevreañ a c'hoarvez gant ho chomlec'h a-vicher, hep krouiñ ur gont nevez."
+        },
+        {
+          "type": "cta",
+          "href": "https://edurl.fr/caramel-tchap",
+          "label": "Mont er sal Tchap Caramel",
+          "icon": "assets/images/branding/tchap.svg"
+        },
+        {
+          "type": "tip",
+          "text": "Al liamm war-du ar sal a zo hegerz ivez e krec'h pep pajenn, e-kichen ar bouton « Sturlevr ». Hag evit ur goulenn prim, **Caramelia** a respont end-eeun en arload."
+        }
+      ]
+    },
+    {
+      "id": "faq",
+      "icon": "help",
+      "title": "Goulennoù stank & geriadurig",
+      "blocks": [
+        {
+          "type": "h",
+          "text": "Goulennoù stank"
+        },
+        {
+          "type": "list",
+          "items": [
+            "**Penaos e c'henel an IA he danvez ?** Deskrivañ a rit hoc'h ezhomm ; Caramel a ra ur **c'hemenn resis** evit an IA, pinvidikaet gant ar **programmoù ofisiel** (ar RAG), ha kas a ra anezhañ d'un **IA herberc'hiet e Frañs** (ILaaS) a skriv an danvez. Caramel a **wiria hag a reizh** anezhañ a-raok leuniañ an obererezh — ha **c'hwi** eo a adlenn hag a azasa.",
+            "**Hag ez a en-dro war Moodle ?** Ya. Caramel a bourchas **mentrezhoù standard** (**.h5p**, **.mbz**, **.xml / GIFT**) a vez **lennet genidik gant Moodle**. Ouzhpenn-se e ziazez **Éléa** ha **Magistère** war Moodle : ar pezh a ya en-dro eviti a ya en-dro war forzh peseurt savenn Moodle.",
+            "**Hag e vez kaset ma roadennoù e lec'h bennak ?** Ho testennoù ne servijont nemet da c'henel an obererezh dre an IA ; Caramel ne vir ket ho tanvezioù. Tennañ testenn ho teulioù ha skeudennoù a c'hoarvez **en ho merdeer**.",
+            "**Dizoberius eo disoc'h an IA, petra ober ?** Azasait gant an dorn en aozer, pe adlañsit ar c'henel gant un deskrivadur resisoc'h. C'hwi eo a gadarna atav.",
+            "**Hag e c'hallan krouiñ meur a obererezh war un dro ?** Ya, en ur c'houlenn digant **Caramelia** : kinnig a ra ur roll da askellañ ha strollañ a ra ar restroù en ur ZIP.",
+            "**Peseurt mentrezh dibab evit Éléa pe Magistère ?** Ar **.h5p** peurvuiañ : etrewezhiat eo hag e tigor e pep lec'h."
+          ]
+        },
+        {
+          "type": "h",
+          "text": "Geriadurig — gerioù al lec'hienn"
+        },
+        {
+          "type": "table",
+          "head": [
+            "Ger",
+            "Ar pezh a dalvez"
+          ],
+          "rows": [
+            [
+              "**Obererezh**",
+              "Ur vammenn bedagogel etrewezhiat (quiz, poelladenn, c'hoari…)."
+            ],
+            [
+              "**Caramelia**",
+              "Ar skoazellerez enframmet (bouton madig) a respont d'ho koulennoù hag a brienta an oberezhioù en ho lec'h."
+            ],
+            [
+              "**Genel**",
+              "Goulenn digant an IA prientiñ an danvez diwar ho teskrivadur."
+            ],
+            [
+              "**Prompt**",
+              "Ar gemennadenn gemenn roet d'un IA. Caramel he skriv evidoc'h."
+            ],
+            [
+              "**RAG**",
+              "Un diaz dave ma tenn an IA tennadoù fiziadus a-raok respont (amañ : teuliadur Caramel, hag ar programmoù ofisiel)."
+            ],
+            [
+              "**Programmoù ofisiel**",
+              "Programmoù skol Frañs (Éduscol) ma c'hall ar c'henel eoriañ warno hervez an danvez hag al live."
+            ],
+            [
+              "**Genel dre bazennoù**",
+              "Troc'hañ emgefre ur goulenn vras (kalz a c'houlennoù) evit mirout ouzh an troc'hadennoù — boull evidoc'h."
+            ],
+            [
+              "**H5P (.h5p)**",
+              "Standard digor an oberezhioù etrewezhiat, lennus gant Éléa, Magistère ha Moodle."
+            ],
+            [
+              "**Moodle (.mbz / .xml)**",
+              "Keflusker savennoù ar c'hentelioù (Éléa, Magistère). .mbz = enrolladenn ; .xml / GIFT = goulennoù."
+            ],
+            [
+              "**GIFT**",
+              "Ur mentrezh testenn eeun evit enporzhiañ goulennoù en ur bank goulennoù."
+            ],
+            [
+              "**Éléa / Magistère**",
+              "Savennoù kentelioù enlinenn an Deskadurezh Vroadel, diazezet war Moodle."
+            ],
+            [
+              "**Aozer gwelus**",
+              "An etrefas a bermet kemmañ an obererezh tachenn dre dachenn, hep kod."
+            ],
+            [
+              "**Kendarvanour**",
+              "Ar prenestr gwelout a heñvelekaa ar rentadur diwezhañ evit amprouiñ an obererezh."
+            ],
+            [
+              "**La Sucrerie**",
+              "Al levraoueg gevell ma **ranner hag e kaver** oberezhioù."
+            ]
+          ]
+        },
+        {
+          "type": "tip",
+          "text": "Ur goulenn hep respont amañ ? Savit anezhañ da **Caramelia**, pe war ar **sal Tchap** (chabistr a-raok) : ar gumuniezh a zo eno evit se."
+        }
+      ]
+    }
+  ]
+}
