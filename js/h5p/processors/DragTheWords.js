@@ -14,6 +14,38 @@ import { latexToUnicode } from '../json-healer.js';
 import { buildMediaStructure } from '../image-manager.js';
 
 
+/**
+ * Libellés d'interface de H5P.DragText.
+ *
+ * Factorisés parce que `process()` (activité autonome) et `transformForQuizSet()`
+ * (question DANS un Quiz ou une Vidéo interactive) doivent en produire EXACTEMENT
+ * les mêmes : les deux listes avaient divergé et la voie conteneur n'en posait plus
+ * que 4 sur 18 — les 14 autres retombaient sur le défaut ANGLAIS de la lib.
+ * @returns {Object}
+ */
+function libelles() {
+    return {
+        dropZoneIndex: translations.h5p_drag_words_drop_zone_index || "Zone de dépôt @index.",
+        empty: translations.h5p_drag_words_drop_zone_empty || "La zone de dépôt @index est vide.",
+        contains: translations.h5p_drag_words_drop_zone_contains || "La zone de dépôt @index contient l'élément @draggable.",
+        tipLabel: translations.h5p_tip_label || "Indice",
+        correctText: translations.h5p_drag_words_correct_text || "Correct !",
+        incorrectText: translations.h5p_drag_words_incorrect_text || "Incorrect !",
+        resetDropTitle: translations.h5p_drag_words_reset_drop_title || "Réinitialiser le dépôt",
+        resetDropDescription: translations.h5p_drag_words_reset_drop_description || "Êtes-vous certain de vouloir réinitialiser cette zone de dépôt ?",
+        grabbed: translations.h5p_drag_words_grabbed || "L'élément est saisi.",
+        cancelledDragging: translations.h5p_drag_words_cancelled_dragging || "Déplacement annulé.",
+        correctAnswer: translations.h5p_drag_words_correct_answer || "Réponse correcte :",
+        feedbackHeader: translations.h5p_drag_words_feedback_header || "Commentaire de retour",
+        scoreBarLabel: translations.h5p_score_bar_label || "Vous avez obtenu :num sur :total points",
+        submitAnswer: translations.h5p_submit_answer || "Valider",
+        ariaDraggableIndex: translations.h5p_drag_words_aria_draggable_index || "@index sur @count éléments.",
+        a11yCheck: translations.h5p_a11y_check || "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+        a11yShowSolution: translations.h5p_a11y_show_solution || "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+        a11yRetry: translations.h5p_a11y_retry || "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer."
+    };
+}
+
 export default {
     process: (jsonObj) => {
         return {
@@ -34,25 +66,8 @@ export default {
                 to: 100,
                 feedback: translations.h5p_drag_words_score_feedback || "Score : @score sur @total."
             }],
-            dropZoneIndex: translations.h5p_drag_words_drop_zone_index || "Zone de dépôt @index.",
-            empty: translations.h5p_drag_words_drop_zone_empty || "La zone de dépôt @index est vide.",
-            contains: translations.h5p_drag_words_drop_zone_contains || "La zone de dépôt @index contient l'élément @draggable.",
-            tipLabel: translations.h5p_tip_label || "Indice",
-            correctText: translations.h5p_drag_words_correct_text || "Correct !",
-            incorrectText: translations.h5p_drag_words_incorrect_text || "Incorrect !",
-            resetDropTitle: translations.h5p_drag_words_reset_drop_title || "Réinitialiser le dépôt",
-            resetDropDescription: translations.h5p_drag_words_reset_drop_description || "Êtes-vous certain de vouloir réinitialiser cette zone de dépôt ?",
-            grabbed: translations.h5p_drag_words_grabbed || "L'élément est saisi.",
-            cancelledDragging: translations.h5p_drag_words_cancelled_dragging || "Déplacement annulé.",
-            correctAnswer: translations.h5p_drag_words_correct_answer || "Réponse correcte :",
-            feedbackHeader: translations.h5p_drag_words_feedback_header || "Commentaire de retour",
-            scoreBarLabel: translations.h5p_score_bar_label || "Vous avez obtenu :num sur :total points",
             media: buildMediaStructure(jsonObj.mediaImage, jsonObj.mediaImageAlt),
-            submitAnswer: translations.h5p_submit_answer || "Valider",
-            ariaDraggableIndex: translations.h5p_drag_words_aria_draggable_index || "@index sur @count éléments.",
-            a11yCheck: translations.h5p_a11y_check || "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
-            a11yShowSolution: translations.h5p_a11y_show_solution || "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
-            a11yRetry: translations.h5p_a11y_retry || "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer."
+            ...libelles()
         };
     },
 
@@ -63,10 +78,13 @@ export default {
         if (question.params.textField) {
             question.params.textField = cleanDragTextTextField(question.params.textField);
         }
-        question.params.checkAnswer = translations.h5p_check_answer || "Vérifier";
-        question.params.tryAgain = translations.h5p_try_again || "Recommencer";
-        question.params.showSolution = translations.h5p_show_solution || "Afficher la solution";
-        question.params.scoreBarLabel = translations.h5p_score_bar_label || "Vous avez obtenu :num sur :total points";
+        // Mêmes libellés que l'activité autonome (cf. libelles()) : sans ça, la
+        // question intégrée affichait « Submit », « Correct! », « Show tip »… en anglais.
+        Object.assign(question.params, libelles(), {
+            checkAnswer: translations.h5p_check_answer || "Vérifier",
+            tryAgain: translations.h5p_try_again || "Recommencer",
+            showSolution: translations.h5p_show_solution || "Afficher la solution"
+        });
         question.params.behaviour = {
             enableRetry: true,
             enableSolutionsButton: true,

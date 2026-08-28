@@ -13,6 +13,35 @@ import { translations } from '../../core/translation.js';
 import { formatTextToHtml } from '../../core/utils.js';
 import { buildMediaStructure } from '../image-manager.js';
 
+/**
+ * Libellés d'interface de H5P.Blanks.
+ *
+ * Factorisés parce que `process()` (activité autonome) et `transformForQuizSet()`
+ * (question DANS un Quiz ou une Vidéo interactive) doivent produire les MÊMES :
+ * la voie conteneur omettait les quatre chaînes `a11y*`, restées en anglais pour
+ * les lecteurs d'écran.
+ * @returns {Object}
+ */
+function libelles() {
+    return {
+        checkAnswer: translations.h5p_check_answer || "Vérifier",
+        tryAgain: translations.h5p_try_again || "Recommencer",
+        showSolutions: translations.h5p_show_solution || "Afficher les solutions",
+        scoreBarLabel: translations.h5p_score_bar_label || "Vous avez obtenu :num sur :total points",
+        notFilledOut: translations.h5p_blanks_not_filled_out || "Veuillez remplir tous les champs.",
+        a11yCheck: translations.h5p_a11y_check || "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+        a11yShowSolution: translations.h5p_a11y_show_solution || "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+        a11yRetry: translations.h5p_a11y_retry || "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+        a11yCheckingModeHeader: translations.h5p_blanks_checking_mode_header || "Mode de vérification",
+        // DÉFAUT AMONT (H5P.Blanks 1.14.37) : les semantics déclarent
+        // `a11yCheckingModeHeader`, mais le code lit `params.a11yHeader`
+        // (blanks.js:203) — clé absente des semantics. La valeur française
+        // partait donc à la poubelle et les lecteurs d'écran annonçaient
+        // « Checking mode ». On alimente LES DEUX, en attendant un correctif amont.
+        a11yHeader: translations.h5p_blanks_checking_mode_header || "Mode de vérification"
+    };
+}
+
 export default {
     process: (jsonObj) => {
         // Cas spécifique rétrocompatibilité: ancien format avec `textBlocks`
@@ -84,10 +113,7 @@ export default {
                 to: 100,
                 feedback: translations.h5p_blanks_feedback || "Vous avez @score sur @total blancs corrects."
             }],
-            a11yCheck: translations.h5p_a11y_check || "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
-            a11yShowSolution: translations.h5p_a11y_show_solution || "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
-            a11yRetry: translations.h5p_a11y_retry || "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
-            a11yCheckingModeHeader: translations.h5p_blanks_checking_mode_header || "Mode de vérification"
+            ...libelles()
         };
     },
 
@@ -96,11 +122,7 @@ export default {
         if (question.params.taskDescription) {
             question.params.text = formatTextToHtml(question.params.taskDescription);
         }
-        question.params.checkAnswer = translations.h5p_check_answer || "Vérifier";
-        question.params.tryAgain = translations.h5p_try_again || "Recommencer";
-        question.params.showSolutions = translations.h5p_show_solution || "Afficher les solutions";
-        question.params.scoreBarLabel = translations.h5p_score_bar_label || "Vous avez obtenu :num sur :total points";
-        question.params.notFilledOut = translations.h5p_blanks_not_filled_out || "Veuillez remplir tous les champs.";
+        Object.assign(question.params, libelles());
         question.params.behaviour = {
             enableRetry: true,
             enableSolutionsButton: true,

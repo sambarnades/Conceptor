@@ -4,7 +4,7 @@
       "label": "Image"
     },
     {
-      "label": "Décoratif uniquement",
+      "label": "Cette image ne sert que de décoration",
       "description": "Activez cette option si l'image est purement décorative et n'ajoute aucune information au contenu de la page. Elle sera ignorée par les lecteurs d'écran et n'aura pas de texte alternatif."
     },
     {
@@ -20,12 +20,12 @@
       "default": "Image"
     },
     {
-      "label": "Expand Image",
-      "default": "Expand Image"
+      "label": "Agrandir l'image",
+      "default": "Agrandir l'image"
     },
     {
-      "label": "Minimize Image",
-      "default": "Minimize Image"
+      "label": "Réduire l'image",
+      "default": "Réduire l'image"
     }
   ]
 }

@@ -1,22 +1,26 @@
+
+
 .h5p-chart svg {
   display: block;
   margin: 0 auto;
 }
 .h5p-chart-chart {
-  font-size: 0.75em;
+  font-size: 1em;
+  background-color: var(--h5p-theme-ui-base);
+  fill: var(--h5p-theme-text-primary);
 }
 .h5p-chart-bar {
   width: 100%;
   height: 100%;
 }
 .h5p-chart-bar .domain {
-  fill: #fff;
-  stroke: #fff;
+  fill: var(--h5p-theme-ui-base);
+  stroke:var(--h5p-theme-ui-base);
   stroke-width: 0.125em;
 }
 .h5p-chart-pie path {
-  stroke: #fff;
-  stroke-width: 0.125em;
+  stroke: var(--h5p-theme-ui-base);
+  stroke-width: 0.2em;
 }
 
 .h5p-standalone.h5p-chart .h5p-chart-chart {

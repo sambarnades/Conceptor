@@ -34,7 +34,7 @@ H5P.ImageHotspotQuestion = (function ($, Question) {
     };
 
     // Inheritance
-    Question.call(this, 'image-hotspot-question');
+    Question.call(this, 'image-hotspot-question', { theme: true });
 
     /**
      * Keeps track of content id.
@@ -94,6 +94,12 @@ H5P.ImageHotspotQuestion = (function ($, Question) {
     };
 
     this.callOnceAttached(() => {
+      if (this.params.imageHotspotQuestion.hotspotSettings.showFeedbackAsPopup) {
+        const mainContainer = this.dom.parentNode.closest('.h5p-image-hotspot-question');
+        if (mainContainer) {
+          mainContainer.classList.add('show-feedback-as-popup');
+        }
+      }
       if (typeof this.lastHotspot === 'number' && this.lastPosition) {
         const hotspotParams = this.lastHotspot >= 0 ?
           this.hotspotSettings.hotspot[this.lastHotspot] :
@@ -308,7 +314,7 @@ H5P.ImageHotspotQuestion = (function ($, Question) {
 
     const feedbackText = params.hotspotParams?.userSettings.feedbackText ||
       this.params.imageHotspotQuestion.hotspotSettings.noneSelectedFeedback ||
-      '&nbsp;';
+      '';
 
     // Send these settings into setFeedback to turn feedback into a popup.
     const popupSettings = {
@@ -336,8 +342,31 @@ H5P.ImageHotspotQuestion = (function ($, Question) {
         this.isPopopOpen = false;
       });
 
-      // Workaroung for H5P.Question when using popups
+      // Create separate containers for scorebar and buttons
+      const scorebar = questionFeedback.querySelector('.h5p-question-scorebar');
       const buttons = questionFeedback.querySelector('.h5p-question-buttons');
+
+      if (scorebar && buttons && !questionFeedback.querySelector('.h5p-question-content-wrapper')) {
+        const currentParent = scorebar.parentNode;
+
+        const contentWrapper = document.createElement('div');
+        contentWrapper.className = 'h5p-question-content-wrapper';
+
+        const scorebarWrapper = document.createElement('div');
+        scorebarWrapper.className = 'h5p-question-scorebar-wrapper';
+
+        const buttonsWrapper = document.createElement('div');
+        buttonsWrapper.className = 'h5p-question-buttons-wrapper';
+
+        scorebarWrapper.appendChild(scorebar);
+        buttonsWrapper.appendChild(buttons);
+
+        contentWrapper.appendChild(scorebarWrapper);
+        contentWrapper.appendChild(buttonsWrapper);
+
+        currentParent.appendChild(contentWrapper);
+      }
+
       if (buttons) {
         buttons.style.display = 'inline-block';
       }
@@ -376,7 +405,11 @@ H5P.ImageHotspotQuestion = (function ($, Question) {
         this.resetTask();
       },
       false,
-      { 'aria-label': this.params.a11yRetry }
+      { 'aria-label': this.params.a11yRetry },
+      {
+        icon: 'retry',
+        styleType: 'secondary'
+      }
     );
   };
 

@@ -31,13 +31,17 @@ const processorMetadata = {
     },
     'Flashcards': {
         machineName: 'H5P.Flashcards',
-        version: { major: 1, minor: 7 }, // aligné éléa
+        version: { major: 1, minor: 7 }, // aligné éléa (1.7.23)
         extraDependencies: [
             { machineName: 'H5P.MathDisplay', majorVersion: 1, minorVersion: 0 },
             { machineName: 'FontAwesome', majorVersion: 4, minorVersion: 5 },
             { machineName: 'H5P.JoubelUI', majorVersion: 1, minorVersion: 3 },
             { machineName: 'H5P.Transition', majorVersion: 1, minorVersion: 0 },
-            { machineName: 'H5P.FontIcons', majorVersion: 1, minorVersion: 0 }
+            { machineName: 'H5P.FontIcons', majorVersion: 1, minorVersion: 0 },
+            // Depuis 1.7.23 la lib est passée au design system H5P (`h5p-theme`) :
+            // elle appelle H5P.Components.Navigation / .Button / .PlaceholderImg.
+            // Sans cette dépendance, la carte se charge mais la navigation plante.
+            { machineName: 'H5P.Components', majorVersion: 1, minorVersion: 0 }
         ]
     },
     'FillInTheBlanks': {

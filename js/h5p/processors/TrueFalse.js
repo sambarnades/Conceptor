@@ -14,6 +14,33 @@ import { formatTextToHtml } from '../../core/utils.js';
 import { buildMediaStructure } from '../image-manager.js';
 
 
+/**
+ * Libellés d'interface de H5P.TrueFalse (bloc `l10n`).
+ *
+ * Factorisés parce que `process()` (activité autonome) et `transformForQuizSet()`
+ * (question DANS un Quiz ou une Vidéo interactive) doivent produire les MÊMES :
+ * la voie conteneur omettait les trois chaînes `a11y*`, restées en anglais pour
+ * les lecteurs d'écran.
+ * @returns {Object}
+ */
+function libellesL10n() {
+    return {
+        trueText: translations.h5p_true_false_true_text || "Vrai",
+        falseText: translations.h5p_true_false_false_text || "Faux",
+        score: translations.h5p_score || "Vous avez obtenu @score sur @total points",
+        checkAnswer: translations.h5p_check_answer || "Vérifier",
+        showSolutionButton: translations.h5p_show_solution || "Afficher la solution",
+        tryAgain: translations.h5p_try_again || "Recommencer",
+        wrongAnswerMessage: translations.h5p_true_false_wrong_answer_message || "Mauvaise réponse",
+        correctAnswerMessage: translations.h5p_true_false_correct_answer_message || "Bonne réponse",
+        scoreBarLabel: translations.h5p_score_bar_label || "Vous avez obtenu :num sur :total points",
+        submitAnswer: translations.h5p_submit_answer || "Valider",
+        a11yCheck: translations.h5p_a11y_check || "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+        a11yShowSolution: translations.h5p_a11y_show_solution || "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+        a11yRetry: translations.h5p_a11y_retry || "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer."
+    };
+}
+
 export default {
     process: (jsonObj) => {
         return {
@@ -21,19 +48,7 @@ export default {
             question: formatTextToHtml(jsonObj.question),
             correct: String(jsonObj.correct), // Ensure it's a string
             l10n: {
-                trueText: translations.h5p_true_false_true_text || "Vrai",
-                falseText: translations.h5p_true_false_false_text || "Faux",
-                score: translations.h5p_score || "Vous avez obtenu @score sur @total points",
-                checkAnswer: translations.h5p_check_answer || "Vérifier",
-                showSolutionButton: translations.h5p_show_solution || "Afficher la solution",
-                tryAgain: translations.h5p_try_again || "Recommencer",
-                wrongAnswerMessage: translations.h5p_true_false_wrong_answer_message || "Mauvaise réponse",
-                correctAnswerMessage: translations.h5p_true_false_correct_answer_message || "Bonne réponse",
-                scoreBarLabel: translations.h5p_score_bar_label || "Vous avez obtenu :num sur :total points",
-                submitAnswer: translations.h5p_submit_answer || "Valider",
-                a11yCheck: translations.h5p_a11y_check || "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
-                a11yShowSolution: translations.h5p_a11y_show_solution || "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
-                a11yRetry: translations.h5p_a11y_retry || "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer."
+                ...libellesL10n()
             },
             behaviour: {
                 enableRetry: true,
@@ -97,16 +112,7 @@ export default {
 
         // Ajouter les traductions de l'interface
         question.params.l10n = {
-            trueText: translations.h5p_true_false_true_text || "Vrai",
-            falseText: translations.h5p_true_false_false_text || "Faux",
-            score: translations.h5p_score || "Vous avez obtenu @score sur @total points",
-            checkAnswer: translations.h5p_check_answer || "Vérifier",
-            showSolutionButton: translations.h5p_show_solution || "Afficher la solution",
-            tryAgain: translations.h5p_try_again || "Recommencer",
-            scoreBarLabel: translations.h5p_score_bar_label || "Vous avez obtenu :num sur :total points",
-            submitAnswer: translations.h5p_submit_answer || "Valider",
-            wrongAnswerMessage: translations.h5p_true_false_wrong_answer_message || "Mauvaise réponse",
-            correctAnswerMessage: translations.h5p_true_false_correct_answer_message || "Bonne réponse",
+            ...libellesL10n(),
             ...question.params.l10n
         };
 

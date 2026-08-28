@@ -99,7 +99,13 @@ export default {
             showRetryButton: true,
             noResultMessage: translations.h5p_quiz_no_result_message || "Terminé",
             message: translations.h5p_quiz_result_message || "Vos résultats :",
-            scoreBarLabel: translations.h5p_score_bar_label || "Vous avez obtenu :num sur :total points",
+            // ATTENTION aux jetons : H5P.QuestionSet attend @finals/@totals, là où les
+            // autres libs (Summary, SingleChoiceSet, Blanks…) attendent :num/:total.
+            // Réutiliser `h5p_score_bar_label` ici affichait « :num » et « :total » en clair.
+            scoreBarLabel: translations.h5p_quiz_score_bar_label || "Vous avez obtenu @finals sur @totals points",
+            amountCorrect: translations.h5p_amount_correct || "@finals bonnes réponses sur @totals",
+            scoreHeader: translations.h5p_score_header || "Score",
+            skipButtonText: translations.h5p_skip_video || "Passer la vidéo",
             solutionButtonText: translations.h5p_show_solution || "Afficher la solution",
             retryButtonText: translations.h5p_try_again || "Recommencer",
             finishButtonText: translations.h5p_finish_label || "Terminer",

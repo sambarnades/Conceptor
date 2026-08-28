@@ -49,6 +49,37 @@ function convertirTips(tips) {
     return converti;
 }
 
+/**
+ * Libellés d'interface de H5P.MultiChoice (bloc `UI`).
+ *
+ * Factorisés parce que `process()` (activité autonome) et `transformForQuizSet()`
+ * (question DANS un Quiz ou une Vidéo interactive) doivent produire les MÊMES :
+ * les deux listes avaient divergé, et c'était ici l'activité AUTONOME la plus
+ * pauvre — ses trois chaînes `a11y*` restaient au défaut anglais de la lib.
+ * @returns {Object}
+ */
+function libellesUI() {
+    return {
+        checkAnswerButton: translations.h5p_check_answer || "Vérifier",
+        showSolutionButton: translations.h5p_show_solution || "Afficher la solution",
+        tryAgainButton: translations.h5p_try_again || "Recommencer",
+        scoreBarLabel: translations.h5p_score_bar_label || "Vous avez obtenu :num sur :total points",
+        submitAnswerButton: translations.h5p_submit_answer || "Valider",
+        tipsLabel: translations.h5p_tip_label || "Indice",
+        tipAvailable: translations.h5p_blanks_input_has_tip_label || "Indice disponible",
+        feedbackAvailable: translations.h5p_quiz_feedback_available || "Feedback disponible",
+        readFeedback: translations.h5p_quiz_read_feedback || "Lire le commentaire",
+        wrongAnswer: translations.h5p_quiz_wrong_answer || "Mauvaise réponse",
+        correctAnswer: translations.h5p_quiz_correct_answer || "Bonne réponse",
+        shouldCheck: translations.h5p_quiz_should_check || "Il fallait cocher ici",
+        shouldNotCheck: translations.h5p_quiz_should_not_check || "Il ne fallait pas cocher ici !",
+        noInput: translations.h5p_quiz_no_input || "Répondez s'il vous plait avant de visionner la solution.",
+        a11yCheck: translations.h5p_a11y_check || "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
+        a11yShowSolution: translations.h5p_a11y_show_solution || "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
+        a11yRetry: translations.h5p_a11y_retry || "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer."
+    };
+}
+
 export default {
     process: (jsonObj) => {
         return {
@@ -60,13 +91,7 @@ export default {
                 text: formatTextToHtml(answer.text),
                 ...(answer.tipsAndFeedback ? { tipsAndFeedback: convertirTips(answer.tipsAndFeedback) } : {})
             })),
-            UI: {
-                checkAnswerButton: translations.h5p_check_answer || "Vérifier",
-                showSolutionButton: translations.h5p_show_solution || "Afficher la solution",
-                tryAgainButton: translations.h5p_try_again || "Recommencer",
-                submitAnswerButton: translations.h5p_submit_answer || "Valider",
-                scoreBarLabel: translations.h5p_score_bar_label || "Vous avez obtenu :num sur :total points"
-            },
+            UI: libellesUI(),
             behaviour: {
                 enableRetry: true,
                 enableSolutionsButton: true,
@@ -101,23 +126,7 @@ export default {
 
     transformForQuizSet: (question) => {
         question.params.UI = {
-            checkAnswerButton: translations.h5p_check_answer || "Vérifier",
-            showSolutionButton: translations.h5p_show_solution || "Afficher la solution",
-            tryAgainButton: translations.h5p_try_again || "Recommencer",
-            scoreBarLabel: translations.h5p_score_bar_label || "Vous avez obtenu :num sur :total points",
-            submitAnswerButton: translations.h5p_submit_answer || "Valider",
-            tipsLabel: translations.h5p_tip_label || "Indice",
-            tipAvailable: translations.h5p_blanks_input_has_tip_label || "Indice disponible",
-            feedbackAvailable: translations.h5p_quiz_feedback_available || "Feedback disponible",
-            readFeedback: translations.h5p_quiz_read_feedback || "Lire le commentaire",
-            wrongAnswer: translations.h5p_quiz_wrong_answer || "Mauvaise réponse",
-            correctAnswer: translations.h5p_quiz_correct_answer || "Bonne réponse",
-            shouldCheck: translations.h5p_quiz_should_check || "Il fallait cocher ici",
-            shouldNotCheck: translations.h5p_quiz_should_not_check || "Il ne fallait pas cocher ici !",
-            noInput: translations.h5p_quiz_no_input || "Répondez s'il vous plait avant de visionner la solution.",
-            a11yCheck: translations.h5p_a11y_check || "Vérifier les réponses. Les réponses seront marquées comme correctes, incorrectes ou non répondues.",
-            a11yShowSolution: translations.h5p_a11y_show_solution || "Afficher la solution. L'exercice sera marqué avec sa solution correcte.",
-            a11yRetry: translations.h5p_a11y_retry || "Recommencer l'exercice. Réinitialiser toutes les réponses et recommencer.",
+            ...libellesUI(),
             ...question.params.UI
         };
 

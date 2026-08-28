@@ -47,7 +47,7 @@ H5P.Blanks = (function ($, Question) {
     var self = this;
 
     // Inheritance
-    Question.call(self, 'blanks');
+    Question.call(self, 'blanks', { theme: true });
 
     // IDs
     this.contentId = id;
@@ -76,6 +76,7 @@ H5P.Blanks = (function ($, Question) {
       scoreBarLabel: 'You got :num out of :total points',
       behaviour: {
         enableRetry: true,
+        allowRetryIfCorrect: false,
         enableSolutionsButton: true,
         enableCheckButton: true,
         caseSensitive: true,
@@ -217,6 +218,7 @@ H5P.Blanks = (function ($, Question) {
         },
         textIfSubmitting: self.params.submitAnswer,
         contentData: self.contentData,
+        icon: 'check',
       });
     }
 
@@ -225,6 +227,9 @@ H5P.Blanks = (function ($, Question) {
       self.showCorrectAnswers(false);
     }, self.params.behaviour.enableSolutionsButton, {
       'aria-label': self.params.a11yShowSolution,
+    }, {
+      styleType: 'secondary',
+      icon: 'show-solutions',
     });
 
     // Try again button
@@ -241,7 +246,9 @@ H5P.Blanks = (function ($, Question) {
           l10n: self.params.confirmRetry,
           instance: self,
           $parentElement: $container
-        }
+        },
+        styleType: 'secondary',
+        icon: 'retry',
       });
     }
     self.toggleButtonVisibility(STATE_ONGOING);
@@ -494,7 +501,10 @@ H5P.Blanks = (function ($, Question) {
     }
 
     if (this.params.behaviour.enableRetry) {
-      if ((state === STATE_CHECKING && !allCorrect) || state === STATE_SHOWING_SOLUTION) {
+      const shouldHide = allCorrect && !this.params.behaviour.allowRetryIfCorrect;
+      const shouldShow = !shouldHide && (state !== STATE_ONGOING);
+
+      if (shouldShow) {
         this.showButton('try-again');
       }
       else {

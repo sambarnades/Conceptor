@@ -26,6 +26,7 @@
  * @exports {Object} default.process - Transformation principale (async, reçoit helpers)
  */
 import { translations } from '../../core/translation.js';
+import { libellesSummary } from './Summary.js';
 import { formatTextToHtml, generateUUID, debugLog } from '../../core/utils.js';
 import { healSlidesLatex } from './CoursePresentation.js';
 import { snapInteractions } from './interactive-video-snap.js';
@@ -377,11 +378,9 @@ function buildSummary(summary) {
                 intro: formatTextToHtml(summary.intro || (translations.h5p_summary_intro || "Choisissez l'affirmation correcte.")),
                 summaries,
                 overallFeedback: [{ from: 0, to: 100, feedback: '' }],
-                solvedLabel: translations.h5p_summary_solved_label || 'Progression :',
-                scoreLabel: translations.h5p_summary_score_label || 'Mauvaises réponses :',
-                resultLabel: translations.h5p_summary_result_label || 'Votre résultat',
-                labelCorrect: translations.h5p_summary_label_correct || 'Correct.',
-                labelIncorrect: translations.h5p_summary_label_incorrect || 'Incorrect ! Veuillez réessayer.'
+                // Libellés PARTAGÉS avec l'activité « Résumé » autonome : ils étaient
+                // recopiés ici à la main et il en manquait 5, affichés en anglais.
+                ...libellesSummary()
             }
         },
         displayAt: 3

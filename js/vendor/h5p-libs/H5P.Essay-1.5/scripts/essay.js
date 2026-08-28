@@ -3,7 +3,7 @@ var H5P = H5P || {};
 /**
  * TODO: This content type needs refactoring. Badly!
  */
-H5P.Essay = function ($, Question) {
+H5P.Essay = function (Question) {
   'use strict';
 
   // CSS Classes
@@ -29,7 +29,7 @@ H5P.Essay = function ($, Question) {
     }
 
     // Inheritance
-    Question.call(this, 'essay');
+    Question.call(this, 'essay', { theme: true });
 
     // Sanitize defaults
     this.params = Essay.extend(
@@ -133,6 +133,42 @@ H5P.Essay = function ($, Question) {
     if (typeof this.previousState === 'object' && Object.keys(this.previousState).length) {
       this.updateScore();
     }
+
+    // Check whether status bar is needed, no "saved" message when subcontent
+    const statusBar = !!(
+      this.params.behaviour.minimumLength ||
+      this.params.behaviour.maximumLength ||
+      (H5PIntegration && H5PIntegration.saveFreq && this.isRoot())
+    );
+
+    // Create InputField
+    this.inputField = new H5P.Essay.InputField({
+      taskDescription: this.params.taskDescription,
+      placeholderText: this.params.placeholderText,
+      maximumLength: this.params.behaviour.maximumLength,
+      remainingChars: this.params.remainingChars,
+      inputFieldSize: this.params.behaviour.inputFieldSize,
+      previousState: this.previousState,
+      statusBar: statusBar
+    }, {
+      onInteracted: ((params) => {
+        this.handleInteracted(params);
+      }),
+      onInput: (() => {
+        this.handleInput();
+      }),
+      onResize: (() => {
+        this.trigger('resize', 'H5PEssayInputField');
+      }),
+    });
+
+    this.on('resize', (event) => {
+      if (event.data === 'H5PEssayInputField') {
+        return;
+      }
+
+      this.inputField.autoResize();
+    });
   }
 
   // Extends Question
@@ -171,31 +207,6 @@ H5P.Essay = function ($, Question) {
         }
       }
     }
-
-    // Check whether status bar is needed, no "saved" message when subcontent
-    const statusBar = !!(
-      this.params.behaviour.minimumLength ||
-      this.params.behaviour.maximumLength ||
-      (H5PIntegration && H5PIntegration.saveFreq && this.isRoot())
-    );
-
-    // Create InputField
-    this.inputField = new H5P.Essay.InputField({
-      taskDescription: this.params.taskDescription,
-      placeholderText: this.params.placeholderText,
-      maximumLength: this.params.behaviour.maximumLength,
-      remainingChars: this.params.remainingChars,
-      inputFieldSize: this.params.behaviour.inputFieldSize,
-      previousState: this.previousState,
-      statusBar: statusBar
-    }, {
-      onInteracted: (function (params) {
-        that.handleInteracted(params);
-      }),
-      onInput: (function () {
-        that.handleInput();
-      })
-    });
 
     this.setViewState(this.previousState && this.previousState.viewState || 'task');
     if (this.viewState === 'results') {
@@ -246,7 +257,10 @@ H5P.Essay = function ($, Question) {
       that.internalShowSolutionsCall = false;
     }, false, {
       'aria-label': this.params.ariaShowSolution
-    }, {});
+    }, {
+      styleType: 'secondary',
+      icon: 'show-solutions'
+    });
 
     // Check answer button
     that.addButton('check-answer', that.params.checkAnswer, function () {
@@ -256,6 +270,7 @@ H5P.Essay = function ($, Question) {
     }, {
       contentData: this.extras,
       textIfSubmitting: this.params.submitAnswer,
+      icon: 'check'
     });
 
     // Retry button
@@ -263,7 +278,10 @@ H5P.Essay = function ($, Question) {
       that.resetTask({ skipClear: true });
     }, false, {
       'aria-label': this.params.ariaRetry
-    }, {});
+    }, {
+      styleType: 'secondary',
+      icon: 'retry'
+    });
   };
 
   /**
@@ -418,28 +436,33 @@ H5P.Essay = function ($, Question) {
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-5}
    */
   Essay.prototype.resetTask = function (params) {
-    params = params || {};
-    this.setViewState('task');
-
-    this.setExplanation();
-    this.removeFeedback();
-    this.hideSolution();
-
-    this.hideButton('show-solution');
-    this.hideButton('try-again');
-
-    // QuestionSet can control check button despite not in Question Type contract
-    if (this.params.behaviour.enableCheckButton) {
-      this.showButton('check-answer');
-    }
-
-    if (!params.skipClear) {
-      this.inputField.setText('');
-    }
-    this.inputField.enable();
-    this.inputField.focus();
-
+    // Always reset previousState
+    this.previousState = {};
     this.isAnswered = false;
+
+    // Reset DOM only if it has been loaded
+    if (this.isContentInitialized()) {
+      params = params || {};
+      this.setViewState('task');
+
+      this.setExplanation();
+      this.removeFeedback();
+      this.hideSolution();
+
+      this.hideButton('show-solution');
+      this.hideButton('try-again');
+
+      // QuestionSet can control check button despite not in Question Type contract
+      if (this.params.behaviour.enableCheckButton) {
+        this.showButton('check-answer');
+      }
+
+      if (!params.skipClear) {
+        this.inputField.setText('');
+      }
+      this.inputField.enable();
+      this.inputField.focus();
+    }
   };
 
   /**
@@ -778,7 +801,8 @@ H5P.Essay = function ($, Question) {
     definition.name['en-US'] = definition.name[this.languageTag];
     // The H5P reporting module expects the "blanks" to be added to the description
     definition.description = {};
-    definition.description[this.languageTag] = this.params.taskDescription + Essay.FILL_IN_PLACEHOLDER;
+    // The below replaceAll makes sure we don't get any unwanted XAPI_PLACEHOLDERs in the questions and description
+    definition.description[this.languageTag] = this.params.taskDescription.replaceAll(/_{10,}/gi, '_________') + Essay.FILL_IN_PLACEHOLDER;
     // Fallback for h5p-php-reporting, expects en-US
     definition.description['en-US'] = definition.description[this.languageTag];
     definition.type = 'http://id.tincanapi.com/activitytype/essay';
@@ -825,7 +849,7 @@ H5P.Essay = function ($, Question) {
         result.push({'keyword': needle, 'match': needle, 'index': front + pos});
       }
       front += pos + needle.length;
-      haystack = haystack.substr(pos + needle.length);
+      haystack = haystack.substring(pos + needle.length);
     }
     return result;
   };
@@ -882,7 +906,7 @@ H5P.Essay = function ($, Question) {
     // Without looking at the surroundings we'd miss words that have additional or missing chars
     for (let size = -windowSize; size <= windowSize; size++) {
       for (let pos = 0; pos < haystack.length; pos++) {
-        const straw = haystack.substr(pos, needle.length + size);
+        const straw = haystack.substring(pos, pos + needle.length + size);
         if (H5P.TextUtilities.areSimilar(needle, straw) && H5P.TextUtilities.isIsolated(straw, haystack, {'index': pos})) {
           // This will only add the match if it's not a duplicate that we found already in the proximity of pos
           if (!this.contains(results, pos)) {
@@ -1071,9 +1095,9 @@ H5P.Essay = function ($, Question) {
      * to show up that restart button without the need to.
      */
     if (!inputFieldText) {
-      return;
+      return {};
     }
-    
+
     return {
       inputField: inputFieldText,
       viewState: this.viewState
@@ -1090,6 +1114,14 @@ H5P.Essay = function ($, Question) {
     }
 
     this.viewState = state;
+  };
+
+  /**
+   * Checks if the content has been initialized or loaded into the DOM.
+   * @returns {boolean} True if the content has been initialized, false otherwise.
+   */
+  Essay.prototype.isContentInitialized = function() {
+    return !!this.inputField; // Check if inputField exists
   };
 
   /** @constant {string}
@@ -1117,4 +1149,4 @@ H5P.Essay = function ($, Question) {
   Essay.VIEW_STATES = ['task', 'results', 'solutions'];
 
   return Essay;
-}(H5P.jQuery, H5P.Question);
+}(H5P.Question);

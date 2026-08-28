@@ -1,4 +1,5 @@
-var H5P = H5P || {};
+// eslint-disable-next-line no-global-assign
+H5P = H5P || {};
 
 /**
  * Constructor.
@@ -13,7 +14,7 @@ var H5P = H5P || {};
     this.extras = extras;
 
     if (params.file === undefined || !(params.file instanceof Object)) {
-      this.placeholder = true;
+      this.placeholder = params.usePlaceholderImage ?? false;
     }
     else {
       this.source = H5P.getPath(params.file.path, id);
@@ -21,9 +22,9 @@ var H5P = H5P || {};
       this.height = params.file.height;
     }
 
-    this.alt = (!params.decorative && params.alt !== undefined) ?
-      this.stripHTML(this.htmlDecode(params.alt)) :
-      '';
+    this.alt = (!params.decorative && params.alt !== undefined)
+      ? this.stripHTML(this.htmlDecode(params.alt))
+      : '';
 
     if (params.title !== undefined) {
       this.title = this.stripHTML(this.htmlDecode(params.title));
@@ -40,23 +41,15 @@ var H5P = H5P || {};
    * @returns {undefined}
    */
   H5P.Image.prototype.attach = function ($wrapper) {
-    var self = this;
-    var source = this.source;
+    const self = this;
+    const { source } = this;
 
     if (self.$img === undefined) {
-      if(self.placeholder) {
-        self.$img = $('<div>', {
-          width: '100%',
-          height: '100%',
-          class: 'h5p-placeholder',
-          title: this.title === undefined ? '' : this.title,
-          on: {
-            load: function () {
-              self.trigger('loaded');
-            }
-          }
-        });
-      } else {
+      if (self.placeholder) {
+        self.$img = $(H5P.Components.PlaceholderImg('h5pImageDefault'));
+        self.trigger('loaded');
+      }
+      else {
         self.$img = $('<img>', {
           width: '100%',
           height: '100%',
@@ -64,10 +57,10 @@ var H5P = H5P || {};
           alt: this.alt,
           title: this.title === undefined ? '' : this.title,
           on: {
-            load: function () {
+            load() {
               self.trigger('loaded');
-            }
-          }
+            },
+          },
         });
       }
     }

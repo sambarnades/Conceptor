@@ -1,13 +1,19 @@
 {
   "semantics": [
     {
-      "description": "Atsakymo pavadinimas / antraštė, kai naudotojas eksportuoja visus atsakymus",
-      "label": "Pavadinimas"
+      "label": "Pavadinimas",
+      "description": "Atsakymo pavadinimas / antraštė, kai naudotojas eksportuoja visus atsakymus"
     },
-    {},
     {
-      "default": "Eksportavimas jūsų įrenginyje nepalaikomas",
-      "label": "„Eksportavimas nepalaikomas“ pavadinimas"
+      "label": "Placeholder text",
+      "description": "Example value or other placeholder text. Should not be used to replace the description of the input field."
+    },
+    {
+      "label": "Index"
+    },
+    {
+      "label": "„Eksportavimas nepalaikomas“ pavadinimas",
+      "default": "Eksportavimas jūsų įrenginyje nepalaikomas"
     },
     {
       "label": "Į eksportuotą dokumentą įtraukti komentarus"
