@@ -50,6 +50,48 @@ function convertirTips(tips) {
 }
 
 /**
+ * Replie dans `tipsAndFeedback` les retours écrits À LA RACINE de la réponse.
+ *
+ * Le semantics de H5P.MultiChoice ne connaît que trois champs sur `answers[]` :
+ * `text`, `correct` et le groupe `tipsAndFeedback` (vérifiable par
+ * `node tests/run_semantics_audit.mjs --module=MultipleChoice`). Or
+ * `H5PContentValidator::validateGroup()` SUPPRIME toute clé absente du semantics
+ * (« no validator exists for @key » → `unset()`). Un `chosenFeedback` posé à la
+ * racine de la réponse disparaît donc à l'import Moodle/Éléa **silencieusement** :
+ * ni erreur, ni trace, juste un retour pédagogique qui ne s'affiche jamais.
+ * Constaté sur `assets/data/examples/quiz_qcm_5.json` (13 retours morts).
+ *
+ * Le repli est déjà l'idiome du dépôt : `InteractiveVideo.js` reconstruit un
+ * `tipsAndFeedback` propre à partir des clés de racine AVANT de déléguer à
+ * `transformForQuizSet` — d'où l'absence de `feedback` dans la table d'alias
+ * ci-dessous, ce cas étant déjà traité en amont par la Vidéo interactive.
+ *
+ * Prudence délibérée : on n'agit que s'il existe au moins une valeur de racine NON
+ * VIDE, et une valeur déjà présente dans `tipsAndFeedback` gagne toujours. Le repli
+ * comble, il n'écrase pas — et une réponse déjà canonique ressort inchangée.
+ *
+ * @param {Object} reponse - une entrée de `answers[]`
+ * @returns {Object} la réponse, retours repliés et clés parasites retirées
+ */
+const ALIAS_RETOURS = ['tip', 'chosenFeedback', 'notChosenFeedback'];
+
+function replierRetoursRacine(reponse) {
+    if (!reponse || typeof reponse !== 'object') return reponse;
+    const parasites = ALIAS_RETOURS.filter(cle => typeof reponse[cle] === 'string');
+    if (!parasites.some(cle => reponse[cle].trim())) return reponse;
+
+    const tips = { ...(reponse.tipsAndFeedback || {}) };
+    for (const cle of parasites) {
+        if (!reponse[cle].trim()) continue;
+        if (typeof tips[cle] === 'string' && tips[cle].trim()) continue;
+        tips[cle] = reponse[cle];
+    }
+    const nette = { ...reponse, tipsAndFeedback: tips };
+    for (const cle of parasites) delete nette[cle];
+    return nette;
+}
+
+/**
  * Libellés d'interface de H5P.MultiChoice (bloc `UI`).
  *
  * Factorisés parce que `process()` (activité autonome) et `transformForQuizSet()`
@@ -86,7 +128,7 @@ export default {
             ...jsonObj, // Conserve la question, les réponses et le overallFeedback
             question: formatTextToHtml(jsonObj.question),
             media: buildMediaStructure(jsonObj.mediaImage, jsonObj.mediaImageAlt),
-            answers: (Array.isArray(jsonObj.answers) ? jsonObj.answers : []).map(answer => ({
+            answers: (Array.isArray(jsonObj.answers) ? jsonObj.answers : []).map(replierRetoursRacine).map(answer => ({
                 ...answer,
                 text: formatTextToHtml(answer.text),
                 ...(answer.tipsAndFeedback ? { tipsAndFeedback: convertirTips(answer.tipsAndFeedback) } : {})
@@ -133,10 +175,10 @@ export default {
         // Added: Ensure text formatting is applied
         question.params.question = formatTextToHtml(question.params.question);
         if (question.params.answers) {
-            question.params.answers = question.params.answers.map(a => ({
-                ...a,
-                text: formatTextToHtml(a.text)
-            }));
+            question.params.answers = question.params.answers.map(a => {
+                const reponse = replierRetoursRacine(a);
+                return { ...reponse, text: formatTextToHtml(reponse.text) };
+            });
         }
 
         question.params.behaviour = {

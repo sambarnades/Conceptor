@@ -4,7 +4,7 @@
 
 ## Identité
 
-**Caramel** v6.3.3 — webapp 100% client-side qui génère des activités H5P (`.h5p`) et Moodle/Éléa (`.mbz`) via IA pour profs francophones. ES6 modules purs, **aucun build, aucun npm**, servi en statique. Proxy IA n8n (clés API côté serveur). 12 langues. Packaging ZIP/TAR/GZIP côté navigateur.
+**Caramel** v6.3.4 — webapp 100% client-side qui génère des activités H5P (`.h5p`) et Moodle/Éléa (`.mbz`) via IA pour profs francophones. ES6 modules purs, **aucun build, aucun npm**, servi en statique. Proxy IA n8n (clés API côté serveur). 12 langues. Packaging ZIP/TAR/GZIP côté navigateur.
 
 Lancement local : `python3 -m http.server 8000` → `http://localhost:8000`. Mode debug : `?debug` dans l'URL.
 
@@ -41,6 +41,11 @@ scripts/         outils Node (.mjs) : verify-all-locales, update-locale-latex, t
 tests/           `test-all.html` = 38 suites navigateur (pilote headless : `node tests/run_browser_suite.mjs`)
                  `roundtrip/harness.mjs` = banc Node (T1 déterminisme, T2 idempotence, T3 verbatim, T4 snapshot, T5 Moodle)
                  `run_*.mjs` = contrôles Node ciblés (oracles Playwright, hygiène, mentions légales…)
+                 `run_feedback_semantics.mjs` = retours par réponse (À LANCER À LA MAIN, hors CI) :
+                 H5P SUPPRIME toute clé absente du semantics sans rien dire, donc un `chosenFeedback`
+                 posé à la racine d'une réponse au lieu de `tipsAndFeedback` disparaît à l'import Éléa.
+                 Embarque sa propre contre-épreuve (cas synthétique) : il vire au ROUGE si on désarme
+                 `replierRetoursRacine()` dans `processors/MultipleChoice.js`.
                  `qa-manuel/` = scénarios Playwright qui CLIQUENT dans le DOM réel (là où la suite
                  mute par `__testing`) + `contre-epreuves.sh`, qui désarme chaque correctif et exige
                  le ROUGE. Serveur sur :8010. Voir `tests/qa-manuel/README.md`.

@@ -4,6 +4,23 @@ Toutes les modifications notables apportées au projet **Caramel** sont consign�
 
 ---
 
+## [6.3.4] - 03-09-2026
+
+### Corrections
+
+- **Vos commentaires de réponse pouvaient disparaître à l'import** : dans un QCM, vous écrivez sous une mauvaise réponse une explication du type « 5² = 25, pas 13 », pour que l'élève comprenne son erreur plutôt que de la subir. Ce commentaire pouvait **disparaître purement et simplement** à l'import dans Éléa — sans message, sans avertissement, sans la moindre trace. L'élève cochait la mauvaise réponse et ne voyait aucune explication ; côté enseignant, rien ne laissait deviner que le texte saisi n'avait pas été retenu, puisque l'activité s'importait sans la moindre erreur.
+
+  En cause : H5P attend ces commentaires à un emplacement **bien précis** dans le fichier de l'activité, et **supprime en silence tout ce qu'il trouve ailleurs** — pas d'erreur, pas de journal, rien. Caramel les plaçait parfois à côté. Ils sont désormais remis au bon endroit avant l'export, et un contrôle automatique vérifie qu'aucun commentaire ne se perd entre ce que vous écrivez et le fichier produit. À savoir : une activité **déjà déposée** ne récupère pas d'elle-même les commentaires perdus — il faut la régénérer avec cette version et la redéposer.
+
+### Notes techniques
+
+- `js/h5p/processors/MultipleChoice.js` : nouveau `replierRetoursRacine()`, branché sur `process()` **et** sur `transformForQuizSet()` — les deux voies doivent produire la même chose, qu'il s'agisse d'un QCM autonome ou d'un QCM glissé dans un Quiz ou une Vidéo interactive. Un retour déjà présent dans `tipsAndFeedback` n'est jamais écrasé : le repli comble, il ne remplace pas. La Vidéo interactive, qui normalisait déjà ses retours en amont de la délégation, est inchangée.
+- `assets/data/examples/quiz_qcm_5.json` : fixture remise à la forme canonique (13 retours déplacés dans `tipsAndFeedback`).
+- `tests/run_feedback_semantics.mjs` (nouveau, **à lancer à la main, hors CI**) : rejoue le pipeline de production sur les 83 fixtures H5P et vérifie qu'aucun retour ne se perd entre la fixture et le `content.json`. Embarque deux cas synthétiques qui lui servent de contre-épreuve — il vire au ROUGE si `replierRetoursRacine()` est désarmé.
+- Mécanisme sous-jacent, à retenir : `H5PContentValidator::validateGroup()` fait `unset()` sur toute clé absente du semantics, sans erreur ni journal. Le semantics de `H5P.MultiChoice` ne déclare que `text`, `correct` et le groupe `tipsAndFeedback` sur `answers[]`.
+
+---
+
 ## [6.3.3] - 28-08-2026
 
 ### Nouveautés

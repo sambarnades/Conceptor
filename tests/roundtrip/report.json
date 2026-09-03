@@ -168,13 +168,13 @@
         {
           "path": "$.presentation.slides[4]",
           "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+1438)",
+          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+1732)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.presentation.slides[5]",
           "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1115)",
+          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1493)",
           "b": "undefined:undefined"
         },
         {
@@ -184,7 +184,7 @@
           "b": "undefined:undefined"
         }
       ],
-      "lengthDelta": -9621,
+      "lengthDelta": -10293,
       "category": "SHAPE-LOSS"
     },
     {
@@ -227,13 +227,13 @@
         {
           "path": "$.presentation.slides[4]",
           "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1364)",
+          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+2247)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.presentation.slides[5]",
           "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+1956)",
+          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+2250)",
           "b": "undefined:undefined"
         },
         {
@@ -243,7 +243,7 @@
           "b": "undefined:undefined"
         }
       ],
-      "lengthDelta": -12237,
+      "lengthDelta": -13414,
       "category": "SHAPE-LOSS"
     },
     {
@@ -286,37 +286,37 @@
         {
           "path": "$.presentation.slides[4]",
           "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+1535)",
+          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+1829)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.presentation.slides[5]",
           "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1331)",
+          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1709)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.presentation.slides[6]",
           "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1185)",
+          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+2068)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.presentation.slides[7]",
           "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+1452)",
+          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+2149)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.presentation.slides[8]",
           "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1906)",
+          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+2116)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.presentation.slides[9]",
           "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+4878)",
+          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+4898)",
           "b": "undefined:undefined"
         },
         {
@@ -338,7 +338,7 @@
           "b": "#ffffff"
         }
       ],
-      "lengthDelta": -25086,
+      "lengthDelta": -27568,
       "category": "SHAPE-LOSS"
     },
     {
@@ -387,13 +387,13 @@
         {
           "path": "$.presentation.slides[5]",
           "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+1494)",
+          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+1788)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.presentation.slides[6]",
           "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1253)",
+          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1631)",
           "b": "undefined:undefined"
         },
         {
@@ -405,19 +405,19 @@
         {
           "path": "$.presentation.slides[8]",
           "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+1368)",
+          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":35,\"backgroundOpacity\":80,\"displayAsButton\":false,\"action\":{\"library\":\"H5P…(+2251)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.presentation.slides[9]",
           "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1189)",
+          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1886)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.presentation.slides[10]",
           "kind": "type",
-          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+1882)",
+          "a": "object:{\"elements\":[{\"x\":2,\"y\":2,\"width\":96,\"height\":96,\"backgroundOpacity\":0,\"displayAsButton\":false,\"action\":{\"subContentId\":…(+2092)",
           "b": "undefined:undefined"
         },
         {
@@ -451,7 +451,7 @@
           "b": "undefined:undefined"
         }
       ],
-      "lengthDelta": -29828,
+      "lengthDelta": -32290,
       "category": "SHAPE-LOSS"
     },
     {
@@ -934,13 +934,13 @@
         {
           "path": "$.chapters[1].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+716)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1094)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.chapters[1].params.content[2]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"Mars est surnommée la planète rou…(+753)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"Mars est surnommée la planète rou…(+1047)",
           "b": "undefined:undefined"
         },
         {
@@ -983,6 +983,11 @@
           "a": "{\"enableRetry\":true,\"enableSolutionsButton\":true,\"passPercentage\":50}"
         },
         {
+          "path": "$.chapters[2].params.content[0].content.params.overallFeedback",
+          "kind": "missing-in-b",
+          "a": "[{\"from\":0,\"to\":25,\"feedback\":\"Revoyez les points clés du livre.\"},{\"from\":26,\"to\":50,\"feedback\":\"C'est un bon début.\"},…(+102)"
+        },
+        {
           "path": "$.chapters[2].params.content[0].content.params.solvedLabel",
           "kind": "missing-in-b",
           "a": "Progression :"
@@ -998,11 +1003,6 @@
           "a": "Votre résultat"
         },
         {
-          "path": "$.chapters[2].params.content[0].content.params.overallFeedback",
-          "kind": "missing-in-b",
-          "a": "[{\"from\":0,\"to\":25,\"feedback\":\"Revoyez les points clés du livre.\"},{\"from\":26,\"to\":50,\"feedback\":\"C'est un bon début.\"},…(+102)"
-        },
-        {
           "path": "$.chapters[2].params.content[0].content.params.labelCorrect",
           "kind": "missing-in-b",
           "a": "Correct."
@@ -1013,7 +1013,7 @@
           "a": "Incorrect ! Veuillez réessayer."
         }
       ],
-      "lengthDelta": -6256,
+      "lengthDelta": -6928,
       "category": "SHAPE-LOSS"
     },
     {
@@ -1079,7 +1079,7 @@
         {
           "path": "$.chapters[1].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MarkTheWords 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exer…(+891)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MarkTheWords 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exer…(+1588)",
           "b": "undefined:undefined"
         },
         {
@@ -1103,7 +1103,7 @@
         {
           "path": "$.chapters[2].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1018)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1396)",
           "b": "undefined:undefined"
         },
         {
@@ -1127,7 +1127,7 @@
         {
           "path": "$.chapters[3].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+1798)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+2008)",
           "b": "undefined:undefined"
         },
         {
@@ -1161,7 +1161,7 @@
           "b": "#1768c4"
         }
       ],
-      "lengthDelta": -12054,
+      "lengthDelta": -13339,
       "category": "SHAPE-LOSS"
     },
     {
@@ -1203,13 +1203,13 @@
         {
           "path": "$.chapters[0].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"La Ve République a été instaurée …(+841)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"La Ve République a été instaurée …(+1135)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.chapters[0].params.content[2]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+951)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1329)",
           "b": "undefined:undefined"
         },
         {
@@ -1263,7 +1263,7 @@
         {
           "path": "$.chapters[2].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+1673)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+1883)",
           "b": "undefined:undefined"
         },
         {
@@ -1291,7 +1291,7 @@
           "b": "undefined:undefined"
         }
       ],
-      "lengthDelta": -11305,
+      "lengthDelta": -12187,
       "category": "SHAPE-LOSS"
     },
     {
@@ -1369,7 +1369,7 @@
         {
           "path": "$.chapters[1].params.content[2]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1087)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1465)",
           "b": "undefined:undefined"
         },
         {
@@ -1393,13 +1393,13 @@
         {
           "path": "$.chapters[2].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+1811)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+2021)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.chapters[2].params.content[2]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"La vaporisation et l'évaporation …(+957)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"La vaporisation et l'évaporation …(+1251)",
           "b": "undefined:undefined"
         },
         {
@@ -1433,7 +1433,7 @@
           "b": "undefined:undefined"
         }
       ],
-      "lengthDelta": -19182,
+      "lengthDelta": -20064,
       "category": "SHAPE-LOSS"
     },
     {
@@ -1481,7 +1481,7 @@
         {
           "path": "$.chapters[0].params.content[2]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"La demande est toujours égale à l…(+968)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"La demande est toujours égale à l…(+1262)",
           "b": "undefined:undefined"
         },
         {
@@ -1511,7 +1511,7 @@
         {
           "path": "$.chapters[1].params.content[2]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1096)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1474)",
           "b": "undefined:undefined"
         },
         {
@@ -1535,7 +1535,7 @@
         {
           "path": "$.chapters[2].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+1996)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+2206)",
           "b": "undefined:undefined"
         },
         {
@@ -1587,7 +1587,7 @@
           "b": "undefined:undefined"
         }
       ],
-      "lengthDelta": -16998,
+      "lengthDelta": -17880,
       "category": "SHAPE-LOSS"
     },
     {
@@ -1635,7 +1635,7 @@
         {
           "path": "$.chapters[0].params.content[2]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"L'hypoténuse est toujours le côté…(+889)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"L'hypoténuse est toujours le côté…(+1183)",
           "b": "undefined:undefined"
         },
         {
@@ -1671,7 +1671,7 @@
         {
           "path": "$.chapters[1].params.content[2]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+850)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1228)",
           "b": "undefined:undefined"
         },
         {
@@ -1695,19 +1695,19 @@
         {
           "path": "$.chapters[2].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MarkTheWords 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exer…(+762)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MarkTheWords 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exer…(+1459)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.chapters[2].params.content[2]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragText 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise…(+798)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragText 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise…(+1681)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.chapters[2].params.content[3]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+1476)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+1686)",
           "b": "undefined:undefined"
         },
         {
@@ -1747,7 +1747,7 @@
           "b": 1
         }
       ],
-      "lengthDelta": -16616,
+      "lengthDelta": -19078,
       "category": "SHAPE-LOSS"
     },
     {
@@ -1801,7 +1801,7 @@
         {
           "path": "$.chapters[0].params.content[3]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"Les Trente Glorieuses ont duré ex…(+930)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"Les Trente Glorieuses ont duré ex…(+1224)",
           "b": "undefined:undefined"
         },
         {
@@ -1837,7 +1837,7 @@
         {
           "path": "$.chapters[1].params.content[3]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1112)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1490)",
           "b": "undefined:undefined"
         },
         {
@@ -1879,7 +1879,7 @@
         {
           "path": "$.chapters[2].params.content[4]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+1861)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+2071)",
           "b": "undefined:undefined"
         },
         {
@@ -1907,7 +1907,7 @@
           "b": "undefined:undefined"
         }
       ],
-      "lengthDelta": -20589,
+      "lengthDelta": -22168,
       "category": "SHAPE-LOSS"
     },
     {
@@ -1949,7 +1949,7 @@
         {
           "path": "$.chapters[0].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"Toutes les grandeurs physiques pe…(+941)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"Toutes les grandeurs physiques pe…(+1235)",
           "b": "undefined:undefined"
         },
         {
@@ -1961,7 +1961,7 @@
         {
           "path": "$.chapters[0].params.content[3]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+892)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1270)",
           "b": "undefined:undefined"
         },
         {
@@ -1991,7 +1991,7 @@
         {
           "path": "$.chapters[1].params.content[2]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragText 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise…(+796)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragText 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise…(+1679)",
           "b": "undefined:undefined"
         },
         {
@@ -2065,7 +2065,7 @@
           "a": "[{\"summary\":[\"Le kilogramme est l’unité de masse du SI.\",\"Le kilogramme est l’unité de longueur du SI.\",\"Le kilogramme e…(+424)"
         }
       ],
-      "lengthDelta": -15955,
+      "lengthDelta": -17510,
       "category": "SHAPE-LOSS"
     },
     {
@@ -2137,7 +2137,7 @@
         {
           "path": "$.chapters[1].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+900)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1278)",
           "b": "undefined:undefined"
         },
         {
@@ -2161,7 +2161,7 @@
         {
           "path": "$.chapters[2].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+1586)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+1796)",
           "b": "undefined:undefined"
         },
         {
@@ -2204,6 +2204,11 @@
           "a": "{\"enableRetry\":true,\"enableSolutionsButton\":true,\"passPercentage\":50}"
         },
         {
+          "path": "$.chapters[3].params.content[0].content.params.overallFeedback",
+          "kind": "missing-in-b",
+          "a": "[{\"from\":0,\"to\":25,\"feedback\":\"Revoyez les points clés du livre.\"},{\"from\":26,\"to\":50,\"feedback\":\"C'est un début, contin…(+101)"
+        },
+        {
           "path": "$.chapters[3].params.content[0].content.params.solvedLabel",
           "kind": "missing-in-b",
           "a": "Progression :"
@@ -2212,14 +2217,9 @@
           "path": "$.chapters[3].params.content[0].content.params.scoreLabel",
           "kind": "missing-in-b",
           "a": "Mauvaises réponses :"
-        },
-        {
-          "path": "$.chapters[3].params.content[0].content.params.resultLabel",
-          "kind": "missing-in-b",
-          "a": "Votre résultat"
         }
       ],
-      "lengthDelta": -7927,
+      "lengthDelta": -8515,
       "category": "SHAPE-LOSS"
     },
     {
@@ -2285,13 +2285,13 @@
         {
           "path": "$.chapters[1].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"La période de la Terreur a été ca…(+1050)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"La période de la Terreur a été ca…(+1344)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.chapters[1].params.content[2]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1039)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1417)",
           "b": "undefined:undefined"
         },
         {
@@ -2315,7 +2315,7 @@
         {
           "path": "$.chapters[2].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+1768)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.SingleChoiceSet 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"E…(+1978)",
           "b": "undefined:undefined"
         },
         {
@@ -2373,7 +2373,7 @@
           "b": "Chapitre 4"
         }
       ],
-      "lengthDelta": -11053,
+      "lengthDelta": -11935,
       "category": "SHAPE-LOSS"
     },
     {
@@ -2415,7 +2415,7 @@
         {
           "path": "$.chapters[0].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragText 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise…(+926)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragText 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise…(+1809)",
           "b": "undefined:undefined"
         },
         {
@@ -2463,7 +2463,7 @@
         {
           "path": "$.chapters[2].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1151)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1529)",
           "b": "undefined:undefined"
         },
         {
@@ -2491,7 +2491,7 @@
           "b": "undefined:undefined"
         }
       ],
-      "lengthDelta": -9064,
+      "lengthDelta": -10325,
       "category": "SHAPE-LOSS"
     },
     {
@@ -2557,13 +2557,13 @@
         {
           "path": "$.chapters[1].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MarkTheWords 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exer…(+807)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.MarkTheWords 1.11\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exer…(+1504)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.chapters[1].params.content[2]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"La métaphore utilise obligatoirem…(+951)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"La métaphore utilise obligatoirem…(+1245)",
           "b": "undefined:undefined"
         },
         {
@@ -2593,7 +2593,7 @@
         {
           "path": "$.chapters[2].params.content[2]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+973)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.Blanks 1.14\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise\",…(+1351)",
           "b": "undefined:undefined"
         },
         {
@@ -2623,7 +2623,7 @@
         {
           "path": "$.chapters[3].params.content[2]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragText 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise…(+924)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragText 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise…(+1807)",
           "b": "undefined:undefined"
         },
         {
@@ -2651,7 +2651,7 @@
           "b": "undefined:undefined"
         }
       ],
-      "lengthDelta": -14465,
+      "lengthDelta": -17600,
       "category": "SHAPE-LOSS"
     },
     {
@@ -2693,7 +2693,7 @@
         {
           "path": "$.chapters[0].params.content[1]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"L'effet de serre est un phénomène…(+975)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.TrueFalse 1.8\",\"metadata\":{\"title\":\"L'effet de serre est un phénomène…(+1269)",
           "b": "undefined:undefined"
         },
         {
@@ -2723,7 +2723,7 @@
         {
           "path": "$.chapters[1].params.content[2]",
           "kind": "type",
-          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragText 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise…(+853)",
+          "a": "object:{\"content\":{\"subContentId\":\"<UUID>\",\"library\":\"H5P.DragText 1.10\",\"metadata\":{\"title\":\"Exercice\",\"contentType\":\"Exercise…(+1736)",
           "b": "undefined:undefined"
         },
         {
@@ -2775,7 +2775,7 @@
           "b": "undefined:undefined"
         }
       ],
-      "lengthDelta": -10287,
+      "lengthDelta": -11464,
       "category": "SHAPE-LOSS"
     },
     {
@@ -2794,28 +2794,28 @@
         {
           "path": "$.interactiveVideo.assets.interactions[0]",
           "kind": "type",
-          "a": "object:{\"duration\":{\"from\":18,\"to\":20},\"pause\":true,\"displayType\":\"button\",\"buttonOnMobile\":false,\"label\":\"Question\",\"x\":58,\"y\"…(+1697)",
+          "a": "object:{\"duration\":{\"from\":18,\"to\":20},\"pause\":true,\"displayType\":\"poster\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":0,\"y\":0,\"width…(+1690)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.interactiveVideo.assets.interactions[1]",
           "kind": "type",
-          "a": "object:{\"duration\":{\"from\":72,\"to\":74},\"pause\":true,\"displayType\":\"poster\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":5,\"y\":65,\"widt…(+920)",
+          "a": "object:{\"duration\":{\"from\":72,\"to\":74},\"pause\":true,\"displayType\":\"poster\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":0,\"y\":0,\"width…(+1215)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.interactiveVideo.assets.interactions[2]",
           "kind": "type",
-          "a": "object:{\"duration\":{\"from\":120,\"to\":122},\"pause\":true,\"displayType\":\"button\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":60,\"y\":10,\"w…(+779)",
+          "a": "object:{\"duration\":{\"from\":120,\"to\":122},\"pause\":true,\"displayType\":\"button\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":60,\"y\":10,\"w…(+1157)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.interactiveVideo.summary",
           "kind": "missing-in-b",
-          "a": "{\"task\":{\"library\":\"H5P.Summary 1.10\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Summary\",\"license\":\"U\",\"title\":…(+457)"
+          "a": "{\"task\":{\"library\":\"H5P.Summary 1.10\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Summary\",\"license\":\"U\",\"title\":…(+690)"
         }
       ],
-      "lengthDelta": -4346,
+      "lengthDelta": -5245,
       "category": "SHAPE-LOSS"
     },
     {
@@ -2846,40 +2846,40 @@
         {
           "path": "$.interactiveVideo.assets.interactions[0]",
           "kind": "type",
-          "a": "object:{\"duration\":{\"from\":205,\"to\":207},\"pause\":true,\"displayType\":\"button\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":45,\"y\":32,\"w…(+1143)",
+          "a": "object:{\"duration\":{\"from\":205,\"to\":207},\"pause\":true,\"displayType\":\"poster\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":0,\"y\":0,\"wid…(+1437)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.interactiveVideo.assets.interactions[1]",
           "kind": "type",
-          "a": "object:{\"duration\":{\"from\":491,\"to\":493},\"pause\":true,\"displayType\":\"button\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":45,\"y\":32,\"w…(+2394)",
+          "a": "object:{\"duration\":{\"from\":491,\"to\":493},\"pause\":true,\"displayType\":\"poster\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":0,\"y\":0,\"wid…(+2394)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.interactiveVideo.assets.interactions[2]",
           "kind": "type",
-          "a": "object:{\"duration\":{\"from\":615,\"to\":617},\"pause\":true,\"displayType\":\"button\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":45,\"y\":32,\"w…(+2191)",
+          "a": "object:{\"duration\":{\"from\":615,\"to\":617},\"pause\":true,\"displayType\":\"poster\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":0,\"y\":0,\"wid…(+2191)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.interactiveVideo.assets.interactions[3]",
           "kind": "type",
-          "a": "object:{\"duration\":{\"from\":1348,\"to\":1350},\"pause\":true,\"displayType\":\"button\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":45,\"y\":32,…(+1214)",
+          "a": "object:{\"duration\":{\"from\":1348,\"to\":1350},\"pause\":true,\"displayType\":\"poster\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":0,\"y\":0,\"w…(+1508)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.interactiveVideo.assets.interactions[4]",
           "kind": "type",
-          "a": "object:{\"duration\":{\"from\":2247,\"to\":2249},\"pause\":true,\"displayType\":\"button\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":45,\"y\":32,…(+792)",
+          "a": "object:{\"duration\":{\"from\":2247,\"to\":2249},\"pause\":true,\"displayType\":\"poster\",\"buttonOnMobile\":false,\"label\":\"\",\"x\":0,\"y\":0,\"w…(+1170)",
           "b": "undefined:undefined"
         },
         {
           "path": "$.interactiveVideo.summary",
           "kind": "missing-in-b",
-          "a": "{\"task\":{\"library\":\"H5P.Summary 1.10\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Summary\",\"license\":\"U\",\"title\":…(+2678)"
+          "a": "{\"task\":{\"library\":\"H5P.Summary 1.10\",\"subContentId\":\"<UUID>\",\"metadata\":{\"contentType\":\"Summary\",\"license\":\"U\",\"title\":…(+2911)"
         }
       ],
-      "lengthDelta": -11303,
+      "lengthDelta": -12502,
       "category": "SHAPE-LOSS"
     },
     {
@@ -3200,160 +3200,160 @@
       "moduleKey": "Glossary",
       "ok": true,
       "error": null,
-      "sha1": "b11a85f24f0621d2ad578489e8ea48fec9cc4bd30c0622ad62aeae313ea012c2",
-      "sha2": "b11a85f24f0621d2ad578489e8ea48fec9cc4bd30c0622ad62aeae313ea012c2",
+      "sha1": "f42a69d9f8d2271f4bea2cf6ea7c856d3645de604ec50f28c6b6b0d9ee1f470c",
+      "sha2": "f42a69d9f8d2271f4bea2cf6ea7c856d3645de604ec50f28c6b6b0d9ee1f470c",
       "diff": [],
-      "canonSize": 3913
+      "canonSize": 3912
     },
     {
       "file": "accordion_2.json",
       "moduleKey": "Glossary",
       "ok": true,
       "error": null,
-      "sha1": "8cdb152b8eadc583d378de66e0f3df92ce478e4219517ac7b06518b2568960ac",
-      "sha2": "8cdb152b8eadc583d378de66e0f3df92ce478e4219517ac7b06518b2568960ac",
+      "sha1": "e7f24fec3dcf0169ddfefc9bb462a25c8212ff812c682e4808cf26c9959e4339",
+      "sha2": "e7f24fec3dcf0169ddfefc9bb462a25c8212ff812c682e4808cf26c9959e4339",
       "diff": [],
-      "canonSize": 3703
+      "canonSize": 3702
     },
     {
       "file": "charts_1.json",
       "moduleKey": "Chart",
       "ok": true,
       "error": null,
-      "sha1": "c2acdc553a3e597be45e8b8dec4448c85e0f092bc01ca4321d9cc9ebe1e3b011",
-      "sha2": "c2acdc553a3e597be45e8b8dec4448c85e0f092bc01ca4321d9cc9ebe1e3b011",
+      "sha1": "03a7a7a559b1962eb71c278e8e4913f850f9e2218439da7cc688a3a51fd56057",
+      "sha2": "03a7a7a559b1962eb71c278e8e4913f850f9e2218439da7cc688a3a51fd56057",
       "diff": [],
-      "canonSize": 1354
+      "canonSize": 1353
     },
     {
       "file": "charts_2.json",
       "moduleKey": "Chart",
       "ok": true,
       "error": null,
-      "sha1": "3a656af30a14b47d48c8faf1b6784f9f87479f95a45364d4d6cb9113d3c64500",
-      "sha2": "3a656af30a14b47d48c8faf1b6784f9f87479f95a45364d4d6cb9113d3c64500",
+      "sha1": "6c3d695c226df5ffe53f6f7bdd14f46407d79e55141ed60c0fd847328dedd8bd",
+      "sha2": "6c3d695c226df5ffe53f6f7bdd14f46407d79e55141ed60c0fd847328dedd8bd",
       "diff": [],
-      "canonSize": 1186
+      "canonSize": 1185
     },
     {
       "file": "charts_3.json",
       "moduleKey": "Chart",
       "ok": true,
       "error": null,
-      "sha1": "744563858f9da7323f3531fa32346c1056d6b516314809eae1782a10519e73c6",
-      "sha2": "744563858f9da7323f3531fa32346c1056d6b516314809eae1782a10519e73c6",
+      "sha1": "687624b26ab7793cfd01dd3359f01804926cdc25eeac83d419cade3c326be403",
+      "sha2": "687624b26ab7793cfd01dd3359f01804926cdc25eeac83d419cade3c326be403",
       "diff": [],
-      "canonSize": 967
+      "canonSize": 1006
     },
     {
       "file": "course_presentation_1.json",
       "moduleKey": "CoursePresentation",
       "ok": true,
       "error": null,
-      "sha1": "a15294b95a9e9acd07628e74c7186a8e7c6204c16962797fd0cc7a8ab40c2d82",
-      "sha2": "a15294b95a9e9acd07628e74c7186a8e7c6204c16962797fd0cc7a8ab40c2d82",
+      "sha1": "245ad4bdf7b473655586f7f70bf5e88916c194d35b4fbf9d562fbd5e4e6b9444",
+      "sha2": "245ad4bdf7b473655586f7f70bf5e88916c194d35b4fbf9d562fbd5e4e6b9444",
       "diff": [],
-      "canonSize": 18646
+      "canonSize": 19052
     },
     {
       "file": "course_presentation_2.json",
       "moduleKey": "CoursePresentation",
       "ok": true,
       "error": null,
-      "sha1": "1f86a54a0e80495e6cf20c2f4fc9d6764ced520733ce7886a4044290e4b8a3aa",
-      "sha2": "1f86a54a0e80495e6cf20c2f4fc9d6764ced520733ce7886a4044290e4b8a3aa",
+      "sha1": "65559e11565e6719a76dc2c24411c1a7697957a069c7bbb0f2add09890c88b29",
+      "sha2": "65559e11565e6719a76dc2c24411c1a7697957a069c7bbb0f2add09890c88b29",
       "diff": [],
-      "canonSize": 23458
+      "canonSize": 24704
     },
     {
       "file": "course_presentation_3.json",
       "moduleKey": "CoursePresentation",
       "ok": true,
       "error": null,
-      "sha1": "5ddb175985abfb6f0502790643ab19594cdf76496e671badcf46b291f86c6558",
-      "sha2": "5ddb175985abfb6f0502790643ab19594cdf76496e671badcf46b291f86c6558",
+      "sha1": "1790c8c1572538fb982f1d0bd98bbd67f420c1f0914e966f8aa26351bd1a959b",
+      "sha2": "1790c8c1572538fb982f1d0bd98bbd67f420c1f0914e966f8aa26351bd1a959b",
       "diff": [],
-      "canonSize": 25991
+      "canonSize": 27978
     },
     {
       "file": "course_presentation_4.json",
       "moduleKey": "CoursePresentation",
       "ok": true,
       "error": null,
-      "sha1": "1c1f5ec058bdc55db56308a38834d5043e9c568882101c01fce54be852f5c5c5",
-      "sha2": "1c1f5ec058bdc55db56308a38834d5043e9c568882101c01fce54be852f5c5c5",
+      "sha1": "1499e31f796e7f3f7e4e5837e41cbdbed3e7547b438ebcbfe43527cff67f5e1b",
+      "sha2": "1499e31f796e7f3f7e4e5837e41cbdbed3e7547b438ebcbfe43527cff67f5e1b",
       "diff": [],
-      "canonSize": 53584
+      "canonSize": 57593
     },
     {
       "file": "course_presentation_5.json",
       "moduleKey": "CoursePresentation",
       "ok": true,
       "error": null,
-      "sha1": "7fda7864ab4d9ee7ccb0d5f799392d7b8b1bbcda748817967780093982103e79",
-      "sha2": "7fda7864ab4d9ee7ccb0d5f799392d7b8b1bbcda748817967780093982103e79",
+      "sha1": "e4da906a88c517a35e18f7534c7ec8098594924645c3d85ca4789709b9d37644",
+      "sha2": "e4da906a88c517a35e18f7534c7ec8098594924645c3d85ca4789709b9d37644",
       "diff": [],
-      "canonSize": 61247
+      "canonSize": 64974
     },
     {
       "file": "crosswords_1.json",
       "moduleKey": "Crossword",
       "ok": true,
       "error": null,
-      "sha1": "1a4c20bb8be2df8f5469f839d57fc4ed5c92adacfc339e4f14b01d7c69542e3a",
-      "sha2": "1a4c20bb8be2df8f5469f839d57fc4ed5c92adacfc339e4f14b01d7c69542e3a",
+      "sha1": "5f0f202b07fe0564dd033ad4ce841c23a05ec02b931f6e22590407d22609b020",
+      "sha2": "5f0f202b07fe0564dd033ad4ce841c23a05ec02b931f6e22590407d22609b020",
       "diff": [],
-      "canonSize": 5969
+      "canonSize": 7469
     },
     {
       "file": "crosswords_2.json",
       "moduleKey": "Crossword",
       "ok": true,
       "error": null,
-      "sha1": "70a88665b41ca9b24f246558642ef7e83ea674a8eb1c4373ea608b5802f6d59b",
-      "sha2": "70a88665b41ca9b24f246558642ef7e83ea674a8eb1c4373ea608b5802f6d59b",
+      "sha1": "e61fb8aa07787308762eaeaf1924b03508d87d7470f87a6b726ac6a8e5c6f999",
+      "sha2": "e61fb8aa07787308762eaeaf1924b03508d87d7470f87a6b726ac6a8e5c6f999",
       "diff": [],
-      "canonSize": 8609
+      "canonSize": 10109
     },
     {
       "file": "crosswords_3.json",
       "moduleKey": "Crossword",
       "ok": true,
       "error": null,
-      "sha1": "8b8f3060b2f4a5ee8efd3d65b52d77867407ce2b0ba798184b8e109e2721f094",
-      "sha2": "8b8f3060b2f4a5ee8efd3d65b52d77867407ce2b0ba798184b8e109e2721f094",
+      "sha1": "f21d566bc5d45c5889870b9aea66855e775d5a3beefcdc5d342d0c7cc2e2e3c5",
+      "sha2": "f21d566bc5d45c5889870b9aea66855e775d5a3beefcdc5d342d0c7cc2e2e3c5",
       "diff": [],
-      "canonSize": 5667
+      "canonSize": 7167
     },
     {
       "file": "dialog_cards_1.json",
       "moduleKey": "DialogCards",
       "ok": true,
       "error": null,
-      "sha1": "07358f231a2cc7b41b0d91a5042a3c88c7900c4fa45e7f90c832724dc022cb01",
-      "sha2": "07358f231a2cc7b41b0d91a5042a3c88c7900c4fa45e7f90c832724dc022cb01",
+      "sha1": "85d8acde6c14a0e2c77f97d7d29343fc6f59ae012f0e1db661fb96435d19ead1",
+      "sha2": "85d8acde6c14a0e2c77f97d7d29343fc6f59ae012f0e1db661fb96435d19ead1",
       "diff": [],
-      "canonSize": 4054
+      "canonSize": 4053
     },
     {
       "file": "dialog_cards_2.json",
       "moduleKey": "DialogCards",
       "ok": true,
       "error": null,
-      "sha1": "03fe5c63cda4ec94ebc34da9715679bdb42c0b9174f846a943aeca4e48cc81cb",
-      "sha2": "03fe5c63cda4ec94ebc34da9715679bdb42c0b9174f846a943aeca4e48cc81cb",
+      "sha1": "eaa71801c1b3b4953ab4e5e27ab228518ebe2d1ea798843c32a3d53c72669c25",
+      "sha2": "eaa71801c1b3b4953ab4e5e27ab228518ebe2d1ea798843c32a3d53c72669c25",
       "diff": [],
-      "canonSize": 3687
+      "canonSize": 3686
     },
     {
       "file": "dialog_cards_3.json",
       "moduleKey": "DialogCards",
       "ok": true,
       "error": null,
-      "sha1": "6176c67912aab852ebb608f9dd53f6ef3f3226f535ad09bc57aa02e27865a870",
-      "sha2": "6176c67912aab852ebb608f9dd53f6ef3f3226f535ad09bc57aa02e27865a870",
+      "sha1": "4bf9888c83ed3191a2c18f41fd86d473e7d84544aab161d232852ea36731aeb0",
+      "sha2": "4bf9888c83ed3191a2c18f41fd86d473e7d84544aab161d232852ea36731aeb0",
       "diff": [],
-      "canonSize": 3696
+      "canonSize": 3695
     },
     {
       "file": "dictation_1.json",
@@ -3370,660 +3370,660 @@
       "moduleKey": "DragAndDrop",
       "ok": true,
       "error": null,
-      "sha1": "5ad7c5687bd6c22f76c7cc8e207cddfe78b7eaf5431991e2c2cf2fbfdb0cb501",
-      "sha2": "5ad7c5687bd6c22f76c7cc8e207cddfe78b7eaf5431991e2c2cf2fbfdb0cb501",
+      "sha1": "b3e4815ae6f9ea6c5a9b425c9d8dbd93883c9b40c7f9116eee012c6892f03b69",
+      "sha2": "b3e4815ae6f9ea6c5a9b425c9d8dbd93883c9b40c7f9116eee012c6892f03b69",
       "diff": [],
-      "canonSize": 9993
+      "canonSize": 9992
     },
     {
       "file": "drag_and_drop_2.json",
       "moduleKey": "DragAndDrop",
       "ok": true,
       "error": null,
-      "sha1": "63031053195d02ceb2050dfab42c0e18f93d8fb55200cdadcba05f9da9f2ea23",
-      "sha2": "63031053195d02ceb2050dfab42c0e18f93d8fb55200cdadcba05f9da9f2ea23",
+      "sha1": "076731007f82905fbe9985d019d39e507cbdec9d5f045272e5a19bc160d72973",
+      "sha2": "076731007f82905fbe9985d019d39e507cbdec9d5f045272e5a19bc160d72973",
       "diff": [],
-      "canonSize": 10785
+      "canonSize": 10784
     },
     {
       "file": "drag_the_words_1.json",
       "moduleKey": "DragTheWords",
       "ok": true,
       "error": null,
-      "sha1": "f6c303fe29cbc6b9862ff8f60058bcb15f9fe27f2b4e8ce1bc4aaefa1e5a15e1",
-      "sha2": "f6c303fe29cbc6b9862ff8f60058bcb15f9fe27f2b4e8ce1bc4aaefa1e5a15e1",
+      "sha1": "e0fe616352e91f9c2b3055cdb708471de8c0d1b550caa921808e4c1e4ddd652b",
+      "sha2": "e0fe616352e91f9c2b3055cdb708471de8c0d1b550caa921808e4c1e4ddd652b",
       "diff": [],
-      "canonSize": 3723
+      "canonSize": 3805
     },
     {
       "file": "drag_the_words_2.json",
       "moduleKey": "DragTheWords",
       "ok": true,
       "error": null,
-      "sha1": "58c32d03f01324e60f9dc19f6287382aa24369f802f257dd0d3ab4cee28d0643",
-      "sha2": "58c32d03f01324e60f9dc19f6287382aa24369f802f257dd0d3ab4cee28d0643",
+      "sha1": "9e8d38ee28fedb4c26cba58a63c9a4f9ba0830964be4bbc83a152defeccb7def",
+      "sha2": "9e8d38ee28fedb4c26cba58a63c9a4f9ba0830964be4bbc83a152defeccb7def",
       "diff": [],
-      "canonSize": 3430
+      "canonSize": 3512
     },
     {
       "file": "drag_the_words_3.json",
       "moduleKey": "DragTheWords",
       "ok": true,
       "error": null,
-      "sha1": "0bc03f4b58fe00a52534b98205032ff057f6e78ce65ec79317c7aa49a128542f",
-      "sha2": "0bc03f4b58fe00a52534b98205032ff057f6e78ce65ec79317c7aa49a128542f",
+      "sha1": "5914f6d4bc5e0bc84b70254eac978efaa50b5426d611d8555ce4e08c64c7bb9f",
+      "sha2": "5914f6d4bc5e0bc84b70254eac978efaa50b5426d611d8555ce4e08c64c7bb9f",
       "diff": [],
-      "canonSize": 2514
+      "canonSize": 2596
     },
     {
       "file": "essay_1.json",
       "moduleKey": "Essay",
       "ok": true,
       "error": null,
-      "sha1": "27d141766cebebee7cacc895c96acc3f6d05b9497759a798a8c58831148a5435",
-      "sha2": "27d141766cebebee7cacc895c96acc3f6d05b9497759a798a8c58831148a5435",
+      "sha1": "6e42174b1147e61378938448bad6df6bb359c2abaf39c63eded3be9063dc45f7",
+      "sha2": "6e42174b1147e61378938448bad6df6bb359c2abaf39c63eded3be9063dc45f7",
       "diff": [],
-      "canonSize": 5465
+      "canonSize": 5464
     },
     {
       "file": "essay_2.json",
       "moduleKey": "Essay",
       "ok": true,
       "error": null,
-      "sha1": "57f0f235b0f992226fd8f1e2572f859752c906de523cd2bce98e6a5dc6dfd844",
-      "sha2": "57f0f235b0f992226fd8f1e2572f859752c906de523cd2bce98e6a5dc6dfd844",
+      "sha1": "fcc08c9a614e6f2e06c894fa9379f7600afedc35834ba6788da1e2211f330d72",
+      "sha2": "fcc08c9a614e6f2e06c894fa9379f7600afedc35834ba6788da1e2211f330d72",
       "diff": [],
-      "canonSize": 5445
+      "canonSize": 5444
     },
     {
       "file": "essay_3.json",
       "moduleKey": "Essay",
       "ok": true,
       "error": null,
-      "sha1": "b06fcaa6706453dd86c81c26a7d1935a309898d0a4f937c97e4c18dc7f98e2eb",
-      "sha2": "b06fcaa6706453dd86c81c26a7d1935a309898d0a4f937c97e4c18dc7f98e2eb",
+      "sha1": "aada17624e101c00bc0bcda275f7b2cc0921a2e792f9971e633068f408121f74",
+      "sha2": "aada17624e101c00bc0bcda275f7b2cc0921a2e792f9971e633068f408121f74",
       "diff": [],
-      "canonSize": 3913
+      "canonSize": 3912
     },
     {
       "file": "fill_in_the_blanks_1.json",
       "moduleKey": "FillInTheBlanks",
       "ok": true,
       "error": null,
-      "sha1": "08dd65fbccc2b0cdec3c2c507d3b30ee11bc6340c7dc5f6d74522c82b7f0137d",
-      "sha2": "08dd65fbccc2b0cdec3c2c507d3b30ee11bc6340c7dc5f6d74522c82b7f0137d",
+      "sha1": "8b4dcf8a199e1ef222dfd1b4b4f792515dd6627cc13f86f542f2a0f940b88923",
+      "sha2": "8b4dcf8a199e1ef222dfd1b4b4f792515dd6627cc13f86f542f2a0f940b88923",
       "diff": [],
-      "canonSize": 5058
+      "canonSize": 5098
     },
     {
       "file": "fill_in_the_blanks_2.json",
       "moduleKey": "FillInTheBlanks",
       "ok": true,
       "error": null,
-      "sha1": "c7b48af2a7bbdfbc66030bd811146891d3a4a6f7f735c51cc79d5efa490d6b4b",
-      "sha2": "c7b48af2a7bbdfbc66030bd811146891d3a4a6f7f735c51cc79d5efa490d6b4b",
+      "sha1": "232a899d022020b6b83d15e930a0d01970b20f91bef2f1cd4c3f5c2b2117cddb",
+      "sha2": "232a899d022020b6b83d15e930a0d01970b20f91bef2f1cd4c3f5c2b2117cddb",
       "diff": [],
-      "canonSize": 4632
+      "canonSize": 4672
     },
     {
       "file": "fill_in_the_blanks_3.json",
       "moduleKey": "FillInTheBlanks",
       "ok": true,
       "error": null,
-      "sha1": "a1e16b3e2d5ff5c21a86a715a4b4fac2966dfeaaf49f18593e57ff2da3b38186",
-      "sha2": "a1e16b3e2d5ff5c21a86a715a4b4fac2966dfeaaf49f18593e57ff2da3b38186",
+      "sha1": "aa7bebe9ba76950455c36cc5a735428b3b2081cbe2d95c478b763ea42bbb4ce5",
+      "sha2": "aa7bebe9ba76950455c36cc5a735428b3b2081cbe2d95c478b763ea42bbb4ce5",
       "diff": [],
-      "canonSize": 3795
+      "canonSize": 3835
     },
     {
       "file": "find_multiple_hotspots_1.json",
       "moduleKey": "FindMultipleHotspots",
       "ok": true,
       "error": null,
-      "sha1": "8d8464d988631c31299e8e9b7185b4bb6a51186da05a7bb1b32b4a5edf5514c7",
-      "sha2": "8d8464d988631c31299e8e9b7185b4bb6a51186da05a7bb1b32b4a5edf5514c7",
+      "sha1": "7d1e88be4bc0cde9e34f300c1b6057234ab9571c8858b57e7cd1c9be0fb8dbc3",
+      "sha2": "7d1e88be4bc0cde9e34f300c1b6057234ab9571c8858b57e7cd1c9be0fb8dbc3",
       "diff": [],
-      "canonSize": 2797
+      "canonSize": 2796
     },
     {
       "file": "find_the_hotspot_1.json",
       "moduleKey": "FindTheHotspot",
       "ok": true,
       "error": null,
-      "sha1": "769c43a804cc0c2b9dac1767dd0bb1497add02b7bd49c0fea62ebea47516a358",
-      "sha2": "769c43a804cc0c2b9dac1767dd0bb1497add02b7bd49c0fea62ebea47516a358",
+      "sha1": "e5672c106717aae310cb17353103ea93c8df6d02828d69c8954a94e6cc481921",
+      "sha2": "e5672c106717aae310cb17353103ea93c8df6d02828d69c8954a94e6cc481921",
       "diff": [],
-      "canonSize": 3038
+      "canonSize": 3037
     },
     {
       "file": "find_the_words_1.json",
       "moduleKey": "FindTheWords",
       "ok": true,
       "error": null,
-      "sha1": "82db4439bad89358b9cd8a3840e3f1a5d15f0953223d53d34eaa801289e006ee",
-      "sha2": "82db4439bad89358b9cd8a3840e3f1a5d15f0953223d53d34eaa801289e006ee",
+      "sha1": "64c76d161391ffaac7f080612599355465d1eb4da19845d34e95072dd4aae4d2",
+      "sha2": "64c76d161391ffaac7f080612599355465d1eb4da19845d34e95072dd4aae4d2",
       "diff": [],
-      "canonSize": 1980
+      "canonSize": 1979
     },
     {
       "file": "find_the_words_2.json",
       "moduleKey": "FindTheWords",
       "ok": true,
       "error": null,
-      "sha1": "b29bbed6f2c6d9179ad5c476e138c0759615e142f710c77b1d3054d8c8d4fbd6",
-      "sha2": "b29bbed6f2c6d9179ad5c476e138c0759615e142f710c77b1d3054d8c8d4fbd6",
+      "sha1": "bce2d58b530a6cfb6a299abcfc1ff813926dd1187cfdd75f49ad31affd694bff",
+      "sha2": "bce2d58b530a6cfb6a299abcfc1ff813926dd1187cfdd75f49ad31affd694bff",
       "diff": [],
-      "canonSize": 1756
+      "canonSize": 1755
     },
     {
       "file": "find_the_words_3.json",
       "moduleKey": "FindTheWords",
       "ok": true,
       "error": null,
-      "sha1": "7d29d9a5fc4cb93752c35bd1a326e5ae85cf1bbec90e65cd4912197e7403ce29",
-      "sha2": "7d29d9a5fc4cb93752c35bd1a326e5ae85cf1bbec90e65cd4912197e7403ce29",
+      "sha1": "cc68cf6e7b4df26e5e1738224f2704f544ca573e163ac4c4ee66c83b96f9d9ba",
+      "sha2": "cc68cf6e7b4df26e5e1738224f2704f544ca573e163ac4c4ee66c83b96f9d9ba",
       "diff": [],
-      "canonSize": 1988
+      "canonSize": 1987
     },
     {
       "file": "flashcards_1.json",
       "moduleKey": "Flashcards",
       "ok": true,
       "error": null,
-      "sha1": "4067536df706e38ae81adb26bace85488fead0b6f07e419657079d423ca241fc",
-      "sha2": "4067536df706e38ae81adb26bace85488fead0b6f07e419657079d423ca241fc",
+      "sha1": "eca7d3b3556300267794786e5dfb6abb5d41573a698834489252f365a48e7dfe",
+      "sha2": "eca7d3b3556300267794786e5dfb6abb5d41573a698834489252f365a48e7dfe",
       "diff": [],
-      "canonSize": 2397
+      "canonSize": 2586
     },
     {
       "file": "flashcards_2.json",
       "moduleKey": "Flashcards",
       "ok": true,
       "error": null,
-      "sha1": "6ec064d0a0c09965f9cb0e3764fc2235e060b4147d4f2c926735d07f7e75a2e0",
-      "sha2": "6ec064d0a0c09965f9cb0e3764fc2235e060b4147d4f2c926735d07f7e75a2e0",
+      "sha1": "c19133f317a39a9858254045317f327e49bb402cb96f216d57d9bf450c65b554",
+      "sha2": "c19133f317a39a9858254045317f327e49bb402cb96f216d57d9bf450c65b554",
       "diff": [],
-      "canonSize": 3536
+      "canonSize": 3725
     },
     {
       "file": "flashcards_3.json",
       "moduleKey": "Flashcards",
       "ok": true,
       "error": null,
-      "sha1": "3d685ef48a28e28a54dae9dc0db1b0fe5d3a988e7fce8c33aef9b89c8bc31ab3",
-      "sha2": "3d685ef48a28e28a54dae9dc0db1b0fe5d3a988e7fce8c33aef9b89c8bc31ab3",
+      "sha1": "c9a9417fe247a1b4c15324564f9054ca2df03185d4deebb601d57ed096567d8d",
+      "sha2": "c9a9417fe247a1b4c15324564f9054ca2df03185d4deebb601d57ed096567d8d",
       "diff": [],
-      "canonSize": 2325
+      "canonSize": 2514
     },
     {
       "file": "image_hotspots_1.json",
       "moduleKey": "ImageHotspots",
       "ok": true,
       "error": null,
-      "sha1": "db3d6b23b3e26aed454bf094831295a0ede9a7864ccdf4150bdcf86fb549d485",
-      "sha2": "db3d6b23b3e26aed454bf094831295a0ede9a7864ccdf4150bdcf86fb549d485",
+      "sha1": "e0ea8b3bf6fad78f714f66b01065cb4c0ff12e3831bd725e4598ddd4610d04c6",
+      "sha2": "e0ea8b3bf6fad78f714f66b01065cb4c0ff12e3831bd725e4598ddd4610d04c6",
       "diff": [],
-      "canonSize": 4075
+      "canonSize": 4074
     },
     {
       "file": "interactive_book_1.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "ecdb7667a8a9e376e5f0d660f97ecef005205926a24655819f98238b5d0b2b37",
-      "sha2": "ecdb7667a8a9e376e5f0d660f97ecef005205926a24655819f98238b5d0b2b37",
+      "sha1": "d3c97668c083399259e2eee727ee7fe6e1ee035992dc63d4ee528c6f6381c0bd",
+      "sha2": "d3c97668c083399259e2eee727ee7fe6e1ee035992dc63d4ee528c6f6381c0bd",
       "diff": [],
-      "canonSize": 18206
+      "canonSize": 19045
     },
     {
       "file": "interactive_book_10.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "a49c5bf10afff7b06ec1796f070efc462c3a44eff85bbbb369f804d18c1175e8",
-      "sha2": "a49c5bf10afff7b06ec1796f070efc462c3a44eff85bbbb369f804d18c1175e8",
+      "sha1": "8034ce3fa466263b1dd4a50ce93d710876897f40125f6f2ed4e8654c8067f0cc",
+      "sha2": "8034ce3fa466263b1dd4a50ce93d710876897f40125f6f2ed4e8654c8067f0cc",
       "diff": [],
-      "canonSize": 27764
+      "canonSize": 29503
     },
     {
       "file": "interactive_book_11.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "9be8d37374033b6eb845cef5b0abdc6e41e8e7b578d10f87af506faae10cf4af",
-      "sha2": "9be8d37374033b6eb845cef5b0abdc6e41e8e7b578d10f87af506faae10cf4af",
+      "sha1": "0179da1186fc53dfcbed38f39f8cb23bff7610fe12c7c33e91157132c0bf9c21",
+      "sha2": "0179da1186fc53dfcbed38f39f8cb23bff7610fe12c7c33e91157132c0bf9c21",
       "diff": [],
-      "canonSize": 26343
+      "canonSize": 27516
     },
     {
       "file": "interactive_book_12.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "807b92540e0840279e0aaa8b8a1ad10b7c13e05dd1300bcfdaaa5965d63ff1bd",
-      "sha2": "807b92540e0840279e0aaa8b8a1ad10b7c13e05dd1300bcfdaaa5965d63ff1bd",
+      "sha1": "5845c25a71d05cf4d3094c7c99dc403aaf605a3c0282c7b6a47b812ba7572e3c",
+      "sha2": "5845c25a71d05cf4d3094c7c99dc403aaf605a3c0282c7b6a47b812ba7572e3c",
       "diff": [],
-      "canonSize": 41632
+      "canonSize": 42805
     },
     {
       "file": "interactive_book_13.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "37b15be1cf790a7a03df07d62debfc31adbc28cccedc7f04bdc6234704ed9989",
-      "sha2": "37b15be1cf790a7a03df07d62debfc31adbc28cccedc7f04bdc6234704ed9989",
+      "sha1": "4100090803411576cfd9bbcfe4569d015f3c30aef746004a97f5fdaf833d15b0",
+      "sha2": "4100090803411576cfd9bbcfe4569d015f3c30aef746004a97f5fdaf833d15b0",
       "diff": [],
-      "canonSize": 38063
+      "canonSize": 39236
     },
     {
       "file": "interactive_book_2.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "dc6f5790d5f205ce960b981663baccff87186eeb4d659eb937d26e83dc99ab62",
-      "sha2": "dc6f5790d5f205ce960b981663baccff87186eeb4d659eb937d26e83dc99ab62",
+      "sha1": "5db0c58d8df2ff445051f0a1e6f008285c8b776c3b134561af6dc514a0e74123",
+      "sha2": "5db0c58d8df2ff445051f0a1e6f008285c8b776c3b134561af6dc514a0e74123",
       "diff": [],
-      "canonSize": 40470
+      "canonSize": 43790
     },
     {
       "file": "interactive_book_3.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "d9047118a316736ae7f2f046c957dbec610e14fb4fc507826d5378ed0248cbc6",
-      "sha2": "d9047118a316736ae7f2f046c957dbec610e14fb4fc507826d5378ed0248cbc6",
+      "sha1": "19f5cd8f74837c714877a66bfc76b4d5889062539493b75e9381b28e9e59d369",
+      "sha2": "19f5cd8f74837c714877a66bfc76b4d5889062539493b75e9381b28e9e59d369",
       "diff": [],
-      "canonSize": 41427
+      "canonSize": 43528
     },
     {
       "file": "interactive_book_4.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "a8fb7087cd0ff4555a898f1fdaaa94c42bed89312b27b91157d799dbcca06e33",
-      "sha2": "a8fb7087cd0ff4555a898f1fdaaa94c42bed89312b27b91157d799dbcca06e33",
+      "sha1": "31c3040e73be20b8b450a49d1fd79ccd31fab4613f64e0984c488866be57cef6",
+      "sha2": "31c3040e73be20b8b450a49d1fd79ccd31fab4613f64e0984c488866be57cef6",
       "diff": [],
-      "canonSize": 38485
+      "canonSize": 40543
     },
     {
       "file": "interactive_book_5.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "ef629196d1a203f2ee9e70d2d329ffff475b9b9901253c8667a2f538f6472522",
-      "sha2": "ef629196d1a203f2ee9e70d2d329ffff475b9b9901253c8667a2f538f6472522",
+      "sha1": "a37282344e012f379e81a4b6169e6a69a9d219e64678624bbafabca875b1d885",
+      "sha2": "a37282344e012f379e81a4b6169e6a69a9d219e64678624bbafabca875b1d885",
       "diff": [],
-      "canonSize": 22052
+      "canonSize": 22863
     },
     {
       "file": "interactive_book_6.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "0e2d492ce5b8db2045fe8f7d914da8a1c8b4397ef1feb5dd9ef6c27ff9c00801",
-      "sha2": "0e2d492ce5b8db2045fe8f7d914da8a1c8b4397ef1feb5dd9ef6c27ff9c00801",
+      "sha1": "14dfa9633d08a35217e032c75efb132118d01238c910419c117202320d377802",
+      "sha2": "14dfa9633d08a35217e032c75efb132118d01238c910419c117202320d377802",
       "diff": [],
-      "canonSize": 26153
+      "canonSize": 27326
     },
     {
       "file": "interactive_book_7.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "9f3fb6e3d7059407911d6b0b608ea54fa86a0acca05cc2cfe2e0c681f82fca82",
-      "sha2": "9f3fb6e3d7059407911d6b0b608ea54fa86a0acca05cc2cfe2e0c681f82fca82",
+      "sha1": "3293ad8a2e86c06bcad4b56c20a5f796002f7673aeb81aa16e6842c685ceb22f",
+      "sha2": "3293ad8a2e86c06bcad4b56c20a5f796002f7673aeb81aa16e6842c685ceb22f",
       "diff": [],
-      "canonSize": 22698
+      "canonSize": 24394
     },
     {
       "file": "interactive_book_8.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "fc3f2f5a4935e847f242a23fb0cb6f669d8dbc78facb2858c85bd6d8feabd2d4",
-      "sha2": "fc3f2f5a4935e847f242a23fb0cb6f669d8dbc78facb2858c85bd6d8feabd2d4",
+      "sha1": "0fc45522195e9d680379a388100b244d6dd95ba0682d14c20522e878a913db88",
+      "sha2": "0fc45522195e9d680379a388100b244d6dd95ba0682d14c20522e878a913db88",
       "diff": [],
-      "canonSize": 32196
+      "canonSize": 36401
     },
     {
       "file": "interactive_book_9.json",
       "moduleKey": "InteractiveBook",
       "ok": true,
       "error": null,
-      "sha1": "ec55debc4fd67a5af04927b027869e6046f2267435765329210b6d76fcba3725",
-      "sha2": "ec55debc4fd67a5af04927b027869e6046f2267435765329210b6d76fcba3725",
+      "sha1": "ff63e51295f0464baa1632d9c25448b3ac24f40fef2dedd3325d3131989fd701",
+      "sha2": "ff63e51295f0464baa1632d9c25448b3ac24f40fef2dedd3325d3131989fd701",
       "diff": [],
-      "canonSize": 23569
+      "canonSize": 25149
     },
     {
       "file": "interactive_video_1.json",
       "moduleKey": "InteractiveVideo",
       "ok": true,
       "error": null,
-      "sha1": "8c65abdf3eaeb63e704470ca32743e1a762d0d6d8e290fc7bce5070876b7418d",
-      "sha2": "8c65abdf3eaeb63e704470ca32743e1a762d0d6d8e290fc7bce5070876b7418d",
+      "sha1": "60325a02c4ec57dde14dde7a048e29c1f7eb286982a52d84ebdf06c856092fe5",
+      "sha2": "60325a02c4ec57dde14dde7a048e29c1f7eb286982a52d84ebdf06c856092fe5",
       "diff": [],
-      "canonSize": 12943
+      "canonSize": 14090
     },
     {
       "file": "interactive_video_2.json",
       "moduleKey": "InteractiveVideo",
       "ok": true,
       "error": null,
-      "sha1": "bb38d2fcef9d3340c677760dadab831586222d58625a24a1f7c5427c62ef28be",
-      "sha2": "bb38d2fcef9d3340c677760dadab831586222d58625a24a1f7c5427c62ef28be",
+      "sha1": "ecf00240e763d16e042d3dfb5952e21d25a4e1b0624cc457eb6654fb35a23f33",
+      "sha2": "ecf00240e763d16e042d3dfb5952e21d25a4e1b0624cc457eb6654fb35a23f33",
       "diff": [],
-      "canonSize": 23298
+      "canonSize": 24807
     },
     {
       "file": "mark_the_words_1.json",
       "moduleKey": "MarkTheWords",
       "ok": true,
       "error": null,
-      "sha1": "8c53d219e263907a173edaebe4bcea9ba6fb826e75b9841cb3c267c7f3228f90",
-      "sha2": "8c53d219e263907a173edaebe4bcea9ba6fb826e75b9841cb3c267c7f3228f90",
+      "sha1": "3b14d9a14a6baabea1b47d2e5c0368ee95eebfbc0fc22ec473cd51f9ee9a0aaa",
+      "sha2": "3b14d9a14a6baabea1b47d2e5c0368ee95eebfbc0fc22ec473cd51f9ee9a0aaa",
       "diff": [],
-      "canonSize": 3948
+      "canonSize": 3947
     },
     {
       "file": "mark_the_words_2.json",
       "moduleKey": "MarkTheWords",
       "ok": true,
       "error": null,
-      "sha1": "59922e4b09e4471b2a0f45902a062bc7170d488cbf7f863eadb2e11551c48954",
-      "sha2": "59922e4b09e4471b2a0f45902a062bc7170d488cbf7f863eadb2e11551c48954",
+      "sha1": "1ebb8ec99db35aa416f00a688a7215ac6b70f5146b8d51fb26353d56fc332d50",
+      "sha2": "1ebb8ec99db35aa416f00a688a7215ac6b70f5146b8d51fb26353d56fc332d50",
       "diff": [],
-      "canonSize": 3375
+      "canonSize": 3374
     },
     {
       "file": "mark_the_words_3.json",
       "moduleKey": "MarkTheWords",
       "ok": true,
       "error": null,
-      "sha1": "5a408560f2080ad81c497d2256c18995bf5ecf5793abaad6d877ec433028de31",
-      "sha2": "5a408560f2080ad81c497d2256c18995bf5ecf5793abaad6d877ec433028de31",
+      "sha1": "680cd399753569280bbd9ed3fd284ae5117e2a27b2de3cfc0d01f60b10521348",
+      "sha2": "680cd399753569280bbd9ed3fd284ae5117e2a27b2de3cfc0d01f60b10521348",
       "diff": [],
-      "canonSize": 3133
+      "canonSize": 3132
     },
     {
       "file": "mark_the_words_4.json",
       "moduleKey": "MarkTheWords",
       "ok": true,
       "error": null,
-      "sha1": "72f7ec382514687cbd43be0bc5a15a93eebe2f186e81dd3fcd8024b99da5ee6b",
-      "sha2": "72f7ec382514687cbd43be0bc5a15a93eebe2f186e81dd3fcd8024b99da5ee6b",
+      "sha1": "8beb36033219c9550fbef5ac137df4b0f747e53a82aba26e89c73ba44f40c107",
+      "sha2": "8beb36033219c9550fbef5ac137df4b0f747e53a82aba26e89c73ba44f40c107",
       "diff": [],
-      "canonSize": 3121
+      "canonSize": 3120
     },
     {
       "file": "multiple_choice_1.json",
       "moduleKey": "MultipleChoice",
       "ok": true,
       "error": null,
-      "sha1": "d704dd5a597d25a74eab9a25b2a9dd95a6492029af087bb7538505ac3b37a5da",
-      "sha2": "d704dd5a597d25a74eab9a25b2a9dd95a6492029af087bb7538505ac3b37a5da",
+      "sha1": "68799eb2e42c1a20a56e74a451d18b30ae86cdb2e295c81156b67b056f02168d",
+      "sha2": "68799eb2e42c1a20a56e74a451d18b30ae86cdb2e295c81156b67b056f02168d",
       "diff": [],
-      "canonSize": 4897
+      "canonSize": 5630
     },
     {
       "file": "multiple_choice_3.json",
       "moduleKey": "MultipleChoice",
       "ok": true,
       "error": null,
-      "sha1": "f85e31e2ec9eb879af6d951b2e30043149fe9fc099b92b2adc670cda014e26d0",
-      "sha2": "f85e31e2ec9eb879af6d951b2e30043149fe9fc099b92b2adc670cda014e26d0",
+      "sha1": "01fda7163693bf3ef8bcf6241dc9152722c11b17b84d5a08ae05bdccc4134d97",
+      "sha2": "01fda7163693bf3ef8bcf6241dc9152722c11b17b84d5a08ae05bdccc4134d97",
       "diff": [],
-      "canonSize": 3477
+      "canonSize": 4210
     },
     {
       "file": "quiz_mixte_1.json",
       "moduleKey": "QuizSet",
       "ok": true,
       "error": null,
-      "sha1": "8ac627e5eb9f6e4ef54dcc1589c9d0cb865b5fa3347d800546641fc01bcc4782",
-      "sha2": "8ac627e5eb9f6e4ef54dcc1589c9d0cb865b5fa3347d800546641fc01bcc4782",
+      "sha1": "b8fd0460c420ef26ed4071742bf76f41b95d9ad4881c5aa8b07a3b52d402245e",
+      "sha2": "b8fd0460c420ef26ed4071742bf76f41b95d9ad4881c5aa8b07a3b52d402245e",
       "diff": [],
-      "canonSize": 24143
+      "canonSize": 27209
     },
     {
       "file": "quiz_mixte_2.json",
       "moduleKey": "QuizSet",
       "ok": true,
       "error": null,
-      "sha1": "c2fa3029287f7d481f5c337377422ee9a3985cfd7ed25d062d4bf72248bbeaf9",
-      "sha2": "c2fa3029287f7d481f5c337377422ee9a3985cfd7ed25d062d4bf72248bbeaf9",
+      "sha1": "452193760ad0541d4c3666c75f60a27855c0e756ca1a4be170710be681ce75a5",
+      "sha2": "452193760ad0541d4c3666c75f60a27855c0e756ca1a4be170710be681ce75a5",
       "diff": [],
-      "canonSize": 18042
+      "canonSize": 21108
     },
     {
       "file": "quiz_mixte_3.json",
       "moduleKey": "QuizSet",
       "ok": true,
       "error": null,
-      "sha1": "ae36b2fc6472f85ab1a55157189a57e141ad180e990a98b7b7ed96b363eb629c",
-      "sha2": "ae36b2fc6472f85ab1a55157189a57e141ad180e990a98b7b7ed96b363eb629c",
+      "sha1": "05b0b14deac407e583ee4197f1fa50211b0a0959eceb67a618bf114e94062f5e",
+      "sha2": "05b0b14deac407e583ee4197f1fa50211b0a0959eceb67a618bf114e94062f5e",
       "diff": [],
-      "canonSize": 16448
+      "canonSize": 19514
     },
     {
       "file": "quiz_mixte_4.json",
       "moduleKey": "QuizSet",
       "ok": true,
       "error": null,
-      "sha1": "855b610bd560cc0515ea8cd8d78773ed8c669c2fc813c8db5fb774ccb21c2ebc",
-      "sha2": "855b610bd560cc0515ea8cd8d78773ed8c669c2fc813c8db5fb774ccb21c2ebc",
+      "sha1": "cb4ed1910b3121721be6c6c5db28af9c8ae49feb46498ed1ffb826c71c085aea",
+      "sha2": "cb4ed1910b3121721be6c6c5db28af9c8ae49feb46498ed1ffb826c71c085aea",
       "diff": [],
-      "canonSize": 12803
+      "canonSize": 15869
     },
     {
       "file": "quiz_mixte_5.json",
       "moduleKey": "QuizSet",
       "ok": true,
       "error": null,
-      "sha1": "f636176f1d574860d59026b10485e81a04304ab2a8fb7116bcaf8c591a34e3e3",
-      "sha2": "f636176f1d574860d59026b10485e81a04304ab2a8fb7116bcaf8c591a34e3e3",
+      "sha1": "ed9728a009f950efc80c554e4e43591dfdeaa88639b503cacbd1cb36c89026df",
+      "sha2": "ed9728a009f950efc80c554e4e43591dfdeaa88639b503cacbd1cb36c89026df",
       "diff": [],
-      "canonSize": 23800
+      "canonSize": 26866
     },
     {
       "file": "quiz_qcm_1.json",
       "moduleKey": "QuizSetQCM",
       "ok": true,
       "error": null,
-      "sha1": "49c38938aab9731cadba51878693aa99c3387bc24815d22db96e5bdbeefe4a23",
-      "sha2": "49c38938aab9731cadba51878693aa99c3387bc24815d22db96e5bdbeefe4a23",
+      "sha1": "a3a299a86c54bedc69a116833466acb00bb8c30009e1bbc8574db0d8e27bc6b0",
+      "sha2": "a3a299a86c54bedc69a116833466acb00bb8c30009e1bbc8574db0d8e27bc6b0",
       "diff": [],
-      "canonSize": 22380
+      "canonSize": 22755
     },
     {
       "file": "quiz_qcm_2.json",
       "moduleKey": "QuizSetQCM",
       "ok": true,
       "error": null,
-      "sha1": "b06e34747c06513bedff3680c7d7cd1ea80c0ffb8488a6875afb4f69c2e7e00b",
-      "sha2": "b06e34747c06513bedff3680c7d7cd1ea80c0ffb8488a6875afb4f69c2e7e00b",
+      "sha1": "99da085fe6d68213362a9233ca2510128ebaf9e1c4c09ad08accfe5dc5ecc9a5",
+      "sha2": "99da085fe6d68213362a9233ca2510128ebaf9e1c4c09ad08accfe5dc5ecc9a5",
       "diff": [],
-      "canonSize": 20008
+      "canonSize": 20383
     },
     {
       "file": "quiz_qcm_3.json",
       "moduleKey": "QuizSetQCM",
       "ok": true,
       "error": null,
-      "sha1": "25152826fa13069b02ceac938e730194154486d75da6586d27b9db1e35ae455f",
-      "sha2": "25152826fa13069b02ceac938e730194154486d75da6586d27b9db1e35ae455f",
+      "sha1": "a2550813338bf8459ee77a88fb84f1687604ceea0a634dcd2774522012bbeb65",
+      "sha2": "a2550813338bf8459ee77a88fb84f1687604ceea0a634dcd2774522012bbeb65",
       "diff": [],
-      "canonSize": 20590
+      "canonSize": 20965
     },
     {
       "file": "quiz_qcm_4.json",
       "moduleKey": "QuizSetQCM",
       "ok": true,
       "error": null,
-      "sha1": "00437328e738f2259a89a72df62baae454e36ed3cad6da461656f573e286b8e0",
-      "sha2": "00437328e738f2259a89a72df62baae454e36ed3cad6da461656f573e286b8e0",
+      "sha1": "7ace7deb83490216362de68c047f99e3f931db00d83dc2a484c21a7cb3c9cb73",
+      "sha2": "7ace7deb83490216362de68c047f99e3f931db00d83dc2a484c21a7cb3c9cb73",
       "diff": [],
-      "canonSize": 19681
+      "canonSize": 20056
     },
     {
       "file": "quiz_qcm_5.json",
       "moduleKey": "QuizSetQCM",
       "ok": true,
       "error": null,
-      "sha1": "3d6548d0e5ebc0718c614985264c00814c32000d2e6e9a812f359f9a5bfb8672",
-      "sha2": "3d6548d0e5ebc0718c614985264c00814c32000d2e6e9a812f359f9a5bfb8672",
+      "sha1": "4232d3efd02c87fc11e52259af8019b667c46d14fded1f4adc7a78167f8ddb0a",
+      "sha2": "4232d3efd02c87fc11e52259af8019b667c46d14fded1f4adc7a78167f8ddb0a",
       "diff": [],
-      "canonSize": 20671
+      "canonSize": 20604
     },
     {
       "file": "quiz_qcm_formules_test.json",
       "moduleKey": "QuizSetQCM",
       "ok": true,
       "error": null,
-      "sha1": "33feb5b065928eb12a43a7db7b604d4c2c985f6c02a064693394cd2e5b77e4af",
-      "sha2": "33feb5b065928eb12a43a7db7b604d4c2c985f6c02a064693394cd2e5b77e4af",
+      "sha1": "cbb26c62cc355d0378850d24bc2d6f038657edfd8a74e248833d60f7d8316b04",
+      "sha2": "cbb26c62cc355d0378850d24bc2d6f038657edfd8a74e248833d60f7d8316b04",
       "diff": [],
-      "canonSize": 50817
+      "canonSize": 51192
     },
     {
       "file": "quiz_vraifaux_1.json",
       "moduleKey": "QuizSetVF",
       "ok": true,
       "error": null,
-      "sha1": "73fe5d3d4ef38ca886012603e8798ecb66b047533d606a78f512d6f15af97bf0",
-      "sha2": "73fe5d3d4ef38ca886012603e8798ecb66b047533d606a78f512d6f15af97bf0",
+      "sha1": "67b2a8bf0d215b785ae06d31b34c63aa41c00fb3d71d2b4841f4ced445e03fe0",
+      "sha2": "67b2a8bf0d215b785ae06d31b34c63aa41c00fb3d71d2b4841f4ced445e03fe0",
       "diff": [],
-      "canonSize": 11914
+      "canonSize": 14317
     },
     {
       "file": "quiz_vraifaux_2.json",
       "moduleKey": "QuizSetVF",
       "ok": true,
       "error": null,
-      "sha1": "2c1469df8d0b978f54bd04e1c0a8aea5e11ba02e93579adebde557e5e3597079",
-      "sha2": "2c1469df8d0b978f54bd04e1c0a8aea5e11ba02e93579adebde557e5e3597079",
+      "sha1": "84f1c335160bf79484d0d265beb4992fb7533fdfb505b259e930d16316911f5b",
+      "sha2": "84f1c335160bf79484d0d265beb4992fb7533fdfb505b259e930d16316911f5b",
       "diff": [],
-      "canonSize": 10858
+      "canonSize": 13261
     },
     {
       "file": "single_choice_set_1.json",
       "moduleKey": "SingleChoiceSet",
       "ok": true,
       "error": null,
-      "sha1": "4a24578bc20791086805975579f774a9e2b9af36083c16f858613772885a8883",
-      "sha2": "4a24578bc20791086805975579f774a9e2b9af36083c16f858613772885a8883",
+      "sha1": "a21bfe01b310d7ac16b9d00d26764422eb7fd79fe1b8ce4b6c4b4649ce5160e7",
+      "sha2": "a21bfe01b310d7ac16b9d00d26764422eb7fd79fe1b8ce4b6c4b4649ce5160e7",
       "diff": [],
-      "canonSize": 4394
+      "canonSize": 4643
     },
     {
       "file": "single_choice_set_2.json",
       "moduleKey": "SingleChoiceSet",
       "ok": true,
       "error": null,
-      "sha1": "0fb2cd84f7ff935ea91337623fcdf3caeacca0ba8bce7ac70ee25d75230fb3bc",
-      "sha2": "0fb2cd84f7ff935ea91337623fcdf3caeacca0ba8bce7ac70ee25d75230fb3bc",
+      "sha1": "c9ad9db2e0dbfbcfffd849639345e5cfb70d9a314984de9c914f3490fbf482f0",
+      "sha2": "c9ad9db2e0dbfbcfffd849639345e5cfb70d9a314984de9c914f3490fbf482f0",
       "diff": [],
-      "canonSize": 3910
+      "canonSize": 4159
     },
     {
       "file": "sort_the_paragraphs_1.json",
       "moduleKey": "SortParagraphs",
       "ok": true,
       "error": null,
-      "sha1": "311ef1c33fdbd80e62e2580e8f99381f9f45f4e3b22ae491a3f972e24f764e9d",
-      "sha2": "311ef1c33fdbd80e62e2580e8f99381f9f45f4e3b22ae491a3f972e24f764e9d",
+      "sha1": "10dcc98348c525e96ceb81763c8a4082b668b513c1a740f5eb257df89823864c",
+      "sha2": "10dcc98348c525e96ceb81763c8a4082b668b513c1a740f5eb257df89823864c",
       "diff": [],
-      "canonSize": 5681
+      "canonSize": 5680
     },
     {
       "file": "sort_the_paragraphs_2.json",
       "moduleKey": "SortParagraphs",
       "ok": true,
       "error": null,
-      "sha1": "a644cb897ae09f128b576a0a58b0cc50113ddd749995261e319e76169520ffb8",
-      "sha2": "a644cb897ae09f128b576a0a58b0cc50113ddd749995261e319e76169520ffb8",
+      "sha1": "86739318cb04329576479d576200cf210ceff17f5fc277a29298eb8026992451",
+      "sha2": "86739318cb04329576479d576200cf210ceff17f5fc277a29298eb8026992451",
       "diff": [],
-      "canonSize": 4945
+      "canonSize": 4944
     },
     {
       "file": "summary_1.json",
       "moduleKey": "Summary",
       "ok": true,
       "error": null,
-      "sha1": "84112859ce93e3f3a3e35a31f93712c94fc1b5027bab50a1c2ec13db74dae161",
-      "sha2": "84112859ce93e3f3a3e35a31f93712c94fc1b5027bab50a1c2ec13db74dae161",
+      "sha1": "d789e4eb2cfbc92d57792852042d1ac93b8ac85b57273037a64b5facb0a2320b",
+      "sha2": "d789e4eb2cfbc92d57792852042d1ac93b8ac85b57273037a64b5facb0a2320b",
       "diff": [],
-      "canonSize": 5462
+      "canonSize": 5461
     },
     {
       "file": "summary_2.json",
       "moduleKey": "Summary",
       "ok": true,
       "error": null,
-      "sha1": "f456f5802972290d9ec4310fb78380659d7d025f9420695e0aefde84cdc16bd5",
-      "sha2": "f456f5802972290d9ec4310fb78380659d7d025f9420695e0aefde84cdc16bd5",
+      "sha1": "8197e101e17d6b3035755113007126417f782370ba58e96d7ef1f4e1648cc12a",
+      "sha2": "8197e101e17d6b3035755113007126417f782370ba58e96d7ef1f4e1648cc12a",
       "diff": [],
-      "canonSize": 4751
+      "canonSize": 4750
     },
     {
       "file": "timeline_1.json",
       "moduleKey": "Timeline",
       "ok": true,
       "error": null,
-      "sha1": "b8d63072e3976ba060b70c07b4712528a7d07ac410fd7583afb3cbee88e65bfa",
-      "sha2": "b8d63072e3976ba060b70c07b4712528a7d07ac410fd7583afb3cbee88e65bfa",
+      "sha1": "e9a9f08bb55facf70ef52f724be6790f65be03597d6f971495b8be960a1b9dee",
+      "sha2": "e9a9f08bb55facf70ef52f724be6790f65be03597d6f971495b8be960a1b9dee",
       "diff": [],
-      "canonSize": 5452
+      "canonSize": 5451
     },
     {
       "file": "timeline_2.json",
       "moduleKey": "Timeline",
       "ok": true,
       "error": null,
-      "sha1": "e09094232c4f73aee15b44eb19d3ff1ccb9be9fa995b6715da95beffe7f8e258",
-      "sha2": "e09094232c4f73aee15b44eb19d3ff1ccb9be9fa995b6715da95beffe7f8e258",
+      "sha1": "8355389e69a1d4cceeb9df65fa68c1e85778e78cfe9ad9cab0cd25de4d90be33",
+      "sha2": "8355389e69a1d4cceeb9df65fa68c1e85778e78cfe9ad9cab0cd25de4d90be33",
       "diff": [],
-      "canonSize": 8985
+      "canonSize": 8984
     },
     {
       "file": "timeline_3.json",
       "moduleKey": "Timeline",
       "ok": true,
       "error": null,
-      "sha1": "d98e6cd21bd4c6ad590e9bca47e6c133bc2b37be8d8495b754116fc557dc231b",
-      "sha2": "d98e6cd21bd4c6ad590e9bca47e6c133bc2b37be8d8495b754116fc557dc231b",
+      "sha1": "7995924dc3d687c7d02c4af4014dc4494efc0dcc064c9e2c5dcc942a827dec0b",
+      "sha2": "7995924dc3d687c7d02c4af4014dc4494efc0dcc064c9e2c5dcc942a827dec0b",
       "diff": [],
-      "canonSize": 9343
+      "canonSize": 9342
     },
     {
       "file": "true_false_1.json",
       "moduleKey": "TrueFalse",
       "ok": true,
       "error": null,
-      "sha1": "c48285efb48abd94cb3fcc602964417529b1f9f44325742a5de87d2135dd8a9a",
-      "sha2": "c48285efb48abd94cb3fcc602964417529b1f9f44325742a5de87d2135dd8a9a",
+      "sha1": "21d78fe89c8117f558c3995517a7e594d916482e594ec895ab824429c2c93044",
+      "sha2": "21d78fe89c8117f558c3995517a7e594d916482e594ec895ab824429c2c93044",
       "diff": [],
-      "canonSize": 3204
+      "canonSize": 3203
     },
     {
       "file": "true_false_2.json",
       "moduleKey": "TrueFalse",
       "ok": true,
       "error": null,
-      "sha1": "65eab769e75bd18c4b8cfcc92247b9d6f889517bd2514636bf10da22e9e6bfd5",
-      "sha2": "65eab769e75bd18c4b8cfcc92247b9d6f889517bd2514636bf10da22e9e6bfd5",
+      "sha1": "aedd8392c8d52b6b5be5b6a81e2856020b6a7454d6147fe5f595960c87f9a975",
+      "sha2": "aedd8392c8d52b6b5be5b6a81e2856020b6a7454d6147fe5f595960c87f9a975",
       "diff": [],
-      "canonSize": 3231
+      "canonSize": 3230
     },
     {
       "file": "true_false_3.json",
       "moduleKey": "TrueFalse",
       "ok": true,
       "error": null,
-      "sha1": "9f61588226091ec97af935d1d2e48e1bb99712d3a91b714a299409d86d3a4572",
-      "sha2": "9f61588226091ec97af935d1d2e48e1bb99712d3a91b714a299409d86d3a4572",
+      "sha1": "e999d3e3e4ed737f65bd46b9b17782e9ad1e4a112de2b5738d1bb91c0c5e38ae",
+      "sha2": "e999d3e3e4ed737f65bd46b9b17782e9ad1e4a112de2b5738d1bb91c0c5e38ae",
       "diff": [],
-      "canonSize": 3379
+      "canonSize": 3378
     }
   ],
   "T3_verbatim": [
@@ -4044,7 +4044,7 @@
       "error": null,
       "verbatimBase64": true,
       "blobUntouchedAfterExtract": true,
-      "extractMarkdownLen": 755,
+      "extractMarkdownLen": 780,
       "extractActivityType": "H5P.Flashcards"
     },
     {
@@ -4054,7 +4054,7 @@
       "error": null,
       "verbatimBase64": true,
       "blobUntouchedAfterExtract": true,
-      "extractMarkdownLen": 2203,
+      "extractMarkdownLen": 2654,
       "extractActivityType": "H5P.MultiChoice"
     },
     {
@@ -4064,7 +4064,7 @@
       "error": null,
       "verbatimBase64": true,
       "blobUntouchedAfterExtract": true,
-      "extractMarkdownLen": 1478,
+      "extractMarkdownLen": 2481,
       "extractActivityType": "H5P.Crossword"
     },
     {
@@ -4084,7 +4084,7 @@
       "error": null,
       "verbatimBase64": true,
       "blobUntouchedAfterExtract": true,
-      "extractMarkdownLen": 3064,
+      "extractMarkdownLen": 3596,
       "extractActivityType": "H5P.InteractiveBook"
     }
   ],
@@ -4093,8 +4093,8 @@
       "moduleKey": "Glossary",
       "format": "h5p",
       "error": null,
-      "totalSha256": "b11a85f24f0621d2ad578489e8ea48fec9cc4bd30c0622ad62aeae313ea012c2",
-      "canonSize": 3913,
+      "totalSha256": "f42a69d9f8d2271f4bea2cf6ea7c856d3645de604ec50f28c6b6b0d9ee1f470c",
+      "canonSize": 3912,
       "fileCount": 2,
       "files": [
         {
@@ -4104,8 +4104,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 523,
-          "canonSha256": "501f4b641db2efd4a3ea750d911fbbb356681711f129fec6031b2f7f85468a7c"
+          "canonSize": 522,
+          "canonSha256": "c1fc0d3012e1417dedab4f6c28966f84760505af4303dab36ef598d0edf56c55"
         }
       ]
     },
@@ -4113,8 +4113,8 @@
       "moduleKey": "Glossary",
       "format": "h5p",
       "error": null,
-      "totalSha256": "8cdb152b8eadc583d378de66e0f3df92ce478e4219517ac7b06518b2568960ac",
-      "canonSize": 3703,
+      "totalSha256": "e7f24fec3dcf0169ddfefc9bb462a25c8212ff812c682e4808cf26c9959e4339",
+      "canonSize": 3702,
       "fileCount": 2,
       "files": [
         {
@@ -4124,8 +4124,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 625,
-          "canonSha256": "f0cd2cbd17c2b99b27582cf72475c46706666763bfc7b4e7ce541f3f2a34f29f"
+          "canonSize": 624,
+          "canonSha256": "a0a6852f1f0d6ef3969adf77e38bbd1b42cd7e2b22f935a523f125e51c879188"
         }
       ]
     },
@@ -4133,8 +4133,8 @@
       "moduleKey": "Chart",
       "format": "h5p",
       "error": null,
-      "totalSha256": "c2acdc553a3e597be45e8b8dec4448c85e0f092bc01ca4321d9cc9ebe1e3b011",
-      "canonSize": 1354,
+      "totalSha256": "03a7a7a559b1962eb71c278e8e4913f850f9e2218439da7cc688a3a51fd56057",
+      "canonSize": 1353,
       "fileCount": 2,
       "files": [
         {
@@ -4144,8 +4144,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 314,
-          "canonSha256": "4f092c7a50d03458a0e8f0c175f101c3712a582ebc24aa9c8aeed3694b5e0d67"
+          "canonSize": 313,
+          "canonSha256": "9f34298799ced01d3a4402bc824879ca06c40d9b9a4de689b7078db9d0534905"
         }
       ]
     },
@@ -4153,8 +4153,8 @@
       "moduleKey": "Chart",
       "format": "h5p",
       "error": null,
-      "totalSha256": "3a656af30a14b47d48c8faf1b6784f9f87479f95a45364d4d6cb9113d3c64500",
-      "canonSize": 1186,
+      "totalSha256": "6c3d695c226df5ffe53f6f7bdd14f46407d79e55141ed60c0fd847328dedd8bd",
+      "canonSize": 1185,
       "fileCount": 2,
       "files": [
         {
@@ -4164,8 +4164,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 314,
-          "canonSha256": "4f092c7a50d03458a0e8f0c175f101c3712a582ebc24aa9c8aeed3694b5e0d67"
+          "canonSize": 313,
+          "canonSha256": "9f34298799ced01d3a4402bc824879ca06c40d9b9a4de689b7078db9d0534905"
         }
       ]
     },
@@ -4173,19 +4173,19 @@
       "moduleKey": "Chart",
       "format": "h5p",
       "error": null,
-      "totalSha256": "744563858f9da7323f3531fa32346c1056d6b516314809eae1782a10519e73c6",
-      "canonSize": 967,
+      "totalSha256": "687624b26ab7793cfd01dd3359f01804926cdc25eeac83d419cade3c326be403",
+      "canonSize": 1006,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 653,
-          "canonSha256": "a45ad30dea03e9cb5fb405502ee76c25ed41f0821effe3b277ce38784db9a8af"
+          "canonSize": 693,
+          "canonSha256": "b41df08c7ba742dd894d758372cdf32ab6c86cf9f91b85082f0c90ccd1f46c1d"
         },
         {
           "name": "h5p.json",
-          "canonSize": 314,
-          "canonSha256": "4f092c7a50d03458a0e8f0c175f101c3712a582ebc24aa9c8aeed3694b5e0d67"
+          "canonSize": 313,
+          "canonSha256": "9f34298799ced01d3a4402bc824879ca06c40d9b9a4de689b7078db9d0534905"
         }
       ]
     },
@@ -4193,19 +4193,19 @@
       "moduleKey": "CoursePresentation",
       "format": "h5p",
       "error": null,
-      "totalSha256": "a15294b95a9e9acd07628e74c7186a8e7c6204c16962797fd0cc7a8ab40c2d82",
-      "canonSize": 18646,
+      "totalSha256": "245ad4bdf7b473655586f7f70bf5e88916c194d35b4fbf9d562fbd5e4e6b9444",
+      "canonSize": 19052,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 15470,
-          "canonSha256": "f50a42817972f33f2ddeb34ddaf37f3e2b2fe59f967944e1535f492432502995"
+          "canonSize": 15877,
+          "canonSha256": "2df7004eed9e8ee7e1d17a4985d306c9beee38131d43aa597fb16e0bf337cebe"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3176,
-          "canonSha256": "c2cfbff4b38612b58a870be747ba3bbbc50b615f24bdf6c09175c43c3a5508c7"
+          "canonSize": 3175,
+          "canonSha256": "929ffc16d947147b1ecebd4fecc31ca9da5ea076158fa19de5715d9cc641db53"
         }
       ]
     },
@@ -4213,19 +4213,19 @@
       "moduleKey": "CoursePresentation",
       "format": "h5p",
       "error": null,
-      "totalSha256": "1f86a54a0e80495e6cf20c2f4fc9d6764ced520733ce7886a4044290e4b8a3aa",
-      "canonSize": 23458,
+      "totalSha256": "65559e11565e6719a76dc2c24411c1a7697957a069c7bbb0f2add09890c88b29",
+      "canonSize": 24704,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 20168,
-          "canonSha256": "41ad33b0d35254232fd575b33850dd6e08cab1a15d650d2280b3d48ad9264c87"
+          "canonSize": 21415,
+          "canonSha256": "153bedab232c349999d602d0fe9a08ad14bdb9bd2505e029be789b790599c10d"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3290,
-          "canonSha256": "73f9b8bf6b27f76407d3d937712bac7ca18074fddeedcf47141d64f3f2300672"
+          "canonSize": 3289,
+          "canonSha256": "b551957a1b40c303fdd31939809faaf2296c08db0686e6c44cb38b602926e8c4"
         }
       ]
     },
@@ -4233,19 +4233,19 @@
       "moduleKey": "CoursePresentation",
       "format": "h5p",
       "error": null,
-      "totalSha256": "5ddb175985abfb6f0502790643ab19594cdf76496e671badcf46b291f86c6558",
-      "canonSize": 25991,
+      "totalSha256": "1790c8c1572538fb982f1d0bd98bbd67f420c1f0914e966f8aa26351bd1a959b",
+      "canonSize": 27978,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 22769,
-          "canonSha256": "a49313c219630266c2e5f8192ddff33561b518a29ae11ab94d4459c99d46196b"
+          "canonSize": 24757,
+          "canonSha256": "020daccdd474cd0d3cac2f3a50e9589419fe43234c259d0ba47555a401784c3b"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3222,
-          "canonSha256": "bf73dc0c40d33c78596fb13d3b749d29bd59c6420d56551f522a76d610e44bfb"
+          "canonSize": 3221,
+          "canonSha256": "13a49b25fcd79faecccebf6c7b2db63d0081b83ec1630a5d062bd58d8c7fb788"
         }
       ]
     },
@@ -4253,19 +4253,19 @@
       "moduleKey": "CoursePresentation",
       "format": "h5p",
       "error": null,
-      "totalSha256": "1c1f5ec058bdc55db56308a38834d5043e9c568882101c01fce54be852f5c5c5",
-      "canonSize": 53584,
+      "totalSha256": "1499e31f796e7f3f7e4e5837e41cbdbed3e7547b438ebcbfe43527cff67f5e1b",
+      "canonSize": 57593,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 50384,
-          "canonSha256": "e456981946b6850b34f296c500e494da8fa0293c4c824015d3101dc3d991bbf1"
+          "canonSize": 54394,
+          "canonSha256": "822b1834fdb81501aec89d4112e4f2ea4a3b1d8c2aa30934ffc3c0f499caeb18"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3200,
-          "canonSha256": "b96e939a0e2e7066dec54c5fb45b0a1a2937c13295419ed08a4e7628ba2c0499"
+          "canonSize": 3199,
+          "canonSha256": "10ed42eeb2f1d014d1f07d556b71e8612db21a44003010148039ee5d1c469f91"
         }
       ]
     },
@@ -4273,19 +4273,19 @@
       "moduleKey": "CoursePresentation",
       "format": "h5p",
       "error": null,
-      "totalSha256": "7fda7864ab4d9ee7ccb0d5f799392d7b8b1bbcda748817967780093982103e79",
-      "canonSize": 61247,
+      "totalSha256": "e4da906a88c517a35e18f7534c7ec8098594924645c3d85ca4789709b9d37644",
+      "canonSize": 64974,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 58083,
-          "canonSha256": "fea9ffb122e284729ec318da51a5fc1d64fbd0a438e7ee585685cb610dedb46e"
+          "canonSize": 61811,
+          "canonSha256": "1ba4c0f23ec7dcbb2c4af7559fb36a3c6fe4c03266a296088c843a5159eba747"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3164,
-          "canonSha256": "68e07d4e6e86f8418f5c2ac7389d7d420b1ca509c1dba1b7b25fa9544378a853"
+          "canonSize": 3163,
+          "canonSha256": "bcbfafb12de65a6ef0bf74f0d20ac1a899c8ecda0c4717066ea25f73c2f31de9"
         }
       ]
     },
@@ -4293,19 +4293,19 @@
       "moduleKey": "Crossword",
       "format": "h5p",
       "error": null,
-      "totalSha256": "1a4c20bb8be2df8f5469f839d57fc4ed5c92adacfc339e4f14b01d7c69542e3a",
-      "canonSize": 5969,
+      "totalSha256": "5f0f202b07fe0564dd033ad4ce841c23a05ec02b931f6e22590407d22609b020",
+      "canonSize": 7469,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 4797,
-          "canonSha256": "ec63949732292ab41b9aefc5f55b1682e41101b9b3d2081790cdef14801b4535"
+          "canonSize": 6298,
+          "canonSha256": "06b0b4037f3c3a5d083fb89589b5d1d769a840bfddfd80444b8cdfbc4f620ee8"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1172,
-          "canonSha256": "f6b23e0338a20676ac4798ab91b2edfd02ce179720cb7fc058688ee0a0fbab98"
+          "canonSize": 1171,
+          "canonSha256": "19dbacc8ab57545c3c5b0229e7618ed98793c69ba13aa0c752d4a12264bd146f"
         }
       ]
     },
@@ -4313,19 +4313,19 @@
       "moduleKey": "Crossword",
       "format": "h5p",
       "error": null,
-      "totalSha256": "70a88665b41ca9b24f246558642ef7e83ea674a8eb1c4373ea608b5802f6d59b",
-      "canonSize": 8609,
+      "totalSha256": "e61fb8aa07787308762eaeaf1924b03508d87d7470f87a6b726ac6a8e5c6f999",
+      "canonSize": 10109,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 7423,
-          "canonSha256": "8a6bfac57cda8c56fe30772653c838c229c1144a66cc4437bf549f88c85fff8a"
+          "canonSize": 8924,
+          "canonSha256": "34626f036b37a5cecf4de9de383ae98fff43694eaea2ac9914ceef48f35365a9"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1186,
-          "canonSha256": "547945e4ef6ddbfa2558429ab75542ae2503827557b4c5aeaeedefec9f8fe1c6"
+          "canonSize": 1185,
+          "canonSha256": "5a3f631d481598f264f3ba735c07e8412db34fd4f55476ab303cebb510cef99c"
         }
       ]
     },
@@ -4333,19 +4333,19 @@
       "moduleKey": "Crossword",
       "format": "h5p",
       "error": null,
-      "totalSha256": "8b8f3060b2f4a5ee8efd3d65b52d77867407ce2b0ba798184b8e109e2721f094",
-      "canonSize": 5667,
+      "totalSha256": "f21d566bc5d45c5889870b9aea66855e775d5a3beefcdc5d342d0c7cc2e2e3c5",
+      "canonSize": 7167,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 4379,
-          "canonSha256": "27d51237c1d5b7f4c59ad2976bee33a19f6d94b92dd6d30f9b6a0b1938e094b5"
+          "canonSize": 5880,
+          "canonSha256": "71c2e3867cfb932a805878c15a1a059fe8d40d8e52c9b3424a1b3203ebc9a24d"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1288,
-          "canonSha256": "bf2e22086c554238698d901fdbd563f9d27696b5cf7829627d878eb1774a4570"
+          "canonSize": 1287,
+          "canonSha256": "3d4de474f6f9d8ecb4c06a66c2dcb266251226b33c497c4cccf80b866576ac52"
         }
       ]
     },
@@ -4353,8 +4353,8 @@
       "moduleKey": "DialogCards",
       "format": "h5p",
       "error": null,
-      "totalSha256": "07358f231a2cc7b41b0d91a5042a3c88c7900c4fa45e7f90c832724dc022cb01",
-      "canonSize": 4054,
+      "totalSha256": "85d8acde6c14a0e2c77f97d7d29343fc6f59ae012f0e1db661fb96435d19ead1",
+      "canonSize": 4053,
       "fileCount": 2,
       "files": [
         {
@@ -4364,8 +4364,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 870,
-          "canonSha256": "14a64a22412545f4f58cfebcc139f0084de462ef1479b9736b510fc0fdf2811d"
+          "canonSize": 869,
+          "canonSha256": "177d7fdcbcfc07b568089bad205633a226ede19ab8c915d76cbf4f1f63d5f0d5"
         }
       ]
     },
@@ -4373,8 +4373,8 @@
       "moduleKey": "DialogCards",
       "format": "h5p",
       "error": null,
-      "totalSha256": "03fe5c63cda4ec94ebc34da9715679bdb42c0b9174f846a943aeca4e48cc81cb",
-      "canonSize": 3687,
+      "totalSha256": "eaa71801c1b3b4953ab4e5e27ab228518ebe2d1ea798843c32a3d53c72669c25",
+      "canonSize": 3686,
       "fileCount": 2,
       "files": [
         {
@@ -4384,8 +4384,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 1010,
-          "canonSha256": "dd5e51a00252ca98f33c953965b6a422d75b438d059f36fc54142d6f9e950b88"
+          "canonSize": 1009,
+          "canonSha256": "ed89743276fe112aec10d1d666283476b89da947f2a360ede8d3f71a6dda00d5"
         }
       ]
     },
@@ -4393,8 +4393,8 @@
       "moduleKey": "DialogCards",
       "format": "h5p",
       "error": null,
-      "totalSha256": "6176c67912aab852ebb608f9dd53f6ef3f3226f535ad09bc57aa02e27865a870",
-      "canonSize": 3696,
+      "totalSha256": "4bf9888c83ed3191a2c18f41fd86d473e7d84544aab161d232852ea36731aeb0",
+      "canonSize": 3695,
       "fileCount": 2,
       "files": [
         {
@@ -4404,8 +4404,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 952,
-          "canonSha256": "e295aad05572f527ce7cdea62414578ab0460a976e2b3ea6a8b8856d80a84985"
+          "canonSize": 951,
+          "canonSha256": "a3c9a3646e37bf247674bddfad79ac38e165d0ad91429a110b0542148154b5ec"
         }
       ]
     },
@@ -4419,8 +4419,8 @@
       "moduleKey": "DragAndDrop",
       "format": "h5p",
       "error": null,
-      "totalSha256": "5ad7c5687bd6c22f76c7cc8e207cddfe78b7eaf5431991e2c2cf2fbfdb0cb501",
-      "canonSize": 9993,
+      "totalSha256": "b3e4815ae6f9ea6c5a9b425c9d8dbd93883c9b40c7f9116eee012c6892f03b69",
+      "canonSize": 9992,
       "fileCount": 2,
       "files": [
         {
@@ -4430,8 +4430,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 1152,
-          "canonSha256": "31147c9c372b6dbd093e0a3527639ea81e782b93de22e22cb1fa5f41b197baf6"
+          "canonSize": 1151,
+          "canonSha256": "810cf6edaf5eb4d01d0e26353b076dbc6004d2cc447ba8b2e089302a44e89576"
         }
       ]
     },
@@ -4439,8 +4439,8 @@
       "moduleKey": "DragAndDrop",
       "format": "h5p",
       "error": null,
-      "totalSha256": "63031053195d02ceb2050dfab42c0e18f93d8fb55200cdadcba05f9da9f2ea23",
-      "canonSize": 10785,
+      "totalSha256": "076731007f82905fbe9985d019d39e507cbdec9d5f045272e5a19bc160d72973",
+      "canonSize": 10784,
       "fileCount": 2,
       "files": [
         {
@@ -4450,8 +4450,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 1256,
-          "canonSha256": "688883d11b840a1b69a3ad2ae2e307ea53b033119fb5deb293b364494c6b4e15"
+          "canonSize": 1255,
+          "canonSha256": "521949981048f806880616a416ab3dd0f220ebd1e6a2831157da79ab6f48c0ae"
         }
       ]
     },
@@ -4459,19 +4459,19 @@
       "moduleKey": "DragTheWords",
       "format": "h5p",
       "error": null,
-      "totalSha256": "f6c303fe29cbc6b9862ff8f60058bcb15f9fe27f2b4e8ce1bc4aaefa1e5a15e1",
-      "canonSize": 3723,
+      "totalSha256": "e0fe616352e91f9c2b3055cdb708471de8c0d1b550caa921808e4c1e4ddd652b",
+      "canonSize": 3805,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 3402,
-          "canonSha256": "4d2964e90b89c2521c94143bf9e733964e4791ba3fefc584775ff86db6460dd2"
+          "canonSize": 3485,
+          "canonSha256": "31957ba93e7b1194ed62fb257dc6eccc3064d57eb9425b89fc9fc88f9cca7c51"
         },
         {
           "name": "h5p.json",
-          "canonSize": 321,
-          "canonSha256": "074949ce0b22c16ee4fd831a0ef9669eae46288b7cfba458b3c4ebeeca76821b"
+          "canonSize": 320,
+          "canonSha256": "950905ea876f5255ddb9a872f0edc742a03775cd8842dbe45928cee24283b5fc"
         }
       ]
     },
@@ -4479,19 +4479,19 @@
       "moduleKey": "DragTheWords",
       "format": "h5p",
       "error": null,
-      "totalSha256": "58c32d03f01324e60f9dc19f6287382aa24369f802f257dd0d3ab4cee28d0643",
-      "canonSize": 3430,
+      "totalSha256": "9e8d38ee28fedb4c26cba58a63c9a4f9ba0830964be4bbc83a152defeccb7def",
+      "canonSize": 3512,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 3109,
-          "canonSha256": "27eb71401a84c85d8d38c35dd818b8c7a169ea9712510717c9fd39b51acb3591"
+          "canonSize": 3192,
+          "canonSha256": "a8475b0fde4e0fa9809551bf47ed49840bae29dbbfacdc062d6c79c7f4a2a8ea"
         },
         {
           "name": "h5p.json",
-          "canonSize": 321,
-          "canonSha256": "074949ce0b22c16ee4fd831a0ef9669eae46288b7cfba458b3c4ebeeca76821b"
+          "canonSize": 320,
+          "canonSha256": "950905ea876f5255ddb9a872f0edc742a03775cd8842dbe45928cee24283b5fc"
         }
       ]
     },
@@ -4499,19 +4499,19 @@
       "moduleKey": "DragTheWords",
       "format": "h5p",
       "error": null,
-      "totalSha256": "0bc03f4b58fe00a52534b98205032ff057f6e78ce65ec79317c7aa49a128542f",
-      "canonSize": 2514,
+      "totalSha256": "5914f6d4bc5e0bc84b70254eac978efaa50b5426d611d8555ce4e08c64c7bb9f",
+      "canonSize": 2596,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 2193,
-          "canonSha256": "e46d094122456d5eab0e43265c04ec19fa799a70c7d3d24f6ed670eedb86d780"
+          "canonSize": 2276,
+          "canonSha256": "562aedb18b0a0e0a98ddce2220b90817ffd63e41a0c9aa33c456257008cdfe0d"
         },
         {
           "name": "h5p.json",
-          "canonSize": 321,
-          "canonSha256": "074949ce0b22c16ee4fd831a0ef9669eae46288b7cfba458b3c4ebeeca76821b"
+          "canonSize": 320,
+          "canonSha256": "950905ea876f5255ddb9a872f0edc742a03775cd8842dbe45928cee24283b5fc"
         }
       ]
     },
@@ -4519,8 +4519,8 @@
       "moduleKey": "Essay",
       "format": "h5p",
       "error": null,
-      "totalSha256": "27d141766cebebee7cacc895c96acc3f6d05b9497759a798a8c58831148a5435",
-      "canonSize": 5465,
+      "totalSha256": "6e42174b1147e61378938448bad6df6bb359c2abaf39c63eded3be9063dc45f7",
+      "canonSize": 5464,
       "fileCount": 2,
       "files": [
         {
@@ -4530,8 +4530,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 915,
-          "canonSha256": "809d1f14b7a741fcf0af5eaf2bdbb28c4dc55da44a916b32aabd14a625950504"
+          "canonSize": 914,
+          "canonSha256": "5853870eeab246eb041c5a1ec1e3b6d1ec20f659ae33f156907f8d7727a749a2"
         }
       ]
     },
@@ -4539,8 +4539,8 @@
       "moduleKey": "Essay",
       "format": "h5p",
       "error": null,
-      "totalSha256": "57f0f235b0f992226fd8f1e2572f859752c906de523cd2bce98e6a5dc6dfd844",
-      "canonSize": 5445,
+      "totalSha256": "fcc08c9a614e6f2e06c894fa9379f7600afedc35834ba6788da1e2211f330d72",
+      "canonSize": 5444,
       "fileCount": 2,
       "files": [
         {
@@ -4550,8 +4550,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 1017,
-          "canonSha256": "f42d78d325035823478292dae0891d407bfa1d7e1f172f156a5d5d1ad44dc9af"
+          "canonSize": 1016,
+          "canonSha256": "a814babe7a24fa5f1585753cbaae901e6c44b3b193557eb8808fab9c50f95339"
         }
       ]
     },
@@ -4559,8 +4559,8 @@
       "moduleKey": "Essay",
       "format": "h5p",
       "error": null,
-      "totalSha256": "b06fcaa6706453dd86c81c26a7d1935a309898d0a4f937c97e4c18dc7f98e2eb",
-      "canonSize": 3913,
+      "totalSha256": "aada17624e101c00bc0bcda275f7b2cc0921a2e792f9971e633068f408121f74",
+      "canonSize": 3912,
       "fileCount": 2,
       "files": [
         {
@@ -4570,8 +4570,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 1017,
-          "canonSha256": "f42d78d325035823478292dae0891d407bfa1d7e1f172f156a5d5d1ad44dc9af"
+          "canonSize": 1016,
+          "canonSha256": "a814babe7a24fa5f1585753cbaae901e6c44b3b193557eb8808fab9c50f95339"
         }
       ]
     },
@@ -4579,19 +4579,19 @@
       "moduleKey": "FillInTheBlanks",
       "format": "h5p",
       "error": null,
-      "totalSha256": "08dd65fbccc2b0cdec3c2c507d3b30ee11bc6340c7dc5f6d74522c82b7f0137d",
-      "canonSize": 5058,
+      "totalSha256": "8b4dcf8a199e1ef222dfd1b4b4f792515dd6627cc13f86f542f2a0f940b88923",
+      "canonSize": 5098,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 4140,
-          "canonSha256": "cb079f120ad5ada155cc36d3dfd95006ccc3747030e584715352f7e2d4f0f6f5"
+          "canonSize": 4181,
+          "canonSha256": "97efbd20cea3bc06dbd9be9b59dfb5f213bebdf493dff6f57ba1c24442c66898"
         },
         {
           "name": "h5p.json",
-          "canonSize": 918,
-          "canonSha256": "9a49a2b3b9c367e7fe600c1dfbc5324ddf06176c61e90288552fc11f2bbc0bbb"
+          "canonSize": 917,
+          "canonSha256": "22f4f077d7f379f27dfa8729c7339e44f2c2a9da294aae6c8ff2aab716e3b2a9"
         }
       ]
     },
@@ -4599,19 +4599,19 @@
       "moduleKey": "FillInTheBlanks",
       "format": "h5p",
       "error": null,
-      "totalSha256": "c7b48af2a7bbdfbc66030bd811146891d3a4a6f7f735c51cc79d5efa490d6b4b",
-      "canonSize": 4632,
+      "totalSha256": "232a899d022020b6b83d15e930a0d01970b20f91bef2f1cd4c3f5c2b2117cddb",
+      "canonSize": 4672,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 3612,
-          "canonSha256": "c5fa45898a6996de8bb4bba0bfbbebb0f5c288db7f0253267095aa50d072782d"
+          "canonSize": 3653,
+          "canonSha256": "76e2e4550a5d5a2cd341b90e005d5152da39323b6a3e73010ada24f0c15886aa"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1020,
-          "canonSha256": "1d70ede7cb7f502c8529ff009169e543f87027063537ce47c455486b946a7472"
+          "canonSize": 1019,
+          "canonSha256": "94482ef9afea07381e75422cd540c7d0fa86fcd0c594aed8edaa29fa69701968"
         }
       ]
     },
@@ -4619,19 +4619,19 @@
       "moduleKey": "FillInTheBlanks",
       "format": "h5p",
       "error": null,
-      "totalSha256": "a1e16b3e2d5ff5c21a86a715a4b4fac2966dfeaaf49f18593e57ff2da3b38186",
-      "canonSize": 3795,
+      "totalSha256": "aa7bebe9ba76950455c36cc5a735428b3b2081cbe2d95c478b763ea42bbb4ce5",
+      "canonSize": 3835,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 2775,
-          "canonSha256": "46ca4f2b8173c928dc3ed93230db6a1c8042a19a70057e0c8398e0d93e0ec82e"
+          "canonSize": 2816,
+          "canonSha256": "b1406ba55af63789653760448f20e4a748dc34ec9b0475261a9bf3a252deed27"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1020,
-          "canonSha256": "1d70ede7cb7f502c8529ff009169e543f87027063537ce47c455486b946a7472"
+          "canonSize": 1019,
+          "canonSha256": "94482ef9afea07381e75422cd540c7d0fa86fcd0c594aed8edaa29fa69701968"
         }
       ]
     },
@@ -4639,8 +4639,8 @@
       "moduleKey": "FindMultipleHotspots",
       "format": "h5p",
       "error": null,
-      "totalSha256": "8d8464d988631c31299e8e9b7185b4bb6a51186da05a7bb1b32b4a5edf5514c7",
-      "canonSize": 2797,
+      "totalSha256": "7d1e88be4bc0cde9e34f300c1b6057234ab9571c8858b57e7cd1c9be0fb8dbc3",
+      "canonSize": 2796,
       "fileCount": 2,
       "files": [
         {
@@ -4650,8 +4650,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 857,
-          "canonSha256": "f6039c20d0bbda226e0c789bf43d8fc639d67cbbe46246d07290900fb17da914"
+          "canonSize": 856,
+          "canonSha256": "8edf042f5a3669343fe83264805ed8e1387843e54e83a078185875ad514a7b08"
         }
       ]
     },
@@ -4659,8 +4659,8 @@
       "moduleKey": "FindTheHotspot",
       "format": "h5p",
       "error": null,
-      "totalSha256": "769c43a804cc0c2b9dac1767dd0bb1497add02b7bd49c0fea62ebea47516a358",
-      "canonSize": 3038,
+      "totalSha256": "e5672c106717aae310cb17353103ea93c8df6d02828d69c8954a94e6cc481921",
+      "canonSize": 3037,
       "fileCount": 2,
       "files": [
         {
@@ -4670,8 +4670,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 1039,
-          "canonSha256": "447a12b4255ea1d70aacd555c94eedbc6ac6c1fc41d25c3baea73a9f874244cc"
+          "canonSize": 1038,
+          "canonSha256": "589fba8d414be75c45168444b9c8bb1850f02499044f622e6b5a23e5571394f7"
         }
       ]
     },
@@ -4679,8 +4679,8 @@
       "moduleKey": "FindTheWords",
       "format": "h5p",
       "error": null,
-      "totalSha256": "82db4439bad89358b9cd8a3840e3f1a5d15f0953223d53d34eaa801289e006ee",
-      "canonSize": 1980,
+      "totalSha256": "64c76d161391ffaac7f080612599355465d1eb4da19845d34e95072dd4aae4d2",
+      "canonSize": 1979,
       "fileCount": 2,
       "files": [
         {
@@ -4690,8 +4690,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 822,
-          "canonSha256": "d1dcee95777436c45177ef4063b8ec12ea3f92040332fb6204e8fc774f1fa033"
+          "canonSize": 821,
+          "canonSha256": "d557c344ef7c387f27f200ce36203d56a5a355e08e8fab8d9d116d5423221c26"
         }
       ]
     },
@@ -4699,8 +4699,8 @@
       "moduleKey": "FindTheWords",
       "format": "h5p",
       "error": null,
-      "totalSha256": "b29bbed6f2c6d9179ad5c476e138c0759615e142f710c77b1d3054d8c8d4fbd6",
-      "canonSize": 1756,
+      "totalSha256": "bce2d58b530a6cfb6a299abcfc1ff813926dd1187cfdd75f49ad31affd694bff",
+      "canonSize": 1755,
       "fileCount": 2,
       "files": [
         {
@@ -4710,8 +4710,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 822,
-          "canonSha256": "d1dcee95777436c45177ef4063b8ec12ea3f92040332fb6204e8fc774f1fa033"
+          "canonSize": 821,
+          "canonSha256": "d557c344ef7c387f27f200ce36203d56a5a355e08e8fab8d9d116d5423221c26"
         }
       ]
     },
@@ -4719,8 +4719,8 @@
       "moduleKey": "FindTheWords",
       "format": "h5p",
       "error": null,
-      "totalSha256": "7d29d9a5fc4cb93752c35bd1a326e5ae85cf1bbec90e65cd4912197e7403ce29",
-      "canonSize": 1988,
+      "totalSha256": "cc68cf6e7b4df26e5e1738224f2704f544ca573e163ac4c4ee66c83b96f9d9ba",
+      "canonSize": 1987,
       "fileCount": 2,
       "files": [
         {
@@ -4730,8 +4730,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 924,
-          "canonSha256": "58fe2b9711043120f935409c8f9b32474fe58557e698964fbbf861462907b695"
+          "canonSize": 923,
+          "canonSha256": "9924d17f58b21168791c7fa5db2cd341bc44fe4dcb7e49de13b3e48fa6e1d187"
         }
       ]
     },
@@ -4739,19 +4739,19 @@
       "moduleKey": "Flashcards",
       "format": "h5p",
       "error": null,
-      "totalSha256": "4067536df706e38ae81adb26bace85488fead0b6f07e419657079d423ca241fc",
-      "canonSize": 2397,
+      "totalSha256": "eca7d3b3556300267794786e5dfb6abb5d41573a698834489252f365a48e7dfe",
+      "canonSize": 2586,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 1639,
-          "canonSha256": "80821088379a1e58d7656e622a6ac6986aab68dea763fc3af6fceaa7b1f0ec8f"
+          "canonSize": 1728,
+          "canonSha256": "7c01594bc7d972a78a487982c211496999780d3daa5909fad0e9ced2d96caea6"
         },
         {
           "name": "h5p.json",
-          "canonSize": 758,
-          "canonSha256": "1dfd847be0e22090a61ac57bfe2f78f0352ccb1da28bf755876f799511ef02e6"
+          "canonSize": 858,
+          "canonSha256": "d864abc61c15bbe3978249d67e71381228158f7b98a1ef16427b04347aa3e71e"
         }
       ]
     },
@@ -4759,19 +4759,19 @@
       "moduleKey": "Flashcards",
       "format": "h5p",
       "error": null,
-      "totalSha256": "6ec064d0a0c09965f9cb0e3764fc2235e060b4147d4f2c926735d07f7e75a2e0",
-      "canonSize": 3536,
+      "totalSha256": "c19133f317a39a9858254045317f327e49bb402cb96f216d57d9bf450c65b554",
+      "canonSize": 3725,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 2668,
-          "canonSha256": "8a202407ffa5ee6931b4cd4b8fc9a4728ea7b542bd7da4b413dbf305f63c414a"
+          "canonSize": 2757,
+          "canonSha256": "3f89fe944f4dff649d976f4d7cf6545e33a6ddf7c50f2c5f209bf945a56c8580"
         },
         {
           "name": "h5p.json",
-          "canonSize": 868,
-          "canonSha256": "ae1253ad1d808d4ed244caa2984921740e07fda1805b009a9fd1dd30744b4c51"
+          "canonSize": 968,
+          "canonSha256": "9fa91ae67b09e3300ecf710573024c4ead20b7a2fa8047fcfbea15cade75caa4"
         }
       ]
     },
@@ -4779,19 +4779,19 @@
       "moduleKey": "Flashcards",
       "format": "h5p",
       "error": null,
-      "totalSha256": "3d685ef48a28e28a54dae9dc0db1b0fe5d3a988e7fce8c33aef9b89c8bc31ab3",
-      "canonSize": 2325,
+      "totalSha256": "c9a9417fe247a1b4c15324564f9054ca2df03185d4deebb601d57ed096567d8d",
+      "canonSize": 2514,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 1471,
-          "canonSha256": "2e5f09bf4a4b9654382f195d183dea6d81bd5da3cc142b49ea21c205a1f8d310"
+          "canonSize": 1560,
+          "canonSha256": "575eb68f01badfe2c9ee231b2ee4054d82e8e6e6cd2b48b8f7307f96211f5a3e"
         },
         {
           "name": "h5p.json",
-          "canonSize": 854,
-          "canonSha256": "c9569a9d97ae800dff71daab5a874d8b08cdf17a0550c6f36dd2fe33e370ebf8"
+          "canonSize": 954,
+          "canonSha256": "002201d57d046a83a4137f89a87ba3dac979be919c77e9dbb391540d4f6a199a"
         }
       ]
     },
@@ -4799,8 +4799,8 @@
       "moduleKey": "ImageHotspots",
       "format": "h5p",
       "error": null,
-      "totalSha256": "db3d6b23b3e26aed454bf094831295a0ede9a7864ccdf4150bdcf86fb549d485",
-      "canonSize": 4075,
+      "totalSha256": "e0ea8b3bf6fad78f714f66b01065cb4c0ff12e3831bd725e4598ddd4610d04c6",
+      "canonSize": 4074,
       "fileCount": 2,
       "files": [
         {
@@ -4810,8 +4810,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 1111,
-          "canonSha256": "6d4cb1b1fd17c65b1e84d33eb1c322ca1fd8e48f2bbc6f6edf134a6775cdb2c3"
+          "canonSize": 1110,
+          "canonSha256": "005f6268193f9438c1ee100a8dcbcbf9302c94dbf0f4d1d2caceddc36764224e"
         }
       ]
     },
@@ -4819,19 +4819,19 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "ecdb7667a8a9e376e5f0d660f97ecef005205926a24655819f98238b5d0b2b37",
-      "canonSize": 18206,
+      "totalSha256": "d3c97668c083399259e2eee727ee7fe6e1ee035992dc63d4ee528c6f6381c0bd",
+      "canonSize": 19045,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 15059,
-          "canonSha256": "a3fe500b559984c68c9524833008a2ed270cf9d2151f2ae19f8b3a7229dd8e3e"
+          "canonSize": 15899,
+          "canonSha256": "d3c9bee6870966cf38c51f84775fe9ab4e8998cf8eaef66f36f2bf3f47ca3725"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3147,
-          "canonSha256": "07dae6a0fd3f9930d893739e24755859407dc513480716c3f8a76d0b5382cd6e"
+          "canonSize": 3146,
+          "canonSha256": "338d869258702e99e16ebbbdc9ac806efbaf40df1529697ee843e7e043148762"
         }
       ]
     },
@@ -4839,19 +4839,19 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "a49c5bf10afff7b06ec1796f070efc462c3a44eff85bbbb369f804d18c1175e8",
-      "canonSize": 27764,
+      "totalSha256": "8034ce3fa466263b1dd4a50ce93d710876897f40125f6f2ed4e8654c8067f0cc",
+      "canonSize": 29503,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 24573,
-          "canonSha256": "5638da493f884bc7f2768692ebb7d76c3b86eaf2ee05ec08ab553bf5467facde"
+          "canonSize": 26313,
+          "canonSha256": "d04a21963b56195e70121b697045ac17fc7d9ec4c808174c880f3f72245cba19"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3191,
-          "canonSha256": "4524286e6396eb4276f4e781ff1a5472100a754ddf60fe34c3f8f1d013b9c5fa"
+          "canonSize": 3190,
+          "canonSha256": "b994527f77e3f8b4587befb43c558387135fda7cb4daf9a91cdd2a6e74a6896a"
         }
       ]
     },
@@ -4859,19 +4859,19 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "9be8d37374033b6eb845cef5b0abdc6e41e8e7b578d10f87af506faae10cf4af",
-      "canonSize": 26343,
+      "totalSha256": "0179da1186fc53dfcbed38f39f8cb23bff7610fe12c7c33e91157132c0bf9c21",
+      "canonSize": 27516,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 23162,
-          "canonSha256": "f86c15f21408f99d81cfbdf1b8a9c442099859313376cb126581a243c1b7512d"
+          "canonSize": 24336,
+          "canonSha256": "f4abb361ee2a77238193e0dafff84346c67b59e7f0db934f8b2c95faca11f1f9"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3181,
-          "canonSha256": "98fbc896efefda2f2492bc8c68b695e5025544cf7555106a81cba9494e5e9ac4"
+          "canonSize": 3180,
+          "canonSha256": "64ca00dc881700f44f3c778dd7803669c4d8dd3ace330ba3d716569eb1f306e0"
         }
       ]
     },
@@ -4879,19 +4879,19 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "807b92540e0840279e0aaa8b8a1ad10b7c13e05dd1300bcfdaaa5965d63ff1bd",
-      "canonSize": 41632,
+      "totalSha256": "5845c25a71d05cf4d3094c7c99dc403aaf605a3c0282c7b6a47b812ba7572e3c",
+      "canonSize": 42805,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 38423,
-          "canonSha256": "7e633d3a0c6a936ea44da382747f93513303ba15b3daaaf29a8e55b217074584"
+          "canonSize": 39597,
+          "canonSha256": "30452745e7bedea2c3f510ffb3332c32e71cdc426d5ade1bff9965e8971a086d"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3209,
-          "canonSha256": "c13aa6314190d6401eb77d8d3a93ad1356ec95c15f69935f9d492af99f70b3cb"
+          "canonSize": 3208,
+          "canonSha256": "db48a134bcfc0fe6567cbddf5790d8c4a9f68de6dab46e33f2a5eddc576ea3a0"
         }
       ]
     },
@@ -4899,19 +4899,19 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "37b15be1cf790a7a03df07d62debfc31adbc28cccedc7f04bdc6234704ed9989",
-      "canonSize": 38063,
+      "totalSha256": "4100090803411576cfd9bbcfe4569d015f3c30aef746004a97f5fdaf833d15b0",
+      "canonSize": 39236,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 34866,
-          "canonSha256": "b9caaf4c0942c9bfb3ea48b62bbbf741d41364a7ccdc0634b15c922a12713523"
+          "canonSize": 36040,
+          "canonSha256": "a868ebef7edf7a378e67e94fc0805098c76fb017181af4c6312419009f47c84a"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3197,
-          "canonSha256": "6bab65b00611cb65da21c0e3f2292ee3f61c81579c6b1ecde9f43edf02101a42"
+          "canonSize": 3196,
+          "canonSha256": "ce543795c380ae49a365591c66517d375c51050dd73fc8283f31cb3d3884543b"
         }
       ]
     },
@@ -4919,19 +4919,19 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "dc6f5790d5f205ce960b981663baccff87186eeb4d659eb937d26e83dc99ab62",
-      "canonSize": 40470,
+      "totalSha256": "5db0c58d8df2ff445051f0a1e6f008285c8b776c3b134561af6dc514a0e74123",
+      "canonSize": 43790,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 37207,
-          "canonSha256": "37ad9a432e373503dd42e7c03661de3fe99742e7d05a09e466216012e9890fc2"
+          "canonSize": 40528,
+          "canonSha256": "723db416a15ab1911732f39693b221bcd8349bd49bbb66fc78942f2ae1d7b5a3"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3263,
-          "canonSha256": "d7c233b9ad994300096d379b4e3a06c4d1cce309eb238887ea7c831fd6fa2c2a"
+          "canonSize": 3262,
+          "canonSha256": "ebe436c51d6296e5eec8241d5d0f711a19d4a31391ee5946adf508ba78f77006"
         }
       ]
     },
@@ -4939,19 +4939,19 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "d9047118a316736ae7f2f046c957dbec610e14fb4fc507826d5378ed0248cbc6",
-      "canonSize": 41427,
+      "totalSha256": "19f5cd8f74837c714877a66bfc76b4d5889062539493b75e9381b28e9e59d369",
+      "canonSize": 43528,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 38204,
-          "canonSha256": "e4e7dad5d209534380aa9227b1a4e312d6ca3a8f700c3aaffdb872910c4e240b"
+          "canonSize": 40306,
+          "canonSha256": "7d1e01484c5dae67504b6cdbdc1fe6de519d8cab7ba959791743654c83020e3c"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3223,
-          "canonSha256": "4f7f7aeed14663cabc5e5f944cb3ab13ca1b92fa2bae02bef775539fa474218f"
+          "canonSize": 3222,
+          "canonSha256": "845426d895de3262df964713bd9e00f3e388187aa68c055a4e695043708509e3"
         }
       ]
     },
@@ -4959,19 +4959,19 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "a8fb7087cd0ff4555a898f1fdaaa94c42bed89312b27b91157d799dbcca06e33",
-      "canonSize": 38485,
+      "totalSha256": "31c3040e73be20b8b450a49d1fd79ccd31fab4613f64e0984c488866be57cef6",
+      "canonSize": 40543,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 35210,
-          "canonSha256": "419c6f5b8ac0fd806eca48feffadc2dc859c88f4712c054555b338ac28c63e0c"
+          "canonSize": 37269,
+          "canonSha256": "fdff0370106d6d16353370c00646ee715c657a4bec54e9d473448f1928e59ab1"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3275,
-          "canonSha256": "62f1c58823ee74b214da0da070d299777e92bf75a0af3578a9493ac3e7f7f3f8"
+          "canonSize": 3274,
+          "canonSha256": "d9af9362064ab40c64530cef22087a27c1b2ea7db0e6db87b961263b6cf752c8"
         }
       ]
     },
@@ -4979,19 +4979,19 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "ef629196d1a203f2ee9e70d2d329ffff475b9b9901253c8667a2f538f6472522",
-      "canonSize": 22052,
+      "totalSha256": "a37282344e012f379e81a4b6169e6a69a9d219e64678624bbafabca875b1d885",
+      "canonSize": 22863,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 18779,
-          "canonSha256": "d1f4fcca34def647332074fa62cc50e5bb44c1bdc2d7f314c103652b8b61d9a4"
+          "canonSize": 19591,
+          "canonSha256": "909cc58c7ba3471cc811e11c9ac5bd963319701272812d1d4aa53ab105cad555"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3273,
-          "canonSha256": "d870ef359513c4613e1e088c6e39fca2c8d156c71df032347d7d26ab1b128111"
+          "canonSize": 3272,
+          "canonSha256": "9fb0afef7387c844f03dfaa61ceb4affe23a8045ec9a19e91aa7b0f92b6d5e2c"
         }
       ]
     },
@@ -4999,19 +4999,19 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "0e2d492ce5b8db2045fe8f7d914da8a1c8b4397ef1feb5dd9ef6c27ff9c00801",
-      "canonSize": 26153,
+      "totalSha256": "14dfa9633d08a35217e032c75efb132118d01238c910419c117202320d377802",
+      "canonSize": 27326,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 22968,
-          "canonSha256": "53d77662c91713b0e7984c2233a9b26be45a3b466c8e4872add67080b83a787c"
+          "canonSize": 24142,
+          "canonSha256": "bb2465ff98b058c5c72d4fcb674faa598d47c39f48a47da011874173e4ca4bfc"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3185,
-          "canonSha256": "585bc42d995ad7dfff26d8e25416dd74a2c7d5195eef81ec26fa62a8cd8f6ce3"
+          "canonSize": 3184,
+          "canonSha256": "2d2d077efbf96428d6afe8b4dd049a1f269023e6848a0c7adadd8e793aabebc0"
         }
       ]
     },
@@ -5019,19 +5019,19 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "9f3fb6e3d7059407911d6b0b608ea54fa86a0acca05cc2cfe2e0c681f82fca82",
-      "canonSize": 22698,
+      "totalSha256": "3293ad8a2e86c06bcad4b56c20a5f796002f7673aeb81aa16e6842c685ceb22f",
+      "canonSize": 24394,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 19505,
-          "canonSha256": "f436025a05911c19057bda6dabb082559cdbf9d24aa0599b42ada5afc73ae73d"
+          "canonSize": 21202,
+          "canonSha256": "6030700fdf9dbbe42bf8063725904389fa31c592ced76ae3b73b0326d7d7c1fa"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3193,
-          "canonSha256": "4e5fb70595a9b04e7072b5ef84b7993f8cadcaee41160e92002faccae586f36a"
+          "canonSize": 3192,
+          "canonSha256": "6ce2e7ee3b381b24bb12549ddaca4c24fcb2318470ccf919200a3d64f41f2a3c"
         }
       ]
     },
@@ -5039,19 +5039,19 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "fc3f2f5a4935e847f242a23fb0cb6f669d8dbc78facb2858c85bd6d8feabd2d4",
-      "canonSize": 32196,
+      "totalSha256": "0fc45522195e9d680379a388100b244d6dd95ba0682d14c20522e878a913db88",
+      "canonSize": 36401,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 29003,
-          "canonSha256": "90b344e04d6060a625993988b8d1e844e60e0db14c3546be73e8028cfa5f7069"
+          "canonSize": 33209,
+          "canonSha256": "5026c5e66e46a403207812c1763f8970414d715d244b25cad928d47071491ba1"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3193,
-          "canonSha256": "ce3307b6988fba0528718bd52dc93d65ca04ae1be12bbc9c92fcb14f35910339"
+          "canonSize": 3192,
+          "canonSha256": "66abe56ff077417b1b52aca1aa75e21c3776c609901fe6d2257ec868a3e11926"
         }
       ]
     },
@@ -5059,19 +5059,19 @@
       "moduleKey": "InteractiveBook",
       "format": "h5p",
       "error": null,
-      "totalSha256": "ec55debc4fd67a5af04927b027869e6046f2267435765329210b6d76fcba3725",
-      "canonSize": 23569,
+      "totalSha256": "ff63e51295f0464baa1632d9c25448b3ac24f40fef2dedd3325d3131989fd701",
+      "canonSize": 25149,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 20418,
-          "canonSha256": "656ac32b833796271b0d4fe5f727293901acff11707526ab366a02fd8a722796"
+          "canonSize": 21999,
+          "canonSha256": "53792a07783b1f1fdf6255f929d37f9669249560837d6a30b9c489e720fd9151"
         },
         {
           "name": "h5p.json",
-          "canonSize": 3151,
-          "canonSha256": "bc43572920339df1c5aef40de2b6d91feced187d7759cdca4d34d8479e95471c"
+          "canonSize": 3150,
+          "canonSha256": "042327441474aa122ca60480c3fd2c49a76541146d5aae4fb650b716ba021982"
         }
       ]
     },
@@ -5079,19 +5079,19 @@
       "moduleKey": "InteractiveVideo",
       "format": "h5p",
       "error": null,
-      "totalSha256": "8c65abdf3eaeb63e704470ca32743e1a762d0d6d8e290fc7bce5070876b7418d",
-      "canonSize": 12943,
+      "totalSha256": "60325a02c4ec57dde14dde7a048e29c1f7eb286982a52d84ebdf06c856092fe5",
+      "canonSize": 14090,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 10808,
-          "canonSha256": "7dcbecd8619bcc49dac4787be4b8f37560beb20e3f8524081e21a6821c5a2d9c"
+          "canonSize": 11956,
+          "canonSha256": "7568f70eab753c37903bca233104b1907314121b9117ffdc2f8146352d7c5734"
         },
         {
           "name": "h5p.json",
-          "canonSize": 2135,
-          "canonSha256": "52bca7fc24fba5f731acaae1d01aacef56639b503337ade98ece0ee2376d5233"
+          "canonSize": 2134,
+          "canonSha256": "65051ae4b089b7d8f52baf30d19cd2d1a05859aae82298e279f8c72de219d90c"
         }
       ]
     },
@@ -5099,19 +5099,19 @@
       "moduleKey": "InteractiveVideo",
       "format": "h5p",
       "error": null,
-      "totalSha256": "bb38d2fcef9d3340c677760dadab831586222d58625a24a1f7c5427c62ef28be",
-      "canonSize": 23298,
+      "totalSha256": "ecf00240e763d16e042d3dfb5952e21d25a4e1b0624cc457eb6654fb35a23f33",
+      "canonSize": 24807,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 21075,
-          "canonSha256": "088310ce4b0461225621fe641ba73078a6e6c3e2cd3e7928dc00daada974c3a5"
+          "canonSize": 22585,
+          "canonSha256": "04558129a8e9bc0bc4f43607b8a56d5e397e63130f1b37031a80cf95af574843"
         },
         {
           "name": "h5p.json",
-          "canonSize": 2223,
-          "canonSha256": "8f7f33ced5d3c8fd777898670c1aa6fb7b80c77acd7011a9d9d51022195ee777"
+          "canonSize": 2222,
+          "canonSha256": "2ef15863137ff3b918ead52b598eb184acf84512389b3ef0e46b5b8d19889583"
         }
       ]
     },
@@ -5119,19 +5119,19 @@
       "moduleKey": "MarkTheWords",
       "format": "h5p",
       "error": null,
-      "totalSha256": "8c53d219e263907a173edaebe4bcea9ba6fb826e75b9841cb3c267c7f3228f90",
-      "canonSize": 3948,
+      "totalSha256": "3b14d9a14a6baabea1b47d2e5c0368ee95eebfbc0fc22ec473cd51f9ee9a0aaa",
+      "canonSize": 3947,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
           "canonSize": 3122,
-          "canonSha256": "57ea4f8b870ed8ca9bd0b5c5866fe51e3495f2b602e947f5c37680a033e1463b"
+          "canonSha256": "cef002326c3d861612bcf7e63747e47f0b938fd5b84812e8743d4a50cf980df5"
         },
         {
           "name": "h5p.json",
-          "canonSize": 826,
-          "canonSha256": "3138aadac1b2b9c707f9ae12e1102d518911002fceb6a03b4fa23fccb5fb1717"
+          "canonSize": 825,
+          "canonSha256": "1079b30ea84989818e6f2b3a885b57f09d507a40aa77adf2ab175da7d7ab1fa7"
         }
       ]
     },
@@ -5139,19 +5139,19 @@
       "moduleKey": "MarkTheWords",
       "format": "h5p",
       "error": null,
-      "totalSha256": "59922e4b09e4471b2a0f45902a062bc7170d488cbf7f863eadb2e11551c48954",
-      "canonSize": 3375,
+      "totalSha256": "1ebb8ec99db35aa416f00a688a7215ac6b70f5146b8d51fb26353d56fc332d50",
+      "canonSize": 3374,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
           "canonSize": 2549,
-          "canonSha256": "08c2a64053bcb89fb8a976408956414cd7eb8436377ac361d329576be95b07d9"
+          "canonSha256": "79bcbcb960e985e0572bff3cb005457a52f872c8030846cff5de5ad945acaa2a"
         },
         {
           "name": "h5p.json",
-          "canonSize": 826,
-          "canonSha256": "3138aadac1b2b9c707f9ae12e1102d518911002fceb6a03b4fa23fccb5fb1717"
+          "canonSize": 825,
+          "canonSha256": "1079b30ea84989818e6f2b3a885b57f09d507a40aa77adf2ab175da7d7ab1fa7"
         }
       ]
     },
@@ -5159,19 +5159,19 @@
       "moduleKey": "MarkTheWords",
       "format": "h5p",
       "error": null,
-      "totalSha256": "5a408560f2080ad81c497d2256c18995bf5ecf5793abaad6d877ec433028de31",
-      "canonSize": 3133,
+      "totalSha256": "680cd399753569280bbd9ed3fd284ae5117e2a27b2de3cfc0d01f60b10521348",
+      "canonSize": 3132,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
           "canonSize": 2307,
-          "canonSha256": "b28d395d8c091e42333b1977f043b0ac2e0c3726561db377fb0b86c33d2863a4"
+          "canonSha256": "af749fe015536a636a34f77ea64e43e92fd53d4db59fa409ea0bd6b981c7e44a"
         },
         {
           "name": "h5p.json",
-          "canonSize": 826,
-          "canonSha256": "3138aadac1b2b9c707f9ae12e1102d518911002fceb6a03b4fa23fccb5fb1717"
+          "canonSize": 825,
+          "canonSha256": "1079b30ea84989818e6f2b3a885b57f09d507a40aa77adf2ab175da7d7ab1fa7"
         }
       ]
     },
@@ -5179,19 +5179,19 @@
       "moduleKey": "MarkTheWords",
       "format": "h5p",
       "error": null,
-      "totalSha256": "72f7ec382514687cbd43be0bc5a15a93eebe2f186e81dd3fcd8024b99da5ee6b",
-      "canonSize": 3121,
+      "totalSha256": "8beb36033219c9550fbef5ac137df4b0f747e53a82aba26e89c73ba44f40c107",
+      "canonSize": 3120,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
           "canonSize": 2295,
-          "canonSha256": "f1c9438357a45e5e1d9c90ade3b6d9227a7aeae3ccc84b01d2f9c00d05598ab3"
+          "canonSha256": "c9fba6c2695ee29ccda8a1a4d8bbfb7c9c108b7cb94735395fd7fae2af63b9ad"
         },
         {
           "name": "h5p.json",
-          "canonSize": 826,
-          "canonSha256": "3138aadac1b2b9c707f9ae12e1102d518911002fceb6a03b4fa23fccb5fb1717"
+          "canonSize": 825,
+          "canonSha256": "1079b30ea84989818e6f2b3a885b57f09d507a40aa77adf2ab175da7d7ab1fa7"
         }
       ]
     },
@@ -5199,19 +5199,19 @@
       "moduleKey": "MultipleChoice",
       "format": "h5p",
       "error": null,
-      "totalSha256": "d704dd5a597d25a74eab9a25b2a9dd95a6492029af087bb7538505ac3b37a5da",
-      "canonSize": 4897,
+      "totalSha256": "68799eb2e42c1a20a56e74a451d18b30ae86cdb2e295c81156b67b056f02168d",
+      "canonSize": 5630,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 4073,
-          "canonSha256": "e923e7e6ccd46c472fd1c2f152f10ebe719207fea12f3912dfc312b9377eae89"
+          "canonSize": 4807,
+          "canonSha256": "e784a8ef1714216daf21e1af1ed96e42b08cd35957f0eb0afbc90b28de69575c"
         },
         {
           "name": "h5p.json",
-          "canonSize": 824,
-          "canonSha256": "94df260a2bc680f36c84607f0cf5407fa8574e6f1e7b4a4c21e119fb7897f7fb"
+          "canonSize": 823,
+          "canonSha256": "8f2880e282371e02ae72734959944b206c08c96814cf4ba8d3f5c24f1d4a7c03"
         }
       ]
     },
@@ -5219,19 +5219,19 @@
       "moduleKey": "MultipleChoice",
       "format": "h5p",
       "error": null,
-      "totalSha256": "f85e31e2ec9eb879af6d951b2e30043149fe9fc099b92b2adc670cda014e26d0",
-      "canonSize": 3477,
+      "totalSha256": "01fda7163693bf3ef8bcf6241dc9152722c11b17b84d5a08ae05bdccc4134d97",
+      "canonSize": 4210,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 2551,
-          "canonSha256": "5256a2c64670cada32ed16ab7e7d5c48e5eb1341fd92df5ade6b4f1b42e04a84"
+          "canonSize": 3285,
+          "canonSha256": "2382aced003dbcf2b09a639afbe4d44f43a64549ae6320f15eef0bcd78663ba9"
         },
         {
           "name": "h5p.json",
-          "canonSize": 926,
-          "canonSha256": "9acdab51db621d3889de1bafc0ea40e1810aa71c7772ac8a4f5d2c459ef054ef"
+          "canonSize": 925,
+          "canonSha256": "e4ee2d0a07e356f21acf20bbaa816b56b0db68ec4fbc833676fa7e11f394fb6a"
         }
       ]
     },
@@ -5239,19 +5239,19 @@
       "moduleKey": "QuizSet",
       "format": "h5p",
       "error": null,
-      "totalSha256": "8ac627e5eb9f6e4ef54dcc1589c9d0cb865b5fa3347d800546641fc01bcc4782",
-      "canonSize": 24143,
+      "totalSha256": "b8fd0460c420ef26ed4071742bf76f41b95d9ad4881c5aa8b07a3b52d402245e",
+      "canonSize": 27209,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 22853,
-          "canonSha256": "8873951d4a99587c434808efba596d30c62c5f1527b93ec9cc6ab531e595d085"
+          "canonSize": 25920,
+          "canonSha256": "3b1e4671716747b1ba39cbfdf96532de20c0fafbcbc654d0948b01c4073dd793"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1290,
-          "canonSha256": "10633b05df0bf86405181ac62d16f32ace41216a31defa814b9e8c6ea32c8b60"
+          "canonSize": 1289,
+          "canonSha256": "bcc66de97ca0c648721364c7c442a859889f86d09779c8abacb584401ea6f805"
         }
       ]
     },
@@ -5259,19 +5259,19 @@
       "moduleKey": "QuizSet",
       "format": "h5p",
       "error": null,
-      "totalSha256": "c2fa3029287f7d481f5c337377422ee9a3985cfd7ed25d062d4bf72248bbeaf9",
-      "canonSize": 18042,
+      "totalSha256": "452193760ad0541d4c3666c75f60a27855c0e756ca1a4be170710be681ce75a5",
+      "canonSize": 21108,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 16736,
-          "canonSha256": "7b7a0812f34e718611e77c8f5814b81156b69eed6d9d21dcc07eb72fac0cbd76"
+          "canonSize": 19803,
+          "canonSha256": "b5b2e0e3a670dea3dcb00f37ec121c68eab9b6272d7d8b1861f2c397be1f321d"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1306,
-          "canonSha256": "2d91a5d0fe8a3f6f27689a5a6088f7b7794bb061b33e6a5f9582156641b0986a"
+          "canonSize": 1305,
+          "canonSha256": "9fa4ba571b8ab85f829b93bd72a56d5a44e78fc3c00ea7fb82b734bd9a602548"
         }
       ]
     },
@@ -5279,19 +5279,19 @@
       "moduleKey": "QuizSet",
       "format": "h5p",
       "error": null,
-      "totalSha256": "ae36b2fc6472f85ab1a55157189a57e141ad180e990a98b7b7ed96b363eb629c",
-      "canonSize": 16448,
+      "totalSha256": "05b0b14deac407e583ee4197f1fa50211b0a0959eceb67a618bf114e94062f5e",
+      "canonSize": 19514,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 15146,
-          "canonSha256": "139aefd408ab5e07c61a7944289f23b246d285bcaf470019d450b017cf5eb439"
+          "canonSize": 18213,
+          "canonSha256": "834aa62939dc102b7f32b56f12ad8c25b2ca88ee7743933d9d9548ad42897264"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1302,
-          "canonSha256": "b9d8211a15f460886a60a7b5a4196f7bdb6191c6d2a80d4609d2aeba2220a219"
+          "canonSize": 1301,
+          "canonSha256": "d8da3cba99fc9558673682b387f6a87438d8e610fca78fddcd0d36ccdb44f84f"
         }
       ]
     },
@@ -5299,19 +5299,19 @@
       "moduleKey": "QuizSet",
       "format": "h5p",
       "error": null,
-      "totalSha256": "855b610bd560cc0515ea8cd8d78773ed8c669c2fc813c8db5fb774ccb21c2ebc",
-      "canonSize": 12803,
+      "totalSha256": "cb4ed1910b3121721be6c6c5db28af9c8ae49feb46498ed1ffb826c71c085aea",
+      "canonSize": 15869,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 11541,
-          "canonSha256": "a4ba572fd6b5031a1045879eceacb55c639cafaad2e0fce15cd39bb84cc94a8b"
+          "canonSize": 14608,
+          "canonSha256": "484cceda1e05aedfa20729a2c92ddb2acb5866b5481a818dc47187d8fda1cbca"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1262,
-          "canonSha256": "0a152436620ba899412f24e448c8ca3bf6c1342d4db6613797eabb81fb6ad72b"
+          "canonSize": 1261,
+          "canonSha256": "6fb971479086ae5d8f945b9192ca4a768c7d728f2c31cc9da95c0b6e2bbdee12"
         }
       ]
     },
@@ -5319,19 +5319,19 @@
       "moduleKey": "QuizSet",
       "format": "h5p",
       "error": null,
-      "totalSha256": "f636176f1d574860d59026b10485e81a04304ab2a8fb7116bcaf8c591a34e3e3",
-      "canonSize": 23800,
+      "totalSha256": "ed9728a009f950efc80c554e4e43591dfdeaa88639b503cacbd1cb36c89026df",
+      "canonSize": 26866,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 22518,
-          "canonSha256": "5edcf1805cb38ab63af23c6bab7fa80432e5d7ce476bb9f2df81ca523d2cc460"
+          "canonSize": 25585,
+          "canonSha256": "11b49ca675d16bc4f70412933e2f919bb0f709206dbd8015a315b8bddf8e2b56"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1282,
-          "canonSha256": "586ce6b4e376341fe6f8d4aa2ec23c28ade0babda4e811900a7ad99ea3c02210"
+          "canonSize": 1281,
+          "canonSha256": "0491e6d9148ed2757437c153c2571de9de2f254aeba9f08fabc8c8e5db792e1f"
         }
       ]
     },
@@ -5339,19 +5339,19 @@
       "moduleKey": "QuizSetQCM",
       "format": "h5p",
       "error": null,
-      "totalSha256": "49c38938aab9731cadba51878693aa99c3387bc24815d22db96e5bdbeefe4a23",
-      "canonSize": 22380,
+      "totalSha256": "a3a299a86c54bedc69a116833466acb00bb8c30009e1bbc8574db0d8e27bc6b0",
+      "canonSize": 22755,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 21100,
-          "canonSha256": "6093a129d050d506f3620b9a4e071b31f3c3148e3581e8a4f8e0411d0830a90b"
+          "canonSize": 21476,
+          "canonSha256": "5ee5412e185db035021b940995f3592c580b6c6a6c85f0ef40833effcd2ba46f"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1280,
-          "canonSha256": "cb80f1d0c6a6882918ff29b52b3cdcfb0bdbefae0f938a401e614a6cc2949378"
+          "canonSize": 1279,
+          "canonSha256": "785f24f205a18ba053c2ba47bed2e6a169164581d0c7f42b7f29b753910e6861"
         }
       ]
     },
@@ -5359,19 +5359,19 @@
       "moduleKey": "QuizSetQCM",
       "format": "h5p",
       "error": null,
-      "totalSha256": "b06e34747c06513bedff3680c7d7cd1ea80c0ffb8488a6875afb4f69c2e7e00b",
-      "canonSize": 20008,
+      "totalSha256": "99da085fe6d68213362a9233ca2510128ebaf9e1c4c09ad08accfe5dc5ecc9a5",
+      "canonSize": 20383,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 18686,
-          "canonSha256": "10ea4fbae32d059b9fb0a2b0715d2a824b74ac43bc131178398910a9e7a0aabf"
+          "canonSize": 19062,
+          "canonSha256": "fd2ddc86ab58fb839501ecc945a3e55d7f95fac881b4ffcdddc76955734c7aa9"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1322,
-          "canonSha256": "7cff23aad630f239c66b2f744fa432e35f508d4ba6ec9895973c0aea49ac97b6"
+          "canonSize": 1321,
+          "canonSha256": "1c0d49861bba642393377c59be892fa8de32a68f32f3324cf2ddabb7c8d9ff61"
         }
       ]
     },
@@ -5379,19 +5379,19 @@
       "moduleKey": "QuizSetQCM",
       "format": "h5p",
       "error": null,
-      "totalSha256": "25152826fa13069b02ceac938e730194154486d75da6586d27b9db1e35ae455f",
-      "canonSize": 20590,
+      "totalSha256": "a2550813338bf8459ee77a88fb84f1687604ceea0a634dcd2774522012bbeb65",
+      "canonSize": 20965,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 19310,
-          "canonSha256": "6c47927fd59f1ce8f719553d3a49d7762a76b03eee00b2955fd2e6fe3c6f4ef4"
+          "canonSize": 19686,
+          "canonSha256": "60becae94fd253a9c2cedd3ca5327e6f9035fe2991335c750ed5164e240ebd11"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1280,
-          "canonSha256": "f5c9753562914a1edb458b39894514df01d37f1cf9040c7b638f12181a75e13b"
+          "canonSize": 1279,
+          "canonSha256": "0791da320588456c556eaa7ef57fb14261c74df172b55fab311dd282759b847e"
         }
       ]
     },
@@ -5399,19 +5399,19 @@
       "moduleKey": "QuizSetQCM",
       "format": "h5p",
       "error": null,
-      "totalSha256": "00437328e738f2259a89a72df62baae454e36ed3cad6da461656f573e286b8e0",
-      "canonSize": 19681,
+      "totalSha256": "7ace7deb83490216362de68c047f99e3f931db00d83dc2a484c21a7cb3c9cb73",
+      "canonSize": 20056,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 18377,
-          "canonSha256": "cf4d5e61a7c1620eb3ba4eeda19de37662364f6a90beaf730f3119b808135da4"
+          "canonSize": 18753,
+          "canonSha256": "c21c1ba5d1a3cdecbb5145a3945629751f230c5b8d8e66368673dc7967e19ceb"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1304,
-          "canonSha256": "9bb855b211341e194d40f9a5b979ca9d49d3889d463cf62b5aa26a17f38fc67b"
+          "canonSize": 1303,
+          "canonSha256": "d8b4d608f834d856c87fbec7f025d52004e954aef9450ca6cc60a587ecdc4403"
         }
       ]
     },
@@ -5419,19 +5419,19 @@
       "moduleKey": "QuizSetQCM",
       "format": "h5p",
       "error": null,
-      "totalSha256": "3d6548d0e5ebc0718c614985264c00814c32000d2e6e9a812f359f9a5bfb8672",
-      "canonSize": 20671,
+      "totalSha256": "4232d3efd02c87fc11e52259af8019b667c46d14fded1f4adc7a78167f8ddb0a",
+      "canonSize": 20604,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 19395,
-          "canonSha256": "8ba066b46b2dcd9de8248fb510f118a01276df8a8d4fcdfeace75f3f1f925b40"
+          "canonSize": 19329,
+          "canonSha256": "0d5039ecac9018797e544ec1cb805749f041e534d707d497dc670838a9227a13"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1276,
-          "canonSha256": "2a326cc47839511b5f96a85518ed3a2731a5c6eade187b1209f90d64af674ed0"
+          "canonSize": 1275,
+          "canonSha256": "26f61d3087db4369795ea9895d057701ca6182d664b868b5a92a540fd142bb43"
         }
       ]
     },
@@ -5439,19 +5439,19 @@
       "moduleKey": "QuizSetQCM",
       "format": "h5p",
       "error": null,
-      "totalSha256": "33feb5b065928eb12a43a7db7b604d4c2c985f6c02a064693394cd2e5b77e4af",
-      "canonSize": 50817,
+      "totalSha256": "cbb26c62cc355d0378850d24bc2d6f038657edfd8a74e248833d60f7d8316b04",
+      "canonSize": 51192,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 49507,
-          "canonSha256": "6267b624de8e0b6855d8c885f6c476c7376c2bc5adc177114c1632b2e7737edf"
+          "canonSize": 49883,
+          "canonSha256": "94b08f6a8d6279025c81d896797e91b58d11395f16f275a39894057953f2014e"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1310,
-          "canonSha256": "c8b041970ee81792396bf9cfea281f0d7b58800a32430f1690d618e9d5ecac6a"
+          "canonSize": 1309,
+          "canonSha256": "c0292f1f0789798b0cd7c8bdd91ae2826a4b1a27ab2b3bdcd3b854629fb3c6c4"
         }
       ]
     },
@@ -5459,19 +5459,19 @@
       "moduleKey": "QuizSetVF",
       "format": "h5p",
       "error": null,
-      "totalSha256": "73fe5d3d4ef38ca886012603e8798ecb66b047533d606a78f512d6f15af97bf0",
-      "canonSize": 11914,
+      "totalSha256": "67b2a8bf0d215b785ae06d31b34c63aa41c00fb3d71d2b4841f4ced445e03fe0",
+      "canonSize": 14317,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 10622,
-          "canonSha256": "836d53697da8b50a231fc4516545aca17e2a9a7d6fbaaeada95d0234fd1aee1c"
+          "canonSize": 13026,
+          "canonSha256": "e9fa679e8e3815e936c8db8b9734a3b30f1af264c18b8ef15b9c950ae15aba21"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1292,
-          "canonSha256": "baa71735c74da3cdb0e6ef6f5c3e2fc539e0550298e1895fe42d89b8b5ed7fc1"
+          "canonSize": 1291,
+          "canonSha256": "8d34c6fd938577598019671491d58e12fed9be5189b82bcedace72c78b72d3db"
         }
       ]
     },
@@ -5479,19 +5479,19 @@
       "moduleKey": "QuizSetVF",
       "format": "h5p",
       "error": null,
-      "totalSha256": "2c1469df8d0b978f54bd04e1c0a8aea5e11ba02e93579adebde557e5e3597079",
-      "canonSize": 10858,
+      "totalSha256": "84f1c335160bf79484d0d265beb4992fb7533fdfb505b259e930d16316911f5b",
+      "canonSize": 13261,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 9538,
-          "canonSha256": "fe01fca568b50c8a9450bbe80eb31925f6381427a235379ce359c358947dffee"
+          "canonSize": 11942,
+          "canonSha256": "7c399b235492f2ac00b609824c24f7a19d277cbb6584cac0a9d6dab79fd08b62"
         },
         {
           "name": "h5p.json",
-          "canonSize": 1320,
-          "canonSha256": "8cdbbef4946f7fea450d69e1c791b441956a93b8d7cb9b10490ce6b4ef12fdc9"
+          "canonSize": 1319,
+          "canonSha256": "635f6741e3fb38c3ceb6e5c4d369639f2ee6ac33f281b284a07645f6b7b03606"
         }
       ]
     },
@@ -5499,19 +5499,19 @@
       "moduleKey": "SingleChoiceSet",
       "format": "h5p",
       "error": null,
-      "totalSha256": "4a24578bc20791086805975579f774a9e2b9af36083c16f858613772885a8883",
-      "canonSize": 4394,
+      "totalSha256": "a21bfe01b310d7ac16b9d00d26764422eb7fd79fe1b8ce4b6c4b4649ce5160e7",
+      "canonSize": 4643,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 3562,
-          "canonSha256": "8980c22d088ccf92d976de7627cbf2eb04c1855e492b421b699bda05d9441205"
+          "canonSize": 3812,
+          "canonSha256": "a5ba2d4dc07edf09382e7ea59ba8d84ee2ff1eccb7f46c7e478777a7f6b081b1"
         },
         {
           "name": "h5p.json",
-          "canonSize": 832,
-          "canonSha256": "a3b4e499ba397710dfd91fa969775cbd79956695fd89d3f0fbb311c5ab67d9e6"
+          "canonSize": 831,
+          "canonSha256": "6c1697a18a2a0a7ced661e774b5c2ff62d4d14cb7c6287401b93b797854338ed"
         }
       ]
     },
@@ -5519,19 +5519,19 @@
       "moduleKey": "SingleChoiceSet",
       "format": "h5p",
       "error": null,
-      "totalSha256": "0fb2cd84f7ff935ea91337623fcdf3caeacca0ba8bce7ac70ee25d75230fb3bc",
-      "canonSize": 3910,
+      "totalSha256": "c9ad9db2e0dbfbcfffd849639345e5cfb70d9a314984de9c914f3490fbf482f0",
+      "canonSize": 4159,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
-          "canonSize": 2976,
-          "canonSha256": "fd121f09df9f5145097a0293a5e906256996fdebfcbe108968e2e20d655dabe0"
+          "canonSize": 3226,
+          "canonSha256": "b721bfb3269f5fac858308628023794d5fab78bc08261268b1af1f93ca609a0c"
         },
         {
           "name": "h5p.json",
-          "canonSize": 934,
-          "canonSha256": "a0bace3fde671e098150ce09413da9308f80b3992c82b9770036787f0b148242"
+          "canonSize": 933,
+          "canonSha256": "2e23471a2e69f11a07eef98539fb8a3eedd42ef001a6d411c8780d5dfaa44fd5"
         }
       ]
     },
@@ -5539,8 +5539,8 @@
       "moduleKey": "SortParagraphs",
       "format": "h5p",
       "error": null,
-      "totalSha256": "311ef1c33fdbd80e62e2580e8f99381f9f45f4e3b22ae491a3f972e24f764e9d",
-      "canonSize": 5681,
+      "totalSha256": "10dcc98348c525e96ceb81763c8a4082b668b513c1a740f5eb257df89823864c",
+      "canonSize": 5680,
       "fileCount": 2,
       "files": [
         {
@@ -5550,8 +5550,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 830,
-          "canonSha256": "e6770e9499de6f617e4489cbce804fd905bf395b582d25d06e51607d010ef539"
+          "canonSize": 829,
+          "canonSha256": "fc4fc4074196f249c5bd1ff4f63bd63ba07e2c963518b62dbce86998ee9f2b93"
         }
       ]
     },
@@ -5559,8 +5559,8 @@
       "moduleKey": "SortParagraphs",
       "format": "h5p",
       "error": null,
-      "totalSha256": "a644cb897ae09f128b576a0a58b0cc50113ddd749995261e319e76169520ffb8",
-      "canonSize": 4945,
+      "totalSha256": "86739318cb04329576479d576200cf210ceff17f5fc277a29298eb8026992451",
+      "canonSize": 4944,
       "fileCount": 2,
       "files": [
         {
@@ -5570,8 +5570,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 932,
-          "canonSha256": "bc0603e97a0f52438e88e8fec551676869f58bbbe1a484b9bc5cdf37ff81ee12"
+          "canonSize": 931,
+          "canonSha256": "85dc89d295f10a3ac00a00ff296db7888494a5020d95c2d8849d36053d989184"
         }
       ]
     },
@@ -5579,19 +5579,19 @@
       "moduleKey": "Summary",
       "format": "h5p",
       "error": null,
-      "totalSha256": "84112859ce93e3f3a3e35a31f93712c94fc1b5027bab50a1c2ec13db74dae161",
-      "canonSize": 5462,
+      "totalSha256": "d789e4eb2cfbc92d57792852042d1ac93b8ac85b57273037a64b5facb0a2320b",
+      "canonSize": 5461,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
           "canonSize": 4646,
-          "canonSha256": "ecbf8ff966c0e3c2848c914c137363fb45e4f7f82ab2e1e7554b2ac0cc80993b"
+          "canonSha256": "c2b829a428ea3c36ece4c699396bede23d08526cc06dcad5d7e2527925acf8a0"
         },
         {
           "name": "h5p.json",
-          "canonSize": 816,
-          "canonSha256": "39a5f21248b04a8c808778cf7bf87083d69737b597fb8b2d32cb71ca8c1986fe"
+          "canonSize": 815,
+          "canonSha256": "9276f89d1f936c6e0189a977339f14cec41cc4d9accb042186ae6317c73ccfff"
         }
       ]
     },
@@ -5599,19 +5599,19 @@
       "moduleKey": "Summary",
       "format": "h5p",
       "error": null,
-      "totalSha256": "f456f5802972290d9ec4310fb78380659d7d025f9420695e0aefde84cdc16bd5",
-      "canonSize": 4751,
+      "totalSha256": "8197e101e17d6b3035755113007126417f782370ba58e96d7ef1f4e1648cc12a",
+      "canonSize": 4750,
       "fileCount": 2,
       "files": [
         {
           "name": "content/content.json",
           "canonSize": 3833,
-          "canonSha256": "9362a080ac250163e81405bd586286efebe3336ca6c38c6391295a07e8f031bc"
+          "canonSha256": "2c24ac0daf1395b392ec7c206497c1915e0c7465ce6087289ef4b58c771072ad"
         },
         {
           "name": "h5p.json",
-          "canonSize": 918,
-          "canonSha256": "d2fc8b0d29504f3670e5960a4f9ed9c5ebd35632b173d4e2c2a09f424ad23003"
+          "canonSize": 917,
+          "canonSha256": "4eefaa689997ce50d57622bc79213c1cf24a6d7e5a9e613205048f6f8ec7577d"
         }
       ]
     },
@@ -5619,8 +5619,8 @@
       "moduleKey": "Timeline",
       "format": "h5p",
       "error": null,
-      "totalSha256": "b8d63072e3976ba060b70c07b4712528a7d07ac410fd7583afb3cbee88e65bfa",
-      "canonSize": 5452,
+      "totalSha256": "e9a9f08bb55facf70ef52f724be6790f65be03597d6f971495b8be960a1b9dee",
+      "canonSize": 5451,
       "fileCount": 2,
       "files": [
         {
@@ -5630,8 +5630,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 417,
-          "canonSha256": "235dd4a122c0f0b99b5780bfe4838ce2b8889b8606abc1f763b7184e590c1fe0"
+          "canonSize": 416,
+          "canonSha256": "8a3f8b81b41af6b3e3f909d00dd947c0688549957531249d59a278e6410cbf40"
         }
       ]
     },
@@ -5639,8 +5639,8 @@
       "moduleKey": "Timeline",
       "format": "h5p",
       "error": null,
-      "totalSha256": "e09094232c4f73aee15b44eb19d3ff1ccb9be9fa995b6715da95beffe7f8e258",
-      "canonSize": 8985,
+      "totalSha256": "8355389e69a1d4cceeb9df65fa68c1e85778e78cfe9ad9cab0cd25de4d90be33",
+      "canonSize": 8984,
       "fileCount": 2,
       "files": [
         {
@@ -5650,8 +5650,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 417,
-          "canonSha256": "235dd4a122c0f0b99b5780bfe4838ce2b8889b8606abc1f763b7184e590c1fe0"
+          "canonSize": 416,
+          "canonSha256": "8a3f8b81b41af6b3e3f909d00dd947c0688549957531249d59a278e6410cbf40"
         }
       ]
     },
@@ -5659,8 +5659,8 @@
       "moduleKey": "Timeline",
       "format": "h5p",
       "error": null,
-      "totalSha256": "d98e6cd21bd4c6ad590e9bca47e6c133bc2b37be8d8495b754116fc557dc231b",
-      "canonSize": 9343,
+      "totalSha256": "7995924dc3d687c7d02c4af4014dc4494efc0dcc064c9e2c5dcc942a827dec0b",
+      "canonSize": 9342,
       "fileCount": 2,
       "files": [
         {
@@ -5670,8 +5670,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 519,
-          "canonSha256": "a5f5112fe618a3981db63f8f4f4f5c85a7b0617ad15bf191bae21a25197852d8"
+          "canonSize": 518,
+          "canonSha256": "43565c66d899c5a035c41ef3ea747fcb26bb430c3c3cc84ec423fbe96bfbc134"
         }
       ]
     },
@@ -5679,8 +5679,8 @@
       "moduleKey": "TrueFalse",
       "format": "h5p",
       "error": null,
-      "totalSha256": "c48285efb48abd94cb3fcc602964417529b1f9f44325742a5de87d2135dd8a9a",
-      "canonSize": 3204,
+      "totalSha256": "21d78fe89c8117f558c3995517a7e594d916482e594ec895ab824429c2c93044",
+      "canonSize": 3203,
       "fileCount": 2,
       "files": [
         {
@@ -5690,8 +5690,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 819,
-          "canonSha256": "e07e0123acd5aa13ae43a3cf8f3600e797398e7d621b059e97b498d7005ab190"
+          "canonSize": 818,
+          "canonSha256": "b0dc8cf55d4bc88cd61351a731ee392ba08a5b5f69a8fb1c18c46c1d08ffe48e"
         }
       ]
     },
@@ -5699,8 +5699,8 @@
       "moduleKey": "TrueFalse",
       "format": "h5p",
       "error": null,
-      "totalSha256": "65eab769e75bd18c4b8cfcc92247b9d6f889517bd2514636bf10da22e9e6bfd5",
-      "canonSize": 3231,
+      "totalSha256": "aedd8392c8d52b6b5be5b6a81e2856020b6a7454d6147fe5f595960c87f9a975",
+      "canonSize": 3230,
       "fileCount": 2,
       "files": [
         {
@@ -5710,8 +5710,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 921,
-          "canonSha256": "6032765afff6bca49fe28fa0f500e58f9c6dbcc9f65c2616bd553456c7471b00"
+          "canonSize": 920,
+          "canonSha256": "b39f11e35ac040bbcaeafe77ac4a4568501fbd22cd6733bbca415e491e4441e7"
         }
       ]
     },
@@ -5719,8 +5719,8 @@
       "moduleKey": "TrueFalse",
       "format": "h5p",
       "error": null,
-      "totalSha256": "9f61588226091ec97af935d1d2e48e1bb99712d3a91b714a299409d86d3a4572",
-      "canonSize": 3379,
+      "totalSha256": "e999d3e3e4ed737f65bd46b9b17782e9ad1e4a112de2b5738d1bb91c0c5e38ae",
+      "canonSize": 3378,
       "fileCount": 2,
       "files": [
         {
@@ -5730,8 +5730,8 @@
         },
         {
           "name": "h5p.json",
-          "canonSize": 921,
-          "canonSha256": "6032765afff6bca49fe28fa0f500e58f9c6dbcc9f65c2616bd553456c7471b00"
+          "canonSize": 920,
+          "canonSha256": "b39f11e35ac040bbcaeafe77ac4a4568501fbd22cd6733bbca415e491e4441e7"
         }
       ]
     }

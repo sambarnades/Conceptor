@@ -20,7 +20,9 @@
           {
             "text": "x > 3",
             "correct": false,
-            "chosenFeedback": "Il faut aussi autoriser la valeur où le radicande vaut 0."
+            "tipsAndFeedback": {
+              "chosenFeedback": "Il faut aussi autoriser la valeur où le radicande vaut 0."
+            }
           },
           {
             "text": "x \\ge 3",
@@ -29,7 +31,9 @@
           {
             "text": "x < 3",
             "correct": false,
-            "chosenFeedback": "Pour x < 3 le nombre sous la racine devient négatif."
+            "tipsAndFeedback": {
+              "chosenFeedback": "Pour x < 3 le nombre sous la racine devient négatif."
+            }
           }
         ],
         "behaviour": {
@@ -74,17 +78,23 @@
           {
             "text": "\\( \\sqrt{13} \\)",
             "correct": false,
-            "chosenFeedback": "2·7+1 = 15, pas 13."
+            "tipsAndFeedback": {
+              "chosenFeedback": "2·7+1 = 15, pas 13."
+            }
           },
           {
             "text": "\\( \\sqrt{9} \\)",
             "correct": false,
-            "chosenFeedback": "Le calcul donne 15, pas 9."
+            "tipsAndFeedback": {
+              "chosenFeedback": "Le calcul donne 15, pas 9."
+            }
           },
           {
             "text": "\\( \\sqrt{5} \\)",
             "correct": false,
-            "chosenFeedback": "Vérifiez le calcul du radicande."
+            "tipsAndFeedback": {
+              "chosenFeedback": "Vérifiez le calcul du radicande."
+            }
           }
         ],
         "behaviour": {
@@ -129,17 +139,23 @@
           {
             "text": "Une droite passant par l'origine.",
             "correct": false,
-            "chosenFeedback": "La fonction racine n’est pas linéaire."
+            "tipsAndFeedback": {
+              "chosenFeedback": "La fonction racine n’est pas linéaire."
+            }
           },
           {
             "text": "Une courbe qui descend vers la droite.",
             "correct": false,
-            "chosenFeedback": "Le signe de la fonction est toujours positif."
+            "tipsAndFeedback": {
+              "chosenFeedback": "Le signe de la fonction est toujours positif."
+            }
           },
           {
             "text": "Une courbe qui part de (0,0) puis diminue pour \\(x>0\\).",
             "correct": false,
-            "chosenFeedback": "Le graphe de \\(\\sqrt{x}\\) est croissant, pas décroissant."
+            "tipsAndFeedback": {
+              "chosenFeedback": "Le graphe de \\(\\sqrt{x}\\) est croissant, pas décroissant."
+            }
           }
         ],
         "behaviour": {
@@ -180,7 +196,9 @@
           {
             "text": "x = 9",
             "correct": false,
-            "chosenFeedback": "5² = 25, pas 13."
+            "tipsAndFeedback": {
+              "chosenFeedback": "5² = 25, pas 13."
+            }
           },
           {
             "text": "x = 21",
@@ -189,12 +207,16 @@
           {
             "text": "x = 25",
             "correct": false,
-            "chosenFeedback": "5² - 4 = 21, pas 25."
+            "tipsAndFeedback": {
+              "chosenFeedback": "5² - 4 = 21, pas 25."
+            }
           },
           {
             "text": "x = 1",
             "correct": false,
-            "chosenFeedback": "Le radicande doit être 25."
+            "tipsAndFeedback": {
+              "chosenFeedback": "Le radicande doit être 25."
+            }
           }
         ],
         "behaviour": {
@@ -239,7 +261,9 @@
           {
             "text": "\\( g(x)=\\sqrt{x^{2}}\\)",
             "correct": false,
-            "chosenFeedback": "Cette expression vaut |x|, ce n’est pas une fonction racine carrée au sens algébrique."
+            "tipsAndFeedback": {
+              "chosenFeedback": "Cette expression vaut |x|, ce n’est pas une fonction racine carrée au sens algébrique."
+            }
           },
           {
             "text": "\\( h(x)=\\sqrt{x}+2\\)",
@@ -256,7 +280,9 @@
           {
             "text": "\\( m(x)=\\sqrt{\\frac{1}{x}}\\)",
             "correct": false,
-            "chosenFeedback": "Le radicande n’est pas de la forme ax+b."
+            "tipsAndFeedback": {
+              "chosenFeedback": "Le radicande n’est pas de la forme ax+b."
+            }
           }
         ],
         "behaviour": {
